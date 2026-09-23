@@ -1,6 +1,6 @@
 import SwiftUI
 
-// MARK: - Learn library (sleep knowledge, Rise parity)
+// MARK: - Learn library (sleep knowledge)
 
 public struct LearnView: View {
     @State private var query = ""

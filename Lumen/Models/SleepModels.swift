@@ -1,11 +1,11 @@
 import Foundation
 
-// MARK: - Core models (Rise parity)
+// MARK: - Core sleep models
 
 public enum SleepSource: String, Codable, Sendable, CaseIterable {
     case phone, wearable, manual
     public var label: String {
-        switch self { case .phone: return "Phone"; case .wearable: return "Watch"; case .manual: return "Manual" }
+        switch self { case .phone: return "Phone"; case .wearable: return "Health"; case .manual: return "Manual" }
     }
 }
 
@@ -30,6 +30,12 @@ public struct SleepEpisode: Identifiable, Codable, Sendable {
     public var source: SleepSource
     public var quality: Int? // 1...5
     public var note: String?
+    /// Actual time asleep (from Health). Nil for manual logs — then time in bed is used.
+    public var asleepSeconds: Double?
+    public var deepSeconds: Double?
+    public var remSeconds: Double?
+    public var coreSeconds: Double?
+    public var awakeSeconds: Double?
 
     public init(id: UUID = UUID(), bedtime: Date, wakeTime: Date, source: SleepSource = .phone, quality: Int? = nil, note: String? = nil) {
         self.id = id
@@ -40,13 +46,29 @@ public struct SleepEpisode: Identifiable, Codable, Sendable {
         self.note = note
     }
 
+    /// Sleep that counts toward need/debt: measured asleep time when known.
     public var duration: TimeInterval {
-        max(0, wakeTime.timeIntervalSince(bedtime))
+        asleepSeconds ?? timeInBed
+    }
+
+    public var timeInBed: TimeInterval { max(0, wakeTime.timeIntervalSince(bedtime)) }
+
+    public var hasStages: Bool { deepSeconds != nil || remSeconds != nil || coreSeconds != nil }
+
+    /// Asleep ÷ in bed, when measured.
+    public var efficiency: Double? {
+        guard let a = asleepSeconds, timeInBed > 0 else { return nil }
+        return min(1, a / timeInBed)
     }
 
     public var midSleep: Date {
         bedtime.addingTimeInterval(duration / 2)
     }
+}
+
+public enum UnitSystem: String, Codable, Sendable, CaseIterable {
+    case metric, imperial
+    public var label: String { self == .metric ? "Metric" : "Imperial" }
 }
 
 public struct UserProfile: Codable, Sendable {
@@ -58,6 +80,12 @@ public struct UserProfile: Codable, Sendable {
     public var name: String
     public var onboardingDone: Bool
     public var isSubscribed: Bool
+    // Local account (added in 1.1; optional so older saves still decode).
+    public var createdAt: Date?
+    public var units: UnitSystem?
+    public var appLock: Bool?
+
+    public var unitSystem: UnitSystem { units ?? .metric }
 
     public static var `default`: UserProfile {
         var wc = DateComponents(); wc.hour = 7; wc.minute = 0
@@ -67,7 +95,7 @@ public struct UserProfile: Codable, Sendable {
             chronotype: .intermediate,
             wakeGoal: wc,
             birthYear: nil,
-            name: "Sleeper",
+            name: "",
             onboardingDone: false,
             isSubscribed: false
         )
@@ -79,7 +107,7 @@ public struct UserProfile: Codable, Sendable {
     }
 }
 
-// MARK: - Habits (16 science-based, Rise parity)
+// MARK: - Habits (16 science-based rituals)
 
 public struct SleepHabit: Identifiable, Codable, Sendable {
     public var id: String

@@ -33,7 +33,7 @@ public final class LLMConnectionService: ObservableObject {
     private init() {
         if let raw = UserDefaults.standard.string(forKey: modeKey), let m = Mode(rawValue: raw) {
             mode = m
-        } else if !(UserDefaults.standard.string(forKey: "lumen.llm.key") ?? "").isEmpty {
+        } else if !(SecureStore.string("lumen.llm.key") ?? "").isEmpty {
             mode = .key // migrated from earlier key-only versions
         }
         refreshStatus()
@@ -59,8 +59,8 @@ public final class LLMConnectionService: ObservableObject {
     }
 
     public var apiKey: String {
-        get { UserDefaults.standard.string(forKey: "lumen.llm.key") ?? "" }
-        set { UserDefaults.standard.set(newValue, forKey: "lumen.llm.key"); refreshStatus() }
+        get { SecureStore.string("lumen.llm.key") ?? "" }
+        set { SecureStore.set(newValue, for: "lumen.llm.key"); refreshStatus() }
     }
     public var endpoint: String {
         get { UserDefaults.standard.string(forKey: "lumen.llm.endpoint") ?? Preset.openAI.endpoint }
@@ -105,8 +105,8 @@ public final class LLMConnectionService: ObservableObject {
         set { UserDefaults.standard.set(newValue, forKey: "lumen.llm.oauth.model") }
     }
 
-    private var oauthAccess: String? { UserDefaults.standard.string(forKey: "lumen.llm.oauth.token") }
-    private var oauthRefresh: String? { UserDefaults.standard.string(forKey: "lumen.llm.oauth.refresh") }
+    private var oauthAccess: String? { SecureStore.string("lumen.llm.oauth.token") }
+    private var oauthRefresh: String? { SecureStore.string("lumen.llm.oauth.refresh") }
     private var oauthExpiry: Date? { UserDefaults.standard.object(forKey: "lumen.llm.oauth.expires") as? Date }
     private var pendingVerifier: String?
 
@@ -184,8 +184,8 @@ public final class LLMConnectionService: ObservableObject {
         do {
             let (data, _) = try await URLSession.shared.data(for: req)
             let tok = try JSONDecoder().decode(OAuthToken.self, from: data)
-            UserDefaults.standard.set(tok.access_token, forKey: "lumen.llm.oauth.token")
-            if let r = tok.refresh_token { UserDefaults.standard.set(r, forKey: "lumen.llm.oauth.refresh") }
+            SecureStore.set(tok.access_token, for: "lumen.llm.oauth.token")
+            if let r = tok.refresh_token { SecureStore.set(r, for: "lumen.llm.oauth.refresh") }
             UserDefaults.standard.set(Date().addingTimeInterval(TimeInterval(tok.expires_in)), forKey: "lumen.llm.oauth.expires")
             status = "Connected — Bearer token stored on this phone"
         } catch {
@@ -204,15 +204,15 @@ public final class LLMConnectionService: ObservableObject {
         do {
             let (data, _) = try await URLSession.shared.data(for: req)
             let tok = try JSONDecoder().decode(OAuthToken.self, from: data)
-            UserDefaults.standard.set(tok.access_token, forKey: "lumen.llm.oauth.token")
+            SecureStore.set(tok.access_token, for: "lumen.llm.oauth.token")
             UserDefaults.standard.set(Date().addingTimeInterval(TimeInterval(tok.expires_in)), forKey: "lumen.llm.oauth.expires")
             return tok.access_token
         } catch { return oauthAccess }
     }
 
     public func disconnectOAuth() {
-        UserDefaults.standard.removeObject(forKey: "lumen.llm.oauth.token")
-        UserDefaults.standard.removeObject(forKey: "lumen.llm.oauth.refresh")
+        SecureStore.set(nil, for: "lumen.llm.oauth.token")
+        SecureStore.set(nil, for: "lumen.llm.oauth.refresh")
         UserDefaults.standard.removeObject(forKey: "lumen.llm.oauth.expires")
         if mode == .oauth { setMode(.onDevice) } else { refreshStatus() }
     }

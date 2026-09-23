@@ -1,12 +1,17 @@
 import Foundation
 import SwiftUI
 
+// MARK: - Health store: activity, nutrition, hydration, coaching (local-first)
+// Real data only. Apple Health is read on launch / foreground; everything the
+// user logs lives on-device and is written back to Health when connected.
+
 @MainActor
 public final class HealthStore: ObservableObject {
     public static let shared = HealthStore()
 
     @Published public var goals = HealthGoals()
-    @Published public var metrics = DayMetrics.empty
+    /// Today's numbers: Health snapshot + anything logged in Lumen.
+    @Published public private(set) var metrics = DayMetrics.empty
     @Published public var workouts: [Workout] = []
     @Published public var meals: [Meal] = []
     @Published public var waterLogs: [HydrationLog] = []
@@ -16,182 +21,190 @@ public final class HealthStore: ObservableObject {
     @Published public var lastSync: Date?
     @Published public var isSyncing = false
     @Published public var chat: [ChatMessage] = []
-    /// True once real HealthKit data has replaced the first-run demo samples.
-    @Published public var usingLiveData = false
 
-    private let mealsKey = "lumen.health.meals.v1"
-    private let workoutsKey = "lumen.health.workouts.v1"
-    private let goalsKey = "lumen.health.goals.v1"
-    private let chatKey = "lumen.health.chat.v1"
-    private let liveKey = "lumen.health.live.v1"
+    /// Last Health snapshot for today (persisted so launch is instant).
+    private var healthSnapshot = DayMetrics.empty
+    private var sleepDebt: TimeInterval = 0
+    private var sleepNeed: TimeInterval = 8 * 3600 + 10 * 60
+    private var lastSleepSeconds: Double?
+
+    public var healthConnected: Bool { HealthKitService.shared.isAuthorized }
+    /// True when numbers come from a connected source rather than manual logs only.
+    public var usingLiveData: Bool { healthConnected || StravaService.shared.isConnected }
 
     public init() {
-        if let d = UserDefaults.standard.data(forKey: goalsKey),
-           let g = try? JSONDecoder().decode(HealthGoals.self, from: d) { goals = g }
-        if let d = UserDefaults.standard.data(forKey: mealsKey),
-           let m = try? JSONDecoder().decode([Meal].self, from: d),
-           Calendar.current.isDateInToday(m.last?.date ?? .distantPast) { meals = m }
-        else { meals = Self.sampleMeals() }
-        if !workoutsSeeded() { workouts = Self.sampleWorkouts() }
-        metrics = Self.sampleMetrics()
-        usingLiveData = UserDefaults.standard.bool(forKey: liveKey)
-        if usingLiveData {
-            // Don't resurrect demo samples across launches once live.
-            workouts.removeAll { $0.source == .sample }
-            meals.removeAll { $0.source == .sample }
+        goals = LocalStore.load(HealthGoals.self, from: "goals", legacyKey: "lumen.health.goals.v1") ?? HealthGoals()
+        let horizon = Calendar.current.date(byAdding: .day, value: -365, to: Date()) ?? .distantPast
+        meals = (LocalStore.load([Meal].self, from: "meals", legacyKey: "lumen.health.meals.v1") ?? [])
+            .filter { $0.source != .sample && $0.date > horizon }
+        workouts = (LocalStore.load([Workout].self, from: "workouts", legacyKey: "lumen.health.workouts.v1") ?? [])
+            .filter { $0.source != .sample }
+        waterLogs = (LocalStore.load([HydrationLog].self, from: "water") ?? []).filter { $0.date > horizon }
+        chat = LocalStore.load([ChatMessage].self, from: "chat", legacyKey: "lumen.health.chat.v1") ?? []
+        if let snap = LocalStore.load(DayMetrics.self, from: "today"), Calendar.current.isDateInToday(snap.date) {
+            healthSnapshot = snap
         }
-        if let d = UserDefaults.standard.data(forKey: chatKey),
-           let c = try? JSONDecoder().decode([ChatMessage].self, from: d) { chat = c }
-        recompute(sleepDebt: 0, sleepNeed: 8*3600+10*60)
+        lastSync = AppGroup.defaults.object(forKey: "health.lastSync") as? Date
+        refresh()
     }
 
-    private func workoutsSeeded() -> Bool {
-        if let d = UserDefaults.standard.data(forKey: workoutsKey),
-           let w = try? JSONDecoder().decode([Workout].self, from: d), !w.isEmpty {
-            workouts = w; return true
-        }
-        return false
-    }
+    // MARK: Derived
 
-    public var caloriesEaten: Double { meals.filter { Calendar.current.isDateInToday($0.date) }.reduce(0) { $0 + $1.calories } }
-    public var proteinEaten: Double { meals.filter { Calendar.current.isDateInToday($0.date) }.reduce(0) { $0 + $1.protein } }
-    public var carbsEaten: Double { meals.filter { Calendar.current.isDateInToday($0.date) }.reduce(0) { $0 + $1.carbs } }
-    public var fatEaten: Double { meals.filter { Calendar.current.isDateInToday($0.date) }.reduce(0) { $0 + $1.fat } }
-    public var waterTodayML: Double {
-        let logged = waterLogs.filter { Calendar.current.isDateInToday($0.date) }.reduce(0) { $0 + $1.ml }
-        return max(metrics.waterML, logged)
-    }
-    public var workoutsToday: [Workout] { workouts.filter { Calendar.current.isDateInToday($0.start) } }
+    private func today<T>(_ items: [T], _ date: (T) -> Date) -> [T] { items.filter { Calendar.current.isDateInToday(date($0)) } }
+    public var mealsToday: [Meal] { today(meals, \.date).sorted { $0.date < $1.date } }
+    public var caloriesEaten: Double { mealsToday.reduce(0) { $0 + $1.calories } }
+    public var proteinEaten: Double { mealsToday.reduce(0) { $0 + $1.protein } }
+    public var carbsEaten: Double { mealsToday.reduce(0) { $0 + $1.carbs } }
+    public var fatEaten: Double { mealsToday.reduce(0) { $0 + $1.fat } }
+    public var waterTodayML: Double { metrics.waterML }
+    public var workoutsToday: [Workout] { today(workouts, \.start) }
     public var caloriesRemaining: Int { max(0, goals.calorieTarget() - Int(caloriesEaten)) }
     public var moveProgress: Double { min(1, metrics.activeCalories / max(1, goals.activeCalGoal)) }
+    public var isCalibrating: Bool { readiness == nil }
+    public var hasActivityToday: Bool { metrics.steps > 0 || metrics.activeCalories > 0 || !workoutsToday.isEmpty }
+
+    /// Meals grouped by day, newest first (for the nutrition journal).
+    public func meals(on day: Date) -> [Meal] {
+        meals.filter { Calendar.current.isDate($0.date, inSameDayAs: day) }.sorted { $0.date < $1.date }
+    }
+
+    // MARK: Mutations
 
     public func addMeal(_ meal: Meal) {
         meals.append(meal)
-        if meal.source != .sample { goLive() }
-        Task { await HealthKitExtended.shared.saveMeal(meal) }
-        persist()
-        recompute(sleepDebt: 0, sleepNeed: 8*3600)
+        Task { await HealthKitService.shared.saveMeal(meal) }
+        persist(); refresh()
     }
+
     public func deleteMeal(_ id: String) {
-        meals.removeAll { $0.id == id }; persist()
-        recompute(sleepDebt: 0, sleepNeed: 8*3600)
+        meals.removeAll { $0.id == id }
+        Task { await HealthKitService.shared.deleteMeal(id: id) }
+        persist(); refresh()
     }
+
     public func addWater(ml: Double) {
         waterLogs.append(HydrationLog(ml: ml))
-        metrics.waterML += ml
-        Task { await HealthKitExtended.shared.saveWater(ml: ml) }
-        persist()
+        Task { await HealthKitService.shared.saveWater(ml: ml) }
+        persist(); refresh()
     }
-    public func addManualWorkout(kind: WorkoutKind, minutes: Double, kcal: Double? = nil) {
-        let w = Workout(kind: kind, title: "Manual \(kind.label)", start: Date(), duration: minutes*60, activeCalories: kcal ?? kind.met * (minutes/60) * (goals.weightKg ?? 75), source: .manual)
-        workouts.append(w); metrics.activeCalories += w.activeCalories; metrics.exerciseMin += minutes
-        goLive()
-        persist()
-        recompute(sleepDebt: 0, sleepNeed: 8*3600)
+
+    public func undoLastWater() {
+        guard let last = today(waterLogs, \.date).max(by: { $0.date < $1.date }) else { return }
+        waterLogs.removeAll { $0.id == last.id }
+        persist(); refresh()
+    }
+
+    public func addManualWorkout(kind: WorkoutKind, minutes: Double, kcal: Double? = nil, start: Date = Date()) {
+        let w = Workout(kind: kind, title: kind.label, start: start, duration: minutes * 60,
+                        activeCalories: kcal ?? kind.met * (minutes / 60) * (goals.weightKg ?? 75), source: .manual)
+        workouts.append(w)
+        workouts.sort { $0.start < $1.start }
+        persist(); refresh()
+    }
+
+    public func deleteWorkout(_ id: String) {
+        workouts.removeAll { $0.id == id && $0.source == .manual }
+        persist(); refresh()
+    }
+
+    public func logWeight(kg: Double) {
+        goals.weightKg = kg
+        healthSnapshot.weightKg = kg
+        Task { await HealthKitService.shared.saveWeight(kg: kg) }
+        persist(); refresh()
+    }
+
+    public func updateGoals(_ g: HealthGoals) {
+        goals = g
+        persist(); refresh()
     }
 
     public func persist() {
-        if let d = try? JSONEncoder().encode(meals) { UserDefaults.standard.set(d, forKey: mealsKey) }
-        if let d = try? JSONEncoder().encode(workouts) { UserDefaults.standard.set(d, forKey: workoutsKey) }
-        if let d = try? JSONEncoder().encode(goals) { UserDefaults.standard.set(d, forKey: goalsKey) }
-        if let d = try? JSONEncoder().encode(chat) { UserDefaults.standard.set(d, forKey: chatKey) }
+        LocalStore.save(meals, as: "meals")
+        LocalStore.save(workouts, as: "workouts")
+        LocalStore.save(goals, as: "goals")
+        LocalStore.save(chat, as: "chat")
+        LocalStore.save(waterLogs, as: "water")
+        LocalStore.save(healthSnapshot, as: "today")
     }
+
+    // MARK: Sync
 
     public func syncAll() async {
         guard !isSyncing else { return }
         isSyncing = true; defer { isSyncing = false }
-        await HealthKitExtended.shared.refreshToday()
-        let hk = HealthKitExtended.shared
+        let hk = HealthKitService.shared
         if hk.isAuthorized {
-            metrics.steps = hk.today.steps
-            metrics.activeCalories = max(metrics.activeCalories, hk.today.activeCalories)
-            metrics.restingCalories = hk.today.restingCalories
-            metrics.exerciseMin = max(metrics.exerciseMin, hk.today.exerciseMin)
-            metrics.standHours = hk.today.standHours
-            metrics.restingHR = hk.today.restingHR
-            metrics.hrvMS = hk.today.hrvMS
-            metrics.avgHR = hk.today.avgHR ?? metrics.avgHR
-            metrics.spo2 = hk.today.spo2 ?? metrics.spo2
-            metrics.weightKg = hk.today.weightKg ?? metrics.weightKg
-            if hk.today.waterML > 0 { metrics.waterML = max(metrics.waterML, hk.today.waterML) }
-            let hkWorkouts = await hk.fetchWorkouts(days: 14)
-            mergeWorkouts(hkWorkouts)
-            // Real data is in: retire every demo sample so the app never
-            // mixes demo numbers with your body. Empty states guide from here.
-            goLive()
+            await hk.refreshToday()
+            healthSnapshot = hk.today
+            if let w = hk.today.weightKg { goals.weightKg = (w * 10).rounded() / 10 }
+            mergeWorkouts(await hk.fetchWorkouts(days: 60))
         }
         if StravaService.shared.isConnected {
             await StravaService.shared.sync()
             mergeWorkouts(StravaService.shared.activities)
-            if !StravaService.shared.activities.isEmpty { goLive() }
         }
         lastSync = Date()
-        persist()
-        recompute(sleepDebt: 0, sleepNeed: 8*3600)
+        AppGroup.defaults.set(lastSync, forKey: "health.lastSync")
+        persist(); refresh()
     }
 
     private func mergeWorkouts(_ incoming: [Workout]) {
         for w in incoming {
+            if let i = workouts.firstIndex(where: { $0.id == w.id }) { workouts[i] = w; continue }
             if let sid = w.stravaID, workouts.contains(where: { $0.stravaID == sid }) { continue }
-            if workouts.contains(where: { $0.overlaps(w) && $0.source != .manual }) { continue }
+            // Same session recorded by two sources: keep the first non-manual copy.
+            if workouts.contains(where: { $0.overlaps(w) && $0.kind == w.kind && $0.source != .manual }) { continue }
             workouts.append(w)
         }
         workouts.sort { $0.start < $1.start }
-        if workouts.count > 300 { workouts.removeFirst(workouts.count - 300) }
+        if workouts.count > 500 { workouts.removeFirst(workouts.count - 500) }
     }
 
-    /// Drop all `.sample` content and mark this device as live-data mode.
-    public func goLive() {
-        let hadSamples = workouts.contains(where: { $0.source == .sample }) || meals.contains(where: { $0.source == .sample })
-        workouts.removeAll { $0.source == .sample }
-        meals.removeAll { $0.source == .sample }
-        if !usingLiveData || hadSamples {
-            usingLiveData = true
-            UserDefaults.standard.set(true, forKey: liveKey)
-            persist()
-        }
-    }
+    // MARK: Coaching
 
+    /// Called by the sleep side whenever debt / need / last night change.
     public func recompute(sleepDebt: TimeInterval, sleepNeed: TimeInterval, lastSleepSeconds: Double? = nil) {
-        if let s = lastSleepSeconds { metrics.sleepSeconds = s }
-        readiness = CoachingEngine.readiness(metrics: metrics, sleepDebt: sleepDebt, workoutsToday: workoutsToday, goals: goals)
-        plan = CoachingEngine.dayPlan(metrics: metrics, readiness: readiness, goals: goals, sleepDebt: sleepDebt, eaten: caloriesEaten, protein: proteinEaten, waterML: waterTodayML)
-        insights = CoachingEngine.insights(metrics: metrics, readiness: readiness, goals: goals, mealsToday: meals.filter { Calendar.current.isDateInToday($0.date) }, workoutsToday: workoutsToday, sleepDebt: sleepDebt)
-        UserDefaults.standard.set(sleepDebt/3600, forKey: "lumen.widget.debt")
-        UserDefaults.standard.set(readiness?.score ?? 70, forKey: "lumen.widget.energy")
+        self.sleepDebt = sleepDebt
+        self.sleepNeed = sleepNeed
+        self.lastSleepSeconds = lastSleepSeconds
+        refresh()
     }
 
-    static func sampleMetrics() -> DayMetrics {
-        var m = DayMetrics.empty
-        m.steps = 7642; m.activeCalories = 486; m.restingCalories = 1650
-        m.exerciseMin = 32; m.standHours = 9; m.avgHR = 72; m.restingHR = 58
-        m.hrvMS = 62; m.weightKg = 75; m.sleepSeconds = 6.8*3600; m.waterML = 900
-        return m
+    public func refresh() {
+        var m = Calendar.current.isDateInToday(healthSnapshot.date) ? healthSnapshot : .empty
+        // Manual sessions aren't in Health's activity totals — add them.
+        let manual = workoutsToday.filter { $0.source == .manual }
+        m.activeCalories += manual.reduce(0) { $0 + $1.activeCalories }
+        m.exerciseMin += manual.reduce(0) { $0 + $1.duration / 60 }
+        let logged = today(waterLogs, \.date).reduce(0) { $0 + $1.ml }
+        // Health already includes water we wrote back; take the larger to avoid double count.
+        m.waterML = max(m.waterML, logged)
+        m.sleepSeconds = lastSleepSeconds
+        if m.weightKg == nil { m.weightKg = goals.weightKg }
+        metrics = m
+
+        // Readiness needs at least one body signal — no guessing on day one.
+        let hasSignal = lastSleepSeconds != nil || m.hrvMS != nil || m.restingHR != nil
+        readiness = hasSignal ? CoachingEngine.readiness(metrics: m, sleepDebt: sleepDebt, workoutsToday: workoutsToday, goals: goals) : nil
+        plan = CoachingEngine.dayPlan(metrics: m, readiness: readiness, goals: goals, sleepDebt: sleepDebt, eaten: caloriesEaten, protein: proteinEaten, waterML: waterTodayML)
+        insights = CoachingEngine.insights(metrics: m, readiness: readiness, goals: goals, mealsToday: mealsToday, workoutsToday: workoutsToday, sleepDebt: sleepDebt)
+
+        let d = AppGroup.defaults
+        d.set(readiness?.score ?? 0, forKey: "widget.readiness")
+        d.set(Int(caloriesEaten), forKey: "widget.eaten")
+        d.set(goals.calorieTarget(), forKey: "widget.target")
+        d.set(Int(proteinEaten), forKey: "widget.protein")
+        d.set(goals.proteinTarget(), forKey: "widget.proteinTarget")
+        d.set(m.steps, forKey: "widget.steps")
+        d.set(moveProgress, forKey: "widget.move")
+        WidgetBridge.reload()
     }
-    static func sampleWorkouts() -> [Workout] {
-        let now = Date(); let cal = Calendar.current
-        func at(dayOffset: Int, hour: Int) -> Date {
-            let d = cal.date(byAdding: .day, value: dayOffset, to: now) ?? now
-            return cal.date(bySettingHour: hour, minute: 0, second: 0, of: d) ?? d
-        }
-        return [
-            Workout(kind: .run, title: "Morning Run", start: at(dayOffset: 0, hour: 7), duration: 32*60, activeCalories: 342, distanceM: 5200, avgHR: 148, source: .sample),
-            Workout(kind: .strength, title: "Upper Strength", start: at(dayOffset: -1, hour: 18), duration: 45*60, activeCalories: 280, avgHR: 118, source: .sample),
-            Workout(kind: .walk, title: "Evening Walk", start: at(dayOffset: -1, hour: 20), duration: 25*60, activeCalories: 110, distanceM: 1800, source: .sample),
-            Workout(kind: .ride, title: "Weekend Ride", start: at(dayOffset: -2, hour: 9), duration: 68*60, activeCalories: 640, distanceM: 24500, avgHR: 132, source: .sample),
-        ]
-    }
-    static func sampleMeals() -> [Meal] {
-        let cal = Calendar.current; let now = Date()
-        func at(hour: Int) -> Date { cal.date(bySettingHour: hour, minute: 15, second: 0, of: now) ?? now }
-        return [
-            Meal(date: at(hour: 8), type: .breakfast, items: [
-                FoodItem(name: "Greek yogurt + berries + honey", grams: 280, calories: 340, proteinG: 28, carbsG: 42, fatG: 6, fiberG: 5, confidence: 0.9),
-                FoodItem(name: "Espresso", grams: 60, calories: 5, proteinG: 0, carbsG: 1, fatG: 0, confidence: 0.99),
-            ], source: .sample),
-            Meal(date: at(hour: 13), type: .lunch, items: [
-                FoodItem(name: "Chicken burrito bowl", grams: 450, calories: 640, proteinG: 45, carbsG: 62, fatG: 20, fiberG: 9, confidence: 0.85),
-            ], source: .sample),
-        ]
+
+    /// Start over: clears every log (Health data itself is untouched).
+    public func resetAll() {
+        goals = HealthGoals(); meals = []; workouts = []; waterLogs = []; chat = []
+        healthSnapshot = .empty; lastSync = nil
+        refresh()
     }
 }

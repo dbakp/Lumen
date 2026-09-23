@@ -1,7 +1,7 @@
 import Foundation
 import SwiftUI
 
-// MARK: - Central observable store (persisted, sample-seeded)
+// MARK: - Sleep store: nights, need, debt, circadian plan (local-first)
 
 @MainActor
 public final class SleepStore: ObservableObject {
@@ -19,29 +19,43 @@ public final class SleepStore: ObservableObject {
     private let episodesKey = "lumen.episodes.v1"
     private let habitsKey = "lumen.habits.v1"
 
+    private let habitsDayKey = "lumen.habits.day"
+
     public init() {
-        // Load or seed (locals first: self isn't fully initialized until all properties are set).
-        let loadedProfile: UserProfile
-        if let data = UserDefaults.standard.data(forKey: profileKey),
-           let p = try? JSONDecoder().decode(UserProfile.self, from: data) {
-            loadedProfile = p
-        } else {
-            loadedProfile = .default
-        }
+        // Locals first: self isn't fully initialized until all properties are set.
+        let loadedProfile = LocalStore.load(UserProfile.self, from: "profile", legacyKey: profileKey) ?? .default
         profile = loadedProfile
-        if let data = UserDefaults.standard.data(forKey: episodesKey),
-           let e = try? JSONDecoder().decode([SleepEpisode].self, from: data),
-           !e.isEmpty {
-            episodes = e.sorted { $0.bedtime < $1.bedtime }
-        } else {
-            episodes = Self.sampleEpisodes(need: loadedProfile.sleepNeed)
+        // Real nights only. Legacy builds seeded fake nights (source .phone) — drop them.
+        let loaded = LocalStore.load([SleepEpisode].self, from: "sleep", legacyKey: episodesKey) ?? []
+        let migrated = LocalStore.load([SleepEpisode].self, from: "sleep") != nil
+        episodes = (migrated ? loaded : loaded.filter { $0.source == .manual }).sorted { $0.bedtime < $1.bedtime }
+        habits = LocalStore.load([SleepHabit].self, from: "habits", legacyKey: habitsKey) ?? SleepHabit.defaults()
+        resetHabitsIfNewDay()
+        recompute()
+    }
+
+    public var hasSleepData: Bool { !episodes.isEmpty }
+
+    /// Ritual check-marks are per day.
+    public func resetHabitsIfNewDay() {
+        let today = Calendar.current.startOfDay(for: Date()).timeIntervalSince1970
+        if UserDefaults.standard.double(forKey: habitsDayKey) != today {
+            for i in habits.indices { habits[i].doneToday = false }
+            UserDefaults.standard.set(today, forKey: habitsDayKey)
         }
-        if let data = UserDefaults.standard.data(forKey: habitsKey),
-           let h = try? JSONDecoder().decode([SleepHabit].self, from: data) {
-            habits = h
-        } else {
-            habits = SleepHabit.defaults()
+    }
+
+    /// Merge nights from Apple Health: Health wins for any night it measured,
+    /// manual logs stay for nights Health doesn't know about.
+    public func mergeHealthSleep(_ incoming: [SleepEpisode]) {
+        guard !incoming.isEmpty else { return }
+        var kept = episodes.filter { ep in
+            !incoming.contains { abs($0.midSleep.timeIntervalSince(ep.midSleep)) < 5 * 3600 }
         }
+        kept.append(contentsOf: incoming)
+        episodes = kept.sorted { $0.bedtime < $1.bedtime }
+        if episodes.count > 400 { episodes.removeFirst(episodes.count - 400) }
+        reestimateNeed()
         recompute()
     }
 
@@ -163,58 +177,37 @@ public final class SleepStore: ObservableObject {
         }
     }
 
-    public func completeOnboarding(need: TimeInterval, chronotype: Chronotype, wakeHour: Int, wakeMinute: Int, name: String) {
+    public func completeOnboarding(need: TimeInterval, chronotype: Chronotype, wakeHour: Int, wakeMinute: Int, name: String, birthYear: Int?, units: UnitSystem) {
         profile.sleepNeed = need
+        profile.birthYear = birthYear
+        profile.units = units
+        profile.createdAt = profile.createdAt ?? Date()
         profile.chronotype = chronotype
         profile.wakeGoal.hour = wakeHour
         profile.wakeGoal.minute = wakeMinute
-        profile.name = name.isEmpty ? "Sleeper" : name
+        profile.name = name.trimmingCharacters(in: .whitespaces)
         profile.onboardingDone = true
-        // Re-seed sample episodes around chosen schedule so day-one looks personal.
-        episodes = Self.sampleEpisodes(need: need, wakeHour: wakeHour, wakeMinute: wakeMinute)
         recompute()
     }
 
-    private func persist() {
-        if let d = try? JSONEncoder().encode(profile) { UserDefaults.standard.set(d, forKey: profileKey) }
-        if let d = try? JSONEncoder().encode(episodes) { UserDefaults.standard.set(d, forKey: episodesKey) }
-        if let d = try? JSONEncoder().encode(habits) { UserDefaults.standard.set(d, forKey: habitsKey) }
-        // Widget snapshot (shared defaults in production via App Group).
-        UserDefaults.standard.set(debt / 3600, forKey: "lumen.widget.debt")
-        UserDefaults.standard.set(energyPotential, forKey: "lumen.widget.energy")
-        UserDefaults.standard.set(suggestedBedtime, forKey: "lumen.widget.bedtime")
+    public func persist() {
+        LocalStore.save(profile, as: "profile")
+        LocalStore.save(episodes, as: "sleep")
+        LocalStore.save(habits, as: "habits")
+        let d = AppGroup.defaults
+        d.set(hasSleepData, forKey: "widget.hasSleep")
+        d.set(debt / 3600, forKey: "widget.debt")
+        d.set(energyPotential, forKey: "widget.energy")
+        d.set(suggestedBedtime, forKey: "widget.bedtime")
+        d.set(lastNight?.duration ?? 0, forKey: "widget.lastSleep")
+        WidgetBridge.reload()
     }
 
-    // MARK: sample data (so first-run + previews feel alive)
-
-    static func sampleEpisodes(need: TimeInterval = 8*3600+10*60, wakeHour: Int = 7, wakeMinute: Int = 0) -> [SleepEpisode] {
-        var out: [SleepEpisode] = []
-        let cal = Calendar.current
-        let now = Date()
-        // Deterministic-ish pseudo-random for stable previews.
-        var seed: UInt64 = 42
-        func rand(_ lo: Double, _ hi: Double) -> Double {
-            seed = seed &* 6364136223846793005 &+ 1442695040888963407
-            let u = Double(seed >> 33) / Double(UInt64.max >> 33)
-            return lo + u * (hi - lo)
-        }
-        for dayAgo in stride(from: 21, through: 0, by: -1) {
-            guard let day = cal.date(byAdding: .day, value: -dayAgo, to: now) else { continue }
-            let isWeekend: Bool = {
-                let wd = cal.component(.weekday, from: day)
-                return wd == 1 || wd == 7
-            }()
-            // Owlish drift on weekends.
-            let wakeShift = (isWeekend ? rand(20, 70) : rand(-25, 25)) * 60
-            var wakeComps = cal.dateComponents([.year, .month, .day], from: day)
-            wakeComps.hour = wakeHour; wakeComps.minute = wakeMinute
-            let wake = (cal.date(from: wakeComps) ?? day).addingTimeInterval(wakeShift)
-            // Duration: need minus typical shortfall (0–90m), weekends catch up.
-            let shortfall = isWeekend ? rand(-60, 30) * 60 : rand(-20, 95) * 60
-            let dur = max(4*3600, need - shortfall + rand(-15, 15)*60)
-            let bed = wake.addingTimeInterval(-dur - rand(5, 35)*60) // + latency
-            out.append(SleepEpisode(bedtime: bed, wakeTime: wake, source: dayAgo % 4 == 0 ? .wearable : .phone, quality: Int(rand(2, 5).rounded())))
-        }
-        return out.sorted { $0.bedtime < $1.bedtime }
+    /// Start over: clears nights and returns to onboarding.
+    public func resetAll() {
+        profile = .default
+        episodes = []
+        habits = SleepHabit.defaults()
+        recompute()
     }
 }

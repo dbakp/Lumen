@@ -37,17 +37,28 @@ public struct GlowRing: View {
 }
 
 public struct ReadinessDial: View {
-    let score: Int
-    public init(score: Int) { self.score = score }
-    var tint: Color { score >= 85 ? .green : score >= 70 ? .cyan : score >= 55 ? .yellow : .orange }
+    let score: Int?
+    public init(score: Int?) { self.score = score }
+    var tint: Color {
+        guard let score else { return .white.opacity(0.5) }
+        return score >= 85 ? .green : score >= 70 ? .cyan : score >= 55 ? .yellow : .orange
+    }
     public var body: some View {
         ZStack {
-            GlowRing(progress: Double(score)/100, colors: [tint, tint.opacity(0.5)])
+            GlowRing(progress: Double(score ?? 0)/100, colors: [tint, tint.opacity(0.5)])
             VStack(spacing: 0) {
-                AnimatedNumber(Double(score)).font(.system(size: 46, weight: .bold, design: .rounded)).foregroundStyle(.white)
-                Text("READINESS").font(.caption2.weight(.bold)).foregroundStyle(.white.opacity(0.55)).tracking(1.4)
+                if let score {
+                    AnimatedNumber(Double(score)).font(.system(size: 46, weight: .bold, design: .rounded)).foregroundStyle(.white)
+                } else {
+                    Image(systemName: "sparkles").font(.system(size: 30, weight: .semibold)).foregroundStyle(.white.opacity(0.8))
+                        .symbolEffect(.pulse)
+                        .padding(.bottom, 4)
+                }
+                Text(score == nil ? "CALIBRATING" : "READINESS").font(.caption2.weight(.bold)).foregroundStyle(.white.opacity(0.55)).tracking(1.4)
             }
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(score.map { "Readiness \($0) out of 100" } ?? "Readiness calibrating")
     }
 }
 
@@ -75,17 +86,18 @@ public struct MetricTile: View {
 public struct DataPill: View {
     let live: Bool
     public init(live: Bool) { self.live = live }
+    var label: String { live ? "APPLE HEALTH" : "ON-DEVICE" }
     public var body: some View {
         HStack(spacing: 5) {
-            Circle().fill(live ? .green : .orange).frame(width: 7, height: 7)
-                .shadow(color: (live ? Color.green : Color.orange).opacity(0.8), radius: 4)
-            Text(live ? "LIVE DATA" : "DEMO")
+            Circle().fill(live ? .green : .white.opacity(0.6)).frame(width: 7, height: 7)
+                .shadow(color: (live ? Color.green : Color.white).opacity(0.6), radius: 4)
+            Text(label)
                 .font(.caption2.weight(.bold)).tracking(0.8)
-                .foregroundStyle(live ? .green : .orange)
+                .foregroundStyle(live ? .green : .white.opacity(0.7))
         }
         .padding(.horizontal, 10).padding(.vertical, 5)
-        .background((live ? Color.green : Color.orange).opacity(0.12), in: Capsule())
-        .overlay(Capsule().stroke((live ? Color.green : Color.orange).opacity(0.3), lineWidth: 0.8))
+        .background((live ? Color.green : Color.white).opacity(0.1), in: Capsule())
+        .overlay(Capsule().stroke((live ? Color.green : Color.white).opacity(0.25), lineWidth: 0.8))
     }
 }
 

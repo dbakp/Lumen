@@ -1,6 +1,6 @@
 import SwiftUI
 
-// MARK: - Habits / Rituals (16 timed nudges, Rise parity)
+// MARK: - Habits / Rituals (16 timed nudges)
 
 public struct HabitsView: View {
     @EnvironmentObject var store: SleepStore

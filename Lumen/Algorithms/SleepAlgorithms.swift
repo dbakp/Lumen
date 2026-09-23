@@ -1,4 +1,4 @@
-// Rise-parity sleep science algorithms.
+// Lumen sleep science algorithms.
 // Covers: personalized sleep need, 14-night weighted sleep debt,
 // simplified SAFTE / two-process circadian prediction, Energy Potential,
 // melatonin window, sleep inertia, and smart bedtime planning.
@@ -9,7 +9,7 @@ import Foundation
 
 public struct SleepNeedEstimator {
     /// Estimate personal sleep need from history.
-    /// Rise uses ~1yr of phone-use behavior. We approximate with:
+    /// Estimated from logged history:
     ///  - trimmed median of longer, consistent nights (ad-lib proxy)
     ///  - age adjustment, clamped to observed 5h...11.5h range.
     public static func estimate(
@@ -57,7 +57,7 @@ public struct SleepNeedEstimator {
     }
 
     public static func defaultNeed(age: Int?) -> TimeInterval {
-        guard let age else { return 8 * 3600 + 10 * 60 } // median RISE user ≈ 8h
+        guard let age else { return 8 * 3600 + 10 * 60 } // population median ≈ 8h
         switch age {
         case ..<13: return 9.5 * 3600
         case 13..<18: return 9 * 3600
@@ -82,10 +82,10 @@ public struct SleepNeedEstimator {
     }
 }
 
-// MARK: - Sleep debt (14-night weighted, Rise method)
+// MARK: - Sleep debt (14-night weighted)
 
 public struct SleepDebtCalculator {
-    /// Rise method (publicly described): 14-night window, last night = 15%,
+    /// 14-night window, last night = 15%,
     /// remaining 85% spread over prior 13 nights with recency weighting.
     public static func weights(count: Int = 14) -> [Double] {
         precondition(count >= 1)
@@ -352,7 +352,7 @@ public struct CircadianModel {
         return min(90, max(10, m))
     }
 
-    /// Energy Potential 0–100, tied to debt (like Rise).
+    /// Energy Potential 0–100, tied to debt .
     public static func energyPotential(debt: TimeInterval) -> Int {
         let d = debt / 3600
         // 0h → 100, 5h → ~60, 10h → ~30, 15h → ~12

@@ -6,8 +6,16 @@ import SwiftUI
 public final class StravaService: ObservableObject {
     public static let shared = StravaService()
 
-    public var clientID = "YOUR_STRAVA_CLIENT_ID"
-    public var clientSecret = "YOUR_STRAVA_CLIENT_SECRET"
+    /// Your own Strava API app (strava.com/settings/api), entered in Settings.
+    public var clientID: String {
+        get { SecureStore.string("strava.clientID") ?? "" }
+        set { SecureStore.set(newValue.trimmingCharacters(in: .whitespaces), for: "strava.clientID"); objectWillChange.send() }
+    }
+    public var clientSecret: String {
+        get { SecureStore.string("strava.clientSecret") ?? "" }
+        set { SecureStore.set(newValue.trimmingCharacters(in: .whitespaces), for: "strava.clientSecret"); objectWillChange.send() }
+    }
+    public var hasCredentials: Bool { !clientID.isEmpty && !clientSecret.isEmpty }
     public var redirectURI = "lumen://strava-callback"
 
     @Published public var isConnected = false
@@ -15,8 +23,8 @@ public final class StravaService: ObservableObject {
     @Published public var status = "Not connected"
     @Published public var activities: [Workout] = []
 
-    private var accessToken: String? { UserDefaults.standard.string(forKey: "strava.token") }
-    private var refreshToken: String? { UserDefaults.standard.string(forKey: "strava.refresh") }
+    private var accessToken: String? { SecureStore.string("strava.token") }
+    private var refreshToken: String? { SecureStore.string("strava.refresh") }
     private var expiresAt: Date? { UserDefaults.standard.object(forKey: "strava.expires") as? Date }
 
     private init() {
@@ -25,7 +33,7 @@ public final class StravaService: ObservableObject {
     }
 
     public var authURL: URL? {
-        guard clientID != "YOUR_STRAVA_CLIENT_ID" else { return nil }
+        guard hasCredentials else { return nil }
         var c = URLComponents(string: "https://www.strava.com/oauth/authorize")!
         c.queryItems = [
             .init(name: "client_id", value: clientID),
@@ -38,7 +46,7 @@ public final class StravaService: ObservableObject {
     }
 
     public func connect() async {
-        guard let url = authURL else { status = "Add Strava Client ID first (see StravaService.swift)"; return }
+        guard let url = authURL else { status = "Add your Strava Client ID and Secret first"; return }
         let session = ASWebAuthenticationSession(url: url, callbackURLScheme: "lumen") { callback, _ in
             guard let callback, let code = URLComponents(url: callback, resolvingAgainstBaseURL: false)?
                 .queryItems?.first(where: { $0.name == "code" })?.value else { return }
@@ -58,8 +66,8 @@ public final class StravaService: ObservableObject {
         do {
             let (data, _) = try await URLSession.shared.data(for: req)
             let decoded = try JSONDecoder().decode(TokenResponse.self, from: data)
-            UserDefaults.standard.set(decoded.access_token, forKey: "strava.token")
-            UserDefaults.standard.set(decoded.refresh_token, forKey: "strava.refresh")
+            SecureStore.set(decoded.access_token, for: "strava.token")
+            SecureStore.set(decoded.refresh_token, for: "strava.refresh")
             UserDefaults.standard.set(Date().addingTimeInterval(TimeInterval(decoded.expires_in)), forKey: "strava.expires")
             athleteName = "\(decoded.athlete.firstname ?? "") \(decoded.athlete.lastname ?? "")".trimmingCharacters(in: .whitespaces)
             isConnected = true; status = "Connected as \(athleteName ?? "athlete")"
@@ -78,7 +86,7 @@ public final class StravaService: ObservableObject {
         do {
             let (data, _) = try await URLSession.shared.data(for: req)
             let decoded = try JSONDecoder().decode(TokenResponse.self, from: data)
-            UserDefaults.standard.set(decoded.access_token, forKey: "strava.token")
+            SecureStore.set(decoded.access_token, for: "strava.token")
             UserDefaults.standard.set(Date().addingTimeInterval(TimeInterval(decoded.expires_in)), forKey: "strava.expires")
             return decoded.access_token
         } catch { return accessToken }
@@ -99,8 +107,8 @@ public final class StravaService: ObservableObject {
     }
 
     public func disconnect() {
-        UserDefaults.standard.removeObject(forKey: "strava.token")
-        UserDefaults.standard.removeObject(forKey: "strava.refresh")
+        SecureStore.set(nil, for: "strava.token")
+        SecureStore.set(nil, for: "strava.refresh")
         isConnected = false; activities = []; status = "Not connected"
     }
 

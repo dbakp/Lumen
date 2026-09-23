@@ -1,7 +1,7 @@
 import Foundation
 
 // MARK: - CoachingEngine: the brain.
-// Rules distilled from Whoop/Oura/Rise/MacroFactor/Apple best practices:
+// Built on published exercise-physiology, sleep and nutrition research:
 // readiness from HRV+RHR+sleep debt+strain balance; strain target; protein-first
 // calorie coaching; 3-bullet day plan; kind, specific, never shaming.
 
@@ -13,7 +13,7 @@ public enum CoachingEngine {
         var score = 82
         var factors: [Readiness.ReadinessFactor] = []
 
-        // Sleep debt drag (biggest lever, like Rise's Energy Potential).
+        // Sleep debt drag (biggest lever).
         let debtH = sleepDebt / 3600
         let debtDrag = Int(min(30, debtH * 4.5))
         score -= debtDrag

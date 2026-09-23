@@ -1,6 +1,6 @@
 import SwiftUI
 
-// MARK: - Today / Home (Rise-parity hero)
+// MARK: - Tonight: debt, energy curve, bedtime plan
 
 public struct HomeView: View {
     @EnvironmentObject var store: SleepStore

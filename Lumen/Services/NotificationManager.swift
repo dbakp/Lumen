@@ -8,12 +8,25 @@ public final class NotificationManager: ObservableObject {
     public static let shared = NotificationManager()
     @Published public var authorized = false
 
-    public func request() async {
+    @discardableResult
+    public func request() async -> Bool {
         do {
             authorized = try await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge])
         } catch {
             authorized = false
         }
+        return authorized
+    }
+
+    /// Mirror the system setting (the user may change it in Settings at any time).
+    public func refreshAuthorization() async {
+        let s = await UNUserNotificationCenter.current().notificationSettings()
+        authorized = s.authorizationStatus == .authorized || s.authorizationStatus == .provisional
+    }
+
+    public func reschedule(from store: SleepStore) {
+        guard let pred = store.prediction else { return }
+        schedule(habits: store.habits, wakeToday: pred.wakeZone.lowerBound, bedtimeTonight: store.suggestedBedtime, melatoninStart: pred.melatoninWindow.lowerBound)
     }
 
     /// Schedule enabled habits relative to wake / bedtime / melatonin window.
