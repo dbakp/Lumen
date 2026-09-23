@@ -9,6 +9,21 @@ public struct NutritionView: View {
 
     public init() {}
 
+    /// Previous days (up to 7) that have meals logged.
+    var pastDays: [Date] {
+        let cal = Calendar.current
+        return (1...7).compactMap { cal.date(byAdding: .day, value: -$0, to: cal.startOfDay(for: Date())) }
+            .filter { !health.meals(on: $0).isEmpty }
+    }
+    var avgKcal: Int {
+        guard !pastDays.isEmpty else { return 0 }
+        return Int(pastDays.map { health.meals(on: $0).reduce(0) { $0 + $1.calories } }.reduce(0, +)) / pastDays.count
+    }
+    var avgProtein: Int {
+        guard !pastDays.isEmpty else { return 0 }
+        return Int(pastDays.map { health.meals(on: $0).reduce(0) { $0 + $1.protein } }.reduce(0, +)) / pastDays.count
+    }
+
     var todayMeals: [Meal] { health.meals.filter { Calendar.current.isDateInToday($0.date) }.sorted { $0.date < $1.date } }
 
     public var body: some View {
@@ -18,6 +33,7 @@ public struct NutritionView: View {
                     VStack(alignment: .leading, spacing: 10) {
                         HStack {
                             MacroRingView(eaten: health.caloriesEaten, target: Double(health.goals.calorieTarget()), protein: health.proteinEaten, proteinTarget: Double(health.goals.proteinTarget()))
+                                .frame(width: 170, height: 170)
                             VStack(alignment: .leading, spacing: 6) {
                                 Text("BUDGET").font(.caption2.weight(.bold)).foregroundStyle(.white.opacity(0.55)).tracking(1.2)
                                 Text("\(health.caloriesRemaining) left").font(.title2.weight(.bold)).foregroundStyle(.white)
@@ -50,6 +66,7 @@ public struct NutritionView: View {
                     VStack(alignment: .leading, spacing: 8) {
                         HStack {
                             SectionHeader("Hydration", subtitle: "\(Int(health.waterTodayML)) of \(health.plan?.waterTargetML ?? 2500) ml", systemImage: "drop.fill")
+                                .contextMenu { Button("Undo last water", systemImage: "arrow.uturn.backward") { health.undoLastWater() } }
                             Spacer()
                             Button("+250 ml") { health.addWater(ml: 250); haptic(.light) }.font(.caption.weight(.bold))
                                 .padding(.horizontal, 12).padding(.vertical, 7).background(.cyan.opacity(0.2), in: Capsule()).foregroundStyle(.cyan)
@@ -67,7 +84,28 @@ public struct NutritionView: View {
                 }
                 ForEach(todayMeals) { meal in MealCard(meal: meal) }
                 if todayMeals.isEmpty {
-                    Text("No meals yet — snap your first plate.").font(.caption).foregroundStyle(.white.opacity(0.55))
+                    EmptyStateCard(icon: "camera.fill", title: "Nothing logged today",
+                                   message: "Snap a photo of your plate or quick-add a food — protein and calories are counted for you.",
+                                   actionTitle: "Snap a meal") { showCapture = true }
+                }
+                if !pastDays.isEmpty {
+                    GlassCard {
+                        VStack(alignment: .leading, spacing: 8) {
+                            SectionHeader("Last 7 days", subtitle: "Average \(avgKcal) kcal · \(avgProtein) g protein", systemImage: "calendar")
+                            ForEach(pastDays, id: \.self) { day in
+                                let meals = health.meals(on: day)
+                                let kcal = Int(meals.reduce(0) { $0 + $1.calories })
+                                let protein = Int(meals.reduce(0) { $0 + $1.protein })
+                                HStack {
+                                    Text(day.formatted(.dateTime.weekday(.wide).month().day())).font(.subheadline).foregroundStyle(.white.opacity(0.85))
+                                    Spacer()
+                                    Text("\(kcal) kcal").font(.subheadline.weight(.semibold).monospacedDigit()).foregroundStyle(.white)
+                                    Text("\(protein) g").font(.caption.monospacedDigit()).foregroundStyle(.green).frame(width: 52, alignment: .trailing)
+                                }
+                                .padding(.vertical, 3)
+                            }
+                        }
+                    }
                 }
             }
             .padding(.horizontal, 16).padding(.bottom, 110)

@@ -117,6 +117,7 @@ public final class HealthKitService: ObservableObject {
 
     public func disconnectLocally() {
         UserDefaults.standard.set(false, forKey: connectedKey)
+        sleepBackfilled = false
         isAuthorized = false
         status = "Paused — manage access in the Health app"
     }
@@ -198,6 +199,13 @@ public final class HealthKitService: ObservableObject {
 
     /// Nightly sleep from Health, one episode per night. Overlapping samples from
     /// several sources (phone + watch) are unioned so nothing is double-counted.
+    /// Full history on first connect, then a short rolling window.
+    public static let historyDays = 730
+    public var sleepBackfilled: Bool {
+        get { UserDefaults.standard.bool(forKey: "lumen.health.sleepBackfilled") }
+        set { UserDefaults.standard.set(newValue, forKey: "lumen.health.sleepBackfilled") }
+    }
+
     public func fetchSleep(days: Int = 30) async -> [SleepEpisode] {
         guard isAvailable, isAuthorized,
               let type = HKObjectType.categoryType(forIdentifier: .sleepAnalysis) else { return [] }
@@ -205,13 +213,13 @@ public final class HealthKitService: ObservableObject {
         let start = Calendar.current.date(byAdding: .day, value: -days, to: end) ?? end
         let predicate = HKQuery.predicateForSamples(withStart: start, end: end, options: [])
         let sort = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: true)
-        let samples: [HKCategorySample] = await withCheckedContinuation { cont in
+        // Years of Watch nights can be tens of thousands of samples — cluster off the main thread.
+        return await withCheckedContinuation { cont in
             let q = HKSampleQuery(sampleType: type, predicate: predicate, limit: HKObjectQueryNoLimit, sortDescriptors: [sort]) { _, s, _ in
-                cont.resume(returning: (s as? [HKCategorySample]) ?? [])
+                cont.resume(returning: Self.episodes(from: (s as? [HKCategorySample]) ?? []))
             }
             self.store.execute(q)
         }
-        return Self.episodes(from: samples)
     }
 
     nonisolated static func episodes(from samples: [HKCategorySample]) -> [SleepEpisode] {

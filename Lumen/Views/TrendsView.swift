@@ -5,12 +5,15 @@ import Charts
 
 public struct TrendsView: View {
     @EnvironmentObject var sleep: SleepStore
+    @EnvironmentObject var health: HealthStore
     @ObservedObject private var hk = HealthKitService.shared
 
     enum Range: Int, CaseIterable, Identifiable {
-        case week = 7, month = 30, quarter = 90
+        case week = 7, month = 30, quarter = 90, year = 365
         var id: Int { rawValue }
-        var label: String { self == .week ? "7D" : self == .month ? "30D" : "90D" }
+        var label: String {
+            switch self { case .week: return "7D"; case .month: return "30D"; case .quarter: return "90D"; case .year: return "1Y" }
+        }
     }
 
     @State private var metric: TrendMetric = .sleep
@@ -154,7 +157,7 @@ public struct TrendsView: View {
                     Image(systemName: metric.icon).font(.title).foregroundStyle(tint(metric).opacity(0.8))
                     Text(emptyMessage).font(.subheadline).foregroundStyle(.white.opacity(0.65)).multilineTextAlignment(.center)
                     if !hk.isAuthorized && metric != .sleep {
-                        Button("Connect Apple Health") { Task { await hk.requestAuthorization(); await load() } }
+                        Button("Connect Apple Health") { Task { if await hk.requestAuthorization() { await SyncCoordinator.syncEverything(sleep: sleep, health: health) }; await load() } }
                             .font(.subheadline.weight(.bold)).tint(.cyan).buttonStyle(.bordered)
                     }
                 }
@@ -168,7 +171,7 @@ public struct TrendsView: View {
                     if useBars {
                         BarMark(x: .value("Day", d.date, unit: .day), y: .value(metric.label, d.value))
                             .foregroundStyle(LinearGradient(colors: [c, c.opacity(0.45)], startPoint: .top, endPoint: .bottom))
-                            .cornerRadius(range == .quarter ? 1 : 4)
+                            .cornerRadius(range.rawValue >= 90 ? 1 : 4)
                             .opacity(selected == nil || selected?.date == d.date ? 1 : 0.35)
                     } else {
                         AreaMark(x: .value("Day", d.date, unit: .day), y: .value(metric.label, d.value))
@@ -196,8 +199,8 @@ public struct TrendsView: View {
             }
             .chartYScale(domain: .automatic(includesZero: useBars))
             .chartXAxis {
-                AxisMarks(values: .stride(by: .day, count: range == .week ? 1 : range == .month ? 7 : 21)) { _ in
-                    AxisValueLabel(format: range == .week ? .dateTime.weekday(.narrow) : .dateTime.month(.abbreviated).day())
+                AxisMarks(values: .stride(by: range == .year ? .month : .day, count: range == .week ? 1 : range == .month ? 7 : range == .quarter ? 21 : 2)) { _ in
+                    AxisValueLabel(format: range == .week ? .dateTime.weekday(.narrow) : range == .year ? .dateTime.month(.abbreviated) : .dateTime.month(.abbreviated).day())
                         .foregroundStyle(.white.opacity(0.5))
                 }
             }

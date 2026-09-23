@@ -9,7 +9,9 @@ public enum SyncCoordinator {
         sleep.resetHabitsIfNewDay()
         let hk = HealthKitService.shared
         if hk.isAuthorized {
-            sleep.mergeHealthSleep(await hk.fetchSleep(days: 60))
+            let days = hk.sleepBackfilled ? 21 : HealthKitService.historyDays
+            sleep.mergeHealthSleep(await hk.fetchSleep(days: days))
+            hk.sleepBackfilled = true
         }
         await health.syncAll()
         propagate(sleep: sleep, health: health)

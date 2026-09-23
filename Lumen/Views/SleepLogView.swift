@@ -6,6 +6,7 @@ public struct SleepLogView: View {
     @EnvironmentObject var store: SleepStore
     @State private var showAdd = false
     @State private var editing: SleepEpisode?
+    @State private var showAll = false
 
     public init() {}
 
@@ -35,11 +36,15 @@ public struct SleepLogView: View {
                                     .foregroundStyle(.white)
                             }
                         }
-                        ForEach(store.episodes.suffix(14).reversed()) { ep in
+                        if store.episodes.isEmpty {
+                            Text("No nights yet. Tap + to log one, or connect Apple Health in Settings.")
+                                .font(.subheadline).foregroundStyle(.white.opacity(0.6)).padding(.vertical, 8)
+                        }
+                        ForEach(store.episodes.suffix(showAll ? 400 : 14).reversed()) { ep in
                             Button { editing = ep } label: {
                                 HStack {
                                     VStack(alignment: .leading, spacing: 2) {
-                                        Text(dateTitle(ep.bedtime)).font(.subheadline.weight(.semibold)).foregroundStyle(.white)
+                                        Text(dateTitle(ep.wakeTime)).font(.subheadline.weight(.semibold)).foregroundStyle(.white)
                                         Text("\(SleepFormat.time(ep.bedtime)) → \(SleepFormat.time(ep.wakeTime)) · \(ep.source.label)")
                                             .font(.caption).foregroundStyle(.white.opacity(0.6))
                                     }
@@ -49,9 +54,14 @@ public struct SleepLogView: View {
                                         .foregroundStyle(ep.duration >= store.profile.sleepNeed - 30*60 ? .green : .orange)
                                 }
                                 .padding(.vertical, 7)
+                                if ep.hasStages { SleepStagesBar(episode: ep).padding(.bottom, 6) }
                                 Divider().background(.white.opacity(0.08))
                             }
                             .buttonStyle(.plain)
+                        }
+                        if store.episodes.count > 14 {
+                            Button(showAll ? "Show recent" : "Show all \(store.episodes.count) nights") { withAnimation { showAll.toggle() } }
+                                .font(.subheadline.weight(.semibold)).foregroundStyle(.cyan).padding(.top, 6)
                         }
                     }
                 }
@@ -59,15 +69,15 @@ public struct SleepLogView: View {
             .padding(.horizontal, 16).padding(.bottom, 90)
         }
         .background(AuroraBackground())
-        .navigationTitle("Sleep")
+        .navigationTitle("Sleep journal")
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $showAdd) { LogSleepSheet() }
         .sheet(item: $editing) { ep in EditSleepSheet(episode: ep) }
     }
 
     func dateTitle(_ d: Date) -> String {
-        if Calendar.current.isDateInToday(d) { return "Tonight" }
-        if Calendar.current.isDateInYesterday(d) { return "Last night" }
+        if Calendar.current.isDateInToday(d) { return "Last night" }
+        if Calendar.current.isDateInYesterday(d) { return "Night before" }
         let f = DateFormatter(); f.dateFormat = "EEE, MMM d"
         return f.string(from: d)
     }
@@ -91,8 +101,9 @@ struct StatChip: View {
 public struct LogSleepSheet: View {
     @EnvironmentObject var store: SleepStore
     @Environment(\.dismiss) var dismiss
-    @State private var bedtime: Date = Calendar.current.date(byAdding: .hour, value: -8, to: Date()) ?? Date()
+    @State private var bedtime: Date = Date()
     @State private var wake: Date = Date()
+    @State private var didSetDefaults = false
 
     public init() {}
     public var body: some View {
@@ -124,6 +135,15 @@ public struct LogSleepSheet: View {
                 .padding(18)
             }
             .navigationTitle("Log sleep").navigationBarTitleDisplayMode(.inline)
+            .onAppear {
+                // Default to "last night": wake at your goal this morning (or now, if earlier),
+                // bedtime one sleep-need before that.
+                guard !didSetDefaults else { return }
+                didSetDefaults = true
+                let goal = store.wakeGoalToday
+                wake = min(goal, Date())
+                bedtime = wake.addingTimeInterval(-store.profile.sleepNeed - 15 * 60)
+            }
             .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Close") { dismiss() } } }
         }
     }

@@ -250,9 +250,9 @@ public struct OnboardingView: View {
         if let s = c.sex { sex = s; filled.append("sex") }
         if let h = c.heightCm { heightCm = h; filled.append("height") }
         if let w = c.weightKg { weightKg = w; filled.append("weight") }
-        let nights = await hk.fetchSleep(days: 60)
+        let nights = await hk.fetchSleep(days: HealthKitService.historyDays)
         if nights.count >= 3 {
-            let est = SleepNeedEstimator.estimate(episodes: nights, age: currentYear - birthYear, chronotype: chronotype)
+            let est = SleepNeedEstimator.estimate(episodes: Array(nights.suffix(120)), age: currentYear - birthYear, chronotype: chronotype)
             needHours = (est.need / 3600 * 12).rounded() / 12
             if let wakeSecs = CircadianModel.circularMean(nights.suffix(14).map { CircadianModel.secondsSinceMidnight($0.wakeTime, calendar: .current) }) {
                 let rounded = (wakeSecs / 900).rounded() * 900
@@ -518,7 +518,10 @@ public struct OnboardingView: View {
             birthYear: birthYear,
             units: units
         )
-        if !importedNights.isEmpty { sleep.mergeHealthSleep(importedNights) }
+        if !importedNights.isEmpty {
+            sleep.mergeHealthSleep(importedNights)
+            HealthKitService.shared.sleepBackfilled = true
+        }
         haptic(.heavy)
         Task { await SyncCoordinator.syncEverything(sleep: sleep, health: health) }
     }

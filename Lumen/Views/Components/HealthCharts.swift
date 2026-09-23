@@ -39,13 +39,17 @@ public struct MacroRingView: View {
             GlowRing(progress: target > 0 ? eaten/target : 0, colors: [.orange, .pink])
             VStack(spacing: 1) {
                 AnimatedNumber(eaten).font(.system(size: 34, weight: .bold, design: .rounded)).foregroundStyle(.white)
-                Text("of \(Int(target)) kcal").font(.caption).foregroundStyle(.white.opacity(0.6))
+                    .lineLimit(1).minimumScaleFactor(0.6)
+                Text("of \(Int(target)) kcal").font(.caption).foregroundStyle(.white.opacity(0.6)).lineLimit(1).minimumScaleFactor(0.8)
                 Text("Protein \(Int(protein))/\(Int(proteinTarget))g")
                     .font(.caption2.weight(.bold)).foregroundStyle(protein >= proteinTarget ? .green : .orange)
                     .padding(.horizontal, 10).padding(.vertical, 3)
+                    .lineLimit(1).minimumScaleFactor(0.7)
                     .background(.white.opacity(0.08), in: Capsule()).padding(.top, 4)
             }
-        }.frame(width: 190, height: 190)
+            .padding(18)
+        }
+        .aspectRatio(1, contentMode: .fit)
     }
 }
 
@@ -104,7 +108,8 @@ public struct WeeklyLoadChart: View {
 
 public struct WorkoutRow: View {
     let workout: Workout
-    public init(_ workout: Workout) { self.workout = workout }
+    let units: UnitSystem
+    public init(_ workout: Workout, units: UnitSystem = .metric) { self.workout = workout; self.units = units }
     public var body: some View {
         HStack(spacing: 12) {
             Image(systemName: workout.kind.icon).font(.system(size: 15, weight: .semibold))
@@ -112,7 +117,7 @@ public struct WorkoutRow: View {
                 .background(LinearGradient(colors: [.cyan.opacity(0.7), .purple.opacity(0.7)], startPoint: .topLeading, endPoint: .bottomTrailing), in: RoundedRectangle(cornerRadius: 13, style: .continuous))
             VStack(alignment: .leading, spacing: 2) {
                 Text(workout.title).font(.subheadline.weight(.bold)).foregroundStyle(.white)
-                Text("\(workout.kind.label) · \(Int(workout.duration/60)) min\(workout.distanceM.map { " · " + String(format: "%.1f km", $0/1000) } ?? "") · \(workout.source.label)")
+                Text("\(SleepFormat.time(workout.start)) · \(Int(workout.duration/60)) min\(workout.distanceM.map { " · " + Units.distance($0, units) } ?? "")\(workout.avgHR.map { " · \(Int($0)) bpm" } ?? "") · \(workout.source.label)")
                     .font(.caption).foregroundStyle(.white.opacity(0.6))
             }
             Spacer()

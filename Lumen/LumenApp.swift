@@ -6,6 +6,11 @@ struct LumenApp: App {
     @StateObject private var health = HealthStore.shared
     @Environment(\.scenePhase) private var scenePhase
 
+    init() {
+        // Clean slate for UI tests (runs before any store loads).
+        if ProcessInfo.processInfo.arguments.contains("-resetForUITests") { LocalStore.eraseAll() }
+    }
+
     var body: some Scene {
         WindowGroup {
             RootView()

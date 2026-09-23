@@ -1,43 +1,78 @@
-# Lumen Health — premium iOS health tracker
+# Lumen
 
-Sleep (Rise-parity engine) + activity + nutrition + AI coach, in one Liquid Glass app.
+A calm, private health coach for iPhone. Lumen brings sleep, energy, movement and nutrition together in one place, learns your body's rhythm from Apple Health, and tells you what to do today.
 
-## Open & run
-1. Open `Lumen.xcodeproj` in Xcode 16+ (iOS 18 SDK; Liquid Glass lights up on iOS 26).
-2. Select the **Lumen** scheme, any iPhone simulator, press Run. No manual setup needed:
-   - **Bundle IDs**: `com.lumen.health` + `com.lumen.health.LumenWidget`
-   - **Privacy keys**: Health (share + update), Camera, Photos, Motion, Notifications — baked into build settings
-   - **Strava + Google OAuth callbacks**: `lumen://` URL scheme registered
-   - **Capabilities**: HealthKit + App Groups (`group.com.lumen.health`) via entitlements
-   - **Background modes**: audio (sleep sounds) + fetch
-   - **App icon, accent color, privacy manifest, widget**: included
-3. Sign in with your Apple ID in Xcode (Signing & Capabilities) to run on a real iPhone.
+Built natively in SwiftUI with a Liquid Glass design. Everything is stored on your device.
 
-Only two things need your own credentials (both entered **in the app, on the phone** — Profile tab):
-- **Strava**: free app at `strava.com/settings/api` → paste Client ID + Secret in code (`StravaService.swift`), then Profile → Connect.
-- **Coach AI** (optional): API key (OpenAI, or Google AI Studio with its preset) **or** Google OAuth (PKCE, `lumen://oauth-callback` registered as redirect). Without either, the coach runs fully on-device with your real data.
+## Features
 
-## What it does
-- **Today**: readiness dial + Move/Exercise/Stand rings + 3-bullet coach briefing + fuel + movement + insights. LIVE/DEMO pill always tells you if numbers are real.
-- **Activity**: unified workouts (HealthKit + Strava + manual, deduped), vitals (RHR, HRV, SpO₂, weight), weekly load.
-- **Snap/Nutrition**: photo → calories + protein in <10s (AI vision if connected, on-device estimate otherwise), macros, hydration, quick-add.
-- **Coach**: chat grounded in your real data (offline brain + optional LLM), insight cards, suggestion chips.
-- **Sleep**: 14-night debt, personal sleep need, circadian energy schedule, rituals, sounds, library.
-- **Real-data-first**: connecting HealthKit/Strava (or logging your own data) permanently retires all demo samples.
+- **First-run onboarding.** You create a local profile, connect Apple Health (which prefills your age, sex, height and weight and imports your full sleep history), set your focus and activity level, set up your rhythm and reminders, and get a personalised plan.
+- **Today.** A readiness score from sleep debt, resting heart rate and HRV. It shows "calibrating" until there's real data and never guesses. Also on this screen: activity rings, a coach briefing, vitals, fuel, movement and insights. Tap readiness to see what's driving it.
+- **Sleep.**
+  - Up to two years of nights imported from Health, with stages (deep, core, REM, awake) and efficiency.
+  - A personal sleep need and 14-night sleep debt.
+  - A circadian energy curve, a timed daily schedule and a suggested bedtime.
+  - A journal, rituals, sleep sounds and short science articles.
+- **Activity.** Workouts from Apple Health, Strava and manual logs, deduplicated and grouped by day. Also training load and vitals (resting HR, HRV, SpO₂, respiratory rate, weight, VO₂ max).
+- **Trends.** 7-day, 30-day, 90-day and 1-year charts for sleep, steps, active energy, exercise, resting HR, HRV and weight. Each shows the average, the change versus the previous period, and the best day, with scrub-to-inspect.
+- **Snap & nutrition.** Photo meal logging and quick-add, protein-first macros, hydration, and a 7-day history. Meals, water and weight are written back to Apple Health.
+- **Coach.** Chat grounded in your real data. It runs fully on-device by default; you can optionally connect your own AI provider (API key or Google OAuth with PKCE).
+- **Widgets.** Readiness (small, medium, Lock Screen rectangular and circular) and a one-tap "Snap a meal" widget, both with deep links into the app.
+- **Privacy.**
+  - Local-first storage in the App Group container.
+  - Secrets (API keys, OAuth tokens) kept in the Keychain.
+  - Optional Face ID lock.
+  - One-tap JSON export and erase-all.
+
+## Data
+
+Lumen is local-first:
+
+| What | Where |
+| --- | --- |
+| Profile, sleep, meals, workouts, water, goals, chat | JSON files in the App Group container (`LocalStore`) |
+| API keys, OAuth tokens, Strava credentials | Keychain (`SecureStore`) |
+| Widget snapshot | Shared `UserDefaults` in the App Group |
+| Health data | Read from Apple Health on launch and on every return to the foreground. Meals, water and weight are written back |
+
+The persistence layer is isolated in `Persistence/`, so a sync backend (for example Supabase) can be added later without touching the views.
+
+## Build & run
+
+1. Open `Lumen.xcodeproj` in Xcode 26 or later (iOS 18+; Liquid Glass lights up on iOS 26).
+2. Select the **Lumen** scheme and run on a simulator or an iPhone.
+   - Bundle IDs are `com.dbakp.lumen` and `com.dbakp.lumen.LumenWidget`, with the App Group `group.com.dbakp.lumen`.
+   - To use a different Apple developer team, change `DEVELOPMENT_TEAM` and the IDs above.
+3. Sources are folder-synced: new files under `Lumen/` are picked up automatically.
+
+Optional connections, configured in the app under **Settings**:
+
+- **Strava.** Create a free API app at strava.com/settings/api, then paste the Client ID and Secret.
+- **Coach AI.** Add an OpenAI-compatible API key (OpenAI, Google AI Studio, or a custom endpoint), or use Google OAuth.
 
 ## Architecture
-- `Models/` — `HealthModels` (Workout/DayMetrics/Readiness/DayPlan/Goals), `NutritionModels`, `HealthStore` (single source of truth), sleep models/store
-- `Algorithms/` — `CoachingEngine` (readiness/strain/protein-first plan), `SleepAlgorithms`
-- `Services/` — `HealthKitExtended`, `StravaService`, `NutritionEngine`, `ChatCoachService`, `LLMConnectionService` (key + OAuth PKCE → OpenAI-compatible `LLMClient`), notifications, sounds
-- `Views/` — Today/Activity/Nutrition/MealCapture/Coach + sleep engine + PremiumUI/HealthCharts components
-- `LumenUITests/` — automated smoke test (onboarding → 5 tabs → Snap → Profile → Coach chat)
+
+- `Persistence/`: `LocalStore` (file-based JSON in the App Group) and `SecureStore` (Keychain).
+- `Models/`: `SleepStore` and `HealthStore` (single sources of truth), sleep, health and nutrition models, units.
+- `Algorithms/`: `SleepAlgorithms` (sleep need, debt, circadian prediction) and `CoachingEngine` (readiness, day plan, insights).
+- `Services/`:
+  - `HealthKitService`: permissions, today, sleep with stages, workouts, history, write-back.
+  - `SyncCoordinator`: keeps the stores in step.
+  - Notifications, Strava, the LLM client, nutrition, sounds, app lock and deep links.
+- `Views/`: Onboarding, Today, Activity, Trends, Sleep, Nutrition, Coach and Settings, plus the design system components.
+- `LumenWidget/`: WidgetKit extension.
+- `LumenUITests/`: an end-to-end smoke test covering fresh onboarding, every tab, logging a workout and a night, and coach chat.
 
 ## Testing
-- `swiftc` logic suite: 23 assertions over debt/need/energy/readiness/goals — all pass.
-- `xcodebuild test -scheme Lumen`: UI smoke test green on iPhone 17 Pro simulator, screenshots attached to the result bundle.
-- Not testable headless (needs your hands + real iPhone): HealthKit permission flow, camera capture, Strava/Google OAuth redirects, haptics, widget on the home screen.
 
-## Production notes
-- Move Strava secret + LLM tokens from UserDefaults to Keychain.
-- Set your Development Team + App Group ID; file HealthKit/App Store privacy as needed.
-- Not medical advice; red-flag symptoms → see a clinician.
+```bash
+xcodebuild test -project Lumen.xcodeproj -scheme Lumen -destination 'platform=iOS Simulator,name=iPhone 17 Pro'
+```
+
+The UI test launches with `-resetForUITests` so it always starts from a clean onboarding. Screenshots of every screen are attached to the result bundle.
+
+Some things can only be checked on a real iPhone: the HealthKit permission sheet, camera capture, the Strava and Google OAuth redirects, haptics, Face ID, and widgets on the Home Screen.
+
+## Disclaimer
+
+Lumen provides wellness guidance, not medical advice. If you suspect a sleep disorder or another health condition, talk to a clinician.
