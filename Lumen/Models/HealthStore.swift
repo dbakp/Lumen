@@ -199,6 +199,7 @@ public final class HealthStore: ObservableObject {
         d.set(m.steps, forKey: "widget.steps")
         d.set(moveProgress, forKey: "widget.move")
         WidgetBridge.reload()
+        WatchSync.shared.scheduleSend()
     }
 
     /// Start over: clears every log (Health data itself is untouched).

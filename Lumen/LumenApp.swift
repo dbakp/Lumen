@@ -17,7 +17,10 @@ struct LumenApp: App {
                 .environmentObject(sleep)
                 .environmentObject(health)
                 .preferredColorScheme(.dark)
-                .task { SyncCoordinator.propagate(sleep: sleep, health: health) }
+                .task {
+                    SyncCoordinator.propagate(sleep: sleep, health: health)
+                    WatchSync.shared.activate(sleep: sleep, health: health)
+                }
                 .onChange(of: scenePhase) { _, phase in
                     guard phase == .active, sleep.profile.onboardingDone else { return }
                     Task { await SyncCoordinator.syncEverything(sleep: sleep, health: health) }

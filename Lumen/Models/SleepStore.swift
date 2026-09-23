@@ -201,6 +201,7 @@ public final class SleepStore: ObservableObject {
         d.set(suggestedBedtime, forKey: "widget.bedtime")
         d.set(lastNight?.duration ?? 0, forKey: "widget.lastSleep")
         WidgetBridge.reload()
+        WatchSync.shared.scheduleSend()
     }
 
     /// Start over: clears nights and returns to onboarding.
