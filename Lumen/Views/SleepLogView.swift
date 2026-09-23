@@ -1,157 +1,139 @@
 import SwiftUI
 
-// MARK: - Sleep journal: history, stats, log/edit
+// MARK: - Sleep history: every night, editable
 
 public struct SleepLogView: View {
     @EnvironmentObject var store: SleepStore
-    @State private var showAdd = false
     @State private var editing: SleepEpisode?
-    @State private var showAll = false
 
     public init() {}
 
-    public var body: some View {
-        ScrollView {
-            VStack(spacing: 16) {
-                GlassCard {
-                    VStack(alignment: .leading, spacing: 8) {
-                        SectionHeader("14-night picture", subtitle: "Need \(SleepFormat.durationHM(store.profile.sleepNeed)) · Avg 7n \(SleepFormat.durationHM(store.avg7))", systemImage: "chart.bar.fill")
-                        DebtHistoryChart(need: store.profile.sleepNeed, episodes: store.episodes)
-                        HStack {
-                            StatChip(title: "Avg", value: SleepFormat.durationHM(store.avg7))
-                            StatChip(title: "Debt", value: SleepFormat.debtString(store.debt))
-                            StatChip(title: "Wake ±", value: "±\(Int(store.consistency/60))m")
-                        }
-                    }
-                }
+    var byMonth: [(month: Date, nights: [SleepEpisode])] {
+        let cal = Calendar.current
+        let g = Dictionary(grouping: store.episodes) { cal.date(from: cal.dateComponents([.year, .month], from: $0.wakeTime)) ?? $0.wakeTime }
+        return g.map { ($0.key, $0.value.sorted { $0.wakeTime > $1.wakeTime }) }.sorted { $0.month > $1.month }
+    }
 
-                GlassCard {
-                    VStack(alignment: .leading, spacing: 4) {
+    public var body: some View {
+        List {
+            if store.episodes.count >= 3 {
+                Section {
+                    VStack(alignment: .leading, spacing: 12) {
                         HStack {
-                            SectionHeader("Nights", subtitle: "\(store.episodes.count) tracked", systemImage: "moon.fill")
+                            stat(SleepFormat.durationHM(store.avg7), "7-night average")
                             Spacer()
-                            Button { showAdd = true } label: {
-                                Image(systemName: "plus").font(.headline.weight(.bold))
-                                    .frame(width: 34, height: 34).liquidGlass(cornerRadius: 12)
-                                    .foregroundStyle(.white)
+                            stat("±\(Int(store.consistency / 60)) min", "Wake-time consistency")
+                        }
+                        DebtHistoryChart(need: store.profile.sleepNeed, episodes: store.episodes).frame(height: 140)
+                    }
+                    .padding(.vertical, 8)
+                    .listRowBackground(Theme.surface)
+                }
+            }
+            if store.episodes.isEmpty {
+                ContentUnavailableView("No nights yet", systemImage: "moon.zzz", description: Text("Nights from Apple Health appear here automatically. Tap + to add one."))
+                    .listRowBackground(Color.clear)
+            }
+            ForEach(byMonth, id: \.month) { group in
+                Section(group.month.formatted(.dateTime.month(.wide).year())) {
+                    ForEach(group.nights) { ep in
+                        Button { editing = ep } label: { row(ep) }
+                            .listRowBackground(Theme.surface)
+                            .swipeActions {
+                                Button("Delete", role: .destructive) { store.deleteEpisode(ep) }
                             }
-                        }
-                        if store.episodes.isEmpty {
-                            Text("No nights yet. Tap + to log one, or connect Apple Health in Settings.")
-                                .font(.subheadline).foregroundStyle(.white.opacity(0.6)).padding(.vertical, 8)
-                        }
-                        ForEach(store.episodes.suffix(showAll ? 400 : 14).reversed()) { ep in
-                            Button { editing = ep } label: {
-                                HStack {
-                                    VStack(alignment: .leading, spacing: 2) {
-                                        Text(dateTitle(ep.wakeTime)).font(.subheadline.weight(.semibold)).foregroundStyle(.white)
-                                        Text("\(SleepFormat.time(ep.bedtime)) → \(SleepFormat.time(ep.wakeTime)) · \(ep.source.label)")
-                                            .font(.caption).foregroundStyle(.white.opacity(0.6))
-                                    }
-                                    Spacer()
-                                    Text(SleepFormat.durationHM(ep.duration))
-                                        .font(.subheadline.weight(.bold).monospacedDigit())
-                                        .foregroundStyle(ep.duration >= store.profile.sleepNeed - 30*60 ? .green : .orange)
-                                }
-                                .padding(.vertical, 7)
-                                if ep.hasStages { SleepStagesBar(episode: ep).padding(.bottom, 6) }
-                                Divider().background(.white.opacity(0.08))
-                            }
-                            .buttonStyle(.plain)
-                        }
-                        if store.episodes.count > 14 {
-                            Button(showAll ? "Show recent" : "Show all \(store.episodes.count) nights") { withAnimation { showAll.toggle() } }
-                                .font(.subheadline.weight(.semibold)).foregroundStyle(.cyan).padding(.top, 6)
-                        }
                     }
                 }
             }
-            .padding(.horizontal, 16).padding(.bottom, 90)
         }
-        .background(AuroraBackground())
-        .navigationTitle("Sleep journal")
-        .navigationBarTitleDisplayMode(.inline)
-        .sheet(isPresented: $showAdd) { LogSleepSheet() }
+        .scrollContentBackground(.hidden)
+        .background(AuroraBackground(Theme.sleep))
+        .navigationTitle("Sleep history")
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button { AppRouter.shared.show(.sleepLog) } label: { Image(systemName: "plus") }.accessibilityLabel("Add a night")
+            }
+        }
         .sheet(item: $editing) { ep in EditSleepSheet(episode: ep) }
     }
 
-    func dateTitle(_ d: Date) -> String {
-        if Calendar.current.isDateInToday(d) { return "Last night" }
-        if Calendar.current.isDateInYesterday(d) { return "Night before" }
-        let f = DateFormatter(); f.dateFormat = "EEE, MMM d"
-        return f.string(from: d)
-    }
-}
-
-struct StatChip: View {
-    let title: String; let value: String
-    var body: some View {
-        VStack(spacing: 1) {
-            Text(title).font(.caption2.weight(.bold)).foregroundStyle(.white.opacity(0.55)).tracking(0.8)
-            Text(value).font(.subheadline.weight(.bold)).foregroundStyle(.white)
+    func stat(_ v: String, _ l: String) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(v).font(.system(.title3, design: .rounded).weight(.semibold)).foregroundStyle(Theme.text)
+            Text(l).font(.footnote).foregroundStyle(Theme.secondary)
         }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, 8)
-        .liquidGlass(cornerRadius: 14, tintOpacity: 0.1)
+    }
+
+    func row(_ ep: SleepEpisode) -> some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 2) {
+                Text(ep.wakeTime.formatted(.dateTime.weekday(.wide).day().month())).font(.body).foregroundStyle(Theme.text)
+                Text("\(SleepFormat.time(ep.bedtime)) – \(SleepFormat.time(ep.wakeTime))\(ep.source == .manual ? " · added by you" : "")")
+                    .font(.footnote).foregroundStyle(Theme.secondary)
+            }
+            Spacer()
+            Text(SleepFormat.durationHM(ep.duration)).font(.body.monospacedDigit())
+                .foregroundStyle(ep.duration >= store.profile.sleepNeed - 1800 ? Theme.text : Theme.food)
+        }
+        .padding(.vertical, 4)
     }
 }
 
-// MARK: - Log / Edit sheets
+// MARK: - Add / edit a night
 
 public struct LogSleepSheet: View {
     @EnvironmentObject var store: SleepStore
     @Environment(\.dismiss) var dismiss
-    @State private var bedtime: Date = Date()
-    @State private var wake: Date = Date()
+    @State private var bedtime = Date()
+    @State private var wake = Date()
     @State private var didSetDefaults = false
 
     public init() {}
+
     public var body: some View {
         NavigationStack {
-            ZStack {
-                AuroraBackground()
-                VStack(spacing: 16) {
-                    GlassCard {
-                        VStack(spacing: 12) {
-                            DatePicker("Bedtime", selection: $bedtime, displayedComponents: [.date, .hourAndMinute])
-                            Divider().background(.white.opacity(0.12))
-                            DatePicker("Wake time", selection: $wake, displayedComponents: [.date, .hourAndMinute])
-                        }.colorScheme(.dark)
-                    }
-                    let dur = max(0, wake.timeIntervalSince(bedtime))
-                    Text("That is \(SleepFormat.durationHM(dur)) — \(impact(dur))")
-                        .font(.subheadline.weight(.semibold)).foregroundStyle(.white.opacity(0.8))
-                    Button {
-                        store.logEpisode(bedtime: bedtime, wakeTime: wake)
-                        haptic()
-                        dismiss()
-                    } label: {
-                        Text("Save night").font(.headline.weight(.bold)).frame(maxWidth: .infinity).padding()
-                    }
-                    .buttonStyle(.borderedProminent).tint(.cyan)
-                    .disabled(wake <= bedtime)
-                    Spacer()
+            VStack(alignment: .leading, spacing: 24) {
+                let dur = max(0, wake.timeIntervalSince(bedtime))
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(SleepFormat.durationHM(dur)).font(.system(size: 48, weight: .semibold, design: .rounded).monospacedDigit()).foregroundStyle(Theme.text)
+                    Text(impact(dur)).font(.subheadline).foregroundStyle(Theme.secondary)
                 }
-                .padding(18)
+                VStack(spacing: 0) {
+                    DatePicker("Went to bed", selection: $bedtime, displayedComponents: [.date, .hourAndMinute]).padding(.vertical, 10)
+                    Rectangle().fill(Theme.hairline).frame(height: 0.5)
+                    DatePicker("Woke up", selection: $wake, in: ...Date(), displayedComponents: [.date, .hourAndMinute]).padding(.vertical, 10)
+                }
+                .padding(.horizontal, 16).surface()
+                Spacer()
+                Button("Save night") {
+                    store.logEpisode(bedtime: bedtime, wakeTime: wake)
+                    dismiss()
+                    AppRouter.shared.confirm("Night saved")
+                }
+                .buttonStyle(LumenPrimaryButtonStyle())
+                .disabled(wake <= bedtime)
             }
-            .navigationTitle("Log sleep").navigationBarTitleDisplayMode(.inline)
+            .padding(Theme.gutter)
+            .background(Theme.bg.ignoresSafeArea())
+            .navigationTitle("Add a night").navigationBarTitleDisplayMode(.inline)
+            .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } } }
             .onAppear {
-                // Default to "last night": wake at your goal this morning (or now, if earlier),
-                // bedtime one sleep-need before that.
+                // Default to "last night": wake at your goal this morning (or now, if earlier).
                 guard !didSetDefaults else { return }
                 didSetDefaults = true
-                let goal = store.wakeGoalToday
-                wake = min(goal, Date())
+                wake = min(store.wakeGoalToday, Date())
                 bedtime = wake.addingTimeInterval(-store.profile.sleepNeed - 15 * 60)
             }
-            .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Close") { dismiss() } } }
         }
+        .presentationDetents([.medium, .large])
+        .tint(.white)
     }
+
     func impact(_ dur: TimeInterval) -> String {
         let need = store.profile.sleepNeed
-        if dur >= need { return "repays debt" }
-        if dur >= need - 3600 { return "near your need" }
-        return "adds ~\(SleepFormat.hours(need - dur)) to debt"
+        if dur >= need { return "Enough to cover your need" }
+        if dur >= need - 3600 { return "Close to your need" }
+        return "About \(SleepFormat.durationHM(need - dur)) less than you need"
     }
 }
 
@@ -163,32 +145,39 @@ public struct EditSleepSheet: View {
     public init(episode: SleepEpisode) { _episode = State(initialValue: episode) }
     public var body: some View {
         NavigationStack {
-            ZStack {
-                AuroraBackground()
-                VStack(spacing: 16) {
-                    GlassCard {
-                        VStack(spacing: 12) {
-                            DatePicker("Bedtime", selection: $episode.bedtime, displayedComponents: [.date, .hourAndMinute])
-                            Divider().background(.white.opacity(0.12))
-                            DatePicker("Wake time", selection: $episode.wakeTime, displayedComponents: [.date, .hourAndMinute])
-                        }.colorScheme(.dark)
-                    }
-                    Button {
-                        store.updateEpisode(episode); haptic(); dismiss()
-                    } label: {
-                        Text("Save changes").font(.headline.weight(.bold)).frame(maxWidth: .infinity).padding()
-                    }
-                    .buttonStyle(.borderedProminent).tint(.cyan)
-                    Button(role: .destructive) {
-                        store.deleteEpisode(episode); dismiss()
-                    } label: {
-                        Text("Delete night").frame(maxWidth: .infinity)
-                    }
-                    Spacer()
-                }.padding(18)
+            VStack(alignment: .leading, spacing: 24) {
+                VStack(spacing: 0) {
+                    DatePicker("Went to bed", selection: $episode.bedtime, displayedComponents: [.date, .hourAndMinute]).padding(.vertical, 10)
+                    Rectangle().fill(Theme.hairline).frame(height: 0.5)
+                    DatePicker("Woke up", selection: $episode.wakeTime, displayedComponents: [.date, .hourAndMinute]).padding(.vertical, 10)
+                }
+                .padding(.horizontal, 16).surface()
+                Button("Delete night", role: .destructive) { store.deleteEpisode(episode); dismiss() }
+                    .foregroundStyle(Theme.move)
+                Spacer()
+                Button("Save changes") {
+                    episode.asleepSeconds = nil // times were edited by hand
+                    store.updateEpisode(episode); dismiss()
+                }
+                .buttonStyle(LumenPrimaryButtonStyle())
             }
+            .padding(Theme.gutter)
+            .background(Theme.bg.ignoresSafeArea())
             .navigationTitle("Edit night").navigationBarTitleDisplayMode(.inline)
-            .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Close") { dismiss() } } }
+            .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } } }
         }
+        .presentationDetents([.medium])
+        .tint(.white)
+    }
+}
+
+struct StatChip: View {
+    let title: String; let value: String
+    var body: some View {
+        VStack(spacing: 2) {
+            Text(value).font(.subheadline.weight(.semibold)).foregroundStyle(Theme.text)
+            Text(title.capitalized).font(.caption).foregroundStyle(Theme.secondary)
+        }
+        .frame(maxWidth: .infinity).padding(.vertical, 10).surface(14)
     }
 }

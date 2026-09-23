@@ -56,23 +56,35 @@ public struct EnergyCurveView: View {
             self.nowFraction = Double((c.hour ?? 0) * 3600 + (c.minute ?? 0) * 60)
         } else { self.nowFraction = nil }
     }
+    /// Gently smoothed for display (the model has sharp steps at wake-up).
+    var smoothed: [EnergyPoint] {
+        guard points.count > 6 else { return points }
+        return points.indices.map { i in
+            let lo = max(0, i - 3), hi = min(points.count - 1, i + 3)
+            let avg = points[lo...hi].reduce(0) { $0 + $1.energy } / Double(hi - lo + 1)
+            var p = points[i]; p.energy = avg; return p
+        }
+    }
     public var body: some View {
-        Chart(points) { p in
+        Chart(smoothed) { p in
             AreaMark(
                 x: .value("Time", p.time / 3600),
                 y: .value("Energy", p.energy)
             )
-            .foregroundStyle(
-                LinearGradient(colors: [.cyan.opacity(0.55), .indigo.opacity(0.12)], startPoint: .top, endPoint: .bottom)
-            )
+            .foregroundStyle(LinearGradient(colors: [Theme.calm.opacity(0.28), Theme.calm.opacity(0.0)], startPoint: .top, endPoint: .bottom))
             .interpolationMethod(.catmullRom)
             LineMark(
                 x: .value("Time", p.time / 3600),
                 y: .value("Energy", p.energy)
             )
-            .foregroundStyle(LinearGradient(colors: [.cyan, .purple], startPoint: .leading, endPoint: .trailing))
-            .lineStyle(StrokeStyle(lineWidth: 2.5, lineCap: .round))
+            .foregroundStyle(Theme.calm)
+            .lineStyle(StrokeStyle(lineWidth: 2, lineCap: .round))
             .interpolationMethod(.catmullRom)
+            if let n = nowFraction {
+                RuleMark(x: .value("Now", n / 3600))
+                    .foregroundStyle(.white.opacity(0.5)).lineStyle(StrokeStyle(lineWidth: 1, dash: [3, 3]))
+                    .annotation(position: .top) { Text("Now").font(.caption2.weight(.semibold)).foregroundStyle(Theme.secondary) }
+            }
         }
         .chartXScale(domain: 0...24)
         .chartYScale(domain: 0...1.05)
@@ -80,14 +92,13 @@ public struct EnergyCurveView: View {
             AxisMarks(values: [0, 6, 12, 18, 24]) { v in
                 AxisValueLabel {
                     if let h = v.as(Double.self) {
-                        Text("\(Int(h))h").font(.caption2).foregroundStyle(.white.opacity(0.55))
+                        Text(h == 0 || h == 24 ? "12a" : h == 12 ? "12p" : h < 12 ? "\(Int(h))a" : "\(Int(h) - 12)p").font(.caption2).foregroundStyle(Theme.tertiary)
                     }
                 }
-                AxisGridLine().foregroundStyle(.white.opacity(0.08))
             }
         }
         .chartYAxis(.hidden)
-        .frame(height: 170)
+        .frame(height: 130)
     }
 }
 
@@ -114,7 +125,7 @@ public struct DebtHistoryChart: View {
                 x: .value("Night", r.date, unit: .day),
                 y: .value("Slept", r.slept)
             )
-            .foregroundStyle(r.deficit > 0 ? LinearGradient(colors: [.orange, .pink], startPoint: .top, endPoint: .bottom) : LinearGradient(colors: [.teal, .cyan], startPoint: .top, endPoint: .bottom))
+            .foregroundStyle(r.deficit > 0.5 ? Theme.sleep.opacity(0.45) : Theme.sleep)
             .cornerRadius(5)
         }
         .chartXAxis {

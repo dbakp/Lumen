@@ -77,6 +77,7 @@ public final class HealthStore: ObservableObject {
     }
 
     public func deleteMeal(_ id: String) {
+        PhotoStore.delete(meals.first { $0.id == id }?.photoID)
         meals.removeAll { $0.id == id }
         Task { await HealthKitService.shared.deleteMeal(id: id) }
         persist(); refresh()

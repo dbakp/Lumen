@@ -1,133 +1,192 @@
 import SwiftUI
 
-// MARK: - Activity: rings, training load, workouts (Health + Strava + manual), vitals.
+// MARK: - Activity: rings → this week → workouts → heart & body
 
 public struct ActivityView: View {
     @EnvironmentObject var health: HealthStore
     @EnvironmentObject var sleep: SleepStore
     @ObservedObject private var hk = HealthKitService.shared
-    @State private var showManual = false
-    @State private var showAll = false
+    var router: AppRouter { .shared }
 
     public init() {}
 
     var units: UnitSystem { sleep.profile.unitSystem }
-
-    var groupedWorkouts: [(day: Date, items: [Workout])] {
-        let recent = health.workouts.sorted { $0.start > $1.start }.prefix(showAll ? 200 : 15)
-        let groups = Dictionary(grouping: recent) { Calendar.current.startOfDay(for: $0.start) }
-        return groups.map { ($0.key, $0.value.sorted { $0.start > $1.start }) }.sorted { $0.day > $1.day }
-    }
+    var recent: [Workout] { Array(health.workouts.sorted { $0.start > $1.start }.prefix(5)) }
 
     public var body: some View {
         ScrollView {
-            VStack(spacing: 16) {
-                ringsCard
-                NavigationLink { TrendsView() } label: {
-                    HStack {
-                        Label("Trends", systemImage: "chart.xyaxis.line").font(.subheadline.weight(.semibold)).foregroundStyle(.white)
-                        Spacer()
-                        Text("Steps, energy, heart, weight").font(.caption).foregroundStyle(.white.opacity(0.55))
-                        Image(systemName: "chevron.right").font(.caption).foregroundStyle(.white.opacity(0.4))
-                    }
-                    .padding(16).liquidGlass(cornerRadius: 20)
+            VStack(alignment: .leading, spacing: 28) {
+                rings
+                if let r = health.readiness {
+                    Text("Aim for \(r.strainTarget.lowerBound)–\(r.strainTarget.upperBound) active calories today, based on how recovered you are.")
+                        .font(.subheadline).foregroundStyle(Theme.secondary)
                 }
-                .buttonStyle(.plain)
-
-                if health.workouts.isEmpty {
-                    EmptyStateCard(icon: "figure.run", title: "No workouts yet",
-                                   message: hk.isAuthorized
-                                   ? "Sessions recorded on your Apple Watch or any fitness app that saves to Health appear here automatically."
-                                   : "Connect Apple Health in Settings to import workouts, or log one yourself.",
-                                   actionTitle: "Log a workout") { showManual = true }
-                } else {
-                    GlassCard {
-                        VStack(alignment: .leading, spacing: 10) {
-                            SectionHeader("Training load", subtitle: "Active energy from sessions, last 7 days", systemImage: "chart.bar.fill")
-                            WeeklyLoadChart(workouts: health.workouts)
-                        }
-                    }
-                    workoutsCard
-                }
-                GlassCard {
-                    VStack(alignment: .leading, spacing: 8) {
-                        SectionHeader("Vitals", subtitle: hk.isAuthorized ? "Latest from Apple Health" : "Connect Apple Health for vitals", systemImage: "heart.text.square.fill")
-                        VitalsGrid()
-                    }
-                }
+                week
+                workouts
+                body_
             }
-            .padding(.horizontal, 16).padding(.bottom, 110)
+            .padding(.horizontal, Theme.gutter).padding(.bottom, 40)
         }
-        .scrollIndicators(.hidden)
-        .background(AuroraBackground())
-        .navigationTitle("Activity").navigationBarTitleDisplayMode(.large)
+        .lumenScreen(Theme.move)
+        .navigationTitle("Activity")
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Button { showManual = true } label: { Image(systemName: "plus") }.accessibilityLabel("Log workout")
+                Button { router.show(.workout) } label: { Image(systemName: "plus") }.accessibilityLabel("Log a workout")
             }
         }
-        .sheet(isPresented: $showManual) { ManualWorkoutSheet() }
         .refreshable { await SyncCoordinator.syncEverything(sleep: sleep, health: health) }
     }
 
-    var ringsCard: some View {
-        GlassCard {
-            HStack(spacing: 16) {
-                TripleRingView(
-                    move: health.moveProgress,
-                    exercise: min(1, health.metrics.exerciseMin / max(1, health.goals.exerciseGoalMin)),
-                    stand: Double(health.metrics.standHours) / Double(max(1, health.goals.standGoal)))
-                .frame(width: 130, height: 130)
-                VStack(alignment: .leading, spacing: 8) {
-                    RingLegend(color: .pink, title: "Move", value: "\(Int(health.metrics.activeCalories))/\(Int(health.goals.activeCalGoal)) kcal")
-                    RingLegend(color: .green, title: "Exercise", value: "\(Int(health.metrics.exerciseMin))/\(Int(health.goals.exerciseGoalMin)) min")
-                    RingLegend(color: .cyan, title: "Stand", value: "\(health.metrics.standHours)/\(health.goals.standGoal) hr")
-                    RingLegend(color: .white, title: "Steps", value: Int(health.metrics.steps).formatted())
-                    if let r = health.readiness {
-                        Text("Today's window \(r.strainTarget.lowerBound)–\(r.strainTarget.upperBound) kcal")
-                            .font(.caption2.weight(.bold)).foregroundStyle(.cyan.opacity(0.9))
-                            .lineLimit(1).minimumScaleFactor(0.8)
-                    }
-                }
-                Spacer(minLength: 0)
+    // MARK: Rings
+
+    var rings: some View {
+        HStack(spacing: 24) {
+            TripleRingView(
+                move: health.moveProgress,
+                exercise: health.metrics.exerciseMin / max(1, health.goals.exerciseGoalMin),
+                stand: Double(health.metrics.standHours) / Double(max(1, health.goals.standGoal)))
+            .frame(width: 150, height: 150)
+            VStack(alignment: .leading, spacing: 14) {
+                ringStat("Move", "\(Int(health.metrics.activeCalories))", "/\(Int(health.goals.activeCalGoal)) kcal", Theme.move)
+                ringStat("Exercise", "\(Int(health.metrics.exerciseMin))", "/\(Int(health.goals.exerciseGoalMin)) min", Theme.steps)
+                ringStat("Stand", "\(health.metrics.standHours)", "/\(health.goals.standGoal) hours", Theme.calm)
+            }
+            Spacer(minLength: 0)
+        }
+        .padding(.top, 8)
+    }
+
+    func ringStat(_ label: String, _ value: String, _ unit: String, _ color: Color) -> some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Text(label).font(.subheadline).foregroundStyle(color)
+            HStack(alignment: .firstTextBaseline, spacing: 2) {
+                Text(value).font(.system(.title2, design: .rounded).weight(.semibold)).monospacedDigit().foregroundStyle(Theme.text)
+                Text(unit).font(.footnote).foregroundStyle(Theme.secondary)
             }
         }
     }
 
-    var workoutsCard: some View {
-        GlassCard {
-            VStack(alignment: .leading, spacing: 6) {
-                SectionHeader("Workouts", subtitle: sourceSummary, systemImage: "flame.fill")
-                ForEach(groupedWorkouts, id: \.day) { group in
-                    Text(dayTitle(group.day)).font(.caption.weight(.bold)).foregroundStyle(.white.opacity(0.5)).tracking(0.8)
-                        .padding(.top, 8)
-                    ForEach(group.items, id: \.id) { w in
+    // MARK: Week
+
+    var week: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            GroupLabel("This week")
+            VStack(alignment: .leading, spacing: 14) {
+                HStack {
+                    NavigationLink { TrendsView(metric: .steps) } label: { weekStat(Int(health.metrics.steps).formatted(), "steps today") }
+                    Spacer()
+                    weekStat("\(health.workouts.filter { $0.start > Date().addingTimeInterval(-7 * 86400) }.count)", "workouts")
+                    Spacer()
+                    weekStat("\(Int(health.workouts.filter { $0.start > Date().addingTimeInterval(-7 * 86400) }.reduce(0) { $0 + $1.duration } / 60))", "active min")
+                }
+                .buttonStyle(.plain)
+                WeeklyLoadChart(workouts: health.workouts).frame(height: 120)
+            }
+            .padding(16).surface()
+        }
+    }
+
+    func weekStat(_ v: String, _ l: String) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(v).font(.system(.title3, design: .rounded).weight(.semibold)).monospacedDigit().foregroundStyle(Theme.text)
+            Text(l).font(.footnote).foregroundStyle(Theme.secondary)
+        }
+    }
+
+    // MARK: Workouts
+
+    @ViewBuilder var workouts: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(alignment: .firstTextBaseline) {
+                GroupLabel("Workouts")
+                if health.workouts.count > 5 {
+                    NavigationLink { AllWorkoutsView() } label: { Text("See all").font(.subheadline.weight(.medium)).foregroundStyle(Theme.secondary) }
+                }
+            }
+            if recent.isEmpty {
+                EmptyStateCard(icon: "figure.run", title: "No workouts yet",
+                               message: hk.isAuthorized ? "Workouts from your Apple Watch and fitness apps show up here." : "Connect Apple Health to bring in workouts, or log one yourself.",
+                               actionTitle: "Log a workout") { router.show(.workout) }
+            } else {
+                RowGroup {
+                    ForEach(Array(recent.enumerated()), id: \.element.id) { i, w in
+                        if i > 0 { RowDivider() }
                         WorkoutRow(w, units: units)
                             .contextMenu {
                                 if w.source == .manual {
-                                    Button(role: .destructive) { health.deleteWorkout(w.id) } label: { Label("Delete", systemImage: "trash") }
+                                    Button("Delete", systemImage: "trash", role: .destructive) { health.deleteWorkout(w.id) }
                                 }
                             }
-                        Divider().background(.white.opacity(0.08))
                     }
-                }
-                if health.workouts.count > 15 {
-                    Button(showAll ? "Show recent" : "Show all") { withAnimation { showAll.toggle() } }
-                        .font(.subheadline.weight(.semibold)).foregroundStyle(.cyan).padding(.top, 4)
                 }
             }
         }
     }
 
-    var sourceSummary: String {
-        let sources = Set(health.workouts.map(\.source)).map(\.label).sorted()
-        return "\(health.workouts.count) sessions · " + sources.joined(separator: " + ")
-    }
+    // MARK: Heart & body
 
-    func dayTitle(_ d: Date) -> String {
-        if Calendar.current.isDateInToday(d) { return "TODAY" }
-        if Calendar.current.isDateInYesterday(d) { return "YESTERDAY" }
-        return d.formatted(.dateTime.weekday(.wide).month().day()).uppercased()
+    var body_: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            GroupLabel("Heart & body")
+            RowGroup {
+                NavigationLink { TrendsView(metric: .restingHR) } label: {
+                    LumenRow("Resting heart rate", value: health.metrics.restingHR.map { "\(Int($0)) bpm" } ?? "—", icon: "heart.fill", color: Theme.heart)
+                }
+                RowDivider()
+                NavigationLink { TrendsView(metric: .hrv) } label: {
+                    LumenRow("Heart rate variability", subtitle: "Higher usually means well recovered", value: health.metrics.hrvMS.map { "\(Int($0)) ms" } ?? "—", icon: "waveform.path.ecg", color: Theme.calm)
+                }
+                RowDivider()
+                NavigationLink { TrendsView(metric: .weight) } label: {
+                    LumenRow("Weight", value: health.metrics.weightKg.map { Units.weight($0, units) } ?? "—", icon: "scalemass.fill", color: Theme.food)
+                }
+                RowDivider()
+                NavigationLink { TrendsView(metric: .activeEnergy) } label: {
+                    LumenRow("Active energy", value: "\(Int(health.metrics.activeCalories)) kcal", icon: "flame.fill", color: Theme.move)
+                }
+                if let spo2 = health.metrics.spo2 {
+                    RowDivider()
+                    LumenRow("Blood oxygen", value: String(format: "%.0f%%", spo2), icon: "lungs.fill", color: Theme.water, chevron: false)
+                }
+                if let vo2 = health.metrics.vo2max {
+                    RowDivider()
+                    LumenRow("Cardio fitness", subtitle: "VO₂ max", value: String(format: "%.0f", vo2), icon: "figure.run.circle", color: Theme.steps, chevron: false)
+                }
+            }
+            .buttonStyle(.plain)
+            if !hk.isAuthorized {
+                Text("Connect Apple Health in Settings to see these.").font(.footnote).foregroundStyle(Theme.tertiary)
+            }
+        }
+    }
+}
+
+// MARK: - All workouts
+
+struct AllWorkoutsView: View {
+    @EnvironmentObject var health: HealthStore
+    @EnvironmentObject var sleep: SleepStore
+    var groups: [(day: Date, items: [Workout])] {
+        let g = Dictionary(grouping: health.workouts) { Calendar.current.startOfDay(for: $0.start) }
+        return g.map { ($0.key, $0.value.sorted { $0.start > $1.start }) }.sorted { $0.day > $1.day }
+    }
+    var body: some View {
+        List {
+            ForEach(groups, id: \.day) { group in
+                Section(group.day.formatted(.dateTime.weekday(.wide).month().day())) {
+                    ForEach(group.items, id: \.id) { w in
+                        WorkoutRow(w, units: sleep.profile.unitSystem)
+                            .listRowBackground(Theme.surface)
+                            .swipeActions {
+                                if w.source == .manual { Button("Delete", role: .destructive) { health.deleteWorkout(w.id) } }
+                            }
+                    }
+                }
+            }
+        }
+        .scrollContentBackground(.hidden)
+        .background(AuroraBackground(Theme.move))
+        .navigationTitle("Workouts")
     }
 }
 
@@ -135,31 +194,19 @@ struct RingLegend: View {
     let color: Color; let title: String; let value: String
     var body: some View {
         HStack(spacing: 8) {
-            Circle().fill(color).frame(width: 9, height: 9)
-            Text(title).font(.caption.weight(.bold)).foregroundStyle(.white.opacity(0.7))
-            Text(value).font(.caption.monospacedDigit()).foregroundStyle(.white)
+            Circle().fill(color).frame(width: 8, height: 8)
+            Text(title).font(.footnote).foregroundStyle(Theme.secondary)
+            Text(value).font(.footnote.monospacedDigit()).foregroundStyle(Theme.text)
         }
     }
 }
 
-struct VitalsGrid: View {
-    @EnvironmentObject var health: HealthStore
-    @EnvironmentObject var sleep: SleepStore
-    var body: some View {
-        let u = sleep.profile.unitSystem
-        LazyVGrid(columns: [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)], spacing: 12) {
-            MetricTile(icon: "heart.fill", tint: .pink, title: "Resting HR", value: health.metrics.restingHR.map { "\(Int($0)) bpm" } ?? "—", sub: "Lower usually = fitter")
-            MetricTile(icon: "waveform.path.ecg", tint: .purple, title: "HRV", value: health.metrics.hrvMS.map { "\(Int($0)) ms" } ?? "—", sub: "SDNN · higher = recovered")
-            MetricTile(icon: "lungs.fill", tint: .cyan, title: "Blood oxygen", value: health.metrics.spo2.map { String(format: "%.0f%%", $0) } ?? "—", sub: health.metrics.respiratoryRate.map { "Resp. \(Int($0))/min" } ?? "SpO₂")
-            MetricTile(icon: "scalemass.fill", tint: .orange, title: "Weight", value: health.metrics.weightKg.map { Units.weight($0, u) } ?? "—", sub: health.metrics.vo2max.map { String(format: "VO₂ max %.0f", $0) } ?? "Log in Settings")
-        }
-    }
-}
+// MARK: - Log workout
 
 struct ManualWorkoutSheet: View {
     @EnvironmentObject var health: HealthStore
     @Environment(\.dismiss) var dismiss
-    @State private var kind: WorkoutKind = .run
+    @State private var kind: WorkoutKind = .walk
     @State private var minutes = 30.0
     @State private var start = Date().addingTimeInterval(-1800)
 
@@ -168,44 +215,46 @@ struct ManualWorkoutSheet: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(spacing: 20) {
+                VStack(alignment: .leading, spacing: 24) {
                     LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 5), spacing: 10) {
                         ForEach(WorkoutKind.allCases, id: \.self) { k in
                             Button { kind = k; haptic(.light) } label: {
                                 VStack(spacing: 6) {
                                     Image(systemName: k.icon).font(.title3)
-                                    Text(k.label).font(.caption2.weight(.semibold)).lineLimit(1).minimumScaleFactor(0.8)
+                                    Text(k.label).font(.caption2.weight(.medium)).lineLimit(1).minimumScaleFactor(0.7)
                                 }
                                 .foregroundStyle(kind == k ? .black : .white)
                                 .frame(maxWidth: .infinity).padding(.vertical, 12)
-                                .background(kind == k ? AnyShapeStyle(Color.cyan) : AnyShapeStyle(.white.opacity(0.08)), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                                .background(kind == k ? Color.white : Theme.surface, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
                             }
                             .buttonStyle(.plain)
                         }
                     }
                     VStack(spacing: 4) {
-                        Text("\(Int(minutes)) min").font(.system(size: 44, weight: .bold, design: .rounded).monospacedDigit()).foregroundStyle(.white)
+                        Text("\(Int(minutes)) min").font(.system(size: 48, weight: .semibold, design: .rounded).monospacedDigit()).foregroundStyle(Theme.text)
                             .contentTransition(.numericText())
-                        Text("≈ \(kcal) active kcal").font(.subheadline).foregroundStyle(.white.opacity(0.65))
+                        Text("About \(kcal) active calories").font(.subheadline).foregroundStyle(Theme.secondary)
                     }
-                    Slider(value: $minutes, in: 5...240, step: 5).tint(.cyan)
+                    .frame(maxWidth: .infinity)
+                    Slider(value: $minutes, in: 5...240, step: 5).tint(.white)
                     DatePicker("Started", selection: $start, in: ...Date(), displayedComponents: [.date, .hourAndMinute])
-                        .colorScheme(.dark).foregroundStyle(.white)
-                        .padding(14).liquidGlass(cornerRadius: 16, tintOpacity: 0.08)
+                        .padding(14).surface(16)
                 }
-                .padding(22)
+                .padding(Theme.gutter)
             }
             .safeAreaInset(edge: .bottom) {
-                Button("Log \(kind.label.lowercased())") {
+                Button("Save \(kind.label.lowercased())") {
                     health.addManualWorkout(kind: kind, minutes: minutes, start: start)
-                    haptic(.medium); dismiss()
+                    dismiss()
+                    AppRouter.shared.confirm("\(kind.label) saved")
                 }
                 .buttonStyle(LumenPrimaryButtonStyle())
-                .padding(.horizontal, 22).padding(.bottom, 8)
+                .padding(.horizontal, Theme.gutter).padding(.bottom, 8)
             }
-            .background(AuroraBackground())
-            .navigationTitle("Log workout").navigationBarTitleDisplayMode(.inline)
+            .background(Theme.bg.ignoresSafeArea())
+            .navigationTitle("Log a workout").navigationBarTitleDisplayMode(.inline)
             .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } } }
         }
+        .tint(.white)
     }
 }

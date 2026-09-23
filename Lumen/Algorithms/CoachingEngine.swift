@@ -18,16 +18,16 @@ public enum CoachingEngine {
         let debtDrag = Int(min(30, debtH * 4.5))
         score -= debtDrag
         factors.append(.init(id: "sleep", label: "Sleep debt", delta: -debtDrag,
-            detail: debtH < 1 ? "Rested — bank it." : debtH < 5 ? "\(String(format: "%.1f", debtH))h debt is costing focus." : "\(String(format: "%.1f", debtH))h debt — recovery day wins."))
+            detail: debtH < 1 ? "You're well rested." : debtH < 5 ? "You're \(String(format: "%.1f", debtH)) hours behind on sleep." : "You're \(String(format: "%.1f", debtH)) hours behind on sleep — rest matters most today."))
 
         // HRV vs implied baseline (uses absolute zones when no history).
         if let hrv = metrics.hrvMS {
             let (d, msg): (Int, String)
             switch hrv {
-            case 80...: (d, msg) = (6, "HRV high — nervous system is primed.")
-            case 50..<80: (d, msg) = (2, "HRV in your productive band.")
-            case 35..<50: (d, msg) = (-4, "HRV a touch low — keep intensity easy.")
-            default: (d, msg) = (-9, "HRV low — prioritize sleep + easy movement.")
+            case 80...: (d, msg) = (6, "Your body looks very well recovered.")
+            case 50..<80: (d, msg) = (2, "Your body looks recovered.")
+            case 35..<50: (d, msg) = (-4, "Your body is still recovering — keep things easy.")
+            default: (d, msg) = (-9, "Your body needs rest — sleep and gentle movement help most.")
             }
             score += d
             factors.append(.init(id: "hrv", label: "HRV \(Int(hrv)) ms", delta: d, detail: msg))
@@ -36,10 +36,10 @@ public enum CoachingEngine {
         // Resting HR.
         if let rhr = metrics.restingHR {
             let (d, msg): (Int, String)
-            if rhr <= 55 { (d, msg) = (4, "Resting HR \(Int(rhr)) — efficient recovery.") }
-            else if rhr <= 65 { (d, msg) = (1, "Resting HR \(Int(rhr)) — normal.") }
-            else if rhr <= 72 { (d, msg) = (-3, "Resting HR \(Int(rhr)) — slightly elevated.") }
-            else { (d, msg) = (-7, "Resting HR \(Int(rhr)) — body is working hard. Go easy.") }
+            if rhr <= 55 { (d, msg) = (4, "\(Int(rhr)) bpm — a calm, strong heart.") }
+            else if rhr <= 65 { (d, msg) = (1, "\(Int(rhr)) bpm — normal for you.") }
+            else if rhr <= 72 { (d, msg) = (-3, "\(Int(rhr)) bpm — a little higher than ideal.") }
+            else { (d, msg) = (-7, "\(Int(rhr)) bpm — your body is working hard. Go easy.") }
             score += d
             factors.append(.init(id: "rhr", label: "Resting HR", delta: d, detail: msg))
         }
@@ -48,16 +48,16 @@ public enum CoachingEngine {
         let yesterdayLoad = workoutsToday.reduce(0) { $0 + $1.activeCalories }
         if yesterdayLoad > 900 {
             score -= 5
-            factors.append(.init(id: "strain", label: "Yesterday's load", delta: -5, detail: "Big day yesterday — adaptation happens today."))
+            factors.append(.init(id: "strain", label: "Yesterday's load", delta: -5, detail: "You trained hard recently — your body gets stronger while it rests."))
         }
 
         score = min(100, max(5, score))
         let headline: String
         switch score {
-        case 85...: headline = "Primed — take on the hard thing."
-        case 70..<85: headline = "Ready — a strong, full day."
-        case 55..<70: headline = "Steady — moderate wins compound."
-        default: headline = "Restore — protect sleep, move gently."
+        case 85...: headline = "Ready for a big day"
+        case 70..<85: headline = "Good to go"
+        case 55..<70: headline = "Take it steady"
+        default: headline = "Rest and recover"
         }
         // Strain target scales with readiness.
         let base = Int(goals.activeCalGoal)
@@ -82,44 +82,44 @@ public enum CoachingEngine {
         var bullets: [String] = []
         // 1. Movement prescription from readiness.
         if score >= 85 {
-            bullets.append("Train hard today — \(readiness?.strainTarget.upperBound ?? 800) kcal window. Hard intervals + strength shine.")
+            bullets.append("A great day for a hard workout — push yourself.")
         } else if score >= 70 {
-            bullets.append("Do the planned workout at 8/10 effort. Cap it at 60 min so tomorrow stays green.")
+            bullets.append("Go for your usual workout, and keep it under an hour.")
         } else if score >= 55 {
-            bullets.append("Easy aerobic 20–30 min + walk after meals. Intensity can wait a day.")
+            bullets.append("Keep exercise light: a 20–30 minute walk or easy ride.")
         } else {
-            bullets.append("No hard training. 15-min walk + stretch. Extra 30 min in bed tonight pays more than any workout.")
+            bullets.append("Skip hard exercise today. A short walk and some stretching is plenty.")
         }
         // 2. Fuel prescription from what's logged.
         let proteinLeft = max(0, proteinTarget - Int(protein))
         if proteinLeft > 60 {
-            bullets.append("Protein gap: ~\(proteinLeft)g left. Anchor dinner around palm-and-a-half of protein + fiber.")
+            bullets.append("Build your next meals around protein — about \(proteinLeft) g to go today.")
         } else if proteinLeft > 0 {
-            bullets.append("Nearly there — \(proteinLeft)g protein to go. A yogurt or shake closes it.")
+            bullets.append("Almost at your protein goal — a yogurt or eggs will get you there.")
         } else {
-            bullets.append("Protein target hit. Keep dinner lighter on starch so sleep onset stays fast.")
+            bullets.append("Protein goal reached. Keep dinner light for better sleep.")
         }
         // 3. Recovery prescription.
         let waterLeft = max(0, waterTarget - Int(waterML))
         if sleepDebt > 5 * 3600 {
-            bullets.append("Debt is high — in bed 30 min earlier tonight, screens dim 2h before. The #1 performance lever.")
+            bullets.append("Go to bed 30 minutes earlier tonight — you're behind on sleep.")
         } else if waterLeft > 1200 {
-            bullets.append("Hydration gap: ~\(waterLeft) ml. Front-load water now — evening catch-up wrecks sleep.")
+            bullets.append("Drink a couple of glasses of water before the evening.")
         } else {
-            bullets.append("Protect the wind-down: dim lights, cool room, same wake time tomorrow ±30 min.")
+            bullets.append("Wind down tonight with dim lights and no screens in bed.")
         }
 
         let briefing: String
-        if score >= 85 { briefing = "Your body is primed. This is a day to be ambitious — train, create, decide." }
-        else if score >= 70 { briefing = "A strong day. Spend energy early, coast intelligently in the evening." }
-        else if score >= 55 { briefing = "A steady day. Moderate effort everywhere beats heroic effort anywhere." }
-        else { briefing = "A restore day. The win is going to bed earlier with low debt — everything else is bonus." }
+        if score >= 85 { briefing = "You're well recovered — a good day to be ambitious." }
+        else if score >= 70 { briefing = "A solid day. Use your energy early and relax in the evening." }
+        else if score >= 55 { briefing = "A steady day. Moderate effort will serve you best." }
+        else { briefing = "A rest day. Going to bed early is the best thing you can do." }
 
         let suggestion: String
-        if score >= 85 { suggestion = "Hard run / intervals + strength" }
-        else if score >= 70 { suggestion = "Planned workout, 8/10 effort" }
-        else if score >= 55 { suggestion = "Zone 2 + walk 25 min" }
-        else { suggestion = "Walk + mobility only" }
+        if score >= 85 { suggestion = "Hard workout" }
+        else if score >= 70 { suggestion = "Your usual workout" }
+        else if score >= 55 { suggestion = "Light exercise" }
+        else { suggestion = "Walk and stretch" }
 
         return DayPlan(
             briefing: briefing,
@@ -140,46 +140,46 @@ public enum CoachingEngine {
         let score = readiness?.score ?? 72
 
         if sleepDebt > 5 * 3600 {
-            out.append(Insight(icon: "moon.fill", tint: "#8B7CFF", title: "Sleep debt is your limiter",
-                body: "Debt of \(String(format: "%.1f", sleepDebt/3600))h drags focus more than any workout boosts it. Earlier bed beats extra coffee — 30 min tonight.",
+            out.append(Insight(icon: "moon.fill", tint: "#8B7CFF", title: "Sleep is holding you back",
+                body: "You're \(String(format: "%.1f", sleepDebt/3600)) hours behind. Going to bed 30 minutes earlier tonight will help more than extra coffee.",
                 action: "See energy schedule"))
         }
         if let hrv = metrics.hrvMS, hrv < 40 {
-            out.append(Insight(icon: "waveform.path.ecg", tint: "#FF6B6B", title: "Recovery is dipped",
-                body: "HRV \(Int(hrv)) ms is below your productive band. Keep training easy and eat to the full target — under-fueling delays bounce-back.",
+            out.append(Insight(icon: "waveform.path.ecg", tint: "#FF6B6B", title: "Your body is still recovering",
+                body: "Keep exercise easy today and eat enough — skipping meals slows recovery.",
                 action: "Go easy today"))
         }
         let protein = mealsToday.reduce(0) { $0 + $1.protein }
         let hour = Calendar.current.component(.hour, from: Date())
         if hour >= 15 && protein < Double(goals.proteinTarget()) * 0.5 {
-            out.append(Insight(icon: "fork.knife", tint: "#4ADE80", title: "Protein is behind pace",
-                body: "You're at \(Int(protein))g of \(goals.proteinTarget())g. A protein-first dinner (\(goals.proteinTarget() - Int(protein))g to go) protects muscle without extra restriction.",
+            out.append(Insight(icon: "fork.knife", tint: "#4ADE80", title: "Room for more protein",
+                body: "You've had \(Int(protein)) g of \(goals.proteinTarget()) g. Make protein the star of dinner — chicken, fish, tofu or eggs.",
                 action: "Log dinner"))
         }
         if metrics.steps > 0 && metrics.steps < goals.stepGoal * 0.5 && hour >= 16 {
             let left = Int(goals.stepGoal - metrics.steps)
             out.append(Insight(icon: "figure.walk", tint: "#22D3EE", title: "A walk closes the gap",
-                body: "\(left) steps to goal — a 15-min walk after dinner covers ~1,500 and deepens sleep pressure. Two birds.",
+                body: "\(left.formatted()) steps to go. A 15-minute walk after dinner covers about 1,500 and helps you sleep.",
                 action: "Take a walk"))
         }
         if !workoutsToday.isEmpty {
             let w = workoutsToday.last!
             out.append(Insight(icon: w.kind.icon, tint: "#FBBF24", title: "\(w.title) logged · \(Int(w.activeCalories)) kcal",
-                body: "Nice work. Refuel with 25–40g protein within 2h and keep the evening easy — adaptation happens tonight.",
+                body: "Nice work. Have a protein-rich meal in the next couple of hours and take the evening easy.",
                 action: nil))
         } else if score >= 70 && hour < 18 {
-            out.append(Insight(icon: "bolt.fill", tint: "#FBBF24", title: "Your window is open",
-                body: "Readiness \(score) + daylight left = perfect training conditions. Even 25 min counts fully toward the ring.",
+            out.append(Insight(icon: "bolt.fill", tint: "#FBBF24", title: "A good time to move",
+                body: "You're well recovered and there's daylight left — even 25 minutes of exercise counts.",
                 action: "Start workout"))
         }
         if metrics.waterML < 1200 && hour >= 14 {
             out.append(Insight(icon: "drop.fill", tint: "#38BDF8", title: "Water before evening",
-                body: "Hydration speeds everything — cognition, HRV, sleep onset. Front-load now so you're not up at night.",
+                body: "Drink some water now so you're not catching up late and waking up at night.",
                 action: "Log water"))
         }
         if out.isEmpty {
-            out.append(Insight(icon: "checkmark.seal.fill", tint: "#4ADE80", title: "On track",
-                body: "Nothing needs fixing. Protect the routine — same wake, protein-first meals, lights low tonight.",
+            out.append(Insight(icon: "checkmark.seal.fill", tint: "#4ADE80", title: "You're on track",
+                body: "Nothing to fix today. Keep your routine — same wake time, good meals, dim lights tonight.",
                 action: nil))
         }
         return Array(out.prefix(5))
@@ -190,12 +190,22 @@ public enum CoachingEngine {
     public static func contextPrompt(metrics: DayMetrics, readiness: Readiness?, goals: HealthGoals, mealsToday: [Meal], workoutsToday: [Workout], sleepDebt: TimeInterval, debtFile: TimeInterval, history: [ChatMessage]) -> String {
         let eaten = mealsToday.reduce(0) { $0 + $1.calories }
         let protein = mealsToday.reduce(0) { $0 + $1.protein }
-        let workoutSummary = workoutsToday.map { "\($0.title) \(Int($0.duration / 60))min" }.joined(separator: ", ")
+        let workoutSummary = workoutsToday.isEmpty ? "none yet" : workoutsToday.map { "\($0.title) \(Int($0.duration / 60)) min" }.joined(separator: ", ")
+        func v(_ d: Double?, _ unit: String) -> String { d.map { "\(Int($0)) \(unit)" } ?? "unknown" }
+        let time = Date().formatted(date: .omitted, time: .shortened)
         return """
-        You are Lumen, a kind elite performance coach (exercise physiologist + sleep scientist + dietitian).
-        Rules: specific over generic; 2-4 sentences + at most 3 bullets; never shame food or body; no medical diagnosis; if red flags (chest pain, fainting, eating disorder), urge a clinician.
-        User context: readiness \(readiness?.score ?? 72) (\(readiness?.headline ?? "")); sleep debt \(String(format: "%.1f", sleepDebt/3600))h; steps \(Int(metrics.steps)); active \(Int(metrics.activeCalories)) kcal / goal \(Int(goals.activeCalGoal)); exercise \(Int(metrics.exerciseMin)) min; RHR \(metrics.restingHR.map { Int($0) } ?? -1); HRV \(metrics.hrvMS.map { Int($0) } ?? -1) ms; eaten \(Int(eaten))/\(goals.calorieTarget()) kcal; protein \(Int(protein))/\(goals.proteinTarget())g; water \(Int(metrics.waterML)) ml; workouts today: \(workoutSummary);
-        Answer with what to do next today.
+        You are Lumen, a warm, expert health coach (sleep, training and nutrition). The person is not technical.
+        Style: plain everyday words, no jargon or abbreviations; 2–4 short sentences, then at most 3 bullet points if useful. \
+        Be specific to their numbers. Never shame food or body. No diagnoses — if they mention chest pain, fainting, disordered eating \
+        or other red flags, kindly suggest seeing a clinician.
+        Right now it is \(time). Their data today:
+        - Readiness: \(readiness.map { "\($0.score)/100 (\($0.headline))" } ?? "not enough data yet")
+        - Sleep debt: \(String(format: "%.1f", sleepDebt / 3600)) hours
+        - Steps: \(Int(metrics.steps)) of \(Int(goals.stepGoal)); active energy \(Int(metrics.activeCalories)) of \(Int(goals.activeCalGoal)) kcal; exercise \(Int(metrics.exerciseMin)) min
+        - Resting heart rate: \(v(metrics.restingHR, "bpm")); heart rate variability: \(v(metrics.hrvMS, "ms"))
+        - Food: \(Int(eaten)) of \(goals.calorieTarget()) kcal, protein \(Int(protein)) of \(goals.proteinTarget()) g; water \(Int(metrics.waterML)) ml
+        - Workouts today: \(workoutSummary)
+        - Goal: \(goals.goal.label)
         """
     }
 }

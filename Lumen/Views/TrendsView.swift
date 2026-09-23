@@ -16,21 +16,26 @@ public struct TrendsView: View {
         }
     }
 
-    @State private var metric: TrendMetric = .sleep
+    @State private var metric: TrendMetric
     @State private var range: Range = .month
+    private let locked: Bool
     @State private var series: [DailyValue] = []
     @State private var previous: [DailyValue] = []
     @State private var loading = false
     @State private var selected: DailyValue?
 
-    public init() {}
+    /// Pass a metric to show a single-metric detail screen.
+    public init(metric: TrendMetric? = nil) {
+        _metric = State(initialValue: metric ?? .sleep)
+        locked = metric != nil
+    }
 
     var units: UnitSystem { sleep.profile.unitSystem }
 
     public var body: some View {
         ScrollView {
             VStack(spacing: 16) {
-                metricPicker
+                if !locked { metricPicker }
                 Picker("Range", selection: $range) {
                     ForEach(Range.allCases) { Text($0.label).tag($0) }
                 }
@@ -38,18 +43,20 @@ public struct TrendsView: View {
 
                 GlassCard {
                     VStack(alignment: .leading, spacing: 14) {
-                        summary
+                        if !series.isEmpty { summary }
                         chart.frame(height: 220)
                     }
                 }
                 if !series.isEmpty { statsRow }
                 insightCard
+                if locked {
+                    Text(metric.explainer).font(.subheadline).foregroundStyle(Theme.secondary).frame(maxWidth: .infinity, alignment: .leading)
+                }
             }
-            .padding(.horizontal, 16).padding(.bottom, 110)
+            .padding(.horizontal, Theme.gutter).padding(.top, 8).padding(.bottom, 40)
         }
-        .scrollIndicators(.hidden)
-        .background(AuroraBackground())
-        .navigationTitle("Trends")
+        .lumenScreen(tint(metric))
+        .navigationTitle(locked ? metric.label : "Trends")
         .navigationBarTitleDisplayMode(.inline)
         .task(id: "\(metric.rawValue)-\(range.rawValue)-\(sleep.episodes.count)") { await load() }
     }
@@ -67,7 +74,7 @@ public struct TrendsView: View {
                             .font(.subheadline.weight(.semibold))
                             .padding(.horizontal, 14).padding(.vertical, 9)
                             .foregroundStyle(metric == m ? .black : .white)
-                            .background(metric == m ? AnyShapeStyle(tint(m)) : AnyShapeStyle(.white.opacity(0.1)), in: Capsule())
+                            .background(metric == m ? AnyShapeStyle(Color.white) : AnyShapeStyle(Theme.surface), in: Capsule())
                     }
                     .buttonStyle(.plain)
                 }
@@ -80,8 +87,8 @@ public struct TrendsView: View {
 
     func tint(_ m: TrendMetric) -> Color {
         switch m {
-        case .sleep: return .indigo; case .steps: return .cyan; case .activeEnergy: return .pink; case .exercise: return .green
-        case .restingHR: return .red; case .hrv: return .purple; case .weight: return .orange
+        case .sleep: return Theme.sleep; case .steps: return Theme.steps; case .activeEnergy: return Theme.move; case .exercise: return Theme.steps
+        case .restingHR: return Theme.heart; case .hrv: return Theme.calm; case .weight: return Theme.food
         }
     }
 
@@ -170,12 +177,12 @@ public struct TrendsView: View {
                 ForEach(series) { d in
                     if useBars {
                         BarMark(x: .value("Day", d.date, unit: .day), y: .value(metric.label, d.value))
-                            .foregroundStyle(LinearGradient(colors: [c, c.opacity(0.45)], startPoint: .top, endPoint: .bottom))
+                            .foregroundStyle(c)
                             .cornerRadius(range.rawValue >= 90 ? 1 : 4)
                             .opacity(selected == nil || selected?.date == d.date ? 1 : 0.35)
                     } else {
                         AreaMark(x: .value("Day", d.date, unit: .day), y: .value(metric.label, d.value))
-                            .foregroundStyle(LinearGradient(colors: [c.opacity(0.35), .clear], startPoint: .top, endPoint: .bottom))
+                            .foregroundStyle(LinearGradient(colors: [c.opacity(0.25), .clear], startPoint: .top, endPoint: .bottom))
                             .interpolationMethod(.catmullRom)
                         LineMark(x: .value("Day", d.date, unit: .day), y: .value(metric.label, d.value))
                             .foregroundStyle(c).lineStyle(StrokeStyle(lineWidth: 2.5, lineCap: .round))

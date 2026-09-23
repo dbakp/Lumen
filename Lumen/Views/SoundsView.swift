@@ -1,98 +1,61 @@
 import SwiftUI
 
-// MARK: - Sleep sounds (procedural engine + timer)
+// MARK: - Sleep sounds (generated on-device, with a fade-out timer)
 
 public struct SoundsView: View {
     @StateObject private var engine = SoundEngine.shared
-    @State private var showTimer = false
-
     public init() {}
 
-    let columns = [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)]
+    var current: SoundTrack? { SoundTrack.all.first { $0.id == engine.playingId && engine.isPlaying } }
 
     public var body: some View {
         ScrollView {
-            VStack(spacing: 16) {
-                GlassCard {
-                    VStack(alignment: .leading, spacing: 8) {
-                        SectionHeader("Fall asleep faster", subtitle: "Procedural audio — no downloads", systemImage: "speaker.wave.2.fill")
-                        Text("Mask noise, cue your wind-down. Sound fades with an optional sleep timer.")
-                            .font(.caption).foregroundStyle(.white.opacity(0.65))
-                    }
-                }
-                LazyVGrid(columns: columns, spacing: 12) {
+            VStack(alignment: .leading, spacing: 24) {
+                Text("Steady sound masks noise and helps your mind settle. Pick one and set a timer — it fades out gently.")
+                    .font(.body).foregroundStyle(Theme.secondary)
+                LazyVGrid(columns: [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)], spacing: 12) {
                     ForEach(SoundTrack.all) { t in
-                        SoundCard(track: t, isPlaying: engine.playingId == t.id && engine.isPlaying) {
-                            engine.toggle(t); haptic()
-                        }
-                    }
-                }
-                // Now playing bar
-                if let current = SoundTrack.all.first(where: { $0.id == engine.playingId }), engine.isPlaying {
-                    GlassCard {
-                        HStack {
-                            Image(systemName: current.icon).foregroundStyle(.cyan)
-                            VStack(alignment: .leading) {
-                                Text(current.title).font(.subheadline.weight(.bold)).foregroundStyle(.white)
-                                Text(engine.sleepTimerMinutes > 0 ? "Timer \(engine.sleepTimerMinutes)m" : "Playing").font(.caption).foregroundStyle(.white.opacity(0.6))
+                        let playing = engine.playingId == t.id && engine.isPlaying
+                        Button { engine.toggle(t); haptic() } label: {
+                            VStack(alignment: .leading, spacing: 18) {
+                                HStack {
+                                    Image(systemName: t.icon).font(.title3).foregroundStyle(playing ? .black : Theme.calm)
+                                    Spacer()
+                                    Image(systemName: playing ? "pause.fill" : "play.fill").font(.footnote).foregroundStyle(playing ? .black : Theme.tertiary)
+                                }
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text(t.title).font(.headline).foregroundStyle(playing ? .black : Theme.text)
+                                    Text(t.subtitle).font(.footnote).foregroundStyle(playing ? .black.opacity(0.6) : Theme.secondary).lineLimit(1)
+                                }
                             }
-                            Spacer()
-                            Button("Timer") { showTimer = true }.font(.caption.weight(.bold)).tint(.cyan).buttonStyle(.bordered)
-                            Button { engine.stop() } label: { Image(systemName: "stop.fill") }.tint(.pink).buttonStyle(.bordered)
+                            .padding(16)
+                            .background(playing ? Color.white : Theme.surface, in: RoundedRectangle(cornerRadius: Theme.radius, style: .continuous))
+                            .overlay(RoundedRectangle(cornerRadius: Theme.radius, style: .continuous).stroke(Theme.hairline, lineWidth: 0.5))
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
+                if current != nil {
+                    VStack(alignment: .leading, spacing: 12) {
+                        GroupLabel("Sleep timer")
+                        HStack(spacing: 10) {
+                            ForEach([15, 30, 60], id: \.self) { m in
+                                Button("\(m) min") { engine.startSleepTimer(minutes: m); haptic(.light) }
+                                    .font(.subheadline.weight(.semibold))
+                                    .frame(maxWidth: .infinity, minHeight: 44)
+                                    .background(engine.sleepTimerMinutes == m ? Color.white : Theme.surfaceRaised, in: Capsule())
+                                    .foregroundStyle(engine.sleepTimerMinutes == m ? .black : .white)
+                            }
+                            Button { engine.stop() } label: { Image(systemName: "stop.fill") }
+                                .frame(width: 44, height: 44).background(Theme.surfaceRaised, in: Circle()).foregroundStyle(.white)
+                                .accessibilityLabel("Stop")
                         }
                     }
-                    .confirmationDialog("Sleep timer", isPresented: $showTimer, titleVisibility: .visible) {
-                        Button("15 min") { engine.startSleepTimer(minutes: 15) }
-                        Button("30 min") { engine.startSleepTimer(minutes: 30) }
-                        Button("60 min") { engine.startSleepTimer(minutes: 60) }
-                        Button("Cancel", role: .cancel) {}
-                    }
                 }
             }
-            .padding(.horizontal, 16).padding(.bottom, 90)
+            .padding(.horizontal, Theme.gutter).padding(.bottom, 40)
         }
-        .background(AuroraBackground())
-        .navigationTitle("Sounds")
-        .navigationBarTitleDisplayMode(.inline)
-    }
-}
-
-struct SoundCard: View {
-    let track: SoundTrack
-    let isPlaying: Bool
-    let action: () -> Void
-    var body: some View {
-        Button(action: action) {
-            VStack(alignment: .leading, spacing: 10) {
-                HStack {
-                    Image(systemName: track.icon).font(.title2)
-                        .frame(width: 46, height: 46)
-                        .background(.white.opacity(0.14), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
-                        .foregroundStyle(.white)
-                    Spacer()
-                    if isPlaying {
-                        Image(systemName: "waveform").foregroundStyle(.cyan)
-                            .symbolEffect(.variableColor.iterative)
-                    }
-                }
-                Text(track.title).font(.headline).foregroundStyle(.white)
-                Text(track.subtitle).font(.caption).foregroundStyle(.white.opacity(0.6))
-                HStack {
-                    Text(isPlaying ? "Pause" : "Play").font(.caption.weight(.bold))
-                    Spacer()
-                    Image(systemName: isPlaying ? "pause.circle.fill" : "play.circle.fill").font(.title3)
-                }
-                .foregroundStyle(.cyan)
-            }
-            .padding(16)
-            .frame(maxWidth: .infinity, minHeight: 170, alignment: .leading)
-            .background(
-                LinearGradient(colors: [Color(hex: track.gradient[0]), Color(hex: track.gradient[1])], startPoint: .topLeading, endPoint: .bottomTrailing),
-                in: RoundedRectangle(cornerRadius: 24, style: .continuous)
-            )
-            .overlay(RoundedRectangle(cornerRadius: 24, style: .continuous).stroke(.white.opacity(isPlaying ? 0.5 : 0.15), lineWidth: isPlaying ? 1.5 : 0.8))
-            .shadow(color: .black.opacity(0.4), radius: 16, y: 8)
-        }
-        .buttonStyle(.plain)
+        .lumenScreen(Theme.calm)
+        .navigationTitle("Sleep sounds")
     }
 }

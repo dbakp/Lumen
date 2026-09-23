@@ -50,7 +50,7 @@ public struct SettingsView: View {
             }
             .task { await notifications.refreshAuthorization() }
         }
-        .tint(.cyan)
+        .tint(.white)
     }
 
     // MARK: Profile
@@ -61,7 +61,7 @@ public struct SettingsView: View {
                 Text(String(sleep.profile.name.prefix(1)).uppercased())
                     .font(.title.weight(.bold)).foregroundStyle(.white)
                     .frame(width: 60, height: 60)
-                    .background(LinearGradient(colors: [.cyan, .purple], startPoint: .topLeading, endPoint: .bottomTrailing), in: Circle())
+                    .background(Theme.surfaceRaised, in: Circle())
                 VStack(alignment: .leading, spacing: 3) {
                     TextField("Name", text: $sleep.profile.name)
                         .font(.title3.weight(.bold))
@@ -134,7 +134,7 @@ public struct SettingsView: View {
         } header: {
             Text("Goals")
         } footer: {
-            Text("Calories use Mifflin-St Jeor × your activity level, adjusted for your focus. Protein scales with body weight.")
+            Text("Calories are worked out from your body, activity level and focus. Protein scales with your weight.")
         }
     }
 
@@ -146,7 +146,7 @@ public struct SettingsView: View {
                     in: 5 * 3600...11.5 * 3600, step: 300) {
                 LabeledContent("Sleep need", value: SleepFormat.durationHM(sleep.profile.sleepNeed))
             }
-            Picker("Chronotype", selection: Binding(get: { sleep.profile.chronotype }, set: { sleep.profile.chronotype = $0; sleep.recompute() })) {
+            Picker("Body clock", selection: Binding(get: { sleep.profile.chronotype }, set: { sleep.profile.chronotype = $0; sleep.recompute() })) {
                 ForEach(Chronotype.allCases, id: \.self) { Text($0.label).tag($0) }
             }
             DatePicker("Wake goal", selection: Binding(
@@ -159,7 +159,7 @@ public struct SettingsView: View {
         } header: {
             Text("Sleep")
         } footer: {
-            Text("Confidence \(Int(sleep.profile.sleepNeedConfidence * 100))% — Lumen refines your need from the nights it sees.")
+            Text("Lumen fine-tunes your sleep need automatically from the nights it sees.")
         }
     }
 
@@ -189,7 +189,7 @@ public struct SettingsView: View {
                             if await hk.requestAuthorization() { await SyncCoordinator.syncEverything(sleep: sleep, health: health) }
                         }
                     }
-                    .buttonStyle(.borderedProminent).controlSize(.small)
+                    .buttonStyle(.borderedProminent).controlSize(.small).foregroundStyle(.black)
                 }
             }
             HStack {
@@ -242,8 +242,8 @@ public struct SettingsView: View {
                 HStack {
                     connectionIcon("sparkles", .purple)
                     VStack(alignment: .leading, spacing: 2) {
-                        Text("Coach brain").foregroundStyle(.primary)
-                        Text(llm.mode.label + " · " + llm.status).font(.caption).foregroundStyle(.secondary).lineLimit(1)
+                        Text("AI").foregroundStyle(.primary)
+                        Text(AIService.shared.brain.label).font(.caption).foregroundStyle(.secondary).lineLimit(1)
                     }
                     Spacer()
                     Image(systemName: "chevron.right").font(.caption).foregroundStyle(.tertiary)
@@ -255,7 +255,7 @@ public struct SettingsView: View {
         } header: {
             Text("Coach")
         } footer: {
-            Text("The on-device coach is private and free. Optionally connect your own AI provider for richer answers and photo meal recognition.")
+            Text("Lumen uses Apple Intelligence — no account or sign-in needed, and your data stays private.")
         }
     }
 
@@ -330,12 +330,12 @@ struct WeightLogSheet: View {
             VStack(spacing: 24) {
                 Text(Units.weight(kg, units)).font(.system(size: 52, weight: .bold, design: .rounded).monospacedDigit())
                     .contentTransition(.numericText()).foregroundStyle(.white)
-                Slider(value: $kg, in: 35...200, step: units == .metric ? 0.1 : 0.04536).tint(.cyan)
+                Slider(value: $kg, in: 35...200, step: units == .metric ? 0.1 : 0.04536).tint(.white)
                 HStack(spacing: 24) {
                     Button { kg -= units == .metric ? 0.1 : 0.4536 } label: { Image(systemName: "minus.circle.fill").font(.largeTitle) }
                     Button { kg += units == .metric ? 0.1 : 0.4536 } label: { Image(systemName: "plus.circle.fill").font(.largeTitle) }
                 }
-                .foregroundStyle(.cyan)
+                .foregroundStyle(.white)
                 Text(HealthKitService.shared.isAuthorized ? "Saved to Apple Health too." : "Saved on this iPhone.")
                     .font(.caption).foregroundStyle(.white.opacity(0.6))
                 Spacer()
@@ -394,83 +394,65 @@ struct StravaSetupSheet: View {
     }
 }
 
-// MARK: - Coach AI setup
+// MARK: - AI setup
 
 struct CoachSetupSheet: View {
+    @ObservedObject var ai = AIService.shared
     @ObservedObject var llm = LLMConnectionService.shared
     @Environment(\.dismiss) var dismiss
-    @State private var llmKey = ""
-    @State private var googleID = ""
-    @State private var oauthEndpoint = ""
-    @State private var keyPreset: LLMConnectionService.Preset = .openAI
+    @State private var key = ""
+    @State private var testing = false
 
     var body: some View {
         NavigationStack {
             Form {
                 Section {
-                    Picker("Brain", selection: $llm.mode) {
-                        ForEach(LLMConnectionService.Mode.allCases, id: \.self) { Text($0.label).tag($0) }
+                    HStack(spacing: 14) {
+                        Image(systemName: ai.brain.isAI ? "sparkles" : "cpu").font(.title2).foregroundStyle(Theme.calm).frame(width: 36)
+                        VStack(alignment: .leading, spacing: 3) {
+                            Text(ai.brain.label).font(.headline)
+                            Text(ai.brain.detail).font(.footnote).foregroundStyle(.secondary)
+                        }
                     }
-                    .pickerStyle(.segmented)
-                    .onChange(of: llm.mode) { _, m in llm.setMode(m) }
+                    .padding(.vertical, 4)
+                    LabeledContent("Photo recognition", value: ai.canSeePhotos ? "On" : "Not available")
                 } footer: {
-                    Text(llm.mode == .onDevice ? "Runs fully on this iPhone with your real data — private and free." : llm.status)
-                }
-
-                if llm.mode == .key {
-                    Section {
-                        Picker("Provider", selection: $keyPreset) {
-                            ForEach(LLMConnectionService.Preset.allCases, id: \.self) { Text($0.label).tag($0) }
-                        }
-                        .onChange(of: keyPreset) { _, p in llm.applyPreset(p); llmKey = llm.apiKey }
-                        SecureField("API key", text: $llmKey)
-                            .textInputAutocapitalization(.never).autocorrectionDisabled()
-                            .onChange(of: llmKey) { _, v in llm.apiKey = v }
-                        LabeledContent("Model", value: llm.model)
-                    } footer: {
-                        Text("Stored in the Keychain and only ever sent to \(URL(string: llm.endpoint)?.host ?? "your provider").")
+                    if !ai.brain.isAI {
+                        Text("To turn it on: iPhone Settings → Apple Intelligence & Siri → Apple Intelligence.")
                     }
                 }
 
-                if llm.mode == .oauth {
-                    Section {
-                        TextField("Google Client ID", text: $googleID)
-                            .textInputAutocapitalization(.never).autocorrectionDisabled()
-                            .onChange(of: googleID) { _, v in llm.googleClientID = v }
-                        TextField("OpenAI-compatible endpoint", text: $oauthEndpoint)
-                            .textInputAutocapitalization(.never).autocorrectionDisabled()
-                            .onChange(of: oauthEndpoint) { _, v in llm.oauthEndpoint = v }
-                        if llm.isOAuthConnected {
-                            Button("Sign out", role: .destructive) { llm.disconnectOAuth() }
-                        } else {
-                            Button("Connect with Google") { llm.connectGoogle() }
+                Section {
+                    SecureField("sk-…", text: $key)
+                        .textInputAutocapitalization(.never).autocorrectionDisabled()
+                        .onChange(of: key) { _, v in
+                            llm.applyPreset(.openAI)
+                            llm.apiKey = v.trimmingCharacters(in: .whitespacesAndNewlines)
+                            llm.setMode(v.isEmpty ? .onDevice : .key)
                         }
-                    } footer: {
-                        Text("Register lumen://oauth-callback as a redirect URI on your OAuth client. PKCE; tokens stay on-device.")
-                    }
-                }
-
-                if llm.mode != .onDevice {
-                    Section {
+                    if !key.isEmpty {
+                        Toggle("Use OpenAI instead of Apple", isOn: Binding(get: { ai.preferOpenAI }, set: { ai.preferOpenAI = $0 }))
                         Button {
-                            Task { await llm.runTest() }
-                        } label: {
-                            HStack { Text("Test connection"); Spacer(); if llm.isBusy { ProgressView() } }
-                        }
-                        .disabled(llm.isBusy || !LLMClient.isConfigured())
-                        if let result = llm.lastTestResult { Text(result).font(.caption) }
+                            testing = true
+                            Task { await llm.runTest(); testing = false }
+                        } label: { HStack { Text("Test key"); Spacer(); if testing { ProgressView() } } }
+                        if let r = llm.lastTestResult { Text(r).font(.footnote) }
+                        Button("Remove key", role: .destructive) { key = ""; ai.preferOpenAI = false }
                     }
+                    Link("Get an OpenAI API key", destination: URL(string: "https://platform.openai.com/api-keys")!)
+                } header: {
+                    Text("Advanced · your own OpenAI key")
+                } footer: {
+                    Text("Optional. OpenAI doesn't offer sign-in for other apps yet, so this uses an API key from your OpenAI account. It's stored in the Keychain and only sent to OpenAI.")
                 }
             }
             .scrollContentBackground(.hidden)
-            .background(AuroraBackground())
-            .navigationTitle("Coach brain").navigationBarTitleDisplayMode(.inline)
+            .background(Theme.bg.ignoresSafeArea())
+            .navigationTitle("AI").navigationBarTitleDisplayMode(.inline)
             .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } } }
-            .onAppear {
-                llmKey = llm.apiKey; googleID = llm.googleClientID
-                oauthEndpoint = llm.oauthEndpoint; keyPreset = llm.currentPreset
-            }
+            .onAppear { key = llm.mode == .key ? llm.apiKey : "" }
         }
+        .tint(.white)
     }
 }
 
@@ -495,7 +477,7 @@ struct ScienceView: View {
     func item(_ icon: String, _ title: String, _ body: String) -> some View {
         GlassCard {
             HStack(alignment: .top, spacing: 14) {
-                Image(systemName: icon).font(.title3).foregroundStyle(.cyan).frame(width: 30)
+                Image(systemName: icon).font(.title3).foregroundStyle(.white).frame(width: 30)
                 VStack(alignment: .leading, spacing: 4) {
                     Text(title).font(.headline).foregroundStyle(.white)
                     Text(body).font(.subheadline).foregroundStyle(.white.opacity(0.7))

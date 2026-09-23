@@ -2,7 +2,11 @@
 
 A calm, private health coach for iPhone. Lumen brings sleep, energy, movement and nutrition together in one place, learns your body's rhythm from Apple Health, and tells you what to do today.
 
-Built natively in SwiftUI with a Liquid Glass design. Everything is stored on your device.
+Built natively in SwiftUI. The design is calm and minimal: content sits on quiet dark surfaces, Liquid Glass is used only for navigation, and colour is reserved for data. Everything is stored on your device.
+
+## Navigation
+
+Five tabs: **Today · Sleep · Activity · Food · Coach**. A single **+** opens the log menu (meal, water, workout, sleep, weight), and every number opens its own chart and plain-language explanation.
 
 ## Features
 
@@ -15,8 +19,15 @@ Built natively in SwiftUI with a Liquid Glass design. Everything is stored on yo
   - A journal, rituals, sleep sounds and short science articles.
 - **Activity.** Workouts from Apple Health, Strava and manual logs, deduplicated and grouped by day. Also training load and vitals (resting HR, HRV, SpO₂, respiratory rate, weight, VO₂ max).
 - **Trends.** 7-day, 30-day, 90-day and 1-year charts for sleep, steps, active energy, exercise, resting HR, HRV and weight. Each shows the average, the change versus the previous period, and the best day, with scrub-to-inspect.
-- **Snap & nutrition.** Photo meal logging and quick-add, protein-first macros, hydration, and a 7-day history. Meals, water and weight are written back to Apple Health.
-- **Coach.** Chat grounded in your real data. It runs fully on-device by default; you can optionally connect your own AI provider (API key or Google OAuth with PKCE).
+- **Food.**
+  - **Snap a meal** opens the camera directly, asking for permission on first use and linking to Settings if access was denied.
+  - Apple Intelligence recognises what's on the plate. Without it, you pick foods from a built-in list; Lumen never guesses.
+  - You can also describe a meal in words or search foods, then adjust portions before saving.
+  - Meal photos are kept as thumbnails. Also here: protein-first macros, water tracking and a 7-day history. Meals, water and weight are written back to Apple Health.
+- **Coach.** Chat grounded in your real data, in plain language.
+  - It runs on **Apple Intelligence**: Apple's Private Cloud Compute where available, otherwise the on-device model. There is no account, no sign-in and no API key.
+  - Without Apple Intelligence, a built-in rule-based coach answers instead.
+  - Optional (Settings → AI → Advanced): use your own OpenAI API key. OpenAI doesn't offer OAuth sign-in for third-party apps, so a key is the only supported route.
 - **Apple Watch.** A companion app with six vertical pages:
   - Readiness and today's training window.
   - Last night's sleep with stages, debt and energy.
@@ -58,7 +69,7 @@ The persistence layer is isolated in `Persistence/`, so a sync backend (for exam
 Optional connections, configured in the app under **Settings**:
 
 - **Strava.** Create a free API app at strava.com/settings/api, then paste the Client ID and Secret.
-- **Coach AI.** Add an OpenAI-compatible API key (OpenAI, Google AI Studio, or a custom endpoint), or use Google OAuth.
+- **AI.** Nothing to set up; Apple Intelligence is used automatically when it's turned on in iOS Settings. Optionally, add your own OpenAI API key under Settings → AI → Advanced.
 
 ## Architecture
 
@@ -69,13 +80,15 @@ Optional connections, configured in the app under **Settings**:
   - `HealthKitService`: permissions, today, sleep with stages, workouts, history, write-back.
   - `SyncCoordinator`: keeps the stores in step.
   - `WatchSync`: pushes the snapshot to the Watch and handles its messages.
-  - Notifications, Strava, the LLM client, nutrition, sounds, app lock and deep links.
-- `Views/`: Onboarding, Today, Activity, Trends, Sleep, Nutrition, Coach and Settings, plus the design system components.
+  - `AIService`: Apple Intelligence (Private Cloud Compute or on-device, with vision and structured output), then an optional OpenAI key, then built-in rules.
+  - Notifications, Strava, the OpenAI client, nutrition, sounds, app lock and deep links.
+- `Views/`: Onboarding, Today, Sleep, Activity, Food, Coach, metric detail/Trends and Settings, plus `AppRouter` (tabs, sheets, toasts).
+- `Views/Components/`: the design system: `Theme` tokens, surfaces, buttons, stat tiles, rows, rings and charts.
 - `Shared/`: `WatchSnapshot`, compiled into both the iPhone and Watch targets.
 - `LumenWatch/`: the watchOS app (`WatchStore` for WatchConnectivity and HealthKit on the wrist, plus the page views).
 - `LumenWatchWidget/`: watch complications.
 - `LumenWidget/`: WidgetKit extension.
-- `LumenUITests/`: an end-to-end smoke test covering fresh onboarding, every tab, logging a workout and a night, and coach chat.
+- `LumenUITests/`: an end-to-end smoke test covering fresh onboarding, every tab, the log menu, logging water, a night, a workout and a food, metric detail, settings, and coach chat.
 
 ## Testing
 

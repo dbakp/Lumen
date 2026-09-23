@@ -1,82 +1,61 @@
 import Foundation
 
-// MARK: - NutritionEngine: <10s photo logging.
-// AI vision when the user connects it (API key or OAuth, all from the phone);
-// otherwise a fast, private on-device estimator.
+// MARK: - NutritionEngine: food search + parsing for AI estimates.
+// Photo and description estimates come from AIService. Without AI we never
+// pretend to recognise a photo — the user picks from this food list instead.
 
 @MainActor
 public final class NutritionEngine: ObservableObject {
     public static let shared = NutritionEngine()
-    @Published public var isAnalyzing = false
-    @Published public var lastAnalysis: MealAnalysis?
-
     private init() {}
 
-    // MARK: on-device estimator (instant, private)
+    /// Typical single servings. Values per serving shown.
+    public static let foods: [FoodItem] = [
+        f("Espresso", 30, 2, 0, 0, 0), f("Cappuccino", 240, 110, 6, 9, 5), f("Latte (oat milk)", 350, 180, 3, 26, 7),
+        f("Orange juice", 250, 110, 2, 26, 0), f("Protein shake", 350, 180, 30, 8, 3, 2), f("Smoothie (fruit)", 400, 250, 4, 55, 2, 5),
+        f("Banana", 120, 105, 1, 27, 0, 3), f("Apple", 180, 95, 0, 25, 0, 4), f("Berries", 150, 70, 1, 17, 0, 4), f("Orange", 150, 70, 1, 18, 0, 3),
+        f("Greek yogurt", 170, 100, 17, 6, 0), f("Skyr with berries", 250, 190, 20, 24, 1, 3), f("Oatmeal with berries", 320, 310, 11, 58, 6, 9),
+        f("Granola with milk", 250, 400, 12, 60, 12, 5), f("Scrambled eggs (2)", 120, 200, 13, 2, 15), f("Boiled egg", 50, 78, 6, 1, 5),
+        f("Avocado toast", 180, 320, 8, 30, 19, 8), f("Toast with butter", 60, 190, 4, 22, 9, 2), f("Croissant", 60, 240, 5, 26, 13, 1),
+        f("Rye bread with cheese", 90, 230, 12, 20, 11, 4), f("Pancakes (3)", 230, 520, 12, 80, 16, 2),
+        f("Chicken breast", 150, 250, 46, 0, 5), f("Salmon fillet", 150, 310, 34, 0, 20), f("Steak", 200, 500, 50, 0, 32),
+        f("Tofu", 150, 180, 20, 4, 10, 2), f("Tuna (can)", 120, 130, 28, 0, 1), f("Meatballs (6)", 180, 400, 26, 10, 28, 1),
+        f("White rice", 180, 230, 4, 50, 0, 1), f("Brown rice", 180, 220, 5, 46, 2, 3), f("Pasta", 200, 310, 11, 62, 2, 3),
+        f("Potatoes", 200, 170, 4, 38, 0, 4), f("Sweet potato", 200, 180, 4, 41, 0, 6), f("Quinoa", 180, 220, 8, 39, 4, 5),
+        f("Mixed salad", 200, 90, 3, 10, 5, 4), f("Roasted vegetables", 200, 150, 4, 18, 7, 6), f("Broccoli", 150, 50, 4, 10, 0, 4),
+        f("Chicken Caesar salad", 350, 480, 36, 18, 30, 4), f("Poke bowl", 450, 600, 32, 70, 20, 6), f("Burrito bowl", 450, 640, 40, 60, 20, 9),
+        f("Chicken wrap", 300, 520, 32, 48, 20, 4), f("Club sandwich", 300, 600, 32, 45, 32, 3), f("Burger", 250, 600, 30, 42, 33, 2),
+        f("Fries", 150, 470, 5, 60, 23, 5), f("Pizza (2 slices)", 250, 570, 24, 66, 22, 4), f("Sushi (8 pieces)", 280, 400, 16, 70, 5, 3),
+        f("Pad thai", 400, 620, 24, 80, 22, 4), f("Chicken curry with rice", 450, 700, 36, 80, 24, 5), f("Lasagna", 350, 600, 32, 45, 32, 4),
+        f("Spaghetti bolognese", 400, 620, 32, 75, 20, 5), f("Soup (vegetable)", 350, 150, 5, 22, 4, 5), f("Ramen", 550, 550, 22, 70, 18, 4),
+        f("Hummus with veg", 150, 220, 7, 18, 14, 6), f("Nuts (handful)", 30, 180, 6, 6, 16, 3), f("Protein bar", 60, 210, 20, 22, 7, 5),
+        f("Dark chocolate (4 squares)", 40, 220, 3, 17, 16, 4), f("Ice cream (2 scoops)", 130, 280, 5, 32, 15, 1), f("Cookie", 40, 200, 2, 26, 10, 1),
+        f("Glass of wine", 150, 125, 0, 4, 0), f("Beer", 330, 150, 1, 13, 0), f("Soda", 330, 140, 0, 35, 0),
+    ]
 
-    public func estimateFromPhoto(imageData: Data, mealType: MealType) async -> MealAnalysis {
-        isAnalyzing = true
-        defer { isAnalyzing = false }
-        // Try AI vision if the user connected it; else local heuristic.
-        if LLMClient.isConfigured(), let llm = await analyzeWithLLM(imageData: imageData) {
-            lastAnalysis = llm; return llm
-        }
-        // Local fallback: classify dominant palette/complexity → plausible meal archetypes.
-        // Real Vision food classifier hook lives here (VNClassifyImageRequest with Food-101
-        // CoreML model dropped into Resources/). We ship sensible defaults + fast UX.
-        try? await Task.sleep(nanoseconds: 900_000_000) // delightful staged shimmer
-        let archetypes: [[FoodItem]] = [
-            [FoodItem(name: "Grilled salmon bowl + rice + greens", grams: 420, calories: 620, proteinG: 42, carbsG: 55, fatG: 22, fiberG: 7, confidence: 0.72)],
-            [FoodItem(name: "Chicken pasta", grams: 380, calories: 680, proteinG: 38, carbsG: 72, fatG: 22, fiberG: 5, confidence: 0.7)],
-            [FoodItem(name: "Burrito bowl", grams: 450, calories: 640, proteinG: 40, carbsG: 60, fatG: 20, fiberG: 9, confidence: 0.7)],
-            [FoodItem(name: "Caesar salad + chicken", grams: 350, calories: 480, proteinG: 36, carbsG: 18, fatG: 30, fiberG: 4, confidence: 0.68)],
-            [FoodItem(name: "Avocado toast + eggs", grams: 280, calories: 520, proteinG: 24, carbsG: 38, fatG: 30, fiberG: 8, confidence: 0.7)],
-        ]
-        // Deterministic pick from image bytes so same photo → same result.
-        let idx = abs(imageData.prefix(64).reduce(0) { $0 + Int($1) }) % archetypes.count
-        let items = archetypes[idx]
-        let kcal = items.reduce(0) { $0 + $1.calories }
-        let protein = items.reduce(0) { $0 + $1.proteinG }
-        let analysis = MealAnalysis(
-            items: items,
-            totalCalories: kcal,
-            headline: "\(items[0].name) · ~\(Int(kcal)) kcal",
-            coachingNote: protein >= 30
-                ? "Protein-strong — this carries your afternoon well. Add water + a short walk."
-                : "Tasty. Add ~20g protein next meal to hit your target without extra calories.",
-            needsReview: true
-        )
-        lastAnalysis = analysis
-        return analysis
+    private static func f(_ name: String, _ g: Double, _ kcal: Double, _ p: Double, _ c: Double, _ fat: Double, _ fiber: Double = 0) -> FoodItem {
+        FoodItem(id: "food-\(name)", name: name, grams: g, calories: kcal, proteinG: p, carbsG: c, fatG: fat, fiberG: fiber, confidence: 1)
     }
 
-    // MARK: quick add / barcode / search
+    public static func quickAdds() -> [FoodItem] { Array(foods.prefix(12)) }
 
-    public static func quickAdds() -> [FoodItem] {
-        [
-            FoodItem(name: "Espresso", grams: 60, calories: 5, proteinG: 0, carbsG: 1, fatG: 0, confidence: 1),
-            FoodItem(name: "Protein shake", grams: 350, calories: 180, proteinG: 30, carbsG: 8, fatG: 3, fiberG: 2, confidence: 1),
-            FoodItem(name: "Banana", grams: 120, calories: 105, proteinG: 1, carbsG: 27, fatG: 0, fiberG: 3, confidence: 1),
-            FoodItem(name: "Greek yogurt 0%", grams: 170, calories: 100, proteinG: 17, carbsG: 6, fatG: 0, fiberG: 0, confidence: 1),
-            FoodItem(name: "Chicken breast 150g", grams: 150, calories: 248, proteinG: 46, carbsG: 0, fatG: 5, confidence: 1),
-            FoodItem(name: "Mixed salad bowl", grams: 300, calories: 220, proteinG: 8, carbsG: 18, fatG: 14, fiberG: 7, confidence: 1),
-            FoodItem(name: "Oatmeal + berries", grams: 320, calories: 310, proteinG: 11, carbsG: 58, fatG: 6, fiberG: 9, confidence: 1),
-            FoodItem(name: "Salmon 150g", grams: 150, calories: 310, proteinG: 34, carbsG: 0, fatG: 20, confidence: 1),
-        ]
+    public func search(_ query: String, recent: [FoodItem] = []) -> [FoodItem] {
+        let q = query.trimmingCharacters(in: .whitespaces).lowercased()
+        var seen = Set<String>()
+        let pool = (recent + Self.foods).filter { seen.insert($0.name.lowercased()).inserted }
+        if q.isEmpty { return Array(pool.prefix(30)) }
+        return pool.filter { $0.name.lowercased().contains(q) }
     }
 
-    public func search(_ query: String) -> [FoodItem] {
-        let q = query.lowercased()
-        if q.isEmpty { return Self.quickAdds() }
-        let base = Self.quickAdds() + (lastAnalysis?.items ?? [])
-        return base.filter { $0.name.lowercased().contains(q) }
+    // MARK: OpenAI-key vision path
+
+    func analyzeWithLLM(imageData: Data) async -> MealAnalysis? {
+        guard let content = await LLMClient.visionMealJSON(imageData: imageData) else { return nil }
+        return Self.parseMealJSON(content)
     }
 
-    // MARK: LLM vision via the shared connection (key or OAuth, all on-device setup)
-
-    private func analyzeWithLLM(imageData: Data) async -> MealAnalysis? {
-        guard let content = await LLMClient.visionMealJSON(imageData: imageData),
-              let inner = Self.extractJSON(content)?.data(using: .utf8),
+    static func parseMealJSON(_ text: String) -> MealAnalysis? {
+        guard let inner = extractJSON(text)?.data(using: .utf8),
               let meal = try? JSONSerialization.jsonObject(with: inner) as? [String: Any],
               let itemsJSON = meal["items"] as? [[String: Any]] else { return nil }
         func num(_ d: [String: Any], _ k: String) -> Double {
@@ -86,20 +65,20 @@ public final class NutritionEngine: ObservableObject {
             return 0
         }
         let items = itemsJSON.map { d in
-            FoodItem(name: d["name"] as? String ?? "Meal", grams: num(d, "grams") == 0 ? 300 : num(d, "grams"), calories: num(d, "calories"), proteinG: num(d, "proteinG"), carbsG: num(d, "carbsG"), fatG: num(d, "fatG"), fiberG: num(d, "fiberG"), confidence: 0.9)
+            FoodItem(name: d["name"] as? String ?? "Food", grams: num(d, "grams") == 0 ? 200 : num(d, "grams"), calories: num(d, "calories"),
+                     proteinG: num(d, "proteinG"), carbsG: num(d, "carbsG"), fatG: num(d, "fatG"), fiberG: num(d, "fiberG"), confidence: 0.85)
         }
         guard !items.isEmpty else { return nil }
         let kcal = items.reduce(0) { $0 + $1.calories }
-        return MealAnalysis(items: items, totalCalories: kcal, headline: (meal["headline"] as? String) ?? "Logged meal · ~\(Int(kcal)) kcal", coachingNote: (meal["coachingNote"] as? String) ?? "Logged. Protein first at the next meal.", needsReview: false)
+        return MealAnalysis(items: items, totalCalories: kcal, headline: (meal["headline"] as? String) ?? items.map(\.name).joined(separator: ", "),
+                            coachingNote: (meal["coachingNote"] as? String) ?? "", needsReview: true)
     }
 
     /// Tolerate markdown fences around the JSON payload.
     static func extractJSON(_ text: String) -> String? {
         let t = text.trimmingCharacters(in: .whitespacesAndNewlines)
         if t.hasPrefix("{") { return t }
-        if let start = t.firstIndex(of: "{"), let end = t.lastIndex(of: "}") {
-            return String(t[start...end])
-        }
+        if let start = t.firstIndex(of: "{"), let end = t.lastIndex(of: "}") { return String(t[start...end]) }
         return nil
     }
 }

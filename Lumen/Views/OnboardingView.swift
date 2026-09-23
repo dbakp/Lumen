@@ -43,7 +43,7 @@ public struct OnboardingView: View {
 
     public var body: some View {
         ZStack {
-            AuroraBackground()
+            AuroraBackground(Theme.calm)
             VStack(spacing: 0) {
                 if step != .welcome && step != .plan { topBar }
                 ZStack {
@@ -67,12 +67,12 @@ public struct OnboardingView: View {
         return HStack(spacing: 14) {
             Button { go(back: true) } label: {
                 Image(systemName: "chevron.left").font(.headline).foregroundStyle(.white)
-                    .frame(width: 40, height: 40).liquidGlass(cornerRadius: 20, tintOpacity: 0.12)
+                    .frame(width: 40, height: 40).background(Theme.surfaceRaised, in: Circle())
             }
             .accessibilityLabel("Back")
             HStack(spacing: 5) {
                 ForEach(0..<total, id: \.self) { i in
-                    Capsule().fill(i <= idx ? Color.cyan : .white.opacity(0.15)).frame(height: 4)
+                    Capsule().fill(i <= idx ? Color.white : .white.opacity(0.15)).frame(height: 3)
                 }
             }
             .animation(.spring, value: idx)
@@ -138,11 +138,11 @@ public struct OnboardingView: View {
             Spacer()
             LumenOrb(size: 220)
             Spacer().frame(height: 28)
-            Text("LUMEN").font(.caption.weight(.heavy)).foregroundStyle(.cyan).tracking(6)
+            Text("Lumen").font(.title3.weight(.semibold)).foregroundStyle(Theme.secondary)
             Text("Feel your best,\nevery day.")
                 .font(.system(size: 40, weight: .bold, design: .rounded)).foregroundStyle(.white)
                 .multilineTextAlignment(.center).padding(.top, 10)
-            Text("Sleep, energy, movement and fuel — one calm coach built around your body and your rhythm.")
+            Text("Sleep, energy, movement and food — one calm coach that learns your body.")
                 .font(.body).foregroundStyle(.white.opacity(0.7)).multilineTextAlignment(.center)
                 .padding(.horizontal, 32).padding(.top, 12)
             Spacer()
@@ -167,7 +167,7 @@ public struct OnboardingView: View {
                     .focused($nameFocused)
                     .onSubmit { if !trimmedName.isEmpty { go() } }
                     .padding(.horizontal, 18).padding(.vertical, 16)
-                    .liquidGlass(cornerRadius: 18, tintOpacity: 0.1)
+                    .surface(18)
                 Label("No email, no password. Your profile lives only on this device.", systemImage: "iphone.gen3")
                     .font(.footnote).foregroundStyle(.white.opacity(0.55))
             }
@@ -182,17 +182,17 @@ public struct OnboardingView: View {
     // MARK: 2 · Apple Health
 
     var healthStep: some View {
-        page(title: "Connect Apple Health", subtitle: "Lumen reads your sleep, activity and heart data to personalise everything — and saves the meals and water you log.") {
+        page(title: "Connect Apple Health", subtitle: "So Lumen can see your sleep, steps and heart — and save the meals and water you log.") {
             VStack(spacing: 12) {
-                benefit("bed.double.fill", .indigo, "Sleep & stages", "Nightly sleep, deep and REM from your Watch")
-                benefit("flame.fill", .orange, "Activity & workouts", "Steps, active energy, exercise and sessions")
-                benefit("heart.fill", .pink, "Recovery signals", "Resting heart rate and HRV shape readiness")
-                benefit("scalemass.fill", .teal, "Body basics", "Height, weight and age prefill your plan")
+                benefit("bed.double.fill", Theme.sleep, "Your sleep", "Every night, including deep and dream sleep")
+                benefit("figure.walk", Theme.move, "Your activity", "Steps, workouts and calories burned")
+                benefit("heart.fill", Theme.heart, "Your heart", "Helps Lumen tell how recovered you are")
+                benefit("person.fill", Theme.steps, "Your basics", "Age, height and weight fill in automatically")
             }
             if healthConnected {
                 GlassCard {
                     VStack(alignment: .leading, spacing: 6) {
-                        Label("Connected", systemImage: "checkmark.seal.fill").font(.headline).foregroundStyle(.green)
+                        Label("Connected", systemImage: "checkmark.circle.fill").font(.headline).foregroundStyle(Theme.steps)
                         Text(importSummary).font(.subheadline).foregroundStyle(.white.opacity(0.75))
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -212,7 +212,7 @@ public struct OnboardingView: View {
                             Text(healthConnecting ? "Reading your data…" : "Connect Apple Health")
                         }
                     }
-                    .buttonStyle(LumenPrimaryButtonStyle(colors: [Color(red: 1, green: 0.38, blue: 0.5), Color(red: 1, green: 0.55, blue: 0.4)]))
+                    .buttonStyle(LumenPrimaryButtonStyle())
                     .disabled(healthConnecting)
                     Button("Not now") { go() }.buttonStyle(LumenSecondaryButtonStyle())
                 }
@@ -229,11 +229,10 @@ public struct OnboardingView: View {
 
     func benefit(_ icon: String, _ tint: Color, _ title: String, _ sub: String) -> some View {
         HStack(spacing: 14) {
-            Image(systemName: icon).font(.headline).foregroundStyle(tint)
-                .frame(width: 42, height: 42).background(tint.opacity(0.15), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+            Image(systemName: icon).font(.title3).foregroundStyle(tint).frame(width: 32)
             VStack(alignment: .leading, spacing: 2) {
-                Text(title).font(.subheadline.weight(.semibold)).foregroundStyle(.white)
-                Text(sub).font(.caption).foregroundStyle(.white.opacity(0.6))
+                Text(title).font(.headline).foregroundStyle(.white)
+                Text(sub).font(.subheadline).foregroundStyle(Theme.secondary)
             }
             Spacer()
         }
@@ -292,15 +291,36 @@ public struct OnboardingView: View {
                 }
                 .pickerStyle(.wheel).frame(height: 110).clipped()
             }
-            fieldCard("Height", value: Units.height(heightCm, units)) {
-                Slider(value: $heightCm, in: 130...215, step: units == .metric ? 1 : 1.27).tint(.cyan)
-            }
-            fieldCard("Weight", value: Units.weight(weightKg, units, decimals: units == .metric ? 1 : 0)) {
-                Slider(value: $weightKg, in: 35...200, step: units == .metric ? 0.5 : 0.4536).tint(.cyan)
+            HStack(spacing: 12) {
+                fieldCard("Height") {
+                    Picker("Height", selection: heightBinding) {
+                        ForEach(heightOptions, id: \.self) { Text(heightLabel($0)).tag($0) }
+                    }
+                    .pickerStyle(.wheel).frame(height: 110).clipped()
+                }
+                fieldCard("Weight") {
+                    Picker("Weight", selection: weightBinding) {
+                        ForEach(weightOptions, id: \.self) { Text("\($0) \(units == .metric ? "kg" : "lb")").tag($0) }
+                    }
+                    .pickerStyle(.wheel).frame(height: 110).clipped()
+                }
             }
         } footer: {
             continueButton()
         }
+    }
+
+    // Whole-number wheels in the user's units.
+    var heightOptions: [Int] { units == .metric ? Array(130...215) : Array(51...84) }
+    func heightLabel(_ v: Int) -> String { units == .metric ? "\(v) cm" : "\(v / 12)′ \(v % 12)″" }
+    var heightBinding: Binding<Int> {
+        Binding(get: { units == .metric ? Int(heightCm.rounded()) : Int((heightCm / 2.54).rounded()) },
+                set: { heightCm = units == .metric ? Double($0) : Double($0) * 2.54 })
+    }
+    var weightOptions: [Int] { units == .metric ? Array(35...200) : Array(77...440) }
+    var weightBinding: Binding<Int> {
+        Binding(get: { units == .metric ? Int(weightKg.rounded()) : Int(Units.lbFromKg(weightKg).rounded()) },
+                set: { weightKg = units == .metric ? Double($0) : Units.kgFromLb(Double($0)) })
     }
 
     func fieldCard<Content: View>(_ label: String, value: String? = nil, @ViewBuilder content: () -> Content) -> some View {
@@ -313,7 +333,7 @@ public struct OnboardingView: View {
             content()
         }
         .padding(16)
-        .liquidGlass(cornerRadius: 20, tintOpacity: 0.08)
+        .surface(20)
     }
 
     // MARK: 4 · Goal
@@ -352,7 +372,7 @@ public struct OnboardingView: View {
     // MARK: 5 · Sleep
 
     var sleepStep: some View {
-        page(title: "Your rhythm", subtitle: importedNights.count >= 3
+        page(title: "Your body clock", subtitle: importedNights.count >= 3
              ? "Based on your last \(importedNights.count) nights in Apple Health."
              : "Lumen refines these automatically as it learns your nights.") {
             VStack(spacing: 10) {
@@ -367,7 +387,7 @@ public struct OnboardingView: View {
                     .colorScheme(.dark)
             }
             fieldCard("Sleep you need", value: SleepFormat.durationHM(needHours * 3600)) {
-                Slider(value: $needHours, in: 6...10.5, step: 0.25).tint(.purple)
+                Slider(value: $needHours, in: 6...10.5, step: 0.25).tint(.white)
                 Text(importedNights.count >= 3 ? "Estimated from your longest, most natural nights." : "Most adults need 7–9 hours; about half need 8 or more.")
                     .font(.caption).foregroundStyle(.white.opacity(0.55))
             }
@@ -381,14 +401,14 @@ public struct OnboardingView: View {
     var remindersStep: some View {
         page(title: "Gentle, well-timed nudges", subtitle: "Lumen times reminders to your body clock — never spammy, always skippable.") {
             VStack(spacing: 12) {
-                benefit("wind", .teal, "Wind-down", "An hour before your melatonin window opens")
-                benefit("moon.fill", .indigo, "Bedtime", "When falling asleep is easiest")
-                benefit("sun.max.fill", .yellow, "Morning light", "Anchor your clock within 30 minutes of waking")
-                benefit("cup.and.saucer.fill", .brown, "Caffeine cutoff", "Protect tonight's sleep")
+                benefit("wind", Theme.calm, "Wind down", "A nudge to dim the lights and relax")
+                benefit("moon.fill", Theme.sleep, "Bedtime", "When falling asleep is easiest for you")
+                benefit("sun.max.fill", Theme.food, "Morning light", "Anchor your clock within 30 minutes of waking")
+                benefit("cup.and.saucer.fill", Theme.food, "Caffeine cutoff", "Protect tonight's sleep")
             }
             if remindersOn {
                 Label("Reminders on — tune them anytime in Rituals.", systemImage: "bell.badge.fill")
-                    .font(.subheadline.weight(.semibold)).foregroundStyle(.green)
+                    .font(.subheadline.weight(.semibold)).foregroundStyle(Theme.steps)
             }
         } footer: {
             VStack(spacing: 6) {
@@ -444,12 +464,13 @@ public struct OnboardingView: View {
                     LumenOrb(size: revealStage >= checks.count ? 120 : 170)
                         .padding(.top, 30)
                         .animation(.spring(response: 0.7), value: revealStage)
+                    ZStack(alignment: .top) {
                     if revealStage < checks.count {
                         VStack(alignment: .leading, spacing: 14) {
                             ForEach(checks.indices, id: \.self) { i in
                                 HStack(spacing: 12) {
                                     Image(systemName: i < revealStage ? "checkmark.circle.fill" : "circle.dotted")
-                                        .foregroundStyle(i < revealStage ? .cyan : .white.opacity(0.35))
+                                        .foregroundStyle(i < revealStage ? Theme.steps : .white.opacity(0.35))
                                         .contentTransition(.symbolEffect(.replace))
                                     Text(checks[i]).foregroundStyle(.white.opacity(i <= revealStage ? 0.9 : 0.4))
                                 }
@@ -457,7 +478,9 @@ public struct OnboardingView: View {
                             }
                         }
                         .padding(.top, 10)
+                        .transition(.opacity.animation(.easeOut(duration: 0.12)))
                     } else {
+                        VStack(spacing: 18) {
                         VStack(spacing: 6) {
                             Text("Your plan is ready\(trimmedName.isEmpty ? "" : ", \(trimmedName)")")
                                 .font(.system(size: 30, weight: .bold, design: .rounded)).foregroundStyle(.white)
@@ -466,14 +489,17 @@ public struct OnboardingView: View {
                                 .font(.subheadline).foregroundStyle(.white.opacity(0.65))
                         }
                         LazyVGrid(columns: [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)], spacing: 12) {
-                            planTile("flame.fill", .orange, "\(g.calorieTarget())", "kcal / day")
-                            planTile("fork.knife", .green, "\(g.proteinTarget()) g", "protein")
-                            planTile("moon.fill", .indigo, SleepFormat.durationHM(needHours * 3600), "sleep need")
-                            planTile("bed.double.fill", .purple, SleepFormat.time(bedtimeTonight), "bedtime tonight")
-                            planTile("shoeprints.fill", .cyan, "\(Int(g.stepGoal).formatted())", "steps")
-                            planTile("drop.fill", .blue, Units.water(Double(Int((g.weightKg ?? 75) * 35)), units), "water")
+                            planTile("fork.knife", Theme.food, "\(g.calorieTarget())", "calories a day")
+                            planTile("bolt.fill", Theme.steps, "\(g.proteinTarget()) g", "protein a day")
+                            planTile("moon.fill", Theme.sleep, SleepFormat.durationHM(needHours * 3600), "sleep a night")
+                            planTile("bed.double.fill", Theme.sleep, SleepFormat.time(bedtimeTonight), "bedtime tonight")
+                            planTile("figure.walk", Theme.steps, "\(Int(g.stepGoal).formatted())", "steps a day")
+                            planTile("drop.fill", Theme.water, Units.water(Double(Int((g.weightKg ?? 75) * 35)), units), "water")
                         }
                         .transition(.move(edge: .bottom).combined(with: .opacity))
+                        }
+                        .transition(.opacity)
+                    }
                     }
                 }
                 .padding(.horizontal, 24)
@@ -503,7 +529,7 @@ public struct OnboardingView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(16)
-        .liquidGlass(cornerRadius: 20, tintOpacity: 0.1)
+        .surface(20)
     }
 
     func finish() {

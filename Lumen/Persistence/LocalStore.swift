@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 // MARK: - Local-first persistence
 // Everything lives on this device, inside the App Group container so the
@@ -76,5 +77,34 @@ public enum LocalStore {
         let file = FileManager.default.temporaryDirectory.appendingPathComponent("Lumen-export-\(f.string(from: Date())).json")
         try? out.write(to: file, options: .atomic)
         return file
+    }
+}
+
+// MARK: - Meal photos (small JPEG thumbnails next to the data files)
+
+public enum PhotoStore {
+    private static var dir: URL {
+        let d = LocalStore.directory.appendingPathComponent("photos", isDirectory: true)
+        if !FileManager.default.fileExists(atPath: d.path) { try? FileManager.default.createDirectory(at: d, withIntermediateDirectories: true) }
+        return d
+    }
+    public static func url(_ id: String) -> URL { dir.appendingPathComponent("\(id).jpg") }
+
+    public static func save(_ image: UIImage, id: String) {
+        let maxSide: CGFloat = 900
+        let scale = min(1, maxSide / max(image.size.width, image.size.height))
+        let size = CGSize(width: image.size.width * scale, height: image.size.height * scale)
+        let resized = UIGraphicsImageRenderer(size: size).image { _ in image.draw(in: CGRect(origin: .zero, size: size)) }
+        if let data = resized.jpegData(compressionQuality: 0.75) { try? data.write(to: url(id), options: .atomic) }
+    }
+
+    public static func load(_ id: String?) -> UIImage? {
+        guard let id else { return nil }
+        return UIImage(contentsOfFile: url(id).path)
+    }
+
+    public static func delete(_ id: String?) {
+        guard let id else { return }
+        try? FileManager.default.removeItem(at: url(id))
     }
 }

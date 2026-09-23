@@ -9,22 +9,19 @@ public struct TripleRingView: View {
         self.move = move; self.exercise = exercise; self.stand = stand
     }
     public var body: some View {
-        ZStack {
-            Circle().stroke(.pink.opacity(0.22), lineWidth: 12).frame(width: 150, height: 150)
-            Circle().trim(from: 0, to: max(0.02, min(1, move)))
-                .stroke(.pink, style: StrokeStyle(lineWidth: 12, lineCap: .round))
-                .rotationEffect(.degrees(-90)).frame(width: 150, height: 150)
-            Circle().stroke(.green.opacity(0.22), lineWidth: 12).frame(width: 118, height: 118)
-            Circle().trim(from: 0, to: max(0.02, min(1, exercise)))
-                .stroke(.green, style: StrokeStyle(lineWidth: 12, lineCap: .round))
-                .rotationEffect(.degrees(-90)).frame(width: 118, height: 118)
-            Circle().stroke(.cyan.opacity(0.22), lineWidth: 12).frame(width: 86, height: 86)
-            Circle().trim(from: 0, to: max(0.02, min(1, stand)))
-                .stroke(.cyan, style: StrokeStyle(lineWidth: 12, lineCap: .round))
-                .rotationEffect(.degrees(-90)).frame(width: 86, height: 86)
+        GeometryReader { g in
+            let d = min(g.size.width, g.size.height)
+            let w = d * 0.085
+            ZStack {
+                ThinRing(progress: move, color: Theme.move, width: w).frame(width: d - w, height: d - w)
+                ThinRing(progress: exercise, color: Theme.steps, width: w).frame(width: d - w * 3.4, height: d - w * 3.4)
+                ThinRing(progress: stand, color: Theme.calm, width: w).frame(width: d - w * 5.8, height: d - w * 5.8)
+            }
+            .frame(width: g.size.width, height: g.size.height)
         }
-        .animation(.spring(response: 0.9, dampingFraction: 0.8), value: move + exercise + stand)
-        .frame(width: 170, height: 170)
+        .aspectRatio(1, contentMode: .fit)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Move \(Int(move * 100)) percent, exercise \(Int(exercise * 100)) percent, stand \(Int(stand * 100)) percent")
     }
 }
 
@@ -36,7 +33,7 @@ public struct MacroRingView: View {
     }
     public var body: some View {
         ZStack {
-            GlowRing(progress: target > 0 ? eaten/target : 0, colors: [.orange, .pink])
+            ThinRing(progress: target > 0 ? eaten/target : 0, color: Theme.food, width: 10)
             VStack(spacing: 1) {
                 AnimatedNumber(eaten).font(.system(size: 34, weight: .bold, design: .rounded)).foregroundStyle(.white)
                     .lineLimit(1).minimumScaleFactor(0.6)
@@ -61,19 +58,11 @@ public struct MacroBar: View {
     public var body: some View {
         VStack(alignment: .leading, spacing: 5) {
             HStack {
-                Text(label).font(.caption.weight(.bold)).foregroundStyle(.white.opacity(0.7))
+                Text(label).font(.subheadline).foregroundStyle(Theme.secondary)
                 Spacer()
-                Text("\(Int(grams))g / \(Int(target))g").font(.caption2.monospacedDigit()).foregroundStyle(.white.opacity(0.6))
+                Text("\(Int(grams)) / \(Int(target)) g").font(.subheadline.monospacedDigit()).foregroundStyle(Theme.text)
             }
-            GeometryReader { geo in
-                ZStack(alignment: .leading) {
-                    Capsule().fill(.white.opacity(0.1))
-                    Capsule().fill(LinearGradient(colors: [color, color.opacity(0.6)], startPoint: .leading, endPoint: .trailing))
-                        .frame(width: geo.size.width * min(1, target > 0 ? grams/target : 0))
-                        .shadow(color: color.opacity(0.5), radius: 6)
-                        .animation(.spring(response: 0.8), value: grams)
-                }
-            }.frame(height: 8)
+            Bar(target > 0 ? grams / target : 0, color: color, height: 6)
         }
     }
 }
@@ -94,14 +83,12 @@ public struct WeeklyLoadChart: View {
     public var body: some View {
         Chart(days) { d in
             BarMark(x: .value("Day", d.date, unit: .day), y: .value("kcal", d.kcal))
-                .foregroundStyle(LinearGradient(colors: [.cyan, .purple], startPoint: .bottom, endPoint: .top))
-                .cornerRadius(6)
+                .foregroundStyle(d.kcal > 0 ? Theme.move : Theme.move.opacity(0.2))
+                .cornerRadius(5)
         }
-        .chartXAxis { AxisMarks(values: .stride(by: .day, count: 2)) { _ in
-            AxisValueLabel(format: .dateTime.weekday(.narrow)).font(.caption2).foregroundStyle(.white.opacity(0.55)) } }
-        .chartYAxis { AxisMarks { _ in
-            AxisValueLabel().font(.caption2).foregroundStyle(.white.opacity(0.5))
-            AxisGridLine().foregroundStyle(.white.opacity(0.07)) } }
+        .chartXAxis { AxisMarks(values: .stride(by: .day, count: 1)) { _ in
+            AxisValueLabel(format: .dateTime.weekday(.narrow)).font(.caption2).foregroundStyle(Theme.tertiary) } }
+        .chartYAxis(.hidden)
         .frame(height: 150)
     }
 }
@@ -111,21 +98,17 @@ public struct WorkoutRow: View {
     let units: UnitSystem
     public init(_ workout: Workout, units: UnitSystem = .metric) { self.workout = workout; self.units = units }
     public var body: some View {
-        HStack(spacing: 12) {
-            Image(systemName: workout.kind.icon).font(.system(size: 15, weight: .semibold))
-                .foregroundStyle(.white).frame(width: 40, height: 40)
-                .background(LinearGradient(colors: [.cyan.opacity(0.7), .purple.opacity(0.7)], startPoint: .topLeading, endPoint: .bottomTrailing), in: RoundedRectangle(cornerRadius: 13, style: .continuous))
+        HStack(spacing: 14) {
+            Image(systemName: workout.kind.icon).font(.body.weight(.medium)).foregroundStyle(Theme.move).frame(width: 26)
             VStack(alignment: .leading, spacing: 2) {
-                Text(workout.title).font(.subheadline.weight(.bold)).foregroundStyle(.white)
-                Text("\(SleepFormat.time(workout.start)) · \(Int(workout.duration/60)) min\(workout.distanceM.map { " · " + Units.distance($0, units) } ?? "")\(workout.avgHR.map { " · \(Int($0)) bpm" } ?? "") · \(workout.source.label)")
-                    .font(.caption).foregroundStyle(.white.opacity(0.6))
+                Text(workout.title).font(.body).foregroundStyle(Theme.text)
+                Text(([ "\(Int(workout.duration / 60)) min" ] + [workout.distanceM.map { Units.distance($0, units) }, workout.avgHR.map { "\(Int($0)) bpm" }].compactMap { $0 })
+                        .joined(separator: " · "))
+                    .font(.footnote).foregroundStyle(Theme.secondary)
             }
             Spacer()
-            VStack(alignment: .trailing, spacing: 1) {
-                Text("\(Int(workout.activeCalories))").font(.headline.weight(.bold).monospacedDigit()).foregroundStyle(.white)
-                Text("kcal").font(.caption2).foregroundStyle(.white.opacity(0.55))
-            }
+            Text("\(Int(workout.activeCalories)) kcal").font(.body.monospacedDigit()).foregroundStyle(Theme.secondary)
         }
-        .padding(.vertical, 6)
+        .padding(.vertical, 12)
     }
 }

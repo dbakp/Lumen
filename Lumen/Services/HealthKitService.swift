@@ -12,7 +12,19 @@ public enum TrendMetric: String, CaseIterable, Identifiable, Sendable {
     public var label: String {
         switch self {
         case .sleep: return "Sleep"; case .steps: return "Steps"; case .activeEnergy: return "Active energy"
-        case .exercise: return "Exercise"; case .restingHR: return "Resting HR"; case .hrv: return "HRV"; case .weight: return "Weight"
+        case .exercise: return "Exercise"; case .restingHR: return "Resting heart rate"; case .hrv: return "Heart rate variability"; case .weight: return "Weight"
+        }
+    }
+    /// One plain-language paragraph shown on the detail screen.
+    public var explainer: String {
+        switch self {
+        case .sleep: return "Time actually asleep each night. Most adults need 7–9 hours; Lumen learns your personal need from your history."
+        case .steps: return "Every step counts — walking is one of the simplest ways to improve energy, mood and sleep."
+        case .activeEnergy: return "Calories burned by moving, on top of what your body uses at rest."
+        case .exercise: return "Minutes of brisk activity. About 30 minutes a day is a great target for most people."
+        case .restingHR: return "Your heart rate when fully at rest. It usually drops as fitness improves, and rises with stress, illness, alcohol or poor sleep."
+        case .hrv: return "The tiny variation between heartbeats. Higher than your own normal usually means you're well recovered. Compare with yourself, not others."
+        case .weight: return "Day-to-day changes are mostly water. Look at the trend over weeks rather than any single day."
         }
     }
     public var icon: String {

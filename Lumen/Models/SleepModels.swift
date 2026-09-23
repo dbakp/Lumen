@@ -12,13 +12,13 @@ public enum SleepSource: String, Codable, Sendable, CaseIterable {
 public enum Chronotype: String, Codable, Sendable, CaseIterable {
     case morning, intermediate, evening
     public var label: String {
-        switch self { case .morning: return "Morning Lark"; case .intermediate: return "Balanced"; case .evening: return "Night Owl" }
+        switch self { case .morning: return "Early bird"; case .intermediate: return "In between"; case .evening: return "Night owl" }
     }
     public var description: String {
         switch self {
-        case .morning: return "You peak early and melatonin arrives sooner."
-        case .intermediate: return "You sit in the flexible middle."
-        case .evening: return "Your clock runs late — peaks and melatonin shift later."
+        case .morning: return "You're sharpest in the morning and sleepy earlier."
+        case .intermediate: return "Somewhere in the middle — most people are."
+        case .evening: return "You come alive later and prefer late nights."
         }
     }
 }
