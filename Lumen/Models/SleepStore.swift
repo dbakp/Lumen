@@ -20,19 +20,21 @@ public final class SleepStore: ObservableObject {
     private let habitsKey = "lumen.habits.v1"
 
     public init() {
-        // Load or seed.
+        // Load or seed (locals first: self isn't fully initialized until all properties are set).
+        let loadedProfile: UserProfile
         if let data = UserDefaults.standard.data(forKey: profileKey),
            let p = try? JSONDecoder().decode(UserProfile.self, from: data) {
-            profile = p
+            loadedProfile = p
         } else {
-            profile = .default
+            loadedProfile = .default
         }
+        profile = loadedProfile
         if let data = UserDefaults.standard.data(forKey: episodesKey),
            let e = try? JSONDecoder().decode([SleepEpisode].self, from: data),
            !e.isEmpty {
             episodes = e.sorted { $0.bedtime < $1.bedtime }
         } else {
-            episodes = Self.sampleEpisodes(need: profile.sleepNeed)
+            episodes = Self.sampleEpisodes(need: loadedProfile.sleepNeed)
         }
         if let data = UserDefaults.standard.data(forKey: habitsKey),
            let h = try? JSONDecoder().decode([SleepHabit].self, from: data) {

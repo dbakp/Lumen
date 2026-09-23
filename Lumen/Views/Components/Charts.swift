@@ -9,7 +9,7 @@ public struct DebtRingView: View {
     public init(debt: TimeInterval, need: TimeInterval) {
         self.debt = debt; self.need = need
     }
-    var body: some View {
+    public var body: some View {
         // Scale: 0h → full glow, 12h+ → drained.
         let progress = max(0, min(1, 1 - debt / (12 * 3600)))
         ZStack {
@@ -56,7 +56,7 @@ public struct EnergyCurveView: View {
             self.nowFraction = Double((c.hour ?? 0) * 3600 + (c.minute ?? 0) * 60)
         } else { self.nowFraction = nil }
     }
-    var body: some View {
+    public var body: some View {
         Chart(points) { p in
             AreaMark(
                 x: .value("Time", p.time / 3600),
@@ -108,7 +108,7 @@ public struct DebtHistoryChart: View {
             Row(date: ep.bedtime, slept: ep.duration/3600, deficit: (need - ep.duration)/3600)
         }
     }
-    var body: some View {
+    public var body: some View {
         Chart(rows) { r in
             BarMark(
                 x: .value("Night", r.date, unit: .day),

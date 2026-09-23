@@ -9,10 +9,14 @@ public struct ProfileView: View {
     @StateObject private var hk = HealthKitExtended.shared
     @StateObject private var strava = StravaService.shared
     @StateObject private var notifications = NotificationManager.shared
+    @StateObject private var llm = LLMConnectionService.shared
     @State private var showPaywall = false
     @State private var showNeedEditor = false
     @State private var showGoals = false
-    @State private var llmKey = UserDefaults.standard.string(forKey: "lumen.llm.key") ?? ""
+    @State private var llmKey = ""
+    @State private var googleID = ""
+    @State private var oauthEndpoint = ""
+    @State private var keyPreset: LLMConnectionService.Preset = .openAI
 
     public init() {}
 
@@ -62,25 +66,18 @@ public struct ProfileView: View {
                         SectionHeader("Integrations", subtitle: "Health + Strava + Watch — deduped", systemImage: "applewatch")
                         HStack {
                             VStack(alignment: .leading) {
-                                Text("Apple Health (sleep)").font(.subheadline.weight(.semibold)).foregroundStyle(.white)
-                                Text(sleepHealth.statusMessage).font(.caption).foregroundStyle(.white.opacity(0.6))
+                                Text("Apple Health").font(.subheadline.weight(.semibold)).foregroundStyle(.white)
+                                Text(healthStatus).font(.caption).foregroundStyle(.white.opacity(0.6))
                             }
                             Spacer()
-                            Button(sleepHealth.isAuthorized ? "Synced" : "Connect") {
-                                Task { await sleepHealth.requestAuthorization(); await syncHealth() }
+                            Button(healthConnected ? "Synced" : "Connect") {
+                                Task {
+                                    await sleepHealth.requestAuthorization()
+                                    await hk.requestAuthorization()
+                                    await syncHealth()
+                                }
                             }
                             .buttonStyle(.borderedProminent).tint(.cyan).font(.caption.weight(.bold))
-                        }
-                        HStack {
-                            VStack(alignment: .leading) {
-                                Text("Health — activity + vitals").font(.subheadline.weight(.semibold)).foregroundStyle(.white)
-                                Text(hk.status).font(.caption).foregroundStyle(.white.opacity(0.6))
-                            }
-                            Spacer()
-                            Button(hk.isAuthorized ? "Synced" : "Connect") {
-                                Task { await hk.requestAuthorization(); await healthStore.syncAll() }
-                            }
-                            .buttonStyle(.borderedProminent).tint(.green).font(.caption.weight(.bold))
                         }
                         HStack {
                             VStack(alignment: .leading) {
@@ -124,12 +121,64 @@ public struct ProfileView: View {
 
                 GlassCard {
                     VStack(alignment: .leading, spacing: 10) {
-                        SectionHeader("Coach AI", subtitle: coachAIStatus, systemImage: "sparkles")
-                        SecureField("OpenAI-compatible API key (optional)", text: $llmKey)
-                            .textFieldStyle(.roundedBorder).colorScheme(.dark)
-                            .onChange(of: llmKey) { _, v in UserDefaults.standard.set(v, forKey: "lumen.llm.key") }
-                        Text("Without a key the coach runs on-device with your real data. With a key it upgrades to vision meal analysis + LLM chat. Keys stay on your device.")
-                            .font(.caption2).foregroundStyle(.white.opacity(0.55))
+                        SectionHeader("Coach AI", subtitle: llm.status, systemImage: "sparkles")
+                        Picker("Brain", selection: $llm.mode) {
+                            ForEach(LLMConnectionService.Mode.allCases, id: \.self) { Text($0.label).tag($0) }
+                        }
+                        .pickerStyle(.segmented)
+                        .onChange(of: llm.mode) { _, m in llm.setMode(m) }
+
+                        if llm.mode == .key {
+                            Picker("Provider", selection: $keyPreset) {
+                                ForEach(LLMConnectionService.Preset.allCases, id: \.self) { Text($0.label).tag($0) }
+                            }
+                            .pickerStyle(.segmented)
+                            .onChange(of: keyPreset) { _, p in llm.applyPreset(p); llmKey = llm.apiKey }
+                            SecureField("API key", text: $llmKey)
+                                .textFieldStyle(.roundedBorder).colorScheme(.dark)
+                                .onChange(of: llmKey) { _, v in llm.apiKey = v }
+                            Text("Endpoint: \(llm.endpoint)\nModel: \(llm.model)")
+                                .font(.caption2.monospaced()).foregroundStyle(.white.opacity(0.5))
+                            Text("Tip: a Google AI Studio key works — pick its preset above. Keys never leave this phone except to your provider.")
+                                .font(.caption2).foregroundStyle(.white.opacity(0.55))
+                        }
+
+                        if llm.mode == .oauth {
+                            TextField("Google Client ID", text: $googleID)
+                                .textFieldStyle(.roundedBorder).colorScheme(.dark).textInputAutocapitalization(.never)
+                                .onChange(of: googleID) { _, v in llm.googleClientID = v }
+                            TextField("Bearer endpoint (OpenAI-compatible)", text: $oauthEndpoint)
+                                .textFieldStyle(.roundedBorder).colorScheme(.dark).textInputAutocapitalization(.never)
+                                .onChange(of: oauthEndpoint) { _, v in llm.oauthEndpoint = v }
+                            HStack {
+                                if llm.isOAuthConnected {
+                                    Button("Sign out") { llm.disconnectOAuth() }
+                                        .buttonStyle(.bordered).tint(.white).font(.caption.weight(.bold))
+                                } else {
+                                    Button("Connect with Google") { llm.connectGoogle() }
+                                        .buttonStyle(.borderedProminent).tint(.cyan).font(.caption.weight(.bold))
+                                }
+                                Spacer()
+                                Text("PKCE · tokens on-device").font(.caption2).foregroundStyle(.white.opacity(0.5))
+                            }
+                            Text("Register lumen://oauth-callback as a redirect URI on your OAuth client (Google Cloud → Credentials).")
+                                .font(.caption2).foregroundStyle(.white.opacity(0.55))
+                        }
+
+                        HStack {
+                            Button("Test AI link") { Task { await llm.runTest() } }
+                                .buttonStyle(.bordered).tint(.cyan).font(.caption.weight(.bold))
+                                .disabled(llm.isBusy || (!LLMClient.isConfigured()))
+                            if llm.isBusy { ProgressView().tint(.cyan).scaleEffect(0.8) }
+                            Spacer()
+                        }
+                        if let result = llm.lastTestResult {
+                            Text(result).font(.caption).foregroundStyle(.green).lineSpacing(2)
+                        }
+                        if llm.mode == .onDevice {
+                            Text("The coach runs fully on-device with your real data — private and free forever.")
+                                .font(.caption2).foregroundStyle(.white.opacity(0.55))
+                        }
                     }
                 }
 
@@ -159,13 +208,23 @@ public struct ProfileView: View {
         .sheet(isPresented: $showNeedEditor) { NeedEditorSheet() }
         .sheet(isPresented: $showGoals) { GoalsSheet() }
         .onAppear {
-            llmKey = UserDefaults.standard.string(forKey: "lumen.llm.key") ?? ""
+            llmKey = llm.apiKey
+            googleID = llm.googleClientID
+            oauthEndpoint = llm.oauthEndpoint
+            keyPreset = llm.currentPreset
             reschedule()
         }
     }
 
-    var coachAIStatus: String {
-        (UserDefaults.standard.string(forKey: "lumen.llm.key") ?? "").isEmpty ? "On-device brain active" : "LLM vision + chat active"
+    var healthConnected: Bool { sleepHealth.isAuthorized || hk.isAuthorized }
+
+    var healthStatus: String {
+        switch (sleepHealth.isAuthorized, hk.isAuthorized) {
+        case (true, true): return "Connected — sleep + activity + vitals"
+        case (true, false): return "Sleep on — tap again for activity"
+        case (false, true): return "Activity on — tap again for sleep"
+        case (false, false): return hk.status == "Not connected" ? sleepHealth.statusMessage : hk.status
+        }
     }
 
     var wakeString: String {

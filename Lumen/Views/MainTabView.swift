@@ -6,6 +6,8 @@ public struct MainTabView: View {
     @EnvironmentObject var store: SleepStore
     @EnvironmentObject var health: HealthStore
     @State private var snapOpen = false
+    @State private var selection = 0
+    @State private var previousSelection = 0
 
     public init() {}
 
@@ -14,26 +16,48 @@ public struct MainTabView: View {
             if !store.profile.onboardingDone {
                 OnboardingView()
             } else {
-                TabView {
-                    NavigationStack { TodayView() }
-                        .tabItem { Label("Today", systemImage: "sunrise.fill") }
-                    NavigationStack { ActivityView() }
-                        .tabItem { Label("Activity", systemImage: "flame.fill") }
-                    // Center capture action (delight: big glass snap button)
+                ZStack(alignment: .bottom) {
+                    TabView(selection: $selection) {
+                        NavigationStack { TodayView() }
+                            .tabItem { Label("Today", systemImage: "sunrise.fill") }
+                            .tag(0)
+                        NavigationStack { ActivityView() }
+                            .tabItem { Label("Activity", systemImage: "flame.fill") }
+                            .tag(1)
+                        // Spacer tab — the floating Snap button below owns this slot.
+                        Color.clear
+                            .tabItem { Label("Snap", systemImage: "camera.fill") }
+                            .tag(2)
+                        NavigationStack { SleepTabView() }
+                            .tabItem { Label("Sleep", systemImage: "moon.fill") }
+                            .tag(3)
+                        NavigationStack { CoachView() }
+                            .tabItem { Label("Coach", systemImage: "sparkles") }
+                            .tag(4)
+                    }
+                    .tint(.cyan)
+                    .onChange(of: selection) { _, new in
+                        if new == 2 {
+                            // Reselect previous tab and open capture instead.
+                            selection = previousSelection
+                            snapOpen = true
+                        } else {
+                            previousSelection = new
+                        }
+                    }
                     Button { snapOpen = true } label: {
                         Image(systemName: "camera.viewfinder").font(.title2.weight(.bold))
                             .foregroundStyle(.black).frame(width: 56, height: 56)
                             .background(LinearGradient(colors: [.orange, .pink], startPoint: .topLeading, endPoint: .bottomTrailing), in: Circle())
                             .shadow(color: .orange.opacity(0.5), radius: 14)
                     }
-                    .tabItem { Label("Snap", systemImage: "camera.fill") }
-                    NavigationStack { SleepTabView() }
-                        .tabItem { Label("Sleep", systemImage: "moon.fill") }
-                    NavigationStack { CoachView() }
-                        .tabItem { Label("Coach", systemImage: "sparkles") }
+                    .offset(y: -28)
+                    // Coach owns the bottom edge with its input bar — yield the space.
+                    .opacity(selection == 4 ? 0 : 1)
+                    .allowsHitTesting(selection != 4)
+                    .animation(.spring(response: 0.4), value: selection)
+                    .sheet(isPresented: $snapOpen) { MealCaptureView().environmentObject(health) }
                 }
-                .tint(.cyan)
-                .sheet(isPresented: $snapOpen) { MealCaptureView().environmentObject(health) }
             }
         }
     }
