@@ -6,7 +6,7 @@ Clone this repository on the new computer, then give the new assistant the promp
 
 ## Continuation checkpoint · 29 October 2026
 
-Development has resumed on the new computer. Batch 9a was published as `a1b7cd1`; the remaining Batch 9 implementation now adds honest current readings and source/date evidence, guarded assistant context, and local confirmed water/workout corrections and deletion. App Designer Pro has been supplied and used here; one continuing independent critic signed off the final native additions after three rounds. See [data-confidence behavior](DATA_CONFIDENCE.md), [Roadmap](ROADMAP.md), [Verification](VERIFICATION.md) and [Design critique](../Design/CRITIQUE.md) for exact scope, native timings and remaining gates.
+Development has resumed on the new computer. Batch 9a was published as `a1b7cd1`; Batch 9 was then completed and published as `5cb1fc7` on 29 October 2026. It adds honest current readings and source/date evidence, guarded assistant context, and local confirmed water/workout corrections and deletion. App Designer Pro has been supplied and used here; one continuing independent critic signed off the final native additions after three rounds. See [data-confidence behavior](DATA_CONFIDENCE.md), [Roadmap](ROADMAP.md), [Verification](VERIFICATION.md) and [Design critique](../Design/CRITIQUE.md) for exact scope, native timings and remaining gates.
 
 The original prompt below remains the product brief. The full goal remains active. Continue the retained Sleep/Food and companion availability/estimate audit, then the remaining ingestion, backup, voice, provider and release work in coherent separately verified batches. Physical-device/provider gates are not satisfied by the simulator. The skill archive is intentionally outside Git; attach it again for a future computer/chat. Personal data and credentials still transfer separately.
 
@@ -15,7 +15,7 @@ The original prompt below remains the product brief. The full goal remains activ
 /goal Continue developing Lumen into a world-class, primarily iOS, AI health assistant.
 
 Repository: https://github.com/dbakp/Lumen  
-Latest published application commit: `86bc68f8c529adfeac8671b7c465f9f3ff117d80`  
+Latest published application commit: `5cb1fc7e4c76ef86ecc21d016eb1df6f5749d331`  
 Branch: `main`
 
 Clone the repository on this computer and inspect its current state before making changes. Continue implementation autonomously in coherent batches. Verify and push each completed batch separately to GitHub. Never force-push or overwrite unrelated changes.
@@ -42,7 +42,7 @@ Clone the repository on this computer and inspect its current state before makin
 
 Use the attached App Designer Pro skill. Preserve the established design direction. Use one independent design critic for native UI changes, address substantive findings, and capture actual simulator screens. `Design/native-preview.html` presents captured screens; it is not the application.
 
-### Completed and published through batch 8
+### Completed and published through batch 9
 
 - Contextual Today, symptoms/check-ins, personal context and quiet reminders.
 - Persistent conversations with cancellation and reply ownership.
@@ -53,17 +53,19 @@ Use the attached App Designer Pro skill. Preserve the established design directi
 - Direct Apple Health ZIP imports with validation, extraction integrity and cleanup.
 - Historical workouts and additional health signals, provenance and duplicate reconciliation.
 - Reviewable conversational logging for symptoms, check-ins, water and workouts. Each entry requires explicit confirmation. Optional AI suggestions use the selected user message; missing or unsupported measurements remain blank. Original messages are separate from optional notes. Edited drafts have Close/swipe protection.
+- Per-metric current readings with source/date/query evidence, explicit recorded zeros, guarded current assistant context, and local confirmed water/workout corrections/deletion with stable identity and retained provenance. External-source workouts remain separate.
 
 ### Latest validation
 
-- 173 production-logic checks passed.
-- All native targets built for the simulator.
-- Final conversational logging and assistant-continuity scenario passed in 144.131 seconds.
-- Broader daily/Library/conversation/backup journey separately passed in 252.272 seconds.
-- Design reviewer confirmed the scoped additions at 4/5 with no remaining high-impact visual findings.
-- These results establish simulator behavior, not real-device AI or clinical reliability. Temporary result bundles on the previous computer are not portable; committed screenshots and verification reports are available in this repository. Re-run relevant checks on this computer.
+- 255 production-logic checks passed, including canonical source/date/zero semantics, corrections, history/context, backup compatibility and actual 14-night estimate selection.
+- All five native targets build with Xcode 27.0 on this computer.
+- Final confidence/correction/accessibility suite: three scenarios, zero failures/skips, 434.883 seconds.
+- Final external-source import/persistence/disclosure scenario: 148.771 seconds, zero failures/skips.
+- Final full daily/Library/conversation/appointment/backup journey: 250.531 seconds, zero failures/skips.
+- One continuing design critic completed three rounds; final scoped screens meet the skill stop rule at 10/11 applicable lines at 4, richness at 3, with no remaining concrete visual/copy defects. Actual final captures: `Design/native/confidence/r3`.
+- These are simulator and pure-logic results. Live HealthKit/provider behavior, VoiceOver, signed devices, clinical reliability and release readiness are not established. Machine-local result bundles are not portable; re-run relevant checks on another computer. See VERIFICATION.md for exact scope, the pre-existing runtime warning and remaining gates.
 
-### Next batch: data confidence and corrections
+### Completed batch 9: data confidence and corrections
 
 1. Distinguish missing readings from genuinely recorded zeros throughout Today, Activity, Insights and assistant context.
 2. Add per-metric source/freshness evidence. HealthKit access requests do not prove every data type is readable.

@@ -104,3 +104,8 @@ The 255-check production-logic suite covers the resolver, calendar/source/zero s
 ## Next delivery focus
 
 Audit missing states and unvalidated estimates in the retained Sleep/Food destinations and companion snapshots, using the new presence/source model without losing old-data decoding. Continue the large/encrypted backup, background ingestion, richer retrieval, voice, provider and release work above in separately verified batches. Do not infer clinical reliability, denied/read access or background delivery from the simulator results.
+
+
+### Batch 9 publishing checkpoint
+
+GitHub accepted `5cb1fc7e4c76ef86ecc21d016eb1df6f5749d331` on `main` on 29 October 2026, after the 255-check suite, native builds, all five simulator flows and round-3 design sign-off. The remote branch was read back and matched the source commit. Batch 9a had previously been published as `a1b7cd1`. The handoff now points to the completed application batch; the full product goal and remaining roadmap stay active.

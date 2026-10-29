@@ -133,3 +133,6 @@ Earlier runs are not counted as passing combined suites. The first had one passi
 Xcode still reports the pre-existing, non-file-specific “Invalid frame dimension (negative or non-finite)” warning when opening the original review form; it is also present in the passing Batch 9a log. No source location is supplied, and the captured layouts and flow pass. This remains an investigation item, not a zero-runtime-warning claim.
 
 Still open: signed-device HealthKit grant/denial/type coverage and writes, stand/roll source behavior, permission changes/background delivery, live providers, VoiceOver and other device sizes/locales, and release validation. Retained Sleep/Food views and Watch/widget snapshots need a separate availability/heuristic audit. Current-day reading caches remain excluded from backups. Correction/deletion never sends HealthKit changes; old backups can re-add absent local records under restore-missing-records rules. The full product roadmap remains active.
+
+
+Publication: GitHub accepted application batch `5cb1fc7e4c76ef86ecc21d016eb1df6f5749d331` on `main` on 29 October 2026. A read-back of `refs/heads/main` matched that commit. The subsequent documentation checkpoint records this verified delivery and does not change application/test source.
