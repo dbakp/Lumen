@@ -51,6 +51,46 @@ import Darwin
         check(HealthTotals.nutrient(local: 600, external: 1000, imported: nil, excludesLumen: false) == 1000, "legacy inclusive snapshots do not double count local meals")
         check(HealthTotals.nutrient(local: 600, external: nil, imported: 1400, excludesLumen: true) == 1400, "imported daily totals are not added to overlapping local logs")
         check(HealthTotals.water(local: 250, snapshot: 1000, imported: nil, excludesLumen: true) == 1250, "external water and local glass combine immediately")
+        check(HealthTotals.water(local: 250, snapshot: 0, imported: 2000, excludesLumen: true) == 250, "recorded external water zero wins over an overlapping import")
+        check(HealthTotals.water(local: 250, snapshot: nil, imported: 2000, excludesLumen: true) == 2000, "an absent water query allows imported coverage without adding overlapping local logs")
+        check(HealthTotals.water(local: 250, snapshot: 1000, imported: 2000, excludesLumen: false) == 1000, "legacy inclusive live water avoids both local and imported double counting")
+
+        var recordedZero = DayMetrics.empty
+        for key in DayMetrics.cumulativeKeys { recordedZero.recordTotal(0, for: key) }
+        recordedZero.fillMissingActivity(from: ["steps": 8000, "activeEnergy": 600, "exercise": 45])
+        check(recordedZero.recordedTotal("steps") == 0 && recordedZero.recordedTotal("activeEnergy") == 0 && recordedZero.recordedTotal("exercise") == 0, "recorded activity zeros survive import reconciliation")
+        var missingTotals = DayMetrics.empty
+        check(DayMetrics.cumulativeKeys.allSatisfy { missingTotals.recordedTotal($0) == nil }, "unrecorded cumulative defaults are unknown")
+        missingTotals.fillMissingActivity(from: ["steps": 0, "exercise": 20])
+        check(missingTotals.recordedTotal("steps") == 0 && missingTotals.recordedTotal("exercise") == 20 && missingTotals.recordedTotal("activeEnergy") == nil, "imports fill missing readings, including recorded zero, without inventing other metrics")
+        let zeroRoundTrip = try JSONDecoder().decode(DayMetrics.self, from: JSONEncoder().encode(recordedZero))
+        check(DayMetrics.cumulativeKeys.allSatisfy { zeroRoundTrip.recordedTotal($0) == 0 }, "recorded zero presence survives snapshot persistence")
+        var legacySnapshot = DayMetrics.empty
+        legacySnapshot.steps = 1234
+        let legacyRoundTrip = try JSONDecoder().decode(DayMetrics.self, from: JSONEncoder().encode(legacySnapshot))
+        check(legacyRoundTrip.recordedTotalKeys == nil && legacyRoundTrip.recordedTotal("steps") == 1234 && legacyRoundTrip.recordedTotal("exercise") == nil, "legacy snapshots decode with positive readings and ambiguous zeros kept unknown")
+        legacySnapshot.recordTotal(0, for: "exercise")
+        check(legacySnapshot.recordedTotal("steps") == 1234 && legacySnapshot.recordedTotal("exercise") == 0, "adding presence to a legacy snapshot preserves its other known readings")
+        var invalidTotals = DayMetrics.empty
+        invalidTotals.recordTotal(.infinity, for: "steps"); invalidTotals.recordTotal(-1, for: "exercise")
+        invalidTotals.recordTotal(Double(Int.max), for: "stand"); invalidTotals.recordTotal(1, for: "unsupported")
+        check(invalidTotals.recordedTotalKeys == nil, "invalid totals and overflowing stand hours cannot establish recorded readings")
+        let manualWorkout = Workout(kind: .walk, title: "Walk", start: Date(), duration: 1200, activeCalories: 80, source: .manual)
+        var unknownEnergy = manualWorkout; unknownEnergy.energyKnown = false
+        var manualOnly = DayMetrics.empty
+        manualOnly.reconcileActivity(from: [:], manualWorkouts: [unknownEnergy])
+        check(manualOnly.recordedTotal("exercise") == 20 && manualOnly.recordedTotal("activeEnergy") == nil, "a manual workout with unknown energy establishes duration without inventing zero calories")
+        var importedWithManual = DayMetrics.empty
+        importedWithManual.reconcileActivity(from: ["activeEnergy": 500, "exercise": 60], manualWorkouts: [manualWorkout])
+        check(importedWithManual.recordedTotal("activeEnergy") == 500 && importedWithManual.recordedTotal("exercise") == 60, "imports and manual sessions are not added without an actual live reading")
+        var partialLive = DayMetrics.empty
+        partialLive.recordTotal(0, for: "activeEnergy")
+        partialLive.reconcileActivity(from: ["activeEnergy": 500, "exercise": 60], manualWorkouts: [manualWorkout])
+        check(partialLive.recordedTotal("activeEnergy") == 80 && partialLive.recordedTotal("exercise") == 60, "each live metric independently controls whether manual sessions can be added")
+        var externalWorkout = manualWorkout; externalWorkout.source = .healthKit
+        var externalOnly = DayMetrics.empty
+        externalOnly.reconcileActivity(from: [:], manualWorkouts: [externalWorkout])
+        check(externalOnly.recordedTotal("exercise") == nil && externalOnly.recordedTotal("activeEnergy") == nil, "external workout summaries do not invent whole-day activity totals")
         let reference = Calendar.current.date(from: DateComponents(year: 2026, month: 1, day: 3))!
         let summary = HealthHistorySummary.summarize([ImportedHealthDay(date: reference, values: ["steps": 2000], sources: [:])], now: reference)
         check(summary.contains("2000.0 count mean; 1/7 days"), "history summaries preserve missing-day coverage rather than averaging gaps as zeros")

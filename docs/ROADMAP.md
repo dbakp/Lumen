@@ -33,6 +33,8 @@ Accept Apple's exported ZIP directly, locate and validate the health XML entry, 
 Add historical workout details and additional common vitals from Apple Health exports, with explicit unit rules, source/date provenance and preview counts. Preserve idempotent reimports and reconcile overlap with live sessions. Imported workouts must appear in the timeline and assistant history without being written back to HealthKit. Add coverage-based views for supported new signals without diagnostic interpretation. Verify optional-model migration and backup compatibility. Background synchronization and physical-device delivery remain subsequent gates.
 
 ## Remaining roadmap after these batches
+Batch 9 is in progress. Its first delivery (9a) establishes cumulative-reading presence in the data layer; the remaining work is listed in the continuation checkpoint below.
+
 1. Large-library backup improvements: encrypted archives, progress/cancellation, streaming or package format beyond the current 100 MB JSON limit; legacy-export conversion with a separate preview.
 2. Background HealthKit observation/anchored synchronization, permission-aware freshness and delivery diagnostics, tested on a signed physical iPhone. Current refresh-on-open is not continuous monitoring.
 3. Additional export categories beyond the completed workout/common-vital coverage, bounded-memory ingestion for very large histories, richer provenance, OCR for scanned records, and reviewable structured lab records. Keep unsupported formats explicit.
@@ -45,6 +47,14 @@ Add historical workout details and additional common vitals from Apple Health ex
 
 ## Completion log
 Pending batch entries will record commit, validation and push outcome below.
+
+### Batch 9a — recorded-zero reconciliation foundation
+
+Today's Health snapshot now preserves whether each cumulative query returned a reading, independently of its value. A recorded zero for steps, exercise, active energy or water takes priority over an overlapping import. Missing queries can still use imported coverage. Manual workouts are added only where the corresponding live metric exists or no imported total overlaps; an unknown workout energy value never establishes a recorded zero. Legacy positive totals remain readable; legacy zero defaults remain ambiguous until refreshed. Optional presence metadata preserves existing snapshot decoding.
+
+Profile weight remains an input to estimated targets, but no longer fills a missing current measurement. Today's HealthKit weight and VO₂ max queries use today's sample window, while onboarding characteristics can still use the latest available profile values. A local weight entry resets an expired snapshot before adding today's measurement.
+
+This is the data-layer part of Batch 9. Today/Activity missing-state labels, assistant context, per-metric source/freshness evidence and correction/deletion of confirmed local water/workout entries are still pending. Legacy cached discrete values lack sample dates; their freshness/migration treatment also remains part of that work. The App Designer Pro attachment required by the handoff was unavailable on this computer; no new UI design or independent design-review result is claimed for this delivery. Validation is recorded in VERIFICATION.md.
 
 ### Batch 0
 Commit `7737ebb` created. Foundation build passed and 28 logic checks passed. Push rejected by GitHub (403): active account `dbakp-askcody` lacks write permission on `dbakp/Lumen`. User notified; access was subsequently resolved and GitHub accepted this commit on 29 October 2026.

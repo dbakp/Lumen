@@ -149,9 +149,9 @@ public final class HealthKitService: ObservableObject {
         async let rhr = latest(.restingHeartRate, unit: HKUnit(from: "count/min"))
         async let hrv = latest(.heartRateVariabilitySDNN, unit: HKUnit(from: "ms"))
         async let spo2 = latest(.oxygenSaturation, unit: .percent())
-        async let weight = latest(.bodyMass, unit: .gramUnit(with: .kilo))
+        async let weight = latest(.bodyMass, unit: .gramUnit(with: .kilo), todayOnly: true)
         async let resp = latest(.respiratoryRate, unit: HKUnit(from: "count/min"))
-        async let vo2 = latest(.vo2Max, unit: HKUnit(from: "ml/(kg*min)"))
+        async let vo2 = latest(.vo2Max, unit: HKUnit(from: "ml/(kg*min)"), todayOnly: true)
         async let avgHR = average(.heartRate, unit: HKUnit(from: "count/min"), start: start, end: end)
         async let dietaryEnergy = sum(.dietaryEnergyConsumed, unit: .kilocalorie(), start: start, end: end, excludingLumen: true)
         async let dietaryProtein = sum(.dietaryProtein, unit: .gram(), start: start, end: end, excludingLumen: true)
@@ -162,11 +162,13 @@ public final class HealthKitService: ObservableObject {
         let (rh, hv, ox, wt, rr, v2, ah) = await (rhr, hrv, spo2, weight, resp, vo2, avgHR)
         var m = DayMetrics.empty
         m.date = start
-        m.steps = s ?? 0; m.activeCalories = a ?? 0; m.restingCalories = b ?? 0
-        m.exerciseMin = e ?? 0; m.standHours = Int((st ?? 0).rounded())
+        m.recordedTotalKeys = []
+        for (key, value) in [("steps", s), ("activeEnergy", a), ("restingEnergy", b), ("exercise", e), ("stand", st), ("water", w)] {
+            if let value { m.recordTotal(value, for: key) }
+        }
         m.restingHR = rh; m.hrvMS = hv; m.respiratoryRate = rr; m.vo2max = v2; m.avgHR = ah
         if let ox { m.spo2 = ox * 100 }
-        m.weightKg = wt; m.waterML = w ?? 0
+        m.weightKg = wt
         m.excludesLumenNutrition = true
         m.dietaryCalories = de; m.dietaryProtein = dp; m.dietaryCarbs = dc; m.dietaryFat = df
         today = m
@@ -407,10 +409,10 @@ public final class HealthKitService: ObservableObject {
         }
     }
 
-    private func latest(_ id: HKQuantityTypeIdentifier, unit: HKUnit) async -> Double? {
+    private func latest(_ id: HKQuantityTypeIdentifier, unit: HKUnit, todayOnly: Bool = false) async -> Double? {
         let sort = NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)
         return await withCheckedContinuation { cont in
-            let freshness: NSPredicate? = (id == .restingHeartRate || id == .heartRateVariabilitySDNN || id == .oxygenSaturation || id == .respiratoryRate)
+            let freshness: NSPredicate? = (todayOnly || id == .restingHeartRate || id == .heartRateVariabilitySDNN || id == .oxygenSaturation || id == .respiratoryRate)
                 ? HKQuery.predicateForSamples(withStart: Calendar.current.startOfDay(for: Date()), end: Date(), options: .strictStartDate) : nil
             let q = HKSampleQuery(sampleType: HKQuantityType(id), predicate: freshness, limit: 1, sortDescriptors: [sort]) { _, samples, _ in
                 cont.resume(returning: (samples?.first as? HKQuantitySample)?.quantity.doubleValue(for: unit))

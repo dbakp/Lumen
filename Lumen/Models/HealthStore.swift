@@ -123,7 +123,9 @@ public final class HealthStore: ObservableObject {
     }
 
     public func logWeight(kg: Double) {
+        guard kg.isFinite, kg > 0, kg <= 1000 else { return }
         goals.weightKg = kg
+        if !Calendar.current.isDateInToday(healthSnapshot.date) { healthSnapshot = .empty }
         healthSnapshot.weightKg = kg
         Task { await HealthKitService.shared.saveWeight(kg: kg) }
         persist(); refresh()
@@ -272,10 +274,8 @@ public final class HealthStore: ObservableObject {
 
     public func refresh() {
         var m = Calendar.current.isDateInToday(healthSnapshot.date) ? healthSnapshot : .empty
+        m.reconcileActivity(from: CompanionStore.shared.todayImport?.values ?? [:], manualWorkouts: workoutsToday)
         if let imported = CompanionStore.shared.todayImport?.values {
-            if m.steps == 0 { m.steps = imported["steps"] ?? 0 }
-            if m.activeCalories == 0 { m.activeCalories = imported["activeEnergy"] ?? 0 }
-            if m.exerciseMin == 0 { m.exerciseMin = imported["exercise"] ?? 0 }
             m.restingHR = m.restingHR ?? imported["restingHR"]
             m.hrvMS = m.hrvMS ?? imported["hrv"]
             m.weightKg = m.weightKg ?? imported["weight"]
@@ -284,15 +284,15 @@ public final class HealthStore: ObservableObject {
             m.spo2 = m.spo2 ?? imported["spo2"]
             m.vo2max = m.vo2max ?? imported["vo2max"]
         }
-        // Manual sessions aren't in Health's activity totals — add them.
-        let manual = workoutsToday.filter { $0.source == .manual }
-        if CompanionStore.shared.todayImport?.values["activeEnergy"] == nil || healthConnected { m.activeCalories += manual.reduce(0) { $0 + $1.activeCalories } }
-        if CompanionStore.shared.todayImport?.values["exercise"] == nil || healthConnected { m.exerciseMin += manual.reduce(0) { $0 + $1.duration / 60 } }
         let logged = today(waterLogs, \.date).reduce(0) { $0 + $1.ml }
-        // Health already includes water we wrote back; take the larger to avoid double count.
-        m.waterML = HealthTotals.water(local: logged, snapshot: m.waterML, imported: CompanionStore.shared.todayImport?.values["water"], excludesLumen: m.excludesLumenNutrition == true)
+        // Fresh snapshots exclude Lumen writes; legacy inclusive snapshots use max.
+        // An actual live reading takes priority over overlapping imported totals.
+        let importedWater = CompanionStore.shared.todayImport?.values["water"]
+        let recordedWater = m.recordedTotal("water")
+        if recordedWater != nil || importedWater != nil || !today(waterLogs, \.date).isEmpty {
+            m.recordTotal(HealthTotals.water(local: logged, snapshot: recordedWater, imported: importedWater, excludesLumen: m.excludesLumenNutrition == true), for: "water")
+        }
         m.sleepSeconds = lastSleepSeconds ?? CompanionStore.shared.todayImport?.values["sleep"].map { $0 * 3600 }
-        if m.weightKg == nil { m.weightKg = goals.weightKg }
         metrics = m
 
         // Readiness needs at least one body signal — no guessing on day one.

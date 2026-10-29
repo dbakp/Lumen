@@ -1,8 +1,12 @@
 # Continue Lumen on a new computer
 
-Handoff date: 29 October 2026. The development goal was paused at the user's request. Batch 9 has not started. The latest application batch is published on `main` as `86bc68f8c529adfeac8671b7c465f9f3ff117d80`.
+Original handoff date: 29 October 2026. The development goal was paused on the previous computer at the user's request. At that checkpoint Batch 9 had not started, and the latest application batch was published on `main` as `86bc68f8c529adfeac8671b7c465f9f3ff117d80`. See the continuation checkpoint below for resumed work.
 
 Clone this repository on the new computer, then give the new assistant the prompt below. Attach **app-designer-pro (1).zip** to carry over the original design skill; that attachment is not bundled in this repository. Personal health history and credentials need separate transfer: GitHub contains the application code and synthetic design/test artifacts. Use the app's backup/restore controls for health history where applicable; configure accounts and permissions on the new device separately.
+
+## Continuation checkpoint · 29 October 2026
+
+Development has resumed on the new computer. Batch 9a implements the data-layer foundation for recorded-zero reconciliation and per-metric manual/import overlap decisions. Profile weight no longer fills a missing current reading, and new Today queries exclude older weight/VO₂ max samples. See the Batch 9a entries in [Roadmap](ROADMAP.md) and [Verification](VERIFICATION.md) for scope and evidence. The original prompt below remains the product brief; Batch 9 is not complete. Continue with missing-state presentation and assistant context, source/freshness evidence (including legacy cached discrete readings) and local water/workout corrections. App Designer Pro is still a separate required attachment for the native UI work.
 
 ## Continuation prompt
 

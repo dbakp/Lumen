@@ -104,8 +104,9 @@ final class LumenSmokeTests: XCTestCase {
         // --- Assistant → automatically saved editable plan ---
         tab("Assistant")
         scrollAndTap("Personal context")
-        let personalFocus = app.textFields["personalFocus"].firstMatch
+        let personalFocus = app.descendants(matching: .any).matching(identifier: "personalFocus").firstMatch
         XCTAssertTrue(personalFocus.waitForExistence(timeout: 5))
+        reveal(personalFocus)
         personalFocus.tap(); personalFocus.typeText("Build a steady sleep routine")
         snap("28-personal-context-editor")
         tap("savePersonalContext")
@@ -387,8 +388,10 @@ final class LumenSmokeTests: XCTestCase {
         for _ in 0..<5 where !(review.exists && review.isHittable) { app.swipeDown() }
         review.tap()
         scrollAndTap("Water")
+        XCTAssertTrue(app.navigationBars["Review water"].waitForExistence(timeout: 5))
         let amount = app.textFields["draftWaterML"]
         XCTAssertTrue(amount.waitForExistence(timeout: 5))
+        reveal(amount)
         amount.coordinate(withNormalizedOffset: CGVector(dx: 0.98, dy: 0.5)).tap(); amount.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: 16) + "500")
         XCTAssertEqual(amount.value as? String, "500")
         snap("107-edited-water-value")

@@ -69,6 +69,9 @@ public struct Workout: Identifiable, Codable, Sendable {
 }
 
 public struct DayMetrics: Codable, Sendable {
+    /// Presence of cumulative readings, independent of their numeric value.
+    /// Nil is a legacy snapshot: only positive totals establish a reading.
+    public var recordedTotalKeys: Set<String>? = nil
     public var date: Date
     public var steps: Double
     public var activeCalories: Double
