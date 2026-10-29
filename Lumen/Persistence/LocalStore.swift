@@ -24,6 +24,13 @@ public enum LocalStore {
         let base = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: AppGroup.id)
             ?? FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
         let dir = base.appendingPathComponent("LumenData", isDirectory: true)
+        let previous = dir.appendingPathExtension("previous")
+        if !FileManager.default.fileExists(atPath: dir.path), FileManager.default.fileExists(atPath: previous.path) {
+            try? FileManager.default.moveItem(at: previous, to: dir)
+        }
+        if FileManager.default.fileExists(atPath: dir.path), FileManager.default.fileExists(atPath: previous.path) {
+            try? FileManager.default.removeItem(at: previous)
+        }
         if !FileManager.default.fileExists(atPath: dir.path) {
             try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
         }

@@ -13,6 +13,7 @@ A native, local-first health companion for iPhone, with Apple Watch and widgets.
 - **Conversations:** searchable chat history, reopen/rename/share/delete, safe routing of replies to the originating conversation and stop-response support. Existing chat migrates without losing messages.
 - **Plans:** edit individual action items, assign dates, set active/completed/archived states and find pending steps in Today or the agenda.
 - **Insights:** compare completed 7/30-day periods with actual coverage and sources; no inferred zero days or claims of causation. Create an editable appointment summary from your symptom descriptions, check-ins and activity.
+- **Backup & restore:** versioned archives with meal photos, integrity checks, a record preview and a merge that keeps current copies. Profile restore is optional; recovered records require fresh assistant-sharing consent.
 - **Library:** searchable plans, reviews, notes and records with type filters. Edit text, complete checklist steps, share document text, delete documents and choose whether each record is included in assistant context. A local weekly review summarizes coverage and logged events without claiming causation.
 
 ## Connections and imports
@@ -30,7 +31,7 @@ Notifications are off by default. Connections contains opt-in, quiet hours and l
 
 ## Privacy and data
 
-Profile, health logs, symptoms, check-ins, imported daily history, documents and chat are JSON in the App Group container, with file protection. Secrets stay in Keychain. Face ID lock, JSON export and erase-all are retained; export/erase cover the new domains. Meal thumbnails are local.
+Profile, health logs, symptoms, check-ins, imported daily history, documents and chat are JSON in the App Group container, with file protection. Secrets stay in Keychain. Face ID lock, readable JSON export and erase-all are retained. Settings also provides restorable backups, including meal photos. Backups contain readable health data: save them privately. Credentials and device permissions are excluded. See [backup behavior and recovery](docs/BACKUPS.md).
 
 Cloud models receive the current health summary and any record excerpts you explicitly included when you send a question. The provider is shown before sending. Choose the built-in guide or available on-device model for local processing. No backend, developer API key or account is bundled. Imported records are treated as untrusted reference text, never instructions.
 
@@ -60,4 +61,4 @@ Lumen supports wellness reflection. It does not diagnose, prescribe or replace c
 
 ## Incremental delivery
 
-See [the missing-feature audit and batch roadmap](docs/ROADMAP.md). Each verified batch is a separate local commit. Publishing currently requires repository write access for the configured account; no push is claimed until GitHub accepts it. Once authenticated correctly, `scripts/publish-batches.sh` publishes each commit separately and refuses to overwrite divergent history.
+See [the missing-feature audit and batch roadmap](docs/ROADMAP.md). The foundation and first three feature batches were published individually on 29 October 2026 after account access was resolved. Each new verified batch is committed and pushed separately. `scripts/publish-batches.sh` publishes each commit separately and refuses to overwrite divergent history.

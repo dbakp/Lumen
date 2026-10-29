@@ -201,5 +201,28 @@ final class LumenSmokeTests: XCTestCase {
         XCTAssertTrue(app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'library-plan-'")).firstMatch.exists)
         snap("50-persisted-library")
         tab("Today")
+        tap("Settings")
+        let backupSettings = app.buttons["backupSettings"].firstMatch
+        reveal(backupSettings); backupSettings.tap()
+        XCTAssertTrue(app.navigationBars["Backup & restore"].waitForExistence(timeout: 5))
+        snap("60-backup-home")
+        tap("createBackup")
+        XCTAssertTrue(app.buttons["reviewBackup"].waitForExistence(timeout: 15))
+        tap("reviewBackup")
+        let restoreButton = app.buttons["restoreBackup"].firstMatch
+        reveal(restoreButton)
+        snap("61-backup-preview")
+        restoreButton.tap(); tap("Restore records")
+        let restored = app.staticTexts["backupRestored"].firstMatch
+        for _ in 0..<8 where !(restored.exists && restored.isHittable) { app.swipeDown() }
+        XCTAssertTrue(restored.waitForExistence(timeout: 10))
+        snap("62-backup-restored")
+        app.navigationBars["Backup & restore"].buttons.element(boundBy: 0).tap()
+        tap("Done")
+        app.terminate(); app.launch()
+        tab("Library")
+        XCTAssertTrue(app.buttons["Questions for my appointment"].waitForExistence(timeout: 5))
+        XCTAssertEqual(app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'library-plan-'")).count, 1, "backup restore duplicated the plan")
+        tab("Today")
     }
 }

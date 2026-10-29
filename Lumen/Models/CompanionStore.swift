@@ -77,6 +77,17 @@ public final class CompanionStore: ObservableObject {
         changed()
     }
     public func clearImports() { importedDays = []; imports = []; changed() }
+    func reloadAfterRestore() {
+        hasLoaded = false
+        symptoms = LocalStore.load([SymptomEntry].self, from: "symptoms") ?? symptoms
+        checkIns = LocalStore.load([WellbeingCheckIn].self, from: "check-ins") ?? checkIns
+        documents = LocalStore.load([HealthDocument].self, from: "documents") ?? documents
+        importedDays = LocalStore.load([ImportedHealthDay].self, from: "imported-days") ?? importedDays
+        imports = LocalStore.load([ImportReceipt].self, from: "import-receipts") ?? imports
+        personalContext = LocalStore.load(PersonalHealthContext.self, from: "personal-context") ?? personalContext
+        hasLoaded = true
+    }
+
     public func reset() {
         symptoms = []; checkIns = []; documents = []; importedDays = []; imports = []
         personalContext = PersonalHealthContext()

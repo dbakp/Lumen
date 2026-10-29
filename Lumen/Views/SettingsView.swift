@@ -281,6 +281,7 @@ public struct SettingsView: View {
                         }
                     }))
             }
+            NavigationLink("Backup & restore") { BackupView() }.accessibilityIdentifier("backupSettings")
             Button {
                 exportURL = LocalStore.exportBundle()
             } label: {

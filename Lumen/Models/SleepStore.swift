@@ -201,6 +201,13 @@ public final class SleepStore: ObservableObject {
         WatchSync.shared.scheduleSend()
     }
 
+    func reloadAfterRestore() {
+        profile = LocalStore.load(UserProfile.self, from: "profile") ?? profile
+        episodes = LocalStore.load([SleepEpisode].self, from: "sleep") ?? episodes
+        habits = LocalStore.load([SleepHabit].self, from: "habits") ?? habits
+        recompute()
+    }
+
     /// Start over: clears nights and returns to onboarding.
     public func resetAll() {
         profile = .default

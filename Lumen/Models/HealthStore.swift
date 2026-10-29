@@ -144,6 +144,21 @@ public final class HealthStore: ObservableObject {
         LocalStore.save(healthSnapshot, as: "today")
     }
 
+    func reloadAfterRestore() {
+        goals = LocalStore.load(HealthGoals.self, from: "goals") ?? goals
+        meals = LocalStore.load([Meal].self, from: "meals") ?? meals
+        workouts = LocalStore.load([Workout].self, from: "workouts") ?? workouts
+        waterLogs = LocalStore.load([HydrationLog].self, from: "water") ?? waterLogs
+        conversationReady = false
+        conversations = LocalStore.load([HealthConversation].self, from: "conversations") ?? conversations
+        if !conversations.contains(where: { $0.id == activeConversationID }) { activeConversationID = nil }
+        chat = conversations.first { $0.id == activeConversationID }?.messages ?? []
+        conversationReady = true
+        UserDefaults.standard.set(activeConversationID, forKey: "lumen.conversation.active")
+        LocalStore.save(chat, as: "chat")
+        refresh()
+    }
+
     // MARK: Conversations
 
     private func saveActiveConversation() {

@@ -20,8 +20,11 @@ Deliver: persisted conversations with migration of legacy chat; search/history/r
 Missing: meaningful period comparisons using actual recorded coverage, a browsable insights destination, and appointment summaries with symptom details and relevant timeline context.
 Deliver: current-versus-previous 7/30-day comparisons, source/coverage labels, clear minimum-data rules; local appointment summary document with symptoms, check-ins, activity and questions; save summaries to Library and share through existing document controls. Associations are not diagnoses or causal claims. Missing days are never treated as zero.
 
+## Batch 4 — recoverable local history
+Deliver versioned, restorable backups including meal photos; checksum and schema validation; preview with counts and conflicts; idempotent merges that preserve current records; optional profile/preferences restore with fresh sharing consent; staged installation and interrupted-write recovery. Retain readable exports as a separate format. No credentials, permissions or HealthKit write-back.
+
 ## Remaining roadmap after these batches
-1. Backup/restore with versioning, preview, validation and merge conflicts; include meal photos and verify migration without dropping historical logs. Current export is not a complete restorable backup.
+1. Large-library backup improvements: encrypted archives, progress/cancellation, streaming or package format beyond the current 100 MB JSON limit; legacy-export conversion with a separate preview.
 2. Background HealthKit observation/anchored synchronization, permission-aware freshness and delivery diagnostics, tested on a signed physical iPhone. Current refresh-on-open is not continuous monitoring.
 3. Apple Health ZIP ingestion, cancellation/progress for large imports, richer provenance, OCR for scanned records, and reviewable structured lab records. Keep unsupported formats explicit.
 4. Direct provider connections only where official OAuth/API access is configured and tested. Existing HealthKit and Strava are not a substitute for pretending every device is connected.
@@ -35,16 +38,19 @@ Deliver: current-versus-previous 7/30-day comparisons, source/coverage labels, c
 Pending batch entries will record commit, validation and push outcome below.
 
 ### Batch 0
-Commit `7737ebb` created. Foundation build passed and 28 logic checks passed. Push rejected by GitHub (403): active account `dbakp-askcody` lacks write permission on `dbakp/Lumen`. User notified; commits remain queued locally until access is resolved.
+Commit `7737ebb` created. Foundation build passed and 28 logic checks passed. Push rejected by GitHub (403): active account `dbakp-askcody` lacks write permission on `dbakp/Lumen`. User notified; access was subsequently resolved and GitHub accepted this commit on 29 October 2026.
 
 ### Batch 1
-Implemented personal context with explicit sharing consent, editable/datable checklist steps, plan states, and an agenda surfaced in Today and Library. Legacy step JSON still decodes. All targets build; 35 logic checks pass. Ready for its own commit; push remains dependent on repository access.
+Implemented personal context with explicit sharing consent, editable/datable checklist steps, plan states, and an agenda surfaced in Today and Library. Legacy step JSON still decodes. All targets build; 35 logic checks pass. Commit `f69f76e` published on 29 October 2026.
 
 ### Batch 2
-Implemented persistent conversation history with legacy migration, search, reopening, rename, share and delete. Reply context is captured at send time; late replies stay in the originating conversation, and deleted conversations are not recreated. Sending is guarded immediately and can be stopped. All targets build; 39 logic checks pass. Push is queued behind the unresolved GitHub write-access issue.
+Implemented persistent conversation history with legacy migration, search, reopening, rename, share and delete. Reply context is captured at send time; late replies stay in the originating conversation, and deleted conversations are not recreated. Sending is guarded immediately and can be stopped. All targets build; 39 logic checks pass. Commit `890af8d` published on 29 October 2026.
 
 ### Batch 3
 Implemented completed-day 7/30-day evidence comparisons with coverage, source details and minimum-data rules; editable appointment summaries; native document headings/lists; clearer empty states and checklist-first plan details. Removed silent meal, water, workout and sleep-history truncation. All targets build, **48 logic checks pass**, and the final expanded iPhone flow passes with **zero failures in 168.984 seconds**. The independent native design reviewer found the requested fixes landed and no further high-impact visual defects in the captured screens. Physical-device/provider/accessibility-size validation remains outstanding.
 
-### Publishing queue
-The verified foundation and three feature batches are separate local commits. `scripts/publish-batches.sh` publishes each one individually, in order, once the configured GitHub account has write access. It checks branch state and refuses a dirty or divergent tree; it never force-pushes. Do not mark a batch published without GitHub accepting its push.
+### Batch 4
+Implemented versioned backups with meal photos, integrity and schema validation, preview, local-copy conflict policy, opt-in preference restore, renewed sharing consent, and staged storage recovery. 68 logic checks pass; the final reviewed native scenario passes in 224.047 seconds with zero failures. See BACKUPS.md for format, merge rules and limits. The independent design review’s conflict-copy finding was addressed; this batch is ready for its own GitHub update.
+
+### Publishing status
+The verified foundation and three feature batches were each accepted by GitHub after authenticating as `dbakp`. Remote `main` reached `54578fb` on 29 October 2026. `scripts/publish-batches.sh` publishes each new batch individually, in order. It checks branch state and refuses a dirty or divergent tree; it never force-pushes. Do not mark a batch published without GitHub accepting its push.

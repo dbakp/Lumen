@@ -94,6 +94,57 @@ import Foundation
         let blocks = DocumentBlocks.parse("## Symptoms\n\nHeadache notes\n\n- First question\n2. Second question")
         check(blocks.map(\.kind) == [.heading(2), .paragraph, .listItem("•"), .listItem("2.")], "document headings and lists render as block structure instead of raw markers")
         check(DocumentBlocks.parse("```\n## literal\n```")[0].kind == .code, "code-fenced record text is not misinterpreted as headings")
+        var backup = BackupSnapshot(profile: .default, goals: HealthGoals(), habits: SleepHabit.defaults(), sleep: [], meals: [], workouts: [], water: [], conversations: migrated, symptoms: [oldSymptom], checkIns: [], documents: [report], importedDays: [day(-1, 2000)], imports: [], personalContext: PersonalHealthContext(), photos: [:])
+        let photoBytes = Data([0xff, 0xd8, 0xff, 0xd9])
+        backup.photos["photo-1"] = photoBytes
+        backup.meals = [Meal(type: .lunch, items: [], photoID: "photo-1")]
+        backup.documents[0].includeInAssistant = true
+        backup.personalContext.focus = "Imported focus"; backup.personalContext.includeInAssistant = true
+        let archiveBytes = try BackupArchive.make(backup)
+        let (archive, roundTrip) = try BackupArchive.read(archiveBytes)
+        check(archive.version == 1 && roundTrip.photos["photo-1"] == photoBytes && roundTrip.symptoms[0].id == oldSymptom.id, "versioned backup round-trip preserves records, IDs and photo bytes")
+        var local = backup
+        local.symptoms[0].note = "Current edit"; local.meals = []; local.photos = ["photo-1": Data([1, 2, 3])]
+        local.documents = []; local.conversations = []; local.personalContext.focus = "Current focus"
+        local.importedDays[0].values["steps"] = 3333
+        backup.importedDays[0].values["water"] = 250
+        let merged = backup.merging(into: local, restorePreferences: false)
+        check(merged.symptoms[0].note == "Current edit" && merged.conversations.count == 1, "restore keeps current edits and adds missing conversation history")
+        check(merged.importedDays[0].values["steps"] == 3333 && merged.importedDays[0].values["water"] == 250, "restore adds missing metrics while keeping current daily values")
+        check(merged.meals[0].photoID != "photo-1" && merged.photos[merged.meals[0].photoID!] == photoBytes && merged.photos["photo-1"] == Data([1, 2, 3]), "restore remaps photo collisions without overwriting existing photos")
+        check(!merged.documents[0].includeInAssistant && merged.personalContext.focus == "Current focus", "restored documents require sharing consent and preferences are opt-in")
+        let preferred = backup.merging(into: local, restorePreferences: true)
+        check(preferred.personalContext.focus == "Imported focus" && !preferred.personalContext.includeInAssistant && preferred.profile.appLock == local.profile.appLock, "profile restore resets context sharing while preserving device lock settings")
+        let repeated = backup.merging(into: merged, restorePreferences: false)
+        check(repeated.recordCount == merged.recordCount && repeated.photos.count == merged.photos.count, "repeated restore does not duplicate records or meal photos")
+        check(backup.conflicts(with: local) > 0, "backup preview reports matching record IDs")
+        func rejects(_ bytes: Data, _ message: String) {
+            do { _ = try BackupArchive.read(bytes); fatalError(message) } catch { print("PASS: " + message) }
+        }
+        rejects(Data("{}".utf8), "malformed and legacy exports are rejected")
+        rejects(try BackupArchive.encoder().encode(BackupArchive(format: "LumenBackup", version: 99, createdAt: Date(), payload: archive.payload, sha256: archive.sha256)), "future backup versions are rejected")
+        rejects(try BackupArchive.encoder().encode(BackupArchive(format: "LumenBackup", version: 1, createdAt: Date(), payload: archive.payload + Data([0]), sha256: archive.sha256)), "corrupted backup payloads are rejected")
+        var unsafe = backup; unsafe.meals[0].photoID = "../outside"; unsafe.photos["../outside"] = photoBytes
+        do { _ = try BackupArchive.make(unsafe); fatalError("unsafe photo path accepted") } catch { print("PASS: photo path traversal rejected") }
+        var duplicate = backup; duplicate.symptoms.append(duplicate.symptoms[0])
+        do { _ = try BackupArchive.make(duplicate); fatalError("duplicate IDs accepted") } catch { print("PASS: duplicate IDs rejected before restore") }
+        var invalidGoal = backup; invalidGoal.goals.weightKg = 1e300
+        do { _ = try BackupArchive.make(invalidGoal); fatalError("unsafe numeric value accepted") } catch { print("PASS: numeric overflow rejected before restore") }
+        var invalidBirthYear = backup; invalidBirthYear.profile.birthYear = Int.min
+        do { _ = try BackupArchive.make(invalidBirthYear); fatalError("unsafe birth year accepted") } catch { print("PASS: birth-year overflow rejected before restore") }
+        let restoreDir = directory.appendingPathComponent("restore-data")
+        try FileManager.default.createDirectory(at: restoreDir, withIntermediateDirectories: true)
+        try Data("original".utf8).write(to: restoreDir.appendingPathComponent("keep.json"))
+        try BackupFiles.install(["new.json": Data("new".utf8), "photos/photo.jpg": photoBytes], into: restoreDir)
+        let keptText = try String(contentsOf: restoreDir.appendingPathComponent("keep.json"), encoding: .utf8)
+        check(keptText == "original", "transaction preserves domains outside the backup")
+        let restoredPhoto = try Data(contentsOf: restoreDir.appendingPathComponent("photos/photo.jpg"))
+        check(restoredPhoto == photoBytes, "transaction installs photo bytes with records")
+        do { try BackupFiles.install(["../escape": Data()], into: restoreDir); fatalError("unsafe file path accepted") } catch { print("PASS: failed staging leaves current records intact") }
+        check(FileManager.default.fileExists(atPath: restoreDir.appendingPathComponent("new.json").path), "failed staging retains the installed backup")
+        try FileManager.default.moveItem(at: restoreDir, to: restoreDir.appendingPathExtension("previous"))
+        try BackupFiles.recover(restoreDir)
+        check(FileManager.default.fileExists(atPath: restoreDir.appendingPathComponent("keep.json").path), "interrupted installation recovers the previous data directory")
         print("All import, model, totals, history, plan, conversation, evidence, document and reminder checks passed.")
     }
 }

@@ -50,6 +50,11 @@ Batch 1 adds consent-controlled personal context, dated editable checklist actio
 
 The actual Swift logic suite now passes **48 checks**, including legacy plan/conversation decoding, sharing consent, scheduling, cross-conversation replies, sparse-period handling, zero baselines and older unresolved symptoms in reports. All application targets build. The expanded native scenario passed with **zero failures in 168.984 seconds**, covering personal-context editing, a dated plan step, reopening the original conversation, insights, appointment-summary creation and the original daily/persistence flows. Result bundle: `/tmp/LumenBatchesFinal.xcresult`; native screenshots: `Design/native/batches`.
 
-GitHub publishing is blocked by external repository permissions: the only configured GitHub account is `dbakp-askcody`, and GitHub reports `push:false` for `dbakp/Lumen`. The first push returned HTTP 403. No batch is claimed as published. Each batch is kept in its own local commit; `scripts/publish-batches.sh` can push them individually after access is corrected. It rejects a dirty tree or divergent remote and never force-pushes.
+GitHub access was resolved by authenticating as `dbakp`. GitHub accepted all four queued commits individually on 29 October 2026, advancing remote `main` to `54578fb`. The publishing script rejects a dirty tree or divergent remote and never force-pushes.
 
 The final native review fixed block-level document rendering, repeated empty metric cards, duplicated plan instructions, link affordances and singular/plural copy. Editor and agenda screenshots are now included. The final expanded scenario passed again after these changes; this is the source being committed in Batch 3.
+
+
+## Batch 4 · backup and restore
+
+The standalone suite passes **68 checks**, including versioned backup round-trip, photo bytes, conflict merging, repeated-restore idempotency, consent reset, future versions, corrupt payloads, unsafe names, duplicate IDs, numeric/birth-year overflow, failed staging and interrupted-install recovery. All native targets build. The final reviewed iPhone scenario passed with **zero failures in 224.047 seconds**, including create → preview → restore → relaunch with a single retained plan. Result: `/tmp/LumenBackupReviewed.xcresult`; captures: `Design/native/backup`. Final source includes bounded JPEG dimensions and indexed day merging. Actual Files/iCloud transfer and restoration on a second signed device remain unverified.
