@@ -44,6 +44,8 @@ public struct Meal: Identifiable, Codable, Sendable {
 }
 
 public struct HydrationLog: Identifiable, Codable, Sendable {
+    public var logOrigin: HealthLogOrigin? = nil
+    public var note: String? = nil
     public var id: String
     public var date: Date
     public var ml: Double

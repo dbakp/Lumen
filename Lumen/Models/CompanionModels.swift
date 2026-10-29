@@ -1,6 +1,7 @@
 import Foundation
 
 public struct SymptomEntry: Identifiable, Codable, Sendable {
+    public var logOrigin: HealthLogOrigin? = nil
     public var id = UUID().uuidString
     public var date = Date()
     public var name: String
@@ -14,6 +15,7 @@ public struct SymptomEntry: Identifiable, Codable, Sendable {
 }
 
 public struct WellbeingCheckIn: Identifiable, Codable, Sendable {
+    public var logOrigin: HealthLogOrigin? = nil
     public var id = UUID().uuidString
     public var date = Date()
     public var energy: Int

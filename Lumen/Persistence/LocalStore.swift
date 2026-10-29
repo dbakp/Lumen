@@ -44,6 +44,11 @@ public enum LocalStore {
         try? data.write(to: url(name), options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
     }
 
+    static func saveChecked<T: Encodable>(_ value: T, as name: String) throws {
+        let data = try encoder.encode(value)
+        try data.write(to: url(name), options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
+    }
+
     public static func load<T: Decodable>(_ type: T.Type, from name: String) -> T? {
         if let data = try? Data(contentsOf: url(name)), let v = try? decoder.decode(T.self, from: data) { return v }
         return nil

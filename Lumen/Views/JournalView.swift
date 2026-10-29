@@ -9,6 +9,7 @@ struct JournalView: View {
     @State private var editing: SymptomEntry?
     @State private var editingCheckIn: WellbeingCheckIn?
     @State private var selectedWorkout: Workout?
+    @State private var selectedWater: HydrationLog?
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
@@ -48,6 +49,7 @@ struct JournalView: View {
                     EmptyStateCard(icon: "book.closed", title: "A page for your day", message: "Meals, movement, sleep and how you feel will appear together here.", actionTitle: "Add a check-in") { AppRouter.shared.show(.checkIn) }
                 } else { TimelineList(events: events, onSelect: { event in
                     if event.id.hasPrefix("symptom-") { editing = companion.symptoms.first { "symptom-" + $0.id == event.id } }
+                    if event.id.hasPrefix("water-") { selectedWater = health.waterLogs.first { "water-" + $0.id == event.id } }
                     if event.id.hasPrefix("workout-") { selectedWorkout = health.workouts.first { "workout-" + $0.id == event.id } }
                     if event.id.hasPrefix("check-") { editingCheckIn = companion.checkIns.first { "check-" + $0.id == event.id } }
                 }) }
@@ -56,6 +58,7 @@ struct JournalView: View {
         }.lumenScreen().navigationTitle("Journal").navigationBarTitleDisplayMode(.inline)
             .toolbar { ToolbarItem(placement: .topBarTrailing) { LogToolbarButton() } }
             .sheet(item: $editing) { SymptomLogSheet(entry: $0) }
+            .sheet(item: $selectedWater) { WaterLogDetailView(log: $0) }
             .sheet(item: $selectedWorkout) { workout in NavigationStack { WorkoutDetailView(workout: workout, units: sleep.profile.unitSystem) } }
             .sheet(item: $editingCheckIn) { CheckInSheet(entry: $0) }
             .confirmationDialog("Delete this symptom log?", isPresented: Binding(get: { deleting != nil }, set: { if !$0 { deleting = nil } }), titleVisibility: .visible) {
@@ -85,7 +88,7 @@ struct TimelineList: View {
                     }.padding(.bottom, 24)
                 }.accessibilityElement(children: .combine)
                     .contentShape(Rectangle()).onTapGesture { onSelect?(event) }
-                    .accessibilityAddTraits(onSelect != nil && (event.id.hasPrefix("symptom-") || event.id.hasPrefix("check-") || event.id.hasPrefix("workout-")) ? .isButton : [])
+                    .accessibilityAddTraits(onSelect != nil && (event.id.hasPrefix("symptom-") || event.id.hasPrefix("check-") || event.id.hasPrefix("workout-") || event.id.hasPrefix("water-")) ? .isButton : [])
             }
         }
     }
@@ -138,6 +141,7 @@ struct SymptomLogSheet: View {
                         Toggle(trigger, isOn: Binding(get: { triggers.contains(trigger) }, set: { if $0 { triggers.insert(trigger) } else { triggers.remove(trigger) } }))
                     }
                 } header: { Text("Possible triggers you noticed") } footer: { Text("These are your observations, not confirmed causes.") }
+                if let origin = original?.logOrigin { Section { LogProvenanceView(origin: origin) } }
                 if original != nil { Section { Button("Delete symptom log", role: .destructive) { deleting = true } } }
                 Section {
                     Text("For sudden severe symptoms, chest pain, breathing difficulty, fainting, or new weakness, seek urgent medical help. Lumen cannot assess emergencies.").font(.footnote).foregroundStyle(Theme.secondary)
@@ -155,7 +159,7 @@ struct SymptomLogSheet: View {
     }
     var valid: Bool { !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && (duration.isEmpty || (Int(duration).map { $0 > 0 && $0 <= 525600 } ?? false)) }
     func save() {
-        CompanionStore.shared.log(SymptomEntry(id: original?.id ?? UUID().uuidString, date: onset, name: name.trimmingCharacters(in: .whitespacesAndNewlines), location: location, severity: Int(severity), durationMinutes: Int(duration), note: note, triggers: triggers.sorted(), resolvedAt: resolved ? (original?.resolvedAt ?? Date()) : nil))
+        CompanionStore.shared.log(SymptomEntry(logOrigin: original?.logOrigin, id: original?.id ?? UUID().uuidString, date: onset, name: name.trimmingCharacters(in: .whitespacesAndNewlines), location: location, severity: Int(severity), durationMinutes: Int(duration), note: note, triggers: triggers.sorted(), resolvedAt: resolved ? (original?.resolvedAt ?? Date()) : nil))
         dismiss(); AppRouter.shared.confirm("Symptom saved")
     }
 }
@@ -185,6 +189,7 @@ struct CheckInSheet: View {
                     scale("Stress", value: $stress, endpoints: "Low to high")
                 }
                 Section("Anything else?") { TextField("What's on your mind?", text: $note, axis: .vertical).lineLimit(3...6) }
+                if let origin = original?.logOrigin { Section { LogProvenanceView(origin: origin) } }
                 if original != nil { Section { Button("Delete check-in", role: .destructive) { deleting = true } } }
             }.scrollContentBackground(.hidden).background(Theme.bg)
                 .navigationTitle("Daily check-in").navigationBarTitleDisplayMode(.inline)
@@ -192,7 +197,7 @@ struct CheckInSheet: View {
                     ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
                     ToolbarItem(placement: .confirmationAction) {
                         Button("Save") {
-                            CompanionStore.shared.checkIn(WellbeingCheckIn(id: original?.id ?? UUID().uuidString, date: original?.date ?? Date(), energy: energy, mood: mood, stress: stress, note: note))
+                            CompanionStore.shared.checkIn(WellbeingCheckIn(logOrigin: original?.logOrigin, id: original?.id ?? UUID().uuidString, date: original?.date ?? Date(), energy: energy, mood: mood, stress: stress, note: note))
                             dismiss(); AppRouter.shared.confirm("Check-in saved")
                         }.fontWeight(.bold)
                     }

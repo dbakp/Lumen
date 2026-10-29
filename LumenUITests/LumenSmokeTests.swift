@@ -366,4 +366,84 @@ final class LumenSmokeTests: XCTestCase {
         snap("94-recorded-evidence-days")
     }
 
+    func testConversationalLogging() throws {
+        finishOnboarding()
+        tab("Assistant")
+        let input = app.textFields["coachInput"].firstMatch
+        let field = input.exists ? input : app.textViews["coachInput"].firstMatch
+        XCTAssertTrue(field.waitForExistence(timeout: 5))
+        field.tap(); field.typeText("I drank 250 ml of water. I walked for 20 minutes. I have a headache 5/10. Energy 2/5, mood 4/5, stress 3/5.")
+        tap("coachSend")
+        let review = app.buttons["Review health entries"].firstMatch
+        for _ in 0..<5 where !(review.exists && review.isHittable) { app.swipeDown() }
+        XCTAssertTrue(review.waitForExistence(timeout: 10)); review.tap()
+        XCTAssertTrue(app.navigationBars["Review health entries"].waitForExistence(timeout: 5))
+        snap("100-chat-log-review")
+        tap("Close")
+        // Cancelling review must not save any proposed observations.
+        tab("Journal")
+        XCTAssertFalse(app.staticTexts["Ongoing symptoms"].exists)
+        tab("Assistant")
+        for _ in 0..<5 where !(review.exists && review.isHittable) { app.swipeDown() }
+        review.tap()
+        scrollAndTap("Water")
+        let amount = app.textFields["draftWaterML"]
+        XCTAssertTrue(amount.waitForExistence(timeout: 5))
+        amount.coordinate(withNormalizedOffset: CGVector(dx: 0.98, dy: 0.5)).tap(); amount.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: 16) + "500")
+        XCTAssertEqual(amount.value as? String, "500")
+        snap("107-edited-water-value")
+        tap("Done")
+        app.navigationBars["Review water"].buttons.element(boundBy: 0).tap()
+        let bar = app.navigationBars["Review health entries"]
+        bar.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).press(forDuration: 0.1, thenDragTo: app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.85)))
+        XCTAssertTrue(app.buttons["Discard unsaved drafts"].waitForExistence(timeout: 5))
+        snap("106-edited-draft-dismissal")
+        tap("Keep reviewing")
+        tap("Close")
+        XCTAssertTrue(app.buttons["Discard unsaved drafts"].waitForExistence(timeout: 5))
+        tap("Keep reviewing")
+        scrollAndTap("Water")
+        let confirm = app.buttons["confirmChatHealthLog"]
+        reveal(confirm); snap("101-chat-water-edit"); confirm.tap()
+        XCTAssertTrue(app.staticTexts["Water · 500 ml"].waitForExistence(timeout: 5))
+        scrollAndTap("Workout")
+        reveal(confirm); confirm.tap()
+        XCTAssertTrue(app.staticTexts["Walk"].waitForExistence(timeout: 5))
+        scrollAndTap("Headache")
+        let location = app.textFields["Body location"]
+        XCTAssertTrue(location.waitForExistence(timeout: 5)); location.tap(); location.typeText("Head")
+        tap("Done")
+        reveal(confirm); confirm.tap()
+        scrollAndTap("Check-in")
+        reveal(confirm); confirm.tap()
+        XCTAssertTrue(app.staticTexts["Saved from this message"].waitForExistence(timeout: 5))
+        snap("102-chat-entries-saved")
+        tap("Close")
+        app.terminate(); app.launchArguments = []; app.launch()
+        tab("Assistant")
+        for _ in 0..<5 where !(review.exists && review.isHittable) { app.swipeDown() }
+        XCTAssertTrue(review.waitForExistence(timeout: 5)); review.tap()
+        XCTAssertTrue(app.staticTexts["Water · 500 ml"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["Walk"].exists)
+        XCTAssertTrue(app.staticTexts["Headache"].exists)
+        XCTAssertTrue(app.staticTexts["Check-in"].exists)
+        XCTAssertFalse(app.buttons["confirmChatHealthLog"].exists)
+        snap("103-chat-entries-persisted")
+        tap("Close"); tab("Journal")
+        XCTAssertTrue(app.staticTexts["Ongoing symptoms"].waitForExistence(timeout: 5))
+        snap("104-chat-journal")
+        tap("Edit")
+        reveal(app.staticTexts["Confirmed from Assistant"])
+        scrollAndTap("Original message")
+        snap("105-chat-log-provenance")
+        tap("Save")
+        tab("Assistant")
+        let nextInput = app.textFields["coachInput"].firstMatch
+        let nextField = nextInput.exists ? nextInput : app.textViews["coachInput"].firstMatch
+        nextField.tap(); nextField.typeText("Help me understand my symptom log")
+        tap("coachSend")
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", "You logged headache")).firstMatch.waitForExistence(timeout: 15))
+        snap("108-assistant-uses-confirmed-log")
+    }
+
 }

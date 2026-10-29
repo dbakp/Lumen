@@ -182,6 +182,7 @@ import Darwin
         catch is CancellationError { print("PASS: CSV tokenization honors cancellation") }
         try ZIPImportChecks.run(in: directory)
         try WorkoutImportChecks.run(in: directory, snapshot: backup)
+        try HealthLogDraftChecks.run(snapshot: backup)
         print("All import, model, totals, history, plan, conversation, evidence, document and reminder checks passed.")
     }
 }

@@ -16,6 +16,8 @@ struct WorkoutDetailView: View {
                     if let distance = workout.distanceM { RowDivider(); LumenRow("Distance", value: Units.distance(distance, units), icon: "point.topleft.down.to.point.bottomright.curvepath", color: Theme.move, chevron: false) }
                     if let hr = workout.avgHR { RowDivider(); LumenRow("Average heart rate", value: "\(Int(hr)) bpm", icon: "heart", color: Theme.move, chevron: false) }
                 }
+                if let note = workout.note, !note.isEmpty { GroupLabel("Your notes"); Text(note) }
+                if let origin = workout.logOrigin { LogProvenanceView(origin: origin) }
                 GroupLabel("Source")
                 Text(workout.sourceDescription).font(.headline)
                 if let origin = workout.importOrigin {

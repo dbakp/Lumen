@@ -9,6 +9,7 @@ public struct CoachView: View {
     @ObservedObject private var ai = AIService.shared
     @State private var draft = ""
     @State private var historyPresented = false
+    @State private var logSelection: HealthLogSelection?
     @State private var isSending = false
     @State private var responseTask: Task<Void, Never>?
     @ObservedObject private var companion = CompanionStore.shared
@@ -31,6 +32,10 @@ public struct CoachView: View {
                         ForEach(health.chat) { message in
                             VStack(alignment: .leading, spacing: 6) {
                                 ChatBubble(msg: message).id(message.id)
+                                if message.role == .user, let conversationID = health.activeConversationID {
+                                    Button("Review health entries", systemImage: "square.and.pencil") { focused = false; logSelection = HealthLogSelection(conversationID: conversationID, message: message) }.font(.footnote).frame(minHeight: 44).disabled(isSending || coach.isTyping || message.text.count > 8000)
+                                    if message.text.count > 8000 { Text("Use a message under 8,000 characters to prepare health entries.").font(.caption).foregroundStyle(Theme.secondary) }
+                                }
                                 if message.role == .coach {
                                     Text(message.provider ?? "Provider not recorded").font(.caption).foregroundStyle(Theme.secondary)
                                     if let saved = companion.documents.first(where: { $0.messageID == message.id }) {
@@ -75,6 +80,7 @@ public struct CoachView: View {
                 }
             }
         }
+        .sheet(item: $logSelection) { HealthLogReviewView(selection: $0).environmentObject(health) }
         .sheet(isPresented: $historyPresented) { ConversationHistoryView().environmentObject(health) }
     }
 

@@ -51,7 +51,7 @@ struct ConversationHistoryView: View {
                 }
                 .confirmationDialog("Delete this conversation?", isPresented: Binding(get: { deleting != nil }, set: { if !$0 { deleting = nil } }), titleVisibility: .visible) {
                     Button("Delete conversation", role: .destructive) { if let deleting { health.deleteConversation(deleting.id) }; deleting = nil }
-                } message: { Text("Saved Library documents stay available. A reply still running for a deleted conversation will be discarded.") }
+                } message: { Text("Saved Library documents and confirmed health entries, including their source messages, stay available. A reply still running for a deleted conversation will be discarded.") }
         }.tint(Theme.accent)
     }
 }

@@ -35,6 +35,8 @@ public struct WorkoutImportOrigin: Codable, Sendable {
 }
 
 public struct Workout: Identifiable, Codable, Sendable {
+    public var logOrigin: HealthLogOrigin? = nil
+    public var note: String? = nil
     public var id: String
     public var kind: WorkoutKind
     public var title: String
