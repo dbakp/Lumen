@@ -24,3 +24,11 @@ Dates are YYYY-MM-DD or ISO 8601 with timezone. Canonical units: steps/count, ac
 XML limit 500 MB; CSV/JSON limit 25 MB. Unsupported units are skipped rather than guessed. Imported historical data is available to the assistant and weekly coverage review. Today's import fills missing live values; live HealthKit totals take precedence. Missing logs never mean zero consumption.
 
 Text, Markdown and text-based PDFs can be added as Library records. PDF extraction uses PDFKit locally; scanned PDFs require OCR before importing. Records are excluded from assistant context by default. Turn on “Use in assistant” to share excerpts with the selected AI provider; documents themselves are never treated as instructions. No direct Oura/Garmin OAuth is claimed: connect those apps to Apple Health or use a portable export.
+
+
+## Progress and cancellation
+XML, CSV and JSON imports show the number of raw records reviewed, including unsupported or duplicate records. Counts are observations, not a percentage or an estimate of time remaining. CSV first prepares its quoted fields; a large file can show zero reviewed records during that stage. Parsing and preview generation run off the main screen. Cancel discards partial results; closing the Connections screen also cancels the operation. No history is added until you explicitly confirm the preview. Opening another import after cancellation cannot resurrect the old preview. CSV/JSON use a 25 MB limit, while streamed XML supports up to 500 MB. ZIP extraction remains a separate step.
+
+For native cancellation testing on a booted simulator, run `python3 scripts/seed-import-ui-fixtures.py <simulator-UUID>` before `LumenSmokeTests/testImportCancellation`. It creates a 37 MB synthetic XML file and a tiny synthetic CSV in that simulator’s Files provider. The fixture contains repeated test measurements and must never be used as a personal health history. Remove `Lumen-import-cancellation.xml` and `Lumen-import-small.csv` from the simulator’s Files app after testing. The parser suite also exercises deterministic cancellation while XML, CSV and JSON are being read, including CSV tokenization.
+
+The native file-backed scenario is skipped when its fixtures are absent; the standalone parser checks always run. The full daily-loop smoke test is independent of those fixtures.

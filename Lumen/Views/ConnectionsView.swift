@@ -8,6 +8,9 @@ struct ConnectionsView: View {
     @ObservedObject private var hk = HealthKitService.shared
     @State private var importing = false
     @State private var parsing = false
+    @State private var activeImport: HealthImportControl?
+    @State private var importTask: Task<Void, Never>?
+    @State private var importStatus: String?
     @State private var preview: HealthImportPreview?
     @State private var filename = ""
     @State private var error: String?
@@ -28,12 +31,26 @@ struct ConnectionsView: View {
             }
             Section {
                 Button("Import health data", systemImage: "square.and.arrow.down") { importing = true }.disabled(parsing)
-                if parsing { ProgressView("Reading measurements locally…") }
+                if parsing, let control = activeImport {
+                    TimelineView(.periodic(from: .now, by: 0.5)) { _ in
+                        HStack(spacing: 12) {
+                            VStack(alignment: .leading, spacing: 8) {
+                                HStack(spacing: 8) {
+                                    ProgressView().controlSize(.small)
+                                    Text("Reading your file").font(.subheadline).foregroundStyle(Theme.text)
+                                }
+                                Text("\(control.recordsProcessed.formatted()) records reviewed").font(.footnote).foregroundStyle(Theme.secondary)
+                            }
+                            Spacer(minLength: 0)
+                        }
+                    }
+                }
+                if let importStatus { Text(importStatus).font(.footnote).foregroundStyle(Theme.secondary) }
                 Text("Choose export.xml from an unzipped Apple Health export, or a metrics CSV/JSON. Preview dates and sources before adding anything.").font(.footnote).foregroundStyle(Theme.secondary)
                 if let preview {
                     VStack(alignment: .leading, spacing: 12) {
                         Text(filename).font(.headline)
-                        Text("\(preview.days.count) days · \(preview.samples) supported samples\n\(preview.skipped) unsupported, duplicate or invalid records skipped").font(.subheadline)
+                        Text("\(preview.days.count) day\(preview.days.count == 1 ? "" : "s") · \(preview.samples) supported sample\(preview.samples == 1 ? "" : "s")\n\(preview.skipped) unsupported, duplicate or invalid record\(preview.skipped == 1 ? "" : "s") skipped").font(.subheadline)
                         if let first = preview.days.first, let last = preview.days.last { Text("\(first.date.formatted(date: .abbreviated, time: .omitted)) – \(last.date.formatted(date: .abbreviated, time: .omitted))").font(.footnote) }
                         Text("Sources: \(preview.sourceNames.joined(separator: ", "))").font(.footnote)
                         Text("For each metric/day, the source with the most samples wins; sources are never added together. Existing imported values for those dates will be replaced. Review sample sources below.").font(.footnote).foregroundStyle(Theme.secondary)
@@ -43,7 +60,7 @@ struct ConnectionsView: View {
                                 Text("\(key): \(day.values[key]!, specifier: "%.1f") \(HealthImportService.units[key] ?? "") · \(day.sources[key] ?? "")").font(.caption).foregroundStyle(Theme.secondary)
                             }
                         }
-                        Button("Import \(preview.days.count) days") { companion.commit(preview, filename: filename); self.preview = nil; AppRouter.shared.confirm("Health history imported") }.buttonStyle(.borderedProminent)
+                        Button("Import \(preview.days.count) day\(preview.days.count == 1 ? "" : "s")") { companion.commit(preview, filename: filename); self.preview = nil; AppRouter.shared.confirm("Health history imported") }.buttonStyle(.borderedProminent)
                         Button("Discard preview", role: .cancel) { self.preview = nil }
                     }.padding(.vertical, 12)
                 }
@@ -53,7 +70,7 @@ struct ConnectionsView: View {
                 ForEach(companion.imports) { receipt in
                     VStack(alignment: .leading, spacing: 4) {
                         Text(receipt.filename).font(.subheadline.weight(.semibold))
-                        Text("\(receipt.days) days · \(receipt.date.formatted(date: .abbreviated, time: .shortened))").font(.caption).foregroundStyle(Theme.secondary)
+                        Text("\(receipt.days) day\(receipt.days == 1 ? "" : "s") · \(receipt.date.formatted(date: .abbreviated, time: .shortened))").font(.caption).foregroundStyle(Theme.secondary)
                     }
                 }
                 if !companion.imports.isEmpty { Button("Clear imported history", role: .destructive) { clear = true } }
@@ -68,21 +85,48 @@ struct ConnectionsView: View {
                 Toggle("Show health details on lock screen", isOn: $companion.reminders.showDetails)
             } header: { Text("Fewer, more useful reminders") } footer: { Text("At most one contextual check-in a day, only when your current logs suggest a useful action. Today's pending check-in is updated when you log or sync. No repeating generic nudges. Lumen must run to read new data; a scheduled check-in may not reflect changes made elsewhere afterwards. Equal start and end means quiet all day. Health details stay hidden by default.") }
         }.scrollContentBackground(.hidden).background(Theme.bg).navigationTitle("Connections").navigationBarTitleDisplayMode(.inline).tint(Theme.accent)
+            .toolbar {
+                if parsing {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button("Cancel import", role: .cancel) { cancelImport() }
+                            .accessibilityIdentifier("cancelHealthImport")
+                    }
+                }
+            }
+            .onDisappear { cancelImport(showMessage: false) }
             .fileImporter(isPresented: $importing, allowedContentTypes: [.xml, .commaSeparatedText, .json]) { result in read(result) }
             .alert("Couldn't import health data", isPresented: Binding(get: { error != nil }, set: { if !$0 { error = nil } })) { Button("OK") { error = nil } } message: { Text(error ?? "") }
             .confirmationDialog("Clear all imported daily measurements?", isPresented: $clear, titleVisibility: .visible) { Button("Clear imported history", role: .destructive) { companion.clearImports() } }
     }
+    func cancelImport(showMessage: Bool = true) {
+        guard activeImport != nil else { return }
+        activeImport?.cancel(); activeImport = nil
+        importTask?.cancel(); importTask = nil; parsing = false
+        if showMessage { importStatus = "Import cancelled. No records were added." }
+    }
     func read(_ result: Result<URL, Error>) {
-        guard case .success(let url) = result else { if case .failure(let e) = result { error = e.localizedDescription }; return }
-        parsing = true; preview = nil; filename = url.lastPathComponent
-        Task {
+        guard case .success(let url) = result else { if case .failure(let e) = result, (e as NSError).code != NSUserCancelledError { error = e.localizedDescription }; return }
+        cancelImport(showMessage: false)
+        let control = HealthImportControl()
+        activeImport = control; parsing = true; preview = nil; importStatus = nil; filename = url.lastPathComponent
+        importTask = Task { @MainActor in
             do {
-                preview = try await Task.detached(priority: .userInitiated) {
+                let parsed = try await Task.detached(priority: .userInitiated) {
                     let access = url.startAccessingSecurityScopedResource(); defer { if access { url.stopAccessingSecurityScopedResource() } }
-                    return try HealthImportService.parse(url: url)
+                    return try HealthImportService.parse(url: url, control: control)
                 }.value
-            } catch { self.error = error.localizedDescription }
-            parsing = false
+                guard activeImport === control else { return }
+                try control.checkCancellation()
+                preview = parsed
+            } catch is CancellationError {
+                guard activeImport === control else { return }
+                importStatus = "Import cancelled. No records were added."
+            } catch {
+                guard activeImport === control else { return }
+                self.error = error.localizedDescription
+            }
+            guard activeImport === control else { return }
+            activeImport = nil; importTask = nil; parsing = false
         }
     }
 }

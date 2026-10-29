@@ -23,10 +23,16 @@ Deliver: current-versus-previous 7/30-day comparisons, source/coverage labels, c
 ## Batch 4 — recoverable local history
 Deliver versioned, restorable backups including meal photos; checksum and schema validation; preview with counts and conflicts; idempotent merges that preserve current records; optional profile/preferences restore with fresh sharing consent; staged installation and interrupted-write recovery. Retain readable exports as a separate format. No credentials, permissions or HealthKit write-back.
 
+## Batch 5 — imports that stay responsive
+Deliver real reviewed-record counts and cancellation for streamed XML and portable CSV/JSON; cancellation while tokenizing CSV and preparing the preview; discard partial results; prevent late previews after navigation/cancellation; distinguish portable-file size limits from XML limits. Validate parser behavior plus the actual native Files picker and Cancel control with synthetic data.
+
+## Next delivery batch — Apple Health ZIP import
+Accept Apple's exported ZIP directly, locate and validate the health XML entry, extract only that entry to a temporary location with size limits, support cancellation, and reuse the existing source/date preview. Test corrupted archives, missing XML, path traversal, expansion limits and cancellation. No records are committed before review. This removes the current manual unzip step before progressing to device-dependent background synchronization.
+
 ## Remaining roadmap after these batches
 1. Large-library backup improvements: encrypted archives, progress/cancellation, streaming or package format beyond the current 100 MB JSON limit; legacy-export conversion with a separate preview.
 2. Background HealthKit observation/anchored synchronization, permission-aware freshness and delivery diagnostics, tested on a signed physical iPhone. Current refresh-on-open is not continuous monitoring.
-3. Apple Health ZIP ingestion, cancellation/progress for large imports, richer provenance, OCR for scanned records, and reviewable structured lab records. Keep unsupported formats explicit.
+3. Apple Health ZIP ingestion, bounded-memory ingestion for very large histories, richer provenance, OCR for scanned records, and reviewable structured lab records. Keep unsupported formats explicit.
 4. Direct provider connections only where official OAuth/API access is configured and tested. Existing HealthKit and Strava are not a substitute for pretending every device is connected.
 5. User-reviewed conversational logging, voice input, structured AI-generated multiweek plans and explicit tool confirmations. The assistant currently advises; it does not silently modify every health log.
 6. More complete data editing and reconciliation: HealthKit write failures, deletion confirmation/retry, source priority, import rollback, configurable retention and export units/timezones.
@@ -50,7 +56,10 @@ Implemented persistent conversation history with legacy migration, search, reope
 Implemented completed-day 7/30-day evidence comparisons with coverage, source details and minimum-data rules; editable appointment summaries; native document headings/lists; clearer empty states and checklist-first plan details. Removed silent meal, water, workout and sleep-history truncation. All targets build, **48 logic checks pass**, and the final expanded iPhone flow passes with **zero failures in 168.984 seconds**. The independent native design reviewer found the requested fixes landed and no further high-impact visual defects in the captured screens. Physical-device/provider/accessibility-size validation remains outstanding.
 
 ### Batch 4
-Implemented versioned backups with meal photos, integrity and schema validation, preview, local-copy conflict policy, opt-in preference restore, renewed sharing consent, and staged storage recovery. 68 logic checks pass; the final reviewed native scenario passes in 224.047 seconds with zero failures. See BACKUPS.md for format, merge rules and limits. The independent design review’s conflict-copy finding was addressed; this batch is ready for its own GitHub update.
+Implemented versioned backups with meal photos, integrity and schema validation, preview, local-copy conflict policy, opt-in preference restore, renewed sharing consent, and staged storage recovery. 68 logic checks pass; the final reviewed native scenario passes in 224.047 seconds with zero failures. See BACKUPS.md for format, merge rules and limits. The independent design review’s conflict-copy finding was addressed; published as `6abc670` on 29 October 2026.
+
+### Batch 5
+Implemented raw-record import progress and responsive cancellation across XML/CSV/JSON and preview preparation. Cancelled or abandoned operations cannot surface a late preview; no partial data is committed. Portable-file errors now state the 25 MB limit. 74 logic checks pass. A real Files-picker integration test cancels a 37 MB synthetic XML, verifies empty history, completes a previewed CSV import, and verifies its receipt after relaunch. Final screenshots and timing are in VERIFICATION.md.
 
 ### Publishing status
-The verified foundation and three feature batches were each accepted by GitHub after authenticating as `dbakp`. Remote `main` reached `54578fb` on 29 October 2026. `scripts/publish-batches.sh` publishes each new batch individually, in order. It checks branch state and refuses a dirty or divergent tree; it never force-pushes. Do not mark a batch published without GitHub accepting its push.
+The verified foundation and three feature batches were each accepted by GitHub after authenticating as `dbakp`. The backup/restore batch was then accepted as `6abc670` on 29 October 2026. `scripts/publish-batches.sh` publishes each new batch individually, in order. It checks branch state and refuses a dirty or divergent tree; it never force-pushes. Do not mark a batch published without GitHub accepting its push.

@@ -20,7 +20,7 @@ A native, local-first health companion for iPhone, with Apple Watch and widgets.
 
 - **Apple Health:** live sleep/stages, activity, workouts, vitals, water, energy and macros. Refresh on launch, foreground and pull-to-refresh. Read permissions are private to Apple: “access requested” does not prove every type is readable. Fresh heart signals are limited to today; recovery comparisons need at least seven previous days of personal data.
 - **Strava:** existing OAuth setup under Settings. Other devices can share through Apple Health or a compatible export; no direct Oura/Garmin connection is simulated.
-- **Health history:** locally parse Apple Health `export.xml` (unzip Apple's export in Files first), or portable CSV/JSON. Preview dates, sources, sample values and skipped records before committing. Reimports replace metric/day values. Historical imports populate Trends and assistant context; today's values fill missing live readings.
+- **Health history:** locally parse Apple Health `export.xml` (unzip Apple's export in Files first), or portable CSV/JSON. See actual reviewed-record counts and cancel parsing without adding partial data. Preview dates, sources, sample values and skipped records before committing. Reimports replace metric/day values. Historical imports populate Trends and assistant context; today's values fill missing live readings.
 - **Records:** import text, Markdown or text-based PDFs. Extraction is local. Scanned PDFs need OCR first. Preview/edit before saving. Record text is excluded from assistant context until you enable it.
 
 See [supported formats, units and aggregation rules](docs/IMPORT_FORMATS.md). XML supports up to 500 MB; portable files up to 25 MB; documents up to 20 MB / 200,000 extracted characters. Unsupported types and units are counted as skipped, never guessed. This is not a complete clinical-record ingestion system.
@@ -49,7 +49,7 @@ scripts/test-imports.sh
 xcodebuild test -project Lumen.xcodeproj -scheme Lumen -destination 'platform=iOS Simulator,name=iPhone 18 Pro' CODE_SIGNING_ALLOWED=NO
 ```
 
-The smoke test covers onboarding, water/symptom/check-in logging, contextual Today, assistant plans, Library notes and checklists, retained feature destinations and persistence after relaunch. It attaches screenshots. The standalone Swift tests exercise actual import parsing, conversions, duplicate/source handling, sleep overlap, invalid inputs, model coding and quiet-hour boundaries.
+The smoke test covers onboarding, water/symptom/check-in logging, contextual Today, assistant plans, Library notes and checklists, retained feature destinations and persistence after relaunch. It attaches screenshots. The standalone Swift tests exercise import parsing/cancellation, conversions, duplicate/source handling, sleep overlap, invalid inputs, model coding, backups and quiet-hour boundaries. For the separate native file-picker import scenario, seed its synthetic fixtures with `python3 scripts/seed-import-ui-fixtures.py <simulator-UUID>`; that scenario skips when fixtures are absent.
 
 Real-device validation is still needed for Health permissions and writes, camera, Strava redirects, model availability/responses, notification delivery, Face ID, haptics, Watch communication and widgets.
 
@@ -61,4 +61,4 @@ Lumen supports wellness reflection. It does not diagnose, prescribe or replace c
 
 ## Incremental delivery
 
-See [the missing-feature audit and batch roadmap](docs/ROADMAP.md). The foundation and first three feature batches were published individually on 29 October 2026 after account access was resolved. Each new verified batch is committed and pushed separately. `scripts/publish-batches.sh` publishes each commit separately and refuses to overwrite divergent history.
+See [the missing-feature audit and batch roadmap](docs/ROADMAP.md). The foundation and first four feature batches were published individually on 29 October 2026 after account access was resolved. Each new verified batch is committed and pushed separately. `scripts/publish-batches.sh` publishes each commit separately and refuses to overwrite divergent history.

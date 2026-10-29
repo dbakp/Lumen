@@ -145,6 +145,39 @@ import Foundation
         try FileManager.default.moveItem(at: restoreDir, to: restoreDir.appendingPathExtension("previous"))
         try BackupFiles.recover(restoreDir)
         check(FileManager.default.fileExists(atPath: restoreDir.appendingPathComponent("keep.json").path), "interrupted installation recovers the previous data directory")
+        let importCSV = directory.appendingPathComponent("progress.csv")
+        let manyRows = "date,metric,value,unit,source\n" + (1...1100).map { "2026-01-01,steps,\($0),count,Watch" }.joined(separator: "\n")
+        try manyRows.write(to: importCSV, atomically: true, encoding: .utf8)
+        let progressControl = HealthImportControl()
+        let progressPreview = try HealthImportService.parse(url: importCSV, control: progressControl)
+        check(progressControl.recordsProcessed == 1100 && progressPreview.samples == 1100, "import progress counts actual reviewed records")
+        let cancelledCSV = HealthImportControl()
+        do {
+            _ = try HealthImportService.parse(url: importCSV, control: cancelledCSV, progress: { count in if count >= 512 { cancelledCSV.cancel() } })
+            fatalError("cancelled CSV yielded a partial preview")
+        } catch is CancellationError { print("PASS: cancellation during CSV parsing discards partial results") }
+        let cancelledBefore = HealthImportControl(); cancelledBefore.cancel()
+        do { _ = try HealthImportService.parse(url: importCSV, control: cancelledBefore); fatalError("pre-cancelled import started") }
+        catch is CancellationError { print("PASS: cancelled imports stop before reading") }
+        let importXML = directory.appendingPathComponent("progress.xml")
+        let xmlRecord = "<Record type=\"HKQuantityTypeIdentifierStepCount\" value=\"10\" unit=\"count\" startDate=\"2026-01-01 10:00:00 +0000\" endDate=\"2026-01-01 10:01:00 +0000\" sourceName=\"Watch\"/>"
+        try ("<HealthData>" + String(repeating: xmlRecord, count: 1100) + "</HealthData>").write(to: importXML, atomically: true, encoding: .utf8)
+        let cancelledXML = HealthImportControl()
+        do {
+            _ = try HealthImportService.parse(url: importXML, control: cancelledXML, progress: { count in if count >= 512 { cancelledXML.cancel() } })
+            fatalError("cancelled XML yielded a partial preview")
+        } catch is CancellationError { print("PASS: XML parser abortion reports cancellation rather than malformed data") }
+        let importJSON = directory.appendingPathComponent("progress.json")
+        let jsonRow = "{\"date\":\"2026-01-01\",\"metric\":\"steps\",\"value\":10,\"unit\":\"count\"}"
+        try ("[" + Array(repeating: jsonRow, count: 1100).joined(separator: ",") + "]").write(to: importJSON, atomically: true, encoding: .utf8)
+        let cancelledJSON = HealthImportControl()
+        do {
+            _ = try HealthImportService.parse(url: importJSON, control: cancelledJSON, progress: { count in if count >= 512 { cancelledJSON.cancel() } })
+            fatalError("cancelled JSON yielded a partial preview")
+        } catch is CancellationError { print("PASS: cancellation during JSON parsing discards partial results") }
+        let csvLexing = HealthImportControl(); csvLexing.cancel()
+        do { _ = try HealthImportService.csvRows(manyRows, control: csvLexing); fatalError("CSV tokenization ignored cancellation") }
+        catch is CancellationError { print("PASS: CSV tokenization honors cancellation") }
         print("All import, model, totals, history, plan, conversation, evidence, document and reminder checks passed.")
     }
 }

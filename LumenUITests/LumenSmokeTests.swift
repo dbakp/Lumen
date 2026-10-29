@@ -41,7 +41,7 @@ final class LumenSmokeTests: XCTestCase {
         XCTAssertTrue(element.exists && element.isHittable)
     }
 
-    func testSmoke() throws {
+    func finishOnboarding() {
         // --- Onboarding ---
         XCTAssertTrue(app.buttons["Get started"].waitForExistence(timeout: 10))
         snap("01-welcome")
@@ -61,6 +61,11 @@ final class LumenSmokeTests: XCTestCase {
         XCTAssertTrue(app.buttons["Start using Lumen"].waitForExistence(timeout: 10))
         snap("08-plan")
         tap("Start using Lumen")
+
+    }
+
+    func testSmoke() throws {
+        finishOnboarding()
 
         // --- Today ---
         snap("09-after-onboarding")
@@ -225,4 +230,60 @@ final class LumenSmokeTests: XCTestCase {
         XCTAssertEqual(app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'library-plan-'")).count, 1, "backup restore duplicated the plan")
         tab("Today")
     }
+    func chooseImportFixture(_ name: String) throws {
+        tap("Import health data")
+        XCTAssertTrue(app.buttons["Cancel"].firstMatch.waitForExistence(timeout: 25), "File picker did not open")
+        if name == "Lumen-import-cancellation" { snap("69-import-picker") }
+        if app.buttons["Browse"].firstMatch.exists { app.buttons["Browse"].firstMatch.tap() }
+        if app.buttons["On My iPhone"].firstMatch.exists { app.buttons["On My iPhone"].firstMatch.tap() }
+        else if app.staticTexts["On My iPhone"].firstMatch.exists { app.staticTexts["On My iPhone"].firstMatch.tap() }
+        let fixture = app.staticTexts[name].firstMatch
+        if !fixture.waitForExistence(timeout: 5) {
+            print(app.debugDescription)
+            throw XCTSkip("Run scripts/seed-import-ui-fixtures.py for this simulator before the file-backed scenario")
+        }
+        let fixtureCell = app.cells.matching(NSPredicate(format: "identifier BEGINSWITH %@", name + ",")).firstMatch
+        fixtureCell.images.firstMatch.tap()
+        XCTAssertTrue(app.buttons["Cancel"].firstMatch.waitForNonExistence(timeout: 10), "XML selection did not dismiss Files")
+    }
+
+    func testImportCancellation() throws {
+        finishOnboarding()
+        scrollAndTap("Your sources")
+        XCTAssertTrue(app.navigationBars["Connections"].waitForExistence(timeout: 5))
+        snap("68-import-home")
+        try chooseImportFixture("Lumen-import-cancellation")
+        let cancel = app.buttons["cancelHealthImport"].firstMatch
+        reveal(cancel)
+        XCTAssertTrue(cancel.waitForExistence(timeout: 10))
+        let reviewed = app.staticTexts.matching(NSPredicate(format: "label MATCHES %@", "[1-9].*records reviewed")).firstMatch
+        XCTAssertTrue(reviewed.waitForExistence(timeout: 10))
+        snap("70-import-progress")
+        cancel.tap()
+        XCTAssertTrue(app.staticTexts["Import cancelled. No records were added."].waitForExistence(timeout: 5))
+        let emptyHistory = app.staticTexts["Nothing imported yet"]
+        reveal(emptyHistory)
+        snap("71-import-cancelled")
+        // Starting another file selection remains possible after cancellation.
+        let importButton = app.buttons["Import health data"]
+        for _ in 0..<6 where !(importButton.exists && importButton.isHittable) { app.swipeDown() }
+        tap("Import health data")
+        XCTAssertTrue(app.buttons["Cancel"].firstMatch.waitForExistence(timeout: 25))
+        tap("Cancel")
+        XCTAssertFalse(app.alerts.firstMatch.exists)
+        XCTAssertTrue(app.buttons["Import health data"].exists)
+        try chooseImportFixture("Lumen-import-small")
+        let commit = app.buttons["Import 1 day"]
+        reveal(commit); snap("72-import-preview")
+        commit.tap()
+        XCTAssertTrue(app.staticTexts["Health history imported"].waitForExistence(timeout: 5))
+        let receipt = app.staticTexts["Lumen-import-small.csv"]
+        reveal(receipt); snap("73-import-history")
+        app.terminate(); app.launchArguments = []; app.launch()
+        scrollAndTap("Your sources")
+        reveal(app.staticTexts["Lumen-import-small.csv"])
+        XCTAssertFalse(app.buttons["cancelHealthImport"].exists)
+        snap("74-import-persisted")
+    }
+
 }
