@@ -52,3 +52,6 @@ Hero contrast correction was reviewed in the updated strip and a frame actually 
 
 ## Native fidelity review
 The independent critic scored the captured native core flows 4/5. Its three concrete findings (adjacent symptom actions, duplicate-save affordance, clipped arc strokes) were fixed. Final source passed the full iPhone smoke scenario in 129.111 seconds, zero failures; final screenshots in Design/native/final. No new clinical or real-device claims are inferred.
+
+## Follow-through batches review
+One independent critic reviewed the new native personal-context, plan editor/agenda, conversation history, Insights and appointment-summary captures. Initial findings: literal block Markdown, repetitive empty metric cards, duplicate plan actions, weak link affordances and singular/plural copy. All were fixed. The final editor, agenda, document and empty-state screenshots were reviewed again; the critic confirmed the requested fixes landed and found no further high-impact visible defects. Captures: Design/native/batches. Real-device and accessibility-size behavior were not inferred from screenshots. Expanded integration scenario: 168.984 seconds, zero failures; actual logic checks: 48.

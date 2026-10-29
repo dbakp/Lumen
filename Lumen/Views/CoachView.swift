@@ -90,7 +90,7 @@ public struct CoachView: View {
             VStack(alignment: .leading, spacing: 8) {
                 Label("Today’s context", systemImage: "checkmark.shield").font(.headline)
                 Text(companion.perspective(health: health).evidence.joined(separator: " · ")).font(.subheadline).foregroundStyle(Theme.secondary)
-                Text("\(companion.activeSymptoms.count) ongoing symptom logs · \(companion.documents.filter(\.includeInAssistant).count) shared records").font(.footnote).foregroundStyle(Theme.secondary)
+                Text("\(companion.activeSymptoms.count) ongoing symptom \(companion.activeSymptoms.count == 1 ? "log" : "logs") · \(companion.documents.filter(\.includeInAssistant).count) shared records").font(.footnote).foregroundStyle(Theme.secondary)
                 Text("Provider: \(ai.brain.label). Your current health summary and shared record excerpts accompany each question.").font(.footnote).foregroundStyle(Theme.secondary)
             }.padding(18).surface()
             VStack(spacing: 10) {

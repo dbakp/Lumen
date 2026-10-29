@@ -24,7 +24,12 @@ struct LibraryView: View {
                         ForEach(HealthDocument.Kind.allCases, id: \.self) { filterButton($0.rawValue.capitalized, value: $0) }
                     }
                 }.scrollIndicators(.hidden)
-                NavigationLink("Your next steps", destination: PlanAgendaView()).frame(minHeight: 44)
+                NavigationLink { InsightsView() } label: {
+                    LumenRow("Insights & appointment summaries", subtitle: "Changes over time and a record to share", icon: "chart.xyaxis.line", color: Theme.accent)
+                }.buttonStyle(.plain)
+                NavigationLink { PlanAgendaView() } label: {
+                    LumenRow("Your next steps", subtitle: "Pending actions from your active plans", icon: "list.bullet", color: Theme.accent)
+                }.buttonStyle(.plain)
                 if extracting { ProgressView("Reading your record locally…") }
                 if filtered.isEmpty {
                     EmptyStateCard(icon: "doc.text", title: search.isEmpty ? "Keep what matters" : "No matching documents", message: "Plans from your assistant, weekly reviews and your own records live here.", actionTitle: "Write a note") { newNote() }
@@ -112,7 +117,8 @@ struct DocumentDetailView: View {
                     Text(doc.title).font(.largeTitle.bold()).tracking(-1)
                     Text("\(doc.source)\nUpdated \(doc.updatedAt.formatted(date: .abbreviated, time: .shortened))").font(.footnote).foregroundStyle(Theme.secondary)
                     if doc.kind == .plan { Text(doc.status.label).font(.subheadline.weight(.semibold)).foregroundStyle(Theme.accent) }
-                    Text(.init(doc.body)).font(.body).lineSpacing(5).textSelection(.enabled)
+                    if doc.kind != .plan || doc.steps.isEmpty { DocumentBodyView(text: doc.body) }
+                    if doc.kind == .plan && !doc.steps.isEmpty { GroupLabel("Your plan steps") }
                     ForEach(doc.steps) { step in
                         Button {
                             var updated = doc
@@ -127,6 +133,9 @@ struct DocumentDetailView: View {
                                 Spacer()
                             }.frame(minHeight: 44).foregroundStyle(step.isDone ? Theme.secondary : Theme.text)
                         }.buttonStyle(.plain).accessibilityLabel("\(step.isDone ? "Completed" : "Incomplete"): \(step.title)")
+                    }
+                    if doc.kind == .plan && !doc.steps.isEmpty {
+                        DisclosureGroup("Original guidance") { DocumentBodyView(text: doc.body).padding(.top, 12) }
                     }
                     Text(doc.kind == .plan ? "An editable wellness draft. Adjust it to how you feel; discuss medical decisions with a clinician." : "Saved on this device. You control whether the assistant can use this text.").font(.footnote).foregroundStyle(Theme.secondary)
                     Toggle("Use in assistant", isOn: Binding(get: { doc.includeInAssistant }, set: { var d = doc; d.includeInAssistant = $0; companion.save(d) }))
@@ -172,7 +181,7 @@ struct DocumentEditor: View {
                         VStack(alignment: .leading, spacing: 10) {
                             TextField("Step", text: $step.title, axis: .vertical)
                             Toggle("Completed", isOn: $step.isDone)
-                            Toggle("Set a date", isOn: Binding(get: { step.dueDate != nil }, set: { step.dueDate = $0 ? (step.dueDate ?? Date()) : nil }))
+                            Toggle("Set a date", isOn: Binding(get: { step.dueDate != nil }, set: { step.dueDate = $0 ? (step.dueDate ?? Date()) : nil })).accessibilityIdentifier("plan-date-\(step.id)")
                             if step.dueDate != nil {
                                 DatePicker("Date", selection: Binding(get: { step.dueDate ?? Date() }, set: { step.dueDate = $0 }), displayedComponents: .date)
                             }

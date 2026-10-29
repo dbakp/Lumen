@@ -42,3 +42,9 @@ Implemented personal context with explicit sharing consent, editable/datable che
 
 ### Batch 2
 Implemented persistent conversation history with legacy migration, search, reopening, rename, share and delete. Reply context is captured at send time; late replies stay in the originating conversation, and deleted conversations are not recreated. Sending is guarded immediately and can be stopped. All targets build; 39 logic checks pass. Push is queued behind the unresolved GitHub write-access issue.
+
+### Batch 3
+Implemented completed-day 7/30-day evidence comparisons with coverage, source details and minimum-data rules; editable appointment summaries; native document headings/lists; clearer empty states and checklist-first plan details. Removed silent meal, water, workout and sleep-history truncation. All targets build, **48 logic checks pass**, and the final expanded iPhone flow passes with **zero failures in 168.984 seconds**. The independent native design reviewer found the requested fixes landed and no further high-impact visual defects in the captured screens. Physical-device/provider/accessibility-size validation remains outstanding.
+
+### Publishing queue
+The verified foundation and three feature batches are separate local commits. `scripts/publish-batches.sh` publishes each one individually, in order, once the configured GitHub account has write access. It checks branch state and refuses a dirty or divergent tree; it never force-pushes. Do not mark a batch published without GitHub accepting its push.

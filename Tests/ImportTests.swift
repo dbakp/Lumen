@@ -78,6 +78,22 @@ import Foundation
         let answered = ConversationArchive.appending(ChatMessage(role: .coach, text: "Answer"), to: migrated[0].id, in: migrated + [other])
         check(answered[0].messages.count == 2 && answered[1].messages.isEmpty, "a reply stays in its originating conversation")
         check(ConversationArchive.appending(ChatMessage(role: .coach, text: "Answer"), to: "deleted", in: migrated)[0].messages.count == 1, "a deleted conversation is not recreated by a late reply")
-        print("All import, model, totals, history, plan, conversation and reminder checks passed.")
+        let today = Calendar.current.startOfDay(for: Date())
+        func day(_ offset: Int, _ value: Double) -> ImportedHealthDay { ImportedHealthDay(date: Calendar.current.date(byAdding: .day, value: offset, to: today)!, values: ["steps": value], sources: ["steps":"Test source"]) }
+        let trend = TrendEvidence.compare([day(-1, 2000), day(-2, 2000), day(-3, 2000), day(-8, 1000), day(-9, 1000), day(-10, 1000), day(0, 99999)], metric: "steps", window: 7)
+        check(trend.currentMean == 2000 && trend.current.count == 3, "trend averages use recorded days and exclude incomplete today")
+        check(trend.changePercent == 100 && trend.previous.count == 3, "trend compares the correct adjacent periods")
+        check(trend.sources == ["Test source"], "trend evidence retains source names")
+        check(!TrendEvidence.compare([day(-1, 2000), day(-8, 1000)], metric: "steps", window: 7).comparable, "sparse periods are not presented as meaningful comparisons")
+        let zero = TrendEvidence.compare([day(-1, 2), day(-2, 2), day(-3, 2), day(-8, 0), day(-9, 0), day(-10, 0)], metric: "steps", window: 7)
+        check(zero.changePercent == nil && zero.change == 2, "zero baselines yield an absolute change without dividing by zero")
+        let oldSymptom = SymptomEntry(date: Calendar.current.date(byAdding: .day, value: -90, to: today)!, name: "Headache", location: "Head", severity: 3, note: "Behind eyes", triggers: ["Stress"])
+        let report = AppointmentSummary.make(symptoms: [oldSymptom], checkIns: [], workouts: [], days: 7)
+        check(report.body.contains("Behind eyes") && report.body.contains("Still marked ongoing"), "appointment summaries include older unresolved symptom descriptions")
+        check(!report.includeInAssistant && report.kind == .review, "appointment summaries remain excluded from assistant context by default")
+        let blocks = DocumentBlocks.parse("## Symptoms\n\nHeadache notes\n\n- First question\n2. Second question")
+        check(blocks.map(\.kind) == [.heading(2), .paragraph, .listItem("•"), .listItem("2.")], "document headings and lists render as block structure instead of raw markers")
+        check(DocumentBlocks.parse("```\n## literal\n```")[0].kind == .code, "code-fenced record text is not misinterpreted as headings")
+        print("All import, model, totals, history, plan, conversation, evidence, document and reminder checks passed.")
     }
 }

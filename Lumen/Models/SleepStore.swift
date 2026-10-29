@@ -54,7 +54,6 @@ public final class SleepStore: ObservableObject {
         }
         kept.append(contentsOf: incoming)
         episodes = kept.sorted { $0.bedtime < $1.bedtime }
-        if episodes.count > 1200 { episodes.removeFirst(episodes.count - 1200) }
         reestimateNeed()
         recompute()
     }
@@ -132,8 +131,6 @@ public final class SleepStore: ObservableObject {
         let ep = SleepEpisode(bedtime: bedtime, wakeTime: wakeTime, source: source, quality: quality)
         episodes.append(ep)
         episodes.sort { $0.bedtime < $1.bedtime }
-        // Keep 400 max.
-        if episodes.count > 1200 { episodes.removeFirst(episodes.count - 1200) }
         reestimateNeed()
         recompute()
     }

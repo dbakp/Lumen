@@ -36,6 +36,11 @@ final class LumenSmokeTests: XCTestCase {
         q.tap()
     }
 
+    func reveal(_ element: XCUIElement) {
+        for _ in 0..<8 where !(element.exists && element.isHittable) { app.swipeUp(velocity: .slow) }
+        XCTAssertTrue(element.exists && element.isHittable)
+    }
+
     func testSmoke() throws {
         // --- Onboarding ---
         XCTAssertTrue(app.buttons["Get started"].waitForExistence(timeout: 10))
@@ -93,6 +98,13 @@ final class LumenSmokeTests: XCTestCase {
 
         // --- Assistant → automatically saved editable plan ---
         tab("Assistant")
+        scrollAndTap("Personal context")
+        let personalFocus = app.textFields["personalFocus"].firstMatch
+        XCTAssertTrue(personalFocus.waitForExistence(timeout: 5))
+        personalFocus.tap(); personalFocus.typeText("Build a steady sleep routine")
+        snap("28-personal-context-editor")
+        tap("savePersonalContext")
+        snap("29-personal-context-saved")
         let input = app.textFields["coachInput"].firstMatch
         let multiInput = app.textViews["coachInput"].firstMatch
         let field = input.exists ? input : multiInput
@@ -110,7 +122,33 @@ final class LumenSmokeTests: XCTestCase {
         XCTAssertTrue(app.navigationBars["Document"].waitForExistence(timeout: 5))
         scrollAndTap("Incomplete:")
         snap("32-plan-detail")
+        tap("Document actions"); tap("Edit")
+        let dateToggle = app.switches.matching(NSPredicate(format: "identifier BEGINSWITH 'plan-date-'")).element(boundBy: 1)
+        reveal(dateToggle); dateToggle.tap()
+        snap("32a-plan-editor")
+        tap("Save")
+        snap("32b-dated-plan")
         app.navigationBars["Document"].buttons.element(boundBy: 0).tap()
+
+        app.swipeDown(); app.swipeDown()
+        scrollAndTap("Your next steps")
+        XCTAssertTrue(app.navigationBars["Your next steps"].waitForExistence(timeout: 5))
+        snap("32d-agenda")
+        app.navigationBars["Your next steps"].buttons.element(boundBy: 0).tap()
+
+        // --- Reopen the original chat after starting a new one ---
+        tab("Assistant")
+        tap("Conversation history")
+        let originalConversation = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'conversation-'")).firstMatch
+        XCTAssertTrue(originalConversation.waitForExistence(timeout: 5))
+        let originalID = originalConversation.identifier
+        snap("32c-conversations")
+        tap("New conversation")
+        XCTAssertTrue(app.staticTexts["Let’s put it\nin context."].waitForExistence(timeout: 5))
+        tap("Conversation history")
+        tap(originalID)
+        XCTAssertTrue(app.staticTexts["coachMessage"].firstMatch.waitForExistence(timeout: 5))
+        tab("Library")
 
         // --- Records remain opt-in; new notes are editable ---
         tap("Add document")
@@ -123,6 +161,17 @@ final class LumenSmokeTests: XCTestCase {
         tap("Save")
         XCTAssertTrue(app.buttons["Questions for my appointment"].waitForExistence(timeout: 5))
         snap("33-library-note")
+
+        // --- Evidence and appointment summaries ---
+        app.swipeDown(); app.swipeDown(); app.swipeDown()
+        scrollAndTap("Insights & appointment summaries")
+        XCTAssertTrue(app.navigationBars["Insights"].waitForExistence(timeout: 5))
+        snap("34-insights")
+        scrollAndTap("Create appointment summary")
+        XCTAssertTrue(app.navigationBars["Document"].waitForExistence(timeout: 5))
+        snap("35-appointment-summary")
+        app.navigationBars["Document"].buttons.element(boundBy: 0).tap()
+        app.navigationBars["Insights"].buttons.element(boundBy: 0).tap()
 
         // --- Resolve symptom and verify source destinations remain reachable ---
         tab("Journal")

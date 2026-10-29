@@ -39,12 +39,11 @@ public final class HealthStore: ObservableObject {
 
     public init() {
         goals = LocalStore.load(HealthGoals.self, from: "goals", legacyKey: "lumen.health.goals.v1") ?? HealthGoals()
-        let horizon = Calendar.current.date(byAdding: .day, value: -365, to: Date()) ?? .distantPast
         meals = (LocalStore.load([Meal].self, from: "meals", legacyKey: "lumen.health.meals.v1") ?? [])
-            .filter { $0.source != .sample && $0.date > horizon }
+            .filter { $0.source != .sample }
         workouts = (LocalStore.load([Workout].self, from: "workouts", legacyKey: "lumen.health.workouts.v1") ?? [])
             .filter { $0.source != .sample }
-        waterLogs = (LocalStore.load([HydrationLog].self, from: "water") ?? []).filter { $0.date > horizon }
+        waterLogs = (LocalStore.load([HydrationLog].self, from: "water") ?? [])
         chat = LocalStore.load([ChatMessage].self, from: "chat", legacyKey: "lumen.health.chat.v1") ?? []
         conversations = ConversationArchive.migrate(legacy: chat, existing: LocalStore.load([HealthConversation].self, from: "conversations") ?? [])
         let rememberedID = UserDefaults.standard.string(forKey: "lumen.conversation.active")
@@ -240,7 +239,6 @@ public final class HealthStore: ObservableObject {
             workouts.append(w)
         }
         workouts.sort { $0.start < $1.start }
-        if workouts.count > 500 { workouts.removeFirst(workouts.count - 500) }
     }
 
     // MARK: Coaching

@@ -9,6 +9,10 @@ A native, local-first health companion for iPhone, with Apple Watch and widgets.
 - **Today:** guidance responds to recent sleep, ongoing symptoms, energy/stress check-ins, workouts, meals and water. Expand “Why this perspective” to inspect the evidence. Three labelled arcs show recorded/missing signals, not goal completion. Quick water and symptom logging are in reach.
 - **Journal:** symptom name, body location, severity, onset, duration, description, possible triggers and resolution. Edit or delete logs, including resolved symptoms, from the timeline. Energy, mood and stress check-ins can also be edited or deleted. Sleep, meals, water, workouts and subjective logs appear together chronologically.
 - **Assistant:** the existing Apple Intelligence / optional OpenAI provider receives current measurements, personal goals, recent symptom history, check-ins, imported history and opted-in record excerpts. Every new response identifies the provider that actually answered; failures use an explicitly labelled built-in guide. Plans requested in chat are saved automatically as editable drafts. Save any other answer manually. Urgent symptom phrases take priority over plan requests.
+- **Personal context:** goals, food preferences, allergies, limitations and schedule, with explicit opt-in before the assistant uses these notes.
+- **Conversations:** searchable chat history, reopen/rename/share/delete, safe routing of replies to the originating conversation and stop-response support. Existing chat migrates without losing messages.
+- **Plans:** edit individual action items, assign dates, set active/completed/archived states and find pending steps in Today or the agenda.
+- **Insights:** compare completed 7/30-day periods with actual coverage and sources; no inferred zero days or claims of causation. Create an editable appointment summary from your symptom descriptions, check-ins and activity.
 - **Library:** searchable plans, reviews, notes and records with type filters. Edit text, complete checklist steps, share document text, delete documents and choose whether each record is included in assistant context. A local weekly review summarizes coverage and logged events without claiming causation.
 
 ## Connections and imports
@@ -53,3 +57,7 @@ Real-device validation is still needed for Health permissions and writes, camera
 [Verification](docs/VERIFICATION.md) · [Plan and market research](docs/IMPLEMENTATION_PLAN.md) · [Design direction](Design/DIRECTION.md) · [Design studies](Design/mockup.html). Studies use explicitly labelled sample data; production never seeds fictional health measurements. App Designer Pro from the user's attachment guided the three concepts, scans and independent critique. These local design studies are not claims of clinical or App Store validation.
 
 Lumen supports wellness reflection. It does not diagnose, prescribe or replace clinical care.
+
+## Incremental delivery
+
+See [the missing-feature audit and batch roadmap](docs/ROADMAP.md). Each verified batch is a separate local commit. Publishing currently requires repository write access for the configured account; no push is claimed until GitHub accepts it. Once authenticated correctly, `scripts/publish-batches.sh` publishes each commit separately and refuses to overwrite divergent history.

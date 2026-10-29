@@ -42,4 +42,14 @@ Imports require unzipping Apple Health's export before selecting export.xml. Sup
 
 ## Final native review fixes
 
-The reviewer scored supplied native core-flow fidelity 4/5. Final pass fixed distinct 44pt symptom action targets, saved-response links that open the existing plan/document instead of inviting duplicate saves, and full stroke clearance around the signal arc. Numbered plan actions take precedence over contextual evidence bullets. The complete smoke scenario passed again on this final source, zero failures. No further code changes followed that pass.
+The reviewer scored supplied native core-flow fidelity 4/5. Final pass fixed distinct 44pt symptom action targets, saved-response links that open the existing plan/document instead of inviting duplicate saves, and full stroke clearance around the signal arc. Numbered plan actions take precedence over contextual evidence bullets. The complete smoke scenario passed again on this final source, zero failures. That pass verified the foundation before the follow-through batches below.
+
+## Follow-through batches · 29 October 2026
+
+Batch 1 adds consent-controlled personal context, dated editable checklist actions, plan lifecycle states and an agenda. Batch 2 adds persistent conversations with migration and safe reply routing. Batch 3 adds completed-day trend comparisons, source/coverage details and local appointment summaries, and removes silent historical-log truncation.
+
+The actual Swift logic suite now passes **48 checks**, including legacy plan/conversation decoding, sharing consent, scheduling, cross-conversation replies, sparse-period handling, zero baselines and older unresolved symptoms in reports. All application targets build. The expanded native scenario passed with **zero failures in 168.984 seconds**, covering personal-context editing, a dated plan step, reopening the original conversation, insights, appointment-summary creation and the original daily/persistence flows. Result bundle: `/tmp/LumenBatchesFinal.xcresult`; native screenshots: `Design/native/batches`.
+
+GitHub publishing is blocked by external repository permissions: the only configured GitHub account is `dbakp-askcody`, and GitHub reports `push:false` for `dbakp/Lumen`. The first push returned HTTP 403. No batch is claimed as published. Each batch is kept in its own local commit; `scripts/publish-batches.sh` can push them individually after access is corrected. It rejects a dirty tree or divergent remote and never force-pushes.
+
+The final native review fixed block-level document rendering, repeated empty metric cards, duplicated plan instructions, link affordances and singular/plural copy. Editor and agenda screenshots are now included. The final expanded scenario passed again after these changes; this is the source being committed in Batch 3.

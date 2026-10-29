@@ -37,6 +37,7 @@ public struct TodayView: View {
                         LumenRow("Food", subtitle: "Meals, nutrients and your appetite", value: "\(health.mealsToday.count) logged", icon: "fork.knife", color: Theme.food)
                     }
                 }.buttonStyle(.plain)
+                NavigationLink("Explore your trends", destination: InsightsView()).frame(minHeight: 44)
                 waterRow
                 if !companion.pendingActions.isEmpty {
                     GroupLabel("Your next steps")

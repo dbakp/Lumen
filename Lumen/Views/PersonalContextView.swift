@@ -9,7 +9,7 @@ struct PersonalContextView: View {
                 Text("What should Lumen know about you?").font(.title2.bold())
                 Text("Keep your goals and everyday constraints in one place. You decide whether they accompany your questions.").foregroundStyle(Theme.secondary)
             }.listRowBackground(Color.clear)
-            Section("Your focus") { TextField("What would you like to work on?", text: $draft.focus, axis: .vertical).lineLimit(2...4) }
+            Section("Your focus") { TextField("What would you like to work on?", text: $draft.focus, axis: .vertical).accessibilityIdentifier("personalFocus").lineLimit(2...4) }
             Section("Food and movement") {
                 TextField("Food preferences", text: $draft.foodPreferences, axis: .vertical)
                 TextField("Allergies you want to note", text: $draft.allergies, axis: .vertical)
@@ -37,7 +37,7 @@ struct PlanAgendaView: View {
             VStack(alignment: .leading, spacing: 24) {
                 Text("One step\nat a time.").font(.largeTitle.bold()).fontWidth(.expanded)
                 if companion.pendingActions.isEmpty {
-                    EmptyStateCard(icon: "checkmark.circle", title: "Room for your next step", message: "Active plans with unfinished steps appear here. Create a plan with your assistant or add steps to a Library document.")
+                    EmptyStateCard(icon: "checkmark.circle", title: "Room for your next step", message: "Active plans with unfinished steps appear here. Create a plan with your assistant or add steps to an existing plan.")
                 }
                 ForEach(companion.pendingActions) { action in PlanActionRow(action: action) }
             }.padding(Theme.gutter)
