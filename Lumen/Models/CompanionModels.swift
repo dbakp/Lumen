@@ -63,6 +63,7 @@ public struct ImportReceipt: Identifiable, Codable, Sendable {
     public var days: Int
     public var samples: Int
     public var skipped: Int
+    public var workouts: Int? = nil
 }
 
 public struct ReminderPreferences: Codable, Sendable {

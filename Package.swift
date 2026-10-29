@@ -56,6 +56,8 @@ let package = Package(
             "Lumen/Models/HealthImportControl.swift",
             "Lumen/Algorithms/DocumentBlocks.swift",
             "Lumen/Algorithms/ZIPPreflight.swift",
+            "Lumen/Algorithms/ImportedMetrics.swift",
+            "Lumen/Algorithms/WorkoutReconciliation.swift",
             "Lumen/Algorithms/TrendEvidence.swift",
             "Lumen/Algorithms/PlanSchedule.swift",
             "Lumen/Algorithms/PlanBuilder.swift",
@@ -67,8 +69,10 @@ let package = Package(
             "Lumen/Models/ConversationModels.swift",
             "Lumen/Models/CompanionModels.swift",
             "Lumen/Services/HealthImportService.swift",
+            "Lumen/Services/WorkoutImportParser.swift",
             "Tests/ImportTests.swift",
             "Tests/ZIPImportChecks.swift",
+            "Tests/WorkoutImportChecks.swift",
             "Lumen/Services/HealthZIPArchive.swift"
 ]
     )]

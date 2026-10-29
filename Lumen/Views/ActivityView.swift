@@ -81,6 +81,7 @@ public struct ActivityView: View {
                 }
                 .buttonStyle(.plain)
                 WeeklyLoadChart(workouts: health.workouts).frame(height: 120)
+                Text("Recorded workout energy. Sessions without energy readings aren’t included.").font(.caption).foregroundStyle(Theme.secondary)
             }
             .padding(16).surface()
         }
@@ -111,7 +112,7 @@ public struct ActivityView: View {
                 RowGroup {
                     ForEach(Array(recent.enumerated()), id: \.element.id) { i, w in
                         if i > 0 { RowDivider() }
-                        WorkoutRow(w, units: units)
+                        NavigationLink { WorkoutDetailView(workout: w, units: units) } label: { WorkoutRow(w, units: units) }.buttonStyle(.plain)
                             .contextMenu {
                                 if w.source == .manual {
                                     Button("Delete", systemImage: "trash", role: .destructive) { health.deleteWorkout(w.id) }
@@ -175,7 +176,7 @@ struct AllWorkoutsView: View {
             ForEach(groups, id: \.day) { group in
                 Section(group.day.formatted(.dateTime.weekday(.wide).month().day())) {
                     ForEach(group.items, id: \.id) { w in
-                        WorkoutRow(w, units: sleep.profile.unitSystem)
+                        NavigationLink { WorkoutDetailView(workout: w, units: sleep.profile.unitSystem) } label: { WorkoutRow(w, units: sleep.profile.unitSystem) }
                             .listRowBackground(Theme.surface)
                             .swipeActions {
                                 if w.source == .manual { Button("Delete", role: .destructive) { health.deleteWorkout(w.id) } }

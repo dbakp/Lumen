@@ -52,25 +52,33 @@ struct ConnectionsView: View {
                 if let preview {
                     VStack(alignment: .leading, spacing: 12) {
                         Text(filename).font(.headline)
-                        Text("\(preview.days.count) day\(preview.days.count == 1 ? "" : "s") · \(preview.samples) supported sample\(preview.samples == 1 ? "" : "s")\n\(preview.skipped) unsupported, duplicate or invalid record\(preview.skipped == 1 ? "" : "s") skipped").font(.subheadline)
-                        if let first = preview.days.first, let last = preview.days.last { Text("\(first.date.formatted(date: .abbreviated, time: .omitted)) – \(last.date.formatted(date: .abbreviated, time: .omitted))").font(.footnote) }
+                        Text("\(preview.coveredDays.count) day\(preview.coveredDays.count == 1 ? "" : "s") · \(preview.samples) supported sample\(preview.samples == 1 ? "" : "s")\n\(preview.skipped) unsupported, duplicate or invalid record\(preview.skipped == 1 ? "" : "s") skipped").font(.subheadline)
+                        if let first = preview.coveredDays.first, let last = preview.coveredDays.last { Text("\(first.formatted(date: .abbreviated, time: .omitted)) – \(last.formatted(date: .abbreviated, time: .omitted))").font(.footnote) }
+                        if !preview.workouts.isEmpty {
+                            Text("\(preview.workouts.count) workout\(preview.workouts.count == 1 ? "" : "s") · \(WorkoutReconciliation.matches(preview.workouts, current: health.workouts)) already recorded").font(.headline)
+                            Text("Matching sessions are kept once. Live source copies take priority. Missing workout energy stays unknown.").font(.footnote).foregroundStyle(Theme.secondary)
+                            ForEach(preview.workouts.suffix(3)) { workout in
+                                Text("\(workout.title) · \(Int(workout.duration / 60)) min · \(workout.energyDescription)\n\(workout.sourceDescription)").font(.caption).foregroundStyle(Theme.secondary)
+                            }
+                            if preview.workoutFieldWarnings > 0 { Text("\(preview.workoutFieldWarnings) workout fields could not be read. Review imported sessions for details.").font(.footnote).foregroundStyle(Theme.secondary) }
+                        }
                         Text("Sources: \(preview.sourceNames.joined(separator: ", "))").font(.footnote)
                         Text("For each metric/day, the source with the most samples wins; sources are never added together. Existing imported values for those dates will be replaced. Review sample sources below.").font(.footnote).foregroundStyle(Theme.secondary)
                         ForEach(preview.days.suffix(3)) { day in
                             Text(day.date.formatted(date: .abbreviated, time: .omitted)).font(.subheadline.bold())
                             ForEach(day.values.keys.sorted(), id: \.self) { key in
-                                Text("\(key): \(day.values[key]!, specifier: "%.1f") \(HealthImportService.units[key] ?? "") · \(day.sources[key] ?? "")").font(.caption).foregroundStyle(Theme.secondary)
+                                Text("\(ImportedMetrics.labels[key] ?? key): \(day.values[key]!, specifier: "%.1f") \(ImportedMetrics.displayUnit(key)) · \(day.sources[key] ?? "")").font(.caption).foregroundStyle(Theme.secondary)
                             }
                         }
                         if filename.lowercased().hasSuffix(".zip") {
-                            Text("Imports supported measurements. Clinical documents and workout routes aren’t included. Add PDF or text records separately in Library.")
+                            Text("Imports supported measurements and workout summaries. Clinical documents and workout routes aren’t included. Add PDF or text records separately in Library.")
                                 .font(.footnote).foregroundStyle(Theme.secondary).accessibilityIdentifier("zipImportScope")
                         }
-                        Button("Import \(preview.days.count) day\(preview.days.count == 1 ? "" : "s")") { companion.commit(preview, filename: filename); self.preview = nil; AppRouter.shared.confirm("Health history imported") }.buttonStyle(.borderedProminent)
+                        Button("Import \(preview.coveredDays.count) day\(preview.coveredDays.count == 1 ? "" : "s")") { companion.commit(preview, filename: filename); self.preview = nil; AppRouter.shared.confirm("Health history imported") }.buttonStyle(.borderedProminent)
                         Button("Discard preview", role: .cancel) { self.preview = nil }
                     }.padding(.vertical, 12)
                 }
-            } header: { Text("Your exports") } footer: { Text("CSV columns: date,metric,value,unit,source. Example: 2026-10-28,steps,8421,count,Watch. Supported metrics: steps, sleep, exercise, activeEnergy, restingHR, hrv, weight, water, calories, protein, carbs, fat.") }
+            } header: { Text("Your exports") } footer: { Text("CSV columns: date,metric,value,unit,source. Example: 2026-10-28,steps,8421,count,Watch. Supported metrics: steps, sleep, exercise, activeEnergy, restingHR, hrv, weight, water, heartRate, respiratoryRate, spo2, vo2max, bodyFat, bmi, calories, protein, carbs, fat.") }
             Section("Import history") {
                 if companion.imports.isEmpty { Text("Nothing imported yet").foregroundStyle(Theme.secondary) }
                 ForEach(companion.imports) { receipt in
@@ -103,7 +111,7 @@ struct ConnectionsView: View {
             .onDisappear { cancelImport(showMessage: false) }
             .fileImporter(isPresented: $importing, allowedContentTypes: [.zip, .xml, .commaSeparatedText, .json]) { result in read(result) }
             .alert("Couldn't import health data", isPresented: Binding(get: { error != nil }, set: { if !$0 { error = nil } })) { Button("OK") { error = nil } } message: { Text(error ?? "") }
-            .confirmationDialog("Clear all imported daily measurements?", isPresented: $clear, titleVisibility: .visible) { Button("Clear imported history", role: .destructive) { companion.clearImports() } }
+            .confirmationDialog("Clear imported measurements and exported workouts?", isPresented: $clear, titleVisibility: .visible) { Button("Clear imported history", role: .destructive) { companion.clearImports() } }
     }
     func cancelImport(showMessage: Bool = true) {
         guard let activeImport else { return }

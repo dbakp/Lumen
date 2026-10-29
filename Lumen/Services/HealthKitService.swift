@@ -151,7 +151,7 @@ public final class HealthKitService: ObservableObject {
         async let spo2 = latest(.oxygenSaturation, unit: .percent())
         async let weight = latest(.bodyMass, unit: .gramUnit(with: .kilo))
         async let resp = latest(.respiratoryRate, unit: HKUnit(from: "count/min"))
-        async let vo2 = latest(.vo2Max, unit: HKUnit(from: "ml/kg*min"))
+        async let vo2 = latest(.vo2Max, unit: HKUnit(from: "ml/(kg*min)"))
         async let avgHR = average(.heartRate, unit: HKUnit(from: "count/min"), start: start, end: end)
         async let dietaryEnergy = sum(.dietaryEnergyConsumed, unit: .kilocalorie(), start: start, end: end, excludingLumen: true)
         async let dietaryProtein = sum(.dietaryProtein, unit: .gram(), start: start, end: end, excludingLumen: true)
@@ -312,13 +312,15 @@ public final class HealthKitService: ObservableObject {
                 let out: [Workout] = samples.map { w in
                     let kind = Self.mapWorkoutType(w.workoutActivityType)
                     let energy = w.statistics(for: HKQuantityType(.activeEnergyBurned))?.sumQuantity()?.doubleValue(for: .kilocalorie())
-                    let kcal = energy ?? kind.met * (w.duration / 3600) * 75
+                    let kcal = energy ?? 0
                     let dist = w.statistics(for: HKQuantityType(.distanceWalkingRunning))?.sumQuantity()?.doubleValue(for: .meter())
                         ?? w.statistics(for: HKQuantityType(.distanceCycling))?.sumQuantity()?.doubleValue(for: .meter())
                         ?? w.statistics(for: HKQuantityType(.distanceSwimming))?.sumQuantity()?.doubleValue(for: .meter())
                     let hr = w.statistics(for: HKQuantityType(.heartRate))?.averageQuantity()?.doubleValue(for: HKUnit(from: "count/min"))
-                    return Workout(id: w.uuid.uuidString, kind: kind, title: Self.workoutName(w.workoutActivityType), start: w.startDate,
+                    var workout = Workout(id: w.uuid.uuidString, kind: kind, title: Self.workoutName(w.workoutActivityType), start: w.startDate,
                                    duration: w.duration, activeCalories: kcal, distanceM: dist, avgHR: hr, source: .healthKit)
+                    workout.energyKnown = energy != nil; workout.energyIsEstimate = false
+                    return workout
                 }
                 cont.resume(returning: out)
             }

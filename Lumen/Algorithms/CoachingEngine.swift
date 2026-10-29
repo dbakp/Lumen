@@ -154,7 +154,7 @@ public enum CoachingEngine {
         }
         if !workoutsToday.isEmpty {
             let w = workoutsToday.last!
-            out.append(Insight(icon: w.kind.icon, tint: "#FBBF24", title: "\(w.title) logged · \(Int(w.activeCalories)) kcal",
+            out.append(Insight(icon: w.kind.icon, tint: "#FBBF24", title: "\(w.title) logged · \(w.energyDescription)",
                 body: "Nice work. Have a protein-rich meal in the next couple of hours and take the evening easy.",
                 action: nil))
         } else if score >= 70 && hour < 18 {

@@ -11,8 +11,8 @@ struct InsightsView: View {
     @State private var connecting = false
     @State private var includePersonal = false
     @State private var summaryID: String?
-    let labels = ["sleep":"Sleep", "steps":"Steps", "exercise":"Exercise", "activeEnergy":"Active energy", "restingHR":"Resting heart rate", "hrv":"Heart rate variability", "water":"Water logged"]
-    var evidence: [MetricEvidence] { ["sleep", "steps", "exercise", "activeEnergy", "restingHR", "hrv", "water"].map { TrendEvidence.compare(days, metric: $0, window: window) } }
+    let labels = ImportedMetrics.labels
+    var evidence: [MetricEvidence] { ImportedMetrics.evidenceKeys.map { TrendEvidence.compare(days, metric: $0, window: window) } }
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
@@ -44,7 +44,8 @@ struct InsightsView: View {
                             }
                             if let mean = metric.currentMean {
                                 Text("\(mean, specifier: "%.1f") \(metric.unit)").font(.title.bold()).monospacedDigit()
-                                if let change = metric.changePercent { Text("\(change >= 0 ? "+" : "")\(change, specifier: "%.1f")% vs previous period").font(.subheadline).foregroundStyle(Theme.secondary) }
+                                if ImportedMetrics.percentageKeys.contains(metric.metric), let change = metric.change { Text("\(change >= 0 ? "+" : "")\(change, specifier: "%.1f") percentage points vs previous period").font(.subheadline).foregroundStyle(Theme.secondary) }
+                                else if let change = metric.changePercent { Text("\(change >= 0 ? "+" : "")\(change, specifier: "%.1f")% vs previous period").font(.subheadline).foregroundStyle(Theme.secondary) }
                                 else if let change = metric.change { Text("Change: \(change, specifier: "%.1f") \(metric.unit)").font(.subheadline) }
                             } else { Text("No readings in this period").font(.subheadline).foregroundStyle(Theme.secondary) }
                             Text("\(metric.current.count)/\(window) current days · \(metric.previous.count)/\(window) previous days").font(.caption).foregroundStyle(Theme.secondary)
@@ -68,13 +69,35 @@ struct MetricEvidenceView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
                 Text(title).font(.largeTitle.bold())
+                if let explanation = ImportedMetrics.explanations[evidence.metric] { Text(explanation).font(.subheadline).foregroundStyle(Theme.secondary) }
                 if evidence.current.isEmpty && evidence.previous.isEmpty {
                     EmptyStateCard(icon: "chart.xyaxis.line", title: "More history will help", message: "Connect Apple Health, import history or keep logging to see this metric here.")
                 } else {
+                    if let latest = (evidence.previous + evidence.current).max(by: { $0.date < $1.date }), let value = latest.values[evidence.metric] {
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Latest recorded day").font(.subheadline).foregroundStyle(Theme.secondary)
+                            Text("\(value, specifier: "%.1f") \(evidence.unit)").font(.largeTitle.bold()).monospacedDigit().accessibilityIdentifier("latestEvidenceValue")
+                            Text(latest.date.formatted(date: .complete, time: .omitted)).font(.subheadline).foregroundStyle(Theme.secondary).accessibilityIdentifier("latestEvidenceDate")
+                        }
+                    }
                     Chart(evidence.previous + evidence.current) { day in
                         PointMark(x: .value("Day", day.date), y: .value(title, day.values[evidence.metric] ?? 0)).foregroundStyle(Theme.accent)
                     }.frame(height: 220).chartYAxisLabel(evidence.unit)
                     Text("Each dot is a recorded day; gaps are left empty. The chart excludes today.").font(.caption).foregroundStyle(Theme.secondary)
+                }
+                if !evidence.current.isEmpty || !evidence.previous.isEmpty {
+                    DisclosureGroup("Recorded days") {
+                        ForEach((evidence.previous + evidence.current).sorted { $0.date > $1.date }) { day in
+                            VStack(alignment: .leading, spacing: 4) {
+                                HStack(alignment: .firstTextBaseline) {
+                                    Text(day.date.formatted(date: .abbreviated, time: .omitted))
+                                    Spacer()
+                                    Text("\(day.values[evidence.metric] ?? 0, specifier: "%.1f") \(evidence.unit)").monospacedDigit()
+                                }
+                                if let source = day.sources[evidence.metric] { Text(source).font(.caption).foregroundStyle(Theme.secondary) }
+                            }.padding(.vertical, 8)
+                        }
+                    }.tint(Theme.accent)
                 }
                 GroupLabel("Coverage and sources")
                 Text("Current: \(evidence.current.count) of \(evidence.window) days. Previous: \(evidence.previous.count) of \(evidence.window) days. Averages use recorded days only.")

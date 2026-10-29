@@ -5,6 +5,9 @@ public struct HealthImportPreview: Sendable {
     public var samples: Int
     public var skipped: Int
     public var sourceNames: [String]
+    public var workouts: [Workout] = []
+    public var workoutFieldWarnings: Int = 0
+    public var coveredDays: [Date] { Array(Set(days.map(\.date) + workouts.map { Calendar.current.startOfDay(for: $0.start) })).sorted() }
 }
 
 public enum HealthImportError: LocalizedError {
@@ -22,7 +25,7 @@ public enum HealthImportError: LocalizedError {
 
 /// Parsing runs away from the UI. XML uses a stream rather than loading the export into memory.
 public enum HealthImportService {
-    public static let units: [String: String] = ["steps":"count", "activeEnergy":"kcal", "exercise":"min", "sleep":"h", "restingHR":"bpm", "hrv":"ms", "weight":"kg", "water":"ml", "calories":"kcal", "protein":"g", "carbs":"g", "fat":"g"]
+    public static let units: [String: String] = ["steps":"count", "activeEnergy":"kcal", "exercise":"min", "sleep":"h", "restingHR":"bpm", "hrv":"ms", "weight":"kg", "water":"ml", "calories":"kcal", "protein":"g", "carbs":"g", "fat":"g", "heartRate":"bpm", "respiratoryRate":"breaths/min", "spo2":"%", "vo2max":"ml/kg/min", "bodyFat":"%", "bmi":"count"]
     public static func parse(url: URL, control: HealthImportControl = HealthImportControl(), progress: @escaping @Sendable (Int) -> Void = { _ in }) throws -> HealthImportPreview {
         try control.checkCancellation()
         let size = (try? url.resourceValues(forKeys: [.fileSizeKey]).fileSize) ?? 0
@@ -111,11 +114,19 @@ private final class Collector: NSObject, XMLParserDelegate {
     var buckets: [Key: Bucket] = [:]
     var samples = 0, skipped = 0
     var seen = Set<String>()
+    var workouts: [Workout] = []
+    var workoutIDs = Set<String>()
+    var pendingWorkout: WorkoutImportDraft?
+    var workoutDepth: Int?
+    var depth = 0
+    var workoutFieldWarnings = 0
     let appleDate: DateFormatter = { let f = DateFormatter(); f.locale = Locale(identifier: "en_US_POSIX"); f.dateFormat = "yyyy-MM-dd HH:mm:ss Z"; return f }()
     let dayDate: DateFormatter = { let f = DateFormatter(); f.locale = Locale(identifier: "en_US_POSIX"); f.dateFormat = "yyyy-MM-dd"; f.isLenient = false; return f }()
     let iso = ISO8601DateFormatter()
-    let map = ["HKQuantityTypeIdentifierStepCount":"steps", "HKQuantityTypeIdentifierActiveEnergyBurned":"activeEnergy", "HKQuantityTypeIdentifierAppleExerciseTime":"exercise", "HKQuantityTypeIdentifierRestingHeartRate":"restingHR", "HKQuantityTypeIdentifierHeartRateVariabilitySDNN":"hrv", "HKQuantityTypeIdentifierBodyMass":"weight", "HKQuantityTypeIdentifierDietaryWater":"water", "HKQuantityTypeIdentifierDietaryEnergyConsumed":"calories", "HKQuantityTypeIdentifierDietaryProtein":"protein", "HKQuantityTypeIdentifierDietaryCarbohydrates":"carbs", "HKQuantityTypeIdentifierDietaryFatTotal":"fat"]
+    let map = ["HKQuantityTypeIdentifierStepCount":"steps", "HKQuantityTypeIdentifierActiveEnergyBurned":"activeEnergy", "HKQuantityTypeIdentifierAppleExerciseTime":"exercise", "HKQuantityTypeIdentifierRestingHeartRate":"restingHR", "HKQuantityTypeIdentifierHeartRateVariabilitySDNN":"hrv", "HKQuantityTypeIdentifierBodyMass":"weight", "HKQuantityTypeIdentifierDietaryWater":"water", "HKQuantityTypeIdentifierDietaryEnergyConsumed":"calories", "HKQuantityTypeIdentifierDietaryProtein":"protein", "HKQuantityTypeIdentifierDietaryCarbohydrates":"carbs", "HKQuantityTypeIdentifierDietaryFatTotal":"fat", "HKQuantityTypeIdentifierHeartRate":"heartRate", "HKQuantityTypeIdentifierRespiratoryRate":"respiratoryRate", "HKQuantityTypeIdentifierOxygenSaturation":"spo2", "HKQuantityTypeIdentifierVO2Max":"vo2max", "HKQuantityTypeIdentifierBodyFatPercentage":"bodyFat", "HKQuantityTypeIdentifierBodyMassIndex":"bmi"]
     func date(_ s: String) -> Date? {
+        let prefix = String(s.prefix(10))
+        guard prefix.count == 10, let day = dayDate.date(from: prefix), dayDate.string(from: day) == prefix else { return nil }
         if let d = iso.date(from: s) ?? appleDate.date(from: s) { return d }
         if s.count == 10, let d = dayDate.date(from: s), dayDate.string(from: d) == s { return d }
         return nil
@@ -125,7 +136,19 @@ private final class Collector: NSObject, XMLParserDelegate {
         add(metric: metric, value: v, unit: unit, start: d, end: d, source: fields["source"] ?? "Imported file")
     }
     func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes a: [String : String] = [:]) {
+        depth += 1
         do { try control.checkCancellation() } catch { parser.abortParsing(); return }
+        if elementName == "Workout" {
+            do { try control.record(progress) } catch { parser.abortParsing(); return }
+            guard workoutDepth == nil else { skipped += 1; return }
+            workoutDepth = depth
+            pendingWorkout = WorkoutImportDraft.make(a, date: date)
+            if pendingWorkout == nil { skipped += 1 }
+            return
+        }
+        if elementName == "WorkoutStatistics", let workoutDepth, depth == workoutDepth + 1 {
+            pendingWorkout?.statistic(a); return
+        }
         guard elementName == "Record" else { return }
         do { try control.record(progress) } catch { parser.abortParsing(); return }
         guard let type = a["type"], let ds = a["startDate"], let start = date(ds), let de = a["endDate"], let end = date(de), end >= start else { skipped += 1; return }
@@ -137,11 +160,25 @@ private final class Collector: NSObject, XMLParserDelegate {
             guard seconds > 0, seconds < 24 * 3600 else { skipped += 1; return }
             add(metric: "sleep", value: seconds / 3600, unit: "h", start: start, end: end, source: source, sleep: true)
         } else if let metric = map[type], let raw = a["value"], let value = Double(raw) {
-            add(metric: metric, value: value, unit: a["unit"] ?? "", start: start, end: end, source: source)
+            if ImportedMetrics.percentageKeys.contains(metric), a["unit"] == "%" {
+                guard (0...1).contains(value) else { skipped += 1; return }
+                add(metric: metric, value: value * 100, unit: "%", start: start, end: end, source: source)
+            } else { add(metric: metric, value: value, unit: a["unit"] ?? "", start: start, end: end, source: source) }
         } else { skipped += 1 }
     }
+    func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
+        if elementName == "Workout", workoutDepth == depth {
+            if let draft = pendingWorkout {
+                let workout = draft.workout()
+                if workoutIDs.insert(workout.id).inserted { workouts.append(workout); workoutFieldWarnings += draft.warnings.count }
+                else { skipped += 1 }
+            }
+            pendingWorkout = nil; workoutDepth = nil
+        }
+        depth = max(0, depth - 1)
+    }
     func add(metric: String, value raw: Double, unit: String, start: Date, end: Date, source: String, sleep: Bool = false) {
-        guard let expected = HealthImportService.units[metric], raw.isFinite, raw >= 0, start <= Date().addingTimeInterval(60) else { skipped += 1; return }
+        guard let expected = HealthImportService.units[metric], raw.isFinite, raw >= 0, start <= Date().addingTimeInterval(60), end >= start, end <= Date().addingTimeInterval(60) else { skipped += 1; return }
         var value = raw
         if unit != expected {
             switch (metric, unit) {
@@ -149,14 +186,17 @@ private final class Collector: NSObject, XMLParserDelegate {
             case ("weight", "lb"): value *= 0.45359237
             case ("weight", "g"): value /= 1000
             case ("hrv", "s"): value *= 1000
-            case ("restingHR", "count/min"): break
+            case ("restingHR", "count/min"), ("heartRate", "count/min"), ("respiratoryRate", "count/min"): break
+            case ("respiratoryRate", "count/s"): value *= 60
+            case ("spo2", "fraction"), ("bodyFat", "fraction"): value *= 100
+            case ("vo2max", "ml/(kg*min)"), ("vo2max", "mL/(kg*min)"), ("vo2max", "mL/kg/min"): break
             case ("sleep", "min"): value /= 60
             case ("sleep", "s"): value /= 3600
             case ("calories", "kJ"), ("activeEnergy", "kJ"): value /= 4.184
             default: skipped += 1; return
             }
         }
-        let limits: [String: Double] = ["sleep":24, "restingHR":300, "hrv":5000, "weight":700, "water":30000, "steps":300000, "activeEnergy":30000, "exercise":1440, "calories":50000, "protein":5000, "carbs":10000, "fat":5000]
+        let limits: [String: Double] = ["sleep":24, "restingHR":300, "hrv":5000, "weight":700, "water":30000, "steps":300000, "activeEnergy":30000, "exercise":1440, "calories":50000, "protein":5000, "carbs":10000, "fat":5000, "heartRate":300, "respiratoryRate":150, "spo2":100, "vo2max":150, "bodyFat":100, "bmi":150]
         guard value <= (limits[metric] ?? .greatestFiniteMagnitude) else { skipped += 1; return }
         let fingerprint = "\(metric)|\(source)|\(start.timeIntervalSince1970)|\(end.timeIntervalSince1970)|\(value)"
         guard seen.insert(fingerprint).inserted else { skipped += 1; return }
@@ -169,7 +209,7 @@ private final class Collector: NSObject, XMLParserDelegate {
     }
     func preview() throws -> HealthImportPreview {
         try control.checkCancellation()
-        guard !buckets.isEmpty else { throw HealthImportError.empty }
+        guard !buckets.isEmpty || !workouts.isEmpty else { throw HealthImportError.empty }
         var chosen: [Date: [String: (String, Bucket)]] = [:]
         // One source per metric per day: never sum two devices that observed the same activity.
         for (key, bucket) in buckets {
@@ -185,7 +225,7 @@ private final class Collector: NSObject, XMLParserDelegate {
             for (metric, pair) in metrics {
                 let (source, b) = pair
                 var value = b.sum
-                if metric == "restingHR" || metric == "hrv" { value /= Double(b.count) }
+                if ImportedMetrics.meanKeys.contains(metric) { value /= Double(b.count) }
                 if metric == "weight" { value = b.latest }
                 if metric == "sleep", !b.intervals.isEmpty {
                     var union: [DateInterval] = []
@@ -202,6 +242,6 @@ private final class Collector: NSObject, XMLParserDelegate {
             return ImportedHealthDay(date: day, values: values, sources: sources)
         }.sorted { $0.date < $1.date }
         try control.checkCancellation()
-        return HealthImportPreview(days: days, samples: samples, skipped: skipped, sourceNames: Array(Set(buckets.keys.map(\.source))).sorted())
+        return HealthImportPreview(days: days, samples: samples, skipped: skipped, sourceNames: Array(Set(buckets.keys.map(\.source) + workouts.compactMap { $0.importOrigin?.sourceName })).sorted(), workouts: workouts.sorted { $0.start < $1.start }, workoutFieldWarnings: workoutFieldWarnings)
     }
 }

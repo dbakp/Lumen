@@ -25,6 +25,15 @@ public enum WorkoutKind: String, Codable, Sendable, CaseIterable {
     }
 }
 
+public struct WorkoutImportOrigin: Codable, Sendable {
+    public var sourceName: String
+    public var activityType: String
+    public var end: Date
+    public var filename: String? = nil
+    public var durationWasReported: Bool? = nil
+    public var warnings: [String]? = nil
+}
+
 public struct Workout: Identifiable, Codable, Sendable {
     public var id: String
     public var kind: WorkoutKind
@@ -37,6 +46,15 @@ public struct Workout: Identifiable, Codable, Sendable {
     public var source: HealthSource
     public var stravaID: Int64?
     public var polyline: String?
+    public var importOrigin: WorkoutImportOrigin? = nil
+    public var energyKnown: Bool? = nil
+    public var energyIsEstimate: Bool? = nil
+    public var energyKcal: Double? { energyKnown == false ? nil : activeCalories }
+    public var sourceDescription: String { importOrigin.map { "Health export · " + $0.sourceName } ?? source.label }
+    public var energyDescription: String {
+        guard let kcal = energyKcal else { return "Energy not provided" }
+        return ((energyIsEstimate ?? (source == .manual)) ? "About " : "") + "\(Int(kcal)) kcal"
+    }
     public init(id: String = UUID().uuidString, kind: WorkoutKind, title: String, start: Date, duration: TimeInterval, activeCalories: Double, distanceM: Double? = nil, avgHR: Double? = nil, source: HealthSource, stravaID: Int64? = nil, polyline: String? = nil) {
         self.id = id; self.kind = kind; self.title = title; self.start = start
         self.duration = duration; self.activeCalories = activeCalories

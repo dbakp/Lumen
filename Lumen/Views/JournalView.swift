@@ -8,6 +8,7 @@ struct JournalView: View {
     @State private var deleting: SymptomEntry?
     @State private var editing: SymptomEntry?
     @State private var editingCheckIn: WellbeingCheckIn?
+    @State private var selectedWorkout: Workout?
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
@@ -47,6 +48,7 @@ struct JournalView: View {
                     EmptyStateCard(icon: "book.closed", title: "A page for your day", message: "Meals, movement, sleep and how you feel will appear together here.", actionTitle: "Add a check-in") { AppRouter.shared.show(.checkIn) }
                 } else { TimelineList(events: events, onSelect: { event in
                     if event.id.hasPrefix("symptom-") { editing = companion.symptoms.first { "symptom-" + $0.id == event.id } }
+                    if event.id.hasPrefix("workout-") { selectedWorkout = health.workouts.first { "workout-" + $0.id == event.id } }
                     if event.id.hasPrefix("check-") { editingCheckIn = companion.checkIns.first { "check-" + $0.id == event.id } }
                 }) }
                 Text("Your notes can help you describe patterns to a clinician. They don't tell us what caused a symptom.").font(.footnote).foregroundStyle(Theme.secondary)
@@ -54,6 +56,7 @@ struct JournalView: View {
         }.lumenScreen().navigationTitle("Journal").navigationBarTitleDisplayMode(.inline)
             .toolbar { ToolbarItem(placement: .topBarTrailing) { LogToolbarButton() } }
             .sheet(item: $editing) { SymptomLogSheet(entry: $0) }
+            .sheet(item: $selectedWorkout) { workout in NavigationStack { WorkoutDetailView(workout: workout, units: sleep.profile.unitSystem) } }
             .sheet(item: $editingCheckIn) { CheckInSheet(entry: $0) }
             .confirmationDialog("Delete this symptom log?", isPresented: Binding(get: { deleting != nil }, set: { if !$0 { deleting = nil } }), titleVisibility: .visible) {
                 Button("Delete log", role: .destructive) { if let deleting { companion.deleteSymptom(deleting.id) }; deleting = nil }
@@ -82,7 +85,7 @@ struct TimelineList: View {
                     }.padding(.bottom, 24)
                 }.accessibilityElement(children: .combine)
                     .contentShape(Rectangle()).onTapGesture { onSelect?(event) }
-                    .accessibilityAddTraits(onSelect != nil && (event.id.hasPrefix("symptom-") || event.id.hasPrefix("check-")) ? .isButton : [])
+                    .accessibilityAddTraits(onSelect != nil && (event.id.hasPrefix("symptom-") || event.id.hasPrefix("check-") || event.id.hasPrefix("workout-")) ? .isButton : [])
             }
         }
     }

@@ -27,7 +27,7 @@ struct BackupSnapshot: Codable, Sendable {
         func common<T: Identifiable>(_ incoming: [T], _ current: [T]) -> Int {
             let ids = Set(current.map(\.id)); return incoming.filter { ids.contains($0.id) }.count
         }
-        let activity = common(sleep, local.sleep) + common(workouts, local.workouts)
+        let activity = common(sleep, local.sleep) + WorkoutReconciliation.matches(workouts, current: local.workouts)
         let nutrition = common(meals, local.meals) + common(water, local.water)
         let journal = common(symptoms, local.symptoms) + common(checkIns, local.checkIns)
         let library = common(conversations, local.conversations) + common(documents, local.documents)
@@ -42,7 +42,7 @@ struct BackupSnapshot: Codable, Sendable {
             var ids = Set(current.map(\.id)); return current + incoming.filter { ids.insert($0.id).inserted }
         }
         result.sleep = merge(sleep, local.sleep).sorted { $0.bedtime < $1.bedtime }
-        result.workouts = merge(workouts, local.workouts).sorted { $0.start < $1.start }
+        result.workouts = WorkoutReconciliation.merge(workouts, into: local.workouts, preferExisting: true)
         result.water = merge(water, local.water)
         result.conversations = merge(conversations, local.conversations)
         result.symptoms = merge(symptoms, local.symptoms)
@@ -144,7 +144,11 @@ struct BackupArchive: Codable, Sendable {
               snapshot.water.allSatisfy({ $0.ml.isFinite && $0.ml > 0 && $0.ml <= 10000 }) else { throw BackupError.invalid }
         guard snapshot.sleep.allSatisfy({ $0.wakeTime >= $0.bedtime && bounded($0.duration) }),
               snapshot.importedDays.allSatisfy({ $0.values.values.allSatisfy(bounded) }) else { throw BackupError.invalid }
-        guard snapshot.workouts.allSatisfy({ bounded($0.duration) && bounded($0.activeCalories) && optionalBounded($0.distanceM) && optionalBounded($0.avgHR) }) else { throw BackupError.invalid }
+        guard snapshot.workouts.allSatisfy({ workout in
+            guard bounded(workout.duration), bounded(workout.activeCalories), optionalBounded(workout.distanceM), optionalBounded(workout.avgHR) else { return false }
+            guard let origin = workout.importOrigin else { return true }
+            return origin.end >= workout.start && origin.end.timeIntervalSince(workout.start) <= 7 * 86400 && workout.duration <= origin.end.timeIntervalSince(workout.start) + 60
+        }) else { throw BackupError.invalid }
         for meal in snapshot.meals {
             guard unique(meal.items) else { throw BackupError.invalid }
             for food in meal.items {

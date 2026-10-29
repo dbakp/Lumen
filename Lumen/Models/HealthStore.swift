@@ -246,14 +246,18 @@ public final class HealthStore: ObservableObject {
     }
 
     private func mergeWorkouts(_ incoming: [Workout]) {
-        for w in incoming {
-            if let i = workouts.firstIndex(where: { $0.id == w.id }) { workouts[i] = w; continue }
-            if let sid = w.stravaID, workouts.contains(where: { $0.stravaID == sid }) { continue }
-            // Same session recorded by two sources: keep the first non-manual copy.
-            if workouts.contains(where: { $0.overlaps(w) && $0.kind == w.kind && $0.source != .manual }) { continue }
-            workouts.append(w)
+        workouts = WorkoutReconciliation.merge(incoming, into: workouts)
+    }
+
+    func importWorkouts(_ incoming: [Workout], filename: String) {
+        let records = incoming.map { original in
+            var workout = original; workout.importOrigin?.filename = filename; return workout
         }
-        workouts.sort { $0.start < $1.start }
+        mergeWorkouts(records); persist(); refresh()
+    }
+
+    func clearImportedWorkouts() {
+        workouts.removeAll { $0.importOrigin != nil }; persist(); refresh()
     }
 
     // MARK: Coaching
@@ -275,6 +279,10 @@ public final class HealthStore: ObservableObject {
             m.restingHR = m.restingHR ?? imported["restingHR"]
             m.hrvMS = m.hrvMS ?? imported["hrv"]
             m.weightKg = m.weightKg ?? imported["weight"]
+            m.avgHR = m.avgHR ?? imported["heartRate"]
+            m.respiratoryRate = m.respiratoryRate ?? imported["respiratoryRate"]
+            m.spo2 = m.spo2 ?? imported["spo2"]
+            m.vo2max = m.vo2max ?? imported["vo2max"]
         }
         // Manual sessions aren't in Health's activity totals — add them.
         let manual = workoutsToday.filter { $0.source == .manual }

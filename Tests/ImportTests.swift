@@ -181,6 +181,7 @@ import Darwin
         do { _ = try HealthImportService.csvRows(manyRows, control: csvLexing); fatalError("CSV tokenization ignored cancellation") }
         catch is CancellationError { print("PASS: CSV tokenization honors cancellation") }
         try ZIPImportChecks.run(in: directory)
+        try WorkoutImportChecks.run(in: directory, snapshot: backup)
         print("All import, model, totals, history, plan, conversation, evidence, document and reminder checks passed.")
     }
 }

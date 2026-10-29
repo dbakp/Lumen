@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Place synthetic fixtures in the chosen simulator's Files provider, never a physical device."""
 import argparse
+import datetime
 import pathlib
 import plistlib
 import uuid
@@ -9,6 +10,7 @@ import zipfile
 parser = argparse.ArgumentParser()
 parser.add_argument('simulator', help='CoreSimulator device UUID')
 args = parser.parse_args()
+fixture_day = (datetime.datetime.now().astimezone().date() - datetime.timedelta(days=1)).isoformat()
 args.simulator = str(uuid.UUID(args.simulator)).upper()
 root = pathlib.Path.home() / 'Library/Developer/CoreSimulator/Devices' / args.simulator / 'data/Containers/Shared/AppGroup'
 if not root.is_dir():
@@ -32,6 +34,10 @@ for metadata in root.glob('*/.com.apple.mobile_container_manager.metadata.plist'
             archive.writestr('apple_health_export/export.xml', health_xml)
             archive.writestr('apple_health_export/export_cda.xml', 'Excluded clinical record fixture')
             archive.writestr('apple_health_export/workout-routes/test.gpx', 'Excluded route fixture')
+        workout = '<Workout workoutActivityType="HKWorkoutActivityTypeRunning" sourceName="Synthetic workout Watch" startDate="2026-10-28 10:00:00 +0000" endDate="2026-10-28 11:00:00 +0000" duration="45" durationUnit="min"/>'
+        signals = ''.join(f'<Record type="HKQuantityTypeIdentifier{kind}" value="{value}" unit="{unit}" startDate="2026-10-28 12:00:00 +0000" endDate="2026-10-28 12:00:00 +0000" sourceName="Synthetic vitals Watch"/>' for kind, value, unit in [('OxygenSaturation', '0.98', '%'), ('BodyFatPercentage', '0.23', '%'), ('RespiratoryRate', '15', 'count/min'), ('VO2Max', '44', 'ml/(kg*min)'), ('BodyMassIndex', '22', 'count'), ('HeartRate', '80', 'count/min')])
+        with zipfile.ZipFile(folder / 'Lumen-workouts-vitals.zip', 'w', compression=zipfile.ZIP_DEFLATED) as archive:
+            archive.writestr('apple_health_export/export.xml', ('<HealthData>' + workout + signals + '</HealthData>').replace('2026-10-28', fixture_day))
         (folder / 'Lumen-health-invalid.zip').write_bytes(b'Not a ZIP archive')
         print(f'Synthetic fixtures ready (XML {target.stat().st_size:,} bytes; CSV {small.stat().st_size} bytes).')
         break

@@ -33,7 +33,7 @@ public enum TrendEvidence {
             unique[key] = ImportedHealthDay(date: key, values: [metric: value], sources: day.sources)
         }
         let ordered = unique.values.sorted { $0.date < $1.date }
-        return MetricEvidence(metric: metric, unit: HealthImportService.units[metric] ?? "", window: window, current: ordered.filter { $0.date >= cut && $0.date < end }, previous: ordered.filter { $0.date >= start && $0.date < cut })
+        return MetricEvidence(metric: metric, unit: ImportedMetrics.displayUnit(metric), window: window, current: ordered.filter { $0.date >= cut && $0.date < end }, previous: ordered.filter { $0.date >= start && $0.date < cut })
     }
 }
 

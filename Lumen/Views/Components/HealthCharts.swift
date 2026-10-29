@@ -102,12 +102,13 @@ public struct WorkoutRow: View {
             Image(systemName: workout.kind.icon).font(.body.weight(.medium)).foregroundStyle(Theme.move).frame(width: 26)
             VStack(alignment: .leading, spacing: 2) {
                 Text(workout.title).font(.body).foregroundStyle(Theme.text)
+                Text(workout.sourceDescription).font(.caption).foregroundStyle(Theme.secondary)
                 Text(([ "\(Int(workout.duration / 60)) min" ] + [workout.distanceM.map { Units.distance($0, units) }, workout.avgHR.map { "\(Int($0)) bpm" }].compactMap { $0 })
                         .joined(separator: " · "))
                     .font(.footnote).foregroundStyle(Theme.secondary)
             }
             Spacer()
-            Text("\(Int(workout.activeCalories)) kcal").font(.body.monospacedDigit()).foregroundStyle(Theme.secondary)
+            Text(workout.energyDescription).font(.body.monospacedDigit()).foregroundStyle(Theme.secondary)
         }
         .padding(.vertical, 12)
     }

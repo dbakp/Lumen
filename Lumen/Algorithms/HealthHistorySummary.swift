@@ -18,6 +18,9 @@ public enum HealthHistorySummary {
                 lines.append("\(key): \(String(format: "%.1f", mean)) \(HealthImportService.units[key]!) mean; \(values.count)/\(window) days; range \(String(format: "%.1f", values.min()!))–\(String(format: "%.1f", values.max()!)).")
             }
         }
+        if days.contains(where: { $0.values.keys.contains(where: { ImportedMetrics.meanKeys.contains($0) }) }) {
+            lines.append("Discrete health signals are arithmetic sample means per day from one selected source, not continuous readings. Heart rate is distinct from resting heart rate. Devices and measurement conditions can differ; do not infer a diagnosis or cause.")
+        }
         return lines.joined(separator: "\n")
     }
 }

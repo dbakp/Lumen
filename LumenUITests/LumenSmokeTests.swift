@@ -326,4 +326,44 @@ final class LumenSmokeTests: XCTestCase {
         snap("84-open-source-license")
     }
 
+    func testWorkoutAndVitalsImport() throws {
+        finishOnboarding()
+        scrollAndTap("Your sources")
+        try chooseImportFixture("Lumen-workouts-vitals.zip")
+        let heading = app.staticTexts["1 workout · 0 already recorded"]
+        reveal(heading); snap("90-workout-preview")
+        let commit = app.buttons["Import 1 day"]
+        reveal(commit); commit.tap()
+        XCTAssertTrue(app.staticTexts["Health history imported"].waitForExistence(timeout: 5))
+        let importButton = app.buttons["Import health data"]
+        for _ in 0..<8 where !(importButton.exists && importButton.isHittable) { app.swipeDown() }
+        try chooseImportFixture("Lumen-workouts-vitals.zip")
+        reveal(app.staticTexts["1 workout · 1 already recorded"])
+        reveal(commit); commit.tap()
+        app.navigationBars["Connections"].buttons.element(boundBy: 0).tap()
+        for _ in 0..<4 { app.swipeDown() }
+        scrollAndTap("Activity")
+        scrollAndTap("Run")
+        XCTAssertTrue(app.staticTexts["Energy not provided"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["Health export · Synthetic workout Watch"].exists)
+        snap("91-imported-workout-detail")
+        app.terminate(); app.launchArguments = []; app.launch()
+        for _ in 0..<4 { app.swipeDown() }
+        scrollAndTap("Activity")
+        scrollAndTap("Run")
+        XCTAssertTrue(app.staticTexts["Lumen-workouts-vitals.zip"].waitForExistence(timeout: 5))
+        snap("92-workout-persisted")
+        app.navigationBars["Workout"].buttons.element(boundBy: 0).tap()
+        app.navigationBars["Activity"].buttons.element(boundBy: 0).tap()
+        for _ in 0..<4 { app.swipeDown() }
+        scrollAndTap("Explore your trends")
+        scrollAndTap("Oxygen saturation")
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", "Mean of recorded oxygen-saturation")).firstMatch.waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["latestEvidenceValue"].label.contains("98"))
+        XCTAssertTrue(app.staticTexts["latestEvidenceDate"].exists)
+        snap("93-oxygen-evidence")
+        scrollAndTap("Recorded days")
+        snap("94-recorded-evidence-days")
+    }
+
 }
