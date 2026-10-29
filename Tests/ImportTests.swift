@@ -70,6 +70,14 @@ import Foundation
         let archivedPlan = HealthDocument(title: "Archived", kind: .plan, body: "Draft", steps: [due], source: "Test", planState: .archived)
         check(PlanSchedule.pending([activePlan, archivedPlan]).count == 1, "archived plans do not surface unfinished actions")
         check(HealthDocument(title: "Done", kind: .plan, body: "Draft", steps: [PlanStep(title: "Done", isDone: true)], source: "Test").status == .completed, "finishing every step completes a plan")
-        print("All import, model, totals, history, plan and reminder checks passed.")
+        let legacy = [ChatMessage(role: .user, text: "Help me plan tomorrow")]
+        let migrated = ConversationArchive.migrate(legacy: legacy, existing: [])
+        check(migrated.count == 1 && migrated[0].messages[0].id == legacy[0].id, "legacy conversation migration preserves messages and identifiers")
+        check(ConversationArchive.migrate(legacy: legacy, existing: migrated).count == 1, "conversation migration does not duplicate existing history")
+        let other = HealthConversation(title: "Other")
+        let answered = ConversationArchive.appending(ChatMessage(role: .coach, text: "Answer"), to: migrated[0].id, in: migrated + [other])
+        check(answered[0].messages.count == 2 && answered[1].messages.isEmpty, "a reply stays in its originating conversation")
+        check(ConversationArchive.appending(ChatMessage(role: .coach, text: "Answer"), to: "deleted", in: migrated)[0].messages.count == 1, "a deleted conversation is not recreated by a late reply")
+        print("All import, model, totals, history, plan, conversation and reminder checks passed.")
     }
 }

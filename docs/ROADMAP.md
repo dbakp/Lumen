@@ -39,3 +39,6 @@ Commit `7737ebb` created. Foundation build passed and 28 logic checks passed. Pu
 
 ### Batch 1
 Implemented personal context with explicit sharing consent, editable/datable checklist steps, plan states, and an agenda surfaced in Today and Library. Legacy step JSON still decodes. All targets build; 35 logic checks pass. Ready for its own commit; push remains dependent on repository access.
+
+### Batch 2
+Implemented persistent conversation history with legacy migration, search, reopening, rename, share and delete. Reply context is captured at send time; late replies stay in the originating conversation, and deleted conversations are not recreated. Sending is guarded immediately and can be stopped. All targets build; 39 logic checks pass. Push is queued behind the unresolved GitHub write-access issue.

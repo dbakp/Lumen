@@ -8,6 +8,9 @@ public struct CoachView: View {
     @StateObject private var coach = ChatCoachService.shared
     @ObservedObject private var ai = AIService.shared
     @State private var draft = ""
+    @State private var historyPresented = false
+    @State private var isSending = false
+    @State private var responseTask: Task<Void, Never>?
     @ObservedObject private var companion = CompanionStore.shared
     @FocusState private var focused: Bool
 
@@ -61,14 +64,18 @@ public struct CoachView: View {
         .navigationTitle("Assistant")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button { historyPresented = true } label: { Image(systemName: "clock.arrow.circlepath") }.accessibilityLabel("Conversation history")
+            }
             if !health.chat.isEmpty {
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu {
-                        Button("New conversation", systemImage: "square.and.pencil") { health.chat = []; health.persist() }
-                    } label: { Image(systemName: "ellipsis") }
+                        Button("New conversation", systemImage: "square.and.pencil") { health.newConversation() }
+                    } label: { Image(systemName: "ellipsis") }.accessibilityLabel("Conversation actions")
                 }
             }
         }
+        .sheet(isPresented: $historyPresented) { ConversationHistoryView().environmentObject(health) }
     }
 
     var intro: some View {
@@ -120,6 +127,11 @@ public struct CoachView: View {
                     // Multi-line field: the keyboard's Send key inserts a newline — treat it as send.
                     if v.hasSuffix("\n") { send(String(v.dropLast())) }
                 }
+            if isSending {
+                Button { responseTask?.cancel(); AppRouter.shared.confirm("Response stopped") } label: {
+                    Image(systemName: "stop.fill").frame(width: 44, height: 44)
+                }.accessibilityLabel("Stop response")
+            }
             Button { send(draft) } label: {
                 Image(systemName: "arrow.up").font(.headline.weight(.bold))
                     .foregroundStyle(canSend ? Theme.onAccent : Theme.tertiary)
@@ -137,19 +149,22 @@ public struct CoachView: View {
         .background(Theme.bg)
     }
 
-    var canSend: Bool { !draft.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && !coach.isTyping }
+    var canSend: Bool { !draft.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && !coach.isTyping && !isSending }
 
     func send(_ text: String) {
         let t = text.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !t.isEmpty, !coach.isTyping else { return }
-        draft = ""
-        focused = false
-        health.chat.append(ChatMessage(role: .user, text: t))
+        guard !t.isEmpty, !coach.isTyping, !isSending else { return }
+        let conversationID = health.ensureConversation()
+        let history = health.chat
+        draft = ""; focused = false; isSending = true
+        health.appendMessage(ChatMessage(role: .user, text: t), to: conversationID)
         health.persist()
-        Task {
-            let answer = await coach.reply(to: t, health: health, sleepDebt: sleep.debt)
+        responseTask = Task {
+            defer { isSending = false; responseTask = nil }
+            let answer = await coach.reply(to: t, health: health, sleepDebt: sleep.debt, conversationHistory: history)
+            guard !Task.isCancelled else { return }
             let reply = ChatMessage(role: .coach, text: answer, provider: coach.lastReplySource)
-            health.chat.append(reply)
+            guard health.appendMessage(reply, to: conversationID) else { return }
             health.persist()
             if PlanBuilder.isRequest(t), ChatCoachService.urgentResponse(for: t) == nil {
                 companion.save(HealthDocument(title: "Plan · \(Date().formatted(date: .abbreviated, time: .omitted))", kind: .plan, body: answer, steps: PlanBuilder.steps(from: answer), source: "Lumen assistant · \(coach.lastReplySource)", messageID: reply.id))

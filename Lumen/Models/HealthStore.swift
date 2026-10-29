@@ -20,7 +20,10 @@ public final class HealthStore: ObservableObject {
     @Published public var insights: [Insight] = []
     @Published public var lastSync: Date?
     @Published public var isSyncing = false
-    @Published public var chat: [ChatMessage] = []
+    @Published public var chat: [ChatMessage] = [] { didSet { if conversationReady { saveActiveConversation() } } }
+    @Published public private(set) var conversations: [HealthConversation] = []
+    @Published public private(set) var activeConversationID: String?
+    private var conversationReady = false
 
     /// Last Health snapshot for today (persisted so launch is instant).
     private var healthSnapshot = DayMetrics.empty
@@ -43,6 +46,13 @@ public final class HealthStore: ObservableObject {
             .filter { $0.source != .sample }
         waterLogs = (LocalStore.load([HydrationLog].self, from: "water") ?? []).filter { $0.date > horizon }
         chat = LocalStore.load([ChatMessage].self, from: "chat", legacyKey: "lumen.health.chat.v1") ?? []
+        conversations = ConversationArchive.migrate(legacy: chat, existing: LocalStore.load([HealthConversation].self, from: "conversations") ?? [])
+        let rememberedID = UserDefaults.standard.string(forKey: "lumen.conversation.active")
+        let selected = conversations.first { $0.id == rememberedID } ?? conversations.max { $0.updatedAt < $1.updatedAt }
+        activeConversationID = selected?.id
+        chat = selected?.messages ?? []
+        conversationReady = true
+        LocalStore.save(conversations, as: "conversations")
         if let snap = LocalStore.load(DayMetrics.self, from: "today"), Calendar.current.isDateInToday(snap.date) {
             healthSnapshot = snap
         }
@@ -129,9 +139,71 @@ public final class HealthStore: ObservableObject {
         LocalStore.save(meals, as: "meals")
         LocalStore.save(workouts, as: "workouts")
         LocalStore.save(goals, as: "goals")
+        LocalStore.save(conversations, as: "conversations")
         LocalStore.save(chat, as: "chat")
         LocalStore.save(waterLogs, as: "water")
         LocalStore.save(healthSnapshot, as: "today")
+    }
+
+    // MARK: Conversations
+
+    private func saveActiveConversation() {
+        guard conversationReady else { return }
+        if activeConversationID == nil {
+            guard !chat.isEmpty else { return }
+            let conversation = HealthConversation(title: ConversationArchive.suggestedTitle(chat), messages: chat)
+            conversations.insert(conversation, at: 0); activeConversationID = conversation.id
+        } else if let index = conversations.firstIndex(where: { $0.id == activeConversationID }) {
+            conversations[index].messages = chat
+            conversations[index].updatedAt = Date()
+            if conversations[index].title == "New conversation" { conversations[index].title = ConversationArchive.suggestedTitle(chat) }
+        }
+        UserDefaults.standard.set(activeConversationID, forKey: "lumen.conversation.active")
+        LocalStore.save(conversations, as: "conversations"); LocalStore.save(chat, as: "chat")
+    }
+
+    @discardableResult public func ensureConversation() -> String {
+        if let activeConversationID { return activeConversationID }
+        let conversation = HealthConversation()
+        conversations.insert(conversation, at: 0); activeConversationID = conversation.id
+        saveActiveConversation(); return conversation.id
+    }
+
+    public func newConversation() {
+        guard !chat.isEmpty else { return }
+        selectConversation(nil)
+    }
+
+    public func selectConversation(_ id: String?) {
+        guard id == nil || conversations.contains(where: { $0.id == id }) else { return }
+        conversationReady = false
+        activeConversationID = id
+        chat = conversations.first { $0.id == id }?.messages ?? []
+        conversationReady = true
+        UserDefaults.standard.set(id, forKey: "lumen.conversation.active")
+        LocalStore.save(chat, as: "chat")
+    }
+
+    public func renameConversation(_ id: String, title: String) {
+        let title = title.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !title.isEmpty, let index = conversations.firstIndex(where: { $0.id == id }) else { return }
+        conversations[index].title = String(title.prefix(100)); LocalStore.save(conversations, as: "conversations")
+    }
+
+    public func deleteConversation(_ id: String) {
+        conversations.removeAll { $0.id == id }
+        if activeConversationID == id { selectConversation(nil) }
+        LocalStore.save(conversations, as: "conversations")
+    }
+
+    @discardableResult public func appendMessage(_ message: ChatMessage, to id: String) -> Bool {
+        guard conversations.contains(where: { $0.id == id }) else { return false }
+        if activeConversationID == id { chat.append(message) }
+        else {
+            conversations = ConversationArchive.appending(message, to: id, in: conversations)
+            LocalStore.save(conversations, as: "conversations")
+        }
+        return true
     }
 
     // MARK: Sync
@@ -229,7 +301,11 @@ public final class HealthStore: ObservableObject {
 
     /// Start over: clears every log (Health data itself is untouched).
     public func resetAll() {
+        conversationReady = false
         goals = HealthGoals(); meals = []; workouts = []; waterLogs = []; chat = []
+        conversations = []; activeConversationID = nil
+        UserDefaults.standard.removeObject(forKey: "lumen.conversation.active")
+        conversationReady = true
         CompanionStore.shared.reset()
         healthSnapshot = .empty; lastSync = nil; hrvBaseline = nil; restingHRBaseline = nil
         refresh()

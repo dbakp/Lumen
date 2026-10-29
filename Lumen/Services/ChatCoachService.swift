@@ -11,12 +11,12 @@ public final class ChatCoachService: ObservableObject {
 
     private init() {}
 
-    public func reply(to text: String, health: HealthStore, sleepDebt: TimeInterval) async -> String {
+    public func reply(to text: String, health: HealthStore, sleepDebt: TimeInterval, conversationHistory: [ChatMessage]? = nil) async -> String {
         isTyping = true
         lastReplySource = "Built-in guide"
         defer { isTyping = false }
         if let urgent = Self.urgentResponse(for: text) { return urgent }
-        let history = Array(health.chat.dropLast()) // latest user message is `text`
+        let history = conversationHistory ?? Array(health.chat.dropLast()) // latest user message is `text`
         let instructions = CompanionStore.shared.context(health: health) + "\n\n" + CoachingEngine.contextPrompt(metrics: health.metrics, readiness: health.readiness, goals: health.goals,
                                                         mealsToday: health.mealsToday, workoutsToday: health.workoutsToday,
                                                         sleepDebt: sleepDebt, debtFile: sleepDebt, history: history, totalCalories: health.caloriesEaten, totalProtein: health.proteinEaten) + "\nWhen asked for a plan, provide a short title, a brief reason tied to recorded data, and 3–5 numbered, flexible steps that can become a checklist. Do not alter medication or prescribe treatment."
