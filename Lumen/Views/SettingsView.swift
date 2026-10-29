@@ -303,6 +303,7 @@ public struct SettingsView: View {
     var aboutSection: some View {
         Section {
             NavigationLink("How Lumen works") { ScienceView() }
+            NavigationLink("Open-source licenses") { OpenSourceLicensesView() }
             LabeledContent("Version", value: "\(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.0") (\(Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "1"))")
         } footer: {
             Text("Lumen offers wellness guidance, not medical advice. If you suspect a sleep or health condition, talk to a clinician.")

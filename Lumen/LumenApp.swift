@@ -9,6 +9,7 @@ struct LumenApp: App {
     @Environment(\.scenePhase) private var scenePhase
 
     init() {
+        HealthZIPArchive.clearTemporaryFiles()
         // Clean slate for UI tests (runs before any store loads).
         if ProcessInfo.processInfo.arguments.contains("-resetForUITests") { LocalStore.eraseAll() }
     }

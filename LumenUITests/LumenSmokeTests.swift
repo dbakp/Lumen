@@ -244,7 +244,7 @@ final class LumenSmokeTests: XCTestCase {
         }
         let fixtureCell = app.cells.matching(NSPredicate(format: "identifier BEGINSWITH %@", name + ",")).firstMatch
         fixtureCell.images.firstMatch.tap()
-        XCTAssertTrue(app.buttons["Cancel"].firstMatch.waitForNonExistence(timeout: 10), "XML selection did not dismiss Files")
+        XCTAssertTrue(app.buttons["Cancel"].firstMatch.waitForNonExistence(timeout: 10), "File selection did not dismiss Files")
     }
 
     func testImportCancellation() throws {
@@ -284,6 +284,46 @@ final class LumenSmokeTests: XCTestCase {
         reveal(app.staticTexts["Lumen-import-small.csv"])
         XCTAssertFalse(app.buttons["cancelHealthImport"].exists)
         snap("74-import-persisted")
+    }
+
+    func testAppleHealthZIP() throws {
+        finishOnboarding()
+        scrollAndTap("Your sources")
+        try chooseImportFixture("Lumen-health-invalid.zip")
+        XCTAssertTrue(app.alerts["Couldn't import health data"].waitForExistence(timeout: 10))
+        snap("80-zip-invalid")
+        tap("OK")
+        try chooseImportFixture("Lumen-health-export.zip")
+        let commit = app.buttons["Import 1 day"]
+        reveal(commit)
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", "Synthetic ZIP Watch")).firstMatch.exists)
+        XCTAssertTrue(app.staticTexts["zipImportScope"].isHittable)
+        snap("81-zip-preview")
+        let discard = app.buttons["Discard preview"]
+        reveal(discard); discard.tap()
+        let empty = app.staticTexts["Nothing imported yet"]
+        reveal(empty)
+        XCTAssertFalse(app.staticTexts["Lumen-health-export.zip"].exists)
+        // Discarding the preview never adds history; retry and explicitly confirm.
+        let importButton = app.buttons["Import health data"]
+        for _ in 0..<6 where !(importButton.exists && importButton.isHittable) { app.swipeDown() }
+        try chooseImportFixture("Lumen-health-export.zip")
+        reveal(commit); commit.tap()
+        XCTAssertTrue(app.staticTexts["Health history imported"].waitForExistence(timeout: 5))
+        reveal(app.staticTexts["Lumen-health-export.zip"])
+        snap("82-zip-imported")
+        app.terminate(); app.launchArguments = []; app.launch()
+        scrollAndTap("Your sources")
+        reveal(app.staticTexts["Lumen-health-export.zip"])
+        snap("83-zip-persisted")
+        app.navigationBars["Connections"].buttons.element(boundBy: 0).tap()
+        tap("Settings")
+        let licenses = app.buttons["Open-source licenses"].firstMatch
+        reveal(licenses); licenses.tap()
+        let license = app.staticTexts["zipLicenseText"]
+        XCTAssertTrue(license.waitForExistence(timeout: 5))
+        XCTAssertTrue(license.label.contains("Permission is hereby granted"))
+        snap("84-open-source-license")
     }
 
 }

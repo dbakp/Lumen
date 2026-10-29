@@ -8,6 +8,7 @@ struct ConnectionsView: View {
     @ObservedObject private var hk = HealthKitService.shared
     @State private var importing = false
     @State private var parsing = false
+    @State private var cancelRequested = false
     @State private var activeImport: HealthImportControl?
     @State private var importTask: Task<Void, Never>?
     @State private var importStatus: String?
@@ -33,20 +34,21 @@ struct ConnectionsView: View {
                 Button("Import health data", systemImage: "square.and.arrow.down") { importing = true }.disabled(parsing)
                 if parsing, let control = activeImport {
                     TimelineView(.periodic(from: .now, by: 0.5)) { _ in
+                        let state = control.progress
                         HStack(spacing: 12) {
                             VStack(alignment: .leading, spacing: 8) {
                                 HStack(spacing: 8) {
                                     ProgressView().controlSize(.small)
-                                    Text("Reading your file").font(.subheadline).foregroundStyle(Theme.text)
+                                    Text(cancelRequested ? "Stopping import" : state.title).font(.subheadline).foregroundStyle(Theme.text)
                                 }
-                                Text("\(control.recordsProcessed.formatted()) records reviewed").font(.footnote).foregroundStyle(Theme.secondary)
+                                Text(cancelRequested ? "Finishing local cleanup" : state.detail).font(.footnote).foregroundStyle(Theme.secondary)
                             }
                             Spacer(minLength: 0)
                         }
                     }
                 }
                 if let importStatus { Text(importStatus).font(.footnote).foregroundStyle(Theme.secondary) }
-                Text("Choose export.xml from an unzipped Apple Health export, or a metrics CSV/JSON. Preview dates and sources before adding anything.").font(.footnote).foregroundStyle(Theme.secondary)
+                Text("Choose your Apple Health export ZIP, export.xml, or a metrics CSV/JSON. Lumen reads the health history locally. Preview dates and sources before adding anything.").font(.footnote).foregroundStyle(Theme.secondary)
                 if let preview {
                     VStack(alignment: .leading, spacing: 12) {
                         Text(filename).font(.headline)
@@ -59,6 +61,10 @@ struct ConnectionsView: View {
                             ForEach(day.values.keys.sorted(), id: \.self) { key in
                                 Text("\(key): \(day.values[key]!, specifier: "%.1f") \(HealthImportService.units[key] ?? "") · \(day.sources[key] ?? "")").font(.caption).foregroundStyle(Theme.secondary)
                             }
+                        }
+                        if filename.lowercased().hasSuffix(".zip") {
+                            Text("Imports supported measurements. Clinical documents and workout routes aren’t included. Add PDF or text records separately in Library.")
+                                .font(.footnote).foregroundStyle(Theme.secondary).accessibilityIdentifier("zipImportScope")
                         }
                         Button("Import \(preview.days.count) day\(preview.days.count == 1 ? "" : "s")") { companion.commit(preview, filename: filename); self.preview = nil; AppRouter.shared.confirm("Health history imported") }.buttonStyle(.borderedProminent)
                         Button("Discard preview", role: .cancel) { self.preview = nil }
@@ -89,26 +95,32 @@ struct ConnectionsView: View {
                 if parsing {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button("Cancel import", role: .cancel) { cancelImport() }
+                            .disabled(cancelRequested)
                             .accessibilityIdentifier("cancelHealthImport")
                     }
                 }
             }
             .onDisappear { cancelImport(showMessage: false) }
-            .fileImporter(isPresented: $importing, allowedContentTypes: [.xml, .commaSeparatedText, .json]) { result in read(result) }
+            .fileImporter(isPresented: $importing, allowedContentTypes: [.zip, .xml, .commaSeparatedText, .json]) { result in read(result) }
             .alert("Couldn't import health data", isPresented: Binding(get: { error != nil }, set: { if !$0 { error = nil } })) { Button("OK") { error = nil } } message: { Text(error ?? "") }
             .confirmationDialog("Clear all imported daily measurements?", isPresented: $clear, titleVisibility: .visible) { Button("Clear imported history", role: .destructive) { companion.clearImports() } }
     }
     func cancelImport(showMessage: Bool = true) {
-        guard activeImport != nil else { return }
-        activeImport?.cancel(); activeImport = nil
-        importTask?.cancel(); importTask = nil; parsing = false
-        if showMessage { importStatus = "Import cancelled. No records were added." }
+        guard let activeImport else { return }
+        activeImport.cancel()
+        if showMessage {
+            // Keep file selection disabled until the worker releases its stream and security scope.
+            cancelRequested = true
+        } else {
+            self.activeImport = nil; importTask?.cancel(); importTask = nil
+            parsing = false; cancelRequested = false
+        }
     }
     func read(_ result: Result<URL, Error>) {
         guard case .success(let url) = result else { if case .failure(let e) = result, (e as NSError).code != NSUserCancelledError { error = e.localizedDescription }; return }
         cancelImport(showMessage: false)
         let control = HealthImportControl()
-        activeImport = control; parsing = true; preview = nil; importStatus = nil; filename = url.lastPathComponent
+        activeImport = control; parsing = true; cancelRequested = false; preview = nil; importStatus = nil; filename = url.lastPathComponent
         importTask = Task { @MainActor in
             do {
                 let parsed = try await Task.detached(priority: .userInitiated) {
@@ -123,10 +135,11 @@ struct ConnectionsView: View {
                 importStatus = "Import cancelled. No records were added."
             } catch {
                 guard activeImport === control else { return }
-                self.error = error.localizedDescription
+                if cancelRequested { importStatus = "Import cancelled. No records were added." }
+                else { self.error = error.localizedDescription }
             }
             guard activeImport === control else { return }
-            activeImport = nil; importTask = nil; parsing = false
+            activeImport = nil; importTask = nil; parsing = false; cancelRequested = false
         }
     }
 }

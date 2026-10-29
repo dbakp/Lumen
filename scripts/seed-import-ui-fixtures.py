@@ -4,6 +4,7 @@ import argparse
 import pathlib
 import plistlib
 import uuid
+import zipfile
 
 parser = argparse.ArgumentParser()
 parser.add_argument('simulator', help='CoreSimulator device UUID')
@@ -26,6 +27,12 @@ for metadata in root.glob('*/.com.apple.mobile_container_manager.metadata.plist'
             output.write('</HealthData>')
         small = folder / 'Lumen-import-small.csv'
         small.write_text('date,metric,value,unit,source\n2026-10-28,steps,8421,count,Synthetic test fixture\n2026-10-28,water,250,ml,Synthetic test fixture\n')
+        health_xml = '<HealthData><Record type="HKQuantityTypeIdentifierStepCount" value="8421" unit="count" startDate="2026-10-28 10:00:00 +0000" endDate="2026-10-28 10:00:00 +0000" sourceName="Synthetic ZIP Watch"/><Record type="HKQuantityTypeIdentifierDietaryWater" value="250" unit="ml" startDate="2026-10-28 11:00:00 +0000" endDate="2026-10-28 11:00:00 +0000" sourceName="Synthetic ZIP bottle"/></HealthData>'
+        with zipfile.ZipFile(folder / 'Lumen-health-export.zip', 'w', compression=zipfile.ZIP_DEFLATED) as archive:
+            archive.writestr('apple_health_export/export.xml', health_xml)
+            archive.writestr('apple_health_export/export_cda.xml', 'Excluded clinical record fixture')
+            archive.writestr('apple_health_export/workout-routes/test.gpx', 'Excluded route fixture')
+        (folder / 'Lumen-health-invalid.zip').write_bytes(b'Not a ZIP archive')
         print(f'Synthetic fixtures ready (XML {target.stat().st_size:,} bytes; CSV {small.stat().st_size} bytes).')
         break
 else:

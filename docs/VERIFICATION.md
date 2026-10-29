@@ -38,7 +38,7 @@ One independent critic performed three rounds and the final reel check: 11/13 ap
 
 Health permissions and writes (including partial/denied reads), camera, real Apple/optional OpenAI inference, Strava OAuth, actual notification delivery, Face ID, haptics, Watch connectivity and Home Screen widgets. These depend on the user's device, selected providers and permissions; they cannot be established by a local simulator build. Notifications refresh when Lumen runs and cannot continuously re-evaluate changes made elsewhere while suspended.
 
-Imports require unzipping Apple Health's export before selecting export.xml. Supported categories, sizes and aggregation heuristics are in IMPORT_FORMATS.md. Clinical-record extraction is text/PDF-based, not diagnostic interpretation or a complete FHIR/EHR integration.
+Direct Apple Health ZIP imports and standalone export.xml are supported after Batch 6. Supported categories, sizes and aggregation heuristics are in IMPORT_FORMATS.md. Clinical-record extraction is text/PDF-based, not diagnostic interpretation or a complete FHIR/EHR integration.
 
 ## Final native review fixes
 
@@ -64,3 +64,13 @@ The standalone suite passes **68 checks**, including versioned backup round-trip
 The standalone suite passes **74 checks**. New checks cover actual reviewed-record counts and deterministic cancellation during XML, CSV and JSON parsing, pre-cancelled operations and CSV tokenization. All native targets build. The final native Files-picker scenario passed with **zero failures in 85.097 seconds** (`/tmp/LumenImportsReviewed.xcresult`): cancelled a 37 MB synthetic XML import, verified empty import history, dismissed a second picker without an alert, imported a small synthetic CSV after preview, and verified the receipt after relaunch. Captures: `Design/native/imports`.
 
 The independent design review found Cancel obscured by the tab bar and singular/plural errors. Cancel now stays in the navigation toolbar, progress is compact, and preview/history say “1 day.” The final reviewer confirmed both fixes and scored progress/cancel usability, preview clarity and native fidelity 4/5, with no remaining high-impact visible findings. Earlier integration attempts corrected cold Files-service timing, icon selection and an offscreen assertion in the test. The file-backed test skips when simulator fixtures are absent; the parser suite always runs. No physical-device, iCloud-transfer or 500 MB performance claim is inferred from this scenario.
+
+## Batch 6 · direct Apple Health ZIP imports
+
+The actual Swift package checks pass **106 checks**, including ZIP/XML parity, retained sources, stored/Deflate and standard ZIP64 layouts, corrupt payload CRCs, unsupported/encrypted/ambiguous/unsafe archives, declared and actual expansion bounds, directory/count/offset bounds, original-file immutability, cancellation, temporary cleanup and interrupted-session cleanup. The check executable compiles the same import and model source used by the iPhone app and pins ZIPFoundation 0.9.20.
+
+The final combined native suite passed **3 scenarios, zero failures, zero skips, 483.552 seconds**. ZIP: 120.220 seconds; cancellable XML/CSV: 125.104 seconds; full daily flow with backups: 238.229 seconds. Result bundle: `/tmp/LumenZIPFinal.xcresult`. It covers selecting a corrupt ZIP and recovering, valid ZIP preview with visible scope disclosure, discarding before commit, confirmed import, receipt persistence after relaunch, bundled license rendering, cancellation and picker reopening, and the existing journal/chat/plan/backup paths. Captures: `Design/native/zip`.
+
+An earlier run exposed an import reopen failure. Cancellation now keeps file selection disabled until the reader releases its stream and security scope. A later receipt assertion stopped on Today before reaching Connections; the recording showed it had not inspected persisted history. The final combined run passed the actual persistence checks after navigation. No earlier failed or skipped run is used as passing evidence.
+
+The independent App Designer Pro reviewer requested a disclosure next to the ZIP import button because zero skipped measurements could otherwise imply every archived file was processed. The final screenshot clearly excludes clinical documents and workout routes and directs PDF/text records to Library. Final preview/error/native/license clarity: 4/5, with no remaining high-impact visible findings. Physical-device/iCloud transfer, accessibility scaling and 500 MB performance validation remain outstanding.

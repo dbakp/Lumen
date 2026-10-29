@@ -1,7 +1,9 @@
 import Foundation
+import Darwin
 
 @main struct ImportTests {
     static func main() throws {
+        setbuf(stdout, nil)
         let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         defer { try? FileManager.default.removeItem(at: directory) }
@@ -178,6 +180,7 @@ import Foundation
         let csvLexing = HealthImportControl(); csvLexing.cancel()
         do { _ = try HealthImportService.csvRows(manyRows, control: csvLexing); fatalError("CSV tokenization ignored cancellation") }
         catch is CancellationError { print("PASS: CSV tokenization honors cancellation") }
+        try ZIPImportChecks.run(in: directory)
         print("All import, model, totals, history, plan, conversation, evidence, document and reminder checks passed.")
     }
 }

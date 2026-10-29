@@ -11,7 +11,7 @@ public enum HealthImportError: LocalizedError {
     case unsupported, malformed(String), empty, tooLarge, portableTooLarge
     public var errorDescription: String? {
         switch self {
-        case .unsupported: return "Choose Apple Health export.xml, a Lumen metrics CSV, or a metrics JSON file. Unzip the Apple Health export first."
+        case .unsupported: return "Choose an Apple Health ZIP or export.xml, a Lumen metrics CSV, or a metrics JSON file."
         case .malformed(let message): return "The file could not be read. \(message)"
         case .empty: return "No supported measurements were found. Check the metric names, units and dates."
         case .portableTooLarge: return "CSV and JSON imports support up to 25 MB. Split this export into smaller files, then import them separately."
@@ -30,6 +30,12 @@ public enum HealthImportService {
             if ["csv", "json"].contains(url.pathExtension.lowercased()) { throw HealthImportError.portableTooLarge }
             throw HealthImportError.tooLarge
         }
+        if url.pathExtension.lowercased() == "zip" {
+            return try HealthZIPArchive.withXML(in: url, control: control) { xml in
+                try parse(url: xml, control: control, progress: progress)
+            }
+        }
+        control.readingRecords()
         let collector = Collector(control: control, progress: progress)
         switch url.pathExtension.lowercased() {
         case "xml":
