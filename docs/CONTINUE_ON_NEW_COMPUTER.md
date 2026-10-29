@@ -6,16 +6,17 @@ Clone this repository on the new computer, then give the new assistant the promp
 
 ## Continuation checkpoint · 29 October 2026
 
-Development has resumed on the new computer. Batch 9a was published as `a1b7cd1`; Batch 9 was then completed and published as `5cb1fc7` on 29 October 2026. It adds honest current readings and source/date evidence, guarded assistant context, and local confirmed water/workout corrections and deletion. App Designer Pro has been supplied and used here; one continuing independent critic signed off the final native additions after three rounds. See [data-confidence behavior](DATA_CONFIDENCE.md), [Roadmap](ROADMAP.md), [Verification](VERIFICATION.md) and [Design critique](../Design/CRITIQUE.md) for exact scope, native timings and remaining gates.
+Development has resumed on the new computer. Batch 9a was published as `a1b7cd1`, Batch 9 as `5cb1fc7`, and Batch 10 as `d54c2e2` on 29 October 2026. Batch 9 adds current source/date evidence, guarded assistant context and confirmed local water/workout corrections. Batch 10 carries missing/zero and estimate semantics into Food, Sleep, Watch and widgets, with actual coverage, snapshot dates and guarded quick undo. App Designer Pro has been supplied and used here; the same continuing independent critic signed off each scoped addition after three rounds. See [data-confidence behavior](DATA_CONFIDENCE.md), [Roadmap](ROADMAP.md), [Verification](VERIFICATION.md) and [Design critique](../Design/CRITIQUE.md) for exact scope, native timings and remaining gates.
 
-The original prompt below remains the product brief. The full goal remains active. Continue the retained Sleep/Food and companion availability/estimate audit, then the remaining ingestion, backup, voice, provider and release work in coherent separately verified batches. Physical-device/provider gates are not satisfied by the simulator. The skill archive is intentionally outside Git; attach it again for a future computer/chat. Personal data and credentials still transfer separately.
+The original prompt below remains the product brief. The full goal remains active. The retained Food/Sleep and companion availability audit is implemented. Continue larger/encrypted backups, ingestion/background delivery, richer retrieval, voice, provider and release work in coherent separately verified batches. Watch water relay identity/acknowledgement, physical-device behavior and unseen widget/complication layouts remain open gates. Physical-device/provider gates are not satisfied by the simulator. The skill archive is intentionally outside Git; attach it again for a future computer/chat. Personal data and credentials still transfer separately.
 
 ## Continuation prompt
 
 /goal Continue developing Lumen into a world-class, primarily iOS, AI health assistant.
 
 Repository: https://github.com/dbakp/Lumen  
-Latest published application commit: `5cb1fc7e4c76ef86ecc21d016eb1df6f5749d331`  
+Latest published application commit: `d54c2e27eff65c9a065ce59070d92296151f4337`
+
 Branch: `main`
 
 Clone the repository on this computer and inspect its current state before making changes. Continue implementation autonomously in coherent batches. Verify and push each completed batch separately to GitHub. Never force-push or overwrite unrelated changes.
@@ -42,7 +43,7 @@ Clone the repository on this computer and inspect its current state before makin
 
 Use the attached App Designer Pro skill. Preserve the established design direction. Use one independent design critic for native UI changes, address substantive findings, and capture actual simulator screens. `Design/native-preview.html` presents captured screens; it is not the application.
 
-### Completed and published through batch 9
+### Completed and published through batch 10
 
 - Contextual Today, symptoms/check-ins, personal context and quiet reminders.
 - Persistent conversations with cancellation and reply ownership.
@@ -57,13 +58,12 @@ Use the attached App Designer Pro skill. Preserve the established design directi
 
 ### Latest validation
 
-- 255 production-logic checks passed, including canonical source/date/zero semantics, corrections, history/context, backup compatibility and actual 14-night estimate selection.
-- All five native targets build with Xcode 27.0 on this computer.
-- Final confidence/correction/accessibility suite: three scenarios, zero failures/skips, 434.883 seconds.
-- Final external-source import/persistence/disclosure scenario: 148.771 seconds, zero failures/skips.
-- Final full daily/Library/conversation/appointment/backup journey: 250.531 seconds, zero failures/skips.
-- One continuing design critic completed three rounds; final scoped screens meet the skill stop rule at 10/11 applicable lines at 4, richness at 3, with no remaining concrete visual/copy defects. Actual final captures: `Design/native/confidence/r3`.
-- These are simulator and pure-logic results. Live HealthKit/provider behavior, VoiceOver, signed devices, clinical reliability and release readiness are not established. Machine-local result bundles are not portable; re-run relevant checks on another computer. See VERIFICATION.md for exact scope, the pre-existing runtime warning and remaining gates.
+- 288 production-logic checks passed, covering prior imports/backups/corrections plus retained-view coverage, packet presence/expiry/order and withholding unsupported readiness.
+- All five native targets build with Xcode 27.0. Shared-container simulator checks use local ad-hoc signing; physical signing/distribution remains unverified.
+- The three-scenario current-reading/retained/daily-and-backup regression suite passed with zero failures/skips in 512.750 seconds. The final focused presentation run passed in 190.632 seconds.
+- A real installed medium widget reads the iPhone app cache. The paired Watch received a newer actual five-zero packet with no readiness field. Failed Watch Health saves display an error and leave the Watch-local total unchanged. This does not establish all offline/reconnect/permission paths.
+- The same independent critic approved all 21 final captures after three rounds: 10/11 lines at 4, richness at 3, no concrete visible defects. Final captures: `Design/native/retained/r5` and `Design/native/retained/companion-r2`.
+- These are simulator and pure-logic results. Live providers, physical Health behavior, every widget/complication family, VoiceOver, clinical reliability and release readiness remain open. See VERIFICATION.md for exact source points, timings, diagnostics and limitations. Re-run machine-local result bundles/checks on a new computer.
 
 ### Completed batch 9: data confidence and corrections
 
@@ -73,6 +73,12 @@ Use the attached App Designer Pro skill. Preserve the established design directi
 4. Avoid presenting profile defaults or stale measurements as current observations.
 5. Allow correction/deletion of locally confirmed water and workout entries, preserving provenance and updating dependent views/context.
 6. Keep external-source records separate from local edits and make HealthKit write-back behavior explicit.
+
+### Completed batch 10: retained Food/Sleep and companions
+
+Food and water preserve independent missing/zero values and separate rounded estimated targets. Quick undo cannot remove a confirmed conversation entry and reports its actual local/Health removal outcome. Sleep selects usable current episodes, identifies manual time in bed, names saved-entry/day coverage and gates debt/timing estimates. Measured-source target learning excludes manual time-in-bed logs. Source-managed sleep stays read-only.
+
+Dated companion packets preserve presence, expire across days and reject delayed older contexts. Watch labels keep unknown values identifiable, snapshots show actual dates/times, and water totals change only after successful Watch Health saves. The readiness starting score is withheld when none of its contributing evidence exists. Preserve these contracts while extending the product; do not turn legacy numeric defaults into observations.
 
 Continue the remaining roadmap afterward. Background HealthKit delivery, broader ingestion/OCR, richer retrieval, voice, larger/encrypted backups, provider integrations and release/device validation remain unfinished. Audit current files rather than assuming this list is exhaustive.
 

@@ -117,3 +117,7 @@ Food preserves independent missing/zero energy, macros and water, with rounded e
 A shared dated presence packet feeds Watch/widgets without inferring measurements from old numeric defaults. Snapshots expire across days and an older context cannot overwrite a newer cache. Watch activity keeps empty queries unknown; successful Watch water saves and iPhone totals stay separate, and failed saves visibly leave the local total unchanged. This is not complete offline/idempotent water reconciliation.
 
 288 logic checks and all five target builds pass. The three-case regression suite passed in 512.750 seconds; the final focused presentation scenario passed in 190.632 seconds. Actual installed medium widget and newly delivered Watch context are verified in the simulator. The same critic approved 21 final captures after three rounds at 10/11 lines at 4, richness at 3, with no remaining concrete visible defects. See VERIFICATION.md for exact source points, timings, limitations and final capture paths. Device/background/provider, larger/encrypted backup, voice, retrieval, accessibility and release work remain active.
+
+### Batch 10 publishing checkpoint
+
+GitHub accepted application batch `d54c2e27eff65c9a065ce59070d92296151f4337` on `main` on 29 October 2026. A read-back of `refs/heads/main` matched the source commit. The continuation handoff now points to Batch 10 and the remaining roadmap; the full product goal remains active.
