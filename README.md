@@ -1,5 +1,7 @@
 # Lumen
 
+Continuing on another computer? Start with the [continuation handoff](docs/CONTINUE_ON_NEW_COMPUTER.md).
+
 A native, local-first health companion for iPhone, with Apple Watch and widgets. Lumen combines what your devices record with how you actually feel, so your daily perspective, conversations and plans have context.
 
 ## The daily loop
