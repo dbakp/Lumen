@@ -89,14 +89,15 @@ public final class HealthKitService: ObservableObject {
         // went through the sheet and simply query — denied types come back empty.
         let connected = UserDefaults.standard.bool(forKey: connectedKey) && HKHealthStore.isHealthDataAvailable()
         isAuthorized = connected
-        status = connected ? "Connected" : "Not connected"
+        status = connected ? "Access requested" : "Not connected"
     }
 
     private var readTypes: Set<HKObjectType> {
         var s = Set<HKObjectType>()
-        let quantities: [HKQuantityTypeIdentifier] = [.stepCount, .activeEnergyBurned, .basalEnergyBurned, .appleExerciseTime, .appleStandTime, .heartRate, .restingHeartRate, .heartRateVariabilitySDNN, .respiratoryRate, .oxygenSaturation, .vo2Max, .bodyMass, .height, .bodyFatPercentage, .dietaryEnergyConsumed, .dietaryProtein, .dietaryCarbohydrates, .dietaryFatTotal, .dietaryFiber, .dietaryWater, .dietaryCaffeine]
+        let quantities: [HKQuantityTypeIdentifier] = [.stepCount, .activeEnergyBurned, .basalEnergyBurned, .appleExerciseTime, .heartRate, .restingHeartRate, .heartRateVariabilitySDNN, .respiratoryRate, .oxygenSaturation, .vo2Max, .bodyMass, .height, .bodyFatPercentage, .dietaryEnergyConsumed, .dietaryProtein, .dietaryCarbohydrates, .dietaryFatTotal, .dietaryFiber, .dietaryWater, .dietaryCaffeine]
         for id in quantities { if let t = HKObjectType.quantityType(forIdentifier: id) { s.insert(t) } }
         if let t = HKObjectType.categoryType(forIdentifier: .sleepAnalysis) { s.insert(t) }
+        if let t = HKObjectType.categoryType(forIdentifier: .appleStandHour) { s.insert(t) }
         if let t = HKObjectType.categoryType(forIdentifier: .mindfulSession) { s.insert(t) }
         if let t = HKObjectType.characteristicType(forIdentifier: .dateOfBirth) { s.insert(t) }
         if let t = HKObjectType.characteristicType(forIdentifier: .biologicalSex) { s.insert(t) }
@@ -119,7 +120,7 @@ public final class HealthKitService: ObservableObject {
             try await store.requestAuthorization(toShare: shareTypes, read: readTypes)
             UserDefaults.standard.set(true, forKey: connectedKey)
             isAuthorized = true
-            status = "Connected"
+            status = "Access requested"
             return true
         } catch {
             status = "Couldn't connect — try again from Settings"
@@ -140,39 +141,47 @@ public final class HealthKitService: ObservableObject {
         guard isAvailable, isAuthorized else { return }
         let start = Calendar.current.startOfDay(for: Date())
         let end = Date()
-        async let steps = sum(.stepCount, unit: .count(), start: start, end: end)
-        async let active = sum(.activeEnergyBurned, unit: .kilocalorie(), start: start, end: end)
-        async let basal = sum(.basalEnergyBurned, unit: .kilocalorie(), start: start, end: end)
-        async let exercise = sum(.appleExerciseTime, unit: .minute(), start: start, end: end)
-        async let stand = sum(.appleStandTime, unit: .hour(), start: start, end: end)
-        async let water = sum(.dietaryWater, unit: .literUnit(with: .milli), start: start, end: end, excludingLumen: true)
-        async let rhr = latest(.restingHeartRate, unit: HKUnit(from: "count/min"))
-        async let hrv = latest(.heartRateVariabilitySDNN, unit: HKUnit(from: "ms"))
-        async let spo2 = latest(.oxygenSaturation, unit: .percent())
-        async let weight = latest(.bodyMass, unit: .gramUnit(with: .kilo), todayOnly: true)
-        async let resp = latest(.respiratoryRate, unit: HKUnit(from: "count/min"))
-        async let vo2 = latest(.vo2Max, unit: HKUnit(from: "ml/(kg*min)"), todayOnly: true)
-        async let avgHR = average(.heartRate, unit: HKUnit(from: "count/min"), start: start, end: end)
-        async let dietaryEnergy = sum(.dietaryEnergyConsumed, unit: .kilocalorie(), start: start, end: end, excludingLumen: true)
-        async let dietaryProtein = sum(.dietaryProtein, unit: .gram(), start: start, end: end, excludingLumen: true)
-        async let dietaryCarbs = sum(.dietaryCarbohydrates, unit: .gram(), start: start, end: end, excludingLumen: true)
-        async let dietaryFat = sum(.dietaryFatTotal, unit: .gram(), start: start, end: end, excludingLumen: true)
-        let (de, dp, dc, df) = await (dietaryEnergy, dietaryProtein, dietaryCarbs, dietaryFat)
-        let (s, a, b, e, st, w) = await (steps, active, basal, exercise, stand, water)
-        let (rh, hv, ox, wt, rr, v2, ah) = await (rhr, hrv, spo2, weight, resp, vo2, avgHR)
-        var m = DayMetrics.empty
-        m.date = start
-        m.recordedTotalKeys = []
-        for (key, value) in [("steps", s), ("activeEnergy", a), ("restingEnergy", b), ("exercise", e), ("stand", st), ("water", w)] {
-            if let value { m.recordTotal(value, for: key) }
-        }
-        m.restingHR = rh; m.hrvMS = hv; m.respiratoryRate = rr; m.vo2max = v2; m.avgHR = ah
-        if let ox { m.spo2 = ox * 100 }
-        m.weightKg = wt
+        async let r0 = quantityReading(.stepCount, unit: .count(), aggregation: .total, start: start, end: end, excludingLumen: false, multiplier: 1)
+        async let r1 = quantityReading(.activeEnergyBurned, unit: .kilocalorie(), aggregation: .total, start: start, end: end, excludingLumen: false, multiplier: 1)
+        async let r2 = quantityReading(.basalEnergyBurned, unit: .kilocalorie(), aggregation: .total, start: start, end: end, excludingLumen: false, multiplier: 1)
+        async let r3 = quantityReading(.appleExerciseTime, unit: .minute(), aggregation: .total, start: start, end: end, excludingLumen: false, multiplier: 1)
+        async let r4 = standHoursReading(start: start, end: end)
+        async let r5 = quantityReading(.dietaryWater, unit: .literUnit(with: .milli), aggregation: .total, start: start, end: end, excludingLumen: true, multiplier: 1)
+        async let r6 = quantityReading(.restingHeartRate, unit: HKUnit(from: "count/min"), aggregation: .latest, start: start, end: end, excludingLumen: false, multiplier: 1)
+        async let r7 = quantityReading(.heartRateVariabilitySDNN, unit: HKUnit(from: "ms"), aggregation: .latest, start: start, end: end, excludingLumen: false, multiplier: 1)
+        async let r8 = quantityReading(.oxygenSaturation, unit: .percent(), aggregation: .latest, start: start, end: end, excludingLumen: false, multiplier: 100)
+        async let r9 = quantityReading(.bodyMass, unit: .gramUnit(with: .kilo), aggregation: .latest, start: start, end: end, excludingLumen: false, multiplier: 1)
+        async let r10 = quantityReading(.respiratoryRate, unit: HKUnit(from: "count/min"), aggregation: .latest, start: start, end: end, excludingLumen: false, multiplier: 1)
+        async let r11 = quantityReading(.vo2Max, unit: HKUnit(from: "ml/(kg*min)"), aggregation: .latest, start: start, end: end, excludingLumen: false, multiplier: 1)
+        async let r12 = quantityReading(.heartRate, unit: HKUnit(from: "count/min"), aggregation: .average, start: start, end: end, excludingLumen: false, multiplier: 1)
+        async let r13 = quantityReading(.bodyFatPercentage, unit: .percent(), aggregation: .latest, start: start, end: end, excludingLumen: false, multiplier: 100)
+        async let r14 = quantityReading(.dietaryEnergyConsumed, unit: .kilocalorie(), aggregation: .total, start: start, end: end, excludingLumen: true, multiplier: 1)
+        async let r15 = quantityReading(.dietaryProtein, unit: .gram(), aggregation: .total, start: start, end: end, excludingLumen: true, multiplier: 1)
+        async let r16 = quantityReading(.dietaryCarbohydrates, unit: .gram(), aggregation: .total, start: start, end: end, excludingLumen: true, multiplier: 1)
+        async let r17 = quantityReading(.dietaryFatTotal, unit: .gram(), aggregation: .total, start: start, end: end, excludingLumen: true, multiplier: 1)
+        var m = DayMetrics.empty; m.date = start; m.readings = [:]; m.recordedTotalKeys = []
+        m.setReading(await r0, for: "steps")
+        m.setReading(await r1, for: "activeEnergy")
+        m.setReading(await r2, for: "restingEnergy")
+        m.setReading(await r3, for: "exercise")
+        m.setReading(await r4, for: "stand")
+        m.setReading(await r5, for: "water")
+        m.setReading(await r6, for: "restingHR")
+        m.setReading(await r7, for: "hrv")
+        m.setReading(await r8, for: "spo2")
+        m.setReading(await r9, for: "weight")
+        m.setReading(await r10, for: "respiratoryRate")
+        m.setReading(await r11, for: "vo2max")
+        m.setReading(await r12, for: "heartRate")
+        m.setReading(await r13, for: "bodyFat")
+        m.setReading(await r14, for: "calories")
+        m.setReading(await r15, for: "protein")
+        m.setReading(await r16, for: "carbs")
+        m.setReading(await r17, for: "fat")
         m.excludesLumenNutrition = true
-        m.dietaryCalories = de; m.dietaryProtein = dp; m.dietaryCarbs = dc; m.dietaryFat = df
         today = m
-        status = "Synced \(DateFormatter.localizedString(from: Date(), dateStyle: .none, timeStyle: .short))"
+        let available = m.readings?.values.filter { $0.value != nil }.count ?? 0
+        status = "Checked \(DateFormatter.localizedString(from: Date(), dateStyle: .none, timeStyle: .short)) · \(available) metrics returned"
     }
 
     // MARK: History (Trends)
@@ -397,6 +406,59 @@ public final class HealthKitService: ObservableObject {
     }
 
     // MARK: Query helpers
+
+    private func standHoursReading(start: Date, end: Date) async -> HealthMetricReading {
+        guard let type = HKObjectType.categoryType(forIdentifier: .appleStandHour) else {
+            return .init(healthQuery: .init(start: start, end: end, checkedAt: Date(), outcome: .failed))
+        }
+        return await withCheckedContinuation { continuation in
+            let query = HKSampleQuery(sampleType: type, predicate: HKQuery.predicateForSamples(withStart: start, end: end, options: .strictStartDate), limit: HKObjectQueryNoLimit, sortDescriptors: nil) { _, samples, error in
+                let samples = ((samples as? [HKCategorySample]) ?? []).filter { $0.value == HKCategoryValueAppleStandHour.stood.rawValue || $0.value == HKCategoryValueAppleStandHour.idle.rawValue }
+                let events = samples.map { CurrentHealthEvidence.StandHourEvent(start: $0.startDate, stood: $0.value == HKCategoryValueAppleStandHour.stood.rawValue) }
+                let count = CurrentHealthEvidence.standHours(events, start: start, end: end)
+                let checkedAt = Date()
+                let check = HealthMetricQuery(start: start, end: end, checkedAt: checkedAt, outcome: error != nil ? .failed : count == nil ? .noData : .recorded)
+                guard error == nil, let count else { continuation.resume(returning: .init(healthQuery: check)); return }
+                let names = Set(samples.map { $0.sourceRevision.source.name }).sorted().joined(separator: ", ")
+                let component = HealthMetricComponent(value: count, origin: .healthKit, source: names.isEmpty ? "Apple Health" : "Apple Health · " + names, start: start, end: end, checkedAt: checkedAt, aggregation: .total)
+                continuation.resume(returning: .init(components: [component], healthQuery: check))
+            }
+            self.store.execute(query)
+        }
+    }
+
+    /// Query time and aggregation window are separate from a latest sample's actual date.
+    /// Empty reads never establish denied or granted read authorization.
+    private func quantityReading(_ id: HKQuantityTypeIdentifier, unit: HKUnit, aggregation: HealthMetricComponent.Aggregation, start: Date, end: Date, excludingLumen: Bool, multiplier: Double) async -> HealthMetricReading {
+        let dates = HKQuery.predicateForSamples(withStart: start, end: end, options: .strictStartDate)
+        let predicate = excludingLumen ? NSCompoundPredicate(andPredicateWithSubpredicates: [dates, NSCompoundPredicate(notPredicateWithSubpredicate: HKQuery.predicateForObjects(from: HKSource.default()))]) : dates
+        return await withCheckedContinuation { continuation in
+            func result(_ value: Double?, source: String, sampleStart: Date? = nil, sampleEnd: Date? = nil, failed: Bool) -> HealthMetricReading {
+                let checkedAt = Date()
+                let usable = value.flatMap { $0.isFinite && $0 >= 0 ? $0 * multiplier : nil }
+                let outcome: HealthMetricQuery.Outcome = failed ? .failed : usable == nil ? .noData : .recorded
+                let query = HealthMetricQuery(start: start, end: end, checkedAt: checkedAt, outcome: outcome)
+                guard let usable, !failed else { return .init(healthQuery: query) }
+                let component = HealthMetricComponent(value: usable, origin: .healthKit, source: source, start: sampleStart ?? start, end: sampleEnd ?? end, lastSampleAt: sampleEnd, checkedAt: checkedAt, aggregation: aggregation)
+                return .init(components: [component], healthQuery: query)
+            }
+            if aggregation == .latest {
+                let query = HKSampleQuery(sampleType: HKQuantityType(id), predicate: predicate, limit: 1, sortDescriptors: [NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)]) { _, samples, error in
+                    let sample = samples?.first as? HKQuantitySample
+                    continuation.resume(returning: result(sample?.quantity.doubleValue(for: unit), source: sample.map { "Apple Health · " + $0.sourceRevision.source.name } ?? "Apple Health", sampleStart: sample?.startDate, sampleEnd: sample?.endDate, failed: error != nil))
+                }
+                self.store.execute(query)
+            } else {
+                let options: HKStatisticsOptions = aggregation == .total ? .cumulativeSum : .discreteAverage
+                let query = HKStatisticsQuery(quantityType: HKQuantityType(id), quantitySamplePredicate: predicate, options: options) { _, statistics, error in
+                    let quantity = aggregation == .total ? statistics?.sumQuantity() : statistics?.averageQuantity()
+                    let names = statistics?.sources?.map(\.name).sorted().joined(separator: ", ") ?? ""
+                    continuation.resume(returning: result(quantity?.doubleValue(for: unit), source: names.isEmpty ? "Apple Health" : "Apple Health · " + names, failed: error != nil))
+                }
+                self.store.execute(query)
+            }
+        }
+    }
 
     private func sum(_ id: HKQuantityTypeIdentifier, unit: HKUnit, start: Date, end: Date, excludingLumen: Bool = false) async -> Double? {
         let dates = HKQuery.predicateForSamples(withStart: start, end: end, options: .strictStartDate)

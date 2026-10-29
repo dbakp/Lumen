@@ -23,7 +23,7 @@ public enum Chronotype: String, Codable, Sendable, CaseIterable {
     }
 }
 
-public struct SleepEpisode: Identifiable, Codable, Sendable {
+public struct SleepEpisode: Identifiable, Codable, Sendable, Equatable {
     public var id: UUID
     public var bedtime: Date
     public var wakeTime: Date

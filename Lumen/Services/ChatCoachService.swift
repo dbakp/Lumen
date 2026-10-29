@@ -18,8 +18,7 @@ public final class ChatCoachService: ObservableObject {
         if let urgent = Self.urgentResponse(for: text) { return urgent }
         let history = conversationHistory ?? Array(health.chat.dropLast()) // latest user message is `text`
         let instructions = CompanionStore.shared.context(health: health) + "\n\n" + CoachingEngine.contextPrompt(metrics: health.metrics, readiness: health.readiness, goals: health.goals,
-                                                        mealsToday: health.mealsToday, workoutsToday: health.workoutsToday,
-                                                        sleepDebt: sleepDebt, debtFile: sleepDebt, history: history, totalCalories: health.caloriesEaten, totalProtein: health.proteinEaten) + "\nWhen asked for a plan, provide a short title, a brief reason tied to recorded data, and 3–5 numbered, flexible steps that can become a checklist. Do not alter medication or prescribe treatment."
+                                                        workoutsToday: health.workoutsToday, estimatedSleepDebt: health.assistantSleepDebt) + "\nWhen asked for a plan, provide a short title, a brief reason tied to recorded data, and 3–5 numbered, flexible steps that can become a checklist. Do not alter medication or prescribe treatment."
         if let ai = await AIService.shared.chat(instructions: instructions, history: history, user: text),
            !ai.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             lastReplySource = AIService.shared.brain.label
@@ -45,7 +44,7 @@ public final class ChatCoachService: ObservableObject {
             return lead + "\n\nRecord when it started, how it feels, how long it lasts and what changes it. These details can help you discuss it with a clinician, but they don't show the cause. For symptoms that persist, worsen or concern you, contact a clinician."
         }
         if containsAny(t, ["eat", "food", "protein", "dinner", "water"]) {
-            return "Your logs today include \(Int(health.caloriesEaten)) kcal, \(Int(health.proteinEaten)) g protein and \(Int(health.waterTodayML)) ml water. These are recorded amounts, not proof of your total intake.\n\nChoose a meal that suits your appetite and preferences. If you exercised, consider food and water afterwards. I can't infer nutritional deficiencies from these logs."
+            return HealthContextPrompt.intakeReply(metrics: health.metrics)
         }
         return perspective.body + "\n\nWhat I'm using:\n" + evidence + "\n\nI'm using the built-in guide for this reply. Enable an available AI provider in Settings for a wider conversation."
     }

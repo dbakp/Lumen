@@ -6,6 +6,7 @@ public struct ActivityView: View {
     @EnvironmentObject var health: HealthStore
     @EnvironmentObject var sleep: SleepStore
     @ObservedObject private var hk = HealthKitService.shared
+    @Environment(\.dynamicTypeSize) private var typeSize
     var router: AppRouter { .shared }
 
     public init() {}
@@ -17,8 +18,9 @@ public struct ActivityView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 28) {
                 rings
+                NavigationLink("Review today's readings", destination: CurrentReadingsView()).frame(minHeight: 44)
                 if let r = health.readiness {
-                    Text("Aim for \(r.strainTarget.lowerBound)–\(r.strainTarget.upperBound) active calories today, based on how recovered you are.")
+                    Text("Estimated activity range: \(r.strainTarget.lowerBound)–\(r.strainTarget.upperBound) kcal. This wellness heuristic cannot establish recovery; check how you feel before exercising.")
                         .font(.subheadline).foregroundStyle(Theme.secondary)
                 }
                 week
@@ -39,52 +41,57 @@ public struct ActivityView: View {
 
     // MARK: Rings
 
-    var rings: some View {
-        HStack(spacing: 24) {
-            TripleRingView(
-                move: health.moveProgress,
-                exercise: health.metrics.exerciseMin / max(1, health.goals.exerciseGoalMin),
-                stand: Double(health.metrics.standHours) / Double(max(1, health.goals.standGoal)))
-            .frame(width: 150, height: 150)
-            VStack(alignment: .leading, spacing: 14) {
-                ringStat("Move", "\(Int(health.metrics.activeCalories))", "/\(Int(health.goals.activeCalGoal)) kcal", Theme.move)
-                ringStat("Exercise", "\(Int(health.metrics.exerciseMin))", "/\(Int(health.goals.exerciseGoalMin)) min", Theme.steps)
-                ringStat("Stand", "\(health.metrics.standHours)", "/\(health.goals.standGoal) hours", Theme.calm)
-            }
-            Spacer(minLength: 0)
+    @ViewBuilder var rings: some View {
+        if typeSize.isAccessibilitySize {
+            VStack(alignment: .leading, spacing: 24) { ringGraphic; ringValues }
+        } else {
+            HStack(spacing: 24) { ringGraphic; ringValues; Spacer(minLength: 0) }.padding(.top, 8)
         }
-        .padding(.top, 8)
     }
+    var ringGraphic: some View {
+        TripleRingView(move: health.moveProgress,
+                       exercise: health.metrics.exerciseMin / max(1, health.goals.exerciseGoalMin),
+                       stand: Double(health.metrics.standHours) / Double(max(1, health.goals.standGoal)))
+            .frame(width: 150, height: 150).accessibilityHidden(true)
+    }
+    var ringValues: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            ringStat("Move", value("activeEnergy"), health.metrics.reading("activeEnergy").value == nil ? "" : "/\(Int(health.goals.activeCalGoal)) kcal", Theme.move)
+            ringStat("Exercise", value("exercise"), health.metrics.reading("exercise").value == nil ? "" : "/\(Int(health.goals.exerciseGoalMin)) min", Theme.steps)
+            ringStat("Stand / roll", value("stand"), health.metrics.reading("stand").value == nil ? "" : "/\(health.goals.standGoal) hours", Theme.calm, id: "stand")
+        }
+    }
+    func value(_ key: String) -> String { health.metrics.reading(key).value.map(HealthMetricCatalog.number) ?? "No reading" }
 
-    func ringStat(_ label: String, _ value: String, _ unit: String, _ color: Color) -> some View {
+    func ringStat(_ label: String, _ value: String, _ unit: String, _ color: Color, id: String? = nil) -> some View {
         VStack(alignment: .leading, spacing: 0) {
             Text(label).font(.subheadline).foregroundStyle(color)
             HStack(alignment: .firstTextBaseline, spacing: 2) {
                 Text(value).font(.system(.title2, design: .rounded).weight(.semibold)).monospacedDigit().foregroundStyle(Theme.text)
                 Text(unit).font(.footnote).foregroundStyle(Theme.secondary)
             }
-        }
+        }.accessibilityElement(children: .combine).accessibilityIdentifier("activity-stat-" + (id ?? label.lowercased()))
     }
 
     // MARK: Week
 
     var week: some View {
         VStack(alignment: .leading, spacing: 12) {
-            GroupLabel("This week")
+            GroupLabel("Past 7 days")
             VStack(alignment: .leading, spacing: 14) {
-                HStack {
-                    NavigationLink { TrendsView(metric: .steps) } label: { weekStat(Int(health.metrics.steps).formatted(), "steps today") }
-                    Spacer()
-                    weekStat("\(health.workouts.filter { $0.start > Date().addingTimeInterval(-7 * 86400) }.count)", "workouts")
-                    Spacer()
-                    weekStat("\(Int(health.workouts.filter { $0.start > Date().addingTimeInterval(-7 * 86400) }.reduce(0) { $0 + $1.duration } / 60))", "active min")
-                }
-                .buttonStyle(.plain)
-                WeeklyLoadChart(workouts: health.workouts).frame(height: 120)
-                Text("Recorded workout energy. Sessions without energy readings aren’t included.").font(.caption).foregroundStyle(Theme.secondary)
+                Group {
+                    if typeSize.isAccessibilitySize { VStack(alignment: .leading, spacing: 16) { weekStats } }
+                    else { HStack(alignment: .top, spacing: 12) { weekStats } }
+                }.buttonStyle(.plain)
+                WeeklyLoadChart(workouts: health.workouts)
             }
             .padding(16).surface()
         }
+    }
+    @ViewBuilder var weekStats: some View {
+        NavigationLink { TrendsView(metric: .steps) } label: { weekStat(value("steps"), "steps today") }.frame(maxWidth: .infinity, alignment: .leading)
+        weekStat("\(CurrentHealthEvidence.recentWorkouts(health.workouts).count)", "workouts").frame(maxWidth: .infinity, alignment: .leading)
+        weekStat("\(Int(CurrentHealthEvidence.recentWorkouts(health.workouts).reduce(0) { $0 + $1.duration } / 60))", "logged min").frame(maxWidth: .infinity, alignment: .leading)
     }
 
     func weekStat(_ v: String, _ l: String) -> some View {
@@ -114,7 +121,7 @@ public struct ActivityView: View {
                         if i > 0 { RowDivider() }
                         NavigationLink { WorkoutDetailView(workout: w, units: units) } label: { WorkoutRow(w, units: units) }.buttonStyle(.plain)
                             .contextMenu {
-                                if w.source == .manual {
+                                if w.source == .manual && w.importOrigin == nil && w.logOrigin == nil {
                                     Button("Delete", systemImage: "trash", role: .destructive) { health.deleteWorkout(w.id) }
                                 }
                             }
@@ -131,32 +138,32 @@ public struct ActivityView: View {
             GroupLabel("Heart & body")
             RowGroup {
                 NavigationLink { TrendsView(metric: .restingHR) } label: {
-                    LumenRow("Resting heart rate", value: health.metrics.restingHR.map { "\(Int($0)) bpm" } ?? "—", icon: "heart.fill", color: Theme.heart)
+                    LumenRow("Resting heart rate", value: HealthMetricCatalog.display(health.metrics.reading("restingHR").value, key: "restingHR"), icon: "heart.fill", color: Theme.heart)
                 }
                 RowDivider()
                 NavigationLink { TrendsView(metric: .hrv) } label: {
-                    LumenRow("Heart rate variability", subtitle: "Higher usually means well recovered", value: health.metrics.hrvMS.map { "\(Int($0)) ms" } ?? "—", icon: "waveform.path.ecg", color: Theme.calm)
+                    LumenRow("Heart rate variability", subtitle: "Compare with your own recorded history", value: HealthMetricCatalog.display(health.metrics.reading("hrv").value, key: "hrv"), icon: "waveform.path.ecg", color: Theme.calm)
                 }
                 RowDivider()
                 NavigationLink { TrendsView(metric: .weight) } label: {
-                    LumenRow("Weight", value: health.metrics.weightKg.map { Units.weight($0, units) } ?? "—", icon: "scalemass.fill", color: Theme.food)
+                    LumenRow("Weight", value: health.metrics.weightKg.map { Units.weight($0, units) } ?? "Not recorded", icon: "scalemass.fill", color: Theme.food)
                 }
                 RowDivider()
                 NavigationLink { TrendsView(metric: .activeEnergy) } label: {
-                    LumenRow("Active energy", value: "\(Int(health.metrics.activeCalories)) kcal", icon: "flame.fill", color: Theme.move)
+                    LumenRow("Active energy", value: HealthMetricCatalog.display(health.metrics.reading("activeEnergy").value, key: "activeEnergy"), icon: "flame.fill", color: Theme.move)
                 }
                 if let spo2 = health.metrics.spo2 {
                     RowDivider()
-                    LumenRow("Blood oxygen", value: String(format: "%.0f%%", spo2), icon: "lungs.fill", color: Theme.water, chevron: false)
+                    LumenRow("Blood oxygen", value: HealthMetricCatalog.display(spo2, key: "spo2"), icon: "lungs.fill", color: Theme.water, chevron: false)
                 }
                 if let vo2 = health.metrics.vo2max {
                     RowDivider()
-                    LumenRow("Cardio fitness", subtitle: "VO₂ max", value: String(format: "%.0f", vo2), icon: "figure.run.circle", color: Theme.steps, chevron: false)
+                    LumenRow("Cardio fitness", subtitle: "VO₂ max", value: HealthMetricCatalog.display(vo2, key: "vo2max"), icon: "figure.run.circle", color: Theme.steps, chevron: false)
                 }
             }
             .buttonStyle(.plain)
             if !hk.isAuthorized {
-                Text("Connect Apple Health in Settings to see these.").font(.footnote).foregroundStyle(Theme.tertiary)
+                Text("Connect Apple Health or import recordings to add readings. Availability varies by data type.").font(.footnote).foregroundStyle(Theme.tertiary)
             }
         }
     }
@@ -179,7 +186,7 @@ struct AllWorkoutsView: View {
                         NavigationLink { WorkoutDetailView(workout: w, units: sleep.profile.unitSystem) } label: { WorkoutRow(w, units: sleep.profile.unitSystem) }
                             .listRowBackground(Theme.surface)
                             .swipeActions {
-                                if w.source == .manual { Button("Delete", role: .destructive) { health.deleteWorkout(w.id) } }
+                                if w.source == .manual && w.importOrigin == nil && w.logOrigin == nil { Button("Delete", role: .destructive) { health.deleteWorkout(w.id) } }
                             }
                     }
                 }

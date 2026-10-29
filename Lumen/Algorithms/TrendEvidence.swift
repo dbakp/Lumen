@@ -20,6 +20,42 @@ public struct MetricEvidence: Identifiable, Sendable {
 }
 
 public enum TrendEvidence {
+    /// Rebuilt from current local records each time, so edits and deletions cannot leave stale totals.
+    public static func includingLocal(_ sourceDays: [ImportedHealthDay], workouts: [Workout], water: [HydrationLog], sleep: [SleepEpisode], since start: Date, now: Date = Date(), calendar: Calendar = .current) -> [ImportedHealthDay] {
+        var days: [Date: ImportedHealthDay] = [:]
+        for day in sourceDays where day.date >= start && day.date <= now { days[calendar.startOfDay(for: day.date)] = day }
+        func set(_ date: Date, _ metric: String, _ value: Double, _ source: String) {
+            guard value.isFinite, value >= 0, value < Double(Int.max / 2) else { return }
+            var day = days[date] ?? ImportedHealthDay(date: date, values: [:], sources: [:])
+            day.values[metric] = value; day.sources[metric] = source; days[date] = day
+        }
+        func merge(_ date: Date, _ metric: String, _ value: Double, _ source: String) {
+            let existing = days[date]?.values[metric]
+            if days[date]?.sources[metric] == "Apple Health", let existing {
+                set(date, metric, existing + value, "Apple Health + " + source)
+            } else if existing == nil || value > (existing ?? 0) {
+                set(date, metric, value, source)
+            }
+        }
+        let sessions = workouts.filter { $0.source == .manual && $0.importOrigin == nil && $0.start >= start && $0.start <= now && $0.duration.isFinite && $0.duration >= 0 }
+        for (date, sessions) in Dictionary(grouping: sessions, by: { calendar.startOfDay(for: $0.start) }) {
+            merge(date, "exercise", sessions.reduce(0) { $0 + $1.duration / 60 }, "Lumen manual workouts")
+            let known = sessions.compactMap(\.energyKcal).filter { $0.isFinite && $0 >= 0 }
+            if !known.isEmpty { merge(date, "activeEnergy", known.reduce(0, +), "Lumen manual workouts") }
+        }
+        let glasses = water.filter { $0.date >= start && $0.date <= now && $0.ml.isFinite && $0.ml > 0 }
+        for (date, logs) in Dictionary(grouping: glasses, by: { calendar.startOfDay(for: $0.date) }) {
+            // Water source overlap is unknown; keep the larger available daily total.
+            let total = logs.reduce(0) { $0 + $1.ml }
+            if days[date]?.values["water"] == nil || total > (days[date]?.values["water"] ?? 0) { set(date, "water", total, "Lumen water logs") }
+        }
+        let nights = sleep.filter { $0.wakeTime >= start && $0.wakeTime <= now && $0.bedtime < $0.wakeTime && $0.duration.isFinite && $0.duration > 0 }
+        for (date, episodes) in Dictionary(grouping: nights, by: { calendar.startOfDay(for: $0.wakeTime) }) {
+            set(date, "sleep", episodes.reduce(0) { $0 + $1.duration } / 3600, "Lumen sleep history")
+        }
+        return days.values.sorted { $0.date < $1.date }
+    }
+
     /// Compare completed calendar days, excluding the incomplete current day and never filling gaps.
     public static func compare(_ days: [ImportedHealthDay], metric: String, window: Int, now: Date = Date(), calendar: Calendar = .current) -> MetricEvidence {
         let window = max(1, window)

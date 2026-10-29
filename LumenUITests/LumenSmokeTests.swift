@@ -32,6 +32,7 @@ final class LumenSmokeTests: XCTestCase {
     func scrollAndTap(_ prefix: String, file: StaticString = #filePath, line: UInt = #line) {
         let q = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", prefix)).firstMatch
         for _ in 0..<6 where !(q.exists && q.isHittable) { app.swipeUp(velocity: .slow) }
+        if !(q.exists && q.isHittable) { snap("unreachable-" + prefix) }
         XCTAssertTrue(q.exists && q.isHittable, "\(prefix) not reachable", file: file, line: line)
         q.tap()
     }
@@ -39,6 +40,13 @@ final class LumenSmokeTests: XCTestCase {
     func reveal(_ element: XCUIElement) {
         for _ in 0..<8 where !(element.exists && element.isHittable) { app.swipeUp(velocity: .slow) }
         XCTAssertTrue(element.exists && element.isHittable)
+    }
+
+    func replaceAmount(_ field: XCUIElement, with text: String, file: StaticString = #filePath, line: UInt = #line) {
+        reveal(field); field.tap()
+        field.typeKey("a", modifierFlags: .command)
+        field.typeText(text)
+        XCTAssertEqual(field.value as? String, text, "Replace the complete amount before saving", file: file, line: line)
     }
 
     func finishOnboarding() {
@@ -347,7 +355,11 @@ final class LumenSmokeTests: XCTestCase {
         scrollAndTap("Run")
         XCTAssertTrue(app.staticTexts["Energy not provided"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.staticTexts["Health export · Synthetic workout Watch"].exists)
+        XCTAssertFalse(app.buttons["editWorkoutEntry"].exists)
+        XCTAssertFalse(app.buttons["deleteWorkoutEntry"].exists)
         snap("91-imported-workout-detail")
+        let managed = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "Managed by its source.")).firstMatch
+        reveal(managed); app.swipeUp(velocity: .slow); snap("95-managed-workout-source")
         app.terminate(); app.launchArguments = []; app.launch()
         for _ in 0..<4 { app.swipeDown() }
         scrollAndTap("Activity")
@@ -392,7 +404,7 @@ final class LumenSmokeTests: XCTestCase {
         let amount = app.textFields["draftWaterML"]
         XCTAssertTrue(amount.waitForExistence(timeout: 5))
         reveal(amount)
-        amount.coordinate(withNormalizedOffset: CGVector(dx: 0.98, dy: 0.5)).tap(); amount.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: 16) + "500")
+        replaceAmount(amount, with: "500")
         XCTAssertEqual(amount.value as? String, "500")
         snap("107-edited-water-value")
         tap("Done")
@@ -447,6 +459,109 @@ final class LumenSmokeTests: XCTestCase {
         tap("coachSend")
         XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", "You logged headache")).firstMatch.waitForExistence(timeout: 15))
         snap("108-assistant-uses-confirmed-log")
+        // Correct confirmed local entries without changing their original statements.
+        tab("Journal")
+        let waterEntry = app.descendants(matching: .any).matching(NSPredicate(format: "identifier BEGINSWITH 'water-'")).firstMatch
+        reveal(waterEntry); waterEntry.tap()
+        XCTAssertEqual(app.staticTexts["waterEntryValue"].label, "500 ml")
+        tap("editWaterEntry")
+        let correctedWater = app.textFields["correctWaterML"]
+        reveal(correctedWater)
+        replaceAmount(correctedWater, with: "750")
+        if app.buttons["dismissCorrectionKeyboard"].isHittable { tap("dismissCorrectionKeyboard") }
+        snap("130-water-correction")
+        tap("cancelCorrectedEntry"); tap("Keep editing")
+        tap("saveCorrectedEntry")
+        XCTAssertTrue(app.staticTexts["waterEntryValue"].waitForExistence(timeout: 5))
+        XCTAssertEqual(app.staticTexts["waterEntryValue"].label, "750 ml")
+        scrollAndTap("Original message")
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", "I drank 250 ml")).firstMatch.exists)
+        snap("131-water-corrected-provenance")
+        reveal(app.buttons["deleteWaterEntry"]); snap("138-water-delete-action"); tap("Done")
+        let workoutEntry = app.descendants(matching: .any).matching(NSPredicate(format: "identifier BEGINSWITH 'workout-'")).firstMatch
+        reveal(workoutEntry); workoutEntry.tap()
+        tap("editWorkoutEntry")
+        let minutes = app.textFields["correctWorkoutMinutes"]
+        replaceAmount(minutes, with: "35")
+        if app.buttons["dismissCorrectionKeyboard"].isHittable { tap("dismissCorrectionKeyboard") }
+        snap("132-workout-correction"); tap("saveCorrectedEntry")
+        XCTAssertTrue(app.staticTexts["35 min"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["Energy not provided"].exists)
+        snap("133-workout-corrected")
+        // Relaunch must keep both corrected records, not append duplicates.
+        app.terminate(); app.launchArguments = []; app.launch(); tab("Journal")
+        reveal(waterEntry); waterEntry.tap(); tap("editWaterEntry")
+        tap("cancelCorrectedEntry"); tap("Done")
+        app.terminate(); app.launchArguments = ["-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]; app.launch(); tab("Journal")
+        reveal(waterEntry); waterEntry.tap(); tap("editWaterEntry")
+        XCTAssertEqual(app.textFields["correctWaterML"].value as? String, "750")
+        reveal(app.textFields["correctWaterML"]); snap("136-large-water-editor"); tap("cancelCorrectedEntry"); tap("Done")
+        app.terminate(); app.launchArguments = ["-lumen.appearance", "dark"]; app.launch(); tab("Journal")
+        reveal(workoutEntry); workoutEntry.tap()
+        XCTAssertTrue(app.staticTexts["35 min"].waitForExistence(timeout: 5))
+        tap("editWorkoutEntry"); reveal(app.textFields["correctWorkoutEnergy"]); snap("139-dark-workout-editor"); tap("cancelCorrectedEntry")
+        scrollAndTap("Delete entry"); snap("137-workout-delete-confirmation"); tap("Keep entry")
+        XCTAssertTrue(app.navigationBars["Workout"].exists)
+        scrollAndTap("Delete entry"); app.alerts.buttons["Delete entry"].tap()
+        XCTAssertTrue(workoutEntry.waitForNonExistence(timeout: 5))
+        reveal(waterEntry); waterEntry.tap()
+        XCTAssertEqual(app.staticTexts["waterEntryValue"].label, "750 ml")
+        scrollAndTap("Delete entry"); snap("134-water-delete-confirmation")
+        app.alerts.buttons["Delete entry"].tap()
+        XCTAssertTrue(waterEntry.waitForNonExistence(timeout: 5))
+        tab("Today"); scrollAndTap("Review today's readings")
+        let waterReading = app.buttons["current-reading-water"]
+        reveal(waterReading); waterReading.tap()
+        XCTAssertEqual(app.staticTexts["currentReadingValue"].label, "Not recorded")
+        snap("135-water-deleted-reading")
+    }
+
+    func testCurrentReadingConfidence() throws {
+        finishOnboarding()
+        scrollAndTap("Activity")
+        for name in ["move", "exercise", "stand"] {
+            XCTAssertTrue(app.descendants(matching: .any).matching(identifier: "activity-stat-" + name).firstMatch.label.contains("No reading"))
+        }
+        snap("120-missing-activity")
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        for _ in 0..<4 { app.swipeDown(velocity: .fast) }
+        scrollAndTap("Review today's readings"); snap("121-current-readings")
+        tap("current-reading-steps")
+        XCTAssertEqual(app.staticTexts["currentReadingValue"].label, "Not recorded")
+        snap("122-missing-steps")
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        scrollAndTap("Your sources")
+        try chooseImportFixture("Lumen-confidence-zero")
+        let commit = app.buttons["Import 1 day"]; reveal(commit); commit.tap()
+        XCTAssertTrue(app.staticTexts["Health history imported"].waitForExistence(timeout: 5))
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        for _ in 0..<6 { app.swipeDown(velocity: .fast) }
+        scrollAndTap("Review today's readings"); tap("current-reading-steps")
+        XCTAssertEqual(app.staticTexts["currentReadingValue"].label, "0 steps")
+        XCTAssertTrue(app.staticTexts["Synthetic zero fixture"].exists)
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", "Sample times are unavailable")).firstMatch.exists)
+        snap("123-recorded-zero-evidence")
+        app.terminate(); app.launchArguments = ["-lumen.appearance", "dark"]; app.launch()
+        scrollAndTap("Review today's readings"); tap("current-reading-steps")
+        XCTAssertEqual(app.staticTexts["currentReadingValue"].label, "0 steps")
+        snap("124-dark-zero-evidence")
+    }
+
+    func testCurrentReadingsLargeText() throws {
+        app.terminate()
+        app.launchArguments = ["-resetForUITests", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]
+        app.launch(); finishOnboarding()
+        XCTAssertTrue(app.buttons["currentReadingsShortcut"].waitForExistence(timeout: 10))
+        snap("127-large-today")
+        tap("currentReadingsShortcut")
+        let steps = app.buttons["current-reading-steps"]; reveal(steps); steps.tap()
+        let amount = app.staticTexts["currentReadingValue"]
+        XCTAssertEqual(amount.label, "Not recorded")
+        XCTAssertGreaterThan(amount.frame.height, 60, "The accessibility-size override must actually be active")
+        snap("125-large-reading-details")
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        snap("126-large-current-readings")
     }
 
 }

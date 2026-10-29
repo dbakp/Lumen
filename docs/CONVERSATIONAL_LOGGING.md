@@ -17,3 +17,14 @@ Each confirmation atomically writes one domain before changing in-memory state. 
 Backup version 1 retains this metadata through optional fields. Existing records without provenance continue to decode. Restoring a backup does not grant sharing consent or enable providers. Live provider output, denied permissions, physical-device performance and accessibility text sizes are not established by simulator tests.
 
 The sheet's swipe protection uses Apple's [dismissal decision](https://developer.apple.com/documentation/uikit/uiadaptivepresentationcontrollerdelegate/presentationcontrollershoulddismiss(_:)) and [attempt callback](https://developer.apple.com/documentation/uikit/uiadaptivepresentationcontrollerdelegate/presentationcontrollerdidattempttodismiss(_:)), preserving the existing SwiftUI presentation callbacks. The installed UIKit SDK documents both callbacks from iOS 13 onward; the app targets iOS 18 or newer.
+
+
+## Correcting a confirmed water or workout entry
+
+Open the entry in Journal or its workout detail and choose **Edit entry**. Change the recorded date/time, amount or duration, optional workout energy, and notes, then choose **Save changes**. Blank workout energy stays unknown; an explicitly entered zero stays recorded. Cancel and swipe dismissal protect edited drafts. Invalid values cannot be saved. Saving replaces the record with the same ID after checked storage succeeds; it does not append a duplicate.
+
+The original statement, preparation source and confirmation time remain unchanged. An edit time is saved separately. If the statement says 250 ml and you correct the entry to 750 ml, the current structured value takes priority in Today, historical totals and assistant context. Source excerpts are references, not a way to recreate deleted observations.
+
+**Delete entry** asks whether to delete or keep the entry. Deletion removes only that Lumen record. The conversation remains, and separate Apple Health/import records can still contribute to your totals. Missing totals become unknown rather than a fabricated zero. These controls are offered for locally confirmed entries; external workouts stay managed by their source. Neither correction nor deletion writes to Apple Health. Existing quick-water, meal and weight logging retain their separate optional write paths.
+
+Version-1 backups preserve optional edit timestamps and provenance. Restoring an older backup can re-add an absent entry under the existing restore-missing-records rules; deletion does not create a permanent tombstone across backups.

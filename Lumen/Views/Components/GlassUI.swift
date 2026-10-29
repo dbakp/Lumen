@@ -18,6 +18,7 @@ public enum Theme {
     public static let sleep = Color(hex: "395B9A")
     public static let move = Color(hex: "B04B31")
     public static let food = Color(hex: "8A631E")
+    public static let destructive = Color("DestructiveText")
     public static let heart = Color(hex: "A33755")
     public static let water = Color(hex: "176992")
     public static let steps = Color(hex: "24755A")

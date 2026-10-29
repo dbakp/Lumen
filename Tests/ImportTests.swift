@@ -223,6 +223,7 @@ import Darwin
         try ZIPImportChecks.run(in: directory)
         try WorkoutImportChecks.run(in: directory, snapshot: backup)
         try HealthLogDraftChecks.run(snapshot: backup)
+        try DataConfidenceChecks.run(snapshot: backup)
         print("All import, model, totals, history, plan, conversation, evidence, document and reminder checks passed.")
     }
 }

@@ -1,24 +1,24 @@
 import Foundation
 
 // MARK: - CoachingEngine: the brain.
-// Built on published exercise-physiology, sleep and nutrition research:
-// readiness from HRV+RHR+sleep debt+strain balance; strain target; protein-first
-// calorie coaching; 3-bullet day plan; kind, specific, never shaming.
+// Wellness heuristics only. Missing observations remain unknown; scores and
+// calculated targets are not measured recovery or clinically validated advice.
 
 public enum CoachingEngine {
 
     // MARK: readiness 0-100
 
-    public static func readiness(metrics: DayMetrics, sleepDebt: TimeInterval, workoutsToday: [Workout], goals: HealthGoals, hrvBaseline: Double? = nil, restingHRBaseline: Double? = nil) -> Readiness {
+    public static func readiness(metrics: DayMetrics, sleepDebt: TimeInterval?, workoutsToday: [Workout], goals: HealthGoals, hrvBaseline: Double? = nil, restingHRBaseline: Double? = nil) -> Readiness {
         var score = 82
         var factors: [Readiness.ReadinessFactor] = []
 
-        // Sleep debt drag (biggest lever).
-        let debtH = sleepDebt / 3600
-        let debtDrag = Int(min(30, debtH * 4.5))
-        score -= debtDrag
-        factors.append(.init(id: "sleep", label: "Sleep debt", delta: -debtDrag,
-            detail: debtH < 1 ? "You're well rested." : debtH < 5 ? "You're \(String(format: "%.1f", debtH)) hours behind on sleep." : "You're \(String(format: "%.1f", debtH)) hours behind on sleep — rest matters most today."))
+        if let sleepDebt, sleepDebt.isFinite, sleepDebt >= 0 {
+            let debtH = sleepDebt / 3600
+            let debtDrag = Int(min(30, debtH * 4.5))
+            score -= debtDrag
+            factors.append(.init(id: "sleep", label: "Estimated sleep debt", delta: -debtDrag,
+                detail: "About \(String(format: "%.1f", debtH)) hours against your sleep target across 14 recorded nights. This estimate does not establish how recovered you feel."))
+        }
 
         if let hrv = metrics.hrvMS {
             let delta: Int
@@ -39,7 +39,7 @@ public enum CoachingEngine {
         }
 
         // Yesterday's strain vs today's readiness (avoid stacking red days).
-        let yesterdayLoad = workoutsToday.reduce(0) { $0 + $1.activeCalories }
+        let yesterdayLoad = workoutsToday.compactMap(\.energyKcal).reduce(0, +)
         if yesterdayLoad > 900 {
             score -= 5
             factors.append(.init(id: "strain", label: "Today’s load", delta: -5, detail: "You trained hard recently — your body gets stronger while it rests."))
@@ -63,7 +63,7 @@ public enum CoachingEngine {
 
     // MARK: day plan
 
-    public static func dayPlan(metrics: DayMetrics, readiness: Readiness?, goals: HealthGoals, sleepDebt: TimeInterval, eaten: Double, protein: Double, waterML: Double) -> DayPlan {
+    public static func dayPlan(metrics: DayMetrics, readiness: Readiness?, goals: HealthGoals, sleepDebt: TimeInterval?, eaten: Double, protein: Double, waterML: Double) -> DayPlan {
         let score = readiness?.score ?? 50
         let calTarget = goals.calorieTarget()
         let proteinTarget = goals.proteinTarget()
@@ -82,7 +82,9 @@ public enum CoachingEngine {
         }
         // 2. Fuel prescription from what's logged.
         let proteinLeft = max(0, proteinTarget - Int(protein))
-        if proteinLeft > 60 {
+        if metrics.reading("protein").value == nil {
+            bullets.append("Protein intake is unknown. Record a meal if you want to review it.")
+        } else if proteinLeft > 60 {
             bullets.append("Build your next meals around protein — about \(proteinLeft) g to go today.")
         } else if proteinLeft > 0 {
             bullets.append("There is room in your logged protein target. Choose a meal that suits your appetite.")
@@ -91,8 +93,10 @@ public enum CoachingEngine {
         }
         // 3. Recovery prescription.
         let waterLeft = max(0, waterTarget - Int(waterML))
-        if sleepDebt > 5 * 3600 {
+        if let sleepDebt, sleepDebt > 5 * 3600 {
             bullets.append("Go to bed 30 minutes earlier tonight — you're behind on sleep.")
+        } else if metrics.reading("water").value == nil {
+            bullets.append("Water intake is unknown. A missing log does not mean you have not had water.")
         } else if waterLeft > 1200 {
             bullets.append("Drink a couple of glasses of water before the evening.")
         } else {
@@ -125,28 +129,23 @@ public enum CoachingEngine {
 
     // MARK: insights feed
 
-    public static func insights(metrics: DayMetrics, readiness: Readiness?, goals: HealthGoals, mealsToday: [Meal], workoutsToday: [Workout], sleepDebt: TimeInterval) -> [Insight] {
+    public static func insights(metrics: DayMetrics, readiness: Readiness?, goals: HealthGoals, mealsToday: [Meal], workoutsToday: [Workout], sleepDebt: TimeInterval?) -> [Insight] {
         var out: [Insight] = []
         let score = readiness?.score ?? 50
 
-        if sleepDebt > 5 * 3600 {
+        if let sleepDebt, sleepDebt > 5 * 3600 {
             out.append(Insight(icon: "moon.fill", tint: "#8B7CFF", title: "Sleep is holding you back",
                 body: "You're \(String(format: "%.1f", sleepDebt/3600)) hours behind. Going to bed 30 minutes earlier tonight will help more than extra coffee.",
                 action: "See energy schedule"))
         }
-        if let hrv = metrics.hrvMS, hrv < 40 {
-            out.append(Insight(icon: "waveform.path.ecg", tint: "#FF6B6B", title: "Your body is still recovering",
-                body: "Keep exercise easy today and eat enough — skipping meals slows recovery.",
-                action: "Go easy today"))
-        }
-        let protein = mealsToday.reduce(0) { $0 + $1.protein }
+        let protein = metrics.reading("protein").value
         let hour = Calendar.current.component(.hour, from: Date())
-        if hour >= 15 && protein < Double(goals.proteinTarget()) * 0.5 {
+        if let protein, hour >= 15 && protein < Double(goals.proteinTarget()) * 0.5 {
             out.append(Insight(icon: "fork.knife", tint: "#4ADE80", title: "Room for more protein",
-                body: "You've had \(Int(protein)) g of \(goals.proteinTarget()) g. Make protein the star of dinner — chicken, fish, tofu or eggs.",
+                body: "Your available records contain \(HealthMetricCatalog.number(protein)) g of protein against an estimated \(goals.proteinTarget()) g target. Records may be incomplete.",
                 action: "Log dinner"))
         }
-        if metrics.steps > 0 && metrics.steps < goals.stepGoal * 0.5 && hour >= 16 {
+        if let steps = metrics.reading("steps").value, steps < goals.stepGoal * 0.5 && hour >= 16 {
             let left = Int(goals.stepGoal - metrics.steps)
             out.append(Insight(icon: "figure.walk", tint: "#22D3EE", title: "A walk closes the gap",
                 body: "\(left.formatted()) steps to go. A 15-minute walk after dinner covers about 1,500 and helps you sleep.",
@@ -158,18 +157,18 @@ public enum CoachingEngine {
                 body: "Nice work. Have a protein-rich meal in the next couple of hours and take the evening easy.",
                 action: nil))
         } else if score >= 70 && hour < 18 {
-            out.append(Insight(icon: "bolt.fill", tint: "#FBBF24", title: "A good time to move",
-                body: "You're well recovered and there's daylight left — even 25 minutes of exercise counts.",
+            out.append(Insight(icon: "bolt.fill", tint: "#FBBF24", title: "Check how you feel",
+                body: "Your readiness estimate is a wellness heuristic. Let symptoms and how you feel guide activity choices.",
                 action: "Start workout"))
         }
-        if metrics.waterML < 1200 && hour >= 14 {
+        if let water = metrics.reading("water").value, water < 1200 && hour >= 14 {
             out.append(Insight(icon: "drop.fill", tint: "#38BDF8", title: "Water before evening",
                 body: "Drink some water now so you're not catching up late and waking up at night.",
                 action: "Log water"))
         }
         if out.isEmpty {
-            out.append(Insight(icon: "checkmark.seal.fill", tint: "#4ADE80", title: "You're on track",
-                body: "Nothing to fix today. Keep your routine — same wake time, good meals, dim lights tonight.",
+            out.append(Insight(icon: "checkmark.seal.fill", tint: "#4ADE80", title: "No suggestion from these records",
+                body: "Available records may be incomplete. Your own sense of how you feel matters alongside them.",
                 action: nil))
         }
         return Array(out.prefix(5))
@@ -177,25 +176,7 @@ public enum CoachingEngine {
 
     // MARK: chat context builder (for ChatCoachService + any LLM)
 
-    public static func contextPrompt(metrics: DayMetrics, readiness: Readiness?, goals: HealthGoals, mealsToday: [Meal], workoutsToday: [Workout], sleepDebt: TimeInterval, debtFile: TimeInterval, history: [ChatMessage], totalCalories: Double? = nil, totalProtein: Double? = nil) -> String {
-        let eaten = totalCalories ?? mealsToday.reduce(0) { $0 + $1.calories }
-        let protein = totalProtein ?? mealsToday.reduce(0) { $0 + $1.protein }
-        let workoutSummary = workoutsToday.isEmpty ? "none yet" : workoutsToday.map { "\($0.title) \(Int($0.duration / 60)) min" }.joined(separator: ", ")
-        func v(_ d: Double?, _ unit: String) -> String { d.map { "\(Int($0)) \(unit)" } ?? "unknown" }
-        let time = Date().formatted(date: .omitted, time: .shortened)
-        return """
-        You are Lumen, a supportive wellness companion (sleep, training and nutrition). The person is not technical.
-        Style: plain everyday words, no jargon or abbreviations; 2–4 short sentences, then at most 3 bullet points if useful. \
-        Be specific to their numbers. Never shame food or body. No diagnoses — if they mention chest pain, fainting, disordered eating \
-        or other red flags, urge emergency care if current or sudden, rather than routine coaching.
-        Right now it is \(time). Their data today:
-        - Readiness: \(readiness.map { "\($0.score)/100 (\($0.headline))" } ?? "not enough data yet")
-        - Sleep debt: \(String(format: "%.1f", sleepDebt / 3600)) hours
-        - Steps: \(Int(metrics.steps)) of \(Int(goals.stepGoal)); active energy \(Int(metrics.activeCalories)) of \(Int(goals.activeCalGoal)) kcal; exercise \(Int(metrics.exerciseMin)) min
-        - Resting heart rate: \(v(metrics.restingHR, "bpm")); heart rate variability: \(v(metrics.hrvMS, "ms"))
-        - Food: \(Int(eaten)) of \(goals.calorieTarget()) kcal, protein \(Int(protein)) of \(goals.proteinTarget()) g; water \(Int(metrics.waterML)) ml
-        - Workouts today: \(workoutSummary)
-        - Goal: \(goals.goal.label)
-        """
+    public static func contextPrompt(metrics: DayMetrics, readiness: Readiness?, goals: HealthGoals, workoutsToday: [Workout], estimatedSleepDebt: Double?) -> String {
+        HealthContextPrompt.make(metrics: metrics, readiness: readiness, goals: goals, workouts: workoutsToday, estimatedSleepDebt: estimatedSleepDebt)
     }
 }

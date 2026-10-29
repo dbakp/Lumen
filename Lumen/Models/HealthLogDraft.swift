@@ -35,7 +35,10 @@ struct HealthLogDraft: Identifiable, Equatable {
     var fieldWarnings: [String] = []
     var recordID: String { "chat-log-" + id }
     var validationMessage: String? {
-        guard date <= Date().addingTimeInterval(1), date.timeIntervalSince1970.isFinite else { return "Choose a time that has already happened." }
+        validationMessage(now: Date())
+    }
+    func validationMessage(now: Date) -> String? {
+        guard date <= now.addingTimeInterval(1), date.timeIntervalSince1970.isFinite else { return "Choose a time that has already happened." }
         guard name.count <= 200, location.count <= 200, note.count <= 8000 else { return "Shorten the entry before saving." }
         func valid(_ value: Double?, _ range: ClosedRange<Double>) -> Bool { value.map { $0.isFinite && range.contains($0) } ?? true }
         switch kind {
@@ -62,6 +65,15 @@ struct HealthLogSelection: Identifiable {
 
 /// Conservative local extraction; everything remains editable and requires confirmation.
 enum HealthLogDrafting {
+    static func amount(_ text: String, decimalSeparator: String = Locale.current.decimalSeparator ?? ".") -> Double? {
+        let text = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !text.isEmpty else { return nil }
+        return Double(text.replacingOccurrences(of: decimalSeparator, with: ".")) ?? .nan
+    }
+    static func preparationDescription(_ provider: String) -> String {
+        provider == "Local draft" ? "Prepared on this iPhone" : "Suggested with " + String(provider.prefix(120))
+    }
+
     static func local(_ text: String, date: Date) -> [HealthLogDraft] {
         let lower = text.lowercased()
         let uncertain = ["?", "will ", "should ", "could ", "might ", "plan ", "want ", "remind ", "didn't", "did not", "don't", "do not", "not ", "no ", "if ", "would ", "example", "quote", "said ", "\"", "“"]
@@ -97,7 +109,7 @@ enum HealthLogDrafting {
         struct Key: Hashable { var conversationID: String; var messageID: String }
         var seen: Set<Key> = []
         return origins.sorted { $0.confirmedAt > $1.confirmedAt }.filter { seen.insert(Key(conversationID: $0.conversationID, messageID: $0.messageID)).inserted }.prefix(10).map {
-            "Source statement (reference only; confirmed structured values take priority): " + String(reflecting: String($0.statement.prefix(1000)))
+            "Source statement (reference only; confirmed structured values take priority; missing entries may have been deleted, never recreate them): " + String(reflecting: String($0.statement.prefix(1000)))
         }.joined(separator: "\n")
     }
 

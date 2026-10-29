@@ -113,6 +113,7 @@ public struct StatTile: View {
 
 /// List row with optional leading symbol, value and chevron.
 public struct LumenRow: View {
+    @Environment(\.dynamicTypeSize) private var typeSize
     let icon: String?
     let color: Color
     let title: String
@@ -127,17 +128,25 @@ public struct LumenRow: View {
             if let icon {
                 Image(systemName: icon).font(.body.weight(.medium)).foregroundStyle(color).frame(width: 26)
             }
-            VStack(alignment: .leading, spacing: 2) {
-                Text(title).font(.body).foregroundStyle(Theme.text)
-                if let subtitle { Text(subtitle).font(.footnote).foregroundStyle(Theme.secondary).lineLimit(2) }
+            if typeSize.isAccessibilitySize {
+                VStack(alignment: .leading, spacing: 6) { rowTitle; rowValue }.frame(maxWidth: .infinity, alignment: .leading)
+            } else {
+                rowTitle
+                Spacer(minLength: 8)
+                rowValue
             }
-            Spacer(minLength: 8)
-            if let value { Text(value).font(.body.monospacedDigit()).foregroundStyle(Theme.secondary) }
             if chevron { Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(Theme.tertiary) }
         }
         .padding(.vertical, 12)
         .contentShape(Rectangle())
     }
+    var rowTitle: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(title).font(.body).foregroundStyle(Theme.text)
+            if let subtitle { Text(subtitle).font(.footnote).foregroundStyle(Theme.secondary).fixedSize(horizontal: false, vertical: true) }
+        }
+    }
+    @ViewBuilder var rowValue: some View { if let value { Text(value).font(.body.monospacedDigit()).foregroundStyle(Theme.secondary) } }
 }
 
 /// Groups rows in one surface with hairline separators.

@@ -32,8 +32,6 @@ let package = Package(
             "Lumen/Models/CompanionStore.swift",
             "Lumen/Models/SleepStore.swift",
             "Lumen/Models/HealthStore.swift",
-            "Lumen/Algorithms/CoachingEngine.swift",
-            "Lumen/Algorithms/SleepAlgorithms.swift",
             "Lumen/Services/BackupService.swift",
             "Lumen/Services/HealthLogConfirmation.swift",
             "Lumen/Services/DeepLink.swift",
@@ -64,6 +62,12 @@ let package = Package(
             "Lumen/Algorithms/PlanBuilder.swift",
             "Lumen/Algorithms/HealthHistorySummary.swift",
             "Lumen/Algorithms/HealthTotals.swift",
+            "Lumen/Algorithms/CurrentHealthEvidence.swift",
+            "Lumen/Algorithms/LocalHealthCorrection.swift",
+            "Lumen/Algorithms/HealthContextPrompt.swift",
+            "Lumen/Algorithms/CoachingEngine.swift",
+            "Lumen/Algorithms/SleepAlgorithms.swift",
+            "Lumen/Models/HealthMetricReading.swift",
             "Lumen/Algorithms/ReminderPolicy.swift",
             "Lumen/Models/HealthModels.swift",
             "Lumen/Models/HealthLogDraft.swift",
@@ -76,6 +80,7 @@ let package = Package(
             "Tests/ZIPImportChecks.swift",
             "Tests/WorkoutImportChecks.swift",
             "Tests/HealthLogDraftChecks.swift",
+            "Tests/DataConfidenceChecks.swift",
             "Lumen/Services/HealthZIPArchive.swift"
 ]
     )]

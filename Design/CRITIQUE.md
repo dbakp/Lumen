@@ -72,3 +72,42 @@ The same independent App Designer Pro critic reviewed actual native import previ
 The same independent App Designer Pro critic reviewed six initial native captures. Hierarchy/native fidelity were 4/5; confirmation clarity, copy and saved-vs-unsaved clarity were 3/5. Requested fixes: persistent units after values are entered, upfront saved/pending and closing behavior, protection for edited drafts on Close/swipe, and separate empty optional notes instead of copying the entire source statement into every note.
 
 Round 3 captures in Design/native/chat-logs/r3 implement all requests. Water keeps its ml label, workout fields keep min/kcal labels, closing has explicit Discard/Keep choices, notes start empty, and provenance preserves the source. The reviewer confirmed all fixes, raised the affected lines to 4/5, and found no remaining high-impact visual defects in all eight captures. Done by the skill stop rule for this scoped addition. An intermediate native test exposed an iOS confirmation popover that omitted the cancel action; a two-choice alert fixed it. The successful revised scenario passed in 209.463 seconds and the full daily/backup journey separately passed in 252.272 seconds. The final extension passed in 144.131 seconds and verified that a subsequent assistant reply uses the saved symptom. Final captures are in Design/native/chat-logs/r4; no product design changed from reviewed round 3. These are synthetic simulator captures; provider inference, accessibility scaling and physical-device behavior remain separate gates.
+
+
+## Batch 9: current evidence and local corrections · round 1
+
+App Designer Pro was supplied on this computer and read from the attached archive. One continuing independent critic reviewed six actual iPhone simulator captures: missing Activity, current readings, missing steps, recorded imported zero, dark recorded zero, and a saved water correction. The editor, workout deletion and largest text size were not yet evidenced, so this round was explicitly partial and not done.
+
+Scores: concept 4, category distinction 4, skill distinction 4, hierarchy 4, typography 4, colour 4, richness 3, rhythm 3, finish 3, native fluency 3, copy 3. Signature, motion, selling assets and unshown flows were unscored. This does not meet the scoped stop rule.
+
+Five required changes, all accepted: give Delete entry native red/trash treatment; collapse an empty weekly energy chart to “No workout energy recorded this week.”; remove irrelevant missing Health check-time copy from imported evidence; use source-specific missing-reading copy and remove repeated generic Health boilerplate; replace “Prepared by: Local draft” with “Prepared on this iPhone”. Combined-source values remain visible, while a single source no longer repeats the hero number. The weekly chart now uses known energy records only and preserves explicit zeros without filling other days. Rerendering and the next review remain pending.
+
+Native rendering is the evidence for these additions. No browser DOM scan or new direction exploration is claimed; the established direction and native implementation are preserved. Uploaded skill resources are not included in the repository.
+
+
+### Batch 9 · round 2
+
+The same critic reviewed all 18 actual captures in `Design/native/confidence/r2`, including both correction forms, saved values, both delete alerts, retained source wording, post-delete unknown, dark mode and actual Accessibility XXXL layouts. All five round-1 requests landed. Scores: concept 4, category 4, skill distinction 4, hierarchy 4, typography 4, colour 4, richness 3, rhythm 4, finish 4, native fluency 4, copy 3. Nine of eleven lines were at 4, but Copy did not meet the required 4. Not done; the external managed-workout capture was still pending.
+
+Accepted fixes: “this week” becomes “in the past 7 days” to match the rolling window; the standalone second “Walk” gets a persistent “Workout name” label; the correction toolbar action becomes “Save” and its accessibility-size title becomes “Water” or “Workout”, avoiding the visible “Edit w…” truncation. No request was declined. The initial amount-entry check was also corrected to select the whole value before replacing it: an intermediate capture showed 3520, rather than 35, because the test had inserted at the beginning. The completed corrected native scenario passed in 287.121 seconds. These preliminary captures are retained as review history; the next captures will verify the remaining wording and toolbar changes.
+
+
+### Batch 9 · round 3 sign-off
+
+The same independent critic opened all 21 native captures in `Design/native/confidence/r3`. The seven-day wording, persistent workout name, shorter Save action and complete XXXL Water title all landed. Source-managed details in 91/92/95 now show the source, named export, reported/end-time qualifications and the full local-correction boundary. The native assertion that edit/delete controls are absent is separate behavioral evidence.
+
+| Rubric | R1 | R2 | R3 |
+|---|---:|---:|---:|
+| Concept on the pixel | 4 | 4 | 4 |
+| Category distinction | 4 | 4 | 4 |
+| Skill distinction | 4 | 4 | 4 |
+| Hierarchy | 4 | 4 | 4 |
+| Typography | 4 | 4 | 4 |
+| Colour | 4 | 4 | 4 |
+| Richness | 3 | 3 | 3 |
+| Rhythm and space | 3 | 4 | 4 |
+| Finish and craft | 3 | 4 | 4 |
+| Native fluency | 3 | 4 | 4 |
+| Copy | 3 | 3 | 4 |
+
+The critic found no remaining concrete visual or copy defects and confirmed **Done by the skill stop rule**: 10/11 applicable lines at 4, none below 3, with Concept, Finish, Native fluency and Copy at 4. Richness remains 3; no portfolio-level score is claimed. All substantive asks were accepted. The solid asset-pair contrast calculations are in DIRECTION.md; they do not measure every system/translucent state. Native screenshots establish the shown layouts, including actual Accessibility XXXL. They do not establish VoiceOver, live HealthKit/provider reliability, clinical validity or physical-device feel. No new motion, store assets or browser-DOM scan is claimed for this native addition.

@@ -120,7 +120,9 @@ public final class CompanionStore: ObservableObject {
         let recent = activeSymptoms.first
         var evidence: [String] = []
         if let sleep = health.metrics.sleepSeconds { evidence.append("Sleep recorded: \(SleepFormat.durationHM(sleep))") }
-        if health.waterTodayML > 0 { evidence.append("Water logged: \(Int(health.waterTodayML)) ml") }
+        if let water = health.metrics.reading("water").value { evidence.append("Water recorded: \(Int(water)) ml") }
+        if health.hasActivityToday { evidence.append("Activity recorded: " + health.activitySummary) }
+        if health.mealsToday.isEmpty && health.hasFoodToday { evidence.append("Food readings are available from your sources") }
         if !health.mealsToday.isEmpty { evidence.append("\(health.mealsToday.count) meal\(health.mealsToday.count == 1 ? "" : "s") logged today") }
         if let check = latestCheckIn { evidence.append("Energy \(check.energy)/5 · Stress \(check.stress)/5") }
         if let recent {

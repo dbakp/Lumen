@@ -115,18 +115,18 @@ struct HealthLogDraftEditor: View {
                     TextField("Symptom", text: $draft.name)
                     TextField("Body location", text: $draft.location)
                     rating("Severity", value: $draft.severity, maximum: 10)
-                    LabeledContent("Duration (min)") { TextField("Optional", value: $draft.durationMinutes, format: .number).multilineTextAlignment(.trailing).keyboardType(.decimalPad) }
+                    LabeledContent("Duration (min)") { HealthAmountField("Optional", value: $draft.durationMinutes).multilineTextAlignment(.trailing).keyboardType(.decimalPad) }
                 case .checkIn:
                     rating("Energy", value: $draft.energy, maximum: 5)
                     rating("Mood", value: $draft.mood, maximum: 5)
                     rating("Stress", value: $draft.stress, maximum: 5)
                 case .water:
-                    LabeledContent("Water (ml)") { TextField("Amount", value: $draft.waterML, format: .number).multilineTextAlignment(.trailing).keyboardType(.decimalPad).accessibilityIdentifier("draftWaterML") }
+                    LabeledContent("Water (ml)") { HealthAmountField("Amount", value: $draft.waterML).multilineTextAlignment(.trailing).keyboardType(.decimalPad).accessibilityIdentifier("draftWaterML") }
                 case .workout:
                     Picker("Activity", selection: $draft.workoutKind) { Text("Choose").tag(Optional<WorkoutKind>.none); ForEach(WorkoutKind.allCases, id: \.self) { Text($0.label).tag(Optional($0)) } }
-                    TextField("Title (optional)", text: $draft.name)
-                    LabeledContent("Duration (min)") { TextField("Minutes", value: $draft.durationMinutes, format: .number).multilineTextAlignment(.trailing).keyboardType(.decimalPad) }
-                    LabeledContent("Energy (kcal)") { TextField("Optional", value: $draft.energyKcal, format: .number).multilineTextAlignment(.trailing).keyboardType(.decimalPad) }
+                    LabeledContent("Workout name") { TextField("Optional", text: $draft.name).multilineTextAlignment(.trailing) }
+                    LabeledContent("Duration (min)") { HealthAmountField("Minutes", value: $draft.durationMinutes).multilineTextAlignment(.trailing).keyboardType(.decimalPad) }
+                    LabeledContent("Energy (kcal)") { HealthAmountField("Optional", value: $draft.energyKcal).multilineTextAlignment(.trailing).keyboardType(.decimalPad) }
                     Text("Leave energy empty if it wasn't measured. Lumen won't estimate it here.").font(.footnote).foregroundStyle(Theme.secondary)
                 }
             }
@@ -134,7 +134,7 @@ struct HealthLogDraftEditor: View {
             Section { DisclosureGroup("Read original message") { Text(selection.message.text).font(.subheadline).textSelection(.enabled) } }
             Section("Before saving") {
                 ForEach(draft.fieldWarnings, id: \.self) { Text($0).font(.footnote).foregroundStyle(Theme.secondary) }
-                Text("Prepared by: \(draft.preparedBy)").font(.footnote).foregroundStyle(Theme.secondary)
+                Text(HealthLogDrafting.preparationDescription(draft.preparedBy)).font(.footnote).foregroundStyle(Theme.secondary)
                 Text("Confirm these values describe what happened to you. The original message is kept with this entry, even if you delete the conversation.").font(.subheadline)
                 if let message = draft.validationMessage { Text(message).font(.footnote).foregroundStyle(Theme.secondary) }
                 if let error { Text(error).font(.footnote).foregroundStyle(Theme.heart) }

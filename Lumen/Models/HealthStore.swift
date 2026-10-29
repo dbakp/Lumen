@@ -2,8 +2,9 @@ import Foundation
 import SwiftUI
 
 // MARK: - Health store: activity, nutrition, hydration, coaching (local-first)
-// Real data only. Apple Health is read on launch / foreground; everything the
-// user logs lives on-device and is written back to Health when connected.
+// Real data only. Apple Health is read on launch / foreground.
+// Conversational confirmations and manual workouts stay local; quick water,
+// meals and weight use the existing optional HealthKit write paths.
 
 @MainActor
 public final class HealthStore: ObservableObject {
@@ -31,11 +32,12 @@ public final class HealthStore: ObservableObject {
     private var restingHRBaseline: Double?
     private var sleepDebt: TimeInterval = 0
     private var sleepNeed: TimeInterval = 8 * 3600 + 10 * 60
-    private var lastSleepSeconds: Double?
+    private var sleepEpisodes: [SleepEpisode] = []
+    public var assistantSleepDebt: Double? { CurrentHealthEvidence.estimatedSleepDebt(sleepEpisodes, sleepNeed: sleepNeed) }
 
     public var healthConnected: Bool { HealthKitService.shared.isAuthorized }
-    /// True when numbers come from a connected source rather than manual logs only.
-    public var usingLiveData: Bool { healthConnected || StravaService.shared.isConnected }
+    /// Actual returned Health readings, independent of completing an access request.
+    public var usingLiveData: Bool { metrics.readings?.values.contains { $0.value != nil && $0.components.contains { $0.origin == .healthKit } } ?? false }
 
     public init() {
         goals = LocalStore.load(HealthGoals.self, from: "goals", legacyKey: "lumen.health.goals.v1") ?? HealthGoals()
@@ -61,18 +63,27 @@ public final class HealthStore: ObservableObject {
 
     // MARK: Derived
 
-    private func today<T>(_ items: [T], _ date: (T) -> Date) -> [T] { items.filter { Calendar.current.isDateInToday(date($0)) } }
-    public var mealsToday: [Meal] { today(meals, \.date).sorted { $0.date < $1.date } }
-    public var caloriesEaten: Double { HealthTotals.nutrient(local: mealsToday.reduce(0) { $0 + $1.calories }, external: metrics.dietaryCalories, imported: CompanionStore.shared.todayImport?.values["calories"], excludesLumen: metrics.excludesLumenNutrition == true) }
-    public var proteinEaten: Double { HealthTotals.nutrient(local: mealsToday.reduce(0) { $0 + $1.protein }, external: metrics.dietaryProtein, imported: CompanionStore.shared.todayImport?.values["protein"], excludesLumen: metrics.excludesLumenNutrition == true) }
-    public var carbsEaten: Double { HealthTotals.nutrient(local: mealsToday.reduce(0) { $0 + $1.carbs }, external: metrics.dietaryCarbs, imported: CompanionStore.shared.todayImport?.values["carbs"], excludesLumen: metrics.excludesLumenNutrition == true) }
-    public var fatEaten: Double { HealthTotals.nutrient(local: mealsToday.reduce(0) { $0 + $1.fat }, external: metrics.dietaryFat, imported: CompanionStore.shared.todayImport?.values["fat"], excludesLumen: metrics.excludesLumenNutrition == true) }
+    private func today<T>(_ items: [T], _ date: (T) -> Date) -> [T] {
+        let now = Date(), calendar = Calendar.current
+        return items.filter { date($0) <= now && calendar.isDate(date($0), inSameDayAs: now) }
+    }
+    public var mealsToday: [Meal] { today(meals.filter { $0.source != .sample }, \.date).sorted { $0.date < $1.date } }
+    public var caloriesEaten: Double { metrics.reading("calories").value ?? 0 }
+    public var proteinEaten: Double { metrics.reading("protein").value ?? 0 }
+    public var carbsEaten: Double { metrics.reading("carbs").value ?? 0 }
+    public var fatEaten: Double { metrics.reading("fat").value ?? 0 }
     public var waterTodayML: Double { metrics.waterML }
-    public var workoutsToday: [Workout] { today(workouts, \.start) }
+    public var workoutsToday: [Workout] { today(workouts.filter { $0.source != .sample }, \.start) }
     public var caloriesRemaining: Int { max(0, goals.calorieTarget() - Int(caloriesEaten)) }
     public var moveProgress: Double { min(1, metrics.activeCalories / max(1, goals.activeCalGoal)) }
     public var isCalibrating: Bool { readiness == nil }
-    public var hasActivityToday: Bool { metrics.steps > 0 || metrics.activeCalories > 0 || !workoutsToday.isEmpty }
+    public var hasActivityToday: Bool { ["steps", "exercise", "activeEnergy", "stand"].contains { metrics.reading($0).value != nil } || !workoutsToday.isEmpty }
+    public var hasFoodToday: Bool { ["calories", "protein", "carbs", "fat"].contains { metrics.reading($0).value != nil } }
+    public var activitySummary: String {
+        for key in ["steps", "exercise", "activeEnergy"] { if let value = metrics.reading(key).value { return HealthMetricCatalog.display(value, key: key) } }
+        if !workoutsToday.isEmpty { return "\(workoutsToday.count) workout\(workoutsToday.count == 1 ? "" : "s") logged" }
+        return "No activity reading"
+    }
 
     /// Meals grouped by day, newest first (for the nutrition journal).
     public func meals(on day: Date) -> [Meal] {
@@ -104,6 +115,11 @@ public final class HealthStore: ObservableObject {
 
     public func undoLastWater() {
         guard let last = today(waterLogs, \.date).max(by: { $0.date < $1.date }) else { return }
+        if last.logOrigin != nil {
+            do { try correctConfirmedWater(last.id, draft: nil) }
+            catch { AppRouter.shared.confirm("Couldn’t remove water. Try again.") }
+            return
+        }
         waterLogs.removeAll { $0.id == last.id }
         Task { await HealthKitService.shared.deleteWater(id: last.id) }
         persist(); refresh()
@@ -118,15 +134,35 @@ public final class HealthStore: ObservableObject {
     }
 
     public func deleteWorkout(_ id: String) {
-        workouts.removeAll { $0.id == id && $0.source == .manual }
+        if workouts.first(where: { $0.id == id }).map(LocalHealthCorrection.canEdit) == true {
+            do { try correctConfirmedWorkout(id, draft: nil) }
+            catch { AppRouter.shared.confirm("Couldn’t remove workout. Try again.") }
+            return
+        }
+        workouts.removeAll { $0.id == id && $0.source == .manual && $0.importOrigin == nil }
         persist(); refresh()
+    }
+
+    /// Confirmed conversational entries are local-only. Corrections never call HealthKit.
+    func correctConfirmedWater(_ id: String, draft: HealthLogDraft?) throws {
+        let records = try LocalHealthCorrection.water(id: id, draft: draft, records: waterLogs)
+        try LocalStore.saveChecked(records, as: "water")
+        waterLogs = records; refresh()
+    }
+
+    func correctConfirmedWorkout(_ id: String, draft: HealthLogDraft?) throws {
+        let records = try LocalHealthCorrection.workout(id: id, draft: draft, records: workouts)
+        try LocalStore.saveChecked(records, as: "workouts")
+        workouts = records; refresh()
     }
 
     public func logWeight(kg: Double) {
         guard kg.isFinite, kg > 0, kg <= 1000 else { return }
         goals.weightKg = kg
         if !Calendar.current.isDateInToday(healthSnapshot.date) { healthSnapshot = .empty }
-        healthSnapshot.weightKg = kg
+        if healthSnapshot.readings == nil { healthSnapshot = CurrentHealthEvidence.resolve(snapshot: healthSnapshot, imported: nil, meals: [], water: [], workouts: [], sleep: nil) }
+        let now = Date()
+        healthSnapshot.setReading(.init(components: [.init(value: kg, origin: .localLog, source: "Lumen weight log", start: now, end: now, lastSampleAt: now, aggregation: .latest)]), for: "weight")
         Task { await HealthKitService.shared.saveWeight(kg: kg) }
         persist(); refresh()
     }
@@ -230,8 +266,8 @@ public final class HealthStore: ObservableObject {
         let hk = HealthKitService.shared
         if hk.isAuthorized {
             await hk.refreshToday()
-            healthSnapshot = hk.today
-            if let w = hk.today.weightKg { goals.weightKg = (w * 10).rounded() / 10 }
+            healthSnapshot = CurrentHealthEvidence.merging(hk.today, into: healthSnapshot)
+            if let w = healthSnapshot.weightKg { goals.weightKg = (w * 10).rounded() / 10 }
             mergeWorkouts(await hk.fetchWorkouts(days: 60))
             let hrvDays = await hk.dailySeries(.hrv, days: 30).filter { !Calendar.current.isDateInToday($0.date) }
             let hrDays = await hk.dailySeries(.restingHR, days: 30).filter { !Calendar.current.isDateInToday($0.date) }
@@ -265,47 +301,28 @@ public final class HealthStore: ObservableObject {
     // MARK: Coaching
 
     /// Called by the sleep side whenever debt / need / last night change.
-    public func recompute(sleepDebt: TimeInterval, sleepNeed: TimeInterval, lastSleepSeconds: Double? = nil) {
+    public func recompute(sleepDebt: TimeInterval, sleepNeed: TimeInterval, sleepEpisodes: [SleepEpisode]) {
         self.sleepDebt = sleepDebt
         self.sleepNeed = sleepNeed
-        self.lastSleepSeconds = lastSleepSeconds
+        self.sleepEpisodes = sleepEpisodes
         refresh()
     }
 
     public func refresh() {
-        var m = Calendar.current.isDateInToday(healthSnapshot.date) ? healthSnapshot : .empty
-        m.reconcileActivity(from: CompanionStore.shared.todayImport?.values ?? [:], manualWorkouts: workoutsToday)
-        if let imported = CompanionStore.shared.todayImport?.values {
-            m.restingHR = m.restingHR ?? imported["restingHR"]
-            m.hrvMS = m.hrvMS ?? imported["hrv"]
-            m.weightKg = m.weightKg ?? imported["weight"]
-            m.avgHR = m.avgHR ?? imported["heartRate"]
-            m.respiratoryRate = m.respiratoryRate ?? imported["respiratoryRate"]
-            m.spo2 = m.spo2 ?? imported["spo2"]
-            m.vo2max = m.vo2max ?? imported["vo2max"]
-        }
-        let logged = today(waterLogs, \.date).reduce(0) { $0 + $1.ml }
-        // Fresh snapshots exclude Lumen writes; legacy inclusive snapshots use max.
-        // An actual live reading takes priority over overlapping imported totals.
-        let importedWater = CompanionStore.shared.todayImport?.values["water"]
-        let recordedWater = m.recordedTotal("water")
-        if recordedWater != nil || importedWater != nil || !today(waterLogs, \.date).isEmpty {
-            m.recordTotal(HealthTotals.water(local: logged, snapshot: recordedWater, imported: importedWater, excludesLumen: m.excludesLumenNutrition == true), for: "water")
-        }
-        m.sleepSeconds = lastSleepSeconds ?? CompanionStore.shared.todayImport?.values["sleep"].map { $0 * 3600 }
+        let m = CurrentHealthEvidence.resolve(snapshot: healthSnapshot, imported: CompanionStore.shared.todayImport, meals: meals, water: waterLogs, workouts: workouts, sleep: sleepEpisodes.max { $0.wakeTime < $1.wakeTime })
         metrics = m
 
         // Readiness needs at least one body signal — no guessing on day one.
         let hasSignal = m.sleepSeconds != nil || m.hrvMS != nil || m.restingHR != nil
-        readiness = hasSignal ? CoachingEngine.readiness(metrics: m, sleepDebt: sleepDebt, workoutsToday: workoutsToday, goals: goals, hrvBaseline: hrvBaseline, restingHRBaseline: restingHRBaseline) : nil
-        plan = CoachingEngine.dayPlan(metrics: m, readiness: readiness, goals: goals, sleepDebt: sleepDebt, eaten: caloriesEaten, protein: proteinEaten, waterML: waterTodayML)
+        readiness = hasSignal ? CoachingEngine.readiness(metrics: m, sleepDebt: assistantSleepDebt, workoutsToday: workoutsToday, goals: goals, hrvBaseline: hrvBaseline, restingHRBaseline: restingHRBaseline) : nil
+        plan = CoachingEngine.dayPlan(metrics: m, readiness: readiness, goals: goals, sleepDebt: assistantSleepDebt, eaten: caloriesEaten, protein: proteinEaten, waterML: waterTodayML)
         let perspective = CompanionStore.shared.perspective(health: self)
         plan?.briefing = perspective.body
         if !CompanionStore.shared.activeSymptoms.isEmpty {
             plan?.bullets = ["Check how you feel before activity; keep your plans flexible.", "Keep notes on symptom timing and changes.", "For symptoms that persist, worsen or concern you, contact a clinician."]
             plan?.workoutSuggestion = "Check symptoms before exercise"
         }
-        insights = CoachingEngine.insights(metrics: m, readiness: readiness, goals: goals, mealsToday: mealsToday, workoutsToday: workoutsToday, sleepDebt: sleepDebt)
+        insights = CoachingEngine.insights(metrics: m, readiness: readiness, goals: goals, mealsToday: mealsToday, workoutsToday: workoutsToday, sleepDebt: assistantSleepDebt)
 
         let d = AppGroup.defaults
         d.set(readiness?.score ?? 0, forKey: "widget.readiness")
@@ -328,7 +345,7 @@ public final class HealthStore: ObservableObject {
         UserDefaults.standard.removeObject(forKey: "lumen.conversation.active")
         conversationReady = true
         CompanionStore.shared.reset()
-        healthSnapshot = .empty; lastSync = nil; hrvBaseline = nil; restingHRBaseline = nil
+        healthSnapshot = .empty; lastSync = nil; hrvBaseline = nil; restingHRBaseline = nil; sleepEpisodes = []; sleepDebt = 0
         refresh()
     }
 }

@@ -87,6 +87,7 @@ struct TimelineList: View {
                         Text(event.detail).font(.subheadline).foregroundStyle(Theme.secondary).fixedSize(horizontal: false, vertical: true)
                     }.padding(.bottom, 24)
                 }.accessibilityElement(children: .combine)
+                    .accessibilityIdentifier(event.id)
                     .contentShape(Rectangle()).onTapGesture { onSelect?(event) }
                     .accessibilityAddTraits(onSelect != nil && (event.id.hasPrefix("symptom-") || event.id.hasPrefix("check-") || event.id.hasPrefix("workout-") || event.id.hasPrefix("water-")) ? .isButton : [])
             }

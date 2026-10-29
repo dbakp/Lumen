@@ -9,6 +9,7 @@ public struct TodayView: View {
     @ObservedObject private var companion = CompanionStore.shared
     @ObservedObject private var hk = HealthKitService.shared
     @State private var showingEvidence = false
+    @Environment(\.dynamicTypeSize) private var typeSize
     public init() {}
     var perspective: DailyPerspective { companion.perspective(health: health) }
     public var body: some View {
@@ -30,14 +31,15 @@ public struct TodayView: View {
                     }
                     Divider()
                     NavigationLink { ActivityView() } label: {
-                        LumenRow("Activity", subtitle: "Movement, workouts and trends", value: health.hasActivityToday ? "\(Int(health.metrics.steps).formatted()) steps" : "No activity logged", icon: "figure.walk", color: Theme.move)
+                        LumenRow("Activity", subtitle: "Movement, workouts and trends", value: health.activitySummary, icon: "figure.walk", color: Theme.move)
                     }
                     Divider()
                     NavigationLink { NutritionView() } label: {
-                        LumenRow("Food", subtitle: "Meals, nutrients and your appetite", value: "\(health.mealsToday.count) logged", icon: "fork.knife", color: Theme.food)
+                        LumenRow("Food", subtitle: "Meals, nutrients and your appetite", value: health.mealsToday.isEmpty ? (health.hasFoodToday ? "Reading available" : "No food reading") : "\(health.mealsToday.count) logged", icon: "fork.knife", color: Theme.food)
                     }
                 }.buttonStyle(.plain)
                 NavigationLink("Explore your trends", destination: InsightsView()).frame(minHeight: 44)
+                NavigationLink("Review today's readings", destination: CurrentReadingsView()).frame(minHeight: 44).accessibilityIdentifier("reviewCurrentReadings")
                 waterRow
                 if !companion.pendingActions.isEmpty {
                     GroupLabel("Your next steps")
@@ -61,6 +63,7 @@ public struct TodayView: View {
             }.padding(.horizontal, Theme.gutter).padding(.bottom, 32)
         }.lumenScreen().navigationTitle("Lumen").navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) { NavigationLink("Readings", destination: CurrentReadingsView()).accessibilityLabel("Today's readings").accessibilityIdentifier("currentReadingsShortcut") }
                 ToolbarItem(placement: .topBarTrailing) { LogToolbarButton() }
                 ToolbarItem(placement: .topBarTrailing) { Button { AppRouter.shared.show(.settings) } label: { Image(systemName: "person.crop.circle") }.accessibilityLabel("Settings") }
             }
@@ -68,10 +71,14 @@ public struct TodayView: View {
     }
     var perspectiveCard: some View {
         VStack(alignment: .leading, spacing: 18) {
-            HStack { Label("Your daily perspective", systemImage: "sun.horizon").font(.subheadline); Spacer() }
+            HStack {
+                if typeSize.isAccessibilitySize { Text("Daily perspective").font(.subheadline) }
+                else { Label("Your daily perspective", systemImage: "sun.horizon").font(.subheadline) }
+                Spacer()
+            }
             Text(perspective.title).font(.system(.largeTitle, weight: .bold)).tracking(-0.7).fixedSize(horizontal: false, vertical: true)
             Text(perspective.body).font(.subheadline).lineSpacing(3).fixedSize(horizontal: false, vertical: true)
-            ContextArc(sleepKnown: health.metrics.sleepSeconds != nil, activityKnown: health.hasActivityToday, foodKnown: !health.mealsToday.isEmpty || health.caloriesEaten > 0)
+            ContextArc(sleepKnown: health.metrics.sleepSeconds != nil, activityKnown: health.hasActivityToday, foodKnown: health.hasFoodToday)
                 .padding(.top, 6)
             Button {
                 withAnimation(.snappy(duration: 0.25)) { showingEvidence.toggle() }
@@ -98,17 +105,20 @@ public struct TodayView: View {
         Button("Check in") { AppRouter.shared.show(.checkIn) }.buttonStyle(LumenTonalButtonStyle())
     }
     var waterRow: some View {
-        HStack(spacing: 16) {
+        ViewThatFits(in: .horizontal) {
+            HStack(spacing: 16) { waterContent }
+            VStack(alignment: .leading, spacing: 16) { waterContent }
+        }.frame(maxWidth: .infinity, alignment: .leading).padding(20).surface()
+    }
+    @ViewBuilder var waterContent: some View {
             Image(systemName: "drop").font(.title2).foregroundStyle(Theme.water)
             VStack(alignment: .leading, spacing: 4) {
                 Text("Water logged").font(.subheadline).foregroundStyle(Theme.secondary)
-                Text(Units.water(health.waterTodayML, sleep.profile.unitSystem)).font(.title2.bold()).monospacedDigit().contentTransition(.numericText())
+                Text(health.metrics.reading("water").value.map { Units.water($0, sleep.profile.unitSystem) } ?? "Not recorded").font(.title2.bold()).monospacedDigit().contentTransition(.numericText())
             }
-            Spacer()
             Button("+ 250 ml") { health.addWater(ml: 250); AppRouter.shared.confirm("Added 250 ml") }
                 .font(.subheadline.bold()).padding(.horizontal, 16).frame(minHeight: 48).background(Theme.surfaceRaised, in: Capsule())
                 .accessibilityLabel("Add 250 millilitres of water")
-        }.padding(20).surface()
     }
 }
 
@@ -177,7 +187,7 @@ struct ReadinessDetailSheet: View {
                                 Text(r.headline).font(.title3.weight(.semibold)).foregroundStyle(Theme.text)
                             }
                         }
-                        Text("A 0–100 estimate of how recovered you are, from your recent sleep and your heart's overnight signals. Higher means your body can take on more today.")
+                        Text("An unvalidated wellness estimate using available sleep and heart readings. Missing signals are left out. This score cannot establish recovery or readiness for exercise.")
                             .font(.subheadline).foregroundStyle(Theme.secondary)
                         VStack(alignment: .leading, spacing: 12) {
                             GroupLabel("What's affecting it")

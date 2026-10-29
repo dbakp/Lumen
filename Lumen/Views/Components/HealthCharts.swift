@@ -70,26 +70,29 @@ public struct MacroBar: View {
 public struct WeeklyLoadChart: View {
     let workouts: [Workout]
     public init(workouts: [Workout]) { self.workouts = workouts }
-    struct Day: Identifiable { var id: Date { date }; var date: Date; var kcal: Double }
-    var days: [Day] {
-        let cal = Calendar.current
-        return (0..<7).map { i in
-            let d = cal.date(byAdding: .day, value: i-6, to: Date()) ?? Date()
-            let sod = cal.startOfDay(for: d)
-            let kcal = workouts.filter { cal.isDate($0.start, inSameDayAs: d) }.reduce(0) { $0 + $1.activeCalories }
-            return Day(date: sod, kcal: kcal)
-        }
-    }
     public var body: some View {
-        Chart(days) { d in
-            BarMark(x: .value("Day", d.date, unit: .day), y: .value("kcal", d.kcal))
-                .foregroundStyle(d.kcal > 0 ? Theme.move : Theme.move.opacity(0.2))
-                .cornerRadius(5)
+        let now = Date()
+        let days = CurrentHealthEvidence.workoutEnergyByDay(workouts, now: now)
+        if days.isEmpty {
+            Text("No workout energy recorded in the past 7 days.").font(.subheadline).foregroundStyle(Theme.secondary).frame(maxWidth: .infinity, alignment: .leading)
+        } else {
+            let start = Calendar.current.date(byAdding: .day, value: -6, to: Calendar.current.startOfDay(for: now)) ?? now
+            VStack(alignment: .leading, spacing: 12) {
+                Chart(days) { d in
+                    if d.kcal == 0 {
+                        PointMark(x: .value("Day", d.date, unit: .day), y: .value("kcal", d.kcal)).foregroundStyle(Theme.move)
+                    } else {
+                        BarMark(x: .value("Day", d.date, unit: .day), y: .value("kcal", d.kcal)).foregroundStyle(Theme.move).cornerRadius(5)
+                    }
+                }
+                .chartXScale(domain: start...now)
+                .chartYScale(domain: 0...max(days.map(\.kcal).max() ?? 1, 1))
+                .chartXAxis { AxisMarks(values: .stride(by: .day, count: 1)) { _ in
+                    AxisValueLabel(format: .dateTime.weekday(.narrow)).font(.caption2).foregroundStyle(Theme.tertiary) } }
+                .chartYAxis(.hidden).frame(height: 120)
+                Text("Recorded workout energy, including estimates. Days without energy readings stay empty.").font(.caption).foregroundStyle(Theme.secondary)
+            }
         }
-        .chartXAxis { AxisMarks(values: .stride(by: .day, count: 1)) { _ in
-            AxisValueLabel(format: .dateTime.weekday(.narrow)).font(.caption2).foregroundStyle(Theme.tertiary) } }
-        .chartYAxis(.hidden)
-        .frame(height: 150)
     }
 }
 

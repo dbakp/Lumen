@@ -35,6 +35,7 @@ public struct WorkoutImportOrigin: Codable, Sendable {
 }
 
 public struct Workout: Identifiable, Codable, Sendable {
+    public var lastEditedAt: Date? = nil
     public var logOrigin: HealthLogOrigin? = nil
     public var note: String? = nil
     public var id: String
@@ -51,15 +52,18 @@ public struct Workout: Identifiable, Codable, Sendable {
     public var importOrigin: WorkoutImportOrigin? = nil
     public var energyKnown: Bool? = nil
     public var energyIsEstimate: Bool? = nil
-    public var energyKcal: Double? { energyKnown == false ? nil : activeCalories }
+    public var energyKcal: Double? {
+        guard energyKnown != false, activeCalories.isFinite, activeCalories >= 0, activeCalories < Double(Int.max / 2), !(energyKnown == nil && activeCalories == 0) else { return nil }
+        return activeCalories
+    }
     public var sourceDescription: String { importOrigin.map { "Health export · " + $0.sourceName } ?? source.label }
     public var energyDescription: String {
         guard let kcal = energyKcal else { return "Energy not provided" }
-        return ((energyIsEstimate ?? (source == .manual)) ? "About " : "") + "\(Int(kcal)) kcal"
+        return ((energyIsEstimate ?? (source == .manual)) ? "About " : "") + "\(HealthMetricCatalog.number(kcal)) kcal"
     }
     public init(id: String = UUID().uuidString, kind: WorkoutKind, title: String, start: Date, duration: TimeInterval, activeCalories: Double, distanceM: Double? = nil, avgHR: Double? = nil, source: HealthSource, stravaID: Int64? = nil, polyline: String? = nil) {
         self.id = id; self.kind = kind; self.title = title; self.start = start
-        self.duration = duration; self.activeCalories = activeCalories
+        self.duration = duration; self.activeCalories = activeCalories; self.energyKnown = true
         self.distanceM = distanceM; self.avgHR = avgHR; self.source = source
         self.stravaID = stravaID; self.polyline = polyline
     }
@@ -69,6 +73,7 @@ public struct Workout: Identifiable, Codable, Sendable {
 }
 
 public struct DayMetrics: Codable, Sendable {
+    public var readings: [String: HealthMetricReading]? = nil
     /// Presence of cumulative readings, independent of their numeric value.
     /// Nil is a legacy snapshot: only positive totals establish a reading.
     public var recordedTotalKeys: Set<String>? = nil

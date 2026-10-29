@@ -6,7 +6,9 @@ Clone this repository on the new computer, then give the new assistant the promp
 
 ## Continuation checkpoint · 29 October 2026
 
-Development has resumed on the new computer. Batch 9a implements the data-layer foundation for recorded-zero reconciliation and per-metric manual/import overlap decisions. Profile weight no longer fills a missing current reading, and new Today queries exclude older weight/VO₂ max samples. See the Batch 9a entries in [Roadmap](ROADMAP.md) and [Verification](VERIFICATION.md) for scope and evidence. The original prompt below remains the product brief; Batch 9 is not complete. Continue with missing-state presentation and assistant context, source/freshness evidence (including legacy cached discrete readings) and local water/workout corrections. App Designer Pro is still a separate required attachment for the native UI work.
+Development has resumed on the new computer. Batch 9a was published as `a1b7cd1`; the remaining Batch 9 implementation now adds honest current readings and source/date evidence, guarded assistant context, and local confirmed water/workout corrections and deletion. App Designer Pro has been supplied and used here; one continuing independent critic signed off the final native additions after three rounds. See [data-confidence behavior](DATA_CONFIDENCE.md), [Roadmap](ROADMAP.md), [Verification](VERIFICATION.md) and [Design critique](../Design/CRITIQUE.md) for exact scope, native timings and remaining gates.
+
+The original prompt below remains the product brief. The full goal remains active. Continue the retained Sleep/Food and companion availability/estimate audit, then the remaining ingestion, backup, voice, provider and release work in coherent separately verified batches. Physical-device/provider gates are not satisfied by the simulator. The skill archive is intentionally outside Git; attach it again for a future computer/chat. Personal data and credentials still transfer separately.
 
 ## Continuation prompt
 

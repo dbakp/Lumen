@@ -18,6 +18,7 @@ struct InsightsView: View {
             VStack(alignment: .leading, spacing: 24) {
                 Text("What has\nchanged?").font(.largeTitle.bold()).fontWidth(.expanded)
                 Text("Compare completed days with the previous period. Today is excluded because it is still in progress.").font(.subheadline).foregroundStyle(Theme.secondary)
+                NavigationLink("Review today's readings", destination: CurrentReadingsView()).frame(minHeight: 44)
                 Picker("Period", selection: $window) { Text("7 days").tag(7); Text("30 days").tag(30) }.pickerStyle(.segmented)
                 if loading { ProgressView("Reading available history…") }
                 GroupLabel("For your next appointment")

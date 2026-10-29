@@ -40,3 +40,35 @@ Log → symptoms sheet → save: light haptic, sheet closes, daily narrative upd
 
 ## Promises
 Local storage; explicit consent before imported document text enters cloud AI; no automatic third-party connections; export and erase include the new domains. Notifications are optional, capped, quiet overnight and rebuilt from current context, with no recurring generic schedule. Background delivery cannot re-evaluate HealthKit unless the app runs; explain this in settings.
+
+## Batch 9 content and interaction
+
+Continue the selected daylight-observatory direction. App Designer Pro was supplied again on 29 October 2026. This is an extension of the existing native app; the previous three concepts, palette, icon, navigation and signature remain the design contract.
+
+- Today: “No activity reading” / a recorded amount including “0 steps”; food shows “No food reading” / “Reading available” / meal count; water shows “Not recorded” or a recorded amount. “Review today's readings” opens the evidence list. Recorded-zero signals count as recorded in the arc.
+- Today's readings: “What was recorded?”; “A zero is a reading. Missing data stays unknown.” Sections: Sleep and movement, Heart and body, Food and water. Each metric opens its own details. Values and sources come from the shared resolver, never demonstration data.
+- Reading details: one prominent value or “Not recorded”, the actual day, selected recorded/imported/cached sources and their periods, estimate labels, and the last Apple Health check outcome/time when available. Daily imports say sample times are unavailable. Empty queries keep read access unknown. Query windows never stand in for latest sample times.
+- Water/workout details: “Edit entry” for confirmed local records; “Edited” time stays separate from original confirmation. Original-message provenance remains readable. Source-managed records retain their source details and have no local edit action.
+- Correction form: recorded time, persistent ml/min/kcal labels, optional notes, “Cancel”, “Save changes”. Blank energy remains unknown. “Saves this Lumen entry only. No changes are sent to Apple Health.” Edited Close/swipe asks “Discard your changes?” with “Discard changes” / “Keep editing”.
+- Delete: a separate destructive action, followed by “Delete this water entry?” / “Delete this workout entry?” and “Delete entry” / “Keep entry”. “Deletes this entry from Lumen. Its original conversation and separate source records remain.”
+
+Correction signature: edit the recorded quantity, save, return to the same entry with the new amount and an edit timestamp; the original statement remains unchanged. Today's derived totals, source evidence, reminders and assistant context refresh through the same stores. Existing state confirmation motion and reduced-motion handling apply. At accessibility sizes, metric values and row metadata stack vertically; system forms remain scrollable. Native light, dark and accessibility captures are reviewed by one independent critic. No paywall, new exploration, store assets or promotional reel are introduced in this feature batch.
+
+
+Batch 9 refinement after native review: no energy readings collapse the weekly plot to one explicit sentence; Delete entry uses the native red trash treatment; single-source details avoid a duplicate amount and unrelated Health boilerplate. Preparation copy reads “Prepared on this iPhone”. A Readings toolbar link keeps evidence directly reachable at the largest text size. The category is labelled “Stand or roll hours”, reflecting qualifying clock hours rather than standing duration. Numeric fields retain the typed decimal text while validating their numeric value; invalid nonempty input is not treated as an optional blank. No tab, app-name or hero-concept change is introduced.
+
+
+Batch 9 text-colour check uses the declared sRGB asset values. The inline destructive action now owns a darker red in light mode (`B3261E`) and a light red in dark mode (`FFB4AB`); its native destructive role and trash symbol remain. System alerts retain system colours. These ratios cover the listed solid colour pairs; they do not measure every translucent/system/pressed state.
+
+| Appearance | Text / surface | Contrast |
+|---|---|---:|
+| light | Ink / Ground | 12.47:1 |
+| light | Ink2 / Ground | 5.53:1 |
+| light | ActionTeal / Ground | 5.78:1 |
+| light | OnAccent / ActionTeal | 6.18:1 |
+| light | DestructiveText / Ground | 6.11:1 |
+| dark | Ink / Ground | 15.67:1 |
+| dark | Ink2 / Ground | 9.34:1 |
+| dark | ActionTeal / Ground | 9.90:1 |
+| dark | OnAccent / ActionTeal | 8.29:1 |
+| dark | DestructiveText / Ground | 10.22:1 |
