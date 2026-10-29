@@ -56,6 +56,20 @@ import Foundation
         check(!PlanBuilder.isRequest("I have an implant") && !PlanBuilder.isRequest("I don't want a plan"), "incidental and negated plan mentions do not create documents")
         check(PlanBuilder.steps(from: "My plan\n1. Check energy\n2) Take a break\n- [ ] Review tomorrow").map(\.title) == ["Check energy", "Take a break"], "numbered plan actions take priority over evidence bullets")
         check(PlanBuilder.steps(from: "- [ ] Walk if comfortable\n- Review tomorrow").map(\.title) == ["Walk if comfortable", "Review tomorrow"], "bullet-only plans become editable checklist steps")
+        let oldStep = try JSONDecoder().decode(PlanStep.self, from: Data("{\"id\":\"old\",\"title\":\"Walk\",\"isDone\":false}".utf8))
+        check(oldStep.dueDate == nil, "legacy plan steps decode without dates")
+        var context = PersonalHealthContext(); context.allergies = "Peanuts"
+        check(!context.assistantText.contains("Peanuts"), "personal context is excluded until explicitly shared")
+        context.includeInAssistant = true
+        check(context.assistantText.contains("Peanuts"), "consented personal context is included")
+        let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
+        let due = PlanStep(title: "Review", dueDate: yesterday)
+        check(PlanSchedule.isOverdue(due), "unfinished past-date steps are overdue")
+        check(!PlanSchedule.isOverdue(PlanStep(title: "Done", isDone: true, dueDate: yesterday)), "completed steps are never overdue")
+        let activePlan = HealthDocument(title: "Plan", kind: .plan, body: "Draft", steps: [due], source: "Test")
+        let archivedPlan = HealthDocument(title: "Archived", kind: .plan, body: "Draft", steps: [due], source: "Test", planState: .archived)
+        check(PlanSchedule.pending([activePlan, archivedPlan]).count == 1, "archived plans do not surface unfinished actions")
+        check(HealthDocument(title: "Done", kind: .plan, body: "Draft", steps: [PlanStep(title: "Done", isDone: true)], source: "Test").status == .completed, "finishing every step completes a plan")
         print("All import, model, totals, history, plan and reminder checks passed.")
     }
 }

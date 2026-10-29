@@ -101,6 +101,7 @@ public struct CoachView: View {
                     .buttonStyle(.plain)
                 }
             }
+            NavigationLink("Personal context", destination: PersonalContextView()).frame(minHeight: 44)
             Label(ai.brain.label, systemImage: ai.brain.isAI ? "lock.shield" : "cpu")
                 .font(.footnote).foregroundStyle(Theme.tertiary)
         }

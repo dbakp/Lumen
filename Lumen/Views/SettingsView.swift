@@ -28,6 +28,7 @@ public struct SettingsView: View {
         NavigationStack {
             Form {
                 profileHeader
+                Section { NavigationLink("Personal context") { PersonalContextView() } }
                 Section("Appearance") {
                     Picker("Theme", selection: $appearance) {
                         Text("Light").tag("light"); Text("Dark").tag("dark"); Text("System").tag("system")

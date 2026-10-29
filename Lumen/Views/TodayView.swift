@@ -38,6 +38,11 @@ public struct TodayView: View {
                     }
                 }.buttonStyle(.plain)
                 waterRow
+                if !companion.pendingActions.isEmpty {
+                    GroupLabel("Your next steps")
+                    ForEach(Array(companion.pendingActions.prefix(3))) { action in PlanActionRow(action: action) }
+                    NavigationLink("View all plan steps", destination: PlanAgendaView()).frame(minHeight: 44)
+                }
                 if !companion.activeSymptoms.isEmpty {
                     Button { AppRouter.shared.tab = .journal } label: {
                         LumenRow("\(companion.activeSymptoms.count) ongoing symptom log\(companion.activeSymptoms.count == 1 ? "" : "s")", subtitle: "Update how you feel or mark a symptom resolved", icon: "bandage", color: Theme.heart)

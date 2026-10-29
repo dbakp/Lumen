@@ -24,6 +24,7 @@ struct LibraryView: View {
                         ForEach(HealthDocument.Kind.allCases, id: \.self) { filterButton($0.rawValue.capitalized, value: $0) }
                     }
                 }.scrollIndicators(.hidden)
+                NavigationLink("Your next steps", destination: PlanAgendaView()).frame(minHeight: 44)
                 if extracting { ProgressView("Reading your record locally…") }
                 if filtered.isEmpty {
                     EmptyStateCard(icon: "doc.text", title: search.isEmpty ? "Keep what matters" : "No matching documents", message: "Plans from your assistant, weekly reviews and your own records live here.", actionTitle: "Write a note") { newNote() }
@@ -36,6 +37,7 @@ struct LibraryView: View {
                                 Text(doc.title).font(.headline).foregroundStyle(Theme.text)
                                 Text(doc.body).font(.subheadline).foregroundStyle(Theme.secondary).lineLimit(2)
                                 Text("\(doc.kind.rawValue.capitalized) · \(doc.updatedAt.formatted(date: .abbreviated, time: .omitted))").font(.caption).foregroundStyle(Theme.tertiary)
+                                if doc.kind == .plan { Text(doc.status.label).font(.caption.weight(.semibold)).foregroundStyle(Theme.accent) }
                                 if !doc.steps.isEmpty { Text("\(doc.steps.filter(\.isDone).count) of \(doc.steps.count) steps completed").font(.caption).foregroundStyle(Theme.accent) }
                             }
                             Spacer(minLength: 0)
@@ -109,6 +111,7 @@ struct DocumentDetailView: View {
                 VStack(alignment: .leading, spacing: 24) {
                     Text(doc.title).font(.largeTitle.bold()).tracking(-1)
                     Text("\(doc.source)\nUpdated \(doc.updatedAt.formatted(date: .abbreviated, time: .shortened))").font(.footnote).foregroundStyle(Theme.secondary)
+                    if doc.kind == .plan { Text(doc.status.label).font(.subheadline.weight(.semibold)).foregroundStyle(Theme.accent) }
                     Text(.init(doc.body)).font(.body).lineSpacing(5).textSelection(.enabled)
                     ForEach(doc.steps) { step in
                         Button {
@@ -117,7 +120,10 @@ struct DocumentDetailView: View {
                         } label: {
                             HStack(alignment: .top, spacing: 12) {
                                 Image(systemName: step.isDone ? "checkmark.circle.fill" : "circle")
-                                Text(step.title).strikethrough(step.isDone)
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text(step.title).strikethrough(step.isDone)
+                                    if let due = step.dueDate { Text("Due " + due.formatted(date: .abbreviated, time: .omitted)).font(.caption).foregroundStyle(Theme.secondary) }
+                                }
                                 Spacer()
                             }.frame(minHeight: 44).foregroundStyle(step.isDone ? Theme.secondary : Theme.text)
                         }.buttonStyle(.plain).accessibilityLabel("\(step.isDone ? "Completed" : "Incomplete"): \(step.title)")
@@ -153,14 +159,34 @@ struct DocumentEditor: View {
         NavigationStack {
             Form {
                 Section("Title") { TextField("Document title", text: $document.title) }
+                if document.kind == .plan {
+                    Section("Plan status") {
+                        Picker("Status", selection: Binding(get: { document.status }, set: { document.planState = $0 })) {
+                            ForEach(PlanState.allCases, id: \.self) { Text($0.label).tag($0) }
+                        }
+                    }
+                }
                 Section("Content") { TextEditor(text: $document.body).frame(minHeight: 280) }
+                Section("Checklist") {
+                    ForEach($document.steps) { $step in
+                        VStack(alignment: .leading, spacing: 10) {
+                            TextField("Step", text: $step.title, axis: .vertical)
+                            Toggle("Completed", isOn: $step.isDone)
+                            Toggle("Set a date", isOn: Binding(get: { step.dueDate != nil }, set: { step.dueDate = $0 ? (step.dueDate ?? Date()) : nil }))
+                            if step.dueDate != nil {
+                                DatePicker("Date", selection: Binding(get: { step.dueDate ?? Date() }, set: { step.dueDate = $0 }), displayedComponents: .date)
+                            }
+                        }.padding(.vertical, 6)
+                    }.onDelete { document.steps.remove(atOffsets: $0) }
+                    Button("Add a step", systemImage: "plus") { document.steps.append(PlanStep(title: "")) }
+                }
                 Section {
                     Toggle("Use in assistant", isOn: $document.includeInAssistant)
                 } footer: { Text("Excerpts may be sent to your selected AI provider when you chat. Leave off to keep this record out of assistant context.") }
             }.scrollContentBackground(.hidden).background(Theme.bg).navigationTitle("Edit document").navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
-                    ToolbarItem(placement: .confirmationAction) { Button("Save") { CompanionStore.shared.save(document); dismiss() }.fontWeight(.bold).disabled(document.title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || document.body.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) }
+                    ToolbarItem(placement: .confirmationAction) { Button("Save") { document.steps = document.steps.filter { !$0.title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }; CompanionStore.shared.save(document); dismiss() }.fontWeight(.bold).disabled(document.title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || document.body.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) }
                 }
         }.tint(Theme.accent)
     }

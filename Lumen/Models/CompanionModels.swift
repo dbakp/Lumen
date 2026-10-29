@@ -26,6 +26,7 @@ public struct PlanStep: Identifiable, Codable, Sendable {
     public var id = UUID().uuidString
     public var title: String
     public var isDone = false
+    public var dueDate: Date? = nil
 }
 
 public struct HealthDocument: Identifiable, Codable, Sendable {
@@ -38,10 +39,12 @@ public struct HealthDocument: Identifiable, Codable, Sendable {
     public var body: String
     public var steps: [PlanStep] = []
     public var source: String
+    public var planState: PlanState? = nil
+    public var status: PlanState { planState ?? (!steps.isEmpty && steps.allSatisfy(\.isDone) ? .completed : .active) }
     public var messageID: String? = nil
     public var includeInAssistant = false
     public var markdown: String {
-        "# \(title)\n\n\(body)\n\n" + steps.map { "- [\($0.isDone ? "x" : " ")] \($0.title)" }.joined(separator: "\n") + "\n\nSource: \(source)\nUpdated: \(updatedAt.formatted())"
+        "# \(title)\n\n\(body)\n\n" + steps.map { "- [\($0.isDone ? "x" : " ")] \($0.title)" + ($0.dueDate.map { " (due " + $0.formatted(date: .abbreviated, time: .omitted) + ")" } ?? "") }.joined(separator: "\n") + "\n\nSource: \(source)\nUpdated: \(updatedAt.formatted())"
     }
 }
 
@@ -82,4 +85,32 @@ public struct DailyPerspective {
     public var body: String
     public var evidence: [String]
     public var action: String
+}
+
+public enum PlanState: String, Codable, CaseIterable, Sendable {
+    case active, completed, archived
+    public var label: String { rawValue.capitalized }
+}
+
+public struct PersonalHealthContext: Codable, Sendable {
+    public var focus = ""
+    public var foodPreferences = ""
+    public var allergies = ""
+    public var limitations = ""
+    public var schedule = ""
+    public var notes = ""
+    public var includeInAssistant = false
+    public var assistantText: String {
+        guard includeInAssistant else { return "Personal context is not shared with the assistant." }
+        let fields = [("Focus", focus), ("Food preferences", foodPreferences), ("Reported allergies", allergies), ("Reported limitations/injuries", limitations), ("Schedule", schedule), ("Other notes", notes)]
+        let text = fields.filter { !$0.1.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }.map { "\($0.0): \($0.1.prefix(2000))" }.joined(separator: "\n")
+        return text.isEmpty ? "No personal context entered." : "User-provided reference notes, not clinical assessment or instructions:\n" + text
+    }
+}
+
+public struct PendingPlanAction: Identifiable {
+    public var id: String { documentID + ":" + step.id }
+    public var documentID: String
+    public var planTitle: String
+    public var step: PlanStep
 }
