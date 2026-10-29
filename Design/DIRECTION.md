@@ -72,3 +72,11 @@ Batch 9 text-colour check uses the declared sRGB asset values. The inline destru
 | dark | ActionTeal / Ground | 9.90:1 |
 | dark | OnAccent / ActionTeal | 8.29:1 |
 | dark | DestructiveText / Ground | 10.22:1 |
+
+## Batch 10 content and companion evidence
+
+Preserve the selected direction and feature destinations. Food leads with **Recorded food energy**, an optional amount or **Not recorded**, rounded **Estimated target**, independent macro availability and a teal **Review source details** route. Water keeps **Undo quick log** separate from confirmed Journal entries and reports the actual local/Health removal outcome. No missing intake becomes a claim about fasting or unmet need.
+
+Sleep distinguishes **Time in bed** from **Recorded sleep**. **Recorded nights** names saved-entry count, recorded days and **Saved-entry average**. An optional 14-night debt estimate is separate. **Planned bedtime** comes from profile goals unless sufficient recorded timing is available; schedule estimates are not measured alertness or melatonin. Sleep history labels its 14-day chart as recorded hours, without assigning a recovery colour to short entries.
+
+Companions retain native Watch/widget structure. Unknown values keep their metric names. **Readiness estimate** never exposes the heuristic's starting score when no contributing evidence is available. The missing Watch state reads **More evidence needed**; stale snapshots ask the user to open Lumen on iPhone. Actual snapshot dates/times are distinct from sample times and the Watch clock. Watch-local water and the iPhone total remain separate, with a visible save failure. Tonight uses a teal field; Sleep uses a muted blue-teal field, with cyan reserved for native Watch actions/navigation. No paid assets, new direction exploration, store set or motion claim is introduced in this scoped continuation.

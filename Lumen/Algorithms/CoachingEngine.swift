@@ -8,6 +8,14 @@ public enum CoachingEngine {
 
     // MARK: readiness 0-100
 
+    /// A sleep total alone does not contribute to the current heuristic.
+    /// Do not publish its starting score when all contributing evidence is absent.
+    public static func readinessIfAvailable(metrics: DayMetrics, sleepDebt: TimeInterval?, workoutsToday: [Workout], goals: HealthGoals, hrvBaseline: Double? = nil, restingHRBaseline: Double? = nil) -> Readiness? {
+        let hasDebt = sleepDebt.map { $0.isFinite && $0 >= 0 } == true
+        guard hasDebt || metrics.hrvMS != nil || metrics.restingHR != nil else { return nil }
+        return readiness(metrics: metrics, sleepDebt: hasDebt ? sleepDebt : nil, workoutsToday: workoutsToday, goals: goals, hrvBaseline: hrvBaseline, restingHRBaseline: restingHRBaseline)
+    }
+
     public static func readiness(metrics: DayMetrics, sleepDebt: TimeInterval?, workoutsToday: [Workout], goals: HealthGoals, hrvBaseline: Double? = nil, restingHRBaseline: Double? = nil) -> Readiness {
         var score = 82
         var factors: [Readiness.ReadinessFactor] = []
@@ -47,11 +55,12 @@ public enum CoachingEngine {
 
         score = min(100, max(5, score))
         let headline: String
-        switch score {
+        if sleepDebt == nil { headline = "Limited sleep history" } else { switch score {
         case 85...: headline = "Ready for a big day"
         case 70..<85: headline = "Good to go"
         case 55..<70: headline = "Take it steady"
         default: headline = "Rest and recover"
+        }
         }
         // Strain target scales with readiness.
         let base = max(100, Int(goals.activeCalGoal))

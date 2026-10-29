@@ -17,7 +17,9 @@ struct SnapProvider: TimelineProvider {
         completion(SnapEntry(date: Date(), s: context.isPreview ? .preview : load()))
     }
     func getTimeline(in context: Context, completion: @escaping (Timeline<SnapEntry>) -> Void) {
-        completion(Timeline(entries: [SnapEntry(date: Date(), s: load())], policy: .after(Date().addingTimeInterval(30 * 60))))
+        let now = Date(), midnight = Calendar.current.date(byAdding: .day, value: 1, to: Calendar.current.startOfDay(for: now))!
+        let snapshot = load()
+        completion(Timeline(entries: [SnapEntry(date: now, s: snapshot), SnapEntry(date: midnight, s: snapshot)], policy: .after(now.addingTimeInterval(30 * 60))))
     }
 }
 
@@ -31,7 +33,7 @@ private func hm(_ secs: Double) -> String { let m = Int(secs / 60); return "\(m 
 struct ReadinessComplication: View {
     @Environment(\.widgetFamily) var family
     let e: SnapEntry
-    var score: Int? { e.s?.readiness }
+    var score: Int? { e.s?.currentReadiness(at: e.date) }
     var body: some View {
         switch family {
         case .accessoryCircular:
@@ -45,11 +47,11 @@ struct ReadinessComplication: View {
         case .accessoryCorner:
             Text(score.map(String.init) ?? "–").font(.system(.title3, design: .rounded).weight(.bold))
                 .widgetLabel {
-                    Gauge(value: Double(score ?? 0), in: 0...100) { Text("Ready") }.tint(readinessTint(score))
+                    Gauge(value: Double(score ?? 0), in: 0...100) { Text("Estimate") }.tint(readinessTint(score))
                 }
         case .accessoryInline:
             if let s = e.s {
-                Text("Ready \(score.map(String.init) ?? "–") · Bed \(s.bedtime?.formatted(date: .omitted, time: .shortened) ?? "—")")
+                Text("Est. \(score.map(String.init) ?? "–") · Plan \(s.planningAvailable(at: e.date) ? s.bedtime?.formatted(date: .omitted, time: .shortened) ?? "—" : "—")")
             } else {
                 Text("Lumen")
             }
@@ -62,8 +64,8 @@ struct ReadinessComplication: View {
                 VStack(alignment: .leading, spacing: 1) {
                     Text("LUMEN").font(.system(size: 10, weight: .heavy)).foregroundStyle(.cyan)
                     if let s = e.s {
-                        Text(s.hasSleep ? "Slept \(hm(s.lastSleepSeconds ?? 0))" : "No sleep yet").font(.caption2)
-                        Text("Bed \(s.bedtime?.formatted(date: .omitted, time: .shortened) ?? "—")").font(.caption2).foregroundStyle(.secondary)
+                        Text(s.reading("sleep", at: e.date).map { (s.observations?.estimates.contains("sleep") == true ? "Time in bed " : "Sleep ") + hm($0 * 3600) } ?? "Sleep not recorded").font(.caption2)
+                        Text("Plan \(s.planningAvailable(at: e.date) ? s.bedtime?.formatted(date: .omitted, time: .shortened) ?? "—" : "—")").font(.caption2).foregroundStyle(.secondary)
                     } else {
                         Text("Open Lumen").font(.caption2)
                     }
@@ -78,7 +80,7 @@ struct BedtimeComplication: View {
     @Environment(\.widgetFamily) var family
     let e: SnapEntry
     var body: some View {
-        let bed = e.s?.bedtime?.formatted(date: .omitted, time: .shortened) ?? "—"
+        let bed = e.s?.planningAvailable(at: e.date) == true ? e.s?.bedtime?.formatted(date: .omitted, time: .shortened) ?? "—" : "—"
         switch family {
         case .accessoryInline:
             Label("Bed \(bed)", systemImage: "moon.fill")
@@ -100,7 +102,7 @@ struct LumenReadinessComplication: Widget {
             ReadinessComplication(e: e).containerBackground(.clear, for: .widget)
         }
         .configurationDisplayName("Readiness")
-        .description("Today's readiness, last night's sleep and bedtime.")
+        .description("Recorded sleep and optional wellness estimates from the current iPhone snapshot.")
         .supportedFamilies([.accessoryCircular, .accessoryRectangular, .accessoryCorner, .accessoryInline])
     }
 }
@@ -111,7 +113,7 @@ struct LumenBedtimeComplication: Widget {
             BedtimeComplication(e: e).containerBackground(.clear, for: .widget)
         }
         .configurationDisplayName("Bedtime")
-        .description("Tonight's suggested bedtime.")
+        .description("A planned bedtime from the current iPhone snapshot.")
         .supportedFamilies([.accessoryCircular, .accessoryInline])
     }
 }

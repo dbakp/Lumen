@@ -173,7 +173,7 @@ public struct CircadianModel {
         calendar: Calendar = .current,
         recentEpisodes: [SleepEpisode],
         todayWake: Date,
-        sleepDebt: TimeInterval,
+        sleepDebt: TimeInterval?,
         chronotype: Chronotype
     ) -> CircadianPrediction {
         let recent = Array(recentEpisodes.suffix(14))
@@ -204,7 +204,7 @@ public struct CircadianModel {
         // Sleep inertia: 15–90 min from debt + short sleep + waking in melatonin window.
         let lastDuration = recent.last?.duration ?? 8 * 3600
         var inertiaMin = 20.0
-        inertiaMin += min(40, (sleepDebt / 3600) * 6)          // +6 min per debt hour, cap 40
+        if let sleepDebt { inertiaMin += min(40, (sleepDebt / 3600) * 6) }          // +6 min per debt hour, cap 40
         if lastDuration < 6 * 3600 { inertiaMin += 15 }
         if melWindow.contains(wakeT) { inertiaMin += 20 }
         inertiaMin = min(90, max(10, inertiaMin))
@@ -257,7 +257,7 @@ public struct CircadianModel {
                 e = min(e, 0.18)
             }
             // Debt drags whole curve down.
-            e -= min(0.25, (sleepDebt / 3600) * 0.03)
+            if let sleepDebt { e -= min(0.25, (sleepDebt / 3600) * 0.03) }
             e = min(1, max(0.03, e))
             curve.append(EnergyPoint(time: t, energy: e))
         }
@@ -320,14 +320,14 @@ public struct CircadianModel {
     public static func suggestedBedtime(
         wakeGoal: Date,
         sleepNeed: TimeInterval,
-        sleepDebt: TimeInterval,
+        sleepDebt: TimeInterval?,
         habitualBedtime: Date,
         payExtraMin: Double = 0
     ) -> (bedtime: Date, note: String) {
         // Base: wake − need − sleep latency (15m).
         var target = wakeGoal.addingTimeInterval(-sleepNeed - 15 * 60)
         // If debt > 5h, add up to 60 min extra catch-up.
-        if sleepDebt > 5 * 3600 {
+        if let sleepDebt, sleepDebt > 5 * 3600 {
             target.addTimeInterval(min(-30 * 60, -(sleepDebt - 5 * 3600) * 0.15))
         }
         target.addTimeInterval(-payExtraMin * 60)
@@ -336,12 +336,12 @@ public struct CircadianModel {
         // Handle day wrap: compare time-of-day.
         if target < earliest && habitualBedtime.timeIntervalSince(target) < 12 * 3600 {
             let fmt = DateFormatter(); fmt.timeStyle = .short
-            return (earliest, "Shifting just 30 min earlier tonight to protect your rhythm — consistency pays debt faster than one big crash.")
+            return (earliest, "This optional plan limits the change from your recorded timing to 30 minutes. It is not a treatment recommendation.")
         }
-        if sleepDebt < 3600 {
-            return (target, "Right on rhythm. This bedtime protects your low debt.")
+        if let sleepDebt, sleepDebt < 3600 {
+            return (target, "An optional plan from your wake goal, profile target and recorded timing. Adjust it to how you feel.")
         }
-        return (target, "This repays debt gradually without wrecking tomorrow's rhythm.")
+        return (target, "An optional plan from available sleep records and your profile target. Missing debt is not included.")
     }
 
     /// Sleep inertia (grogginess) estimate in minutes.

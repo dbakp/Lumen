@@ -16,6 +16,7 @@ public struct WatchSnapshot: Codable, Equatable, Sendable {
     }
 
     public var generatedAt = Date()
+    public var observations: DisplayEvidence? = nil
     public var name = ""
     // Readiness
     public var readiness: Int?
@@ -57,6 +58,24 @@ public struct WatchSnapshot: Codable, Equatable, Sendable {
 
     public init() {}
 
+    /// Reconnection can deliver an older saved application context after a newer cache.
+    public func canReplace(_ previous: WatchSnapshot?, at now: Date = Date()) -> Bool {
+        let incoming = observations?.capturedAt ?? generatedAt
+        guard incoming.timeIntervalSince1970.isFinite, incoming <= now.addingTimeInterval(60) else { return false }
+        guard let previous else { return true }
+        let saved = previous.observations?.capturedAt ?? previous.generatedAt
+        guard saved.timeIntervalSince1970.isFinite, saved <= now.addingTimeInterval(60) else { return true }
+        return incoming >= saved
+    }
+
+    public func reading(_ key: String, at now: Date = Date(), calendar: Calendar = .current) -> Double? {
+        observations?.value(key, at: now, calendar: calendar)
+    }
+    public func currentReadiness(at now: Date = Date()) -> Int? {
+        guard let value = reading("readiness", at: now), (0...100).contains(value), value == value.rounded() else { return nil }
+        return Int(value)
+    }
+    public func planningAvailable(at now: Date = Date()) -> Bool { observations?.isCurrent(at: now) == true }
     public static let contextKey = "snapshot"
     public static let storeKey = "watch.snapshot"
 
@@ -72,6 +91,7 @@ public struct WatchSnapshot: Codable, Equatable, Sendable {
         s.briefing = "A strong day. Spend energy early, coast intelligently in the evening."
         s.strainLow = 450; s.strainHigh = 750
         s.hasSleep = true; s.lastSleepSeconds = 7.6 * 3600
+        s.observations = .init(day: Calendar.current.startOfDay(for: Date()), capturedAt: Date(), values: ["sleep": 7.6, "sleepDebt": 2.1, "energyEstimate": 84, "readiness": 82, "calories": 1320, "protein": 88, "water": 1250], estimates: ["sleepDebt", "energyEstimate", "readiness", "calories", "protein"])
         s.deepSeconds = 1.1 * 3600; s.remSeconds = 1.7 * 3600; s.coreSeconds = 4.8 * 3600; s.awakeSeconds = 0.3 * 3600
         s.debtHours = 2.1; s.energyPotential = 84
         s.bedtime = Calendar.current.date(bySettingHour: 22, minute: 40, second: 0, of: Date())

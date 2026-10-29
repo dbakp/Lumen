@@ -31,6 +31,7 @@ for metadata in root.glob('*/.com.apple.mobile_container_manager.metadata.plist'
         small = folder / 'Lumen-import-small.csv'
         small.write_text('date,metric,value,unit,source\n2026-10-28,steps,8421,count,Synthetic test fixture\n2026-10-28,water,250,ml,Synthetic test fixture\n')
         (folder / 'Lumen-confidence-zero.csv').write_text(f'date,metric,value,unit,source\n{today},steps,0,count,Synthetic zero fixture\n{today},exercise,0,min,Synthetic zero fixture\n{today},water,0,ml,Synthetic zero fixture\n')
+        (folder / 'Lumen-retained-zero.csv').write_text(f'date,metric,value,unit,source\n{today},calories,0,kcal,Synthetic retained fixture\n{today},protein,0,g,Synthetic retained fixture\n{today},carbs,0,g,Synthetic retained fixture\n{today},water,0,ml,Synthetic retained fixture\n{today},sleep,0,h,Synthetic retained fixture\n')
         health_xml = '<HealthData><Record type="HKQuantityTypeIdentifierStepCount" value="8421" unit="count" startDate="2026-10-28 10:00:00 +0000" endDate="2026-10-28 10:00:00 +0000" sourceName="Synthetic ZIP Watch"/><Record type="HKQuantityTypeIdentifierDietaryWater" value="250" unit="ml" startDate="2026-10-28 11:00:00 +0000" endDate="2026-10-28 11:00:00 +0000" sourceName="Synthetic ZIP bottle"/></HealthData>'
         with zipfile.ZipFile(folder / 'Lumen-health-export.zip', 'w', compression=zipfile.ZIP_DEFLATED) as archive:
             archive.writestr('apple_health_export/export.xml', health_xml)

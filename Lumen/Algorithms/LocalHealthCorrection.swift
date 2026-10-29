@@ -1,6 +1,9 @@
 import Foundation
 
 enum LocalHealthCorrection {
+    static func latestQuickWater(_ records: [HydrationLog], now: Date = Date(), calendar: Calendar = .current) -> HydrationLog? {
+        records.filter { $0.logOrigin == nil && $0.ml.isFinite && $0.ml > 0 && $0.date <= now && calendar.isDate($0.date, inSameDayAs: now) }.max { $0.date < $1.date }
+    }
     enum Failure: Error { case missing, protectedRecord, invalid }
     static func canEdit(_ workout: Workout) -> Bool { workout.source == .manual && workout.importOrigin == nil && workout.logOrigin != nil }
     static func water(id: String, draft: HealthLogDraft?, records: [HydrationLog], now: Date = Date()) throws -> [HydrationLog] {

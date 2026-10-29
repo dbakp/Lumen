@@ -7,10 +7,10 @@ public struct HabitsView: View {
     public init() {}
 
     func time(for h: SleepHabit) -> Date? {
-        guard let pred = store.prediction else { return nil }
+        guard let pred = store.currentPrediction else { return nil }
         switch h.anchor {
         case .wakePlus, .fixedClock: return pred.wakeZone.lowerBound.addingTimeInterval(h.offset)
-        case .bedtimeMinus: return store.suggestedBedtime.addingTimeInterval(-h.offset)
+        case .bedtimeMinus: return store.plannedBedtime.addingTimeInterval(-h.offset)
         }
     }
 

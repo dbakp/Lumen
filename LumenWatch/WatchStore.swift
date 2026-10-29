@@ -11,13 +11,14 @@ final class WatchStore: NSObject, ObservableObject {
     static let groupID = "group.com.dbakp.lumen"
 
     @Published var snapshot: WatchSnapshot?
-    @Published var steps: Double = 0
-    @Published var activeEnergy: Double = 0
-    @Published var exerciseMin: Double = 0
-    @Published var standHours: Double = 0
-    @Published var heartRate: Double?
-    @Published var restingHR: Double?
-    @Published var waterLoggedHere: Double = 0
+    @Published var activity: DisplayEvidence?
+    @Published var heartRateDate: Date?
+    @Published var savedWatchWater: DisplayEvidence?
+    @Published var savingWater = false
+    @Published var waterError: String?
+
+    func activityValue(_ key: String, at now: Date = Date()) -> Double? { activity?.value(key, at: now) }
+    var waterLoggedHere: Double? { savedWatchWater?.value("water") }
 
     private let hk = HKHealthStore()
     private var defaults: UserDefaults { UserDefaults(suiteName: Self.groupID) ?? .standard }
@@ -26,7 +27,10 @@ final class WatchStore: NSObject, ObservableObject {
         super.init()
         snapshot = WatchSnapshot.decode(defaults.data(forKey: WatchSnapshot.storeKey))
         // Design review hook (simulator screenshots).
+        #if DEBUG
         if ProcessInfo.processInfo.arguments.contains("-watchPreview") { snapshot = .preview }
+        #endif
+        savedWatchWater = DisplayEvidence.decode(defaults.data(forKey: "watch.savedWater.v1"))
     }
 
     func start() {
@@ -39,17 +43,14 @@ final class WatchStore: NSObject, ObservableObject {
 
     var isStale: Bool {
         guard let s = snapshot else { return true }
-        return !Calendar.current.isDateInToday(s.generatedAt)
+        return s.observations?.isCurrent() != true
     }
 
     // MARK: Snapshot
 
     fileprivate func apply(_ data: Data) {
-        guard var s = WatchSnapshot.decode(data) else { return }
-        // Keep optimistic ritual toggles that the phone hasn't echoed yet.
-        s.generatedAt = Date()
+        guard let s = WatchSnapshot.decode(data), s.canReplace(snapshot) else { return }
         snapshot = s
-        waterLoggedHere = 0
         defaults.set(s.encoded(), forKey: WatchSnapshot.storeKey)
         WidgetCenter.shared.reloadAllTimelines()
     }
@@ -70,13 +71,19 @@ final class WatchStore: NSObject, ObservableObject {
     }
 
     func logWater(_ ml: Double) {
-        waterLoggedHere += ml
+        guard !savingWater, ml.isFinite, (1...10000).contains(ml) else { return }
+        savingWater = true; waterError = nil
         Task {
-            let sample = HKQuantitySample(type: HKQuantityType(.dietaryWater),
-                                          quantity: HKQuantity(unit: .literUnit(with: .milli), doubleValue: ml),
-                                          start: Date(), end: Date())
-            try? await hk.save(sample)
-            WCSession.default.transferUserInfo([WatchMessage.loggedWater: ml])
+            defer { savingWater = false }
+            let now = Date()
+            let sample = HKQuantitySample(type: HKQuantityType(.dietaryWater), quantity: HKQuantity(unit: .literUnit(with: .milli), doubleValue: ml), start: now, end: now)
+            do {
+                try await hk.save(sample)
+                let previous = savedWatchWater?.value("water", at: now) ?? 0
+                savedWatchWater = .init(day: Calendar.current.startOfDay(for: now), capturedAt: now, values: ["water": previous + ml])
+                defaults.set(savedWatchWater?.encoded(), forKey: "watch.savedWater.v1")
+                if WCSession.default.activationState == .activated { WCSession.default.transferUserInfo([WatchMessage.loggedWater: ml]) }
+            } catch { waterError = "Couldn’t save water to Apple Health. Your total has not changed. Review write access and try again." }
         }
     }
 
@@ -85,45 +92,56 @@ final class WatchStore: NSObject, ObservableObject {
     func requestHealth() async {
         guard HKHealthStore.isHealthDataAvailable() else { return }
         let read: Set<HKObjectType> = [HKQuantityType(.stepCount), HKQuantityType(.activeEnergyBurned),
-                                       HKQuantityType(.appleExerciseTime), HKQuantityType(.appleStandTime),
+                                       HKQuantityType(.appleExerciseTime), HKCategoryType(.appleStandHour),
                                        HKQuantityType(.heartRate), HKQuantityType(.restingHeartRate)]
         let share: Set<HKSampleType> = [HKQuantityType(.dietaryWater)]
         try? await hk.requestAuthorization(toShare: share, read: read)
     }
 
     func refreshActivity() async {
-        let start = Calendar.current.startOfDay(for: Date())
-        async let s = sum(.stepCount, .count(), start)
-        async let a = sum(.activeEnergyBurned, .kilocalorie(), start)
-        async let e = sum(.appleExerciseTime, .minute(), start)
-        async let st = sum(.appleStandTime, .hour(), start)
-        async let hr = latest(.heartRate, HKUnit(from: "count/min"))
-        async let rhr = latest(.restingHeartRate, HKUnit(from: "count/min"))
-        steps = await s ?? 0
-        activeEnergy = await a ?? 0
-        exerciseMin = await e ?? 0
-        standHours = (await st ?? 0).rounded()
-        heartRate = await hr
-        restingHR = await rhr
+        let start = Calendar.current.startOfDay(for: Date()), end = Date()
+        async let steps = sum(.stepCount, .count(), start, end)
+        async let active = sum(.activeEnergyBurned, .kilocalorie(), start, end)
+        async let exercise = sum(.appleExerciseTime, .minute(), start, end)
+        async let stand = standHours(start, end)
+        async let heart = latest(.heartRate, HKUnit(from: "count/min"), start, end)
+        let (s, a, e, st, hr) = await (steps, active, exercise, stand, heart)
+        var values: [String: Double] = [:]
+        for (key, value) in [("steps", s), ("activeEnergy", a), ("exercise", e), ("stand", st), ("heartRate", hr.value)] { if let value { values[key] = value } }
+        activity = .init(day: start, capturedAt: Date(), values: values)
+        heartRateDate = hr.date
     }
-
-    private func sum(_ id: HKQuantityTypeIdentifier, _ unit: HKUnit, _ start: Date) async -> Double? {
-        let pred = HKQuery.predicateForSamples(withStart: start, end: Date(), options: .strictStartDate)
-        return await withCheckedContinuation { cont in
-            hk.execute(HKStatisticsQuery(quantityType: HKQuantityType(id), quantitySamplePredicate: pred, options: .cumulativeSum) { _, s, _ in
-                cont.resume(returning: s?.sumQuantity()?.doubleValue(for: unit))
+    private func sum(_ id: HKQuantityTypeIdentifier, _ unit: HKUnit, _ start: Date, _ end: Date) async -> Double? {
+        let predicate = HKQuery.predicateForSamples(withStart: start, end: end, options: .strictStartDate)
+        return await withCheckedContinuation { continuation in
+            hk.execute(HKStatisticsQuery(quantityType: HKQuantityType(id), quantitySamplePredicate: predicate, options: .cumulativeSum) { _, statistics, error in
+                continuation.resume(returning: error == nil ? statistics?.sumQuantity()?.doubleValue(for: unit) : nil)
+            })
+        }
+    }
+    private struct Sample { var value: Double?; var date: Date? }
+    private func latest(_ id: HKQuantityTypeIdentifier, _ unit: HKUnit, _ start: Date, _ end: Date) async -> Sample {
+        let predicate = HKQuery.predicateForSamples(withStart: start, end: end, options: .strictStartDate)
+        return await withCheckedContinuation { continuation in
+            hk.execute(HKSampleQuery(sampleType: HKQuantityType(id), predicate: predicate, limit: 1, sortDescriptors: [NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)]) { _, samples, error in
+                let sample = samples?.first as? HKQuantitySample
+                let usable = error == nil && sample.map { $0.endDate <= end } == true
+                continuation.resume(returning: .init(value: usable ? sample?.quantity.doubleValue(for: unit) : nil, date: usable ? sample?.endDate : nil))
+            })
+        }
+    }
+    private func standHours(_ start: Date, _ end: Date) async -> Double? {
+        let type = HKCategoryType(.appleStandHour)
+        let predicate = HKQuery.predicateForSamples(withStart: start, end: end, options: .strictStartDate)
+        return await withCheckedContinuation { continuation in
+            hk.execute(HKSampleQuery(sampleType: type, predicate: predicate, limit: HKObjectQueryNoLimit, sortDescriptors: nil) { _, samples, error in
+                guard error == nil else { continuation.resume(returning: nil); return }
+                let entries = ((samples as? [HKCategorySample]) ?? []).filter { $0.value == HKCategoryValueAppleStandHour.stood.rawValue || $0.value == HKCategoryValueAppleStandHour.idle.rawValue }
+                continuation.resume(returning: StandHourEvidence.count(entries.map { .init(start: $0.startDate, stood: $0.value == HKCategoryValueAppleStandHour.stood.rawValue) }, start: start, end: end))
             })
         }
     }
 
-    private func latest(_ id: HKQuantityTypeIdentifier, _ unit: HKUnit) async -> Double? {
-        let sort = NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)
-        return await withCheckedContinuation { cont in
-            hk.execute(HKSampleQuery(sampleType: HKQuantityType(id), predicate: nil, limit: 1, sortDescriptors: [sort]) { _, s, _ in
-                cont.resume(returning: (s?.first as? HKQuantitySample)?.quantity.doubleValue(for: unit))
-            })
-        }
-    }
 }
 
 extension WatchStore: WCSessionDelegate {

@@ -1,11 +1,12 @@
 import SwiftUI
 
-// MARK: - Food: what's left today → snap → water → meals → week
+// MARK: - Food: available records, estimated targets, water and meals
 
 public struct NutritionView: View {
     @EnvironmentObject var health: HealthStore
     @EnvironmentObject var sleep: SleepStore
     @State private var showSearch = false
+    @Environment(\.dynamicTypeSize) private var typeSize
     var router: AppRouter { .shared }
 
     public init() {}
@@ -43,33 +44,35 @@ public struct NutritionView: View {
     // MARK: Hero
 
     var hero: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            VStack(alignment: .leading, spacing: 2) {
-                Text("Left today").font(.subheadline.weight(.medium)).foregroundStyle(Theme.secondary)
-                HStack(alignment: .firstTextBaseline, spacing: 6) {
-                    Text("\(health.caloriesRemaining)").font(.system(size: 56, weight: .semibold, design: .rounded)).monospacedDigit()
-                        .foregroundStyle(Theme.text).contentTransition(.numericText())
-                    Text("kcal").font(.title3).foregroundStyle(Theme.secondary)
-                }
-                Text("\(Int(health.caloriesEaten)) eaten of \(Int(target))").font(.subheadline).foregroundStyle(Theme.secondary)
-            }
-            Bar(health.caloriesEaten / max(1, target), color: Theme.food, height: 8)
-            HStack(spacing: 16) {
-                macro("Protein", health.proteinEaten, proteinTarget, Theme.steps)
-                macro("Carbs", health.carbsEaten, target * 0.45 / 4, Theme.water)
-                macro("Fat", health.fatEaten, target * 0.3 / 9, Theme.food)
-            }
-        }
-        .padding(.top, 8)
+        let energy = health.metrics.reading("calories")
+        return VStack(alignment: .leading, spacing: 16) {
+            Text("Recorded food energy").font(.subheadline.weight(.medium)).foregroundStyle(Theme.secondary)
+            Text(HealthMetricCatalog.display(energy.value, key: "calories"))
+                .font(.largeTitle.bold()).fontWidth(.expanded).monospacedDigit().accessibilityIdentifier("foodEnergyValue")
+            Text("Estimated target: \(HealthMetricCatalog.number((target / 10).rounded() * 10)) kcal").font(.subheadline).foregroundStyle(Theme.secondary)
+            if energy.isEstimate { Text("Includes food estimates").font(.footnote).foregroundStyle(Theme.secondary) }
+            Text("Available records may cover only part of your intake.").font(.footnote).foregroundStyle(Theme.secondary)
+            if let value = energy.value { Bar(value / max(1, target), color: Theme.food, height: 8).accessibilityHidden(true) }
+            if typeSize.isAccessibilitySize { VStack(alignment: .leading, spacing: 20) { macros } }
+            else { HStack(alignment: .top, spacing: 16) { macros } }
+            NavigationLink { CurrentReadingsView() } label: {
+                HStack { Text("Review source details"); Spacer(); Image(systemName: "chevron.right").font(.footnote.weight(.semibold)) }
+            }.foregroundStyle(Theme.accent).frame(minHeight: 44)
+        }.padding(.top, 8)
     }
-
-    func macro(_ name: String, _ g: Double, _ t: Double, _ c: Color) -> some View {
-        VStack(alignment: .leading, spacing: 6) {
+    @ViewBuilder var macros: some View {
+        macro("Protein", key: "protein", target: proteinTarget, color: Theme.steps)
+        macro("Carbohydrates", key: "carbs", target: target * 0.45 / 4, color: Theme.water)
+        macro("Fat", key: "fat", target: target * 0.3 / 9, color: Theme.food)
+    }
+    func macro(_ name: String, key: String, target: Double, color: Color) -> some View {
+        let value = health.metrics.reading(key).value
+        return VStack(alignment: .leading, spacing: 6) {
             Text(name).font(.footnote).foregroundStyle(Theme.secondary)
-            Text("\(Int(g)) / \(Int(t)) g").font(.subheadline.monospacedDigit()).foregroundStyle(Theme.text)
-            Bar(g / max(1, t), color: c, height: 4)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
+            Text(HealthMetricCatalog.display(value, key: key)).font(.subheadline.monospacedDigit()).foregroundStyle(Theme.text).accessibilityIdentifier("food-" + key)
+            Text("Est. target \(HealthMetricCatalog.number(target.rounded())) g").font(.caption).foregroundStyle(Theme.secondary)
+            if let value { Bar(value / max(1, target), color: color, height: 4).accessibilityHidden(true) }
+        }.frame(maxWidth: .infinity, alignment: .leading)
     }
 
     // MARK: Actions
@@ -90,30 +93,22 @@ public struct NutritionView: View {
 
     var water: some View {
         let target = Double(health.plan?.waterTargetML ?? 2500)
-        let glasses = Int(health.waterTodayML / 250)
+        let value = health.metrics.reading("water").value
         return VStack(alignment: .leading, spacing: 12) {
             GroupLabel("Water")
             VStack(alignment: .leading, spacing: 14) {
-                HStack {
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text(Units.water(health.waterTodayML, units)).font(.system(.title2, design: .rounded).weight(.semibold)).monospacedDigit().foregroundStyle(Theme.text)
-                        Text("of \(Units.water(target, units)) · \(glasses) glass\(glasses == 1 ? "" : "es")").font(.footnote).foregroundStyle(Theme.secondary)
-                    }
-                    Spacer()
-                    Button { health.undoLastWater() } label: {
-                        Image(systemName: "minus").font(.headline).frame(width: 44, height: 44).background(Theme.surfaceRaised, in: Circle())
-                    }
-                    .accessibilityLabel("Remove last glass")
-                    .disabled(health.waterTodayML == 0)
-                    Button { health.addWater(ml: 250); haptic(.light) } label: {
-                        Image(systemName: "plus").font(.headline).foregroundStyle(.black).frame(width: 44, height: 44).background(Theme.water, in: Circle())
-                    }
-                    .accessibilityLabel("Add a glass of water")
-                }
-                .foregroundStyle(Theme.text)
-                Bar(health.waterTodayML / target, color: Theme.water, height: 6)
-            }
-            .padding(16).surface()
+                Text(value.map { Units.water($0, units) } ?? "Not recorded").font(.title2.weight(.semibold)).monospacedDigit().accessibilityIdentifier("foodWaterValue")
+                Text("Estimated target: \((units == .metric ? (target / 1000).formatted(.number.precision(.fractionLength(1))) + " L" : (target / 29.5735).formatted(.number.precision(.fractionLength(0))) + " fl oz"))").font(.footnote).foregroundStyle(Theme.secondary)
+                HStack(spacing: 12) {
+                    Button("Undo quick log", systemImage: "arrow.uturn.backward") { health.undoLastWater() }
+                        .disabled(!health.canUndoQuickWater).frame(minHeight: 44).accessibilityIdentifier("undoQuickWater")
+                    Spacer(minLength: 8)
+                    Button("+ 250 ml") { health.addWater(ml: 250); haptic(.light) }.frame(minHeight: 44)
+                }.font(.subheadline.weight(.semibold))
+                if let value { Bar(value / max(1, target), color: Theme.water, height: 6).accessibilityHidden(true) }
+                Text("Undo removes the latest quick log from Lumen. Confirmed entries can be changed in Journal.").font(.footnote).foregroundStyle(Theme.secondary)
+                if let status = health.waterUndoStatus { Text(status).font(.footnote).foregroundStyle(Theme.secondary).accessibilityIdentifier("waterUndoStatus") }
+            }.padding(16).surface()
         }
     }
 
@@ -124,7 +119,7 @@ public struct NutritionView: View {
             GroupLabel("Today's meals")
             if health.mealsToday.isEmpty {
                 EmptyStateCard(icon: "fork.knife", title: "Nothing logged yet",
-                               message: "Take a photo of your plate — it only takes a few seconds.",
+                               message: "Meals you add in Lumen appear here. Source totals can be available without individual meal entries.",
                                actionTitle: "Snap a meal") { router.show(.meal(camera: true)) }
             } else {
                 RowGroup {

@@ -13,6 +13,7 @@ public enum SyncCoordinator {
             sleep.mergeHealthSleep(await hk.fetchSleep(days: days))
             hk.sleepBackfilled = true
         }
+        sleep.recompute()
         await health.syncAll()
         propagate(sleep: sleep, health: health)
         await NotificationManager.shared.refreshAuthorization()

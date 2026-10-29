@@ -71,7 +71,7 @@ public struct Bar: View {
         GeometryReader { g in
             ZStack(alignment: .leading) {
                 Capsule().fill(color.opacity(0.16))
-                Capsule().fill(color).frame(width: max(height, g.size.width * min(1, max(0, progress))))
+                Capsule().fill(color).frame(width: max(0, g.size.width * (progress.isFinite ? min(1, max(0, progress)) : 0)))
                     .animation(.spring(response: 0.7), value: progress)
             }
         }

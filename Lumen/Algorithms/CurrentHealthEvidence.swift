@@ -26,10 +26,7 @@ public enum CurrentHealthEvidence {
     }
     /// Category records count qualifying clock hours, not continuous standing duration.
     public static func standHours(_ events: [StandHourEvent], start: Date, end: Date, calendar: Calendar = .current) -> Double? {
-        let recorded = events.filter { $0.start.timeIntervalSince1970.isFinite && $0.start >= start && $0.start <= end }
-        guard !recorded.isEmpty else { return nil }
-        let hours = recorded.filter(\.stood).compactMap { calendar.dateInterval(of: .hour, for: $0.start)?.start }
-        return Double(Set(hours).count)
+        StandHourEvidence.count(events.map { .init(start: $0.start, stood: $0.stood) }, start: start, end: end, calendar: calendar)
     }
     public static func merging(_ incoming: DayMetrics, into previous: DayMetrics, now: Date = Date(), calendar: Calendar = .current) -> DayMetrics {
         let old = resolve(snapshot: previous, imported: nil, meals: [], water: [], workouts: [], sleep: nil, now: now, calendar: calendar)
@@ -123,7 +120,7 @@ public enum CurrentHealthEvidence {
             let live = result.reading(key).components.contains { $0.origin == .healthKit || $0.origin == .legacyCache }
             combine(local(value, dates: food.map(\.date), source: "Lumen meal logs", estimate: true), key: key, additive: live && snapshot.excludesLumenNutrition == true)
         }
-        if let sleep, isToday(sleep.wakeTime), validDate(sleep.bedtime), sleep.wakeTime >= sleep.bedtime, sleep.duration.isFinite, sleep.duration > 0 {
+        if let sleep, isToday(sleep.wakeTime), SleepEvidence.usable(sleep, now: now) {
             let component = HealthMetricComponent(value: sleep.duration / 3600, origin: .sleepHistory, source: "Sleep history · " + sleep.source.label, start: sleep.bedtime, end: sleep.wakeTime, lastSampleAt: sleep.wakeTime, aggregation: .total, isEstimate: sleep.asleepSeconds == nil)
             result.setReading(.init(components: [component]), for: "sleep")
         }
@@ -147,7 +144,7 @@ public enum CurrentHealthEvidence {
               let start = calendar.date(byAdding: .day, value: -13, to: calendar.startOfDay(for: now)) else { return nil }
         let nights = episodes.filter { $0.wakeTime >= start && $0.wakeTime <= now }
         guard nights.count == 14, Set(nights.map { calendar.startOfDay(for: $0.wakeTime) }).count == 14,
-              nights.allSatisfy({ $0.bedtime < $0.wakeTime && $0.duration.isFinite && $0.duration > 0 }) else { return nil }
+              nights.allSatisfy({ SleepEvidence.usable($0, now: now) }) else { return nil }
         return nights.sorted { $0.wakeTime < $1.wakeTime }
     }
 }

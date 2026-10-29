@@ -52,6 +52,8 @@ public final class WatchSync: NSObject, ObservableObject {
         guard let sleep, let health, sleep.profile.onboardingDone else { return nil }
         var s = WatchSnapshot()
         s.name = sleep.profile.name
+        s.observations = health.displayEvidence
+        if let energy = sleep.energyEstimate { s.observations?.values["energyEstimate"] = Double(energy); s.observations?.estimates.insert("energyEstimate") }
         if let r = health.readiness {
             s.readiness = r.score
             s.readinessHeadline = r.headline
@@ -59,7 +61,7 @@ public final class WatchSync: NSObject, ObservableObject {
             s.strainHigh = r.strainTarget.upperBound
         }
         s.briefing = health.isCalibrating ? nil : health.plan?.briefing
-        if let last = sleep.lastNight {
+        if let last = sleep.currentNight {
             s.hasSleep = true
             s.lastSleepSeconds = last.duration
             s.lastBedtime = last.bedtime
@@ -69,11 +71,11 @@ public final class WatchSync: NSObject, ObservableObject {
             s.coreSeconds = last.coreSeconds
             s.awakeSeconds = last.awakeSeconds
         }
-        s.debtHours = sleep.debt / 3600
+        s.debtHours = (sleep.recordedDebt ?? 0) / 3600
         s.sleepNeedSeconds = sleep.profile.sleepNeed
-        s.energyPotential = sleep.energyPotential
-        s.bedtime = sleep.suggestedBedtime
-        if let p = sleep.prediction {
+        s.energyPotential = sleep.energyEstimate ?? 0
+        s.bedtime = sleep.plannedBedtime
+        if let p = sleep.currentPrediction {
             s.windDown = p.windDown
             s.melatoninStart = p.melatoninWindow.lowerBound
             s.melatoninEnd = p.melatoninWindow.upperBound
@@ -101,10 +103,10 @@ public final class WatchSync: NSObject, ObservableObject {
     }
 
     private func ritualTime(_ h: SleepHabit, _ sleep: SleepStore) -> Date? {
-        guard let pred = sleep.prediction else { return nil }
+        guard let pred = sleep.currentPrediction else { return nil }
         switch h.anchor {
         case .wakePlus, .fixedClock: return pred.wakeZone.lowerBound.addingTimeInterval(h.offset)
-        case .bedtimeMinus: return sleep.suggestedBedtime.addingTimeInterval(-h.offset)
+        case .bedtimeMinus: return sleep.plannedBedtime.addingTimeInterval(-h.offset)
         }
     }
 

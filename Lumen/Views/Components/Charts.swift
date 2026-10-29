@@ -115,19 +115,20 @@ public struct DebtHistoryChart: View {
         var date: Date; var slept: Double; var deficit: Double
     }
     var rows: [Row] {
-        episodes.suffix(14).map { ep in
-            Row(date: ep.bedtime, slept: ep.duration/3600, deficit: (need - ep.duration)/3600)
+        SleepEvidence.recent(episodes, days: 14).entries.map { ep in
+            Row(date: ep.wakeTime, slept: ep.duration/3600, deficit: (need - ep.duration)/3600)
         }
     }
     public var body: some View {
         Chart(rows) { r in
             BarMark(
                 x: .value("Night", r.date, unit: .day),
-                y: .value("Slept", r.slept)
+                y: .value("Recorded hours", r.slept)
             )
-            .foregroundStyle(r.deficit > 0.5 ? Theme.sleep.opacity(0.45) : Theme.sleep)
+            .foregroundStyle(Theme.sleep)
             .cornerRadius(5)
         }
+        .chartYAxisLabel("h recorded")
         .chartXAxis {
             AxisMarks(values: .stride(by: .day, count: 3)) { _ in
                 AxisValueLabel(format: .dateTime.day().month(.abbreviated), centered: true)
@@ -140,7 +141,6 @@ public struct DebtHistoryChart: View {
                 AxisGridLine().foregroundStyle(Theme.text.opacity(0.08))
             }
         }
-        .frame(height: 180)
     }
 }
 

@@ -18,7 +18,6 @@ let package = Package(
             "LumenWatchWidget",
             "LumenWidget",
             "README.md",
-            "Shared",
             "docs",
             "scripts",
             "Lumen/Views",
@@ -28,7 +27,6 @@ let package = Package(
             "Lumen/PrivacyInfo.xcprivacy",
             "Lumen/LumenApp.swift",
             "Lumen/Resources",
-            "Lumen/Models/Units.swift",
             "Lumen/Models/CompanionStore.swift",
             "Lumen/Models/SleepStore.swift",
             "Lumen/Models/HealthStore.swift",
@@ -67,6 +65,10 @@ let package = Package(
             "Lumen/Algorithms/HealthContextPrompt.swift",
             "Lumen/Algorithms/CoachingEngine.swift",
             "Lumen/Algorithms/SleepAlgorithms.swift",
+            "Lumen/Algorithms/SleepEvidence.swift",
+            "Lumen/Models/Units.swift",
+            "Shared/DisplayEvidence.swift",
+            "Shared/WatchSnapshot.swift",
             "Lumen/Models/HealthMetricReading.swift",
             "Lumen/Algorithms/ReminderPolicy.swift",
             "Lumen/Models/HealthModels.swift",
@@ -81,6 +83,7 @@ let package = Package(
             "Tests/WorkoutImportChecks.swift",
             "Tests/HealthLogDraftChecks.swift",
             "Tests/DataConfidenceChecks.swift",
+            "Tests/RetainedEvidenceChecks.swift",
             "Lumen/Services/HealthZIPArchive.swift"
 ]
     )]

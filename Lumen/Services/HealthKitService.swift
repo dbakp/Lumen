@@ -393,10 +393,10 @@ public final class HealthKitService: ObservableObject {
         try? await store.save(s)
     }
 
-    public func deleteWater(id: String) async {
-        guard isAvailable, isAuthorized else { return }
+    public func deleteWater(id: String) async throws -> Int? {
+        guard isAvailable, isAuthorized else { return nil }
         let predicate = HKQuery.predicateForObjects(withMetadataKey: "LumenWaterID", allowedValues: [id])
-        _ = try? await store.deleteObjects(of: HKQuantityType(.dietaryWater), predicate: predicate)
+        return try await store.deleteObjects(of: HKQuantityType(.dietaryWater), predicate: predicate)
     }
 
     public func saveWeight(kg: Double) async {

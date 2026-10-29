@@ -33,14 +33,14 @@ Accept Apple's exported ZIP directly, locate and validate the health XML entry, 
 Add historical workout details and additional common vitals from Apple Health exports, with explicit unit rules, source/date provenance and preview counts. Preserve idempotent reimports and reconcile overlap with live sessions. Imported workouts must appear in the timeline and assistant history without being written back to HealthKit. Add coverage-based views for supported new signals without diagnostic interpretation. Verify optional-model migration and backup compatibility. Background synchronization and physical-device delivery remain subsequent gates.
 
 ## Remaining roadmap after these batches
-Batch 9a established cumulative-reading presence in the data layer. The remaining Batch 9 implementation adds source/date evidence, honest missing states and local corrections; its delivery evidence is recorded below. The full product goal remains active.
+Batches 9a/9 established per-metric presence, evidence and local corrections. Batch 10 carries availability and honest estimates into Food, Sleep and companion snapshots. Delivery evidence is recorded below; the full product goal remains active.
 
 1. Large-library backup improvements: encrypted archives, progress/cancellation, streaming or package format beyond the current 100 MB JSON limit; legacy-export conversion with a separate preview.
 2. Background HealthKit observation/anchored synchronization, permission-aware freshness and delivery diagnostics, tested on a signed physical iPhone. Current refresh-on-open is not continuous monitoring.
 3. Additional export categories beyond the completed workout/common-vital coverage, bounded-memory ingestion for very large histories, richer provenance, OCR for scanned records, and reviewable structured lab records. Keep unsupported formats explicit.
 4. Direct provider connections only where official OAuth/API access is configured and tested. Existing HealthKit and Strava are not a substitute for pretending every device is connected.
 5. User-reviewed conversational logging, voice input, structured AI-generated multiweek plans and explicit tool confirmations. The assistant currently advises; it does not silently modify every health log.
-6. More complete data editing and reconciliation: HealthKit write failures, deletion confirmation/retry, source priority, import rollback, configurable retention and export units/timezones. Carry per-metric availability into retained Food/Sleep views and Watch/widget snapshots; audit their older estimates and guidance separately from the completed Today/Activity/Insights/assistant work.
+6. More complete data editing and reconciliation: HealthKit write failures, deletion confirmation/retry, source priority, import rollback, configurable retention and export units/timezones. The Food/Sleep and companion presence audit is implemented in Batch 10. Broader heuristic/clinical review and acknowledged identity-preserving Watch water reconciliation remain open.
 7. Device release validation: denied/partial HealthKit access, real model inference, notifications in the background, camera, Face ID, Watch offline/reconnect and widgets, accessibility text sizes, localization and energy/performance profiling.
 8. Clinical/product governance before any diagnostic feature, medications guidance, lab interpretation or regulated claims. Keep wellness guidance distinct from medical assessment.
 9. Distribution: signed builds, CI on a configured macOS runner, TestFlight, privacy/store disclosures and crash reporting with explicit data-minimization choices. No credentials or paid services are assumed.
@@ -103,9 +103,17 @@ The 255-check production-logic suite covers the resolver, calendar/source/zero s
 
 ## Next delivery focus
 
-Audit missing states and unvalidated estimates in the retained Sleep/Food destinations and companion snapshots, using the new presence/source model without losing old-data decoding. Continue the large/encrypted backup, background ingestion, richer retrieval, voice, provider and release work above in separately verified batches. Do not infer clinical reliability, denied/read access or background delivery from the simulator results.
+The retained Food/Sleep and companion availability audit is implemented in Batch 10. Continue large/encrypted backup improvements, background ingestion, richer retrieval, voice, provider and release work above in separately verified batches. Do not infer clinical reliability, denied/read access or background delivery from the simulator results.
 
 
 ### Batch 9 publishing checkpoint
 
 GitHub accepted `5cb1fc7e4c76ef86ecc21d016eb1df6f5749d331` on `main` on 29 October 2026, after the 255-check suite, native builds, all five simulator flows and round-3 design sign-off. The remote branch was read back and matched the source commit. Batch 9a had previously been published as `a1b7cd1`. The handoff now points to the completed application batch; the full product goal and remaining roadmap stay active.
+
+## Batch 10 — retained Food/Sleep and companion evidence
+
+Food preserves independent missing/zero energy, macros and water, with rounded estimated targets and source routes. Quick undo excludes confirmed entries, uses checked local removal and separately reports its Health removal outcome. Sleep selects usable dated episodes, identifies manual time in bed, states the actual seven-day entry denominator, requires complete coverage for debt and enough distinct days for timing models, and excludes manual time-in-bed logs from measured-source target learning. Source-managed sleep stays read-only. Readiness is withheld when none of its contributing evidence exists.
+
+A shared dated presence packet feeds Watch/widgets without inferring measurements from old numeric defaults. Snapshots expire across days and an older context cannot overwrite a newer cache. Watch activity keeps empty queries unknown; successful Watch water saves and iPhone totals stay separate, and failed saves visibly leave the local total unchanged. This is not complete offline/idempotent water reconciliation.
+
+288 logic checks and all five target builds pass. The three-case regression suite passed in 512.750 seconds; the final focused presentation scenario passed in 190.632 seconds. Actual installed medium widget and newly delivered Watch context are verified in the simulator. The same critic approved 21 final captures after three rounds at 10/11 lines at 4, richness at 3, with no remaining concrete visible defects. See VERIFICATION.md for exact source points, timings, limitations and final capture paths. Device/background/provider, larger/encrypted backup, voice, retrieval, accessibility and release work remain active.

@@ -33,7 +33,7 @@ struct LumenApp: App {
                 .onChange(of: sleep.debt) { _, _ in SyncCoordinator.propagate(sleep: sleep, health: health) }
                 .onChange(of: sleep.episodes) { _, _ in SyncCoordinator.propagate(sleep: sleep, health: health) }
                 .onChange(of: sleep.profile.sleepNeed) { _, _ in SyncCoordinator.propagate(sleep: sleep, health: health) }
-                .onReceive(NotificationCenter.default.publisher(for: .NSCalendarDayChanged)) { _ in SyncCoordinator.propagate(sleep: sleep, health: health) }
+                .onReceive(NotificationCenter.default.publisher(for: .NSCalendarDayChanged)) { _ in sleep.resetHabitsIfNewDay(); sleep.recompute(); SyncCoordinator.propagate(sleep: sleep, health: health) }
                 .onOpenURL { url in
                     // Widget deep links: lumen://today, lumen://snap, lumen://sleep
                     DeepLink.shared.handle(url)

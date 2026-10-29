@@ -8,28 +8,36 @@ public struct HomeView: View {
     @ObservedObject private var hk = HealthKitService.shared
     @ObservedObject private var notifications = NotificationManager.shared
     var router: AppRouter { .shared }
+    @Environment(\.dynamicTypeSize) private var typeSize
 
     public init() {}
 
     public var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 28) {
-                if let last = store.lastNight {
-                    LastNightHero(episode: last, need: store.profile.sleepNeed)
-                    stats
+                if let value = health.metrics.reading("sleep").value {
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text(health.metrics.reading("sleep").isEstimate ? "Time in bed" : "Recorded sleep").font(.subheadline).foregroundStyle(Theme.secondary)
+                        Text(SleepFormat.durationHM(value * 3600)).font(.largeTitle.bold()).fontWidth(.expanded).accessibilityIdentifier("currentSleepDuration")
+                        Text(health.metrics.reading("sleep").sourceLabel).font(.subheadline).foregroundStyle(Theme.secondary)
+                        Text(health.metrics.reading("sleep").isEstimate ? "Estimated from recorded bed and wake times; time asleep was not measured." : "Today's available reading may be incomplete.").font(.footnote).foregroundStyle(Theme.secondary)
+                    }.padding(.top, 8)
                 } else {
-                    EmptyStateCard(icon: "moon.stars", title: "No sleep yet",
-                                   message: hk.isAuthorized
-                                   ? "Wear your Apple Watch to bed and last night appears here in the morning."
-                                   : "Connect Apple Health to bring in your nights automatically, or add one yourself.",
-                                   actionTitle: hk.isAuthorized ? "Add a night" : "Connect Apple Health") {
-                        if hk.isAuthorized { router.show(.sleepLog) }
-                        else { Task { if await hk.requestAuthorization() { await SyncCoordinator.syncEverything(sleep: store, health: health) } } }
+                    EmptyStateCard(icon: "moon.stars", title: "Sleep not recorded today", message: "Add your bed and wake times, connect Apple Health, or import a recording.", actionTitle: "Add a night") { router.show(.sleepLog) }
+                }
+                NavigationLink { CurrentReadingDetailView(key: "sleep") } label: {
+                    HStack { Text("Review sleep source details"); Spacer(); Image(systemName: "chevron.right").font(.footnote.weight(.semibold)) }
+                }.foregroundStyle(Theme.accent).frame(minHeight: 44)
+                stats
+                if health.metrics.reading("sleep").value == nil, let last = store.lastNight {
+                    VStack(alignment: .leading, spacing: 8) {
+                        GroupLabel("Latest saved entry")
+                        Text(last.wakeTime.formatted(date: .complete, time: .shortened)).font(.headline)
+                        Text("\(SleepFormat.durationHM(last.duration)) · \(last.asleepSeconds == nil ? "time in bed" : "reported asleep")").font(.subheadline).foregroundStyle(Theme.secondary)
                     }
-                    .padding(.top, 12)
                 }
                 tonight
-                if let pred = store.prediction, store.hasSleepData { energy(pred) }
+                if let pred = store.currentPrediction { energy(pred) }
                 more
             }
             .padding(.horizontal, Theme.gutter).padding(.bottom, 40)
@@ -47,16 +55,18 @@ public struct HomeView: View {
     // MARK: Stats
 
     var stats: some View {
-        HStack(spacing: 0) {
-            stat(SleepFormat.debtString(store.debt).replacingOccurrences(of: " hr", with: "h"), "Sleep debt",
-                 store.debt / 3600 < 5 ? Theme.steps : Theme.food)
-            divider
-            stat(store.lastNight?.efficiency.map { "\(Int($0 * 100))%" } ?? "—", "Restful")
-            divider
-            stat(SleepFormat.durationHM(store.avg7), "7-night avg")
-        }
-        .padding(.vertical, 16)
-        .surface()
+        VStack(alignment: .leading, spacing: 16) {
+            GroupLabel("Recorded nights")
+            if typeSize.isAccessibilitySize { VStack(alignment: .leading, spacing: 20) { statisticValues } }
+            else { HStack(alignment: .top, spacing: 16) { statisticValues } }
+            Text("\(store.recentEvidence.entries.count) saved \(store.recentEvidence.entries.count == 1 ? "entry" : "entries") across \(store.recentEvidence.recordedDays) of 7 days. Imported daily totals are separate; gaps stay unknown.").font(.footnote).foregroundStyle(Theme.secondary)
+            if store.recordedDebt == nil { Text("Sleep-debt estimate needs 14 nights with clear bed and wake times.").font(.footnote).foregroundStyle(Theme.secondary) }
+        }.padding(16).surface()
+    }
+    @ViewBuilder var statisticValues: some View {
+        stat(store.recordedDebt.map { SleepFormat.debtString($0) } ?? "Not available", "Estimated debt").accessibilityIdentifier("sleepDebtEstimate")
+        stat(store.currentNight?.efficiency.map { "\(Int($0 * 100))%" } ?? "Not recorded", "Asleep / in bed")
+        stat(store.recentEvidence.meanDuration.map(SleepFormat.durationHM) ?? "Not recorded", "Saved-entry average")
     }
 
     var divider: some View { Rectangle().fill(Theme.hairline).frame(width: 0.5, height: 36) }
@@ -66,7 +76,7 @@ public struct HomeView: View {
             Text(value).font(.system(.title3, design: .rounded).weight(.semibold)).monospacedDigit().foregroundStyle(color)
             Text(label).font(.footnote).foregroundStyle(Theme.secondary)
         }
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: .infinity).accessibilityElement(children: .combine)
     }
 
     // MARK: Tonight
@@ -77,18 +87,18 @@ public struct HomeView: View {
             VStack(alignment: .leading, spacing: 0) {
                 HStack(alignment: .firstTextBaseline) {
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("Bedtime").font(.subheadline).foregroundStyle(Theme.secondary)
-                        Text(SleepFormat.time(store.suggestedBedtime)).font(.system(size: 40, weight: .semibold, design: .rounded)).monospacedDigit().foregroundStyle(Theme.text)
+                        Text("Planned bedtime").font(.subheadline).foregroundStyle(Theme.secondary)
+                        Text(SleepFormat.time(store.plannedBedtime)).font(.system(size: 40, weight: .semibold, design: .rounded)).monospacedDigit().foregroundStyle(Theme.text)
                     }
                     Spacer()
                     Text("Wake \(SleepFormat.time(store.wakeGoalTomorrow))").font(.subheadline).foregroundStyle(Theme.secondary)
                 }
                 .padding(.vertical, 16)
-                if let p = store.prediction {
+                if let p = store.currentPrediction {
                     Rectangle().fill(Theme.hairline).frame(height: 0.5)
                     LumenRow("Wind down", value: SleepFormat.time(p.windDown), icon: "wind", color: Theme.calm, chevron: false)
                     Rectangle().fill(Theme.hairline).frame(height: 0.5)
-                    LumenRow("Easiest time to fall asleep", value: SleepFormat.timeRange(p.melatoninWindow), icon: "moon", color: Theme.sleep, chevron: false)
+                    LumenRow("Estimated sleep window", value: SleepFormat.timeRange(p.melatoninWindow), icon: "moon", color: Theme.sleep, chevron: false)
                 }
                 if !notifications.authorized {
                     Rectangle().fill(Theme.hairline).frame(height: 0.5)
@@ -102,9 +112,7 @@ public struct HomeView: View {
             }
             .padding(.horizontal, 16)
             .surface()
-            if store.hasSleepData {
-                Text(store.bedtimeNote).font(.footnote).foregroundStyle(Theme.tertiary)
-            }
+            Text(store.currentPrediction == nil ? "From your wake goal and profile sleep target. This plan does not measure your sleep need." : store.bedtimeNote).font(.footnote).foregroundStyle(Theme.secondary)
         }
     }
 
@@ -112,13 +120,14 @@ public struct HomeView: View {
 
     func energy(_ pred: CircadianPrediction) -> some View {
         VStack(alignment: .leading, spacing: 12) {
-            GroupLabel("Your energy today")
+            GroupLabel("Optional schedule estimate")
             VStack(alignment: .leading, spacing: 12) {
+                Text("A heuristic from available sleep timing, not measured alertness or melatonin. Missing debt is not included.").font(.footnote).foregroundStyle(Theme.secondary)
                 EnergyCurveView(points: pred.curve, now: Date())
                 HStack {
-                    Label("Peak \(SleepFormat.time(pred.morningPeak))", systemImage: "arrow.up.right")
+                    Label("Model peak \(SleepFormat.time(pred.morningPeak))", systemImage: "arrow.up.right")
                     Spacer()
-                    Label("Dip \(SleepFormat.time(pred.middayDip))", systemImage: "arrow.down.right")
+                    Label("Model dip \(SleepFormat.time(pred.middayDip))", systemImage: "arrow.down.right")
                 }
                 .font(.footnote).foregroundStyle(Theme.secondary)
             }
@@ -178,8 +187,8 @@ struct LastNightHero: View {
 
     var delta: String {
         let d = episode.duration - need
-        if abs(d) < 10 * 60 { return "right on your need" }
-        return d > 0 ? "\(SleepFormat.durationHM(d)) over your need" : "\(SleepFormat.durationHM(-d)) short"
+        if abs(d) < 10 * 60 { return "at your profile target" }
+        return d > 0 ? "\(SleepFormat.durationHM(d)) above the profile target" : "\(SleepFormat.durationHM(-d)) below the profile target"
     }
 }
 

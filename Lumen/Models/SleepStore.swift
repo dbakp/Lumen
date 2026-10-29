@@ -12,6 +12,7 @@ public final class SleepStore: ObservableObject {
     @Published public var debt: TimeInterval = 0
     @Published public var energyPotential: Int = 80
     @Published public var prediction: CircadianPrediction?
+    private var predictionDate: Date?
     @Published public var suggestedBedtime: Date = Date()
     @Published public var bedtimeNote: String = ""
 
@@ -60,20 +61,20 @@ public final class SleepStore: ObservableObject {
 
     // MARK: derived
 
-    public var lastNight: SleepEpisode? { episodes.last }
-    public var lastDuration: TimeInterval { lastNight?.duration ?? profile.sleepNeed }
-    public var avg7: TimeInterval {
-        let arr = episodes.suffix(7).map(\.duration)
-        guard !arr.isEmpty else { return 0 }
-        return arr.reduce(0, +) / Double(arr.count)
+    public var lastNight: SleepEpisode? { SleepEvidence.latest(episodes) }
+    public var currentNight: SleepEpisode? { SleepEvidence.today(episodes) }
+    public var lastDuration: TimeInterval? { lastNight?.duration }
+    public var recentEvidence: SleepEvidence.Recent { SleepEvidence.recent(episodes) }
+    public var recordedDebt: TimeInterval? { CurrentHealthEvidence.estimatedSleepDebt(episodes, sleepNeed: profile.sleepNeed) }
+    public var energyEstimate: Int? { recordedDebt.map { CircadianModel.energyPotential(debt: $0) } }
+    public var avg7: TimeInterval { recentEvidence.meanDuration ?? 0 } // Legacy numeric API; UI uses optional evidence.
+    public var consistency: TimeInterval { SleepEvidence.wakeSpread(episodes) ?? 0 }
+    public var currentPrediction: CircadianPrediction? {
+        guard let predictionDate, Calendar.current.isDateInToday(predictionDate), currentNight != nil else { return nil }
+        return prediction
     }
-    public var consistency: TimeInterval {
-        // SD of wake times last 7d (lower = better).
-        let wakes = episodes.suffix(7).map { CircadianModel.secondsSinceMidnight($0.wakeTime, calendar: .current) }
-        guard wakes.count > 1 else { return 0 }
-        let mean = wakes.reduce(0, +) / Double(wakes.count)
-        let v = wakes.map { pow($0 - mean, 2) }.reduce(0, +) / Double(wakes.count - 1)
-        return sqrt(v)
+    public var plannedBedtime: Date {
+        currentPrediction == nil ? wakeGoalTomorrow.addingTimeInterval(-profile.sleepNeed - 15 * 60) : suggestedBedtime
     }
 
     public var wakeGoalToday: Date {
@@ -90,35 +91,20 @@ public final class SleepStore: ObservableObject {
     }
 
     public func recompute(now: Date = Date()) {
-        let durations = episodes.map(\.duration)
-        debt = SleepDebtCalculator.debt(sleepNeed: profile.sleepNeed, recentDurationsOldestFirst: durations)
-        energyPotential = CircadianModel.energyPotential(debt: debt)
-        // Use today's actual wake if last episode is today, else goal.
-        let todayWake: Date
-        if let last = lastNight, Calendar.current.isDateInToday(last.wakeTime) {
-            todayWake = last.wakeTime
-        } else {
-            todayWake = wakeGoalToday
-        }
-        prediction = CircadianModel.predict(
-            recentEpisodes: episodes,
-            todayWake: todayWake,
-            sleepDebt: debt,
-            chronotype: profile.chronotype
-        )
+        let coveredDebt = CurrentHealthEvidence.estimatedSleepDebt(episodes, sleepNeed: profile.sleepNeed, now: now)
+        debt = coveredDebt ?? 0 // Retained compatibility field, never displayed without presence.
+        energyPotential = coveredDebt.map { CircadianModel.energyPotential(debt: $0) } ?? 0
+        let eligible = SleepEvidence.predictionEntries(episodes, now: now)
+        predictionDate = now
+        if let current = SleepEvidence.today(eligible, now: now), !eligible.isEmpty {
+            prediction = CircadianModel.predict(recentEpisodes: eligible, todayWake: current.wakeTime, sleepDebt: coveredDebt, chronotype: profile.chronotype)
+        } else { prediction = nil }
+        suggestedBedtime = wakeGoalTomorrow.addingTimeInterval(-profile.sleepNeed - 15 * 60)
+        bedtimeNote = "Based on your wake goal and profile sleep target. This is a plan, not a measured sleep need."
         if prediction != nil {
-            let hb: Date = {
-                // Circular-mean bedtime as a date tonight.
-                let secs = CircadianModel.circularMean(episodes.suffix(7).map { CircadianModel.secondsSinceMidnight($0.bedtime, calendar: .current) }) ?? (23*3600)
-                let sod = Calendar.current.startOfDay(for: now)
-                return sod.addingTimeInterval(secs)
-            }()
-            let plan = CircadianModel.suggestedBedtime(
-                wakeGoal: wakeGoalTomorrow,
-                sleepNeed: profile.sleepNeed,
-                sleepDebt: debt,
-                habitualBedtime: hb
-            )
+            let secs = CircadianModel.circularMean(eligible.suffix(7).map { CircadianModel.secondsSinceMidnight($0.bedtime, calendar: .current) }) ?? (23 * 3600)
+            let habitual = Calendar.current.startOfDay(for: now).addingTimeInterval(secs)
+            let plan = CircadianModel.suggestedBedtime(wakeGoal: wakeGoalTomorrow, sleepNeed: profile.sleepNeed, sleepDebt: coveredDebt, habitualBedtime: habitual)
             suggestedBedtime = plan.bedtime
             bedtimeNote = plan.note
         }
@@ -136,12 +122,14 @@ public final class SleepStore: ObservableObject {
     }
 
     public func deleteEpisode(_ ep: SleepEpisode) {
-        episodes.removeAll { $0.id == ep.id }
+        guard ep.source == .manual else { return }
+        episodes.removeAll { $0.id == ep.id && $0.source == .manual }
         recompute()
     }
 
     public func updateEpisode(_ ep: SleepEpisode) {
-        if let i = episodes.firstIndex(where: { $0.id == ep.id }) {
+        guard ep.source == .manual, SleepEvidence.usable(ep) else { return }
+        if let i = episodes.firstIndex(where: { $0.id == ep.id && $0.source == .manual }) {
             episodes[i] = ep
             episodes.sort { $0.bedtime < $1.bedtime }
             recompute()
@@ -149,7 +137,9 @@ public final class SleepStore: ObservableObject {
     }
 
     public func reestimateNeed() {
-        let (need, conf) = SleepNeedEstimator.estimate(episodes: episodes, age: profile.age, chronotype: profile.chronotype)
+        let measured = SleepEvidence.needEstimationEntries(episodes)
+        guard !measured.isEmpty else { return }
+        let (need, conf) = SleepNeedEstimator.estimate(episodes: measured, age: profile.age, chronotype: profile.chronotype)
         // Blend slowly to avoid jumps: 70% old + 30% new after onboarding.
         if profile.onboardingDone {
             profile.sleepNeed = profile.sleepNeed * 0.7 + need * 0.3
@@ -192,11 +182,11 @@ public final class SleepStore: ObservableObject {
         LocalStore.save(episodes, as: "sleep")
         LocalStore.save(habits, as: "habits")
         let d = AppGroup.defaults
-        d.set(hasSleepData, forKey: "widget.hasSleep")
+        d.set(currentNight != nil, forKey: "widget.hasSleep")
         d.set(debt / 3600, forKey: "widget.debt")
         d.set(energyPotential, forKey: "widget.energy")
-        d.set(suggestedBedtime, forKey: "widget.bedtime")
-        d.set(lastNight?.duration ?? 0, forKey: "widget.lastSleep")
+        d.set(plannedBedtime, forKey: "widget.bedtime")
+        d.set(currentNight?.duration ?? 0, forKey: "widget.lastSleep")
         WidgetBridge.reload()
         WatchSync.shared.scheduleSend()
     }

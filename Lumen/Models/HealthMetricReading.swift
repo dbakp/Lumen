@@ -55,12 +55,10 @@ public enum HealthMetricCatalog {
     public static let labels = ["sleep": "Sleep", "steps": "Steps", "activeEnergy": "Active energy", "restingEnergy": "Resting energy", "exercise": "Exercise", "stand": "Stand or roll hours", "restingHR": "Resting heart rate", "hrv": "Heart rate variability", "heartRate": "Heart rate", "respiratoryRate": "Breathing rate", "spo2": "Oxygen saturation", "vo2max": "VO₂ max", "weight": "Weight", "bodyFat": "Body fat", "bmi": "Body mass index", "calories": "Food energy", "protein": "Protein", "carbs": "Carbohydrates", "fat": "Fat", "water": "Water"]
     public static let units = ["sleep": "h", "steps": "steps", "activeEnergy": "kcal", "restingEnergy": "kcal", "exercise": "min", "stand": "hours", "restingHR": "bpm", "hrv": "ms", "heartRate": "bpm", "respiratoryRate": "breaths/min", "spo2": "%", "vo2max": "ml/kg/min", "weight": "kg", "bodyFat": "%", "bmi": "", "calories": "kcal", "protein": "g", "carbs": "g", "fat": "g", "water": "ml"]
     public static func display(_ value: Double?, key: String) -> String {
-        guard let value, value.isFinite else { return "Not recorded" }
-        return number(value) + (units[key].map { $0.isEmpty ? "" : " " + $0 } ?? "")
+        EvidenceFormat.amount(value, unit: units[key] ?? "")
     }
     public static func number(_ value: Double) -> String {
-        if value > 0 && value < 0.01 { return "<0.01" }
-        return value.formatted(.number.precision(.fractionLength(0...2)))
+        EvidenceFormat.number(value)
     }
 }
 

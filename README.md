@@ -9,6 +9,7 @@ A native, local-first health companion for iPhone, with Apple Watch and widgets.
 **Today → Journal → Assistant → Library.** Today leads with a contextual explanation and its evidence, rather than a synthetic score. Sleep, Activity and Food remain a tap away. The default appearance is light, with cool white surfaces, deep teal actions and system typography. Settings supports Light, Dark and System.
 
 - **Today:** guidance responds to recent sleep, ongoing symptoms, energy/stress check-ins, workouts, meals and water. Expand “Why this perspective” to inspect the evidence. Three labelled arcs show recorded/missing signals, not goal completion. Quick water and symptom logging are in reach.
+- **Food, Sleep and companions:** missing values stay unknown, recorded zeros stay zero, and estimated targets are separate. Manual nights are time in bed; sleep averages name their recorded coverage. Watch/widgets use dated snapshots, and a failed Watch water save leaves its total unchanged.
 - **Data confidence:** today’s per-metric overview marks missing readings unknown, preserves recorded zeros, and exposes source and date evidence. Locally confirmed water/workout entries can be corrected or deleted with provenance retained. See [readings and correction rules](docs/DATA_CONFIDENCE.md).
 - **Conversational logging:** review your own message as editable symptom, check-in, water or workout drafts. Confirm entries individually; original wording, preparation source and confirmation time stay with the saved record. Optional AI suggestions use only the selected message. See [review and privacy behavior](docs/CONVERSATIONAL_LOGGING.md).
 - **Journal:** symptom name, body location, severity, onset, duration, description, possible triggers and resolution. Edit or delete logs, including resolved symptoms, from the timeline. Energy, mood and stress check-ins can also be edited or deleted. Sleep, meals, water, workouts and subjective logs appear together chronologically.
@@ -45,15 +46,17 @@ Sleep need/debt and rhythm estimates, sleep sounds and rituals; manual and conne
 
 ## Build and verify
 
-Open `Lumen.xcodeproj` in Xcode 27.1 or later; select **Lumen**. Deployment remains iOS 18+, with model and iOS 26/27 APIs availability-checked. Set your development team to run on a physical device. Bundle IDs use `com.dbakp.lumen` and App Group `group.com.dbakp.lumen`.
+Open `Lumen.xcodeproj` in Xcode 27.0 or later; select **Lumen**. Deployment remains iOS 18+, with model and iOS 26/27 APIs availability-checked. Set your development team to run on a physical device. Bundle IDs use `com.dbakp.lumen` and App Group `group.com.dbakp.lumen`.
 
 ```sh
 xcodebuild -project Lumen.xcodeproj -scheme Lumen -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build
 scripts/test-imports.sh
-xcodebuild test -project Lumen.xcodeproj -scheme Lumen -destination 'platform=iOS Simulator,name=iPhone 18 Pro' CODE_SIGNING_ALLOWED=NO
+xcodebuild test -project Lumen.xcodeproj -scheme Lumen -destination 'platform=iOS Simulator,name=iPhone 18 Pro' CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=-
 ```
 
 The smoke test covers onboarding, water/symptom/check-in logging, contextual Today, assistant plans, Library notes and checklists, retained feature destinations and persistence after relaunch. It attaches screenshots. The standalone Swift package checks (ZIPFoundation pinned to 0.9.20) exercise import parsing/cancellation, conversions, duplicate/source handling, sleep overlap, invalid inputs, model coding, backups and quiet-hour boundaries. For the separate native file-picker import scenario, seed its synthetic fixtures with `python3 scripts/seed-import-ui-fixtures.py <simulator-UUID>`; that scenario skips when fixtures are absent.
+
+Simulator widget/shared-container checks use local ad-hoc signing (`CODE_SIGN_IDENTITY=-`); an unsigned build does not establish App Group behavior. Add a Lumen widget to the dedicated simulator Home Screen for the optional retained-flow widget capture.
 
 Real-device validation is still needed for Health permissions and writes, camera, Strava redirects, model availability/responses, notification delivery, Face ID, haptics, Watch communication and widgets.
 

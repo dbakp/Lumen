@@ -564,4 +564,86 @@ final class LumenSmokeTests: XCTestCase {
         snap("126-large-current-readings")
     }
 
+    func testRetainedFoodAndSleepConfidence() throws {
+        finishOnboarding()
+        scrollAndTap("Food")
+        XCTAssertEqual(app.staticTexts["foodEnergyValue"].label, "Not recorded")
+        XCTAssertEqual(app.staticTexts["food-protein"].label, "Not recorded")
+        XCTAssertFalse(app.staticTexts["Left today"].exists)
+        snap("200-food-missing")
+        let water = app.staticTexts["foodWaterValue"]; reveal(water)
+        XCTAssertEqual(water.label, "Not recorded")
+        XCTAssertFalse(app.buttons["undoQuickWater"].isEnabled)
+        tap("+ 250 ml")
+        XCTAssertEqual(water.label, "250 ml")
+        tap("undoQuickWater")
+        XCTAssertEqual(water.label, "Not recorded")
+        XCTAssertTrue(app.staticTexts["waterUndoStatus"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["waterUndoStatus"].label.contains("No Apple Health removal was attempted"))
+        snap("201-water-after-quick-undo")
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        for _ in 0..<5 { app.swipeDown(velocity: .fast) }
+        scrollAndTap("Sleep")
+        XCTAssertTrue(app.staticTexts["Sleep not recorded today"].exists)
+        XCTAssertTrue(app.descendants(matching: .any).matching(identifier: "sleepDebtEstimate").firstMatch.label.contains("Not available"))
+        snap("202-sleep-missing")
+        tap("Add a night")
+        tap("Save night")
+        XCTAssertTrue(app.staticTexts["currentSleepDuration"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["Time in bed"].exists)
+        XCTAssertTrue(app.descendants(matching: .any).matching(identifier: "sleepDebtEstimate").firstMatch.label.contains("Not available"))
+        snap("203-one-manual-night")
+        scrollAndTap("Sleep history")
+        XCTAssertTrue(app.navigationBars["Sleep history"].waitForExistence(timeout: 5))
+        let night = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'sleep-entry-'")).firstMatch
+        XCTAssertTrue(night.waitForExistence(timeout: 5)); XCTAssertTrue(night.isHittable)
+        snap("203a-sleep-history"); night.tap()
+        snap("203b-manual-sleep-editor")
+        tap("Delete night")
+        XCTAssertTrue(app.staticTexts["No detailed entries yet"].waitForExistence(timeout: 5))
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        XCTAssertTrue(app.staticTexts["Sleep not recorded today"].exists)
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        for _ in 0..<5 { app.swipeDown(velocity: .fast) }
+        scrollAndTap("Your sources")
+        try chooseImportFixture("Lumen-retained-zero")
+        let commit = app.buttons["Import 1 day"]; reveal(commit); commit.tap()
+        XCTAssertTrue(app.staticTexts["Health history imported"].waitForExistence(timeout: 5))
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        for _ in 0..<5 { app.swipeDown(velocity: .fast) }
+        scrollAndTap("Food")
+        XCTAssertEqual(app.staticTexts["foodEnergyValue"].label, "0 kcal")
+        XCTAssertEqual(app.staticTexts["food-protein"].label, "0 g")
+        XCTAssertEqual(app.staticTexts["food-fat"].label, "Not recorded")
+        snap("204-partial-food-zero")
+        reveal(water); XCTAssertEqual(water.label, "0 ml")
+        XCTAssertFalse(app.buttons["undoQuickWater"].isEnabled)
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        for _ in 0..<5 { app.swipeDown(velocity: .fast) }
+        scrollAndTap("Sleep")
+        XCTAssertEqual(app.staticTexts["currentSleepDuration"].label, "0h 0m")
+        XCTAssertTrue(app.descendants(matching: .any).matching(identifier: "sleepDebtEstimate").firstMatch.label.contains("Not available"))
+        snap("205-imported-zero-sleep")
+        // Optional capture for a widget installed in this dedicated simulator's Home Screen.
+        // The functional Food/Sleep assertions do not depend on manual widget setup.
+        XCUIDevice.shared.press(.home)
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        let widget = springboard.descendants(matching: .any).matching(NSPredicate(format: "label == 'Lumen' AND value == 'Widget'")).firstMatch
+        if widget.waitForExistence(timeout: 4) { snap("210-widget-recorded-zero") }
+        app.activate()
+        app.terminate(); app.launchArguments = ["-lumen.appearance", "dark"]; app.launch()
+        scrollAndTap("Food"); snap("206-dark-food-zero")
+        app.terminate(); app.launchArguments = ["-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]; app.launch()
+        let food = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Food")).firstMatch
+        for _ in 0..<14 where !(food.exists && food.isHittable) { app.swipeUp(velocity: .fast) }
+        XCTAssertTrue(food.isHittable); food.tap()
+        XCTAssertEqual(app.staticTexts["foodEnergyValue"].label, "0 kcal")
+        snap("207-large-food-zero")
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        for _ in 0..<10 { app.swipeDown(velocity: .fast) }
+        scrollAndTap("Sleep")
+        XCTAssertEqual(app.staticTexts["currentSleepDuration"].label, "0h 0m")
+        snap("208-large-sleep-zero")
+    }
+
 }

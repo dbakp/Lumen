@@ -111,3 +111,39 @@ The same independent critic opened all 21 native captures in `Design/native/conf
 | Copy | 3 | 3 | 4 |
 
 The critic found no remaining concrete visual or copy defects and confirmed **Done by the skill stop rule**: 10/11 applicable lines at 4, none below 3, with Concept, Finish, Native fluency and Copy at 4. Richness remains 3; no portfolio-level score is claimed. All substantive asks were accepted. The solid asset-pair contrast calculations are in DIRECTION.md; they do not measure every system/translucent state. Native screenshots establish the shown layouts, including actual Accessibility XXXL. They do not establish VoiceOver, live HealthKit/provider reliability, clinical validity or physical-device feel. No new motion, store assets or browser-DOM scan is claimed for this native addition.
+
+## Batch 10: Food, Sleep and companion evidence · round 1
+
+The same independent App Designer Pro critic reviewed five actual iPhone captures in `Design/native/retained/r1`: missing Food/water, undo returning to missing, missing Sleep, one manual night, and partial imported food zeros with unknown fat. Scores: Concept 4, Category 4, Skill distinction 4, Hierarchy 4, Typography 4, Colour 4, Richness 3, Rhythm 4, Finish 4, Native fluency 4, Copy 3. Not done: Copy was below the required 4, and companion/dark/large-text evidence was pending.
+
+All five asks were accepted: singular entry grammar; rounded and explicitly estimated macro/energy/water targets; an actual saved-entry denominator and recorded-day coverage; teal source navigation with chevrons; plain sleep-coverage wording and an explicit quick-undo Health outcome. The outcome is based on the actual deletion call, with no blanket permission/synchronization claim.
+
+### Batch 10 · round 2
+
+The critic opened all eight corrected iPhone captures in `Design/native/retained/r2`, including actual dark Food and Accessibility XXXL. Every iPhone ask landed; the scoped iPhone scores are now all 4 except Richness 3. Large Sleep remained pending.
+
+The same round opened seven first-pass companion captures in `Design/native/retained/companion-r1`. Overall scores: Concept 3, Category 3, Skill distinction 4, Hierarchy 3, Typography 3, Colour 4, Richness 3, Rhythm 4, Finish 3, Native fluency 4, Copy 3. Not done. Required changes: withhold and recapture the unsupported default readiness score and name Readiness estimate; label all unknown Food/Water/Activity values; round Watch targets consistently; show actual snapshot dates/times; replace unexplained dashes and Model window wording. All were accepted. The iPhone's pure readiness gate now excludes a lone sleep total when none of the heuristic's contributing inputs exists.
+
+The Watch denial alert and unchanged total were clearly readable. These captures establish rendered simulator behavior, not physical-device writes or timely fresh WatchConnectivity delivery. The widget was installed on the simulator Home Screen and read the actual iPhone shared cache. Its round-1 score is superseded only when the corrected source is recaptured. Final source/captures and the next review are pending; no sign-off is claimed here.
+
+### Batch 10 · round 3 sign-off
+
+The same critic opened all **12 final iPhone/widget captures** in `Design/native/retained/r5` and **nine Watch captures** in `Design/native/retained/companion-r2`. All requests landed; no remaining concrete defects or awkward strings were found in the visible content.
+
+| Rubric | R1 iPhone | R2 overall | R3 final |
+|---|---:|---:|---:|
+| Concept on the pixel | 4 | 3 | 4 |
+| Category distinction | 4 | 3 | 4 |
+| Skill distinction | 4 | 4 | 4 |
+| Hierarchy | 4 | 3 | 4 |
+| Typography | 4 | 3 | 4 |
+| Colour | 4 | 4 | 4 |
+| Richness | 3 | 3 | 3 |
+| Rhythm and space | 4 | 4 | 4 |
+| Finish and craft | 4 | 3 | 4 |
+| Native fluency | 4 | 4 | 4 |
+| Copy | 3 | 3 | 4 |
+
+The final medium widget names Readiness estimate, withholds its unsupported score/ring, and fits the full snapshot date/time. Watch missing/zero rows retain names and timestamps; Tonight uses explicit unavailable timing text; missing Readiness fits “More evidence needed”. The save-error alert and unchanged Watch-local water are clear. Actual XXXL Food/Sleep reflow, recorded-hour history coverage and both manual-editor dates are visible. The history transition image and the clipped intermediate widget/readiness frames remain review history, not final evidence.
+
+**Done by the skill stop rule:** 10/11 applicable lines at 4, none below 3, with Concept, Finish, Native fluency and Copy at 4. Richness remains 3. No further polish was requested and no UI change was made after this sign-off. This covers the shown synthetic simulator layouts, installed medium widget and Watch pages; unseen widget/complication families, VoiceOver, physical-device feel and synchronization guarantees are not inferred. No new motion, store set, paid assets or browser-DOM scan is claimed.
