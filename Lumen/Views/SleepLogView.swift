@@ -126,7 +126,7 @@ public struct LogSleepSheet: View {
             }
         }
         .presentationDetents([.medium, .large])
-        .tint(.white)
+        .tint(Theme.accent)
     }
 
     func impact(_ dur: TimeInterval) -> String {
@@ -167,7 +167,7 @@ public struct EditSleepSheet: View {
             .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } } }
         }
         .presentationDetents([.medium])
-        .tint(.white)
+        .tint(Theme.accent)
     }
 }
 

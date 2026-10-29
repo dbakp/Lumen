@@ -21,6 +21,6 @@ public enum SyncCoordinator {
 
     /// Push sleep-derived numbers into the coaching side.
     public static func propagate(sleep: SleepStore, health: HealthStore) {
-        health.recompute(sleepDebt: sleep.debt, sleepNeed: sleep.profile.sleepNeed, lastSleepSeconds: sleep.lastNight?.duration)
+        health.recompute(sleepDebt: sleep.debt, sleepNeed: sleep.profile.sleepNeed, lastSleepSeconds: sleep.lastNight.flatMap { Calendar.current.isDateInToday($0.wakeTime) ? $0.duration : nil })
     }
 }

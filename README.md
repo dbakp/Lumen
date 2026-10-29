@@ -1,105 +1,55 @@
 # Lumen
 
-A calm, private health coach for iPhone. Lumen brings sleep, energy, movement and nutrition together in one place, learns your body's rhythm from Apple Health, and tells you what to do today.
+A native, local-first health companion for iPhone, with Apple Watch and widgets. Lumen combines what your devices record with how you actually feel, so your daily perspective, conversations and plans have context.
 
-Built natively in SwiftUI. The design is calm and minimal: content sits on quiet dark surfaces, Liquid Glass is used only for navigation, and colour is reserved for data. Everything is stored on your device.
+## The daily loop
 
-## Navigation
+**Today → Journal → Assistant → Library.** Today leads with a contextual explanation and its evidence, rather than a synthetic score. Sleep, Activity and Food remain a tap away. The default appearance is light, with cool white surfaces, deep teal actions and system typography. Settings supports Light, Dark and System.
 
-Five tabs: **Today · Sleep · Activity · Food · Coach**. A single **+** opens the log menu (meal, water, workout, sleep, weight), and every number opens its own chart and plain-language explanation.
+- **Today:** guidance responds to recent sleep, ongoing symptoms, energy/stress check-ins, workouts, meals and water. Expand “Why this perspective” to inspect the evidence. Three labelled arcs show recorded/missing signals, not goal completion. Quick water and symptom logging are in reach.
+- **Journal:** symptom name, body location, severity, onset, duration, description, possible triggers and resolution. Edit or delete logs, including resolved symptoms, from the timeline. Energy, mood and stress check-ins can also be edited or deleted. Sleep, meals, water, workouts and subjective logs appear together chronologically.
+- **Assistant:** the existing Apple Intelligence / optional OpenAI provider receives current measurements, personal goals, recent symptom history, check-ins, imported history and opted-in record excerpts. Every new response identifies the provider that actually answered; failures use an explicitly labelled built-in guide. Plans requested in chat are saved automatically as editable drafts. Save any other answer manually. Urgent symptom phrases take priority over plan requests.
+- **Library:** searchable plans, reviews, notes and records with type filters. Edit text, complete checklist steps, share document text, delete documents and choose whether each record is included in assistant context. A local weekly review summarizes coverage and logged events without claiming causation.
 
-## Features
+## Connections and imports
 
-- **First-run onboarding.** You create a local profile, connect Apple Health (which prefills your age, sex, height and weight and imports your full sleep history), set your focus and activity level, set up your rhythm and reminders, and get a personalised plan.
-- **Today.** A readiness score from sleep debt, resting heart rate and HRV. It shows "calibrating" until there's real data and never guesses. Also on this screen: activity rings, a coach briefing, vitals, fuel, movement and insights. Tap readiness to see what's driving it.
-- **Sleep.**
-  - Up to two years of nights imported from Health, with stages (deep, core, REM, awake) and efficiency.
-  - A personal sleep need and 14-night sleep debt.
-  - A circadian energy curve, a timed daily schedule and a suggested bedtime.
-  - A journal, rituals, sleep sounds and short science articles.
-- **Activity.** Workouts from Apple Health, Strava and manual logs, deduplicated and grouped by day. Also training load and vitals (resting HR, HRV, SpO₂, respiratory rate, weight, VO₂ max).
-- **Trends.** 7-day, 30-day, 90-day and 1-year charts for sleep, steps, active energy, exercise, resting HR, HRV and weight. Each shows the average, the change versus the previous period, and the best day, with scrub-to-inspect.
-- **Food.**
-  - **Snap a meal** opens the camera directly, asking for permission on first use and linking to Settings if access was denied.
-  - Apple Intelligence recognises what's on the plate. Without it, you pick foods from a built-in list; Lumen never guesses.
-  - You can also describe a meal in words or search foods, then adjust portions before saving.
-  - Meal photos are kept as thumbnails. Also here: protein-first macros, water tracking and a 7-day history. Meals, water and weight are written back to Apple Health.
-- **Coach.** Chat grounded in your real data, in plain language.
-  - It runs on **Apple Intelligence**: Apple's Private Cloud Compute where available, otherwise the on-device model. There is no account, no sign-in and no API key.
-  - Without Apple Intelligence, a built-in rule-based coach answers instead.
-  - Optional (Settings → AI → Advanced): use your own OpenAI API key. OpenAI doesn't offer OAuth sign-in for third-party apps, so a key is the only supported route.
-- **Apple Watch.** A companion app with six vertical pages:
-  - Readiness and today's training window.
-  - Last night's sleep with stages, debt and energy.
-  - Tonight's bedtime, wind-down, melatonin window, caffeine cutoff and energy curve.
-  - Live activity rings, steps and heart rate read on the wrist.
-  - Fuel, with one-tap water logging saved to Health.
-  - Rituals you can check off from your wrist.
-  - Complications: readiness (circular, rectangular, corner, inline) and bedtime.
-- **Widgets.** Readiness (small, medium, Lock Screen rectangular and circular) and a one-tap "Snap a meal" widget, both with deep links into the app.
-- **Privacy.**
-  - Local-first storage in the App Group container.
-  - Secrets (API keys, OAuth tokens) kept in the Keychain.
-  - Optional Face ID lock.
-  - One-tap JSON export and erase-all.
+- **Apple Health:** live sleep/stages, activity, workouts, vitals, water, energy and macros. Refresh on launch, foreground and pull-to-refresh. Read permissions are private to Apple: “access requested” does not prove every type is readable. Fresh heart signals are limited to today; recovery comparisons need at least seven previous days of personal data.
+- **Strava:** existing OAuth setup under Settings. Other devices can share through Apple Health or a compatible export; no direct Oura/Garmin connection is simulated.
+- **Health history:** locally parse Apple Health `export.xml` (unzip Apple's export in Files first), or portable CSV/JSON. Preview dates, sources, sample values and skipped records before committing. Reimports replace metric/day values. Historical imports populate Trends and assistant context; today's values fill missing live readings.
+- **Records:** import text, Markdown or text-based PDFs. Extraction is local. Scanned PDFs need OCR first. Preview/edit before saving. Record text is excluded from assistant context until you enable it.
 
-## Data
+See [supported formats, units and aggregation rules](docs/IMPORT_FORMATS.md). XML supports up to 500 MB; portable files up to 25 MB; documents up to 20 MB / 200,000 extracted characters. Unsupported types and units are counted as skipped, never guessed. This is not a complete clinical-record ingestion system.
 
-Lumen is local-first:
+## Contextual notifications
 
-| What | Where |
-| --- | --- |
-| Profile, sleep, meals, workouts, water, goals, chat | JSON files in the App Group container (`LocalStore`) |
-| API keys, OAuth tokens, Strava credentials | Keychain (`SecureStore`) |
-| Widget snapshot | Shared `UserDefaults` in the App Group |
-| Apple Watch | The phone sends a `WatchSnapshot` via WatchConnectivity application context; the Watch sends back ritual check-offs and water. Activity and heart rate are read directly on the Watch |
-| Health data | Read from Apple Health on launch and on every return to the foreground. Meals, water and weight are written back |
+Notifications are off by default. Connections contains opt-in, quiet hours and lock-screen detail controls. Lumen replaces the old repeating habit notifications with at most one non-repeating contextual check-in per day. Logging or syncing rebuilds the pending check-in. Ongoing symptoms, low energy or high stress suppress exercise pressure. Sensitive details are hidden by default. Lumen must run to refresh context; a scheduled notification cannot continuously observe changes made in other apps.
 
-The persistence layer is isolated in `Persistence/`, so a sync backend (for example Supabase) can be added later without touching the views.
+## Privacy and data
 
-## Build & run
+Profile, health logs, symptoms, check-ins, imported daily history, documents and chat are JSON in the App Group container, with file protection. Secrets stay in Keychain. Face ID lock, JSON export and erase-all are retained; export/erase cover the new domains. Meal thumbnails are local.
 
-1. Open `Lumen.xcodeproj` in Xcode 26 or later (iOS 18+; Liquid Glass lights up on iOS 26).
-2. Select the **Lumen** scheme and run on a simulator or an iPhone.
-   - Bundle IDs are `com.dbakp.lumen`, `com.dbakp.lumen.LumenWidget`, `com.dbakp.lumen.watchkitapp` and `com.dbakp.lumen.watchkitapp.widgets`, with the App Group `group.com.dbakp.lumen`.
-   - The Watch app is embedded in the iPhone app. Install it from the iPhone's Watch app, or run the **LumenWatch** scheme on a watch with Developer Mode enabled.
-   - To use a different Apple developer team, change `DEVELOPMENT_TEAM` and the IDs above.
-3. Sources are folder-synced: new files under `Lumen/` are picked up automatically.
+Cloud models receive the current health summary and any record excerpts you explicitly included when you send a question. The provider is shown before sending. Choose the built-in guide or available on-device model for local processing. No backend, developer API key or account is bundled. Imported records are treated as untrusted reference text, never instructions.
 
-Optional connections, configured in the app under **Settings**:
+## Retained features
 
-- **Strava.** Create a free API app at strava.com/settings/api, then paste the Client ID and Secret.
-- **AI.** Nothing to set up; Apple Intelligence is used automatically when it's turned on in iOS Settings. Optionally, add your own OpenAI API key under Settings → AI → Advanced.
+Sleep need/debt and rhythm estimates, sleep sounds and rituals; manual and connected workouts; calorie/macronutrient tracking with meal photos and user-reviewed estimates; hydration and weight logging; metric trends; Apple Watch pages, water logging and habits; readiness/bedtime complications and iPhone widgets. Readiness remains an approximate wellness heuristic, not a clinical measure or a guarantee that exercise is appropriate.
 
-## Architecture
+## Build and verify
 
-- `Persistence/`: `LocalStore` (file-based JSON in the App Group) and `SecureStore` (Keychain).
-- `Models/`: `SleepStore` and `HealthStore` (single sources of truth), sleep, health and nutrition models, units.
-- `Algorithms/`: `SleepAlgorithms` (sleep need, debt, circadian prediction) and `CoachingEngine` (readiness, day plan, insights).
-- `Services/`:
-  - `HealthKitService`: permissions, today, sleep with stages, workouts, history, write-back.
-  - `SyncCoordinator`: keeps the stores in step.
-  - `WatchSync`: pushes the snapshot to the Watch and handles its messages.
-  - `AIService`: Apple Intelligence (Private Cloud Compute or on-device, with vision and structured output), then an optional OpenAI key, then built-in rules.
-  - Notifications, Strava, the OpenAI client, nutrition, sounds, app lock and deep links.
-- `Views/`: Onboarding, Today, Sleep, Activity, Food, Coach, metric detail/Trends and Settings, plus `AppRouter` (tabs, sheets, toasts).
-- `Views/Components/`: the design system: `Theme` tokens, surfaces, buttons, stat tiles, rows, rings and charts.
-- `Shared/`: `WatchSnapshot`, compiled into both the iPhone and Watch targets.
-- `LumenWatch/`: the watchOS app (`WatchStore` for WatchConnectivity and HealthKit on the wrist, plus the page views).
-- `LumenWatchWidget/`: watch complications.
-- `LumenWidget/`: WidgetKit extension.
-- `LumenUITests/`: an end-to-end smoke test covering fresh onboarding, every tab, the log menu, logging water, a night, a workout and a food, metric detail, settings, and coach chat.
+Open `Lumen.xcodeproj` in Xcode 27.1 or later; select **Lumen**. Deployment remains iOS 18+, with model and iOS 26/27 APIs availability-checked. Set your development team to run on a physical device. Bundle IDs use `com.dbakp.lumen` and App Group `group.com.dbakp.lumen`.
 
-## Testing
-
-```bash
-xcodebuild test -project Lumen.xcodeproj -scheme Lumen -destination 'platform=iOS Simulator,name=iPhone 17 Pro'
+```sh
+xcodebuild -project Lumen.xcodeproj -scheme Lumen -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build
+scripts/test-imports.sh
+xcodebuild test -project Lumen.xcodeproj -scheme Lumen -destination 'platform=iOS Simulator,name=iPhone 18 Pro' CODE_SIGNING_ALLOWED=NO
 ```
 
-The UI test launches with `-resetForUITests` so it always starts from a clean onboarding. Screenshots of every screen are attached to the result bundle.
+The smoke test covers onboarding, water/symptom/check-in logging, contextual Today, assistant plans, Library notes and checklists, retained feature destinations and persistence after relaunch. It attaches screenshots. The standalone Swift tests exercise actual import parsing, conversions, duplicate/source handling, sleep overlap, invalid inputs, model coding and quiet-hour boundaries.
 
-Some things can only be checked on a real iPhone: the HealthKit permission sheet, camera capture, the Strava and Google OAuth redirects, haptics, Face ID, and widgets on the Home Screen.
+Real-device validation is still needed for Health permissions and writes, camera, Strava redirects, model availability/responses, notification delivery, Face ID, haptics, Watch communication and widgets.
 
-## Disclaimer
+## Design and implementation notes
 
-Lumen provides wellness guidance, not medical advice. If you suspect a sleep disorder or another health condition, talk to a clinician.
+[Verification](docs/VERIFICATION.md) · [Plan and market research](docs/IMPLEMENTATION_PLAN.md) · [Design direction](Design/DIRECTION.md) · [Design studies](Design/mockup.html). Studies use explicitly labelled sample data; production never seeds fictional health measurements. App Designer Pro from the user's attachment guided the three concepts, scans and independent critique. These local design studies are not claims of clinical or App Store validation.
+
+Lumen supports wellness reflection. It does not diagnose, prescribe or replace clinical care.

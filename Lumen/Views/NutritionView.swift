@@ -81,7 +81,7 @@ public struct NutritionView: View {
             Button { showSearch = true } label: { Image(systemName: "magnifyingglass").font(.headline) }
                 .frame(width: 56, height: 56)
                 .background(Theme.surfaceRaised, in: Circle())
-                .foregroundStyle(.white)
+                .foregroundStyle(Theme.text)
                 .accessibilityLabel("Search foods")
         }
     }
@@ -110,7 +110,7 @@ public struct NutritionView: View {
                     }
                     .accessibilityLabel("Add a glass of water")
                 }
-                .foregroundStyle(.white)
+                .foregroundStyle(Theme.text)
                 Bar(health.waterTodayML / target, color: Theme.water, height: 6)
             }
             .padding(16).surface()

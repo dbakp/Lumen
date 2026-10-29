@@ -66,17 +66,17 @@ public struct OnboardingView: View {
         let idx = step.rawValue - 1
         return HStack(spacing: 14) {
             Button { go(back: true) } label: {
-                Image(systemName: "chevron.left").font(.headline).foregroundStyle(.white)
+                Image(systemName: "chevron.left").font(.headline).foregroundStyle(Theme.text)
                     .frame(width: 40, height: 40).background(Theme.surfaceRaised, in: Circle())
             }
             .accessibilityLabel("Back")
             HStack(spacing: 5) {
                 ForEach(0..<total, id: \.self) { i in
-                    Capsule().fill(i <= idx ? Color.white : .white.opacity(0.15)).frame(height: 3)
+                    Capsule().fill(i <= idx ? Theme.accent : Theme.hairline).frame(height: 3)
                 }
             }
             .animation(.spring, value: idx)
-            Text("\(idx + 1)/\(total)").font(.caption.monospacedDigit().weight(.semibold)).foregroundStyle(.white.opacity(0.5))
+            Text("\(idx + 1)/\(total)").font(.caption.monospacedDigit().weight(.semibold)).foregroundStyle(Theme.text.opacity(0.5))
         }
         .padding(.horizontal, 20).padding(.top, 8)
     }
@@ -99,9 +99,9 @@ public struct OnboardingView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 18) {
                     VStack(alignment: .leading, spacing: 8) {
-                        Text(title).font(.system(size: 32, weight: .bold, design: .rounded)).foregroundStyle(.white)
+                        Text(title).font(.system(size: 32, weight: .bold, design: .rounded)).foregroundStyle(Theme.text)
                             .fixedSize(horizontal: false, vertical: true)
-                        Text(subtitle).font(.body).foregroundStyle(.white.opacity(0.65))
+                        Text(subtitle).font(.body).foregroundStyle(Theme.text.opacity(0.65))
                             .fixedSize(horizontal: false, vertical: true)
                     }
                     .padding(.top, 24)
@@ -140,16 +140,16 @@ public struct OnboardingView: View {
             Spacer().frame(height: 28)
             Text("Lumen").font(.title3.weight(.semibold)).foregroundStyle(Theme.secondary)
             Text("Feel your best,\nevery day.")
-                .font(.system(size: 40, weight: .bold, design: .rounded)).foregroundStyle(.white)
+                .font(.system(size: 40, weight: .bold, design: .rounded)).foregroundStyle(Theme.text)
                 .multilineTextAlignment(.center).padding(.top, 10)
             Text("Sleep, energy, movement and food — one calm coach that learns your body.")
-                .font(.body).foregroundStyle(.white.opacity(0.7)).multilineTextAlignment(.center)
+                .font(.body).foregroundStyle(Theme.text.opacity(0.7)).multilineTextAlignment(.center)
                 .padding(.horizontal, 32).padding(.top, 12)
             Spacer()
             VStack(spacing: 10) {
                 continueButton("Get started")
                 Label("Private by design · your data stays on this iPhone", systemImage: "lock.fill")
-                    .font(.caption).foregroundStyle(.white.opacity(0.5))
+                    .font(.caption).foregroundStyle(Theme.text.opacity(0.5))
             }
             .padding(.horizontal, 24).padding(.bottom, 16)
         }
@@ -160,8 +160,8 @@ public struct OnboardingView: View {
     var nameStep: some View {
         page(title: "Let's set up your profile", subtitle: "What should Lumen call you?") {
             VStack(alignment: .leading, spacing: 10) {
-                TextField("", text: $name, prompt: Text("First name").foregroundStyle(.white.opacity(0.35)))
-                    .font(.title2.weight(.semibold)).foregroundStyle(.white)
+                TextField("", text: $name, prompt: Text("First name").foregroundStyle(Theme.text.opacity(0.35)))
+                    .font(.title2.weight(.semibold)).foregroundStyle(Theme.text)
                     .textContentType(.givenName).textInputAutocapitalization(.words).autocorrectionDisabled()
                     .submitLabel(.continue)
                     .focused($nameFocused)
@@ -169,7 +169,7 @@ public struct OnboardingView: View {
                     .padding(.horizontal, 18).padding(.vertical, 16)
                     .surface(18)
                 Label("No email, no password. Your profile lives only on this device.", systemImage: "iphone.gen3")
-                    .font(.footnote).foregroundStyle(.white.opacity(0.55))
+                    .font(.footnote).foregroundStyle(Theme.text.opacity(0.55))
             }
         } footer: {
             continueButton(enabled: !trimmedName.isEmpty)
@@ -193,7 +193,7 @@ public struct OnboardingView: View {
                 GlassCard {
                     VStack(alignment: .leading, spacing: 6) {
                         Label("Connected", systemImage: "checkmark.circle.fill").font(.headline).foregroundStyle(Theme.steps)
-                        Text(importSummary).font(.subheadline).foregroundStyle(.white.opacity(0.75))
+                        Text(importSummary).font(.subheadline).foregroundStyle(Theme.text.opacity(0.75))
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
@@ -231,7 +231,7 @@ public struct OnboardingView: View {
         HStack(spacing: 14) {
             Image(systemName: icon).font(.title3).foregroundStyle(tint).frame(width: 32)
             VStack(alignment: .leading, spacing: 2) {
-                Text(title).font(.headline).foregroundStyle(.white)
+                Text(title).font(.headline).foregroundStyle(Theme.text)
                 Text(sub).font(.subheadline).foregroundStyle(Theme.secondary)
             }
             Spacer()
@@ -326,9 +326,9 @@ public struct OnboardingView: View {
     func fieldCard<Content: View>(_ label: String, value: String? = nil, @ViewBuilder content: () -> Content) -> some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
-                Text(label).font(.subheadline.weight(.semibold)).foregroundStyle(.white.opacity(0.7))
+                Text(label).font(.subheadline.weight(.semibold)).foregroundStyle(Theme.text.opacity(0.7))
                 Spacer()
-                if let value { Text(value).font(.headline.monospacedDigit()).foregroundStyle(.white).contentTransition(.numericText()) }
+                if let value { Text(value).font(.headline.monospacedDigit()).foregroundStyle(Theme.text).contentTransition(.numericText()) }
             }
             content()
         }
@@ -345,7 +345,7 @@ public struct OnboardingView: View {
                 ChoiceCard(icon: "equal", title: "Maintain & feel great", subtitle: "Energy, sleep and consistency", selected: goal == .maintain) { goal = .maintain }
                 ChoiceCard(icon: "arrow.up.right", title: "Build strength", subtitle: "Small surplus, recovery first", selected: goal == .gain) { goal = .gain }
             }
-            Text("How active are you on a typical week?").font(.headline).foregroundStyle(.white).padding(.top, 6)
+            Text("How active are you on a typical week?").font(.headline).foregroundStyle(Theme.text).padding(.top, 6)
             VStack(spacing: 10) {
                 ForEach(HealthGoals.ActivityLevel.allCases, id: \.self) { a in
                     ChoiceCard(icon: activityIcon(a), title: a.label, subtitle: activityDetail(a), selected: activity == a) { activity = a }
@@ -387,9 +387,9 @@ public struct OnboardingView: View {
                     .colorScheme(.dark)
             }
             fieldCard("Sleep you need", value: SleepFormat.durationHM(needHours * 3600)) {
-                Slider(value: $needHours, in: 6...10.5, step: 0.25).tint(.white)
+                Slider(value: $needHours, in: 6...10.5, step: 0.25).tint(Theme.accent)
                 Text(importedNights.count >= 3 ? "Estimated from your longest, most natural nights." : "Most adults need 7–9 hours; about half need 8 or more.")
-                    .font(.caption).foregroundStyle(.white.opacity(0.55))
+                    .font(.caption).foregroundStyle(Theme.text.opacity(0.55))
             }
         } footer: {
             continueButton()
@@ -399,15 +399,14 @@ public struct OnboardingView: View {
     // MARK: 6 · Reminders
 
     var remindersStep: some View {
-        page(title: "Gentle, well-timed nudges", subtitle: "Lumen times reminders to your body clock — never spammy, always skippable.") {
+        page(title: "A check-in when it helps", subtitle: "Optional reminders that take today’s logs into account.") {
             VStack(spacing: 12) {
-                benefit("wind", Theme.calm, "Wind down", "A nudge to dim the lights and relax")
-                benefit("moon.fill", Theme.sleep, "Bedtime", "When falling asleep is easiest for you")
-                benefit("sun.max.fill", Theme.food, "Morning light", "Anchor your clock within 30 minutes of waking")
-                benefit("cup.and.saucer.fill", Theme.food, "Caffeine cutoff", "Protect tonight's sleep")
+                benefit("bell", Theme.accent, "At most once a day", "A contextual check-in, never a repeating list")
+                benefit("moon", Theme.sleep, "Quiet overnight", "No check-ins between 21:00 and 08:00 by default")
+                benefit("lock", Theme.accent, "Details stay private", "Health details are hidden on your lock screen")
             }
             if remindersOn {
-                Label("Reminders on — tune them anytime in Rituals.", systemImage: "bell.badge.fill")
+                Label("Check-ins on. Adjust them in Connections.", systemImage: "bell.badge")
                     .font(.subheadline.weight(.semibold)).foregroundStyle(Theme.steps)
             }
         } footer: {
@@ -418,6 +417,7 @@ public struct OnboardingView: View {
                     continueButton("Turn on reminders") {
                         Task {
                             let ok = await NotificationManager.shared.request()
+                            CompanionStore.shared.reminders.enabled = ok
                             withAnimation { remindersOn = ok }
                             go()
                         }
@@ -470,9 +470,9 @@ public struct OnboardingView: View {
                             ForEach(checks.indices, id: \.self) { i in
                                 HStack(spacing: 12) {
                                     Image(systemName: i < revealStage ? "checkmark.circle.fill" : "circle.dotted")
-                                        .foregroundStyle(i < revealStage ? Theme.steps : .white.opacity(0.35))
+                                        .foregroundStyle(i < revealStage ? Theme.steps : Theme.tertiary)
                                         .contentTransition(.symbolEffect(.replace))
-                                    Text(checks[i]).foregroundStyle(.white.opacity(i <= revealStage ? 0.9 : 0.4))
+                                    Text(checks[i]).foregroundStyle(Theme.text.opacity(i <= revealStage ? 0.9 : 0.4))
                                 }
                                 .font(.headline)
                             }
@@ -483,10 +483,10 @@ public struct OnboardingView: View {
                         VStack(spacing: 18) {
                         VStack(spacing: 6) {
                             Text("Your plan is ready\(trimmedName.isEmpty ? "" : ", \(trimmedName)")")
-                                .font(.system(size: 30, weight: .bold, design: .rounded)).foregroundStyle(.white)
+                                .font(.system(size: 30, weight: .bold, design: .rounded)).foregroundStyle(Theme.text)
                                 .multilineTextAlignment(.center)
                             Text("A starting point — Lumen adapts it daily from your data.")
-                                .font(.subheadline).foregroundStyle(.white.opacity(0.65))
+                                .font(.subheadline).foregroundStyle(Theme.text.opacity(0.65))
                         }
                         LazyVGrid(columns: [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)], spacing: 12) {
                             planTile("fork.knife", Theme.food, "\(g.calorieTarget())", "calories a day")
@@ -524,8 +524,8 @@ public struct OnboardingView: View {
     func planTile(_ icon: String, _ tint: Color, _ value: String, _ label: String) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             Image(systemName: icon).font(.headline).foregroundStyle(tint)
-            Text(value).font(.title3.weight(.bold).monospacedDigit()).foregroundStyle(.white).lineLimit(1).minimumScaleFactor(0.7)
-            Text(label).font(.caption).foregroundStyle(.white.opacity(0.6))
+            Text(value).font(.title3.weight(.bold).monospacedDigit()).foregroundStyle(Theme.text).lineLimit(1).minimumScaleFactor(0.7)
+            Text(label).font(.caption).foregroundStyle(Theme.text.opacity(0.6))
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(16)

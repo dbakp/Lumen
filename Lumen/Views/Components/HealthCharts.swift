@@ -35,9 +35,9 @@ public struct MacroRingView: View {
         ZStack {
             ThinRing(progress: target > 0 ? eaten/target : 0, color: Theme.food, width: 10)
             VStack(spacing: 1) {
-                AnimatedNumber(eaten).font(.system(size: 34, weight: .bold, design: .rounded)).foregroundStyle(.white)
+                AnimatedNumber(eaten).font(.system(size: 34, weight: .bold, design: .rounded)).foregroundStyle(Theme.text)
                     .lineLimit(1).minimumScaleFactor(0.6)
-                Text("of \(Int(target)) kcal").font(.caption).foregroundStyle(.white.opacity(0.6)).lineLimit(1).minimumScaleFactor(0.8)
+                Text("of \(Int(target)) kcal").font(.caption).foregroundStyle(Theme.text.opacity(0.6)).lineLimit(1).minimumScaleFactor(0.8)
                 Text("Protein \(Int(protein))/\(Int(proteinTarget))g")
                     .font(.caption2.weight(.bold)).foregroundStyle(protein >= proteinTarget ? .green : .orange)
                     .padding(.horizontal, 10).padding(.vertical, 3)

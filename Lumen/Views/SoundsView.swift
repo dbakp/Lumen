@@ -43,11 +43,11 @@ public struct SoundsView: View {
                                 Button("\(m) min") { engine.startSleepTimer(minutes: m); haptic(.light) }
                                     .font(.subheadline.weight(.semibold))
                                     .frame(maxWidth: .infinity, minHeight: 44)
-                                    .background(engine.sleepTimerMinutes == m ? Color.white : Theme.surfaceRaised, in: Capsule())
-                                    .foregroundStyle(engine.sleepTimerMinutes == m ? .black : .white)
+                                    .background(engine.sleepTimerMinutes == m ? Theme.accent : Theme.surfaceRaised, in: Capsule())
+                                    .foregroundStyle(engine.sleepTimerMinutes == m ? Theme.onAccent : Theme.text)
                             }
                             Button { engine.stop() } label: { Image(systemName: "stop.fill") }
-                                .frame(width: 44, height: 44).background(Theme.surfaceRaised, in: Circle()).foregroundStyle(.white)
+                                .frame(width: 44, height: 44).background(Theme.surfaceRaised, in: Circle()).foregroundStyle(Theme.text)
                                 .accessibilityLabel("Stop")
                         }
                     }

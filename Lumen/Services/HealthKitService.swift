@@ -145,7 +145,7 @@ public final class HealthKitService: ObservableObject {
         async let basal = sum(.basalEnergyBurned, unit: .kilocalorie(), start: start, end: end)
         async let exercise = sum(.appleExerciseTime, unit: .minute(), start: start, end: end)
         async let stand = sum(.appleStandTime, unit: .hour(), start: start, end: end)
-        async let water = sum(.dietaryWater, unit: .literUnit(with: .milli), start: start, end: end)
+        async let water = sum(.dietaryWater, unit: .literUnit(with: .milli), start: start, end: end, excludingLumen: true)
         async let rhr = latest(.restingHeartRate, unit: HKUnit(from: "count/min"))
         async let hrv = latest(.heartRateVariabilitySDNN, unit: HKUnit(from: "ms"))
         async let spo2 = latest(.oxygenSaturation, unit: .percent())
@@ -153,6 +153,11 @@ public final class HealthKitService: ObservableObject {
         async let resp = latest(.respiratoryRate, unit: HKUnit(from: "count/min"))
         async let vo2 = latest(.vo2Max, unit: HKUnit(from: "ml/kg*min"))
         async let avgHR = average(.heartRate, unit: HKUnit(from: "count/min"), start: start, end: end)
+        async let dietaryEnergy = sum(.dietaryEnergyConsumed, unit: .kilocalorie(), start: start, end: end, excludingLumen: true)
+        async let dietaryProtein = sum(.dietaryProtein, unit: .gram(), start: start, end: end, excludingLumen: true)
+        async let dietaryCarbs = sum(.dietaryCarbohydrates, unit: .gram(), start: start, end: end, excludingLumen: true)
+        async let dietaryFat = sum(.dietaryFatTotal, unit: .gram(), start: start, end: end, excludingLumen: true)
+        let (de, dp, dc, df) = await (dietaryEnergy, dietaryProtein, dietaryCarbs, dietaryFat)
         let (s, a, b, e, st, w) = await (steps, active, basal, exercise, stand, water)
         let (rh, hv, ox, wt, rr, v2, ah) = await (rhr, hrv, spo2, weight, resp, vo2, avgHR)
         var m = DayMetrics.empty
@@ -162,6 +167,8 @@ public final class HealthKitService: ObservableObject {
         m.restingHR = rh; m.hrvMS = hv; m.respiratoryRate = rr; m.vo2max = v2; m.avgHR = ah
         if let ox { m.spo2 = ox * 100 }
         m.weightKg = wt; m.waterML = w ?? 0
+        m.excludesLumenNutrition = true
+        m.dietaryCalories = de; m.dietaryProtein = dp; m.dietaryCarbs = dc; m.dietaryFat = df
         today = m
         status = "Synced \(DateFormatter.localizedString(from: Date(), dateStyle: .none, timeStyle: .short))"
     }
@@ -367,10 +374,16 @@ public final class HealthKitService: ObservableObject {
         }
     }
 
-    public func saveWater(ml: Double) async {
+    public func saveWater(ml: Double, id: String? = nil) async {
         guard isAvailable, isAuthorized else { return }
-        let s = HKQuantitySample(type: HKQuantityType(.dietaryWater), quantity: HKQuantity(unit: .literUnit(with: .milli), doubleValue: ml), start: Date(), end: Date())
+        let s = HKQuantitySample(type: HKQuantityType(.dietaryWater), quantity: HKQuantity(unit: .literUnit(with: .milli), doubleValue: ml), start: Date(), end: Date(), metadata: id.map { ["LumenWaterID": $0] })
         try? await store.save(s)
+    }
+
+    public func deleteWater(id: String) async {
+        guard isAvailable, isAuthorized else { return }
+        let predicate = HKQuery.predicateForObjects(withMetadataKey: "LumenWaterID", allowedValues: [id])
+        _ = try? await store.deleteObjects(of: HKQuantityType(.dietaryWater), predicate: predicate)
     }
 
     public func saveWeight(kg: Double) async {
@@ -381,8 +394,9 @@ public final class HealthKitService: ObservableObject {
 
     // MARK: Query helpers
 
-    private func sum(_ id: HKQuantityTypeIdentifier, unit: HKUnit, start: Date, end: Date) async -> Double? {
-        let pred = HKQuery.predicateForSamples(withStart: start, end: end, options: .strictStartDate)
+    private func sum(_ id: HKQuantityTypeIdentifier, unit: HKUnit, start: Date, end: Date, excludingLumen: Bool = false) async -> Double? {
+        let dates = HKQuery.predicateForSamples(withStart: start, end: end, options: .strictStartDate)
+        let pred = excludingLumen ? NSCompoundPredicate(andPredicateWithSubpredicates: [dates, NSCompoundPredicate(notPredicateWithSubpredicate: HKQuery.predicateForObjects(from: HKSource.default()))]) : dates
         return await withCheckedContinuation { cont in
             let q = HKStatisticsQuery(quantityType: HKQuantityType(id), quantitySamplePredicate: pred, options: .cumulativeSum) { _, stats, _ in
                 cont.resume(returning: stats?.sumQuantity()?.doubleValue(for: unit))
@@ -394,7 +408,9 @@ public final class HealthKitService: ObservableObject {
     private func latest(_ id: HKQuantityTypeIdentifier, unit: HKUnit) async -> Double? {
         let sort = NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)
         return await withCheckedContinuation { cont in
-            let q = HKSampleQuery(sampleType: HKQuantityType(id), predicate: nil, limit: 1, sortDescriptors: [sort]) { _, samples, _ in
+            let freshness: NSPredicate? = (id == .restingHeartRate || id == .heartRateVariabilitySDNN || id == .oxygenSaturation || id == .respiratoryRate)
+                ? HKQuery.predicateForSamples(withStart: Calendar.current.startOfDay(for: Date()), end: Date(), options: .strictStartDate) : nil
+            let q = HKSampleQuery(sampleType: HKQuantityType(id), predicate: freshness, limit: 1, sortDescriptors: [sort]) { _, samples, _ in
                 cont.resume(returning: (samples?.first as? HKQuantitySample)?.quantity.doubleValue(for: unit))
             }
             self.store.execute(q)

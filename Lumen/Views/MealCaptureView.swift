@@ -87,7 +87,7 @@ public struct MealCaptureView: View {
             }
             .task { if openCamera && !hasContent { await startCamera() } }
         }
-        .tint(.white)
+        .tint(Theme.accent)
     }
 
     // MARK: Start
@@ -106,7 +106,7 @@ public struct MealCaptureView: View {
 
             PhotosPicker(selection: $pickerItem, matching: .images) {
                 Label("Choose from Photos", systemImage: "photo.on.rectangle")
-                    .font(.headline).foregroundStyle(.white)
+                    .font(.headline).foregroundStyle(Theme.text)
                     .frame(maxWidth: .infinity, minHeight: 52)
                     .background(Theme.surfaceRaised, in: Capsule())
             }
@@ -159,8 +159,8 @@ public struct MealCaptureView: View {
                             ZStack {
                                 RoundedRectangle(cornerRadius: Theme.radius, style: .continuous).fill(.black.opacity(0.45))
                                 VStack(spacing: 10) {
-                                    ProgressView().tint(.white)
-                                    Text("Looking at your plate…").font(.subheadline.weight(.medium)).foregroundStyle(.white)
+                                    ProgressView().tint(Theme.accent)
+                                    Text("Looking at your plate…").font(.subheadline.weight(.medium)).foregroundStyle(Theme.text)
                                 }
                             }
                         }
@@ -350,7 +350,7 @@ struct FoodSearchSheet: View {
                 }
             }
         }
-        .tint(.white)
+        .tint(Theme.accent)
     }
 
     var rows: some View {

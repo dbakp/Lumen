@@ -24,7 +24,7 @@ public struct HabitsView: View {
                 VStack(alignment: .leading, spacing: 10) {
                     Text("\(done) of \(active.count) done today").font(.title2.weight(.semibold)).foregroundStyle(Theme.text)
                     Bar(Double(done) / Double(max(1, active.count)), color: Theme.steps, height: 6)
-                    Text("Small, well-timed habits add up to better sleep. Reminders follow these times.").font(.subheadline).foregroundStyle(Theme.secondary)
+                    Text("Use these times as a guide. Optional contextual check-ins are controlled in Connections.").font(.subheadline).foregroundStyle(Theme.secondary)
                 }
                 RowGroup {
                     ForEach(Array(active.enumerated()), id: \.element.id) { i, h in

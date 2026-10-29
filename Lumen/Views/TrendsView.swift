@@ -73,8 +73,8 @@ public struct TrendsView: View {
                         Label(m.label, systemImage: m.icon)
                             .font(.subheadline.weight(.semibold))
                             .padding(.horizontal, 14).padding(.vertical, 9)
-                            .foregroundStyle(metric == m ? .black : .white)
-                            .background(metric == m ? AnyShapeStyle(Color.white) : AnyShapeStyle(Theme.surface), in: Capsule())
+                            .foregroundStyle(metric == m ? Theme.onAccent : Theme.text)
+                            .background(metric == m ? AnyShapeStyle(Theme.accent) : AnyShapeStyle(Theme.surface), in: Capsule())
                     }
                     .buttonStyle(.plain)
                 }
@@ -96,20 +96,23 @@ public struct TrendsView: View {
 
     func load() async {
         loading = true; defer { loading = false }
-        if metric == .sleep {
-            let cal = Calendar.current
-            let start = cal.date(byAdding: .day, value: -(range.rawValue * 2 - 1), to: cal.startOfDay(for: Date())) ?? Date()
-            let byDay = Dictionary(grouping: sleep.episodes.filter { $0.wakeTime >= start }) { cal.startOfDay(for: $0.wakeTime) }
-            let all = byDay.map { DailyValue(date: $0.key, value: $0.value.reduce(0) { $0 + $1.duration } / 3600) }.sorted { $0.date < $1.date }
-            let cut = cal.date(byAdding: .day, value: -(range.rawValue - 1), to: cal.startOfDay(for: Date())) ?? Date()
-            series = all.filter { $0.date >= cut }
-            previous = all.filter { $0.date < cut }
-        } else {
-            let all = await hk.dailySeries(metric, days: range.rawValue * 2)
-            let cut = Calendar.current.date(byAdding: .day, value: -(range.rawValue - 1), to: Calendar.current.startOfDay(for: Date())) ?? Date()
-            series = all.filter { $0.date >= cut }.map(convert)
-            previous = all.filter { $0.date < cut }.map(convert)
+        let cal = Calendar.current
+        let start = cal.date(byAdding: .day, value: -(range.rawValue * 2 - 1), to: cal.startOfDay(for: Date())) ?? Date()
+        var values: [Date: Double] = [:]
+        let importKey = metric.rawValue
+        for day in CompanionStore.shared.importedDays where day.date >= start {
+            if let value = day.values[importKey] { values[day.date] = value }
         }
+        if metric == .sleep {
+            let byDay = Dictionary(grouping: sleep.episodes.filter { $0.wakeTime >= start }) { cal.startOfDay(for: $0.wakeTime) }
+            for (day, episodes) in byDay { values[day] = episodes.reduce(0) { $0 + $1.duration } / 3600 }
+        } else {
+            for value in await hk.dailySeries(metric, days: range.rawValue * 2) { values[cal.startOfDay(for: value.date)] = value.value }
+        }
+        let all = values.map { DailyValue(date: $0.key, value: $0.value) }.sorted { $0.date < $1.date }
+        let cut = cal.date(byAdding: .day, value: -(range.rawValue - 1), to: cal.startOfDay(for: Date())) ?? Date()
+        series = all.filter { $0.date >= cut }.map(convert)
+        previous = all.filter { $0.date < cut }.map(convert)
     }
 
     func convert(_ v: DailyValue) -> DailyValue {
@@ -136,10 +139,10 @@ public struct TrendsView: View {
         HStack(alignment: .firstTextBaseline) {
             VStack(alignment: .leading, spacing: 2) {
                 Text(selected.map { $0.date.formatted(.dateTime.weekday(.abbreviated).month().day()) } ?? (metric == .weight ? "LATEST" : "DAILY AVERAGE"))
-                    .font(.caption2.weight(.bold)).foregroundStyle(.white.opacity(0.55)).tracking(1)
+                    .font(.caption2.weight(.bold)).foregroundStyle(Theme.text.opacity(0.55)).tracking(1)
                 Text(selected.map { format($0.value) } ?? (metric == .weight ? series.last.map { format($0.value) } : average.map(format)) ?? "—")
                     .font(.system(size: 34, weight: .bold, design: .rounded).monospacedDigit())
-                    .foregroundStyle(.white).contentTransition(.numericText())
+                    .foregroundStyle(Theme.text).contentTransition(.numericText())
             }
             Spacer()
             if selected == nil, let a = average, let p = previousAverage, p > 0 {
@@ -147,7 +150,7 @@ public struct TrendsView: View {
                 let good = metric.lowerIsBetter ? delta <= 0 : delta >= 0
                 Label(String(format: "%+.0f%%", delta), systemImage: delta >= 0 ? "arrow.up.right" : "arrow.down.right")
                     .font(.subheadline.weight(.bold))
-                    .foregroundStyle(metric == .weight ? .white.opacity(0.8) : (good ? .green : .orange))
+                    .foregroundStyle(metric == .weight ? Theme.secondary : (good ? .green : .orange))
                     .padding(.horizontal, 10).padding(.vertical, 5)
                     .background(.white.opacity(0.08), in: Capsule())
                     .accessibilityLabel("Change versus previous period")
@@ -159,10 +162,10 @@ public struct TrendsView: View {
         if series.isEmpty {
             VStack(spacing: 10) {
                 if loading {
-                    ProgressView().tint(.white)
+                    ProgressView().tint(Theme.accent)
                 } else {
                     Image(systemName: metric.icon).font(.title).foregroundStyle(tint(metric).opacity(0.8))
-                    Text(emptyMessage).font(.subheadline).foregroundStyle(.white.opacity(0.65)).multilineTextAlignment(.center)
+                    Text(emptyMessage).font(.subheadline).foregroundStyle(Theme.text.opacity(0.65)).multilineTextAlignment(.center)
                     if !hk.isAuthorized && metric != .sleep {
                         Button("Connect Apple Health") { Task { if await hk.requestAuthorization() { await SyncCoordinator.syncEverything(sleep: sleep, health: health) }; await load() } }
                             .font(.subheadline.weight(.bold)).tint(.cyan).buttonStyle(.bordered)
@@ -191,7 +194,7 @@ public struct TrendsView: View {
                 }
                 if let a = average, metric != .weight {
                     RuleMark(y: .value("Average", a))
-                        .foregroundStyle(.white.opacity(0.35)).lineStyle(StrokeStyle(lineWidth: 1, dash: [4, 4]))
+                        .foregroundStyle(Theme.text.opacity(0.35)).lineStyle(StrokeStyle(lineWidth: 1, dash: [4, 4]))
                 }
                 if metric == .sleep {
                     RuleMark(y: .value("Need", sleep.profile.sleepNeed / 3600))
@@ -201,20 +204,20 @@ public struct TrendsView: View {
                         }
                 }
                 if let s = selected {
-                    RuleMark(x: .value("Selected", s.date, unit: .day)).foregroundStyle(.white.opacity(0.4))
+                    RuleMark(x: .value("Selected", s.date, unit: .day)).foregroundStyle(Theme.text.opacity(0.4))
                 }
             }
             .chartYScale(domain: .automatic(includesZero: useBars))
             .chartXAxis {
                 AxisMarks(values: .stride(by: range == .year ? .month : .day, count: range == .week ? 1 : range == .month ? 7 : range == .quarter ? 21 : 2)) { _ in
                     AxisValueLabel(format: range == .week ? .dateTime.weekday(.narrow) : range == .year ? .dateTime.month(.abbreviated) : .dateTime.month(.abbreviated).day())
-                        .foregroundStyle(.white.opacity(0.5))
+                        .foregroundStyle(Theme.text.opacity(0.5))
                 }
             }
             .chartYAxis {
                 AxisMarks(position: .trailing) { _ in
-                    AxisGridLine().foregroundStyle(.white.opacity(0.08))
-                    AxisValueLabel().foregroundStyle(.white.opacity(0.5))
+                    AxisGridLine().foregroundStyle(Theme.text.opacity(0.08))
+                    AxisValueLabel().foregroundStyle(Theme.text.opacity(0.5))
                 }
             }
             .chartOverlay { proxy in
@@ -239,8 +242,8 @@ public struct TrendsView: View {
 
     var emptyMessage: String {
         if metric == .sleep { return "No nights in this range yet. Sleep with your Watch or log a night to see your pattern." }
-        if !hk.isAuthorized { return "Connect Apple Health to see \(metric.label.lowercased()) over time." }
-        return "No \(metric.label.lowercased()) data in Apple Health for this range."
+        if !hk.isAuthorized { return "Connect Apple Health or import history to see \(metric.label.lowercased()) over time." }
+        return "No \(metric.label.lowercased()) readings available for this range."
     }
 
     // MARK: Stats
@@ -262,7 +265,7 @@ public struct TrendsView: View {
             GlassCard {
                 HStack(alignment: .top, spacing: 12) {
                     Image(systemName: "lightbulb.fill").foregroundStyle(.yellow)
-                    Text(text).font(.subheadline).foregroundStyle(.white.opacity(0.85))
+                    Text(text).font(.subheadline).foregroundStyle(Theme.text.opacity(0.85))
                     Spacer(minLength: 0)
                 }
             }

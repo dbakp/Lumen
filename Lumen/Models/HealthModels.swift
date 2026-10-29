@@ -63,6 +63,11 @@ public struct DayMetrics: Codable, Sendable {
     public var vo2max: Double?
     public var weightKg: Double?
     public var sleepSeconds: Double?
+    public var excludesLumenNutrition: Bool?
+    public var dietaryCalories: Double?
+    public var dietaryProtein: Double?
+    public var dietaryCarbs: Double?
+    public var dietaryFat: Double?
     public var waterML: Double
     public static var empty: DayMetrics {
         DayMetrics(date: Calendar.current.startOfDay(for: Date()), steps: 0, activeCalories: 0, restingCalories: 0, exerciseMin: 0, standHours: 0, waterML: 0)

@@ -24,9 +24,9 @@ public final class AIService: ObservableObject {
         }
         public var detail: String {
             switch self {
-            case .privateCloud: return "Private Cloud Compute — Apple can't see your data. No sign-in needed."
+            case .privateCloud: return "Processes your request with Apple’s Private Cloud Compute when available."
             case .onDevice: return "Runs entirely on this iPhone. No sign-in needed."
-            case .openAIKey: return "Answers come from OpenAI using the key you added."
+            case .openAIKey: return "Your health summary and shared record excerpts are sent to OpenAI using your key."
             case .builtIn: return "Turn on Apple Intelligence in iOS Settings for smarter answers and photo recognition."
             }
         }
@@ -43,12 +43,18 @@ public final class AIService: ObservableObject {
 
     public var brain: Brain {
         if preferOpenAI && LLMClient.isConfigured() { return .openAIKey }
+        #if targetEnvironment(simulator)
+        // The simulator can report model availability without a usable inference runtime.
+        // Avoid FoundationModels' internal assertion; device inference is verified on hardware.
+        return LLMClient.isConfigured() ? .openAIKey : .builtIn
+        #else
         #if canImport(FoundationModels)
         if #available(iOS 27.0, *), PrivateCloudComputeLanguageModel().isAvailable { return .privateCloud }
         if #available(iOS 26.0, *), SystemLanguageModel.default.isAvailable { return .onDevice }
         #endif
         if LLMClient.isConfigured() { return .openAIKey }
         return .builtIn
+        #endif
     }
 
     /// Photo recognition needs a model with vision.

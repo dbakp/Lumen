@@ -1,79 +1,51 @@
 import Foundation
 import UserNotifications
 
-// MARK: - Smart habit reminders timed to circadian prediction
-
+/// One optional, non-repeating check-in. Refresh on sync and each local log mutation.
 @MainActor
 public final class NotificationManager: ObservableObject {
     public static let shared = NotificationManager()
     @Published public var authorized = false
-
-    @discardableResult
-    public func request() async -> Bool {
-        do {
-            authorized = try await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge])
-        } catch {
-            authorized = false
-        }
+    private let requestID = "lumen.contextual-check-in"
+    @discardableResult public func request() async -> Bool {
+        do { authorized = try await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) }
+        catch { authorized = false }
         return authorized
     }
-
-    /// Mirror the system setting (the user may change it in Settings at any time).
     public func refreshAuthorization() async {
-        let s = await UNUserNotificationCenter.current().notificationSettings()
-        authorized = s.authorizationStatus == .authorized || s.authorizationStatus == .provisional
+        let settings = await UNUserNotificationCenter.current().notificationSettings()
+        authorized = settings.authorizationStatus == .authorized || settings.authorizationStatus == .provisional
     }
+    public func reschedule(from store: SleepStore) { refreshContext(health: .shared) }
+    /// Compatibility for older callers; habit timing no longer creates generic repeating alerts.
+    public func schedule(habits: [SleepHabit], wakeToday: Date, bedtimeTonight: Date, melatoninStart: Date) { refreshContext(health: .shared) }
 
-    public func reschedule(from store: SleepStore) {
-        guard let pred = store.prediction else { return }
-        schedule(habits: store.habits, wakeToday: pred.wakeZone.lowerBound, bedtimeTonight: store.suggestedBedtime, melatoninStart: pred.melatoninWindow.lowerBound)
-    }
-
-    /// Schedule enabled habits relative to wake / bedtime / melatonin window.
-    public func schedule(habits: [SleepHabit], wakeToday: Date, bedtimeTonight: Date, melatoninStart: Date) {
+    public func refreshContext(health: HealthStore) {
         let center = UNUserNotificationCenter.current()
+        // Migrate away from every generic pending request created by previous releases.
         center.removeAllPendingNotificationRequests()
-        guard authorized else { return }
-        let cal = Calendar.current
-        for habit in habits where habit.isEnabled {
-            let fire: Date
-            switch habit.anchor {
-            case .wakePlus:
-                fire = wakeToday.addingTimeInterval(habit.offset)
-            case .bedtimeMinus:
-                fire = bedtimeTonight.addingTimeInterval(-habit.offset)
-            case .fixedClock:
-                fire = wakeToday.addingTimeInterval(habit.offset)
-            }
-            // Don't schedule in the past; push to tomorrow same time.
-            var target = fire
-            if target < Date().addingTimeInterval(60) {
-                target = cal.date(byAdding: .day, value: 1, to: fire) ?? fire
-            }
-            let content = UNMutableNotificationContent()
-            content.title = habit.title
-            content.body = habit.detail
-            content.sound = .default
-            let comps = cal.dateComponents([.hour, .minute], from: target)
-            let trigger = UNCalendarNotificationTrigger(dateMatching: comps, repeats: true)
-            let req = UNNotificationRequest(identifier: "lumen.\(habit.id)", content: content, trigger: trigger)
-            center.add(req)
-        }
-        // Bedtime + wind-down anchors.
-        scheduleOne(id: "lumen.winddown", title: "Wind down", body: "Lights low, screens dim. Melatonin rises in ~1 hour.", date: melatoninStart.addingTimeInterval(-3600))
-        scheduleOne(id: "lumen.bedtime", title: "Melatonin window is open", body: "The easiest 60 minutes to fall asleep starts now.", date: melatoninStart)
-    }
-
-    private func scheduleOne(id: String, title: String, body: String, date: Date) {
-        var target = date
-        if target < Date().addingTimeInterval(60) {
-            target = Calendar.current.date(byAdding: .day, value: 1, to: date) ?? date
-        }
+        let companion = CompanionStore.shared
+        let prefs = companion.reminders
+        guard authorized, prefs.enabled else { return }
+        let now = Date(), calendar = Calendar.current
+        let hour = calendar.component(.hour, from: now)
+        guard !ReminderPolicy.isQuiet(hour: hour, start: prefs.quietStart, end: prefs.quietEnd) else { return }
+        // Symptoms and low energy deserve room, not an exercise/hydration pressure nudge.
+        guard companion.activeSymptoms.isEmpty, companion.latestCheckIn.map({ $0.energy > 2 && $0.stress < 4 }) ?? true else { return }
+        let useful = !health.workoutsToday.isEmpty || (health.metrics.sleepSeconds.map { $0 < 7 * 3600 } ?? false)
+        guard useful else { return }
+        let oldTarget = UserDefaults.standard.object(forKey: "lumen.reminder.target") as? Date
+        if let oldTarget, calendar.isDateInToday(oldTarget), oldTarget <= now { return }
+        let target = oldTarget.flatMap { calendar.isDateInToday($0) && $0 > now ? $0 : nil } ?? now.addingTimeInterval(20 * 60)
+        guard calendar.isDateInToday(target), !ReminderPolicy.isQuiet(hour: calendar.component(.hour, from: target), start: prefs.quietStart, end: prefs.quietEnd) else { return }
+        let perspective = companion.perspective(health: health)
         let content = UNMutableNotificationContent()
-        content.title = title; content.body = body; content.sound = .default
-        content.interruptionLevel = .timeSensitive
-        let comps = Calendar.current.dateComponents([.hour, .minute], from: target)
-        let trigger = UNCalendarNotificationTrigger(dateMatching: comps, repeats: true)
-        UNUserNotificationCenter.current().add(UNNotificationRequest(identifier: id, content: content, trigger: trigger))
+        content.title = prefs.showDetails ? perspective.title : "Your Lumen check-in"
+        content.body = prefs.showDetails ? perspective.body : "A moment to check in with yourself. Open Lumen for your latest context."
+        content.sound = .default
+        content.userInfo = ["url": "lumen://today"]
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: max(60, target.timeIntervalSinceNow), repeats: false)
+        UserDefaults.standard.set(target, forKey: "lumen.reminder.target")
+        center.add(UNNotificationRequest(identifier: requestID, content: content, trigger: trigger))
     }
 }

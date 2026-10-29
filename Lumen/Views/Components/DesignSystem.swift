@@ -5,11 +5,11 @@ import SwiftUI
 /// Primary action: white capsule, black label. One per screen.
 public struct LumenPrimaryButtonStyle: ButtonStyle {
     var fill: Color
-    public init(colors: [Color]? = nil) { fill = colors?.first ?? .white }
+    public init(colors: [Color]? = nil) { fill = colors?.first ?? Theme.accent }
     public func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.headline)
-            .foregroundStyle(.black)
+            .foregroundStyle(Theme.onAccent)
             .frame(maxWidth: .infinity, minHeight: 56)
             .background(fill, in: Capsule())
             .opacity(configuration.isPressed ? 0.85 : 1)
@@ -24,7 +24,7 @@ public struct LumenTonalButtonStyle: ButtonStyle {
     public func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.headline)
-            .foregroundStyle(.white)
+            .foregroundStyle(Theme.text)
             .frame(maxWidth: .infinity, minHeight: 52)
             .background(Theme.surfaceRaised, in: Capsule())
             .opacity(configuration.isPressed ? 0.7 : 1)
@@ -119,7 +119,7 @@ public struct LumenRow: View {
     let subtitle: String?
     let value: String?
     var chevron: Bool
-    public init(_ title: String, subtitle: String? = nil, value: String? = nil, icon: String? = nil, color: Color = .white, chevron: Bool = true) {
+    public init(_ title: String, subtitle: String? = nil, value: String? = nil, icon: String? = nil, color: Color = Theme.text, chevron: Bool = true) {
         self.title = title; self.subtitle = subtitle; self.value = value; self.icon = icon; self.color = color; self.chevron = chevron
     }
     public var body: some View {
@@ -171,17 +171,17 @@ public struct ChoiceCard: View {
             haptic(.light); action()
         } label: {
             HStack(spacing: 14) {
-                Image(systemName: icon).font(.title3).foregroundStyle(selected ? .black : .white.opacity(0.8)).frame(width: 30)
+                Image(systemName: icon).font(.title3).foregroundStyle(selected ? Theme.onAccent : Theme.text).frame(width: 30)
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(title).font(.headline).foregroundStyle(selected ? .black : .white)
+                    Text(title).font(.headline).foregroundStyle(selected ? Theme.onAccent : Theme.text)
                     if let subtitle {
-                        Text(subtitle).font(.footnote).foregroundStyle(selected ? .black.opacity(0.6) : Theme.secondary).multilineTextAlignment(.leading)
+                        Text(subtitle).font(.footnote).foregroundStyle(selected ? Theme.onAccent.opacity(0.85) : Theme.secondary).multilineTextAlignment(.leading)
                     }
                 }
                 Spacer()
             }
             .padding(.horizontal, 16).padding(.vertical, 14)
-            .background(selected ? Color.white : Theme.surface, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+            .background(selected ? Theme.accent : Theme.surface, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
             .overlay(RoundedRectangle(cornerRadius: 18, style: .continuous).stroke(Theme.hairline, lineWidth: 0.5))
             .animation(.easeOut(duration: 0.18), value: selected)
         }
@@ -210,8 +210,8 @@ public struct EmptyStateCard: View {
                 Button(actionTitle, action: action)
                     .font(.subheadline.weight(.semibold))
                     .padding(.horizontal, 18).padding(.vertical, 10)
-                    .background(Color.white, in: Capsule())
-                    .foregroundStyle(.black)
+                    .background(Theme.accent, in: Capsule())
+                    .foregroundStyle(Theme.onAccent)
                     .padding(.top, 6)
             }
         }
@@ -228,18 +228,13 @@ public struct LumenOrb: View {
     public init(size: CGFloat = 180) { self.size = size }
     public var body: some View {
         ZStack {
-            Circle()
-                .fill(RadialGradient(colors: [Theme.calm.opacity(0.55), Theme.sleep.opacity(0.25), .clear], center: .center, startRadius: 2, endRadius: size / 2))
-                .scaleEffect(phase ? 1.06 : 0.94)
-                .blur(radius: 10)
-            Circle()
-                .fill(.white.opacity(0.9))
-                .frame(width: size * 0.12, height: size * 0.12)
-                .blur(radius: 2)
-                .shadow(color: .white.opacity(0.8), radius: 12)
+            Circle().stroke(Theme.accent.opacity(0.12), lineWidth: size * 0.09)
+            Circle().trim(from: 0.08, to: 0.72)
+                .stroke(Theme.accent, style: StrokeStyle(lineWidth: size * 0.09, lineCap: .round))
+                .rotationEffect(.degrees(-90))
+            Image(systemName: "sun.horizon").font(.system(size: size * 0.26, weight: .light)).foregroundStyle(Theme.accent)
         }
-        .frame(width: size, height: size)
-        .onAppear { withAnimation(.easeInOut(duration: 3.6).repeatForever(autoreverses: true)) { phase.toggle() } }
+        .frame(width: size * 0.8, height: size * 0.8)
         .accessibilityHidden(true)
     }
 }

@@ -27,11 +27,11 @@ public struct DebtRingView: View {
             VStack(spacing: 2) {
                 Text(SleepFormat.debtString(debt))
                     .font(.system(size: 44, weight: .bold, design: .rounded))
-                    .foregroundStyle(.white)
+                    .foregroundStyle(Theme.text)
                     .contentTransition(.numericText())
                 Text("sleep debt")
                     .font(.subheadline.weight(.medium))
-                    .foregroundStyle(.white.opacity(0.65))
+                    .foregroundStyle(Theme.text.opacity(0.65))
                 Text(debt < 5*3600 ? "In the green zone" : "Above 5h target")
                     .font(.caption2.weight(.semibold))
                     .padding(.horizontal, 10).padding(.vertical, 4)
@@ -82,7 +82,7 @@ public struct EnergyCurveView: View {
             .interpolationMethod(.catmullRom)
             if let n = nowFraction {
                 RuleMark(x: .value("Now", n / 3600))
-                    .foregroundStyle(.white.opacity(0.5)).lineStyle(StrokeStyle(lineWidth: 1, dash: [3, 3]))
+                    .foregroundStyle(Theme.text.opacity(0.5)).lineStyle(StrokeStyle(lineWidth: 1, dash: [3, 3]))
                     .annotation(position: .top) { Text("Now").font(.caption2.weight(.semibold)).foregroundStyle(Theme.secondary) }
             }
         }
@@ -131,13 +131,13 @@ public struct DebtHistoryChart: View {
         .chartXAxis {
             AxisMarks(values: .stride(by: .day, count: 3)) { _ in
                 AxisValueLabel(format: .dateTime.day().month(.abbreviated), centered: true)
-                    .font(.caption2).foregroundStyle(.white.opacity(0.55))
+                    .font(.caption2).foregroundStyle(Theme.text.opacity(0.55))
             }
         }
         .chartYAxis {
             AxisMarks { _ in
-                AxisValueLabel().font(.caption2).foregroundStyle(.white.opacity(0.55))
-                AxisGridLine().foregroundStyle(.white.opacity(0.08))
+                AxisValueLabel().font(.caption2).foregroundStyle(Theme.text.opacity(0.55))
+                AxisGridLine().foregroundStyle(Theme.text.opacity(0.08))
             }
         }
         .frame(height: 180)
@@ -162,11 +162,11 @@ public struct TimelineRow: View {
                 .background(color.opacity(0.18), in: RoundedRectangle(cornerRadius: 11, style: .continuous))
                 .foregroundStyle(color)
             VStack(alignment: .leading, spacing: 1) {
-                Text(title).font(.subheadline.weight(.semibold)).foregroundStyle(.white)
-                Text(detail).font(.caption).foregroundStyle(.white.opacity(0.6)).lineLimit(2)
+                Text(title).font(.subheadline.weight(.semibold)).foregroundStyle(Theme.text)
+                Text(detail).font(.caption).foregroundStyle(Theme.text.opacity(0.6)).lineLimit(2)
             }
             Spacer()
-            Text(time).font(.subheadline.weight(.semibold).monospacedDigit()).foregroundStyle(.white.opacity(0.9))
+            Text(time).font(.subheadline.weight(.semibold).monospacedDigit()).foregroundStyle(Theme.text.opacity(0.9))
         }
         .padding(.vertical, 6)
     }

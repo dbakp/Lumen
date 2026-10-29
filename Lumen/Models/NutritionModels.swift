@@ -63,11 +63,12 @@ public struct MealAnalysis: Sendable {
 public struct ChatMessage: Identifiable, Codable, Sendable {
     public var id: String
     public var role: Role
+    public var provider: String?
     public var text: String
     public var date: Date
     public enum Role: String, Codable, Sendable { case user, coach }
-    public init(id: String = UUID().uuidString, role: Role, text: String, date: Date = Date()) {
-        self.id = id; self.role = role; self.text = text; self.date = date
+    public init(id: String = UUID().uuidString, role: Role, text: String, date: Date = Date(), provider: String? = nil) {
+        self.id = id; self.role = role; self.text = text; self.date = date; self.provider = provider
     }
 }
 

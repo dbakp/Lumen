@@ -9,7 +9,7 @@ public enum CoachingEngine {
 
     // MARK: readiness 0-100
 
-    public static func readiness(metrics: DayMetrics, sleepDebt: TimeInterval, workoutsToday: [Workout], goals: HealthGoals) -> Readiness {
+    public static func readiness(metrics: DayMetrics, sleepDebt: TimeInterval, workoutsToday: [Workout], goals: HealthGoals, hrvBaseline: Double? = nil, restingHRBaseline: Double? = nil) -> Readiness {
         var score = 82
         var factors: [Readiness.ReadinessFactor] = []
 
@@ -20,35 +20,29 @@ public enum CoachingEngine {
         factors.append(.init(id: "sleep", label: "Sleep debt", delta: -debtDrag,
             detail: debtH < 1 ? "You're well rested." : debtH < 5 ? "You're \(String(format: "%.1f", debtH)) hours behind on sleep." : "You're \(String(format: "%.1f", debtH)) hours behind on sleep — rest matters most today."))
 
-        // HRV vs implied baseline (uses absolute zones when no history).
         if let hrv = metrics.hrvMS {
-            let (d, msg): (Int, String)
-            switch hrv {
-            case 80...: (d, msg) = (6, "Your body looks very well recovered.")
-            case 50..<80: (d, msg) = (2, "Your body looks recovered.")
-            case 35..<50: (d, msg) = (-4, "Your body is still recovering — keep things easy.")
-            default: (d, msg) = (-9, "Your body needs rest — sleep and gentle movement help most.")
-            }
-            score += d
-            factors.append(.init(id: "hrv", label: "HRV \(Int(hrv)) ms", delta: d, detail: msg))
+            let delta: Int
+            let detail: String
+            if let baseline = hrvBaseline, baseline > 0 {
+                let ratio = hrv / baseline
+                delta = ratio < 0.8 ? -6 : ratio > 1.15 ? 3 : 0
+                detail = "\(Int(hrv)) ms today; recent personal average \(Int(baseline)) ms. A change alone does not establish recovery or illness."
+            } else { delta = 0; detail = "\(Int(hrv)) ms recorded. At least seven prior days are needed for a personal comparison." }
+            score += delta
+            factors.append(.init(id: "hrv", label: "Heart rate variability", delta: delta, detail: detail))
         }
-
-        // Resting HR.
         if let rhr = metrics.restingHR {
-            let (d, msg): (Int, String)
-            if rhr <= 55 { (d, msg) = (4, "\(Int(rhr)) bpm — a calm, strong heart.") }
-            else if rhr <= 65 { (d, msg) = (1, "\(Int(rhr)) bpm — normal for you.") }
-            else if rhr <= 72 { (d, msg) = (-3, "\(Int(rhr)) bpm — a little higher than ideal.") }
-            else { (d, msg) = (-7, "\(Int(rhr)) bpm — your body is working hard. Go easy.") }
-            score += d
-            factors.append(.init(id: "rhr", label: "Resting HR", delta: d, detail: msg))
+            let delta = restingHRBaseline.map { rhr > $0 + 5 ? -4 : 0 } ?? 0
+            score += delta
+            let comparison = restingHRBaseline.map { "Recent personal average \(Int($0)) bpm." } ?? "Building your personal baseline."
+            factors.append(.init(id: "rhr", label: "Resting heart rate", delta: delta, detail: "\(Int(rhr)) bpm recorded. " + comparison))
         }
 
         // Yesterday's strain vs today's readiness (avoid stacking red days).
         let yesterdayLoad = workoutsToday.reduce(0) { $0 + $1.activeCalories }
         if yesterdayLoad > 900 {
             score -= 5
-            factors.append(.init(id: "strain", label: "Yesterday's load", delta: -5, detail: "You trained hard recently — your body gets stronger while it rests."))
+            factors.append(.init(id: "strain", label: "Today’s load", delta: -5, detail: "You trained hard recently — your body gets stronger while it rests."))
         }
 
         score = min(100, max(5, score))
@@ -60,21 +54,17 @@ public enum CoachingEngine {
         default: headline = "Rest and recover"
         }
         // Strain target scales with readiness.
-        let base = Int(goals.activeCalGoal)
-        let target: ClosedRange<Int>
-        switch score {
-        case 85...: target = (base - 50)...(base + 350)
-        case 70..<85: target = (base - 100)...(base + 200)
-        case 55..<70: target = (base - 200)...(base + 50)
-        default: target = 150...(base - 150)
-        }
+        let base = max(100, Int(goals.activeCalGoal))
+        let lower = max(0, base - (score >= 70 ? 100 : 250))
+        let upper = max(lower, base + (score >= 85 ? 250 : score >= 70 ? 100 : -50))
+        let target = lower...upper
         return Readiness(score: score, factors: factors, headline: headline, strainTarget: target)
     }
 
     // MARK: day plan
 
     public static func dayPlan(metrics: DayMetrics, readiness: Readiness?, goals: HealthGoals, sleepDebt: TimeInterval, eaten: Double, protein: Double, waterML: Double) -> DayPlan {
-        let score = readiness?.score ?? 72
+        let score = readiness?.score ?? 50
         let calTarget = goals.calorieTarget()
         let proteinTarget = goals.proteinTarget()
         let waterTarget = Int((goals.weightKg ?? 75) * 35) // ml, ~35ml/kg
@@ -95,9 +85,9 @@ public enum CoachingEngine {
         if proteinLeft > 60 {
             bullets.append("Build your next meals around protein — about \(proteinLeft) g to go today.")
         } else if proteinLeft > 0 {
-            bullets.append("Almost at your protein goal — a yogurt or eggs will get you there.")
+            bullets.append("There is room in your logged protein target. Choose a meal that suits your appetite.")
         } else {
-            bullets.append("Protein goal reached. Keep dinner light for better sleep.")
+            bullets.append("Your logged protein target is reached. Let appetite and preferences guide your next meal.")
         }
         // 3. Recovery prescription.
         let waterLeft = max(0, waterTarget - Int(waterML))
@@ -137,7 +127,7 @@ public enum CoachingEngine {
 
     public static func insights(metrics: DayMetrics, readiness: Readiness?, goals: HealthGoals, mealsToday: [Meal], workoutsToday: [Workout], sleepDebt: TimeInterval) -> [Insight] {
         var out: [Insight] = []
-        let score = readiness?.score ?? 72
+        let score = readiness?.score ?? 50
 
         if sleepDebt > 5 * 3600 {
             out.append(Insight(icon: "moon.fill", tint: "#8B7CFF", title: "Sleep is holding you back",
@@ -187,17 +177,17 @@ public enum CoachingEngine {
 
     // MARK: chat context builder (for ChatCoachService + any LLM)
 
-    public static func contextPrompt(metrics: DayMetrics, readiness: Readiness?, goals: HealthGoals, mealsToday: [Meal], workoutsToday: [Workout], sleepDebt: TimeInterval, debtFile: TimeInterval, history: [ChatMessage]) -> String {
-        let eaten = mealsToday.reduce(0) { $0 + $1.calories }
-        let protein = mealsToday.reduce(0) { $0 + $1.protein }
+    public static func contextPrompt(metrics: DayMetrics, readiness: Readiness?, goals: HealthGoals, mealsToday: [Meal], workoutsToday: [Workout], sleepDebt: TimeInterval, debtFile: TimeInterval, history: [ChatMessage], totalCalories: Double? = nil, totalProtein: Double? = nil) -> String {
+        let eaten = totalCalories ?? mealsToday.reduce(0) { $0 + $1.calories }
+        let protein = totalProtein ?? mealsToday.reduce(0) { $0 + $1.protein }
         let workoutSummary = workoutsToday.isEmpty ? "none yet" : workoutsToday.map { "\($0.title) \(Int($0.duration / 60)) min" }.joined(separator: ", ")
         func v(_ d: Double?, _ unit: String) -> String { d.map { "\(Int($0)) \(unit)" } ?? "unknown" }
         let time = Date().formatted(date: .omitted, time: .shortened)
         return """
-        You are Lumen, a warm, expert health coach (sleep, training and nutrition). The person is not technical.
+        You are Lumen, a supportive wellness companion (sleep, training and nutrition). The person is not technical.
         Style: plain everyday words, no jargon or abbreviations; 2–4 short sentences, then at most 3 bullet points if useful. \
         Be specific to their numbers. Never shame food or body. No diagnoses — if they mention chest pain, fainting, disordered eating \
-        or other red flags, kindly suggest seeing a clinician.
+        or other red flags, urge emergency care if current or sudden, rather than routine coaching.
         Right now it is \(time). Their data today:
         - Readiness: \(readiness.map { "\($0.score)/100 (\($0.headline))" } ?? "not enough data yet")
         - Sleep debt: \(String(format: "%.1f", sleepDebt / 3600)) hours

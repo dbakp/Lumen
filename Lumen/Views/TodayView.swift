@@ -6,261 +6,143 @@ import SwiftUI
 public struct TodayView: View {
     @EnvironmentObject var health: HealthStore
     @EnvironmentObject var sleep: SleepStore
+    @ObservedObject private var companion = CompanionStore.shared
     @ObservedObject private var hk = HealthKitService.shared
-    var router: AppRouter { .shared }
-
+    @State private var showingEvidence = false
     public init() {}
-
-    var units: UnitSystem { sleep.profile.unitSystem }
-
+    var perspective: DailyPerspective { companion.perspective(health: health) }
     public var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 28) {
-                header
-                if !hk.isAuthorized { connectBanner }
-                hero
-                focus
-                tiles
-                upNext
-                tip
-            }
-            .padding(.horizontal, Theme.gutter).padding(.bottom, 40)
-        }
-        .lumenScreen(Theme.readiness(health.readiness?.score))
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) { LogToolbarButton() }
-            ToolbarItem(placement: .topBarTrailing) {
-                Button { router.show(.settings) } label: {
-                    Text(String(sleep.profile.name.prefix(1)).uppercased().ifEmpty("•"))
-                        .font(.subheadline.weight(.semibold)).foregroundStyle(.white)
-                        .frame(width: 30, height: 30)
-                        .background(Theme.surfaceRaised, in: Circle())
+                VStack(alignment: .leading, spacing: 12) {
+                    Text(Date().formatted(.dateTime.weekday(.wide).day().month(.wide))).font(.subheadline).foregroundStyle(Theme.secondary)
+                    Text("Your day, in context.").font(.system(.title2, weight: .bold)).fontWidth(.expanded).tracking(-1.2)
+                }.padding(.top, 8)
+                perspectiveCard
+                ViewThatFits(in: .horizontal) {
+                    HStack(spacing: 12) { dailyActions }
+                    VStack(spacing: 12) { dailyActions }
                 }
-                .accessibilityLabel("Settings")
-            }
-        }
-        .refreshable { await SyncCoordinator.syncEverything(sleep: sleep, health: health) }
-    }
-
-    // MARK: Header
-
-    var header: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(Date().formatted(.dateTime.weekday(.wide).day().month(.wide)))
-                .font(.subheadline.weight(.medium)).foregroundStyle(Theme.secondary)
-            Text(greeting + (sleep.profile.name.isEmpty ? "" : ", \(sleep.profile.name)"))
-                .font(.largeTitle.weight(.bold)).foregroundStyle(Theme.text)
-                .lineLimit(1).minimumScaleFactor(0.7)
-        }
-    }
-
-    var greeting: String {
-        switch Calendar.current.component(.hour, from: Date()) {
-        case 0..<5: return "Still up"; case 5..<12: return "Good morning"; case 12..<18: return "Good afternoon"; default: return "Good evening"
-        }
-    }
-
-    var connectBanner: some View {
-        Button {
-            Task { if await hk.requestAuthorization() { await SyncCoordinator.syncEverything(sleep: sleep, health: health) } }
-        } label: {
-            HStack(spacing: 14) {
-                Image(systemName: "heart.fill").font(.title3).foregroundStyle(Theme.heart)
-                VStack(alignment: .leading, spacing: 2) {
-                    Text("Connect Apple Health").font(.headline).foregroundStyle(Theme.text)
-                    Text("See your sleep, steps and heart here automatically.").font(.subheadline).foregroundStyle(Theme.secondary)
-                }
-                Spacer(minLength: 0)
-                Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(Theme.tertiary)
-            }
-            .padding(16).surface()
-        }
-        .buttonStyle(.plain)
-    }
-
-    // MARK: Hero
-
-    var hero: some View {
-        let score = health.readiness?.score
-        let color = Theme.readiness(score)
-        return Button { if score != nil { router.show(.readiness) } } label: {
-            VStack(spacing: 18) {
-                ZStack {
-                    ThinRing(progress: Double(score ?? 0) / 100, color: color, width: 12)
-                    VStack(spacing: 2) {
-                        Text(score.map(String.init) ?? "–")
-                            .font(.system(size: 64, weight: .semibold, design: .rounded)).monospacedDigit()
-                            .foregroundStyle(Theme.text).contentTransition(.numericText())
-                        Text(score == nil ? "Getting to know you" : "Readiness")
-                            .font(.subheadline.weight(.medium)).foregroundStyle(Theme.secondary)
+                VStack(alignment: .leading, spacing: 0) {
+                    GroupLabel("The whole picture").padding(.bottom, 12)
+                    NavigationLink { HomeView() } label: {
+                        LumenRow("Sleep", subtitle: "Rest, rhythm and tonight’s routine", value: health.metrics.sleepSeconds.map { SleepFormat.durationHM($0) } ?? "No recent night", icon: "moon", color: Theme.sleep)
                     }
-                }
-                .frame(width: 200, height: 200)
-                VStack(spacing: 6) {
-                    Text(score == nil ? "Your score appears after your first night" : readinessLine)
-                        .font(.title3.weight(.semibold)).foregroundStyle(Theme.text).multilineTextAlignment(.center)
-                    if score != nil {
-                        Text("Based on your sleep and heart · Tap for details").font(.footnote).foregroundStyle(Theme.tertiary)
+                    Divider()
+                    NavigationLink { ActivityView() } label: {
+                        LumenRow("Activity", subtitle: "Movement, workouts and trends", value: health.hasActivityToday ? "\(Int(health.metrics.steps).formatted()) steps" : "No activity logged", icon: "figure.walk", color: Theme.move)
                     }
-                }
-            }
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 8)
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel(score.map { "Readiness \($0) out of 100. \(readinessLine)" } ?? "Readiness not available yet")
-    }
-
-    var readinessLine: String {
-        guard let s = health.readiness?.score else { return "" }
-        switch s {
-        case 80...: return "You're ready for a big day"
-        case 65..<80: return "Good to go — steady effort"
-        case 50..<65: return "Take it a little easier today"
-        default: return "A rest day will pay off"
-        }
-    }
-
-    // MARK: Focus
-
-    @ViewBuilder var focus: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            GroupLabel("Today's focus")
-            VStack(alignment: .leading, spacing: 0) {
-                let items = focusItems
-                ForEach(Array(items.enumerated()), id: \.offset) { i, item in
-                    if i > 0 { Rectangle().fill(Theme.hairline).frame(height: 0.5).padding(.leading, 34) }
-                    HStack(alignment: .firstTextBaseline, spacing: 14) {
-                        Text("\(i + 1)").font(.subheadline.weight(.semibold).monospacedDigit()).foregroundStyle(Theme.tertiary).frame(width: 20)
-                        Text(item).font(.body).foregroundStyle(Theme.text).fixedSize(horizontal: false, vertical: true)
-                        Spacer(minLength: 0)
+                    Divider()
+                    NavigationLink { NutritionView() } label: {
+                        LumenRow("Food", subtitle: "Meals, nutrients and your appetite", value: "\(health.mealsToday.count) logged", icon: "fork.knife", color: Theme.food)
                     }
-                    .padding(.vertical, 13)
+                }.buttonStyle(.plain)
+                waterRow
+                if !companion.activeSymptoms.isEmpty {
+                    Button { AppRouter.shared.tab = .journal } label: {
+                        LumenRow("\(companion.activeSymptoms.count) ongoing symptom log\(companion.activeSymptoms.count == 1 ? "" : "s")", subtitle: "Update how you feel or mark a symptom resolved", icon: "bandage", color: Theme.heart)
+                    }.buttonStyle(.plain)
                 }
-            }
-            .padding(.horizontal, 16)
-            .surface()
-        }
-    }
-
-    var focusItems: [String] {
-        if health.isCalibrating {
-            var out: [String] = []
-            if !hk.isAuthorized { out.append("Connect Apple Health so Lumen can read your sleep and steps.") }
-            out.append(sleep.hasSleepData ? "Wear your Watch to bed tonight for sleep stages." : "Log last night's sleep — tap + at the top.")
-            out.append("Snap your next meal to track calories and protein.")
-            return out
-        }
-        return health.plan?.bullets ?? []
-    }
-
-    // MARK: Tiles
-
-    var tiles: some View {
-        LazyVGrid(columns: [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)], spacing: 12) {
-            NavigationLink { TrendsView(metric: .sleep) } label: {
-                StatTile("Sleep", value: sleep.lastNight.map { SleepFormat.durationHM($0.duration) } ?? "—",
-                         caption: sleep.hasSleepData ? "Need \(SleepFormat.durationHM(sleep.profile.sleepNeed))" : "No nights yet",
-                         color: Theme.sleep, progress: sleep.lastNight.map { $0.duration / sleep.profile.sleepNeed })
-            }
-            NavigationLink { TrendsView(metric: .steps) } label: {
-                StatTile("Steps", value: Int(health.metrics.steps).formatted(), caption: "Goal \(Int(health.goals.stepGoal).formatted())",
-                         color: Theme.steps, progress: health.metrics.steps / max(1, health.goals.stepGoal))
-            }
-            Button { router.tab = .food } label: {
-                StatTile("Food", value: "\(health.caloriesRemaining)", caption: "kcal left · \(Int(health.proteinEaten)) g protein",
-                         color: Theme.food, progress: health.caloriesEaten / Double(max(1, health.goals.calorieTarget())))
-            }
-            waterTile
-        }
-        .buttonStyle(.plain)
-    }
-
-    var waterTile: some View {
-        let target = Double(health.plan?.waterTargetML ?? 2500)
-        return VStack(alignment: .leading, spacing: 10) {
-            HStack(spacing: 6) {
-                Circle().fill(Theme.water).frame(width: 7, height: 7)
-                Text("Water").font(.subheadline.weight(.medium)).foregroundStyle(Theme.secondary)
-                Spacer(minLength: 0)
-            }
-            Text(Units.water(health.waterTodayML, units)).font(.system(size: 26, weight: .semibold, design: .rounded)).monospacedDigit()
-                .foregroundStyle(Theme.text).lineLimit(1).minimumScaleFactor(0.7).contentTransition(.numericText())
-            Bar(health.waterTodayML / target, color: Theme.water, height: 4)
-            HStack {
-                Text("of \(Units.water(target, units))").font(.footnote).foregroundStyle(Theme.secondary)
-                Spacer()
-                Button {
-                    health.addWater(ml: 250)
-                    router.confirm("Added 250 ml")
-                } label: {
-                    Image(systemName: "plus").font(.footnote.weight(.bold)).foregroundStyle(.black)
-                        .frame(width: 28, height: 28).background(Theme.water, in: Circle())
+                let events = Array(companion.timeline(health: health, sleep: sleep, on: Date()).prefix(4))
+                if !events.isEmpty {
+                    GroupLabel("Today’s story", action: ("View journal", { AppRouter.shared.tab = .journal }))
+                    TimelineList(events: events)
                 }
-                .accessibilityLabel("Add a glass of water")
+                NavigationLink { ConnectionsView() } label: {
+                    LumenRow("Your sources", subtitle: hk.isAuthorized ? "Apple Health access requested · review sync and imports" : "Connect Apple Health or import your history", icon: "externaldrive", color: Theme.accent)
+                }.buttonStyle(.plain)
+                Text("A daily perspective for your wellbeing. Your own sense of how you feel always matters alongside the numbers.").font(.footnote).foregroundStyle(Theme.secondary)
+            }.padding(.horizontal, Theme.gutter).padding(.bottom, 32)
+        }.lumenScreen().navigationTitle("Lumen").navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) { LogToolbarButton() }
+                ToolbarItem(placement: .topBarTrailing) { Button { AppRouter.shared.show(.settings) } label: { Image(systemName: "person.crop.circle") }.accessibilityLabel("Settings") }
             }
-        }
-        .padding(16).surface()
+            .refreshable { await SyncCoordinator.syncEverything(sleep: sleep, health: health) }
     }
-
-    // MARK: Up next
-
-    struct Moment: Identifiable { let id = UUID(); let icon: String; let title: String; let detail: String; let time: Date; let color: Color }
-
-    var moments: [Moment] {
-        guard let p = sleep.prediction else { return [] }
-        let all = [
-            Moment(icon: "brain.head.profile", title: "Best focus", detail: "Do your hardest task", time: p.morningPeak, color: Theme.calm),
-            Moment(icon: "cloud.sun", title: "Energy dip", detail: "A short walk helps more than coffee", time: p.middayDip, color: Theme.food),
-            Moment(icon: "cup.and.saucer", title: "Last coffee", detail: "Caffeine after this can hurt your sleep", time: p.caffeineCutoff, color: Theme.food),
-            Moment(icon: "figure.run", title: "Best time to train", detail: "Your body is warmed up", time: p.afternoonPeak, color: Theme.move),
-            Moment(icon: "wind", title: "Wind down", detail: "Dim the lights, put screens away", time: p.windDown, color: Theme.calm),
-            Moment(icon: "moon", title: "Bedtime", detail: "For \(SleepFormat.durationHM(sleep.profile.sleepNeed)) of sleep", time: sleep.suggestedBedtime, color: Theme.sleep),
-        ].sorted { $0.time < $1.time }
-        return Array(all.filter { $0.time > Date() }.prefix(2))
+    var perspectiveCard: some View {
+        VStack(alignment: .leading, spacing: 18) {
+            HStack { Label("Your daily perspective", systemImage: "sun.horizon").font(.subheadline); Spacer() }
+            Text(perspective.title).font(.system(.largeTitle, weight: .bold)).tracking(-0.7).fixedSize(horizontal: false, vertical: true)
+            Text(perspective.body).font(.subheadline).lineSpacing(3).fixedSize(horizontal: false, vertical: true)
+            ContextArc(sleepKnown: health.metrics.sleepSeconds != nil, activityKnown: health.hasActivityToday, foodKnown: !health.mealsToday.isEmpty || health.caloriesEaten > 0)
+                .padding(.top, 6)
+            Button {
+                withAnimation(.snappy(duration: 0.25)) { showingEvidence.toggle() }
+            } label: {
+                HStack {
+                    Text(showingEvidence ? "Hide evidence" : "Why this perspective").font(.subheadline.weight(.semibold))
+                    Spacer()
+                    Image(systemName: showingEvidence ? "chevron.up" : "chevron.down").font(.footnote.weight(.semibold))
+                }.foregroundStyle(Color.white).frame(minHeight: 44)
+            }.buttonStyle(.plain).accessibilityValue(showingEvidence ? "Expanded" : "Collapsed")
+            if showingEvidence {
+                VStack(alignment: .leading, spacing: 10) {
+                    ForEach(perspective.evidence, id: \.self) { Text($0).font(.footnote) }
+                    Text("From your available Health readings, imports and Lumen logs. Gaps and partial access can affect this summary.").font(.footnote)
+                }.frame(maxWidth: .infinity, alignment: .leading)
+            }
+        }.foregroundStyle(Color.white).padding(24)
+            .background(LinearGradient(colors: [Color(hex: "087C83"), Color(hex: "005E68")], startPoint: .topLeading, endPoint: .bottomTrailing), in: RoundedRectangle(cornerRadius: 30))
+            .overlay(RoundedRectangle(cornerRadius: 30).stroke(Color.white.opacity(0.2), lineWidth: 1))
+            .shadow(color: Theme.accent.opacity(0.12), radius: 16, y: 8)
     }
+    @ViewBuilder var dailyActions: some View {
+        Button("Log how you feel", systemImage: "plus") { AppRouter.shared.show(.symptom) }.buttonStyle(LumenPrimaryButtonStyle())
+        Button("Check in") { AppRouter.shared.show(.checkIn) }.buttonStyle(LumenTonalButtonStyle())
+    }
+    var waterRow: some View {
+        HStack(spacing: 16) {
+            Image(systemName: "drop").font(.title2).foregroundStyle(Theme.water)
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Water logged").font(.subheadline).foregroundStyle(Theme.secondary)
+                Text(Units.water(health.waterTodayML, sleep.profile.unitSystem)).font(.title2.bold()).monospacedDigit().contentTransition(.numericText())
+            }
+            Spacer()
+            Button("+ 250 ml") { health.addWater(ml: 250); AppRouter.shared.confirm("Added 250 ml") }
+                .font(.subheadline.bold()).padding(.horizontal, 16).frame(minHeight: 48).background(Theme.surfaceRaised, in: Capsule())
+                .accessibilityLabel("Add 250 millilitres of water")
+        }.padding(20).surface()
+    }
+}
 
-    @ViewBuilder var upNext: some View {
-        if !moments.isEmpty {
-            VStack(alignment: .leading, spacing: 12) {
-                GroupLabel("Coming up")
-                RowGroup {
-                    ForEach(Array(moments.enumerated()), id: \.element.id) { i, m in
-                        if i > 0 { RowDivider() }
-                        HStack(spacing: 14) {
-                            Image(systemName: m.icon).font(.body.weight(.medium)).foregroundStyle(m.color).frame(width: 26)
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text(m.title).font(.body).foregroundStyle(Theme.text)
-                                Text(m.detail).font(.footnote).foregroundStyle(Theme.secondary)
-                            }
-                            Spacer()
-                            Text(SleepFormat.time(m.time)).font(.body.monospacedDigit()).foregroundStyle(Theme.text)
-                        }
-                        .padding(.vertical, 12)
-                    }
+/// Three labelled signals, not a synthetic composite score. Unavailable signals stay hollow.
+struct ContextArc: View {
+    var sleepKnown: Bool
+    var activityKnown: Bool
+    var foodKnown: Bool
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.dynamicTypeSize) private var typeSize
+    var body: some View {
+        VStack(spacing: 10) {
+            ZStack {
+                ForEach(0..<3) { i in
+                    let available = [sleepKnown, activityKnown, foodKnown][i]
+                    Circle().trim(from: 0.52 + Double(i) * 0.16, to: 0.64 + Double(i) * 0.16)
+                        .stroke(Color.white.opacity(available ? 0.85 : 0.22), style: StrokeStyle(lineWidth: 16, lineCap: .round))
+                        .frame(width: 194, height: 194)
                 }
+            }.offset(y: 8).padding(.horizontal, 10).frame(height: 112, alignment: .top).clipped()
+            if typeSize.isAccessibilitySize {
+                VStack(alignment: .leading, spacing: 8) { signalLabels }
+            } else {
+                HStack(alignment: .top, spacing: 12) { signalLabels }
             }
-        }
+        }.frame(maxWidth: .infinity)
+            .animation(reduceMotion ? nil : .spring(response: 0.3), value: sleepKnown)
+            .accessibilityElement(children: .combine)
     }
-
-    // MARK: Tip
-
-    @ViewBuilder var tip: some View {
-        if !health.isCalibrating, let insight = health.insights.first {
-            Button { router.tab = .coach } label: {
-                HStack(alignment: .top, spacing: 14) {
-                    Image(systemName: "sparkles").foregroundStyle(Theme.calm).frame(width: 26)
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(insight.title).font(.headline).foregroundStyle(Theme.text)
-                        Text(insight.body).font(.subheadline).foregroundStyle(Theme.secondary).fixedSize(horizontal: false, vertical: true)
-                        Text("Ask your coach").font(.subheadline.weight(.semibold)).foregroundStyle(Theme.text).padding(.top, 4)
-                    }
-                    Spacer(minLength: 0)
-                }
-                .padding(16).surface()
-            }
-            .buttonStyle(.plain)
-        }
+    @ViewBuilder var signalLabels: some View {
+        signal("Sleep", sleepKnown)
+        signal("Movement", activityKnown)
+        signal("Food", foodKnown)
+    }
+    func signal(_ title: String, _ known: Bool) -> some View {
+        VStack(spacing: 4) {
+            Label(title, systemImage: known ? "checkmark.circle.fill" : "circle.dashed").font(.caption)
+            Text(known ? "Recorded" : "No data").font(.caption2).opacity(0.85)
+        }.frame(maxWidth: .infinity).accessibilityElement(children: .ignore)
+            .accessibilityLabel("\(title): \(known ? "recorded" : "no data")")
     }
 }
 
@@ -324,7 +206,7 @@ struct ReadinessDetailSheet: View {
             .navigationTitle("Readiness").navigationBarTitleDisplayMode(.inline)
             .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } } }
         }
-        .tint(.white)
+        .tint(Theme.accent)
     }
 
     static func plain(_ label: String) -> String {

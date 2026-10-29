@@ -4,6 +4,8 @@ import SwiftUI
 struct LumenApp: App {
     @StateObject private var sleep = SleepStore()
     @StateObject private var health = HealthStore.shared
+    @AppStorage("lumen.appearance") private var appearance = "light"
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.scenePhase) private var scenePhase
 
     init() {
@@ -16,7 +18,9 @@ struct LumenApp: App {
             RootView()
                 .environmentObject(sleep)
                 .environmentObject(health)
-                .preferredColorScheme(.dark)
+                .preferredColorScheme(appearance == "system" ? nil : appearance == "dark" ? .dark : .light)
+                .transaction { if reduceMotion { $0.animation = nil } }
+                .tint(Theme.accent)
                 .task {
                     SyncCoordinator.propagate(sleep: sleep, health: health)
                     WatchSync.shared.activate(sleep: sleep, health: health)

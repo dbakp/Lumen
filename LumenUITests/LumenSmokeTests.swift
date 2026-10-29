@@ -26,7 +26,7 @@ final class LumenSmokeTests: XCTestCase {
         b.tap()
     }
 
-    func tab(_ name: String) { app.tabBars.buttons[name].tap() }
+    func tab(_ name: String) { app.buttons[name].firstMatch.tap() }
 
     /// Scroll until a button whose label starts with `prefix` is on screen, then tap it.
     func scrollAndTap(_ prefix: String, file: StaticString = #filePath, line: UInt = #line) {
@@ -58,7 +58,8 @@ final class LumenSmokeTests: XCTestCase {
         tap("Start using Lumen")
 
         // --- Today ---
-        XCTAssertTrue(app.tabBars.buttons["Today"].waitForExistence(timeout: 10))
+        snap("09-after-onboarding")
+        XCTAssertTrue(app.buttons["Today"].firstMatch.waitForExistence(timeout: 10))
         snap("10-today")
         app.swipeUp(); snap("10b-today-scrolled"); app.swipeDown()
 
@@ -69,67 +70,87 @@ final class LumenSmokeTests: XCTestCase {
         app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Water'")).firstMatch.tap()
         XCTAssertTrue(app.staticTexts["Added 250 ml of water"].waitForExistence(timeout: 4), "water toast missing")
 
-        // --- Metric detail ---
-        XCTAssertTrue(app.navigationBars["Log"].waitForNonExistence(timeout: 4))
-        scrollAndTap("Steps")
-        XCTAssertTrue(app.navigationBars["Steps"].waitForExistence(timeout: 5))
-        snap("12-metric-detail")
-        app.navigationBars["Steps"].buttons.element(boundBy: 0).tap()
-
-        // --- Settings ---
-        tap("Settings")
-        XCTAssertTrue(app.navigationBars["Settings"].waitForExistence(timeout: 5))
-        snap("13-settings")
-        app.swipeUp(); snap("13b-settings-scrolled")
-        tap("Done")
-
-        // --- Sleep: empty → add a night → populated ---
-        tab("Sleep")
-        XCTAssertTrue(app.navigationBars["Sleep"].waitForExistence(timeout: 5))
-        snap("20-sleep-empty")
-        tap("Add a night")
-        tap("Save night")
-        XCTAssertTrue(app.staticTexts["Sleep debt"].waitForExistence(timeout: 5), "sleep tab did not populate")
-        snap("21-sleep")
-        app.swipeUp(); snap("21b-sleep-scrolled")
-
-        // --- Activity + log workout ---
-        tab("Activity")
-        XCTAssertTrue(app.navigationBars["Activity"].waitForExistence(timeout: 5))
-        snap("30-activity")
-        tap("Log a workout")
-        XCTAssertTrue(app.navigationBars["Log a workout"].waitForExistence(timeout: 5))
-        snap("31-log-workout")
-        tap("Save walk")
-        XCTAssertTrue(app.staticTexts["Walk"].waitForExistence(timeout: 5), "logged workout not listed")
-        snap("32-activity-with-workout")
-
-        // --- Food: camera opens; log a food via search ---
-        tab("Food")
-        XCTAssertTrue(app.navigationBars["Food"].waitForExistence(timeout: 5))
-        snap("40-food")
-        tap("Search foods")
-        XCTAssertTrue(app.navigationBars["Add food"].waitForExistence(timeout: 5))
-        snap("41-food-search")
-        app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Banana'")).firstMatch.tap()
-        XCTAssertTrue(app.staticTexts["Banana"].waitForExistence(timeout: 5), "meal not listed")
-        snap("42-food-with-meal")
-
-        // --- Coach ---
-        tab("Coach")
-        XCTAssertTrue(app.navigationBars["Coach"].waitForExistence(timeout: 5))
-        snap("50-coach")
-        let field = app.textFields["coachInput"]
-        XCTAssertTrue(field.waitForExistence(timeout: 5), "coach input missing")
-        field.tap(); field.typeText("Should I train hard?")
-        tap("coachSend")
-        let reply = app.descendants(matching: .any).matching(identifier: "coachMessage").firstMatch
-        XCTAssertTrue(reply.waitForExistence(timeout: 45), "coach did not reply")
-        snap("51-coach-reply")
-
-        // --- Today after: readiness live ---
+        // --- Symptom → persistent journal → contextual Today ---
+        tap("Log")
+        app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Symptom'")).firstMatch.tap()
+        XCTAssertTrue(app.textFields["symptomName"].waitForExistence(timeout: 5))
+        snap("20-symptom-form")
+        tap("saveSymptom")
+        tab("Journal")
+        XCTAssertTrue(app.staticTexts["Ongoing symptoms"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["Headache"].firstMatch.exists)
+        snap("21-journal")
         tab("Today")
-        XCTAssertFalse(app.staticTexts["Getting to know you"].exists, "readiness still calibrating after logging sleep")
-        snap("60-today-after")
+        XCTAssertTrue(app.staticTexts["Keep today’s plan flexible."].waitForExistence(timeout: 5))
+        snap("22-contextual-today")
+
+        // --- Subjective energy adds context without replacing symptom priority ---
+        tap("Check in")
+        XCTAssertTrue(app.navigationBars["Daily check-in"].waitForExistence(timeout: 5))
+        tap("Save")
+        tab("Journal")
+        snap("23-check-in-timeline")
+
+        // --- Assistant → automatically saved editable plan ---
+        tab("Assistant")
+        let input = app.textFields["coachInput"].firstMatch
+        let multiInput = app.textViews["coachInput"].firstMatch
+        let field = input.exists ? input : multiInput
+        XCTAssertTrue(field.waitForExistence(timeout: 5))
+        field.tap(); field.typeText("Make a flexible plan for today")
+        tap("coachSend")
+        XCTAssertTrue(app.staticTexts["coachMessage"].firstMatch.waitForExistence(timeout: 30))
+        snap("30-assistant-plan")
+        tab("Library")
+        let plan = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'library-plan-'")).firstMatch
+        snap("31-library-before-assertion")
+        XCTAssertTrue(plan.waitForExistence(timeout: 5), "generated plan was not saved")
+        snap("31-library")
+        plan.tap()
+        XCTAssertTrue(app.navigationBars["Document"].waitForExistence(timeout: 5))
+        scrollAndTap("Incomplete:")
+        snap("32-plan-detail")
+        app.navigationBars["Document"].buttons.element(boundBy: 0).tap()
+
+        // --- Records remain opt-in; new notes are editable ---
+        tap("Add document")
+        tap("Write a note")
+        XCTAssertTrue(app.navigationBars["Edit document"].waitForExistence(timeout: 5))
+        let title = app.textFields["Document title"]
+        title.tap(); title.typeText("Questions for my appointment")
+        let editor = app.textViews.firstMatch
+        editor.tap(); editor.typeText("Discuss recurring headaches and their timing.")
+        tap("Save")
+        XCTAssertTrue(app.buttons["Questions for my appointment"].waitForExistence(timeout: 5))
+        snap("33-library-note")
+
+        // --- Resolve symptom and verify source destinations remain reachable ---
+        tab("Journal")
+        tap("Mark resolved")
+        XCTAssertTrue(app.staticTexts["Ongoing symptoms"].waitForNonExistence(timeout: 5))
+        tab("Today")
+        scrollAndTap("Sleep")
+        XCTAssertTrue(app.navigationBars["Sleep"].waitForExistence(timeout: 5))
+        snap("40-sleep-light")
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        scrollAndTap("Activity")
+        XCTAssertTrue(app.navigationBars["Activity"].waitForExistence(timeout: 5))
+        snap("41-activity-light")
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        scrollAndTap("Food")
+        snap("42-food-light")
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+
+        // --- Relaunch keeps local logs and documents ---
+        app.terminate()
+        app.launchArguments = []
+        app.launch()
+        snap("09-after-onboarding")
+        XCTAssertTrue(app.buttons["Today"].firstMatch.waitForExistence(timeout: 10))
+        tab("Library")
+        XCTAssertTrue(app.buttons["Questions for my appointment"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'library-plan-'")).firstMatch.exists)
+        snap("50-persisted-library")
+        tab("Today")
     }
 }

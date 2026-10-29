@@ -6,28 +6,28 @@ import SwiftUI
 // Colour is used for data only — one hue per domain, muted.
 
 public enum Theme {
-    public static let bg = Color(red: 0.035, green: 0.035, blue: 0.045)
-    public static let surface = Color.white.opacity(0.055)
-    public static let surfaceRaised = Color.white.opacity(0.085)
-    public static let hairline = Color.white.opacity(0.07)
-    public static let text = Color.white
-    public static let secondary = Color.white.opacity(0.62)
-    public static let tertiary = Color.white.opacity(0.4)
-
-    // Domain hues
-    public static let sleep = Color(red: 0.62, green: 0.58, blue: 1.0)
-    public static let move = Color(red: 1.0, green: 0.45, blue: 0.40)
-    public static let food = Color(red: 1.0, green: 0.72, blue: 0.38)
-    public static let heart = Color(red: 1.0, green: 0.42, blue: 0.55)
-    public static let water = Color(red: 0.43, green: 0.72, blue: 1.0)
-    public static let steps = Color(red: 0.50, green: 0.89, blue: 0.79)
-    public static let calm = Color(red: 0.55, green: 0.85, blue: 0.95)
+    public static let bg = Color("Ground")
+    public static let surface = Color("Raised")
+    public static let surfaceRaised = Color("Raised2")
+    public static let hairline = Color("Rule")
+    public static let text = Color("Ink")
+    public static let secondary = Color("Ink2")
+    public static let tertiary = Color("Ink3")
+    public static let accent = Color("ActionTeal")
+    public static let onAccent = Color("OnAccent")
+    public static let sleep = Color(hex: "395B9A")
+    public static let move = Color(hex: "B04B31")
+    public static let food = Color(hex: "8A631E")
+    public static let heart = Color(hex: "A33755")
+    public static let water = Color(hex: "176992")
+    public static let steps = Color(hex: "24755A")
+    public static let calm = accent
 
     public static let radius: CGFloat = 22
-    public static let gutter: CGFloat = 20
+    public static let gutter: CGFloat = 24
 
     public static func readiness(_ score: Int?) -> Color {
-        guard let score else { return .white.opacity(0.35) }
+        guard let score else { return tertiary }
         return score >= 80 ? steps : score >= 65 ? calm : score >= 50 ? food : move
     }
 }
@@ -37,10 +37,7 @@ public struct AuroraBackground: View {
     var hue: Color
     public init(_ hue: Color = Theme.calm) { self.hue = hue }
     public var body: some View {
-        ZStack {
-            Theme.bg
-            RadialGradient(colors: [hue.opacity(0.16), .clear], center: UnitPoint(x: 0.5, y: -0.1), startRadius: 10, endRadius: 460)
-        }
+        Theme.bg
         .ignoresSafeArea()
     }
 }
@@ -48,7 +45,7 @@ public struct AuroraBackground: View {
 public extension View {
     /// Quiet content surface (kept under its old name so every screen adopts it).
     func liquidGlass(cornerRadius: CGFloat = Theme.radius, tintOpacity: Double = 0.14) -> some View {
-        self.background(Color.white.opacity(0.03 + tintOpacity * 0.18), in: RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
+        self.background(Theme.surface, in: RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
             .overlay(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous).stroke(Theme.hairline, lineWidth: 0.5))
     }
 
@@ -61,7 +58,7 @@ public extension View {
 
     /// Standard screen chrome: background + hidden scroll indicators.
     func lumenScreen(_ hue: Color = Theme.calm) -> some View {
-        self.scrollIndicators(.hidden).background(AuroraBackground(hue))
+        self.scrollIndicators(.hidden).foregroundStyle(Theme.text).background(AuroraBackground(hue))
     }
 }
 

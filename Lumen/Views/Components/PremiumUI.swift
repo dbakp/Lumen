@@ -48,13 +48,13 @@ public struct ReadinessDial: View {
             GlowRing(progress: Double(score ?? 0)/100, colors: [tint, tint.opacity(0.5)])
             VStack(spacing: 0) {
                 if let score {
-                    AnimatedNumber(Double(score)).font(.system(size: 46, weight: .bold, design: .rounded)).foregroundStyle(.white)
+                    AnimatedNumber(Double(score)).font(.system(size: 46, weight: .bold, design: .rounded)).foregroundStyle(Theme.text)
                 } else {
-                    Image(systemName: "sparkles").font(.system(size: 30, weight: .semibold)).foregroundStyle(.white.opacity(0.8))
+                    Image(systemName: "sparkles").font(.system(size: 30, weight: .semibold)).foregroundStyle(Theme.text.opacity(0.8))
                         .symbolEffect(.pulse)
                         .padding(.bottom, 4)
                 }
-                Text(score == nil ? "CALIBRATING" : "READINESS").font(.caption2.weight(.bold)).foregroundStyle(.white.opacity(0.55)).tracking(1.4)
+                Text(score == nil ? "CALIBRATING" : "READINESS").font(.caption2.weight(.bold)).foregroundStyle(Theme.text.opacity(0.55)).tracking(1.4)
             }
         }
         .accessibilityElement(children: .ignore)
@@ -72,10 +72,10 @@ public struct MetricTile: View {
             Image(systemName: icon).font(.system(size: 15, weight: .semibold))
                 .foregroundStyle(tint).frame(width: 30, height: 30)
                 .background(tint.opacity(0.16), in: RoundedRectangle(cornerRadius: 9, style: .continuous))
-            Text(value).font(.title3.weight(.bold).monospacedDigit()).foregroundStyle(.white)
+            Text(value).font(.title3.weight(.bold).monospacedDigit()).foregroundStyle(Theme.text)
             VStack(alignment: .leading, spacing: 1) {
-                Text(title).font(.caption.weight(.semibold)).foregroundStyle(.white.opacity(0.75))
-                Text(sub).font(.caption2).foregroundStyle(.white.opacity(0.5))
+                Text(title).font(.caption.weight(.semibold)).foregroundStyle(Theme.text.opacity(0.75))
+                Text(sub).font(.caption2).foregroundStyle(Theme.text.opacity(0.5))
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -109,8 +109,8 @@ public struct InsightCard: View {    let insight: Insight
                 .foregroundStyle(Color(hex: insight.tint)).frame(width: 34, height: 34)
                 .background(Color(hex: insight.tint).opacity(0.16), in: RoundedRectangle(cornerRadius: 11, style: .continuous))
             VStack(alignment: .leading, spacing: 3) {
-                Text(insight.title).font(.subheadline.weight(.bold)).foregroundStyle(.white)
-                Text(insight.body).font(.caption).foregroundStyle(.white.opacity(0.7)).lineSpacing(2)
+                Text(insight.title).font(.subheadline.weight(.bold)).foregroundStyle(Theme.text)
+                Text(insight.body).font(.caption).foregroundStyle(Theme.text.opacity(0.7)).lineSpacing(2)
                 if let a = insight.action {
                     Text(a + " →").font(.caption.weight(.bold)).foregroundStyle(.cyan).padding(.top, 2)
                 }
@@ -129,17 +129,17 @@ public struct BriefingCard: View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
                 Image(systemName: "sparkles").foregroundStyle(.cyan)
-                Text("COACH BRIEFING").font(.caption2.weight(.bold)).foregroundStyle(.white.opacity(0.6)).tracking(1.2)
+                Text("COACH BRIEFING").font(.caption2.weight(.bold)).foregroundStyle(Theme.text.opacity(0.6)).tracking(1.2)
                 Spacer()
                 if let r = readiness {
                     Text(r.headline).font(.caption2.weight(.bold)).foregroundStyle(.cyan)
                 }
             }
-            Text(plan.briefing).font(.headline.weight(.semibold)).foregroundStyle(.white).lineSpacing(3)
+            Text(plan.briefing).font(.headline.weight(.semibold)).foregroundStyle(Theme.text).lineSpacing(3)
             ForEach(plan.bullets, id: \.self) { b in
                 HStack(alignment: .top, spacing: 8) {
                     Image(systemName: "checkmark.circle.fill").foregroundStyle(.green).font(.caption)
-                    Text(b).font(.subheadline).foregroundStyle(.white.opacity(0.85)).lineSpacing(2)
+                    Text(b).font(.subheadline).foregroundStyle(Theme.text.opacity(0.85)).lineSpacing(2)
                 }
             }
         }

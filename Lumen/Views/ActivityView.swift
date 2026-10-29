@@ -223,9 +223,9 @@ struct ManualWorkoutSheet: View {
                                     Image(systemName: k.icon).font(.title3)
                                     Text(k.label).font(.caption2.weight(.medium)).lineLimit(1).minimumScaleFactor(0.7)
                                 }
-                                .foregroundStyle(kind == k ? .black : .white)
+                                .foregroundStyle(kind == k ? Theme.onAccent : Theme.text)
                                 .frame(maxWidth: .infinity).padding(.vertical, 12)
-                                .background(kind == k ? Color.white : Theme.surface, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                                .background(kind == k ? Theme.accent : Theme.surface, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
                             }
                             .buttonStyle(.plain)
                         }
@@ -236,7 +236,7 @@ struct ManualWorkoutSheet: View {
                         Text("About \(kcal) active calories").font(.subheadline).foregroundStyle(Theme.secondary)
                     }
                     .frame(maxWidth: .infinity)
-                    Slider(value: $minutes, in: 5...240, step: 5).tint(.white)
+                    Slider(value: $minutes, in: 5...240, step: 5).tint(Theme.accent)
                     DatePicker("Started", selection: $start, in: ...Date(), displayedComponents: [.date, .hourAndMinute])
                         .padding(14).surface(16)
                 }
@@ -255,6 +255,6 @@ struct ManualWorkoutSheet: View {
             .navigationTitle("Log a workout").navigationBarTitleDisplayMode(.inline)
             .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } } }
         }
-        .tint(.white)
+        .tint(Theme.accent)
     }
 }

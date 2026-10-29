@@ -5,11 +5,13 @@ import SwiftUI
 @MainActor
 public final class AppRouter: ObservableObject {
     public static let shared = AppRouter()
-    public enum TabID: Hashable { case today, sleep, activity, food, coach }
+    public enum TabID: Hashable { case today, sleep, activity, food, coach, journal, library }
     public enum Sheet: Identifiable, Equatable {
-        case log, meal(camera: Bool), settings, sleepLog, workout, weight, readiness
+        case log, meal(camera: Bool), settings, sleepLog, workout, weight, readiness, symptom, checkIn, sleepHome, activityHome, foodHome
         public var id: String {
             switch self {
+            case .sleepHome: return "sleepHome"; case .activityHome: return "activityHome"; case .foodHome: return "foodHome"
+            case .symptom: return "symptom"; case .checkIn: return "checkIn"
             case .log: return "log"; case .meal(let c): return "meal\(c)"; case .settings: return "settings"
             case .sleepLog: return "sleep"; case .workout: return "workout"; case .weight: return "weight"; case .readiness: return "readiness"
             }
@@ -70,17 +72,21 @@ public struct MainTabView: View {
     public var body: some View {
         TabView(selection: $router.tab) {
             Tab("Today", systemImage: "sun.max.fill", value: AppRouter.TabID.today) { NavigationStack { TodayView() } }
-            Tab("Sleep", systemImage: "moon.fill", value: AppRouter.TabID.sleep) { NavigationStack { HomeView() } }
-            Tab("Activity", systemImage: "figure.walk", value: AppRouter.TabID.activity) { NavigationStack { ActivityView() } }
-            Tab("Food", systemImage: "fork.knife", value: AppRouter.TabID.food) { NavigationStack { NutritionView() } }
-            Tab("Coach", systemImage: "sparkles", value: AppRouter.TabID.coach) { NavigationStack { CoachView() } }
+            Tab("Journal", systemImage: "book.closed", value: AppRouter.TabID.journal) { NavigationStack { JournalView() } }
+            Tab("Assistant", systemImage: "bubble.left.and.bubble.right", value: AppRouter.TabID.coach) { NavigationStack { CoachView() } }
+            Tab("Library", systemImage: "doc.text", value: AppRouter.TabID.library) { NavigationStack { LibraryView() } }
         }
-        .tint(.white)
+        .tint(Theme.accent)
         .sensoryFeedback(.selection, trigger: router.tab)
         .sheet(item: $router.sheet) { sheet in
             Group {
                 switch sheet {
                 case .log: LogSheet()
+                case .sleepHome: NavigationStack { HomeView() }
+                case .activityHome: NavigationStack { ActivityView() }
+                case .foodHome: NavigationStack { NutritionView() }
+                case .symptom: SymptomLogSheet()
+                case .checkIn: CheckInSheet()
                 case .meal(let camera): MealCaptureView(openCamera: camera)
                 case .settings: SettingsView()
                 case .sleepLog: LogSleepSheet()
@@ -106,15 +112,22 @@ public struct MainTabView: View {
         }
         .onChange(of: links.pending) { _, target in route(target) }
         .onAppear { route(links.pending) }
+        .task { await SyncCoordinator.syncEverything(sleep: store, health: health) }
+        .onChange(of: router.tab) { _, tab in
+            if tab == .sleep || tab == .activity || tab == .food {
+                router.show(tab == .sleep ? .sleepHome : tab == .activity ? .activityHome : .foodHome)
+                router.tab = .today
+            }
+        }
     }
 
     func route(_ target: DeepLink.Target?) {
         guard let target else { return }
         switch target {
         case .today: router.tab = .today
-        case .activity: router.tab = .activity
-        case .snap: router.tab = .food; router.show(.meal(camera: true))
-        case .sleep: router.tab = .sleep
+        case .activity: router.tab = .today; router.show(.activityHome)
+        case .snap: router.tab = .today; router.show(.meal(camera: true))
+        case .sleep: router.tab = .today; router.show(.sleepHome)
         case .coach: router.tab = .coach
         }
         links.pending = nil
@@ -130,7 +143,9 @@ struct LogSheet: View {
 
     var body: some View {
         NavigationStack {
-            VStack(spacing: 12) {
+            ScrollView { VStack(spacing: 12) {
+                logButton("Symptom", "Pain, headache or anything you notice", "bandage", Theme.heart) { next(.symptom) }
+                logButton("Check-in", "Energy, mood and stress", "face.smiling", Theme.accent) { next(.checkIn) }
                 logButton("Meal", "Snap a photo of your plate", "camera.fill", Theme.food) { next(.meal(camera: true)) }
                 logButton("Water", "Add a glass · 250 ml", "drop.fill", Theme.water) {
                     health.addWater(ml: 250); dismiss(); router.confirm("Added 250 ml of water")
@@ -140,6 +155,7 @@ struct LogSheet: View {
                 logButton("Weight", "Update your weight", "scalemass.fill", Theme.steps) { next(.weight) }
                 Spacer()
             }
+            }
             .padding(.horizontal, Theme.gutter).padding(.top, 8)
             .background(Theme.bg.ignoresSafeArea())
             .navigationTitle("Log").navigationBarTitleDisplayMode(.inline)
@@ -147,7 +163,7 @@ struct LogSheet: View {
         }
         .presentationDetents([.fraction(0.68), .large])
         .presentationBackground(Theme.bg)
-        .tint(.white)
+        .tint(Theme.accent)
     }
 
     func next(_ s: AppRouter.Sheet) {

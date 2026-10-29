@@ -12,6 +12,7 @@ public struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
 
     @State private var exportURL: URL?
+    @AppStorage("lumen.appearance") private var appearance = "light"
     @State private var confirmErase = false
     @State private var showWeightLog = false
     @State private var showCoachSetup = false
@@ -27,9 +28,15 @@ public struct SettingsView: View {
         NavigationStack {
             Form {
                 profileHeader
+                Section("Appearance") {
+                    Picker("Theme", selection: $appearance) {
+                        Text("Light").tag("light"); Text("Dark").tag("dark"); Text("System").tag("system")
+                    }
+                }
                 bodySection
                 goalsSection
                 sleepSection
+                Section { NavigationLink("Health imports & contextual reminders") { ConnectionsView() } }
                 connectionsSection
                 coachSection
                 privacySection
@@ -50,7 +57,7 @@ public struct SettingsView: View {
             }
             .task { await notifications.refreshAuthorization() }
         }
-        .tint(.white)
+        .tint(Theme.accent)
     }
 
     // MARK: Profile
@@ -59,7 +66,7 @@ public struct SettingsView: View {
         Section {
             HStack(spacing: 14) {
                 Text(String(sleep.profile.name.prefix(1)).uppercased())
-                    .font(.title.weight(.bold)).foregroundStyle(.white)
+                    .font(.title.weight(.bold)).foregroundStyle(Theme.text)
                     .frame(width: 60, height: 60)
                     .background(Theme.surfaceRaised, in: Circle())
                 VStack(alignment: .leading, spacing: 3) {
@@ -196,7 +203,7 @@ public struct SettingsView: View {
                 connectionIcon("bell.fill", .orange)
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Reminders")
-                    Text(notifications.authorized ? "Timed to your body clock" : "Off").font(.caption).foregroundStyle(.secondary)
+                    Text(notifications.authorized && CompanionStore.shared.reminders.enabled ? "Contextual check-ins" : "Off").font(.caption).foregroundStyle(.secondary)
                 }
                 Spacer()
                 if notifications.authorized {
@@ -204,7 +211,7 @@ public struct SettingsView: View {
                 } else {
                     Button("Turn on") {
                         Task {
-                            if await notifications.request() { notifications.reschedule(from: sleep) }
+                            if await notifications.request() { CompanionStore.shared.reminders.enabled = true; notifications.reschedule(from: sleep) }
                             else if let url = URL(string: UIApplication.openNotificationSettingsURLString) { await UIApplication.shared.open(url) }
                         }
                     }
@@ -230,7 +237,7 @@ public struct SettingsView: View {
     }
 
     func connectionIcon(_ name: String, _ tint: Color) -> some View {
-        Image(systemName: name).font(.subheadline.weight(.semibold)).foregroundStyle(.white)
+        Image(systemName: name).font(.subheadline.weight(.semibold)).foregroundStyle(Theme.text)
             .frame(width: 30, height: 30).background(tint.gradient, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
     }
 
@@ -255,7 +262,7 @@ public struct SettingsView: View {
         } header: {
             Text("Coach")
         } footer: {
-            Text("Lumen uses Apple Intelligence — no account or sign-in needed, and your data stays private.")
+            Text("The assistant uses the provider shown above. With a cloud provider, your current health summary and any shared record excerpts are sent with your question. Use the built-in guide or on-device model to keep processing local.")
         }
     }
 
@@ -329,15 +336,15 @@ struct WeightLogSheet: View {
         NavigationStack {
             VStack(spacing: 24) {
                 Text(Units.weight(kg, units)).font(.system(size: 52, weight: .bold, design: .rounded).monospacedDigit())
-                    .contentTransition(.numericText()).foregroundStyle(.white)
-                Slider(value: $kg, in: 35...200, step: units == .metric ? 0.1 : 0.04536).tint(.white)
+                    .contentTransition(.numericText()).foregroundStyle(Theme.text)
+                Slider(value: $kg, in: 35...200, step: units == .metric ? 0.1 : 0.04536).tint(Theme.accent)
                 HStack(spacing: 24) {
                     Button { kg -= units == .metric ? 0.1 : 0.4536 } label: { Image(systemName: "minus.circle.fill").font(.largeTitle) }
                     Button { kg += units == .metric ? 0.1 : 0.4536 } label: { Image(systemName: "plus.circle.fill").font(.largeTitle) }
                 }
-                .foregroundStyle(.white)
+                .foregroundStyle(Theme.text)
                 Text(HealthKitService.shared.isAuthorized ? "Saved to Apple Health too." : "Saved on this iPhone.")
-                    .font(.caption).foregroundStyle(.white.opacity(0.6))
+                    .font(.caption).foregroundStyle(Theme.text.opacity(0.6))
                 Spacer()
                 Button("Save weight") { health.logWeight(kg: (kg * 10).rounded() / 10); haptic(.medium); dismiss() }
                     .buttonStyle(LumenPrimaryButtonStyle())
@@ -452,7 +459,7 @@ struct CoachSetupSheet: View {
             .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } } }
             .onAppear { key = llm.mode == .key ? llm.apiKey : "" }
         }
-        .tint(.white)
+        .tint(Theme.accent)
     }
 }
 
@@ -467,7 +474,7 @@ struct ScienceView: View {
                 item("waveform.path.ecg", "Circadian energy", "A two-process model of sleep pressure and your body clock predicts peaks, dips and the melatonin window.")
                 item("gauge.with.dots.needle.67percent", "Readiness", "Sleep debt, resting heart rate and HRV combine into a 0–100 score that sets today's training target.")
                 item("fork.knife", "Fuel", "Mifflin-St Jeor energy needs × activity, protein-first targets scaled to your weight and goal.")
-                Text("Lumen offers wellness guidance, not medical advice.").font(.caption).foregroundStyle(.white.opacity(0.5))
+                Text("Lumen offers wellness guidance, not medical advice.").font(.caption).foregroundStyle(Theme.text.opacity(0.5))
             }
             .padding(20)
         }
@@ -477,10 +484,10 @@ struct ScienceView: View {
     func item(_ icon: String, _ title: String, _ body: String) -> some View {
         GlassCard {
             HStack(alignment: .top, spacing: 14) {
-                Image(systemName: icon).font(.title3).foregroundStyle(.white).frame(width: 30)
+                Image(systemName: icon).font(.title3).foregroundStyle(Theme.text).frame(width: 30)
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(title).font(.headline).foregroundStyle(.white)
-                    Text(body).font(.subheadline).foregroundStyle(.white.opacity(0.7))
+                    Text(title).font(.headline).foregroundStyle(Theme.text)
+                    Text(body).font(.subheadline).foregroundStyle(Theme.text.opacity(0.7))
                 }
                 Spacer(minLength: 0)
             }
