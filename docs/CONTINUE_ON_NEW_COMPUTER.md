@@ -10,14 +10,16 @@ Development has resumed on the new computer. Batch 9a was published as `a1b7cd1`
 
 Batch 11 was published as `9361b0a34325bf4d557e1dd51f301fee77055aa4` on 30 October 2026. It adds password-protected streamed backups, large file-backed photo archives, progress/cancellation and guarded staged restoration while preserving older JSON backups. GitHub's `refs/heads/main` was read back and matched that application commit. See [Backup behavior](BACKUPS.md) for limits and password recovery expectations.
 
-The original prompt below remains the product brief. The full goal remains active. The retained Food/Sleep and companion availability audit and large/encrypted backup implementation are complete within their documented scope. Continue ingestion/background delivery, richer retrieval, voice, provider and release work in coherent separately verified batches. General readable-export conversion, Watch water relay identity/acknowledgement, physical-device behavior and unseen widget/complication layouts remain open gates. Physical-device/provider gates are not satisfied by the simulator. The skill archive is intentionally outside Git; attach it again for a future computer/chat. Personal data and credentials still transfer separately.
+Batch 12 was published as `b2ed046ba18bdd6ffe50a0838c4a33abb6167e00` on 30 October 2026. It adds optional Health observation, durable paged sleep/workout replay and deletion handling, permission-review rescans, protected-data startup guards and factual check/connection states. GitHub accepted the push and `refs/heads/main` matched that application commit. Actual background/sample delivery still needs signed-device verification; see [Health synchronization](HEALTH_SYNC.md).
+
+The original prompt below remains the product brief. The full goal remains active. The retained Food/Sleep and companion availability audit, large/encrypted backups and incremental Health observation/replay are implemented within their documented scope. Continue broader ingestion/OCR, richer retrieval, voice, provider and release work in coherent separately verified batches. Signed-iPhone background delivery, general readable-export conversion, Watch water relay identity/acknowledgement, physical-device behavior and unseen widget/complication layouts remain open gates. Physical-device/provider gates are not satisfied by the simulator. The skill archive is intentionally outside Git; attach it again for a future computer/chat. Personal data and credentials still transfer separately.
 
 ## Continuation prompt
 
 /goal Continue developing Lumen into a world-class, primarily iOS, AI health assistant.
 
 Repository: https://github.com/dbakp/Lumen  
-Latest published application commit: `9361b0a34325bf4d557e1dd51f301fee77055aa4`
+Latest published application commit: `b2ed046ba18bdd6ffe50a0838c4a33abb6167e00`
 
 Branch: `main`
 
@@ -45,13 +47,14 @@ Clone the repository on this computer and inspect its current state before makin
 
 Use the attached App Designer Pro skill. Preserve the established design direction. Use one independent design critic for native UI changes, address substantive findings, and capture actual simulator screens. `Design/native-preview.html` presents captured screens; it is not the application.
 
-### Completed and published through batch 11
+### Completed and published through batch 12
 
 - Contextual Today, symptoms/check-ins, personal context and quiet reminders.
 - Persistent conversations with cancellation and reply ownership.
 - Editable dated plans, agenda and Library documents.
 - Coverage-aware historical Insights and appointment summaries.
 - Validated backup/restore, including meal photos, password-protected streamed archives, progress/cancellation, legacy JSON compatibility and guarded staged restoration.
+- Optional Health observation with durable paged sleep/workout replay, explicit deletion evidence, permission-review rescans, checked application and guarded startup before protected data is readable. Background/sample delivery remains a signed-device gate.
 - Cancellable imports with progress.
 - Direct Apple Health ZIP imports with validation, extraction integrity and cleanup.
 - Historical workouts and additional health signals, provenance and duplicate reconciliation.
@@ -60,12 +63,13 @@ Use the attached App Designer Pro skill. Preserve the established design directi
 
 ### Latest validation
 
-- 343 production-logic checks passed, covering prior imports/backups/corrections and retained-view evidence plus encrypted archive validation, cancellation/cleanup, large streaming, legacy compatibility and concurrent-write protection.
-- All five native targets build with Xcode 27.0. Shared-container simulator checks use local ad-hoc signing; physical signing/distribution remains unverified.
-- The final native large-backup case passed with zero failures/skips in 204.870 seconds: Files selection, legacy compatibility, damage rejection, active cancellation/retry, restore/relaunch and a fresh 1,241,513,984-byte iPhone export/reopen with 100,001 water entries and 430 meal photos. The dark/actual Accessibility XXXL and external Files-save/reopen suite passed two cases with zero failures/skips in 264.842 seconds. Password/confirmation and full daily/backup scenarios passed individually in 100.053 and 230.692 seconds; their combined result bundle also contains an intermediate failing large case and is not claimed as a passing combined suite.
-- A real installed medium widget reads the iPhone app cache. The paired Watch received a newer actual five-zero packet with no readiness field. Failed Watch Health saves display an error and leave the Watch-local total unchanged. This does not establish all offline/reconnect/permission paths.
-- The same independent critic approved the backup work after three rounds and supplemental final large-export captures: 10/11 lines at 4, richness at 3, no concrete visible defects. Final backup captures: `Design/native/backups/r2` and `Design/native/backups/r3`. Earlier retained-view captures remain in `Design/native/retained/r5` and `Design/native/retained/companion-r2`.
-- These are simulator and pure-logic results. Live providers, physical Health behavior, every widget/complication family, VoiceOver, clinical reliability and release readiness remain open. See VERIFICATION.md for exact source points, timings, diagnostics and limitations. Re-run machine-local result bundles/checks on a new computer.
+- 373 production-logic checks pass, including encrypted archives and Health replay, failed saves/retries, deletion ownership, cancellation/disconnect, coalesced events, permission-review rescans and legacy decoding.
+- All five native targets build with Xcode 27.0. Local ad-hoc signing establishes simulator shared-container behavior. A separate unsigned generic-iOS-device build compiles the device-only Health registration APIs; physical signing/distribution remains unverified.
+- The final three-case Health suite passes with zero failures/skips in 247.928 seconds: light/dark/actual XXXL preference persistence (127.374 s), real SDK foreground empty queries/relaunch (68.857 s), and onboarding/check/confirmed erase (51.698 s). An earlier 88.726-second foreground case exercises both stages of the actual system permission sheet, including its history-range choice. Read-back confirms two 414-byte query anchors, zero cached sleep/workout records and no pending application. Empty queries do not prove permission scope or sample delivery.
+- The full daily/Journal/Assistant/Library/appointment/encrypted-backup regression passes separately in 233.169 seconds, before the last copy-only refinements. The final focused suite verifies those refinements. No failed combined suite is counted as passing; VERIFICATION.md records intermediate selector/system-sheet diagnostics.
+- Batch 11's actual 1,241,513,984-byte backup restore/export/reopen remains verified, with 100,001 water entries and 430 meal photos on the outgoing path. Batch 10's installed medium widget and paired Watch packet checks remain prior companion evidence, not proof of all reconnection/offline paths.
+- The same independent critic approved the Health extension after four rounds: 10/11 applicable lines at 4, Richness 3, no remaining concrete visible defect. Final captures: `Design/native/health-sync/r4`. Earlier backup/retained captures remain review history.
+- These are simulator, build and pure-logic results. Signed-device background delivery/cold launch/first unlock, actual Health insertion/deletion delivery and permission changes, live providers, every widget/complication family, VoiceOver, clinical validity and release readiness remain open. See VERIFICATION.md for source hashes, exact timings and limits. Re-run machine-local checks/result bundles on a new computer.
 
 ### Completed batch 9: data confidence and corrections
 
@@ -88,13 +92,19 @@ Version-2 backups use native AppleArchive password encryption and stream file-ba
 
 The format enforces 2 GiB file/expanded-data bounds. Native validation establishes incoming and outgoing 1.24 GB archives with valid JPEG photos; it does not establish full 2 GiB device behavior, an independent cryptographic audit, iCloud or second-physical-device transfer, or every interruption/storage-pressure path. General readable exports remain separate from restorable backups. Preserve these boundaries and the revision/write barrier when extending storage.
 
-Continue the remaining roadmap afterward. Background HealthKit delivery, broader ingestion/OCR, richer retrieval, voice, general readable-export conversion, provider integrations and release/device validation remain unfinished. Audit current files rather than assuming this list is exhaustive.
+### Completed batch 12: incremental Health observation and replay
+
+Health observers are installed in the application delegate at launch. Opt-in background registration starts off and requests hourly delivery; iOS decides actual timing. A private device cache stores each 500-object sleep/workout page together with its native query anchor. Known deletions affect only managed Health records; manual entries and separate imported records remain. Checks replay after interrupted application, and a storage revision guard prevents replacing concurrent local edits. Current quantities still use the statistical/query-evidence path. A reviewed Health sheet requests a cursor rescan for newly available history without treating empty reads as deletions. Use Review Health access & sync after changing sharing outside Lumen.
+
+Initial onboarding uses the same paged path. Protected data must be readable before stores load; a cold launch while locked must not load defaults over unreadable history. Disconnect/erase invalidates pending work and clears the new preference/check metadata. The cache is excluded from exported/backed-up domains and persists on the current device through a staged restore. Preserve these contracts. The initial predicate starts 730 calendar days before cache creation; record/file limits and the loss of old HealthKit tombstones are explicit in HEALTH_SYNC.md. This is not a lifetime replica or continuous monitoring.
+
+Continue the remaining roadmap afterward. Signed-device Health background delivery, broader ingestion/OCR, richer retrieval, voice, general readable-export conversion, provider integrations and release/device validation remain unfinished. Audit current files rather than assuming this list is exhaustive.
 
 ### Engineering and delivery
 
 - Native SwiftUI Xcode project: `Lumen.xcodeproj`, scheme `Lumen`.
 - Logic checks: `scripts/test-imports.sh`.
-- Native tests: `LumenUITests/LumenSmokeTests.swift`.
+- Native tests: `LumenUITests/LumenSmokeTests.swift`. Use a dedicated simulator with synthetic data; the Health scenarios interact with the system permission sheet and the test harness resets local Lumen data.
 - Discover this computer's Xcode installation and simulator IDs; previous-machine paths and IDs are not portable. The previous environment used Xcode 27.1 and an iOS 27 simulator.
 - Do not run concurrent Xcode builds against the same DerivedData directory.
 - `scripts/publish-batches.sh` publishes committed batches individually and rejects dirty/divergent state. Configure GitHub authentication with write access to `dbakp/Lumen` on this computer; previous-machine authentication is not transferred by cloning.
