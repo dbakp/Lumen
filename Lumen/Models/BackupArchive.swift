@@ -37,6 +37,24 @@ struct BackupSnapshot: Codable, Sendable {
 
     /// Current copies win. Restoring the same archive twice is idempotent.
     func merging(into local: BackupSnapshot, restorePreferences: Bool) -> BackupSnapshot {
+        var addedPhotos: [String: Data] = [:]
+        var result = mergingRecords(into: local, restorePreferences: restorePreferences, photoIDs: Set(photos.keys)) { old, new in addedPhotos[new] = photos[old] }
+        result.photos.merge(addedPhotos) { current, _ in current }
+        return result
+    }
+
+    /// Same identity, consent and conflict policy, with photos remaining file-backed.
+    func mergingFileBacked(into local: BackupSnapshot, restorePreferences: Bool, photoFiles: [String: URL]) throws -> (snapshot: BackupSnapshot, photos: [String: URL]) {
+        guard photos.isEmpty, local.photos.isEmpty else { throw BackupError.invalid }
+        try BackupArchive.validate(self, availablePhotoIDs: Set(photoFiles.keys))
+        do { try BackupArchive.validate(local, availablePhotoIDs: Set(local.meals.compactMap(\.photoID))) }
+        catch { throw BackupError.currentDataInvalid }
+        var addedPhotos: [String: URL] = [:]
+        let result = mergingRecords(into: local, restorePreferences: restorePreferences, photoIDs: Set(photoFiles.keys)) { old, new in addedPhotos[new] = photoFiles[old] }
+        return (result, addedPhotos)
+    }
+
+    private func mergingRecords(into local: BackupSnapshot, restorePreferences: Bool, photoIDs: Set<String>, transferPhoto: (String, String) -> Void) -> BackupSnapshot {
         var result = local
         func merge<T: Identifiable>(_ incoming: [T], _ current: [T]) -> [T] {
             var ids = Set(current.map(\.id)); return current + incoming.filter { ids.insert($0.id).inserted }
@@ -64,10 +82,10 @@ struct BackupSnapshot: Codable, Sendable {
         var photoMapping: [String: String] = [:]
         let newMeals = meals.filter { !currentMealIDs.contains($0.id) }.map { original in
             var meal = original
-            if let photoID = original.photoID, let bytes = photos[photoID] {
+            if let photoID = original.photoID, photoIDs.contains(photoID) {
                 // Never let an archive overwrite another meal's photo on this device.
                 let id = photoMapping[photoID] ?? UUID().uuidString
-                photoMapping[photoID] = id; result.photos[id] = bytes; meal.photoID = id
+                photoMapping[photoID] = id; transferPhoto(photoID, id); meal.photoID = id
             }
             return meal
         }
@@ -125,7 +143,7 @@ struct BackupArchive: Codable, Sendable {
     static func safePhotoID(_ id: String) -> Bool {
         !id.isEmpty && id.count <= 100 && id.unicodeScalars.allSatisfy { CharacterSet.alphanumerics.contains($0) || $0 == "-" || $0 == "_" }
     }
-    static func validate(_ snapshot: BackupSnapshot) throws {
+    static func validate(_ snapshot: BackupSnapshot, availablePhotoIDs: Set<String>? = nil) throws {
         func unique<T: Identifiable>(_ records: [T]) -> Bool {
             records.count <= 200_000 && Set(records.map(\.id)).count == records.count
         }
@@ -138,7 +156,7 @@ struct BackupArchive: Codable, Sendable {
         guard snapshot.conversations.allSatisfy({ unique($0.messages) }),
               snapshot.documents.allSatisfy({ unique($0.steps) }) else { throw BackupError.invalid }
         guard snapshot.photos.allSatisfy({ safePhotoID($0.key) && !$0.value.isEmpty && $0.value.count <= maxPhotoBytes }),
-              snapshot.meals.allSatisfy({ $0.photoID.map { safePhotoID($0) && snapshot.photos[$0] != nil } ?? true }) else { throw BackupError.invalid }
+              snapshot.meals.allSatisfy({ $0.photoID.map { safePhotoID($0) && (availablePhotoIDs?.contains($0) ?? (snapshot.photos[$0] != nil)) } ?? true }) else { throw BackupError.invalid }
         guard snapshot.symptoms.allSatisfy({ (1...10).contains($0.severity) }),
               snapshot.checkIns.allSatisfy({ (1...5).contains($0.energy) && (1...5).contains($0.mood) && (1...5).contains($0.stress) }),
               snapshot.water.allSatisfy({ $0.ml.isFinite && $0.ml > 0 && $0.ml <= 10000 }) else { throw BackupError.invalid }
@@ -174,13 +192,15 @@ struct BackupArchive: Codable, Sendable {
 }
 
 enum BackupError: LocalizedError {
-    case tooLarge, invalid, version, integrity, busy, missingPhoto
+    case tooLarge, invalid, version, integrity, busy, missingPhoto, recordsChanged, currentDataInvalid
     var errorDescription: String? {
         switch self {
         case .tooLarge: return "This backup is over the 100 MB limit. Keep the original file; no records were changed."
         case .invalid: return "This file isn’t a valid Lumen backup. Choose a file created from Backup & restore. Older data exports can’t be restored here."
         case .version: return "This backup needs a newer version of Lumen. Update the app, then try again."
-        case .integrity: return "This backup failed its integrity check. Choose another copy; no records were changed."
+        case .integrity: return "This backup appears to be damaged. Choose another copy; no records were changed."
+        case .currentDataInvalid: return "A current record on this iPhone is invalid, so Lumen stopped the restore. Your records and this backup are unchanged."
+        case .recordsChanged: return "Your records changed while these files were being prepared. Try again; no records were replaced."
         case .busy: return "Wait for health syncing to finish, then try again."
         case .missingPhoto: return "A meal photo is missing or unreadable. Your records are unchanged. Remove the missing photo from its meal before making a backup."
         }

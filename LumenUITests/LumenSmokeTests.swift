@@ -38,8 +38,16 @@ final class LumenSmokeTests: XCTestCase {
     }
 
     func reveal(_ element: XCUIElement) {
-        for _ in 0..<8 where !(element.exists && element.isHittable) { app.swipeUp(velocity: .slow) }
-        XCTAssertTrue(element.exists && element.isHittable)
+        for _ in 0..<12 {
+            // Return at the successful observation; rechecking after the loop races
+            // the keyboard's own scroll of the next password field.
+            if element.exists && element.isHittable { return }
+            if element.exists && element.frame.midY < app.frame.midY { app.swipeDown(velocity: .slow) }
+            else { app.swipeUp(velocity: .slow) }
+        }
+        if element.exists && element.isHittable { return }
+        snap("unreachable-element"); print(app.debugDescription)
+        XCTFail("Element could not be brought into view")
     }
 
     func replaceAmount(_ field: XCUIElement, with text: String, file: StaticString = #filePath, line: UInt = #line) {
@@ -70,6 +78,202 @@ final class LumenSmokeTests: XCTestCase {
         snap("08-plan")
         tap("Start using Lumen")
 
+    }
+
+    private let backupPassword = "Synthetic backup passphrase 42"
+
+    func enterBackupPassword(_ identifier: String, value: String) {
+        let field = app.secureTextFields[identifier].firstMatch
+        reveal(field); field.tap(); field.typeKey("a", modifierFlags: .command); field.typeText(value)
+    }
+
+    func createEncryptedBackup(timeout: TimeInterval = 30) {
+        tap("createBackup")
+        XCTAssertTrue(app.navigationBars["Backup password"].waitForExistence(timeout: 5))
+        enterBackupPassword("newBackupPassword", value: backupPassword)
+        enterBackupPassword("confirmBackupPassword", value: backupPassword)
+        app.secureTextFields["confirmBackupPassword"].typeText("\n")
+        let create = app.buttons["confirmCreateBackup"].firstMatch; reveal(create); create.tap()
+        XCTAssertTrue(app.buttons["cancelBackupOperation"].waitForNonExistence(timeout: timeout))
+        XCTAssertFalse(app.alerts.firstMatch.exists)
+        XCTAssertTrue(app.buttons["reviewBackup"].waitForExistence(timeout: 10))
+    }
+
+    func unlockBackup(value: String? = nil) {
+        XCTAssertTrue(app.buttons["cancelBackupOperation"].waitForNonExistence(timeout: 90), "Finish copying the selected file before entering its password")
+        let field = app.secureTextFields["unlockBackupPassword"].firstMatch
+        reveal(field); XCTAssertTrue(field.waitForExistence(timeout: 15))
+        enterBackupPassword("unlockBackupPassword", value: value ?? backupPassword)
+        field.typeText("\n")
+        let button = app.buttons["unlockBackup"].firstMatch; reveal(button); button.tap()
+    }
+
+    func openBackupSettings() {
+        tab("Today"); tap("Settings")
+        let button = app.buttons["backupSettings"].firstMatch
+        for _ in 0..<28 {
+            if button.exists && button.isHittable { break }
+            app.swipeUp(velocity: .fast)
+        }
+        XCTAssertTrue(button.exists && button.isHittable); button.tap()
+        XCTAssertTrue(app.navigationBars["Backup & restore"].waitForExistence(timeout: 5))
+    }
+
+    func testEncryptedBackup() throws {
+        finishOnboarding(); openBackupSettings(); snap("110-backup-home")
+        tap("createBackup"); XCTAssertTrue(app.secureTextFields["newBackupPassword"].waitForExistence(timeout: 5)); snap("111-backup-password-empty")
+        XCTAssertFalse(app.buttons["confirmCreateBackup"].isEnabled)
+        enterBackupPassword("newBackupPassword", value: "short")
+        enterBackupPassword("confirmBackupPassword", value: "short")
+        XCTAssertFalse(app.buttons["confirmCreateBackup"].isEnabled)
+        enterBackupPassword("newBackupPassword", value: backupPassword)
+        enterBackupPassword("confirmBackupPassword", value: "Different password")
+        app.secureTextFields["confirmBackupPassword"].typeText("\n")
+        XCTAssertTrue(app.staticTexts["The passwords don’t match."].exists)
+        snap("112-backup-password-mismatch")
+        XCTAssertFalse(app.buttons["confirmCreateBackup"].isEnabled)
+        enterBackupPassword("confirmBackupPassword", value: backupPassword)
+        app.secureTextFields["confirmBackupPassword"].typeText("\n")
+        snap("113-backup-password-ready")
+        let create = app.buttons["confirmCreateBackup"].firstMatch; reveal(create); create.tap()
+        XCTAssertTrue(app.buttons["reviewBackup"].waitForExistence(timeout: 30))
+        snap("114-backup-created")
+        tap("reviewBackup")
+        let field = app.secureTextFields["unlockBackupPassword"].firstMatch
+        reveal(field); XCTAssertTrue(field.waitForExistence(timeout: 15)); snap("115-backup-locked")
+        unlockBackup(value: "Wrong synthetic password")
+        XCTAssertTrue(app.alerts["Couldn’t unlock backup"].waitForExistence(timeout: 20))
+        snap("116-backup-wrong-password"); tap("OK")
+        XCTAssertFalse(app.buttons["restoreBackup"].exists)
+        unlockBackup()
+        let restore = app.buttons["restoreBackup"].firstMatch
+        reveal(restore); XCTAssertTrue(restore.waitForExistence(timeout: 30)); snap("117-backup-preview")
+        app.swipeUp(velocity: .slow); snap("117a-backup-restore-options")
+        restore.tap(); XCTAssertTrue(app.alerts["Restore missing records?"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["Keep reviewing"].exists); snap("118-backup-restore-confirmation")
+        tap("Keep reviewing"); restore.tap(); tap("Restore records")
+        XCTAssertTrue(app.staticTexts["backupRestored"].waitForExistence(timeout: 30))
+        for _ in 0..<5 { app.swipeDown() }
+        snap("119-backup-restored")
+        XCTAssertTrue(app.buttons["shareBackup"].exists)
+    }
+
+    func chooseBackupFixture(_ name: String) throws {
+        let choose = app.buttons["chooseBackup"].firstMatch; reveal(choose); choose.tap()
+        XCTAssertTrue(app.buttons["Cancel"].firstMatch.waitForExistence(timeout: 25))
+        if app.buttons["Browse"].firstMatch.exists { app.buttons["Browse"].firstMatch.tap() }
+        if app.buttons["On My iPhone"].firstMatch.exists { app.buttons["On My iPhone"].firstMatch.tap() }
+        else if app.staticTexts["On My iPhone"].firstMatch.exists { app.staticTexts["On My iPhone"].firstMatch.tap() }
+        let cell = app.cells.matching(NSPredicate(format: "identifier BEGINSWITH %@", name)).firstMatch
+        // Files retains its scroll position between selections. Move toward the item,
+        // including back up when a previously selected file left this one above the viewport.
+        for _ in 0..<16 {
+            if cell.exists && cell.isHittable { break }
+            if cell.exists && cell.frame.midY < app.frame.midY { app.swipeDown(velocity: .fast) }
+            else { app.swipeUp(velocity: .fast) }
+        }
+        XCTAssertTrue(cell.waitForExistence(timeout: 5) && cell.isHittable, "Seed synthetic backup fixtures before this scenario")
+        let picker = app.buttons.matching(NSPredicate(format: "label == %@ AND identifier != %@", "Cancel", "cancelBackupOperation")).firstMatch
+        cell.images.firstMatch.tap()
+        XCTAssertTrue(picker.waitForNonExistence(timeout: 15), "File selection must dismiss the picker; the app's processing Cancel is a separate control")
+    }
+
+    @discardableResult
+    func backupPreview() -> XCUIElement {
+        XCTAssertTrue(app.buttons["cancelBackupOperation"].waitForNonExistence(timeout: 90))
+        XCTAssertFalse(app.alerts.firstMatch.exists, app.alerts.firstMatch.debugDescription)
+        let kind = app.descendants(matching: .any).matching(identifier: "backupPreviewKind").firstMatch
+        reveal(kind)
+        return kind
+    }
+
+    func confirmBackupRestore() {
+        let restore = app.buttons["restoreBackup"].firstMatch; reveal(restore); restore.tap(); tap("Restore records")
+        XCTAssertTrue(app.staticTexts["backupRestored"].waitForExistence(timeout: 30))
+    }
+
+    func testBackupFilesAndCancellation() throws {
+        finishOnboarding(); openBackupSettings()
+        try chooseBackupFixture("Lumen-backup-legacy")
+        let legacy = backupPreview(); XCTAssertEqual(legacy.label, "Older, unencrypted backup"); snap("130-backup-legacy-preview")
+        confirmBackupRestore()
+        try chooseBackupFixture("Lumen-backup-encrypted"); unlockBackup()
+        let encrypted = backupPreview(); XCTAssertEqual(encrypted.label, "Encrypted backup"); snap("131-backup-encrypted-preview")
+        confirmBackupRestore()
+        try chooseBackupFixture("Lumen-backup-damaged"); unlockBackup()
+        XCTAssertTrue(app.alerts["Couldn’t unlock backup"].waitForExistence(timeout: 20))
+        snap("132-backup-integrity-error"); tap("OK")
+        XCTAssertFalse(app.buttons["restoreBackup"].exists)
+        try chooseBackupFixture("Lumen-backup-large"); unlockBackup()
+        let cancel = app.buttons["cancelBackupOperation"].firstMatch
+        XCTAssertTrue(cancel.waitForExistence(timeout: 5)); snap("133-backup-reading-progress"); cancel.tap()
+        let cancelled = app.staticTexts["backupStatus"].firstMatch
+        XCTAssertTrue(cancelled.waitForExistence(timeout: 30)); XCTAssertTrue(cancelled.label.contains("Cancelled"))
+        snap("134-backup-cancelled")
+        XCTAssertFalse(app.buttons["restoreBackup"].exists)
+        // Retry the same private selected file, then install its valid photos and relaunch.
+        unlockBackup()
+        XCTAssertTrue(app.buttons["cancelBackupOperation"].waitForNonExistence(timeout: 90))
+        XCTAssertFalse(app.alerts.firstMatch.exists)
+        _ = backupPreview()
+        let waterCount = app.descendants(matching: .any).matching(identifier: "backupWaterCount").firstMatch
+        XCTAssertEqual(waterCount.value as? String, Int(100_000).formatted(), "The large fixture's full water history must be decoded before preview")
+        snap("135-backup-large-preview")
+        confirmBackupRestore(); snap("136-backup-large-restored")
+        app.navigationBars["Backup & restore"].buttons.element(boundBy: 0).tap(); tap("Done")
+        app.terminate(); app.launchArguments = []; app.launch(); tab("Library")
+        XCTAssertTrue(app.buttons["Synthetic transfer plan"].waitForExistence(timeout: 10))
+        XCTAssertEqual(app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'library-plan-'")).count, 1)
+        snap("137-backup-persisted-library")
+        // Create and reopen a new archive from the restored large library on iPhone too.
+        openBackupSettings(); createEncryptedBackup(timeout: 90); snap("138-backup-large-created")
+        tap("reviewBackup"); unlockBackup()
+        XCTAssertTrue(app.buttons["cancelBackupOperation"].waitForNonExistence(timeout: 90))
+        XCTAssertFalse(app.alerts.firstMatch.exists)
+        let roundTrip = backupPreview(); XCTAssertEqual(roundTrip.label, "Encrypted backup")
+        XCTAssertEqual(app.descendants(matching: .any).matching(identifier: "backupWaterCount").firstMatch.value as? String, Int(100_001).formatted(), "The new archive must include both the retained local water entry and all restored entries")
+        snap("139-backup-large-roundtrip")
+    }
+
+    func testBackupShareAndReopen() throws {
+        finishOnboarding(); openBackupSettings(); createEncryptedBackup()
+        tap("shareBackup")
+        let saveToFiles = app.cells.matching(NSPredicate(format: "label == %@", "Save to Files")).firstMatch
+        XCTAssertTrue(saveToFiles.waitForExistence(timeout: 10)); snap("150-backup-share-sheet"); saveToFiles.tap()
+        let save = app.buttons["Save"].firstMatch
+        XCTAssertTrue(save.waitForExistence(timeout: 10))
+        if app.buttons["On My iPhone"].firstMatch.exists { app.buttons["On My iPhone"].firstMatch.tap() }
+        else if app.staticTexts["On My iPhone"].firstMatch.exists { app.staticTexts["On My iPhone"].firstMatch.tap() }
+        let name = app.textFields.matching(NSPredicate(format: "value CONTAINS %@", "Lumen-backup-")).firstMatch
+        XCTAssertTrue(name.waitForExistence(timeout: 5), app.debugDescription)
+        let savedName = "Lumen-shared-check-" + UUID().uuidString.prefix(8)
+        name.tap(); name.typeKey("a", modifierFlags: .command); name.typeText(savedName + ".lumenbackup")
+        snap("151-backup-save-to-files"); save.tap()
+        XCTAssertTrue(save.waitForNonExistence(timeout: 15))
+        // Leaving removes the private share copy; the external saved file must still reopen.
+        app.navigationBars["Backup & restore"].buttons.element(boundBy: 0).tap(); tap("Done")
+        openBackupSettings(); try chooseBackupFixture(savedName); unlockBackup()
+        let preview = backupPreview(); XCTAssertEqual(preview.label, "Encrypted backup"); snap("152-backup-saved-file-preview")
+    }
+
+    func testBackupPresentation() throws {
+        finishOnboarding(); openBackupSettings()
+        app.terminate(); app.launchArguments = ["-lumen.appearance", "dark"]; app.launch(); openBackupSettings()
+        snap("140-backup-dark-home"); tap("createBackup"); XCTAssertTrue(app.secureTextFields["newBackupPassword"].waitForExistence(timeout: 5)); snap("141-backup-dark-password"); tap("Cancel")
+        app.terminate(); app.launchArguments = ["-lumen.appearance", "light", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]
+        app.launch(); openBackupSettings()
+        XCTAssertGreaterThan(app.staticTexts["Keep your\nhistory close."].frame.height, 100, "The accessibility-size override must actually be active")
+        snap("142-backup-large-type-home")
+        let create = app.buttons["createBackup"].firstMatch; reveal(create); create.tap()
+        XCTAssertTrue(app.navigationBars["Backup password"].waitForExistence(timeout: 5)); snap("143a-backup-large-type-password-heading")
+        reveal(app.secureTextFields["newBackupPassword"].firstMatch); snap("143-backup-large-type-password")
+        enterBackupPassword("newBackupPassword", value: backupPassword)
+        enterBackupPassword("confirmBackupPassword", value: backupPassword)
+        app.secureTextFields["confirmBackupPassword"].typeText("\n")
+        let confirm = app.buttons["confirmCreateBackup"].firstMatch; reveal(confirm); snap("144-backup-large-type-create"); confirm.tap()
+        let review = app.buttons["reviewBackup"].firstMatch; reveal(review)
+        XCTAssertTrue(review.waitForExistence(timeout: 30)); review.tap(); unlockBackup()
+        let restore = app.buttons["restoreBackup"].firstMatch; reveal(restore); snap("145-backup-large-type-restore")
     }
 
     func testSmoke() throws {
@@ -220,9 +424,8 @@ final class LumenSmokeTests: XCTestCase {
         reveal(backupSettings); backupSettings.tap()
         XCTAssertTrue(app.navigationBars["Backup & restore"].waitForExistence(timeout: 5))
         snap("60-backup-home")
-        tap("createBackup")
-        XCTAssertTrue(app.buttons["reviewBackup"].waitForExistence(timeout: 15))
-        tap("reviewBackup")
+        createEncryptedBackup()
+        tap("reviewBackup"); unlockBackup()
         let restoreButton = app.buttons["restoreBackup"].firstMatch
         reveal(restoreButton)
         snap("61-backup-preview")

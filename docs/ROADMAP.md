@@ -33,9 +33,9 @@ Accept Apple's exported ZIP directly, locate and validate the health XML entry, 
 Add historical workout details and additional common vitals from Apple Health exports, with explicit unit rules, source/date provenance and preview counts. Preserve idempotent reimports and reconcile overlap with live sessions. Imported workouts must appear in the timeline and assistant history without being written back to HealthKit. Add coverage-based views for supported new signals without diagnostic interpretation. Verify optional-model migration and backup compatibility. Background synchronization and physical-device delivery remain subsequent gates.
 
 ## Remaining roadmap after these batches
-Batches 9a/9 established per-metric presence, evidence and local corrections. Batch 10 carries availability and honest estimates into Food, Sleep and companion snapshots. Delivery evidence is recorded below; the full product goal remains active.
+Batches 9a/9 established per-metric presence, evidence and local corrections. Batch 10 carries availability and honest estimates into Food, Sleep and companion snapshots. Batch 11 implements encrypted streamed backups and version-1 compatibility. Delivery evidence is recorded below; the full product goal remains active.
 
-1. Large-library backup improvements: encrypted archives, progress/cancellation, streaming or package format beyond the current 100 MB JSON limit; legacy-export conversion with a separate preview.
+1. General readable-export conversion with a separate preview. Encrypted streamed backups beyond 100 MB, progress/cancellation and older version-1 backup compatibility are implemented in Batch 11. Physical-device/iCloud transfer, worst-case resource pressure and release review remain gates.
 2. Background HealthKit observation/anchored synchronization, permission-aware freshness and delivery diagnostics, tested on a signed physical iPhone. Current refresh-on-open is not continuous monitoring.
 3. Additional export categories beyond the completed workout/common-vital coverage, bounded-memory ingestion for very large histories, richer provenance, OCR for scanned records, and reviewable structured lab records. Keep unsupported formats explicit.
 4. Direct provider connections only where official OAuth/API access is configured and tested. Existing HealthKit and Strava are not a substitute for pretending every device is connected.
@@ -121,3 +121,11 @@ A shared dated presence packet feeds Watch/widgets without inferring measurement
 ### Batch 10 publishing checkpoint
 
 GitHub accepted application batch `d54c2e27eff65c9a065ce59070d92296151f4337` on `main` on 29 October 2026. A read-back of `refs/heads/main` matched the source commit. The continuation handoff now points to Batch 10 and the remaining roadmap; the full product goal remains active.
+
+### Batch 11 — encrypted streamed backups · 30 October 2026
+
+Implemented password-protected version-2 archives with file-backed meal photos, 2 GiB file/expanded-data bounds, progress and persistent cancellation, version-1 JSON compatibility, private retryable input, explicit review/confirmation and staged restoration. Current-copy, source and fresh-consent policies remain. A local revision/write barrier prevents a staged restore from replacing concurrent edits. Native filenames use the device's local date.
+
+343 production-logic checks and all five target builds pass. Actual native validation covers a 1,241,513,984-byte archive with 100,000 water logs/429 valid JPEGs, cancellation/retry/restore/relaunch, then a fresh iPhone export/reopen with 100,001 logs and 430 photos. The final large case passes in 204.870 seconds. Password, full daily/backup, dark/XXXL and external Files-save/reopen scenarios also pass individually; see VERIFICATION.md for exact result-bundle and intermediate-failure accounting. The same critic signs off after three rounds, 10/11 lines at 4, Richness 3, with no remaining concrete pixel/copy defects.
+
+General readable-export conversion, physical-device/iCloud/resource-pressure/crypto/release review and the rest of the product roadmap remain open. The full goal remains active. Publication will be recorded at the accepted source checkpoint.

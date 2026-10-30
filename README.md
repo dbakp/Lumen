@@ -18,7 +18,7 @@ A native, local-first health companion for iPhone, with Apple Watch and widgets.
 - **Conversations:** searchable chat history, reopen/rename/share/delete, safe routing of replies to the originating conversation and stop-response support. Existing chat migrates without losing messages.
 - **Plans:** edit individual action items, assign dates, set active/completed/archived states and find pending steps in Today or the agenda.
 - **Insights:** compare completed 7/30-day periods with actual coverage and sources; no inferred zero days or claims of causation. Create an editable appointment summary from your symptom descriptions, check-ins and activity.
-- **Backup & restore:** versioned archives with meal photos, integrity checks, a record preview and a merge that keeps current copies. Profile restore is optional; recovered records require fresh assistant-sharing consent.
+- **Backup & restore:** password-protected, streamed archives with meal photos, progress/cancellation and a review before merging. New files support up to 2 GB; older JSON backups remain readable. Current copies win, profile restore is optional, and newly recovered documents require fresh assistant-sharing consent.
 - **Library:** searchable plans, reviews, notes and records with type filters. Edit text, complete checklist steps, share document text, delete documents and choose whether each record is included in assistant context. A local weekly review summarizes coverage and logged events without claiming causation.
 
 ## Connections and imports
@@ -36,7 +36,7 @@ Notifications are off by default. Connections contains opt-in, quiet hours and l
 
 ## Privacy and data
 
-Profile, health logs, symptoms, check-ins, imported daily history, documents and chat are JSON in the App Group container, with file protection. Secrets stay in Keychain. Face ID lock, readable JSON export and erase-all are retained. Settings also provides restorable backups, including meal photos. Backups contain readable health data: save them privately. Credentials and device permissions are excluded. See [backup behavior and recovery](docs/BACKUPS.md).
+Profile, health logs, symptoms, check-ins, imported daily history, documents and chat are JSON in the App Group container, with file protection. Secrets stay in Keychain. Face ID lock, readable JSON export and erase-all are retained. Settings also provides encrypted restorable backups, including meal photos. Keep the backup password separately; Lumen cannot recover it. Older JSON backups and readable data exports remain unencrypted. Credentials and device permissions are excluded. See [backup behavior and recovery](docs/BACKUPS.md).
 
 Cloud models receive the current health summary and any record excerpts you explicitly included when you send a question. The provider is shown before sending. Choose the built-in guide or available on-device model for local processing. No backend, developer API key or account is bundled. Imported records are treated as untrusted reference text, never instructions.
 
@@ -55,6 +55,15 @@ xcodebuild test -project Lumen.xcodeproj -scheme Lumen -destination 'platform=iO
 ```
 
 The smoke test covers onboarding, water/symptom/check-in logging, contextual Today, assistant plans, Library notes and checklists, retained feature destinations and persistence after relaunch. It attaches screenshots. The standalone Swift package checks (ZIPFoundation pinned to 0.9.20) exercise import parsing/cancellation, conversions, duplicate/source handling, sleep overlap, invalid inputs, model coding, backups and quiet-hour boundaries. For the separate native file-picker import scenario, seed its synthetic fixtures with `python3 scripts/seed-import-ui-fixtures.py <simulator-UUID>`; that scenario skips when fixtures are absent.
+
+The backup file-picker scenarios require separate synthetic archives. Use a new output folder each time; this opt-in generator makes a large local fixture (over 1 GB with 100,000 water records and valid JPEG photos), plus small encrypted, older JSON and damaged copies. No health data is read:
+
+```sh
+swift run --scratch-path /tmp/LumenLogicBuild LumenLogicChecks --backup-ui-fixtures /tmp/LumenSyntheticBackups
+python3 scripts/seed-import-ui-fixtures.py <simulator-UUID> --backup-fixtures /tmp/LumenSyntheticBackups
+```
+
+The synthetic fixture password is `Synthetic backup passphrase 42`. Keep these generated files outside Git. The backup scenarios fail if their required files are absent; they do not claim a skipped file-picker scenario as verification.
 
 Simulator widget/shared-container checks use local ad-hoc signing (`CODE_SIGN_IDENTITY=-`); an unsigned build does not establish App Group behavior. Add a Lumen widget to the dedicated simulator Home Screen for the optional retained-flow widget capture.
 

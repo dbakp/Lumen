@@ -43,7 +43,7 @@ struct LibraryView: View {
                                 Text(doc.body).font(.subheadline).foregroundStyle(Theme.secondary).lineLimit(2)
                                 Text("\(doc.kind.rawValue.capitalized) · \(doc.updatedAt.formatted(date: .abbreviated, time: .omitted))").font(.caption).foregroundStyle(Theme.tertiary)
                                 if doc.kind == .plan { Text(doc.status.label).font(.caption.weight(.semibold)).foregroundStyle(Theme.accent) }
-                                if !doc.steps.isEmpty { Text("\(doc.steps.filter(\.isDone).count) of \(doc.steps.count) steps completed").font(.caption).foregroundStyle(Theme.accent) }
+                                if !doc.steps.isEmpty { Text("\(doc.steps.filter(\.isDone).count) of \(doc.steps.count) \(doc.steps.count == 1 ? "step" : "steps") completed").font(.caption).foregroundStyle(Theme.accent) }
                             }
                             Spacer(minLength: 0)
                             Image(systemName: "chevron.right").font(.caption).foregroundStyle(Theme.tertiary)

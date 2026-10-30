@@ -147,3 +147,35 @@ The same critic opened all **12 final iPhone/widget captures** in `Design/native
 The final medium widget names Readiness estimate, withholds its unsupported score/ring, and fits the full snapshot date/time. Watch missing/zero rows retain names and timestamps; Tonight uses explicit unavailable timing text; missing Readiness fits “More evidence needed”. The save-error alert and unchanged Watch-local water are clear. Actual XXXL Food/Sleep reflow, recorded-hour history coverage and both manual-editor dates are visible. The history transition image and the clipped intermediate widget/readiness frames remain review history, not final evidence.
 
 **Done by the skill stop rule:** 10/11 applicable lines at 4, none below 3, with Concept, Finish, Native fluency and Copy at 4. Richness remains 3. No further polish was requested and no UI change was made after this sign-off. This covers the shown synthetic simulator layouts, installed medium widget and Watch pages; unseen widget/complication families, VoiceOver, physical-device feel and synchronization guarantees are not inferred. No new motion, store set, paid assets or browser-DOM scan is claimed.
+
+## Batch 11: encrypted backups · round 1
+
+The same continuing independent App Designer Pro critic inspected all ten actual native captures in `Design/native/backups/r1`. This extends the established iPhone direction. No new concepts, paywall, paid imagery, store assets or reel are in scope. The native captures do not show filled secure-field contents; no replacement text was composited into the images. Frame 111 was captured during presentation and is review history, not evidence of the settled empty form.
+
+| Rubric | R1 |
+|---|---:|
+| Concept on the pixel | 4 |
+| Category distinction | 4 |
+| Skill distinction | 4 |
+| Hierarchy | 4 |
+| Typography | 4 |
+| Colour | 4 |
+| Richness | 3 |
+| Rhythm and space | 4 |
+| Finish and craft | 3 |
+| Native fluency | 3 |
+| Copy | 3 |
+
+**Not done.** All four concrete findings were accepted: persistent Password/Repeat password labels outside secure contents; a visible non-committing restore choice; action-specific error titles with plain uncertainty about password versus file damage; and Encrypted backup ready to save with Save or share backup as the first action. The quoted “failed its integrity check” became “The password may be incorrect or this file may be damaged.” “Couldn’t complete backup” is replaced by create/open/unlock/restore-specific titles. Explanatory footers now use the established secondary ink. The actual empty form, complete restore options, legacy file, large-file progress/cancellation, dark appearance and actual XXXL remain to be reviewed in round 2.
+
+### Batch 11 · round 2
+
+The critic opened all 27 round-2 PNGs in `Design/native/backups/r2`, including native Files/share controls, actual large-file cancellation/restore, dark mode and actual Accessibility XXXL. All round-1 requests landed. Scores: Concept 4, Category 4, Skill distinction 4, Hierarchy 4, Typography 4, Colour 4, Richness 3, Rhythm 4, Finish 4, Native fluency 4, Copy 4. **Done by the stop rule** for the shown layouts: 10/11 at 4, none below 3; no portfolio-level 5 is claimed.
+
+Two concrete after-done corrections were accepted: Library's “0 of 1 steps completed” becomes “0 of 1 step completed”, and preview integers use locale-aware grouping to match progress counts (100.000 in the shown locale). Recapture and a final critic check remain required for those changes. The accepted XXXL layout is scrollable: continued text below the viewport is not treated as a collision, and navigation/Cancel, labels and wrapped actions remain readable. The default filename/unlock/error frames were omitted in R2 pending a final regression after fixing a UTC filename-date mismatch; the system share and reopened-file captures already verify the local date. Rare validation/size/storage errors are production-logic coverage, not additional visually scored native states.
+
+### Batch 11 · round 3 sign-off
+
+The same critic opened all four corrected captures in `Design/native/backups/r3`: locale-aware 100.000, “0 of 1 step completed”, and the default locked/error states using the local filename date 2026-10-30. Both after-done corrections landed. No new concrete pixel/copy defects were found. Scores remain 4 across the applicable lines except Richness 3: **10/11 at 4+, Done by the skill stop rule**. No subsequent visual change is planned. Accessibility identifiers improve test stability without changing these pixels; VoiceOver itself remains unverified. The added large outgoing-export/reopen runtime check is a separate verification gate, not inferred from still images.
+
+Supplemental round-3 runtime frames 138/139 were also opened by the same critic. The ready state retains its save-first hierarchy; the reopened archive shows 430 · 430 meals/photos, 100.001 water logs and 100.433 matching records without collisions. No new concrete defects; prior scores and Done remain. These figures are synthetic native data, with runtime/file-size proof recorded separately in VERIFICATION.md.

@@ -4,11 +4,13 @@ import argparse
 import datetime
 import pathlib
 import plistlib
+import shutil
 import uuid
 import zipfile
 
 parser = argparse.ArgumentParser()
 parser.add_argument('simulator', help='CoreSimulator device UUID')
+parser.add_argument('--backup-fixtures', type=pathlib.Path, help='Directory made with the opt-in synthetic backup fixture generator')
 args = parser.parse_args()
 fixture_day = (datetime.datetime.now().astimezone().date() - datetime.timedelta(days=1)).isoformat()
 today = datetime.datetime.now().astimezone().date().isoformat()
@@ -42,6 +44,10 @@ for metadata in root.glob('*/.com.apple.mobile_container_manager.metadata.plist'
         with zipfile.ZipFile(folder / 'Lumen-workouts-vitals.zip', 'w', compression=zipfile.ZIP_DEFLATED) as archive:
             archive.writestr('apple_health_export/export.xml', ('<HealthData>' + workout + signals + '</HealthData>').replace('2026-10-28', fixture_day))
         (folder / 'Lumen-health-invalid.zip').write_bytes(b'Not a ZIP archive')
+        if args.backup_fixtures:
+            for fixture in args.backup_fixtures.glob('Lumen-backup-*'):
+                if fixture.is_file() and fixture.suffix in {'.json', '.lumenbackup'}:
+                    shutil.copyfile(fixture, folder / fixture.name)
         print(f'Synthetic fixtures ready (XML {target.stat().st_size:,} bytes; CSV {small.stat().st_size} bytes).')
         break
 else:

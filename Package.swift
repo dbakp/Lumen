@@ -50,6 +50,9 @@ let package = Package(
         sources: [
             "Lumen/Models/SleepModels.swift",
             "Lumen/Models/BackupArchive.swift",
+            "Lumen/Models/BackupPackage.swift",
+            "Lumen/Models/BackupFileTransaction.swift",
+            "Lumen/Models/BackupStorageRevision.swift",
             "Lumen/Models/HealthImportControl.swift",
             "Lumen/Algorithms/DocumentBlocks.swift",
             "Lumen/Algorithms/ZIPPreflight.swift",
@@ -84,6 +87,8 @@ let package = Package(
             "Tests/HealthLogDraftChecks.swift",
             "Tests/DataConfidenceChecks.swift",
             "Tests/RetainedEvidenceChecks.swift",
+            "Tests/BackupPackageChecks.swift",
+            "Tests/BackupUIFixtures.swift",
             "Lumen/Services/HealthZIPArchive.swift"
 ]
     )]

@@ -13,6 +13,22 @@ public enum AppGroup {
 }
 
 public enum LocalStore {
+    private static let removeAbandonedStages: Void = {
+        let fm = FileManager.default
+        let base = fm.containerURL(forSecurityApplicationGroupIdentifier: AppGroup.id)
+            ?? fm.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
+        let abandoned = ((try? fm.contentsOfDirectory(at: base, includingPropertiesForKeys: nil)) ?? []).filter {
+            $0.lastPathComponent.hasPrefix("LumenData.restore-") || $0.lastPathComponent.hasPrefix("LumenData.retired-")
+        }
+        // Capture only leftovers present at first access, before a new restore can start.
+        DispatchQueue.global(qos: .utility).async { for folder in abandoned { try? fm.removeItem(at: folder) } }
+    }()
+    private static let writes = BackupStorageRevision()
+    static var revision: UInt64 { writes.current }
+    static func performWrite<T>(_ operation: () throws -> T) rethrows -> T { try writes.write(operation) }
+    static func commitRestore(_ transaction: BackupFileTransaction, revision: UInt64) throws {
+        try writes.commit(ifUnchanged: revision) { try transaction.commit() }
+    }
     private static let encoder: JSONEncoder = {
         let e = JSONEncoder(); e.dateEncodingStrategy = .iso8601; return e
     }()
@@ -21,6 +37,7 @@ public enum LocalStore {
     }()
 
     public static var directory: URL {
+        _ = removeAbandonedStages
         let base = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: AppGroup.id)
             ?? FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
         let dir = base.appendingPathComponent("LumenData", isDirectory: true)
@@ -40,13 +57,17 @@ public enum LocalStore {
     private static func url(_ name: String) -> URL { directory.appendingPathComponent("\(name).json") }
 
     public static func save<T: Encodable>(_ value: T, as name: String) {
-        guard let data = try? encoder.encode(value) else { return }
-        try? data.write(to: url(name), options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
+        performWrite {
+            guard let data = try? encoder.encode(value) else { return }
+            try? data.write(to: url(name), options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
+        }
     }
 
     static func saveChecked<T: Encodable>(_ value: T, as name: String) throws {
-        let data = try encoder.encode(value)
-        try data.write(to: url(name), options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
+        try performWrite {
+            let data = try encoder.encode(value)
+            try data.write(to: url(name), options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
+        }
     }
 
     public static func load<T: Decodable>(_ type: T.Type, from name: String) -> T? {
@@ -71,9 +92,11 @@ public enum LocalStore {
 
     /// Wipe everything Lumen stores locally (account reset).
     public static func eraseAll() {
-        for f in allFiles() { try? FileManager.default.removeItem(at: f) }
-        if let bundle = Bundle.main.bundleIdentifier { UserDefaults.standard.removePersistentDomain(forName: bundle) }
-        AppGroup.defaults.removePersistentDomain(forName: AppGroup.id)
+        performWrite {
+            for f in allFiles() { try? FileManager.default.removeItem(at: f) }
+            if let bundle = Bundle.main.bundleIdentifier { UserDefaults.standard.removePersistentDomain(forName: bundle) }
+            AppGroup.defaults.removePersistentDomain(forName: AppGroup.id)
+        }
     }
 
     /// One JSON document with every domain — the user's data, portable.
@@ -107,7 +130,11 @@ public enum PhotoStore {
         let scale = min(1, maxSide / max(image.size.width, image.size.height))
         let size = CGSize(width: image.size.width * scale, height: image.size.height * scale)
         let resized = UIGraphicsImageRenderer(size: size).image { _ in image.draw(in: CGRect(origin: .zero, size: size)) }
-        if let data = resized.jpegData(compressionQuality: 0.75) { try? data.write(to: url(id), options: .atomic) }
+        LocalStore.performWrite {
+            if let data = resized.jpegData(compressionQuality: 0.75) {
+                try? data.write(to: url(id), options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
+            }
+        }
     }
 
     public static func load(_ id: String?) -> UIImage? {
@@ -117,6 +144,6 @@ public enum PhotoStore {
 
     public static func delete(_ id: String?) {
         guard let id else { return }
-        try? FileManager.default.removeItem(at: url(id))
+        LocalStore.performWrite { try? FileManager.default.removeItem(at: url(id)) }
     }
 }
