@@ -22,6 +22,8 @@ Batch 16 was published as `c54df787051db1f513b949129a0db1a8ff5b425c` on 30 Octob
 
 Batch 17 was published as `f8efaa8b5195d1692363a9a2ac330050288e6c55` on 30 October 2026. It removes the reproduced keyboard-layout diagnostic from the tested review and confirmed-correction forms, keeps native Done above the keyboard and moves optional notes into a full-size editor with exact text preservation. Native checks cover all four entry kinds, single-key edits, notes before/after confirmation and relaunch, corrections, deletion, actual XXXL/dark appearance and the complete original-message disclosure. GitHub accepted the push and `refs/heads/main` matched the application commit. See [Conversational logging](CONVERSATIONAL_LOGGING.md) and the scoped evidence below.
 
+Batch 18 was published as `a0426827fcacedfc4026445e649ee2984fc91a50` on 30 October 2026. It adds reviewed 1/2/4/8-week plans, selected-provider typed/validated proposals or an explicitly chosen local template, full wording/date review, fresh acknowledgement, checked saving and matching Library/agenda calendar days. Assistant sharing starts off, and legacy dates/backups remain compatible. GitHub accepted the push and `refs/heads/main` matched the application commit. See [Scheduled plans](SCHEDULED_PLANS.md) and the scoped validation below.
+
 The original prompt below remains the product brief. The full goal remains active. The retained Food/Sleep and companion availability audit, large/encrypted backups, incremental Health observation/replay and scanned-record review, question-based lexical Library retrieval and reviewed readable-export recovery are implemented within their documented scope. Continue additional ingestion/structured records, semantic retrieval quality, signed-device voice validation, provider and release work in coherent separately verified batches. Signed-iPhone background delivery, Watch water relay identity/acknowledgement, physical-device behavior and unseen widget/complication layouts remain open gates. Physical-device/provider gates are not satisfied by the simulator. The skill archive is intentionally outside Git; attach it again for a future computer/chat. Personal data and credentials still transfer separately.
 
 ## Continuation prompt
@@ -60,7 +62,7 @@ Clone the repository on this computer and inspect its current state before makin
 
 Use the attached App Designer Pro skill. Preserve the established design direction. Use one independent design critic for native UI changes, address substantive findings, and capture actual simulator screens. `Design/native-preview.html` presents captured screens; it is not the application.
 
-### Completed through batch 18
+### Completed and published through batch 18
 
 - Contextual Today, symptoms/check-ins, personal context and quiet reminders.
 - Persistent conversations with cancellation and reply ownership.
@@ -87,8 +89,10 @@ Use the attached App Designer Pro skill. Preserve the established design directi
 - Final-source normal delivery passes **113.743s** and actual XXXL software-key/date/save/relaunch/agenda passes **184.381s**, each inside its explicitly failed mixed bundle. Separate dark/eight-week/XXXL presentation passes **142.320s**. These have zero recorded runtime warnings. Earlier cancellation/failure **145.032s** and broad four-case daily/Library/backup **473.695s** results retain their precise source boundaries in VERIFICATION.md. No failed suite is relabelled.
 - The final wording editor follows the existing full-notes pattern: a short literal step preview plus **Edit full step**, with date editing on the step form. Real visible keys prove an end insertion and two adjacent middle insertions; the exact text and moved calendar day survive Save and relaunch. Native Before saving navigation and the complete final Week8 action/date are captured.
 - Temporary diagnostic/custom text bridges are removed. The original numeric selection was at the string end while the displayed caret/layout disagreed; exact-value and AX-keyboard-presence assertions alone were insufficient. Keep the stronger actual-key, geometry, exact text/date and acknowledgement checks. Compact failing and passing history stays in Git; temporary paths are historical after cleanup.
-- The same App Designer Pro critic signs off R3 at **10/11 lines at4+, Richness3**, all concrete requests closed. The34 final native originals are in `Design/native/plans/r3`; no app UI source changes follow sign-off.
+- The same App Designer Pro critic signs off R3 at **10/11 lines at 4+, Richness 3**, all concrete requests closed. The34 final native originals are in `Design/native/plans/r3`; no app UI source changes follow sign-off.
 - Live-provider quality, clinical suitability, physical devices, VoiceOver and broader release gates remain open. The full product goal remains active. See [Scheduled plans](SCHEDULED_PLANS.md) and `Design/native/plans` for the contract and evidence.
+
+- After code/evidence were confirmed on GitHub, cleanup removed **90 task-owned artifact roots**, **46 superseded PNG working copies** (15,676,137 logical bytes), and the obsolete 876-byte numeric-only simulator trace. Available bytes increased from **35,488,272,384 to 39,157,301,248** during the main cleanup, a measured **3,669,028,864-byte increase (about 3.67 GB)**. Both reused build directories, package scratch, obsolete mirror and raw test bundles/exports/logs are gone. The repository, all 34 final PNGs, useful defect/copy frames, compact evidence, supplied skill/archive and small synthetic simulator state remain. No unrelated cache, project, runtime or simulator was erased. Exact scope/measurements are in `Design/native/plans/storage-cleanup.json`; temporary paths in reports are historical. No build was run for this documentation/cleanup checkpoint.
 
 ### Batch17 validation retained
 
