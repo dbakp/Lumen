@@ -9,6 +9,8 @@ struct OpenSourceLicensesView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
+                NavigationLink("MiniLM Library search · Apache 2.0") { MiniLMLicenseView() }.frame(minHeight: 44)
+                Divider()
                 Text("ZIPFoundation").font(.title.bold())
                 Text("Version 0.9.20 · MIT license").font(.subheadline).foregroundStyle(Theme.secondary)
                 Text("Reads Apple Health ZIP exports on your device.").font(.body)

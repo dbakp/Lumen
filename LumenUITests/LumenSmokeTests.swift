@@ -690,8 +690,15 @@ final class LumenSmokeTests: XCTestCase {
     }
 
     func testLibraryRetrievalAndWithdrawal() throws {
+        app.terminate(); app.launchArguments = ["-resetForUITests", "-librarySearchRemoteUITestMode"]; app.launch()
         try prepareRetrievalLibrary(allShared: true)
         snap("210-library-search-intro")
+        askLibrary("Find my walking records.")
+        let allMatches = app.buttons["libraryReferencesToggle"].firstMatch; reveal(allMatches); allMatches.tap()
+        XCTAssertEqual(app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'library-reference-' ")).count, 4)
+        let fourth = app.buttons["library-reference-4"].firstMatch; reveal(fourth); snap("209-four-literal-library-matches"); fourth.tap()
+        XCTAssertTrue(app.staticTexts["reference-excerpt"].waitForExistence(timeout: 5)); XCTAssertTrue(app.staticTexts["reference-excerpt"].label.contains("walking route")); tap("Done")
+        tap("Conversation actions"); tap("New conversation")
         askLibrary("What does my record say about ferritin?")
         let reply = app.staticTexts["coachMessage"].firstMatch
         XCTAssertTrue(reply.label.contains("12.5 mg/L")); XCTAssertFalse(reply.label.contains("PRIVATE-CANARY")); snap("211-library-search-reply")
@@ -709,7 +716,7 @@ final class LumenSmokeTests: XCTestCase {
         let saved = app.buttons["View saved document"].firstMatch; reveal(saved); saved.tap()
         let savedRefs = app.buttons["Library matches"].firstMatch; reveal(savedRefs); savedRefs.tap(); reveal(app.buttons["library-reference-1"].firstMatch); snap("216-library-saved-references")
         app.navigationBars["Document"].buttons.element(boundBy: 0).tap()
-        app.terminate(); app.launchArguments = []; app.launch(); tab("Assistant")
+        app.terminate(); app.launchArguments = ["-librarySearchRemoteUITestMode"]; app.launch(); tab("Assistant")
         openLibraryReference(); snap("217-library-reference-persisted"); tap("Done")
         askLibrary("What does my record say about ferritin?", replies: 2)
         XCTAssertTrue(app.staticTexts.matching(identifier: "coachMessage").element(boundBy: 1).label.contains("No match in the shared documents searched"))
@@ -1411,6 +1418,136 @@ final class LumenSmokeTests: XCTestCase {
     func openScheduledPlan() {
         tab("Assistant"); tap("Conversation actions"); tap("Make a multiweek plan")
         XCTAssertTrue(app.navigationBars["Make a plan"].waitForExistence(timeout: 5))
+    }
+
+    func openLibrarySearchSettings() {
+        tab("Today"); tap("Settings")
+        let link = app.buttons["librarySearchSettings"].firstMatch; reveal(link); link.tap()
+        XCTAssertTrue(app.navigationBars["Library search"].waitForExistence(timeout: 5))
+    }
+    func closeLibrarySearchSettings() {
+        app.navigationBars["Library search"].buttons.element(boundBy: 0).tap(); tap("Done")
+    }
+    func createSemanticNote(title: String, body: String, shared: Bool) {
+        tab("Library"); tap("Add document"); tap("Write a note")
+        let titleField = app.textFields["Document title"].firstMatch; XCTAssertTrue(titleField.waitForExistence(timeout: 5))
+        titleField.tap(); titleField.typeText(title)
+        let text = app.textViews.firstMatch; text.tap(); text.typeText(body)
+        XCTAssertEqual(text.value as? String, body)
+        if shared { nativeSwitch("Use in assistant", enabled: true) }
+        tap("Save"); XCTAssertTrue(app.navigationBars["Library"].waitForExistence(timeout: 5))
+    }
+    func testRelatedTopicSearchLifecycle() throws {
+        app.terminate(); app.launchArguments = ["-resetForUITests", "-librarySearchUITestMode"]; app.launch(); finishOnboarding()
+        createSemanticNote(title: "Consultation note", body: "Persistent tiredness and low energy over several weeks.", shared: true)
+        createSemanticNote(title: "Private exhausted detail", body: "PRIVATE-SEMANTIC-CANARY Feeling exhausted after exercise.", shared: false)
+        tab("Assistant"); askLibrary("What did my saved notes say about feeling exhausted?")
+        let first = app.staticTexts.matching(identifier: "coachMessage").firstMatch
+        XCTAssertTrue(first.label.contains("No match")); snap("390-topic-keyword-default")
+        openLibrarySearchSettings(); snap("391-topic-model-off")
+        XCTAssertTrue(app.staticTexts["meaningSearchFixtureLabel"].exists)
+        tap("meaningSearchDownload")
+        XCTAssertTrue(app.buttons["meaningSearchCancel"].waitForExistence(timeout: 5)); snap("392-topic-copy-progress")
+        tap("meaningSearchCancel")
+        XCTAssertTrue(app.buttons["meaningSearchDownload"].waitForExistence(timeout: 30)); XCTAssertFalse(app.switches["meaningSearchToggle"].exists)
+        tap("meaningSearchDownload")
+        let toggle = app.switches["meaningSearchToggle"].firstMatch
+        XCTAssertTrue(toggle.waitForExistence(timeout: 90)); XCTAssertEqual(toggle.value as? String, "1"); snap("393-topic-model-enabled")
+        closeLibrarySearchSettings(); tab("Assistant"); askLibrary("What did my saved notes say about feeling exhausted?", replies: 2)
+        let reply = app.staticTexts.matching(identifier: "coachMessage").element(boundBy: 1)
+        XCTAssertTrue(reply.label.contains("Persistent tiredness")); XCTAssertFalse(reply.label.contains("PRIVATE-SEMANTIC-CANARY"))
+        let disclosure = app.buttons.matching(identifier: "libraryReferencesToggle").allElementsBoundByIndex.last!; reveal(disclosure); disclosure.tap()
+        let method = app.staticTexts["librarySearchMethod"].firstMatch; reveal(method)
+        XCTAssertTrue(method.label.contains("English related topics")); snap("394-topic-real-model-result")
+        let reference = app.buttons["library-reference-1"].firstMatch; reveal(reference); reference.tap()
+        XCTAssertTrue(app.staticTexts["reference-excerpt"].waitForExistence(timeout: 5)); XCTAssertEqual(app.staticTexts["reference-excerpt"].label, "Persistent tiredness and low energy over several weeks.")
+        snap("395-topic-exact-reference"); tap("Done")
+        app.terminate(); app.launchArguments = ["-librarySearchUITestMode"]; app.launch()
+        openLibrarySearchSettings(); XCTAssertEqual(app.switches["meaningSearchToggle"].value as? String, "1"); snap("396-topic-relaunched")
+        closeLibrarySearchSettings(); tab("Assistant"); askLibrary("What did my saved notes say about feeling exhausted?", replies: 3)
+        XCTAssertTrue(app.staticTexts.matching(identifier: "coachMessage").element(boundBy: 2).label.contains("Persistent tiredness"))
+        openLibrarySearchSettings()
+        nativeSwitch("meaningSearchToggle", enabled: false)
+        XCTAssertTrue(app.buttons["meaningSearchDelete"].waitForExistence(timeout: 15)); XCTAssertEqual(app.switches["meaningSearchToggle"].value as? String, "0"); snap("397-topic-disabled-kept")
+        tap("meaningSearchDelete"); XCTAssertTrue(app.buttons["meaningSearchDownload"].waitForExistence(timeout: 30)); snap("398-topic-model-deleted")
+        closeLibrarySearchSettings(); tab("Assistant"); askLibrary("What did my saved notes say about feeling exhausted?", replies: 4)
+        XCTAssertTrue(app.staticTexts.matching(identifier: "coachMessage").element(boundBy: 3).label.contains("No match"))
+        snap("399-topic-keyword-after-delete")
+    }
+    func testRelatedTopicRemoteInstallAndErase() throws {
+        // Actual public pinned download, hash checks, compilation and inference.
+        // The separately labelled local lookup path sends no generative request.
+        app.terminate(); app.launchArguments = ["-resetForUITests", "-librarySearchRemoteUITestMode"]; app.launch(); finishOnboarding()
+        createSemanticNote(title: "Consultation note", body: "Persistent tiredness and low energy over several weeks.", shared: true)
+        openLibrarySearchSettings(); XCTAssertFalse(app.staticTexts["meaningSearchFixtureLabel"].exists)
+        XCTAssertTrue(app.buttons["Download & enable"].exists); snap("413-topic-real-download-before")
+        tap("meaningSearchDownload")
+        let cancel = app.buttons["meaningSearchCancel"].firstMatch
+        XCTAssertTrue(cancel.waitForExistence(timeout: 5)); snap("420-topic-real-download-progress"); cancel.tap()
+        let retry = app.buttons["meaningSearchDownload"].firstMatch
+        XCTAssertTrue(retry.waitForExistence(timeout: 30)); snap("421-topic-real-download-cancelled"); retry.tap()
+        XCTAssertTrue(app.switches["meaningSearchToggle"].waitForExistence(timeout: 240)); XCTAssertFalse(app.staticTexts["meaningSearchError"].exists); snap("414-topic-real-download-installed")
+        closeLibrarySearchSettings(); tab("Assistant"); askLibrary("What did my saved notes say about feeling exhausted?")
+        XCTAssertTrue(app.staticTexts["coachMessage"].label.contains("Persistent tiredness")); snap("415-topic-network-installed-inference")
+        app.terminate(); app.launchArguments = ["-librarySearchRemoteUITestMode"]; app.launch(); tab("Assistant")
+        askLibrary("What did my saved notes say about feeling exhausted?", replies: 2)
+        XCTAssertTrue(app.staticTexts.matching(identifier: "coachMessage").element(boundBy: 1).label.contains("Persistent tiredness")); snap("416-topic-cold-inference")
+        tab("Library"); let note = app.buttons["Consultation note"].firstMatch; reveal(note); note.tap(); nativeSwitch("Use in assistant", enabled: false)
+        app.navigationBars["Document"].buttons.element(boundBy: 0).tap(); tab("Assistant")
+        askLibrary("What did my saved notes say about feeling exhausted?", replies: 3)
+        let withdrawn = app.staticTexts.matching(identifier: "coachMessage").element(boundBy: 2)
+        XCTAssertTrue(withdrawn.label.contains("No Library documents are shared")); XCTAssertFalse(withdrawn.label.contains("Persistent tiredness")); snap("417-topic-sharing-withdrawn")
+        openLibrarySearchSettings(); nativeSwitch("meaningSearchToggle", enabled: false); snap("422-topic-remote-model-disabled-kept")
+        let delete = app.buttons["meaningSearchDelete"].firstMatch; reveal(delete); delete.tap()
+        XCTAssertTrue(app.buttons["meaningSearchDownload"].waitForExistence(timeout: 30)); snap("423-topic-remote-model-deleted")
+        tap("meaningSearchDownload"); XCTAssertTrue(app.switches["meaningSearchToggle"].waitForExistence(timeout: 240))
+        closeLibrarySearchSettings()
+        tab("Today"); tap("Settings"); let erase = app.buttons["Erase all data"].firstMatch; reveal(erase); erase.tap(); tap("Erase everything")
+        XCTAssertTrue(app.buttons["Get started"].waitForExistence(timeout: 15)); snap("418-topic-erased")
+        app.terminate(); app.launchArguments = ["-librarySearchRemoteUITestMode"]; app.launch(); finishOnboarding(); openLibrarySearchSettings()
+        XCTAssertTrue(app.buttons["meaningSearchDownload"].waitForExistence(timeout: 30)); XCTAssertFalse(app.switches["meaningSearchToggle"].exists); snap("419-topic-model-absent-after-erase")
+    }
+    func testRelatedTopicSearchPresentation() throws {
+        app.terminate(); app.launchArguments = ["-resetForUITests", "-librarySearchUITestMode"]; app.launch(); finishOnboarding()
+        createSemanticNote(title: "Consultation note", body: "Persistent tiredness and low energy over several weeks.", shared: true)
+        openLibrarySearchSettings(); snap("400-topic-light-download")
+        tap("meaningSearchDownload"); XCTAssertTrue(app.switches["meaningSearchToggle"].waitForExistence(timeout: 90))
+        snap("401-topic-light-installed")
+        let modelDetails = app.buttons["Model & license"].firstMatch; reveal(modelDetails); snap("402-topic-sharing-details"); modelDetails.tap()
+        XCTAssertTrue(app.staticTexts["miniLMLicenseText"].waitForExistence(timeout: 5)); snap("403-topic-model-license")
+        app.navigationBars["Model & license"].buttons.element(boundBy: 0).tap(); closeLibrarySearchSettings(); tab("Assistant")
+        askLibrary("What did my saved notes say about feeling exhausted?")
+        XCTAssertTrue(app.staticTexts["coachMessage"].label.contains("Persistent tiredness"))
+        app.terminate(); app.launchArguments = ["-librarySearchUITestMode", "-lumen.appearance", "dark"]; app.launch()
+        openLibrarySearchSettings(); snap("404-topic-dark-controls"); closeLibrarySearchSettings(); tab("Assistant")
+        let disclosure = app.buttons["libraryReferencesToggle"].firstMatch; reveal(disclosure); disclosure.tap()
+        let method = app.staticTexts["librarySearchMethod"].firstMatch; reveal(method); snap("405-topic-dark-source-method")
+        let reference = app.buttons["library-reference-1"].firstMatch; reveal(reference); reference.tap(); snap("406-topic-dark-exact-source"); tap("Done")
+        app.terminate(); app.launchArguments = ["-librarySearchUITestMode", "-lumen.appearance", "light", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]; app.launch()
+        openLibrarySearchSettings(); snap("407-topic-large-heading")
+        let toggle = app.switches["meaningSearchToggle"].firstMatch; reveal(toggle); XCTAssertEqual(toggle.value as? String, "1"); snap("408-topic-large-controls")
+        let privacy = app.staticTexts["Only shared Library text is searched. Topic matching runs on this iPhone; record text isn't sent to the model download host."].firstMatch
+        reveal(privacy); snap("409-topic-large-sharing")
+        closeLibrarySearchSettings(); tab("Assistant"); reveal(disclosure); disclosure.tap(); reveal(method); snap("410-topic-large-source-method")
+        reveal(reference); reference.tap(); XCTAssertTrue(app.staticTexts["reference-excerpt"].waitForExistence(timeout: 5)); snap("411-topic-large-reference-heading")
+        reveal(app.staticTexts["reference-excerpt"]); snap("412-topic-large-excerpt"); tap("Done")
+    }
+    func testRelatedTopicLargeCoverage() throws {
+        app.terminate(); app.launchArguments = ["-resetForUITests", "-librarySearchUITestMode"]; app.launch(); finishOnboarding()
+        createSemanticNote(title: "Consultation note", body: "Persistent tiredness and low energy over several weeks.", shared: true)
+        openLibrarySearchSettings(); tap("meaningSearchDownload")
+        XCTAssertTrue(app.switches["meaningSearchToggle"].waitForExistence(timeout: 90)); closeLibrarySearchSettings(); tab("Assistant")
+        askLibrary("What did my saved notes say about feeling exhausted?")
+        XCTAssertTrue(app.staticTexts["coachMessage"].label.contains("Persistent tiredness"))
+        app.terminate(); app.launchArguments = ["-librarySearchUITestMode", "-lumen.appearance", "light", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]; app.launch(); tab("Assistant")
+        let disclosure = app.buttons["libraryReferencesToggle"].firstMatch; reveal(disclosure); disclosure.tap()
+        let coverage = app.staticTexts["Related-topic search compared the only prepared excerpt."].firstMatch
+        reveal(coverage); XCTAssertTrue(coverage.isHittable); snap("424-topic-large-comparison-coverage")
+        let reference = app.buttons["library-reference-1"].firstMatch
+        reveal(reference); XCTAssertTrue(reference.isHittable); snap("425-topic-large-source-row")
+        reference.tap(); XCTAssertTrue(app.staticTexts["reference-excerpt"].waitForExistence(timeout: 5))
+        reveal(app.staticTexts["reference-excerpt"]); XCTAssertEqual(app.staticTexts["reference-excerpt"].label, "Persistent tiredness and low energy over several weeks.")
+        snap("426-topic-large-literal-source")
     }
     func enterPlanGoal(_ text: String, capture: String? = nil) {
         reveal(app.buttons["editScheduledPlanGoal"].firstMatch); tap("editScheduledPlanGoal")

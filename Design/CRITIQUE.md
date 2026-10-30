@@ -441,3 +441,8 @@ The same continuing critic opened all **34 original-size captures** in `native/p
 **Done by the stop rule:**10/11 applicable lines at4+ (90.9%), none below3, Concept/Finish/Native/Copy all4. Every named concrete visual/copy defect is closed. No new UI change, decoration or optional portfolio pass is requested. No app UI source changed after this sign-off. Normal native scroll edges remain normal; the earlier focused-end defect is directly replaced by372/382.
 
 The source map retains the exact boundaries: R11 normal delivery and R12 calendar editing are passing cases inside failed mixed bundles, R13 presentation is a passing bundle, R5 cancellation is its earlier passing case inside a failed mixed bundle. Design approval does not create a combined passing suite or establish live-provider, travel-time-zone execution, clinical, signed-device or VoiceOver validation.
+
+
+## Batch 19 · related-topic search · 31 October 2026
+
+The continuing App Designer Pro critic accepts R2 and supplemental cache-state/XXXL/final four-reference evidence at10/11 applicable lines at4, Richness3. All quoted copy/affordance/layout requests are closed; unknown source selection remains unrecorded and no confidence score is invented. Exact original pixels, source boundaries, earlier failures and the accepted scorecards are in [the native review](native/semantic-search/CRITIQUE.md). Passing simulator/visual results do not establish clinical relevance, live-provider quality, VoiceOver or physical-device performance.

@@ -256,6 +256,9 @@ public struct SettingsView: View {
                     Image(systemName: "chevron.right").font(.caption).foregroundStyle(.tertiary)
                 }
             }
+            NavigationLink { LibrarySearchSettingsView() } label: {
+                Label("Library search", systemImage: "text.magnifyingglass")
+            }.accessibilityIdentifier("librarySearchSettings")
             if !health.chat.isEmpty {
                 Button("Clear coach conversation", role: .destructive) { health.chat = []; health.persist() }
             }
@@ -308,6 +311,7 @@ public struct SettingsView: View {
         HealthBackgroundSync.shared.resetUserState()
         HealthKitService.shared.disconnectLocally()
         LocalStore.eraseAll()
+        SemanticSearchService.shared.removeModel()
         SecureStore.eraseAll()
         StravaService.shared.disconnect()
         UNUserNotificationCenterBridge.removeAll()

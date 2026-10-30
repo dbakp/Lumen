@@ -32,6 +32,9 @@ public struct CoachView: View {
         ScrollViewReader { proxy in
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
+                    #if DEBUG && targetEnvironment(simulator)
+                    if SemanticSearchService.usesLocalReplyTest { Text("Local model test · no generative provider request").font(.footnote).foregroundStyle(Theme.secondary) }
+                    #endif
                     if health.chat.isEmpty { intro } else {
                         ForEach(health.chat) { message in
                             VStack(alignment: .leading, spacing: 6) {

@@ -1,10 +1,10 @@
 # Question-based Library retrieval
 
-Batch 14 replaces the five-most-recent, first-3,000-character record block in assistant requests with a local question-based search. It does not extract structured labs or create clinical measurements.
+Batch 14 replaces the five-most-recent, first-3,000-character record block in assistant requests with a local question-based search. Batch 19 adds optional English related-topic ranking beside that keyword path; see [local related-topic search](SEMANTIC_SEARCH.md). Neither route extracts structured labs or creates clinical measurements.
 
 ## Search and consent
 
-Only documents with **Use in assistant** enabled enter the index. Each question builds an in-memory SQLite FTS5 index on a cancellable background task. SQLite temporary storage is also memory-only. There is no persistent duplicate search database, embedding service or remote search. The selected AI provider still receives the existing current health summary and conversation context plus the selected Library excerpts; this is not a claim that the whole assistant runs locally.
+Only documents with **Use in assistant** enabled enter the index. Each question builds an in-memory SQLite FTS5 index on a cancellable background task. SQLite temporary storage is also memory-only. There is no persistent duplicate search database or remote embedding/search service. The optional encoder keeps a bounded private RAM cache; generic downloaded model/runtime files are separate from health records and excluded from backups. The selected AI provider still receives the existing current health summary and conversation context plus the selected Library excerpts; this is not a claim that the whole assistant runs locally.
 
 The lexical search uses Unicode tokenization, case/diacritic folding, bounded English stop words and longer-word prefixes. It ranks title and body matches, selects at most four non-overlapping passages, and limits each document to two passages. Paragraphs are split into 900-character windows with a 120-character overlap. The current plan status and checklist, including completion and planned calendar days (or legacy UTC due dates), accompany a saved plan's prose. Unchanged imported text can retain reviewed page numbers; text edited after review uses excerpt locations instead. These locations describe saved text, not verified original-file pagination.
 
@@ -13,6 +13,8 @@ Limits per question: 5,000 shared documents, 20 million characters, 80 MB of UTF
 The app checks consent and content again after the background search and before calling the provider. A changed selected record asks for a new question. If a request has already reached a provider, changing a local switch cannot recall that request. Provider use follows the existing user selection; the recorded provider is captured before the asynchronous search.
 
 ## Replies and references
+
+Literal lookup keeps the full bounded selection, up to four excerpts and two per document. Later related-topic results must not disappear behind leading keyword matches. Selection method and actual comparison coverage accompany new references; missing older selection metadata stays unrecorded. Topic similarity is not proof that an excerpt answers a question. Referenced Markdown sharing preserves that method/limit disclosure as well as exact text.
 
 Each selected passage gets a fresh request-specific identifier. The provider receives untrusted JSON reference blocks and instructions to cite only those exact identifiers. Lumen converts recognized identifiers to visible numbers. Unknown, stale and bare numbered reference markers become **reference unavailable**, never a link to an unrelated record. Model-supplied Markdown destinations attached to these markers are removed; a Library number cannot become an arbitrary external link. This checks reference identity; it does not establish that a model's claim is supported, medically correct or complete.
 

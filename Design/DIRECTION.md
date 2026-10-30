@@ -1,5 +1,11 @@
 # Lumen direction
 
+## Batch 19 · local related-topic Library search (in development)
+
+Preserve the daylight-observatory palette, expanded display headings and native grouped navigation. Add **Library search** under Coach settings. The first heading is **Find related wording**; native controls distinguish **Download & enable**, **Related-topic search**, **Cancel** and **Delete model**. Show actual transfer bytes, separate checking/preparing states and a stopping state while native work finishes. Download is 45 MB, preparation needs 250 MB free; only the compiled model and receipt remain installed. Turning off retains generic weights and stops the encoder/RAM cache; deletion waits for workers to stop. English-only topic ranking supplements keyword search, with source sharing still controlled by each document.
+
+Sources name **Keyword match**, **Related topic**, **Keyword + related topic** or **Kept from the earlier reply**. The expanded source view reports actual comparison coverage and warns that related topics may not answer the question. Reference sheets keep the exact saved excerpt and current/sharing/deletion states. No medical confidence score is shown. Model details retain the pinned attribution and Apache license. Light/dark/XXXL review and continuing-critic rounds remain pending; these words are the development contract, not a delivery claim. No new concept, icon, paywall, store set or promotional motion is introduced.
+
 ## Brief (self-authored from the user's go-ahead)
 A private, native iPhone health companion. First ten seconds: understand what matters today and record how you feel. Light first; precise, humane, luminous. Keep the name, Apple Health, Watch, widgets, nutrition, activity, sleep, sounds, trends, local storage and optional AI providers. No subscription is introduced.
 

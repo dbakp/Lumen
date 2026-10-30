@@ -21,7 +21,11 @@ public final class ChatCoachService: ObservableObject {
         let history = conversationHistory ?? Array(health.chat.dropLast()) // latest user message is `text`
         let selectedBrain = AIService.shared.brain
         let documents = CompanionStore.shared.documents
-        let search = Task.detached(priority: .userInitiated) { try RecordRetrieval.search(query: text, documents: documents, history: history) }
+        let modelLease = await SemanticSearchService.shared.lease()
+        guard !Task.isCancelled else { return "" }
+        let search = Task.detached(priority: .userInitiated) {
+            try await HybridLibrarySearch.search(query: text, documents: documents, history: history, encoder: modelLease.encoder, enabled: modelLease.enabled)
+        }
         let references: RecordReplyContext
         do {
             references = try await withTaskCancellationHandler(operation: { try await search.value }, onCancel: { search.cancel() })
@@ -30,6 +34,9 @@ public final class ChatCoachService: ObservableObject {
             return "Library search couldn't finish. Try again, or open the record in Library."
         }
         guard !Task.isCancelled else { return "" }
+        guard SemanticSearchService.shared.isCurrent(modelLease) else {
+            return "Library search settings changed during this request. Send your question again to use the current settings."
+        }
         // Consent/content may change while the background search is running.
         let currentDocuments = CompanionStore.shared.documents
         guard references.passages.allSatisfy({ RecordRetrieval.isCurrent($0, documents: currentDocuments) }) else {
@@ -39,14 +46,30 @@ public final class ChatCoachService: ObservableObject {
         let instructions = CompanionStore.shared.context(health: health) + "\n\n" + CoachingEngine.contextPrompt(metrics: health.metrics, readiness: health.readiness, goals: health.goals,
                                                         workoutsToday: health.workoutsToday, estimatedSleepDebt: health.assistantSleepDebt) + "\nWhen asked for a plan, provide a short title, a brief reason tied to recorded data, and 3–5 numbered, flexible steps that can become a checklist. Do not alter medication or prescribe treatment."
         let fullInstructions = instructions + "\n\n" + RecordRetrieval.prompt(references)
+        #if DEBUG && targetEnvironment(simulator)
+        if SemanticSearchService.usesLocalReplyTest {
+            let lookup = RecordRetrieval.localReply(references, query: text)
+            lastRecordContext = lookup.1
+            lastReplySource = "Local model test · no provider request"
+            return lookup.0
+        }
+        #endif
         if let ai = await AIService.shared.chat(instructions: fullInstructions, history: safeHistory, user: text, using: selectedBrain),
            !ai.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            guard !Task.isCancelled, SemanticSearchService.shared.isCurrent(modelLease),
+                  references.passages.allSatisfy({ RecordRetrieval.isCurrent($0, documents: CompanionStore.shared.documents) }) else {
+                return "Library records or search settings changed during this reply. Send your question again to use the current settings."
+            }
             lastReplySource = selectedBrain.label
             let resolved = RecordRetrieval.resolving(ai.trimmingCharacters(in: .whitespacesAndNewlines), context: references)
             lastRecordContext = resolved.1
             return resolved.0
         }
         guard !Task.isCancelled else { return "" }
+        guard SemanticSearchService.shared.isCurrent(modelLease),
+              references.passages.allSatisfy({ RecordRetrieval.isCurrent($0, documents: CompanionStore.shared.documents) }) else {
+            return "Library records or search settings changed during this reply. Send your question again to use the current settings."
+        }
         if !PlanBuilder.isRequest(text), !references.passages.isEmpty || RecordRetrieval.isLibraryQuestion(text, history: history) {
             let lookup = RecordRetrieval.localReply(references, query: text)
             lastRecordContext = lookup.1

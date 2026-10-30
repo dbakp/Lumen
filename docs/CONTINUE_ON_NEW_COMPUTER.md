@@ -31,7 +31,7 @@ The original prompt below remains the product brief. The full goal remains activ
 /goal Continue developing Lumen into a world-class, primarily iOS, AI health assistant.
 
 Repository: https://github.com/dbakp/Lumen  
-Latest published application commit: `f8efaa8b5195d1692363a9a2ac330050288e6c55`
+Latest published application commit: `a0426827fcacedfc4026445e649ee2984fc91a50`
 
 Branch: `main`
 
@@ -82,7 +82,19 @@ Use the attached App Designer Pro skill. Preserve the established design directi
 
 - Reviewed1/2/4/8-week plans with selected-provider proposals or an explicit local template, full wording/date review, fresh acknowledgement, checked saving, matching Library/agenda calendar days and sharing off by default.
 
-### Latest validation · Batch18
+### Latest validation · Batch19 · 31 October 2026
+
+Batch 19 is implemented and locally verified; publication is recorded after GitHub read-back. It adds optional English on-device related-topic Library ranking, explicit 45 MB model download/enable/cancel/off/delete, exact source method/coverage, and a complete four-excerpt literal packet. Sharing/source/settings guards remain; generic model files are separate from exported health data. Runtime-cache cleanup is bounded to packages matching eight fingerprints from the pinned weights and runs only after encoders/workers stop. Unknown layouts/unrelated caches remain untouched.
+
+- **585 production-logic checks**, **21 actual-model/compatibility checks**, **14 actual installation checks**, plus **two isolated low-space checks** pass. The nine-case synthetic quality diagnostic retains the iron-stores miss and unexpected selections; it is not clinical validation.
+- All five simulator targets build for testing; unsigned generic-iOS Release passes, minimum OS18. The build mirror matches **169 native files** and **20 package/test files**. Native SHA-256: `941298de4cd7de78ef0708bf470f0390c870dd1c1cf0507881d5842c6ad5fff0`. No test flags/labels or model packages remain in Release; the vocabulary hash matches its pin.
+- Final-source native Library/four-reference/save/relaunch/withdrawal/edit/delete passes **279.672s** and remote download/cancel/retry/compile/inference/cold load/withdrawal/delete/erase passes **240.356s**, together with zero failures/skips/recorded runtime warnings. Cache-fixed earlier lifecycle **204.435s**, presentation **232.935s** and targeted XXXL coverage **145.770s** pass in a separate bundle; their one-result UI is unchanged by final backend-only refinements. Failed earlier bundles remain explicitly failed.
+- The first on-disk erase audit exposed about901 MB of stale Core ML CPU programs. Final read-back finds no managed model directory, temporary compiled model or CPU caches; unrelated Metal files remain at **496,648 bytes**. This is the dedicated simulator, not every physical-device cache format.
+- The same critic accepts R2 and cache-state/XXXL/final four-reference supplements at **10/11 applicable lines at 4, Richness3**, no concrete defects. Original reviewed pixels, source boundaries, failed history and compact evidence are in `Design/native/semantic-search`; see [the contract](SEMANTIC_SEARCH.md).
+
+The full goal remains active: structured labs/broader ingestion, comprehensive English/multilingual relevance, live providers, signed-device Health/Watch/voice, physical performance/accessibility and release/privacy governance remain open. After publication, remove only redundant task-owned artifacts and record the actual recovered space; do not rebuild for that documentation/cleanup checkpoint.
+
+### Batch18 validation retained
 
 - **548 production-logic checks pass**, including strict multiweek proposals, stable identities, calendar days, planned/current retrieval state and actual backup/readable round trips. Existing checks remain.
 - All five simulator targets and an unsigned generic-iOS-device **Release** build pass. Final equality covers **159 native/project/UI-test files** and **17 package/test/check-script files**. Native SHA-256: `9dd0fe45624033eaef743b9f6413153696b99ddf0c1d66558bb099a9f8b52720`. Release min OS stays18.0; simulated plan/speech labels and the temporary numeric probe are absent. Later changes affect UI-test gestures/captures only; app source matches the Release build.

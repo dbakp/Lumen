@@ -1,0 +1,27 @@
+{
+  "scope": "Synthetic English topic-retrieval diagnostics; expected context is not a clinical answer or medical-quality benchmark.",
+  "documents": [
+    {"id":"fatigue","title":"Consultation note","body":"Persistent tiredness and low energy over several weeks."},
+    {"id":"sleep","title":"Sleep diary","body":"Difficulty falling asleep, with long periods awake after going to bed."},
+    {"id":"edema","title":"Examination note","body":"Bilateral pedal edema was documented during the examination."},
+    {"id":"ferritin","title":"Laboratory report","body":"Ferritin 8 ug/L. Reference interval 20 to 200 ug/L. Review the original report."},
+    {"id":"iron-pan","title":"Kitchen note","body":"The cast iron pan should be cleaned and seasoned after cooking."},
+    {"id":"finance","title":"Household budget","body":"The accountant prepared a summary of quarterly income and expenses."},
+    {"id":"battery","title":"Equipment note","body":"The portable battery has low energy and needs charging before the journey."},
+    {"id":"no-swelling","title":"Earlier visit","body":"The patient denied ankle swelling at this visit. No edema was observed."},
+    {"id":"left-ankle","title":"Walking note","body":"Swelling of the left ankle after a walk. The right ankle was unchanged."},
+    {"id":"right-ankle","title":"Later appointment","body":"Swelling was recorded in the right ankle. There was no swelling in the left ankle."},
+    {"id":"glucose","title":"Sample LAB-42","body":"Fasting glucose 5.4 mmol/L, not 54 mmol/L. Sample LAB-42."}
+  ],
+  "cases": [
+    {"id":"differently-worded-fatigue","question":"What did my saved notes say about feeling exhausted?","expected":["fatigue"]},
+    {"id":"differently-worded-sleep","question":"Find records about trouble getting to sleep.","expected":["sleep"]},
+    {"id":"differently-worded-edema","question":"Which notes describe swelling in both feet?","expected":["edema"]},
+    {"id":"iron-stores-known-risk","question":"What did my saved records say about iron stores?","expected":["ferritin"]},
+    {"id":"exact-lab-identifier","question":"What does sample LAB-42 say about glucose?","expected":["glucose"]},
+    {"id":"negation-needs-excerpt","question":"Which record says ankle swelling was denied?","expected":["no-swelling"]},
+    {"id":"laterality-needs-both-excerpts","question":"Find the walking and later appointment notes about my left ankle.","expected":["left-ankle","right-ankle"]},
+    {"id":"non-health-record","question":"What did the accountant say about expenses?","expected":["finance"]},
+    {"id":"literal-kitchen-record","question":"Find my cast iron pan cleaning note.","expected":["iron-pan"]}
+  ]
+}

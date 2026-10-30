@@ -4,6 +4,20 @@ import Darwin
 @main struct ImportTests {
     static func main() async throws {
         setbuf(stdout, nil)
+        if CommandLine.arguments.count == 5, CommandLine.arguments[1] == "--semantic-benchmark" {
+            try await MiniLMChecks.benchmark(source: URL(fileURLWithPath: CommandLine.arguments[2]), compiled: URL(fileURLWithPath: CommandLine.arguments[3]), output: URL(fileURLWithPath: CommandLine.arguments[4])); return
+        }
+        #if DEBUG
+        if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--semantic-space-check" {
+            try await MiniLMChecks.lowSpace(destination: URL(fileURLWithPath: CommandLine.arguments[2])); return
+        }
+        if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--semantic-install-check" {
+            try await MiniLMChecks.install(source: URL(fileURLWithPath: CommandLine.arguments[2])); return
+        }
+        #endif
+        if CommandLine.arguments.count == 4, CommandLine.arguments[1] == "--semantic-model-check" {
+            try await MiniLMChecks.model(source: URL(fileURLWithPath: CommandLine.arguments[2]), compiled: URL(fileURLWithPath: CommandLine.arguments[3])); return
+        }
         if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--readable-ui-fixtures" {
             try ReadableExportChecks.fixtures(URL(fileURLWithPath: CommandLine.arguments[2])); return
         }
@@ -18,6 +32,8 @@ import Darwin
         }
         try VoiceDraftChecks.run()
         try ScheduledPlanChecks.run()
+        try MiniLMChecks.run()
+        try await MiniLMChecks.cacheChecks()
         let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         defer { try? FileManager.default.removeItem(at: directory) }

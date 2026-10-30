@@ -26,6 +26,17 @@ struct RecordSourcesView: View {
                      : "\(context.searchedDocuments.formatted()) of \(context.sharedDocuments.formatted()) shared document\(context.sharedDocuments == 1 ? "" : "s") searched")
                     .font(.caption).foregroundStyle(Theme.secondary)
                 if context.limited { Text("Search limits reached. Some shared text wasn't searched.").font(.footnote).foregroundStyle(Theme.secondary) }
+                Text(method).font(.footnote).foregroundStyle(Theme.secondary).accessibilityIdentifier("librarySearchMethod")
+                if let audit = context.meaningSearch, audit.status == .used {
+                    Text("Related topics may not answer your question. Check the excerpt before relying on it.").font(.footnote).foregroundStyle(Theme.secondary)
+                    Text(audit.indexedPassages == 1 && audit.comparedPassages == 1
+                         ? "Related-topic search compared the only prepared excerpt."
+                         : "Compared \(audit.comparedPassages.formatted()) of \(audit.indexedPassages.formatted()) prepared excerpts for related topics.")
+                        .font(.caption).foregroundStyle(Theme.secondary)
+                    if audit.limited { Text("Some related-topic comparisons were skipped.").font(.footnote).foregroundStyle(Theme.secondary) }
+                } else if context.meaningSearch?.limited == true {
+                    Text("Related-topic comparison limits reached. Keyword results are shown.").font(.footnote).foregroundStyle(Theme.secondary)
+                }
                 if context.passages.isEmpty { Text("No matching excerpts were selected.").font(.footnote).foregroundStyle(Theme.secondary) }
                 ForEach(context.passages) { passage in
                     Button { selected = passage } label: {
@@ -35,6 +46,7 @@ struct RecordSourcesView: View {
                             VStack(alignment: .leading, spacing: 4) {
                                 Text(verbatim: passage.title).font(.subheadline.weight(.semibold)).foregroundStyle(Theme.text).multilineTextAlignment(.leading)
                                 Text(passage.location).font(.caption).foregroundStyle(Theme.secondary)
+                                Text(passage.selectionLabel).font(.caption).foregroundStyle(Theme.secondary)
                                 if context.mode == .model { Text(passage.referenced ? "Referenced in reply" : "Shared with provider · not cited").font(.caption).foregroundStyle(Theme.secondary) }
                             }
                             Spacer(minLength: 0)
@@ -47,6 +59,29 @@ struct RecordSourcesView: View {
             }
         }.tint(Theme.accent)
             .sheet(item: $selected) { RecordReferenceView(passage: $0, context: context) }
+    }
+    private var method: String {
+        switch context.meaningSearch?.status {
+        case .used: return "Keyword search + English related topics · on this iPhone"
+        case .unavailable: return "Keyword search · related-topic model unavailable"
+        case .unsupportedLanguage: return "Keyword search · question not identified as English"
+        case .queryTooLong: return "Keyword search · question too long for topic matching"
+        case .failed: return "Keyword search · related-topic search couldn't finish"
+        case .notNeeded: return "Keyword search · no additional topic comparison"
+        case .off, .none: return "Keyword search"
+        }
+    }
+}
+
+private extension LibraryPassage {
+    var selectionLabel: String {
+        switch selection {
+        case .relatedTopic: return "Related topic"
+        case .keywordAndRelatedTopic: return "Keyword + related topic"
+        case .carried: return "Kept from the earlier reply"
+        case .keyword: return "Keyword match"
+        case .none: return "Selection method not recorded"
+        }
     }
 }
 
@@ -64,6 +99,10 @@ private struct RecordReferenceView: View {
                         Text("Reference \(passage.number)").font(.footnote.weight(.semibold)).foregroundStyle(Theme.accent)
                         Text(verbatim: passage.title).font(.largeTitle.bold()).fontWidth(.expanded).tracking(-1)
                         Text(passage.location).font(.subheadline).foregroundStyle(Theme.secondary)
+                        Text(passage.selectionLabel).font(.subheadline).foregroundStyle(Theme.secondary)
+                        if passage.selection == .relatedTopic || passage.selection == .keywordAndRelatedTopic {
+                            Text("This excerpt may not answer your question.").font(.subheadline).foregroundStyle(Theme.secondary)
+                        }
                         Text(verbatim: passage.source).font(.footnote).foregroundStyle(Theme.secondary)
                     }
                     VStack(alignment: .leading, spacing: 10) {
