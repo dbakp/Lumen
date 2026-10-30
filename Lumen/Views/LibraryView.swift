@@ -1,6 +1,4 @@
 import SwiftUI
-import UniformTypeIdentifiers
-import PDFKit
 
 struct LibraryView: View {
     @EnvironmentObject var health: HealthStore
@@ -8,9 +6,8 @@ struct LibraryView: View {
     @State private var search = ""
     @State private var kind: HealthDocument.Kind?
     @State private var importing = false
+    @State private var recordWorkspace: RecordWorkspace?
     @State private var editing: HealthDocument?
-    @State private var error: String?
-    @State private var extracting = false
     var filtered: [HealthDocument] {
         companion.documents.filter { (kind == nil || $0.kind == kind) && (search.isEmpty || $0.title.localizedCaseInsensitiveContains(search) || $0.body.localizedCaseInsensitiveContains(search)) }
     }
@@ -30,7 +27,6 @@ struct LibraryView: View {
                 NavigationLink { PlanAgendaView() } label: {
                     LumenRow("Your next steps", subtitle: "Pending actions from your active plans", icon: "list.bullet", color: Theme.accent)
                 }.buttonStyle(.plain)
-                if extracting { ProgressView("Reading your record locally…") }
                 if filtered.isEmpty {
                     EmptyStateCard(icon: "doc.text", title: search.isEmpty ? "Keep what matters" : "No matching documents", message: "Plans from your assistant, weekly reviews and your own records live here.", actionTitle: "Write a note") { newNote() }
                 }
@@ -42,6 +38,7 @@ struct LibraryView: View {
                                 Text(doc.title).font(.headline).foregroundStyle(Theme.text)
                                 Text(doc.body).font(.subheadline).foregroundStyle(Theme.secondary).lineLimit(2)
                                 Text("\(doc.kind.rawValue.capitalized) · \(doc.updatedAt.formatted(date: .abbreviated, time: .omitted))").font(.caption).foregroundStyle(Theme.tertiary)
+                                if doc.extraction != nil { Text("Reviewed import").font(.caption.weight(.semibold)).foregroundStyle(Theme.accent) }
                                 if doc.kind == .plan { Text(doc.status.label).font(.caption.weight(.semibold)).foregroundStyle(Theme.accent) }
                                 if !doc.steps.isEmpty { Text("\(doc.steps.filter(\.isDone).count) of \(doc.steps.count) \(doc.steps.count == 1 ? "step" : "steps") completed").font(.caption).foregroundStyle(Theme.accent) }
                             }
@@ -69,8 +66,10 @@ struct LibraryView: View {
                 }
             }
             .sheet(item: $editing) { DocumentEditor(document: $0) }
-            .fileImporter(isPresented: $importing, allowedContentTypes: [.plainText, .pdf, UTType(filenameExtension: "md") ?? .plainText]) { result in importRecord(result) }
-            .alert("Couldn't import record", isPresented: Binding(get: { error != nil }, set: { if !$0 { error = nil } })) { Button("OK") { error = nil } } message: { Text(error ?? "") }
+            .sheet(isPresented: $importing, onDismiss: { recordWorkspace?.cleanup(); recordWorkspace = nil }) {
+                RecordImportView(onWorkspaceReady: { recordWorkspace = $0 }) { kind = .record; search = "" }
+            }
+
     }
     func filterButton(_ title: String, value: HealthDocument.Kind?) -> some View {
         Button(title) { kind = value }
@@ -80,27 +79,7 @@ struct LibraryView: View {
             .accessibilityAddTraits(kind == value ? .isSelected : [])
     }
     func newNote() { editing = HealthDocument(title: "", kind: .note, body: "", source: "Your note") }
-    func importRecord(_ result: Result<URL, Error>) {
-        guard case .success(let url) = result else { if case .failure(let e) = result { error = e.localizedDescription }; return }
-        extracting = true
-        Task {
-            do {
-                let draft = try await Task.detached(priority: .userInitiated) {
-                    let access = url.startAccessingSecurityScopedResource(); defer { if access { url.stopAccessingSecurityScopedResource() } }
-                    let size = (try url.resourceValues(forKeys: [.fileSizeKey])).fileSize ?? 0
-                    guard size < 20_000_000 else { throw HealthImportError.tooLarge }
-                    let text: String
-                    if url.pathExtension.lowercased() == "pdf" { text = PDFDocument(url: url)?.string ?? "" }
-                    else { text = try String(contentsOf: url, encoding: .utf8) }
-                    guard !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { throw HealthImportError.malformed("No readable text. Scanned PDFs need text recognition before importing.") }
-                    guard text.count <= 200_000 else { throw HealthImportError.malformed("The record exceeds 200,000 characters. Split it into smaller records.") }
-                    return HealthDocument(title: url.deletingPathExtension().lastPathComponent, kind: .record, body: text, source: "Imported · \(url.lastPathComponent)")
-                }.value
-                editing = draft
-            } catch { self.error = error.localizedDescription }
-            extracting = false
-        }
-    }
+
 }
 
 struct DocumentDetailView: View {
@@ -109,6 +88,7 @@ struct DocumentDetailView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var editing: HealthDocument?
     @State private var confirmDelete = false
+    @State private var mutationError: String?
     var document: HealthDocument? { companion.documents.first { $0.id == documentID } }
     var body: some View {
         ScrollView {
@@ -116,13 +96,23 @@ struct DocumentDetailView: View {
                 VStack(alignment: .leading, spacing: 24) {
                     Text(doc.title).font(.largeTitle.bold()).tracking(-1)
                     Text("\(doc.source)\nUpdated \(doc.updatedAt.formatted(date: .abbreviated, time: .shortened))").font(.footnote).foregroundStyle(Theme.secondary)
+                    if let extraction = doc.extraction {
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Reviewed imported text").font(.headline)
+                            Text("\(extraction.pages.count.formatted()) source page\(extraction.pages.count == 1 ? "" : "s") · \(extraction.recognizedPages.formatted()) from text recognition").font(.subheadline).foregroundStyle(Theme.secondary)
+                            Text("Import review: \(extraction.reviewedAt.formatted(date: .abbreviated, time: .shortened)). Keep the original file separately. This text can still contain errors.").font(.footnote).foregroundStyle(Theme.secondary)
+                            let excluded = extraction.pages.filter { $0.method == .excluded }.count
+                            if excluded > 0 { Text("\(excluded.formatted()) source page\(excluded == 1 ? "" : "s") excluded from the saved text.").font(.footnote).foregroundStyle(Theme.secondary) }
+                            if extraction.laterEditedAt != nil { Text("Text was edited after the import review.").font(.footnote).foregroundStyle(Theme.secondary) }
+                        }
+                    }
                     if doc.kind == .plan { Text(doc.status.label).font(.subheadline.weight(.semibold)).foregroundStyle(Theme.accent) }
                     if doc.kind != .plan || doc.steps.isEmpty { DocumentBodyView(text: doc.body) }
                     if doc.kind == .plan && !doc.steps.isEmpty { GroupLabel("Your plan steps") }
                     ForEach(doc.steps) { step in
                         Button {
                             var updated = doc
-                            if let i = updated.steps.firstIndex(where: { $0.id == step.id }) { updated.steps[i].isDone.toggle(); companion.save(updated) }
+                            if let i = updated.steps.firstIndex(where: { $0.id == step.id }) { updated.steps[i].isDone.toggle(); do { try companion.saveChecked(updated) } catch { mutationError = "Your change wasn't saved. Try again." } }
                         } label: {
                             HStack(alignment: .top, spacing: 12) {
                                 Image(systemName: step.isDone ? "checkmark.circle.fill" : "circle")
@@ -138,7 +128,7 @@ struct DocumentDetailView: View {
                         DisclosureGroup("Original guidance") { DocumentBodyView(text: doc.body).padding(.top, 12) }
                     }
                     Text(doc.kind == .plan ? "An editable wellness draft. Adjust it to how you feel; discuss medical decisions with a clinician." : "Saved on this device. You control whether the assistant can use this text.").font(.footnote).foregroundStyle(Theme.secondary)
-                    Toggle("Use in assistant", isOn: Binding(get: { doc.includeInAssistant }, set: { var d = doc; d.includeInAssistant = $0; companion.save(d) }))
+                    Toggle("Use in assistant", isOn: Binding(get: { doc.includeInAssistant }, set: { var d = doc; d.includeInAssistant = $0; do { try companion.saveChecked(d) } catch { mutationError = "The sharing setting wasn't saved. It is still set as shown. Try again." } }))
                     Text("When enabled, excerpts are sent with your questions to the AI provider selected in Settings. Imported text is treated as reference material.").font(.footnote).foregroundStyle(Theme.secondary)
                 }.padding(Theme.gutter)
             }
@@ -155,8 +145,12 @@ struct DocumentDetailView: View {
                 }
             }
             .sheet(item: $editing) { DocumentEditor(document: $0) }
+            .alert("Couldn't update document", isPresented: Binding(get: { mutationError != nil }, set: { if !$0 { mutationError = nil } })) { Button("OK") { mutationError = nil } } message: { Text(mutationError ?? "") }
             .confirmationDialog("Delete this document?", isPresented: $confirmDelete, titleVisibility: .visible) {
-                Button("Delete", role: .destructive) { companion.deleteDocument(documentID); dismiss() }
+                Button("Delete", role: .destructive) {
+                    do { try companion.deleteDocumentChecked(documentID); dismiss() }
+                    catch { mutationError = "The document wasn't deleted. Try again." }
+                }
             }
     }
 }
@@ -164,6 +158,18 @@ struct DocumentDetailView: View {
 struct DocumentEditor: View {
     @Environment(\.dismiss) private var dismiss
     @State var document: HealthDocument
+    @State private var saveError: String?
+    @State private var discardEdits = false
+    private let original: Data
+    init(document: HealthDocument) {
+        _document = State(initialValue: document)
+        original = Self.encoded(document)
+    }
+    private static func encoded(_ value: HealthDocument) -> Data {
+        let encoder = JSONEncoder(); encoder.outputFormatting = .sortedKeys
+        return (try? encoder.encode(value)) ?? Data()
+    }
+    private var hasEdits: Bool { Self.encoded(document) != original }
     var body: some View {
         NavigationStack {
             Form {
@@ -194,9 +200,19 @@ struct DocumentEditor: View {
                 } footer: { Text("Excerpts may be sent to your selected AI provider when you chat. Leave off to keep this record out of assistant context.") }
             }.scrollContentBackground(.hidden).background(Theme.bg).navigationTitle("Edit document").navigationBarTitleDisplayMode(.inline)
                 .toolbar {
-                    ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
-                    ToolbarItem(placement: .confirmationAction) { Button("Save") { document.steps = document.steps.filter { !$0.title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }; CompanionStore.shared.save(document); dismiss() }.fontWeight(.bold).disabled(document.title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || document.body.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) }
+                    ToolbarItem(placement: .cancellationAction) { Button("Cancel") { if hasEdits { discardEdits = true } else { dismiss() } } }
+                    ToolbarItem(placement: .confirmationAction) { Button("Save") {
+                        do {
+                            document.steps = document.steps.filter { !$0.title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+                            try CompanionStore.shared.saveChecked(document); dismiss()
+                        } catch { saveError = "Your changes were not saved. Try again." }
+                    }.fontWeight(.bold).disabled(document.title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || document.body.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) }
                 }
         }.tint(Theme.accent)
+            .background(SheetDismissGuard(hasEdits: hasEdits) { discardEdits = true })
+            .alert("Discard your document changes?", isPresented: $discardEdits) {
+                Button("Discard changes", role: .destructive) { dismiss() }; Button("Keep editing", role: .cancel) {}
+            }
+            .alert("Couldn't save document", isPresented: Binding(get: { saveError != nil }, set: { if !$0 { saveError = nil } })) { Button("OK") { saveError = nil } } message: { Text(saveError ?? "") }
     }
 }

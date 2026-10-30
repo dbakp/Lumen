@@ -45,6 +45,7 @@ public struct HealthDocument: Identifiable, Codable, Sendable {
     public var status: PlanState { planState ?? (!steps.isEmpty && steps.allSatisfy(\.isDone) ? .completed : .active) }
     public var messageID: String? = nil
     public var includeInAssistant = false
+    public var extraction: RecordExtraction? = nil
     public var markdown: String {
         "# \(title)\n\n\(body)\n\n" + steps.map { "- [\($0.isDone ? "x" : " ")] \($0.title)" + ($0.dueDate.map { " (due " + $0.formatted(date: .abbreviated, time: .omitted) + ")" } ?? "") }.joined(separator: "\n") + "\n\nSource: \(source)\nUpdated: \(updatedAt.formatted())"
     }

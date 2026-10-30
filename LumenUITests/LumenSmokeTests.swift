@@ -256,6 +256,173 @@ final class LumenSmokeTests: XCTestCase {
         let preview = backupPreview(); XCTAssertEqual(preview.label, "Encrypted backup"); snap("152-backup-saved-file-preview")
     }
 
+    func openRecordImport() {
+        tab("Library"); tap("Add document"); tap("Import a record")
+        XCTAssertTrue(app.buttons["chooseRecordFile"].waitForExistence(timeout: 5))
+    }
+    func chooseRecordFixture(_ name: String) throws {
+        let choose = app.buttons["chooseRecordFile"].firstMatch; reveal(choose); choose.tap()
+        let picker = app.collectionViews["File View"].firstMatch
+        XCTAssertTrue(picker.waitForExistence(timeout: 25))
+        if app.buttons["Browse"].firstMatch.exists { app.buttons["Browse"].firstMatch.tap() }
+        if app.buttons["On My iPhone"].firstMatch.exists { app.buttons["On My iPhone"].firstMatch.tap() }
+        else if app.staticTexts["On My iPhone"].firstMatch.exists { app.staticTexts["On My iPhone"].firstMatch.tap() }
+        let folder = app.cells.matching(NSPredicate(format: "identifier BEGINSWITH '00 Lumen record checks'")).firstMatch
+        if folder.waitForExistence(timeout: 2) {
+            for _ in 0..<12 where !(folder.isHittable && folder.frame.minY > 170 && folder.frame.minY < 680) { app.swipeDown(velocity: .slow) }
+            folder.tap()
+        }
+        let cell = app.cells.matching(NSPredicate(format: "identifier BEGINSWITH %@", name)).firstMatch
+        for _ in 0..<24 {
+            if cell.exists && cell.isHittable && cell.frame.maxY > 220 && cell.frame.minY < 700 { break }
+            if cell.exists && cell.frame.maxY < 220 { app.swipeDown(velocity: .slow) }
+            else { app.swipeUp(velocity: .slow) }
+        }
+        XCTAssertTrue(cell.exists && cell.isHittable, "Seed synthetic record fixtures before this scenario")
+        var previous = CGRect.null
+        let stable = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+            let current = cell.frame; defer { previous = current }
+            return current == previous
+        }, object: cell)
+        XCTAssertEqual(XCTWaiter.wait(for: [stable], timeout: 5), .completed)
+        // Files grid cells can extend behind its floating tab bar. Tap a visible
+        // part of the actual cell rather than letting XCTest choose its centre.
+        let frame = cell.frame
+        let y = max(210, min(720, frame.minY + 50))
+        app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: frame.midX, dy: y)).tap()
+        if !cell.waitForNonExistence(timeout: 15) { print(app.debugDescription); XCTFail("The selected record must leave Files") }
+    }
+    func waitForRecordPreview() {
+        let ready = app.descendants(matching: .any).matching(identifier: "recordPreviewReady").firstMatch
+        XCTAssertTrue(ready.waitForExistence(timeout: 90)); XCTAssertFalse(app.alerts.firstMatch.exists)
+    }
+    func nativeSwitch(_ identifier: String, enabled: Bool) {
+        let toggle = app.switches[identifier].firstMatch; reveal(toggle)
+        if (toggle.value as? String) != (enabled ? "1" : "0") {
+            let control = toggle.switches.firstMatch
+            if control.exists { reveal(control); control.tap() } else { toggle.tap() }
+        }
+        let expected = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", enabled ? "1" : "0"), object: toggle)
+        XCTAssertEqual(XCTWaiter.wait(for: [expected], timeout: 5), .completed)
+    }
+    func testScannedRecordReview() throws {
+        finishOnboarding(); openRecordImport(); snap("180-record-start")
+        try chooseRecordFixture("Lumen-record-scan"); waitForRecordPreview(); snap("181-record-scan-preview")
+        XCTAssertFalse(app.buttons["saveReviewedRecord"].isEnabled)
+        let title = app.textFields["recordTitle"].firstMatch; replaceAmount(title, with: "Synthetic reviewed record"); title.typeText("\n")
+        let content = app.textViews["recordPageText"].firstMatch; reveal(content)
+        XCTAssertTrue((content.value as? String ?? "").contains("12.5")); snap("182-record-page-text")
+        content.tap(); content.typeKey("a", modifierFlags: .command); content.typeText("Reviewed synthetic value: 12.5 mg/L"); tap("finishRecordEditing")
+        app.swipeDown(velocity: .slow)
+        let next = app.buttons["Next page"].firstMatch; reveal(next); next.tap()
+        XCTAssertTrue((app.descendants(matching: .any).matching(identifier: "recordPageNumber").firstMatch.label).contains("2"))
+        let secondPage = app.textViews["recordPageText"].firstMatch; reveal(secondPage)
+        secondPage.tap()
+        let softwareKeyboard = app.keyboards.firstMatch
+        if softwareKeyboard.waitForExistence(timeout: 5) { snap("199b-record-software-keyboard") }
+        else { snap("199b-record-keyboard-state"); print("Software keyboard wasn't visible after focus") }
+        secondPage.typeKey("a", modifierFlags: .command); secondPage.typeText("Reviewed second synthetic value: 12.5 mg/L"); snap("199-record-editing"); tap("finishRecordEditing")
+        snap("183-record-second-page")
+        nativeSwitch("acknowledgeRecordText", enabled: true)
+        XCTAssertEqual(app.switches["shareImportedRecord"].firstMatch.value as? String, "0")
+        snap("184-record-reviewed-ready"); tap("saveReviewedRecord")
+        XCTAssertTrue(app.buttons["saveReviewedRecord"].waitForNonExistence(timeout: 10))
+        let saved = app.buttons["Synthetic reviewed record"].firstMatch; reveal(saved); saved.tap()
+        XCTAssertTrue(app.staticTexts["Reviewed imported text"].waitForExistence(timeout: 5)); snap("185-record-saved")
+        XCTAssertTrue(app.staticTexts["Reviewed synthetic value: 12.5 mg/L"].firstMatch.exists)
+        app.terminate(); app.launchArguments = []; app.launch(); tab("Library"); tap("Synthetic reviewed record")
+        XCTAssertTrue(app.staticTexts["Reviewed imported text"].waitForExistence(timeout: 5)); snap("186-record-persisted")
+        app.navigationBars["Document"].buttons.element(boundBy: 0).tap()
+        openRecordImport(); try chooseRecordFixture("Lumen-record-scan"); waitForRecordPreview()
+        nativeSwitch("acknowledgeRecordText", enabled: true); tap("saveReviewedRecord")
+        XCTAssertTrue(app.alerts["Save another copy?"].waitForExistence(timeout: 5)); snap("198-record-duplicate")
+        tap("Keep reviewing"); tap("cancelRecordImport")
+    }
+    func testRecordPresentationAndDraftGuard() throws {
+        finishOnboarding()
+        app.terminate(); app.launchArguments = ["-lumen.appearance", "dark"]; app.launch()
+        openRecordImport(); try chooseRecordFixture("Lumen-record-blank"); waitForRecordPreview()
+        XCTAssertFalse(app.buttons["saveReviewedRecord"].isEnabled)
+        let text = app.textViews["recordPageText"].firstMatch; reveal(text)
+        text.tap(); text.typeText("Synthetic transcribed page for review."); tap("finishRecordEditing")
+        let reviewBar = app.navigationBars["Review record"]
+        reviewBar.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).press(forDuration: 0.1, thenDragTo: app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.85)))
+        XCTAssertTrue(app.alerts["Discard your changes?"].waitForExistence(timeout: 5)); snap("191b-record-swipe-guard"); tap("Keep reviewing")
+        tap("cancelRecordImport"); tap("Keep reviewing")
+        XCTAssertTrue(text.exists); snap("191-record-dark-draft")
+        nativeSwitch("acknowledgeRecordText", enabled: true)
+        XCTAssertTrue(app.buttons["saveReviewedRecord"].isEnabled)
+        nativeSwitch("excludeRecordPage", enabled: true)
+        nativeSwitch("acknowledgeRecordText", enabled: true)
+        XCTAssertFalse(app.buttons["saveReviewedRecord"].isEnabled, "Excluding every page must not create an empty record")
+        snap("192-record-dark-excluded"); tap("cancelRecordImport"); tap("Discard changes")
+        app.terminate(); app.launchArguments = ["-lumen.appearance", "light", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]; app.launch()
+        openRecordImport(); snap("193-record-large-start")
+        try chooseRecordFixture("Lumen-record-hybrid"); waitForRecordPreview(); snap("194-record-large-review")
+        let title = app.textFields["recordTitle"].firstMatch; reveal(title)
+        XCTAssertGreaterThan(title.frame.height, 45, "Actual accessibility type must enlarge the title field")
+        let source = app.descendants(matching: .any).matching(identifier: "recordTextSource").firstMatch
+        reveal(source); source.tap(); tap("Selectable text")
+        let page = app.textViews["recordPageText"].firstMatch; reveal(page)
+        XCTAssertTrue((page.value as? String ?? "").contains("header")); XCTAssertFalse((page.value as? String ?? "").contains("LAB-42"))
+        snap("195-record-large-source")
+        let pageImage = app.buttons["Page image"].firstMatch; reveal(pageImage); pageImage.tap()
+        let renderedPage = app.images["Original page 1"].firstMatch; reveal(renderedPage); snap("195b-record-page-image")
+        let original = app.buttons["Open original"].firstMatch; reveal(original); original.tap()
+        let originalPage = app.staticTexts["Selectable header only"].firstMatch
+        XCTAssertTrue(originalPage.waitForExistence(timeout: 15), app.debugDescription); snap("196-record-original")
+        let closeOriginal = app.buttons["closeOriginalRecord"].firstMatch
+        XCTAssertTrue(closeOriginal.waitForExistence(timeout: 10), app.debugDescription); closeOriginal.tap()
+        XCTAssertTrue(closeOriginal.waitForNonExistence(timeout: 10))
+        nativeSwitch("acknowledgeRecordText", enabled: true); snap("197-record-large-controls")
+        let sharing = app.switches["shareImportedRecord"].firstMatch; reveal(sharing); snap("197b-record-large-sharing")
+        XCTAssertEqual(app.switches["shareImportedRecord"].firstMatch.value as? String, "0")
+        tap("cancelRecordImport")
+    }
+
+    func testRecordSourceReplacementAndKeyboard() throws {
+        finishOnboarding(); openRecordImport()
+        try chooseRecordFixture("Lumen-record-hybrid"); waitForRecordPreview()
+        let text = app.textViews["recordPageText"].firstMatch; reveal(text); text.tap()
+        if app.keyboards.firstMatch.waitForExistence(timeout: 5) { snap("200-record-software-keyboard") }
+        else { snap("200-record-keyboard-state"); print("Software keyboard wasn't visible after record focus") }
+        text.typeKey("a", modifierFlags: .command); text.typeText("Reviewed synthetic correction: 12.5 mg/L")
+        let footer = app.staticTexts["Save keeps your reviewed text and page details. The original file isn't stored in Library; keep your own copy."].firstMatch
+        reveal(footer)
+        let done = app.buttons["finishRecordEditing"].firstMatch
+        for _ in 0..<8 where footer.frame.maxY + 12 > done.frame.minY {
+            let top = app.navigationBars["Review record"].frame.maxY + 24
+            let bottom = done.frame.minY - 24
+            app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: bottom)).press(forDuration: 0.1, thenDragTo: app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: top)))
+        }
+        XCTAssertLessThanOrEqual(footer.frame.maxY + 12, done.frame.minY, "Focused text must scroll clear of the keyboard Done action")
+        snap("201-record-focused-footer"); done.tap()
+        let source = app.descendants(matching: .any).matching(identifier: "recordTextSource").firstMatch
+        reveal(source); source.tap(); tap("Selectable text")
+        XCTAssertTrue(app.alerts["Replace your edits with the other text version?"].waitForExistence(timeout: 5)); snap("202-record-source-guard"); tap("Keep edits")
+        XCTAssertEqual(text.value as? String, "Reviewed synthetic correction: 12.5 mg/L")
+        reveal(source); source.tap(); tap("Selectable text"); tap("Replace page text")
+        XCTAssertTrue((text.value as? String ?? "").contains("header")); XCTAssertFalse((text.value as? String ?? "").contains("Reviewed synthetic correction"))
+        XCTAssertEqual(app.switches["acknowledgeRecordText"].firstMatch.value as? String, "0")
+        snap("203-record-replaced-source"); tap("cancelRecordImport"); XCTAssertTrue(app.buttons["cancelRecordImport"].waitForNonExistence(timeout: 10))
+    }
+
+    func testRecordCancellationAndErrors() throws {
+        finishOnboarding(); openRecordImport()
+        try chooseRecordFixture("Lumen-record-long")
+        let progress = app.descendants(matching: .any).matching(identifier: "recordReadingProgress").firstMatch
+        XCTAssertTrue(progress.waitForExistence(timeout: 10)); snap("187-record-progress"); tap("cancelRecordImport")
+        XCTAssertTrue(app.buttons["chooseRecordFile"].waitForExistence(timeout: 30)); snap("188-record-cancelled")
+        try chooseRecordFixture("Lumen-record-locked")
+        XCTAssertTrue(app.alerts["Couldn't read record"].waitForExistence(timeout: 20)); snap("189-record-locked"); tap("OK")
+        try chooseRecordFixture("Lumen-record-damaged")
+        XCTAssertTrue(app.alerts["Couldn't read record"].waitForExistence(timeout: 20)); tap("OK")
+        try chooseRecordFixture("Lumen-record-hybrid"); waitForRecordPreview()
+        let content = app.textViews["recordPageText"].firstMatch; reveal(content)
+        XCTAssertTrue((content.value as? String ?? "").contains("LAB-42")); snap("190-record-hybrid")
+        tap("cancelRecordImport")
+    }
+
     func openHealthConnections() {
         tap("Settings")
         let link = app.buttons["Health imports & contextual reminders"].firstMatch

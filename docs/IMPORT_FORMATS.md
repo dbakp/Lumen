@@ -23,7 +23,7 @@ Dates are YYYY-MM-DD or ISO 8601 with timezone. Canonical units: steps/count, ac
 
 ZIP and expanded XML limits 500 MB each; CSV/JSON limit 25 MB. Unsupported units are skipped rather than guessed. Imported historical data is available to the assistant and weekly coverage review. Today's import fills missing live values; live HealthKit totals take precedence. Missing logs never mean zero consumption.
 
-Text, Markdown and text-based PDFs can be added as Library records. PDF extraction uses PDFKit locally; scanned PDFs require OCR before importing. Records are excluded from assistant context by default. Turn on “Use in assistant” to share excerpts with the selected AI provider; documents themselves are never treated as instructions. No direct Oura/Garmin OAuth is claimed: connect those apps to Apple Health or use a portable export.
+PDFs (including scans), still JPEG/PNG/HEIC images, UTF-8 text and Markdown can be added as Library records. On-device PDFKit/Vision reading retains page versions for comparison and correction before explicit review and saving. Bounds: 20 MB, 100 pages and 200,000 characters; locked PDFs need unlocking and forms need flattening. Save retains reviewed text and provenance, not the original file. Keep the original separately. Records are excluded from assistant context by default. Turn on “Use in assistant” to share excerpts with the selected AI provider; documents themselves are never treated as instructions. See [Record import](RECORD_IMPORT.md) for exact behavior and limits. No direct Oura/Garmin OAuth is claimed: connect those apps to Apple Health or use a portable export.
 
 
 ## Progress and cancellation

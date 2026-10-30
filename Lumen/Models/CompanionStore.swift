@@ -68,12 +68,29 @@ public final class CompanionStore: ObservableObject {
         if let i = documents.firstIndex(where: { $0.id == d.id }) { documents[i] = d } else { documents.insert(d, at: 0) }
         persist()
     }
+    func saveChecked(_ document: HealthDocument) throws {
+        var value = document; value.updatedAt = Date()
+        var next = documents
+        if let index = next.firstIndex(where: { $0.id == value.id }) {
+            if next[index].body != value.body, var extraction = value.extraction {
+                extraction.laterEditedAt = max(Date(), extraction.reviewedAt); value.extraction = extraction
+            }
+            next[index] = value
+        }
+        else { next.insert(value, at: 0) }
+        try LocalStore.saveChecked(next, as: "documents")
+        documents = next
+    }
     public var pendingActions: [PendingPlanAction] { PlanSchedule.pending(documents) }
     public func togglePlanStep(documentID: String, stepID: String) {
         guard var doc = documents.first(where: { $0.id == documentID }), let index = doc.steps.firstIndex(where: { $0.id == stepID }) else { return }
         doc.steps[index].isDone.toggle(); save(doc)
     }
     public func deleteDocument(_ id: String) { documents.removeAll { $0.id == id }; persist() }
+    func deleteDocumentChecked(_ id: String) throws {
+        let next = documents.filter { $0.id != id }
+        try LocalStore.saveChecked(next, as: "documents"); documents = next
+    }
     public func commit(_ preview: HealthImportPreview, filename: String) {
         // Replace metric/day values rather than adding: repeated imports are idempotent.
         for day in preview.days {
