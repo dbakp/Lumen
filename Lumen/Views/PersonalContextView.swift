@@ -56,7 +56,7 @@ struct PlanActionRow: View {
                 VStack(alignment: .leading, spacing: 6) {
                     Text(action.step.title).font(.body.weight(.semibold)).foregroundStyle(Theme.text)
                     Text(action.planTitle).font(.caption).foregroundStyle(Theme.secondary)
-                    if let due = action.step.dueDate {
+                    if let due = action.step.calendarDate {
                         Text((PlanSchedule.isOverdue(action.step) ? "Planned for " : "Due ") + due.formatted(date: .abbreviated, time: .omitted)).font(.caption).foregroundStyle(Theme.secondary)
                     } else { Text("No date set").font(.caption).foregroundStyle(Theme.secondary) }
                 }.frame(maxWidth: .infinity, alignment: .leading).padding(.vertical, 8)

@@ -13,6 +13,7 @@ public struct CoachView: View {
     @State private var keyboardSubmission: VoiceDraftTarget?
     @State private var historyPresented = false
     @State private var logSelection: HealthLogSelection?
+    @State private var planning = false
     @State private var isSending = false
     @State private var responseTask: Task<Void, Never>?
     @ObservedObject private var companion = CompanionStore.shared
@@ -83,13 +84,12 @@ public struct CoachView: View {
             ToolbarItem(placement: .topBarLeading) {
                 Button { historyPresented = true } label: { Image(systemName: "clock.arrow.circlepath") }.accessibilityLabel("Conversation history")
             }
-            if !health.chat.isEmpty {
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu {
-                        Button("New conversation", systemImage: "square.and.pencil") { health.newConversation() }
+                        Button("Make a multiweek plan", systemImage: "calendar.badge.plus") { focused = false; planning = true }
+                        if !health.chat.isEmpty { Button("New conversation", systemImage: "square.and.pencil") { health.newConversation() } }
                     } label: { Image(systemName: "ellipsis") }.accessibilityLabel("Conversation actions")
                 }
-            }
         }
         .alert("Couldn't save reply", isPresented: Binding(get: { saveError != nil }, set: { if !$0 { saveError = nil } })) { Button("OK") { saveError = nil } } message: { Text(saveError ?? "") }
         .sheet(isPresented: Binding(get: { voiceTarget != nil }, set: { if !$0 { voiceTarget = nil } })) {
@@ -108,6 +108,7 @@ public struct CoachView: View {
             send(request.originalDraft)
         }
         .sheet(item: $logSelection) { HealthLogReviewView(selection: $0).environmentObject(health) }
+        .sheet(isPresented: $planning) { ScheduledPlanSheet().environmentObject(health) }
         .sheet(isPresented: $historyPresented) { ConversationHistoryView().environmentObject(health) }
     }
 
@@ -141,6 +142,7 @@ public struct CoachView: View {
                     .buttonStyle(.plain)
                 }
             }
+            Button("Make a multiweek plan", systemImage: "calendar.badge.plus") { planning = true }.frame(minHeight: 44).accessibilityIdentifier("startScheduledPlan")
             NavigationLink("Personal context", destination: PersonalContextView()).frame(minHeight: 44)
             Label(ai.brain.label, systemImage: ai.brain.isAI ? "lock.shield" : "cpu")
                 .font(.footnote).foregroundStyle(Theme.tertiary)

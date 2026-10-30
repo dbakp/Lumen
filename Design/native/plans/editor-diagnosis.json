@@ -1,0 +1,52 @@
+{
+  "scope": "Temporary opt-in Debug-simulator numeric-only probe, original SwiftUI TextEditor. No real user text captured. Values transcribed from the tool read-back before subsequent test resets replaced the app container.",
+  "resultBundle": "/tmp/LumenBatch18CursorTrace.xcresult",
+  "testSeconds": 90.571,
+  "originalScreenshotSHA256": "40fd4f64363950aac2e30a1ddb6d9e401418738659b0f30bfe3bd6c5ca13098a",
+  "numbers": {
+    "utf16Count": 119,
+    "selectedLocation": 119,
+    "selectedLength": 0,
+    "fontSize": 53,
+    "attributedFontSize": 53,
+    "typingFontSize": 53,
+    "bounds": {
+      "width": 354,
+      "height": 432,
+      "x": 0,
+      "y": 143.33333333333334
+    },
+    "windowFrame": {
+      "width": 354,
+      "height": 432,
+      "x": 24,
+      "y": 320.66666666666663
+    },
+    "selectedAndEndCaretWindow": {
+      "x": 234.66666666666666,
+      "y": 681.6666666666666,
+      "width": 2,
+      "height": 63.66666666666663
+    },
+    "contentSize": {
+      "width": 354,
+      "height": 576
+    }
+  },
+  "interpretation": "Actual selection is at the complete string end while painted glyphs/caret disagree; stored selection loss is not established.",
+  "probeFollowups": [
+    {
+      "bundle": "/tmp/LumenBatch18NativeEditorProbe.xcresult",
+      "seconds": 101.533,
+      "result": "Passed",
+      "limit": "String end/middle assertions pass; pixels do not establish settled software keyboard."
+    },
+    {
+      "bundle": "/tmp/LumenBatch18SelectionR10.xcresult",
+      "seconds": 94.396,
+      "result": "Passed",
+      "limit": "AX keyboard exists but pixels do not show it. Not final visual proof."
+    }
+  ],
+  "finalApproach": "Remove custom bridge/probe. Use shared full-size PlanDraftTextEditor from an explicit full-wording route, separate from the date/preview form. Final native validation separately required."
+}

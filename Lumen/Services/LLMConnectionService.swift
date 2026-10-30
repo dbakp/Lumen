@@ -276,7 +276,7 @@ public enum LLMClient {
     }
 
     /// OpenAI-compatible chat completions. Returns assistant text or nil.
-    public static func complete(endpoint: URL, bearer: String, model: String, turns: [ChatTurn], maxTokens: Int = 400, temperature: Double = 0.7, imageData: Data? = nil) async -> String? {
+    public static func complete(endpoint: URL, bearer: String, model: String, turns: [ChatTurn], maxTokens: Int = 400, temperature: Double = 0.7, imageData: Data? = nil, requireCompleteReply: Bool = false) async -> String? {
         var req = URLRequest(url: endpoint)
         req.httpMethod = "POST"
         req.setValue("Bearer \(bearer)", forHTTPHeaderField: "Authorization")
@@ -302,7 +302,9 @@ public enum LLMClient {
                 // Some gateways nest differently; try `output` shape.
                 return nil
             }
+            if requireCompleteReply, choices.first?["finish_reason"] as? String != "stop" { return nil }
             if let msg = choices.first?["message"] as? [String: Any], let content = msg["content"] as? String {
+                if requireCompleteReply, let refusal = msg["refusal"] as? String, !refusal.isEmpty { return nil }
                 return content.trimmingCharacters(in: .whitespacesAndNewlines)
             }
             return nil
@@ -326,12 +328,12 @@ public enum LLMClient {
 
     /// Coach chat with full conversation history.
     @MainActor
-    public static func coachChat(system: String, history: [(role: String, text: String)], userText: String) async -> String? {
+    public static func coachChat(system: String, history: [(role: String, text: String)], userText: String, maxTokens: Int = 400, requireCompleteReply: Bool = false) async -> String? {
         guard let r = await route() else { return nil }
         var turns = [ChatTurn(role: "system", text: system)]
         turns += history.map { ChatTurn(role: $0.role, text: $0.text) }
         turns.append(ChatTurn(role: "user", text: userText))
-        return await complete(endpoint: r.endpoint, bearer: r.bearer, model: r.model, turns: turns, maxTokens: 400)
+        return await complete(endpoint: r.endpoint, bearer: r.bearer, model: r.model, turns: turns, maxTokens: min(6000, max(400, maxTokens)), requireCompleteReply: requireCompleteReply)
     }
 
     /// Meal photo → raw JSON string (caller parses MealAnalysis).

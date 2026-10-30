@@ -168,7 +168,11 @@ private struct ReadableRecordSummary {
             let x = s.documents[i]; title = x.title; detail = x.kind.rawValue.capitalized + " · " + x.source + "\nUpdated " + Self.date(x.updatedAt)
             text = x.body
             if x.kind == .plan { text += "\n\nPlan status: " + x.status.label }
-            for step in x.steps { text += "\n\n[\(step.isDone ? "done" : "pending")] " + step.title + (step.dueDate.map { "\nDue: " + Self.date($0) } ?? "\nNo due date") }
+            for step in x.steps {
+                let date = step.plannedDay.flatMap { PlanDay.date($0) == nil ? nil : $0 }
+                let dateText = date.map { "\nPlanned calendar day: " + $0 } ?? step.dueDate.map { "\nDue: " + Self.date($0) } ?? "\nNo due date"
+                text += "\n\n[\(step.isDone ? "done" : "pending")] " + step.title + dateText
+            }
             if let extraction = x.extraction { text += "\n\nReviewed import: \(Self.date(extraction.reviewedAt))\n\(extraction.pages.count) source pages. The original file isn't in this export." }
             text += (x.recordContext?.markdownReferences ?? "") + "\n\nAssistant sharing starts off if this document is added."
         case .importedDays:

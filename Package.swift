@@ -73,6 +73,8 @@ let package = Package(
             "Lumen/Algorithms/WorkoutReconciliation.swift",
             "Lumen/Algorithms/TrendEvidence.swift",
             "Lumen/Algorithms/PlanSchedule.swift",
+            "Lumen/Algorithms/ScheduledPlan.swift",
+            "Tests/ScheduledPlanChecks.swift",
             "Lumen/Algorithms/PlanBuilder.swift",
             "Lumen/Algorithms/HealthHistorySummary.swift",
             "Lumen/Algorithms/HealthTotals.swift",

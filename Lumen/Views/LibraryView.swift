@@ -8,6 +8,7 @@ struct LibraryView: View {
     @State private var importing = false
     @State private var recordWorkspace: RecordWorkspace?
     @State private var editing: HealthDocument?
+    @State private var planning = false
     var filtered: [HealthDocument] {
         companion.documents.filter { (kind == nil || $0.kind == kind) && (search.isEmpty || $0.title.localizedCaseInsensitiveContains(search) || $0.body.localizedCaseInsensitiveContains(search)) }
     }
@@ -61,11 +62,13 @@ struct LibraryView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu {
                         Button("Write a note", systemImage: "square.and.pencil") { newNote() }
+                        Button("Make a multiweek plan", systemImage: "calendar.badge.plus") { planning = true }
                         Button("Import a record", systemImage: "doc.badge.plus") { importing = true }
                     } label: { Image(systemName: "plus") }.accessibilityLabel("Add document")
                 }
             }
             .sheet(item: $editing) { DocumentEditor(document: $0) }
+            .sheet(isPresented: $planning) { ScheduledPlanSheet().environmentObject(health) }
             .sheet(isPresented: $importing, onDismiss: { recordWorkspace?.cleanup(); recordWorkspace = nil }) {
                 RecordImportView(onWorkspaceReady: { recordWorkspace = $0 }) { kind = .record; search = "" }
             }
@@ -118,7 +121,7 @@ struct DocumentDetailView: View {
                                 Image(systemName: step.isDone ? "checkmark.circle.fill" : "circle")
                                 VStack(alignment: .leading, spacing: 4) {
                                     Text(step.title).strikethrough(step.isDone)
-                                    if let due = step.dueDate { Text("Due " + due.formatted(date: .abbreviated, time: .omitted)).font(.caption).foregroundStyle(Theme.secondary) }
+                                    if let due = step.calendarDate { Text("Due " + due.formatted(date: .abbreviated, time: .omitted)).font(.caption).foregroundStyle(Theme.secondary) }
                                 }
                                 Spacer()
                             }.frame(minHeight: 44).foregroundStyle(step.isDone ? Theme.secondary : Theme.text)
@@ -128,7 +131,7 @@ struct DocumentDetailView: View {
                         DisclosureGroup("Original guidance") { DocumentBodyView(text: doc.body).padding(.top, 12) }
                     }
                     if let context = doc.recordContext, context.mode != .guide { RecordSourcesView(context: context) }
-                    Text(doc.kind == .plan ? "An editable wellness draft. Adjust it to how you feel; discuss medical decisions with a clinician." : "Saved on this device. You control whether the assistant can use this text.").font(.footnote).foregroundStyle(Theme.secondary)
+                    Text(doc.kind == .plan ? "Your saved plan stays editable. Adjust its steps as your plans change." : "Saved on this device. You control whether the assistant can use this text.").font(.footnote).foregroundStyle(Theme.secondary)
                     Toggle("Use in assistant", isOn: Binding(get: { doc.includeInAssistant }, set: { var d = doc; d.includeInAssistant = $0; do { try companion.saveChecked(d) } catch { mutationError = "The sharing setting wasn't saved. It is still set as shown. Try again." } }))
                     Text("When enabled, matching text can be sent with your questions to the AI provider selected in Settings. Turning this off stops future retrieval. Earlier replies and saved copies keep their excerpts.").font(.footnote).foregroundStyle(Theme.secondary)
                 }.padding(Theme.gutter)
@@ -189,9 +192,9 @@ struct DocumentEditor: View {
                         VStack(alignment: .leading, spacing: 10) {
                             TextField("Step", text: $step.title, axis: .vertical)
                             Toggle("Completed", isOn: $step.isDone)
-                            Toggle("Set a date", isOn: Binding(get: { step.dueDate != nil }, set: { step.dueDate = $0 ? (step.dueDate ?? Date()) : nil })).accessibilityIdentifier("plan-date-\(step.id)")
-                            if step.dueDate != nil {
-                                DatePicker("Date", selection: Binding(get: { step.dueDate ?? Date() }, set: { step.dueDate = $0 }), displayedComponents: .date)
+                            Toggle("Set a date", isOn: Binding(get: { step.calendarDate != nil }, set: { step.setDate($0 ? (step.calendarDate ?? Date()) : nil) })).accessibilityIdentifier("plan-date-\(step.id)")
+                            if step.calendarDate != nil {
+                                DatePicker("Date", selection: Binding(get: { step.calendarDate ?? Date() }, set: { step.setDate($0) }), displayedComponents: .date)
                             }
                         }.padding(.vertical, 6)
                     }.onDelete { document.steps.remove(atOffsets: $0) }

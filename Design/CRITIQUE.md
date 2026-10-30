@@ -401,3 +401,43 @@ The same critic inspected all **19 original-size final captures** and the update
 Capture limitation: 131 appears partway through source-disclosure expansion, showing the original message only through “stress.” It proves the visible original250/current750 separation; it does not establish complete-source-body layout. The critic does not infer permanent clipping or request a product change from that frame. A focused settled-source capture follows as supplementary evidence. Normal form scroll edges and a partial native alert likewise aren't certification of unseen content or fixed-clipping defects.
 
 Supplementary settled-source evidence: the same critic inspected348 at original size and checked its source-map entry after the **68.624 s** passing native case. The settled down-chevron and entire original statement through “stress 3/5.” are visible, separated from Delete entry; current750 remains distinct from original250. This closes the transitional131 evidence limitation. All R2 scores and scoped sign-off remain unchanged; no concrete clipping/copy/layout defect or further app change is requested. The final set has20 PNGs; no app UI source changed after sign-off.
+
+## Batch 18 · reviewed multiweek plans · 30 October 2026
+
+The same continuing App Designer Pro critic inspected all17 original-size native PNGs in `native/plans/r1`, the source map and the new direction content. No new concept/icon/paywall/store/motion or DOM scan is in scope. Production local templates and explicitly simulated generation have distinct source labels; neither is a clinical/model-accuracy result.
+
+### Round 1
+
+| Concept | Category | Skill distinction | Hierarchy | Type | Colour | Richness | Rhythm | Finish | Native | Copy |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 4 | 4 | 4 | 4 | 4 | 3 | 3 | 4 | 4 | 4 | 3 |
+
+Not done:8/11 lines at4+, Copy below the required4, and the second round remains. Source/unsaved/review/save boundaries and the separate local template are clear. The complete XXXL goal end/caret clears Done/keyboard in363;367 stacks the acknowledgement label above its switch;368 retains both native discard choices. Cut-off next rows at scroll edges do not establish fixed clipping.
+
+All three concrete requests are accepted: the saved document says **Your saved plan stays editable. Adjust its steps as your plans change.**, replacing its contradictory saved **draft** wording and generic medical instruction; operative provider/template footers use declared `Theme.secondary`, while genuinely unavailable controls keep disabled styling; invalid-reply recovery says **We couldn't make a complete dated plan from this reply. Try again, or use the planning template. No plan was saved.** Recovery instructions consistently call the available action planning template; source metadata may still say Built-in template.
+
+Round2 must add a real XXXL action editor/end/caret with software keyboard and open planned-date picker, Weeks menu/Before saving jump, final dated action, settled XXXL completion, saved plan after relaunch and matching agenda date. It also needs the full sharing explanation, visibly reset acknowledgement/disabled Save after editing, and preserved-input failure/cancellation with explicit template. No decorative or redesign pass is requested. R1 provenance remains scoped: R3 presentation passes129.379s inside a failed mixed bundle; R2 cancellation passes150.498s inside its failed mixed bundle;350–356 stop after saved-document display at an incorrect root-Close harness assumption and do not establish relaunch.
+
+### Round 2
+
+The same critic opened all33 original-size candidates in `native/plans/r2` and their map. The saved-plan wording, secondary-ink footers and dated-plan recovery copy close all three R1 text/colour requests. Review-reset374 differs from accepted354;366b shows the entire final Week8 action and24December date;373 shows the native calendar;375/375b show settled large completion with both fully contained, centered actions;376–378 retain the edited literal action and7November date through save/relaunch/agenda.377b supplies the full sharing explanation;356b is identical to356 and does not independently prove it. Normal scroll edges remain normal.
+
+| Concept | Category | Skill distinction | Hierarchy | Type | Colour | Richness | Rhythm | Finish | Native | Copy |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 4 | 4 | 4 | 4 | 4 | 4 | 3 | 4 | 3 | 4 | 4 |
+
+Not done:9/11 lines at4+ (81.8%), but Finish remains below the required4.372 still has the caret between **and** and **leave**, with **it to the day…** cut at the editor boundary and no final sentence/caret. It does not prove text loss or permanent inaccessibility, but cannot close the live editing defect. The critic requests diagnosis of actual selection/viewport, preserving that selection and bringing it into the unobscured area. No forced end-caret, smaller type or changed saved wording is accepted. Round3 must show a genuine final-line edit with visible caret/keyboard, a middle-text edit that does not jump, and retained save/reopen/date checks. A further-scrolled menu frame should show the complete Before saving item; current369/369b are a capture limit, not another fixed-clipping verdict. No redesign/decoration/portfolio work is requested. Live providers, clinical quality, travel execution, physical devices and VoiceOver remain outside the scope.
+
+### Round 3 · scoped sign-off
+
+The same continuing critic opened all **34 original-size captures** in `native/plans/r3` and read the complete source map. All R2 requests are closed.372 shows the complete real **Final line. X** and end caret above Done/software keyboard;382 shows the adjacent **Keep qz|the** middle insertion while retaining the final X below. These are intentional synthetic keystrokes, not product copy.384 shows the deliberate three-line preview and complete **Edit full step** route to the full-size editor. No custom bridge, forced caret-to-end or smaller type remains.
+
+366b fully contains the final action and **Thursday,24 December2026**, with Add a step below;369b fully contains **Before saving**.376–378 retain the literal edited wording and **Due7 Nov2026** through save/relaunch/agenda.374 retains acknowledgement off and disabled Save;354 is its separately acknowledged state. R1 copy/secondary ink,375b padded centered completion and377b full sharing explanation remain approved.
+
+| Concept | Category | Skill distinction | Hierarchy | Type | Colour | Richness | Rhythm | Finish | Native | Copy |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 4 | 4 | 4 | 4 | 4 | 4 | 3 | 4 | 4 | 4 | 4 |
+
+**Done by the stop rule:**10/11 applicable lines at4+ (90.9%), none below3, Concept/Finish/Native/Copy all4. Every named concrete visual/copy defect is closed. No new UI change, decoration or optional portfolio pass is requested. No app UI source changed after this sign-off. Normal native scroll edges remain normal; the earlier focused-end defect is directly replaced by372/382.
+
+The source map retains the exact boundaries: R11 normal delivery and R12 calendar editing are passing cases inside failed mixed bundles, R13 presentation is a passing bundle, R5 cancellation is its earlier passing case inside a failed mixed bundle. Design approval does not create a combined passing suite or establish live-provider, travel-time-zone execution, clinical, signed-device or VoiceOver validation.

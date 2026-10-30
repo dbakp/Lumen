@@ -1,0 +1,37 @@
+# Reviewed multiweek plans
+
+Use **Make a multiweek plan** in Assistant or the Library add menu. Enter a goal, choose a start date and 1, 2, 4 or 8 weeks. This flow is separate from ordinary conversational plans, which retain their existing automatic Library draft behavior.
+
+## Preparation and data
+
+**Prepare draft** uses the selected available AI provider. The request includes the literal goal, timeframe, current health summary (including bounded original source wording attached to confirmed logs) and personal context only when its existing sharing setting allows it. It does not retrieve Library excerpts or replay conversation history. Provider selection is captured at the start. If the personal context or its sharing choice changes during preparation, the result cannot open for review; prepare again with the current choice. Earlier provider requests cannot be recalled.
+
+The response is a proposed wellness routine, not a clinical assessment. The prompt prohibits diagnosis, medication/treatment changes, restrictive diets, invented measurements and unsupported health promises. The existing urgent-symptom route precedes preparation and template creation. These instructions and review controls are not proof of medical correctness, prompt-injection resistance or live-provider quality; those require separate evaluation.
+
+Apple generation uses a typed `Generable` plan/action schema; compatible providers use an explicit JSON contract. Both pass through the same independent validator. The reply must be a complete version-1 JSON object with a title, rationale and day-relative actions. The app rejects ambiguous repeated keys, unknown keys, missing or invalid fields, unsupported versions, overlarge text, out-of-range days, duplicated same-day actions and schedules that omit a requested week. It never clips an overlarge schedule into an apparently complete plan. Plain refusal/prose, fenced JSON and truncated replies do not become plans. Complete compatible-chat replies require a normal stop reason; explicit refusal and length-limited results are rejected. Apple and compatible-chat requests have an explicit upper budget of 6,000 response tokens for this flow; ordinary chat retains its prior behavior. The app's parser independently limits reply text to 65,536 UTF-8 bytes.
+
+Preparation has an explicit **Stop preparing**, a 60-second UI deadline and request identity checks. Stopping, discarding or leaving invalidates that request before cancellation; a delayed response cannot replace a newer draft. Inputs remain after errors, cancellation or timeout. No automatic retry or silent provider/template substitution happens.
+
+When an AI provider is unavailable or unsuccessful, **Use a planning template** remains a separate explicit choice. It repeats three planning/reflection prompts per week on this iPhone, without reading health records or adapting actions to the goal. Its source and rationale say this plainly. A failed AI request may already have reached the provider before a later template choice.
+
+## Review and save
+
+Every step and its date appears in week sections. The native Weeks menu jumps to any week or Before saving, including at large text sizes, without acknowledging or saving. Open a step to edit its date or choose Add step wording / Edit full step for the complete text editor; swipe to remove it, or add a new step. The short form preview does not replace the full saved wording. Dates stay within the selected period. The title and description are editable in full-size text editors. Action edits remain part of the temporary draft. Done or Back returns from the full wording editor; the step screen then returns its date and wording to review. Changing a reviewed action resets its acknowledgement. The goal is retained separately. **Change goal or timeframe** asks before discarding only the proposed steps, keeping the setup for a new preparation. Closing/swiping protects the entire unsaved draft.
+
+**I checked the steps and dates** starts off and resets after any draft edit. **Save plan** is enabled only for an acknowledged valid draft. Saved drafts contain 1–56 steps with unique local identities, nonempty wording and no repeated action on the same day. A user can explicitly remove a whole week during review; empty weeks remain visible. No plan is persisted before this action. A failed checked write leaves the review intact. Retrying uses the same document/action identities, preventing duplicate plans from that draft.
+
+Saving adds an active editable plan to Library and its unfinished actions to **Your next steps**. Assistant sharing starts off. No health log, Apple Health write or system Calendar event is created. Completion offers **View saved plan** and **Done**. Existing document editing, status, completion, deletion, sharing, backups and readable recovery continue to apply.
+
+## Dates and provenance
+
+Newly scheduled steps retain an ISO Gregorian calendar day alongside a legacy absolute due date. The current app displays, sorts, compares overdue status, edits, exports and retrieves the planned calendar day, so travel does not turn a planned Friday into Thursday. Legacy plans without the optional field keep their existing absolute-date behavior. Editing a date updates both representations; clearing it clears both. Backups/readable recovery preserve the optional day and reject impossible days before committing.
+
+The saved source records the selected provider label or local template. The body retains the literal goal, rationale, initial planning period, preparation/review times and calendar-day policy. It does not contain a duplicate static copy of the checklist: current editable steps remain the schedule. Existing assistant retrieval includes their current date/completion state only if the document is explicitly shared. Editing steps or changing plan status does not rewrite the initial goal/period history in the guidance.
+
+Limits: goal 2,000 characters / 8,000 UTF-8 bytes; title 120 / 480; rationale 2,000 / 8,000; step wording 500 / 2,000; at most 56 steps; supported calendar days 1900–2200; health context at most 64,000 UTF-8 bytes before a provider request. Values exceeding a limit require correction rather than silent trimming.
+
+## Evidence boundaries
+
+Debug simulator fixtures explicitly say **Simulated plan. No AI request.** They exercise the production parser, review and checked-save path without sending a request. They are excluded from Release compilation. The separate local-template route is actual production behavior. See [Verification](VERIFICATION.md) for exact source/build/native results; screenshots do not establish VoiceOver, every time zone, signed physical-device inference, clinical quality or provider accuracy.
+
+The existing compatible-provider connection supports user-configured endpoints/models, so this flow uses an explicit JSON contract plus independent validation rather than assuming every configured model supports a schema-constrained API. Official [OpenAI Structured Outputs documentation](https://developers.openai.com/api/docs/guides/structured-outputs) distinguishes schema-constrained output from JSON alone and requires handling refusals/incomplete output. The Xcode27 FoundationModels SDK's `GenerationOptions.maximumResponseTokens` and `respond(to:generating:options:)` establish the Apple output-budget API used here. No live provider or credential was used during development.

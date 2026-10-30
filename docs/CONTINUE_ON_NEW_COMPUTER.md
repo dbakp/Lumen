@@ -60,7 +60,7 @@ Clone the repository on this computer and inspect its current state before makin
 
 Use the attached App Designer Pro skill. Preserve the established design direction. Use one independent design critic for native UI changes, address substantive findings, and capture actual simulator screens. `Design/native-preview.html` presents captured screens; it is not the application.
 
-### Completed and published through batch 17
+### Completed through batch 18
 
 - Contextual Today, symptoms/check-ins, personal context and quiet reminders.
 - Persistent conversations with cancellation and reply ownership.
@@ -78,7 +78,19 @@ Use the attached App Designer Pro skill. Preserve the established design directi
 - Reviewable conversational logging for symptoms, check-ins, water and workouts, with focus-bound keyboard dismissal, full-size optional notes editing and exact multiline text preservation. Each entry requires explicit confirmation. Optional AI suggestions use the selected user message; missing or unsupported measurements remain blank. Original messages are separate from optional notes. Edited drafts have Close/swipe protection.
 - Per-metric current readings with source/date/query evidence, explicit recorded zeros, guarded current assistant context, and local confirmed water/workout corrections/deletion with stable identity and retained provenance. External-source workouts remain separate.
 
-### Latest validation
+- Reviewed1/2/4/8-week plans with selected-provider proposals or an explicit local template, full wording/date review, fresh acknowledgement, checked saving, matching Library/agenda calendar days and sharing off by default.
+
+### Latest validation · Batch18
+
+- **548 production-logic checks pass**, including strict multiweek proposals, stable identities, calendar days, planned/current retrieval state and actual backup/readable round trips. Existing checks remain.
+- All five simulator targets and an unsigned generic-iOS-device **Release** build pass. Final equality covers **159 native/project/UI-test files** and **17 package/test/check-script files**. Native SHA-256: `9dd0fe45624033eaef743b9f6413153696b99ddf0c1d66558bb099a9f8b52720`. Release min OS stays18.0; simulated plan/speech labels and the temporary numeric probe are absent. Later changes affect UI-test gestures/captures only; app source matches the Release build.
+- Final-source normal delivery passes **113.743s** and actual XXXL software-key/date/save/relaunch/agenda passes **184.381s**, each inside its explicitly failed mixed bundle. Separate dark/eight-week/XXXL presentation passes **142.320s**. These have zero recorded runtime warnings. Earlier cancellation/failure **145.032s** and broad four-case daily/Library/backup **473.695s** results retain their precise source boundaries in VERIFICATION.md. No failed suite is relabelled.
+- The final wording editor follows the existing full-notes pattern: a short literal step preview plus **Edit full step**, with date editing on the step form. Real visible keys prove an end insertion and two adjacent middle insertions; the exact text and moved calendar day survive Save and relaunch. Native Before saving navigation and the complete final Week8 action/date are captured.
+- Temporary diagnostic/custom text bridges are removed. The original numeric selection was at the string end while the displayed caret/layout disagreed; exact-value and AX-keyboard-presence assertions alone were insufficient. Keep the stronger actual-key, geometry, exact text/date and acknowledgement checks. Compact failing and passing history stays in Git; temporary paths are historical after cleanup.
+- The same App Designer Pro critic signs off R3 at **10/11 lines at4+, Richness3**, all concrete requests closed. The34 final native originals are in `Design/native/plans/r3`; no app UI source changes follow sign-off.
+- Live-provider quality, clinical suitability, physical devices, VoiceOver and broader release gates remain open. The full product goal remains active. See [Scheduled plans](SCHEDULED_PLANS.md) and `Design/native/plans` for the contract and evidence.
+
+### Batch17 validation retained
 
 - **503 production-logic checks pass**, retaining the actual backup/import/retrieval/voice/PCM/Vision checks. Batch 17 changes native editing; model/schema, provider consent, source messages and explicit entry confirmation remain unchanged.
 - All five simulator targets and a separate unsigned generic-iOS-device **Release** build pass with Xcode 27.0. Final source equality covers **155 native files** and **16 package/test/check-script files**. Native SHA-256: `4f1ba98245e5d80ca2e3ad30d8d9a3a3aee75335401253fc2bafe093d53a7866`. The supplementary source-disclosure UI test was added after the Release build; app source is unchanged. The Release executable excludes simulated speech text and minimum deployment remains iOS18. Exact definitions/boundaries are in VERIFICATION.md and `Design/native/health-editor/source-verification.json`.
@@ -144,7 +156,7 @@ Preserve the 100 MiB plain-file/combined-metadata bounds, per-section/aggregate 
 
 Assistant opens a temporary local speech draft on supported iOS 26+ devices. Availability/language selection never starts a microphone or download; Download language and Start recording are separate decisions. Apple analyzer modules process bounded owned PCM streams, with actual format conversion and no recording file/server fallback. Stop ends microphone capture immediately, capture/finalization are time-bounded and foreground/audio changes stop rather than restart recording. Shared model storage and deferred asset cleanup remain iOS-managed.
 
-Literal stopped text leads with Check your words. Edit text has a focused native editor with keep/discard protection; acknowledgement starts off and resets after edits. Use text only appends to the unchanged target conversation/current unsent draft. Send and every health-entry confirmation remain separate. Both typed submit callbacks queue their request outside binding updates, check the current conversation/text and clear the submitted composer without clearing new typing. Preserve these boundaries, the 8,000-character/32,000-byte/2,048-segment limits and the Debug-simulator-only fixture boundary. Signed-device speech and the retained water-editor diagnostic remain open; see VOICE_DRAFTS.md.
+Literal stopped text leads with Check your words. Edit text has a focused native editor with keep/discard protection; acknowledgement starts off and resets after edits. Use text only appends to the unchanged target conversation/current unsent draft. Send and every health-entry confirmation remain separate. Both typed submit callbacks queue their request outside binding updates, check the current conversation/text and clear the submitted composer without clearing new typing. Preserve these boundaries, the 8,000-character/32,000-byte/2,048-segment limits and the Debug-simulator-only fixture boundary. Signed-device speech remains open; the tested review/correction keyboard diagnostic was resolved in Batch 17. See VOICE_DRAFTS.md.
 
 ### Storage policy on every run
 

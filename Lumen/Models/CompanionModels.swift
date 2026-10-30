@@ -29,6 +29,11 @@ public struct PlanStep: Identifiable, Codable, Sendable {
     public var title: String
     public var isDone = false
     public var dueDate: Date? = nil
+    public var plannedDay: String? = nil
+    public var calendarDate: Date? { plannedDay.flatMap { PlanDay.date($0) } ?? dueDate }
+    public mutating func setDate(_ date: Date?) {
+        dueDate = date; plannedDay = date.map { PlanDay.string($0) }
+    }
 }
 
 public struct HealthDocument: Identifiable, Codable, Sendable {
@@ -48,7 +53,7 @@ public struct HealthDocument: Identifiable, Codable, Sendable {
     public var extraction: RecordExtraction? = nil
     public var recordContext: RecordReplyContext? = nil
     public var markdown: String {
-        "# \(title)\n\n\(body)\n\n" + steps.map { "- [\($0.isDone ? "x" : " ")] \($0.title)" + ($0.dueDate.map { " (due " + $0.formatted(date: .abbreviated, time: .omitted) + ")" } ?? "") }.joined(separator: "\n") + "\n\nSource: \(source)\nUpdated: \(updatedAt.formatted())" + (recordContext?.markdownReferences ?? "")
+        "# \(title)\n\n\(body)\n\n" + steps.map { "- [\($0.isDone ? "x" : " ")] \($0.title)" + ($0.calendarDate.map { " (due " + $0.formatted(date: .abbreviated, time: .omitted) + ")" } ?? "") }.joined(separator: "\n") + "\n\nSource: \(source)\nUpdated: \(updatedAt.formatted())" + (recordContext?.markdownReferences ?? "")
     }
 }
 

@@ -87,7 +87,11 @@ public enum RecordRetrieval {
         if !document.steps.isEmpty {
             let iso = ISO8601DateFormatter()
             value += "\n\nCurrent saved checklist\n" + document.steps.map { step in
-                "[\(step.isDone ? "done" : "pending")] \(step.title)" + (step.dueDate.map { " · due " + iso.string(from: $0) + " (UTC)" } ?? " · no due date")
+                let dateText: String
+                if let day = step.plannedDay, PlanDay.date(day) != nil { dateText = " · planned calendar day " + day }
+                else if let due = step.dueDate { dateText = " · due " + iso.string(from: due) + " (UTC)" }
+                else { dateText = " · no due date" }
+                return "[\(step.isDone ? "done" : "pending")] \(step.title)" + dateText
             }.joined(separator: "\n")
         }
         return value.utf8.count <= maxDocumentBytes && value.count <= maxDocumentCharacters ? value : nil

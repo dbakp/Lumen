@@ -1408,6 +1408,198 @@ final class LumenSmokeTests: XCTestCase {
         XCTAssertEqual(app.staticTexts.matching(identifier: "userMessage").count, 1)
     }
 
+    func openScheduledPlan() {
+        tab("Assistant"); tap("Conversation actions"); tap("Make a multiweek plan")
+        XCTAssertTrue(app.navigationBars["Make a plan"].waitForExistence(timeout: 5))
+    }
+    func enterPlanGoal(_ text: String, capture: String? = nil) {
+        reveal(app.buttons["editScheduledPlanGoal"].firstMatch); tap("editScheduledPlanGoal")
+        let editor = app.textViews["scheduledPlanGoal"].firstMatch
+        XCTAssertTrue(editor.waitForExistence(timeout: 5)); editor.tap(); editor.typeText(text)
+        XCTAssertEqual(editor.value as? String, text)
+        let done = app.buttons["finishPlanText"].firstMatch
+        XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 5)); XCTAssertTrue(done.isHittable)
+        XCTAssertGreaterThanOrEqual(done.frame.height, 44); XCTAssertLessThanOrEqual(done.frame.maxY, app.keyboards.firstMatch.frame.minY + 1)
+        if let capture { snap(capture) }; done.tap()
+        XCTAssertEqual(app.staticTexts["scheduledPlanGoalPreview"].label, text)
+    }
+    func testScheduledPlanDelivery() throws {
+        app.terminate(); app.launchArguments = ["-resetForUITests", "-scheduledPlanUITestFixture", "valid"]; app.launch()
+        finishOnboarding(); openScheduledPlan()
+        let goal = "Make time to review my routine over the next two weeks."
+        enterPlanGoal(goal, capture: "350-plan-goal-editor"); snap("351-plan-setup")
+        reveal(app.buttons["prepareScheduledPlan"].firstMatch); tap("prepareScheduledPlan")
+        XCTAssertTrue(app.staticTexts["scheduledPlanCount"].waitForExistence(timeout: 10)); XCTAssertEqual(app.staticTexts["scheduledPlanCount"].label, "2 weeks · 4 dated steps"); snap("352-plan-review")
+        let save = app.buttons["saveScheduledPlan"].firstMatch; reveal(save); XCTAssertFalse(save.isEnabled)
+        let acknowledge = app.switches["acknowledgeScheduledPlan"].firstMatch; reveal(acknowledge); nativeSwitch("acknowledgeScheduledPlan", enabled: true); XCTAssertTrue(save.isEnabled)
+        tap("Jump to week"); tap("Week 1")
+        let first = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'scheduledPlanAction-' ")).firstMatch; reveal(first); first.tap()
+        tap("editFullScheduledAction")
+        let editor = app.textViews["scheduledActionText"].firstMatch; XCTAssertTrue(editor.waitForExistence(timeout: 5))
+        let changed = "Choose one small step that fits my actual schedule."
+        replaceVoiceText(editor, with: changed); snap("353-plan-step-editor")
+        app.navigationBars["Step wording"].buttons.element(boundBy: 0).tap()
+        app.navigationBars["Plan step"].buttons.element(boundBy: 0).tap()
+        reveal(save); XCTAssertFalse(save.isEnabled, "Editing a reviewed step requires a new acknowledgement"); snap("374-plan-edit-needs-review")
+        reveal(acknowledge); nativeSwitch("acknowledgeScheduledPlan", enabled: true); snap("354-plan-ready-to-save"); save.tap()
+        XCTAssertTrue(app.staticTexts["Plan saved."].waitForExistence(timeout: 5)); snap("355-plan-saved"); tap("View saved plan")
+        let completed = app.buttons["Incomplete: " + changed].firstMatch; reveal(completed); completed.tap()
+        XCTAssertTrue(app.buttons["Completed: " + changed].exists)
+        let share = app.switches["Use in assistant"].firstMatch; reveal(share); XCTAssertEqual(share.value as? String, "0"); snap("356-plan-sharing-off")
+        let explanation = app.staticTexts.matching(NSPredicate(format: "label == %@", "When enabled, matching text can be sent with your questions to the AI provider selected in Settings. Turning this off stops future retrieval. Earlier replies and saved copies keep their excerpts." )).firstMatch; reveal(explanation); snap("356b-plan-sharing-explanation")
+        app.navigationBars["Document"].buttons.element(boundBy: 0).tap(); tap("finishScheduledPlan")
+        app.terminate(); app.launchArguments = []; app.launch(); tab("Library")
+        let plan = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'library-plan-' ")).firstMatch
+        reveal(plan); XCTAssertEqual(app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'library-plan-' ")).count, 1); plan.tap()
+        XCTAssertTrue(app.buttons["Completed: " + changed].waitForExistence(timeout: 5)); snap("357-plan-after-relaunch")
+        app.navigationBars["Document"].buttons.element(boundBy: 0).tap(); scrollAndTap("Your next steps")
+        XCTAssertFalse(app.buttons["Complete " + changed].exists)
+        XCTAssertTrue(app.buttons["Complete Review your routine and adjust if needed"].firstMatch.waitForExistence(timeout: 5)); snap("358-plan-agenda")
+    }
+    func testScheduledPlanCancellationAndFailure() throws {
+        app.terminate(); app.launchArguments = ["-resetForUITests", "-scheduledPlanUITestFixture", "invalid"]; app.launch()
+        finishOnboarding(); openScheduledPlan(); enterPlanGoal("Review my weekly routine.")
+        reveal(app.buttons["prepareScheduledPlan"].firstMatch); tap("prepareScheduledPlan")
+        let error = app.staticTexts["scheduledPlanError"].firstMatch; XCTAssertTrue(error.waitForExistence(timeout: 8)); reveal(error); snap("359-plan-invalid-reply")
+        XCTAssertFalse(app.staticTexts["scheduledPlanCount"].exists)
+        tap("closeScheduledPlan"); tap("Keep planning"); tap("closeScheduledPlan"); tap("Discard draft")
+        tab("Library"); XCTAssertEqual(app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'library-plan-' ")).count, 0)
+        app.terminate(); app.launchArguments = ["-resetForUITests", "-scheduledPlanUITestFixture", "delayed"]; app.launch()
+        finishOnboarding(); openScheduledPlan(); enterPlanGoal("Keep a flexible weekly routine.")
+        reveal(app.buttons["prepareScheduledPlan"].firstMatch); tap("prepareScheduledPlan"); tap("stopScheduledPlan"); XCTAssertTrue(app.staticTexts["scheduledPlanError"].waitForExistence(timeout: 5))
+        let lateDraft = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in self.app.staticTexts["scheduledPlanCount"].exists }, object: nil)
+        XCTAssertEqual(XCTWaiter.wait(for: [lateDraft], timeout: 9), .timedOut, "A stopped preparation must not surface a late draft")
+        let template = app.buttons["useScheduledPlanTemplate"].firstMatch; reveal(template); template.tap()
+        XCTAssertTrue(app.staticTexts["scheduledPlanCount"].waitForExistence(timeout: 5)); XCTAssertEqual(app.staticTexts["scheduledPlanCount"].label, "2 weeks · 6 dated steps"); snap("360-plan-explicit-template")
+        let revise = app.buttons["Change goal or timeframe"].firstMatch; reveal(revise); revise.tap(); tap("Keep these steps")
+        revise.tap(); tap("Change setup")
+        XCTAssertEqual(app.staticTexts["scheduledPlanGoalPreview"].label, "Keep a flexible weekly routine.")
+        tap("closeScheduledPlan"); tap("Discard draft"); tab("Library")
+        XCTAssertEqual(app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'library-plan-' ")).count, 0)
+    }
+    func testScheduledPlanPresentation() throws {
+        app.terminate(); app.launchArguments = ["-resetForUITests", "-lumen.appearance", "dark"]; app.launch()
+        finishOnboarding(); openScheduledPlan(); enterPlanGoal("Make room to review and adapt my routine."); snap("361-plan-dark-setup")
+        let template = app.buttons["useScheduledPlanTemplate"].firstMatch; reveal(template); template.tap()
+        XCTAssertTrue(app.staticTexts["scheduledPlanCount"].waitForExistence(timeout: 5)); snap("362-plan-dark-review")
+        tap("closeScheduledPlan"); tap("Discard draft")
+        app.terminate(); app.launchArguments = ["-lumen.appearance", "light", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]; app.launch()
+        openScheduledPlan(); enterPlanGoal("Make space for a routine.\nThe last line stays editable.", capture: "363-plan-large-goal-editor")
+        let duration = app.buttons["scheduledPlanWeeks"].firstMatch; reveal(duration); duration.tap(); tap("8 weeks")
+        reveal(template); snap("364-plan-large-setup"); template.tap()
+        XCTAssertTrue(app.staticTexts["scheduledPlanCount"].waitForExistence(timeout: 5)); XCTAssertEqual(app.staticTexts["scheduledPlanCount"].label, "8 weeks · 24 dated steps"); snap("365-plan-large-review")
+        tap("Jump to week"); let week = app.buttons["Week 8"].firstMatch; reveal(week); snap("369-plan-week-menu"); week.tap()
+        let lastWeek = app.staticTexts["Week 8"].firstMatch; reveal(lastWeek); snap("366-plan-large-last-week")
+        let finalDate = Calendar.current.date(byAdding: .day, value: 55, to: Date())!.formatted(date: .complete, time: .omitted)
+        let lastAction = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'scheduledPlanAction-' AND label CONTAINS %@", finalDate)).firstMatch
+        reveal(lastAction)
+        let top = app.navigationBars["Make a plan"].frame.maxY + 12, bottom = app.frame.maxY - 70
+        for _ in 0..<10 {
+            let f = lastAction.frame
+            if f.minY >= top && f.maxY <= bottom { break }
+            let upward = f.maxY > bottom
+            let shift = min(200, max(40, abs(f.midY - (top + bottom) / 2)))
+            let start = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: app.frame.midX, dy: (top + bottom) / 2))
+            start.press(forDuration: 0.05, thenDragTo: start.withOffset(CGVector(dx: 0, dy: upward ? -shift : shift)), withVelocity: .slow, thenHoldForDuration: 0.4)
+        }
+        XCTAssertGreaterThanOrEqual(lastAction.frame.minY, top); XCTAssertLessThanOrEqual(lastAction.frame.maxY, bottom); snap("366b-plan-large-final-action")
+        tap("Jump to week"); let before = app.buttons["Before saving"].firstMatch; reveal(before)
+        // Scroll inside the native menu, then let its scroll animation settle.
+        app.buttons["Week 7"].firstMatch.swipeUp()
+        let menuSettled = expectation(description: "Native week menu settled")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { menuSettled.fulfill() }; wait(for: [menuSettled], timeout: 2)
+        XCTAssertTrue(before.isHittable); snap("369b-plan-before-saving-menu"); before.tap()
+        let ack = app.switches["acknowledgeScheduledPlan"].firstMatch; reveal(ack); snap("367-plan-large-confirmation"); XCTAssertFalse(app.buttons["saveScheduledPlan"].isEnabled)
+        tap("closeScheduledPlan"); XCTAssertTrue(app.alerts["Discard this plan draft?"].waitForExistence(timeout: 5)); snap("368-plan-large-discard"); tap("Discard draft")
+    }
+    func testScheduledPlanDatePickerInspection() throws {
+        finishOnboarding(); openScheduledPlan(); enterPlanGoal("Make room to review my routine.")
+        let template = app.buttons["useScheduledPlanTemplate"].firstMatch; reveal(template); template.tap()
+        XCTAssertTrue(app.staticTexts["scheduledPlanCount"].waitForExistence(timeout: 5))
+        tap("Jump to week"); tap("Week 1")
+        let action = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'scheduledPlanAction-' ")).firstMatch; reveal(action); action.tap()
+        let picker = app.descendants(matching: .any).matching(identifier: "scheduledActionDate").firstMatch
+        XCTAssertTrue(picker.waitForExistence(timeout: 5))
+        if picker.buttons.firstMatch.exists { picker.buttons.firstMatch.tap() } else { picker.tap() }
+        snap("370-plan-date-picker-inspection"); print("PLAN_DATE_PICKER_HIERARCHY\n" + app.debugDescription)
+    }
+    func testScheduledPlanUrgentGuard() throws {
+        finishOnboarding(); openScheduledPlan(); enterPlanGoal("Make a plan for chest pain happening now.")
+        let template = app.buttons["useScheduledPlanTemplate"].firstMatch; reveal(template); template.tap()
+        let error = app.staticTexts["scheduledPlanError"].firstMatch; XCTAssertTrue(error.waitForExistence(timeout: 5)); reveal(error)
+        XCTAssertTrue(error.label.contains("local emergency services")); XCTAssertFalse(app.staticTexts["scheduledPlanCount"].exists)
+        snap("371-plan-urgent-routing-fixture")
+        tap("closeScheduledPlan"); tap("Discard draft"); tab("Library")
+        XCTAssertEqual(app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'library-plan-' ")).count, 0)
+    }
+    func testScheduledPlanCalendarEditing() throws {
+        finishOnboarding()
+        app.terminate(); app.launchArguments = ["-lumen.appearance", "light", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]; app.launch()
+        openScheduledPlan(); enterPlanGoal("Review a routine that fits my day.")
+        let template = app.buttons["useScheduledPlanTemplate"].firstMatch; reveal(template); template.tap()
+        XCTAssertTrue(app.staticTexts["scheduledPlanCount"].waitForExistence(timeout: 5))
+        tap("Jump to week"); tap("Before saving")
+        let add = app.buttons["Add a step"].firstMatch; reveal(add); add.tap()
+        tap("Jump to week"); tap("Week 1")
+        let action = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Add step wording'")).firstMatch; reveal(action); action.tap()
+        tap("editFullScheduledAction")
+        let editor = app.textViews["scheduledActionText"].firstMatch; XCTAssertTrue(editor.waitForExistence(timeout: 5))
+        var wording = "Review one small step at a time, and leave room to adapt it to the day.\nKeep the wording and date together.\nFinal line."
+        XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 5)); editor.typeText(wording); XCTAssertEqual(editor.value as? String, wording)
+        let done = app.buttons["finishPlanText"].firstMatch
+        XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 5)); XCTAssertGreaterThanOrEqual(done.frame.height, 44)
+        // XCTest's text injection can hide the software keyboard. Reopen the
+        // actual editor, then perform the editing proof only with visible keys.
+        tap("finishPlanText"); reveal(app.buttons["editFullScheduledAction"].firstMatch); tap("editFullScheduledAction")
+        XCTAssertTrue(editor.waitForExistence(timeout: 5)); XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 5))
+        XCTAssertLessThan(app.keyboards.firstMatch.frame.minY, app.frame.maxY - 150)
+        editor.swipeUp(velocity: .slow); editor.swipeUp(velocity: .slow)
+        editor.coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.9)).tap()
+        func visibleLetter(_ letter: String) -> String {
+            let key = app.keyboards.keys.matching(NSPredicate(format: "label ==[c] %@", letter)).firstMatch
+            XCTAssertTrue(key.exists && key.isHittable)
+            XCTAssertGreaterThanOrEqual(key.frame.minY, app.keyboards.firstMatch.frame.minY)
+            XCTAssertLessThanOrEqual(key.frame.maxY, app.frame.maxY)
+            let literal = key.label; key.tap(); return literal
+        }
+        let space = app.keyboards.keys["space"].firstMatch; XCTAssertTrue(space.isHittable); space.tap()
+        wording += " " + visibleLetter("x"); XCTAssertEqual(editor.value as? String, wording)
+        XCTAssertLessThanOrEqual(done.frame.maxY, app.keyboards.firstMatch.frame.minY + 1); snap("372-plan-large-step-keyboard"); snap("381-plan-end-insertion")
+        editor.coordinate(withNormalizedOffset: CGVector(dx: 0.3, dy: 0.35)).tap()
+        let marker = visibleLetter("q"), middle = editor.value as? String ?? ""
+        XCTAssertEqual(middle.replacingOccurrences(of: marker, with: ""), wording)
+        XCTAssertFalse(middle.hasSuffix(marker)); XCTAssertTrue(middle.contains(marker))
+        let next = visibleLetter("z"); wording = middle.replacingOccurrences(of: marker, with: marker + next)
+        XCTAssertEqual(editor.value as? String, wording)
+        XCTAssertLessThan(app.keyboards.firstMatch.frame.minY, app.frame.maxY - 150); snap("382-plan-middle-insertion")
+        tap("finishPlanText")
+        let fullRoute = app.buttons["editFullScheduledAction"].firstMatch; reveal(fullRoute); snap("384-plan-full-step-route")
+        let picker = app.datePickers["scheduledActionDate"].firstMatch; XCTAssertTrue(picker.waitForExistence(timeout: 5)); picker.tap()
+        let replanned = Calendar.current.date(byAdding: .day, value: 8, to: Date())!
+        if Calendar.current.component(.month, from: replanned) != Calendar.current.component(.month, from: Date()) { tap("DatePicker.NextMonth") }
+        let formatter = DateFormatter(); formatter.locale = Locale(identifier: "en_GB"); formatter.dateFormat = "EEEE, d MMMM"
+        let day = app.buttons[formatter.string(from: replanned)].firstMatch
+        XCTAssertTrue(day.waitForExistence(timeout: 5)); XCTAssertTrue(day.isEnabled); snap("373-plan-large-date-picker"); day.tap()
+        app.navigationBars["Plan step"].tap()
+        tap("finishScheduledAction")
+        tap("Jump to week"); tap("Before saving")
+        let save = app.buttons["saveScheduledPlan"].firstMatch; reveal(save); XCTAssertFalse(save.isEnabled)
+        nativeSwitch("acknowledgeScheduledPlan", enabled: true); reveal(save); save.tap()
+        XCTAssertTrue(app.staticTexts["Plan saved."].waitForExistence(timeout: 5)); snap("375-plan-large-completion")
+        let view = app.buttons["View saved plan"].firstMatch; reveal(view); snap("375b-plan-large-completion-actions"); view.tap()
+        let expected = "Due " + replanned.formatted(date: .abbreviated, time: .omitted)
+        let due = app.staticTexts[expected].firstMatch; reveal(due); XCTAssertTrue(due.exists); snap("376-plan-large-saved-date")
+        let sharing = app.staticTexts.matching(NSPredicate(format: "label == %@", "When enabled, matching text can be sent with your questions to the AI provider selected in Settings. Turning this off stops future retrieval. Earlier replies and saved copies keep their excerpts." )).firstMatch
+        reveal(sharing); snap("376b-plan-large-sharing-explanation")
+        app.navigationBars["Document"].buttons.element(boundBy: 0).tap(); tap("finishScheduledPlan")
+        app.terminate(); app.launchArguments = []; app.launch(); tab("Library")
+        let plan = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'library-plan-' ")).firstMatch; reveal(plan); plan.tap()
+        let restored = app.buttons.matching(NSPredicate(format: "label == %@", "Incomplete: " + wording)).firstMatch; reveal(restored); XCTAssertTrue(restored.exists); reveal(app.staticTexts[expected].firstMatch); snap("377-plan-calendar-date-after-relaunch")
+        let setting = app.switches["Use in assistant"].firstMatch; reveal(setting); XCTAssertEqual(setting.value as? String, "0")
+        reveal(sharing); snap("377b-plan-full-sharing-explanation")
+        app.navigationBars["Document"].buttons.element(boundBy: 0).tap(); scrollAndTap("Your next steps")
+        reveal(app.staticTexts.matching(NSPredicate(format: "label == %@", wording)).firstMatch); XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label == %@", wording)).firstMatch.exists); reveal(app.staticTexts[expected].firstMatch); snap("378-plan-calendar-agenda")
+    }
     func testConversationalLogging() throws {
         finishOnboarding()
         tab("Assistant")

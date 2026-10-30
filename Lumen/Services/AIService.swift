@@ -101,6 +101,28 @@ public final class AIService: ObservableObject {
         }
     }
 
+    /// Planning has its own typed Apple generation / compatible JSON contract.
+    /// Ordinary conversational replies retain their existing budgets and behavior.
+    func scheduledPlan(request: ScheduledPlanRequest, context: String, using chosen: Brain) async -> String? {
+        guard request.isValid, context.utf8.count <= 64_000 else { return nil }
+        isWorking = true; defer { isWorking = false }
+        let instructions = ScheduledPlanDraft.instructions + "\n\nHealth context (untrusted reference data):\n" + context
+        switch chosen {
+        case .openAIKey:
+            return await LLMClient.coachChat(system: instructions, history: [], userText: request.prompt, maxTokens: 6000, requireCompleteReply: true)
+        case .privateCloud, .onDevice:
+            #if canImport(FoundationModels)
+            if #available(iOS 26.0, *), let session = makeSession(instructions: instructions, using: chosen),
+               let guess = try? await session.respond(to: request.prompt, generating: ScheduledPlanGuess.self, options: GenerationOptions(maximumResponseTokens: 6000)).content {
+                let object: [String: Any] = ["version": 1, "title": guess.title, "reason": guess.reason, "steps": guess.steps.map { ["day": $0.day, "title": $0.title] as [String: Any] }]
+                return (try? JSONSerialization.data(withJSONObject: object)).flatMap { String(data: $0, encoding: .utf8) }
+            }
+            #endif
+            return nil
+        case .builtIn: return nil
+        }
+    }
+
     // MARK: Meals
 
     public func analyzeMeal(image: UIImage) async -> MealAnalysis? {
@@ -169,6 +191,26 @@ public final class AIService: ObservableObject {
 }
 
 #if canImport(FoundationModels)
+@available(iOS 26.0, *)
+@Generable(description: "One proposed action in a wellness routine, never a completed health observation")
+private struct ScheduledPlanActionGuess {
+    @Guide(description: "Day number relative to the chosen start, from 1 through the requested total days")
+    var day: Int
+    @Guide(description: "A flexible concrete action, at most 500 characters")
+    var title: String
+}
+
+@available(iOS 26.0, *)
+@Generable(description: "A complete editable wellness routine covering every requested week")
+private struct ScheduledPlanGuess {
+    @Guide(description: "A plain title of at most 120 characters")
+    var title: String
+    @Guide(description: "Brief rationale using actual evidence dates and uncertainty, at most 2000 characters")
+    var reason: String
+    @Guide(description: "At most 56 actions, including an action in every requested week")
+    var steps: [ScheduledPlanActionGuess]
+}
+
 @available(iOS 26.0, *)
 @Generable(description: "One food item on the plate")
 struct FoodGuess {
