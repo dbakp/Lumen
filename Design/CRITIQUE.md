@@ -337,3 +337,39 @@ The same critic inspected replacement 287 and added 289 at original size, read t
 | 4 | 4 | 4 | 4 | 4 | 4 | 3 | 4 | 4 | 4 | 4 |
 
 **Done by the stop rule:** 10/11 applicable lines at 4+ (90.9%), none below 3, all required lines 4. All concrete R1/R2 requests are visibly closed. No new imagery, concept or portfolio pass is requested. The dedicated role-metadata case passes in **89.523 s**, zero failures/skips/recorded runtime warnings. Earlier full reader/recovery, large-review, sharing and encrypted-backup case boundaries remain separately documented; no mixed-result bundle is relabelled as a passing suite. The final gallery uses `native/readable/r3` (**31 PNGs**, source map and durable verification record). No UI source changed after this sign-off. Native static evidence does not establish VoiceOver, physical-device behavior, clinical accuracy, live-provider quality or a browser-DOM scan.
+
+## Batch 16 · reviewed voice drafts · 30 October 2026
+
+The supplied App Designer Pro skill continues the daylight-observatory direction in native Assistant sheets. No new concept, icon, paywall, store set or promotional motion is in scope. The same continuing independent critic inspected all 15 original-size native PNGs and `capture-sources.json` in `native/voice/r1`. Every frame in this first set is explicitly simulated speech; the fixture never opens a microphone or downloads a language. Native captures and assertions provide the evidence, with no browser-DOM scan claim.
+
+### Round 1
+
+| Concept | Category | Skill distinction | Hierarchy | Type | Colour | Richness | Rhythm | Finish | Native | Copy |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 4 | 4 | 4 | 4 | 4 | 4 | 3 | 4 | 3 | 4 | 3 |
+
+Not done: 8/11 applicable lines at 4+, with Finish and Copy below the required 4. The critic finds the live → checked text → unsent composer → separate health-review sequence clear. Typed text survives insertion, the unchecked Use text control is visibly disabled, and native keep/discard decisions protect the temporary work. Richness 3 does not call for decorative medical imagery.
+
+Two concrete asks are accepted: at actual Accessibility XXXL, give Edit text, Copy text and Record again consistent text alignment rather than allowing the second word to start under the symbol; replace “left the foreground” / “leave the foreground” with “you left Lumen” / “leave Lumen.” Round 2 uses text-only actions at accessibility sizes and retains symbols at standard sizes. It will add the actual availability state, a settled large action row and further editor captures. Frame 316 has a caret but no software keyboard: it does not prove keyboard clearance. Ordinary native scroll edges in the earlier frames are not fixed clipping. Signature, motion, conversion and store-feature work are outside this scope; no acoustic, VoiceOver or physical-device result follows from a fixture.
+
+### Round 2
+
+The same critic inspected all **24 original-size captures** in `native/voice/r2` and their per-case source map. Both R1 requests landed: text-only accessibility actions align correctly, and stop/privacy copy uses leave/left Lumen. Actual production availability offers Download language without capture/download consent. Captures 316/323 show the software keyboard; 324 shows the long XXXL editor's end/caret with reachable Done. These are shown simulator states, not every keyboard/device.
+
+| Concept | Category | Skill distinction | Hierarchy | Type | Colour | Richness | Rhythm | Finish | Native | Copy |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 4 | 4 | 4 | 4 | 4 | 4 | 3 | 4 | 3 | 4 | 4 |
+
+Not done: 9/11 lines at 4+, but Finish remains 3. Newly shown settled frame 325 retains the submitted keyboard text in the composer with Send enabled after a reply. The native test established one sent message but didn't assert composer clearing. This is accepted as a real reentrant-input defect. Round 3 will submit outside the input callback, check the originating conversation/current draft, require an empty composer and disabled Send after completion, and verify genuinely new unsent typing survives. All other concrete visual/copy requests are closed; normal scroll edges and the separately retained water-editor runtime diagnostic are not newly established fixed clipping. No ornamental/portfolio pass is requested.
+
+### Round 3 · final sign-off
+
+The same continuing critic opened all **13 changed/new captures** in `native/voice/r3` at original size, read the source map and confirmed that the other **12 PNGs are byte-identical** to R2. Settled 325 now shows the completed reply above an empty composer with Message your coach and inactive Send. In 326, genuinely new unsent typing has its caret/software keyboard and active Send; the old submitted text is absent. The final native assertions separately require these states and exactly one user message.
+
+| Concept | Category | Skill distinction | Hierarchy | Type | Colour | Richness | Rhythm | Finish | Native | Copy |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 4 | 4 | 4 | 4 | 4 | 4 | 3 | 4 | 4 | 4 | 4 |
+
+**Done by the stop rule:** 10/11 applicable lines at 4+ (90.9%), none below 3, Concept/Finish/Native/Copy all 4. Every named R1/R2 concrete defect is closed. The refreshed final-source voice path retains correction/acknowledgement, typed-prefix preservation, unsent insertion, individual 375 ml confirmation and one saved entry. Keyboard-up editors keep Done reachable. XXXL rows, actual availability, dark appearance and plain lifecycle copy remain approved. No UI source changed after this sign-off, and no additional portfolio/decorative pass is requested.
+
+The water-editor invalid-frame diagnostic remains disclosed runtime evidence; these stills establish no new geometry defect and no zero-warning claim. Physical-device/acoustic/microphone, VoiceOver and live-provider checks remain outside the verdict. The final set has **25 PNGs**. To avoid redundant local evidence, R1 retains its old foreground-copy/large-row/keyboard-absent counterexamples (308/313/316), and R2 retains the settled retained-draft defect (325); their complete capture hashes/result provenance and all critique scores remain. Other superseded frames are replaced by the final set, rather than permanently archiving every duplicate render.

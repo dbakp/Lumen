@@ -89,6 +89,155 @@ final class LumenSmokeTests: XCTestCase {
 
     }
 
+    func prepareVoice(appearance: String = "light", failingRestart: Bool = false) {
+        app.terminate(); app.launchArguments = ["-resetForUITests", "-voice-fixture", "-lumen.appearance", appearance] + (failingRestart ? ["-voice-fixture-fail-restart"] : []); app.launch()
+        finishOnboarding(); tab("Assistant")
+    }
+    func revealVoice(_ element: XCUIElement, towardsTop: Bool = false) {
+        for _ in 0..<18 {
+            let top = app.navigationBars.firstMatch.frame.maxY + 16
+            let controls = app.descendants(matching: .any).matching(identifier: "voiceControls").firstMatch
+            let bottom = controls.exists ? controls.frame.minY - 16 : app.frame.maxY - 110
+            if element.exists && element.isHittable && element.frame.midY > top && element.frame.midY < bottom { return }
+            let upper = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 8, dy: top + 8))
+            let lower = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 8, dy: bottom - 8))
+            if (element.exists && element.frame.midY < top) || (!element.exists && towardsTop) { upper.press(forDuration: 0.05, thenDragTo: lower) }
+            else { lower.press(forDuration: 0.05, thenDragTo: upper) }
+        }
+        XCTFail("Voice control not reachable: " + element.identifier)
+    }
+    func startAndReviewVoice() {
+        tap("coachVoice")
+        let start = app.buttons["startVoice"].firstMatch
+        XCTAssertTrue(app.navigationBars["Voice draft"].waitForExistence(timeout: 5))
+        revealVoice(start); start.tap()
+        let live = app.staticTexts["voiceLiveText"].firstMatch
+        let hypothesis = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in live.exists && live.label.contains("300") }, object: live)
+        XCTAssertEqual(XCTWaiter.wait(for: [hypothesis], timeout: 5), .completed)
+        snap("302-voice-live-fixture"); tap("stopVoice")
+        XCTAssertTrue(app.buttons["useVoiceText"].waitForExistence(timeout: 8))
+    }
+    func replaceVoiceText(_ editor: XCUIElement, with text: String) {
+        // These short fixture drafts fit in the editor. Tapping its empty lower
+        // area puts the caret at the end without a simulator hardware shortcut.
+        let previous = editor.value as? String ?? ""
+        editor.coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.9)).tap()
+        editor.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: previous.count + 2))
+        XCTAssertEqual(editor.value as? String ?? "", "", "Clear the entire prior fixture text before replacing it")
+        editor.typeText(text); XCTAssertEqual(editor.value as? String, text)
+    }
+    func testVoiceDraftReview() throws {
+        prepareVoice()
+        let composer = app.descendants(matching: .any).matching(identifier: "coachInput").firstMatch
+        composer.tap(); composer.typeText("Keep this typed question."); snap("300-voice-composer")
+        startAndReviewVoice()
+        let use = app.buttons["useVoiceText"].firstMatch
+        XCTAssertFalse(use.isEnabled); snap("303-voice-review-unchecked")
+        let edit = app.buttons["editVoiceText"].firstMatch; revealVoice(edit); edit.tap()
+        let editor = app.textViews["voiceDraftText"].firstMatch
+        XCTAssertTrue(editor.waitForExistence(timeout: 5)); editor.tap(); snap("323-voice-editor-before-hardware-keys")
+        replaceVoiceText(editor, with: "I drank 375 ml of water.\nMy shoulder pain is 2 out of 10."); snap("316-voice-text-editor"); tap("saveVoiceEdit")
+        let checked = app.switches["voiceChecked"].firstMatch; revealVoice(checked); nativeSwitch("voiceChecked", enabled: true)
+        XCTAssertTrue(use.isEnabled)
+        revealVoice(edit); edit.tap(); replaceVoiceText(editor, with: "I drank 375 ml of water.\nMy shoulder pain is 2 out of 10. I checked this synthetic text."); tap("saveVoiceEdit")
+        XCTAssertFalse(use.isEnabled, "Any later edit requires a fresh review acknowledgement")
+        revealVoice(checked); nativeSwitch("voiceChecked", enabled: true); snap("304-voice-reviewed-ready"); use.tap()
+        XCTAssertTrue(app.navigationBars["Voice draft"].waitForNonExistence(timeout: 5))
+        XCTAssertTrue((composer.value as? String ?? "").contains("Keep this typed question.\nI drank 375"))
+        XCTAssertTrue((composer.value as? String ?? "").contains("shoulder pain"))
+        XCTAssertFalse(app.staticTexts["userMessage"].exists); XCTAssertFalse(app.staticTexts["coachMessage"].exists); snap("305-voice-unsent-draft")
+        tap("coachSend")
+        XCTAssertTrue(app.staticTexts["coachMessage"].firstMatch.waitForExistence(timeout: 30))
+        XCTAssertEqual(app.staticTexts.matching(identifier: "userMessage").count, 1)
+        let review = app.buttons["Review health entries"].firstMatch; reveal(review); review.tap()
+        XCTAssertTrue(app.navigationBars["Review health entries"].waitForExistence(timeout: 10)); snap("306-voice-health-review")
+        let water = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Water'")).firstMatch
+        reveal(water); water.tap()
+        let amount = app.textFields["draftWaterML"].firstMatch
+        XCTAssertTrue(amount.waitForExistence(timeout: 5)); XCTAssertEqual(amount.value as? String, "375")
+        snap("319-voice-water-confirmation")
+        let confirm = app.buttons["confirmChatHealthLog"].firstMatch; reveal(confirm); XCTAssertTrue(confirm.isEnabled); confirm.tap()
+        XCTAssertTrue(app.staticTexts["1 saved · 0 to review"].waitForExistence(timeout: 8)); snap("320-voice-one-entry-saved")
+        tap("Close"); app.terminate(); app.launchArguments = ["-lumen.appearance", "light"]; app.launch(); tab("Assistant")
+        let savedReview = app.buttons["Review health entries"].firstMatch; reveal(savedReview); savedReview.tap()
+        XCTAssertTrue(app.staticTexts["1 saved · 0 to review"].waitForExistence(timeout: 8)); snap("321-voice-saved-after-relaunch")
+        tap("Close")
+    }
+    func testVoiceDraftCancelAndBackground() throws {
+        prepareVoice(); startAndReviewVoice()
+        let again = app.buttons["recordVoiceAgain"].firstMatch; revealVoice(again); again.tap()
+        XCTAssertTrue(app.alerts["Record again?"].waitForExistence(timeout: 5)); snap("307-voice-record-again")
+        tap("Keep reviewing"); revealVoice(again); again.tap(); tap("Replace voice draft")
+        XCTAssertTrue(app.buttons["stopVoice"].waitForExistence(timeout: 5))
+        XCUIDevice.shared.press(.home); app.activate()
+        XCTAssertTrue(app.buttons["useVoiceText"].waitForExistence(timeout: 10))
+        let notice = app.staticTexts["voiceNotice"].firstMatch; revealVoice(notice); XCTAssertTrue(notice.label.contains("left Lumen")); snap("308-voice-foreground-stop")
+        tap("cancelVoice"); XCTAssertTrue(app.alerts["Discard this voice draft?"].waitForExistence(timeout: 5)); snap("309-voice-discard-choice")
+        tap("Keep reviewing"); tap("cancelVoice"); tap("Discard draft")
+        XCTAssertTrue(app.navigationBars["Voice draft"].waitForNonExistence(timeout: 5))
+        XCTAssertFalse(app.staticTexts["userMessage"].exists)
+        tap("coachVoice")
+        let start = app.buttons["startVoice"].firstMatch; revealVoice(start); XCTAssertTrue(start.isHittable)
+        XCTAssertFalse(app.textViews["voiceDraftText"].exists); snap("310-voice-clean-reopen"); tap("cancelVoice")
+    }
+    func testVoiceDraftFailedRestart() throws {
+        prepareVoice(failingRestart: true); startAndReviewVoice()
+        let edit = app.buttons["editVoiceText"].firstMatch; revealVoice(edit); edit.tap()
+        let editor = app.textViews["voiceDraftText"].firstMatch; XCTAssertTrue(editor.waitForExistence(timeout: 5))
+        replaceVoiceText(editor, with: "Corrected synthetic draft: I drank 375 ml of water."); tap("saveVoiceEdit")
+        revealVoice(edit); edit.tap(); editor.tap(); editor.typeText(" Unsaved correction."); tap("cancelVoiceEdit")
+        XCTAssertTrue(app.alerts["Discard your text changes?"].waitForExistence(timeout: 5)); snap("317-voice-editor-discard-choice")
+        tap("Keep editing"); XCTAssertTrue(editor.exists); tap("cancelVoiceEdit"); tap("Discard changes")
+        XCTAssertEqual(app.staticTexts["voiceReviewText"].label, "Corrected synthetic draft: I drank 375 ml of water.")
+        let again = app.buttons["recordVoiceAgain"].firstMatch; revealVoice(again); again.tap(); tap("Replace voice draft")
+        let notice = app.staticTexts["voiceNotice"].firstMatch; revealVoice(notice)
+        XCTAssertTrue(notice.label.contains("couldn't start"))
+        XCTAssertEqual(app.staticTexts["voiceReviewText"].label, "Corrected synthetic draft: I drank 375 ml of water."); snap("315-voice-failed-restart-keeps-edit")
+        tap("cancelVoice"); tap("Discard draft")
+    }
+    func testVoiceDraftPresentation() throws {
+        prepareVoice(appearance: "dark"); startAndReviewVoice(); snap("311-voice-dark-review")
+        app.terminate(); app.launchArguments = ["-voice-fixture", "-lumen.appearance", "light", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]; app.launch(); tab("Assistant"); snap("312-voice-large-composer")
+        startAndReviewVoice()
+        let checked = app.switches["voiceChecked"].firstMatch; revealVoice(checked); snap("313-voice-large-acknowledgement")
+        nativeSwitch("voiceChecked", enabled: true); XCTAssertTrue(app.buttons["useVoiceText"].isEnabled)
+        let again = app.buttons["recordVoiceAgain"].firstMatch; revealVoice(again); snap("322-voice-large-actions")
+        let edit = app.buttons["editVoiceText"].firstMatch; revealVoice(edit, towardsTop: true); edit.tap()
+        let editor = app.textViews["voiceDraftText"].firstMatch; XCTAssertTrue(editor.waitForExistence(timeout: 5)); editor.tap()
+        editor.typeText(String(repeating: "Additional synthetic review text.\n", count: 12) + "End of synthetic editor text.")
+        XCTAssertTrue(app.buttons["saveVoiceEdit"].isHittable); snap("324-voice-large-editor-end")
+        tap("cancelVoiceEdit"); tap("Discard changes")
+        tap("cancelVoice"); tap("Discard draft")
+    }
+    func testComposerKeyboardReturn() throws {
+        finishOnboarding(); tab("Assistant")
+        let input = app.descendants(matching: .any).matching(identifier: "coachInput").firstMatch
+        input.tap(); input.typeText("Synthetic keyboard submission.\n")
+        XCTAssertTrue(app.staticTexts["coachMessage"].firstMatch.waitForExistence(timeout: 30))
+        XCTAssertEqual(app.staticTexts.matching(identifier: "userMessage").count, 1)
+        XCTAssertEqual(app.staticTexts["userMessage"].firstMatch.label, "Synthetic keyboard submission.")
+        let cleared = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+            (input.value as? String ?? "").isEmpty && !self.app.buttons["coachSend"].isEnabled
+        }, object: input)
+        XCTAssertEqual(XCTWaiter.wait(for: [cleared], timeout: 5), .completed)
+        snap("325-composer-keyboard-return")
+        input.tap(); input.typeText("My next unsent synthetic question.")
+        XCTAssertEqual(input.value as? String, "My next unsent synthetic question.")
+        XCTAssertTrue(app.buttons["coachSend"].isEnabled)
+        XCTAssertEqual(app.staticTexts.matching(identifier: "userMessage").count, 1)
+        snap("326-composer-new-unsent-text")
+    }
+    func testVoiceActualAvailability() throws {
+        finishOnboarding(); tab("Assistant"); tap("coachVoice")
+        let known = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+            self.app.buttons["startVoice"].exists || self.app.buttons["downloadVoiceLanguage"].exists || self.app.staticTexts["voiceUnavailable"].exists
+        }, object: app)
+        XCTAssertEqual(XCTWaiter.wait(for: [known], timeout: 30), .completed)
+        XCTAssertFalse(app.staticTexts["voiceFixture"].exists); snap("314-voice-actual-availability")
+        tap("cancelVoice"); XCTAssertTrue(app.navigationBars["Voice draft"].waitForNonExistence(timeout: 5))
+        XCTAssertFalse(app.staticTexts["userMessage"].exists)
+    }
+
     private let backupPassword = "Synthetic backup passphrase 42"
 
     func enterBackupPassword(_ identifier: String, value: String) {

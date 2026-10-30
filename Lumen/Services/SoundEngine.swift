@@ -107,6 +107,13 @@ public final class SoundEngine: ObservableObject {
         }
     }
 
+    /// Voice capture pauses playback without cancelling the existing sleep timer.
+    /// The user can resume the selected track from Sounds after recording.
+    func pauseForVoice() {
+        guard isPlaying else { return }
+        stopEngine(); isPlaying = false
+    }
+
     public func stop() {
         stopEngine()
         playingId = nil

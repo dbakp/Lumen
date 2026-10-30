@@ -9,6 +9,8 @@ public struct CoachView: View {
     @ObservedObject private var ai = AIService.shared
     @State private var draft = ""
     @State private var saveError: String?
+    @State private var voiceTarget: VoiceDraftTarget?
+    @State private var keyboardSubmission: VoiceDraftTarget?
     @State private var historyPresented = false
     @State private var logSelection: HealthLogSelection?
     @State private var isSending = false
@@ -90,6 +92,21 @@ public struct CoachView: View {
             }
         }
         .alert("Couldn't save reply", isPresented: Binding(get: { saveError != nil }, set: { if !$0 { saveError = nil } })) { Button("OK") { saveError = nil } } message: { Text(saveError ?? "") }
+        .sheet(isPresented: Binding(get: { voiceTarget != nil }, set: { if !$0 { voiceTarget = nil } })) {
+            if let target = voiceTarget {
+                VoiceDraftSheet(target: target) { text in
+                    draft = try target.adding(text, to: .init(conversationID: health.activeConversationID, originalDraft: draft))
+                }
+            }
+        }
+        .onChange(of: keyboardSubmission) { _, request in
+            guard let request else { return }
+            keyboardSubmission = nil
+            guard request.conversationID == health.activeConversationID,
+                  request.originalDraft == draft.trimmingCharacters(in: .whitespacesAndNewlines) else { return }
+            // Submit after the text-input callback has finished its binding writes.
+            send(request.originalDraft)
+        }
         .sheet(item: $logSelection) { HealthLogReviewView(selection: $0).environmentObject(health) }
         .sheet(isPresented: $historyPresented) { ConversationHistoryView().environmentObject(health) }
     }
@@ -132,17 +149,22 @@ public struct CoachView: View {
 
     var inputBar: some View {
         HStack(alignment: .bottom, spacing: 10) {
-            TextField("", text: $draft, prompt: Text("Message your coach").foregroundStyle(Theme.tertiary), axis: .vertical)
+            TextField("", text: Binding(get: { draft }, set: { value in
+                let returned = ComposerDraftEdit.isReturn(previous: draft, next: value)
+                draft = value
+                if returned { requestKeyboardSubmission(String(value.dropLast())) }
+            }), prompt: Text("Message your coach").foregroundStyle(Theme.tertiary), axis: .vertical)
                 .focused($focused).lineLimit(1...5)
                 .accessibilityIdentifier("coachInput")
                 .padding(.horizontal, 16).padding(.vertical, 12)
                 .foregroundStyle(Theme.text)
                 .submitLabel(.send)
-                .onSubmit { send(draft) }
-                .onChange(of: draft) { _, v in
-                    // Multi-line field: the keyboard's Send key inserts a newline — treat it as send.
-                    if v.hasSuffix("\n") { send(String(v.dropLast())) }
-                }
+                .onSubmit { requestKeyboardSubmission(draft) }
+            Button {
+                focused = false
+                voiceTarget = .init(conversationID: health.activeConversationID, originalDraft: draft)
+            } label: { Image(systemName: "mic").font(.system(size: 20)).frame(width: 44, height: 44) }
+                .disabled(isSending || coach.isTyping).accessibilityLabel("Speak a message").accessibilityIdentifier("coachVoice")
             if isSending {
                 Button { responseTask?.cancel(); AppRouter.shared.confirm("Response stopped") } label: {
                     Image(systemName: "stop.fill").frame(width: 44, height: 44)
@@ -166,6 +188,12 @@ public struct CoachView: View {
     }
 
     var canSend: Bool { !draft.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && !coach.isTyping && !isSending }
+
+    func requestKeyboardSubmission(_ text: String) {
+        let value = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !value.isEmpty, !coach.isTyping, !isSending else { return }
+        keyboardSubmission = .init(conversationID: health.activeConversationID, originalDraft: value)
+    }
 
     func send(_ text: String) {
         let t = text.trimmingCharacters(in: .whitespacesAndNewlines)
