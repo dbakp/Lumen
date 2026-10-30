@@ -256,6 +256,102 @@ final class LumenSmokeTests: XCTestCase {
         let preview = backupPreview(); XCTAssertEqual(preview.label, "Encrypted backup"); snap("152-backup-saved-file-preview")
     }
 
+    func openHealthConnections() {
+        tap("Settings")
+        let link = app.buttons["Health imports & contextual reminders"].firstMatch
+        reveal(link); link.tap()
+        XCTAssertTrue(app.navigationBars["Connections"].waitForExistence(timeout: 5))
+    }
+
+    func setHealthDeliverySwitch(_ toggle: XCUIElement, enabled: Bool) {
+        // SwiftUI exposes the label and UISwitch as one wide accessibility element.
+        // Tap the actual trailing control, then wait for its published value.
+        reveal(toggle)
+        let nativeControl = toggle.switches.firstMatch
+        if nativeControl.exists { reveal(nativeControl); nativeControl.tap() }
+        else { toggle.tap() }
+        let expected = enabled ? "1" : "0"
+        let changed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", expected), object: toggle)
+        XCTAssertEqual(XCTWaiter.wait(for: [changed], timeout: 5), .completed)
+    }
+
+    func approveSyntheticHealthAccess(until completed: XCUIElement) {
+        let all = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH 'Select All'")).firstMatch
+        if all.waitForExistence(timeout: 6) { all.tap() }
+        for step in 0..<3 {
+            if completed.exists { return }
+            let range = app.descendants(matching: .any).matching(NSPredicate(format: "label BEGINSWITH 'All Recorded Data and Future Data'")).firstMatch
+            if range.exists && range.isHittable { range.tap() }
+            let approval = app.buttons.matching(NSPredicate(format: "identifier == 'UIA.Health.Allow.Button' OR label == 'Allow' OR label == 'Continue'")).firstMatch
+            for _ in 0..<10 where !(approval.exists && approval.isHittable && approval.isEnabled) { app.swipeUp(velocity: .slow) }
+            if !(approval.exists && approval.isHittable) { snap("health-approval-unreachable"); print(app.debugDescription) }
+            XCTAssertTrue(approval.exists && approval.isHittable, "Health approval step must be reachable")
+            snap("170b-health-approval-" + String(step)); approval.tap()
+            let complete = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == true"), object: completed)
+            _ = XCTWaiter.wait(for: [complete], timeout: 3)
+        }
+    }
+
+    func testHealthForegroundSynchronization() throws {
+        finishOnboarding(); openHealthConnections(); tap("Connect Apple Health")
+        let reviewed = app.buttons["Review Health access & sync"].firstMatch
+        approveSyntheticHealthAccess(until: reviewed)
+        XCTAssertTrue(reviewed.waitForExistence(timeout: 20))
+        let retry = app.buttons["checkHealthNow"].firstMatch
+        reveal(retry)
+        let history = app.descendants(matching: .any).matching(identifier: "healthHistoryCheck").firstMatch
+        XCTAssertTrue(history.waitForExistence(timeout: 30)); snap("171-health-foreground-sync")
+        app.terminate(); app.launchArguments = []; app.launch(); openHealthConnections()
+        XCTAssertTrue(history.waitForExistence(timeout: 30)); snap("172-health-foreground-persisted")
+    }
+
+    func testHealthOnboardingSynchronization() throws {
+        tap("Get started")
+        let name = app.textFields.firstMatch; XCTAssertTrue(name.waitForExistence(timeout: 5)); name.tap(); name.typeText("Alex")
+        tap("Continue"); tap("Connect Apple Health")
+        let requested = app.staticTexts["Access requested"].firstMatch
+        approveSyntheticHealthAccess(until: requested)
+        XCTAssertTrue(requested.waitForExistence(timeout: 30)); snap("173-health-onboarding-readings")
+        tap("Continue"); tap("Continue"); tap("Continue"); tap("Continue"); tap("Maybe later"); tap("Start using Lumen")
+        openHealthConnections()
+        let history = app.descendants(matching: .any).matching(identifier: "healthHistoryCheck").firstMatch
+        reveal(history); XCTAssertFalse((history.value as? String ?? "").isEmpty)
+        snap("174-health-onboarding-sync")
+        app.navigationBars["Connections"].buttons.element(boundBy: 0).tap()
+        let erase = app.buttons["Erase all data"].firstMatch; reveal(erase); erase.tap()
+        tap("Erase everything")
+        XCTAssertTrue(app.buttons["Get started"].waitForExistence(timeout: 10))
+        snap("175-health-reset-cleared")
+    }
+
+    func testHealthDeliveryPreferences() throws {
+        finishOnboarding(); openHealthConnections()
+        let toggle = app.switches["backgroundHealthUpdates"].firstMatch
+        reveal(toggle); XCTAssertEqual(toggle.value as? String, "0")
+        snap("160-health-updates-off")
+        setHealthDeliverySwitch(toggle, enabled: true)
+        XCTAssertEqual(app.descendants(matching: .any).matching(identifier: "healthDeliveryStatus").firstMatch.value as? String, "Waiting for Apple Health connection")
+        snap("161-health-updates-awaiting-access")
+        app.terminate(); app.launchArguments = ["-lumen.appearance", "dark"]; app.launch(); openHealthConnections()
+        reveal(toggle); XCTAssertEqual(toggle.value as? String, "1")
+        XCTAssertEqual(app.descendants(matching: .any).matching(identifier: "healthDeliveryStatus").firstMatch.value as? String, "Waiting for Apple Health connection")
+        snap("162-health-updates-dark")
+        app.terminate(); app.launchArguments = ["-lumen.appearance", "light", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]
+        app.launch(); openHealthConnections(); reveal(toggle)
+        let largeControl = app.descendants(matching: .any).matching(identifier: "healthUpdatesControl").firstMatch
+        reveal(largeControl)
+        XCTAssertGreaterThan(largeControl.frame.height, 128, "The accessibility-size override must enlarge the full-width control")
+        snap("163-health-updates-large-type")
+        setHealthDeliverySwitch(toggle, enabled: false)
+        snap("164-health-updates-large-type-off")
+        let status = app.descendants(matching: .any).matching(identifier: "healthDeliveryStatus").firstMatch
+        reveal(status); snap("165-health-updates-large-type-status")
+        let explanation = app.staticTexts["iOS decides when to deliver changes. Updates may wait until you unlock your iPhone. Open Lumen to refresh at any time."].firstMatch
+        reveal(explanation); snap("166-health-updates-large-type-explanation")
+        app.terminate(); app.launchArguments = []; app.launch(); openHealthConnections(); reveal(toggle)
+        XCTAssertEqual(toggle.value as? String, "0"); XCTAssertTrue(app.staticTexts["Not connected"].firstMatch.exists)
+    }
+
     func testBackupPresentation() throws {
         finishOnboarding(); openBackupSettings()
         app.terminate(); app.launchArguments = ["-lumen.appearance", "dark"]; app.launch(); openBackupSettings()

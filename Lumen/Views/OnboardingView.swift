@@ -148,8 +148,8 @@ public struct OnboardingView: View {
             Spacer()
             VStack(spacing: 10) {
                 continueButton("Get started")
-                Label("Private by design · your data stays on this iPhone", systemImage: "lock.fill")
-                    .font(.caption).foregroundStyle(Theme.text.opacity(0.5))
+                Label("Stored on this iPhone. You choose what to share.", systemImage: "lock.fill")
+                    .font(.caption).foregroundStyle(Theme.secondary)
             }
             .padding(.horizontal, 24).padding(.bottom, 16)
         }
@@ -184,15 +184,15 @@ public struct OnboardingView: View {
     var healthStep: some View {
         page(title: "Connect Apple Health", subtitle: "So Lumen can see your sleep, steps and heart — and save the meals and water you log.") {
             VStack(spacing: 12) {
-                benefit("bed.double.fill", Theme.sleep, "Your sleep", "Every night, including deep and dream sleep")
+                benefit("bed.double.fill", Theme.sleep, "Your sleep", "Sleep readings available in Apple Health")
                 benefit("figure.walk", Theme.move, "Your activity", "Steps, workouts and calories burned")
-                benefit("heart.fill", Theme.heart, "Your heart", "Helps Lumen tell how recovered you are")
-                benefit("person.fill", Theme.steps, "Your basics", "Age, height and weight fill in automatically")
+                benefit("heart.fill", Theme.heart, "Your heart", "Heart-rate readings for daily context")
+                benefit("person.fill", Theme.steps, "Your basics", "Use available age, height and weight readings")
             }
             if healthConnected {
                 GlassCard {
                     VStack(alignment: .leading, spacing: 6) {
-                        Label("Connected", systemImage: "checkmark.circle.fill").font(.headline).foregroundStyle(Theme.steps)
+                        Label("Access requested", systemImage: "checkmark.circle.fill").font(.headline).foregroundStyle(Theme.steps)
                         Text(importSummary).font(.subheadline).foregroundStyle(Theme.text.opacity(0.75))
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -222,9 +222,9 @@ public struct OnboardingView: View {
 
     var importSummary: String {
         var parts: [String] = []
-        if !importedNights.isEmpty { parts.append("\(importedNights.count) nights of sleep") }
+        if !importedNights.isEmpty { parts.append("\(importedNights.count.formatted()) nights of sleep") }
         parts.append(contentsOf: prefilled)
-        return parts.isEmpty ? "You're all set — new data will flow in automatically." : "Imported " + parts.joined(separator: ", ") + "."
+        return parts.isEmpty ? "No sleep or profile readings returned. You can continue and add details yourself." : "Read " + parts.joined(separator: ", ") + "."
     }
 
     func benefit(_ icon: String, _ tint: Color, _ title: String, _ sub: String) -> some View {
@@ -249,7 +249,8 @@ public struct OnboardingView: View {
         if let s = c.sex { sex = s; filled.append("sex") }
         if let h = c.heightCm { heightCm = h; filled.append("height") }
         if let w = c.weightKg { weightKg = w; filled.append("weight") }
-        let nights = await hk.fetchSleep(days: HealthKitService.historyDays)
+        await SyncCoordinator.syncEverything(sleep: sleep, health: health)
+        let nights = sleep.episodes.filter { $0.source == .wearable }
         if nights.count >= 3 {
             let est = SleepNeedEstimator.estimate(episodes: Array(nights.suffix(120)), age: currentYear - birthYear, chronotype: chronotype)
             needHours = (est.need / 3600 * 12).rounded() / 12
@@ -544,10 +545,6 @@ public struct OnboardingView: View {
             birthYear: birthYear,
             units: units
         )
-        if !importedNights.isEmpty {
-            sleep.mergeHealthSleep(importedNights)
-            HealthKitService.shared.sleepBackfilled = true
-        }
         haptic(.heavy)
         Task { await SyncCoordinator.syncEverything(sleep: sleep, health: health) }
     }

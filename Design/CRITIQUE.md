@@ -179,3 +179,57 @@ Two concrete after-done corrections were accepted: Library's “0 of 1 steps com
 The same critic opened all four corrected captures in `Design/native/backups/r3`: locale-aware 100.000, “0 of 1 step completed”, and the default locked/error states using the local filename date 2026-10-30. Both after-done corrections landed. No new concrete pixel/copy defects were found. Scores remain 4 across the applicable lines except Richness 3: **10/11 at 4+, Done by the skill stop rule**. No subsequent visual change is planned. Accessibility identifiers improve test stability without changing these pixels; VoiceOver itself remains unverified. The added large outgoing-export/reopen runtime check is a separate verification gate, not inferred from still images.
 
 Supplemental round-3 runtime frames 138/139 were also opened by the same critic. The ready state retains its save-first hierarchy; the reopened archive shows 430 · 430 meals/photos, 100.001 water logs and 100.433 matching records without collisions. No new concrete defects; prior scores and Done remain. These figures are synthetic native data, with runtime/file-size proof recorded separately in VERIFICATION.md.
+
+## Batch 12 · Health updates between visits · round 1
+
+Same continuing independent App Designer Pro critic; actual SwiftUI captures in `Design/native/health-sync/r1` (160–164). No new direction, icon, paywall or motion signature is claimed. The native preference/persistence scenario passes separately in 122.148 seconds; this is not background-delivery evidence. No browser-DOM scan is claimed.
+
+| Line | Score |
+|---|---:|
+| Concept | 4 |
+| Category distinction | 4 |
+| Skill distinction | 4 |
+| Hierarchy | 4 |
+| Typography | 3 |
+| Colour | 3 |
+| Richness | 3 |
+| Rhythm | 3 |
+| Finish | 3 |
+| Native fluency | 4 |
+| Copy | 3 |
+
+Not done. The critic requested four concrete changes: stack the largest-text label above the switch to remove “Back-ground”; remove “Background delivery needs verification on a physical iPhone.” from the product form; use established secondary ink for status/privacy information; and replace “Delivery / Updates are off” with explicit background status. The critic retained the timing/unlock explanation and the distinction between enabled preference and disconnected Health access.
+
+Changes prepared for round 2: full-width accessible label with the switch beneath it; vertical status at accessibility sizes; themed status/privacy ink; “Background status / Off” and “Waiting for Apple Health connection”; engineering verification detail moved to documentation. Round 2 will include scrolled large-type status and timing text as requested. Physical delivery and VoiceOver behavior remain outside pixel evidence.
+
+## Batch 12 · round 2
+
+The same critic opened all seven `Design/native/health-sync/r2` captures. The revised preference case passes individually in **125.681 seconds** in `/tmp/LumenBatch12HealthR6.xcresult`; that bundle also contains a failing system-authorization test and is not a passing combined suite. The earlier passing preference run was 122.148 seconds. Switch tests now tap the actual nested native switch rather than the wide accessibility wrapper.
+
+Scores: Concept 4, Category distinction 4, Skill distinction 4, Hierarchy 4, Typography 4, Colour 4, Richness 3, Rhythm 4, Finish 4, Native fluency 4, Copy 4. **Done by the scoped stop rule.** All four requests landed; no concrete visible defect remains. The critic explicitly limits the XXXL value claim to the shown Off state; the longer awaiting-connection value is shown at normal size and dark mode. Runtime authorization and background delivery remain separate from the pixel review.
+
+## Batch 12 · round 3, expanded runtime and onboarding copy
+
+The critic inspected the five `Design/native/health-sync/r3` captures after the real foreground Health flow passed in 88.726 seconds, and onboarding/erase plus the full daily/backup regression passed together in 285.321 seconds. The native read-back held two 414-byte query anchors, zero sleep/workout records and no pending application. These empty-query results are not sample-delivery or background proof.
+
+The background-control layout approval stood, but **Copy fell to 3**, so the expanded scope was not done. The critic requested conditional onboarding benefit language, check terminology for empty-query timestamps, a normal “Check Health now” action with retry reserved for errors, and a privacy footer that allows optional sharing. Round-4 changes use “Sleep readings available in Apple Health,” “Heart-rate readings for daily context,” and “Use available age, height and weight readings”; “Health check triggered,” “Sleep & workout check,” and “Check Health now”; and “Stored on this iPhone. You choose what to share.” The revised footer uses established secondary ink. Final captures and sign-off follow after the focused native rerun. The earlier copy-only capture run was deliberately stopped to apply that footer contrast refinement and is not claimed as passing evidence.
+
+## Batch 12 · round 4 final sign-off
+
+The same critic opened all **12** final `Design/native/health-sync/r4` PNGs at full size after the final three-case native suite passed with zero failures/skips in **247.928 seconds**. All requests landed: available-reading language, access-request versus empty-result separation, check terminology, normal check action, optional-sharing privacy copy and stronger footer ink. Native scroll edges are accepted; no unseen XXXL awaiting-connection value or VoiceOver behavior is claimed.
+
+| Line | Final score |
+|---|---:|
+| Concept | 4 |
+| Category distinction | 4 |
+| Skill distinction | 4 |
+| Hierarchy | 4 |
+| Typography | 4 |
+| Colour | 4 |
+| Richness | 3 |
+| Rhythm | 4 |
+| Finish | 4 |
+| Native fluency | 4 |
+| Copy | 4 |
+
+**Done by the scoped stop rule**, no remaining concrete visible defect. No app UI changed after this sign-off. Physical background delivery and actual Health sample receipt remain separate verification gates. The earlier rounds remain review history; the gallery now points to round 4.

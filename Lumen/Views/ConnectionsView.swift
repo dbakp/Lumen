@@ -6,6 +6,8 @@ struct ConnectionsView: View {
     @EnvironmentObject var sleep: SleepStore
     @ObservedObject private var companion = CompanionStore.shared
     @ObservedObject private var hk = HealthKitService.shared
+    @ObservedObject private var delivery = HealthBackgroundSync.shared
+    @Environment(\.dynamicTypeSize) private var typeSize
     @State private var importing = false
     @State private var parsing = false
     @State private var cancelRequested = false
@@ -16,6 +18,11 @@ struct ConnectionsView: View {
     @State private var filename = ""
     @State private var error: String?
     @State private var clear = false
+    private var deliveryStatus: String { delivery.enabled && !hk.isAuthorized ? "Waiting for Apple Health connection" : delivery.registration }
+    private var backgroundToggle: some View {
+        Toggle("Background Health updates", isOn: Binding(get: { delivery.enabled }, set: { delivery.setEnabled($0) }))
+            .accessibilityIdentifier("backgroundHealthUpdates")
+    }
     var body: some View {
         Form {
             Section {
@@ -23,9 +30,46 @@ struct ConnectionsView: View {
                 Button(hk.isAuthorized ? "Review Health access & sync" : "Connect Apple Health") {
                     Task { if await hk.requestAuthorization() { await SyncCoordinator.syncEverything(sleep: sleep, health: health) } }
                 }
-                if let last = health.lastSync { Text("Last refresh: \(last.formatted(date: .abbreviated, time: .shortened))").font(.footnote).foregroundStyle(Theme.secondary) }
+                if let last = health.lastSync { Text("Lumen refreshed: \(last.formatted(date: .abbreviated, time: .shortened))").font(.footnote).foregroundStyle(Theme.secondary) }
                 Text("Read access is private: completing Apple's permission sheet doesn't tell Lumen which types you allowed. Missing readings stay unknown.").font(.footnote).foregroundStyle(Theme.secondary)
             } header: { Text("Live sources") }
+            Section {
+                if typeSize.isAccessibilitySize {
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text("Background Health updates").accessibilityHidden(true)
+                        backgroundToggle.labelsHidden().accessibilityLabel("Background Health updates")
+                    }.accessibilityElement(children: .contain).accessibilityIdentifier("healthUpdatesControl")
+                } else { backgroundToggle }
+                Group {
+                    if typeSize.isAccessibilitySize {
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Background status").font(.headline)
+                            Text(deliveryStatus).foregroundStyle(Theme.secondary)
+                        }
+                    } else {
+                        LabeledContent { Text(deliveryStatus).foregroundStyle(Theme.secondary) } label: { Text("Background status") }
+                    }
+                }
+                .accessibilityElement(children: .ignore).accessibilityLabel("Health background status").accessibilityValue(deliveryStatus)
+                .accessibilityIdentifier("healthDeliveryStatus")
+                if let date = delivery.lastEvent {
+                    LabeledContent { Text(date.formatted(date: .abbreviated, time: .shortened)).foregroundStyle(Theme.secondary) } label: { Text("Health check triggered") }.font(.footnote)
+                }
+                if let date = delivery.lastApplied {
+                    LabeledContent { Text(date.formatted(date: .abbreviated, time: .shortened)).foregroundStyle(Theme.secondary) } label: { Text("Sleep & workout check") }.font(.footnote)
+                        .accessibilityElement(children: .ignore).accessibilityLabel("Sleep and workout check")
+                        .accessibilityValue(date.formatted(date: .abbreviated, time: .shortened)).accessibilityIdentifier("healthHistoryCheck")
+                }
+                if let issue = delivery.issue { Text(issue).font(.footnote).foregroundStyle(Theme.text) }
+                if hk.isAuthorized {
+                    Button(delivery.issue == nil ? "Check Health now" : "Retry Health update") { Task { await SyncCoordinator.syncEverything(sleep: sleep, health: health) } }
+                        .accessibilityIdentifier("checkHealthNow").disabled(health.isSyncing)
+                }
+                Text("iOS decides when to deliver changes. Updates may wait until you unlock your iPhone. Open Lumen to refresh at any time.")
+                    .font(.footnote).foregroundStyle(Theme.secondary)
+            } header: { Text("Between visits") } footer: {
+                Text("Health changes are processed on this iPhone. This is not continuous monitoring.").foregroundStyle(Theme.secondary)
+            }
             Section {
                 NavigationLink { SettingsView() } label: { LabeledContent("Strava", value: StravaService.shared.isConnected ? "Connected" : "Set up") }
                 Text("For Oura, Garmin and other sources, enable their Apple Health integration or import a compatible export. Lumen only reads the categories you share.").font(.footnote).foregroundStyle(Theme.secondary)

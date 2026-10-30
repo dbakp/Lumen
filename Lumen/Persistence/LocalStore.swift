@@ -70,6 +70,10 @@ public enum LocalStore {
         }
     }
 
+    static func saveEncodedChecked(_ data: Data, as name: String) throws {
+        try performWrite { try data.write(to: url(name), options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication]) }
+    }
+
     public static func load<T: Decodable>(_ type: T.Type, from name: String) -> T? {
         if let data = try? Data(contentsOf: url(name)), let v = try? decoder.decode(T.self, from: data) { return v }
         return nil
@@ -102,7 +106,7 @@ public enum LocalStore {
     /// One JSON document with every domain — the user's data, portable.
     public static func exportBundle() -> URL? {
         var root: [String: Any] = ["exportedAt": ISO8601DateFormatter().string(from: Date()), "app": "Lumen"]
-        for f in allFiles() where f.pathExtension == "json" {
+        for f in allFiles() where f.pathExtension == "json" && f.deletingPathExtension().lastPathComponent != "healthSync" {
             if let d = try? Data(contentsOf: f), let obj = try? JSONSerialization.jsonObject(with: d) {
                 root[f.deletingPathExtension().lastPathComponent] = obj
             }

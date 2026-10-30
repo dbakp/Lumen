@@ -33,10 +33,10 @@ Accept Apple's exported ZIP directly, locate and validate the health XML entry, 
 Add historical workout details and additional common vitals from Apple Health exports, with explicit unit rules, source/date provenance and preview counts. Preserve idempotent reimports and reconcile overlap with live sessions. Imported workouts must appear in the timeline and assistant history without being written back to HealthKit. Add coverage-based views for supported new signals without diagnostic interpretation. Verify optional-model migration and backup compatibility. Background synchronization and physical-device delivery remain subsequent gates.
 
 ## Remaining roadmap after these batches
-Batches 9a/9 established per-metric presence, evidence and local corrections. Batch 10 carries availability and honest estimates into Food, Sleep and companion snapshots. Batch 11 implements encrypted streamed backups and version-1 compatibility. Delivery evidence is recorded below; the full product goal remains active.
+Batches 9a/9 established per-metric presence, evidence and local corrections. Batch 10 carries availability and honest estimates into Food, Sleep and companion snapshots. Batch 11 implements encrypted streamed backups and version-1 compatibility. Batch 12 adds incremental Health observation/replay while retaining the physical-device gate. Delivery evidence is recorded below; the full product goal remains active.
 
 1. General readable-export conversion with a separate preview. Encrypted streamed backups beyond 100 MB, progress/cancellation and older version-1 backup compatibility are implemented in Batch 11. Physical-device/iCloud transfer, worst-case resource pressure and release review remain gates.
-2. Background HealthKit observation/anchored synchronization, permission-aware freshness and delivery diagnostics, tested on a signed physical iPhone. Current refresh-on-open is not continuous monitoring.
+2. Signed-physical-iPhone validation of background HealthKit delivery, permission changes, lock/unlock, cold launch and interruptions. Batch 12 implements opt-in observation, durable anchored sleep/workout replay, deletion handling and delivery diagnostics. The implementation and simulator/unsigned-device builds do not satisfy this device gate; the app is not continuous monitoring.
 3. Additional export categories beyond the completed workout/common-vital coverage, bounded-memory ingestion for very large histories, richer provenance, OCR for scanned records, and reviewable structured lab records. Keep unsupported formats explicit.
 4. Direct provider connections only where official OAuth/API access is configured and tested. Existing HealthKit and Strava are not a substitute for pretending every device is connected.
 5. User-reviewed conversational logging, voice input, structured AI-generated multiweek plans and explicit tool confirmations. The assistant currently advises; it does not silently modify every health log.
@@ -103,7 +103,7 @@ The 255-check production-logic suite covers the resolver, calendar/source/zero s
 
 ## Next delivery focus
 
-The retained Food/Sleep and companion availability audit is implemented in Batch 10, and encrypted streaming backups in Batch 11. Continue background ingestion, richer retrieval, voice, provider and release work above in separately verified batches. General readable-export conversion and backup device/iCloud/resource-pressure validation remain open. Do not infer clinical reliability, denied/read access or background delivery from the simulator results.
+The retained Food/Sleep and companion availability audit is implemented in Batch 10, and encrypted streaming backups in Batch 11. Incremental Health observation/replay is implemented in Batch 12; signed-device delivery remains a gate. Continue broader ingestion, richer retrieval, voice, provider and release work above in separately verified batches. General readable-export conversion and backup device/iCloud/resource-pressure validation remain open. Do not infer clinical reliability, denied/read access or background delivery from the simulator results.
 
 
 ### Batch 9 publishing checkpoint
@@ -133,3 +133,11 @@ General readable-export conversion, physical-device/iCloud/resource-pressure/cry
 ### Batch 11 publishing checkpoint
 
 GitHub accepted application batch `9361b0a34325bf4d557e1dd51f301fee77055aa4` on `main` on 30 October 2026. A read-back of `refs/heads/main` matched that source commit. The continuation handoff now records the completed backup batch and its verification limits; this subsequent documentation checkpoint does not change application/test source.
+
+## Batch 12 — incremental Health updates between visits
+
+Implemented opt-in Health observers installed at application launch, paged anchored sleep/workout replay with durable cursor-plus-record writes, known-deletion reconciliation, coalesced refreshes and permission-review rescans. Current statistical readings retain their separate source/query evidence. The initial onboarding connection now uses the bounded path. Domain stores wait for protected data before loading; disconnect/erase invalidates in-flight work and clears the new local preference/check metadata. The device-only cache is excluded from exports/backups. Initial history is 730 calendar days, with explicit cache/page limits and retained older local records.
+
+The UI separates connection, requested background delivery and actual checks. Empty reads do not establish permission or new measurements. Largest text stacks the switch and status, and onboarding benefits/privacy text avoid unsupported automatic-data and recovery promises. See [Health synchronization](HEALTH_SYNC.md) for contracts and physical-device gates.
+
+373 logic checks pass. All five targets build for the simulator and unsigned generic iOS device. Three final native Health scenarios pass with zero failures/skips in 247.928 seconds; the full daily/backup regression passes separately in 233.169 seconds. Actual SDK empty-query cursors and relaunch persistence are verified; real sample/background delivery is not. The continuing critic approves round 4 at 10/11 applicable lines at 4, Richness 3, with no remaining concrete visible defect. Native captures/review history are in Design/CRITIQUE.md and detailed evidence in VERIFICATION.md. Publication will be recorded after GitHub acceptance. Signed-device delivery, broader ingestion/retrieval/voice/providers, data reconciliation and release work remain open; the full goal stays active.

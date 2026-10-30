@@ -80,7 +80,7 @@ public final class HealthKitService: ObservableObject {
     @Published public var status: String
     @Published public var today = DayMetrics.empty
 
-    private let store = HKHealthStore()
+    let store = HKHealthStore()
     private let connectedKey = "lumen.health.connected"
     public var isAvailable: Bool { HKHealthStore.isHealthDataAvailable() }
 
@@ -120,7 +120,9 @@ public final class HealthKitService: ObservableObject {
             try await store.requestAuthorization(toShare: shareTypes, read: readTypes)
             UserDefaults.standard.set(true, forKey: connectedKey)
             isAuthorized = true
+            UserDefaults.standard.set(UUID().uuidString, forKey: "lumen.health.rescan")
             status = "Access requested"
+            HealthBackgroundSync.shared.start()
             return true
         } catch {
             status = "Couldn't connect — try again from Settings"
@@ -130,8 +132,8 @@ public final class HealthKitService: ObservableObject {
 
     public func disconnectLocally() {
         UserDefaults.standard.set(false, forKey: connectedKey)
-        sleepBackfilled = false
         isAuthorized = false
+        HealthBackgroundSync.shared.stop()
         status = "Paused — manage access in the Health app"
     }
 
@@ -225,118 +227,20 @@ public final class HealthKitService: ObservableObject {
         return c
     }
 
-    // MARK: Sleep (with stages)
+    // MARK: Workouts (used by the anchored synchronization pipeline)
 
-    /// Nightly sleep from Health, one episode per night. Overlapping samples from
-    /// several sources (phone + watch) are unioned so nothing is double-counted.
-    /// Full history on first connect, then a short rolling window.
-    public static let historyDays = 730
-    public var sleepBackfilled: Bool {
-        get { UserDefaults.standard.bool(forKey: "lumen.health.sleepBackfilled") }
-        set { UserDefaults.standard.set(newValue, forKey: "lumen.health.sleepBackfilled") }
-    }
-
-    public func fetchSleep(days: Int = 30) async -> [SleepEpisode] {
-        guard isAvailable, isAuthorized,
-              let type = HKObjectType.categoryType(forIdentifier: .sleepAnalysis) else { return [] }
-        let end = Date()
-        let start = Calendar.current.date(byAdding: .day, value: -days, to: end) ?? end
-        let predicate = HKQuery.predicateForSamples(withStart: start, end: end, options: [])
-        let sort = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: true)
-        // Years of Watch nights can be tens of thousands of samples — cluster off the main thread.
-        return await withCheckedContinuation { cont in
-            let q = HKSampleQuery(sampleType: type, predicate: predicate, limit: HKObjectQueryNoLimit, sortDescriptors: [sort]) { _, s, _ in
-                cont.resume(returning: Self.episodes(from: (s as? [HKCategorySample]) ?? []))
-            }
-            self.store.execute(q)
-        }
-    }
-
-    nonisolated static func episodes(from samples: [HKCategorySample]) -> [SleepEpisode] {
-        typealias V = HKCategoryValueSleepAnalysis
-        let asleepValues: Set<Int> = [V.asleepUnspecified.rawValue, V.asleepCore.rawValue, V.asleepDeep.rawValue, V.asleepREM.rawValue]
-        let asleep = samples.filter { asleepValues.contains($0.value) }.sorted { $0.startDate < $1.startDate }
-
-        // Cluster into nights: gaps under 2h stay in the same night.
-        var clusters: [[HKCategorySample]] = []
-        var lastEnd: Date?
-        for s in asleep {
-            if let e = lastEnd, s.startDate.timeIntervalSince(e) < 2 * 3600 {
-                clusters[clusters.count - 1].append(s)
-            } else {
-                clusters.append([s])
-            }
-            lastEnd = max(lastEnd ?? s.endDate, s.endDate)
-        }
-
-        func unionSeconds(_ items: [HKCategorySample]) -> Double {
-            var total = 0.0; var curS: Date?; var curE: Date?
-            for s in items.sorted(by: { $0.startDate < $1.startDate }) {
-                if let cs = curS, let ce = curE, s.startDate <= ce {
-                    curE = max(ce, s.endDate); _ = cs
-                } else {
-                    if let cs = curS, let ce = curE { total += ce.timeIntervalSince(cs) }
-                    curS = s.startDate; curE = s.endDate
-                }
-            }
-            if let cs = curS, let ce = curE { total += ce.timeIntervalSince(cs) }
-            return total
-        }
-
-        var out: [SleepEpisode] = []
-        for c in clusters {
-            guard let bed = c.map(\.startDate).min(), let wake = c.map(\.endDate).max() else { continue }
-            let asleepSecs = unionSeconds(c)
-            guard asleepSecs >= 3 * 3600 else { continue } // naps are not nights
-            // Stage totals from the richest source (usually the watch).
-            let bySource = Dictionary(grouping: c) { $0.sourceRevision.source.bundleIdentifier }
-            let staged = bySource.values.max { a, b in
-                a.filter { $0.value != V.asleepUnspecified.rawValue }.count < b.filter { $0.value != V.asleepUnspecified.rawValue }.count
-            } ?? c
-            func stage(_ v: V) -> Double? {
-                let secs = staged.filter { $0.value == v.rawValue }.reduce(0) { $0 + $1.endDate.timeIntervalSince($1.startDate) }
-                return secs > 0 ? secs : nil
-            }
-            let awakeInside = samples.filter { $0.value == V.awake.rawValue && $0.startDate >= bed && $0.endDate <= wake }
-                .reduce(0.0) { $0 + $1.endDate.timeIntervalSince($1.startDate) }
-            var ep = SleepEpisode(bedtime: bed, wakeTime: wake, source: .wearable)
-            ep.asleepSeconds = asleepSecs
-            ep.deepSeconds = stage(.asleepDeep)
-            ep.remSeconds = stage(.asleepREM)
-            ep.coreSeconds = stage(.asleepCore)
-            ep.awakeSeconds = awakeInside > 0 ? awakeInside : nil
-            out.append(ep)
-        }
-        return out
-    }
-
-    // MARK: Workouts
-
-    public func fetchWorkouts(days: Int = 30) async -> [Workout] {
-        guard isAvailable, isAuthorized else { return [] }
-        let start = Calendar.current.date(byAdding: .day, value: -days, to: Date()) ?? Date()
-        let pred = HKQuery.predicateForSamples(withStart: start, end: Date(), options: .strictStartDate)
-        let sort = NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)
-        return await withCheckedContinuation { cont in
-            let q = HKSampleQuery(sampleType: .workoutType(), predicate: pred, limit: 300, sortDescriptors: [sort]) { _, samples, _ in
-                guard let samples = samples as? [HKWorkout] else { cont.resume(returning: []); return }
-                let out: [Workout] = samples.map { w in
-                    let kind = Self.mapWorkoutType(w.workoutActivityType)
-                    let energy = w.statistics(for: HKQuantityType(.activeEnergyBurned))?.sumQuantity()?.doubleValue(for: .kilocalorie())
-                    let kcal = energy ?? 0
-                    let dist = w.statistics(for: HKQuantityType(.distanceWalkingRunning))?.sumQuantity()?.doubleValue(for: .meter())
-                        ?? w.statistics(for: HKQuantityType(.distanceCycling))?.sumQuantity()?.doubleValue(for: .meter())
-                        ?? w.statistics(for: HKQuantityType(.distanceSwimming))?.sumQuantity()?.doubleValue(for: .meter())
-                    let hr = w.statistics(for: HKQuantityType(.heartRate))?.averageQuantity()?.doubleValue(for: HKUnit(from: "count/min"))
-                    var workout = Workout(id: w.uuid.uuidString, kind: kind, title: Self.workoutName(w.workoutActivityType), start: w.startDate,
-                                   duration: w.duration, activeCalories: kcal, distanceM: dist, avgHR: hr, source: .healthKit)
-                    workout.energyKnown = energy != nil; workout.energyIsEstimate = false
-                    return workout
-                }
-                cont.resume(returning: out)
-            }
-            self.store.execute(q)
-        }
+    nonisolated static func workout(_ w: HKWorkout) -> Workout {
+        let kind = Self.mapWorkoutType(w.workoutActivityType)
+        let energy = w.statistics(for: HKQuantityType(.activeEnergyBurned))?.sumQuantity()?.doubleValue(for: .kilocalorie())
+        let kcal = energy ?? 0
+        let dist = w.statistics(for: HKQuantityType(.distanceWalkingRunning))?.sumQuantity()?.doubleValue(for: .meter())
+            ?? w.statistics(for: HKQuantityType(.distanceCycling))?.sumQuantity()?.doubleValue(for: .meter())
+            ?? w.statistics(for: HKQuantityType(.distanceSwimming))?.sumQuantity()?.doubleValue(for: .meter())
+        let hr = w.statistics(for: HKQuantityType(.heartRate))?.averageQuantity()?.doubleValue(for: HKUnit(from: "count/min"))
+        var workout = Workout(id: w.uuid.uuidString, kind: kind, title: Self.workoutName(w.workoutActivityType), start: w.startDate,
+                       duration: w.duration, activeCalories: kcal, distanceM: dist, avgHR: hr, source: .healthKit)
+        workout.energyKnown = energy != nil; workout.energyIsEstimate = false
+        return workout
     }
 
     nonisolated public static func mapWorkoutType(_ t: HKWorkoutActivityType) -> WorkoutKind {

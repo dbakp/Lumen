@@ -37,6 +37,7 @@ let package = Package(
             "Lumen/Services/AppLock.swift",
             "Lumen/Services/NotificationManager.swift",
             "Lumen/Services/HealthKitService.swift",
+            "Lumen/Services/HealthBackgroundSync.swift",
             "Lumen/Services/TrendEvidenceService.swift",
             "Lumen/Services/WatchSync.swift",
             "Lumen/Services/WidgetBridge.swift",
@@ -54,6 +55,7 @@ let package = Package(
             "Lumen/Models/BackupFileTransaction.swift",
             "Lumen/Models/BackupStorageRevision.swift",
             "Lumen/Models/HealthImportControl.swift",
+            "Lumen/Models/HealthSyncLedger.swift",
             "Lumen/Algorithms/DocumentBlocks.swift",
             "Lumen/Algorithms/ZIPPreflight.swift",
             "Lumen/Algorithms/ImportedMetrics.swift",
@@ -89,6 +91,7 @@ let package = Package(
             "Tests/RetainedEvidenceChecks.swift",
             "Tests/BackupPackageChecks.swift",
             "Tests/BackupUIFixtures.swift",
+            "Tests/HealthSyncChecks.swift",
             "Lumen/Services/HealthZIPArchive.swift"
 ]
     )]

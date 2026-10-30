@@ -311,11 +311,12 @@ public struct SettingsView: View {
     }
 
     func eraseAll() {
+        HealthBackgroundSync.shared.resetUserState()
+        HealthKitService.shared.disconnectLocally()
         LocalStore.eraseAll()
         SecureStore.eraseAll()
         StravaService.shared.disconnect()
         UNUserNotificationCenterBridge.removeAll()
-        HealthKitService.shared.disconnectLocally()
         health.resetAll()
         sleep.resetAll()
         dismiss()

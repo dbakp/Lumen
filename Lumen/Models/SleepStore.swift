@@ -5,6 +5,7 @@ import SwiftUI
 
 @MainActor
 public final class SleepStore: ObservableObject {
+    public static let shared = SleepStore()
     @Published public var profile: UserProfile
     @Published public var episodes: [SleepEpisode] // oldest → newest
     @Published public var habits: [SleepHabit]
@@ -57,6 +58,10 @@ public final class SleepStore: ObservableObject {
         episodes = kept.sorted { $0.bedtime < $1.bedtime }
         reestimateNeed()
         recompute()
+    }
+
+    func installHealthEpisodes(_ values: [SleepEpisode]) {
+        episodes = values; reestimateNeed(); recompute()
     }
 
     // MARK: derived

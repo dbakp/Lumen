@@ -283,22 +283,30 @@ public final class HealthStore: ObservableObject {
 
     // MARK: Sync
 
+    func installHealthWorkouts(_ values: [Workout]) { workouts = values }
+
     public func syncAll() async {
-        guard !isSyncing else { return }
-        isSyncing = true; defer { isSyncing = false }
+        await SyncCoordinator.syncEverything(sleep: SleepStore.shared, health: self)
+    }
+
+    func refreshSources(includeProviders: Bool) async {
+        let session = HealthBackgroundSync.shared.generation
         let hk = HealthKitService.shared
         if hk.isAuthorized {
             await hk.refreshToday()
+            guard hk.isAuthorized, HealthBackgroundSync.shared.generation == session else { return }
             healthSnapshot = CurrentHealthEvidence.merging(hk.today, into: healthSnapshot)
             if let w = healthSnapshot.weightKg { goals.weightKg = (w * 10).rounded() / 10 }
-            mergeWorkouts(await hk.fetchWorkouts(days: 60))
+            // Workouts are applied by the durable anchored pipeline.
             let hrvDays = await hk.dailySeries(.hrv, days: 30).filter { !Calendar.current.isDateInToday($0.date) }
             let hrDays = await hk.dailySeries(.restingHR, days: 30).filter { !Calendar.current.isDateInToday($0.date) }
+            guard hk.isAuthorized, HealthBackgroundSync.shared.generation == session else { return }
             hrvBaseline = hrvDays.count >= 7 ? hrvDays.map(\.value).reduce(0, +) / Double(hrvDays.count) : nil
             restingHRBaseline = hrDays.count >= 7 ? hrDays.map(\.value).reduce(0, +) / Double(hrDays.count) : nil
         }
-        if StravaService.shared.isConnected {
+        if includeProviders, StravaService.shared.isConnected {
             await StravaService.shared.sync()
+            guard HealthBackgroundSync.shared.generation == session else { return }
             mergeWorkouts(StravaService.shared.activities)
         }
         lastSync = Date()
