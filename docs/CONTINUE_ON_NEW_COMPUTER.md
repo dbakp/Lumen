@@ -14,14 +14,16 @@ Batch 12 was published as `b2ed046ba18bdd6ffe50a0838c4a33abb6167e00` on 30 Octob
 
 Batch 13 was published as `0ba58bd84e00756c30cef52cf279a2b712efb00f` on 30 October 2026. It adds on-device PDF/scan/still-image/UTF-8 reading, page/source comparison and correction, explicit review/exclusion and assistant consent, duplicate decisions, checked Library saves and compatible provenance. Private source/preview files are explicitly removed when the import sheet dismisses; the original file remains the user's separate copy. GitHub accepted the push and `refs/heads/main` matched the application commit. See [Record import](RECORD_IMPORT.md) for exact scope and limits.
 
-The original prompt below remains the product brief. The full goal remains active. The retained Food/Sleep and companion availability audit, large/encrypted backups, incremental Health observation/replay and scanned-record review are implemented within their documented scope. Continue additional ingestion/structured records, richer retrieval, voice, provider and release work in coherent separately verified batches. Signed-iPhone background delivery, general readable-export conversion, Watch water relay identity/acknowledgement, physical-device behavior and unseen widget/complication layouts remain open gates. Physical-device/provider gates are not satisfied by the simulator. The skill archive is intentionally outside Git; attach it again for a future computer/chat. Personal data and credentials still transfer separately.
+Batch 14 was published as `1f8923825c9e8638c8ca1100eb12af9cb768f70f` on 30 October 2026. It replaces fixed recent-record prefixes with bounded in-memory question-based Library search, fresh citable source IDs, saved reference snapshots, consent/content-aware history, literal on-device fallback and compatible backup/export provenance. Native flows cover sharing withdrawal, edit/delete, independently saved copies, an unsent quote draft and actual XXXL source text. GitHub accepted the push and `refs/heads/main` matched the application commit. See [Library retrieval](LIBRARY_RETRIEVAL.md) for exact limits, history transition and retained-copy semantics.
+
+The original prompt below remains the product brief. The full goal remains active. The retained Food/Sleep and companion availability audit, large/encrypted backups, incremental Health observation/replay and scanned-record review and question-based lexical Library retrieval are implemented within their documented scope. Continue additional ingestion/structured records, semantic retrieval quality, voice, provider and release work in coherent separately verified batches. Signed-iPhone background delivery, general readable-export conversion, Watch water relay identity/acknowledgement, physical-device behavior and unseen widget/complication layouts remain open gates. Physical-device/provider gates are not satisfied by the simulator. The skill archive is intentionally outside Git; attach it again for a future computer/chat. Personal data and credentials still transfer separately.
 
 ## Continuation prompt
 
 /goal Continue developing Lumen into a world-class, primarily iOS, AI health assistant.
 
 Repository: https://github.com/dbakp/Lumen  
-Latest published application commit: `0ba58bd84e00756c30cef52cf279a2b712efb00f`
+Latest published application commit: `1f8923825c9e8638c8ca1100eb12af9cb768f70f`
 
 Branch: `main`
 
@@ -43,13 +45,14 @@ Clone the repository on this computer and inspect its current state before makin
 - [Verification evidence](VERIFICATION.md)
 - [Implementation plan](IMPLEMENTATION_PLAN.md)
 - [Import formats](IMPORT_FORMATS.md)
+- [Library retrieval and retained references](LIBRARY_RETRIEVAL.md)
 - [Conversational logging](CONVERSATIONAL_LOGGING.md)
 - [Design direction](../Design/DIRECTION.md)
 - [Design critiques](../Design/CRITIQUE.md)
 
 Use the attached App Designer Pro skill. Preserve the established design direction. Use one independent design critic for native UI changes, address substantive findings, and capture actual simulator screens. `Design/native-preview.html` presents captured screens; it is not the application.
 
-### Completed and published through batch 13
+### Completed and published through batch 14
 
 - Contextual Today, symptoms/check-ins, personal context and quiet reminders.
 - Persistent conversations with cancellation and reply ownership.
@@ -57,6 +60,7 @@ Use the attached App Designer Pro skill. Preserve the established design directi
 - Coverage-aware historical Insights and appointment summaries.
 - Validated backup/restore, including meal photos, password-protected streamed archives, progress/cancellation, legacy JSON compatibility and guarded staged restoration.
 - On-device scanned-PDF/still-image and selectable/UTF-8 record reading, private original/page comparison, source-version editing with keep/replace protection, explicit review/exclusion, assistant sharing off by default, duplicate-file decisions, checked Library mutations and compatible page/source provenance. Original files remain separate user-held copies.
+- Question-based in-memory search over explicitly shared Library text, current plan/checklist state, immutable reply references, source validation and visible current/changed/sharing-off/deleted states. Earlier replies without saved references remain visible and support quoting into an editable unsent question. Backups and readable sharing preserve compatible reference provenance.
 - Optional Health observation with durable paged sleep/workout replay, explicit deletion evidence, permission-review rescans, checked application and guarded startup before protected data is readable. Background/sample delivery remains a signed-device gate.
 - Cancellable imports with progress.
 - Direct Apple Health ZIP imports with validation, extraction integrity and cleanup.
@@ -66,13 +70,13 @@ Use the attached App Designer Pro skill. Preserve the established design directi
 
 ### Latest validation
 
-- **399 production-logic checks pass**, including actual macOS Vision recognition of synthetic scans/hybrid pages/images, retained selectable/UTF-8/CSV reference behavior, bounds/errors/cancellation, review/exclusion, metadata/legacy/backup compatibility and explicit cleanup while a preview reference remains retained. These are not a clinical accuracy benchmark.
-- All five native simulator targets build with Xcode 27.0. A separate unsigned generic-iOS-device build also passes; signing/distribution and physical behavior remain unverified. The final app/test/project/shared source matches its build mirror across 146 files; exact hashes/logs are in VERIFICATION.md.
-- Final cleanup/save suite: **2 tests, zero failures/skips, 241.454 s** (source replacement/software keyboard/footer 93.764 s; corrected two-page save/relaunch/duplicate 147.689 s). Native storage read-back confirms one record, both edited/corrected page bodies, sharing off, a matching input fingerprint and zero remaining record working folders after close.
-- The final presentation/source suite passes separately in **263.732 s**, including dark mode, actual XXXL full-label controls, source selection, original rendering and return, edited-draft swipe/close protection, all-pages-excluded gating and keyboard clearance. A real Files recovery/cancellation/hybrid case passes separately in 135.440 s. The full daily/Journal/Assistant/Library/appointment/encrypted-backup regression passes separately in **230.552 s**, before final record-only refinements. No failed combined suite is counted as passing.
-- App Designer Pro's same continuing critic signs off record-review round 3 at **10/11 applicable lines at 4+, Richness 3**, no remaining concrete visible/copy defect. Captures: `Design/native/records/r3`; their source list distinguishes result bundles. Subsequent cleanup is nonvisual and verified separately.
-- Batch 12's three Health cases pass in 247.928 s, with actual SDK empty queries and retained native anchors; no physical background/sample delivery is established. Batch 11's actual 1,241,513,984-byte restore/export/reopen remains prior large-archive evidence. Companion packet/widget checks remain prior scoped evidence.
-- OCR can misread units: the synthetic native scan visibly reads mg/L as ma/L before manual correction. Review is mandatory but does not establish medical correctness. Physical-device OCR performance, more languages/layouts, handwriting/tables/rotations, iCloud transfer, original archival/structured labs, signed-device Health delivery, providers, VoiceOver and release readiness remain open. Keep originals separately. The full product goal remains active.
+- **439 production-logic checks pass**, including real SQLite FTS5, text beyond the former five-document/3,000-character cutoff, Unicode/page/offset handling, current plan state, explicit bounds, consent/edit/delete/history gates, fresh/stale/fabricated source IDs, external-link removal, unsent quote preparation, legacy compatibility and both actual encrypted streamed and version-1 backup references. The complete suite retains actual macOS Vision synthetic recognition checks; it is not a clinical benchmark.
+- All five native simulator targets build with Xcode 27.0. A separate unsigned generic-iOS-device build passes; signing/distribution and physical behavior remain unverified. The final app/test/project/shared source matches its build mirror across **148 files**; exact SHA-256 and logs are in VERIFICATION.md.
+- Final focused native suite: **3 tests, zero failures/skips, 531.988 s** (historical provider/legacy fixture and unsent quote 91.353 s; actual lookup/dark/XXXL/full excerpt/footer 183.339 s; eight-document search/save/withdraw/relaunch/edit/keep/delete 257.296 s). The full daily/Journal/Assistant/Library/appointment/encrypted-backup journey passes separately in 241.406 s; its two-case delivery suite totals 334.267 s and precedes only the final delete-choice/legacy-sentence refinements.
+- Native read-back confirms four messages, one conversation, nine Library documents, seven shared documents, removal of the original and one independent saved answer with sharing off. The saved answer keeps the identical page-2 reference at character 4,344 and literal synthetic 12.5 mg/L. The next lookup omits the withdrawn record, and neither reply includes the private canary.
+- App Designer Pro's same continuing critic signs off retrieval round 3 at **10/11 applicable lines at 4, Richness 3**, no remaining concrete visible defect. Final captures: `Design/native/retrieval/r3` (23 PNGs and per-test provenance). No UI source changed after sign-off. Historical provider-layout fixtures are explicitly synthetic; no live inference is established.
+- Batch 13's original comparison/correction/review and working-folder cleanup remain supported by their separately documented native evidence. The final 439-check suite retains recognition/cleanup logic checks. Prior Health observer/anchor, large encrypted archive and companion/widget evidence remains scoped as recorded in VERIFICATION.md; it does not establish physical delivery or release readiness.
+- Live provider/citation-claim quality, semantic and multilingual retrieval, prompt-injection resistance beyond the implemented boundaries, physical-device performance/energy, VoiceOver, structured labs, voice, general readable-export conversion and release work remain open. Recognized source identity does not prove medical accuracy. The full product goal remains active.
 
 ### Completed batch 9: data confidence and corrections
 
@@ -107,7 +111,15 @@ Library reads PDFs (including scans), still JPEG/PNG/HEIC images and UTF-8 text/
 
 The source is limited to 20 MB, 100 pages and 200,000 text characters; images/raster previews have documented bounds. Locked PDFs need unlocked copies; PDF form widgets need flattening. Recognition uses accurate Vision requests with language correction disabled; it can still misread names, numbers, units and reading order. Saved body text has page headings plus optional source fingerprint/method/edit/exclusion/review metadata; old documents/backups remain readable. Later body edits mark the text as changed after review. The original and recognition alternatives aren't permanent Library attachments. Preserve checked storage, consent, provenance and explicit working-folder cleanup on sheet dismissal. No measurements or Health samples are created from these records.
 
-Continue the remaining roadmap afterward. Signed-device Health background delivery, additional ingestion/structured records, richer retrieval, voice, general readable-export conversion, provider integrations and release/device validation remain unfinished. Audit current files rather than assuming this list is exhaustive.
+Continue the remaining roadmap afterward. Signed-device Health background delivery, additional ingestion/structured records, semantic retrieval quality, voice, general readable-export conversion, provider integrations and release/device validation remain unfinished. Audit current files rather than assuming this list is exhaustive.
+
+### Completed batch 14: question-based Library references
+
+Each question builds a cancellable in-memory SQLite FTS5 index over explicitly shared documents. It selects at most four bounded non-overlapping passages (two per document), includes current plan status/checklists and retains saved-page locations where applicable. Document, character, byte and passage limits are explicit; search is lexical and no match does not establish absence. No persistent duplicate index or embedding service is added.
+
+Successful model replies keep their selected packet; literal built-in lookups keep the excerpts they return. Fresh request-specific source IDs are validated before becoming human reference numbers; stale/unknown/bare markers cannot link to another record, and model-supplied destinations on source markers are stripped. Source sheets distinguish snapshot text from the current Library version. Saving notes/plans, backup/restore and readable sharing preserve optional provenance. A fallback label identifies the answer's source; an unsuccessful provider attempt may already have received the question/context.
+
+Future history replays a source-bearing reply only while all of its selected content, sharing permissions and newly selected passages match. Old replies without saved references remain visible but are omitted from provider history; Quote in new question prepares an editable draft ending with a question cue, without sending it. User messages remain context. Turning sharing off or removing an original does not erase earlier conversations, independently saved copies, backups, exports or earlier provider requests. Keep these consent/version/copy boundaries and checked Library saves intact. See LIBRARY_RETRIEVAL.md.
 
 ### Engineering and delivery
 
