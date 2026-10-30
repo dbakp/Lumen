@@ -4,7 +4,7 @@ Original handoff date: 29 October 2026. The development goal was paused on the p
 
 Clone this repository on the new computer, then give the new assistant the prompt below. Attach the **App Designer Pro skill archive** to carry over the design skill; that attachment is not bundled in this repository. Personal health history and credentials need separate transfer: GitHub contains the application code and synthetic design/test artifacts. Use the app's backup/restore controls for health history where applicable; configure accounts and permissions on the new device separately.
 
-## Continuation checkpoint · 30 October 2026
+## Continuation checkpoint · 31 October 2026
 
 Development has resumed on the new computer. Batch 9a was published as `a1b7cd1`, Batch 9 as `5cb1fc7`, and Batch 10 as `d54c2e2` on 29 October 2026. Batch 9 adds current source/date evidence, guarded assistant context and confirmed local water/workout corrections. Batch 10 carries missing/zero and estimate semantics into Food, Sleep, Watch and widgets, with actual coverage, snapshot dates and guarded quick undo. App Designer Pro has been supplied and used here; the same continuing independent critic signed off each scoped addition after three rounds. See [data-confidence behavior](DATA_CONFIDENCE.md), [Roadmap](ROADMAP.md), [Verification](VERIFICATION.md) and [Design critique](../Design/CRITIQUE.md) for exact scope, native timings and remaining gates.
 
@@ -24,6 +24,8 @@ Batch 17 was published as `f8efaa8b5195d1692363a9a2ac330050288e6c55` on 30 Octob
 
 Batch 18 was published as `a0426827fcacedfc4026445e649ee2984fc91a50` on 30 October 2026. It adds reviewed 1/2/4/8-week plans, selected-provider typed/validated proposals or an explicitly chosen local template, full wording/date review, fresh acknowledgement, checked saving and matching Library/agenda calendar days. Assistant sharing starts off, and legacy dates/backups remain compatible. GitHub accepted the push and `refs/heads/main` matched the application commit. See [Scheduled plans](SCHEDULED_PLANS.md) and the scoped validation below.
 
+Batch 19 was published as `f957f1bec644e8da8e55da0b2feee390c78839d8` on 31 October 2026. It adds optional English on-device related-topic Library search, explicit model download/enable/off/delete, exact selection/coverage disclosures and four-excerpt local lookup. GitHub accepted the push through the batch publisher and `refs/heads/main` read-back matched before redundant artifacts were removed. See [Local related-topic search](SEMANTIC_SEARCH.md) for known relevance misses and remaining device/provider gates.
+
 The original prompt below remains the product brief. The full goal remains active. The retained Food/Sleep and companion availability audit, large/encrypted backups, incremental Health observation/replay and scanned-record review, question-based lexical Library retrieval and reviewed readable-export recovery are implemented within their documented scope. Continue additional ingestion/structured records, semantic retrieval quality, signed-device voice validation, provider and release work in coherent separately verified batches. Signed-iPhone background delivery, Watch water relay identity/acknowledgement, physical-device behavior and unseen widget/complication layouts remain open gates. Physical-device/provider gates are not satisfied by the simulator. The skill archive is intentionally outside Git; attach it again for a future computer/chat. Personal data and credentials still transfer separately.
 
 ## Continuation prompt
@@ -31,7 +33,7 @@ The original prompt below remains the product brief. The full goal remains activ
 /goal Continue developing Lumen into a world-class, primarily iOS, AI health assistant.
 
 Repository: https://github.com/dbakp/Lumen  
-Latest published application commit: `a0426827fcacedfc4026445e649ee2984fc91a50`
+Latest published application commit: `f957f1bec644e8da8e55da0b2feee390c78839d8`
 
 Branch: `main`
 
@@ -62,7 +64,7 @@ Clone the repository on this computer and inspect its current state before makin
 
 Use the attached App Designer Pro skill. Preserve the established design direction. Use one independent design critic for native UI changes, address substantive findings, and capture actual simulator screens. `Design/native-preview.html` presents captured screens; it is not the application.
 
-### Completed and published through batch 18
+### Completed and published through batch 19
 
 - Contextual Today, symptoms/check-ins, personal context and quiet reminders.
 - Persistent conversations with cancellation and reply ownership.
@@ -72,6 +74,7 @@ Use the attached App Designer Pro skill. Preserve the established design directi
 - Validated backup/restore, including meal photos, password-protected streamed archives, progress/cancellation, legacy JSON compatibility and guarded staged restoration.
 - Checked readable JSON creation/share and separately reviewed recovery of historical Lumen exports. Category selection and independent setting replacements precede confirmation; setting replacements start off. Read-only paging, explicit photo/demo/cache omissions, current-copy merge policy and private cleanup remain distinct from encrypted backups.
 - On-device scanned-PDF/still-image and selectable/UTF-8 record reading, private original/page comparison, source-version editing with keep/replace protection, explicit review/exclusion, assistant sharing off by default, duplicate-file decisions, checked Library mutations and compatible page/source provenance. Original files remain separate user-held copies.
+- Optional, explicit-download English on-device topic ranking supplements keyword search, with exact selection/coverage and four-excerpt local lookup; known relevance and device gates remain.
 - Question-based in-memory search over explicitly shared Library text, current plan/checklist state, immutable reply references, source validation and visible current/changed/sharing-off/deleted states. Earlier replies without saved references remain visible and support quoting into an editable unsent question. Backups and readable sharing preserve compatible reference provenance.
 - Optional Health observation with durable paged sleep/workout replay, explicit deletion evidence, permission-review rescans, checked application and guarded startup before protected data is readable. Background/sample delivery remains a signed-device gate.
 - Cancellable imports with progress.
@@ -84,7 +87,7 @@ Use the attached App Designer Pro skill. Preserve the established design directi
 
 ### Latest validation · Batch19 · 31 October 2026
 
-Batch 19 is implemented and locally verified; publication is recorded after GitHub read-back. It adds optional English on-device related-topic Library ranking, explicit 45 MB model download/enable/cancel/off/delete, exact source method/coverage, and a complete four-excerpt literal packet. Sharing/source/settings guards remain; generic model files are separate from exported health data. Runtime-cache cleanup is bounded to packages matching eight fingerprints from the pinned weights and runs only after encoders/workers stop. Unknown layouts/unrelated caches remain untouched.
+Batch 19 is implemented, locally verified and published; GitHub read-back matched the application commit above. It adds optional English on-device related-topic Library ranking, explicit 45 MB model download/enable/cancel/off/delete, exact source method/coverage, and a complete four-excerpt literal packet. Sharing/source/settings guards remain; generic model files are separate from exported health data. Runtime-cache cleanup is bounded to packages matching eight fingerprints from the pinned weights and runs only after encoders/workers stop. Unknown layouts/unrelated caches remain untouched.
 
 - **585 production-logic checks**, **21 actual-model/compatibility checks**, **14 actual installation checks**, plus **two isolated low-space checks** pass. The nine-case synthetic quality diagnostic retains the iron-stores miss and unexpected selections; it is not clinical validation.
 - All five simulator targets build for testing; unsigned generic-iOS Release passes, minimum OS18. The build mirror matches **169 native files** and **20 package/test files**. Native SHA-256: `941298de4cd7de78ef0708bf470f0390c870dd1c1cf0507881d5842c6ad5fff0`. No test flags/labels or model packages remain in Release; the vocabulary hash matches its pin.
@@ -92,7 +95,7 @@ Batch 19 is implemented and locally verified; publication is recorded after GitH
 - The first on-disk erase audit exposed about901 MB of stale Core ML CPU programs. Final read-back finds no managed model directory, temporary compiled model or CPU caches; unrelated Metal files remain at **496,648 bytes**. This is the dedicated simulator, not every physical-device cache format.
 - The same critic accepts R2 and cache-state/XXXL/final four-reference supplements at **10/11 applicable lines at 4, Richness3**, no concrete defects. Original reviewed pixels, source boundaries, failed history and compact evidence are in `Design/native/semantic-search`; see [the contract](SEMANTIC_SEARCH.md).
 
-The full goal remains active: structured labs/broader ingestion, comprehensive English/multilingual relevance, live providers, signed-device Health/Watch/voice, physical performance/accessibility and release/privacy governance remain open. After publication, remove only redundant task-owned artifacts and record the actual recovered space; do not rebuild for that documentation/cleanup checkpoint.
+The full goal remains active: structured labs/broader ingestion, comprehensive English/multilingual relevance, live providers, signed-device Health/Watch/voice, physical performance/accessibility and release/privacy governance remain open. After GitHub confirmation, scoped cleanup removed 139 task-owned roots and increased available space from 36,182,786,048 to 39,240,560,640 bytes: **3,057,774,592 bytes (about 3.06 GB)**. The repository, reviewed native PNGs, compact evidence, supplied skill and current model/Library inputs remain. The exact verification-executable cache namespace was removed only after its workers stopped; global/system/browser/unrelated application caches remain untouched. See `Design/native/semantic-search/storage-cleanup.json`. Temporary result paths are historical, and no application build was run for this documentation/cleanup checkpoint.
 
 ### Batch18 validation retained
 

@@ -1,6 +1,6 @@
 # Optional local related-topic Library search
 
-Native iPhone 18 Pro / iOS 27 evidence with synthetic records only. Read [the product contract](../../../docs/SEMANTIC_SEARCH.md), [source/result verification](verification.json) and [the continuing critic's review](CRITIQUE.md) for exact scope. Publication is recorded separately after remote confirmation.
+Native iPhone 18 Pro / iOS 27 evidence with synthetic records only. Read [the product contract](../../../docs/SEMANTIC_SEARCH.md), [source/result verification](verification.json) and [the continuing critic's review](CRITIQUE.md) for exact scope. Published as `f957f1bec644e8da8e55da0b2feee390c78839d8`; GitHub main read-back matched before scoped cleanup.
 
 | View | Evidence |
 |---|---|
@@ -20,3 +20,5 @@ Native iPhone 18 Pro / iOS 27 evidence with synthetic records only. Read [the pr
 The original pixels, hashes, dimensions and result-bundle origins are in each round's `captures.json`. Raw temporary paths are historical once scoped cleanup completes. The two received-byte/cache-clearing frames show different actual phases; neither is relabelled as the other. No held or invented preparation state is shown.
 
 The final cache read-back and earlier failure are preserved separately in [erasure-readback.json](erasure-readback.json), [erasure-readback-before-cache-fix.json](erasure-readback-before-cache-fix.json) and [cache-investigation.json](cache-investigation.json). The known synthetic retrieval misses and unexpected selections remain in [the quality diagnostic](synthetic-quality-diagnostic.json). General topic similarity is not medical confidence or proof that a source answers a question.
+
+[Storage cleanup](storage-cleanup.json) records the measured 3.06 GB available-space increase and exact task-owned scope. Reviewed PNGs and compact outcomes remain; raw result paths are historical. No application build was run for this documentation-only checkpoint.
