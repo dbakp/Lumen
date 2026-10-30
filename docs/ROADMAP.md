@@ -103,7 +103,7 @@ The 255-check production-logic suite covers the resolver, calendar/source/zero s
 
 ## Next delivery focus
 
-The retained Food/Sleep and companion availability audit is implemented in Batch 10. Continue large/encrypted backup improvements, background ingestion, richer retrieval, voice, provider and release work above in separately verified batches. Do not infer clinical reliability, denied/read access or background delivery from the simulator results.
+The retained Food/Sleep and companion availability audit is implemented in Batch 10, and encrypted streaming backups in Batch 11. Continue background ingestion, richer retrieval, voice, provider and release work above in separately verified batches. General readable-export conversion and backup device/iCloud/resource-pressure validation remain open. Do not infer clinical reliability, denied/read access or background delivery from the simulator results.
 
 
 ### Batch 9 publishing checkpoint
@@ -128,4 +128,8 @@ Implemented password-protected version-2 archives with file-backed meal photos, 
 
 343 production-logic checks and all five target builds pass. Actual native validation covers a 1,241,513,984-byte archive with 100,000 water logs/429 valid JPEGs, cancellation/retry/restore/relaunch, then a fresh iPhone export/reopen with 100,001 logs and 430 photos. The final large case passes in 204.870 seconds. Password, full daily/backup, dark/XXXL and external Files-save/reopen scenarios also pass individually; see VERIFICATION.md for exact result-bundle and intermediate-failure accounting. The same critic signs off after three rounds, 10/11 lines at 4, Richness 3, with no remaining concrete pixel/copy defects.
 
-General readable-export conversion, physical-device/iCloud/resource-pressure/crypto/release review and the rest of the product roadmap remain open. The full goal remains active. Publication will be recorded at the accepted source checkpoint.
+General readable-export conversion, physical-device/iCloud/resource-pressure/crypto/release review and the rest of the product roadmap remain open. The full goal remains active.
+
+### Batch 11 publishing checkpoint
+
+GitHub accepted application batch `9361b0a34325bf4d557e1dd51f301fee77055aa4` on `main` on 30 October 2026. A read-back of `refs/heads/main` matched that source commit. The continuation handoff now records the completed backup batch and its verification limits; this subsequent documentation checkpoint does not change application/test source.
