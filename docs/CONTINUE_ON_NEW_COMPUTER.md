@@ -133,6 +133,10 @@ The reader explicitly accounts for absent photo files, excluded demo meals/worko
 
 Preserve the 100 MiB plain-file/combined-metadata bounds, per-section/aggregate limits, cancellable duplicate-key/typed validation, guarded staged storage revision barrier and explicit cleanup after workers stop. JSON is editable and cannot prove authorship. Large/password/photo transfers remain on the encrypted path. Keep READABLE_EXPORT.md and the exact native source/result boundaries in VERIFICATION.md as the contract while continuing the broader roadmap.
 
+### Storage policy on every run
+
+The user has limited local storage. Follow the repository's `AGENTS.md`: check available space, reuse active build output, and delete task-owned disposable artifacts after needed code/evidence is backed up on GitHub. Keep the working source, committed native screenshots/compact verification, the supplied skill and anything still in use. Clear obsolete raw test bundles, duplicate captures, temporary mirrors, large synthetic fixtures and project build caches; leave unrelated caches, simulators and personal files alone. Temporary paths referenced above may have been cleaned and must be regenerated when needed. Cleanup itself does not require rebuilding the app.
+
 ### Engineering and delivery
 
 - Native SwiftUI Xcode project: `Lumen.xcodeproj`, scheme `Lumen`.
