@@ -4,6 +4,9 @@ import Darwin
 @main struct ImportTests {
     static func main() async throws {
         setbuf(stdout, nil)
+        if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--readable-ui-fixtures" {
+            try ReadableExportChecks.fixtures(URL(fileURLWithPath: CommandLine.arguments[2])); return
+        }
         if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--record-ui-fixtures" {
             try RecordImportChecks.fixtures(URL(fileURLWithPath: CommandLine.arguments[2])); return
         }
@@ -236,6 +239,7 @@ import Darwin
         try RetainedEvidenceChecks.run()
         try RecordImportChecks.run(in: directory, sample: backup)
         try await RecordRetrievalChecks.run(snapshot: backup)
+        try ReadableExportChecks.run(in: directory, sample: backup)
         try await HealthSyncChecks.run()
         try BackupPackageChecks.run(in: directory, sample: backup)
         print("All import, model, totals, history, plan, conversation, evidence, document and reminder checks passed.")

@@ -283,7 +283,7 @@ enum BackupPackage {
 
 final class BackupOperationControl: @unchecked Sendable {
     enum Stage: Sendable { case preparing, writing, unlocking, reading, checkingPhotos, restoring }
-    struct Progress: Sendable { var stage: Stage; var completed: Int; var total: Int; var bytes: Int64 }
+    struct Progress: Sendable { var stage: Stage; var completed: Int; var total: Int; var bytes: Int64; var detail: String? = nil }
     private let lock = NSLock()
     private var cancelled = false
     private var cancellationHandler: (@Sendable () -> Void)?
@@ -300,8 +300,8 @@ final class BackupOperationControl: @unchecked Sendable {
         if stop { handler?() }
     }
     func checkCancellation() throws { lock.lock(); let stop = cancelled; lock.unlock(); if stop || Task.isCancelled { throw CancellationError() } }
-    func update(_ stage: Stage, completed: Int = 0, total: Int = 0, bytes: Int64 = 0) {
-        let value = Progress(stage: stage, completed: completed, total: total, bytes: bytes)
+    func update(_ stage: Stage, completed: Int = 0, total: Int = 0, bytes: Int64 = 0, detail: String? = nil) {
+        let value = Progress(stage: stage, completed: completed, total: total, bytes: bytes, detail: detail)
         lock.lock(); state = value; lock.unlock()
         observer?(value)
     }

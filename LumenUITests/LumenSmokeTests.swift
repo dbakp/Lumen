@@ -162,9 +162,9 @@ final class LumenSmokeTests: XCTestCase {
         XCTAssertTrue(app.buttons["Keep reviewing"].exists); snap("118-backup-restore-confirmation")
         tap("Keep reviewing"); restore.tap(); tap("Restore records")
         XCTAssertTrue(app.staticTexts["backupRestored"].waitForExistence(timeout: 30))
-        for _ in 0..<5 { app.swipeDown() }
+        let share = app.buttons["shareBackup"].firstMatch; reveal(share)
         snap("119-backup-restored")
-        XCTAssertTrue(app.buttons["shareBackup"].exists)
+        XCTAssertTrue(share.isHittable)
     }
 
     func chooseBackupFixture(_ name: String) throws {
@@ -319,6 +319,184 @@ final class LumenSmokeTests: XCTestCase {
         let expected = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", enabled ? "1" : "0"), object: toggle)
         XCTAssertEqual(XCTWaiter.wait(for: [expected], timeout: 5), .completed)
     }
+    func openReadableRecovery() {
+        openBackupSettings()
+        let recover = app.buttons["readableRecovery"].firstMatch; reveal(recover); recover.tap()
+        XCTAssertTrue(app.navigationBars["Recover export"].waitForExistence(timeout: 5))
+    }
+
+    func chooseReadableFixture(_ name: String) throws {
+        let choose = app.buttons["chooseReadableExport"].firstMatch; reveal(choose); choose.tap()
+        let picker = app.collectionViews["File View"].firstMatch; XCTAssertTrue(picker.waitForExistence(timeout: 25))
+        if app.buttons["Browse"].firstMatch.exists { app.buttons["Browse"].firstMatch.tap() }
+        if app.buttons["On My iPhone"].firstMatch.exists { app.buttons["On My iPhone"].firstMatch.tap() }
+        else if app.staticTexts["On My iPhone"].firstMatch.exists { app.staticTexts["On My iPhone"].firstMatch.tap() }
+        let folder = app.cells.matching(NSPredicate(format: "identifier BEGINSWITH '00 Lumen readable checks'")).firstMatch
+        if folder.waitForExistence(timeout: 2) {
+            for _ in 0..<12 where !(folder.isHittable && folder.frame.minY > 170 && folder.frame.minY < 680) { app.swipeDown(velocity: .slow) }
+            folder.tap()
+        }
+        let cell = app.cells.matching(NSPredicate(format: "identifier BEGINSWITH %@", name)).firstMatch
+        for _ in 0..<24 {
+            if cell.exists && cell.isHittable && cell.frame.maxY > 220 && cell.frame.minY < 700 { break }
+            if cell.exists && cell.frame.maxY < 220 { app.swipeDown(velocity: .slow) }
+            else { app.swipeUp(velocity: .slow) }
+        }
+        XCTAssertTrue(cell.exists && cell.isHittable, "Seed synthetic readable fixtures before this scenario")
+        var previous = CGRect.null
+        let stable = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+            let current = cell.frame; defer { previous = current }; return current == previous
+        }, object: cell)
+        XCTAssertEqual(XCTWaiter.wait(for: [stable], timeout: 5), .completed)
+        let frame = cell.frame
+        app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: frame.midX, dy: max(210, min(720, frame.minY + 50)))).tap()
+        XCTAssertTrue(picker.waitForNonExistence(timeout: 15))
+    }
+    func waitForReadableReview() {
+        XCTAssertTrue(app.buttons["cancelReadableOperation"].waitForNonExistence(timeout: 90))
+        XCTAssertTrue(app.staticTexts["Lumen checks the file format but can’t confirm who created or edited it."].waitForExistence(timeout: 90), app.debugDescription)
+        XCTAssertFalse(app.alerts.firstMatch.exists)
+    }
+    func confirmReadableRecovery() {
+        let add = app.buttons["recoverReadableData"].firstMatch; reveal(add); add.tap()
+        XCTAssertTrue(app.alerts["Add selected data?"].waitForExistence(timeout: 5)); snap("267-readable-confirmation")
+        tap("Keep reviewing"); add.tap(); tap("Add data")
+        let status = app.staticTexts["readableStatus"].firstMatch
+        XCTAssertTrue(status.waitForExistence(timeout: 60)); reveal(status)
+        XCTAssertTrue(status.label.contains("Selected data is saved")); snap("268-readable-complete")
+    }
+    func testReadableExportShareAndReopen() throws {
+        finishOnboarding(); tab("Today"); tap("Settings")
+        let export = app.buttons["readableExportSettings"].firstMatch; reveal(export); export.tap(); snap("276-readable-export-home")
+        tap("createReadableExport")
+        XCTAssertTrue(app.buttons["cancelReadableOperation"].waitForNonExistence(timeout: 30))
+        XCTAssertTrue(app.staticTexts["readableExportReady"].waitForExistence(timeout: 20)); snap("277-readable-export-ready")
+        tap("shareReadableExport")
+        let saveToFiles = app.cells.matching(NSPredicate(format: "label == %@", "Save to Files")).firstMatch
+        XCTAssertTrue(saveToFiles.waitForExistence(timeout: 10)); snap("278-readable-share"); saveToFiles.tap()
+        let save = app.buttons["Save"].firstMatch; XCTAssertTrue(save.waitForExistence(timeout: 10))
+        if app.buttons["On My iPhone"].firstMatch.exists { app.buttons["On My iPhone"].firstMatch.tap() }
+        else if app.staticTexts["On My iPhone"].firstMatch.exists { app.staticTexts["On My iPhone"].firstMatch.tap() }
+        let name = app.textFields.matching(NSPredicate(format: "value CONTAINS %@", "Lumen-export-")).firstMatch
+        XCTAssertTrue(name.waitForExistence(timeout: 5))
+        let savedName = "Lumen-readable-shared-" + UUID().uuidString.prefix(8)
+        name.tap(); name.typeKey("a", modifierFlags: .command); name.typeText(savedName); snap("279-readable-save-to-files"); save.tap()
+        XCTAssertTrue(save.waitForNonExistence(timeout: 15))
+        app.navigationBars["Readable export"].buttons.element(boundBy: 0).tap(); tap("Done")
+        openReadableRecovery()
+        // The external saved file is at the Files root, rather than the fixture folder.
+        let choose = app.buttons["chooseReadableExport"].firstMatch; reveal(choose); choose.tap()
+        let picker = app.collectionViews["File View"].firstMatch; XCTAssertTrue(picker.waitForExistence(timeout: 25))
+        if app.buttons["Browse"].firstMatch.exists { app.buttons["Browse"].firstMatch.tap() }
+        if app.buttons["On My iPhone"].firstMatch.exists { app.buttons["On My iPhone"].firstMatch.tap() }
+        else if app.staticTexts["On My iPhone"].firstMatch.exists { app.staticTexts["On My iPhone"].firstMatch.tap() }
+        let cell = app.cells.matching(NSPredicate(format: "identifier BEGINSWITH %@", savedName)).firstMatch
+        for _ in 0..<30 {
+            if cell.exists && cell.isHittable && cell.frame.midY > 220 && cell.frame.midY < 700 { break }
+            if cell.exists && cell.frame.midY < 220 { app.swipeDown(velocity: .slow) }
+            else { app.swipeUp(velocity: .slow) }
+        }
+        XCTAssertTrue(cell.exists && cell.isHittable); let frame = cell.frame
+        app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: frame.midX, dy: max(210, min(720, frame.minY + 50)))).tap()
+        XCTAssertTrue(picker.waitForNonExistence(timeout: 15)); waitForReadableReview(); snap("280-readable-shared-file-review")
+        XCTAssertFalse(app.alerts.firstMatch.exists)
+        let emptyWater = app.switches["recoverReadable-water"].firstMatch; reveal(emptyWater)
+        XCTAssertFalse(emptyWater.isEnabled)
+        let add = app.buttons["recoverReadableData"].firstMatch; reveal(add); XCTAssertFalse(add.isEnabled)
+    }
+
+    func testReadableMessageMetadata() throws {
+        finishOnboarding(); openReadableRecovery()
+        try chooseReadableFixture("Lumen-readable-full"); waitForReadableReview()
+        let review = app.buttons["reviewReadable-conversations"].firstMatch; reveal(review); review.tap(); tap("readableEntry-0")
+        tap("readableMessage-1")
+        let metadata = app.staticTexts["readableEntryMetadata"].firstMatch
+        XCTAssertTrue(metadata.waitForExistence(timeout: 5)); XCTAssertEqual(metadata.label, "Synthetic fixture"); snap("289-readable-assistant-provider")
+        app.navigationBars["Saved entry"].buttons.element(boundBy: 0).tap(); tap("Next messages"); tap("readableMessage-51")
+        XCTAssertTrue(metadata.waitForExistence(timeout: 5)); XCTAssertTrue(metadata.label.contains(" · "))
+        XCTAssertFalse(metadata.label.contains("Provider")); XCTAssertTrue(app.staticTexts["readableEntryText"].label.contains("Synthetic archived message 51")); snap("287-readable-saved-message")
+    }
+    func testReadableLargeReview() throws {
+        finishOnboarding(); openReadableRecovery()
+        try chooseReadableFixture("Lumen-readable-large"); waitForReadableReview()
+        let water = app.switches["recoverReadable-water"].firstMatch; reveal(water)
+        XCTAssertTrue(water.label.contains(Int(100_000).formatted())); snap("281-readable-large-count")
+        let review = app.buttons["reviewReadable-water"].firstMatch; reveal(review); review.tap()
+        XCTAssertTrue(app.buttons["readableEntry-0"].waitForExistence(timeout: 5))
+        let next = app.buttons["Next entries"].firstMatch; reveal(next); next.tap()
+        XCTAssertTrue(app.buttons["readableEntry-100"].waitForExistence(timeout: 5)); snap("282-readable-paged-records")
+        tap("readableEntry-100")
+        XCTAssertTrue(app.staticTexts["readableEntryText"].waitForExistence(timeout: 5)); snap("283-readable-large-record")
+        app.navigationBars["Saved entry"].buttons.element(boundBy: 0).tap(); tap("Done")
+        app.navigationBars["Recover export"].buttons.element(boundBy: 0).tap()
+        app.navigationBars["Backup & restore"].buttons.element(boundBy: 0).tap(); tap("Done")
+        app.terminate(); app.launchArguments = []; app.launch(); tab("Library")
+        XCTAssertFalse(app.buttons["Synthetic recovered plan"].exists)
+    }
+    func testReadableRecovery() throws {
+        finishOnboarding(); openReadableRecovery(); snap("260-readable-start")
+        try chooseReadableFixture("Lumen-readable-full"); waitForReadableReview(); snap("261-readable-review")
+        let review = app.buttons["reviewReadable-documents"].firstMatch; reveal(review); review.tap()
+        XCTAssertTrue(app.navigationBars["Library documents"].waitForExistence(timeout: 5)); snap("262-readable-record-list")
+        tap("readableEntry-0")
+        let text = app.staticTexts["readableEntryText"].firstMatch
+        XCTAssertTrue(text.waitForExistence(timeout: 5)); XCTAssertTrue(text.label.contains("flexible synthetic plan")); snap("263-readable-entry")
+        tap("Next"); XCTAssertTrue(text.label.hasPrefix("Synthetic saved paragraph")); snap("285-readable-text-pagination")
+        app.navigationBars["Saved entry"].buttons.element(boundBy: 0).tap(); tap("Done")
+        let conversation = app.buttons["reviewReadable-conversations"].firstMatch; reveal(conversation); conversation.tap(); tap("readableEntry-0")
+        tap("Next messages"); XCTAssertTrue(app.buttons["readableMessage-50"].waitForExistence(timeout: 5)); snap("286-readable-message-pagination")
+        tap("readableMessage-51"); XCTAssertTrue(app.staticTexts["readableEntryText"].label.contains("Synthetic archived message 51")); snap("287-readable-saved-message")
+        app.navigationBars["Saved entry"].buttons.element(boundBy: 0).tap()
+        app.navigationBars["Saved conversation"].buttons.element(boundBy: 0).tap(); tap("Done")
+        let daily = app.buttons["reviewReadable-imported-days"].firstMatch; reveal(daily); daily.tap(); tap("readableEntry-0")
+        XCTAssertTrue(app.staticTexts["readableEntryText"].label.contains("original daily time zone was not saved")); snap("284-readable-daily-timestamp")
+        app.navigationBars["Saved entry"].buttons.element(boundBy: 0).tap(); tap("Done")
+        for key in ["profile", "goals", "habits", "personal-context"] {
+            let toggle = app.switches["recoverReadable-" + key].firstMatch; reveal(toggle); XCTAssertEqual(toggle.value as? String, "0")
+            if key == "profile" {
+                let settings = app.buttons["reviewReadable-profile"].firstMatch; reveal(settings); settings.tap(); tap("readableEntry-0")
+                XCTAssertTrue(app.staticTexts["readableEntryText"].label.contains("Synthetic recovered profile")); snap("288-readable-profile-settings")
+                app.navigationBars["Saved entry"].buttons.element(boundBy: 0).tap(); tap("Done")
+            }
+        }
+        snap("264-readable-optional-settings")
+        let missing = app.descendants(matching: .any).matching(identifier: "readableMissingPhotos").firstMatch; reveal(missing); snap("265-readable-omissions")
+        XCTAssertTrue(missing.label.contains("1") || (missing.value as? String ?? "").contains("1"))
+        XCTAssertTrue(app.staticTexts["Temporary daily totals"].exists); XCTAssertTrue(app.staticTexts["Reminder settings"].exists)
+        confirmReadableRecovery()
+        tap("finishReadableRecovery")
+        let recover = app.buttons["readableRecovery"].firstMatch; reveal(recover); recover.tap()
+        try chooseReadableFixture("Lumen-readable-full"); waitForReadableReview(); confirmReadableRecovery()
+        app.terminate(); app.launchArguments = []; app.launch(); tab("Library"); tap("Synthetic recovered plan")
+        let sharing = app.switches["Use in assistant"].firstMatch; reveal(sharing); XCTAssertEqual(sharing.value as? String, "0"); snap("269-readable-persisted")
+    }
+    func testReadablePresentationAndCancellation() throws {
+        finishOnboarding(); openReadableRecovery()
+        try chooseReadableFixture("Lumen-readable-invalid")
+        XCTAssertTrue(app.alerts["Couldn't read export"].waitForExistence(timeout: 30)); snap("270-readable-invalid"); tap("OK")
+        XCTAssertFalse(app.buttons["recoverReadableData"].exists)
+        try chooseReadableFixture("Lumen-readable-large")
+        let cancel = app.buttons["cancelReadableOperation"].firstMatch
+        XCTAssertTrue(cancel.waitForExistence(timeout: 5)); snap("271-readable-progress"); cancel.tap()
+        XCTAssertTrue(cancel.waitForNonExistence(timeout: 90)); XCTAssertFalse(app.buttons["recoverReadableData"].exists)
+        let cancelled = app.staticTexts["readableStatus"].firstMatch; reveal(cancelled); snap("272-readable-cancelled")
+        XCTAssertTrue(cancelled.label.contains("Cancelled"))
+        try chooseReadableFixture("Lumen-readable-partial"); waitForReadableReview()
+        XCTAssertFalse(app.switches["recoverReadable-profile"].exists)
+        nativeSwitch("recoverReadable-water", enabled: false)
+        let add = app.buttons["recoverReadableData"].firstMatch; reveal(add); XCTAssertFalse(add.isEnabled)
+        nativeSwitch("recoverReadable-water", enabled: true)
+        app.terminate(); app.launchArguments = ["-lumen.appearance", "dark"]; app.launch()
+        openReadableRecovery(); try chooseReadableFixture("Lumen-readable-partial"); waitForReadableReview(); snap("273-readable-dark-partial")
+        app.terminate(); app.launchArguments = ["-lumen.appearance", "light", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]; app.launch()
+        openReadableRecovery(); try chooseReadableFixture("Lumen-readable-full"); waitForReadableReview()
+        let water = app.switches["recoverReadable-water"].firstMatch; reveal(water); snap("274-readable-large-controls")
+        XCTAssertEqual(water.value as? String, "1")
+        let review = app.buttons["reviewReadable-documents"].firstMatch; reveal(review); review.tap(); tap("readableEntry-0")
+        let content = app.staticTexts["readableEntryText"].firstMatch; reveal(content); snap("275-readable-large-entry")
+        XCTAssertGreaterThan(content.frame.height, 200)
+    }
+
     func prepareRetrievalLibrary(allShared: Bool = false) throws {
         finishOnboarding(); openBackupSettings(); try chooseBackupFixture("Lumen-backup-retrieval")
         _ = backupPreview(); confirmBackupRestore()

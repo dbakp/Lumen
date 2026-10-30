@@ -11,7 +11,6 @@ public struct SettingsView: View {
     @ObservedObject private var llm = LLMConnectionService.shared
     @Environment(\.dismiss) private var dismiss
 
-    @State private var exportURL: URL?
     @AppStorage("lumen.appearance") private var appearance = "light"
     @State private var confirmErase = false
     @State private var showWeightLog = false
@@ -282,14 +281,9 @@ public struct SettingsView: View {
                     }))
             }
             NavigationLink("Backup & restore") { BackupView() }.accessibilityIdentifier("backupSettings")
-            Button {
-                exportURL = LocalStore.exportBundle()
-            } label: {
+            NavigationLink { ReadableExportView() } label: {
                 Label("Export my data", systemImage: "square.and.arrow.up")
-            }
-            if let exportURL {
-                ShareLink(item: exportURL) { Label("Share export file", systemImage: "doc.fill") }
-            }
+            }.accessibilityIdentifier("readableExportSettings")
             Button(role: .destructive) { confirmErase = true } label: {
                 Label("Erase all data", systemImage: "trash")
             }

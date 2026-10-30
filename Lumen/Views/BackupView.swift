@@ -62,6 +62,9 @@ struct BackupView: View {
             } header: { Text("Bring records back").foregroundStyle(Theme.secondary) } footer: {
                 Text("Encrypted Lumen backups up to 2 GB, or older JSON backups up to 100 MB. Review the contents before restoring.").foregroundStyle(Theme.secondary)
             }.disabled(unavailable)
+            Section {
+                NavigationLink("Recover a readable export") { ReadableRecoveryView() }.accessibilityIdentifier("readableRecovery")
+            } footer: { Text("For JSON files made with Export my data. Review their contents separately before adding data.").foregroundStyle(Theme.secondary) }.disabled(unavailable)
             if let source, source.encrypted, preview == nil {
                 Section {
                     Label(source.name, systemImage: "lock.doc").font(.subheadline).lineLimit(3).id("backupUnlockSection")

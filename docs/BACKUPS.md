@@ -1,6 +1,6 @@
 # Backup and restore
 
-Settings → Privacy & data → Backup & restore. New backups are encrypted and use the `.lumenbackup` extension. Readable **Export my data** files remain a separate, unencrypted format and cannot be restored here.
+Settings → Privacy & data → Backup & restore. New backups are encrypted and use the `.lumenbackup` extension. Readable **Export my data** files use a separate, unencrypted format. Choose **Recover a readable export** for their own reviewed conversion; the backup file/password controls remain specific to typed backups. See [Readable exports](READABLE_EXPORT.md).
 
 ## Save and bring back a copy
 
@@ -32,7 +32,7 @@ Large operations need free space for the selected archive, decrypted preview pho
 
 Version 2 uses Apple's `AppleArchive` encrypted byte stream with the password/scrypt profile `hkdf_sha256_aesctr_hmac__scrypt__none` and LZFSE compression. A framed manifest, typed records and raw photos are inside the authenticated container. Authentication includes the stream's declared size; the reader checks the complete stream, declared counts and end-of-file before returning a preview. There is no custom encryption primitive or new third-party cryptography dependency. The archive does not store your password. Record contents are encrypted; the shared filename still reveals the backup date, and file size remains visible. Possessing a valid file/password does not establish who authored its records.
 
-Version 1 remains readable through its original typed JSON decoder and SHA-256 checksum. That checksum detects corruption, not authorship. Older JSON backups are explicitly labelled **Older, unencrypted backup**. Restoring one and creating a new backup produces the encrypted format, including the device's current merged records. General readable exports are still not a restorable format; a separate reviewed conversion remains future work.
+Version 1 remains readable through its original typed JSON decoder and SHA-256 checksum. That checksum detects corruption, not authorship. Older JSON backups are explicitly labelled **Older, unencrypted backup**. Restoring one and creating a new backup produces the encrypted format, including the device's current merged records. General readable exports use the separate [reviewed recovery](READABLE_EXPORT.md) path, with no photo files and independent category/settings selection. They are never treated as authenticated encrypted backups.
 
 The platform implementation is used directly. This is not a claim of an independent cryptographic audit, full 2 GiB device testing or release compliance approval. See [verification evidence](VERIFICATION.md) for the actual synthetic files and native scenarios exercised.
 

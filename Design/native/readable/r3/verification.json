@@ -1,0 +1,87 @@
+{
+  "sourceVerification": {
+    "nativeFiles": 150,
+    "aggregateSHA256": "64c4a0facdf1a2a01e9767ec9af586127932f6e400c2c936c48b83b45c9f82c4",
+    "allMatchBuildMirror": true,
+    "packageTestFiles": 15,
+    "packageTestMirrorMatch": true
+  },
+  "logicChecks": 482,
+  "simulatorTargetsBuilt": 5,
+  "unsignedDeviceBuildPassed": true,
+  "physicalDeviceRun": false,
+  "confirmedRecoveryReadback": {
+    "recoveredWater": 1,
+    "recoveredConversations": 1,
+    "recoveredPlans": 1,
+    "planSharing": false,
+    "missingPhotoReferenceRemoved": true,
+    "currentNameRetained": "Alex",
+    "currentGoalRetained": true,
+    "repeatRecoveryDidNotDuplicate": true,
+    "unconfirmedPartialNotSaved": true,
+    "privateWorkingFolders": 0,
+    "retainedPlanCharacters": 8032,
+    "retainedMessages": 52,
+    "retainedImportedZero": true
+  },
+  "unconfirmedReviewReadback": {
+    "reviewedWaterEntries": 100000,
+    "openedRecordIndex": 100,
+    "unconfirmedReadableRecordsSaved": 0,
+    "privateWorkingFolders": 0
+  },
+  "passingCases": [
+    {
+      "test": "testEncryptedBackup",
+      "durationSeconds": 110.101,
+      "result": "/tmp/LumenBatch15Final.xcresult",
+      "status": "passed"
+    },
+    {
+      "test": "testReadableExportShareAndReopen",
+      "durationSeconds": 112.524,
+      "result": "/tmp/LumenBatch15Final.xcresult",
+      "status": "passed"
+    },
+    {
+      "test": "testReadableLargeReview",
+      "durationSeconds": 107.722,
+      "result": "/tmp/LumenBatch15LargeDelivery.xcresult",
+      "status": "passed"
+    },
+    {
+      "test": "testReadablePresentationAndCancellation",
+      "durationSeconds": 290.577,
+      "result": "/tmp/LumenBatch15ReaderDelivery.xcresult",
+      "status": "passed"
+    },
+    {
+      "test": "testReadableRecovery",
+      "durationSeconds": 211.541,
+      "result": "/tmp/LumenBatch15ReaderDelivery.xcresult",
+      "status": "passed"
+    },
+    {
+      "test": "testSmoke",
+      "durationSeconds": 242.408,
+      "result": "/tmp/LumenBatch15LargeRegression.xcresult",
+      "status": "passed"
+    },
+    {
+      "test": "testReadableMessageMetadata",
+      "durationSeconds": 89.523,
+      "result": "/tmp/LumenBatch15MetadataDelivery.xcresult",
+      "status": "passed"
+    }
+  ],
+  "suiteBoundaries": {
+    "LumenBatch15Final": "4 passed, 1 failed (large-review exit navigation); this combined suite is not a pass. The separate corrected large case passes.",
+    "LumenBatch15LargeDelivery": "1 passed, 0 failed, 0 skipped; before only the natural text-boundary refinement.",
+    "LumenBatch15ReaderDelivery": "2 passed, 0 failed, 0 skipped; final affected reader/recovery/error/appearance flows.",
+    "LumenBatch15LargeRegression": "1 smoke case passed, 2 harness cases failed; this combined suite is not a pass.",
+    "LumenBatch15MetadataDelivery": "1 passed, 0 failed/skipped, zero recorded runtime warnings; final user-date / assistant-provider correction."
+  },
+  "finalAffectedRuntimeWarnings": [],
+  "finalMetadataRuntimeWarnings": []
+}

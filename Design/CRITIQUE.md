@@ -301,3 +301,39 @@ The same continuing critic inspected all **23 original-size native PNGs** and `c
 **Done by the stop rule:** 10/11 applicable lines at 4 (90.9%), Richness 3, none below 3, Concept/Finish/Native/Copy all 4. No remaining concrete visible defect. No redesign/portfolio pass or decorative clinical imagery is requested. The final native suite passes all three cases in 531.988 s, including Keep document before reopening/confirming deletion and the unsent quote assertion. The earlier full daily/encrypted-backup regression is separate evidence. No UI source changed after this sign-off.
 
 The capture map marks 230–234 as restored historical fixtures; they establish presentation, not live model use of a citation. Other captures exercise actual local search and current document mutations. Native viewport edges and large-word hyphenation are ordinary scrolling/wrapping, not lost text. This scoped sign-off does not cover VoiceOver, physical devices, every language/size, live providers or clinical accuracy. No browser-DOM scan, new icon/paywall/motion/store set or unseen state is claimed. The native gallery presents captures rather than running the app.
+
+## Batch 15 · readable export and reviewed recovery · 30 October 2026
+
+The supplied App Designer Pro skill continues the selected native direction. No new exploration, icon, paywall, store set or promotional motion is in scope. The same continuing independent critic inspected every one of 22 original-size native captures and the per-test source map in `native/readable/r1`. These come from the three-case passing synthetic suite (581.856 s): recovery/repeated merge/relaunch, invalid/cancel/partial/dark/actual XXXL, and actual creation/share/Files/reopen. Native pixels and assertions supply evidence; no browser-DOM scan is claimed.
+
+### Round 1
+
+| Concept | Category | Skill distinction | Hierarchy | Type | Colour | Richness | Rhythm | Finish | Native | Copy |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 4 | 4 | 4 | 3 | 4 | 3 | 3 | 4 | 3 | 4 | 3 |
+
+Not done: six of eleven lines at 4+, with Finish/Copy at 3. The original summary's seven was corrected by the critic to six; the individual scores above are authoritative. The useful findings are a completion screen still led by pre-recovery instructions, pale body-sized native label values, and stiff file-trust/omission wording. The regular light Exported value was sampled at RGB 138/138/142 on white, about 3.44:1. Normal scroll edges in the long forms/readers are not clipping defects. The actual XXXL labels and controls stack successfully.
+
+All concrete asks are accepted for round 2: lead with **Recovery complete.**, its factual result and an explicit Done action; make another export secondary; apply declared secondary ink to dates/counts; say who created/edited the file can't be confirmed; label omitted sections **Not added from this file** and **Temporary daily totals** while preserving actual unknown identifiers. Confirmation wording becomes direct. A test-created double `.json` suffix is a system rename-field artifact; the harness will enter a stem and let Files preserve the extension. Incoming filenames remain literal.
+
+Round 2 also needs the newly implemented persistent list/message/text page controls, disabled empty categories, explicit demo-workout exclusion and a saved daily timestamp/time-zone explanation. R1 does not establish those unshown states. A SwiftUI publishing warning during invalid-alert dismissal is separate runtime evidence; local alert state and button-owned error clearing will be checked in the affected native flow. Source edits waited until the complete R1 verdict.
+
+### Round 2
+
+The same critic inspected all **30 original-size PNGs** in `native/readable/r2` and their source map. Every R1 request landed: completion leads; dates/counts use declared secondary ink; file trust and omitted temporary totals are plain; confirmation has two choices and direct copy; the reopened file has one `.json` extension. Added frames show actual 100,000-entry paging, 52-message paging, a saved message, natural long-text section breaks, daily timestamp/recorded-zero/time-zone limits and optional profile values. Empty selections have both visible disabled treatment and separate native assertions.
+
+| Concept | Category | Skill distinction | Hierarchy | Type | Colour | Richness | Rhythm | Finish | Native | Copy |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 4 | 4 | 4 | 4 | 4 | 4 | 3 | 4 | 4 | 4 | 4 |
+
+Numerically done: 10/11 applicable lines at 4+ (90.9%), none below 3 and all required lines at 4. No portfolio/decorative pass is requested. One concrete after-done correction remains: the user-authored message in 287 incorrectly shows **Provider not recorded**. Replace it with that message's recorded localized date/time and zone; keep provider metadata for assistant replies. The existing typography/style supports this without redesign. Round 3 will verify the settled role-specific correction. Scroll edges in the long forms/readers are not established clipping defects; varied navigation offsets in short captures are not evidence of a persistent alignment defect.
+
+### Round 3 · final sign-off
+
+The same critic inspected replacement 287 and added 289 at original size, read the final source map in `native/readable/r3`, and confirmed the other 29 images are byte-identical to R2. A user message now shows its recorded **30 Oct 2026 at 6.26 · CET** timestamp beneath **Your message**. The assistant reply still shows **Synthetic fixture** as its provider. Literal message bodies remain unchanged, and both subtitles use the established secondary ink. The concrete role-specific defect is closed; no other visible defect is named.
+
+| Concept | Category | Skill distinction | Hierarchy | Type | Colour | Richness | Rhythm | Finish | Native | Copy |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 4 | 4 | 4 | 4 | 4 | 4 | 3 | 4 | 4 | 4 | 4 |
+
+**Done by the stop rule:** 10/11 applicable lines at 4+ (90.9%), none below 3, all required lines 4. All concrete R1/R2 requests are visibly closed. No new imagery, concept or portfolio pass is requested. The dedicated role-metadata case passes in **89.523 s**, zero failures/skips/recorded runtime warnings. Earlier full reader/recovery, large-review, sharing and encrypted-backup case boundaries remain separately documented; no mixed-result bundle is relabelled as a passing suite. The final gallery uses `native/readable/r3` (**31 PNGs**, source map and durable verification record). No UI source changed after this sign-off. Native static evidence does not establish VoiceOver, physical-device behavior, clinical accuracy, live-provider quality or a browser-DOM scan.

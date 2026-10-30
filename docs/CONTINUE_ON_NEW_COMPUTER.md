@@ -46,6 +46,7 @@ Clone the repository on this computer and inspect its current state before makin
 - [Implementation plan](IMPLEMENTATION_PLAN.md)
 - [Import formats](IMPORT_FORMATS.md)
 - [Library retrieval and retained references](LIBRARY_RETRIEVAL.md)
+- [Readable export and reviewed recovery](READABLE_EXPORT.md)
 - [Conversational logging](CONVERSATIONAL_LOGGING.md)
 - [Design direction](../Design/DIRECTION.md)
 - [Design critiques](../Design/CRITIQUE.md)

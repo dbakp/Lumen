@@ -11,6 +11,7 @@ import zipfile
 parser = argparse.ArgumentParser()
 parser.add_argument('simulator', help='CoreSimulator device UUID')
 parser.add_argument('--backup-fixtures', type=pathlib.Path, help='Directory made with the opt-in synthetic backup fixture generator')
+parser.add_argument('--readable-fixtures', type=pathlib.Path, help='Directory made with the synthetic readable-export fixture generator')
 parser.add_argument('--record-fixtures', type=pathlib.Path, help='Directory made with the synthetic record fixture generator')
 args = parser.parse_args()
 fixture_day = (datetime.datetime.now().astimezone().date() - datetime.timedelta(days=1)).isoformat()
@@ -49,6 +50,12 @@ for metadata in root.glob('*/.com.apple.mobile_container_manager.metadata.plist'
             for fixture in args.backup_fixtures.glob('Lumen-backup-*'):
                 if fixture.is_file() and fixture.suffix in {'.json', '.lumenbackup'}:
                     shutil.copyfile(fixture, folder / fixture.name)
+        if args.readable_fixtures:
+            records = folder / "00 Lumen readable checks"
+            records.mkdir(exist_ok=True)
+            for fixture in args.readable_fixtures.glob('Lumen-readable-*.json'):
+                if fixture.is_file():
+                    shutil.copyfile(fixture, records / fixture.name)
         if args.record_fixtures:
             records = folder / "00 Lumen record checks"
             records.mkdir(exist_ok=True)

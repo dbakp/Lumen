@@ -1,6 +1,15 @@
 import Foundation
 import CryptoKit
 
+struct BackupPreferenceSelection: OptionSet, Sendable, Equatable {
+    let rawValue: Int
+    static let profile = Self(rawValue: 1)
+    static let goals = Self(rawValue: 2)
+    static let habits = Self(rawValue: 4)
+    static let personalContext = Self(rawValue: 8)
+    static let all: Self = [.profile, .goals, .habits, .personalContext]
+}
+
 /// A typed, versioned backup. Credentials and device permissions never enter this format.
 struct BackupSnapshot: Codable, Sendable {
     var profile: UserProfile
@@ -38,23 +47,26 @@ struct BackupSnapshot: Codable, Sendable {
     /// Current copies win. Restoring the same archive twice is idempotent.
     func merging(into local: BackupSnapshot, restorePreferences: Bool) -> BackupSnapshot {
         var addedPhotos: [String: Data] = [:]
-        var result = mergingRecords(into: local, restorePreferences: restorePreferences, photoIDs: Set(photos.keys)) { old, new in addedPhotos[new] = photos[old] }
+        var result = mergingRecords(into: local, preferences: restorePreferences ? .all : [], photoIDs: Set(photos.keys)) { old, new in addedPhotos[new] = photos[old] }
         result.photos.merge(addedPhotos) { current, _ in current }
         return result
     }
 
     /// Same identity, consent and conflict policy, with photos remaining file-backed.
     func mergingFileBacked(into local: BackupSnapshot, restorePreferences: Bool, photoFiles: [String: URL]) throws -> (snapshot: BackupSnapshot, photos: [String: URL]) {
+        try mergingFileBacked(into: local, preferences: restorePreferences ? .all : [], photoFiles: photoFiles)
+    }
+    func mergingFileBacked(into local: BackupSnapshot, preferences: BackupPreferenceSelection, photoFiles: [String: URL]) throws -> (snapshot: BackupSnapshot, photos: [String: URL]) {
         guard photos.isEmpty, local.photos.isEmpty else { throw BackupError.invalid }
         try BackupArchive.validate(self, availablePhotoIDs: Set(photoFiles.keys))
         do { try BackupArchive.validate(local, availablePhotoIDs: Set(local.meals.compactMap(\.photoID))) }
         catch { throw BackupError.currentDataInvalid }
         var addedPhotos: [String: URL] = [:]
-        let result = mergingRecords(into: local, restorePreferences: restorePreferences, photoIDs: Set(photoFiles.keys)) { old, new in addedPhotos[new] = photoFiles[old] }
+        let result = mergingRecords(into: local, preferences: preferences, photoIDs: Set(photoFiles.keys)) { old, new in addedPhotos[new] = photoFiles[old] }
         return (result, addedPhotos)
     }
 
-    private func mergingRecords(into local: BackupSnapshot, restorePreferences: Bool, photoIDs: Set<String>, transferPhoto: (String, String) -> Void) -> BackupSnapshot {
+    private func mergingRecords(into local: BackupSnapshot, preferences: BackupPreferenceSelection, photoIDs: Set<String>, transferPhoto: (String, String) -> Void) -> BackupSnapshot {
         var result = local
         func merge<T: Identifiable>(_ incoming: [T], _ current: [T]) -> [T] {
             var ids = Set(current.map(\.id)); return current + incoming.filter { ids.insert($0.id).inserted }
@@ -90,13 +102,15 @@ struct BackupSnapshot: Codable, Sendable {
             return meal
         }
         result.meals = merge(newMeals, local.meals)
-        if restorePreferences {
+        if preferences.contains(.profile) {
             result.profile = profile
             result.profile.appLock = local.profile.appLock
             result.profile.isSubscribed = local.profile.isSubscribed
             result.profile.onboardingDone = local.profile.onboardingDone
-            result.goals = goals
-            result.habits = habits.map { var habit = $0; habit.doneToday = false; return habit }
+        }
+        if preferences.contains(.goals) { result.goals = goals }
+        if preferences.contains(.habits) { result.habits = habits.map { var habit = $0; habit.doneToday = false; return habit } }
+        if preferences.contains(.personalContext) {
             result.personalContext = personalContext
             result.personalContext.includeInAssistant = false
         }

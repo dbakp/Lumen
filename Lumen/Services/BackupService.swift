@@ -17,6 +17,7 @@ final class BackupWorkspace: Sendable {
         directory = FileManager.default.temporaryDirectory.appendingPathComponent("LumenBackupWork-" + UUID().uuidString, isDirectory: true)
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true, attributes: [.posixPermissions: 0o700])
     }
+    func cleanup() { try? FileManager.default.removeItem(at: directory) }
     deinit {
         let folder = directory
         DispatchQueue.global(qos: .utility).async { try? FileManager.default.removeItem(at: folder) }
@@ -38,10 +39,12 @@ enum BackupService {
         let name: String
         let encrypted: Bool
         fileprivate let workspace: BackupWorkspace
+        func cleanup() { workspace.cleanup() }
     }
     struct Export: Sendable {
         let url: URL
         fileprivate let workspace: BackupWorkspace
+        func cleanup() { workspace.cleanup() }
     }
     struct Preview: Sendable {
         let snapshot: BackupSnapshot
@@ -99,8 +102,10 @@ enum BackupService {
     }
 
     /// Own the selected bytes before releasing Files/iCloud access or asking for a password.
-    nonisolated static func select(_ url: URL, control: BackupOperationControl) throws -> Source {
+    nonisolated static func select(_ url: URL, control: BackupOperationControl, limit: Int64 = BackupPackage.maxFileBytes) throws -> Source {
         let workspace = try BackupWorkspace(), target = workspace.directory.appendingPathComponent("selected-backup")
+        var retained = false
+        defer { if !retained { workspace.cleanup() } }
         let access = url.startAccessingSecurityScopedResource()
         defer { if access { url.stopAccessingSecurityScopedResource() } }
         let coordinator = NSFileCoordinator()
@@ -110,7 +115,7 @@ enum BackupService {
         var coordinationError: NSError?, result: Result<Void, Error>?
         control.update(.preparing)
         coordinator.coordinate(readingItemAt: url, options: .withoutChanges, error: &coordinationError) { file in
-            result = Result { _ = try copyFile(file, to: target, limit: BackupPackage.maxFileBytes, control: control, report: true) }
+            result = Result { _ = try copyFile(file, to: target, limit: limit, control: control, report: true) }
         }
         try control.checkCancellation()
         if let coordinationError { throw coordinationError }
@@ -123,6 +128,7 @@ enum BackupService {
             let size = try target.resourceValues(forKeys: [.fileSizeKey]).fileSize ?? 0
             guard size <= BackupArchive.maxBytes else { throw BackupError.tooLarge }
         }
+        retained = true
         return Source(url: target, name: url.lastPathComponent, encrypted: encrypted, workspace: workspace)
     }
     nonisolated static func read(_ source: Source, password: String, control: BackupOperationControl) throws -> Preview {
@@ -175,6 +181,9 @@ enum BackupService {
         }
     }
     static func restore(_ incoming: Preview, preferences: Bool, sleep: SleepStore, health: HealthStore, control: BackupOperationControl) async throws {
+        try await restore(incoming, selection: preferences ? .all : [], sleep: sleep, health: health, control: control)
+    }
+    private static func restore(_ incoming: Preview, selection: BackupPreferenceSelection, sleep: SleepStore, health: HealthStore, control: BackupOperationControl) async throws {
         guard !health.isSyncing else { throw BackupError.busy }
         let revision = LocalStore.revision
         let local = try snapshot(sleep: sleep, health: health)
@@ -182,7 +191,7 @@ enum BackupService {
         let transaction = try await Task.detached(priority: .userInitiated) {
             try control.checkCancellation()
             try BackupArchive.validate(incoming.snapshot, availablePhotoIDs: Set(incoming.photos.keys))
-            let merged = try incoming.snapshot.mergingFileBacked(into: local, restorePreferences: preferences, photoFiles: incoming.photos)
+            let merged = try incoming.snapshot.mergingFileBacked(into: local, preferences: selection, photoFiles: incoming.photos)
             let availableIDs = Set(local.meals.compactMap(\.photoID)).union(merged.photos.keys)
             try BackupArchive.validate(merged.snapshot, availablePhotoIDs: availableIDs)
             var files: [String: Data] = [:]
@@ -209,6 +218,39 @@ enum BackupService {
         health.reloadAfterRestore()
         sleep.reloadAfterRestore()
         SyncCoordinator.propagate(sleep: sleep, health: health)
+    }
+
+    static func exportReadable(sleep: SleepStore, health: HealthStore, control: BackupOperationControl) async throws -> Export {
+        let revision = LocalStore.revision, value = try snapshot(sleep: sleep, health: health)
+        let reminders = CompanionStore.shared.reminders
+        let result = try await Task.detached(priority: .userInitiated) {
+            let workspace = try BackupWorkspace()
+            let formatter = DateFormatter(); formatter.locale = Locale(identifier: "en_US_POSIX"); formatter.calendar = Calendar(identifier: .gregorian); formatter.timeZone = .current; formatter.dateFormat = "yyyy-MM-dd"
+            let file = workspace.directory.appendingPathComponent("Lumen-export-" + formatter.string(from: Date()) + ".json")
+            try ReadableExport.write(value, reminders: reminders, to: file, control: control)
+            return Export(url: file, workspace: workspace)
+        }.value
+        do {
+            try control.checkCancellation()
+            guard LocalStore.revision == revision else { throw ReadableExport.Failure.recordsChanged }
+            return result
+        } catch { result.cleanup(); throw error }
+    }
+    nonisolated static func selectReadable(_ url: URL, control: BackupOperationControl) throws -> Source {
+        do { return try select(url, control: control, limit: Int64(ReadableExport.maxBytes)) }
+        catch BackupError.invalid { throw ReadableExport.Failure.format }
+        catch BackupError.tooLarge { throw ReadableExport.Failure.tooLarge }
+        catch BackupPackage.PackageError.tooLarge { throw ReadableExport.Failure.tooLarge }
+    }
+    nonisolated static func convertReadable(_ source: Source, control: BackupOperationControl) throws -> ReadableExport.Conversion {
+        guard !source.encrypted else { throw ReadableExport.Failure.format }
+        control.update(.reading)
+        return try ReadableExport.read(Data(contentsOf: source.url, options: .mappedIfSafe), control: control)
+    }
+    static func restoreReadable(_ conversion: ReadableExport.Conversion, domains: Set<ReadableExport.Domain>, sleep: SleepStore, health: HealthStore, control: BackupOperationControl) async throws {
+        let (snapshot, preferences) = try conversion.selected(domains)
+        let preview = Preview(snapshot: snapshot, createdAt: conversion.exportedAt, encrypted: false, photos: [:], contents: nil, workspace: nil)
+        try await restore(preview, selection: preferences, sleep: sleep, health: health, control: control)
     }
 
     private static func photoURLs(_ snapshot: BackupSnapshot) throws -> [String: URL] {

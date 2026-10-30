@@ -1,0 +1,32 @@
+# Readable exports and reviewed recovery
+
+Settings → Privacy & data → Export my data opens **Readable export**. Create export prepares a plain JSON file; **Save or share export** saves a separate copy through Files or the system share sheet. This file contains sensitive text and isn't encrypted. It does not contain meal photos, credentials, device permissions or the device-only Health replay cache. Use **Backup & restore** for a password-protected transfer with photos.
+
+Leaving the export screen removes Lumen's private share copy after any work stops. A saved Files copy remains yours. Creating a replacement is cancellable; a failed replacement leaves the preceding share copy available. Typed data is captured before work starts, streamed off the main thread and checked against the storage revision before a share file is offered. Changed or malformed local data produces an error rather than a silently incomplete export.
+
+## Recover an earlier export
+
+Open **Recover a readable export** from Backup & restore, or **Recover an earlier export** from Readable export. Choose the JSON file originally made with Lumen's **Export my data**. This is separate from opening a typed backup or importing a portable metrics file in Connections.
+
+Selecting a file makes no changes to saved records. Review its actual filename, export date and category counts. **Review records** opens read-only saved values, notes, plan steps or individual conversation messages. Lists page by 100 entries, conversations by 50 messages and long text in sections of at most 2,000 characters, preferring paragraph or word boundaries. All saved characters remain available. Review is a structural check, not verification of a record's authorship or medical accuracy.
+
+Available nonempty history categories start selected. Name/sleep settings, body/activity goals, sleep routines and personal notes are independent replacement choices and start off. Absent sections aren't offered; they cannot replace current settings with generated defaults. A present malformed or null section fails conversion rather than becoming empty. The confirmation offers **Keep reviewing** and **Add data**.
+
+After confirmation, the shared staged restore checks the current storage revision and commits the selected merge before success appears. Current matching records win; repeated recovery keeps record identities. Imported daily metrics add only missing values at the exact saved date. New Library documents and replaced personal notes start with assistant sharing off. An existing matching document, meal/photo or unselected setting retains its current value. Profile replacement retains the device's lock, subscription and onboarding state. Selected sleep routines lose their old daily checkmarks. Recovery never writes samples to Apple Health.
+
+## Historical format policy
+
+The converter accepts the historical `app: "Lumen"` / ISO-8601 `exportedAt` root object and the new `readableVersion: 1` form. Dates accept whole or fractional seconds. Supported sections are `profile`, `goals`, `habits`, `sleep`, `meals`, `workouts`, `water`, `conversations`, `symptoms`, `check-ins`, `documents`, `imported-days`, `import-receipts` and `personal-context`. Optional saved source references and import-review provenance follow the existing typed models and validation.
+
+- Older exports sometimes repeat the active `chat` in `conversations`. Exact message-ID/content mirrors don't create another conversation. An unmatched continuation is kept in full as a separate recovered conversation with a stable content-based ID; the preview explains that archived messages can appear in both. Conflicting copies with the same message ID fail conversion.
+- Readable exports have no photo files. Incoming meal photo references are removed and counted before review; meal text stays. Current matching local meals retain their photos. Historical demo meals/workouts are excluded with visible counts, matching the app's existing non-demo data policy.
+- `today`, `healthSync`, per-device `reminder-preferences` and unknown root sections aren't restored. Their names appear under **What to expect**. Cached totals never become measurements. Unsupported sections remain in the user's original file.
+- Dates are decoded as their encoded instants rather than reinterpreted as local midnight; saved record JSON retains the app’s existing whole-second ISO precision. Historical daily entries didn't save their original civil time zone. The read-only daily record shows the exact saved timestamp in this iPhone's time zone and explains that limitation. Cross-time-zone daily grouping is not reconstructed or claimed.
+
+## Bounds and failure behavior
+
+Readable input/output is limited to 100 MiB (the UI says 100 MB). A typed section has at most 200,000 records; the existing backup validator also bounds aggregate top-level records at 500,000 and nested identities/numeric/provenance values. JSON auditing rejects repeated keys, including equivalent escaped keys, before Foundation can discard one value. Depth is limited to 64, keys per object to 1,000, root keys to 64 and encoded key length to 4,096 bytes. The writer additionally bounds an individual encoded record at 32 MiB and refuses to overwrite an existing destination. The shared restore also limits combined resulting record metadata to 100 MiB, including current local records. A merge that exceeds those limits fails before committing.
+
+Selection takes an owned, bounded copy under coordinated Files access. Auditing, decoding and writing check cancellation; typed arrays report actual item counts. Cancellation discards the entire conversion or staged operation. Source copies are removed after conversion stops; temporary output/staging files are private and explicitly released when leaving. As with other checked restores, cancellation cannot undo a commit that already completed. The app reports success for that committed operation.
+
+This path uses in-memory JSON objects during conversion within its file bound; it is not the large-photo streaming backup reader. Simulator tests use synthetic data. Physical-device memory, storage pressure, iCloud/second-device transfer, VoiceOver and every malformed legacy variant remain separate validation gates. No checksum in an editable readable file establishes authorship. Completion leads with **Recovery complete**, its saved-result sentence and **Done**; choosing another file is secondary.
