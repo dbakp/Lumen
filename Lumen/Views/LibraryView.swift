@@ -127,9 +127,10 @@ struct DocumentDetailView: View {
                     if doc.kind == .plan && !doc.steps.isEmpty {
                         DisclosureGroup("Original guidance") { DocumentBodyView(text: doc.body).padding(.top, 12) }
                     }
+                    if let context = doc.recordContext, context.mode != .guide { RecordSourcesView(context: context) }
                     Text(doc.kind == .plan ? "An editable wellness draft. Adjust it to how you feel; discuss medical decisions with a clinician." : "Saved on this device. You control whether the assistant can use this text.").font(.footnote).foregroundStyle(Theme.secondary)
                     Toggle("Use in assistant", isOn: Binding(get: { doc.includeInAssistant }, set: { var d = doc; d.includeInAssistant = $0; do { try companion.saveChecked(d) } catch { mutationError = "The sharing setting wasn't saved. It is still set as shown. Try again." } }))
-                    Text("When enabled, excerpts are sent with your questions to the AI provider selected in Settings. Imported text is treated as reference material.").font(.footnote).foregroundStyle(Theme.secondary)
+                    Text("When enabled, matching text can be sent with your questions to the AI provider selected in Settings. Turning this off stops future retrieval. Earlier replies and saved copies keep their excerpts.").font(.footnote).foregroundStyle(Theme.secondary)
                 }.padding(Theme.gutter)
             }
         }.lumenScreen().navigationTitle("Document").navigationBarTitleDisplayMode(.inline)
@@ -146,12 +147,13 @@ struct DocumentDetailView: View {
             }
             .sheet(item: $editing) { DocumentEditor(document: $0) }
             .alert("Couldn't update document", isPresented: Binding(get: { mutationError != nil }, set: { if !$0 { mutationError = nil } })) { Button("OK") { mutationError = nil } } message: { Text(mutationError ?? "") }
-            .confirmationDialog("Delete this document?", isPresented: $confirmDelete, titleVisibility: .visible) {
+            .alert("Delete this document?", isPresented: $confirmDelete) {
+                Button("Keep document", role: .cancel) {}
                 Button("Delete", role: .destructive) {
                     do { try companion.deleteDocumentChecked(documentID); dismiss() }
                     catch { mutationError = "The document wasn't deleted. Try again." }
                 }
-            }
+            } message: { Text("Earlier replies and saved copies keep their excerpts. Delete those separately if you want to remove them too.") }
     }
 }
 

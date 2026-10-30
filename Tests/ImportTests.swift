@@ -7,6 +7,9 @@ import Darwin
         if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--record-ui-fixtures" {
             try RecordImportChecks.fixtures(URL(fileURLWithPath: CommandLine.arguments[2])); return
         }
+        if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--retrieval-ui-fixtures" {
+            try RecordRetrievalChecks.fixtures(URL(fileURLWithPath: CommandLine.arguments[2])); return
+        }
         if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--backup-ui-fixtures" {
             try BackupUIFixtures.write(to: URL(fileURLWithPath: CommandLine.arguments[2])); return
         }
@@ -232,6 +235,7 @@ import Darwin
         try DataConfidenceChecks.run(snapshot: backup)
         try RetainedEvidenceChecks.run()
         try RecordImportChecks.run(in: directory, sample: backup)
+        try await RecordRetrievalChecks.run(snapshot: backup)
         try await HealthSyncChecks.run()
         try BackupPackageChecks.run(in: directory, sample: backup)
         print("All import, model, totals, history, plan, conversation, evidence, document and reminder checks passed.")

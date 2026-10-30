@@ -60,6 +60,8 @@ let package = Package(
             "Lumen/Services/RecordImportService.swift",
             "Tests/RecordImportChecks.swift",
             "Lumen/Algorithms/DocumentBlocks.swift",
+            "Lumen/Algorithms/RecordRetrieval.swift",
+            "Tests/RecordRetrievalChecks.swift",
             "Lumen/Algorithms/ZIPPreflight.swift",
             "Lumen/Algorithms/ImportedMetrics.swift",
             "Lumen/Algorithms/WorkoutReconciliation.swift",

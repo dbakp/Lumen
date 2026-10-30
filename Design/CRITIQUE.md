@@ -257,3 +257,47 @@ The same continuing independent critic inspected all 28 final PNGs and their cap
 Final scores: Concept 4; Category distinction 4; Skill distinction 4; Hierarchy 4; Typography 4; Colour 4; Richness 3; Rhythm 4; Finish 4; Native fluency 4; Copy 4. **Done by the stop rule: 10/11 at 4+, none below 3, and all required lines at 4.** No remaining concrete visible/copy defect in the supplied scope. Physical-device feel, clinical accuracy, VoiceOver, every keyboard/device/language and unshown states remain outside these scores. No browser-DOM scan or additional icon/paywall/motion claim is made.
 
 A subsequent nonvisual cleanup refinement registers the working folder with the Library sheet owner and removes it explicitly on dismissal. This addresses SwiftUI retaining the last closed preview beyond the view's visible lifetime. Cleanup behavior is not part of the visual score; it is independently verified by logic and native close/save checks. No layout or copy changes follow the visual sign-off. The final delivery evidence and source hashes are recorded in VERIFICATION.md.
+
+## Batch 14 · Library retrieval references · round 1
+
+Same continuing independent App Designer Pro critic; native iPhone captures in `native/retrieval/r1` (12 original-resolution PNGs). Their source list explicitly distinguishes the passing 180.343-second lookup/withdrawal/save/relaunch case from the later failed XXXL presentation case in the same result bundle. The failed suite is not counted as passing. A supplemental native XXXL frame confirms the send-glyph overflow and collapsed disclosure state. No live provider inference is represented.
+
+| Line | R1 | Evidence / required change |
+|---|---:|---|
+| Concept | 4 | Saved wording, page location and separate current-text state fit the observatory direction. |
+| Category distinction | 4 | Cool ground, expanded source title and quiet teal numbering retain Lumen's identity. |
+| Skill distinction | 4 | Native glass/SF type; no generic cream/serif treatment. |
+| Hierarchy | 4 | Document → excerpt → provenance; remove the repeated lookup heading in a saved copy. |
+| Typography | 4 | Headlines and body contrast; contain decorative symbols at XXXL. |
+| Colour | 4 | Light/dark ink is readable; give Open in Library the owned action teal. |
+| Richness | 3 | Purposeful reference number; refine it without decorative medical imagery. |
+| Rhythm | 4 | Clear sheet groups; shorten the no-match reply. |
+| Finish | 3 | XXXL Send glyph exceeds its circular background. |
+| Native fluency | 3 | Large multiline disclosure label does not reliably activate expansion. |
+| Copy | 3 | Fix singular document counts and abstract accuracy footer wording. |
+
+Not done: 7/11 applicable lines at 4+, with Finish/Native/Copy at 3. Signature, Motion, Conversion and store-feature work are outside this scoped extension.
+
+Required response for round 2: use a whole-row native expansion button with explicit expanded/collapsed state, a bounded chevron, scaled reference badge and stable 44-point Send button/symbol; make count copy singular-aware; use the question as the saved lookup title and omit its repeated generic body heading; shorten no-match/accuracy language and apply teal to Open in Library. Capture settled expanded rows in light/dark/XXXL, full large source/footer, changed/deleted states and synthetic historical provider-layout/legacy states. The latter is labelled as a fixture, not a live model request. All concrete requests are accepted. The original direction remains; no new exploration, paid assets, icon, paywall or promotional motion is introduced.
+
+### Round 2
+
+All 22 original-size captures in `native/retrieval/r2` were reviewed by the same critic. Source provenance identifies the fully passing native three-case suite (509.687 s), actual on-device search versus restored synthetic historical provider/legacy layout fixtures, and no live inference claim. R1's requests all landed: settled source rows, whole-row expansion, contained XXXL Send/badge, correct singular/plural, teal action, shorter copy and question-based saved title without the repeated heading.
+
+| Concept | Category | Skill distinction | Hierarchy | Type | Colour | Richness | Rhythm | Finish | Native | Copy |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 4 | 4 | 4 | 4 | 4 | 4 | 3 | 4 | 4 | 3 | 4 |
+
+Not done: 9/11 at 4+, but Native remains 3. In newly shown 219a, Delete lacks an explicit visible keeping/cancel choice. In 233/234, “no source map” is implementation language. Round 3 will show a two-choice native delete alert, test Keep document before confirmed deletion, and replace the legacy sentence with “This earlier reply has no saved references and isn't included with new questions.” A scrolled XXXL literal-excerpt frame will supplement 223/224. The critic treats their hyphenated large title/multiple-screen sheet as normal accessibility wrapping/scrolling, not lost text, and names no other concrete defect. These final two requests are accepted; no ornamental redesign is warranted by Richness 3.
+
+### Round 3 · final sign-off
+
+The same continuing critic inspected all **23 original-size native PNGs** and `capture-sources.json` in `native/retrieval/r3`. Both R2 corrections landed: 219a visibly provides Delete and Keep document while retaining the independent-copy explanation; 233/234 use “no saved references” in the plain legacy sentence. The complete literal excerpt is visible at actual XXXL in 223a, from its synthetic ferritin opening through “no diagnosis is provided,” clear of navigation/bottom safe areas. The subsequent provenance scrolls normally. All R1 changes remain intact.
+
+| Concept | Category | Skill distinction | Hierarchy | Type | Colour | Richness | Rhythm | Finish | Native | Copy |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 4 | 4 | 4 | 4 | 4 | 4 | 3 | 4 | 4 | 4 | 4 |
+
+**Done by the stop rule:** 10/11 applicable lines at 4 (90.9%), Richness 3, none below 3, Concept/Finish/Native/Copy all 4. No remaining concrete visible defect. No redesign/portfolio pass or decorative clinical imagery is requested. The final native suite passes all three cases in 531.988 s, including Keep document before reopening/confirming deletion and the unsent quote assertion. The earlier full daily/encrypted-backup regression is separate evidence. No UI source changed after this sign-off.
+
+The capture map marks 230–234 as restored historical fixtures; they establish presentation, not live model use of a citation. Other captures exercise actual local search and current document mutations. Native viewport edges and large-word hyphenation are ordinary scrolling/wrapping, not lost text. This scoped sign-off does not cover VoiceOver, physical devices, every language/size, live providers or clinical accuracy. No browser-DOM scan, new icon/paywall/motion/store set or unseen state is claimed. The native gallery presents captures rather than running the app.

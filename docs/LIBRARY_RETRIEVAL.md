@@ -1,0 +1,33 @@
+# Question-based Library retrieval
+
+Batch 14 replaces the five-most-recent, first-3,000-character record block in assistant requests with a local question-based search. It does not extract structured labs or create clinical measurements.
+
+## Search and consent
+
+Only documents with **Use in assistant** enabled enter the index. Each question builds an in-memory SQLite FTS5 index on a cancellable background task. SQLite temporary storage is also memory-only. There is no persistent duplicate search database, embedding service or remote search. The selected AI provider still receives the existing current health summary and conversation context plus the selected Library excerpts; this is not a claim that the whole assistant runs locally.
+
+The lexical search uses Unicode tokenization, case/diacritic folding, bounded English stop words and longer-word prefixes. It ranks title and body matches, selects at most four non-overlapping passages, and limits each document to two passages. Paragraphs are split into 900-character windows with a 120-character overlap. The current plan status and checklist, including completion and UTC due dates, accompany a saved plan's prose. Unchanged imported text can retain reviewed page numbers; text edited after review uses excerpt locations instead. These locations describe saved text, not verified original-file pagination.
+
+Limits per question: 5,000 shared documents, 20 million characters, 80 MB of UTF-8 text, and 30,000 indexed passages. A document is limited to 200,000 characters/1 MB and 1,000 checklist steps; titles/sources and passage byte sizes are separately bounded. Coverage counts and an explicit limited-search state accompany results. Title matches are prioritized before global limits. No match does not establish that information is absent. English lexical matching is not semantic retrieval or a clinical accuracy guarantee.
+
+The app checks consent and content again after the background search and before calling the provider. A changed selected record asks for a new question. If a request has already reached a provider, changing a local switch cannot recall that request. Provider use follows the existing user selection; the recorded provider is captured before the asynchronous search.
+
+## Replies and references
+
+Each selected passage gets a fresh request-specific identifier. The provider receives untrusted JSON reference blocks and instructions to cite only those exact identifiers. Lumen converts recognized identifiers to visible numbers. Unknown, stale and bare numbered reference markers become **reference unavailable**, never a link to an unrelated record. Model-supplied Markdown destinations attached to these markers are removed; a Library number cannot become an arbitrary external link. This checks reference identity; it does not establish that a model's claim is supported, medically correct or complete.
+
+**Library for this reply** distinguishes text shared with a provider from text its answer actually cited. **Library matches** identifies the built-in fallback: literal saved-text excerpts, no model interpretation. Built-in flexible plans and urgent-symptom guidance retain their existing precedence. Search failure asks for retry instead of pretending the Library was searched successfully. A fallback label identifies the source of the displayed answer; a failed provider attempt may already have received the question and selected context. It does not imply that no remote request was attempted.
+
+Successful model replies keep the selected provider packet; literal lookups keep the excerpts they return. Each retained passage includes its exact text, document identity/title/source, content fingerprint, character range, page/excerpt location, selection time and document update time. Tapping a reference shows this snapshot and a route to today's Library version, with explicit changed/sharing-off/deleted states. Dates are document/selection dates, not dates of a clinical observation. Saving a reply or generated plan carries its source map; sharing a document or conversation appends only the referenced excerpts, not unused provider context. New metadata is optional for older storage and is validated in both backup formats.
+
+## History, withdrawal and copies
+
+A previous source-bearing reply is replayed to a provider only while every selected source still has matching content and sharing permission and appears in the new question's selected context. Source numbers are mapped to the new request's identifiers. Follow-ups can retain the latest reply's exact current sources; they do not jump over a later guide reply to an unrelated older record. This policy deliberately favors omission over silently sending stale text.
+
+Earlier replies without a source map stay visible but are omitted from new provider history. Their interface says so and offers **Quote in new question**, which places a bounded quote into the editable composer without sending it. The prepared quote ends with an editable question cue, avoiding the composer's newline-to-send behavior. User messages remain conversation context; explicitly quoting and sending text is a new user disclosure.
+
+Turning sharing off or deleting the original Library document stops future retrieval and replay of its source-bearing replies. It does not erase excerpts already stored in conversations, independently saved Library copies, exported files, backups or a provider's earlier requests. The interface explains retained copies. Delete the conversation and saved copies separately; external copies remain under their holders' control. New restore documents still start with sharing off, following the existing backup policy.
+
+## Verification boundary
+
+Production-logic checks exercise real SQLite FTS5, relevance beyond five newer records and beyond 3,000 characters, page locations, Unicode offsets, current checklist state, private-record exclusion, fresh/stale/fabricated citations, follow-up remapping, consent/edit/delete gates, legacy history, cancellation, bounds and backup/export compatibility. 439 production-logic checks pass. The final native three-case suite, separate daily/encrypted-backup regression, native storage read-back, all-target builds and three-round design sign-off are recorded in VERIFICATION.md. Synthetic data only. Live Apple/OpenAI inference, semantic grounding quality, multilingual retrieval quality, physical-device memory/performance and VoiceOver remain separate gates.

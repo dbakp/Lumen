@@ -32,7 +32,7 @@ struct ConversationHistoryView: View {
                     }.accessibilityIdentifier("conversation-\(conversation.id)")
                         .contextMenu {
                             Button("Rename", systemImage: "pencil") { title = conversation.title; renaming = conversation }
-                            ShareLink(item: conversation.messages.map { "\($0.role == .user ? "You" : "Lumen"): \($0.text)" }.joined(separator: "\n\n")) { Label("Share conversation", systemImage: "square.and.arrow.up") }
+                            ShareLink(item: conversation.messages.map { "\($0.role == .user ? "You" : "Lumen"): \($0.text)" + ($0.recordContext?.markdownReferences ?? "") }.joined(separator: "\n\n")) { Label("Share conversation", systemImage: "square.and.arrow.up") }
                             Button("Delete", systemImage: "trash", role: .destructive) { deleting = conversation }
                         }
                         .swipeActions { Button("Delete", role: .destructive) { deleting = conversation } }

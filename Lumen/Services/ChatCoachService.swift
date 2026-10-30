@@ -8,21 +8,50 @@ public final class ChatCoachService: ObservableObject {
     public static let shared = ChatCoachService()
     @Published public var isTyping = false
     @Published public private(set) var lastReplySource = "Built-in guide"
+    public private(set) var lastRecordContext = RecordReplyContext.guide()
 
     private init() {}
 
     public func reply(to text: String, health: HealthStore, sleepDebt: TimeInterval, conversationHistory: [ChatMessage]? = nil) async -> String {
         isTyping = true
         lastReplySource = "Built-in guide"
+        lastRecordContext = .guide()
         defer { isTyping = false }
         if let urgent = Self.urgentResponse(for: text) { return urgent }
         let history = conversationHistory ?? Array(health.chat.dropLast()) // latest user message is `text`
+        let selectedBrain = AIService.shared.brain
+        let documents = CompanionStore.shared.documents
+        let search = Task.detached(priority: .userInitiated) { try RecordRetrieval.search(query: text, documents: documents, history: history) }
+        let references: RecordReplyContext
+        do {
+            references = try await withTaskCancellationHandler(operation: { try await search.value }, onCancel: { search.cancel() })
+        } catch {
+            if Task.isCancelled { return "" }
+            return "Library search couldn't finish. Try again, or open the record in Library."
+        }
+        guard !Task.isCancelled else { return "" }
+        // Consent/content may change while the background search is running.
+        let currentDocuments = CompanionStore.shared.documents
+        guard references.passages.allSatisfy({ RecordRetrieval.isCurrent($0, documents: currentDocuments) }) else {
+            return "A shared Library record changed during this search. Send your question again to use the current text and sharing settings."
+        }
+        let safeHistory = RecordRetrieval.history(history, context: references, documents: currentDocuments)
         let instructions = CompanionStore.shared.context(health: health) + "\n\n" + CoachingEngine.contextPrompt(metrics: health.metrics, readiness: health.readiness, goals: health.goals,
                                                         workoutsToday: health.workoutsToday, estimatedSleepDebt: health.assistantSleepDebt) + "\nWhen asked for a plan, provide a short title, a brief reason tied to recorded data, and 3–5 numbered, flexible steps that can become a checklist. Do not alter medication or prescribe treatment."
-        if let ai = await AIService.shared.chat(instructions: instructions, history: history, user: text),
+        let fullInstructions = instructions + "\n\n" + RecordRetrieval.prompt(references)
+        if let ai = await AIService.shared.chat(instructions: fullInstructions, history: safeHistory, user: text, using: selectedBrain),
            !ai.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            lastReplySource = AIService.shared.brain.label
-            return ai.trimmingCharacters(in: .whitespacesAndNewlines)
+            lastReplySource = selectedBrain.label
+            let resolved = RecordRetrieval.resolving(ai.trimmingCharacters(in: .whitespacesAndNewlines), context: references)
+            lastRecordContext = resolved.1
+            return resolved.0
+        }
+        guard !Task.isCancelled else { return "" }
+        if !PlanBuilder.isRequest(text), !references.passages.isEmpty || RecordRetrieval.isLibraryQuestion(text, history: history) {
+            let lookup = RecordRetrieval.localReply(references, query: text)
+            lastRecordContext = lookup.1
+            lastReplySource = "Library lookup · on this iPhone"
+            return lookup.0
         }
         try? await Task.sleep(nanoseconds: 500_000_000)
         return localReply(userText: text, health: health, sleepDebt: sleepDebt)

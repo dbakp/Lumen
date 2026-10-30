@@ -8,6 +8,7 @@ public struct CoachView: View {
     @StateObject private var coach = ChatCoachService.shared
     @ObservedObject private var ai = AIService.shared
     @State private var draft = ""
+    @State private var saveError: String?
     @State private var historyPresented = false
     @State private var logSelection: HealthLogSelection?
     @State private var isSending = false
@@ -38,6 +39,13 @@ public struct CoachView: View {
                                 }
                                 if message.role == .coach {
                                     Text(message.provider ?? "Provider not recorded").font(.caption).foregroundStyle(Theme.secondary)
+                                    if let context = message.recordContext, context.mode != .guide {
+                                        RecordSourcesView(context: context)
+                                    } else if message.recordContext == nil {
+                                        Text("This earlier reply has no saved references and isn't included with new questions.").font(.caption).foregroundStyle(Theme.secondary)
+                                        Button("Quote in new question", systemImage: "quote.bubble") { draft = RecordRetrieval.quotedQuestion(from: message); focused = true }
+                                            .font(.footnote).frame(minHeight: 44).disabled(isSending)
+                                    }
                                     if let saved = companion.documents.first(where: { $0.messageID == message.id }) {
                                         NavigationLink {
                                             DocumentDetailView(documentID: saved.id)
@@ -46,9 +54,10 @@ public struct CoachView: View {
                                         }.font(.footnote).frame(minHeight: 44)
                                     } else {
                                         Button("Save to Library", systemImage: "bookmark") {
-                                            let title = String(message.text.split(separator: "\n").first ?? "Assistant note")
-                                            companion.save(HealthDocument(title: String(title.prefix(80)), kind: .note, body: message.text, source: "Lumen assistant · \(message.provider ?? "Provider not recorded")", messageID: message.id))
-                                            AppRouter.shared.confirm("Saved to Library")
+                                            do {
+                                                try companion.saveChecked(RecordRetrieval.savedDocument(from: message, history: health.chat))
+                                                AppRouter.shared.confirm("Saved to Library")
+                                            } catch { saveError = "The reply wasn't saved. Try again." }
                                         }.font(.footnote).frame(minHeight: 44)
                                     }
                                 }
@@ -80,6 +89,7 @@ public struct CoachView: View {
                 }
             }
         }
+        .alert("Couldn't save reply", isPresented: Binding(get: { saveError != nil }, set: { if !$0 { saveError = nil } })) { Button("OK") { saveError = nil } } message: { Text(saveError ?? "") }
         .sheet(item: $logSelection) { HealthLogReviewView(selection: $0).environmentObject(health) }
         .sheet(isPresented: $historyPresented) { ConversationHistoryView().environmentObject(health) }
     }
@@ -97,7 +107,7 @@ public struct CoachView: View {
                 Label("Today’s context", systemImage: "checkmark.shield").font(.headline)
                 Text(companion.perspective(health: health).evidence.joined(separator: " · ")).font(.subheadline).foregroundStyle(Theme.secondary)
                 Text("\(companion.activeSymptoms.count) ongoing symptom \(companion.activeSymptoms.count == 1 ? "log" : "logs") · \(companion.documents.filter(\.includeInAssistant).count) shared records").font(.footnote).foregroundStyle(Theme.secondary)
-                Text("Provider: \(ai.brain.label). Your current health summary and shared record excerpts accompany each question.").font(.footnote).foregroundStyle(Theme.secondary)
+                Text("Provider: \(ai.brain.label). Relevant text is selected from shared Library documents for each question, alongside your current health summary.").font(.footnote).foregroundStyle(Theme.secondary)
             }.padding(18).surface()
             VStack(spacing: 10) {
                 ForEach(suggestions, id: \.1) { icon, text in
@@ -139,9 +149,9 @@ public struct CoachView: View {
                 }.accessibilityLabel("Stop response")
             }
             Button { send(draft) } label: {
-                Image(systemName: "arrow.up").font(.headline.weight(.bold))
+                Image(systemName: "arrow.up").font(.system(size: 22, weight: .bold))
                     .foregroundStyle(canSend ? Theme.onAccent : Theme.tertiary)
-                    .frame(width: 36, height: 36)
+                    .frame(width: 44, height: 44)
                     .background(canSend ? Theme.accent : Theme.surfaceRaised, in: Circle())
             }
             .disabled(!canSend)
@@ -169,12 +179,14 @@ public struct CoachView: View {
             defer { isSending = false; responseTask = nil }
             let answer = await coach.reply(to: t, health: health, sleepDebt: sleep.debt, conversationHistory: history)
             guard !Task.isCancelled else { return }
-            let reply = ChatMessage(role: .coach, text: answer, provider: coach.lastReplySource)
+            let reply = ChatMessage(role: .coach, text: answer, provider: coach.lastReplySource, recordContext: coach.lastRecordContext)
             guard health.appendMessage(reply, to: conversationID) else { return }
             health.persist()
             if PlanBuilder.isRequest(t), ChatCoachService.urgentResponse(for: t) == nil {
-                companion.save(HealthDocument(title: "Plan · \(Date().formatted(date: .abbreviated, time: .omitted))", kind: .plan, body: answer, steps: PlanBuilder.steps(from: answer), source: "Lumen assistant · \(coach.lastReplySource)", messageID: reply.id))
-                AppRouter.shared.confirm("Plan saved to Library")
+                do {
+                    try companion.saveChecked(HealthDocument(title: "Plan · \(Date().formatted(date: .abbreviated, time: .omitted))", kind: .plan, body: answer, steps: PlanBuilder.steps(from: answer), source: "Lumen assistant · \(coach.lastReplySource)", messageID: reply.id, recordContext: reply.recordContext))
+                    AppRouter.shared.confirm("Plan saved to Library")
+                } catch { saveError = "The reply is in this conversation, but its plan wasn't saved. Use Save to Library to try again." }
             }
         }
     }

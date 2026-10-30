@@ -38,16 +38,25 @@ final class LumenSmokeTests: XCTestCase {
     }
 
     func reveal(_ element: XCUIElement) {
-        for _ in 0..<12 {
-            // Return at the successful observation; rechecking after the loop races
-            // the keyboard's own scroll of the next password field.
-            if element.exists && element.isHittable { return }
-            if element.exists && element.frame.midY < app.frame.midY { app.swipeDown(velocity: .slow) }
+        for _ in 0..<16 {
+            let input = app.descendants(matching: .any).matching(identifier: "coachInput").firstMatch
+            let composerVisible = input.exists && input.isHittable && element.identifier != "coachInput"
+            let top = app.navigationBars.firstMatch.exists ? app.navigationBars.firstMatch.frame.maxY + 16 : 130
+            let bottom = composerVisible ? input.frame.minY - 20 : app.frame.maxY - 90
+            if element.exists && element.isHittable && (!composerVisible || (element.frame.midY > top && element.frame.midY < bottom)) { return }
+            let down = element.exists && element.frame.midY < (top + bottom) / 2
+            if composerVisible {
+                // A partly visible row can report hittable while its centre is
+                // behind the fixed composer. Scroll in the real content gutter.
+                let lower = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: bottom - 8))
+                let upper = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: top + 8))
+                if down { upper.press(forDuration: 0.05, thenDragTo: lower) }
+                else { lower.press(forDuration: 0.05, thenDragTo: upper) }
+            } else if down { app.swipeDown(velocity: .slow) }
             else { app.swipeUp(velocity: .slow) }
         }
-        if element.exists && element.isHittable { return }
         snap("unreachable-element"); print(app.debugDescription)
-        XCTFail("Element could not be brought into view")
+        XCTFail("Element could not be brought into the visible content area")
     }
 
     func replaceAmount(_ field: XCUIElement, with text: String, file: StaticString = #filePath, line: UInt = #line) {
@@ -160,22 +169,27 @@ final class LumenSmokeTests: XCTestCase {
 
     func chooseBackupFixture(_ name: String) throws {
         let choose = app.buttons["chooseBackup"].firstMatch; reveal(choose); choose.tap()
-        XCTAssertTrue(app.buttons["Cancel"].firstMatch.waitForExistence(timeout: 25))
+        let picker = app.collectionViews["File View"].firstMatch
+        XCTAssertTrue(picker.waitForExistence(timeout: 25))
         if app.buttons["Browse"].firstMatch.exists { app.buttons["Browse"].firstMatch.tap() }
         if app.buttons["On My iPhone"].firstMatch.exists { app.buttons["On My iPhone"].firstMatch.tap() }
         else if app.staticTexts["On My iPhone"].firstMatch.exists { app.staticTexts["On My iPhone"].firstMatch.tap() }
         let cell = app.cells.matching(NSPredicate(format: "identifier BEGINSWITH %@", name)).firstMatch
-        // Files retains its scroll position between selections. Move toward the item,
-        // including back up when a previously selected file left this one above the viewport.
-        for _ in 0..<16 {
-            if cell.exists && cell.isHittable { break }
-            if cell.exists && cell.frame.midY < app.frame.midY { app.swipeDown(velocity: .fast) }
-            else { app.swipeUp(velocity: .fast) }
+        for _ in 0..<24 {
+            if cell.exists && cell.isHittable && cell.frame.maxY > 220 && cell.frame.minY < 700 { break }
+            if cell.exists && cell.frame.maxY < 220 { app.swipeDown(velocity: .slow) }
+            else { app.swipeUp(velocity: .slow) }
         }
-        XCTAssertTrue(cell.waitForExistence(timeout: 5) && cell.isHittable, "Seed synthetic backup fixtures before this scenario")
-        let picker = app.buttons.matching(NSPredicate(format: "label == %@ AND identifier != %@", "Cancel", "cancelBackupOperation")).firstMatch
-        cell.images.firstMatch.tap()
-        XCTAssertTrue(picker.waitForNonExistence(timeout: 15), "File selection must dismiss the picker; the app's processing Cancel is a separate control")
+        XCTAssertTrue(cell.exists && cell.isHittable, "Seed synthetic backup fixtures before this scenario")
+        var previous = CGRect.null
+        let stable = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+            let current = cell.frame; defer { previous = current }; return current == previous
+        }, object: cell)
+        XCTAssertEqual(XCTWaiter.wait(for: [stable], timeout: 5), .completed)
+        let frame = cell.frame
+        app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: frame.midX, dy: max(210, min(720, frame.minY + 50)))).tap()
+        if !picker.waitForNonExistence(timeout: 15) { print(app.debugDescription); XCTFail("Selecting a backup must leave Files") }
+
     }
 
     @discardableResult
@@ -305,6 +319,122 @@ final class LumenSmokeTests: XCTestCase {
         let expected = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", enabled ? "1" : "0"), object: toggle)
         XCTAssertEqual(XCTWaiter.wait(for: [expected], timeout: 5), .completed)
     }
+    func prepareRetrievalLibrary(allShared: Bool = false) throws {
+        finishOnboarding(); openBackupSettings(); try chooseBackupFixture("Lumen-backup-retrieval")
+        _ = backupPreview(); confirmBackupRestore()
+        app.navigationBars["Backup & restore"].buttons.element(boundBy: 0).tap(); tap("Done"); tab("Library")
+        let titles = (allShared ? (1...7).map { "Recent walking note \($0)" } : []) + ["Autumn appointment record"]
+        for title in titles {
+            let document = app.buttons[title].firstMatch; reveal(document); document.tap()
+            nativeSwitch("Use in assistant", enabled: true)
+            app.navigationBars["Document"].buttons.element(boundBy: 0).tap()
+        }
+        tab("Assistant")
+    }
+
+    func askLibrary(_ question: String, replies: Int = 1) {
+        let input = app.textFields["coachInput"].firstMatch
+        let field = input.exists ? input : app.textViews["coachInput"].firstMatch
+        XCTAssertTrue(field.waitForExistence(timeout: 5)); field.tap(); field.typeText(question); tap("coachSend")
+        let count = NSPredicate(format: "count == %d", replies)
+        expectation(for: count, evaluatedWith: app.staticTexts.matching(identifier: "coachMessage"))
+        waitForExpectations(timeout: 30)
+    }
+
+    func openLibraryReference() {
+        let disclosure = app.buttons["Library matches"].firstMatch; reveal(disclosure)
+        let source = app.buttons["library-reference-1"].firstMatch
+        if disclosure.value as? String == "Collapsed" { disclosure.tap() }
+        reveal(source); source.tap()
+        XCTAssertTrue(app.navigationBars["Saved reference"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["reference-excerpt"].label.contains("12.5 mg/L"))
+    }
+
+    func testLibraryRetrievalAndWithdrawal() throws {
+        try prepareRetrievalLibrary(allShared: true)
+        snap("210-library-search-intro")
+        askLibrary("What does my record say about ferritin?")
+        let reply = app.staticTexts["coachMessage"].firstMatch
+        XCTAssertTrue(reply.label.contains("12.5 mg/L")); XCTAssertFalse(reply.label.contains("PRIVATE-CANARY")); snap("211-library-search-reply")
+        let disclosure = app.buttons["Library matches"].firstMatch; reveal(disclosure); disclosure.tap()
+        XCTAssertEqual(disclosure.value as? String, "Expanded")
+        reveal(app.buttons["library-reference-1"].firstMatch)
+        XCTAssertTrue(app.staticTexts["8 shared documents searched"].exists); snap("212-library-search-expanded")
+        openLibraryReference(); snap("213-library-source-current")
+        let open = app.buttons["Open in Library"].firstMatch; reveal(open); open.tap()
+        nativeSwitch("Use in assistant", enabled: false); snap("214-library-sharing-withdrawn")
+        app.navigationBars["Document"].buttons.element(boundBy: 0).tap()
+        let off = app.staticTexts["Assistant sharing is off for this document. This saved excerpt stays with the earlier reply."].firstMatch
+        reveal(off); XCTAssertTrue(off.exists); snap("215-library-source-sharing-off"); tap("Done")
+        let save = app.buttons["Save to Library"].firstMatch; reveal(save); save.tap()
+        let saved = app.buttons["View saved document"].firstMatch; reveal(saved); saved.tap()
+        let savedRefs = app.buttons["Library matches"].firstMatch; reveal(savedRefs); savedRefs.tap(); reveal(app.buttons["library-reference-1"].firstMatch); snap("216-library-saved-references")
+        app.navigationBars["Document"].buttons.element(boundBy: 0).tap()
+        app.terminate(); app.launchArguments = []; app.launch(); tab("Assistant")
+        openLibraryReference(); snap("217-library-reference-persisted"); tap("Done")
+        askLibrary("What does my record say about ferritin?", replies: 2)
+        XCTAssertTrue(app.staticTexts.matching(identifier: "coachMessage").element(boundBy: 1).label.contains("No match in the shared documents searched"))
+        snap("218-library-no-match-after-withdrawal")
+        openLibraryReference()
+        let current = app.buttons["Open in Library"].firstMatch; reveal(current); current.tap()
+        tap("Document actions"); tap("Edit")
+        let body = app.textViews.firstMatch; reveal(body); body.tap(); body.typeKey("a", modifierFlags: .command); body.typeText("Changed synthetic appointment note.")
+        tap("Save"); app.navigationBars["Document"].buttons.element(boundBy: 0).tap()
+        let changed = app.staticTexts["The Library text has changed"].firstMatch; reveal(changed); snap("219-library-source-changed")
+        reveal(app.buttons["Open in Library"].firstMatch); tap("Open in Library")
+        tap("Document actions"); tap("Delete")
+        XCTAssertTrue(app.alerts["Delete this document?"].waitForExistence(timeout: 5)); snap("219a-library-delete-copy-explanation")
+        tap("Keep document"); XCTAssertTrue(app.alerts["Delete this document?"].waitForNonExistence(timeout: 5))
+        XCTAssertTrue(app.navigationBars["Document"].exists)
+        tap("Document actions"); tap("Delete"); tap("Delete")
+        let removed = app.staticTexts["Document removed from Library"].firstMatch; reveal(removed); XCTAssertTrue(removed.exists); snap("219b-library-source-removed")
+        tap("Done")
+    }
+
+    func testLibraryProviderReferenceLayout() throws {
+        finishOnboarding(); openBackupSettings(); try chooseBackupFixture("Lumen-backup-reference-layout")
+        _ = backupPreview(); confirmBackupRestore()
+        app.navigationBars["Backup & restore"].buttons.element(boundBy: 0).tap(); tap("Done"); tab("Assistant")
+        tap("Conversation history"); scrollAndTap("Reference layout fixture")
+        let disclosure = app.buttons["Library for this reply"].firstMatch; reveal(disclosure); disclosure.tap()
+        let fourth = app.buttons["library-reference-4"].firstMatch; reveal(fourth); snap("230-library-provider-context-fixture")
+        XCTAssertTrue(app.staticTexts["Shared with provider · not cited"].firstMatch.exists)
+        let invalid = app.staticTexts["The reply included an unrecognized reference. It couldn't be linked to saved text."].firstMatch; reveal(invalid); snap("231-library-unknown-reference-fixture")
+        let first = app.buttons["library-reference-1"].firstMatch; reveal(first); first.tap()
+        XCTAssertTrue(app.navigationBars["Saved reference"].waitForExistence(timeout: 5)); snap("232-library-provider-snapshot-fixture"); tap("Done")
+        let legacy = app.staticTexts["This earlier reply has no saved references and isn't included with new questions."].firstMatch; reveal(legacy); snap("233-library-legacy-reply")
+        let quote = app.buttons["Quote in new question"].firstMatch; reveal(quote); quote.tap()
+        let field = app.textFields["coachInput"].firstMatch
+        let input = field.exists ? field : app.textViews["coachInput"].firstMatch
+        XCTAssertTrue((input.value as? String ?? "").contains("Synthetic earlier reply without source metadata.")); snap("234-library-legacy-quote-draft")
+        XCTAssertEqual(app.staticTexts.matching(identifier: "coachMessage").count, 2, "Quoting must not send the draft")
+    }
+
+    func testLibraryReferencePresentation() throws {
+        try prepareRetrievalLibrary()
+        askLibrary("What does my record say about ferritin?")
+        app.terminate(); app.launchArguments = ["-lumen.appearance", "dark"]; app.launch(); tab("Assistant")
+        let disclosure = app.buttons["Library matches"].firstMatch; reveal(disclosure); disclosure.tap(); reveal(app.buttons["library-reference-1"].firstMatch); snap("220-library-dark-reply")
+        openLibraryReference(); snap("221-library-dark-source"); tap("Done")
+        app.terminate(); app.launchArguments = ["-lumen.appearance", "light", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]; app.launch(); tab("Assistant")
+        let largeDisclosure = app.buttons["Library matches"].firstMatch; reveal(largeDisclosure); largeDisclosure.tap(); reveal(app.buttons["library-reference-1"].firstMatch); snap("222-library-large-references")
+        openLibraryReference(); snap("223-library-large-source")
+        let excerpt = app.staticTexts["reference-excerpt"].firstMatch
+        XCTAssertGreaterThan(excerpt.frame.height, 150)
+        for _ in 0..<8 {
+            let top = app.navigationBars["Saved reference"].frame.maxY + 16
+            if excerpt.frame.minY >= top && excerpt.frame.maxY < app.frame.maxY - 60 { break }
+            let lower = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: 600))
+            let upper = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: 400))
+            if excerpt.frame.minY < top { upper.press(forDuration: 0.05, thenDragTo: lower) }
+            else { lower.press(forDuration: 0.05, thenDragTo: upper) }
+        }
+        XCTAssertGreaterThan(excerpt.frame.minY, app.navigationBars["Saved reference"].frame.maxY)
+        XCTAssertLessThan(excerpt.frame.maxY, app.frame.maxY - 45)
+        snap("223a-library-large-excerpt")
+        let open = app.buttons["Open in Library"].firstMatch; reveal(open); snap("224-library-large-source-footer")
+    }
+
     func testScannedRecordReview() throws {
         finishOnboarding(); openRecordImport(); snap("180-record-start")
         try chooseRecordFixture("Lumen-record-scan"); waitForRecordPreview(); snap("181-record-scan-preview")
