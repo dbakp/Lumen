@@ -59,10 +59,22 @@ final class LumenSmokeTests: XCTestCase {
         XCTFail("Element could not be brought into the visible content area")
     }
 
-    func replaceAmount(_ field: XCUIElement, with text: String, file: StaticString = #filePath, line: UInt = #line) {
+    func selectAmount(_ field: XCUIElement, file: StaticString = #filePath, line: UInt = #line) {
         reveal(field); field.tap()
-        field.typeKey("a", modifierFlags: .command)
-        field.typeText(text)
+        XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 5), file: file, line: line)
+        field.coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap()
+        let button = app.buttons["Select All"].firstMatch
+        let menu = app.menuItems["Select All"].firstMatch
+        if !(button.exists || menu.exists) { field.press(forDuration: 1.0) }
+        let selectAll = button.exists ? button : menu
+        XCTAssertTrue(selectAll.waitForExistence(timeout: 5), "Select the complete prior amount", file: file, line: line)
+        selectAll.tap()
+    }
+    func replaceAmount(_ field: XCUIElement, with text: String, file: StaticString = #filePath, line: UInt = #line) {
+        selectAmount(field, file: file, line: line)
+        if text.allSatisfy({ $0.isASCII && $0.isNumber }) {
+            for digit in text { app.keyboards.keys[String(digit)].firstMatch.tap() }
+        } else { field.typeText(text) }
         XCTAssertEqual(field.value as? String, text, "Replace the complete amount before saving", file: file, line: line)
     }
 
@@ -1302,6 +1314,100 @@ final class LumenSmokeTests: XCTestCase {
         snap("94-recorded-evidence-days")
     }
 
+    func focusHealthDraftInput(_ identifier: String, capture: String? = nil) {
+        let field = identifier == "draftHealthNotes" ? app.textViews[identifier].firstMatch : app.descendants(matching: .any).matching(identifier: identifier).firstMatch
+        if identifier == "draftHealthNotes" {
+            let edit = app.buttons["editHealthDraftNotes"].firstMatch; reveal(edit); edit.tap()
+            XCTAssertTrue(field.waitForExistence(timeout: 5))
+        } else { reveal(field); field.tap() }
+        let done = app.buttons[identifier == "draftHealthNotes" ? "finishHealthDraftNotes" : "dismissHealthDraftKeyboard"].firstMatch
+        XCTAssertTrue(done.waitForExistence(timeout: 5)); XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 5))
+        XCTAssertTrue(done.isHittable); XCTAssertGreaterThanOrEqual(done.frame.height, 44)
+        XCTAssertLessThanOrEqual(done.frame.maxY, app.keyboards.firstMatch.frame.minY + 1)
+        if let capture { snap(capture) }
+        done.tap(); XCTAssertTrue(app.keyboards.firstMatch.waitForNonExistence(timeout: 5))
+    }
+    func reopenWaterDraft() {
+        let review = app.buttons["Review health entries"].firstMatch; reveal(review); review.tap()
+        let water = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Water'")).firstMatch; reveal(water); water.tap()
+        XCTAssertTrue(app.navigationBars["Review water"].waitForExistence(timeout: 5))
+    }
+    func testHealthDraftKeyboardPresentation() throws {
+        app.terminate(); app.launchArguments = ["-resetForUITests", "-lumen.appearance", "dark"]; app.launch()
+        finishOnboarding(); tab("Assistant")
+        let input = app.descendants(matching: .any).matching(identifier: "coachInput").firstMatch
+        input.tap(); input.typeText("I drank 350 ml of water."); tap("coachSend")
+        reopenWaterDraft(); focusHealthDraftInput("draftWaterML", capture: "333-water-dark-keyboard")
+        app.navigationBars["Review water"].buttons.element(boundBy: 0).tap(); tap("Close")
+        app.terminate(); app.launchArguments = ["-lumen.appearance", "light", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]; app.launch(); tab("Assistant")
+        reopenWaterDraft(); snap("334-water-large-review")
+        let notes = app.textViews["draftHealthNotes"].firstMatch
+        let edit = app.buttons["editHealthDraftNotes"].firstMatch; reveal(edit); edit.tap()
+        XCTAssertTrue(notes.waitForExistence(timeout: 5)); notes.tap(); notes.typeText("Large synthetic note.\nThe final line stays visible.")
+        let done = app.buttons["finishHealthDraftNotes"].firstMatch
+        XCTAssertTrue(done.waitForExistence(timeout: 5)); XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 5))
+        XCTAssertTrue(done.isHittable); XCTAssertGreaterThanOrEqual(done.frame.height, 44)
+        XCTAssertLessThanOrEqual(done.frame.maxY, app.keyboards.firstMatch.frame.minY + 1)
+        snap("335-water-large-note-keyboard")
+        XCTAssertEqual(notes.value as? String, "Large synthetic note.\nThe final line stays visible.")
+        done.tap(); XCTAssertTrue(app.keyboards.firstMatch.waitForNonExistence(timeout: 5))
+        XCTAssertEqual(app.staticTexts["draftHealthNotesPreview"].label, "Large synthetic note.\nThe final line stays visible."); snap("336-water-large-note-dismissed")
+        reveal(app.buttons["editHealthDraftNotes"].firstMatch); snap("346-water-large-full-note-route")
+        app.navigationBars["Review water"].buttons.element(boundBy: 0).tap(); tap("Close")
+        XCTAssertTrue(app.alerts["Discard your unsaved changes?"].waitForExistence(timeout: 5)); snap("337-water-large-discard")
+        tap("Keep reviewing"); tap("Close"); tap("Discard unsaved drafts")
+        XCTAssertEqual(app.staticTexts.matching(identifier: "userMessage").count, 1)
+    }
+
+    func testHealthLogSourceDisclosure() throws {
+        finishOnboarding(); tab("Assistant")
+        let statement = "I drank 250 ml of water. I walked for 20 minutes. I have a headache 5/10. Energy 2/5, mood 4/5, stress 3/5."
+        let input = app.descendants(matching: .any).matching(identifier: "coachInput").firstMatch
+        input.tap(); input.typeText(statement); tap("coachSend"); reopenWaterDraft()
+        let confirm = app.buttons["confirmChatHealthLog"].firstMatch; reveal(confirm); confirm.tap(); tap("Close")
+        tab("Journal")
+        let water = app.descendants(matching: .any).matching(NSPredicate(format: "identifier BEGINSWITH 'water-' ")).firstMatch
+        reveal(water); water.tap(); tap("editWaterEntry")
+        replaceAmount(app.textFields["correctWaterML"].firstMatch, with: "750")
+        tap("dismissCorrectionKeyboard"); tap("saveCorrectedEntry")
+        XCTAssertEqual(app.staticTexts["waterEntryValue"].label, "750 ml")
+        scrollAndTap("Original message")
+        let full = app.staticTexts[statement].firstMatch; XCTAssertTrue(full.waitForExistence(timeout: 5))
+        let top = app.navigationBars.firstMatch.frame.maxY + 8
+        let bottom = app.frame.maxY - 70
+        for _ in 0..<8 {
+            if full.exists && full.frame.minY >= top && full.frame.maxY <= bottom { break }
+            if full.exists && full.frame.minY < top { app.swipeDown(velocity: .slow) }
+            else { app.swipeUp(velocity: .slow) }
+        }
+        var prior = CGRect.null, unchanged = 0
+        let settled = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+            let frame = full.frame
+            unchanged = frame == prior ? unchanged + 1 : 0; prior = frame
+            return unchanged >= 2 && frame.minY >= top && frame.maxY <= bottom && frame.height > 40
+        }, object: full)
+        XCTAssertEqual(XCTWaiter.wait(for: [settled], timeout: 8), .completed)
+        XCTAssertEqual(full.label, statement); snap("348-complete-original-message")
+        tap("Done")
+    }
+
+    func testHealthDraftLayout() throws {
+        finishOnboarding(); tab("Assistant")
+        let input = app.descendants(matching: .any).matching(identifier: "coachInput").firstMatch
+        input.tap(); input.typeText("I drank 350 ml of water."); tap("coachSend")
+        let review = app.buttons["Review health entries"].firstMatch; reveal(review); review.tap()
+        let water = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Water'")).firstMatch; reveal(water); water.tap()
+        let amount = app.textFields["draftWaterML"].firstMatch
+        XCTAssertTrue(amount.waitForExistence(timeout: 5)); XCTAssertEqual(amount.value as? String, "350")
+        snap("330-water-review-layout")
+        amount.tap(); XCTAssertTrue(app.buttons["dismissHealthDraftKeyboard"].waitForExistence(timeout: 5)); snap("331-water-keyboard")
+        tap("dismissHealthDraftKeyboard"); XCTAssertTrue(app.keyboards.firstMatch.waitForNonExistence(timeout: 5))
+        XCTAssertEqual(amount.value as? String, "350"); snap("332-water-keyboard-dismissed")
+        let confirm = app.buttons["confirmChatHealthLog"].firstMatch; reveal(confirm); XCTAssertTrue(confirm.isEnabled)
+        app.navigationBars["Review water"].buttons.element(boundBy: 0).tap(); tap("Close")
+        XCTAssertEqual(app.staticTexts.matching(identifier: "userMessage").count, 1)
+    }
+
     func testConversationalLogging() throws {
         finishOnboarding()
         tab("Assistant")
@@ -1326,7 +1432,11 @@ final class LumenSmokeTests: XCTestCase {
         XCTAssertTrue(app.navigationBars["Review water"].waitForExistence(timeout: 5))
         let amount = app.textFields["draftWaterML"]
         XCTAssertTrue(amount.waitForExistence(timeout: 5))
-        reveal(amount)
+        selectAmount(amount)
+        app.keyboards.keys["5"].firstMatch.tap()
+        XCTAssertEqual(amount.value as? String, "5")
+        tap("Done"); app.navigationBars["Review water"].buttons.element(boundBy: 0).tap(); scrollAndTap("Water")
+        XCTAssertEqual(amount.value as? String, "5", "The first single-key edit must survive marking the draft as changed")
         replaceAmount(amount, with: "500")
         XCTAssertEqual(amount.value as? String, "500")
         snap("107-edited-water-value")
@@ -1341,18 +1451,30 @@ final class LumenSmokeTests: XCTestCase {
         XCTAssertTrue(app.buttons["Discard unsaved drafts"].waitForExistence(timeout: 5))
         tap("Keep reviewing")
         scrollAndTap("Water")
+        let savedNote = "Reviewed synthetic water note.\nKept separately from the original 250 ml message."
+        let correctedNote = savedNote + "\nCorrection note kept with this entry."
+        let editNote = app.buttons["editHealthDraftNotes"].firstMatch; reveal(editNote); editNote.tap()
+        let noteEditor = app.textViews["draftHealthNotes"].firstMatch
+        XCTAssertTrue(noteEditor.waitForExistence(timeout: 5)); noteEditor.tap(); noteEditor.typeText(savedNote)
+        XCTAssertEqual(noteEditor.value as? String, savedNote); snap("341-water-note-before-confirmation")
+        tap("finishHealthDraftNotes")
+        XCTAssertEqual(app.staticTexts["draftHealthNotesPreview"].label, savedNote)
         let confirm = app.buttons["confirmChatHealthLog"]
         reveal(confirm); snap("101-chat-water-edit"); confirm.tap()
         XCTAssertTrue(app.staticTexts["Water · 500 ml"].waitForExistence(timeout: 5))
         scrollAndTap("Workout")
+        for id in ["draftWorkoutName", "draftWorkoutDuration", "draftWorkoutEnergy", "draftHealthNotes"] { focusHealthDraftInput(id, capture: id == "draftHealthNotes" ? "338-workout-note-keyboard" : nil) }
         reveal(confirm); confirm.tap()
         XCTAssertTrue(app.staticTexts["Walk"].waitForExistence(timeout: 5))
         scrollAndTap("Headache")
+        for id in ["draftSymptomName", "draftSymptomDuration", "draftHealthNotes"] { focusHealthDraftInput(id, capture: id == "draftHealthNotes" ? "339-symptom-note-keyboard" : nil) }
         let location = app.textFields["Body location"]
         XCTAssertTrue(location.waitForExistence(timeout: 5)); location.tap(); location.typeText("Head")
+        XCTAssertEqual(location.value as? String, "Head")
         tap("Done")
         reveal(confirm); confirm.tap()
         scrollAndTap("Check-in")
+        focusHealthDraftInput("draftHealthNotes", capture: "340-checkin-note-keyboard")
         reveal(confirm); confirm.tap()
         XCTAssertTrue(app.staticTexts["Saved from this message"].waitForExistence(timeout: 5))
         snap("102-chat-entries-saved")
@@ -1387,7 +1509,14 @@ final class LumenSmokeTests: XCTestCase {
         let waterEntry = app.descendants(matching: .any).matching(NSPredicate(format: "identifier BEGINSWITH 'water-'")).firstMatch
         reveal(waterEntry); waterEntry.tap()
         XCTAssertEqual(app.staticTexts["waterEntryValue"].label, "500 ml")
+        XCTAssertTrue(app.staticTexts[savedNote].exists, "Confirmed notes persist through relaunch separately from their original message")
+        snap("342-water-note-after-relaunch")
         tap("editWaterEntry")
+        let editCorrectedNote = app.buttons["editCorrectedEntryNotes"].firstMatch; reveal(editCorrectedNote); editCorrectedNote.tap()
+        let correctionNoteEditor = app.textViews["draftHealthNotes"].firstMatch
+        XCTAssertTrue(correctionNoteEditor.waitForExistence(timeout: 5)); XCTAssertEqual(correctionNoteEditor.value as? String, savedNote)
+        replaceVoiceText(correctionNoteEditor, with: correctedNote); snap("347-correction-note-editor")
+        tap("finishHealthDraftNotes")
         let correctedWater = app.textFields["correctWaterML"]
         reveal(correctedWater)
         replaceAmount(correctedWater, with: "750")
@@ -1397,6 +1526,7 @@ final class LumenSmokeTests: XCTestCase {
         tap("saveCorrectedEntry")
         XCTAssertTrue(app.staticTexts["waterEntryValue"].waitForExistence(timeout: 5))
         XCTAssertEqual(app.staticTexts["waterEntryValue"].label, "750 ml")
+        XCTAssertTrue(app.staticTexts[correctedNote].exists)
         scrollAndTap("Original message")
         XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", "I drank 250 ml")).firstMatch.exists)
         snap("131-water-corrected-provenance")
@@ -1413,7 +1543,7 @@ final class LumenSmokeTests: XCTestCase {
         snap("133-workout-corrected")
         // Relaunch must keep both corrected records, not append duplicates.
         app.terminate(); app.launchArguments = []; app.launch(); tab("Journal")
-        reveal(waterEntry); waterEntry.tap(); tap("editWaterEntry")
+        reveal(waterEntry); waterEntry.tap(); XCTAssertTrue(app.staticTexts[correctedNote].exists); tap("editWaterEntry")
         tap("cancelCorrectedEntry"); tap("Done")
         app.terminate(); app.launchArguments = ["-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]; app.launch(); tab("Journal")
         reveal(waterEntry); waterEntry.tap(); tap("editWaterEntry")

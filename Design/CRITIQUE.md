@@ -373,3 +373,31 @@ The same continuing critic opened all **13 changed/new captures** in `native/voi
 **Done by the stop rule:** 10/11 applicable lines at 4+ (90.9%), none below 3, Concept/Finish/Native/Copy all 4. Every named R1/R2 concrete defect is closed. The refreshed final-source voice path retains correction/acknowledgement, typed-prefix preservation, unsent insertion, individual 375 ml confirmation and one saved entry. Keyboard-up editors keep Done reachable. XXXL rows, actual availability, dark appearance and plain lifecycle copy remain approved. No UI source changed after this sign-off, and no additional portfolio/decorative pass is requested.
 
 The water-editor invalid-frame diagnostic remains disclosed runtime evidence; these stills establish no new geometry defect and no zero-warning claim. Physical-device/acoustic/microphone, VoiceOver and live-provider checks remain outside the verdict. The final set has **25 PNGs**. To avoid redundant local evidence, R1 retains its old foreground-copy/large-row/keyboard-absent counterexamples (308/313/316), and R2 retains the settled retained-draft defect (325); their complete capture hashes/result provenance and all critique scores remain. Other superseded frames are replaced by the final set, rather than permanently archiving every duplicate render.
+
+## Batch 17 · health-entry keyboard and note editing · 30 October 2026
+
+The supplied App Designer Pro skill continues the existing native direction. No new concept, icon, paywall, store set or motion is in scope. The same independent critic inspected all eight original-size synthetic captures and `capture-sources.json` in `native/health-editor/r1`.
+
+### Round 1
+
+| Concept | Category | Skill distinction | Hierarchy | Type | Colour | Richness | Rhythm | Finish | Native | Copy |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 4 | 4 | 4 | 4 | 4 | 4 | 3 | 4 | 3 | 4 | 4 |
+
+Not done: 9/11 lines at 4+, but Finish remains below the required 4. The light/dark number-pad Done inset is clear, grows with actual XXXL text and disappears after dismissal without changing 350 ml. Native geometry assertions separately establish its target and position; pixels don't measure hit areas.
+
+The concrete defect is 335: only the beginning of the focused multiline note is above the inset, while its end/caret remains behind the keyboard. 336 reveals the full text only after dismissal. A text-value assertion is insufficient evidence of visible editing. This is accepted and is being addressed with a full-size native notes editor, preserving all text and draft/confirmation protection without shrinking type or forcing the caret to the end. The form retains a short preview and an explicit route to the full note. Round 2 must show a settled visible end/caret with the software keyboard, other log-kind input routes and full regression results. Lower form scroll edges and a partial large alert are not independently established fixed clipping. No new content rewrite or decorative pass is requested.
+
+### Round 2 · scoped sign-off
+
+The same critic inspected all **19 original-size final captures** and the updated map. The complete XXXL final line/caret in 335 clears both Done and keyboard. Frame 346 shows the full Edit full note action beneath the deliberate three-line preview. The shared editor is consistent in the workout/symptom/check-in routes (338–340); those kinds are identified by test provenance, rather than a visible metric label in the empty editor. Correction light/XXXL/dark states (130/136/139), corrected literal note (347), saved note (342) and separate current750/original250 values (131) preserve the accepted hierarchy.
+
+| Concept | Category | Skill distinction | Hierarchy | Type | Colour | Richness | Rhythm | Finish | Native | Copy |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 4 | 4 | 4 | 4 | 4 | 4 | 3 | 4 | 4 | 4 | 4 |
+
+**Done by the stop rule:** 10/11 applicable lines at 4+ (90.9%), none below 3, all required lines 4. Every named R1 defect is closed; no additional UI/copy or portfolio pass is requested. Passing native assertions and the final zero-warning regression provide runtime/focus/text/persistence evidence separately from pixels. Physical devices, VoiceOver and clinical validation remain outside this verdict.
+
+Capture limitation: 131 appears partway through source-disclosure expansion, showing the original message only through “stress.” It proves the visible original250/current750 separation; it does not establish complete-source-body layout. The critic does not infer permanent clipping or request a product change from that frame. A focused settled-source capture follows as supplementary evidence. Normal form scroll edges and a partial native alert likewise aren't certification of unseen content or fixed-clipping defects.
+
+Supplementary settled-source evidence: the same critic inspected348 at original size and checked its source-map entry after the **68.624 s** passing native case. The settled down-chevron and entire original statement through “stress 3/5.” are visible, separated from Delete entry; current750 remains distinct from original250. This closes the transitional131 evidence limitation. All R2 scores and scoped sign-off remain unchanged; no concrete clipping/copy/layout defect or further app change is requested. The final set has20 PNGs; no app UI source changed after sign-off.

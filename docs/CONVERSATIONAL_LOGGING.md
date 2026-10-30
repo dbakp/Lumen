@@ -28,3 +28,9 @@ The original statement, preparation source and confirmation time remain unchange
 **Delete entry** asks whether to delete or keep the entry. Deletion removes only that Lumen record. The conversation remains, and separate Apple Health/import records can still contribute to your totals. Missing totals become unknown rather than a fabricated zero. These controls are offered for locally confirmed entries; external workouts stay managed by their source. Neither correction nor deletion writes to Apple Health. Existing quick-water, meal and weight logging retain their separate optional write paths.
 
 Version-1 backups preserve optional edit timestamps and provenance. Restoring an older backup can re-add an absent entry under the existing restore-missing-records rules; deletion does not create a permanent tombstone across backups.
+
+## Keyboard dismissal
+
+Scalar fields have distinct focus identities and a trailing **Done** control in a native material inset above the keyboard. Done dismisses the keyboard without confirming an entry. Optional notes open a full-size native text editor; its Done action returns to the temporary entry draft. The form shows a short note preview and **Edit full note**. Note edits immediately mark the draft as changed, so closing still offers keep/discard choices. Both Done controls have minimum 44-point label touch areas and grow with Dynamic Type. The existing 8,000-character note limit, original-message provenance and separate **Confirm and save entry** action remain.
+
+The same focus-bound dismissal and full-note editor apply when correcting a previously confirmed local water or workout entry. Save and Cancel retain their separate roles; source statements and original confirmation metadata remain independent of edited values and notes.

@@ -103,6 +103,8 @@ struct HealthLogDraftEditor: View {
     @Environment(\.dismiss) private var dismiss
     @State private var saving = false
     @State private var error: String?
+    private enum Input: Hashable { case symptomName, location, symptomDuration, water, workoutName, workoutDuration, energy }
+    @FocusState private var focusedInput: Input?
     var body: some View {
         Form {
             Section {
@@ -112,25 +114,37 @@ struct HealthLogDraftEditor: View {
             Section(draft.kind.label) {
                 switch draft.kind {
                 case .symptom:
-                    TextField("Symptom", text: $draft.name)
-                    TextField("Body location", text: $draft.location)
+                    TextField("Symptom", text: $draft.name).focused($focusedInput, equals: .symptomName).accessibilityIdentifier("draftSymptomName")
+                    TextField("Body location", text: $draft.location).focused($focusedInput, equals: .location).accessibilityIdentifier("draftSymptomLocation")
                     rating("Severity", value: $draft.severity, maximum: 10)
-                    LabeledContent("Duration (min)") { HealthAmountField("Optional", value: $draft.durationMinutes).multilineTextAlignment(.trailing).keyboardType(.decimalPad) }
+                    LabeledContent("Duration (min)") { HealthAmountField("Optional", value: $draft.durationMinutes).focused($focusedInput, equals: .symptomDuration).accessibilityIdentifier("draftSymptomDuration").multilineTextAlignment(.trailing).keyboardType(.decimalPad) }
                 case .checkIn:
                     rating("Energy", value: $draft.energy, maximum: 5)
                     rating("Mood", value: $draft.mood, maximum: 5)
                     rating("Stress", value: $draft.stress, maximum: 5)
                 case .water:
-                    LabeledContent("Water (ml)") { HealthAmountField("Amount", value: $draft.waterML).multilineTextAlignment(.trailing).keyboardType(.decimalPad).accessibilityIdentifier("draftWaterML") }
+                    LabeledContent("Water (ml)") { HealthAmountField("Amount", value: $draft.waterML).focused($focusedInput, equals: .water).multilineTextAlignment(.trailing).keyboardType(.decimalPad).accessibilityIdentifier("draftWaterML") }
                 case .workout:
                     Picker("Activity", selection: $draft.workoutKind) { Text("Choose").tag(Optional<WorkoutKind>.none); ForEach(WorkoutKind.allCases, id: \.self) { Text($0.label).tag(Optional($0)) } }
-                    LabeledContent("Workout name") { TextField("Optional", text: $draft.name).multilineTextAlignment(.trailing) }
-                    LabeledContent("Duration (min)") { HealthAmountField("Minutes", value: $draft.durationMinutes).multilineTextAlignment(.trailing).keyboardType(.decimalPad) }
-                    LabeledContent("Energy (kcal)") { HealthAmountField("Optional", value: $draft.energyKcal).multilineTextAlignment(.trailing).keyboardType(.decimalPad) }
+                    LabeledContent("Workout name") { TextField("Optional", text: $draft.name).focused($focusedInput, equals: .workoutName).accessibilityIdentifier("draftWorkoutName").multilineTextAlignment(.trailing) }
+                    LabeledContent("Duration (min)") { HealthAmountField("Minutes", value: $draft.durationMinutes).focused($focusedInput, equals: .workoutDuration).accessibilityIdentifier("draftWorkoutDuration").multilineTextAlignment(.trailing).keyboardType(.decimalPad) }
+                    LabeledContent("Energy (kcal)") { HealthAmountField("Optional", value: $draft.energyKcal).focused($focusedInput, equals: .energy).accessibilityIdentifier("draftWorkoutEnergy").multilineTextAlignment(.trailing).keyboardType(.decimalPad) }
                     Text("Leave energy empty if it wasn't measured. Lumen won't estimate it here.").font(.footnote).foregroundStyle(Theme.secondary)
                 }
             }
-            Section("Your notes") { TextField("Anything to add? (optional)", text: $draft.note, axis: .vertical).lineLimit(3...8) }
+            Section("Your notes (optional)") {
+                if !draft.note.isEmpty {
+                    Text(verbatim: draft.note).lineLimit(3).accessibilityIdentifier("draftHealthNotesPreview")
+                }
+                NavigationLink {
+                    HealthDraftNotesEditor(note: Binding(get: { draft.note }, set: { value in
+                        var updated = draft
+                        if value != updated.note { updated.note = value; updated.isEdited = true }
+                        draft = updated
+                    }))
+                } label: { Text(draft.note.isEmpty ? "Add notes" : "Edit full note") }
+                .accessibilityIdentifier("editHealthDraftNotes")
+            }
             Section { DisclosureGroup("Read original message") { Text(selection.message.text).font(.subheadline).textSelection(.enabled) } }
             Section("Before saving") {
                 ForEach(draft.fieldWarnings, id: \.self) { Text($0).font(.footnote).foregroundStyle(Theme.secondary) }
@@ -141,10 +155,26 @@ struct HealthLogDraftEditor: View {
                 Button("Confirm and save entry", systemImage: "checkmark.circle") { confirm() }
                     .disabled(saving || draft.validationMessage != nil || HealthLogConfirmation.contains(draft.recordID, health: health)).accessibilityIdentifier("confirmChatHealthLog")
             }
-        }.onChange(of: draft) { _, _ in if !draft.isEdited { draft.isEdited = true } }
+        }.onChange(of: draft) { _, changed in
+            if !changed.isEdited {
+                var edited = changed; edited.isEdited = true; draft = edited
+            }
+        }
             .scrollContentBackground(.hidden).background(Theme.bg).tint(Theme.accent)
             .navigationTitle("Review \(draft.kind.label.lowercased())").navigationBarTitleDisplayMode(.inline)
-            .toolbar { ToolbarItemGroup(placement: .keyboard) { Spacer(); Button("Done") { UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil) } } }
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                if focusedInput != nil {
+                    HStack {
+                        Spacer()
+                        Button { focusedInput = nil } label: {
+                            Text("Done").frame(minWidth: 44, minHeight: 44).contentShape(Rectangle())
+                        }
+                        .accessibilityIdentifier("dismissHealthDraftKeyboard")
+                    }
+                    .padding(.horizontal, Theme.gutter)
+                    .background(.bar).tint(Theme.accent)
+                }
+            }
     }
     func rating(_ label: String, value: Binding<Int?>, maximum: Int) -> some View {
         Picker(label, selection: value) { Text("Choose").tag(Optional<Int>.none); ForEach(1...maximum, id: \.self) { Text("\($0)/\(maximum)").tag(Optional($0)) } }
@@ -154,5 +184,39 @@ struct HealthLogDraftEditor: View {
         defer { saving = false }
         do { try HealthLogConfirmation.confirm(draft, selection: selection, health: health); dismiss(); AppRouter.shared.confirm("Health entry saved") }
         catch { self.error = "Couldn't save this entry. Your draft is still here; try again." }
+    }
+}
+
+
+struct HealthDraftNotesEditor: View {
+    @Binding private var note: String
+    @State private var text: String
+    @FocusState private var focused: Bool
+    init(note: Binding<String>) {
+        _note = note; _text = State(initialValue: note.wrappedValue)
+    }
+    @Environment(\.dismiss) private var dismiss
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            TextEditor(text: $text).font(.body).foregroundStyle(Theme.text)
+                .scrollContentBackground(.hidden).focused($focused).autocorrectionDisabled()
+                .accessibilityIdentifier("draftHealthNotes").accessibilityLabel("Entry notes")
+            if text.count > 8000 {
+                Text("Use 8,000 characters or less before confirming the entry.").font(.footnote).foregroundStyle(Theme.secondary)
+            }
+        }
+        .padding(Theme.gutter).background(Theme.bg).tint(Theme.accent)
+        .navigationTitle("Entry notes").navigationBarTitleDisplayMode(.inline)
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+            HStack {
+                Spacer()
+                Button { note = text; focused = false; dismiss() } label: {
+                    Text("Done").frame(minWidth: 44, minHeight: 44).contentShape(Rectangle())
+                }.accessibilityIdentifier("finishHealthDraftNotes")
+            }
+            .padding(.horizontal, Theme.gutter).background(.bar).tint(Theme.accent)
+        }
+        .onChange(of: text) { _, value in note = value }
+        .task { focused = true }
     }
 }

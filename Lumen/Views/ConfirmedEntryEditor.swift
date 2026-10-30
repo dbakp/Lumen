@@ -10,6 +10,8 @@ struct ConfirmedEntryEditor: View {
     @State private var draft: HealthLogDraft
     @State private var discarding = false
     @State private var saveError = false
+    private enum Input: Hashable { case water, name, duration, energy }
+    @FocusState private var focusedInput: Input?
     var hasEdits: Bool { draft != initial }
 
     init(water: HydrationLog) {
@@ -31,18 +33,23 @@ struct ConfirmedEntryEditor: View {
                 Section("When it happened") { DatePicker("Recorded time", selection: $draft.date, in: ...Date()) }
                 if draft.kind == .water {
                     Section("Water") {
-                        LabeledContent("Amount (ml)") { HealthAmountField("Amount", value: $draft.waterML).multilineTextAlignment(.trailing).keyboardType(.decimalPad).accessibilityIdentifier("correctWaterML") }
+                        LabeledContent("Amount (ml)") { HealthAmountField("Amount", value: $draft.waterML).focused($focusedInput, equals: .water).multilineTextAlignment(.trailing).keyboardType(.decimalPad).accessibilityIdentifier("correctWaterML") }
                     }
                 } else {
                     Section("Workout") {
                         Picker("Activity", selection: $draft.workoutKind) { ForEach(WorkoutKind.allCases, id: \.self) { Text($0.label).tag(Optional($0)) } }
-                        LabeledContent("Workout name") { TextField("Optional", text: $draft.name).multilineTextAlignment(.trailing).accessibilityIdentifier("correctWorkoutTitle") }
-                        LabeledContent("Duration (min)") { HealthAmountField("Minutes", value: $draft.durationMinutes).multilineTextAlignment(.trailing).keyboardType(.decimalPad).accessibilityIdentifier("correctWorkoutMinutes") }
-                        LabeledContent("Energy (kcal)") { HealthAmountField("Optional", value: $draft.energyKcal).multilineTextAlignment(.trailing).keyboardType(.decimalPad).accessibilityIdentifier("correctWorkoutEnergy") }
+                        LabeledContent("Workout name") { TextField("Optional", text: $draft.name).focused($focusedInput, equals: .name).multilineTextAlignment(.trailing).accessibilityIdentifier("correctWorkoutTitle") }
+                        LabeledContent("Duration (min)") { HealthAmountField("Minutes", value: $draft.durationMinutes).focused($focusedInput, equals: .duration).multilineTextAlignment(.trailing).keyboardType(.decimalPad).accessibilityIdentifier("correctWorkoutMinutes") }
+                        LabeledContent("Energy (kcal)") { HealthAmountField("Optional", value: $draft.energyKcal).focused($focusedInput, equals: .energy).multilineTextAlignment(.trailing).keyboardType(.decimalPad).accessibilityIdentifier("correctWorkoutEnergy") }
                         Text("Leave energy empty when it wasn’t measured.").font(.footnote).foregroundStyle(Theme.secondary)
                     }
                 }
-                Section("Your notes") { TextField("Optional", text: $draft.note, axis: .vertical).lineLimit(3...6) }
+                Section("Your notes (optional)") {
+                    if !draft.note.isEmpty { Text(verbatim: draft.note).lineLimit(3) }
+                    NavigationLink { HealthDraftNotesEditor(note: $draft.note) } label: {
+                        Text(draft.note.isEmpty ? "Add notes" : "Edit full note")
+                    }.accessibilityIdentifier("editCorrectedEntryNotes")
+                }
                 Section {
                     Text("Saves this Lumen entry only. No changes are sent to Apple Health.")
                     Text("Separate source records can still appear in your totals.").foregroundStyle(Theme.secondary)
@@ -54,7 +61,17 @@ struct ConfirmedEntryEditor: View {
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) { Button("Cancel") { if hasEdits { discarding = true } else { dismiss() } }.accessibilityIdentifier("cancelCorrectedEntry") }
                     ToolbarItem(placement: .confirmationAction) { Button("Save") { save() }.fontWeight(.bold).disabled(!hasEdits || draft.validationMessage != nil).accessibilityIdentifier("saveCorrectedEntry") }
-                    ToolbarItemGroup(placement: .keyboard) { Spacer(); Button("Done") { UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil) }.accessibilityIdentifier("dismissCorrectionKeyboard") }
+                }
+                .safeAreaInset(edge: .bottom, spacing: 0) {
+                    if focusedInput != nil {
+                        HStack {
+                            Spacer()
+                            Button { focusedInput = nil } label: {
+                                Text("Done").frame(minWidth: 44, minHeight: 44).contentShape(Rectangle())
+                            }.accessibilityIdentifier("dismissCorrectionKeyboard")
+                        }
+                        .padding(.horizontal, Theme.gutter).background(.bar).tint(Theme.accent)
+                    }
                 }
         }.tint(Theme.accent)
             .background(SheetDismissGuard(hasEdits: hasEdits) { discarding = true })
