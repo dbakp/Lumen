@@ -17,12 +17,20 @@ enum LabFileImportService {
         }
     }
     enum Failure: LocalizedError {
-        case file
-        var errorDescription: String? { "Choose a nonempty CSV, TSV or JSON file. Shortcuts, folders and symbolic links aren't supported." }
+        case file, fhirFormat
+        var errorDescription: String? {
+            switch self {
+            case .file: return "Choose a nonempty supported data file. Shortcuts, folders and symbolic links aren't supported."
+            case .fhirFormat: return "Choose a FHIR JSON or NDJSON file. Keep bulk-export manifests and companion files separate."
+            }
+        }
     }
-    static func read(_ url: URL, control: BackupOperationControl) throws -> Input {
+    static func read(_ url: URL, control: BackupOperationControl, fhir: Bool = false) throws -> Input {
         try control.checkCancellation()
-        guard ["csv", "tsv", "json"].contains(url.pathExtension.lowercased()) else { throw LabTable.Failure.format }
+        guard (fhir ? ["json", "ndjson"] : ["csv", "tsv", "json"]).contains(url.pathExtension.lowercased()) else {
+            if fhir { throw Failure.fhirFormat }
+            throw LabTable.Failure.format
+        }
         let access = url.startAccessingSecurityScopedResource()
         defer { if access { url.stopAccessingSecurityScopedResource() } }
         guard try url.resourceValues(forKeys: [.isSymbolicLinkKey]).isSymbolicLink != true else { throw Failure.file }

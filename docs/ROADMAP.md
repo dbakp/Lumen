@@ -48,6 +48,10 @@ Batches 9a/9 established per-metric presence, evidence and local corrections. Ba
 ## Completion log
 Pending batch entries will record commit, validation and push outcome below.
 
+### Batch 25 — reviewed local NDJSON lab files · verified
+
+Extend the reviewed FHIR workflow to bounded single-resource-type NDJSON files. Preserve complete physical-line inventory, exact original byte/token positions, person grouping and unresolved companion references, explicit corrections/exclusions, checked sharing-off saves, source-only receipts and actual backup compatibility. [The contract and acceptance gates](FHIR_NDJSON_IMPORT.md) distinguish a local file from a complete bulk export. LogicR11 passes1,294 checks; current BuildR9/ReleaseR5, reader probe and complete compact lifecycle pass. Main R6 retains its pre-caption-only boundary. Continuing Round3 closes all requests at43/55,10/11 lines4+, no later UI edit. Source/Release audit passes; publication/read-back and scoped cleanup are recorded separately. The full product goal remains active.
+
 ### Batch 9a — recorded-zero reconciliation foundation
 
 Today's Health snapshot now preserves whether each cumulative query returned a reading, independently of its value. A recorded zero for steps, exercise, active energy or water takes priority over an overlapping import. Missing queries can still use imported coverage. Manual workouts are added only where the corresponding live metric exists or no imported total overlaps; an unknown workout energy value never establishes a recorded zero. Legacy positive totals remain readable; legacy zero defaults remain ambiguous until refreshed. Optional presence metadata preserves existing snapshot decoding.

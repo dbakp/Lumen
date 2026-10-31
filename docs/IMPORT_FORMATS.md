@@ -58,3 +58,9 @@ Primary references: [Apple percent unit](https://developer.apple.com/documentati
 ## Earlier Lumen readable exports
 
 Files made with **Export my data** use a different format from the portable metric arrays above. In Settings → Backup & restore, choose **Recover a readable export** for category/record review and explicit confirmation. Photo files and cached totals are not recovered. See [Readable exports](READABLE_EXPORT.md) for supported sections, optional setting replacement and limits.
+
+## Reviewed FHIR lab files
+
+Library's separate FHIR import accepts local FHIR R4 `.json` resources/Bundles and `.ndjson` files containing one complete resource per physical LF/CRLF line, with one top-level resource type per file. The whole input is limited to2MB,1,024 resources including contained resources,64 nesting levels and100,000 JSON nodes. NDJSON permits an initial UTF-8 BOM and a final line without a newline; blank/multiline/mixed-type/Bundle lines, bare carriage returns, duplicate keys and malformed lines reject the complete file. This is separate from the flat-table JSON and Apple Health routes; file extension selects the mode without fallback or format guessing.
+
+Coverage, person selection, correction/exclusion, acknowledgement and checked saving precede a saved record. Original tokens, full-file byte ranges, exact-file SHA-256 and retained receipts remain separate from reviewed wording. NDJSON locations use `/line/N` with physical lines starting at1. Only the selected local file is read; companion files, manifest URLs, external references and attachments are not fetched. Sharing starts off. See [FHIR lab import](FHIR_LAB_IMPORT.md) and [NDJSON scope/current verification](FHIR_NDJSON_IMPORT.md). Batch25's scoped checks, source/build audit, current reader/compact flow and continuing design review pass at their documented boundaries; full bulk-export, profile and clinical validation remain open.

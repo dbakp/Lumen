@@ -67,7 +67,7 @@ public struct HealthDocument: Identifiable, Codable, Sendable {
     public var hasValidFHIRLabImport: Bool {
         guard let origin = fhirLabImport else { return labReport?.observations.allSatisfy { $0.fhirSource == nil } ?? true }
         return kind == .record && labComparison == nil && origin.isValid && labImportOrigin == nil && labReport?.importedFrom == nil && (labReport?.observations.allSatisfy { observation in
-            observation.fhirSource.map { $0.isValid && $0.inputSHA256.lowercased() == origin.sha256.lowercased() && origin.selectedPaths.contains($0.resultPath) } ?? true
+            observation.fhirSource.map { $0.isValid && ($0.inputFormat ?? .json) == (origin.inputFormat ?? .json) && $0.inputSHA256.lowercased() == origin.sha256.lowercased() && origin.selectedPaths.contains($0.resultPath) } ?? true
         } ?? true)
     }
     public var markdown: String {

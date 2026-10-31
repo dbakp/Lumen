@@ -1,11 +1,11 @@
 import Foundation
 
-/// Local resource identity graph for a reviewed FHIR R4 JSON import. This never
+/// Local resource identity graph for a reviewed FHIR R4 JSON/NDJSON import. This never
 /// follows a URL, treats a display name as an identifier, or infers a subject
 /// across report/observation relationships. It is not a FHIR profile validator.
 struct FHIRResourceArchive: Sendable {
     struct Resource: Identifiable, Sendable {
-        let id: String // Original JSON pointer, not a purported clinical ID.
+        let id: String // JSON pointer, or /line/N plus within-line path; never a clinical ID.
         let node: LiteralJSON.Node
         let type: String
         let logicalID: String?
@@ -22,13 +22,14 @@ struct FHIRResourceArchive: Sendable {
         case found(String), missing, ambiguous([String]), unsupported, invalid, wrongType(String)
     }
     enum Failure: LocalizedError {
-        case root, resource(String), limit, contained(String)
+        case root, resource(String), limit, contained(String), lineType(Int)
         var errorDescription: String? {
             switch self {
             case .root: return "Choose a FHIR JSON resource or Bundle. A flat JSON table uses the table import."
             case .resource(let path): return "Check the resource identity or structure at \(path.isEmpty ? "the file root" : path)."
             case .limit: return "This file has more than 1,024 resources or bundle entries. Split the export."
             case .contained(let path): return "Nested contained resources at \(path) aren't supported by FHIR R4. Export a fresh copy."
+            case .lineType(let line): return "Each NDJSON line must contain one resource of the same type. Check line \(line); Bundles and mixed resource types need a JSON Bundle export."
             }
         }
     }
@@ -37,6 +38,7 @@ struct FHIRResourceArchive: Sendable {
     let filename: String
     let sha256: String
     let readAt: Date
+    let format: FHIRInputFormat
     let bundleType: String?
     let entries: [Entry]
     let resources: [Resource]
@@ -47,9 +49,13 @@ struct FHIRResourceArchive: Sendable {
     init(data: Data, filename: String, control: BackupOperationControl = .init(), now: Date = Date()) throws {
         guard LabReport.bounded(filename, limit: 500, required: true, multiline: false),
               !filename.contains("/"), !filename.contains("\\"), now.timeIntervalSince1970.isFinite else { throw Failure.root }
-        let json = try LiteralJSON.parse(data, control: control)
-        guard json.root.members != nil, let rootType = json.root["resourceType"]?.string,
-              Self.validType(rootType) else { throw Failure.root }
+        let format: FHIRInputFormat = URL(fileURLWithPath: filename).pathExtension.lowercased() == "ndjson" ? .ndjson : .json
+        let json = try format == .ndjson ? LiteralJSON.parseLines(data, maxLines: Self.maxResources, control: control) : LiteralJSON.parse(data, control: control)
+        let rootType: String
+        if format == .json {
+            guard json.root.members != nil, let type = json.root["resourceType"]?.string, Self.validType(type) else { throw Failure.root }
+            rootType = type
+        } else { rootType = "NDJSON" }
         var resources: [Resource] = [], entries: [Entry] = []
         func add(_ node: LiteralJSON.Node, path: String, url: String?, container: String?) throws {
             try control.checkCancellation()
@@ -73,7 +79,17 @@ struct FHIRResourceArchive: Sendable {
                 }
             }
         }
-        if rootType == "Bundle" {
+        if format == .ndjson {
+            bundleType = nil
+            var type: String?
+            for (index, node) in (json.root.elements ?? []).enumerated() {
+                guard let current = node["resourceType"]?.string, Self.validType(current), current != "Bundle", type == nil || type == current else { throw Failure.lineType(index + 1) }
+                type = current
+                let path = "/line/\(index + 1)"
+                try add(node, path: path, url: nil, container: nil)
+                entries.append(.init(path: path, resourcePath: path, requestMethod: nil))
+            }
+        } else if rootType == "Bundle" {
             guard let type = json.root["type"]?.string,
                   ["document", "message", "transaction", "transaction-response", "batch", "batch-response", "history", "searchset", "collection"].contains(type) else { throw Failure.root }
             bundleType = type
@@ -104,7 +120,7 @@ struct FHIRResourceArchive: Sendable {
             try add(json.root, path: "", url: nil, container: nil)
             entries.append(.init(path: "", resourcePath: "", requestMethod: nil))
         }
-        self.json = json; self.filename = filename; sha256 = BackupArchive.digest(data); readAt = now
+        self.json = json; self.filename = filename; sha256 = BackupArchive.digest(data); readAt = now; self.format = format
         self.resources = resources; self.entries = entries
         hasNextPage = rootType == "Bundle" && (json.root["link"]?.elements?.contains { $0["relation"]?.string == "next" } ?? false)
         byPath = Dictionary(uniqueKeysWithValues: resources.enumerated().map { ($0.element.id, $0.offset) })
@@ -116,8 +132,9 @@ struct FHIRResourceArchive: Sendable {
     func resource(at path: String) -> Resource? { byPath[path].map { resources[$0] } }
     func identity(of resource: Resource) -> String? {
         if let full = resource.fullURL { return full }
-        guard let container = resource.container, let parent = self.resource(at: container), let full = parent.fullURL, let id = resource.logicalID else { return nil }
-        return full + "#" + id
+        if let container = resource.container, let parent = self.resource(at: container), let full = identity(of: parent), let id = resource.logicalID { return full + "#" + id }
+        if format == .ndjson, resource.container == nil, let id = resource.logicalID { return "urn:lumen:ndjson:" + sha256 + ":" + resource.type + "/" + id }
+        return nil
     }
     private func owner(_ resource: Resource) -> Resource { resource.container.flatMap { self.resource(at: $0) } ?? resource }
     /// Literal identity without fetching or claiming the target is present.
@@ -132,6 +149,10 @@ struct FHIRResourceArchive: Sendable {
         }
         guard let parsed = Self.versioned(literal) else { return nil }
         if Self.isAbsolute(parsed.url) { return parsed.url }
+        // An NDJSON file supplies no server base. Retain a relative literal
+        // identity only inside this exact file, never invent an absolute URL or
+        // merge it with an absolute reference ending in the same Type/id.
+        if format == .ndjson, Self.relativeIdentity(parsed.url) { return "urn:lumen:ndjson:" + sha256 + ":" + parsed.url }
         guard Self.relativeIdentity(parsed.url), let full = owner(source).fullURL, let base = Self.restBase(full) else { return nil }
         return base + parsed.url
     }
@@ -157,14 +178,23 @@ struct FHIRResourceArchive: Sendable {
                 candidates = resources.filter { $0.container == owner(source).id && $0.logicalID.map { Self.exact($0, id) } == true }
             } else {
                 guard let parsed = Self.versioned(literal) else { return .unsupported }
-                let absolute: String
-                if Self.isAbsolute(parsed.url) { absolute = parsed.url }
-                else {
-                    guard Self.relativeIdentity(parsed.url), let full = owner(source).fullURL, let base = Self.restBase(full) else { return .unsupported }
-                    absolute = base + parsed.url
-                }
-                candidates = (byFullURL[Data(absolute.utf8)] ?? []).map { resources[$0] }.filter { resource in
-                    parsed.version.map { wanted in resource.version.map { Self.exact($0, wanted) } == true } ?? true
+                if format == .ndjson, Self.relativeIdentity(parsed.url) {
+                    let pieces = parsed.url.split(separator: "/").map(String.init)
+                    candidates = resources.filter { resource in
+                        resource.container == nil && Self.exact(resource.type, pieces[0]) &&
+                        resource.logicalID.map { Self.exact($0, pieces[1]) } == true &&
+                        (parsed.version.map { wanted in resource.version.map { Self.exact($0, wanted) } == true } ?? true)
+                    }
+                } else {
+                    let absolute: String
+                    if Self.isAbsolute(parsed.url) { absolute = parsed.url }
+                    else {
+                        guard Self.relativeIdentity(parsed.url), let full = owner(source).fullURL, let base = Self.restBase(full) else { return .unsupported }
+                        absolute = base + parsed.url
+                    }
+                    candidates = (byFullURL[Data(absolute.utf8)] ?? []).map { resources[$0] }.filter { resource in
+                        parsed.version.map { wanted in resource.version.map { Self.exact($0, wanted) } == true } ?? true
+                    }
                 }
             }
         } else if let identifier = reference["identifier"] {

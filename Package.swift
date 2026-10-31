@@ -85,6 +85,7 @@ let package = Package(
             "Tests/FHIRImportChecks.swift",
             "Tests/FHIRLabPreparationChecks.swift",
             "Tests/FHIRLabDraftChecks.swift",
+            "Tests/FHIRNDJSONChecks.swift",
             "Lumen/Services/RecordImportService.swift",
             "Tests/RecordImportChecks.swift",
             "Lumen/Algorithms/DocumentBlocks.swift",

@@ -55,6 +55,7 @@ import Darwin
         try FHIRImportChecks.run()
         try FHIRLabPreparationChecks.run()
         try FHIRLabDraftChecks.run()
+        try FHIRNDJSONChecks.run()
         try MiniLMChecks.run()
         try await MiniLMChecks.cacheChecks()
         let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)

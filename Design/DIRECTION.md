@@ -1,5 +1,11 @@
 # Lumen direction
 
+## Batch 25 · reviewed local NDJSON · verified
+
+Preserve the daylight-observatory direction and existing FHIR review sequence. **Choose a FHIR file** accepts JSON or NDJSON; coverage names **One NDJSON file was read** and says companion files/the bulk-export manifest were not loaded. The source action is **Read original NDJSON**. The new line explanation is grouped: **/line/N means physical line N, starting at 1. The rest of the path identifies a field on that line.** Then: **Only this local file was read. Companion files were not loaded. A resource ID in this file does not identify its original server.** Exact source values remain separate from this app explanation.
+
+Literal readers/source-link previews use native attributed text with discretionary hyphenation disabled. Keep full Dynamic Type, existing ink/action roles, native selection and scrolling. **Copy full text** copies the entire reader input across all display parts; the toolbar confirms **Copied full text**. No invisible break characters or source edits are used to change wrapping. Coverage/person/correction/acknowledgement, sharing-off saving and independent original fields remain. R1 scores40/55 and requests literal typography/copy corrections plus targeted settled XXXL and compact evidence. Current native regressions and the continuing critic's next review are pending; this entry is not final design sign-off.
+
 ## Batch 20 · reviewed lab transcriptions
 
 Keep the existing daylight-observatory design, expanded headings, native forms and teal actions. A saved record gains **Lab results** with literal reported result/unit, review time, source excerpt, and **Add lab results** or **Review lab results**. Editing lives in a separate review: **Keep each result with its source.**, **Add result**, **I checked every result and its source**, **Cancel**, **Save**. Result details retain **Test name**, **Reported result**, **Unit**, **Reference wording**, **Reported flag**, optional collection day/laboratory/specimen/method and an exact saved-text source picker. No high/low colour or interpreted normality is invented. Changes reset acknowledgement; saved-source changes show **Source text changed** and withhold old structured metadata from assistant search. See `docs/LAB_RECORDS.md` for the exact content/behavior contract. Native light/dark/XXXL evidence and two continuing-critic rounds are accepted in `native/labs`; publication is recorded after remote read-back.
@@ -262,3 +268,13 @@ Round2 closes all five first-round requests at43/55, with narrow capture gaps. N
 ### Batch 24 · final scoped acceptance
 
 Current NativeR5 passes934.761s with full dark/actualXXXL selected labels for all three identity choices, scope, editor/end caret and Save/completion. The same critic inspects all23 current originals and both unchanged full-unit controls: Round4 is Done at43/55,10/11 lines4+, all required lines4, Richness3, no remaining concrete defect. No app UI source change follows acceptance. Exact older normal/compact/code/source-state and failed-mixed boundaries remain in verification.json; this does not close physical-device, VoiceOver, clinical, full-UCUM or release gates.
+
+
+### Batch 25 · Round2 caption correction
+
+The same critic closes added JSON/digest hyphens, grouped line explanation, settled gate/editor/receipt gaps and the underlying Library-icon investigation at41/55, Not done. One human caption remains character-wrapped with the literal path. Separate the path label from the word-wrapping explanatory byte-range caption; retain every byte number, full Dynamic Type, original source and native selection/Copy. Recapture current main/compact flow and the two largest-text code positions before Round3. No unrelated redesign is requested.
+
+
+### Batch25 · final scoped acceptance
+
+The same critic closes the separated human-caption correction and inspects all23 actual375×667 originals after all24 current wrapping and14 main-flow originals. Round3 is Done at43/55,10/11 lines4+, Richness3, all required lines4; no concrete defect. Main R6 predates only caption separation; current WrapR3 and full compact SmallR3 prove the changed/current surfaces. No app/UI edit follows acceptance. Broader device, clinical, terminology/provider and release gates remain open.

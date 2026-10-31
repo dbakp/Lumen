@@ -231,6 +231,8 @@ The user has limited local storage. Follow the repository's `AGENTS.md`: check a
 
 ### Engineering and delivery
 
+Batch25 [reviewed FHIR NDJSON files](FHIR_NDJSON_IMPORT.md) is verified locally. LogicR11 passes1,294 checks; current BuildR9/unsignedReleaseR5, current reader probe134.306s and complete current375×667 lifecycle382.371s pass. Main NativeR6 passes3 cases before only caption separation; exact boundaries remain in Design/native/fhir-ndjson. Continuing Round3 closes all named defects at43/55,10/11 lines4+, Richness3, with no later app/UI edit. All workers are terminal; publication/read-back and measured cleanup are the next delivery steps. The full goal remains active.
+
 - Native SwiftUI Xcode project: `Lumen.xcodeproj`, scheme `Lumen`.
 - Logic checks: `scripts/test-imports.sh`.
 - Native tests: `LumenUITests/LumenSmokeTests.swift`. Use a dedicated simulator with synthetic data; the Health scenarios interact with the system permission sheet and the test harness resets local Lumen data.

@@ -81,7 +81,8 @@ struct FHIRLabDraft: Sendable {
         guard LabReport.bounded(title, limit: 500, required: true), now.timeIntervalSince1970.isFinite else { throw Failure.title }
         let selected = results.filter(\.included)
         guard !selected.isEmpty, selected.count <= LabReport.maxObservations else { throw Failure.rows }
-        var body = "Original FHIR fields from \(preparation.archive.filename).\nLumen arranged these selected fields; JSON paths and token spelling are retained. Reviewed transcriptions can be corrected separately. This is not the original file layout or a complete clinical record. Keep the original file separately."
+        let locations = preparation.archive.format == .ndjson ? "Physical line numbers (starting at 1), within-line JSON paths and original token spelling are retained. /line/N identifies a source line, not a JSON array." : "JSON paths and token spelling are retained."
+        var body = "Original FHIR fields from \(preparation.archive.filename).\nLumen arranged these selected fields; \(locations) Reviewed transcriptions can be corrected separately. This is not the original file layout or a complete clinical record. Keep the original file separately."
         var observations: [LabObservation] = []
         for row in selected {
             try control.checkCancellation()
@@ -99,7 +100,7 @@ struct FHIRLabDraft: Sendable {
         }
         let coverage = preparation.coverage
         let unresolved = coverage.links.filter { if case .found = $0.resolution { return false }; return true }.count
-        let origin = FHIRLabImportOrigin(version: 1, filename: preparation.archive.filename, sha256: preparation.archive.sha256, readAt: preparation.archive.readAt, inputEntries: coverage.entries, inputResources: coverage.resources, proposedResults: coverage.resultRows, selectedPaths: selected.map(\.id), subjectKey: subject.key, subjectLabel: subject.label, hasNextPage: coverage.hasNextPage, unresolvedLinks: unresolved, omittedFields: coverage.omittedResourceFields.values.reduce(0) { $0 + $1.count })
+        let origin = FHIRLabImportOrigin(version: 1, filename: preparation.archive.filename, sha256: preparation.archive.sha256, readAt: preparation.archive.readAt, inputEntries: coverage.entries, inputResources: coverage.resources, proposedResults: coverage.resultRows, selectedPaths: selected.map(\.id), subjectKey: subject.key, subjectLabel: subject.label, hasNextPage: coverage.hasNextPage, unresolvedLinks: unresolved, omittedFields: coverage.omittedResourceFields.values.reduce(0) { $0 + $1.count }, inputFormat: preparation.archive.format == .ndjson ? .ndjson : nil)
         let reviewedAt = max(now, preparation.archive.readAt)
         let report = LabReport(reviewedAt: reviewedAt, sourceBodySHA256: LabReport.digest(body), observations: observations)
         guard report.contentBytes <= LabReport.maxContentBytes else { throw Failure.textLimit }

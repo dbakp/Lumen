@@ -1,0 +1,834 @@
+{
+  "status": "Verified within scope; publication and cleanup pending",
+  "publishedBaseline": "8ae4968a83c2f48f05284e6b60b42a8062cda1f8",
+  "syntheticOnly": true,
+  "attempts": {
+    "LogicR1": {
+      "status": "failed",
+      "logPath": "/tmp/LumenBatch25LogicR1.log",
+      "logSHA256": "94f8f2a1300bc71f7dc8ddc823eb5402b1fef04e1f09ac63bf66ac081ff7413c",
+      "passLines": 0,
+      "failure": "Test-only compiler error: throwing reference expression on RHS of &&; precomputed references in R2."
+    },
+    "LogicR2": {
+      "status": "failed",
+      "logPath": "/tmp/LumenBatch25LogicR2.log",
+      "logSHA256": "3ea6e4edf4661c48bf9eb54e765fde97ea076c929cb44606ed29b082d9f321e3",
+      "passLines": 763,
+      "failure": "Backup fixture included before/after document states with same ID; validation correctly rejected duplicate IDs. R3 uses independent synthetic source-only ID.",
+      "taskOwnedCrashReport": {
+        "filename": "LumenLogicChecks-2026-10-31-161004.ips",
+        "sha256": "3d7f27bc0645eb71c7b35ed4d275c02b70a91cce7d813c950f4ffb76ea1baa8e",
+        "captureTime": "2026-10-31 16:10:03.4089 +0100",
+        "exception": "EXC_BREAKPOINT/SIGTRAP",
+        "provenance": "Exact capture time matches LogicR2 log mtime16:10:03 and top-level BackupError.invalid. Only this report is scoped for cleanup."
+      }
+    },
+    "LogicR3": {
+      "status": "passed",
+      "logPath": "/tmp/LumenBatch25LogicR3.log",
+      "logSHA256": "1312008093d4762ce43f291f40d74b2f668ac8ee9ebdcd66f7b5ddde1c68e873",
+      "passLines": 1285
+    },
+    "LogicR4": {
+      "status": "passed",
+      "logPath": "/tmp/LumenBatch25LogicR4.log",
+      "logSHA256": "395aa124f5d492d98a30a397a960807cbacb739293c326578465a8b83a6b6bb8",
+      "passLines": 1285
+    },
+    "LogicR5": {
+      "status": "passed",
+      "logPath": "/tmp/LumenBatch25LogicR5.log",
+      "logSHA256": "e4468e1eefae8de01fe4faa676f3be149ef1a616166303dd9f88ef2d6b8856ad",
+      "passLines": 1289
+    },
+    "BuildR1": {
+      "status": "passed",
+      "logPath": "/tmp/LumenBatch25BuildR1.log",
+      "logSHA256": "28ec4db40e2a1b5d38c7d562abde61d894dbb2d8a480e5d8b9b4a5ef784c1005",
+      "passLines": 0
+    },
+    "BuildR2": {
+      "status": "passed",
+      "logPath": "/tmp/LumenBatch25BuildR2.log",
+      "logSHA256": "e08c240d661eb4e6047b89ca6e321f9a13fd463a5f6851a37c4de65ced6eec0f",
+      "passLines": 0
+    },
+    "ReleaseR1": {
+      "status": "passed",
+      "logPath": "/tmp/LumenBatch25ReleaseR1.log",
+      "logSHA256": "36631460686c8230252665e9e0f9c7c14f6923ed26b8c655659f2d0141f98e47",
+      "passLines": 0
+    },
+    "NativeR1": {
+      "status": "failed",
+      "logPath": "/tmp/LumenBatch25NativeR1.log",
+      "logSHA256": "4e6e11c1c97f6882054374f471baff0bbacd856c250babd158f935b52e66d360",
+      "passLines": 0,
+      "seconds": 92.224,
+      "failure": "Fixture setup placed new files at Files root; chooseLabFile opens existing 00 Lumen lab checks folder. No selected file reached the importer. Inputs copied into the intended folder for R2."
+    },
+    "LogicR6": {
+      "status": "passed",
+      "passLines": 1290,
+      "logPath": "/tmp/LumenBatch25LogicR6.log",
+      "logSHA256": "805686521d051bb874436c4960bad281fef8f3fa8d5d57779d0eb7653672a8af",
+      "addedScope": "Exact 2 MB NDJSON original-file acceptance; 62 prior NDJSON checks plus existing baseline retained."
+    },
+    "LogicR7": {
+      "status": "passed",
+      "passLines": 1291,
+      "logPath": "/tmp/LumenBatch25LogicR7.log",
+      "logSHA256": "92aa68a2509c5e2b11cb0b129af44f92a0202eae48a1dad2486725f26306f6ec",
+      "addedScope": "Selected NDJSON line must be within inputEntries even for a retained source-only receipt."
+    },
+    "BuildR3": {
+      "status": "passed",
+      "logPath": "/tmp/LumenBatch25BuildR3.log",
+      "logSHA256": "d9aff918a8c10ff3589ff15a661db6ddfb2ef9f868a5a0697af3cefeaeeddadd",
+      "sourceMap": "source-build-r3.json"
+    },
+    "ReleaseR2": {
+      "status": "passed",
+      "logPath": "/tmp/LumenBatch25ReleaseR2.log",
+      "logSHA256": "f111d109cc5de44700725cb9b92f72b4e172f79381a71122f6d13b83f85cb88b",
+      "sourceMap": "source-build-r3.json"
+    },
+    "LogicR8": {
+      "status": "passed",
+      "logPath": "/tmp/LumenBatch25LogicR8.log",
+      "logSHA256": "cebf12052dc42dc8728e19a1af7a99f1b2535b7f03c1a2ecac51011dffb67e77",
+      "passLines": 1291
+    },
+    "LogicR9": {
+      "status": "passed",
+      "logPath": "/tmp/LumenBatch25LogicR9.log",
+      "logSHA256": "1c5364b5d43928eb8a036aa40e46a5296219971b97a74c78090f5a40ffa15df7",
+      "passLines": 1291
+    },
+    "LogicR10": {
+      "status": "passed",
+      "logPath": "/tmp/LumenBatch25LogicR10.log",
+      "logSHA256": "461b9fa725396cf143a1187f8fa883e1b6d39bbc2bb644a56a66dbf6b5ebb98d",
+      "passLines": 1291,
+      "sourceMap": "source-build-r6.json"
+    },
+    "BuildR4": {
+      "status": "passed",
+      "logPath": "/tmp/LumenBatch25BuildR4.log",
+      "logSHA256": "b733259b9c9734ae790ed4f732a62da565ea314365d786b9bae10d5d1292876c",
+      "passLines": 0
+    },
+    "BuildR5": {
+      "status": "passed",
+      "logPath": "/tmp/LumenBatch25BuildR5.log",
+      "logSHA256": "7b965ce32446f691e411cf13c14519463b02d98d22f30c8421c4202a6d2c53ae",
+      "passLines": 0
+    },
+    "BuildR6": {
+      "status": "passed",
+      "logPath": "/tmp/LumenBatch25BuildR6.log",
+      "logSHA256": "1ef9f60e3199bc72618df8203d522f06811baf1129aa5cb99c8cfcca80cc7812",
+      "sourceMap": "source-build-r6.json"
+    },
+    "ReleaseR3": {
+      "status": "passed",
+      "logPath": "/tmp/LumenBatch25ReleaseR3.log",
+      "logSHA256": "d0fe50a8fb076d47db2a4ec3e6aece2aa6579b5d2c9aa3f5ea10461a68158de1",
+      "sourceMap": "source-build-r5.json"
+    },
+    "LogicR11": {
+      "status": "passed",
+      "passLines": 1294,
+      "logSHA256": "036fa08e2b0830a7e99eef1537d6a4151b714d0b2a97ea4e32735520448d2972",
+      "sourceMap": "source-build-r8.json",
+      "addedScope": "Bare CR inside resource/terminator/separator reject; CRLF and escaped CR remain supported; JSON mode unchanged."
+    },
+    "BuildR8": {
+      "status": "passed",
+      "logSHA256": "967d6db2640923f617e90a7a3415e36755a7b4023190eca8322777972686c442",
+      "sourceMap": "source-build-r8.json"
+    },
+    "BuildR9": {
+      "status": "passed",
+      "logPath": "/tmp/LumenBatch25BuildR9.log",
+      "logSHA256": "67e0051ea6b7eba1a590fb547526b499b87203c4c22f024f26e6fbba8b260745",
+      "sourceMap": "source-build-r9.json"
+    },
+    "ReleaseR5": {
+      "status": "passed",
+      "logPath": "/tmp/LumenBatch25ReleaseR5.log",
+      "logSHA256": "4edfc5cd784e0ccfef7184fdd5d8b7491dee1c8cba35ce98570fe36ff60e4793",
+      "sourceMap": "source-build-r9.json"
+    }
+  },
+  "fixtures": {
+    "FHIRObservations.ndjson": {
+      "bytes": 817,
+      "sha256": "e825a983f0746edd9dd2a85709eaa5a5ba000e13724df46134a17593669ed9fe"
+    },
+    "FHIRInvalid.ndjson": {
+      "bytes": 121,
+      "sha256": "cbda359dafefe886e4895fe16df819f8c919d223c4181898c24ec3172c05cfaa"
+    }
+  },
+  "nativeInputCount": 192,
+  "logicInputCount": 91,
+  "nativeR2": {
+    "status": "passed",
+    "unifiedExecSession": 13956,
+    "resultPath": "/tmp/LumenBatch25NativeR2.xcresult",
+    "scope": [
+      "testFHIRNDJSONLifecycle",
+      "testFHIRNDJSONPresentation"
+    ],
+    "build": "BuildR2",
+    "caseProgress": [
+      {
+        "case": "testFHIRNDJSONLifecycle",
+        "status": "passed",
+        "seconds": 341.646
+      },
+      {
+        "case": "testFHIRNDJSONPresentation",
+        "status": "passed",
+        "seconds": 311.996
+      }
+    ],
+    "passedTests": 2,
+    "failedTests": 0,
+    "skippedTests": 0,
+    "runtimeWarnings": [],
+    "appSource": "BuildR2 before receipt-inventory guard; native UI/copy unchanged at BuildR3",
+    "summary": {
+      "devicesAndConfigurations": [
+        {
+          "device": {
+            "architecture": "arm64",
+            "deviceId": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+            "deviceName": "Lumen continuation verification",
+            "modelName": "iPhone 18 Pro",
+            "osBuildNumber": "24A434",
+            "osVersion": "27.0",
+            "platform": "iOS Simulator"
+          },
+          "expectedFailures": 0,
+          "failedTests": 0,
+          "passedTests": 2,
+          "skippedTests": 0,
+          "testPlanConfiguration": {
+            "configurationId": "1",
+            "configurationName": "Test Scheme Action"
+          }
+        }
+      ],
+      "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+      "expectedFailures": 0,
+      "failedTests": 0,
+      "finishTime": 1793460518.764,
+      "passedTests": 2,
+      "result": "Passed",
+      "runtimeWarnings": [],
+      "skippedTests": 0,
+      "startTime": 1793459859.429,
+      "statistics": [],
+      "testFailures": [],
+      "title": "Test - Lumen",
+      "topInsights": [],
+      "totalTestCount": 2
+    },
+    "captureCount": 36,
+    "captures": "r2/captures.json"
+  },
+  "pending": [
+    "GitHub publication/read-back",
+    "Stopped-worker scoped cleanup"
+  ],
+  "sourceMap": "source-build-r9.json",
+  "notes": [
+    "No whole-goal completion or physical-device/clinical/provider/release-readiness claim.",
+    "Reuse current task-owned build directories while verification is active."
+  ],
+  "compactSimulator": {
+    "udid": "A41473D3-64A6-4BBE-9F60-1944EF7E6E06",
+    "name": "Lumen Batch25 compact verification",
+    "deviceType": "iPhone SE (3rd generation)",
+    "intendedLogicalSize": "375x667; must verify pixels/frame in test evidence",
+    "runtime": "iOS 27.0",
+    "fixtures": [
+      {
+        "path": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/A41473D3-64A6-4BBE-9F60-1944EF7E6E06/data/Containers/Shared/AppGroup/60C901CF-01F0-4A7E-8329-3CC2857E5D15/File Provider Storage/00 Lumen lab checks/Lumen-fhir-ndjson-review.ndjson",
+        "bytes": 817,
+        "sha256": "e825a983f0746edd9dd2a85709eaa5a5ba000e13724df46134a17593669ed9fe"
+      },
+      {
+        "path": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/A41473D3-64A6-4BBE-9F60-1944EF7E6E06/data/Containers/Shared/AppGroup/60C901CF-01F0-4A7E-8329-3CC2857E5D15/File Provider Storage/00 Lumen lab checks/Lumen-fhir-ndjson-invalid.ndjson",
+        "bytes": 121,
+        "sha256": "cbda359dafefe886e4895fe16df819f8c919d223c4181898c24ec3172c05cfaa"
+      }
+    ],
+    "purpose": "Dedicated disposable synthetic Batch25 native verification; no personal data",
+    "status": "Current SmallR3 complete lifecycle passed; dedicated device retained until GitHub confirmation and cleanup"
+  },
+  "productionChangeAfterBuildR2": {
+    "file": "Lumen/Models/FHIRLabProvenance.swift",
+    "scope": "NDJSON receipt validation additionally rejects selected physical line beyond inputEntries. No native copy/layout or valid fixture interpretation changed.",
+    "pending": "Rerun simulator/Release builds and compact case on this source; NativeR2 retains exact earlier backend source boundary."
+  },
+  "smallR1": {
+    "status": "passed before R1 design corrections",
+    "resultPath": "/tmp/LumenBatch25SmallR1.xcresult",
+    "build": "BuildR3",
+    "scope": "testFHIRNDJSONLifecycle",
+    "udid": "A41473D3-64A6-4BBE-9F60-1944EF7E6E06",
+    "seconds": 343.763,
+    "summary": {
+      "devicesAndConfigurations": [
+        {
+          "device": {
+            "architecture": "arm64",
+            "deviceId": "A41473D3-64A6-4BBE-9F60-1944EF7E6E06",
+            "deviceName": "Lumen Batch25 compact verification",
+            "modelName": "iPhone SE (3rd generation)",
+            "osBuildNumber": "24A434",
+            "osVersion": "27.0",
+            "platform": "iOS Simulator"
+          },
+          "expectedFailures": 0,
+          "failedTests": 0,
+          "passedTests": 1,
+          "skippedTests": 0,
+          "testPlanConfiguration": {
+            "configurationId": "1",
+            "configurationName": "Test Scheme Action"
+          }
+        }
+      ],
+      "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+      "expectedFailures": 0,
+      "failedTests": 0,
+      "finishTime": 1793461008.025,
+      "passedTests": 1,
+      "result": "Passed",
+      "runtimeWarnings": [],
+      "skippedTests": 0,
+      "startTime": 1793460645.569,
+      "statistics": [],
+      "testFailures": [],
+      "title": "Test - Lumen",
+      "topInsights": [],
+      "totalTestCount": 1
+    },
+    "captures": "small-r1/captures.json",
+    "captureCount": 18,
+    "dimensions": "750x1334 pixels, native375x667 at2x",
+    "note": "Retest final renderer/copy/copywording on same dedicated compact device after correction."
+  },
+  "designRound1": {
+    "status": "not done",
+    "score": "40/55",
+    "path": "critique-round-1.md",
+    "findings": [
+      "Literal JSON/hash discretionary hyphens",
+      "Grouped plainer line-location explanation",
+      "Settled outside-sheet fragment investigation",
+      "Targeted XXXL and compact captures"
+    ]
+  },
+  "nativeR3": {
+    "status": "failed",
+    "seconds": 111.72,
+    "summary": {
+      "devicesAndConfigurations": [
+        {
+          "device": {
+            "architecture": "arm64",
+            "deviceId": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+            "deviceName": "Lumen continuation verification",
+            "modelName": "iPhone 18 Pro",
+            "osBuildNumber": "24A434",
+            "osVersion": "27.0",
+            "platform": "iOS Simulator"
+          },
+          "expectedFailures": 0,
+          "failedTests": 1,
+          "passedTests": 0,
+          "skippedTests": 0,
+          "testPlanConfiguration": {
+            "configurationId": "1",
+            "configurationName": "Test Scheme Action"
+          }
+        }
+      ],
+      "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+      "expectedFailures": 0,
+      "failedTests": 1,
+      "finishTime": 1793461454.239,
+      "passedTests": 0,
+      "result": "Failed",
+      "runtimeWarnings": [],
+      "skippedTests": 0,
+      "startTime": 1793461324.01,
+      "statistics": [],
+      "testFailures": [
+        {
+          "failureText": "XCTAssertTrue failed",
+          "targetName": "LumenUITests",
+          "testIdentifier": 1,
+          "testIdentifierString": "LumenSmokeTests/testFHIRNDJSONLifecycle()",
+          "testIdentifierURL": "test://com.apple.xcode/Lumen/LumenUITests/LumenSmokeTests/testFHIRNDJSONLifecycle",
+          "testName": "testFHIRNDJSONLifecycle()"
+        }
+      ],
+      "title": "Test - Lumen",
+      "topInsights": [],
+      "totalTestCount": 1
+    },
+    "build": "BuildR4",
+    "logSHA256": "e67650825f47653b880564ce6ffb6eecf643db54723786446e95287484431fa2",
+    "failure": "New UIKit literal link label no longer contributed SwiftUI touch geometry; Original NDJSON tap remained on coverage. Failure hierarchy proves no reader navigation. BuildR5 adds explicit full-row contentShape; reader AX is explicit. Clipboard check was not reached."
+  },
+  "nativeR4": {
+    "status": "failed",
+    "summary": {
+      "devicesAndConfigurations": [
+        {
+          "device": {
+            "architecture": "arm64",
+            "deviceId": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+            "deviceName": "Lumen continuation verification",
+            "modelName": "iPhone 18 Pro",
+            "osBuildNumber": "24A434",
+            "osVersion": "27.0",
+            "platform": "iOS Simulator"
+          },
+          "expectedFailures": 0,
+          "failedTests": 2,
+          "passedTests": 0,
+          "skippedTests": 0,
+          "testPlanConfiguration": {
+            "configurationId": "1",
+            "configurationName": "Test Scheme Action"
+          }
+        }
+      ],
+      "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+      "expectedFailures": 0,
+      "failedTests": 2,
+      "finishTime": 1793461917.502,
+      "passedTests": 0,
+      "result": "Failed",
+      "runtimeWarnings": [],
+      "skippedTests": 0,
+      "startTime": 1793461715.243,
+      "statistics": [],
+      "testFailures": [
+        {
+          "failureText": "XCTAssertEqual failed: (\"nil\") is not equal to (\"Optional(\"{\\\"resourceType\\\":\\\"Observation\\\",\\\"id\\\":\\\"synthetic-hb-1\\\",\\\"status\\\":\\\"final\\\",\\\"subject\\\":{\\\"reference\\\":\\\"Patient/synthetic-a\\\"},\\\"code\\\":{\\\"coding\\\":[{\\\"system\\\":\\\"http://loinc.org\\\",\\\"code\\\":\\\"718-7\\\",\\\"display\\\":\\\"Hemoglobin\\\"}],\\\"text\\\":\\\"Synthetic hemoglobin\\\"},\\\"effectiveDateTime\\\":\\\"2026-10-28T09:30:00+01:00\\\",\\\"valueQuantity\\\":{\\\"value\\\":12.00,\\\"unit\\\":\\\"g/dL\\\",\\\"system\\\":\\\"http://unitsofmeasure.org\\\",\\\"code\\\":\\\"g/dL\\\"}}\\n{\\\"resourceType\\\":\\\"Observation\\\",\\\"id\\\":\\\"synthetic-note-2\\\",\\\"status\\\":\\\"final\\\",\\\"subject\\\":{\\\"reference\\\":\\\"Patient/synthetic-a\\\"},\\\"code\\\":{\\\"text\\\":\\\"Synthetic qualitative result\\\"},\\\"valueString\\\":\\\"Not detected. Check the original report; this is synthetic test data.\\\"}\\n{\\\"resourceType\\\":\\\"Observation\\\",\\\"id\\\":\\\"synthetic-other-3\\\",\\\"status\\\":\\\"final\\\",\\\"subject\\\":{\\\"reference\\\":\\\"Patient/synthetic-b\\\"},\\\"code\\\":{\\\"text\\\":\\\"Synthetic other person\\'s result\\\"},\\\"valueInteger\\\":99}\\n\")\") - Copy full text must preserve the original selected input, not visual line breaks or discretionary punctuation",
+          "targetName": "LumenUITests",
+          "testIdentifier": 1,
+          "testIdentifierString": "LumenSmokeTests/testFHIRNDJSONLifecycle()",
+          "testIdentifierURL": "test://com.apple.xcode/Lumen/LumenUITests/LumenSmokeTests/testFHIRNDJSONLifecycle",
+          "testName": "testFHIRNDJSONLifecycle()"
+        },
+        {
+          "failureText": "XCTAssertEqual failed: (\"nil\") is not equal to (\"Optional(\"{\\\"resourceType\\\":\\\"Observation\\\",\\\"id\\\":\\\"synthetic-hb-1\\\",\\\"status\\\":\\\"final\\\",\\\"subject\\\":{\\\"reference\\\":\\\"Patient/synthetic-a\\\"},\\\"code\\\":{\\\"coding\\\":[{\\\"system\\\":\\\"http://loinc.org\\\",\\\"code\\\":\\\"718-7\\\",\\\"display\\\":\\\"Hemoglobin\\\"}],\\\"text\\\":\\\"Synthetic hemoglobin\\\"},\\\"effectiveDateTime\\\":\\\"2026-10-28T09:30:00+01:00\\\",\\\"valueQuantity\\\":{\\\"value\\\":12.00,\\\"unit\\\":\\\"g/dL\\\",\\\"system\\\":\\\"http://unitsofmeasure.org\\\",\\\"code\\\":\\\"g/dL\\\"}}\\n{\\\"resourceType\\\":\\\"Observation\\\",\\\"id\\\":\\\"synthetic-note-2\\\",\\\"status\\\":\\\"final\\\",\\\"subject\\\":{\\\"reference\\\":\\\"Patient/synthetic-a\\\"},\\\"code\\\":{\\\"text\\\":\\\"Synthetic qualitative result\\\"},\\\"valueString\\\":\\\"Not detected. Check the original report; this is synthetic test data.\\\"}\\n{\\\"resourceType\\\":\\\"Observation\\\",\\\"id\\\":\\\"synthetic-other-3\\\",\\\"status\\\":\\\"final\\\",\\\"subject\\\":{\\\"reference\\\":\\\"Patient/synthetic-b\\\"},\\\"code\\\":{\\\"text\\\":\\\"Synthetic other person\\'s result\\\"},\\\"valueInteger\\\":99}\\n\")\") - Copy full text must preserve the original selected input, not visual line breaks or discretionary punctuation",
+          "targetName": "LumenUITests",
+          "testIdentifier": 2,
+          "testIdentifierString": "LumenSmokeTests/testFHIRNDJSONPresentation()",
+          "testIdentifierURL": "test://com.apple.xcode/Lumen/LumenUITests/LumenSmokeTests/testFHIRNDJSONPresentation",
+          "testName": "testFHIRNDJSONPresentation()"
+        }
+      ],
+      "title": "Test - Lumen",
+      "topInsights": [
+        {
+          "category": "Common Failures",
+          "impact": "100% of failures",
+          "text": "2 runs of 2 tests failed with XCTAssertEqual failed: (\"nil\") is not equal to (\"Optional(\"{\\\"resourceType\\\":\\\"Observation\\\",\\\"id\\\":\\\"synthetic-hb-1\\\",\\\"status\\\":\\\"final\\\",\\\"subject\\\":{\\\"reference\\\":\\\"Patient/synthetic-a\\\"},\\\"code\\\":{\\\"coding\\\":[{\\\"system\\\":\\\"http://loinc.org\\\",\\\"code\\\":\\\"718-7\\\",\\\"display\\\":\\\"Hemoglobin\\\"}],\\\"text\\\":\\\"Synthetic hemoglobin\\\"},\\\"effectiveDateTime\\\":\\\"2026-10-28T09:30:00+01:00\\\",\\\"valueQuantity\\\":{\\\"value\\\":12.00,\\\"unit\\\":\\\"g/dL\\\",\\\"system\\\":\\\"http://unitsofmeasure.org\\\",\\\"code\\\":\\\"g/dL\\\"}}\\n{\\\"resourceType\\\":\\\"Observation\\\",\\\"id\\\":\\\"synthetic-note-2\\\",\\\"status\\\":\\\"final\\\",\\\"subject\\\":{\\\"reference\\\":\\\"Patient/synthetic-a\\\"},\\\"code\\\":{\\\"text\\\":\\\"Synthetic qualitative result\\\"},\\\"valueString\\\":\\\"Not detected. Check the original report; this is synthetic test data.\\\"}\\n{\\\"resourceType\\\":\\\"Observation\\\",\\\"id\\\":\\\"synthetic-other-3\\\",\\\"status\\\":\\\"final\\\",\\\"subject\\\":{\\\"reference\\\":\\\"Patient/synthetic-b\\\"},\\\"code\\\":{\\\"text\\\":\\\"Synthetic other person\\'s result\\\"},\\\"valueInteger\\\":99}\\n\")\") - Copy full text must preserve the original selected input, not visual line breaks or discretionary punctuation"
+        }
+      ],
+      "totalTestCount": 2
+    },
+    "build": "BuildR5",
+    "failure": "Both cases reach the corrected original reader and actual Copy full text action, then fail because the UI-test runner is denied cross-app clipboard read (PBErrorDomain13). This is not proof that app Copy failed. BuildR6 removes the runner API read and exercises actual native Paste in Lumen with exact text comparison.",
+    "logSHA256": "5bc4db6da53807d056c463b02b0cdcc7b1928aac930798dad889f9546c2299ce"
+  },
+  "releaseR3": {
+    "status": "passed",
+    "productionEqualsCurrentBuildR6": true
+  },
+  "nativeR5": {
+    "status": "passed",
+    "unifiedExecSession": 92235,
+    "build": "BuildR6",
+    "resultPath": "/tmp/LumenBatch25NativeR5.xcresult",
+    "scope": [
+      "testFHIRLongSourceFields",
+      "testFHIRNDJSONLifecycle",
+      "testFHIRNDJSONPresentation"
+    ],
+    "caseProgress": [
+      {
+        "case": "testFHIRLongSourceFields",
+        "status": "passed",
+        "seconds": 185.274
+      },
+      {
+        "case": "testFHIRNDJSONLifecycle",
+        "status": "passed",
+        "seconds": 332.184
+      },
+      {
+        "case": "testFHIRNDJSONPresentation",
+        "status": "passed",
+        "seconds": 456.595
+      }
+    ],
+    "summary": {
+      "devicesAndConfigurations": [
+        {
+          "device": {
+            "architecture": "arm64",
+            "deviceId": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+            "deviceName": "Lumen continuation verification",
+            "modelName": "iPhone 18 Pro",
+            "osBuildNumber": "24A434",
+            "osVersion": "27.0",
+            "platform": "iOS Simulator"
+          },
+          "expectedFailures": 0,
+          "failedTests": 0,
+          "passedTests": 3,
+          "skippedTests": 0,
+          "testPlanConfiguration": {
+            "configurationId": "1",
+            "configurationName": "Test Scheme Action"
+          }
+        }
+      ],
+      "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+      "expectedFailures": 0,
+      "failedTests": 0,
+      "finishTime": 1793463142.379,
+      "passedTests": 3,
+      "result": "Passed",
+      "runtimeWarnings": [],
+      "skippedTests": 0,
+      "startTime": 1793462156.73,
+      "statistics": [],
+      "testFailures": [],
+      "title": "Test - Lumen",
+      "topInsights": [],
+      "totalTestCount": 3
+    },
+    "captureCount": 70,
+    "captures": "r5/captures.json",
+    "logSHA256": "d7b29723baee6f2e859c8024a7b4dccb14c423d31d756b24ed4d9332175524aa"
+  },
+  "smallR2": {
+    "status": "passed before final wrapping correction",
+    "unifiedExecSession": 39978,
+    "build": "BuildR6",
+    "resultPath": "/tmp/LumenBatch25SmallR2.xcresult",
+    "scope": "testFHIRNDJSONLifecycle",
+    "seconds": 369.004,
+    "summary": {
+      "devicesAndConfigurations": [
+        {
+          "device": {
+            "architecture": "arm64",
+            "deviceId": "A41473D3-64A6-4BBE-9F60-1944EF7E6E06",
+            "deviceName": "Lumen Batch25 compact verification",
+            "modelName": "iPhone SE (3rd generation)",
+            "osBuildNumber": "24A434",
+            "osVersion": "27.0",
+            "platform": "iOS Simulator"
+          },
+          "expectedFailures": 0,
+          "failedTests": 0,
+          "passedTests": 1,
+          "skippedTests": 0,
+          "testPlanConfiguration": {
+            "configurationId": "1",
+            "configurationName": "Test Scheme Action"
+          }
+        }
+      ],
+      "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+      "expectedFailures": 0,
+      "failedTests": 0,
+      "finishTime": 1793463674.08,
+      "passedTests": 1,
+      "result": "Passed",
+      "runtimeWarnings": [],
+      "skippedTests": 0,
+      "startTime": 1793463289.508,
+      "statistics": [],
+      "testFailures": [],
+      "title": "Test - Lumen",
+      "topInsights": [],
+      "totalTestCount": 1
+    },
+    "note": "Core reader/copy/paste/flow passes; word-wrap pixels still add emergency hyphens, so this is not final typography proof."
+  },
+  "wrappingInvestigation": {
+    "finding": "NativeR5 still displays He-/moglobin and added SHA-256 hyphens despite paragraph flags/factor0. Copy/native Paste bytes are exact; display glyphs differ.",
+    "wrapR1": {
+      "status": "passed visual probe before bare-CR guard",
+      "seconds": 132.222,
+      "build": "BuildR7",
+      "captures": "wrap-r1/captures.json",
+      "finding": "Strict character wrapping removes false hyphens but breaks app-generated prose mid-word; a further native delegate/default-hyphenation correction preserves natural word boundaries."
+    },
+    "wrapR2": {
+      "status": "passed focused visual probe; before Round2 caption correction",
+      "build": "BuildR8",
+      "resultPath": "/tmp/LumenBatch25WrapR2.xcresult",
+      "seconds": 145.394,
+      "summary": {
+        "devicesAndConfigurations": [
+          {
+            "device": {
+              "architecture": "arm64",
+              "deviceId": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+              "deviceName": "Lumen continuation verification",
+              "modelName": "iPhone 18 Pro",
+              "osBuildNumber": "24A434",
+              "osVersion": "27.0",
+              "platform": "iOS Simulator"
+            },
+            "expectedFailures": 0,
+            "failedTests": 0,
+            "passedTests": 1,
+            "skippedTests": 0,
+            "testPlanConfiguration": {
+              "configurationId": "1",
+              "configurationName": "Test Scheme Action"
+            }
+          }
+        ],
+        "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+        "expectedFailures": 0,
+        "failedTests": 0,
+        "finishTime": 1793464696.87,
+        "passedTests": 1,
+        "result": "Passed",
+        "runtimeWarnings": [],
+        "skippedTests": 0,
+        "startTime": 1793464540.596,
+        "statistics": [],
+        "testFailures": [],
+        "title": "Test - Lumen",
+        "topInsights": [],
+        "totalTestCount": 1
+      },
+      "captures": "wrap-r2/captures.json"
+    }
+  },
+  "logicR11": {
+    "status": "passed",
+    "checks": 1294,
+    "newNDJSONChecks": 67,
+    "logSHA256": "036fa08e2b0830a7e99eef1537d6a4151b714d0b2a97ea4e32735520448d2972",
+    "sourceMap": "source-build-r8.json",
+    "note": "Current logic unchanged after this run; later caption separation affects UI only."
+  },
+  "nativeR6": {
+    "status": "passed before UI-only caption separation",
+    "unifiedExecSession": 73532,
+    "build": "BuildR8",
+    "resultPath": "/tmp/LumenBatch25NativeR6.xcresult",
+    "note": "Source mirror retained unchanged during suite; current working source later separates human caption from literal path.",
+    "summary": {
+      "devicesAndConfigurations": [
+        {
+          "device": {
+            "architecture": "arm64",
+            "deviceId": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+            "deviceName": "Lumen continuation verification",
+            "modelName": "iPhone 18 Pro",
+            "osBuildNumber": "24A434",
+            "osVersion": "27.0",
+            "platform": "iOS Simulator"
+          },
+          "expectedFailures": 0,
+          "failedTests": 0,
+          "passedTests": 3,
+          "skippedTests": 0,
+          "testPlanConfiguration": {
+            "configurationId": "1",
+            "configurationName": "Test Scheme Action"
+          }
+        }
+      ],
+      "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+      "expectedFailures": 0,
+      "failedTests": 0,
+      "finishTime": 1793465888.851,
+      "passedTests": 3,
+      "result": "Passed",
+      "runtimeWarnings": [],
+      "skippedTests": 0,
+      "startTime": 1793464895.735,
+      "statistics": [],
+      "testFailures": [],
+      "title": "Test - Lumen",
+      "topInsights": [],
+      "totalTestCount": 3
+    },
+    "captures": "r6/captures.json",
+    "captureCount": 69,
+    "caseProgress": [
+      {
+        "case": "testFHIRLongSourceFields",
+        "status": "passed",
+        "seconds": 187.388
+      },
+      {
+        "case": "testFHIRNDJSONLifecycle",
+        "status": "passed",
+        "seconds": 334.719
+      },
+      {
+        "case": "testFHIRNDJSONPresentation",
+        "status": "passed",
+        "seconds": 461.22
+      }
+    ],
+    "logSHA256": "690cd53a5dd17f53b29bc8ea43b5242d76b7625fcf5e4924227c059be2cb8a28"
+  },
+  "releaseR4": {
+    "status": "passed",
+    "build": "BuildR8",
+    "logSHA256": "7e9fb0d697029c9c1afde53e8f8db5405a0f5af16d296a34463b88d21166d7ab",
+    "note": "Before UI-only Round2 caption separation."
+  },
+  "designRound2": {
+    "status": "not done",
+    "score": 41,
+    "maximum": 55,
+    "report": "critique-round-2.md",
+    "remaining": "One explanatory byte-range caption character-wraps words at XXXL. Final current-source full-flow and compact evidence pending."
+  },
+  "currentCandidate": {
+    "build": "BuildR9",
+    "sourceMap": "source-build-r9.json",
+    "simulatorBuildSession": 70705,
+    "releaseBuild": "ReleaseR5",
+    "releaseBuildSession": 67056,
+    "note": "Caption separation plus UI-test code/full-receipt captures. Logic unchanged from R11."
+  },
+  "releaseR5": {
+    "status": "passed",
+    "sourceMap": "source-build-r9.json",
+    "audit": "release-r5-audit.json"
+  },
+  "wrapR3": {
+    "status": "passed",
+    "unifiedExecSession": 12377,
+    "build": "BuildR9",
+    "resultPath": "/tmp/LumenBatch25WrapR3.xcresult",
+    "scope": "Light/dark/actualXXXL saved record, full receipt, literal code and separated human byte-range caption",
+    "seconds": 134.306,
+    "summary": {
+      "devicesAndConfigurations": [
+        {
+          "device": {
+            "architecture": "arm64",
+            "deviceId": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+            "deviceName": "Lumen continuation verification",
+            "modelName": "iPhone 18 Pro",
+            "osBuildNumber": "24A434",
+            "osVersion": "27.0",
+            "platform": "iOS Simulator"
+          },
+          "expectedFailures": 0,
+          "failedTests": 0,
+          "passedTests": 1,
+          "skippedTests": 0,
+          "testPlanConfiguration": {
+            "configurationId": "1",
+            "configurationName": "Test Scheme Action"
+          }
+        }
+      ],
+      "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+      "expectedFailures": 0,
+      "failedTests": 0,
+      "finishTime": 1793466126.149,
+      "passedTests": 1,
+      "result": "Passed",
+      "runtimeWarnings": [],
+      "skippedTests": 0,
+      "startTime": 1793465981.737,
+      "statistics": [],
+      "testFailures": [],
+      "title": "Test - Lumen",
+      "topInsights": [],
+      "totalTestCount": 1
+    },
+    "captures": "wrap-r3/captures.json",
+    "captureCount": 24,
+    "logSHA256": "2aa53162b659c4289b2f244ff11778618ce4839030df2e927a85eabbe404f64d"
+  },
+  "smallR3": {
+    "status": "passed",
+    "unifiedExecSession": 24164,
+    "build": "BuildR9",
+    "resultPath": "/tmp/LumenBatch25SmallR3.xcresult",
+    "scope": "Complete current-source NDJSON lifecycle on actual375x667, plus code/caption and complete receipt captures",
+    "seconds": 382.371,
+    "summary": {
+      "devicesAndConfigurations": [
+        {
+          "device": {
+            "architecture": "arm64",
+            "deviceId": "A41473D3-64A6-4BBE-9F60-1944EF7E6E06",
+            "deviceName": "Lumen Batch25 compact verification",
+            "modelName": "iPhone SE (3rd generation)",
+            "osBuildNumber": "24A434",
+            "osVersion": "27.0",
+            "platform": "iOS Simulator"
+          },
+          "expectedFailures": 0,
+          "failedTests": 0,
+          "passedTests": 1,
+          "skippedTests": 0,
+          "testPlanConfiguration": {
+            "configurationId": "1",
+            "configurationName": "Test Scheme Action"
+          }
+        }
+      ],
+      "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+      "expectedFailures": 0,
+      "failedTests": 0,
+      "finishTime": 1793466532.537,
+      "passedTests": 1,
+      "result": "Passed",
+      "runtimeWarnings": [],
+      "skippedTests": 0,
+      "startTime": 1793466130.977,
+      "statistics": [],
+      "testFailures": [],
+      "title": "Test - Lumen",
+      "topInsights": [],
+      "totalTestCount": 1
+    },
+    "captures": "small-r3/captures.json",
+    "captureCount": 23,
+    "logSHA256": "c0af668e4703f19798d3e7868c7dc810181bde2601832ec6e3f5280c56bcf0f6"
+  },
+  "designRound3": {
+    "status": "done within scope",
+    "score": 43,
+    "maximum": 55,
+    "linesAtLeast4": 10,
+    "applicableLines": 11,
+    "report": "critique-round-3.md",
+    "noConcreteDefects": true,
+    "noAppUIChangeAfterAcceptance": true
+  },
+  "finalSourceAudit": "final-source-audit.json"
+}

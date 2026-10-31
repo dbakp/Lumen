@@ -479,3 +479,12 @@ R3 reads20 presentation and2 full-unit acknowledgement originals. Reader, softwa
 R4 opens23 current originals plus both accepted full-unit controls. Same reported name, My reviewed name match and Supplied test code are fully readable at actualXXXL; complete name scope and original code/version remain visible. Final43/55,10/11 applicable lines4+, Richness3, Concept/Finish/Native/Copy all4. **Done within scope**, no concrete defect, no source/UI edit after sign-off. No decorative or portfolio extension is requested.
 
 NativeR2 remains failed mixed with two passing cases and a separate failed Save-chrome capture helper. Current R5 presentation passes934.761s after the real label repair; current compact and unit-control passes retain their exact unchanged-component/source boundaries. No combined-suite, physical-device, VoiceOver, clinical, full-UCUM or DOM-scan claim follows. See [the retained source maps and scorecards](native/lab-normalization/README.md).
+
+
+## Batch25 · reviewed local FHIR NDJSON · three rounds complete
+
+The same continuing App Designer Pro critic scores40→41→43/55. R1 catches discretionary punctuation in original JSON/hash display and opaque line explanation, plus settled/compact evidence gaps. R2 closes literal punctuation, natural receipt prose, plain grouped line/identity explanation and the specified settled gate/editor/receipt/error gaps. Library-before/after context identifies the lower-left fragment as the underlying Insights chart icon around the rounded native sheet, with no foreground leak established. It then catches a human byte-range caption sharing literal character wrapping.
+
+BuildR9 separates the literal path and word-wrapping caption without changing source text, byte numbers or Dynamic Type. R3 individually inspects24 current light/dark/actualXXXL reader originals,14 main R6 originals and23 current compact originals. Caption, literal/digest, keyboard/Done, reviewed13.25 versus original12.00, completion, full receipt and duplicate actions close. Final43/55,10/11 lines4+, Richness3, Concept/Finish/Native/Copy all4: **Done within scope**, no concrete defect, no later app/UI edit.
+
+Main NativeR6 passes all3 cases on BuildR8 before only caption separation; current WrapR3 passes134.306s and complete current compact SmallR3 passes382.371s on BuildR9. No combined final-source main suite, clinical, physical-device, VoiceOver, full-profile or DOM-scan proof is claimed. [All scorecards, hashes and exact boundaries](native/fhir-ndjson/README.md) are retained.

@@ -1,5 +1,7 @@
 import Foundation
 
+public enum FHIRInputFormat: String, Codable, Sendable { case json, ndjson }
+
 /// Display parts retain every original Unicode scalar and UTF-8 byte. A very
 /// large combining sequence cannot bypass the reader's per-part byte bound.
 enum FHIRSourceReading {
@@ -45,6 +47,7 @@ public struct FHIRResultSource: Codable, Sendable, Equatable {
     public let componentIndex: Int?
     public let valueKind: String
     public let fields: [FHIRSourceField]
+    public let inputFormat: FHIRInputFormat?
     private let facts: Facts?
     private struct Facts: Sendable, Equatable {
         let status: String
@@ -54,13 +57,13 @@ public struct FHIRResultSource: Codable, Sendable, Equatable {
         let normalization: LabNormalization.SourceFacts
     }
     private enum CodingKeys: String, CodingKey {
-        case version, inputSHA256, resourcePath, fullURL, resourceIdentity, resourceVersion, componentIndex, valueKind, fields
+        case version, inputSHA256, resourcePath, fullURL, resourceIdentity, resourceVersion, componentIndex, valueKind, fields, inputFormat
     }
-    public init(version: Int = 1, inputSHA256: String, resourcePath: String, fullURL: String?, resourceIdentity: String? = nil, resourceVersion: String?, componentIndex: Int?, valueKind: String, fields: [FHIRSourceField]) {
+    public init(version: Int = 1, inputSHA256: String, resourcePath: String, fullURL: String?, resourceIdentity: String? = nil, resourceVersion: String?, componentIndex: Int?, valueKind: String, fields: [FHIRSourceField], inputFormat: FHIRInputFormat? = nil) {
         self.version = version; self.inputSHA256 = inputSHA256; self.resourcePath = resourcePath; self.fullURL = fullURL
         self.resourceIdentity = resourceIdentity ?? fullURL
-        self.resourceVersion = resourceVersion; self.componentIndex = componentIndex; self.valueKind = valueKind; self.fields = fields
-        facts = Self.inspect(version: version, sha: inputSHA256, resourcePath: resourcePath, fullURL: fullURL, identity: resourceIdentity ?? fullURL, resourceVersion: resourceVersion, component: componentIndex, kind: valueKind, fields: fields)
+        self.resourceVersion = resourceVersion; self.componentIndex = componentIndex; self.valueKind = valueKind; self.fields = fields; self.inputFormat = inputFormat
+        facts = Self.inspect(version: version, sha: inputSHA256, resourcePath: resourcePath, fullURL: fullURL, identity: resourceIdentity ?? fullURL, resourceVersion: resourceVersion, component: componentIndex, kind: valueKind, fields: fields, format: inputFormat)
     }
     public init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
@@ -69,7 +72,7 @@ public struct FHIRResultSource: Codable, Sendable, Equatable {
             guard fields.count < 64 else { throw DecodingError.dataCorrupted(.init(codingPath: c.codingPath, debugDescription: "Too many captured FHIR fields")) }
             fields.append(try list.decode(FHIRSourceField.self))
         }
-        self.init(version: try c.decode(Int.self, forKey: .version), inputSHA256: try c.decode(String.self, forKey: .inputSHA256), resourcePath: try c.decode(String.self, forKey: .resourcePath), fullURL: try c.decodeIfPresent(String.self, forKey: .fullURL), resourceIdentity: try c.decodeIfPresent(String.self, forKey: .resourceIdentity), resourceVersion: try c.decodeIfPresent(String.self, forKey: .resourceVersion), componentIndex: try c.decodeIfPresent(Int.self, forKey: .componentIndex), valueKind: try c.decode(String.self, forKey: .valueKind), fields: fields)
+        self.init(version: try c.decode(Int.self, forKey: .version), inputSHA256: try c.decode(String.self, forKey: .inputSHA256), resourcePath: try c.decode(String.self, forKey: .resourcePath), fullURL: try c.decodeIfPresent(String.self, forKey: .fullURL), resourceIdentity: try c.decodeIfPresent(String.self, forKey: .resourceIdentity), resourceVersion: try c.decodeIfPresent(String.self, forKey: .resourceVersion), componentIndex: try c.decodeIfPresent(Int.self, forKey: .componentIndex), valueKind: try c.decode(String.self, forKey: .valueKind), fields: fields, inputFormat: try c.decodeIfPresent(FHIRInputFormat.self, forKey: .inputFormat))
     }
     public var isValid: Bool { facts != nil }
     public var resultPath: String { resourcePath + (componentIndex.map { "/component/\($0)" } ?? "") }
@@ -91,12 +94,17 @@ public struct FHIRResultSource: Codable, Sendable, Equatable {
         return body[range].utf8.elementsEqual(sourceText.utf8)
     }
     public var referenceText: String {
-        "Original FHIR source capture · \(valueKind)\nInput SHA-256: \(inputSHA256)\nResource path: \(resourcePath.isEmpty ? "file root" : resourcePath)\nOriginal fullUrl: \(fullURL ?? "Not supplied")\nResolved local resource identity: \(resourceIdentity ?? "Not established outside this file")\nOriginal resource version: \(resourceVersion ?? "Not supplied")\nComponent index: \(componentIndex.map(String.init) ?? "Not a component")\nOriginal declared status: \(originalStatus ?? "Invalid capture")\nCaptured fields are historical original-file data. Reviewed values can differ; these fields do not establish clinical accuracy or current source state.\n" + sourceText
+        let format = inputFormat == .ndjson ? "NDJSON: /line/N means physical line N, starting at 1. The rest of the path identifies a field on that line.\n\nA resource ID in this file does not identify its original server.\n\n" : ""
+        return "Original FHIR source capture · \(valueKind)\n" + format + "Input SHA-256: \(inputSHA256)\nResource path: \(resourcePath.isEmpty ? "file root" : resourcePath)\nOriginal fullUrl: \(fullURL ?? "Not supplied")\nResolved local resource identity: \(resourceIdentity ?? "Not established outside this file")\nOriginal resource version: \(resourceVersion ?? "Not supplied")\nComponent index: \(componentIndex.map(String.init) ?? "Not a component")\nOriginal declared status: \(originalStatus ?? "Invalid capture")\nCaptured fields are historical original-file data. Reviewed values can differ; these fields do not establish clinical accuracy or current source state.\n" + sourceText
     }
     static func validSHA(_ text: String) -> Bool { text.count == 64 && text.allSatisfy { $0.isASCII && $0.isHexDigit } }
     static func validResourcePath(_ text: String) -> Bool {
-        guard text.range(of: #"^(?:/entry/(?:0|[1-9][0-9]{0,3})/resource)?(?:/contained/(?:0|[1-9][0-9]{0,3}))?$"#, options: .regularExpression) != nil else { return false }
-        return text.split(separator: "/").filter { $0.first?.isNumber == true }.allSatisfy { Int($0).map { (0..<1024).contains($0) } == true }
+        guard text.range(of: #"^(?:(?:/entry/(?:0|[1-9][0-9]{0,3})/resource)|(?:/line/[1-9][0-9]{0,3}))?(?:/contained/(?:0|[1-9][0-9]{0,3}))?$"#, options: .regularExpression) != nil else { return false }
+        let pieces = text.split(separator: "/")
+        for index in pieces.indices where pieces[index].first?.isNumber == true {
+            guard let value = Int(pieces[index]), (pieces[index - 1] == "line" ? (1...1024).contains(value) : (0..<1024).contains(value)) else { return false }
+        }
+        return true
     }
     static func validResultPath(_ text: String) -> Bool {
         if let range = text.range(of: "/component/", options: .backwards) {
@@ -106,9 +114,10 @@ public struct FHIRResultSource: Codable, Sendable, Equatable {
         }
         return validResourcePath(text)
     }
-    private static func inspect(version: Int, sha: String, resourcePath: String, fullURL: String?, identity: String?, resourceVersion: String?, component: Int?, kind: String, fields: [FHIRSourceField]) -> Facts? {
+    private static func inspect(version: Int, sha: String, resourcePath: String, fullURL: String?, identity: String?, resourceVersion: String?, component: Int?, kind: String, fields: [FHIRSourceField], format: FHIRInputFormat?) -> Facts? {
         let kinds = ["valueQuantity", "valueCodeableConcept", "valueString", "valueBoolean", "valueInteger", "valueRange", "valueRatio", "valueSampledData", "valueTime", "valueDateTime", "valuePeriod", "dataAbsentReason", "missing"]
         guard version == 1, validSHA(sha), validResourcePath(resourcePath), kinds.contains(kind),
+              resourcePath.hasPrefix("/line/") == (format == .ndjson),
               component.map({ (0..<1024).contains($0) }) ?? true,
               fullURL.map({ LabReport.bounded($0, limit: 2000, required: true, multiline: false) && !$0.contains("/_history/") && FHIRResourceArchive.isAbsolute($0) }) ?? true,
               identity.map({ LabReport.bounded($0, limit: 2200, required: true, multiline: false) && FHIRResourceArchive.isAbsolute($0) }) ?? true,
@@ -194,17 +203,24 @@ public struct FHIRLabImportOrigin: Codable, Sendable, Equatable {
     public let hasNextPage: Bool
     public let unresolvedLinks: Int
     public let omittedFields: Int
+    public var inputFormat: FHIRInputFormat? = nil
     public var isValid: Bool {
         version == 1 && LabReport.bounded(filename, limit: 500, required: true, multiline: false) && !filename.contains("/") && !filename.contains("\\") &&
         FHIRResultSource.validSHA(sha256) && FHIRResultSource.validSHA(subjectKey) && readAt.timeIntervalSince1970.isFinite &&
         (1...1024).contains(inputEntries) && (1...1024).contains(inputResources) && (1...1024).contains(proposedResults) &&
         (1...LabReport.maxObservations).contains(selectedPaths.count) && selectedPaths.count <= proposedResults && Set(selectedPaths).count == selectedPaths.count &&
-        selectedPaths.allSatisfy(FHIRResultSource.validResultPath) &&
+        selectedPaths.allSatisfy({ path in
+            guard FHIRResultSource.validResultPath(path), path.hasPrefix("/line/") == (inputFormat == .ndjson) else { return false }
+            if inputFormat == .ndjson { return Int(path.split(separator: "/")[1]).map { $0 <= inputEntries } == true }
+            return true
+        }) &&
         LabReport.bounded(subjectLabel, limit: 4000, required: true) && (0...100_000).contains(unresolvedLinks) && (0...100_000).contains(omittedFields)
     }
     public var referenceText: String {
         let entries = inputEntries == 1 ? "entry" : "entries", resources = inputResources == 1 ? "resource" : "resources"
         let results = proposedResults == 1 ? "result proposal" : "result proposals", paths = selectedPaths.count == 1 ? "result path" : "result paths"
-        return "Originally reviewed FHIR JSON fields: \(filename)\nInput SHA-256: \(sha256)\nRead: \(ISO8601DateFormatter().string(from: readAt))\nFile inventory: \(inputEntries) \(entries), \(inputResources) \(resources), \(proposedResults) \(results). Original selection: \(selectedPaths.count) \(paths).\nSelected paths:\n\(selectedPaths.map { $0.isEmpty ? "file root" : $0 }.joined(separator: "\n"))\nReviewed person group: \(subjectLabel)\nNext page reported: \(hasNextPage ? "Yes; not downloaded" : "No next-page link supplied")\nUnresolved result links: \(unresolvedLinks). Fields not retained in full: \(omittedFields).\nLumen arranged selected source fields; this is not the original file layout, a complete FHIR record or proof of clinical authorship. Other results and additional fields were not retained. Keep the original file separately."
+        let format = inputFormat == .ndjson ? "NDJSON" : "JSON"
+        let location = inputFormat == .ndjson ? "\n\n/line/N means physical line N, starting at 1. The rest of the path identifies a field on that line.\n\nOnly this local file was read. Companion files and the bulk-export manifest were not loaded. A resource ID in this file does not identify its original server.\n" : ""
+        return "Originally reviewed FHIR \(format) fields: \(filename)\(location)\nInput SHA-256: \(sha256)\nRead: \(ISO8601DateFormatter().string(from: readAt))\nFile inventory: \(inputEntries) \(entries), \(inputResources) \(resources), \(proposedResults) \(results). Original selection: \(selectedPaths.count) \(paths).\nSelected paths:\n\(selectedPaths.map { $0.isEmpty ? "file root" : $0 }.joined(separator: "\n"))\nReviewed person group: \(subjectLabel)\nNext page reported: \(hasNextPage ? "Yes; not downloaded" : "No next-page link supplied")\nUnresolved result links: \(unresolvedLinks). Fields not retained in full: \(omittedFields).\nLumen arranged selected source fields; this is not the original file layout, a complete FHIR record or proof of clinical authorship. Other results and additional fields were not retained. Keep the original file separately."
     }
 }

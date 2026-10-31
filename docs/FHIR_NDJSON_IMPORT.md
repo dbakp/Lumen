@@ -1,0 +1,35 @@
+# Reviewed FHIR NDJSON lab files · Batch 25
+
+Implemented and verified within the scope below. Batch25 extends the existing reviewed FHIR importer; publication/read-back and storage cleanup are recorded in the handoff and native evidence. The full product goal remains active.
+
+## Contract
+
+Read a local `.ndjson` file containing one complete FHIR R4 resource per physical line, with one resource type across the file. Contained resources may have other types. LF and CRLF separators, optional initial UTF-8 BOM, horizontal whitespace and a last line without a newline are accepted. Bare carriage returns, empty/interior/trailing blank lines, multiline objects, mixed resource types, Bundle lines, duplicate decoded keys, malformed/truncated lines and bulk-export completion manifests are rejected. A malformed line rejects the complete file; no partial preview is returned. `.json` keeps the existing single-resource/Bundle mode, without format guessing or a fallback after parse failure.
+
+Keep the same whole-file limits: 2 MB, 1,024 resources including contained resources, 64 JSON nesting levels and a shared 100,000-node budget across all lines. Result/relationship/source limits and cancellation remain those of the reviewed FHIR importer. Original file bytes, SHA-256, numeric lexemes, string escapes and absolute file-byte ranges are retained. `/line/N` means physical line N, starting at 1, followed by a JSON path within that line; it is not a JSON array pointer.
+
+Resolve contained references only within their owning line. A relative `Type/id` can identify an exact top-level resource inside this file; duplicate IDs stay ambiguous and version-specific links require the exact version. No server base is guessed and an absolute URL is never matched by suffix. Relative person references can form a literal group inside this exact input, while missing companion Patient records remain unresolved and visibly require original/person review. File-scoped identifiers do not establish global resource identity, clinical validity or authorship. Known revisions of one typed ID share their file-scoped event identity. Across different input files, the absence of a server identity remains unknown.
+
+The existing coverage → intended person → results/corrections → acknowledgement → checked save flow remains. One NDJSON file is not a complete bulk export. Do not fetch manifest URLs, external references, attachments or companion files. Sources without enough context keep their unresolved warnings; do not infer missing patient identity, collection day, laboratory, interpretation or measurements. Sharing starts off. Existing JSON records, absent-format legacy metadata, history guards, source-only duplicate receipts and backup/readable recovery stay compatible. Saved NDJSON receipts and per-result captures record the new format explicitly.
+
+Literal source readers and source-link previews must not add discretionary hyphens to original words, paths or hashes. Preserve full Dynamic Type, natural wrapping and native read-only selection. **Copy full text** copies the entire original reader input, including when it spans display parts; it does not copy rendered line breaks, ellipses or only the current part. The first design review caught visible punctuation added by default SwiftUI wrapping. A native attributed-text reader disables default layout-manager hyphenation and vetoes discretionary hyphens while retaining natural word wrapping. Literal path/previews use character wrapping; human captions use separate word-wrapping text. Copy retains the complete original input. A character-wrap-only probe removed punctuation but broke prose mid-word, so it was not accepted. Current BuildR9 reader/compact pixels and continuing Round3 design review close the named typography defects. Earlier passing UI tests are retained at their exact source boundaries.
+
+## Required acceptance evidence
+
+- Production logic: strict line parsing/bounds, full-file byte/token equality, identity/ambiguity/version/person/contained scoping, exact provenance, source-only receipts, original value forms and actual version-one/encrypted/readable backup round trips. Retain failures as failures.
+- Native Files selection of `.ndjson`, complete coverage/original/line explanation, person selection, correction/acknowledgement reset, checked save/relaunch/duplicates and malformed-file recovery.
+- Native normal/compact, dark and actual largest accessibility text. Use the same independent critic for at least two rounds; address concrete findings before delivery.
+- All five simulator products, unsigned generic-iOS Release, final source/provenance audit, GitHub push/read-back and measured stopped-worker scoped cleanup.
+
+## Primary references read 31 October 2026
+
+[HL7 FHIR R4 NDJSON](https://hl7.org/fhir/R4/nd-json.html) defines one resource type per file, line-separated resources, possible contained resources and `application/fhir+ndjson`. This implementation accepts a local file; it does not implement the asynchronous bulk-export protocol or imply that an arbitrary input conforms to an entire FHIR profile.
+
+[HL7 Bulk Data export source](https://github.com/HL7/bulk-data/blob/master/input/pagecontent/export.md) distinguishes completion manifests/output files and permits relative or absolute references. Lumen's file-scoped identity is an internal conservative representation where the original server base and companion files are unavailable, not a supplied clinical identifier.
+
+Apple's installed iOS27 SDK exposes paragraph/layout-manager `usesDefaultHyphenation` and the `NSLayoutManagerDelegate` hyphenation decision. The reader disables default hyphenation at both levels and returns false from the delegate decision; the deprecated layout-manager factor alone did not prevent added glyphs in native captures. No invisible break characters are inserted into source strings. [UILabel line wrapping](https://developer.apple.com/documentation/uikit/uilabel/linebreakmode) and [paragraph hyphenation](https://developer.apple.com/documentation/uikit/nsmutableparagraphstyle/hyphenationfactor) are platform text-layout controls, not changes to the original source value. Native pixels/copy and current-source builds remain the required implementation proof.
+
+
+## Verified delivery boundary
+
+LogicR11 passes1,294 checks; all five simulator products at BuildR9 and unsigned ReleaseR5 pass. Main NativeR6 passes three cases before only human-caption separation. Current WrapR3 passes134.306s across light/dark/actualXXXL; current SmallR3 passes the complete375×667 lifecycle in382.371s, including native full-source Paste, caption/code/receipt, correction/save/relaunch/duplicate. Each bundle has zero failures/skips/recorded runtime warnings. Final continuing critic43/55,10/11 lines4+, all concrete requests closed, no later app/UI edit. Exact hashes, historical failures and per-image provenance are in [the native evidence](../Design/native/fhir-ndjson/README.md). No combined final-source main suite, physical-device, VoiceOver, clinical or release-readiness claim follows.

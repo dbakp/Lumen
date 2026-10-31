@@ -26,7 +26,7 @@ Passing current-production native cases retain precise boundaries: R5 import/cor
 
 The same continuing App Designer Pro critic completes three rounds: **38/55 → 43/55 → 43/55**, with 10/11 applicable lines at 4+, Richness 3, and Concept/Finish/Native/Copy all 4. Round 2 closed all five concrete requests; Round 3 closes its two unchanged-UI capture gaps with no new definite defect. No UI change follows acceptance. See [native evidence](../Design/native/fhir-labs/README.md), [verification](VERIFICATION.md) and [critique](../Design/CRITIQUE.md). Only synthetic inputs were used; the Debug simulator route disables remote/model requests.
 
-Physical-device, VoiceOver, clinical validity, broader clinical/FHIR bulk/XML/NDJSON ingestion, live provider connections and release/privacy governance remain open. A reviewed local file importer does not establish those gates or validate the clinical source's authorship.
+Physical-device, VoiceOver, clinical validity, broader clinical/FHIR bulk/XML and multi-file NDJSON ingestion, live provider connections and release/privacy governance remain open. A reviewed local file importer does not establish those gates or validate the clinical source's authorship.
 
 ## Integration invariants
 
@@ -44,3 +44,11 @@ A graph read is not result eligibility. Proposal validation still needs required
 - [HL7 R4 Observation](https://hl7.org/fhir/R4/observation.html): result values have different declared forms, and components can carry their own values and reference information. Those distinctions must survive extraction; qualifiers and non-scalar forms cannot be flattened into unqualified numbers.
 - [HL7 R4 DiagnosticReport](https://hl7.org/fhir/R4/diagnosticreport.html): a report can connect observations and additional report context. Preserve that relationship separately from the individual result's directly supplied facts.
 - [HL7 R4 datatypes](https://hl7.org/fhir/R4/datatypes.html): a Quantity carries its comparator and distinct unit display/system/code fields. Those original fields belong in the review/provenance rather than an inferred unit conversion.
+
+## Batch 25 extension · NDJSON · verified
+
+The same review flow now accepts a local `.ndjson` file with one same-type FHIR resource per physical line, preserving exact complete input bytes, source tokens and absolute byte ranges. A malformed line rejects the whole file; no partial prefix is proposed. LF/CRLF, initial BOM and a final line without newline are supported. Bare CR, blank/multiline/Bundle/mixed-type lines, duplicate keys and manifest objects are rejected. Existing JSON mode does not guess NDJSON after a parse failure.
+
+Line locations are `/line/N` followed by a within-line field path. Exact typed relative IDs resolve only inside the selected file; duplicate IDs remain ambiguous and versioned references require the exact version. No server base or companion Patient is inferred. Known revisions retain one file-scoped event identity, preventing them from silently becoming independent measurements. Sharing, correction/original separation, receipt-only duplicate identity and backup compatibility remain.
+
+Logic passes1,294 checks; current BuildR9/ReleaseR5, reader probe, full compact lifecycle and continuing Round3 design acceptance pass. Exact main-versus-caption source boundaries, publication and cleanup are tracked in [the NDJSON contract](FHIR_NDJSON_IMPORT.md) and [the evidence ledger](../Design/native/fhir-ndjson/README.md). The older Batch23 evidence above proves its earlier JSON scope; it does not certify this extension. Full bulk/XML/profiles, clinical validity, physical devices and the broader release gates remain open.

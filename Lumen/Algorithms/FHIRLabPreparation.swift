@@ -90,7 +90,7 @@ struct FHIRLabPreparation: Sendable {
     let coverage: Coverage
     func capturedSource(for resultID: String) -> FHIRResultSource? {
         guard let result = results.first(where: { $0.id == resultID }), let resource = archive.resource(at: result.resourcePath), result.issues.isEmpty else { return nil }
-        let source = FHIRResultSource(inputSHA256: archive.sha256, resourcePath: resource.id, fullURL: resource.fullURL, resourceIdentity: archive.identity(of: resource), resourceVersion: resource.version, componentIndex: result.componentIndex, valueKind: result.valueKind, fields: result.fields.map { .init(path: $0.path, token: $0.token, byteStart: $0.byteStart, byteEnd: $0.byteEnd) })
+        let source = FHIRResultSource(inputSHA256: archive.sha256, resourcePath: resource.id, fullURL: resource.fullURL, resourceIdentity: archive.identity(of: resource), resourceVersion: resource.version, componentIndex: result.componentIndex, valueKind: result.valueKind, fields: result.fields.map { .init(path: $0.path, token: $0.token, byteStart: $0.byteStart, byteEnd: $0.byteEnd) }, inputFormat: archive.format == .ndjson ? .ndjson : nil)
         return source.isValid ? source : nil
     }
 

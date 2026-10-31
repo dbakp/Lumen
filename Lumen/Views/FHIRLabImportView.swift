@@ -75,7 +75,7 @@ struct FHIRLabImportView: View {
                     ToolbarItem(placement: .confirmationAction) { Button("Save") { save() }.fontWeight(.bold).disabled(!canSave).accessibilityIdentifier("saveFHIRImport") }
                 }
             }
-            .fileImporter(isPresented: $choosing, allowedContentTypes: [.json]) { result in
+            .fileImporter(isPresented: $choosing, allowedContentTypes: [.json, UTType(filenameExtension: "ndjson", conformingTo: .data) ?? .data]) { result in
                 switch result {
                 case .success(let url): read(url)
                 case .failure(let failure): error = failure.localizedDescription
@@ -112,7 +112,7 @@ struct FHIRLabImportView: View {
                 if typeSize.isAccessibilitySize { Text("Choose a FHIR file").multilineTextAlignment(.center).padding(.horizontal, 24).padding(.vertical, 20) }
                 else { Label("Choose a FHIR file", systemImage: "doc.badge.plus") }
             }.buttonStyle(FHIRPrimaryButtonStyle()).accessibilityIdentifier("chooseFHIRFile")
-            Text("FHIR R4 JSON · up to 2 MB and 1,024 entries/resources. Read on this device. No links are downloaded.").font(.footnote).foregroundStyle(Theme.secondary)
+            Text("FHIR R4 JSON or NDJSON · up to 2 MB and 1,024 entries/resources. Read on this device. No links are downloaded.").font(.footnote).foregroundStyle(Theme.secondary)
             Text("Keep the original file separately. Lumen doesn't interpret these results or add them to Apple Health.").font(.footnote).foregroundStyle(Theme.secondary)
         }
     }
@@ -125,9 +125,13 @@ struct FHIRLabImportView: View {
             Text("\(prepared.coverage.deletedEntries.count) \(prepared.coverage.deletedEntries.count == 1 ? "deletion entry" : "deletion entries") · \(prepared.coverage.requestResponseOnly.count) \(prepared.coverage.requestResponseOnly.count == 1 ? "request/response-only entry" : "request/response-only entries") · \(prepared.coverage.panelsWithoutOwnValue.count) \(prepared.coverage.panelsWithoutOwnValue.count == 1 ? "panel without its own result" : "panels without their own result")").font(.footnote).foregroundStyle(Theme.secondary)
             let unresolved = prepared.coverage.links.filter { if case .found = $0.resolution { return false }; return true }.count
             Text("\(unresolved) unresolved result links. \(prepared.coverage.omittedResourceFields.values.reduce(0) { $0 + $1.count }) fields not retained in full.").foregroundStyle(Theme.secondary)
-            Text(prepared.coverage.hasNextPage ? "This export reports another page. It has not been downloaded." : "No next-page link was supplied. This does not prove the export is complete.").font(.footnote).foregroundStyle(Theme.secondary)
+            if prepared.archive.format == .ndjson {
+                Text("One NDJSON file was read. Companion files and the bulk-export manifest have not been loaded.").font(.footnote).foregroundStyle(Theme.secondary).accessibilityIdentifier("fhirNDJSONCoverage")
+            } else {
+                Text(prepared.coverage.hasNextPage ? "This export reports another page. It has not been downloaded." : "No next-page link was supplied. This does not prove the export is complete.").font(.footnote).foregroundStyle(Theme.secondary)
+            }
             FHIRReaderLink("File coverage details") { FHIRCoverageView(preparation: prepared) }.accessibilityIdentifier("fhirCoverageDetails")
-            FHIRReaderLink("Read original JSON") { FHIRTextReader(title: "Original JSON", text: String(decoding: prepared.archive.json.source, as: UTF8.self), subtitle: "Temporary input. Keep your original file separately.") }.accessibilityIdentifier("fhirOriginalJSON")
+            FHIRReaderLink(prepared.archive.format == .ndjson ? "Read original NDJSON" : "Read original JSON") { FHIRTextReader(title: prepared.archive.format == .ndjson ? "Original NDJSON" : "Original JSON", text: String(decoding: prepared.archive.json.source, as: UTF8.self), subtitle: "Temporary input. Keep your original file separately.") }.accessibilityIdentifier("fhirOriginalJSON")
             LabHistoryToggle(title: "I checked the file coverage and what will be left out", value: $coverageReviewed, identifier: "acknowledgeFHIRCoverage")
             if prepared.results.isEmpty { Text("No lab result proposals are available in this file. Nothing can be saved.").foregroundStyle(Theme.secondary) }
             Button("Continue") { page = 0; step = .person }.buttonStyle(FHIRPrimaryButtonStyle()).disabled(!coverageReviewed || prepared.results.isEmpty).accessibilityIdentifier("continueFHIRCoverage")
@@ -223,7 +227,7 @@ struct FHIRLabImportView: View {
     }
     private func read(_ url: URL) {
         execute(title: "Reading FHIR file.", operation: { control in
-            let input = try LabFileImportService.read(url, control: control)
+            let input = try LabFileImportService.read(url, control: control, fhir: true)
             return try FHIRLabPreparation(archive: .init(data: input.data, filename: input.filename, control: control, now: input.readAt), control: control)
         }) { value in
             preparation = value; coverageReviewed = false; subjectKey = nil; personChecked = false; draft = nil; acknowledged = false; page = 0; step = .coverage
