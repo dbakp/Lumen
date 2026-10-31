@@ -1,0 +1,37 @@
+{
+  "cutoffs": [
+    null,
+    0.42,
+    0.55,
+    0.6,
+    0.65,
+    0.7,
+    0.75,
+    0.8,
+    0.85,
+    0.9
+  ],
+  "decisionRule": "Do not select an app cutoff from the old nine cases. Report every fixed-grid tradeoff; a cutoff supporting direct-answer source selection would need >=90% supported hit@4 and zero unsupported questions with a selection on this small challenge. Failure means these scalar scores alone do not establish direct-answer support, not that all related-topic choices are clinical errors. Actual literal/consent/fusion/budget/legacy/storage and broader quality gates remain necessary.",
+  "declaredAtUTC": "2026-10-31T19:03:13.877897+00:00",
+  "declaredBeforeChallengeEncodingOrScores": true,
+  "documents": 17,
+  "fixtureSHA256": "e01bfa411c9521da506026840b5d8ae000c7bccec9533704d40d98ed760378da",
+  "instructionDevDecisionSHA256": "c906332238a52ad566b0a7a7dac77fb824bd3699a86e55194a3300eb3f0913c1",
+  "instructionProtocolSHA256": "6fbc83d9c95c605325d77f0b7005cd70dfdf03b917c0c19bb59d5fa4e7aba4e5",
+  "labels": "Directly supporting documents from explicit synthetic wording. Empty expected set means no direct answer in this corpus; topic-related choices may still be returned. Do not label every unjudged related topic clinically false.",
+  "metrics": [
+    "supported question hit@1 and hit@4",
+    "unsupported question with any returned topic",
+    "exact-identifier and negation/date first-rank choices",
+    "all per-query scores/top-four document IDs for each model"
+  ],
+  "models": [
+    "Existing pinned MiniLM with raw query",
+    "Exact canonical MedEmbed with separately fixed BGE instruction plus complete query"
+  ],
+  "preparation": "Actual production RecordRetrieval complete passages; synthetic source label; same title-prefix and every native window.",
+  "queries": 32,
+  "scope": "Synthetic development challenge, not held-out/clinical validation or actual app/provider behavior",
+  "testSet": "Do not compute NFCorpus test retrieval scores during this calibration challenge.",
+  "version": 1
+}
