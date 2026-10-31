@@ -35,3 +35,5 @@ The initial foundation is not completion of the full product goal. The [roadmap]
 ### Batch 25 · verified
 
 The local FHIR NDJSON extension is implemented with exact original bytes/physical-line paths, whole-file bounds, conservative local identities and existing person/correction/receipt/backup flows. LogicR11 passes1,294 checks; current all-product/unsigned Release builds, complete current compact flow, light/dark/XXXL reader probe and final continuing critic43/55 pass. Exact pre-caption main-flow and current-source reader/compact boundaries, publication and cleanup are tracked in [the batch evidence](../Design/native/fhir-ndjson/README.md). The full product goal and physical/provider/release gates remain active.
+
+Batch25 application `f190b1d314299727f97788fb73665c6966f084ab` is published with exact GitHub confirmation. Scoped cleanup recovers5.51GB;144 useful captures and compact/source evidence remain. This checkpoint changes documentation/evidence retention only.

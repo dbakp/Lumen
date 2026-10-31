@@ -1,5 +1,5 @@
 {
-  "status": "Verified within scope; publication and cleanup pending",
+  "status": "Published; scoped verification and stopped-worker cleanup complete; full product goal active",
   "publishedBaseline": "8ae4968a83c2f48f05284e6b60b42a8062cda1f8",
   "syntheticOnly": true,
   "attempts": {
@@ -240,10 +240,7 @@
     "captureCount": 36,
     "captures": "r2/captures.json"
   },
-  "pending": [
-    "GitHub publication/read-back",
-    "Stopped-worker scoped cleanup"
-  ],
+  "pending": [],
   "sourceMap": "source-build-r9.json",
   "notes": [
     "No whole-goal completion or physical-device/clinical/provider/release-readiness claim.",
@@ -268,7 +265,7 @@
       }
     ],
     "purpose": "Dedicated disposable synthetic Batch25 native verification; no personal data",
-    "status": "Current SmallR3 complete lifecycle passed; dedicated device retained until GitHub confirmation and cleanup"
+    "status": "Dedicated task-owned compact simulator removed after GitHub confirmation; primary/Watch/shared runtimes preserved"
   },
   "productionChangeAfterBuildR2": {
     "file": "Lumen/Models/FHIRLabProvenance.swift",
@@ -830,5 +827,20 @@
     "noConcreteDefects": true,
     "noAppUIChangeAfterAcceptance": true
   },
-  "finalSourceAudit": "final-source-audit.json"
+  "finalSourceAudit": "final-source-audit.json",
+  "publication": {
+    "applicationCommit": "f190b1d314299727f97788fb73665c6966f084ab",
+    "githubMainReadBack": "f190b1d314299727f97788fb73665c6966f084ab",
+    "publisher": "scripts/publish-batches.sh",
+    "confirmedBeforeCleanup": true
+  },
+  "storageCleanup": "storage-cleanup.json",
+  "retainedUsefulPNGs": 144,
+  "temporaryPaths": "Historical after scoped cleanup; current source/evidence in repository and superseded PNGs recoverable in application commit.",
+  "remainingProductGates": [
+    "clinical/source-authorship and broader FHIR/profile/terminology validation",
+    "physical-device/VoiceOver/localization/performance",
+    "retrieval/provider quality",
+    "release/privacy governance"
+  ]
 }

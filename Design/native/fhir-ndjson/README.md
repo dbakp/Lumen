@@ -1,6 +1,6 @@
 # Batch 25 · reviewed FHIR NDJSON files · verified
 
-Scoped implementation and verification are complete; GitHub publication/read-back and measured cleanup are recorded separately below once performed. The full product goal remains active. [The contract](../../../docs/FHIR_NDJSON_IMPORT.md) describes this local-file route; it is not full bulk export, profile conformance or clinical validation.
+Scoped implementation and verification are complete and published as `f190b1d314299727f97788fb73665c6966f084ab`; exact GitHub main read-back matched before cleanup. The full product goal remains active. [The contract](../../../docs/FHIR_NDJSON_IMPORT.md) describes this local-file route; it is not full bulk export, profile conformance or clinical validation.
 
 ## Final source and behavior
 
@@ -27,4 +27,10 @@ NativeR5 and SmallR2 passed functionality but still displayed emergency hyphens.
 
 Physical-device/VoiceOver, clinical validity/source authorship, broader FHIR/terminology/ingestion, live providers/retrieval quality and release/privacy governance remain open. Synthetic simulator evidence does not satisfy them.
 
-All build/test/export workers are terminal. Keep repository, current tiny inputs, supplied skill/archive and pinned model. After exact GitHub confirmation, remove only task-owned redundant output/caches and the dedicated compact test simulator, preserving primary/Watch devices, shared runtimes, unrelated projects and personal data. Record actual available-space recovery; raw temporary paths then become historical. Do not rebuild for documentation-only cleanup.
+## Publication and measured cleanup
+
+Application Batch25 `f190b1d314299727f97788fb73665c6966f084ab` reached GitHub through `scripts/publish-batches.sh`; exact main read-back matched before cleanup. All build/test/export/publish workers were terminal. Scoped cleanup removed240 task-owned roots (including143 superseded PNG working copies), both reused platform build directories, package scratch, obsolete mirror, raw bundles/exports/logs, one exact synthetic harness crash report and two wrong-folder duplicate fixtures. The dedicated compact simulator was removed through simctl; primary/Watch simulators and shared runtimes remain.
+
+Available bytes increased from **25,134,804,992 to 30,647,353,344**, a settled **5,512,548,352-byte increase (about5.51GB)**. Removed roots total2,553,268,339 logical bytes and2,591,879,168 unique-inode allocated bytes, excluding the simulator; APFS and concurrent activity differ from volume recovery. Exact inventory/measurements are in `Design/native/fhir-ndjson/storage-cleanup.json`.
+
+All **144 retained useful native originals** still match their hashes. Compact outcomes, source maps, scorecards, repository, current tiny inputs, supplied skill/archive and pinned model remain. Superseded original PNGs are recoverable in the published application commit; their manifests mark local removal. Unrelated projects/processes/personal data and global/system/browser/application caches were preserved; no symlink target was followed. Raw temporary paths are historical. No application build was run for this documentation/cleanup checkpoint. The full product goal remains active.
