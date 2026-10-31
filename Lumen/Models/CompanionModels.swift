@@ -57,6 +57,7 @@ public struct HealthDocument: Identifiable, Codable, Sendable {
     /// reviewed transcriptions are explicitly removed. Older imports carry it
     /// only inside labReport; keep that compatible fallback until next review.
     public var labImportOrigin: LabImportOrigin? = nil
+    public var labComparison: LabComparisonSnapshot? = nil
     public var originalLabImport: LabImportOrigin? { labImportOrigin ?? labReport?.importedFrom }
     public var hasValidLabImportOrigin: Bool {
         guard let origin = labImportOrigin else { return true }
@@ -64,7 +65,7 @@ public struct HealthDocument: Identifiable, Codable, Sendable {
     }
     public var markdown: String {
         let retainedOrigin = labReport == nil && hasValidLabImportOrigin ? (labImportOrigin.map { "\n\n## Original lab-file import\n\n" + $0.referenceText } ?? "") : ""
-        return "# \(title)\n\n\(body)\n\n" + steps.map { "- [\($0.isDone ? "x" : " ")] \($0.title)" + ($0.calendarDate.map { " (due " + $0.formatted(date: .abbreviated, time: .omitted) + ")" } ?? "") }.joined(separator: "\n") + "\n\nSource: \(source)\nUpdated: \(updatedAt.formatted())" + (recordContext?.markdownReferences ?? "") + (labReport?.markdown(body: body) ?? "") + retainedOrigin
+        return "# \(title)\n\n\(body)\n\n" + steps.map { "- [\($0.isDone ? "x" : " ")] \($0.title)" + ($0.calendarDate.map { " (due " + $0.formatted(date: .abbreviated, time: .omitted) + ")" } ?? "") }.joined(separator: "\n") + "\n\nSource: \(source)\nUpdated: \(updatedAt.formatted())" + (recordContext?.markdownReferences ?? "") + (labReport?.markdown(body: body) ?? "") + retainedOrigin + (labComparison?.markdown(body: body) ?? "")
     }
 }
 

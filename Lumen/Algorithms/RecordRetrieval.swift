@@ -110,6 +110,10 @@ public enum RecordRetrieval {
     public static func text(_ document: HealthDocument) -> String? {
         guard document.hasValidLabImportOrigin, document.body.utf8.count <= maxDocumentBytes, document.body.count <= maxDocumentCharacters, document.steps.count <= 1000, document.steps.allSatisfy({ $0.title.utf8.count <= 20_000 }) else { return nil }
         var value = document.body
+        if let comparison = document.labComparison {
+            guard comparison.isValid(in: document) else { return nil }
+            if !comparison.isCurrent(body: document.body) { value += "\n\nEarlier lab comparison metadata is withheld because this document text was edited after capture. The current text is an independently edited snapshot." }
+        }
         if document.labReport == nil, let origin = document.labImportOrigin { value += "\n\n" + origin.referenceText }
         if let report = document.labReport {
             guard report.isValid(in: document) else { return nil }

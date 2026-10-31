@@ -26,6 +26,9 @@ struct LibraryView: View {
                 NavigationLink { InsightsView() } label: {
                     LumenRow("Insights & appointment summaries", subtitle: "Changes over time and a record to share", icon: "chart.xyaxis.line", color: Theme.accent)
                 }.buttonStyle(.plain)
+                NavigationLink { LabHistoryView() } label: {
+                    LumenRow("Lab history", subtitle: "Collection dates, source details and checked comparisons", icon: "chart.xyaxis.line", color: Theme.accent)
+                }.buttonStyle(.plain).accessibilityIdentifier("openLabHistory")
                 NavigationLink { PlanAgendaView() } label: {
                     LumenRow("Your next steps", subtitle: "Pending actions from your active plans", icon: "list.bullet", color: Theme.accent)
                 }.buttonStyle(.plain)
@@ -114,8 +117,11 @@ struct DocumentDetailView: View {
                         }
                     }
                     if doc.kind == .plan { Text(doc.status.label).font(.subheadline.weight(.semibold)).foregroundStyle(Theme.accent) }
-                    if doc.kind == .record { LabResultsSection(document: doc) { reviewingLabs = true } }
-                    if doc.kind != .plan || doc.steps.isEmpty { DocumentBodyView(text: doc.body) }
+                    if doc.kind == .record && doc.labComparison == nil { LabResultsSection(document: doc) { reviewingLabs = true } }
+                    if let comparison = doc.labComparison {
+                        LabComparisonSection(document: doc)
+                        if !comparison.isCurrent(body: doc.body) { DocumentBodyView(text: doc.body) }
+                    } else if doc.kind != .plan || doc.steps.isEmpty { DocumentBodyView(text: doc.body) }
                     if doc.kind == .plan && !doc.steps.isEmpty { GroupLabel("Your plan steps") }
                     ForEach(doc.steps) { step in
                         Button {

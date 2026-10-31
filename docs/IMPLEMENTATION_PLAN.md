@@ -23,6 +23,10 @@ No diagnosis, medication changes, invented health measurements, speculative biol
 
 Urgent-symptom routing is deliberately conservative and does not diagnose. NHS headache guidance identifies sudden extremely painful headaches and neurological symptoms as reasons for emergency help: https://www.nhs.uk/symptoms/headaches/ . NHS chest-pain guidance covers persistent/sudden chest pain and associated breathing symptoms: https://www.nhs.uk/symptoms/chest-pain/ . The app refers to local emergency services rather than hard-coding a UK number. The generic under-seven-hour sleep observation is informed by CDC adult sleep guidance, not a personal clinical sleep prescription: https://www.cdc.gov/sleep/about/ . These sources do not validate Lumen's heuristic readiness score or its AI output.
 
-## Completion
+## Initial foundation checkpoint · 29 October 2026
 
 Implemented steps 1–8. All five build targets compile; 28 standalone Swift checks pass; the complete native smoke scenario passes on iPhone 18 Pro / iOS 27.0 with zero failures. See VERIFICATION.md for exact coverage, physical-device checks and supported import limits. Final implementation includes the refreshed app icon, source-aware totals, personal heart-signal baselines, historical summaries, editable logs, Library documents/checklists, and capped contextual notifications. No cloud deployment or App Store publication was performed.
+
+## Continuing delivery · 31 October 2026
+
+The initial foundation is not completion of the full product goal. The [roadmap](ROADMAP.md), [continuation handoff](CONTINUE_ON_NEW_COMPUTER.md) and dated [verification evidence](VERIFICATION.md) track subsequent batches and remaining gates. Batch 21 is published; Batch 22 implements [lab history and reviewed comparisons](LAB_HISTORY.md), verified locally with815 logic checks, all-product simulator/unsigned Release builds, scoped native journeys and final design sign-off; publication and cleanup are recorded in the handoff. Physical-device Health/Watch/voice delivery, broader ingestion/relevance, clinical review, live providers and release/privacy governance remain open.

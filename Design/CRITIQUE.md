@@ -450,3 +450,10 @@ The continuing App Designer Pro critic accepts R2 and supplemental cache-state/X
 ## Batch 20 · reviewed lab transcriptions
 
 The same continuing critic inspects13 original R1 frames, then22 settled NativeR3 originals. R1 is not done (9/11 lines4+, Finish3); R2 is done (10/11 lines4+, Richness3, Finish4), all five requests closed and no remaining concrete defects. Source comparison appears before acknowledgement; deletion/footers/search/large controls are refined. Exact glyphs, failed test history and the limits of stills versus behavioral checks remain in `native/labs/CRITIQUE.md` and `verification.json`. No app UI change follows sign-off.
+
+
+## Batch 22 · lab history and reviewed comparisons · 31 October 2026
+
+The same continuing App Designer Pro critic completes four rounds:39/55,39/55,42/55,43/55. It reads all42 R7 originals, all24 R9 plus11 SmallR2 originals, then all16 R10 originals and the retained compact action. Final10/11 applicable lines4+, Richness3; none below3 and Concept/Finish/Native/Copy all4. All named requests are closed: explicit selection/limits, source wording/actions, complete large-text dates, readable axis ink, plain current/captured decimal guidance, edited/current versus historical facts, stale unsaved sources, compact navigation and the full-size contained completion action. No new UI edit follows sign-off.
+
+Exact scorecards and source boundaries remain in [the native evidence](native/lab-history/README.md). R10/source-r11 is final presentation; R9/source-r10 retains edited/stale states; SmallR2/source-r10 retains the unchanged compact action; R7/source-r8 retains earlier functional/context evidence with superseded chart/copy pixels. Passing scoped cases are not an invented combined final-source suite, and earlier failures remain failed. No physical-device, VoiceOver, clinical or DOM-scan claim is made.

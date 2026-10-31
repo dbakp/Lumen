@@ -63,7 +63,7 @@ public struct LabTextSource: Codable, Sendable, Equatable {
         LabReport.bounded(excerpt, limit: 2000, required: true, multiline: true)
     }
     public func matches(_ body: String) -> Bool {
-        isValid && body.count >= end && String(body.dropFirst(start).prefix(end - start)) == excerpt
+        isValid && body.count >= end && String(body.dropFirst(start).prefix(end - start)).utf8.elementsEqual(excerpt.utf8)
     }
 }
 
@@ -102,7 +102,7 @@ public struct LabReport: Codable, Sendable, Equatable {
         let characters = Array(body)
         return observations.allSatisfy { observation in
             let source = observation.source
-            return source.isValid && source.end <= characters.count && String(characters[source.start..<source.end]) == source.excerpt
+            return source.isValid && source.end <= characters.count && String(characters[source.start..<source.end]).utf8.elementsEqual(source.excerpt.utf8)
         }
     }
     public var referenceText: String {

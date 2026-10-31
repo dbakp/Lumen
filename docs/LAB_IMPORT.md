@@ -26,7 +26,7 @@ Actual file-picker/mapping/subject/exclusion/correction/save/relaunch/duplicate/
 
 ## References and open scope
 
-[RFC 4180](https://www.rfc-editor.org/rfc/rfc4180) informs quoted CSV fields and embedded line breaks; this implementation also accepts LF/CR and applies the same quoting rules to TSV. [RFC 8259](https://www.rfc-editor.org/rfc/rfc8259) informs strict JSON syntax and literal numeric tokens. This is a bounded flat-table import, not FHIR ingestion, automatic PDF/OCR table interpretation, unit normalization, clinical interpretation or a comprehensive lab-format claim. Those and longitudinal comparison, real clinical accuracy, physical devices, live providers and release governance remain open.
+[RFC 4180](https://www.rfc-editor.org/rfc/rfc4180) informs quoted CSV fields and embedded line breaks; this implementation also accepts LF/CR and applies the same quoting rules to TSV. [RFC 8259](https://www.rfc-editor.org/rfc/rfc8259) informs strict JSON syntax and literal numeric tokens. This is a bounded flat-table import, not FHIR ingestion, automatic PDF/OCR table interpretation, unit normalization, clinical interpretation or a comprehensive lab-format claim. Those, real clinical accuracy, physical devices, live providers and release governance remain open. [Lab history and reviewed comparisons](LAB_HISTORY.md) are a separate Batch 22 feature with their own source and verification boundaries.
 
 ## Compatibility and review refinements in progress
 

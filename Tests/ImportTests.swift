@@ -4,6 +4,12 @@ import Darwin
 @main struct ImportTests {
     static func main() async throws {
         setbuf(stdout, nil)
+        if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--lab-history-captured-ui-fixture" {
+            try LabHistoryChecks.capturedFixture(URL(fileURLWithPath: CommandLine.arguments[2])); return
+        }
+        if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--lab-history-ui-fixtures" {
+            try LabHistoryChecks.fixtures(URL(fileURLWithPath: CommandLine.arguments[2])); return
+        }
         if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--lab-import-ui-fixtures" {
             try LabImportChecks.fixtures(URL(fileURLWithPath: CommandLine.arguments[2])); return
         }
@@ -40,6 +46,7 @@ import Darwin
         try ScheduledPlanChecks.run()
         try await LabReportChecks.run()
         try LabImportChecks.run()
+        try LabHistoryChecks.run()
         try MiniLMChecks.run()
         try await MiniLMChecks.cacheChecks()
         let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)

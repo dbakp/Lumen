@@ -1,4 +1,5 @@
 import XCTest
+import CryptoKit
 
 // MARK: - Lumen smoke test: fresh onboarding → every tab → logging → coach.
 // Screenshots are attached to the result bundle for visual review.
@@ -11,6 +12,236 @@ final class LumenSmokeTests: XCTestCase {
         app = XCUIApplication()
         app.launchArguments = ["-resetForUITests"]
         app.launch()
+    }
+
+    func historyIdentity(_ fields: [String]) -> String {
+        SHA256.hash(data: Data(fields.map { "\($0.utf8.count):" + $0 }.joined().utf8)).map { String(format: "%02x", $0) }.joined()
+    }
+    func historyPoint(_ record: String) -> String { historyIdentity([record, record + "-result"]) }
+    var earlierHistorySource: String { "Ferritin: 12.00 µg/L; collection 2026-01-20; Synthetic laboratory; Serum; Synthetic assay." }
+    func prepareHistoryFixture(fixture: String = "Lumen-backup-history", arguments: [String] = []) throws {
+        app.terminate(); app.launchArguments = ["-resetForUITests", "-librarySearchRemoteUITestMode"] + arguments; app.launch()
+        finishOnboarding(); openBackupSettings(); try chooseBackupFixture(fixture)
+        _ = backupPreview(); confirmBackupRestore()
+        app.navigationBars["Backup & restore"].buttons.element(boundBy: 0).tap(); tap("Done"); tab("Library")
+    }
+    func openHistoryRecords(_ ids: [String]) {
+        let history = app.buttons["openLabHistory"].firstMatch; reveal(history); history.tap()
+        XCTAssertTrue(app.buttons["reviewLabHistoryRecords"].waitForExistence(timeout: 5))
+        XCTAssertFalse(app.buttons["reviewLabHistoryRecords"].isEnabled)
+        snap("530-history-record-selection")
+        for id in ids { let record = app.buttons["history-record-" + id].firstMatch; reveal(record); record.tap(); XCTAssertEqual(record.value as? String, "Selected") }
+        tap("reviewLabHistoryRecords")
+        XCTAssertFalse(app.buttons["prepareLabHistory"].isEnabled)
+        nativeSwitch("labHistoryPersonChecked", enabled: true); snap("531-history-person-review")
+        tap("prepareLabHistory")
+        XCTAssertTrue(app.staticTexts["labHistoryPreparedCount"].waitForExistence(timeout: 20)); snap("532-history-test-groups")
+    }
+    func openFirstHistoryGroup() {
+        let group = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'history-group-'")).firstMatch
+        reveal(group); group.tap()
+        XCTAssertTrue(app.buttons["historyDecimal-dot"].waitForExistence(timeout: 5))
+    }
+    func selectHistoryResult(_ record: String) {
+        let button = app.buttons["history-select-" + historyPoint(record)].firstMatch; reveal(button); button.tap()
+        XCTAssertTrue(button.label.contains("Selected for comparison"))
+    }
+    func historyPlot() -> XCUIElement {
+        // Charts exposes both a virtual accessibility summary (whose frame can
+        // extend outside the content) and its actual interactive plot area.
+        // Scroll using the visible plot's geometry, not the virtual summary.
+        let candidates = app.otherElements.matching(identifier: "labHistoryNumericPlot")
+        let bounded = candidates.allElementsBoundByIndex.filter { !$0.frame.isEmpty && $0.frame.minX >= 0 && $0.frame.maxX <= app.frame.maxX }
+        return bounded.min { $0.frame.width * $0.frame.height < $1.frame.width * $1.frame.height } ?? candidates.firstMatch
+    }
+    func testLabHistoryComparison() throws {
+        try prepareHistoryFixture()
+        openHistoryRecords(["history-earlier", "history-later", "history-qualified", "history-undated", "history-zero"])
+        XCTAssertTrue(app.staticTexts["labHistoryPreparedCount"].label.contains("5 saved results"))
+        openFirstHistoryGroup()
+        XCTAssertFalse(app.descendants(matching: .any).matching(identifier: "labHistoryNumericPlot").firstMatch.exists)
+        tap("historyDecimal-dot")
+        let plot = historyPlot()
+        revealLabExcerpt(plot); snap("533-history-numeric-points")
+        plot.coordinate(withNormalizedOffset: CGVector(dx: 0.85, dy: 0.5)).tap()
+        let selectedDay = app.buttons["Show selected day"].firstMatch; XCTAssertTrue(selectedDay.waitForExistence(timeout: 5)); reveal(selectedDay); selectedDay.tap()
+        XCTAssertTrue(app.staticTexts["historyValue-" + historyPoint("history-later")].exists)
+        XCTAssertFalse(app.staticTexts["historyValue-" + historyPoint("history-earlier")].exists); snap("561-history-selected-collection-day")
+        let all = app.buttons["Show all results"].firstMatch; reveal(all); all.tap()
+        let coverage = app.staticTexts["labHistoryPlotCoverage"].firstMatch; reveal(coverage)
+        XCTAssertTrue(coverage.label.contains("3 of 3 numeric results") && coverage.label.contains("2 other results"))
+        let qualified = app.staticTexts["historyValue-" + historyPoint("history-qualified")].firstMatch
+        reveal(qualified); XCTAssertEqual(qualified.label, "<5,0"); snap("534-history-qualified-literal")
+        let undated = app.staticTexts["historyValue-" + historyPoint("history-undated")].firstMatch
+        reveal(undated); XCTAssertEqual(undated.label, "7.00"); snap("535-history-undated-literal")
+        let read = app.buttons["history-read-" + historyPoint("history-earlier")].firstMatch; reveal(read); read.tap()
+        let excerpt = app.staticTexts["historySourceExcerpt-" + historyPoint("history-earlier")].firstMatch
+        revealLabExcerpt(excerpt); XCTAssertTrue(excerpt.label.contains("12.00 µg/L")); snap("536-history-full-source")
+        tap("Done")
+        selectHistoryResult("history-later")
+        XCTAssertEqual(app.staticTexts["historyComparisonSelectionState"].label, "1 of 2 selected"); snap("562-history-one-of-two-selected")
+        selectHistoryResult("history-earlier"); tap("compareLabHistoryResults")
+        XCTAssertTrue(app.buttons["saveLabComparison"].waitForExistence(timeout: 5)); XCTAssertFalse(app.buttons["saveLabComparison"].isEnabled)
+        let difference = app.staticTexts["labComparisonDifference"].firstMatch; reveal(difference); XCTAssertEqual(difference.label, "6.5"); snap("537-history-review-difference")
+        nativeSwitch("acknowledgeLabComparison", enabled: true)
+        let comma = app.buttons["historyDecimal-comma"].firstMatch; reveal(comma); comma.tap()
+        XCTAssertFalse(app.buttons["saveLabComparison"].isEnabled)
+        XCTAssertTrue(app.staticTexts["labComparisonNoArithmetic"].exists); snap("538-history-interpretation-resets-review")
+        tap("historyDecimal-dot"); nativeSwitch("acknowledgeLabComparison", enabled: true); snap("539-history-ready-to-save")
+        tap("saveLabComparison")
+        XCTAssertTrue(app.staticTexts["labComparisonSaved"].waitForExistence(timeout: 15)); snap("540-history-comparison-saved")
+        tap("viewSavedLabComparison")
+        let captured = app.staticTexts["capturedLabDifference"].firstMatch; reveal(captured); XCTAssertEqual(captured.label, "6.5"); snap("541-history-saved-snapshot")
+        let sharing = app.switches["Use in assistant"].firstMatch; reveal(sharing); XCTAssertEqual(sharing.value as? String, "0", "A newly saved comparison starts with sharing off")
+        app.terminate(); app.launchArguments = ["-librarySearchRemoteUITestMode"]; app.launch(); tab("Library")
+        let saved = app.buttons["Lab comparison · 2026-01-20 to 2026-10-20"].firstMatch; reveal(saved); saved.tap()
+        reveal(captured); XCTAssertEqual(captured.label, "6.5"); snap("542-history-relaunched-snapshot")
+        let value = app.staticTexts["capturedLabValue-" + historyPoint("history-earlier")].firstMatch; reveal(value); XCTAssertEqual(value.label, "12.00")
+        let source = app.buttons["historySourceDisclosure-" + historyPoint("history-earlier")].firstMatch; reveal(source); source.tap()
+        // SwiftUI can propagate a DisclosureGroup identifier to its contents.
+        // Assert the exact visible source wording rather than a descendant ID.
+        let savedExcerpt = app.staticTexts[earlierHistorySource].firstMatch
+        revealLabExcerpt(savedExcerpt); XCTAssertEqual(savedExcerpt.label, earlierHistorySource); snap("543-history-saved-full-source")
+        app.navigationBars["Document"].buttons.element(boundBy: 0).tap()
+        openLabRecord("Synthetic report · history-earlier"); tap("Document actions"); tap("Edit")
+        let title = app.textFields["Document title"].firstMatch; XCTAssertTrue(title.waitForExistence(timeout: 5)); title.tap(); title.typeText(" corrected")
+        tap("Save"); app.navigationBars["Document"].buttons.element(boundBy: 0).tap()
+        let comparisonTitle = "Lab comparison · 2026-01-20 to 2026-10-20"
+        let comparisonRecord = app.buttons[comparisonTitle].firstMatch; reveal(comparisonRecord); comparisonRecord.tap()
+        let changedSource = app.staticTexts["Source record changed after this capture"].firstMatch; reveal(changedSource); snap("544-history-original-renamed")
+        XCTAssertEqual(value.label, "12.00")
+        app.navigationBars["Document"].buttons.element(boundBy: 0).tap()
+        openLabRecord("Synthetic report · history-later"); tap("Document actions"); tap("Delete"); tap("Delete")
+        reveal(comparisonRecord); comparisonRecord.tap()
+        let removedSource = app.staticTexts["Source record removed; this captured copy remains"].firstMatch; reveal(removedSource); snap("545-history-original-removed")
+        XCTAssertEqual(app.staticTexts["capturedLabValue-" + historyPoint("history-later")].firstMatch.label, "18.50")
+        app.terminate(); app.launchArguments = ["-librarySearchRemoteUITestMode"]; app.launch(); tab("Library"); reveal(comparisonRecord); comparisonRecord.tap()
+        reveal(removedSource); XCTAssertTrue(removedSource.exists); snap("546-history-removed-source-relaunch")
+    }
+
+    func testLabHistoryPresentation() throws {
+        try prepareHistoryFixture(arguments: ["-lumen.appearance", "dark"])
+        openHistoryRecords(["history-earlier", "history-later"]); openFirstHistoryGroup(); tap("historyDecimal-dot")
+        let plot = historyPlot()
+        revealLabExcerpt(plot); snap("547-history-dark-plot")
+        selectHistoryResult("history-later"); selectHistoryResult("history-earlier"); tap("compareLabHistoryResults")
+        let difference = app.staticTexts["labComparisonDifference"].firstMatch; reveal(difference); XCTAssertEqual(difference.label, "6.5"); snap("548-history-dark-comparison")
+        let comma = app.buttons["historyDecimal-comma"].firstMatch; reveal(comma); comma.tap()
+        let literal = app.staticTexts["labComparisonNoArithmetic"].firstMatch; reveal(literal); snap("577-history-dark-decimal-wording")
+        tap("cancelLabComparison")
+        app.terminate(); app.launchArguments = ["-librarySearchRemoteUITestMode", "-lumen.appearance", "light", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]; app.launch(); tab("Library")
+        openHistoryRecords(["history-earlier", "history-later"]); openFirstHistoryGroup(); tap("historyDecimal-dot")
+        revealLabExcerpt(plot); snap("549-history-xxxl-plot")
+        selectHistoryResult("history-later"); selectHistoryResult("history-earlier"); tap("compareLabHistoryResults")
+        reveal(difference); XCTAssertEqual(difference.label, "6.5"); snap("550-history-xxxl-comparison")
+        nativeSwitch("acknowledgeLabComparison", enabled: true); snap("551-history-xxxl-review-action")
+        tap("saveLabComparison"); XCTAssertTrue(app.staticTexts["labComparisonSaved"].waitForExistence(timeout: 15)); snap("552-history-xxxl-completion")
+        let view = app.buttons["viewSavedLabComparison"].firstMatch; reveal(view); XCTAssertTrue(view.isHittable); snap("576-history-xxxl-completion-action"); view.tap()
+        let value = app.staticTexts["capturedLabValue-" + historyPoint("history-earlier")].firstMatch; reveal(value); XCTAssertEqual(value.label, "12.00"); snap("553-history-xxxl-saved-literal")
+        let source = app.buttons["historySourceDisclosure-" + historyPoint("history-earlier")].firstMatch; reveal(source); source.tap()
+        let excerpt = app.staticTexts[earlierHistorySource].firstMatch; revealLabExcerpt(excerpt); XCTAssertEqual(excerpt.label, earlierHistorySource); snap("554-history-xxxl-exact-source")
+    }
+
+    func testLabHistoryLiteralContextsAndPaging() throws {
+        try prepareHistoryFixture()
+        openHistoryRecords(["history-imported", "history-imported-copy", "history-paged", "history-earlier", "history-other-lab", "history-qualitative"])
+        let base = historyIdentity(["Ferritin", "µg/L", "Synthetic laboratory", "Serum", "Synthetic assay", "Final"])
+        let other = historyIdentity(["Ferritin", "µg/L", "Other synthetic laboratory", "Serum", "Synthetic assay", "Final"])
+        let baseGroup = app.buttons["history-group-" + base].firstMatch; reveal(baseGroup); baseGroup.tap(); selectHistoryResult("history-earlier"); tap("historyAllTests")
+        let otherGroup = app.buttons["history-group-" + other].firstMatch; reveal(otherGroup); otherGroup.tap(); selectHistoryResult("history-other-lab"); tap("compareLabHistoryResults")
+        tap("historyDecimal-dot")
+        let unavailable = app.staticTexts["labComparisonNoArithmetic"].firstMatch; reveal(unavailable); XCTAssertTrue(unavailable.exists); snap("555-history-different-laboratories")
+        nativeSwitch("acknowledgeLabComparison", enabled: true); XCTAssertTrue(app.buttons["saveLabComparison"].isEnabled)
+        tap("cancelLabComparison"); tap("historyClearComparedResults"); tap("historyAllTests")
+        let pcr = historyIdentity(["PCR", "", "", "", "", ""])
+        let pcrGroup = app.buttons["history-group-" + pcr].firstMatch; reveal(pcrGroup); pcrGroup.tap(); tap("historyDecimal-literal")
+        let wording = app.staticTexts["historyValue-" + historyPoint("history-qualitative")].firstMatch; reveal(wording); XCTAssertEqual(wording.label, "Not detected"); snap("556-history-qualitative-wording-only")
+        XCTAssertFalse(app.descendants(matching: .any).matching(identifier: "labHistoryNumericPlot").firstMatch.exists)
+        tap("historyAllTests")
+        let paged = historyIdentity(["Paged synthetic test", "mg/L", "Synthetic laboratory", "Serum", "Synthetic assay", "Final"])
+        let pagedGroup = app.buttons["history-group-" + paged].firstMatch; reveal(pagedGroup); pagedGroup.tap(); tap("historyDecimal-literal")
+        let next = app.buttons["historyNextPage"].firstMatch; reveal(next); XCTAssertTrue(next.isEnabled); snap("557-history-page-one-complete")
+        var reported = Dictionary(uniqueKeysWithValues: app.staticTexts.matching(NSPredicate(format: "identifier BEGINSWITH 'historyValue-'")).allElementsBoundByIndex.map { ($0.identifier, $0.label) })
+        XCTAssertEqual(reported.count, 20); next.tap()
+        // Equal-day history is explicitly unordered within its day. Paging
+        // follows stable result IDs, so check the complete page count rather
+        // than assuming source-row 21 is the last displayed result.
+        let pageCount = app.staticTexts["labHistoryPageCount"].firstMatch; reveal(pageCount); XCTAssertEqual(pageCount.label, "21–21 of 21"); snap("558-history-last-page")
+        XCTAssertFalse(next.isEnabled); XCTAssertEqual(app.staticTexts.matching(NSPredicate(format: "identifier BEGINSWITH 'historyValue-'")).count, 1)
+        for value in app.staticTexts.matching(NSPredicate(format: "identifier BEGINSWITH 'historyValue-'")).allElementsBoundByIndex { XCTAssertNil(reported[value.identifier]); reported[value.identifier] = value.label }
+        XCTAssertEqual(reported.count, 21)
+        for row in 1...21 { XCTAssertEqual(reported["historyValue-" + historyIdentity(["history-paged", "history-paged-\(row)"])], "\(row).00") }
+        let previous = app.buttons["historyPreviousPage"].firstMatch; previous.tap(); reveal(pageCount); XCTAssertEqual(pageCount.label, "1–20 of 21")
+        tap("historyAllTests")
+        let copied = historyIdentity(["Synthetic copied cells", "µg/L", "Synthetic laboratory", "", "", ""])
+        let copiedGroup = app.buttons["history-group-" + copied].firstMatch; reveal(copiedGroup); copiedGroup.tap(); tap("historyDecimal-dot")
+        let duplicate = app.staticTexts["Selected records repeat the same imported cells. Choose one copy in the record selection."].firstMatch; reveal(duplicate); snap("559-history-duplicate-cells-block-plot")
+        let blockedCoverage = app.staticTexts["labHistoryPlotCoverage"].firstMatch; reveal(blockedCoverage); XCTAssertTrue(blockedCoverage.label.hasPrefix("0 of 2 numeric results"))
+        let selections = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'history-select-'")).allElementsBoundByIndex
+        XCTAssertEqual(selections.count, 2)
+        for button in selections { reveal(button); button.tap() }
+        tap("compareLabHistoryResults"); nativeSwitch("acknowledgeLabComparison", enabled: true)
+        XCTAssertFalse(app.buttons["saveLabComparison"].isEnabled); snap("560-history-duplicate-comparison-blocked"); tap("cancelLabComparison")
+    }
+
+    func testLabHistorySmallScreen() throws {
+        XCTAssertEqual(app.frame.width, 375); XCTAssertEqual(app.frame.height, 667)
+        try prepareHistoryFixture(arguments: ["-lumen.appearance", "light"])
+        openHistoryRecords(["history-earlier", "history-later"]); openFirstHistoryGroup()
+        let allTests = app.buttons["historyAllTests"].firstMatch; reveal(allTests); snap("575-history-all-tests-return")
+        tap("historyDecimal-dot")
+        let plot = historyPlot(); revealLabExcerpt(plot); snap("563-history-compact-plot")
+        selectHistoryResult("history-later")
+        XCTAssertEqual(app.staticTexts["historyComparisonSelectionState"].label, "1 of 2 selected"); snap("564-history-compact-one-selection")
+        selectHistoryResult("history-earlier"); tap("compareLabHistoryResults")
+        let difference = app.staticTexts["labComparisonDifference"].firstMatch; reveal(difference); XCTAssertEqual(difference.label, "6.5"); snap("565-history-compact-review")
+        nativeSwitch("acknowledgeLabComparison", enabled: true); snap("566-history-compact-acknowledgement")
+        tap("saveLabComparison"); XCTAssertTrue(app.staticTexts["labComparisonSaved"].waitForExistence(timeout: 15)); snap("567-history-compact-completion")
+        let view = app.buttons["viewSavedLabComparison"].firstMatch; reveal(view); view.tap()
+        let source = app.buttons["historySourceDisclosure-" + historyPoint("history-earlier")].firstMatch; reveal(source); source.tap()
+        let excerpt = app.staticTexts[earlierHistorySource].firstMatch; revealLabExcerpt(excerpt); XCTAssertEqual(excerpt.label, earlierHistorySource); snap("568-history-compact-exact-source")
+        let sharing = app.switches["Use in assistant"].firstMatch; reveal(sharing); XCTAssertEqual(sharing.value as? String, "0")
+        app.terminate(); app.launchArguments = ["-librarySearchRemoteUITestMode", "-lumen.appearance", "light"]; app.launch(); tab("Library")
+        let saved = app.buttons["Lab comparison · 2026-01-20 to 2026-10-20"].firstMatch; reveal(saved); saved.tap()
+        let captured = app.staticTexts["capturedLabDifference"].firstMatch; reveal(captured); XCTAssertEqual(captured.label, "6.5"); snap("569-history-compact-relaunched")
+    }
+
+    func testLabHistoryEditedSnapshot() throws {
+        try prepareHistoryFixture(fixture: "Lumen-backup-captured-comparison")
+        let document = app.buttons["Restored synthetic comparison"].firstMatch; reveal(document); document.tap()
+        let captured = app.staticTexts["capturedLabDifference"].firstMatch; reveal(captured); XCTAssertEqual(captured.label, "6.5")
+        tap("Document actions"); tap("Edit")
+        let notes = "My separately edited comparison notes. No current lab measurement is recorded here."
+        let body = app.textViews.firstMatch; reveal(body); body.tap(); body.typeKey("a", modifierFlags: .command); body.typeText(notes)
+        XCTAssertEqual(body.value as? String, notes); tap("Save")
+        let edited = app.staticTexts["labComparisonEditedText"].firstMatch; reveal(edited)
+        XCTAssertFalse(captured.exists, "Earlier arithmetic stays inside the separately labelled historical disclosure")
+        let currentText = app.staticTexts[notes].firstMatch; reveal(currentText); XCTAssertEqual(currentText.label, notes); snap("570-history-edited-current-text")
+        let earlier = app.buttons["Earlier captured comparison"].firstMatch; reveal(earlier); earlier.tap()
+        reveal(captured); XCTAssertEqual(captured.label, "6.5"); snap("571-history-earlier-captured-facts")
+        app.terminate(); app.launchArguments = ["-librarySearchRemoteUITestMode"]; app.launch(); tab("Library"); reveal(document); document.tap()
+        reveal(edited); XCTAssertTrue(edited.exists); XCTAssertFalse(captured.exists)
+        reveal(currentText); XCTAssertEqual(currentText.label, notes); snap("572-history-edited-snapshot-relaunch")
+        let sharing = app.switches["Use in assistant"].firstMatch; reveal(sharing); XCTAssertEqual(sharing.value as? String, "0")
+    }
+
+    func testLabHistoryChangedSourceDraft() throws {
+        try prepareHistoryFixture()
+        openHistoryRecords(["history-earlier", "history-later"]); openFirstHistoryGroup(); tap("historyDecimal-dot")
+        selectHistoryResult("history-later"); selectHistoryResult("history-earlier"); tap("compareLabHistoryResults")
+        nativeSwitch("acknowledgeLabComparison", enabled: true); XCTAssertTrue(app.buttons["saveLabComparison"].isEnabled)
+        let original = app.buttons["comparisonOpenSource-" + historyPoint("history-earlier")].firstMatch; reveal(original); original.tap()
+        tap("Document actions"); tap("Edit")
+        let title = app.textFields["Document title"].firstMatch; XCTAssertTrue(title.waitForExistence(timeout: 5)); title.tap(); title.typeText(" corrected while reviewing")
+        tap("Save"); app.navigationBars["Document"].buttons.element(boundBy: 0).tap()
+        let changed = app.staticTexts["labComparisonSourceChanged"].firstMatch; reveal(changed)
+        XCTAssertFalse(app.buttons["saveLabComparison"].isEnabled); snap("573-history-source-change-blocks-draft")
+        nativeSwitch("acknowledgeLabComparison", enabled: true); XCTAssertFalse(app.buttons["saveLabComparison"].isEnabled)
+        tap("cancelLabComparison")
+        let status = app.staticTexts["labHistorySourceStatus"].firstMatch; reveal(status); snap("574-history-refresh-requires-person-check")
+        XCTAssertTrue(status.label.contains("Check the intended person"))
+        app.terminate(); app.launchArguments = ["-librarySearchRemoteUITestMode"]; app.launch(); tab("Library")
+        XCTAssertFalse(app.buttons["Lab comparison · 2026-01-20 to 2026-10-20"].exists, "The source-changed draft has not created a saved comparison")
     }
 
     func snap(_ name: String) {
@@ -39,11 +270,23 @@ final class LumenSmokeTests: XCTestCase {
 
     func reveal(_ element: XCUIElement) {
         for _ in 0..<16 {
+            let targetIdentifier = element.exists ? element.identifier : ""
             let input = app.descendants(matching: .any).matching(identifier: "coachInput").firstMatch
-            let composerVisible = input.exists && input.isHittable && element.identifier != "coachInput"
+            let composerVisible = input.exists && input.isHittable && targetIdentifier != "coachInput"
             let top = app.navigationBars.firstMatch.exists ? app.navigationBars.firstMatch.frame.maxY + 16 : 130
             let bar = app.tabBars.firstMatch
             var bottom = composerVisible ? input.frame.minY - 20 : (bar.exists && bar.isHittable ? bar.frame.minY - 12 : app.frame.maxY - 40)
+            // Lab history's comparison inset sits above the tab bar. Start
+            // scrolling in content, clear of both fixed action rows.
+            for identifier in ["compareLabHistoryResults", "historyClearComparedResults"] where targetIdentifier != identifier {
+                let action = app.buttons[identifier].firstMatch
+                // A sheet can keep the background history's AX nodes. Reserve
+                // only the front screen's footer; Clear remains available even
+                // when a comparison is blocked.
+                if action.exists && action.isHittable && !action.frame.isEmpty && action.frame.minY > top && action.frame.minY < bottom { bottom = min(bottom, action.frame.minY - 12) }
+            }
+            let selectionStatus = app.staticTexts["historyComparisonSelectionState"].firstMatch
+            if selectionStatus.exists && selectionStatus.isHittable && !selectionStatus.frame.isEmpty && selectionStatus.frame.minY > top && selectionStatus.frame.minY < bottom { bottom = min(bottom, selectionStatus.frame.minY - 12) }
             if app.keyboards.firstMatch.exists { bottom = min(bottom, app.keyboards.firstMatch.frame.minY - 12) }
             // Native controls may report hittable while their centre is behind
             // a modal navigation bar. Check the actual visible content region.
