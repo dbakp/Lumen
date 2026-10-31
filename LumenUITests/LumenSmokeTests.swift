@@ -18,6 +18,187 @@ final class LumenSmokeTests: XCTestCase {
         SHA256.hash(data: Data(fields.map { "\($0.utf8.count):" + $0 }.joined().utf8)).map { String(format: "%02x", $0) }.joined()
     }
     func historyPoint(_ record: String) -> String { historyIdentity([record, record + "-result"]) }
+    func openUnitPair(coded: Bool = false, second: String = "unit-later") {
+        let firstID = coded ? "unit-coded-earlier" : "unit-earlier", secondID = coded ? "unit-coded-later" : second
+        openHistoryRecords([firstID, secondID])
+        if coded {
+            let first = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'history-group-' AND label BEGINSWITH 'Hemoglobin' ")).firstMatch; reveal(first); first.tap()
+        } else {
+            let first = app.buttons["history-group-" + historyIdentity(["Hemoglobin", "g/dL", "Synthetic laboratory", "Serum", "Synthetic assay", "Final"])].firstMatch; reveal(first); first.tap()
+        }
+        selectHistoryResult(firstID); tap("historyAllTests")
+        if coded {
+            let next = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'history-group-' AND label BEGINSWITH 'Hb' ")).firstMatch; reveal(next); next.tap()
+        } else {
+            let nextUnit = second == "unit-arbitrary" ? "IU/L" : "g/L"
+            let nextName = second == "unit-renamed" ? "Hb" : "Hemoglobin"
+            let next = app.buttons["history-group-" + historyIdentity([nextName, nextUnit, "Synthetic laboratory", "Serum", "Synthetic assay", "Final"])].firstMatch; reveal(next); next.tap()
+        }
+        selectHistoryResult(secondID); tap("compareLabHistoryResults"); tap("historyDecimal-dot")
+        XCTAssertTrue(app.staticTexts["labComparisonNoArithmetic"].waitForExistence(timeout: 5))
+        XCTAssertFalse(app.buttons["saveLabComparison"].isEnabled)
+    }
+    func editUnitTarget(_ value: String, capture: String) {
+        let button = app.buttons["editFull-normalizationTarget"].firstMatch; reveal(button); button.tap()
+        let field = app.textViews["normalizationCodeText"].firstMatch
+        XCTAssertTrue(field.waitForExistence(timeout: 5)); XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 5)); settleLabFrame(field)
+        labField("normalizationCodeText", value: value, replacing: true, doneIdentifier: "finishNormalizationCode", finish: value.count <= 100, inOpenEditor: true, capturePrefix: capture)
+        if value.count > 100 {
+            // Exercise the actual end insertion point with the software keyboard.
+            field.typeText(XCUIKeyboardKey.delete.rawValue); field.typeText(String(value.suffix(1)))
+            XCTAssertEqual(field.value as? String, value); settleLabFrame(field)
+            XCTAssertTrue(app.keyboards.firstMatch.exists && app.buttons["finishNormalizationCode"].isHittable)
+            snap(capture + "-end-caret-keyboard"); tap("finishNormalizationCode")
+        }
+    }
+    func checkUnitReview(coded: Bool = false, reviewedNames: Bool = false, capture: String? = nil) {
+        nativeSwitch("normalizationFirstChecked", enabled: true, towardsTop: true)
+        if let capture { revealLabExcerpt(app.switches["normalizationFirstChecked"].firstMatch); snap(capture + "-earlier-unit-checked") }
+        nativeSwitch("normalizationSecondChecked", enabled: true)
+        if let capture { revealLabExcerpt(app.switches["normalizationSecondChecked"].firstMatch); snap(capture + "-later-unit-checked") }
+        let picker = app.buttons["normalizationTestMatch"].firstMatch; reveal(picker); picker.tap(); tap(coded ? "Supplied test code" : (reviewedNames ? "My reviewed name match" : "Same reported name"))
+        if !coded { XCTAssertTrue(app.staticTexts["normalizationNameScope"].exists) }
+        if reviewedNames, let capture {
+            revealLabExcerpt(picker); snap(capture + "-reviewed-name-choice")
+            revealLabExcerpt(app.staticTexts["normalizationNameScope"].firstMatch); snap(capture + "-name-match-scope")
+        }
+        nativeSwitch("normalizationTestChecked", enabled: true)
+        if let capture { revealLabExcerpt(app.switches["normalizationTestChecked"].firstMatch); snap(capture + "-identity-checked") }
+    }
+    func saveUnitComparison(capture: String, expected: String = "15") {
+        let difference = app.staticTexts["labComparisonDifference"].firstMatch; reveal(difference); revealLabExcerpt(difference); XCTAssertEqual(difference.label, expected); snap(capture + "-difference")
+        nativeSwitch("acknowledgeLabComparison", enabled: true); XCTAssertTrue(app.buttons["saveLabComparison"].isEnabled)
+        if capture == "726-units-xxxl" {
+            revealLabExcerpt(app.switches["acknowledgeLabComparison"].firstMatch); snap(capture + "-final-acknowledgement")
+            // Save belongs to navigation chrome, above the scrollable content.
+            let save = app.buttons["saveLabComparison"].firstMatch; settleLabFrame(save)
+            XCTAssertTrue(save.isHittable && app.frame.contains(save.frame))
+            snap(capture + "-save-ready")
+        }
+        tap("saveLabComparison")
+        XCTAssertTrue(app.staticTexts["labComparisonSaved"].waitForExistence(timeout: 20))
+        let view = app.buttons["viewSavedLabComparison"].firstMatch; reveal(view); revealLabExcerpt(view); snap(capture + "-complete-action"); view.tap()
+        let captured = app.staticTexts["capturedLabDifference"].firstMatch; reveal(captured); XCTAssertEqual(captured.label, expected); snap(capture + "-saved")
+    }
+    func testLabUnitComparisonLifecycle() throws {
+        try prepareHistoryFixture(fixture: "Lumen-backup-unit-review")
+        openUnitPair(); snap("700-units-literal-before-review")
+        nativeSwitch("normalizeLabComparison", enabled: true); snap("701-units-review-unchecked")
+        let firstTarget = app.frame.width < 390 ? "g/L" + String(repeating: ".1", count: 56) : "g/L"
+        editUnitTarget(firstTarget, capture: "702-units-common-editor")
+        checkUnitReview()
+        let first = app.staticTexts["normalizedValue-0"].firstMatch; reveal(first); XCTAssertEqual(first.label, "120"); snap("703-units-converted-earlier")
+        XCTAssertEqual(app.staticTexts["normalizedReported-0"].label, "Reported: 12.00 g/dL")
+        let later = app.staticTexts["normalizedValue-1"].firstMatch; reveal(later); XCTAssertEqual(later.label, "135"); snap("704-units-converted-later")
+        nativeSwitch("acknowledgeLabComparison", enabled: true); XCTAssertTrue(app.buttons["saveLabComparison"].isEnabled)
+        let target = app.buttons["editFull-normalizationTarget"].firstMatch; reveal(target, towardsTop: true); target.tap()
+        labField("normalizationCodeText", value: "g/dL", replacing: true, doneIdentifier: "finishNormalizationCode", inOpenEditor: true)
+        XCTAssertFalse(app.buttons["saveLabComparison"].isEnabled)
+        XCTAssertEqual(app.switches["normalizationFirstChecked"].firstMatch.value as? String, "0"); snap("705-units-edit-resets-review")
+        editUnitTarget("g/L", capture: "706-units-common-correction")
+        nativeSwitch("normalizationFirstChecked", enabled: true, towardsTop: true); nativeSwitch("normalizationSecondChecked", enabled: true)
+        let support = app.buttons["normalizationSupported"].firstMatch; reveal(support); support.tap()
+        XCTAssertTrue(app.staticTexts["fhirFullText"].waitForExistence(timeout: 5)); snap("707-units-supported-reader")
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        saveUnitComparison(capture: "708-units")
+        let sharing = app.switches["Use in assistant"].firstMatch; reveal(sharing); XCTAssertEqual(sharing.value as? String, "0")
+        let source = app.staticTexts["capturedLabValue-" + historyPoint("unit-earlier")].firstMatch; reveal(source); XCTAssertEqual(source.label, "12.00"); snap("709-units-original-retained")
+        app.terminate(); app.launchArguments = ["-librarySearchRemoteUITestMode"]; app.launch(); tab("Library")
+        let saved = app.buttons["Lab comparison · 2026-01-20 to 2026-10-20"].firstMatch; reveal(saved); saved.tap()
+        let difference = app.staticTexts["capturedLabDifference"].firstMatch; reveal(difference); XCTAssertEqual(difference.label, "15"); snap("710-units-relaunched")
+        let receipt = app.buttons["capturedNormalizationReview"].firstMatch; reveal(receipt); receipt.tap()
+        XCTAssertTrue(app.staticTexts["fhirFullText"].waitForExistence(timeout: 5)); snap("711-units-captured-review")
+        XCTAssertFalse(app.staticTexts["fhirFullText"].label.contains("## Reviewed unit conversion"))
+        if app.frame.width >= 390 {
+            app.navigationBars.buttons.element(boundBy: 0).tap()
+            app.navigationBars["Document"].buttons.element(boundBy: 0).tap()
+            openLabRecord("Synthetic report · unit-earlier"); tap("Document actions"); tap("Edit")
+            let title = app.textFields["Document title"].firstMatch; XCTAssertTrue(title.waitForExistence(timeout: 5)); title.tap(); title.typeText(" corrected"); tap("Save")
+            app.navigationBars["Document"].buttons.element(boundBy: 0).tap(); reveal(saved); saved.tap()
+            let changed = app.staticTexts["Source record changed after this capture"].firstMatch; reveal(changed); snap("712-units-original-changed")
+            XCTAssertEqual(app.staticTexts["capturedLabDifference"].firstMatch.label, "15")
+            app.navigationBars["Document"].buttons.element(boundBy: 0).tap()
+            openLabRecord("Synthetic report · unit-later"); tap("Document actions"); tap("Delete"); tap("Delete")
+            reveal(saved); saved.tap()
+            let removed = app.staticTexts["Source record removed; this captured copy remains"].firstMatch; reveal(removed); snap("713-units-original-removed")
+            XCTAssertEqual(app.staticTexts["capturedLabValue-" + historyPoint("unit-later")].firstMatch.label, "135.00")
+            app.terminate(); app.launchArguments = ["-librarySearchRemoteUITestMode"]; app.launch(); tab("Library"); reveal(saved); saved.tap()
+            reveal(removed); XCTAssertTrue(removed.exists); XCTAssertEqual(app.staticTexts["capturedLabDifference"].firstMatch.label, "15"); snap("714-units-removed-source-relaunch")
+        }
+    }
+    func testLabUnitCodingAndUnsupported() throws {
+        try prepareHistoryFixture(fixture: "Lumen-backup-unit-review")
+        openUnitPair(coded: true); nativeSwitch("normalizeLabComparison", enabled: true)
+        editUnitTarget("g/L", capture: "740-units-coded-target"); checkUnitReview(coded: true)
+        let read = app.buttons["normalizationCodeReader"].firstMatch; reveal(read); read.tap()
+        let text = app.staticTexts["fhirFullText"].firstMatch; XCTAssertTrue(text.waitForExistence(timeout: 5)); XCTAssertTrue(text.label.contains("718-7") && text.label.contains("2.80")); snap("741-units-supplied-code")
+        app.navigationBars.buttons.element(boundBy: 0).tap(); saveUnitComparison(capture: "742-units-coded")
+        app.terminate(); app.launchArguments = ["-librarySearchRemoteUITestMode"]; app.launch(); tab("Library")
+        openUnitPair(second: "unit-arbitrary"); nativeSwitch("normalizeLabComparison", enabled: true)
+        editUnitTarget("g/L", capture: "743-units-unsupported-target"); checkUnitReview()
+        let unavailable = app.staticTexts["labComparisonNoArithmetic"].firstMatch; reveal(unavailable); revealLabExcerpt(unavailable); snap("744-units-unsupported-literal")
+        XCTAssertFalse(app.staticTexts["labComparisonDifference"].exists)
+        let reason = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH 'Later result:' AND label CONTAINS 'not supported for linear conversion: IU' ")).firstMatch; reveal(reason); XCTAssertTrue(reason.exists)
+    }
+    func testLabUnitComparisonPresentation() throws {
+        try prepareHistoryFixture(fixture: "Lumen-backup-unit-review", arguments: ["-lumen.appearance", "dark"])
+        openUnitPair(); nativeSwitch("normalizeLabComparison", enabled: true); editUnitTarget("g/L", capture: "720-units-dark-editor")
+        let help = app.buttons["normalizationSupported"].firstMatch; reveal(help); help.tap()
+        XCTAssertTrue(app.staticTexts["fhirFullText"].waitForExistence(timeout: 5)); app.swipeUp(velocity: .slow); snap("720-units-supported-limits")
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        checkUnitReview(); saveUnitComparison(capture: "721-units-dark")
+        app.terminate(); app.launchArguments = ["-librarySearchRemoteUITestMode", "-lumen.appearance", "light", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]; app.launch(); tab("Library")
+        openUnitPair(); nativeSwitch("normalizeLabComparison", enabled: true)
+        let match = app.buttons["normalizationTestMatch"].firstMatch; reveal(match); match.tap(); tap("Same reported name")
+        revealLabExcerpt(match); snap("722-units-xxxl-same-reported-name-choice")
+        revealLabExcerpt(app.staticTexts["normalizationNameScope"].firstMatch); snap("723-units-xxxl-same-name-scope")
+        app.terminate(); app.launch(); tab("Library")
+        openUnitPair(second: "unit-renamed"); nativeSwitch("normalizeLabComparison", enabled: true)
+        let longCode = "g/L" + String(repeating: ".1", count: 56)
+        editUnitTarget(longCode, capture: "724-units-xxxl-long-editor"); checkUnitReview(reviewedNames: true, capture: "724-units-xxxl")
+        let converted = app.staticTexts["normalizedValue-0"].firstMatch; reveal(converted); XCTAssertEqual(converted.label, "120"); snap("725-units-xxxl-converted")
+        saveUnitComparison(capture: "726-units-xxxl")
+        app.terminate(); app.launch(); tab("Library")
+        openUnitPair(coded: true); nativeSwitch("normalizeLabComparison", enabled: true)
+        reveal(match); match.tap(); tap("Supplied test code"); revealLabExcerpt(match); snap("727-units-xxxl-supplied-code-choice")
+    }
+    func testLabUnitCompleteAcknowledgements() throws {
+        try prepareHistoryFixture(fixture: "Lumen-backup-unit-review")
+        app.terminate(); app.launchArguments = ["-librarySearchRemoteUITestMode", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]; app.launch(); tab("Library")
+        openUnitPair(); nativeSwitch("normalizeLabComparison", enabled: true)
+        for (identifier, field, code, capture) in [
+            ("normalizationFirstChecked", "normalizationFirst", "g/dL", "750-units-xxxl-earlier-complete-acknowledgement"),
+            ("normalizationSecondChecked", "normalizationSecond", "g/L", "751-units-xxxl-later-complete-acknowledgement")
+        ] {
+            nativeSwitch(identifier, enabled: true, towardsTop: identifier == "normalizationFirstChecked")
+            let control = app.switches[identifier].firstMatch
+            let codeButton = app.buttons["editFull-" + field].firstMatch
+            XCTAssertEqual(codeButton.value as? String, code)
+            // At accessibility sizes the visible sentence is a sibling of the
+            // native switch. Keep the code, complete sentence and switch in one
+            // settled content frame, rather than checking the thumb alone.
+            let labels = app.staticTexts.matching(NSPredicate(format: "label == %@", "I checked this unit against the report")).allElementsBoundByIndex
+            let label = try XCTUnwrap(labels.filter { $0.frame.maxY <= control.frame.maxY }.min { abs($0.frame.maxY - control.frame.minY) < abs($1.frame.maxY - control.frame.minY) })
+            for _ in 0..<12 {
+                settleLabFrame(control)
+                let top = app.navigationBars.firstMatch.frame.maxY + 12, bottom = app.frame.maxY - 40
+                let region = codeButton.frame.union(label.frame).union(control.frame)
+                XCTAssertLessThanOrEqual(region.height, bottom - top)
+                if region.minY >= top && region.maxY <= bottom { break }
+                let above = region.minY < top, overflow = above ? top - region.minY : region.maxY - bottom
+                let distance = min(bottom - top - 40, max(40, overflow + 12)), startY = above ? top + 20 : bottom - 20
+                let start = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: startY))
+                let end = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: startY + (above ? distance : -distance)))
+                start.press(forDuration: 0.05, thenDragTo: end)
+            }
+            settleLabFrame(label); settleLabFrame(control)
+            let region = codeButton.frame.union(label.frame).union(control.frame)
+            XCTAssertGreaterThanOrEqual(region.minY, app.navigationBars.firstMatch.frame.maxY + 12)
+            XCTAssertLessThanOrEqual(region.maxY, app.frame.maxY - 40)
+            XCTAssertEqual(control.value as? String, "1"); snap(capture)
+        }
+        tap("cancelLabComparison")
+    }
     var earlierHistorySource: String { "Ferritin: 12.00 µg/L; collection 2026-01-20; Synthetic laboratory; Serum; Synthetic assay." }
     func prepareHistoryFixture(fixture: String = "Lumen-backup-history", arguments: [String] = []) throws {
         app.terminate(); app.launchArguments = ["-resetForUITests", "-librarySearchRemoteUITestMode"] + arguments; app.launch()
@@ -717,9 +898,10 @@ final class LumenSmokeTests: XCTestCase {
         let ready = app.descendants(matching: .any).matching(identifier: "recordPreviewReady").firstMatch
         XCTAssertTrue(ready.waitForExistence(timeout: 90)); XCTAssertFalse(app.alerts.firstMatch.exists)
     }
-    func nativeSwitch(_ identifier: String, enabled: Bool) {
-        let toggle = app.switches[identifier].firstMatch; reveal(toggle)
-        if identifier.contains("FHIR") { settleLabFrame(toggle) }
+    func nativeSwitch(_ identifier: String, enabled: Bool, towardsTop: Bool = false) {
+        let toggle = app.switches[identifier].firstMatch; reveal(toggle, towardsTop: towardsTop)
+        let touchThumb = identifier.contains("FHIR") || identifier.hasPrefix("normalization") || identifier == "normalizeLabComparison"
+        if touchThumb { settleLabFrame(toggle) }
         if (toggle.value as? String) != (enabled ? "1" : "0") {
             let control = toggle.switches.firstMatch
             if control.exists {
@@ -727,7 +909,7 @@ final class LumenSmokeTests: XCTestCase {
                 // Touch the visible native thumb. A labelled SwiftUI switch
                 // also exposes a larger outer AX rectangle; its centre can
                 // land on the label or a non-interactive part of the track.
-                if identifier.contains("FHIR") {
+                if touchThumb {
                     control.coordinate(withNormalizedOffset: CGVector(dx: enabled ? 0.25 : 0.75, dy: 0.5)).tap()
                 } else { control.tap() }
             } else { toggle.tap() }

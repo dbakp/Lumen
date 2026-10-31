@@ -14,6 +14,8 @@ struct LabComparisonReviewSheet: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.dynamicTypeSize) private var typeSize
     @State private var style: LabHistory.DecimalStyle?
+    @State private var normalizing = false
+    @State private var normalization: LabNormalizationReview
     @State private var acknowledged = false
     @State private var stale = false
     @State private var saving = false
@@ -23,13 +25,18 @@ struct LabComparisonReviewSheet: View {
     @State private var epoch = UUID()
     @State private var control: BackupOperationControl?
     @State private var job: Task<Void, Never>?
-    init(draft: LabHistoryComparisonDraft) { self.draft = draft; _style = State(initialValue: draft.style) }
+    init(draft: LabHistoryComparisonDraft) {
+        self.draft = draft; _style = State(initialValue: draft.style)
+        let points = [draft.firstID, draft.secondID].compactMap { key in draft.selection.points.first { $0.id == key } }
+        let assignments = points.map { LabUnitAssignment(pointID: $0.id, code: LabNormalization.proposedCode($0)) }
+        _normalization = State(initialValue: LabNormalizationReview(units: assignments, targetCode: assignments.first?.code ?? ""))
+    }
     private var comparison: LabHistory.Comparison? {
         guard let a = draft.selection.points.first(where: { $0.id == draft.firstID }), let b = draft.selection.points.first(where: { $0.id == draft.secondID }) else { return nil }
-        return LabHistory.compare(a, b, style: style, personChecked: true)
+        return LabHistory.compare(a, b, style: style, personChecked: true, normalization: normalizing ? normalization : nil)
     }
     private var canSave: Bool {
-        guard !saving, !stale, acknowledged, style != nil, saved == nil, let comparison else { return false }
+        guard !saving, !stale, acknowledged, style != nil, saved == nil, !normalizing || normalization.isReviewed, let comparison else { return false }
         return comparison.first.id != comparison.second.id && (comparison.first.importedCellsID == nil || comparison.first.importedCellsID != comparison.second.importedCellsID)
     }
     var body: some View {
@@ -48,12 +55,17 @@ struct LabComparisonReviewSheet: View {
                             if stale { Text("Saved records changed. Close this comparison and check the refreshed sources before saving.").foregroundStyle(Theme.secondary).accessibilityIdentifier("labComparisonSourceChanged") }
                             LabNumberStylePicker(style: $style)
                             Text(style?.explanation ?? "Choose a decimal mark, or keep the wording without a number calculation.").font(.footnote).foregroundStyle(Theme.secondary)
+                            LabHistoryToggle(title: "Compare in one unit", value: $normalizing, identifier: "normalizeLabComparison")
+                            if normalizing {
+                                LabUnitReviewFields(first: comparison.first, second: comparison.second, chronological: comparison.chronological, review: $normalization)
+                                LabConvertedValuesView(comparison: comparison)
+                            }
                             LabComparisonNumberView(comparison: comparison, captured: false)
                             ForEach(comparison.warnings, id: \.self) { Text($0).font(.footnote).foregroundStyle(Theme.secondary).fixedSize(horizontal: false, vertical: true) }
                             LabCapturedResultView(point: comparison.first, label: comparison.chronological ? "Earlier result" : "First result", expandedSource: true)
                             Divider()
                             LabCapturedResultView(point: comparison.second, label: comparison.chronological ? "Later result" : "Second result", expandedSource: true)
-                            LabHistoryToggle(title: "I checked both results, their sources and number interpretation", value: $acknowledged, identifier: "acknowledgeLabComparison")
+                            LabHistoryToggle(title: normalizing ? "I checked both results, their sources and the unit conversion" : "I checked both results, their sources and number interpretation", value: $acknowledged, identifier: "acknowledgeLabComparison")
                             Text("The selected records were checked as belonging to the intended person. Matching labels do not establish clinical comparability.").font(.footnote).foregroundStyle(Theme.secondary)
                             Text("Saves an independent snapshot with sharing off. Later source edits or deletion do not update that separate copy.").font(.footnote).foregroundStyle(Theme.secondary)
                         } else { Text("The selected results are no longer available. Close this comparison and choose them again.").foregroundStyle(Theme.secondary) }
@@ -67,6 +79,8 @@ struct LabComparisonReviewSheet: View {
             }
             .alert("Comparison wasn't saved", isPresented: Binding(get: { error != nil }, set: { if !$0 { error = nil } })) { Button("OK") { error = nil } } message: { Text(error ?? "") }
             .onChange(of: style) { _, _ in acknowledged = false }
+            .onChange(of: normalizing) { _, _ in acknowledged = false }
+            .onChange(of: normalization) { _, _ in acknowledged = false }
             .onReceive(companion.$documents.dropFirst()) { _ in
                 guard !committing, saved == nil else { return }
                 epoch = UUID(); stale = true; acknowledged = false; control?.cancel(); job?.cancel(); saving = false
@@ -88,13 +102,13 @@ struct LabComparisonReviewSheet: View {
     }
     private func save() {
         guard canSave else { return }
-        let next = BackupOperationControl(), token = epoch, documents = companion.documents, selection = draft.selection, first = draft.firstID, second = draft.secondID, interpretation = style
+        let next = BackupOperationControl(), token = epoch, documents = companion.documents, selection = draft.selection, first = draft.firstID, second = draft.secondID, interpretation = style, unitReview = normalizing ? normalization : nil
         saving = true; control = next
         job = Task { @MainActor in
             do {
                 let document = try await Task.detached(priority: .userInitiated) {
                     try next.checkCancellation()
-                    let value = try LabHistory.snapshot(selection, firstID: first, secondID: second, style: interpretation, personChecked: true, acknowledged: true, currentDocuments: documents)
+                    let value = try LabHistory.snapshot(selection, firstID: first, secondID: second, style: interpretation, personChecked: true, acknowledged: true, currentDocuments: documents, normalization: unitReview)
                     try next.checkCancellation(); return value
                 }.value
                 try next.checkCancellation(); guard epoch == token, !stale else { return }
@@ -118,10 +132,15 @@ struct LabComparisonNumberView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             if let difference = comparison.difference {
-                Text(captured ? "Captured number difference" : "Number difference").font(.headline)
+                Text(comparison.normalization == nil ? (captured ? "Captured number difference" : "Number difference") : (captured ? "Captured converted difference" : "Converted number difference")).font(.headline)
                 Text(difference).font(.title.bold()).fixedSize(horizontal: false, vertical: true).accessibilityIdentifier(captured ? "capturedLabDifference" : "labComparisonDifference")
-                Text("Later minus earlier · reported unit: " + comparison.first.observation.unit).foregroundStyle(Theme.secondary).fixedSize(horizontal: false, vertical: true)
-                Text("Arithmetic in the reported units. This is not a relative percentage or a clinical assessment.").font(.footnote).foregroundStyle(Theme.secondary)
+                if let normalized = comparison.normalization {
+                    Text("Later minus earlier · common unit: " + normalized.unit).foregroundStyle(Theme.secondary).fixedSize(horizontal: false, vertical: true)
+                    Text("Reference ranges and flags stay in their original units. This arithmetic does not assess the results.").font(.footnote).foregroundStyle(Theme.secondary)
+                } else {
+                    Text("Later minus earlier · reported unit: " + comparison.first.observation.unit).foregroundStyle(Theme.secondary).fixedSize(horizontal: false, vertical: true)
+                    Text("Arithmetic in the reported units. This is not a relative percentage or a clinical assessment.").font(.footnote).foregroundStyle(Theme.secondary)
+                }
             } else {
                 Text("Literal comparison").font(.headline)
                 Text("No numeric difference calculated.").foregroundStyle(Theme.secondary).accessibilityIdentifier("labComparisonNoArithmetic")
@@ -264,6 +283,14 @@ struct LabComparisonSection: View {
     private func captured(_ snapshot: LabComparisonSnapshot) -> some View {
         VStack(alignment: .leading, spacing: 24) {
             let comparison = snapshot.capturedComparison
+            if let normalized = comparison.normalization {
+                Text(normalized.identity).font(.footnote).foregroundStyle(Theme.secondary).fixedSize(horizontal: false, vertical: true)
+                if normalized.review.testMatch == .reportedName || normalized.review.testMatch == .reviewedNames {
+                    Text("This name match applies only to this snapshot. No terminology equivalence was verified.").font(.footnote).foregroundStyle(Theme.secondary).fixedSize(horizontal: false, vertical: true)
+                }
+                LabConvertedValuesView(comparison: comparison)
+                FHIRReaderLink("Captured unit review") { FHIRTextReader(title: "Captured unit review", text: snapshot.capturedReaderText) }.accessibilityIdentifier("capturedNormalizationReview")
+            }
             LabComparisonNumberView(comparison: comparison, captured: true)
             Text(LabHistory.DecimalStyle(rawValue: snapshot.decimalStyle)?.capturedExplanation ?? "Number interpretation unavailable").font(.footnote).foregroundStyle(Theme.secondary)
             ForEach(snapshot.warnings, id: \.self) { Text($0).font(.footnote).foregroundStyle(Theme.secondary) }

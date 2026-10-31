@@ -10,6 +10,7 @@ public struct LabComparisonSnapshot: Codable, Sendable, Equatable {
     public var reasons: [String]
     public var warnings: [String]
     public var bodySHA256: String
+    public var normalization: LabNormalizationReview? = nil
 
     public var isValid: Bool {
         guard version == 1, savedAt.timeIntervalSince1970.isFinite,
@@ -20,7 +21,13 @@ public struct LabComparisonSnapshot: Codable, Sendable, Equatable {
               (reasons + warnings).allSatisfy({ LabReport.bounded($0, limit: 2000, required: true) }) else { return false }
         let a = sources[0].point, b = sources[1].point
         guard a.importedCellsID == nil || a.importedCellsID != b.importedCellsID else { return false }
-        let expected = LabHistory.compare(a, b, style: style, personChecked: true)
+        if let normalization {
+            guard normalization.isReviewed, Set(normalization.units.map(\.pointID)) == Set([a.id, b.id]) else { return false }
+        }
+        let expected = LabHistory.compare(a, b, style: style, personChecked: true, normalization: normalization)
+        // Historical explanatory copy is not numeric authority. Recompute
+        // eligibility/value without making backup validity depend on UI copy.
+        if normalization != nil && expected.difference != numberDifference { return false }
         switch (expected.difference, numberDifference) {
         case (nil, nil): return !reasons.isEmpty
         case let (expected?, stored?):
@@ -38,12 +45,16 @@ public struct LabComparisonSnapshot: Codable, Sendable, Equatable {
     public func isCurrent(body: String) -> Bool { isValid && LabReport.digest(body) == bodySHA256.lowercased() }
 
     var capturedComparison: LabHistory.Comparison {
-        let comparison = LabHistory.compare(sources[0].point, sources[1].point, style: LabHistory.DecimalStyle(rawValue: decimalStyle), personChecked: true)
-        return LabHistory.Comparison(first: comparison.first, second: comparison.second, chronological: comparison.chronological, difference: numberDifference, reasons: reasons, warnings: warnings)
+        let comparison = LabHistory.compare(sources[0].point, sources[1].point, style: LabHistory.DecimalStyle(rawValue: decimalStyle), personChecked: true, normalization: normalization)
+        return LabHistory.Comparison(first: comparison.first, second: comparison.second, chronological: comparison.chronological, difference: numberDifference, reasons: reasons, warnings: warnings, normalization: comparison.normalization)
     }
     var capturedText: String {
         guard isValid, let style = LabHistory.DecimalStyle(rawValue: decimalStyle) else { return "" }
         return LabHistory.snapshotText(capturedComparison, style: style, now: savedAt)
+    }
+    var capturedReaderText: String {
+        guard isValid, let style = LabHistory.DecimalStyle(rawValue: decimalStyle) else { return "" }
+        return LabHistory.snapshotText(capturedComparison, style: style, now: savedAt, markdownHeadings: false)
     }
     func markdown(body: String) -> String {
         guard isValid else { return "" }

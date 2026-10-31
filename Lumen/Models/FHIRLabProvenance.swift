@@ -51,6 +51,7 @@ public struct FHIRResultSource: Codable, Sendable, Equatable {
         let scalar: String?
         let codingContext: String
         let eventIdentity: String
+        let normalization: LabNormalization.SourceFacts
     }
     private enum CodingKeys: String, CodingKey {
         case version, inputSHA256, resourcePath, fullURL, resourceIdentity, resourceVersion, componentIndex, valueKind, fields
@@ -75,6 +76,7 @@ public struct FHIRResultSource: Codable, Sendable, Equatable {
     var originalStatus: String? { facts?.status }
     var originalScalarToken: String? { facts?.scalar }
     var codingContext: String? { facts?.codingContext }
+    var normalizationFacts: LabNormalization.SourceFacts? { facts?.normalization }
     /// All components/versions of one observation share an event identity;
     /// different component slots retain separate literal-result identities.
     var eventIdentity: String? { facts?.eventIdentity }
@@ -156,7 +158,24 @@ public struct FHIRResultSource: Codable, Sendable, Equatable {
         let context = LabHistory.key([kind, codeToken, quantity?["system"]?.string ?? "", quantity?["code"]?.string ?? "", fields.first { $0.path == resourcePath + "/method" }?.token ?? "", fields.first { $0.path == resourcePath + "/bodySite" }?.token ?? ""] + fields.filter { $0.path.hasSuffix("/type") }.map(\.token))
         let sourceEvent = identity.map { "uri:" + $0 } ?? ("file:" + sha.lowercased() + ":" + resourcePath)
         let event = LabHistory.key([sourceEvent])
-        return Facts(status: status, scalar: scalar, codingContext: context, eventIdentity: event)
+        var codes: [LabTestCode] = [], complete = code.members!.allSatisfy { ["coding", "text", "id"].contains($0.name) }
+        if let quantity, quantity.members?.allSatisfy({ ["value", "unit", "system", "code", "comparator", "id"].contains($0.name) }) != true { complete = false }
+        if let coding = code["coding"] {
+            if let items = coding.elements, items.count <= 64 {
+                for item in items {
+                    guard let members = item.members, members.allSatisfy({ ["system", "code", "version", "display", "userSelected", "id"].contains($0.name) }) else { complete = false; continue }
+                    if item["system"] == nil && item["code"] == nil && item["version"] == nil { continue }
+                    guard let system = item["system"]?.string, let code = item["code"]?.string,
+                          item["version"].map({ $0.string != nil }) ?? true else { complete = false; continue }
+                    let value = LabTestCode(system: system, code: code, version: item["version"]?.string)
+                    if value.isValid { if !codes.contains(where: { $0.id == value.id }) { codes.append(value) } }
+                    else { complete = false }
+                }
+            } else { complete = false }
+        }
+        let clinical = LabHistory.key([fields.first { $0.path == resourcePath + "/method" }?.token ?? "", fields.first { $0.path == resourcePath + "/bodySite" }?.token ?? ""] + fields.filter { $0.path.hasSuffix("/type") }.map(\.token))
+        let normalization = LabNormalization.SourceFacts(codes: codes, complete: complete, unitSystem: quantity?["system"]?.string, unitCode: quantity?["code"]?.string, unitDisplay: quantity?["unit"]?.string, clinicalContext: clinical)
+        return Facts(status: status, scalar: scalar, codingContext: context, eventIdentity: event, normalization: normalization)
     }
 }
 

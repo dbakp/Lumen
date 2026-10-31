@@ -4,7 +4,9 @@ This batch adds structured, user-reviewed transcriptions to saved Library record
 
 ## Contract
 
-Each result retains the literal test name, result (including comparison signs, decimal punctuation or qualitative wording), unit, reported reference wording and reported flag. Laboratory, specimen and method stay literal or unknown. Multiline wording and whitespace remain literal. A collection day is optional and must be an explicitly reviewed YYYY-MM-DD calendar day; absent dates are not replaced with today. Lumen does not convert units, infer a normal range, assign high/low flags, map names to a clinical code or infer comparability/clinical meaning.
+Each result retains the literal test name, result (including comparison signs, decimal punctuation or qualitative wording), unit, reported reference wording and reported flag. Laboratory, specimen and method stay literal or unknown. Multiline wording and whitespace remain literal. A collection day is optional and must be an explicitly reviewed YYYY-MM-DD calendar day; absent dates are not replaced with today. This transcription preserves reported units and does not infer a normal range, assign high/low flags, map names to a clinical code or infer comparability/clinical meaning.
+
+An optional [reviewed unit comparison](LAB_NORMALIZATION.md) can separately convert two selected results after explicit unit and test-identity review. Its independent saved snapshot retains original and converted values; the source transcription and reference wording remain unchanged. See that contract for supported linear units and current verification scope.
 
 Results attach to an existing record, with stable identities and exact source excerpts/character offsets. Each review row exposes its complete source excerpt before saving. The review acknowledgement must be fresh after edits. Saving uses checked storage and rejects a concurrently changed/deleted record or a changed lab review. Sharing follows the current document choice; opening a review cannot reset a newer consent choice. Removing all transcriptions requires explicit review and preserves the source document.
 

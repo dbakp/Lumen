@@ -330,21 +330,14 @@ enum LabHistory {
         let difference: String?
         let reasons: [String]
         let warnings: [String]
+        var normalization: LabNormalization.Values? = nil
     }
-    static func compare(_ a: Point, _ b: Point, style: DecimalStyle?, personChecked: Bool) -> Comparison {
+    static func compare(_ a: Point, _ b: Point, style: DecimalStyle?, personChecked: Bool, normalization: LabNormalizationReview? = nil) -> Comparison {
+        if let normalization { return LabNormalization.compare(a, b, style: style, personChecked: personChecked, review: normalization) }
         let chronological = a.collectionDay != nil && b.collectionDay != nil && a.collectionDay != b.collectionDay
         let first = chronological && a.collectionDay! > b.collectionDay! ? b : a
         let second = chronological && a.collectionDay! > b.collectionDay! ? a : b
-        var reasons: [String] = []
-        if !personChecked { reasons.append(PlotIssue.person.message) }
-        if first.id == second.id { reasons.append(Failure.pair.localizedDescription) }
-        if first.importedCellsID != nil && first.importedCellsID == second.importedCellsID { reasons.append(Failure.duplicate.localizedDescription) }
-        if let event = first.observation.fhirSource?.eventIdentity, event == second.observation.fhirSource?.eventIdentity { reasons.append("These FHIR results belong to the same original observation event. They are not independent measurements.") }
-        for point in [first, second] { if let issue = point.fhirScalarIssue, !reasons.contains(issue) { reasons.append(issue) } }
-        if first.groupID != second.groupID { reasons.append(PlotIssue.context.message) }
-        if !LabReport.bounded(first.observation.unit, limit: 100, required: true, multiline: false) || !LabReport.bounded(second.observation.unit, limit: 100, required: true, multiline: false) { reasons.append(PlotIssue.unit.message) }
-        if first.observation.laboratory.isEmpty || second.observation.laboratory.isEmpty { reasons.append(PlotIssue.laboratory.message) }
-        if !chronological { reasons.append(a.collectionDay == nil || b.collectionDay == nil ? "A collection day is missing. Record timestamps were not used." : "The collection day is the same. Order within that day is unknown.") }
+        var reasons = comparisonReasons(first, second, personChecked: personChecked, chronological: chronological)
         var numbers: [Number] = []
         for (label, point) in [(chronological ? "Earlier result" : "First result", first), (chronological ? "Later result" : "Second result", second)] {
             switch number(point.observation.result, style: style) {
@@ -354,42 +347,76 @@ enum LabHistory {
         }
         var difference: String?
         if reasons.isEmpty && numbers.count == 2 {
-            var earlier = numbers[0].decimal, later = numbers[1].decimal, value = Decimal()
-            let status = NSDecimalSubtract(&value, &later, &earlier, .plain)
-            let canonical = NSDecimalNumber(decimal: value).stringValue
-            if status == .noError, !value.isNaN,
-               let expected = exactDifference(numbers[1].canonical, numbers[0].canonical), token(canonical) == expected,
-               case .success = number(canonical, style: .dot) { difference = canonical }
-            else { reasons.append("The exact decimal difference cannot be represented. Both reported values are retained.") }
+            difference = checkedDifference(later: numbers[1], earlier: numbers[0])
+            if difference == nil { reasons.append("The exact decimal difference cannot be represented. Both reported values are retained.") }
         }
         return Comparison(first: first, second: second, chronological: chronological, difference: difference, reasons: reasons, warnings: contextWarnings([first, second]))
     }
+    static func comparisonReasons(_ first: Point, _ second: Point, personChecked: Bool, chronological: Bool, exactContext: Bool = true, printedUnits: Bool = true) -> [String] {
+        var reasons: [String] = []
+        if !personChecked { reasons.append(PlotIssue.person.message) }
+        if first.id == second.id { reasons.append(Failure.pair.localizedDescription) }
+        if first.importedCellsID != nil && first.importedCellsID == second.importedCellsID { reasons.append(Failure.duplicate.localizedDescription) }
+        if let event = first.observation.fhirSource?.eventIdentity, event == second.observation.fhirSource?.eventIdentity { reasons.append("These FHIR results belong to the same original observation event. They are not independent measurements.") }
+        for point in [first, second] { if let issue = point.fhirScalarIssue, !reasons.contains(issue) { reasons.append(issue) } }
+        if exactContext && first.groupID != second.groupID { reasons.append(PlotIssue.context.message) }
+        if printedUnits && (!LabReport.bounded(first.observation.unit, limit: 100, required: true, multiline: false) || !LabReport.bounded(second.observation.unit, limit: 100, required: true, multiline: false)) { reasons.append(PlotIssue.unit.message) }
+        if first.observation.laboratory.isEmpty || second.observation.laboratory.isEmpty { reasons.append(PlotIssue.laboratory.message) }
+        if !chronological { reasons.append(first.collectionDay == nil || second.collectionDay == nil ? "A collection day is missing. Record timestamps were not used." : "The collection day is the same. Order within that day is unknown.") }
+        return reasons
+    }
+    static func checkedDifference(later: Number, earlier: Number) -> String? {
+        var earlierDecimal = earlier.decimal, laterDecimal = later.decimal, value = Decimal()
+        let status = NSDecimalSubtract(&value, &laterDecimal, &earlierDecimal, .plain)
+        let canonical = NSDecimalNumber(decimal: value).stringValue
+        guard status == .noError, !value.isNaN,
+              let expected = exactDifference(later.canonical, earlier.canonical), token(canonical) == expected,
+              case .success = number(canonical, style: .dot) else { return nil }
+        return canonical
+    }
 
-    static func snapshot(_ selection: Selection, firstID: String, secondID: String, style: DecimalStyle?, personChecked: Bool, acknowledged: Bool, currentDocuments: [HealthDocument], now: Date = Date()) throws -> HealthDocument {
+    static func snapshot(_ selection: Selection, firstID: String, secondID: String, style: DecimalStyle?, personChecked: Bool, acknowledged: Bool, currentDocuments: [HealthDocument], now: Date = Date(), normalization: LabNormalizationReview? = nil) throws -> HealthDocument {
         guard personChecked else { throw Failure.person }
         guard acknowledged, style != nil else { throw Failure.review }
+        if let normalization, !normalization.isReviewed { throw Failure.review }
         let current = try prepare(recordIDs: selection.records.map(\.id), documents: currentDocuments, now: now)
         guard zip(selection.records, current.records).allSatisfy({ $0.id == $1.id && $0.fingerprint == $1.fingerprint && $0.reviewedAt == $1.reviewedAt }) else { throw Failure.changed }
         guard firstID != secondID, let first = current.points.first(where: { $0.id == firstID }), let second = current.points.first(where: { $0.id == secondID }) else { throw Failure.pair }
         guard first.importedCellsID == nil || first.importedCellsID != second.importedCellsID else { throw Failure.duplicate }
-        let result = compare(first, second, style: style, personChecked: true)
+        let result = compare(first, second, style: style, personChecked: true, normalization: normalization)
         let body = snapshotText(result, style: style!, now: now)
         guard body.count <= RecordReview.maxCharacters, body.utf8.count <= RecordRetrieval.maxDocumentBytes else { throw Failure.size }
         var document = HealthDocument(title: "Lab comparison · " + (result.chronological ? result.first.collectionDay! + " to " + result.second.collectionDay! : "reported results"), kind: .review, body: body, source: "Lumen · checked lab comparison snapshot")
         document.createdAt = now; document.updatedAt = now; document.includeInAssistant = false
-        document.labComparison = LabComparisonSnapshot(savedAt: now, decimalStyle: style!.rawValue, sources: [.init(result.first), .init(result.second)], numberDifference: result.difference, reasons: result.reasons, warnings: result.warnings, bodySHA256: LabReport.digest(body))
+        document.labComparison = LabComparisonSnapshot(savedAt: now, decimalStyle: style!.rawValue, sources: [.init(result.first), .init(result.second)], numberDifference: result.difference, reasons: result.reasons, warnings: result.warnings, bodySHA256: LabReport.digest(body), normalization: normalization)
         guard document.labComparison!.isValid(in: document) else { throw Failure.changed }
         return document
     }
-    static func snapshotText(_ result: Comparison, style: DecimalStyle, now: Date) -> String {
+    static func snapshotText(_ result: Comparison, style: DecimalStyle, now: Date, markdownHeadings: Bool = true) -> String {
         let iso = ISO8601DateFormatter()
+        func heading(_ title: String) -> String { "\n\n" + (markdownHeadings ? "## " : "") + title + "\n" }
         var body = "Independent lab comparison snapshot. Checked and saved \(iso.string(from: now)). Later edits or deletion of source records do not update this separate copy. Check the current original reports before relying on it.\n\nNumber interpretation: \(style.capturedExplanation)\nThe selected records were checked by you as belonging to the intended person. This snapshot does not establish clinical comparability or interpret results."
+        if let normalized = result.normalization {
+            body += heading("Reviewed unit conversion") + "Common target UCUM code: " + normalized.unit + "\nTest identity basis: " + normalized.identity
+            if normalized.review.testMatch == .reportedName || normalized.review.testMatch == .reviewedNames {
+                body += "\nThis name match applies only to this snapshot. No terminology equivalence was verified."
+            }
+            body += "\nSource values, units, flags and reference wording remain unchanged. Reference ranges were not converted."
+            for point in [result.first, result.second] {
+                if let assignment = normalized.review.units.first(where: { $0.pointID == point.id }) {
+                    body += "\n\nResult ID: " + point.observation.id + "\nReported unit wording: " + (point.observation.unit.isEmpty ? "Not recorded" : point.observation.unit) + "\nYour reviewed source UCUM code: " + assignment.code
+                    if let converted = normalized.converted.first(where: { $0.pointID == point.id }) { body += "\nAssignment basis: " + converted.basis + "\nExact conversion factor: " + converted.factor + "\nConverted number: " + converted.value + " " + normalized.unit }
+                    else { body += "\nNo converted number was retained for this result." }
+                }
+            }
+        }
         if let difference = result.difference {
-            body += "\n\n## Number difference\nLater minus earlier: \(difference)\nReported unit: \(result.first.observation.unit)\nArithmetic in the reported units, not a relative percentage or clinical assessment."
-        } else { body += "\n\n## Literal comparison\nNo numeric difference was calculated.\n" + result.reasons.joined(separator: "\n") }
+            if let normalized = result.normalization { body += heading("Converted number difference") + "Later minus earlier: " + difference + "\nCommon unit: " + normalized.unit + "\nExact arithmetic after the reviewed conversions, not a clinical assessment." }
+            else { body += heading("Number difference") + "Later minus earlier: \(difference)\nReported unit: \(result.first.observation.unit)\nArithmetic in the reported units, not a relative percentage or clinical assessment." }
+        } else { body += heading("Literal comparison") + "No numeric difference was calculated.\n" + result.reasons.joined(separator: "\n") }
         if !result.warnings.isEmpty { body += "\n\nContext to check\n" + result.warnings.joined(separator: "\n") }
         for (label, point) in [(result.chronological ? "Earlier result" : "First result", result.first), (result.chronological ? "Later result" : "Second result", result.second)] {
-            body += "\n\n## \(label)\nRecord: \(point.record.title)\nRecord source: \(point.record.source)\nRecord ID: \(point.record.id)\nResult ID: \(point.observation.id)\nSource content SHA-256: \(point.record.fingerprint)\nSource review: \(iso.string(from: point.record.reviewedAt))\nOriginal person label: \(point.record.personLabel)\n\n\(point.observation.referenceText)\n\nExact saved source excerpt\n\(point.observation.source.excerpt)"
+            body += heading(label) + "Record: \(point.record.title)\nRecord source: \(point.record.source)\nRecord ID: \(point.record.id)\nResult ID: \(point.observation.id)\nSource content SHA-256: \(point.record.fingerprint)\nSource review: \(iso.string(from: point.record.reviewedAt))\nOriginal person label: \(point.record.personLabel)\n\n\(point.observation.referenceText)\n\nExact saved source excerpt\n\(point.observation.source.excerpt)"
             if let origin = point.record.origin { body += "\n\nHistorical original-file receipt\n" + origin.referenceText }
             if let origin = point.record.fhirOrigin { body += "\n\nHistorical FHIR import receipt\n" + origin.referenceText }
         }
