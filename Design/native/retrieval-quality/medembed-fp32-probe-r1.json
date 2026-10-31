@@ -1,0 +1,2002 @@
+{
+  "scope": "Pinned MedEmbed upstream FP32 CLS-pooling probe, original diagnostic plus manual input hypotheses; no shipped behavior or clinical validation. No Core ML parity claimed yet.",
+  "repository": "abhinand/MedEmbed-small-v0.1",
+  "revision": "40a5850d046cfdb56154e332b4d7099b63e8d50e",
+  "pooling": {
+    "word_embedding_dimension": 384,
+    "pooling_mode_cls_token": true,
+    "pooling_mode_mean_tokens": false,
+    "pooling_mode_max_tokens": false,
+    "pooling_mode_mean_sqrt_len_tokens": false,
+    "pooling_mode_weightedmean_tokens": false,
+    "pooling_mode_lasttoken": false,
+    "include_prompt": true
+  },
+  "elapsedMacSeconds": 1.8215877918992192,
+  "cases": [
+    {
+      "id": "differently-worded-fatigue",
+      "form": "original",
+      "question": "What did my saved notes say about feeling exhausted?",
+      "documentInput": "title+body",
+      "expected": [
+        "fatigue"
+      ],
+      "scores": [
+        {
+          "documentID": "fatigue",
+          "similarity": 0.7734629169025582
+        },
+        {
+          "documentID": "sleep",
+          "similarity": 0.7210613509735312
+        },
+        {
+          "documentID": "left-ankle",
+          "similarity": 0.6543669320786965
+        },
+        {
+          "documentID": "no-swelling",
+          "similarity": 0.6420130995002213
+        },
+        {
+          "documentID": "right-ankle",
+          "similarity": 0.6218039053170954
+        },
+        {
+          "documentID": "ferritin",
+          "similarity": 0.6178830182525619
+        },
+        {
+          "documentID": "edema",
+          "similarity": 0.6175247076566805
+        },
+        {
+          "documentID": "glucose",
+          "similarity": 0.6106951282376668
+        },
+        {
+          "documentID": "finance",
+          "similarity": 0.6101090228602382
+        },
+        {
+          "documentID": "battery",
+          "similarity": 0.6047458293386906
+        },
+        {
+          "documentID": "iron-pan",
+          "similarity": 0.5198929657879389
+        }
+      ]
+    },
+    {
+      "id": "differently-worded-fatigue",
+      "form": "original",
+      "question": "What did my saved notes say about feeling exhausted?",
+      "documentInput": "body",
+      "expected": [
+        "fatigue"
+      ],
+      "scores": [
+        {
+          "documentID": "fatigue",
+          "similarity": 0.7439162983577361
+        },
+        {
+          "documentID": "sleep",
+          "similarity": 0.6833738508091486
+        },
+        {
+          "documentID": "no-swelling",
+          "similarity": 0.6483330142455854
+        },
+        {
+          "documentID": "ferritin",
+          "similarity": 0.6310795099394827
+        },
+        {
+          "documentID": "battery",
+          "similarity": 0.6184973432716377
+        },
+        {
+          "documentID": "finance",
+          "similarity": 0.6123920284173551
+        },
+        {
+          "documentID": "right-ankle",
+          "similarity": 0.5977705064603054
+        },
+        {
+          "documentID": "left-ankle",
+          "similarity": 0.5914892575865242
+        },
+        {
+          "documentID": "glucose",
+          "similarity": 0.5852190171182332
+        },
+        {
+          "documentID": "edema",
+          "similarity": 0.5844512406542772
+        },
+        {
+          "documentID": "iron-pan",
+          "similarity": 0.5020511163172994
+        }
+      ]
+    },
+    {
+      "id": "differently-worded-fatigue",
+      "form": "manual-compact-probe",
+      "question": "feeling exhausted",
+      "documentInput": "title+body",
+      "expected": [
+        "fatigue"
+      ],
+      "scores": [
+        {
+          "documentID": "fatigue",
+          "similarity": 0.7692968164215035
+        },
+        {
+          "documentID": "sleep",
+          "similarity": 0.7100468800119146
+        },
+        {
+          "documentID": "no-swelling",
+          "similarity": 0.6180494025706116
+        },
+        {
+          "documentID": "glucose",
+          "similarity": 0.6073938941262338
+        },
+        {
+          "documentID": "left-ankle",
+          "similarity": 0.6037256239820856
+        },
+        {
+          "documentID": "battery",
+          "similarity": 0.6036459107890375
+        },
+        {
+          "documentID": "ferritin",
+          "similarity": 0.6002282039428302
+        },
+        {
+          "documentID": "edema",
+          "similarity": 0.5962940814974719
+        },
+        {
+          "documentID": "right-ankle",
+          "similarity": 0.5793350759975358
+        },
+        {
+          "documentID": "finance",
+          "similarity": 0.5453252042001034
+        },
+        {
+          "documentID": "iron-pan",
+          "similarity": 0.4983321812593731
+        }
+      ]
+    },
+    {
+      "id": "differently-worded-fatigue",
+      "form": "manual-compact-probe",
+      "question": "feeling exhausted",
+      "documentInput": "body",
+      "expected": [
+        "fatigue"
+      ],
+      "scores": [
+        {
+          "documentID": "fatigue",
+          "similarity": 0.7867585029591548
+        },
+        {
+          "documentID": "sleep",
+          "similarity": 0.7291185882509685
+        },
+        {
+          "documentID": "battery",
+          "similarity": 0.6332180254568223
+        },
+        {
+          "documentID": "no-swelling",
+          "similarity": 0.6298783090046185
+        },
+        {
+          "documentID": "ferritin",
+          "similarity": 0.6058109191931424
+        },
+        {
+          "documentID": "left-ankle",
+          "similarity": 0.5998754122853766
+        },
+        {
+          "documentID": "glucose",
+          "similarity": 0.5980072119326858
+        },
+        {
+          "documentID": "edema",
+          "similarity": 0.5844262555522337
+        },
+        {
+          "documentID": "right-ankle",
+          "similarity": 0.5706337143270366
+        },
+        {
+          "documentID": "finance",
+          "similarity": 0.5449526935231447
+        },
+        {
+          "documentID": "iron-pan",
+          "similarity": 0.5008282312614947
+        }
+      ]
+    },
+    {
+      "id": "differently-worded-sleep",
+      "form": "original",
+      "question": "Find records about trouble getting to sleep.",
+      "documentInput": "title+body",
+      "expected": [
+        "sleep"
+      ],
+      "scores": [
+        {
+          "documentID": "sleep",
+          "similarity": 0.7945674790216553
+        },
+        {
+          "documentID": "fatigue",
+          "similarity": 0.6863589609670876
+        },
+        {
+          "documentID": "edema",
+          "similarity": 0.6246547702776548
+        },
+        {
+          "documentID": "battery",
+          "similarity": 0.6228983879407544
+        },
+        {
+          "documentID": "right-ankle",
+          "similarity": 0.6201420006927089
+        },
+        {
+          "documentID": "no-swelling",
+          "similarity": 0.6049222331385011
+        },
+        {
+          "documentID": "ferritin",
+          "similarity": 0.6045735863694345
+        },
+        {
+          "documentID": "glucose",
+          "similarity": 0.5909628517004627
+        },
+        {
+          "documentID": "left-ankle",
+          "similarity": 0.5797595653735763
+        },
+        {
+          "documentID": "finance",
+          "similarity": 0.5687684408857823
+        },
+        {
+          "documentID": "iron-pan",
+          "similarity": 0.4783943946374495
+        }
+      ]
+    },
+    {
+      "id": "differently-worded-sleep",
+      "form": "original",
+      "question": "Find records about trouble getting to sleep.",
+      "documentInput": "body",
+      "expected": [
+        "sleep"
+      ],
+      "scores": [
+        {
+          "documentID": "sleep",
+          "similarity": 0.7299897315537044
+        },
+        {
+          "documentID": "fatigue",
+          "similarity": 0.6747178652743636
+        },
+        {
+          "documentID": "no-swelling",
+          "similarity": 0.6214222512708262
+        },
+        {
+          "documentID": "battery",
+          "similarity": 0.6205463723364898
+        },
+        {
+          "documentID": "edema",
+          "similarity": 0.6127640142806331
+        },
+        {
+          "documentID": "ferritin",
+          "similarity": 0.6119418417544681
+        },
+        {
+          "documentID": "right-ankle",
+          "similarity": 0.6087798965140903
+        },
+        {
+          "documentID": "glucose",
+          "similarity": 0.5731241222245542
+        },
+        {
+          "documentID": "finance",
+          "similarity": 0.5718685206636386
+        },
+        {
+          "documentID": "left-ankle",
+          "similarity": 0.5435366305718141
+        },
+        {
+          "documentID": "iron-pan",
+          "similarity": 0.4880249526670357
+        }
+      ]
+    },
+    {
+      "id": "differently-worded-sleep",
+      "form": "manual-compact-probe",
+      "question": "trouble getting to sleep",
+      "documentInput": "title+body",
+      "expected": [
+        "sleep"
+      ],
+      "scores": [
+        {
+          "documentID": "sleep",
+          "similarity": 0.8019817629671598
+        },
+        {
+          "documentID": "fatigue",
+          "similarity": 0.6574535837350158
+        },
+        {
+          "documentID": "battery",
+          "similarity": 0.5901708989590088
+        },
+        {
+          "documentID": "no-swelling",
+          "similarity": 0.5471576704321798
+        },
+        {
+          "documentID": "glucose",
+          "similarity": 0.5466582569630178
+        },
+        {
+          "documentID": "edema",
+          "similarity": 0.5329820489003381
+        },
+        {
+          "documentID": "right-ankle",
+          "similarity": 0.5297894273993855
+        },
+        {
+          "documentID": "ferritin",
+          "similarity": 0.523964191917365
+        },
+        {
+          "documentID": "left-ankle",
+          "similarity": 0.5028258336507718
+        },
+        {
+          "documentID": "finance",
+          "similarity": 0.46406619534655735
+        },
+        {
+          "documentID": "iron-pan",
+          "similarity": 0.4170109353349687
+        }
+      ]
+    },
+    {
+      "id": "differently-worded-sleep",
+      "form": "manual-compact-probe",
+      "question": "trouble getting to sleep",
+      "documentInput": "body",
+      "expected": [
+        "sleep"
+      ],
+      "scores": [
+        {
+          "documentID": "sleep",
+          "similarity": 0.8033861406622799
+        },
+        {
+          "documentID": "fatigue",
+          "similarity": 0.6580888793727384
+        },
+        {
+          "documentID": "battery",
+          "similarity": 0.620923821649203
+        },
+        {
+          "documentID": "no-swelling",
+          "similarity": 0.5621960888309517
+        },
+        {
+          "documentID": "glucose",
+          "similarity": 0.5422870954594021
+        },
+        {
+          "documentID": "edema",
+          "similarity": 0.5281836759820756
+        },
+        {
+          "documentID": "ferritin",
+          "similarity": 0.5270417423045299
+        },
+        {
+          "documentID": "right-ankle",
+          "similarity": 0.5144557974863188
+        },
+        {
+          "documentID": "left-ankle",
+          "similarity": 0.4957646110224302
+        },
+        {
+          "documentID": "finance",
+          "similarity": 0.4708638303900512
+        },
+        {
+          "documentID": "iron-pan",
+          "similarity": 0.41992116014796044
+        }
+      ]
+    },
+    {
+      "id": "differently-worded-edema",
+      "form": "original",
+      "question": "Which notes describe swelling in both feet?",
+      "documentInput": "title+body",
+      "expected": [
+        "edema"
+      ],
+      "scores": [
+        {
+          "documentID": "left-ankle",
+          "similarity": 0.8082759080224821
+        },
+        {
+          "documentID": "edema",
+          "similarity": 0.7627916535843826
+        },
+        {
+          "documentID": "no-swelling",
+          "similarity": 0.7468961408413366
+        },
+        {
+          "documentID": "right-ankle",
+          "similarity": 0.7459096924271733
+        },
+        {
+          "documentID": "ferritin",
+          "similarity": 0.6097830425264781
+        },
+        {
+          "documentID": "sleep",
+          "similarity": 0.5913299818340743
+        },
+        {
+          "documentID": "fatigue",
+          "similarity": 0.5702824479181259
+        },
+        {
+          "documentID": "glucose",
+          "similarity": 0.5584125200087737
+        },
+        {
+          "documentID": "battery",
+          "similarity": 0.5313865079535173
+        },
+        {
+          "documentID": "finance",
+          "similarity": 0.5020751925471123
+        },
+        {
+          "documentID": "iron-pan",
+          "similarity": 0.4729468617528634
+        }
+      ]
+    },
+    {
+      "id": "differently-worded-edema",
+      "form": "original",
+      "question": "Which notes describe swelling in both feet?",
+      "documentInput": "body",
+      "expected": [
+        "edema"
+      ],
+      "scores": [
+        {
+          "documentID": "right-ankle",
+          "similarity": 0.7782011874503529
+        },
+        {
+          "documentID": "left-ankle",
+          "similarity": 0.7572807693582299
+        },
+        {
+          "documentID": "no-swelling",
+          "similarity": 0.7498189872487457
+        },
+        {
+          "documentID": "edema",
+          "similarity": 0.7423517611100899
+        },
+        {
+          "documentID": "ferritin",
+          "similarity": 0.6106699492002821
+        },
+        {
+          "documentID": "sleep",
+          "similarity": 0.5425378172501159
+        },
+        {
+          "documentID": "fatigue",
+          "similarity": 0.5367683038474128
+        },
+        {
+          "documentID": "battery",
+          "similarity": 0.5314880914136996
+        },
+        {
+          "documentID": "finance",
+          "similarity": 0.5312110675984828
+        },
+        {
+          "documentID": "glucose",
+          "similarity": 0.5217684950437783
+        },
+        {
+          "documentID": "iron-pan",
+          "similarity": 0.4603705680840723
+        }
+      ]
+    },
+    {
+      "id": "differently-worded-edema",
+      "form": "manual-compact-probe",
+      "question": "swelling in both feet",
+      "documentInput": "title+body",
+      "expected": [
+        "edema"
+      ],
+      "scores": [
+        {
+          "documentID": "no-swelling",
+          "similarity": 0.7899059987476266
+        },
+        {
+          "documentID": "left-ankle",
+          "similarity": 0.7837464794170131
+        },
+        {
+          "documentID": "right-ankle",
+          "similarity": 0.7652784764800163
+        },
+        {
+          "documentID": "edema",
+          "similarity": 0.7428549127193029
+        },
+        {
+          "documentID": "fatigue",
+          "similarity": 0.5806647303489035
+        },
+        {
+          "documentID": "ferritin",
+          "similarity": 0.5675320595529437
+        },
+        {
+          "documentID": "sleep",
+          "similarity": 0.5607608560733512
+        },
+        {
+          "documentID": "glucose",
+          "similarity": 0.5378964584887562
+        },
+        {
+          "documentID": "battery",
+          "similarity": 0.5024842951432182
+        },
+        {
+          "documentID": "iron-pan",
+          "similarity": 0.4860444995246404
+        },
+        {
+          "documentID": "finance",
+          "similarity": 0.466906344892583
+        }
+      ]
+    },
+    {
+      "id": "differently-worded-edema",
+      "form": "manual-compact-probe",
+      "question": "swelling in both feet",
+      "documentInput": "body",
+      "expected": [
+        "edema"
+      ],
+      "scores": [
+        {
+          "documentID": "left-ankle",
+          "similarity": 0.8100589257402767
+        },
+        {
+          "documentID": "no-swelling",
+          "similarity": 0.7936783195575744
+        },
+        {
+          "documentID": "right-ankle",
+          "similarity": 0.7862520001880969
+        },
+        {
+          "documentID": "edema",
+          "similarity": 0.7461128807046156
+        },
+        {
+          "documentID": "sleep",
+          "similarity": 0.5782976070067863
+        },
+        {
+          "documentID": "ferritin",
+          "similarity": 0.5720287032250657
+        },
+        {
+          "documentID": "fatigue",
+          "similarity": 0.550171773439735
+        },
+        {
+          "documentID": "battery",
+          "similarity": 0.5148696840054248
+        },
+        {
+          "documentID": "glucose",
+          "similarity": 0.5144702062507328
+        },
+        {
+          "documentID": "finance",
+          "similarity": 0.4953808563114357
+        },
+        {
+          "documentID": "iron-pan",
+          "similarity": 0.49114669376147735
+        }
+      ]
+    },
+    {
+      "id": "iron-stores-known-risk",
+      "form": "original",
+      "question": "What did my saved records say about iron stores?",
+      "documentInput": "title+body",
+      "expected": [
+        "ferritin"
+      ],
+      "scores": [
+        {
+          "documentID": "ferritin",
+          "similarity": 0.6460880694129867
+        },
+        {
+          "documentID": "right-ankle",
+          "similarity": 0.5931339318244656
+        },
+        {
+          "documentID": "iron-pan",
+          "similarity": 0.5853933799001192
+        },
+        {
+          "documentID": "no-swelling",
+          "similarity": 0.5776890237005028
+        },
+        {
+          "documentID": "finance",
+          "similarity": 0.5705770090906228
+        },
+        {
+          "documentID": "glucose",
+          "similarity": 0.5583275659745841
+        },
+        {
+          "documentID": "battery",
+          "similarity": 0.5470737817183687
+        },
+        {
+          "documentID": "fatigue",
+          "similarity": 0.5410852988343836
+        },
+        {
+          "documentID": "left-ankle",
+          "similarity": 0.5394418304338545
+        },
+        {
+          "documentID": "edema",
+          "similarity": 0.529479429485569
+        },
+        {
+          "documentID": "sleep",
+          "similarity": 0.5169720266554455
+        }
+      ]
+    },
+    {
+      "id": "iron-stores-known-risk",
+      "form": "original",
+      "question": "What did my saved records say about iron stores?",
+      "documentInput": "body",
+      "expected": [
+        "ferritin"
+      ],
+      "scores": [
+        {
+          "documentID": "ferritin",
+          "similarity": 0.653450514275303
+        },
+        {
+          "documentID": "no-swelling",
+          "similarity": 0.5885113938776442
+        },
+        {
+          "documentID": "iron-pan",
+          "similarity": 0.5868383017425315
+        },
+        {
+          "documentID": "finance",
+          "similarity": 0.5713653437488795
+        },
+        {
+          "documentID": "right-ankle",
+          "similarity": 0.5638357869160753
+        },
+        {
+          "documentID": "glucose",
+          "similarity": 0.5270289346284212
+        },
+        {
+          "documentID": "battery",
+          "similarity": 0.5261504245579759
+        },
+        {
+          "documentID": "edema",
+          "similarity": 0.5098849008810588
+        },
+        {
+          "documentID": "left-ankle",
+          "similarity": 0.4995185310485556
+        },
+        {
+          "documentID": "fatigue",
+          "similarity": 0.48957141632309586
+        },
+        {
+          "documentID": "sleep",
+          "similarity": 0.4484537048471332
+        }
+      ]
+    },
+    {
+      "id": "iron-stores-known-risk",
+      "form": "manual-compact-probe",
+      "question": "iron stores",
+      "documentInput": "title+body",
+      "expected": [
+        "ferritin"
+      ],
+      "scores": [
+        {
+          "documentID": "ferritin",
+          "similarity": 0.6458329480695306
+        },
+        {
+          "documentID": "iron-pan",
+          "similarity": 0.5796655055108269
+        },
+        {
+          "documentID": "battery",
+          "similarity": 0.5649057336745745
+        },
+        {
+          "documentID": "glucose",
+          "similarity": 0.5326066848004971
+        },
+        {
+          "documentID": "no-swelling",
+          "similarity": 0.5218515352778569
+        },
+        {
+          "documentID": "right-ankle",
+          "similarity": 0.5110110752649063
+        },
+        {
+          "documentID": "finance",
+          "similarity": 0.5090349351832458
+        },
+        {
+          "documentID": "edema",
+          "similarity": 0.5069711826920615
+        },
+        {
+          "documentID": "fatigue",
+          "similarity": 0.48936136520329554
+        },
+        {
+          "documentID": "left-ankle",
+          "similarity": 0.4878213755409832
+        },
+        {
+          "documentID": "sleep",
+          "similarity": 0.43906268230043166
+        }
+      ]
+    },
+    {
+      "id": "iron-stores-known-risk",
+      "form": "manual-compact-probe",
+      "question": "iron stores",
+      "documentInput": "body",
+      "expected": [
+        "ferritin"
+      ],
+      "scores": [
+        {
+          "documentID": "ferritin",
+          "similarity": 0.6452303981044021
+        },
+        {
+          "documentID": "iron-pan",
+          "similarity": 0.6004998926123432
+        },
+        {
+          "documentID": "battery",
+          "similarity": 0.5514745232907687
+        },
+        {
+          "documentID": "no-swelling",
+          "similarity": 0.5433536475602292
+        },
+        {
+          "documentID": "finance",
+          "similarity": 0.5140822537488576
+        },
+        {
+          "documentID": "glucose",
+          "similarity": 0.5115527168451074
+        },
+        {
+          "documentID": "edema",
+          "similarity": 0.5008195992721
+        },
+        {
+          "documentID": "right-ankle",
+          "similarity": 0.4817209192448393
+        },
+        {
+          "documentID": "left-ankle",
+          "similarity": 0.4709814717294968
+        },
+        {
+          "documentID": "fatigue",
+          "similarity": 0.4655292141671232
+        },
+        {
+          "documentID": "sleep",
+          "similarity": 0.4057868500846668
+        }
+      ]
+    },
+    {
+      "id": "exact-lab-identifier",
+      "form": "original",
+      "question": "What does sample LAB-42 say about glucose?",
+      "documentInput": "title+body",
+      "expected": [
+        "glucose"
+      ],
+      "scores": [
+        {
+          "documentID": "glucose",
+          "similarity": 0.8631976863488671
+        },
+        {
+          "documentID": "ferritin",
+          "similarity": 0.7060692871038089
+        },
+        {
+          "documentID": "battery",
+          "similarity": 0.596058784952282
+        },
+        {
+          "documentID": "edema",
+          "similarity": 0.5658400751364554
+        },
+        {
+          "documentID": "finance",
+          "similarity": 0.5434694056231419
+        },
+        {
+          "documentID": "fatigue",
+          "similarity": 0.5248863627329381
+        },
+        {
+          "documentID": "no-swelling",
+          "similarity": 0.5240520757649973
+        },
+        {
+          "documentID": "sleep",
+          "similarity": 0.5161585270250146
+        },
+        {
+          "documentID": "iron-pan",
+          "similarity": 0.5032664387015949
+        },
+        {
+          "documentID": "right-ankle",
+          "similarity": 0.49751402851826787
+        },
+        {
+          "documentID": "left-ankle",
+          "similarity": 0.4729344947156178
+        }
+      ]
+    },
+    {
+      "id": "exact-lab-identifier",
+      "form": "original",
+      "question": "What does sample LAB-42 say about glucose?",
+      "documentInput": "body",
+      "expected": [
+        "glucose"
+      ],
+      "scores": [
+        {
+          "documentID": "glucose",
+          "similarity": 0.8166508469755225
+        },
+        {
+          "documentID": "ferritin",
+          "similarity": 0.6852249685912717
+        },
+        {
+          "documentID": "battery",
+          "similarity": 0.6012873648895402
+        },
+        {
+          "documentID": "edema",
+          "similarity": 0.5649343104846007
+        },
+        {
+          "documentID": "no-swelling",
+          "similarity": 0.5458581871000439
+        },
+        {
+          "documentID": "finance",
+          "similarity": 0.544256820361559
+        },
+        {
+          "documentID": "right-ankle",
+          "similarity": 0.5198621340549744
+        },
+        {
+          "documentID": "fatigue",
+          "similarity": 0.5163580766674964
+        },
+        {
+          "documentID": "iron-pan",
+          "similarity": 0.5052934823424967
+        },
+        {
+          "documentID": "sleep",
+          "similarity": 0.5052753061566498
+        },
+        {
+          "documentID": "left-ankle",
+          "similarity": 0.45453749088497186
+        }
+      ]
+    },
+    {
+      "id": "exact-lab-identifier",
+      "form": "manual-compact-probe",
+      "question": "sample LAB-42 glucose",
+      "documentInput": "title+body",
+      "expected": [
+        "glucose"
+      ],
+      "scores": [
+        {
+          "documentID": "glucose",
+          "similarity": 0.8869760457120616
+        },
+        {
+          "documentID": "ferritin",
+          "similarity": 0.7195081539388287
+        },
+        {
+          "documentID": "battery",
+          "similarity": 0.6061047406172463
+        },
+        {
+          "documentID": "edema",
+          "similarity": 0.5860456881103413
+        },
+        {
+          "documentID": "finance",
+          "similarity": 0.5576055209362863
+        },
+        {
+          "documentID": "fatigue",
+          "similarity": 0.5413179593504935
+        },
+        {
+          "documentID": "no-swelling",
+          "similarity": 0.5340423562406277
+        },
+        {
+          "documentID": "sleep",
+          "similarity": 0.5298140906395211
+        },
+        {
+          "documentID": "right-ankle",
+          "similarity": 0.514760101125213
+        },
+        {
+          "documentID": "iron-pan",
+          "similarity": 0.5140397148338961
+        },
+        {
+          "documentID": "left-ankle",
+          "similarity": 0.48171204742836793
+        }
+      ]
+    },
+    {
+      "id": "exact-lab-identifier",
+      "form": "manual-compact-probe",
+      "question": "sample LAB-42 glucose",
+      "documentInput": "body",
+      "expected": [
+        "glucose"
+      ],
+      "scores": [
+        {
+          "documentID": "glucose",
+          "similarity": 0.8455095328542738
+        },
+        {
+          "documentID": "ferritin",
+          "similarity": 0.694056589059597
+        },
+        {
+          "documentID": "battery",
+          "similarity": 0.6195057024696465
+        },
+        {
+          "documentID": "edema",
+          "similarity": 0.5864294789295703
+        },
+        {
+          "documentID": "finance",
+          "similarity": 0.5685214216272526
+        },
+        {
+          "documentID": "no-swelling",
+          "similarity": 0.5561955190079074
+        },
+        {
+          "documentID": "fatigue",
+          "similarity": 0.5460244046743222
+        },
+        {
+          "documentID": "right-ankle",
+          "similarity": 0.533036207677623
+        },
+        {
+          "documentID": "sleep",
+          "similarity": 0.5300142054024831
+        },
+        {
+          "documentID": "iron-pan",
+          "similarity": 0.5214026804846114
+        },
+        {
+          "documentID": "left-ankle",
+          "similarity": 0.4780191544260312
+        }
+      ]
+    },
+    {
+      "id": "negation-needs-excerpt",
+      "form": "original",
+      "question": "Which record says ankle swelling was denied?",
+      "documentInput": "title+body",
+      "expected": [
+        "no-swelling"
+      ],
+      "scores": [
+        {
+          "documentID": "no-swelling",
+          "similarity": 0.8588263605872506
+        },
+        {
+          "documentID": "right-ankle",
+          "similarity": 0.8363050829196902
+        },
+        {
+          "documentID": "left-ankle",
+          "similarity": 0.7730346064963246
+        },
+        {
+          "documentID": "edema",
+          "similarity": 0.6925450879521097
+        },
+        {
+          "documentID": "ferritin",
+          "similarity": 0.5941393925269719
+        },
+        {
+          "documentID": "fatigue",
+          "similarity": 0.5558865400515897
+        },
+        {
+          "documentID": "glucose",
+          "similarity": 0.5549336438994368
+        },
+        {
+          "documentID": "sleep",
+          "similarity": 0.5378511531538724
+        },
+        {
+          "documentID": "battery",
+          "similarity": 0.5208796246768755
+        },
+        {
+          "documentID": "iron-pan",
+          "similarity": 0.46730686183905656
+        },
+        {
+          "documentID": "finance",
+          "similarity": 0.4657432456517428
+        }
+      ]
+    },
+    {
+      "id": "negation-needs-excerpt",
+      "form": "original",
+      "question": "Which record says ankle swelling was denied?",
+      "documentInput": "body",
+      "expected": [
+        "no-swelling"
+      ],
+      "scores": [
+        {
+          "documentID": "no-swelling",
+          "similarity": 0.8729458656926022
+        },
+        {
+          "documentID": "right-ankle",
+          "similarity": 0.8545066314621078
+        },
+        {
+          "documentID": "left-ankle",
+          "similarity": 0.7691427316220106
+        },
+        {
+          "documentID": "edema",
+          "similarity": 0.6800946489971468
+        },
+        {
+          "documentID": "ferritin",
+          "similarity": 0.6124309773608236
+        },
+        {
+          "documentID": "glucose",
+          "similarity": 0.5254267975079754
+        },
+        {
+          "documentID": "battery",
+          "similarity": 0.5191049415360549
+        },
+        {
+          "documentID": "finance",
+          "similarity": 0.49517931058357595
+        },
+        {
+          "documentID": "fatigue",
+          "similarity": 0.4864371001317518
+        },
+        {
+          "documentID": "sleep",
+          "similarity": 0.484547917185125
+        },
+        {
+          "documentID": "iron-pan",
+          "similarity": 0.4723441638667667
+        }
+      ]
+    },
+    {
+      "id": "negation-needs-excerpt",
+      "form": "manual-compact-probe",
+      "question": "ankle swelling was denied",
+      "documentInput": "title+body",
+      "expected": [
+        "no-swelling"
+      ],
+      "scores": [
+        {
+          "documentID": "no-swelling",
+          "similarity": 0.924719465297729
+        },
+        {
+          "documentID": "right-ankle",
+          "similarity": 0.8746396659570513
+        },
+        {
+          "documentID": "left-ankle",
+          "similarity": 0.8183981982121632
+        },
+        {
+          "documentID": "edema",
+          "similarity": 0.7148667766408405
+        },
+        {
+          "documentID": "ferritin",
+          "similarity": 0.5918093870115588
+        },
+        {
+          "documentID": "fatigue",
+          "similarity": 0.5903967718142147
+        },
+        {
+          "documentID": "battery",
+          "similarity": 0.5525335553591633
+        },
+        {
+          "documentID": "glucose",
+          "similarity": 0.552193127062245
+        },
+        {
+          "documentID": "sleep",
+          "similarity": 0.5227745032621313
+        },
+        {
+          "documentID": "iron-pan",
+          "similarity": 0.5060407061021432
+        },
+        {
+          "documentID": "finance",
+          "similarity": 0.47180976411822334
+        }
+      ]
+    },
+    {
+      "id": "negation-needs-excerpt",
+      "form": "manual-compact-probe",
+      "question": "ankle swelling was denied",
+      "documentInput": "body",
+      "expected": [
+        "no-swelling"
+      ],
+      "scores": [
+        {
+          "documentID": "no-swelling",
+          "similarity": 0.9386076028491889
+        },
+        {
+          "documentID": "right-ankle",
+          "similarity": 0.8787365843962411
+        },
+        {
+          "documentID": "left-ankle",
+          "similarity": 0.839470389863052
+        },
+        {
+          "documentID": "edema",
+          "similarity": 0.7049710090898736
+        },
+        {
+          "documentID": "ferritin",
+          "similarity": 0.6031480593296517
+        },
+        {
+          "documentID": "battery",
+          "similarity": 0.5567127091236952
+        },
+        {
+          "documentID": "glucose",
+          "similarity": 0.5316577900027413
+        },
+        {
+          "documentID": "sleep",
+          "similarity": 0.5233166849209591
+        },
+        {
+          "documentID": "iron-pan",
+          "similarity": 0.5165664846589141
+        },
+        {
+          "documentID": "finance",
+          "similarity": 0.5108129464592942
+        },
+        {
+          "documentID": "fatigue",
+          "similarity": 0.5036125742742662
+        }
+      ]
+    },
+    {
+      "id": "laterality-needs-both-excerpts",
+      "form": "original",
+      "question": "Find the walking and later appointment notes about my left ankle.",
+      "documentInput": "title+body",
+      "expected": [
+        "left-ankle",
+        "right-ankle"
+      ],
+      "scores": [
+        {
+          "documentID": "left-ankle",
+          "similarity": 0.8158617876253813
+        },
+        {
+          "documentID": "right-ankle",
+          "similarity": 0.7773251078613928
+        },
+        {
+          "documentID": "no-swelling",
+          "similarity": 0.7359231231700283
+        },
+        {
+          "documentID": "edema",
+          "similarity": 0.6555758494910177
+        },
+        {
+          "documentID": "fatigue",
+          "similarity": 0.6515823758232663
+        },
+        {
+          "documentID": "battery",
+          "similarity": 0.6144845730390859
+        },
+        {
+          "documentID": "sleep",
+          "similarity": 0.5769829349133491
+        },
+        {
+          "documentID": "ferritin",
+          "similarity": 0.5704615402003445
+        },
+        {
+          "documentID": "finance",
+          "similarity": 0.5553665714009165
+        },
+        {
+          "documentID": "glucose",
+          "similarity": 0.5443735481288564
+        },
+        {
+          "documentID": "iron-pan",
+          "similarity": 0.520658206007304
+        }
+      ]
+    },
+    {
+      "id": "laterality-needs-both-excerpts",
+      "form": "original",
+      "question": "Find the walking and later appointment notes about my left ankle.",
+      "documentInput": "body",
+      "expected": [
+        "left-ankle",
+        "right-ankle"
+      ],
+      "scores": [
+        {
+          "documentID": "left-ankle",
+          "similarity": 0.7548959367016811
+        },
+        {
+          "documentID": "no-swelling",
+          "similarity": 0.7303951701586181
+        },
+        {
+          "documentID": "right-ankle",
+          "similarity": 0.7067430402020992
+        },
+        {
+          "documentID": "edema",
+          "similarity": 0.6300137777391978
+        },
+        {
+          "documentID": "battery",
+          "similarity": 0.6184708876256758
+        },
+        {
+          "documentID": "ferritin",
+          "similarity": 0.59085345796743
+        },
+        {
+          "documentID": "finance",
+          "similarity": 0.5736614240214322
+        },
+        {
+          "documentID": "fatigue",
+          "similarity": 0.5689063272277589
+        },
+        {
+          "documentID": "glucose",
+          "similarity": 0.5287458873405919
+        },
+        {
+          "documentID": "iron-pan",
+          "similarity": 0.5130357827051382
+        },
+        {
+          "documentID": "sleep",
+          "similarity": 0.49311353253762674
+        }
+      ]
+    },
+    {
+      "id": "laterality-needs-both-excerpts",
+      "form": "manual-compact-probe",
+      "question": "walking and later appointment left ankle",
+      "documentInput": "title+body",
+      "expected": [
+        "left-ankle",
+        "right-ankle"
+      ],
+      "scores": [
+        {
+          "documentID": "right-ankle",
+          "similarity": 0.8356417715186177
+        },
+        {
+          "documentID": "left-ankle",
+          "similarity": 0.8294103067972024
+        },
+        {
+          "documentID": "no-swelling",
+          "similarity": 0.7975205564913551
+        },
+        {
+          "documentID": "edema",
+          "similarity": 0.6358318732691716
+        },
+        {
+          "documentID": "fatigue",
+          "similarity": 0.6356507738101039
+        },
+        {
+          "documentID": "battery",
+          "similarity": 0.6205758096520183
+        },
+        {
+          "documentID": "sleep",
+          "similarity": 0.5401583285218063
+        },
+        {
+          "documentID": "iron-pan",
+          "similarity": 0.5314096453833363
+        },
+        {
+          "documentID": "ferritin",
+          "similarity": 0.5151372018841724
+        },
+        {
+          "documentID": "glucose",
+          "similarity": 0.5046949789270586
+        },
+        {
+          "documentID": "finance",
+          "similarity": 0.48465591856915313
+        }
+      ]
+    },
+    {
+      "id": "laterality-needs-both-excerpts",
+      "form": "manual-compact-probe",
+      "question": "walking and later appointment left ankle",
+      "documentInput": "body",
+      "expected": [
+        "left-ankle",
+        "right-ankle"
+      ],
+      "scores": [
+        {
+          "documentID": "left-ankle",
+          "similarity": 0.8165445457131074
+        },
+        {
+          "documentID": "no-swelling",
+          "similarity": 0.7941313279795399
+        },
+        {
+          "documentID": "right-ankle",
+          "similarity": 0.7226050774055963
+        },
+        {
+          "documentID": "battery",
+          "similarity": 0.6310440821329675
+        },
+        {
+          "documentID": "edema",
+          "similarity": 0.6231902658478714
+        },
+        {
+          "documentID": "iron-pan",
+          "similarity": 0.5427197815447302
+        },
+        {
+          "documentID": "ferritin",
+          "similarity": 0.5335762031961717
+        },
+        {
+          "documentID": "fatigue",
+          "similarity": 0.5310650343500888
+        },
+        {
+          "documentID": "finance",
+          "similarity": 0.5145277772212447
+        },
+        {
+          "documentID": "sleep",
+          "similarity": 0.506797667866181
+        },
+        {
+          "documentID": "glucose",
+          "similarity": 0.49369316544709
+        }
+      ]
+    },
+    {
+      "id": "non-health-record",
+      "form": "original",
+      "question": "What did the accountant say about expenses?",
+      "documentInput": "title+body",
+      "expected": [
+        "finance"
+      ],
+      "scores": [
+        {
+          "documentID": "finance",
+          "similarity": 0.8044894975556386
+        },
+        {
+          "documentID": "battery",
+          "similarity": 0.5383753812640697
+        },
+        {
+          "documentID": "fatigue",
+          "similarity": 0.532958545375143
+        },
+        {
+          "documentID": "iron-pan",
+          "similarity": 0.5241358408661464
+        },
+        {
+          "documentID": "no-swelling",
+          "similarity": 0.523522345670687
+        },
+        {
+          "documentID": "glucose",
+          "similarity": 0.517885917656254
+        },
+        {
+          "documentID": "ferritin",
+          "similarity": 0.5148900264778765
+        },
+        {
+          "documentID": "right-ankle",
+          "similarity": 0.514030529262287
+        },
+        {
+          "documentID": "edema",
+          "similarity": 0.5056384318063214
+        },
+        {
+          "documentID": "sleep",
+          "similarity": 0.5033713457434347
+        },
+        {
+          "documentID": "left-ankle",
+          "similarity": 0.46687981779764093
+        }
+      ]
+    },
+    {
+      "id": "non-health-record",
+      "form": "original",
+      "question": "What did the accountant say about expenses?",
+      "documentInput": "body",
+      "expected": [
+        "finance"
+      ],
+      "scores": [
+        {
+          "documentID": "finance",
+          "similarity": 0.8076453805867718
+        },
+        {
+          "documentID": "no-swelling",
+          "similarity": 0.5386368791277479
+        },
+        {
+          "documentID": "iron-pan",
+          "similarity": 0.533637262325205
+        },
+        {
+          "documentID": "ferritin",
+          "similarity": 0.5300944540302489
+        },
+        {
+          "documentID": "battery",
+          "similarity": 0.5216322522802128
+        },
+        {
+          "documentID": "glucose",
+          "similarity": 0.5051062248480064
+        },
+        {
+          "documentID": "edema",
+          "similarity": 0.49199569368713786
+        },
+        {
+          "documentID": "right-ankle",
+          "similarity": 0.49119440515476076
+        },
+        {
+          "documentID": "fatigue",
+          "similarity": 0.45685417030007475
+        },
+        {
+          "documentID": "sleep",
+          "similarity": 0.45534512053223447
+        },
+        {
+          "documentID": "left-ankle",
+          "similarity": 0.4258972807192476
+        }
+      ]
+    },
+    {
+      "id": "non-health-record",
+      "form": "manual-compact-probe",
+      "question": "accountant expenses",
+      "documentInput": "title+body",
+      "expected": [
+        "finance"
+      ],
+      "scores": [
+        {
+          "documentID": "finance",
+          "similarity": 0.8270199609774171
+        },
+        {
+          "documentID": "battery",
+          "similarity": 0.5453006279771699
+        },
+        {
+          "documentID": "glucose",
+          "similarity": 0.5312197135747141
+        },
+        {
+          "documentID": "fatigue",
+          "similarity": 0.5308607206121982
+        },
+        {
+          "documentID": "iron-pan",
+          "similarity": 0.5293021815347534
+        },
+        {
+          "documentID": "ferritin",
+          "similarity": 0.5234966943738767
+        },
+        {
+          "documentID": "edema",
+          "similarity": 0.5138172935037579
+        },
+        {
+          "documentID": "sleep",
+          "similarity": 0.5003202819941376
+        },
+        {
+          "documentID": "no-swelling",
+          "similarity": 0.491382041266753
+        },
+        {
+          "documentID": "right-ankle",
+          "similarity": 0.48824022573259346
+        },
+        {
+          "documentID": "left-ankle",
+          "similarity": 0.4539862703725488
+        }
+      ]
+    },
+    {
+      "id": "non-health-record",
+      "form": "manual-compact-probe",
+      "question": "accountant expenses",
+      "documentInput": "body",
+      "expected": [
+        "finance"
+      ],
+      "scores": [
+        {
+          "documentID": "finance",
+          "similarity": 0.8327989105550664
+        },
+        {
+          "documentID": "iron-pan",
+          "similarity": 0.5432725881145518
+        },
+        {
+          "documentID": "ferritin",
+          "similarity": 0.532689312167411
+        },
+        {
+          "documentID": "battery",
+          "similarity": 0.5325122781594693
+        },
+        {
+          "documentID": "glucose",
+          "similarity": 0.5242366360549419
+        },
+        {
+          "documentID": "no-swelling",
+          "similarity": 0.5047709062223842
+        },
+        {
+          "documentID": "edema",
+          "similarity": 0.49594954190896684
+        },
+        {
+          "documentID": "fatigue",
+          "similarity": 0.48199764946544316
+        },
+        {
+          "documentID": "right-ankle",
+          "similarity": 0.4717966871306592
+        },
+        {
+          "documentID": "sleep",
+          "similarity": 0.46671404511929165
+        },
+        {
+          "documentID": "left-ankle",
+          "similarity": 0.42476906067843984
+        }
+      ]
+    },
+    {
+      "id": "literal-kitchen-record",
+      "form": "original",
+      "question": "Find my cast iron pan cleaning note.",
+      "documentInput": "title+body",
+      "expected": [
+        "iron-pan"
+      ],
+      "scores": [
+        {
+          "documentID": "iron-pan",
+          "similarity": 0.8507894389725151
+        },
+        {
+          "documentID": "battery",
+          "similarity": 0.6279513487913306
+        },
+        {
+          "documentID": "finance",
+          "similarity": 0.6026370022816481
+        },
+        {
+          "documentID": "ferritin",
+          "similarity": 0.587930545327361
+        },
+        {
+          "documentID": "edema",
+          "similarity": 0.5832864442504405
+        },
+        {
+          "documentID": "fatigue",
+          "similarity": 0.5738840816486549
+        },
+        {
+          "documentID": "right-ankle",
+          "similarity": 0.5587045464465433
+        },
+        {
+          "documentID": "no-swelling",
+          "similarity": 0.5471328269538092
+        },
+        {
+          "documentID": "glucose",
+          "similarity": 0.5366159825101485
+        },
+        {
+          "documentID": "left-ankle",
+          "similarity": 0.5317221048261187
+        },
+        {
+          "documentID": "sleep",
+          "similarity": 0.48481306693886395
+        }
+      ]
+    },
+    {
+      "id": "literal-kitchen-record",
+      "form": "original",
+      "question": "Find my cast iron pan cleaning note.",
+      "documentInput": "body",
+      "expected": [
+        "iron-pan"
+      ],
+      "scores": [
+        {
+          "documentID": "iron-pan",
+          "similarity": 0.8371643090977434
+        },
+        {
+          "documentID": "ferritin",
+          "similarity": 0.6014017182787189
+        },
+        {
+          "documentID": "battery",
+          "similarity": 0.5955624947900322
+        },
+        {
+          "documentID": "finance",
+          "similarity": 0.5945778847584765
+        },
+        {
+          "documentID": "no-swelling",
+          "similarity": 0.5670955944717897
+        },
+        {
+          "documentID": "edema",
+          "similarity": 0.550092878222678
+        },
+        {
+          "documentID": "right-ankle",
+          "similarity": 0.5269826780206025
+        },
+        {
+          "documentID": "glucose",
+          "similarity": 0.5232696318023143
+        },
+        {
+          "documentID": "fatigue",
+          "similarity": 0.5005280813554822
+        },
+        {
+          "documentID": "left-ankle",
+          "similarity": 0.4735893780133749
+        },
+        {
+          "documentID": "sleep",
+          "similarity": 0.4377294308672594
+        }
+      ]
+    },
+    {
+      "id": "literal-kitchen-record",
+      "form": "manual-compact-probe",
+      "question": "cast iron pan cleaning",
+      "documentInput": "title+body",
+      "expected": [
+        "iron-pan"
+      ],
+      "scores": [
+        {
+          "documentID": "iron-pan",
+          "similarity": 0.8875043521416704
+        },
+        {
+          "documentID": "battery",
+          "similarity": 0.5713520506042009
+        },
+        {
+          "documentID": "finance",
+          "similarity": 0.5505958506418602
+        },
+        {
+          "documentID": "edema",
+          "similarity": 0.5268340795377285
+        },
+        {
+          "documentID": "ferritin",
+          "similarity": 0.5217081239244442
+        },
+        {
+          "documentID": "right-ankle",
+          "similarity": 0.5031982475412249
+        },
+        {
+          "documentID": "no-swelling",
+          "similarity": 0.49544421545233164
+        },
+        {
+          "documentID": "glucose",
+          "similarity": 0.4893313284372839
+        },
+        {
+          "documentID": "fatigue",
+          "similarity": 0.46874700405895375
+        },
+        {
+          "documentID": "left-ankle",
+          "similarity": 0.4322970833568838
+        },
+        {
+          "documentID": "sleep",
+          "similarity": 0.4110354839863806
+        }
+      ]
+    },
+    {
+      "id": "literal-kitchen-record",
+      "form": "manual-compact-probe",
+      "question": "cast iron pan cleaning",
+      "documentInput": "body",
+      "expected": [
+        "iron-pan"
+      ],
+      "scores": [
+        {
+          "documentID": "iron-pan",
+          "similarity": 0.9042480054615226
+        },
+        {
+          "documentID": "battery",
+          "similarity": 0.546825573213123
+        },
+        {
+          "documentID": "finance",
+          "similarity": 0.5304611095434969
+        },
+        {
+          "documentID": "ferritin",
+          "similarity": 0.5252330887946765
+        },
+        {
+          "documentID": "no-swelling",
+          "similarity": 0.5194217505712013
+        },
+        {
+          "documentID": "edema",
+          "similarity": 0.5165773764574559
+        },
+        {
+          "documentID": "right-ankle",
+          "similarity": 0.4987459993730287
+        },
+        {
+          "documentID": "glucose",
+          "similarity": 0.4778621995473351
+        },
+        {
+          "documentID": "left-ankle",
+          "similarity": 0.4303297986635688
+        },
+        {
+          "documentID": "fatigue",
+          "similarity": 0.4253891764823838
+        },
+        {
+          "documentID": "sleep",
+          "similarity": 0.39916973312261145
+        }
+      ]
+    }
+  ]
+}

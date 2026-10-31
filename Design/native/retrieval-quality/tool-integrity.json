@@ -1,0 +1,44 @@
+{
+  "scope": "Evaluation-tool integrity checks, separate from model compatibility and app behavior",
+  "checks": [
+    {
+      "case": "bounded pinned download with cached source assets",
+      "status": "passed",
+      "downloadedBytes": 201,
+      "otherWeightsHardLinkedOnly": true
+    },
+    {
+      "case": "self-attested changed source receipt",
+      "status": "correctly rejected"
+    },
+    {
+      "case": "symlinked source root",
+      "status": "correctly rejected"
+    },
+    {
+      "case": "window corruption",
+      "status": "correctly rejected",
+      "failures": [
+        {
+          "id": "golden-1",
+          "issues": [
+            "windowTokenIDs differs"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "vector corruption",
+      "status": "correctly rejected",
+      "failures": [
+        {
+          "id": "golden-1",
+          "issues": [
+            "numerical gate failed"
+          ]
+        }
+      ]
+    }
+  ],
+  "originalSourceStillPinValid": true
+}

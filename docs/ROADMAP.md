@@ -48,6 +48,10 @@ Batches 9a/9 established per-metric presence, evidence and local corrections. Ba
 ## Completion log
 Pending batch entries will record commit, validation and push outcome below.
 
+### Batch26 — retrieval-quality investigation ·active
+
+Investigate the retained iron-stores/ferritin miss without tuning a threshold to the old nine examples. Portable pinned-source/offline native tools now verify79 tokenizer/window/controller cases and154 vectors against original upstream FP32, retaining failed exports and exact source hashes. No app model/cutoff/UI changes are selected. Public full-corpus dev calibration, locally held-out tests, no-match/non-health/identifier checks, current-app fusion/consent/legacy/resource verification and any selected model integration remain open. [The contract](RETRIEVAL_QUALITY.md) and [research evidence](../Design/native/retrieval-quality/README.md) define the frozen protocol and current retained inputs. This is not completed application delivery.
+
 ### Batch 25 — reviewed local NDJSON lab files · verified
 
 Extend the reviewed FHIR workflow to bounded single-resource-type NDJSON files. Preserve complete physical-line inventory, exact original byte/token positions, person grouping and unresolved companion references, explicit corrections/exclusions, checked sharing-off saves, source-only receipts and actual backup compatibility. [The contract and acceptance gates](FHIR_NDJSON_IMPORT.md) distinguish a local file from a complete bulk export. LogicR11 passes1,294 checks; current BuildR9/ReleaseR5, reader probe and complete compact lifecycle pass. Main R6 retains its pre-caption-only boundary. Continuing Round3 closes all requests at43/55,10/11 lines4+, no later UI edit. Source/Release audit passes; publication/read-back and scoped cleanup are recorded separately. The full product goal remains active.

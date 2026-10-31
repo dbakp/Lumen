@@ -1,0 +1,37 @@
+{
+  "scope": "Portable evaluation export; exact candidate native parity/retrieval/device gates remain separate. Package identifiers may differ on re-export; only the measured artifact hashes bind a selected package.",
+  "sourceRepository": "abhinand/MedEmbed-small-v0.1",
+  "sourceRevision": "40a5850d046cfdb56154e332b4d7099b63e8d50e",
+  "python": "3.12.14",
+  "torch": "2.7.0",
+  "transformers": "4.51.3",
+  "coremltools": "9.0",
+  "numpy": "2.2.6",
+  "conversionSeconds": 2.0742581668309867,
+  "sequenceLength": 256,
+  "pooling": "CLS then L2 normalization",
+  "precision": "FLOAT16",
+  "maskRepresentation": "finite -10000 for padded positions, zero for real tokens",
+  "maskReferenceWindowCount": 85,
+  "maskFP32MaximumElementDifference": 0.0,
+  "referenceSHA256": "c77d3f3bbac1a83187959d5313d8b9b7f01d3e60f3e8df508d4bfd35859316b1",
+  "fixtureSHA256": "9141fbec2cd342ed676dc84f8de4b37f4b87cefaa38905ed592076ab568bc55c",
+  "minimumDeploymentTarget": "iOS18",
+  "files": [
+    {
+      "path": "Data/com.apple.CoreML/model.mlmodel",
+      "bytes": 139880,
+      "sha256": "b8a9612b22ffce63d974cb1a4e4f8a9f4c59fd59adc53a375790c019e6ebe5e5"
+    },
+    {
+      "path": "Data/com.apple.CoreML/weights/weight.bin",
+      "bytes": 66240384,
+      "sha256": "6df9bdd22efa9df53d86fac97966d1f9efe56891dca02fa26da4c9bce7e60035"
+    },
+    {
+      "path": "Manifest.json",
+      "bytes": 617,
+      "sha256": "1705673ff421139662a3d779857abba315db0bead85f0781ff613e03bed43875"
+    }
+  ]
+}

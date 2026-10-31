@@ -1,0 +1,11 @@
+{
+  "scope": "Numerical conversion sanity gates, not retrieval/clinical quality thresholds",
+  "fixedBeforeBroaderRun": true,
+  "maximumElementDifference": 0.005,
+  "minimumCosine": 0.999,
+  "allTokenizerIDsAndWindowCountsExact": true,
+  "allOutputsFinite": true,
+  "expectedControllerStatusesExact": true,
+  "reference": "Unmodified upstream FP32 BERT, declared CLS pooling and L2 normalization",
+  "initialProbe": "40 texts already observed before this broader policy; broader fixture independently exercises legacy golden tokenization, 254-token boundary, overlapping windows, Unicode and bounds"
+}

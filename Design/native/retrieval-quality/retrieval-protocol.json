@@ -1,0 +1,48 @@
+{
+  "status": "Frozen before public benchmark retrieval scores are inspected; no model/cutoff selected",
+  "dataset": "BEIR NFCorpus",
+  "source": "https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/nfcorpus.zip",
+  "publishedArchiveMD5": "a89dba18a62ef92f7d323ec890a0d38d",
+  "calibrationSplit": "dev",
+  "heldOutSplit": "test",
+  "heldOutRule": "Do not compute test retrieval scores until model/policy candidates and calibration conclusions are recorded. These test queries may have appeared in upstream training; training overlap is unknown.",
+  "models": [
+    "published pinned MiniLM CoreML",
+    "pinned MedEmbed FP32 plus numerically checked finite-mask CoreML candidate"
+  ],
+  "queryInput": "Original query, no invented expansion or instruction prefix. Reject overlong native queries explicitly rather than truncate them.",
+  "documentInput": "Use complete bounded production-prepared excerpts with the same title prefix as HybridLibrarySearch. Retain all windows. Stop and report any index exclusion/limit; do not evaluate a silent corpus prefix.",
+  "rankingScope": "Offline model-only full-corpus diagnostic. Document score is maximum similarity across its prepared passage windows. This does not reproduce keyword fusion, four-passage selection or the12-second live app budget.",
+  "metrics": [
+    "nDCG@10",
+    "MAP@100",
+    "Recall@4",
+    "Recall@100",
+    "Precision@4",
+    "query coverage",
+    "explicit input/index/model failures"
+  ],
+  "cutoffInvestigation": "Report dev score distributions and fixed grids, preserving no-cutoff ranking. No old0.42 cutoff is assumed transferable. Candidate cutoffs remain research values until no-match/non-health and end-to-end app checks are also complete.",
+  "smallDiagnostic": "Original nine cases remain development probes, not held-out validation. Retain known misses and all unexpected selections.",
+  "dataRetention": "Keep archive/file hashes, split IDs, exact protocol, outcomes and failures in Git. Keep corpus/query text and temporary vectors outside the repository; do not redistribute raw dataset contents.",
+  "limits": [
+    "Public relevance judgments do not establish medical truth or clinical suitability",
+    "Incomplete judgments may count useful unjudged results as unexpected",
+    "Upstream training/test overlap has not been audited",
+    "Mac timings do not establish physical-iPhone performance",
+    "No new app model, cutoff, inference policy or clinical claim is shipped by this diagnostic"
+  ],
+  "fixedCutoffGrid": [
+    null,
+    0.42,
+    0.55,
+    0.6,
+    0.65,
+    0.7,
+    0.75,
+    0.8,
+    0.85,
+    0.9
+  ],
+  "candidateRankingGate": "Before app integration, dev nDCG@10 should improve by at least0.02 absolute without Precision@4 worsening by more than0.02; any exception requires an explicit tradeoff before test scoring. No-match, non-health, exact-identifier and runtime gates remain independently necessary."
+}

@@ -1,0 +1,97 @@
+{
+  "checkedAtUTC": "2026-10-31T18:05:50.854014+00:00",
+  "currentPublishedApp": "f190b1d314299727f97788fb73665c6966f084ab",
+  "appModelAndUIUnchanged": true,
+  "numericalCompatibility": {
+    "status": "passed",
+    "cases": 79,
+    "comparedVectors": 154,
+    "minimumCosine": 0.9999746615903126,
+    "maximumElementDifference": 0.0015715062618255615,
+    "tokensPaddedWindowsMasksAndControllerStatusesExact": true,
+    "report": "parity-r3.json",
+    "candidate": "conversion-r3.json exact package"
+  },
+  "portableExport": {
+    "source": "scripts/embedding-probe/convert.py",
+    "referenceWindows": 85,
+    "maskFP32MaximumElementDifference": 0.0,
+    "report": "conversion-r3.json"
+  },
+  "failedAttempts": [
+    {
+      "attempt": "FP32 trace then default FP16 conversion",
+      "nativeStatus": "invalidOutput; exit133",
+      "inspection": "384/384 NaNs",
+      "report": "failed-output-inspection.json",
+      "producer": "failed-default-mask-producer.py",
+      "inspector": "failed-output-producer.swift",
+      "nativeLogSHA256": "da78256482264abfbd49002ca6ac7f97e120aefd823a1b769fc2813a667fad8e"
+    },
+    {
+      "attempt": "all-FP16 PyTorch trace",
+      "conversionStatus": "failed: layer_norm epsilon fp32 versus gamma fp16",
+      "subsequentHarnessFailure": "Missing artifact compile/prediction attempted; sequence corrected. Not a second app-vector failure.",
+      "producer": "failed-half-trace-producer.py",
+      "conversionLogSHA256": "ac7106bfab93a8e02682e32dbbe167689e3993f8d30c34cbfef88a9e01c37281"
+    }
+  ],
+  "pending": [
+    "Public dev retrieval evaluation under frozen protocol",
+    "Record policy candidates before inspecting public test scores",
+    "Unanswerable/non-health and actual app/fusion/consent/legacy/storage checks",
+    "Any selected model hosting, app/native/Release/UI validation and coherent publication"
+  ],
+  "storage": "Current model inputs/environment/compiled candidate remain needed; remove only verified obsolete outputs after required evidence reaches GitHub.",
+  "publicDataset": {
+    "input": "nfcorpus-source.json",
+    "status": "Downloaded and archive MD5 verified; no dev/test retrieval scores computed",
+    "protocol": "retrieval-protocol.json"
+  },
+  "currentProcesses": {
+    "status": "All known download/export/reference/native/reproduction/tool-integrity workers are terminal; no app build or native UI process was started by this investigation."
+  },
+  "sources": [
+    {
+      "url": "https://huggingface.co/abhinand/MedEmbed-small-v0.1",
+      "basis": "declared training/domain/Apache-2.0 license; not independent validation"
+    },
+    {
+      "url": "https://huggingface.co/BAAI/bge-small-en-v1.5",
+      "basis": "base model declaredMIT; score-distribution and task calibration guidance"
+    },
+    {
+      "url": "https://github.com/beir-cellar/beir",
+      "basis": "official NFCorpus archive URL and publishedMD5"
+    }
+  ],
+  "conversionWarnings": {
+    "retained": true,
+    "messages": [
+      "RuntimeWarning: overflow encountered in cast in converter value/range transforms"
+    ],
+    "logSHA256": "c483bfd0d21218fe0beacfe035a69a38eaee451d0bcb3d76c795b32139620eca",
+    "scope": "Warnings remain explicit; no failed export is relabelled as valid. Selected artifact has separate79-case numerical proof."
+  },
+  "baselineReproduction": {
+    "configurations": 36,
+    "maximumScoreDifference": 2.220446049250313e-16,
+    "report": "minilm-reproduced.json"
+  },
+  "macNativeObservation": {
+    "caseCount": 79,
+    "comparedVectors": 154,
+    "realSeconds": 2.51,
+    "maximumResidentBytes": 161611776,
+    "scope": "Mac CLI using a reused helper cache namespace; not physical-iPhone latency/memory/energy or cold-launch proof"
+  },
+  "exportProducer": "conversion-r3-producer.py",
+  "toolIntegrity": "tool-integrity.json",
+  "sourceMaps": [
+    "production-source-map.json",
+    "parity-source-map.json",
+    "current-tools-source-map.json"
+  ],
+  "originalReferenceProducer": "reference-r2-producer.py",
+  "publicToolRefinement": "Checked-in canonical manifest is authoritative, sources refuse unknown files/symlinks, Safetensors/local-only loading forced, bounded cached-input/network branch and rejection controls passed."
+}
