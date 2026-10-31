@@ -248,3 +248,6 @@ Batch25 [reviewed FHIR NDJSON files](FHIR_NDJSON_IMPORT.md) is verified locally.
 - Do not push personal health data, credentials or real-user screenshots.
 - Do not fabricate integrations, measurements, diagnoses or verification.
 - Keep the full goal active until its requirements are actually implemented and verified; report external device/account/release dependencies honestly.
+
+
+Batch26 development research publication: `23ee57a20dd3f1a3f9fcd63d1ff89582103ac2e3` reached GitHub through the batch publisher, with exact main read-back. The raw-query candidate is not promoted because its+0.015214 dev nDCG gain misses the predeclared+0.02 gate; test scores remain uncomputed and application/model/UI remain Batch25. Stopped-worker cleanup removed119 known obsolete roots, recovered a measured776,933,376 available bytes (about0.78GB), and preserved current source/model/env/dataset/prepared corpus/matrices plus the helper cache needed next. Exact ownership, hard-link accounting and retained-input hashes are in Design/native/retrieval-quality/storage-cleanup.json. No cleanup-only app rebuild was run; the full goal stays active.

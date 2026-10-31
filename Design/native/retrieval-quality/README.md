@@ -35,7 +35,7 @@ The complete production-prepared corpus and native corpus/dev encoding are now v
 
 ## Storage
 
-About28GB was available at the last check. The original45MB MiniLM source and new133MB FP32 candidate are current inputs; no duplicate external model download is needed. The task-only Python environment was installed without pip cache. Keep source/provenance, useful compact outcomes, current model inputs and supplied skill. After required evidence reaches GitHub and all workers stop, remove obsolete graphs/raw vectors/build/cache output only within verified task-owned locations. Preserve other projects/processes, shared runtimes and global caches. No Batch26 cleanup has occurred yet.
+About29GB was available after the scoped cleanup below. The original45MB MiniLM source and new133MB FP32 candidate are current inputs; no duplicate external model download is needed. The task-only Python environment was installed without pip cache. Keep source/provenance, useful compact outcomes, current model inputs and supplied skill. After required evidence reaches GitHub and all workers stop, remove obsolete graphs/raw vectors/build/cache output only within verified task-owned locations. Preserve other projects/processes, shared runtimes and global caches. The scoped cleanup below is now complete after GitHub confirmation.
 
 ## Complete development evaluation · raw-query candidate not promoted
 
@@ -56,3 +56,11 @@ Six corpus controls pass: duplicate corpus/native IDs, complete-index rejection 
 Failed initial vocabulary lookup, macOS alias path receipt defects, failed first path repair and corrected tie preparation are explicit in `dev-decision.json`. Receipt normalization proves the complete model file size/hash multiset unchanged and changes no vectors, inputs, mapping or timing. Native relative paths now come directly from the enumerator and pass the control. Exact original native producer, current tool hashes, corrected compact receipts and their original hashes are retained.
 
 Keep `corpus-prepared`, `dev-input`, `baseline-corpus`, `candidate-corpus` and current native encoder under `/tmp/LumenBatch26Probe` for immediate further research, alongside the canonical models/source/environment/dataset listed above. Raw temporary report paths are historical if later cleaned; pinned public inputs and retained code reproduce them.
+
+## Publication and scoped storage cleanup
+
+Research/source/evidence commit `23ee57a20dd3f1a3f9fcd63d1ff89582103ac2e3` reached GitHub through `scripts/publish-batches.sh`; exact main read-back matched before deletion. All known task build/encoder workers were terminal. Cleanup removed119 known obsolete roots, including four superseded model package/compiled exports, task-only Swift package scratch, earlier vectors/full report copies, raw logs, smoke fixtures/hard links, two obsolete helper cache namespaces and two exactly timed diagnostic crashes. Symlinks were unlinked without following targets. `storage-cleanup.json` retains exact roots, ownership, inventory digest, hard-link accounting and reverified current input hashes.
+
+Available bytes increased from28,618,870,784 to29,395,804,160: a measured **776,933,376-byte increase (about0.78GB)**. Removed files total1,172,674,610 logical bytes and1,048,768,512 unique-inode allocated bytes;914,030,592 allocated bytes had every hard link in the removal set. APFS/concurrent activity differs from the observed available-volume delta. The compact report replaces the disposable full temporary inventory after its publication.
+
+The working repository, compact outcomes/source/producer maps, original/current model inputs, task Python environment, verified public dataset, prepared passages and complete current matrices remain. The current `EmbeddingCorpusProbe` helper cache is retained for immediate query-policy work; global/shared/other-project caches, simulators/runtimes and personal files are preserved. No new app build was run for cleanup. `current-tools-source-map.json` is the earlier compatibility checkpoint's map; `corpus-tools-source-map.json` is current for this development evaluation. The full goal remains active.

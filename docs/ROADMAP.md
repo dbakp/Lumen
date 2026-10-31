@@ -278,3 +278,6 @@ Batch24 publication: `8ae4968a83c2f48f05284e6b60b42a8062cda1f8` reached GitHub t
 
 
 Batch25 publication: `f190b1d314299727f97788fb73665c6966f084ab` reached GitHub through the publisher with exact main read-back. Stopped-worker cleanup recovered5.51GB, retaining144 useful originals/compact outcomes/source maps/current inputs and supplied skill. Raw temporary paths are historical; no documentation-only rebuild was run. The full goal remains active.
+
+
+Batch26 development research publication: `23ee57a20dd3f1a3f9fcd63d1ff89582103ac2e3` reached GitHub through the batch publisher, with exact main read-back. The raw-query candidate is not promoted because its+0.015214 dev nDCG gain misses the predeclared+0.02 gate; test scores remain uncomputed and application/model/UI remain Batch25. Stopped-worker cleanup removed119 known obsolete roots, recovered a measured776,933,376 available bytes (about0.78GB), and preserved current source/model/env/dataset/prepared corpus/matrices plus the helper cache needed next. Exact ownership, hard-link accounting and retained-input hashes are in Design/native/retrieval-quality/storage-cleanup.json. No cleanup-only app rebuild was run; the full goal stays active.
