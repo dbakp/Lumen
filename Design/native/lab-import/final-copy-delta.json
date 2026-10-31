@@ -1,0 +1,9 @@
+{
+  "from": "build-r14-source.json",
+  "changedAppFiles": [
+    "Lumen/Algorithms/LabFileDraft.swift"
+  ],
+  "change": "Aggregate overflow recovery names text-size limit instead of only the character limit. No condition, bound, failure type, recovery action or view changes.",
+  "diff": "--- BuildR14/Lumen/Algorithms/LabFileDraft.swift\n+++ final/Lumen/Algorithms/LabFileDraft.swift\n@@ -26,7 +26,7 @@\n             case .rows: return \"Include between 1 and 256 results. Select fewer rows or split the file.\"\n             case .source: return \"Mapped source cells must fit within 2,000 characters per row. Exclude the row or map fewer optional columns.\"\n             case .invalid(let row): return \"Check the required fields and field lengths for included row \\(row). Correct it using the original, or exclude that row.\"\n-            case .textLimit: return \"The selected source cells and lab fields exceed this record's 200,000-character limit. Select fewer rows.\"\n+            case .textLimit: return \"The selected source cells and lab fields exceed this record's text-size limit. Select fewer rows.\"\n             }\n         }\n     }\n",
+  "logicEvidence": "logicR24:725 passed"
+}

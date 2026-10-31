@@ -200,7 +200,7 @@ struct RecordImportView: View {
     private func save(allowDuplicate: Bool = false) {
         guard let preview else { return }
         do {
-            if !allowDuplicate && companion.documents.contains(where: { $0.extraction?.sha256 == preview.sha256 }) { duplicate = true; return }
+            if !allowDuplicate && RecordReview.hasDuplicate(sha256: preview.sha256, in: companion.documents) { duplicate = true; return }
             var document = try RecordReview.document(title: title, pages: pages, filename: preview.filename, sha256: preview.sha256, readAt: preview.readAt, acknowledged: acknowledged)
             document.includeInAssistant = share
             try companion.saveChecked(document)

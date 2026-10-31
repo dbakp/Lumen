@@ -32,11 +32,12 @@ enum LabReview {
                   current.body == sourceBody, current.labReport == originalReport, RecordRetrieval.fingerprint(current) == originalFingerprint else { throw Failure.sourceChanged }
             guard acknowledged else { throw Failure.review }
             if observations.isEmpty, originalReport != nil {
-                var result = current; result.labReport = nil; return result
+                var result = current; result.labImportOrigin = current.originalLabImport; result.labReport = nil; return result
             }
-            let report = LabReport(reviewedAt: now, sourceBodySHA256: LabReport.digest(sourceBody), observations: observations)
+            var report = LabReport(reviewedAt: now, sourceBodySHA256: LabReport.digest(sourceBody), observations: observations)
+            report.importedFrom = current.originalLabImport
             guard report.isCurrent(body: sourceBody) else { throw Failure.invalid }
-            var result = current; result.labReport = report
+            var result = current; result.labReport = report; result.labImportOrigin = current.originalLabImport
             guard RecordRetrieval.text(result) != nil else { throw Failure.textLimit }
             // Use the latest sharing choice, not the value when the draft opened.
             return result

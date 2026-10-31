@@ -7,13 +7,13 @@ struct LumenApp: App {
 
     init() {
         HealthZIPArchive.clearTemporaryFiles()
-        // Clean slate for UI tests (runs before any store loads).
+        #if DEBUG && targetEnvironment(simulator)
+        // Clean slate only for dedicated simulator UI tests, before stores load.
         if ProcessInfo.processInfo.arguments.contains("-resetForUITests") {
             LocalStore.eraseAll()
-            #if DEBUG && targetEnvironment(simulator)
             SemanticSearchService.resetForUITests()
-            #endif
         }
+        #endif
     }
 
     var body: some Scene {

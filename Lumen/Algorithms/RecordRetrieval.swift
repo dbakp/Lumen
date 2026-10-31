@@ -108,8 +108,9 @@ public enum RecordRetrieval {
     /// Canonical text includes the current editable checklist, rather than treating
     /// a plan's old prose as its current completion/due-date state.
     public static func text(_ document: HealthDocument) -> String? {
-        guard document.body.utf8.count <= maxDocumentBytes, document.body.count <= maxDocumentCharacters, document.steps.count <= 1000, document.steps.allSatisfy({ $0.title.utf8.count <= 20_000 }) else { return nil }
+        guard document.hasValidLabImportOrigin, document.body.utf8.count <= maxDocumentBytes, document.body.count <= maxDocumentCharacters, document.steps.count <= 1000, document.steps.allSatisfy({ $0.title.utf8.count <= 20_000 }) else { return nil }
         var value = document.body
+        if document.labReport == nil, let origin = document.labImportOrigin { value += "\n\n" + origin.referenceText }
         if let report = document.labReport {
             guard report.isValid(in: document) else { return nil }
             if report.isCurrent(body: document.body) { value += "\n\n" + report.referenceText }

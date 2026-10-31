@@ -69,7 +69,7 @@ public final class CompanionStore: ObservableObject {
         persist()
     }
     func saveChecked(_ document: HealthDocument) throws {
-        guard document.labReport?.isValid(in: document) ?? true else { throw LabReview.Failure.invalid }
+        guard document.hasValidLabImportOrigin, document.labReport?.isValid(in: document) ?? true else { throw LabReview.Failure.invalid }
         var value = document; value.updatedAt = Date()
         var next = documents
         if let index = next.firstIndex(where: { $0.id == value.id }) {

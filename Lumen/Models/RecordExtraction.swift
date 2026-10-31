@@ -42,6 +42,12 @@ struct RecordPageDraft: Identifiable, Sendable {
 }
 
 enum RecordReview {
+    /// Either import route can hold the same original-file fingerprint. Titles,
+    /// reviewed wording and patient identities never establish a file match.
+    static func hasDuplicate(sha256: String, in documents: [HealthDocument]) -> Bool {
+        let hash = sha256.lowercased()
+        return documents.contains { $0.originalLabImport?.sha256.lowercased() == hash || $0.extraction?.sha256.lowercased() == hash }
+    }
     static let maxCharacters = 200_000
     static func body(_ pages: [RecordPageDraft]) throws -> String {
         guard !pages.isEmpty, pages.count <= 100, pages.enumerated().allSatisfy({ $0.element.number == $0.offset + 1 }) else { throw RecordImportError.invalid }

@@ -1,0 +1,2121 @@
+{
+  "status": "Batch21 locally verified and continuing-critic Round3 done; publication pending. Full objective remains active.",
+  "publishedBaseline": "4e455c67560d9e5a46dad0ad63cf547fbcb431b6",
+  "logicR5": {
+    "exitCode": 0,
+    "passedChecks": 695,
+    "log": "/tmp/lumen-batch21-logic-r5.log",
+    "sha256": "a81a12917424565bbaaa458b8fdc5e852eac5c296e949822320950eaf1b6634e",
+    "packageSources": {
+      "Lumen/Algorithms/CoachingEngine.swift": "3089077994db6e30dc93d84e2fcfe7308b8a847d8ac39e378e8b58228243d9ca",
+      "Lumen/Algorithms/CurrentHealthEvidence.swift": "1b906911a1193d83b7e5d45500e7beaec9b3560905dcf15f9363e7051c8c02a0",
+      "Lumen/Algorithms/DocumentBlocks.swift": "472b069725cca542403ba8cf6e4c48146090d8959dde26aafd96ed686a185b11",
+      "Lumen/Algorithms/HealthContextPrompt.swift": "0ecaee68fd434ec301d4d1dce19f4130aecf34278762a6fb37967ad520f577b7",
+      "Lumen/Algorithms/HealthHistorySummary.swift": "18d7b8f35f93059989ba61b0ee025da49123da46d2625a3feaf206bcbad05df4",
+      "Lumen/Algorithms/HealthTotals.swift": "804155005d6361efceb20af4c8f434b13a55d4ce5ef964ffa7e62c68710a64e7",
+      "Lumen/Algorithms/HybridLibrarySearch.swift": "8db2a0606dc453a66e68192882f06aaea26cc5b78461e53e8df67126efc0cacc",
+      "Lumen/Algorithms/ImportedMetrics.swift": "257085540417d9647a1a1722d2b3c189c020d22bd9d33bd56a440ebeb3ff1085",
+      "Lumen/Algorithms/JSONFieldAudit.swift": "1368c46c21948657b7335f1df3d9375fd5b8e25e03110d98b3072383bbd92a16",
+      "Lumen/Algorithms/LabFileDraft.swift": "df0a896d5c1421724abb1e87ceba4a6d740c166081292fc9ad44c360eaf9293b",
+      "Lumen/Algorithms/LabReview.swift": "bf47334001e4fc99c4cd36280adccdbb22f3ecd12d4a885afc595909e2dcb9ea",
+      "Lumen/Algorithms/LabTable.swift": "b60e08f8ad9b5698e30f95b9a56cd73eea0d9a85ae349508148277f568786952",
+      "Lumen/Algorithms/LocalHealthCorrection.swift": "057a1fa636f5812d7af001431fb9e3c7a799315a82634a13cac753f1455f565a",
+      "Lumen/Algorithms/MiniLMTokenizer.swift": "4e47edb85dfff2140a51e2c3f95ff4b7b8814c82c8282ef15a2beaed50c72e84",
+      "Lumen/Algorithms/PlanBuilder.swift": "f4b99866b9103657b409a49d463be9748e97a3bdd7221a517fbd03baf4855b6d",
+      "Lumen/Algorithms/PlanSchedule.swift": "db3bcfcfbb7e4e122304309d003c4adb7953f7f6c99856cf117c5fb1575a5b4b",
+      "Lumen/Algorithms/ReadableExport.swift": "c2c03259625fc0d74e4b3cb4724d1ac46b880e1fd32b053b128f7f34e4d350c3",
+      "Lumen/Algorithms/RecordRetrieval.swift": "2285dd0550fdb724effa12bb680deb2d682dd698510733c0aa36f0eb1dcf3609",
+      "Lumen/Algorithms/ReminderPolicy.swift": "4d2590b99d5b64266036a16a149c82b944040d73ea0381ddb121d301fa669d6b",
+      "Lumen/Algorithms/ScheduledPlan.swift": "cadf892e02aa43636506748ea896c7021310ee0018e84c80fe5107d8132a6d0b",
+      "Lumen/Algorithms/SemanticModelPackage.swift": "19255061e7d68e6fb06d4cde51c21a2922bc9ea926e0f612cd874736a019d45e",
+      "Lumen/Algorithms/SleepAlgorithms.swift": "bbc3ddd2588939ed702495859a7f1cd63f0f126a541556db66d8f2ea272a248d",
+      "Lumen/Algorithms/SleepEvidence.swift": "f12109991f1540be999dff5c03ccebdb86b728fb9a64f096ec48fdf2013e50ca",
+      "Lumen/Algorithms/TrendEvidence.swift": "b98e628d3d57bf7a5dc8282bfae7c09a4574c0760291cbdcbc13b913f6abad67",
+      "Lumen/Algorithms/WorkoutReconciliation.swift": "92362c8dec7498b9b5e763605cf0cd1c5381ce66a73507ee37fbdd975e125f1b",
+      "Lumen/Algorithms/ZIPPreflight.swift": "2954ae05abd6833c88d2850e6ae54243a5fb57f9ff61d1da41e0099577152228",
+      "Lumen/Models/BackupArchive.swift": "cbcbb9558e96153d396d3806ca5c4418dc9792a9743da9b540cc0035ba479c47",
+      "Lumen/Models/BackupFileTransaction.swift": "efd22a5528357590acef13e9790f4b0b965e858fa20c08b3562cc8bc6cde8915",
+      "Lumen/Models/BackupPackage.swift": "fe699a88273bf8ed6389a12a6021c9eec243786d332c7c2edfaa729246943565",
+      "Lumen/Models/BackupStorageRevision.swift": "f620d8c6288492ab20f9c6e9f5851541860c05071bc114ff0963581d96d97d6f",
+      "Lumen/Models/CompanionModels.swift": "023140dba793c638c1800ca230902c803d06e7d3c1c5bcc440a354a9bc3cbaee",
+      "Lumen/Models/ConversationModels.swift": "9f4aa9402fdccda0ee18bb166df685e96fadd83db6e7e307a992f7e2482c1d84",
+      "Lumen/Models/HealthImportControl.swift": "e39ba852a4e22b554ba20cac01c53dd3bfae075f74cf29a7eb2dd057f7742bba",
+      "Lumen/Models/HealthLogDraft.swift": "7366cf9dcfacba4cd29c3ba1c57891853590a3905463ece4807c64f3ba4ed2d0",
+      "Lumen/Models/HealthMetricReading.swift": "900ba6631986e38f9527ea04675d7919a961850f97c44101752fda553c5314f7",
+      "Lumen/Models/HealthModels.swift": "7af21dc70808c00c75e6ebb40cf89b66b627a6ef75c05cbcb9ee2d87cceb6eba",
+      "Lumen/Models/HealthSyncLedger.swift": "ec11628a2a7bfc70926078161ad70e3854cd22bed6de438c17cca6510447ffc9",
+      "Lumen/Models/LabImportOrigin.swift": "dcaa9b435ef055895f805967c57b46af29bcd3f2915ec343559652329819506e",
+      "Lumen/Models/LabReport.swift": "7ef8aa7601c0b1f75fd7b3a583efb383792b93e93792387ab7b6b9578ef1c024",
+      "Lumen/Models/MiniLMRuntimeCache.swift": "0d15818a7d937991bb7df92734c239bf946b9985271da0f312cebb5397b75e59",
+      "Lumen/Models/NutritionModels.swift": "f7c4b8c43691f82a713dfea66b4551ec543491010c7301939d31150d6375d1c2",
+      "Lumen/Models/RecordExtraction.swift": "06738567e6a693eb9a9a043ad7c672d2d669b6bbb9e4aaee17c74723ce5a513e",
+      "Lumen/Models/SemanticModelInstallation.swift": "12327978d3f627f3ba27ea5c90ee0b643c58f84b08213772e424ca69ec8015bd",
+      "Lumen/Models/SleepModels.swift": "eadd1d0a4d3dadf66a018f36d27ff3129372bd0c0c0224b85c8f4b3d6f4f9764",
+      "Lumen/Models/Units.swift": "2a396afe1874a690dcfffca3a99d7d5f5e23b5ed47ec52986c9442f7d7c16834",
+      "Lumen/Models/VoiceDraft.swift": "c2487bb02b57d204af44a4df50100c181f0cbca037b9050819442e7feaaede17",
+      "Lumen/Services/HealthImportService.swift": "eac51442f9f5859fa09750bd6664600d5a578224adba5cad1f01c8f68e91fb9f",
+      "Lumen/Services/HealthZIPArchive.swift": "885a295b91f81c1517e87eee708d72cc75582286f0a315a2729cb3985f85056b",
+      "Lumen/Services/LabFileImportService.swift": "684f8b6a7a28973c829449f517d0cb537f07d499479b9be4dc6cea29fb5a0da5",
+      "Lumen/Services/MiniLMEncoder.swift": "ca809534839f44e093b702aeaefebdc38123ee39f77d02bb14a2448bc26183d9",
+      "Lumen/Services/RecordImportService.swift": "1b593a50a4781ca7ecc3b3eede456bd14513662d4e8563a478e193330122034d",
+      "Lumen/Services/VoiceAudioBridge.swift": "a64d93cf181a1c4f2f52faea8aed2fbdfdcf6b542255fb52d5939939ca9b9ebe",
+      "Lumen/Services/WorkoutImportParser.swift": "d3452e579e076646c6977b99f5e64d04b08fa42c9b2d432605ded16360660193",
+      "Shared/DisplayEvidence.swift": "fcf91e22498afd93f5e10735e11de64530c33cc42764ecf6ebe838c91d9b6773",
+      "Shared/WatchSnapshot.swift": "a7ec76f222a17f1bc3ddca4a5fc9aeed22e6cc31581ec7f6d8c450636c44897c",
+      "Tests/BackupPackageChecks.swift": "d52e9223ff08ec18509c2d72430c7b658e00fa98fbe2a2990d86e93b42c4a987",
+      "Tests/BackupUIFixtures.swift": "17c1e7c472839ab71269008d75131d888587a655ea8f855d596d25e2b3445786",
+      "Tests/DataConfidenceChecks.swift": "187feacb7b07f1980b47fbef13f08c102f0d085a09dfe75a8a7223b200b6649d",
+      "Tests/HealthLogDraftChecks.swift": "5aa9d1eb1b187b824ff47def360c31886815fceb17db0c6822a83fb1e4b1f558",
+      "Tests/HealthSyncChecks.swift": "a97e1a597baa369d53fab06044df65b95be165c7f91a3000475d42b67b5c2945",
+      "Tests/ImportTests.swift": "514451b108ea0a0a608f241c0bbfaf55f8dbbeab05f07f70e2f1cd6296e691c4",
+      "Tests/LabImportChecks.swift": "b957b5a558352e042e9a6164b71e7eafaab4a2ed1d4088f6b0560619fe7abd64",
+      "Tests/LabReportChecks.swift": "d59d422ee49fe32cd4d007012f032448ff067a7489574dc870ed523951b3e075",
+      "Tests/MiniLMChecks.swift": "a8694aaed6f82ca24a72591fe440f44e2019fe17d9468f7e27a3575507f23bac",
+      "Tests/ReadableExportChecks.swift": "f471ae2b04114da4c25090f7e932aec7677796bff3b101f79836699420b3361e",
+      "Tests/RecordImportChecks.swift": "94739ad7f60234dd23c1a7ee512081c75560a232f22d40c5e2e4fe7804904cff",
+      "Tests/RecordRetrievalChecks.swift": "ab3570f275eec52ed684c6e4df3304759a450d86917d449f9df8227245a4eebf",
+      "Tests/RetainedEvidenceChecks.swift": "508c73804898ba4c9be449ef6a2d1ea7405d14355ff5aeb7ed607f3993fe994d",
+      "Tests/ScheduledPlanChecks.swift": "043d296ebf89e32e95e274d812d615967ec4db125e08023348585a1f220cdb8c",
+      "Tests/VoiceDraftChecks.swift": "6301be2d64c65fb5c2278a4ed6afcf830389c6fdbccef48b7e495d0bd3f54871",
+      "Tests/WorkoutImportChecks.swift": "3e55004f1002d4724425439c9d476d863282ba1d8c88dbe78aaaad2dd89dfc60",
+      "Tests/ZIPImportChecks.swift": "ed54c75e9baaf3f7d7dde21cceb67b2a2b5e66894b231fb8c4109960d02a380f"
+    }
+  },
+  "builds": [
+    {
+      "run": "R1",
+      "exitCode": 0,
+      "source": "build-r1-source.json",
+      "log": "/tmp/lumen-batch21-build-r1.log"
+    },
+    {
+      "run": "R2",
+      "exitCode": 0,
+      "source": "build-r2-source.json",
+      "log": "/tmp/lumen-batch21-build-r2.log"
+    },
+    {
+      "run": "R3",
+      "exitCode": 0,
+      "source": "build-r3-source.json",
+      "log": "/tmp/lumen-batch21-build-r3.log"
+    },
+    {
+      "run": "R4",
+      "exitCode": 0,
+      "source": "build-r4-source.json",
+      "log": "/tmp/lumen-batch21-build-r4.log"
+    },
+    {
+      "run": "R5",
+      "exitCode": 0,
+      "source": "build-r5-source.json",
+      "log": "/tmp/lumen-batch21-build-r5.log"
+    },
+    {
+      "run": "R7",
+      "exitCode": 0,
+      "source": "build-r7-source.json",
+      "log": "/tmp/lumen-batch21-build-r7.log"
+    },
+    {
+      "run": "R8",
+      "exitCode": 0,
+      "source": "build-r8-source.json",
+      "log": "/tmp/lumen-batch21-build-r8.log"
+    },
+    {
+      "run": "R9",
+      "exitCode": 0,
+      "source": "build-r9-source.json",
+      "log": "/tmp/lumen-batch21-build-r9.log",
+      "applicationChangesFromR8": []
+    },
+    {
+      "run": "R10",
+      "exitCode": 0,
+      "source": "build-r10-source.json",
+      "log": "/tmp/lumen-batch21-build-r10.log"
+    },
+    {
+      "run": "R11",
+      "exitCode": 0,
+      "source": "build-r11-source.json",
+      "log": "/tmp/lumen-batch21-build-r11.log"
+    },
+    {
+      "run": "R12",
+      "exitCode": 0,
+      "source": "build-r12-source.json",
+      "log": "/tmp/lumen-batch21-build-r12.log"
+    },
+    {
+      "run": "R13",
+      "exitCode": 0,
+      "source": "build-r13-source.json",
+      "log": "/tmp/lumen-batch21-build-r13.log"
+    },
+    {
+      "run": "R14",
+      "exitCode": 0,
+      "source": "build-r14-source.json",
+      "log": "/tmp/lumen-batch21-build-r14.log"
+    },
+    {
+      "run": "R15",
+      "exitCode": 0,
+      "source": "build-r15-source.json",
+      "log": "/tmp/lumen-batch21-build-r15.log"
+    }
+  ],
+  "nativeR1": {
+    "exitCode": 65,
+    "source": "build-r2-source.json",
+    "summary": {
+      "devicesAndConfigurations": [
+        {
+          "device": {
+            "architecture": "arm64",
+            "deviceId": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+            "deviceName": "Lumen continuation verification",
+            "modelName": "iPhone 18 Pro",
+            "osBuildNumber": "24A434",
+            "osVersion": "27.0",
+            "platform": "iOS Simulator"
+          },
+          "expectedFailures": 0,
+          "failedTests": 1,
+          "passedTests": 2,
+          "skippedTests": 0,
+          "testPlanConfiguration": {
+            "configurationId": "1",
+            "configurationName": "Test Scheme Action"
+          }
+        }
+      ],
+      "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+      "expectedFailures": 0,
+      "failedTests": 1,
+      "finishTime": 1793410073.997,
+      "passedTests": 2,
+      "result": "Failed",
+      "runtimeWarnings": [],
+      "skippedTests": 0,
+      "startTime": 1793409313.586,
+      "statistics": [],
+      "testFailures": [
+        {
+          "failureText": "failed - Element could not be brought into the visible content area",
+          "targetName": "LumenUITests",
+          "testIdentifier": 1,
+          "testIdentifierString": "LumenSmokeTests/testLabFileImportFormatsAndCancellation()",
+          "testIdentifierURL": "test://com.apple.xcode/Lumen/LumenUITests/LumenSmokeTests/testLabFileImportFormatsAndCancellation",
+          "testName": "testLabFileImportFormatsAndCancellation()"
+        }
+      ],
+      "title": "Test - Lumen",
+      "topInsights": [],
+      "totalTestCount": 3
+    },
+    "cases": {
+      "formatsAndCancellation": {
+        "result": "failed",
+        "durationSeconds": 248.808,
+        "reason": "Parent accessibility identifier overrode the page-picker identifier. Native control was visible; harness could not address it."
+      },
+      "lifecycle": {
+        "result": "passed",
+        "durationSeconds": 245.681
+      },
+      "presentation": {
+        "result": "passed",
+        "durationSeconds": 255.122
+      }
+    },
+    "originals": "r1/provenance.json"
+  },
+  "failedHistory": [
+    {
+      "run": "logicR1",
+      "result": "failed",
+      "reason": "Test compared fractional read/review timestamps against version-one ISO-8601 whole-second archive timestamps. Test inputs now use a fixed whole second; archive precision was not changed."
+    },
+    {
+      "run": "logicR3",
+      "result": "compile failed",
+      "reason": "Throwing test expression was used inside a nonthrowing assertion autoclosure. Resolved by evaluating the document before assertion."
+    },
+    {
+      "run": "logicR9",
+      "result": "failed",
+      "reason": "A real combined Unicode payload exceeded the report budget while individual rows were valid, but surfaced the per-row source error. The draft now checks the shared report byte budget and gives the existing record-size recovery action."
+    },
+    {
+      "run": "logicR11",
+      "result": "failed",
+      "reason": "Golden test fixture incorrectly used source end 18 instead of the actual 19 Swift characters; the literal fixture was corrected. Independent published-format fingerprint now matches."
+    }
+  ],
+  "pending": [
+    "Publication and exact GitHub main read-back",
+    "Scoped cleanup after publication"
+  ],
+  "open": [
+    "FHIR and broader clinical records",
+    "Automatic OCR table reading",
+    "Longitudinal lab comparison",
+    "Clinical accuracy",
+    "Physical-device Health/Watch/voice/accessibility/performance",
+    "Live provider quality",
+    "Release/privacy governance"
+  ],
+  "syntheticOnly": true,
+  "logicR12": {
+    "exitCode": 0,
+    "passedChecks": 701,
+    "log": "/tmp/lumen-batch21-logic-r12.log",
+    "sha256": "cfcb0473d15f38656e8f6b7098be7a2abd23aad84f6fc4174bf42bf2ea781d81",
+    "packageSources": {
+      "Lumen/Algorithms/CoachingEngine.swift": "3089077994db6e30dc93d84e2fcfe7308b8a847d8ac39e378e8b58228243d9ca",
+      "Lumen/Algorithms/CurrentHealthEvidence.swift": "1b906911a1193d83b7e5d45500e7beaec9b3560905dcf15f9363e7051c8c02a0",
+      "Lumen/Algorithms/DocumentBlocks.swift": "472b069725cca542403ba8cf6e4c48146090d8959dde26aafd96ed686a185b11",
+      "Lumen/Algorithms/HealthContextPrompt.swift": "0ecaee68fd434ec301d4d1dce19f4130aecf34278762a6fb37967ad520f577b7",
+      "Lumen/Algorithms/HealthHistorySummary.swift": "18d7b8f35f93059989ba61b0ee025da49123da46d2625a3feaf206bcbad05df4",
+      "Lumen/Algorithms/HealthTotals.swift": "804155005d6361efceb20af4c8f434b13a55d4ce5ef964ffa7e62c68710a64e7",
+      "Lumen/Algorithms/HybridLibrarySearch.swift": "8db2a0606dc453a66e68192882f06aaea26cc5b78461e53e8df67126efc0cacc",
+      "Lumen/Algorithms/ImportedMetrics.swift": "257085540417d9647a1a1722d2b3c189c020d22bd9d33bd56a440ebeb3ff1085",
+      "Lumen/Algorithms/JSONFieldAudit.swift": "1368c46c21948657b7335f1df3d9375fd5b8e25e03110d98b3072383bbd92a16",
+      "Lumen/Algorithms/LabFileDraft.swift": "98de4de7cdf1673de2ec1878e805b9ddd2d4db5ab101f9f5074048f0e72821f3",
+      "Lumen/Algorithms/LabReview.swift": "bf47334001e4fc99c4cd36280adccdbb22f3ecd12d4a885afc595909e2dcb9ea",
+      "Lumen/Algorithms/LabTable.swift": "ad9b7af1e207c76c7cfd5924fdce2693510364a5832162f6aeec99e029da62c9",
+      "Lumen/Algorithms/LocalHealthCorrection.swift": "057a1fa636f5812d7af001431fb9e3c7a799315a82634a13cac753f1455f565a",
+      "Lumen/Algorithms/MiniLMTokenizer.swift": "4e47edb85dfff2140a51e2c3f95ff4b7b8814c82c8282ef15a2beaed50c72e84",
+      "Lumen/Algorithms/PlanBuilder.swift": "f4b99866b9103657b409a49d463be9748e97a3bdd7221a517fbd03baf4855b6d",
+      "Lumen/Algorithms/PlanSchedule.swift": "db3bcfcfbb7e4e122304309d003c4adb7953f7f6c99856cf117c5fb1575a5b4b",
+      "Lumen/Algorithms/ReadableExport.swift": "c2c03259625fc0d74e4b3cb4724d1ac46b880e1fd32b053b128f7f34e4d350c3",
+      "Lumen/Algorithms/RecordRetrieval.swift": "2285dd0550fdb724effa12bb680deb2d682dd698510733c0aa36f0eb1dcf3609",
+      "Lumen/Algorithms/ReminderPolicy.swift": "4d2590b99d5b64266036a16a149c82b944040d73ea0381ddb121d301fa669d6b",
+      "Lumen/Algorithms/ScheduledPlan.swift": "cadf892e02aa43636506748ea896c7021310ee0018e84c80fe5107d8132a6d0b",
+      "Lumen/Algorithms/SemanticModelPackage.swift": "19255061e7d68e6fb06d4cde51c21a2922bc9ea926e0f612cd874736a019d45e",
+      "Lumen/Algorithms/SleepAlgorithms.swift": "bbc3ddd2588939ed702495859a7f1cd63f0f126a541556db66d8f2ea272a248d",
+      "Lumen/Algorithms/SleepEvidence.swift": "f12109991f1540be999dff5c03ccebdb86b728fb9a64f096ec48fdf2013e50ca",
+      "Lumen/Algorithms/TrendEvidence.swift": "b98e628d3d57bf7a5dc8282bfae7c09a4574c0760291cbdcbc13b913f6abad67",
+      "Lumen/Algorithms/WorkoutReconciliation.swift": "92362c8dec7498b9b5e763605cf0cd1c5381ce66a73507ee37fbdd975e125f1b",
+      "Lumen/Algorithms/ZIPPreflight.swift": "2954ae05abd6833c88d2850e6ae54243a5fb57f9ff61d1da41e0099577152228",
+      "Lumen/Models/BackupArchive.swift": "cbcbb9558e96153d396d3806ca5c4418dc9792a9743da9b540cc0035ba479c47",
+      "Lumen/Models/BackupFileTransaction.swift": "efd22a5528357590acef13e9790f4b0b965e858fa20c08b3562cc8bc6cde8915",
+      "Lumen/Models/BackupPackage.swift": "fe699a88273bf8ed6389a12a6021c9eec243786d332c7c2edfaa729246943565",
+      "Lumen/Models/BackupStorageRevision.swift": "f620d8c6288492ab20f9c6e9f5851541860c05071bc114ff0963581d96d97d6f",
+      "Lumen/Models/CompanionModels.swift": "023140dba793c638c1800ca230902c803d06e7d3c1c5bcc440a354a9bc3cbaee",
+      "Lumen/Models/ConversationModels.swift": "9f4aa9402fdccda0ee18bb166df685e96fadd83db6e7e307a992f7e2482c1d84",
+      "Lumen/Models/HealthImportControl.swift": "e39ba852a4e22b554ba20cac01c53dd3bfae075f74cf29a7eb2dd057f7742bba",
+      "Lumen/Models/HealthLogDraft.swift": "7366cf9dcfacba4cd29c3ba1c57891853590a3905463ece4807c64f3ba4ed2d0",
+      "Lumen/Models/HealthMetricReading.swift": "900ba6631986e38f9527ea04675d7919a961850f97c44101752fda553c5314f7",
+      "Lumen/Models/HealthModels.swift": "7af21dc70808c00c75e6ebb40cf89b66b627a6ef75c05cbcb9ee2d87cceb6eba",
+      "Lumen/Models/HealthSyncLedger.swift": "ec11628a2a7bfc70926078161ad70e3854cd22bed6de438c17cca6510447ffc9",
+      "Lumen/Models/LabImportOrigin.swift": "57db4f70fd22c55518b8d90b5ae32dfba26ae4469a66e8f773cb91faea9d49f6",
+      "Lumen/Models/LabReport.swift": "be284acacb4514dc330b56d4404e80e36fbcf82afcd87bcac8ed4e8c8555d0fc",
+      "Lumen/Models/MiniLMRuntimeCache.swift": "0d15818a7d937991bb7df92734c239bf946b9985271da0f312cebb5397b75e59",
+      "Lumen/Models/NutritionModels.swift": "f7c4b8c43691f82a713dfea66b4551ec543491010c7301939d31150d6375d1c2",
+      "Lumen/Models/RecordExtraction.swift": "06738567e6a693eb9a9a043ad7c672d2d669b6bbb9e4aaee17c74723ce5a513e",
+      "Lumen/Models/SemanticModelInstallation.swift": "12327978d3f627f3ba27ea5c90ee0b643c58f84b08213772e424ca69ec8015bd",
+      "Lumen/Models/SleepModels.swift": "eadd1d0a4d3dadf66a018f36d27ff3129372bd0c0c0224b85c8f4b3d6f4f9764",
+      "Lumen/Models/Units.swift": "2a396afe1874a690dcfffca3a99d7d5f5e23b5ed47ec52986c9442f7d7c16834",
+      "Lumen/Models/VoiceDraft.swift": "c2487bb02b57d204af44a4df50100c181f0cbca037b9050819442e7feaaede17",
+      "Lumen/Services/HealthImportService.swift": "eac51442f9f5859fa09750bd6664600d5a578224adba5cad1f01c8f68e91fb9f",
+      "Lumen/Services/HealthZIPArchive.swift": "885a295b91f81c1517e87eee708d72cc75582286f0a315a2729cb3985f85056b",
+      "Lumen/Services/LabFileImportService.swift": "684f8b6a7a28973c829449f517d0cb537f07d499479b9be4dc6cea29fb5a0da5",
+      "Lumen/Services/MiniLMEncoder.swift": "ca809534839f44e093b702aeaefebdc38123ee39f77d02bb14a2448bc26183d9",
+      "Lumen/Services/RecordImportService.swift": "1b593a50a4781ca7ecc3b3eede456bd14513662d4e8563a478e193330122034d",
+      "Lumen/Services/VoiceAudioBridge.swift": "a64d93cf181a1c4f2f52faea8aed2fbdfdcf6b542255fb52d5939939ca9b9ebe",
+      "Lumen/Services/WorkoutImportParser.swift": "d3452e579e076646c6977b99f5e64d04b08fa42c9b2d432605ded16360660193",
+      "Shared/DisplayEvidence.swift": "fcf91e22498afd93f5e10735e11de64530c33cc42764ecf6ebe838c91d9b6773",
+      "Shared/WatchSnapshot.swift": "a7ec76f222a17f1bc3ddca4a5fc9aeed22e6cc31581ec7f6d8c450636c44897c",
+      "Tests/BackupPackageChecks.swift": "d52e9223ff08ec18509c2d72430c7b658e00fa98fbe2a2990d86e93b42c4a987",
+      "Tests/BackupUIFixtures.swift": "17c1e7c472839ab71269008d75131d888587a655ea8f855d596d25e2b3445786",
+      "Tests/DataConfidenceChecks.swift": "187feacb7b07f1980b47fbef13f08c102f0d085a09dfe75a8a7223b200b6649d",
+      "Tests/HealthLogDraftChecks.swift": "5aa9d1eb1b187b824ff47def360c31886815fceb17db0c6822a83fb1e4b1f558",
+      "Tests/HealthSyncChecks.swift": "a97e1a597baa369d53fab06044df65b95be165c7f91a3000475d42b67b5c2945",
+      "Tests/ImportTests.swift": "514451b108ea0a0a608f241c0bbfaf55f8dbbeab05f07f70e2f1cd6296e691c4",
+      "Tests/LabImportChecks.swift": "8ae92ce0e32d2101a1057e7befc886504296a47ae32071d1c6390e7e40f34f49",
+      "Tests/LabReportChecks.swift": "d59d422ee49fe32cd4d007012f032448ff067a7489574dc870ed523951b3e075",
+      "Tests/MiniLMChecks.swift": "a8694aaed6f82ca24a72591fe440f44e2019fe17d9468f7e27a3575507f23bac",
+      "Tests/ReadableExportChecks.swift": "f471ae2b04114da4c25090f7e932aec7677796bff3b101f79836699420b3361e",
+      "Tests/RecordImportChecks.swift": "94739ad7f60234dd23c1a7ee512081c75560a232f22d40c5e2e4fe7804904cff",
+      "Tests/RecordRetrievalChecks.swift": "ab3570f275eec52ed684c6e4df3304759a450d86917d449f9df8227245a4eebf",
+      "Tests/RetainedEvidenceChecks.swift": "508c73804898ba4c9be449ef6a2d1ea7405d14355ff5aeb7ed607f3993fe994d",
+      "Tests/ScheduledPlanChecks.swift": "043d296ebf89e32e95e274d812d615967ec4db125e08023348585a1f220cdb8c",
+      "Tests/VoiceDraftChecks.swift": "6301be2d64c65fb5c2278a4ed6afcf830389c6fdbccef48b7e495d0bd3f54871",
+      "Tests/WorkoutImportChecks.swift": "3e55004f1002d4724425439c9d476d863282ba1d8c88dbe78aaaad2dd89dfc60",
+      "Tests/ZIPImportChecks.swift": "ed54c75e9baaf3f7d7dde21cceb67b2a2b5e66894b231fb8c4109960d02a380f"
+    },
+    "publishedBatch20Fingerprint": "68882639acb7fd569ca79892c34f0f4c2edb1e40f6560db5be408fc763be942e"
+  },
+  "unsignedReleaseR1": {
+    "exitCode": 0,
+    "source": "build-r4-source.json",
+    "minimumOSVersion": "18.0",
+    "log": "/tmp/lumen-batch21-release-r1.log",
+    "warning": "Existing full-screen/interface-orientation warning remains. Current backend refinements require another build; this is not yet final-source Release proof."
+  },
+  "nativeR2": {
+    "exitCode": 65,
+    "source": "build-r4-source.json",
+    "summary": {
+      "devicesAndConfigurations": [
+        {
+          "device": {
+            "architecture": "arm64",
+            "deviceId": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+            "deviceName": "Lumen continuation verification",
+            "modelName": "iPhone 18 Pro",
+            "osBuildNumber": "24A434",
+            "osVersion": "27.0",
+            "platform": "iOS Simulator"
+          },
+          "expectedFailures": 0,
+          "failedTests": 6,
+          "passedTests": 0,
+          "skippedTests": 0,
+          "testPlanConfiguration": {
+            "configurationId": "1",
+            "configurationName": "Test Scheme Action"
+          }
+        }
+      ],
+      "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+      "expectedFailures": 0,
+      "failedTests": 6,
+      "finishTime": 1793412348.971,
+      "passedTests": 0,
+      "result": "Failed",
+      "runtimeWarnings": [],
+      "skippedTests": 0,
+      "startTime": 1793411131.023,
+      "statistics": [],
+      "testFailures": [
+        {
+          "failureText": "XCTAssertTrue failed",
+          "targetName": "LumenUITests",
+          "testIdentifier": 1,
+          "testIdentifierString": "LumenSmokeTests/testLabFileImportFormatsAndCancellation()",
+          "testIdentifierURL": "test://com.apple.xcode/Lumen/LumenUITests/LumenSmokeTests/testLabFileImportFormatsAndCancellation",
+          "testName": "testLabFileImportFormatsAndCancellation()"
+        },
+        {
+          "failureText": "XCTAssertTrue failed - Your value missing",
+          "targetName": "LumenUITests",
+          "testIdentifier": 2,
+          "testIdentifierString": "LumenSmokeTests/testLabFileImportLifecycle()",
+          "testIdentifierURL": "test://com.apple.xcode/Lumen/LumenUITests/LumenSmokeTests/testLabFileImportLifecycle",
+          "testName": "testLabFileImportLifecycle()"
+        },
+        {
+          "failureText": "failed - Element could not be brought into the visible content area",
+          "targetName": "LumenUITests",
+          "testIdentifier": 3,
+          "testIdentifierString": "LumenSmokeTests/testLabFileImportLimitsAndLargeMapping()",
+          "testIdentifierURL": "test://com.apple.xcode/Lumen/LumenUITests/LumenSmokeTests/testLabFileImportLimitsAndLargeMapping",
+          "testName": "testLabFileImportLimitsAndLargeMapping()"
+        },
+        {
+          "failureText": "failed - The fixture's complete source excerpt must be visible for capture",
+          "targetName": "LumenUITests",
+          "testIdentifier": 4,
+          "testIdentifierString": "LumenSmokeTests/testLabFileImportPresentation()",
+          "testIdentifierURL": "test://com.apple.xcode/Lumen/LumenUITests/LumenSmokeTests/testLabFileImportPresentation",
+          "testName": "testLabFileImportPresentation()"
+        },
+        {
+          "failureText": "XCTAssertTrue failed",
+          "targetName": "LumenUITests",
+          "testIdentifier": 5,
+          "testIdentifierString": "LumenSmokeTests/testLabRecordPresentation()",
+          "testIdentifierURL": "test://com.apple.xcode/Lumen/LumenUITests/LumenSmokeTests/testLabRecordPresentation",
+          "testName": "testLabRecordPresentation()"
+        },
+        {
+          "failureText": "XCTAssertEqual failed: (\"Optional(\"<5,0\")\") is not equal to (\"Optional(\"\")\") - Clear the full selected value before entering the correction",
+          "targetName": "LumenUITests",
+          "testIdentifier": 6,
+          "testIdentifierString": "LumenSmokeTests/testReviewedLabRecords()",
+          "testIdentifierURL": "test://com.apple.xcode/Lumen/LumenUITests/LumenSmokeTests/testReviewedLabRecords",
+          "testName": "testReviewedLabRecords()"
+        }
+      ],
+      "title": "Test - Lumen",
+      "topInsights": [],
+      "totalTestCount": 6
+    },
+    "originals": "r2/provenance.json",
+    "hierarchyFacts": "r2-failed-hierarchy-facts.json",
+    "notes": [
+      "All six cases failed; no whole-case success is claimed from the pictures",
+      "Remapping control was at y53\u201397 behind navigation; old editor button was at y\u221251\u2013152. Both had been treated as hittable. Generic visibility now checks control centre against the content region.",
+      "A scrolled LazyVStack filename had been pruned, so waiting for it was not a valid loaded-state check.",
+      "The Form helper searched downwards for an unmounted field above the current position.",
+      "The XXXL completion footer is fully visible in the failure PNG; the capture helper incorrectly reserved the covered background tab bar.",
+      "The old correction field did not reflect deletion at the immediate assertion; next run waits for the actual empty value and still requires complete clearing. No matching application crash report for PID66599 was found.",
+      "xcresulttool operations on one result bundle must be sequential: parallel readers raced while creating database.sqlite3; export succeeded after the summary completed."
+    ]
+  },
+  "logicR13": {
+    "exitCode": 0,
+    "passedChecks": 704,
+    "log": "/tmp/lumen-batch21-logic-r13.log",
+    "sha256": "b55cec2b6cc88a60934a9ef8a62f3c2fadbe1f36a795f1aaec8ac552e8c4411b",
+    "packageSources": {
+      "Lumen/Algorithms/CoachingEngine.swift": "3089077994db6e30dc93d84e2fcfe7308b8a847d8ac39e378e8b58228243d9ca",
+      "Lumen/Algorithms/CurrentHealthEvidence.swift": "1b906911a1193d83b7e5d45500e7beaec9b3560905dcf15f9363e7051c8c02a0",
+      "Lumen/Algorithms/DocumentBlocks.swift": "472b069725cca542403ba8cf6e4c48146090d8959dde26aafd96ed686a185b11",
+      "Lumen/Algorithms/HealthContextPrompt.swift": "0ecaee68fd434ec301d4d1dce19f4130aecf34278762a6fb37967ad520f577b7",
+      "Lumen/Algorithms/HealthHistorySummary.swift": "18d7b8f35f93059989ba61b0ee025da49123da46d2625a3feaf206bcbad05df4",
+      "Lumen/Algorithms/HealthTotals.swift": "804155005d6361efceb20af4c8f434b13a55d4ce5ef964ffa7e62c68710a64e7",
+      "Lumen/Algorithms/HybridLibrarySearch.swift": "8db2a0606dc453a66e68192882f06aaea26cc5b78461e53e8df67126efc0cacc",
+      "Lumen/Algorithms/ImportedMetrics.swift": "257085540417d9647a1a1722d2b3c189c020d22bd9d33bd56a440ebeb3ff1085",
+      "Lumen/Algorithms/JSONFieldAudit.swift": "1368c46c21948657b7335f1df3d9375fd5b8e25e03110d98b3072383bbd92a16",
+      "Lumen/Algorithms/LabFileDraft.swift": "98de4de7cdf1673de2ec1878e805b9ddd2d4db5ab101f9f5074048f0e72821f3",
+      "Lumen/Algorithms/LabReview.swift": "bf47334001e4fc99c4cd36280adccdbb22f3ecd12d4a885afc595909e2dcb9ea",
+      "Lumen/Algorithms/LabTable.swift": "820669bd7014b3f454d05bf890d917c8d80811fa920d063e99bc0c12a15c24c4",
+      "Lumen/Algorithms/LocalHealthCorrection.swift": "057a1fa636f5812d7af001431fb9e3c7a799315a82634a13cac753f1455f565a",
+      "Lumen/Algorithms/MiniLMTokenizer.swift": "4e47edb85dfff2140a51e2c3f95ff4b7b8814c82c8282ef15a2beaed50c72e84",
+      "Lumen/Algorithms/PlanBuilder.swift": "f4b99866b9103657b409a49d463be9748e97a3bdd7221a517fbd03baf4855b6d",
+      "Lumen/Algorithms/PlanSchedule.swift": "db3bcfcfbb7e4e122304309d003c4adb7953f7f6c99856cf117c5fb1575a5b4b",
+      "Lumen/Algorithms/ReadableExport.swift": "c2c03259625fc0d74e4b3cb4724d1ac46b880e1fd32b053b128f7f34e4d350c3",
+      "Lumen/Algorithms/RecordRetrieval.swift": "2285dd0550fdb724effa12bb680deb2d682dd698510733c0aa36f0eb1dcf3609",
+      "Lumen/Algorithms/ReminderPolicy.swift": "4d2590b99d5b64266036a16a149c82b944040d73ea0381ddb121d301fa669d6b",
+      "Lumen/Algorithms/ScheduledPlan.swift": "cadf892e02aa43636506748ea896c7021310ee0018e84c80fe5107d8132a6d0b",
+      "Lumen/Algorithms/SemanticModelPackage.swift": "19255061e7d68e6fb06d4cde51c21a2922bc9ea926e0f612cd874736a019d45e",
+      "Lumen/Algorithms/SleepAlgorithms.swift": "bbc3ddd2588939ed702495859a7f1cd63f0f126a541556db66d8f2ea272a248d",
+      "Lumen/Algorithms/SleepEvidence.swift": "f12109991f1540be999dff5c03ccebdb86b728fb9a64f096ec48fdf2013e50ca",
+      "Lumen/Algorithms/TrendEvidence.swift": "b98e628d3d57bf7a5dc8282bfae7c09a4574c0760291cbdcbc13b913f6abad67",
+      "Lumen/Algorithms/WorkoutReconciliation.swift": "92362c8dec7498b9b5e763605cf0cd1c5381ce66a73507ee37fbdd975e125f1b",
+      "Lumen/Algorithms/ZIPPreflight.swift": "2954ae05abd6833c88d2850e6ae54243a5fb57f9ff61d1da41e0099577152228",
+      "Lumen/Models/BackupArchive.swift": "cbcbb9558e96153d396d3806ca5c4418dc9792a9743da9b540cc0035ba479c47",
+      "Lumen/Models/BackupFileTransaction.swift": "efd22a5528357590acef13e9790f4b0b965e858fa20c08b3562cc8bc6cde8915",
+      "Lumen/Models/BackupPackage.swift": "fe699a88273bf8ed6389a12a6021c9eec243786d332c7c2edfaa729246943565",
+      "Lumen/Models/BackupStorageRevision.swift": "f620d8c6288492ab20f9c6e9f5851541860c05071bc114ff0963581d96d97d6f",
+      "Lumen/Models/CompanionModels.swift": "023140dba793c638c1800ca230902c803d06e7d3c1c5bcc440a354a9bc3cbaee",
+      "Lumen/Models/ConversationModels.swift": "9f4aa9402fdccda0ee18bb166df685e96fadd83db6e7e307a992f7e2482c1d84",
+      "Lumen/Models/HealthImportControl.swift": "e39ba852a4e22b554ba20cac01c53dd3bfae075f74cf29a7eb2dd057f7742bba",
+      "Lumen/Models/HealthLogDraft.swift": "7366cf9dcfacba4cd29c3ba1c57891853590a3905463ece4807c64f3ba4ed2d0",
+      "Lumen/Models/HealthMetricReading.swift": "900ba6631986e38f9527ea04675d7919a961850f97c44101752fda553c5314f7",
+      "Lumen/Models/HealthModels.swift": "7af21dc70808c00c75e6ebb40cf89b66b627a6ef75c05cbcb9ee2d87cceb6eba",
+      "Lumen/Models/HealthSyncLedger.swift": "ec11628a2a7bfc70926078161ad70e3854cd22bed6de438c17cca6510447ffc9",
+      "Lumen/Models/LabImportOrigin.swift": "57db4f70fd22c55518b8d90b5ae32dfba26ae4469a66e8f773cb91faea9d49f6",
+      "Lumen/Models/LabReport.swift": "be284acacb4514dc330b56d4404e80e36fbcf82afcd87bcac8ed4e8c8555d0fc",
+      "Lumen/Models/MiniLMRuntimeCache.swift": "0d15818a7d937991bb7df92734c239bf946b9985271da0f312cebb5397b75e59",
+      "Lumen/Models/NutritionModels.swift": "f7c4b8c43691f82a713dfea66b4551ec543491010c7301939d31150d6375d1c2",
+      "Lumen/Models/RecordExtraction.swift": "06738567e6a693eb9a9a043ad7c672d2d669b6bbb9e4aaee17c74723ce5a513e",
+      "Lumen/Models/SemanticModelInstallation.swift": "12327978d3f627f3ba27ea5c90ee0b643c58f84b08213772e424ca69ec8015bd",
+      "Lumen/Models/SleepModels.swift": "eadd1d0a4d3dadf66a018f36d27ff3129372bd0c0c0224b85c8f4b3d6f4f9764",
+      "Lumen/Models/Units.swift": "2a396afe1874a690dcfffca3a99d7d5f5e23b5ed47ec52986c9442f7d7c16834",
+      "Lumen/Models/VoiceDraft.swift": "c2487bb02b57d204af44a4df50100c181f0cbca037b9050819442e7feaaede17",
+      "Lumen/Services/HealthImportService.swift": "eac51442f9f5859fa09750bd6664600d5a578224adba5cad1f01c8f68e91fb9f",
+      "Lumen/Services/HealthZIPArchive.swift": "885a295b91f81c1517e87eee708d72cc75582286f0a315a2729cb3985f85056b",
+      "Lumen/Services/LabFileImportService.swift": "684f8b6a7a28973c829449f517d0cb537f07d499479b9be4dc6cea29fb5a0da5",
+      "Lumen/Services/MiniLMEncoder.swift": "ca809534839f44e093b702aeaefebdc38123ee39f77d02bb14a2448bc26183d9",
+      "Lumen/Services/RecordImportService.swift": "1b593a50a4781ca7ecc3b3eede456bd14513662d4e8563a478e193330122034d",
+      "Lumen/Services/VoiceAudioBridge.swift": "a64d93cf181a1c4f2f52faea8aed2fbdfdcf6b542255fb52d5939939ca9b9ebe",
+      "Lumen/Services/WorkoutImportParser.swift": "d3452e579e076646c6977b99f5e64d04b08fa42c9b2d432605ded16360660193",
+      "Shared/DisplayEvidence.swift": "fcf91e22498afd93f5e10735e11de64530c33cc42764ecf6ebe838c91d9b6773",
+      "Shared/WatchSnapshot.swift": "a7ec76f222a17f1bc3ddca4a5fc9aeed22e6cc31581ec7f6d8c450636c44897c",
+      "Tests/BackupPackageChecks.swift": "d52e9223ff08ec18509c2d72430c7b658e00fa98fbe2a2990d86e93b42c4a987",
+      "Tests/BackupUIFixtures.swift": "17c1e7c472839ab71269008d75131d888587a655ea8f855d596d25e2b3445786",
+      "Tests/DataConfidenceChecks.swift": "187feacb7b07f1980b47fbef13f08c102f0d085a09dfe75a8a7223b200b6649d",
+      "Tests/HealthLogDraftChecks.swift": "5aa9d1eb1b187b824ff47def360c31886815fceb17db0c6822a83fb1e4b1f558",
+      "Tests/HealthSyncChecks.swift": "a97e1a597baa369d53fab06044df65b95be165c7f91a3000475d42b67b5c2945",
+      "Tests/ImportTests.swift": "514451b108ea0a0a608f241c0bbfaf55f8dbbeab05f07f70e2f1cd6296e691c4",
+      "Tests/LabImportChecks.swift": "1c4e076a79b97bcac1334e79d572264400574189c39a4caeb991362fff778e7c",
+      "Tests/LabReportChecks.swift": "d59d422ee49fe32cd4d007012f032448ff067a7489574dc870ed523951b3e075",
+      "Tests/MiniLMChecks.swift": "a8694aaed6f82ca24a72591fe440f44e2019fe17d9468f7e27a3575507f23bac",
+      "Tests/ReadableExportChecks.swift": "f471ae2b04114da4c25090f7e932aec7677796bff3b101f79836699420b3361e",
+      "Tests/RecordImportChecks.swift": "94739ad7f60234dd23c1a7ee512081c75560a232f22d40c5e2e4fe7804904cff",
+      "Tests/RecordRetrievalChecks.swift": "ab3570f275eec52ed684c6e4df3304759a450d86917d449f9df8227245a4eebf",
+      "Tests/RetainedEvidenceChecks.swift": "508c73804898ba4c9be449ef6a2d1ea7405d14355ff5aeb7ed607f3993fe994d",
+      "Tests/ScheduledPlanChecks.swift": "043d296ebf89e32e95e274d812d615967ec4db125e08023348585a1f220cdb8c",
+      "Tests/VoiceDraftChecks.swift": "6301be2d64c65fb5c2278a4ed6afcf830389c6fdbccef48b7e495d0bd3f54871",
+      "Tests/WorkoutImportChecks.swift": "3e55004f1002d4724425439c9d476d863282ba1d8c88dbe78aaaad2dd89dfc60",
+      "Tests/ZIPImportChecks.swift": "ed54c75e9baaf3f7d7dde21cceb67b2a2b5e66894b231fb8c4109960d02a380f"
+    },
+    "notes": [
+      "Published Batch 20 reference fingerprint is unchanged when new metadata is absent",
+      "Combined Unicode overflow gives record-size recovery guidance",
+      "Native preview has both grapheme and byte bounds; original source remains untouched"
+    ]
+  },
+  "unsignedReleaseR2": {
+    "exitCode": 0,
+    "source": "build-r5-source.json",
+    "minimumOSVersion": "18.0",
+    "log": "/tmp/lumen-batch21-release-r2.log"
+  },
+  "nativeR3": {
+    "status": "failed",
+    "source": "build-r5-source.json",
+    "bundle": "/tmp/LumenBatch21NativeR3.xcresult",
+    "log": "/tmp/lumen-batch21-native-r3.log",
+    "requestedCases": 6,
+    "exitCode": 65,
+    "summary": {
+      "devicesAndConfigurations": [
+        {
+          "device": {
+            "architecture": "arm64",
+            "deviceId": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+            "deviceName": "Lumen continuation verification",
+            "modelName": "iPhone 18 Pro",
+            "osBuildNumber": "24A434",
+            "osVersion": "27.0",
+            "platform": "iOS Simulator"
+          },
+          "expectedFailures": 0,
+          "failedTests": 2,
+          "passedTests": 4,
+          "skippedTests": 0,
+          "testPlanConfiguration": {
+            "configurationId": "1",
+            "configurationName": "Test Scheme Action"
+          }
+        }
+      ],
+      "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+      "expectedFailures": 0,
+      "failedTests": 2,
+      "finishTime": 1793414745.024,
+      "passedTests": 4,
+      "result": "Failed",
+      "runtimeWarnings": [],
+      "skippedTests": 0,
+      "startTime": 1793413169.589,
+      "statistics": [],
+      "testFailures": [
+        {
+          "failureText": "failed - Element could not be brought into the visible content area",
+          "targetName": "LumenUITests",
+          "testIdentifier": 3,
+          "testIdentifierString": "LumenSmokeTests/testLabFileImportLimitsAndLargeMapping()",
+          "testIdentifierURL": "test://com.apple.xcode/Lumen/LumenUITests/LumenSmokeTests/testLabFileImportLimitsAndLargeMapping",
+          "testName": "testLabFileImportLimitsAndLargeMapping()"
+        },
+        {
+          "failureText": "XCTAssertEqual failed: (\"Optional(\"Ferri\")\") is not equal to (\"Optional(\"Ferritin\")\")",
+          "targetName": "LumenUITests",
+          "testIdentifier": 6,
+          "testIdentifierString": "LumenSmokeTests/testReviewedLabRecords()",
+          "testIdentifierURL": "test://com.apple.xcode/Lumen/LumenUITests/LumenSmokeTests/testReviewedLabRecords",
+          "testName": "testReviewedLabRecords()"
+        }
+      ],
+      "title": "Test - Lumen",
+      "topInsights": [],
+      "totalTestCount": 6
+    },
+    "originals": "r3/provenance.json",
+    "notes": [
+      "Four cases passed. Limits/title field was an existing AX node with an empty frame after scrolling; current test source explicitly materializes it before interacting.",
+      "Manual correction failed when immediate AX read returned Ferri after dispatching Ferritin; current test source waits for the exact full entered value and does not retry typing."
+    ]
+  },
+  "logicR15": {
+    "passedChecks": 706,
+    "log": "/tmp/lumen-batch21-logic-r15.log",
+    "result": "passed",
+    "note": "Includes shared exact-file duplicate identity across lab and general record routes.",
+    "sourceHashes": {
+      "Package.swift": "e3840b2c4df446d19ff3ff78b3188f405b69a41c5450b1505488e3061fdfd01f",
+      "Lumen/Models/SleepModels.swift": "eadd1d0a4d3dadf66a018f36d27ff3129372bd0c0c0224b85c8f4b3d6f4f9764",
+      "Lumen/Models/BackupArchive.swift": "cbcbb9558e96153d396d3806ca5c4418dc9792a9743da9b540cc0035ba479c47",
+      "Lumen/Models/BackupPackage.swift": "fe699a88273bf8ed6389a12a6021c9eec243786d332c7c2edfaa729246943565",
+      "Lumen/Models/BackupFileTransaction.swift": "efd22a5528357590acef13e9790f4b0b965e858fa20c08b3562cc8bc6cde8915",
+      "Lumen/Models/BackupStorageRevision.swift": "f620d8c6288492ab20f9c6e9f5851541860c05071bc114ff0963581d96d97d6f",
+      "Lumen/Models/HealthImportControl.swift": "e39ba852a4e22b554ba20cac01c53dd3bfae075f74cf29a7eb2dd057f7742bba",
+      "Lumen/Models/HealthSyncLedger.swift": "ec11628a2a7bfc70926078161ad70e3854cd22bed6de438c17cca6510447ffc9",
+      "Lumen/Models/RecordExtraction.swift": "5240b6c12d60b5faf727deb486fde0f152f43f2e2404b88f87f6b319b1802691",
+      "Lumen/Models/LabReport.swift": "be284acacb4514dc330b56d4404e80e36fbcf82afcd87bcac8ed4e8c8555d0fc",
+      "Lumen/Models/LabImportOrigin.swift": "57db4f70fd22c55518b8d90b5ae32dfba26ae4469a66e8f773cb91faea9d49f6",
+      "Lumen/Algorithms/LabReview.swift": "bf47334001e4fc99c4cd36280adccdbb22f3ecd12d4a885afc595909e2dcb9ea",
+      "Lumen/Algorithms/LabTable.swift": "820669bd7014b3f454d05bf890d917c8d80811fa920d063e99bc0c12a15c24c4",
+      "Lumen/Algorithms/LabFileDraft.swift": "5d94f42d517f8337e8a46f960d9e8df911ad37e7c314ff0a698feb04bc12a023",
+      "Lumen/Services/LabFileImportService.swift": "684f8b6a7a28973c829449f517d0cb537f07d499479b9be4dc6cea29fb5a0da5",
+      "Tests/LabReportChecks.swift": "d59d422ee49fe32cd4d007012f032448ff067a7489574dc870ed523951b3e075",
+      "Tests/LabImportChecks.swift": "69f8dca01fc93e9880d5036a3735cc8e4f50fc54bdf810f11e96a1d98dfc101a",
+      "Lumen/Services/RecordImportService.swift": "1b593a50a4781ca7ecc3b3eede456bd14513662d4e8563a478e193330122034d",
+      "Tests/RecordImportChecks.swift": "94739ad7f60234dd23c1a7ee512081c75560a232f22d40c5e2e4fe7804904cff",
+      "Lumen/Algorithms/DocumentBlocks.swift": "472b069725cca542403ba8cf6e4c48146090d8959dde26aafd96ed686a185b11",
+      "Lumen/Algorithms/RecordRetrieval.swift": "2285dd0550fdb724effa12bb680deb2d682dd698510733c0aa36f0eb1dcf3609",
+      "Lumen/Algorithms/MiniLMTokenizer.swift": "4e47edb85dfff2140a51e2c3f95ff4b7b8814c82c8282ef15a2beaed50c72e84",
+      "Lumen/Algorithms/SemanticModelPackage.swift": "19255061e7d68e6fb06d4cde51c21a2922bc9ea926e0f612cd874736a019d45e",
+      "Lumen/Algorithms/HybridLibrarySearch.swift": "8db2a0606dc453a66e68192882f06aaea26cc5b78461e53e8df67126efc0cacc",
+      "Lumen/Models/SemanticModelInstallation.swift": "12327978d3f627f3ba27ea5c90ee0b643c58f84b08213772e424ca69ec8015bd",
+      "Lumen/Models/MiniLMRuntimeCache.swift": "0d15818a7d937991bb7df92734c239bf946b9985271da0f312cebb5397b75e59",
+      "Lumen/Services/MiniLMEncoder.swift": "ca809534839f44e093b702aeaefebdc38123ee39f77d02bb14a2448bc26183d9",
+      "Tests/MiniLMChecks.swift": "a8694aaed6f82ca24a72591fe440f44e2019fe17d9468f7e27a3575507f23bac",
+      "Lumen/Algorithms/ReadableExport.swift": "c2c03259625fc0d74e4b3cb4724d1ac46b880e1fd32b053b128f7f34e4d350c3",
+      "Lumen/Algorithms/JSONFieldAudit.swift": "1368c46c21948657b7335f1df3d9375fd5b8e25e03110d98b3072383bbd92a16",
+      "Tests/ReadableExportChecks.swift": "f471ae2b04114da4c25090f7e932aec7677796bff3b101f79836699420b3361e",
+      "Tests/RecordRetrievalChecks.swift": "ab3570f275eec52ed684c6e4df3304759a450d86917d449f9df8227245a4eebf",
+      "Lumen/Algorithms/ZIPPreflight.swift": "2954ae05abd6833c88d2850e6ae54243a5fb57f9ff61d1da41e0099577152228",
+      "Lumen/Algorithms/ImportedMetrics.swift": "257085540417d9647a1a1722d2b3c189c020d22bd9d33bd56a440ebeb3ff1085",
+      "Lumen/Algorithms/WorkoutReconciliation.swift": "92362c8dec7498b9b5e763605cf0cd1c5381ce66a73507ee37fbdd975e125f1b",
+      "Lumen/Algorithms/TrendEvidence.swift": "b98e628d3d57bf7a5dc8282bfae7c09a4574c0760291cbdcbc13b913f6abad67",
+      "Lumen/Algorithms/PlanSchedule.swift": "db3bcfcfbb7e4e122304309d003c4adb7953f7f6c99856cf117c5fb1575a5b4b",
+      "Lumen/Algorithms/ScheduledPlan.swift": "cadf892e02aa43636506748ea896c7021310ee0018e84c80fe5107d8132a6d0b",
+      "Tests/ScheduledPlanChecks.swift": "043d296ebf89e32e95e274d812d615967ec4db125e08023348585a1f220cdb8c",
+      "Lumen/Algorithms/PlanBuilder.swift": "f4b99866b9103657b409a49d463be9748e97a3bdd7221a517fbd03baf4855b6d",
+      "Lumen/Algorithms/HealthHistorySummary.swift": "18d7b8f35f93059989ba61b0ee025da49123da46d2625a3feaf206bcbad05df4",
+      "Lumen/Algorithms/HealthTotals.swift": "804155005d6361efceb20af4c8f434b13a55d4ce5ef964ffa7e62c68710a64e7",
+      "Lumen/Algorithms/CurrentHealthEvidence.swift": "1b906911a1193d83b7e5d45500e7beaec9b3560905dcf15f9363e7051c8c02a0",
+      "Lumen/Algorithms/LocalHealthCorrection.swift": "057a1fa636f5812d7af001431fb9e3c7a799315a82634a13cac753f1455f565a",
+      "Lumen/Algorithms/HealthContextPrompt.swift": "0ecaee68fd434ec301d4d1dce19f4130aecf34278762a6fb37967ad520f577b7",
+      "Lumen/Algorithms/CoachingEngine.swift": "3089077994db6e30dc93d84e2fcfe7308b8a847d8ac39e378e8b58228243d9ca",
+      "Lumen/Algorithms/SleepAlgorithms.swift": "bbc3ddd2588939ed702495859a7f1cd63f0f126a541556db66d8f2ea272a248d",
+      "Lumen/Algorithms/SleepEvidence.swift": "f12109991f1540be999dff5c03ccebdb86b728fb9a64f096ec48fdf2013e50ca",
+      "Lumen/Models/Units.swift": "2a396afe1874a690dcfffca3a99d7d5f5e23b5ed47ec52986c9442f7d7c16834",
+      "Shared/DisplayEvidence.swift": "fcf91e22498afd93f5e10735e11de64530c33cc42764ecf6ebe838c91d9b6773",
+      "Shared/WatchSnapshot.swift": "a7ec76f222a17f1bc3ddca4a5fc9aeed22e6cc31581ec7f6d8c450636c44897c",
+      "Lumen/Models/HealthMetricReading.swift": "900ba6631986e38f9527ea04675d7919a961850f97c44101752fda553c5314f7",
+      "Lumen/Algorithms/ReminderPolicy.swift": "4d2590b99d5b64266036a16a149c82b944040d73ea0381ddb121d301fa669d6b",
+      "Lumen/Models/HealthModels.swift": "7af21dc70808c00c75e6ebb40cf89b66b627a6ef75c05cbcb9ee2d87cceb6eba",
+      "Lumen/Models/HealthLogDraft.swift": "7366cf9dcfacba4cd29c3ba1c57891853590a3905463ece4807c64f3ba4ed2d0",
+      "Lumen/Models/VoiceDraft.swift": "c2487bb02b57d204af44a4df50100c181f0cbca037b9050819442e7feaaede17",
+      "Lumen/Services/VoiceAudioBridge.swift": "a64d93cf181a1c4f2f52faea8aed2fbdfdcf6b542255fb52d5939939ca9b9ebe",
+      "Tests/VoiceDraftChecks.swift": "6301be2d64c65fb5c2278a4ed6afcf830389c6fdbccef48b7e495d0bd3f54871",
+      "Lumen/Models/NutritionModels.swift": "f7c4b8c43691f82a713dfea66b4551ec543491010c7301939d31150d6375d1c2",
+      "Lumen/Models/ConversationModels.swift": "9f4aa9402fdccda0ee18bb166df685e96fadd83db6e7e307a992f7e2482c1d84",
+      "Lumen/Models/CompanionModels.swift": "023140dba793c638c1800ca230902c803d06e7d3c1c5bcc440a354a9bc3cbaee",
+      "Lumen/Services/HealthImportService.swift": "eac51442f9f5859fa09750bd6664600d5a578224adba5cad1f01c8f68e91fb9f",
+      "Lumen/Services/WorkoutImportParser.swift": "d3452e579e076646c6977b99f5e64d04b08fa42c9b2d432605ded16360660193",
+      "Tests/ImportTests.swift": "514451b108ea0a0a608f241c0bbfaf55f8dbbeab05f07f70e2f1cd6296e691c4",
+      "Tests/ZIPImportChecks.swift": "ed54c75e9baaf3f7d7dde21cceb67b2a2b5e66894b231fb8c4109960d02a380f",
+      "Tests/WorkoutImportChecks.swift": "3e55004f1002d4724425439c9d476d863282ba1d8c88dbe78aaaad2dd89dfc60",
+      "Tests/HealthLogDraftChecks.swift": "5aa9d1eb1b187b824ff47def360c31886815fceb17db0c6822a83fb1e4b1f558",
+      "Tests/DataConfidenceChecks.swift": "187feacb7b07f1980b47fbef13f08c102f0d085a09dfe75a8a7223b200b6649d",
+      "Tests/RetainedEvidenceChecks.swift": "508c73804898ba4c9be449ef6a2d1ea7405d14355ff5aeb7ed607f3993fe994d",
+      "Tests/BackupPackageChecks.swift": "d52e9223ff08ec18509c2d72430c7b658e00fa98fbe2a2990d86e93b42c4a987",
+      "Tests/BackupUIFixtures.swift": "17c1e7c472839ab71269008d75131d888587a655ea8f855d596d25e2b3445786",
+      "Tests/HealthSyncChecks.swift": "a97e1a597baa369d53fab06044df65b95be165c7f91a3000475d42b67b5c2945",
+      "Lumen/Services/HealthZIPArchive.swift": "885a295b91f81c1517e87eee708d72cc75582286f0a315a2729cb3985f85056b"
+    }
+  },
+  "buildR6": {
+    "exitCode": 0,
+    "source": "build-r6-source.json",
+    "log": "/tmp/lumen-batch21-build-r6.log",
+    "products": [
+      "Debug-watchsimulator/LumenWatchWidget.appex",
+      "Debug-watchsimulator/LumenWatch.app",
+      "Debug-iphonesimulator/Lumen.app",
+      "Debug-iphonesimulator/LumenUITests-Runner.app",
+      "Debug-iphonesimulator/LumenWidget.appex"
+    ]
+  },
+  "unsignedReleaseR3": {
+    "exitCode": 0,
+    "source": "build-r6-source.json",
+    "minimumOSVersion": "18.0",
+    "log": "/tmp/lumen-batch21-release-r3.log"
+  },
+  "nativeR4": {
+    "status": "failed",
+    "source": "build-r6-source.json",
+    "bundle": "/tmp/LumenBatch21NativeR4.xcresult",
+    "log": "/tmp/lumen-batch21-native-r4.log",
+    "requestedCases": 3,
+    "exitCode": 65,
+    "summary": {
+      "devicesAndConfigurations": [
+        {
+          "device": {
+            "architecture": "arm64",
+            "deviceId": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+            "deviceName": "Lumen continuation verification",
+            "modelName": "iPhone 18 Pro",
+            "osBuildNumber": "24A434",
+            "osVersion": "27.0",
+            "platform": "iOS Simulator"
+          },
+          "expectedFailures": 0,
+          "failedTests": 1,
+          "passedTests": 2,
+          "skippedTests": 0,
+          "testPlanConfiguration": {
+            "configurationId": "1",
+            "configurationName": "Test Scheme Action"
+          }
+        }
+      ],
+      "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+      "expectedFailures": 0,
+      "failedTests": 1,
+      "finishTime": 1793415875.532,
+      "passedTests": 2,
+      "result": "Failed",
+      "runtimeWarnings": [],
+      "skippedTests": 0,
+      "startTime": 1793415035.244,
+      "statistics": [],
+      "testFailures": [
+        {
+          "failureText": "XCTAssertTrue failed",
+          "targetName": "LumenUITests",
+          "testIdentifier": 2,
+          "testIdentifierString": "LumenSmokeTests/testLabFileImportLimitsAndLargeMapping()",
+          "testIdentifierURL": "test://com.apple.xcode/Lumen/LumenUITests/LumenSmokeTests/testLabFileImportLimitsAndLargeMapping",
+          "testName": "testLabFileImportLimitsAndLargeMapping()"
+        }
+      ],
+      "title": "Test - Lumen",
+      "topInsights": [],
+      "totalTestCount": 3
+    },
+    "notes": [
+      "Lifecycle passed 304.164s; existing manual correction/source-change/removal passed 247.947s.",
+      "Limits/title validation and the complete long real heading were reached. Case failed afterward while waiting for an unmaterialized off-screen Method menu; the next test source scrolls it into view first.",
+      "The current UI has a later field/source-specific validation refinement, which is not scored by this run."
+    ],
+    "originals": "r4/provenance.json"
+  },
+  "smallScreenDevice": {
+    "udid": "1D78908E-3040-41C7-A9DA-7DC21F48E2DE",
+    "name": "Lumen Batch21 small import verification",
+    "deviceType": "iPhone SE (3rd generation)",
+    "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-27-0",
+    "purpose": "Task-owned temporary 375x667 native verification; remove only after retained evidence reaches GitHub.",
+    "status": "verification passed; shutdown requested; retained until GitHub confirmation",
+    "fixturesPath": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/1D78908E-3040-41C7-A9DA-7DC21F48E2DE/data/Containers/Shared/AppGroup/85F7F944-C42B-4422-892D-EFE7E83BC804/File Provider Storage/00 Lumen lab checks",
+    "fixtures": [
+      {
+        "name": "Lumen-lab-invalid.csv",
+        "bytes": 23,
+        "sha256": "5070830b9c9e8d391496b1de3dba89761487f743710673d6d0f2e22de1b8c010"
+      },
+      {
+        "name": "Lumen-lab-limits.csv",
+        "bytes": 2061,
+        "sha256": "bf2520439d58ee387e7c11f8832505705c1645b8ff3181d9317206d43fb26456"
+      },
+      {
+        "name": "Lumen-lab-regional.csv",
+        "bytes": 36,
+        "sha256": "dd6b39c9e7f43ee5ef13fff6ddb7fd9893ddf25f70f28e8000d4f3c4aaacdfdc"
+      },
+      {
+        "name": "Lumen-lab-tab.tsv",
+        "bytes": 41,
+        "sha256": "2cdd73c5b6f9bfc2900771806a663a4085e9e2c264eb631d64ea4ea75d594624"
+      },
+      {
+        "name": "Lumen-lab-long-header.csv",
+        "bytes": 150,
+        "sha256": "f48e685e2b586b99ed4356e5988c9b08be5ba368c30e7b28959d98724d05d3cc"
+      },
+      {
+        "name": "Lumen-lab-literal.json",
+        "bytes": 170,
+        "sha256": "034ed462830309999c86d838b35e0c8b554bddbb159eb6b59f3223e145fb1c12"
+      },
+      {
+        "name": "Lumen-lab-table.csv",
+        "bytes": 331,
+        "sha256": "2f8a7b1effc731fe64663111f922440f78d6c2ef9cbf8d2713a105a807e7cf75"
+      },
+      {
+        "name": "Lumen-lab-paged.csv",
+        "bytes": 476,
+        "sha256": "b3b83d06a81c2fe558f2cff4a851fba8d7ece8e2d54b77f0e83c1f93195f0c3b"
+      }
+    ]
+  },
+  "logicR17": {
+    "passedChecks": 708,
+    "exitCode": 0,
+    "log": "/tmp/lumen-batch21-logic-r17.log",
+    "sourceHashes": {
+      "Package.swift": "e3840b2c4df446d19ff3ff78b3188f405b69a41c5450b1505488e3061fdfd01f",
+      "Lumen/Models/SleepModels.swift": "eadd1d0a4d3dadf66a018f36d27ff3129372bd0c0c0224b85c8f4b3d6f4f9764",
+      "Lumen/Models/BackupArchive.swift": "cbcbb9558e96153d396d3806ca5c4418dc9792a9743da9b540cc0035ba479c47",
+      "Lumen/Models/BackupPackage.swift": "fe699a88273bf8ed6389a12a6021c9eec243786d332c7c2edfaa729246943565",
+      "Lumen/Models/BackupFileTransaction.swift": "efd22a5528357590acef13e9790f4b0b965e858fa20c08b3562cc8bc6cde8915",
+      "Lumen/Models/BackupStorageRevision.swift": "f620d8c6288492ab20f9c6e9f5851541860c05071bc114ff0963581d96d97d6f",
+      "Lumen/Models/HealthImportControl.swift": "e39ba852a4e22b554ba20cac01c53dd3bfae075f74cf29a7eb2dd057f7742bba",
+      "Lumen/Models/HealthSyncLedger.swift": "ec11628a2a7bfc70926078161ad70e3854cd22bed6de438c17cca6510447ffc9",
+      "Lumen/Models/RecordExtraction.swift": "5240b6c12d60b5faf727deb486fde0f152f43f2e2404b88f87f6b319b1802691",
+      "Lumen/Models/LabReport.swift": "be284acacb4514dc330b56d4404e80e36fbcf82afcd87bcac8ed4e8c8555d0fc",
+      "Lumen/Models/LabImportOrigin.swift": "57db4f70fd22c55518b8d90b5ae32dfba26ae4469a66e8f773cb91faea9d49f6",
+      "Lumen/Algorithms/LabReview.swift": "bf47334001e4fc99c4cd36280adccdbb22f3ecd12d4a885afc595909e2dcb9ea",
+      "Lumen/Algorithms/LabTable.swift": "613ca2d5fe7f4803f109eba6f2a439a141893439ee9cd562f1b6ce5167123fc8",
+      "Lumen/Algorithms/LabFileDraft.swift": "5d94f42d517f8337e8a46f960d9e8df911ad37e7c314ff0a698feb04bc12a023",
+      "Lumen/Services/LabFileImportService.swift": "684f8b6a7a28973c829449f517d0cb537f07d499479b9be4dc6cea29fb5a0da5",
+      "Tests/LabReportChecks.swift": "d59d422ee49fe32cd4d007012f032448ff067a7489574dc870ed523951b3e075",
+      "Tests/LabImportChecks.swift": "2a63501ffcc59b9d521ceab26ee0745808887c09f0af4ade249e36d7a33fe364",
+      "Lumen/Services/RecordImportService.swift": "1b593a50a4781ca7ecc3b3eede456bd14513662d4e8563a478e193330122034d",
+      "Tests/RecordImportChecks.swift": "94739ad7f60234dd23c1a7ee512081c75560a232f22d40c5e2e4fe7804904cff",
+      "Lumen/Algorithms/DocumentBlocks.swift": "472b069725cca542403ba8cf6e4c48146090d8959dde26aafd96ed686a185b11",
+      "Lumen/Algorithms/RecordRetrieval.swift": "2285dd0550fdb724effa12bb680deb2d682dd698510733c0aa36f0eb1dcf3609",
+      "Lumen/Algorithms/MiniLMTokenizer.swift": "4e47edb85dfff2140a51e2c3f95ff4b7b8814c82c8282ef15a2beaed50c72e84",
+      "Lumen/Algorithms/SemanticModelPackage.swift": "19255061e7d68e6fb06d4cde51c21a2922bc9ea926e0f612cd874736a019d45e",
+      "Lumen/Algorithms/HybridLibrarySearch.swift": "8db2a0606dc453a66e68192882f06aaea26cc5b78461e53e8df67126efc0cacc",
+      "Lumen/Models/SemanticModelInstallation.swift": "12327978d3f627f3ba27ea5c90ee0b643c58f84b08213772e424ca69ec8015bd",
+      "Lumen/Models/MiniLMRuntimeCache.swift": "0d15818a7d937991bb7df92734c239bf946b9985271da0f312cebb5397b75e59",
+      "Lumen/Services/MiniLMEncoder.swift": "ca809534839f44e093b702aeaefebdc38123ee39f77d02bb14a2448bc26183d9",
+      "Tests/MiniLMChecks.swift": "a8694aaed6f82ca24a72591fe440f44e2019fe17d9468f7e27a3575507f23bac",
+      "Lumen/Algorithms/ReadableExport.swift": "c2c03259625fc0d74e4b3cb4724d1ac46b880e1fd32b053b128f7f34e4d350c3",
+      "Lumen/Algorithms/JSONFieldAudit.swift": "1368c46c21948657b7335f1df3d9375fd5b8e25e03110d98b3072383bbd92a16",
+      "Tests/ReadableExportChecks.swift": "f471ae2b04114da4c25090f7e932aec7677796bff3b101f79836699420b3361e",
+      "Tests/RecordRetrievalChecks.swift": "ab3570f275eec52ed684c6e4df3304759a450d86917d449f9df8227245a4eebf",
+      "Lumen/Algorithms/ZIPPreflight.swift": "2954ae05abd6833c88d2850e6ae54243a5fb57f9ff61d1da41e0099577152228",
+      "Lumen/Algorithms/ImportedMetrics.swift": "257085540417d9647a1a1722d2b3c189c020d22bd9d33bd56a440ebeb3ff1085",
+      "Lumen/Algorithms/WorkoutReconciliation.swift": "92362c8dec7498b9b5e763605cf0cd1c5381ce66a73507ee37fbdd975e125f1b",
+      "Lumen/Algorithms/TrendEvidence.swift": "b98e628d3d57bf7a5dc8282bfae7c09a4574c0760291cbdcbc13b913f6abad67",
+      "Lumen/Algorithms/PlanSchedule.swift": "db3bcfcfbb7e4e122304309d003c4adb7953f7f6c99856cf117c5fb1575a5b4b",
+      "Lumen/Algorithms/ScheduledPlan.swift": "cadf892e02aa43636506748ea896c7021310ee0018e84c80fe5107d8132a6d0b",
+      "Tests/ScheduledPlanChecks.swift": "043d296ebf89e32e95e274d812d615967ec4db125e08023348585a1f220cdb8c",
+      "Lumen/Algorithms/PlanBuilder.swift": "f4b99866b9103657b409a49d463be9748e97a3bdd7221a517fbd03baf4855b6d",
+      "Lumen/Algorithms/HealthHistorySummary.swift": "18d7b8f35f93059989ba61b0ee025da49123da46d2625a3feaf206bcbad05df4",
+      "Lumen/Algorithms/HealthTotals.swift": "804155005d6361efceb20af4c8f434b13a55d4ce5ef964ffa7e62c68710a64e7",
+      "Lumen/Algorithms/CurrentHealthEvidence.swift": "1b906911a1193d83b7e5d45500e7beaec9b3560905dcf15f9363e7051c8c02a0",
+      "Lumen/Algorithms/LocalHealthCorrection.swift": "057a1fa636f5812d7af001431fb9e3c7a799315a82634a13cac753f1455f565a",
+      "Lumen/Algorithms/HealthContextPrompt.swift": "0ecaee68fd434ec301d4d1dce19f4130aecf34278762a6fb37967ad520f577b7",
+      "Lumen/Algorithms/CoachingEngine.swift": "3089077994db6e30dc93d84e2fcfe7308b8a847d8ac39e378e8b58228243d9ca",
+      "Lumen/Algorithms/SleepAlgorithms.swift": "bbc3ddd2588939ed702495859a7f1cd63f0f126a541556db66d8f2ea272a248d",
+      "Lumen/Algorithms/SleepEvidence.swift": "f12109991f1540be999dff5c03ccebdb86b728fb9a64f096ec48fdf2013e50ca",
+      "Lumen/Models/Units.swift": "2a396afe1874a690dcfffca3a99d7d5f5e23b5ed47ec52986c9442f7d7c16834",
+      "Shared/DisplayEvidence.swift": "fcf91e22498afd93f5e10735e11de64530c33cc42764ecf6ebe838c91d9b6773",
+      "Shared/WatchSnapshot.swift": "a7ec76f222a17f1bc3ddca4a5fc9aeed22e6cc31581ec7f6d8c450636c44897c",
+      "Lumen/Models/HealthMetricReading.swift": "900ba6631986e38f9527ea04675d7919a961850f97c44101752fda553c5314f7",
+      "Lumen/Algorithms/ReminderPolicy.swift": "4d2590b99d5b64266036a16a149c82b944040d73ea0381ddb121d301fa669d6b",
+      "Lumen/Models/HealthModels.swift": "7af21dc70808c00c75e6ebb40cf89b66b627a6ef75c05cbcb9ee2d87cceb6eba",
+      "Lumen/Models/HealthLogDraft.swift": "7366cf9dcfacba4cd29c3ba1c57891853590a3905463ece4807c64f3ba4ed2d0",
+      "Lumen/Models/VoiceDraft.swift": "c2487bb02b57d204af44a4df50100c181f0cbca037b9050819442e7feaaede17",
+      "Lumen/Services/VoiceAudioBridge.swift": "a64d93cf181a1c4f2f52faea8aed2fbdfdcf6b542255fb52d5939939ca9b9ebe",
+      "Tests/VoiceDraftChecks.swift": "6301be2d64c65fb5c2278a4ed6afcf830389c6fdbccef48b7e495d0bd3f54871",
+      "Lumen/Models/NutritionModels.swift": "f7c4b8c43691f82a713dfea66b4551ec543491010c7301939d31150d6375d1c2",
+      "Lumen/Models/ConversationModels.swift": "9f4aa9402fdccda0ee18bb166df685e96fadd83db6e7e307a992f7e2482c1d84",
+      "Lumen/Models/CompanionModels.swift": "023140dba793c638c1800ca230902c803d06e7d3c1c5bcc440a354a9bc3cbaee",
+      "Lumen/Services/HealthImportService.swift": "eac51442f9f5859fa09750bd6664600d5a578224adba5cad1f01c8f68e91fb9f",
+      "Lumen/Services/WorkoutImportParser.swift": "d3452e579e076646c6977b99f5e64d04b08fa42c9b2d432605ded16360660193",
+      "Tests/ImportTests.swift": "514451b108ea0a0a608f241c0bbfaf55f8dbbeab05f07f70e2f1cd6296e691c4",
+      "Tests/ZIPImportChecks.swift": "ed54c75e9baaf3f7d7dde21cceb67b2a2b5e66894b231fb8c4109960d02a380f",
+      "Tests/WorkoutImportChecks.swift": "3e55004f1002d4724425439c9d476d863282ba1d8c88dbe78aaaad2dd89dfc60",
+      "Tests/HealthLogDraftChecks.swift": "5aa9d1eb1b187b824ff47def360c31886815fceb17db0c6822a83fb1e4b1f558",
+      "Tests/DataConfidenceChecks.swift": "187feacb7b07f1980b47fbef13f08c102f0d085a09dfe75a8a7223b200b6649d",
+      "Tests/RetainedEvidenceChecks.swift": "508c73804898ba4c9be449ef6a2d1ea7405d14355ff5aeb7ed607f3993fe994d",
+      "Tests/BackupPackageChecks.swift": "d52e9223ff08ec18509c2d72430c7b658e00fa98fbe2a2990d86e93b42c4a987",
+      "Tests/BackupUIFixtures.swift": "17c1e7c472839ab71269008d75131d888587a655ea8f855d596d25e2b3445786",
+      "Tests/HealthSyncChecks.swift": "a97e1a597baa369d53fab06044df65b95be165c7f91a3000475d42b67b5c2945",
+      "Lumen/Services/HealthZIPArchive.swift": "885a295b91f81c1517e87eee708d72cc75582286f0a315a2729cb3985f85056b"
+    },
+    "notes": [
+      "Scalar-level CSV parsing preserves combining marks immediately after separators and opening quotes; CRLF and raw-token preservation regressions also pass."
+    ]
+  },
+  "logicR16": {
+    "exitCode": 133,
+    "log": "/tmp/lumen-batch21-logic-r16.log",
+    "result": "failed regression before scalar-parser fix",
+    "failure": "a combining mark immediately after a CSV separator cannot absorb the delimiter"
+  },
+  "logicR18": {
+    "passedChecks": 712,
+    "exitCode": 0,
+    "log": "/tmp/lumen-batch21-logic-r18.log",
+    "sourceHashes": {
+      "Package.swift": "e3840b2c4df446d19ff3ff78b3188f405b69a41c5450b1505488e3061fdfd01f",
+      "Lumen/Models/SleepModels.swift": "eadd1d0a4d3dadf66a018f36d27ff3129372bd0c0c0224b85c8f4b3d6f4f9764",
+      "Lumen/Models/BackupArchive.swift": "cbcbb9558e96153d396d3806ca5c4418dc9792a9743da9b540cc0035ba479c47",
+      "Lumen/Models/BackupPackage.swift": "fe699a88273bf8ed6389a12a6021c9eec243786d332c7c2edfaa729246943565",
+      "Lumen/Models/BackupFileTransaction.swift": "efd22a5528357590acef13e9790f4b0b965e858fa20c08b3562cc8bc6cde8915",
+      "Lumen/Models/BackupStorageRevision.swift": "f620d8c6288492ab20f9c6e9f5851541860c05071bc114ff0963581d96d97d6f",
+      "Lumen/Models/HealthImportControl.swift": "e39ba852a4e22b554ba20cac01c53dd3bfae075f74cf29a7eb2dd057f7742bba",
+      "Lumen/Models/HealthSyncLedger.swift": "ec11628a2a7bfc70926078161ad70e3854cd22bed6de438c17cca6510447ffc9",
+      "Lumen/Models/RecordExtraction.swift": "5240b6c12d60b5faf727deb486fde0f152f43f2e2404b88f87f6b319b1802691",
+      "Lumen/Models/LabReport.swift": "e039c8131ec6133076fac019cb69ddbe1eddcb12fc18a7b93730ba4524360b52",
+      "Lumen/Models/LabImportOrigin.swift": "57db4f70fd22c55518b8d90b5ae32dfba26ae4469a66e8f773cb91faea9d49f6",
+      "Lumen/Algorithms/LabReview.swift": "bf47334001e4fc99c4cd36280adccdbb22f3ecd12d4a885afc595909e2dcb9ea",
+      "Lumen/Algorithms/LabTable.swift": "613ca2d5fe7f4803f109eba6f2a439a141893439ee9cd562f1b6ce5167123fc8",
+      "Lumen/Algorithms/LabFileDraft.swift": "5d94f42d517f8337e8a46f960d9e8df911ad37e7c314ff0a698feb04bc12a023",
+      "Lumen/Services/LabFileImportService.swift": "684f8b6a7a28973c829449f517d0cb537f07d499479b9be4dc6cea29fb5a0da5",
+      "Tests/LabReportChecks.swift": "d59d422ee49fe32cd4d007012f032448ff067a7489574dc870ed523951b3e075",
+      "Tests/LabImportChecks.swift": "5b3e74bb0fa0d7b519b0d97068309be2ab75aa1e2bfd51d9d41c25c3fac2fc85",
+      "Lumen/Services/RecordImportService.swift": "1b593a50a4781ca7ecc3b3eede456bd14513662d4e8563a478e193330122034d",
+      "Tests/RecordImportChecks.swift": "94739ad7f60234dd23c1a7ee512081c75560a232f22d40c5e2e4fe7804904cff",
+      "Lumen/Algorithms/DocumentBlocks.swift": "472b069725cca542403ba8cf6e4c48146090d8959dde26aafd96ed686a185b11",
+      "Lumen/Algorithms/RecordRetrieval.swift": "2285dd0550fdb724effa12bb680deb2d682dd698510733c0aa36f0eb1dcf3609",
+      "Lumen/Algorithms/MiniLMTokenizer.swift": "4e47edb85dfff2140a51e2c3f95ff4b7b8814c82c8282ef15a2beaed50c72e84",
+      "Lumen/Algorithms/SemanticModelPackage.swift": "19255061e7d68e6fb06d4cde51c21a2922bc9ea926e0f612cd874736a019d45e",
+      "Lumen/Algorithms/HybridLibrarySearch.swift": "8db2a0606dc453a66e68192882f06aaea26cc5b78461e53e8df67126efc0cacc",
+      "Lumen/Models/SemanticModelInstallation.swift": "12327978d3f627f3ba27ea5c90ee0b643c58f84b08213772e424ca69ec8015bd",
+      "Lumen/Models/MiniLMRuntimeCache.swift": "0d15818a7d937991bb7df92734c239bf946b9985271da0f312cebb5397b75e59",
+      "Lumen/Services/MiniLMEncoder.swift": "ca809534839f44e093b702aeaefebdc38123ee39f77d02bb14a2448bc26183d9",
+      "Tests/MiniLMChecks.swift": "a8694aaed6f82ca24a72591fe440f44e2019fe17d9468f7e27a3575507f23bac",
+      "Lumen/Algorithms/ReadableExport.swift": "c2c03259625fc0d74e4b3cb4724d1ac46b880e1fd32b053b128f7f34e4d350c3",
+      "Lumen/Algorithms/JSONFieldAudit.swift": "1368c46c21948657b7335f1df3d9375fd5b8e25e03110d98b3072383bbd92a16",
+      "Tests/ReadableExportChecks.swift": "f471ae2b04114da4c25090f7e932aec7677796bff3b101f79836699420b3361e",
+      "Tests/RecordRetrievalChecks.swift": "ab3570f275eec52ed684c6e4df3304759a450d86917d449f9df8227245a4eebf",
+      "Lumen/Algorithms/ZIPPreflight.swift": "2954ae05abd6833c88d2850e6ae54243a5fb57f9ff61d1da41e0099577152228",
+      "Lumen/Algorithms/ImportedMetrics.swift": "257085540417d9647a1a1722d2b3c189c020d22bd9d33bd56a440ebeb3ff1085",
+      "Lumen/Algorithms/WorkoutReconciliation.swift": "92362c8dec7498b9b5e763605cf0cd1c5381ce66a73507ee37fbdd975e125f1b",
+      "Lumen/Algorithms/TrendEvidence.swift": "b98e628d3d57bf7a5dc8282bfae7c09a4574c0760291cbdcbc13b913f6abad67",
+      "Lumen/Algorithms/PlanSchedule.swift": "db3bcfcfbb7e4e122304309d003c4adb7953f7f6c99856cf117c5fb1575a5b4b",
+      "Lumen/Algorithms/ScheduledPlan.swift": "cadf892e02aa43636506748ea896c7021310ee0018e84c80fe5107d8132a6d0b",
+      "Tests/ScheduledPlanChecks.swift": "043d296ebf89e32e95e274d812d615967ec4db125e08023348585a1f220cdb8c",
+      "Lumen/Algorithms/PlanBuilder.swift": "f4b99866b9103657b409a49d463be9748e97a3bdd7221a517fbd03baf4855b6d",
+      "Lumen/Algorithms/HealthHistorySummary.swift": "18d7b8f35f93059989ba61b0ee025da49123da46d2625a3feaf206bcbad05df4",
+      "Lumen/Algorithms/HealthTotals.swift": "804155005d6361efceb20af4c8f434b13a55d4ce5ef964ffa7e62c68710a64e7",
+      "Lumen/Algorithms/CurrentHealthEvidence.swift": "1b906911a1193d83b7e5d45500e7beaec9b3560905dcf15f9363e7051c8c02a0",
+      "Lumen/Algorithms/LocalHealthCorrection.swift": "057a1fa636f5812d7af001431fb9e3c7a799315a82634a13cac753f1455f565a",
+      "Lumen/Algorithms/HealthContextPrompt.swift": "0ecaee68fd434ec301d4d1dce19f4130aecf34278762a6fb37967ad520f577b7",
+      "Lumen/Algorithms/CoachingEngine.swift": "3089077994db6e30dc93d84e2fcfe7308b8a847d8ac39e378e8b58228243d9ca",
+      "Lumen/Algorithms/SleepAlgorithms.swift": "bbc3ddd2588939ed702495859a7f1cd63f0f126a541556db66d8f2ea272a248d",
+      "Lumen/Algorithms/SleepEvidence.swift": "f12109991f1540be999dff5c03ccebdb86b728fb9a64f096ec48fdf2013e50ca",
+      "Lumen/Models/Units.swift": "2a396afe1874a690dcfffca3a99d7d5f5e23b5ed47ec52986c9442f7d7c16834",
+      "Shared/DisplayEvidence.swift": "fcf91e22498afd93f5e10735e11de64530c33cc42764ecf6ebe838c91d9b6773",
+      "Shared/WatchSnapshot.swift": "a7ec76f222a17f1bc3ddca4a5fc9aeed22e6cc31581ec7f6d8c450636c44897c",
+      "Lumen/Models/HealthMetricReading.swift": "900ba6631986e38f9527ea04675d7919a961850f97c44101752fda553c5314f7",
+      "Lumen/Algorithms/ReminderPolicy.swift": "4d2590b99d5b64266036a16a149c82b944040d73ea0381ddb121d301fa669d6b",
+      "Lumen/Models/HealthModels.swift": "7af21dc70808c00c75e6ebb40cf89b66b627a6ef75c05cbcb9ee2d87cceb6eba",
+      "Lumen/Models/HealthLogDraft.swift": "7366cf9dcfacba4cd29c3ba1c57891853590a3905463ece4807c64f3ba4ed2d0",
+      "Lumen/Models/VoiceDraft.swift": "c2487bb02b57d204af44a4df50100c181f0cbca037b9050819442e7feaaede17",
+      "Lumen/Services/VoiceAudioBridge.swift": "a64d93cf181a1c4f2f52faea8aed2fbdfdcf6b542255fb52d5939939ca9b9ebe",
+      "Tests/VoiceDraftChecks.swift": "6301be2d64c65fb5c2278a4ed6afcf830389c6fdbccef48b7e495d0bd3f54871",
+      "Lumen/Models/NutritionModels.swift": "f7c4b8c43691f82a713dfea66b4551ec543491010c7301939d31150d6375d1c2",
+      "Lumen/Models/ConversationModels.swift": "9f4aa9402fdccda0ee18bb166df685e96fadd83db6e7e307a992f7e2482c1d84",
+      "Lumen/Models/CompanionModels.swift": "023140dba793c638c1800ca230902c803d06e7d3c1c5bcc440a354a9bc3cbaee",
+      "Lumen/Services/HealthImportService.swift": "eac51442f9f5859fa09750bd6664600d5a578224adba5cad1f01c8f68e91fb9f",
+      "Lumen/Services/WorkoutImportParser.swift": "d3452e579e076646c6977b99f5e64d04b08fa42c9b2d432605ded16360660193",
+      "Tests/ImportTests.swift": "514451b108ea0a0a608f241c0bbfaf55f8dbbeab05f07f70e2f1cd6296e691c4",
+      "Tests/ZIPImportChecks.swift": "ed54c75e9baaf3f7d7dde21cceb67b2a2b5e66894b231fb8c4109960d02a380f",
+      "Tests/WorkoutImportChecks.swift": "3e55004f1002d4724425439c9d476d863282ba1d8c88dbe78aaaad2dd89dfc60",
+      "Tests/HealthLogDraftChecks.swift": "5aa9d1eb1b187b824ff47def360c31886815fceb17db0c6822a83fb1e4b1f558",
+      "Tests/DataConfidenceChecks.swift": "187feacb7b07f1980b47fbef13f08c102f0d085a09dfe75a8a7223b200b6649d",
+      "Tests/RetainedEvidenceChecks.swift": "508c73804898ba4c9be449ef6a2d1ea7405d14355ff5aeb7ed607f3993fe994d",
+      "Tests/BackupPackageChecks.swift": "d52e9223ff08ec18509c2d72430c7b658e00fa98fbe2a2990d86e93b42c4a987",
+      "Tests/BackupUIFixtures.swift": "17c1e7c472839ab71269008d75131d888587a655ea8f855d596d25e2b3445786",
+      "Tests/HealthSyncChecks.swift": "a97e1a597baa369d53fab06044df65b95be165c7f91a3000475d42b67b5c2945",
+      "Lumen/Services/HealthZIPArchive.swift": "885a295b91f81c1517e87eee708d72cc75582286f0a315a2729cb3985f85056b"
+    },
+    "notes": [
+      "Adds distinct missing/blank/character/byte/control recovery reasons; invalid optional method identifies that field. All legacy validation and reference fingerprint checks still pass."
+    ]
+  },
+  "unsignedReleaseR4": {
+    "exitCode": 0,
+    "source": "build-r7-source.json",
+    "minimumOSVersion": "18.0",
+    "log": "/tmp/lumen-batch21-release-r4.log",
+    "audit": {
+      "minimumOSVersion": "18.0",
+      "bundleID": "com.dbakp.lumen",
+      "binarySHA256": "3f5d53d59010ceaa3453a8f31dc98b845c154f678bd916aa23fd2bb389cf5520",
+      "excludedDebugMarkers": [
+        "librarySearchRemoteUITestMode",
+        "Simulated plan. No AI request."
+      ],
+      "unexpectedDebugMarkers": [
+        "resetForUITests",
+        "Simulated speech. No microphone."
+      ],
+      "modelPackages": []
+    }
+  },
+  "nativeR5": {
+    "status": "failed",
+    "source": "build-r7-source.json",
+    "bundle": "/tmp/LumenBatch21NativeR5.xcresult",
+    "log": "/tmp/lumen-batch21-native-r5.log",
+    "requestedCases": 3,
+    "exitCode": 65,
+    "summary": {
+      "devicesAndConfigurations": [
+        {
+          "device": {
+            "architecture": "arm64",
+            "deviceId": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+            "deviceName": "Lumen continuation verification",
+            "modelName": "iPhone 18 Pro",
+            "osBuildNumber": "24A434",
+            "osVersion": "27.0",
+            "platform": "iOS Simulator"
+          },
+          "expectedFailures": 0,
+          "failedTests": 2,
+          "passedTests": 1,
+          "skippedTests": 0,
+          "testPlanConfiguration": {
+            "configurationId": "1",
+            "configurationName": "Test Scheme Action"
+          }
+        }
+      ],
+      "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+      "expectedFailures": 0,
+      "failedTests": 2,
+      "finishTime": 1793416549.918,
+      "passedTests": 1,
+      "result": "Failed",
+      "runtimeWarnings": [],
+      "skippedTests": 0,
+      "startTime": 1793416009.265,
+      "statistics": [],
+      "testFailures": [
+        {
+          "failureText": "XCTAssertEqual failed: (\"These source cells exceed the 2.000-character limit. Exclude this row or map fewer optional columns.\") is not equal to (\"These source cells exceed the 2,000-character limit. Exclude this row or map fewer optional columns.\")",
+          "targetName": "LumenUITests",
+          "testIdentifier": 1,
+          "testIdentifierString": "LumenSmokeTests/testLabFileImportLimitsAndLargeMapping()",
+          "testIdentifierURL": "test://com.apple.xcode/Lumen/LumenUITests/LumenSmokeTests/testLabFileImportLimitsAndLargeMapping",
+          "testName": "testLabFileImportLimitsAndLargeMapping()"
+        },
+        {
+          "failureText": "failed - The fixture's complete content must be visible for capture",
+          "targetName": "LumenUITests",
+          "testIdentifier": 2,
+          "testIdentifierString": "LumenSmokeTests/testLabFileImportValidationPresentation()",
+          "testIdentifierURL": "test://com.apple.xcode/Lumen/LumenUITests/LumenSmokeTests/testLabFileImportValidationPresentation",
+          "testName": "testLabFileImportValidationPresentation()"
+        }
+      ],
+      "title": "Test - Lumen",
+      "topInsights": [],
+      "totalTestCount": 3
+    },
+    "originals": "r5/provenance.json",
+    "notes": [
+      "Manual correction/source-change/removal passed251.343s with the field-specific validation UI.",
+      "Normal source-limit assertion incorrectly hard-coded English grouping; app correctly displayed Danish-region 2.000. Next assertion uses2000.formatted().",
+      "The full-height visibility gesture oscillated a312.667-point label between clipped viewport edges. Failed final frame wasx24,y614.667,w354,h312.667. Next helper scrolls only measured overflow; complete-frame assertion stays unchanged."
+    ]
+  },
+  "unsignedReleaseR5": {
+    "exitCode": 0,
+    "source": "build-r8-source.json",
+    "log": "/tmp/lumen-batch21-release-r5.log",
+    "audit": {
+      "minimumOSVersion": "18.0",
+      "binarySHA256": "682f2d4d4976d3306a30d6065e770255014b514711f2ff57f793d73d304474ff",
+      "excludedDebugMarkers": [
+        "librarySearchRemoteUITestMode",
+        "resetForUITests",
+        "Simulated plan. No AI request.",
+        "Simulated speech. No microphone."
+      ],
+      "unexpectedDebugMarkers": [],
+      "modelPackages": []
+    }
+  },
+  "smallR1": {
+    "status": "passed",
+    "source": "build-r8-source.json",
+    "bundle": "/tmp/LumenBatch21SmallR1.xcresult",
+    "log": "/tmp/lumen-batch21-small-r1.log",
+    "requestedCases": 1,
+    "exitCode": 0,
+    "summary": {
+      "devicesAndConfigurations": [
+        {
+          "device": {
+            "architecture": "arm64",
+            "deviceId": "1D78908E-3040-41C7-A9DA-7DC21F48E2DE",
+            "deviceName": "Lumen Batch21 small import verification",
+            "modelName": "iPhone SE (3rd generation)",
+            "osBuildNumber": "24A434",
+            "osVersion": "27.0",
+            "platform": "iOS Simulator"
+          },
+          "expectedFailures": 0,
+          "failedTests": 0,
+          "passedTests": 1,
+          "skippedTests": 0,
+          "testPlanConfiguration": {
+            "configurationId": "1",
+            "configurationName": "Test Scheme Action"
+          }
+        }
+      ],
+      "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+      "expectedFailures": 0,
+      "failedTests": 0,
+      "finishTime": 1793416955.352,
+      "passedTests": 1,
+      "result": "Passed",
+      "runtimeWarnings": [],
+      "skippedTests": 0,
+      "startTime": 1793416661.126,
+      "statistics": [],
+      "testFailures": [],
+      "title": "Test - Lumen",
+      "topInsights": [],
+      "totalTestCount": 1
+    },
+    "originals": "small-r1/provenance.json"
+  },
+  "nativeR6": {
+    "status": "failed",
+    "source": "build-r8-source.json",
+    "bundle": "/tmp/LumenBatch21NativeR6.xcresult",
+    "log": "/tmp/lumen-batch21-native-r6.log",
+    "requestedCases": 2,
+    "exitCode": 65,
+    "summary": {
+      "devicesAndConfigurations": [
+        {
+          "device": {
+            "architecture": "arm64",
+            "deviceId": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+            "deviceName": "Lumen continuation verification",
+            "modelName": "iPhone 18 Pro",
+            "osBuildNumber": "24A434",
+            "osVersion": "27.0",
+            "platform": "iOS Simulator"
+          },
+          "expectedFailures": 0,
+          "failedTests": 1,
+          "passedTests": 1,
+          "skippedTests": 0,
+          "testPlanConfiguration": {
+            "configurationId": "1",
+            "configurationName": "Test Scheme Action"
+          }
+        }
+      ],
+      "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+      "expectedFailures": 0,
+      "failedTests": 1,
+      "finishTime": 1793417310.415,
+      "passedTests": 1,
+      "result": "Failed",
+      "runtimeWarnings": [],
+      "skippedTests": 0,
+      "startTime": 1793416967.373,
+      "statistics": [],
+      "testFailures": [
+        {
+          "failureText": "XCTAssertTrue failed",
+          "targetName": "LumenUITests",
+          "testIdentifier": 1,
+          "testIdentifierString": "LumenSmokeTests/testLabFileImportLimitsAndLargeMapping()",
+          "testIdentifierURL": "test://com.apple.xcode/Lumen/LumenUITests/LumenSmokeTests/testLabFileImportLimitsAndLargeMapping",
+          "testName": "testLabFileImportLimitsAndLargeMapping()"
+        }
+      ],
+      "title": "Test - Lumen",
+      "topInsights": [],
+      "totalTestCount": 2
+    },
+    "originals": "r6/provenance.json",
+    "notes": [
+      "XXXL-specific source/required-field validation passed179.245s, including correction and enabled Save after exclusions.",
+      "Normal case captured source/missing/result-size guidance, then failed because no native edit menu appeared for replacing the501-digit value. Archived AX tree shows focused field atx32,y470.7,w338,h75.3, zero-size selection adjustment container and no Select/Cut/Copy/menu nodes. No typed replacement or save was attempted after this failure."
+    ]
+  },
+  "currentSourceEquality": {
+    "status": "matched",
+    "comparedWith": "build-r15-source.json",
+    "groups": {
+      "application": {
+        "count": 175,
+        "sha256": "3e9f0a2cf35029f2320861c30a5fe9ee0164927d59ef9676d5e9979ff22a445a",
+        "mismatches": []
+      },
+      "uiTests": {
+        "count": 2,
+        "sha256": "c63e9a8a60ca44e096dd17849bd4b5b4d0892ea41cc1365be32314d61bf9697d",
+        "mismatches": []
+      },
+      "packageTestsScripts": {
+        "count": 26,
+        "sha256": "c68bb8c3e104a830e21492b1b4c4aa23d1dbb37ac8a5fe22b631bc7dd0432e76",
+        "mismatches": []
+      }
+    },
+    "hashEncoding": "SHA-256 over sorted relative path + NUL + lowercase file SHA-256 + LF, UTF-8",
+    "logicR24SourceCount": 73,
+    "logicR24Mismatches": [],
+    "sameApplicationAsUnsignedReleaseR10": true,
+    "nativeR10ToFinalAppDelta": [
+      "Lumen/Algorithms/LabFileDraft.swift"
+    ],
+    "notes": [
+      "NativeR10/SmallR5 use BuildR14. Their only later app-source delta is the aggregate recovery sentence in final-copy-delta.json. No bound, failure type, recovery action or view/editor/receipt layout changed.",
+      "ReceiptR2 uses BuildR13. Its model/receipt UI remains unchanged through final source; subsequent shared-editor action and aggregate error copy do not affect that receipt/removal/relaunch/duplicate case.",
+      "Earlier R9 passing five-case suite and R3 formats case retain their recorded source boundaries. They are not relabelled as final-source suites."
+    ]
+  },
+  "nativeR7": {
+    "status": "failed",
+    "source": "build-r9-source.json",
+    "bundle": "/tmp/LumenBatch21NativeR7.xcresult",
+    "log": "/tmp/lumen-batch21-native-r7.log",
+    "requestedCases": 1,
+    "exitCode": 65,
+    "summary": {
+      "devicesAndConfigurations": [
+        {
+          "device": {
+            "architecture": "arm64",
+            "deviceId": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+            "deviceName": "Lumen continuation verification",
+            "modelName": "iPhone 18 Pro",
+            "osBuildNumber": "24A434",
+            "osVersion": "27.0",
+            "platform": "iOS Simulator"
+          },
+          "expectedFailures": 0,
+          "failedTests": 1,
+          "passedTests": 0,
+          "skippedTests": 0,
+          "testPlanConfiguration": {
+            "configurationId": "1",
+            "configurationName": "Test Scheme Action"
+          }
+        }
+      ],
+      "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+      "expectedFailures": 0,
+      "failedTests": 1,
+      "finishTime": 1793417716.116,
+      "passedTests": 0,
+      "result": "Failed",
+      "runtimeWarnings": [],
+      "skippedTests": 0,
+      "startTime": 1793417548.774,
+      "statistics": [],
+      "testFailures": [
+        {
+          "failureText": "XCTAssertEqual failed: (\"XCTWaiterResult(rawValue: 2)\") is not equal to (\"XCTWaiterResult(rawValue: 1)\") - A native edit menu must confirm a selection before deletion",
+          "targetName": "LumenUITests",
+          "testIdentifier": 1,
+          "testIdentifierString": "LumenSmokeTests/testLabFileImportLimitsAndLargeMapping()",
+          "testIdentifierURL": "test://com.apple.xcode/Lumen/LumenUITests/LumenSmokeTests/testLabFileImportLimitsAndLargeMapping",
+          "testName": "testLabFileImportLimitsAndLargeMapping()"
+        }
+      ],
+      "title": "Test - Lumen",
+      "topInsights": [],
+      "totalTestCount": 1
+    },
+    "notes": [
+      "Double-tap still offers no native edit menu. The explicit failure screenshot shows the long inline value extending behind the keyboard, exposing a real product editing defect.",
+      "BuildR10 replaces lab field/title input with a full-size native TextEditor. No replacement or save after the R7 failure is claimed."
+    ],
+    "originals": "r7/provenance.json"
+  },
+  "designRound2": {
+    "status": "historical visual sign-off for BuildR8; current full-editor UI requires Round3",
+    "scoredLines": 11,
+    "atLeast4": 10,
+    "richness": 3,
+    "concreteVisibleDefects": 0,
+    "pendingSupplement": [],
+    "publicationGate": "Historical only; R8/R9 close the requested title/menu supplement. Round3 and final focused native gates supersede it."
+  },
+  "unsignedReleaseR6": {
+    "exitCode": 0,
+    "source": "build-r10-source.json",
+    "log": "/tmp/lumen-batch21-release-r6.log",
+    "audit": {
+      "minimumOSVersion": "18.0",
+      "binarySHA256": "13ded72a860b3d3a26c56d8dbc050b04cc9e5539904c0496b21a2f18e7868513",
+      "excludedDebugMarkers": [
+        "librarySearchRemoteUITestMode",
+        "resetForUITests",
+        "Simulated plan. No AI request.",
+        "Simulated speech. No microphone."
+      ],
+      "unexpectedDebugMarkers": [],
+      "modelPackages": []
+    }
+  },
+  "nativeR8": {
+    "status": "passed",
+    "source": "build-r10-source.json",
+    "bundle": "/tmp/LumenBatch21NativeR8.xcresult",
+    "log": "/tmp/lumen-batch21-native-r8.log",
+    "requestedCases": 1,
+    "exitCode": 0,
+    "summary": {
+      "devicesAndConfigurations": [
+        {
+          "device": {
+            "architecture": "arm64",
+            "deviceId": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+            "deviceName": "Lumen continuation verification",
+            "modelName": "iPhone 18 Pro",
+            "osBuildNumber": "24A434",
+            "osVersion": "27.0",
+            "platform": "iOS Simulator"
+          },
+          "expectedFailures": 0,
+          "failedTests": 0,
+          "passedTests": 1,
+          "skippedTests": 0,
+          "testPlanConfiguration": {
+            "configurationId": "1",
+            "configurationName": "Test Scheme Action"
+          }
+        }
+      ],
+      "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+      "expectedFailures": 0,
+      "failedTests": 0,
+      "finishTime": 1793418895.401,
+      "passedTests": 1,
+      "result": "Passed",
+      "runtimeWarnings": [],
+      "skippedTests": 0,
+      "startTime": 1793418551.293,
+      "statistics": [],
+      "testFailures": [],
+      "title": "Test - Lumen",
+      "topInsights": [],
+      "totalTestCount": 1
+    },
+    "durationSeconds": 334.594,
+    "originals": "r8/provenance.json",
+    "notes": [
+      "Full-size text editor preserves501 digits; native exact replacement to2.00 passes.",
+      "Discard preserves the previous required/missing value; Keep editing preserves the corrected2.00; outer result validation gates confirmation.",
+      "Record title501 blocks Save; exact replacement to a valid title and re-acknowledgement enables Save.",
+      "Complete XXXL long actual header and Not mapped captures506/507 pass."
+    ]
+  },
+  "nativeR9": {
+    "status": "passed",
+    "source": "build-r10-source.json",
+    "bundle": "/tmp/LumenBatch21NativeR9.xcresult",
+    "log": "/tmp/lumen-batch21-native-r9.log",
+    "requestedCases": 5,
+    "exitCode": 0,
+    "summary": {
+      "devicesAndConfigurations": [
+        {
+          "device": {
+            "architecture": "arm64",
+            "deviceId": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+            "deviceName": "Lumen continuation verification",
+            "modelName": "iPhone 18 Pro",
+            "osBuildNumber": "24A434",
+            "osVersion": "27.0",
+            "platform": "iOS Simulator"
+          },
+          "expectedFailures": 0,
+          "failedTests": 0,
+          "passedTests": 5,
+          "skippedTests": 0,
+          "testPlanConfiguration": {
+            "configurationId": "1",
+            "configurationName": "Test Scheme Action"
+          }
+        }
+      ],
+      "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+      "expectedFailures": 0,
+      "failedTests": 0,
+      "finishTime": 1793420388.111,
+      "passedTests": 5,
+      "result": "Passed",
+      "runtimeWarnings": [],
+      "skippedTests": 0,
+      "startTime": 1793419093.666,
+      "statistics": [],
+      "testFailures": [],
+      "title": "Test - Lumen",
+      "topInsights": [],
+      "totalTestCount": 5
+    },
+    "originals": "r9/provenance.json",
+    "caseDurationsSeconds": {
+      "importLifecycle": 291.236,
+      "importPresentation": 316.415,
+      "validationPresentation": 179.57,
+      "manualPresentation": 225.575,
+      "manualLifecycle": 274.27
+    }
+  },
+  "logicR19": {
+    "exitCode": 133,
+    "log": "/tmp/lumen-batch21-logic-r19.log",
+    "result": "failed regression before receipt ownership fix",
+    "failure": "removing lab transcriptions preserves the record original file identity for later duplicate decisions"
+  },
+  "logicR22": {
+    "passedChecks": 725,
+    "exitCode": 0,
+    "log": "/tmp/lumen-batch21-logic-r22.log",
+    "sourceHashes": {
+      "Package.swift": "e3840b2c4df446d19ff3ff78b3188f405b69a41c5450b1505488e3061fdfd01f",
+      "Lumen/Models/SleepModels.swift": "eadd1d0a4d3dadf66a018f36d27ff3129372bd0c0c0224b85c8f4b3d6f4f9764",
+      "Lumen/Models/BackupArchive.swift": "42185fd4424628baff46d69b0e3295b03a107ca9c48ebd6d32e2d39e882ccfb7",
+      "Lumen/Models/BackupPackage.swift": "fe699a88273bf8ed6389a12a6021c9eec243786d332c7c2edfaa729246943565",
+      "Lumen/Models/BackupFileTransaction.swift": "efd22a5528357590acef13e9790f4b0b965e858fa20c08b3562cc8bc6cde8915",
+      "Lumen/Models/BackupStorageRevision.swift": "f620d8c6288492ab20f9c6e9f5851541860c05071bc114ff0963581d96d97d6f",
+      "Lumen/Models/HealthImportControl.swift": "e39ba852a4e22b554ba20cac01c53dd3bfae075f74cf29a7eb2dd057f7742bba",
+      "Lumen/Models/HealthSyncLedger.swift": "ec11628a2a7bfc70926078161ad70e3854cd22bed6de438c17cca6510447ffc9",
+      "Lumen/Models/RecordExtraction.swift": "b681bcfe6d8655ce31fd243fff646b55c365056d513573807e919c565129d890",
+      "Lumen/Models/LabReport.swift": "85c73e3752134f52e21cec13032c7cb0aa344c5213245a45b239966ef86d0d84",
+      "Lumen/Models/LabImportOrigin.swift": "57db4f70fd22c55518b8d90b5ae32dfba26ae4469a66e8f773cb91faea9d49f6",
+      "Lumen/Algorithms/LabReview.swift": "de2a68dc914f3f18011224f5542f21cb580e19c9b8d393c496a597a8aae1ef67",
+      "Lumen/Algorithms/LabTable.swift": "613ca2d5fe7f4803f109eba6f2a439a141893439ee9cd562f1b6ce5167123fc8",
+      "Lumen/Algorithms/LabFileDraft.swift": "208cc2bb73371258ccd76c42fe6812c7cfa28efc157e674d7c25a99e0cfbae59",
+      "Lumen/Services/LabFileImportService.swift": "684f8b6a7a28973c829449f517d0cb537f07d499479b9be4dc6cea29fb5a0da5",
+      "Tests/LabReportChecks.swift": "d59d422ee49fe32cd4d007012f032448ff067a7489574dc870ed523951b3e075",
+      "Tests/LabImportChecks.swift": "bc1ef869b871291e0101d580a523e849a693c7648837e60d625746613579ef04",
+      "Lumen/Services/RecordImportService.swift": "1b593a50a4781ca7ecc3b3eede456bd14513662d4e8563a478e193330122034d",
+      "Tests/RecordImportChecks.swift": "94739ad7f60234dd23c1a7ee512081c75560a232f22d40c5e2e4fe7804904cff",
+      "Lumen/Algorithms/DocumentBlocks.swift": "472b069725cca542403ba8cf6e4c48146090d8959dde26aafd96ed686a185b11",
+      "Lumen/Algorithms/RecordRetrieval.swift": "dc2f42e04d45492a6bd91553cba9ee89a753a7da9a646850d1cb15b6c14f7c6b",
+      "Lumen/Algorithms/MiniLMTokenizer.swift": "4e47edb85dfff2140a51e2c3f95ff4b7b8814c82c8282ef15a2beaed50c72e84",
+      "Lumen/Algorithms/SemanticModelPackage.swift": "19255061e7d68e6fb06d4cde51c21a2922bc9ea926e0f612cd874736a019d45e",
+      "Lumen/Algorithms/HybridLibrarySearch.swift": "8db2a0606dc453a66e68192882f06aaea26cc5b78461e53e8df67126efc0cacc",
+      "Lumen/Models/SemanticModelInstallation.swift": "12327978d3f627f3ba27ea5c90ee0b643c58f84b08213772e424ca69ec8015bd",
+      "Lumen/Models/MiniLMRuntimeCache.swift": "0d15818a7d937991bb7df92734c239bf946b9985271da0f312cebb5397b75e59",
+      "Lumen/Services/MiniLMEncoder.swift": "ca809534839f44e093b702aeaefebdc38123ee39f77d02bb14a2448bc26183d9",
+      "Tests/MiniLMChecks.swift": "a8694aaed6f82ca24a72591fe440f44e2019fe17d9468f7e27a3575507f23bac",
+      "Lumen/Algorithms/ReadableExport.swift": "c2c03259625fc0d74e4b3cb4724d1ac46b880e1fd32b053b128f7f34e4d350c3",
+      "Lumen/Algorithms/JSONFieldAudit.swift": "1368c46c21948657b7335f1df3d9375fd5b8e25e03110d98b3072383bbd92a16",
+      "Tests/ReadableExportChecks.swift": "f471ae2b04114da4c25090f7e932aec7677796bff3b101f79836699420b3361e",
+      "Tests/RecordRetrievalChecks.swift": "ab3570f275eec52ed684c6e4df3304759a450d86917d449f9df8227245a4eebf",
+      "Lumen/Algorithms/ZIPPreflight.swift": "2954ae05abd6833c88d2850e6ae54243a5fb57f9ff61d1da41e0099577152228",
+      "Lumen/Algorithms/ImportedMetrics.swift": "257085540417d9647a1a1722d2b3c189c020d22bd9d33bd56a440ebeb3ff1085",
+      "Lumen/Algorithms/WorkoutReconciliation.swift": "92362c8dec7498b9b5e763605cf0cd1c5381ce66a73507ee37fbdd975e125f1b",
+      "Lumen/Algorithms/TrendEvidence.swift": "b98e628d3d57bf7a5dc8282bfae7c09a4574c0760291cbdcbc13b913f6abad67",
+      "Lumen/Algorithms/PlanSchedule.swift": "db3bcfcfbb7e4e122304309d003c4adb7953f7f6c99856cf117c5fb1575a5b4b",
+      "Lumen/Algorithms/ScheduledPlan.swift": "cadf892e02aa43636506748ea896c7021310ee0018e84c80fe5107d8132a6d0b",
+      "Tests/ScheduledPlanChecks.swift": "043d296ebf89e32e95e274d812d615967ec4db125e08023348585a1f220cdb8c",
+      "Lumen/Algorithms/PlanBuilder.swift": "f4b99866b9103657b409a49d463be9748e97a3bdd7221a517fbd03baf4855b6d",
+      "Lumen/Algorithms/HealthHistorySummary.swift": "18d7b8f35f93059989ba61b0ee025da49123da46d2625a3feaf206bcbad05df4",
+      "Lumen/Algorithms/HealthTotals.swift": "804155005d6361efceb20af4c8f434b13a55d4ce5ef964ffa7e62c68710a64e7",
+      "Lumen/Algorithms/CurrentHealthEvidence.swift": "1b906911a1193d83b7e5d45500e7beaec9b3560905dcf15f9363e7051c8c02a0",
+      "Lumen/Algorithms/LocalHealthCorrection.swift": "057a1fa636f5812d7af001431fb9e3c7a799315a82634a13cac753f1455f565a",
+      "Lumen/Algorithms/HealthContextPrompt.swift": "0ecaee68fd434ec301d4d1dce19f4130aecf34278762a6fb37967ad520f577b7",
+      "Lumen/Algorithms/CoachingEngine.swift": "3089077994db6e30dc93d84e2fcfe7308b8a847d8ac39e378e8b58228243d9ca",
+      "Lumen/Algorithms/SleepAlgorithms.swift": "bbc3ddd2588939ed702495859a7f1cd63f0f126a541556db66d8f2ea272a248d",
+      "Lumen/Algorithms/SleepEvidence.swift": "f12109991f1540be999dff5c03ccebdb86b728fb9a64f096ec48fdf2013e50ca",
+      "Lumen/Models/Units.swift": "2a396afe1874a690dcfffca3a99d7d5f5e23b5ed47ec52986c9442f7d7c16834",
+      "Shared/DisplayEvidence.swift": "fcf91e22498afd93f5e10735e11de64530c33cc42764ecf6ebe838c91d9b6773",
+      "Shared/WatchSnapshot.swift": "a7ec76f222a17f1bc3ddca4a5fc9aeed22e6cc31581ec7f6d8c450636c44897c",
+      "Lumen/Models/HealthMetricReading.swift": "900ba6631986e38f9527ea04675d7919a961850f97c44101752fda553c5314f7",
+      "Lumen/Algorithms/ReminderPolicy.swift": "4d2590b99d5b64266036a16a149c82b944040d73ea0381ddb121d301fa669d6b",
+      "Lumen/Models/HealthModels.swift": "7af21dc70808c00c75e6ebb40cf89b66b627a6ef75c05cbcb9ee2d87cceb6eba",
+      "Lumen/Models/HealthLogDraft.swift": "7366cf9dcfacba4cd29c3ba1c57891853590a3905463ece4807c64f3ba4ed2d0",
+      "Lumen/Models/VoiceDraft.swift": "c2487bb02b57d204af44a4df50100c181f0cbca037b9050819442e7feaaede17",
+      "Lumen/Services/VoiceAudioBridge.swift": "a64d93cf181a1c4f2f52faea8aed2fbdfdcf6b542255fb52d5939939ca9b9ebe",
+      "Tests/VoiceDraftChecks.swift": "6301be2d64c65fb5c2278a4ed6afcf830389c6fdbccef48b7e495d0bd3f54871",
+      "Lumen/Models/NutritionModels.swift": "f7c4b8c43691f82a713dfea66b4551ec543491010c7301939d31150d6375d1c2",
+      "Lumen/Models/ConversationModels.swift": "9f4aa9402fdccda0ee18bb166df685e96fadd83db6e7e307a992f7e2482c1d84",
+      "Lumen/Models/CompanionModels.swift": "35a4db01473ebb1acb9bb084eaca741a728b2eaafbcb87eb1865921ed0eff13a",
+      "Lumen/Services/HealthImportService.swift": "eac51442f9f5859fa09750bd6664600d5a578224adba5cad1f01c8f68e91fb9f",
+      "Lumen/Services/WorkoutImportParser.swift": "d3452e579e076646c6977b99f5e64d04b08fa42c9b2d432605ded16360660193",
+      "Tests/ImportTests.swift": "514451b108ea0a0a608f241c0bbfaf55f8dbbeab05f07f70e2f1cd6296e691c4",
+      "Tests/ZIPImportChecks.swift": "ed54c75e9baaf3f7d7dde21cceb67b2a2b5e66894b231fb8c4109960d02a380f",
+      "Tests/WorkoutImportChecks.swift": "3e55004f1002d4724425439c9d476d863282ba1d8c88dbe78aaaad2dd89dfc60",
+      "Tests/HealthLogDraftChecks.swift": "5aa9d1eb1b187b824ff47def360c31886815fceb17db0c6822a83fb1e4b1f558",
+      "Tests/DataConfidenceChecks.swift": "187feacb7b07f1980b47fbef13f08c102f0d085a09dfe75a8a7223b200b6649d",
+      "Tests/RetainedEvidenceChecks.swift": "508c73804898ba4c9be449ef6a2d1ea7405d14355ff5aeb7ed607f3993fe994d",
+      "Tests/BackupPackageChecks.swift": "d52e9223ff08ec18509c2d72430c7b658e00fa98fbe2a2990d86e93b42c4a987",
+      "Tests/BackupUIFixtures.swift": "17c1e7c472839ab71269008d75131d888587a655ea8f855d596d25e2b3445786",
+      "Tests/HealthSyncChecks.swift": "a97e1a597baa369d53fab06044df65b95be165c7f91a3000475d42b67b5c2945",
+      "Lumen/Services/HealthZIPArchive.swift": "885a295b91f81c1517e87eee708d72cc75582286f0a315a2729cb3985f85056b"
+    },
+    "notes": [
+      "Historical file receipt survives last-transcription removal, source-only sharing and duplicate detection.",
+      "Earlier report-only origin migrates on removal; new manual rows retain origin without invented import-row identities.",
+      "Origin ownership preserves unchanged reference hashes; invalid/contradictory/proposed mismatched origins are rejected.",
+      "Actual legacy/encrypted/readable round trips retain source-only receipt."
+    ]
+  },
+  "unsignedReleaseR7": {
+    "exitCode": 0,
+    "source": "build-r11-source.json",
+    "log": "/tmp/lumen-batch21-release-r7.log",
+    "audit": {
+      "minimumOSVersion": "18.0",
+      "binarySHA256": "90f998e1e72c045b15cdcd712732e65885601c4955ebaeda1b55130e46130da9",
+      "excludedDebugMarkers": [
+        "librarySearchRemoteUITestMode",
+        "resetForUITests",
+        "Simulated plan. No AI request.",
+        "Simulated speech. No microphone."
+      ],
+      "unexpectedDebugMarkers": [],
+      "modelPackages": []
+    }
+  },
+  "smallR2": {
+    "status": "failed",
+    "source": "build-r11-source.json",
+    "bundle": "/tmp/LumenBatch21SmallR2.xcresult",
+    "summary": {
+      "devicesAndConfigurations": [
+        {
+          "device": {
+            "architecture": "arm64",
+            "deviceId": "1D78908E-3040-41C7-A9DA-7DC21F48E2DE",
+            "deviceName": "Lumen Batch21 small import verification",
+            "modelName": "iPhone SE (3rd generation)",
+            "osBuildNumber": "24A434",
+            "osVersion": "27.0",
+            "platform": "iOS Simulator"
+          },
+          "expectedFailures": 0,
+          "failedTests": 1,
+          "passedTests": 0,
+          "skippedTests": 0,
+          "testPlanConfiguration": {
+            "configurationId": "1",
+            "configurationName": "Test Scheme Action"
+          }
+        }
+      ],
+      "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+      "expectedFailures": 0,
+      "failedTests": 1,
+      "finishTime": 1793420957.385,
+      "passedTests": 0,
+      "result": "Failed",
+      "runtimeWarnings": [],
+      "skippedTests": 0,
+      "startTime": 1793420741.721,
+      "statistics": [],
+      "testFailures": [
+        {
+          "failureText": "XCTAssertEqual failed: (\"XCTWaiterResult(rawValue: 2)\") is not equal to (\"XCTWaiterResult(rawValue: 1)\") - A native edit menu must confirm a selection before deletion",
+          "targetName": "LumenUITests",
+          "testIdentifier": 1,
+          "testIdentifierString": "LumenSmokeTests/testLabFileImportSmallScreen()",
+          "testIdentifierURL": "test://com.apple.xcode/Lumen/LumenUITests/LumenSmokeTests/testLabFileImportSmallScreen",
+          "testName": "testLabFileImportSmallScreen()"
+        }
+      ],
+      "title": "Test - Lumen",
+      "topInsights": [],
+      "totalTestCount": 1
+    },
+    "originals": "small-r2/provenance.json",
+    "finding": "Same-open-editor replacement failed. Screenshot shows system Scan Text insertion panel, not an absent selection. Log records XCTest automatic long-press hit point {-1,-1}; subsequent blind double-tap can hit the system menu. No app-layout cause proven."
+  },
+  "receiptR1": {
+    "status": "passed",
+    "source": "build-r11-source.json",
+    "bundle": "/tmp/LumenBatch21ReceiptR1.xcresult",
+    "summary": {
+      "devicesAndConfigurations": [
+        {
+          "device": {
+            "architecture": "arm64",
+            "deviceId": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+            "deviceName": "Lumen continuation verification",
+            "modelName": "iPhone 18 Pro",
+            "osBuildNumber": "24A434",
+            "osVersion": "27.0",
+            "platform": "iOS Simulator"
+          },
+          "expectedFailures": 0,
+          "failedTests": 0,
+          "passedTests": 1,
+          "skippedTests": 0,
+          "testPlanConfiguration": {
+            "configurationId": "1",
+            "configurationName": "Test Scheme Action"
+          }
+        }
+      ],
+      "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+      "expectedFailures": 0,
+      "failedTests": 0,
+      "finishTime": 1793421653.188,
+      "passedTests": 1,
+      "result": "Passed",
+      "runtimeWarnings": [],
+      "skippedTests": 0,
+      "startTime": 1793421409.557,
+      "statistics": [],
+      "testFailures": [],
+      "title": "Test - Lumen",
+      "topInsights": [],
+      "totalTestCount": 1
+    },
+    "originals": "receipt-r1/provenance.json"
+  },
+  "smallR3": {
+    "status": "failed",
+    "source": "build-r12-source.json",
+    "bundle": "/tmp/LumenBatch21SmallR3.xcresult",
+    "log": "/tmp/lumen-batch21-small-r3.log",
+    "summary": {
+      "devicesAndConfigurations": [
+        {
+          "device": {
+            "architecture": "arm64",
+            "deviceId": "1D78908E-3040-41C7-A9DA-7DC21F48E2DE",
+            "deviceName": "Lumen Batch21 small import verification",
+            "modelName": "iPhone SE (3rd generation)",
+            "osBuildNumber": "24A434",
+            "osVersion": "27.0",
+            "platform": "iOS Simulator"
+          },
+          "expectedFailures": 0,
+          "failedTests": 1,
+          "passedTests": 0,
+          "skippedTests": 0,
+          "testPlanConfiguration": {
+            "configurationId": "1",
+            "configurationName": "Test Scheme Action"
+          }
+        }
+      ],
+      "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+      "expectedFailures": 0,
+      "failedTests": 1,
+      "finishTime": 1793421922.192,
+      "passedTests": 0,
+      "result": "Failed",
+      "runtimeWarnings": [],
+      "skippedTests": 0,
+      "startTime": 1793421705.496,
+      "statistics": [],
+      "testFailures": [
+        {
+          "failureText": "XCTAssertEqual failed: (\"XCTWaiterResult(rawValue: 2)\") is not equal to (\"XCTWaiterResult(rawValue: 1)\") - Wait for the native field to reflect the complete deletion",
+          "targetName": "LumenUITests",
+          "testIdentifier": 1,
+          "testIdentifierString": "LumenSmokeTests/testLabFileImportSmallScreen()",
+          "testIdentifierURL": "test://com.apple.xcode/Lumen/LumenUITests/LumenSmokeTests/testLabFileImportSmallScreen",
+          "testName": "testLabFileImportSmallScreen()"
+        }
+      ],
+      "title": "Test - Lumen",
+      "topInsights": [],
+      "totalTestCount": 1
+    },
+    "originals": "small-r3/provenance.json",
+    "finding": "Failed at exact empty-field check after deleting only a native word selection from501 digits. Cut availability did not establish Select All. R13 requires the explicit native Select All action; no app-selection/layout change is inferred."
+  },
+  "logicR23": {
+    "passedChecks": 725,
+    "exitCode": 0,
+    "log": "/tmp/lumen-batch21-logic-r23.log",
+    "sourceHashes": {
+      "Package.swift": "e3840b2c4df446d19ff3ff78b3188f405b69a41c5450b1505488e3061fdfd01f",
+      "Lumen/Models/SleepModels.swift": "eadd1d0a4d3dadf66a018f36d27ff3129372bd0c0c0224b85c8f4b3d6f4f9764",
+      "Lumen/Models/BackupArchive.swift": "42185fd4424628baff46d69b0e3295b03a107ca9c48ebd6d32e2d39e882ccfb7",
+      "Lumen/Models/BackupPackage.swift": "fe699a88273bf8ed6389a12a6021c9eec243786d332c7c2edfaa729246943565",
+      "Lumen/Models/BackupFileTransaction.swift": "efd22a5528357590acef13e9790f4b0b965e858fa20c08b3562cc8bc6cde8915",
+      "Lumen/Models/BackupStorageRevision.swift": "f620d8c6288492ab20f9c6e9f5851541860c05071bc114ff0963581d96d97d6f",
+      "Lumen/Models/HealthImportControl.swift": "e39ba852a4e22b554ba20cac01c53dd3bfae075f74cf29a7eb2dd057f7742bba",
+      "Lumen/Models/HealthSyncLedger.swift": "ec11628a2a7bfc70926078161ad70e3854cd22bed6de438c17cca6510447ffc9",
+      "Lumen/Models/RecordExtraction.swift": "b681bcfe6d8655ce31fd243fff646b55c365056d513573807e919c565129d890",
+      "Lumen/Models/LabReport.swift": "85c73e3752134f52e21cec13032c7cb0aa344c5213245a45b239966ef86d0d84",
+      "Lumen/Models/LabImportOrigin.swift": "3bd65b2bad1a75d44d6d25f3acb342bfd73a94210c02c6f21f7a019658a61d4d",
+      "Lumen/Algorithms/LabReview.swift": "de2a68dc914f3f18011224f5542f21cb580e19c9b8d393c496a597a8aae1ef67",
+      "Lumen/Algorithms/LabTable.swift": "613ca2d5fe7f4803f109eba6f2a439a141893439ee9cd562f1b6ce5167123fc8",
+      "Lumen/Algorithms/LabFileDraft.swift": "208cc2bb73371258ccd76c42fe6812c7cfa28efc157e674d7c25a99e0cfbae59",
+      "Lumen/Services/LabFileImportService.swift": "684f8b6a7a28973c829449f517d0cb537f07d499479b9be4dc6cea29fb5a0da5",
+      "Tests/LabReportChecks.swift": "d59d422ee49fe32cd4d007012f032448ff067a7489574dc870ed523951b3e075",
+      "Tests/LabImportChecks.swift": "bc1ef869b871291e0101d580a523e849a693c7648837e60d625746613579ef04",
+      "Lumen/Services/RecordImportService.swift": "1b593a50a4781ca7ecc3b3eede456bd14513662d4e8563a478e193330122034d",
+      "Tests/RecordImportChecks.swift": "94739ad7f60234dd23c1a7ee512081c75560a232f22d40c5e2e4fe7804904cff",
+      "Lumen/Algorithms/DocumentBlocks.swift": "472b069725cca542403ba8cf6e4c48146090d8959dde26aafd96ed686a185b11",
+      "Lumen/Algorithms/RecordRetrieval.swift": "dc2f42e04d45492a6bd91553cba9ee89a753a7da9a646850d1cb15b6c14f7c6b",
+      "Lumen/Algorithms/MiniLMTokenizer.swift": "4e47edb85dfff2140a51e2c3f95ff4b7b8814c82c8282ef15a2beaed50c72e84",
+      "Lumen/Algorithms/SemanticModelPackage.swift": "19255061e7d68e6fb06d4cde51c21a2922bc9ea926e0f612cd874736a019d45e",
+      "Lumen/Algorithms/HybridLibrarySearch.swift": "8db2a0606dc453a66e68192882f06aaea26cc5b78461e53e8df67126efc0cacc",
+      "Lumen/Models/SemanticModelInstallation.swift": "12327978d3f627f3ba27ea5c90ee0b643c58f84b08213772e424ca69ec8015bd",
+      "Lumen/Models/MiniLMRuntimeCache.swift": "0d15818a7d937991bb7df92734c239bf946b9985271da0f312cebb5397b75e59",
+      "Lumen/Services/MiniLMEncoder.swift": "ca809534839f44e093b702aeaefebdc38123ee39f77d02bb14a2448bc26183d9",
+      "Tests/MiniLMChecks.swift": "a8694aaed6f82ca24a72591fe440f44e2019fe17d9468f7e27a3575507f23bac",
+      "Lumen/Algorithms/ReadableExport.swift": "c2c03259625fc0d74e4b3cb4724d1ac46b880e1fd32b053b128f7f34e4d350c3",
+      "Lumen/Algorithms/JSONFieldAudit.swift": "1368c46c21948657b7335f1df3d9375fd5b8e25e03110d98b3072383bbd92a16",
+      "Tests/ReadableExportChecks.swift": "f471ae2b04114da4c25090f7e932aec7677796bff3b101f79836699420b3361e",
+      "Tests/RecordRetrievalChecks.swift": "ab3570f275eec52ed684c6e4df3304759a450d86917d449f9df8227245a4eebf",
+      "Lumen/Algorithms/ZIPPreflight.swift": "2954ae05abd6833c88d2850e6ae54243a5fb57f9ff61d1da41e0099577152228",
+      "Lumen/Algorithms/ImportedMetrics.swift": "257085540417d9647a1a1722d2b3c189c020d22bd9d33bd56a440ebeb3ff1085",
+      "Lumen/Algorithms/WorkoutReconciliation.swift": "92362c8dec7498b9b5e763605cf0cd1c5381ce66a73507ee37fbdd975e125f1b",
+      "Lumen/Algorithms/TrendEvidence.swift": "b98e628d3d57bf7a5dc8282bfae7c09a4574c0760291cbdcbc13b913f6abad67",
+      "Lumen/Algorithms/PlanSchedule.swift": "db3bcfcfbb7e4e122304309d003c4adb7953f7f6c99856cf117c5fb1575a5b4b",
+      "Lumen/Algorithms/ScheduledPlan.swift": "cadf892e02aa43636506748ea896c7021310ee0018e84c80fe5107d8132a6d0b",
+      "Tests/ScheduledPlanChecks.swift": "043d296ebf89e32e95e274d812d615967ec4db125e08023348585a1f220cdb8c",
+      "Lumen/Algorithms/PlanBuilder.swift": "f4b99866b9103657b409a49d463be9748e97a3bdd7221a517fbd03baf4855b6d",
+      "Lumen/Algorithms/HealthHistorySummary.swift": "18d7b8f35f93059989ba61b0ee025da49123da46d2625a3feaf206bcbad05df4",
+      "Lumen/Algorithms/HealthTotals.swift": "804155005d6361efceb20af4c8f434b13a55d4ce5ef964ffa7e62c68710a64e7",
+      "Lumen/Algorithms/CurrentHealthEvidence.swift": "1b906911a1193d83b7e5d45500e7beaec9b3560905dcf15f9363e7051c8c02a0",
+      "Lumen/Algorithms/LocalHealthCorrection.swift": "057a1fa636f5812d7af001431fb9e3c7a799315a82634a13cac753f1455f565a",
+      "Lumen/Algorithms/HealthContextPrompt.swift": "0ecaee68fd434ec301d4d1dce19f4130aecf34278762a6fb37967ad520f577b7",
+      "Lumen/Algorithms/CoachingEngine.swift": "3089077994db6e30dc93d84e2fcfe7308b8a847d8ac39e378e8b58228243d9ca",
+      "Lumen/Algorithms/SleepAlgorithms.swift": "bbc3ddd2588939ed702495859a7f1cd63f0f126a541556db66d8f2ea272a248d",
+      "Lumen/Algorithms/SleepEvidence.swift": "f12109991f1540be999dff5c03ccebdb86b728fb9a64f096ec48fdf2013e50ca",
+      "Lumen/Models/Units.swift": "2a396afe1874a690dcfffca3a99d7d5f5e23b5ed47ec52986c9442f7d7c16834",
+      "Shared/DisplayEvidence.swift": "fcf91e22498afd93f5e10735e11de64530c33cc42764ecf6ebe838c91d9b6773",
+      "Shared/WatchSnapshot.swift": "a7ec76f222a17f1bc3ddca4a5fc9aeed22e6cc31581ec7f6d8c450636c44897c",
+      "Lumen/Models/HealthMetricReading.swift": "900ba6631986e38f9527ea04675d7919a961850f97c44101752fda553c5314f7",
+      "Lumen/Algorithms/ReminderPolicy.swift": "4d2590b99d5b64266036a16a149c82b944040d73ea0381ddb121d301fa669d6b",
+      "Lumen/Models/HealthModels.swift": "7af21dc70808c00c75e6ebb40cf89b66b627a6ef75c05cbcb9ee2d87cceb6eba",
+      "Lumen/Models/HealthLogDraft.swift": "7366cf9dcfacba4cd29c3ba1c57891853590a3905463ece4807c64f3ba4ed2d0",
+      "Lumen/Models/VoiceDraft.swift": "c2487bb02b57d204af44a4df50100c181f0cbca037b9050819442e7feaaede17",
+      "Lumen/Services/VoiceAudioBridge.swift": "a64d93cf181a1c4f2f52faea8aed2fbdfdcf6b542255fb52d5939939ca9b9ebe",
+      "Tests/VoiceDraftChecks.swift": "6301be2d64c65fb5c2278a4ed6afcf830389c6fdbccef48b7e495d0bd3f54871",
+      "Lumen/Models/NutritionModels.swift": "f7c4b8c43691f82a713dfea66b4551ec543491010c7301939d31150d6375d1c2",
+      "Lumen/Models/ConversationModels.swift": "9f4aa9402fdccda0ee18bb166df685e96fadd83db6e7e307a992f7e2482c1d84",
+      "Lumen/Models/CompanionModels.swift": "35a4db01473ebb1acb9bb084eaca741a728b2eaafbcb87eb1865921ed0eff13a",
+      "Lumen/Services/HealthImportService.swift": "eac51442f9f5859fa09750bd6664600d5a578224adba5cad1f01c8f68e91fb9f",
+      "Lumen/Services/WorkoutImportParser.swift": "d3452e579e076646c6977b99f5e64d04b08fa42c9b2d432605ded16360660193",
+      "Tests/ImportTests.swift": "514451b108ea0a0a608f241c0bbfaf55f8dbbeab05f07f70e2f1cd6296e691c4",
+      "Tests/ZIPImportChecks.swift": "ed54c75e9baaf3f7d7dde21cceb67b2a2b5e66894b231fb8c4109960d02a380f",
+      "Tests/WorkoutImportChecks.swift": "3e55004f1002d4724425439c9d476d863282ba1d8c88dbe78aaaad2dd89dfc60",
+      "Tests/HealthLogDraftChecks.swift": "5aa9d1eb1b187b824ff47def360c31886815fceb17db0c6822a83fb1e4b1f558",
+      "Tests/DataConfidenceChecks.swift": "187feacb7b07f1980b47fbef13f08c102f0d085a09dfe75a8a7223b200b6649d",
+      "Tests/RetainedEvidenceChecks.swift": "508c73804898ba4c9be449ef6a2d1ea7405d14355ff5aeb7ed607f3993fe994d",
+      "Tests/BackupPackageChecks.swift": "d52e9223ff08ec18509c2d72430c7b658e00fa98fbe2a2990d86e93b42c4a987",
+      "Tests/BackupUIFixtures.swift": "17c1e7c472839ab71269008d75131d888587a655ea8f855d596d25e2b3445786",
+      "Tests/HealthSyncChecks.swift": "a97e1a597baa369d53fab06044df65b95be165c7f91a3000475d42b67b5c2945",
+      "Lumen/Services/HealthZIPArchive.swift": "885a295b91f81c1517e87eee708d72cc75582286f0a315a2729cb3985f85056b"
+    },
+    "notes": [
+      "Receipt row-count copy uses singular only when original inputRows is one. All existing compatibility, source, backup and removal checks still pass."
+    ]
+  },
+  "unsignedReleaseR8": {
+    "exitCode": 0,
+    "source": "build-r13-source.json",
+    "log": "/tmp/lumen-batch21-release-r8.log",
+    "audit": {
+      "minimumOSVersion": "18.0",
+      "binarySHA256": "4b97e7540a5ccc2db1edd1251b6e7a4f9a11030fec7f8f39d97a47f6e8c5eb17",
+      "excludedDebugMarkers": [
+        "librarySearchRemoteUITestMode",
+        "resetForUITests",
+        "Simulated plan. No AI request.",
+        "Simulated speech. No microphone."
+      ],
+      "unexpectedDebugMarkers": [],
+      "modelPackages": []
+    }
+  },
+  "smallR4": {
+    "status": "failed",
+    "source": "build-r13-source.json",
+    "bundle": "/tmp/LumenBatch21SmallR4.xcresult",
+    "log": "/tmp/lumen-batch21-small-r4.log",
+    "summary": {
+      "devicesAndConfigurations": [
+        {
+          "device": {
+            "architecture": "arm64",
+            "deviceId": "1D78908E-3040-41C7-A9DA-7DC21F48E2DE",
+            "deviceName": "Lumen Batch21 small import verification",
+            "modelName": "iPhone SE (3rd generation)",
+            "osBuildNumber": "24A434",
+            "osVersion": "27.0",
+            "platform": "iOS Simulator"
+          },
+          "expectedFailures": 0,
+          "failedTests": 1,
+          "passedTests": 0,
+          "skippedTests": 0,
+          "testPlanConfiguration": {
+            "configurationId": "1",
+            "configurationName": "Test Scheme Action"
+          }
+        }
+      ],
+      "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+      "expectedFailures": 0,
+      "failedTests": 1,
+      "finishTime": 1793422228.997,
+      "passedTests": 0,
+      "result": "Failed",
+      "runtimeWarnings": [],
+      "skippedTests": 0,
+      "startTime": 1793422019.857,
+      "statistics": [],
+      "testFailures": [
+        {
+          "failureText": "XCTAssertEqual failed: (\"XCTWaiterResult(rawValue: 2)\") is not equal to (\"XCTWaiterResult(rawValue: 1)\") - Require the native Select All action before full replacement",
+          "targetName": "LumenUITests",
+          "testIdentifier": 1,
+          "testIdentifierString": "LumenSmokeTests/testLabFileImportSmallScreen()",
+          "testIdentifierURL": "test://com.apple.xcode/Lumen/LumenUITests/LumenSmokeTests/testLabFileImportSmallScreen",
+          "testName": "testLabFileImportSmallScreen()"
+        }
+      ],
+      "title": "Test - Lumen",
+      "topInsights": [],
+      "totalTestCount": 1
+    },
+    "originals": "small-r4/provenance.json"
+  },
+  "receiptR2": {
+    "status": "passed",
+    "source": "build-r13-source.json",
+    "bundle": "/tmp/LumenBatch21ReceiptR2.xcresult",
+    "log": "/tmp/lumen-batch21-receipt-r2.log",
+    "summary": {
+      "devicesAndConfigurations": [
+        {
+          "device": {
+            "architecture": "arm64",
+            "deviceId": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+            "deviceName": "Lumen continuation verification",
+            "modelName": "iPhone 18 Pro",
+            "osBuildNumber": "24A434",
+            "osVersion": "27.0",
+            "platform": "iOS Simulator"
+          },
+          "expectedFailures": 0,
+          "failedTests": 0,
+          "passedTests": 1,
+          "skippedTests": 0,
+          "testPlanConfiguration": {
+            "configurationId": "1",
+            "configurationName": "Test Scheme Action"
+          }
+        }
+      ],
+      "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+      "expectedFailures": 0,
+      "failedTests": 0,
+      "finishTime": 1793422261.195,
+      "passedTests": 1,
+      "result": "Passed",
+      "runtimeWarnings": [],
+      "skippedTests": 0,
+      "startTime": 1793422019.985,
+      "statistics": [],
+      "testFailures": [],
+      "title": "Test - Lumen",
+      "topInsights": [],
+      "totalTestCount": 1
+    },
+    "originals": "receipt-r2/provenance.json",
+    "caseDurationSeconds": 227.853
+  },
+  "smallR5": {
+    "status": "passed",
+    "source": "build-r14-source.json",
+    "bundle": "/tmp/LumenBatch21SmallR5.xcresult",
+    "log": "/tmp/lumen-batch21-small-r5.log",
+    "summary": {
+      "devicesAndConfigurations": [
+        {
+          "device": {
+            "architecture": "arm64",
+            "deviceId": "1D78908E-3040-41C7-A9DA-7DC21F48E2DE",
+            "deviceName": "Lumen Batch21 small import verification",
+            "modelName": "iPhone SE (3rd generation)",
+            "osBuildNumber": "24A434",
+            "osVersion": "27.0",
+            "platform": "iOS Simulator"
+          },
+          "expectedFailures": 0,
+          "failedTests": 0,
+          "passedTests": 1,
+          "skippedTests": 0,
+          "testPlanConfiguration": {
+            "configurationId": "1",
+            "configurationName": "Test Scheme Action"
+          }
+        }
+      ],
+      "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+      "expectedFailures": 0,
+      "failedTests": 0,
+      "finishTime": 1793422704.709,
+      "passedTests": 1,
+      "result": "Passed",
+      "runtimeWarnings": [],
+      "skippedTests": 0,
+      "startTime": 1793422370.117,
+      "statistics": [],
+      "testFailures": [],
+      "title": "Test - Lumen",
+      "topInsights": [],
+      "totalTestCount": 1
+    },
+    "originals": "small-r5/provenance.json",
+    "caseDurationSeconds": 320.678
+  },
+  "nativeR10": {
+    "status": "passed",
+    "source": "build-r14-source.json",
+    "bundle": "/tmp/LumenBatch21NativeR10.xcresult",
+    "log": "/tmp/lumen-batch21-native-r10.log",
+    "summary": {
+      "devicesAndConfigurations": [
+        {
+          "device": {
+            "architecture": "arm64",
+            "deviceId": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+            "deviceName": "Lumen continuation verification",
+            "modelName": "iPhone 18 Pro",
+            "osBuildNumber": "24A434",
+            "osVersion": "27.0",
+            "platform": "iOS Simulator"
+          },
+          "expectedFailures": 0,
+          "failedTests": 0,
+          "passedTests": 3,
+          "skippedTests": 0,
+          "testPlanConfiguration": {
+            "configurationId": "1",
+            "configurationName": "Test Scheme Action"
+          }
+        }
+      ],
+      "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+      "expectedFailures": 0,
+      "failedTests": 0,
+      "finishTime": 1793423313.084,
+      "passedTests": 3,
+      "result": "Passed",
+      "runtimeWarnings": [],
+      "skippedTests": 0,
+      "startTime": 1793422370.241,
+      "statistics": [],
+      "testFailures": [],
+      "title": "Test - Lumen",
+      "topInsights": [],
+      "totalTestCount": 3
+    },
+    "originals": "r10/provenance.json",
+    "caseDurationsSeconds": {
+      "limitsTitleCancellationMenus": 358.889,
+      "darkXXXLImportPresentation": 330.684,
+      "manualXXXLPresentation": 239.46
+    }
+  },
+  "unsignedReleaseR9": {
+    "exitCode": 0,
+    "source": "build-r14-source.json",
+    "log": "/tmp/lumen-batch21-release-r9.log",
+    "audit": {
+      "minimumOSVersion": "18.0",
+      "binarySHA256": "20b1455da249bcfe02abc07741393be418501c3bdad760ac7bbfc48fda0a7999",
+      "excludedDebugMarkers": [
+        "librarySearchRemoteUITestMode",
+        "resetForUITests",
+        "Simulated plan. No AI request.",
+        "Simulated speech. No microphone."
+      ],
+      "unexpectedDebugMarkers": [],
+      "modelPackages": []
+    }
+  },
+  "logicR24": {
+    "passedChecks": 725,
+    "exitCode": 0,
+    "log": "/tmp/lumen-batch21-logic-r24.log",
+    "logSHA256": "477d73c24d1c94a0e8482ab37a8ff506f52f60cb3d3cb71f2d9cfc7cfb3aed98",
+    "sourceHashes": {
+      "Package.swift": "e3840b2c4df446d19ff3ff78b3188f405b69a41c5450b1505488e3061fdfd01f",
+      "Lumen/Models/SleepModels.swift": "eadd1d0a4d3dadf66a018f36d27ff3129372bd0c0c0224b85c8f4b3d6f4f9764",
+      "Lumen/Models/BackupArchive.swift": "42185fd4424628baff46d69b0e3295b03a107ca9c48ebd6d32e2d39e882ccfb7",
+      "Lumen/Models/BackupPackage.swift": "fe699a88273bf8ed6389a12a6021c9eec243786d332c7c2edfaa729246943565",
+      "Lumen/Models/BackupFileTransaction.swift": "efd22a5528357590acef13e9790f4b0b965e858fa20c08b3562cc8bc6cde8915",
+      "Lumen/Models/BackupStorageRevision.swift": "f620d8c6288492ab20f9c6e9f5851541860c05071bc114ff0963581d96d97d6f",
+      "Lumen/Models/HealthImportControl.swift": "e39ba852a4e22b554ba20cac01c53dd3bfae075f74cf29a7eb2dd057f7742bba",
+      "Lumen/Models/HealthSyncLedger.swift": "ec11628a2a7bfc70926078161ad70e3854cd22bed6de438c17cca6510447ffc9",
+      "Lumen/Models/RecordExtraction.swift": "b681bcfe6d8655ce31fd243fff646b55c365056d513573807e919c565129d890",
+      "Lumen/Models/LabReport.swift": "85c73e3752134f52e21cec13032c7cb0aa344c5213245a45b239966ef86d0d84",
+      "Lumen/Models/LabImportOrigin.swift": "3bd65b2bad1a75d44d6d25f3acb342bfd73a94210c02c6f21f7a019658a61d4d",
+      "Lumen/Algorithms/LabReview.swift": "de2a68dc914f3f18011224f5542f21cb580e19c9b8d393c496a597a8aae1ef67",
+      "Lumen/Algorithms/LabTable.swift": "613ca2d5fe7f4803f109eba6f2a439a141893439ee9cd562f1b6ce5167123fc8",
+      "Lumen/Algorithms/LabFileDraft.swift": "b596f773bf894bd05b711d50f52441ec85895edc7fbcd82c6dab94169b09eda2",
+      "Lumen/Services/LabFileImportService.swift": "684f8b6a7a28973c829449f517d0cb537f07d499479b9be4dc6cea29fb5a0da5",
+      "Tests/LabReportChecks.swift": "d59d422ee49fe32cd4d007012f032448ff067a7489574dc870ed523951b3e075",
+      "Tests/LabImportChecks.swift": "bc1ef869b871291e0101d580a523e849a693c7648837e60d625746613579ef04",
+      "Lumen/Services/RecordImportService.swift": "1b593a50a4781ca7ecc3b3eede456bd14513662d4e8563a478e193330122034d",
+      "Tests/RecordImportChecks.swift": "94739ad7f60234dd23c1a7ee512081c75560a232f22d40c5e2e4fe7804904cff",
+      "Lumen/Algorithms/DocumentBlocks.swift": "472b069725cca542403ba8cf6e4c48146090d8959dde26aafd96ed686a185b11",
+      "Lumen/Algorithms/RecordRetrieval.swift": "dc2f42e04d45492a6bd91553cba9ee89a753a7da9a646850d1cb15b6c14f7c6b",
+      "Lumen/Algorithms/MiniLMTokenizer.swift": "4e47edb85dfff2140a51e2c3f95ff4b7b8814c82c8282ef15a2beaed50c72e84",
+      "Lumen/Algorithms/SemanticModelPackage.swift": "19255061e7d68e6fb06d4cde51c21a2922bc9ea926e0f612cd874736a019d45e",
+      "Lumen/Algorithms/HybridLibrarySearch.swift": "8db2a0606dc453a66e68192882f06aaea26cc5b78461e53e8df67126efc0cacc",
+      "Lumen/Models/SemanticModelInstallation.swift": "12327978d3f627f3ba27ea5c90ee0b643c58f84b08213772e424ca69ec8015bd",
+      "Lumen/Models/MiniLMRuntimeCache.swift": "0d15818a7d937991bb7df92734c239bf946b9985271da0f312cebb5397b75e59",
+      "Lumen/Services/MiniLMEncoder.swift": "ca809534839f44e093b702aeaefebdc38123ee39f77d02bb14a2448bc26183d9",
+      "Tests/MiniLMChecks.swift": "a8694aaed6f82ca24a72591fe440f44e2019fe17d9468f7e27a3575507f23bac",
+      "Lumen/Algorithms/ReadableExport.swift": "c2c03259625fc0d74e4b3cb4724d1ac46b880e1fd32b053b128f7f34e4d350c3",
+      "Lumen/Algorithms/JSONFieldAudit.swift": "1368c46c21948657b7335f1df3d9375fd5b8e25e03110d98b3072383bbd92a16",
+      "Tests/ReadableExportChecks.swift": "f471ae2b04114da4c25090f7e932aec7677796bff3b101f79836699420b3361e",
+      "Tests/RecordRetrievalChecks.swift": "ab3570f275eec52ed684c6e4df3304759a450d86917d449f9df8227245a4eebf",
+      "Lumen/Algorithms/ZIPPreflight.swift": "2954ae05abd6833c88d2850e6ae54243a5fb57f9ff61d1da41e0099577152228",
+      "Lumen/Algorithms/ImportedMetrics.swift": "257085540417d9647a1a1722d2b3c189c020d22bd9d33bd56a440ebeb3ff1085",
+      "Lumen/Algorithms/WorkoutReconciliation.swift": "92362c8dec7498b9b5e763605cf0cd1c5381ce66a73507ee37fbdd975e125f1b",
+      "Lumen/Algorithms/TrendEvidence.swift": "b98e628d3d57bf7a5dc8282bfae7c09a4574c0760291cbdcbc13b913f6abad67",
+      "Lumen/Algorithms/PlanSchedule.swift": "db3bcfcfbb7e4e122304309d003c4adb7953f7f6c99856cf117c5fb1575a5b4b",
+      "Lumen/Algorithms/ScheduledPlan.swift": "cadf892e02aa43636506748ea896c7021310ee0018e84c80fe5107d8132a6d0b",
+      "Tests/ScheduledPlanChecks.swift": "043d296ebf89e32e95e274d812d615967ec4db125e08023348585a1f220cdb8c",
+      "Lumen/Algorithms/PlanBuilder.swift": "f4b99866b9103657b409a49d463be9748e97a3bdd7221a517fbd03baf4855b6d",
+      "Lumen/Algorithms/HealthHistorySummary.swift": "18d7b8f35f93059989ba61b0ee025da49123da46d2625a3feaf206bcbad05df4",
+      "Lumen/Algorithms/HealthTotals.swift": "804155005d6361efceb20af4c8f434b13a55d4ce5ef964ffa7e62c68710a64e7",
+      "Lumen/Algorithms/CurrentHealthEvidence.swift": "1b906911a1193d83b7e5d45500e7beaec9b3560905dcf15f9363e7051c8c02a0",
+      "Lumen/Algorithms/LocalHealthCorrection.swift": "057a1fa636f5812d7af001431fb9e3c7a799315a82634a13cac753f1455f565a",
+      "Lumen/Algorithms/HealthContextPrompt.swift": "0ecaee68fd434ec301d4d1dce19f4130aecf34278762a6fb37967ad520f577b7",
+      "Lumen/Algorithms/CoachingEngine.swift": "3089077994db6e30dc93d84e2fcfe7308b8a847d8ac39e378e8b58228243d9ca",
+      "Lumen/Algorithms/SleepAlgorithms.swift": "bbc3ddd2588939ed702495859a7f1cd63f0f126a541556db66d8f2ea272a248d",
+      "Lumen/Algorithms/SleepEvidence.swift": "f12109991f1540be999dff5c03ccebdb86b728fb9a64f096ec48fdf2013e50ca",
+      "Lumen/Models/Units.swift": "2a396afe1874a690dcfffca3a99d7d5f5e23b5ed47ec52986c9442f7d7c16834",
+      "Shared/DisplayEvidence.swift": "fcf91e22498afd93f5e10735e11de64530c33cc42764ecf6ebe838c91d9b6773",
+      "Shared/WatchSnapshot.swift": "a7ec76f222a17f1bc3ddca4a5fc9aeed22e6cc31581ec7f6d8c450636c44897c",
+      "Lumen/Models/HealthMetricReading.swift": "900ba6631986e38f9527ea04675d7919a961850f97c44101752fda553c5314f7",
+      "Lumen/Algorithms/ReminderPolicy.swift": "4d2590b99d5b64266036a16a149c82b944040d73ea0381ddb121d301fa669d6b",
+      "Lumen/Models/HealthModels.swift": "7af21dc70808c00c75e6ebb40cf89b66b627a6ef75c05cbcb9ee2d87cceb6eba",
+      "Lumen/Models/HealthLogDraft.swift": "7366cf9dcfacba4cd29c3ba1c57891853590a3905463ece4807c64f3ba4ed2d0",
+      "Lumen/Models/VoiceDraft.swift": "c2487bb02b57d204af44a4df50100c181f0cbca037b9050819442e7feaaede17",
+      "Lumen/Services/VoiceAudioBridge.swift": "a64d93cf181a1c4f2f52faea8aed2fbdfdcf6b542255fb52d5939939ca9b9ebe",
+      "Tests/VoiceDraftChecks.swift": "6301be2d64c65fb5c2278a4ed6afcf830389c6fdbccef48b7e495d0bd3f54871",
+      "Lumen/Models/NutritionModels.swift": "f7c4b8c43691f82a713dfea66b4551ec543491010c7301939d31150d6375d1c2",
+      "Lumen/Models/ConversationModels.swift": "9f4aa9402fdccda0ee18bb166df685e96fadd83db6e7e307a992f7e2482c1d84",
+      "Lumen/Models/CompanionModels.swift": "35a4db01473ebb1acb9bb084eaca741a728b2eaafbcb87eb1865921ed0eff13a",
+      "Lumen/Services/HealthImportService.swift": "eac51442f9f5859fa09750bd6664600d5a578224adba5cad1f01c8f68e91fb9f",
+      "Lumen/Services/WorkoutImportParser.swift": "d3452e579e076646c6977b99f5e64d04b08fa42c9b2d432605ded16360660193",
+      "Tests/ImportTests.swift": "514451b108ea0a0a608f241c0bbfaf55f8dbbeab05f07f70e2f1cd6296e691c4",
+      "Tests/ZIPImportChecks.swift": "ed54c75e9baaf3f7d7dde21cceb67b2a2b5e66894b231fb8c4109960d02a380f",
+      "Tests/WorkoutImportChecks.swift": "3e55004f1002d4724425439c9d476d863282ba1d8c88dbe78aaaad2dd89dfc60",
+      "Tests/HealthLogDraftChecks.swift": "5aa9d1eb1b187b824ff47def360c31886815fceb17db0c6822a83fb1e4b1f558",
+      "Tests/DataConfidenceChecks.swift": "187feacb7b07f1980b47fbef13f08c102f0d085a09dfe75a8a7223b200b6649d",
+      "Tests/RetainedEvidenceChecks.swift": "508c73804898ba4c9be449ef6a2d1ea7405d14355ff5aeb7ed607f3993fe994d",
+      "Tests/BackupPackageChecks.swift": "d52e9223ff08ec18509c2d72430c7b658e00fa98fbe2a2990d86e93b42c4a987",
+      "Tests/BackupUIFixtures.swift": "17c1e7c472839ab71269008d75131d888587a655ea8f855d596d25e2b3445786",
+      "Tests/HealthSyncChecks.swift": "a97e1a597baa369d53fab06044df65b95be165c7f91a3000475d42b67b5c2945",
+      "Lumen/Services/HealthZIPArchive.swift": "885a295b91f81c1517e87eee708d72cc75582286f0a315a2729cb3985f85056b"
+    },
+    "notes": [
+      "Only app-source delta after BuildR14: aggregate overflow recovery says text-size limit, covering both character and byte budgets. Bounds, failure type and recovery action are unchanged. Existing aggregate byte regression and all compatibility/backup checks pass. Final build/Release comparison pending native worker completion."
+    ]
+  },
+  "unsignedReleaseR10": {
+    "exitCode": 0,
+    "source": "build-r15-source.json",
+    "log": "/tmp/lumen-batch21-release-r10.log",
+    "audit": {
+      "minimumOSVersion": "18.0",
+      "binarySHA256": "32cf3e1975b6eda74ca873afaab02dc1a5c20b1e93e14d56a84467008e86474e",
+      "excludedDebugMarkers": [
+        "librarySearchRemoteUITestMode",
+        "resetForUITests",
+        "Simulated plan. No AI request.",
+        "Simulated speech. No microphone."
+      ],
+      "unexpectedDebugMarkers": [],
+      "modelPackages": []
+    }
+  },
+  "designRound3": {
+    "status": "done within scoped native visual/copy review",
+    "scoredLines": 11,
+    "atLeast4": 10,
+    "richness": 3,
+    "total": 43,
+    "maximum": 55,
+    "concreteVisibleDefects": 0,
+    "reviewedOriginals": {
+      "r10": 40,
+      "small-r5": 12,
+      "receipt-r2": 4
+    },
+    "aggregateOverflowCopy": "Accepted as source-only wording; no new rendered-alert claim",
+    "report": "CRITIQUE.md"
+  }
+}

@@ -153,7 +153,9 @@ private struct VoiceDraftView: View {
     @ViewBuilder private var bottomControls: some View {
         if capturing || voice.phase == .reviewing || voice.fixture {
             VStack(alignment: .leading, spacing: 10) {
+                #if DEBUG && targetEnvironment(simulator)
                 if voice.fixture { Text("Simulated speech. No microphone.").font(.footnote).foregroundStyle(Theme.secondary).accessibilityIdentifier("voiceFixture") }
+                #endif
                 if capturing {
                     Text((voice.phase == .recording ? "Recording · " : "Finishing transcription · ") + duration).font(.headline.monospacedDigit()).foregroundStyle(Theme.secondary).accessibilityIdentifier("voiceRecordingState")
                     if voice.phase == .recording { primary("Stop recording", enabled: true, id: "stopVoice") { voice.stop() } }

@@ -42,18 +42,19 @@ final class LumenSmokeTests: XCTestCase {
             let input = app.descendants(matching: .any).matching(identifier: "coachInput").firstMatch
             let composerVisible = input.exists && input.isHittable && element.identifier != "coachInput"
             let top = app.navigationBars.firstMatch.exists ? app.navigationBars.firstMatch.frame.maxY + 16 : 130
-            let bottom = composerVisible ? input.frame.minY - 20 : app.frame.maxY - 90
-            if element.exists && element.isHittable && (!composerVisible || (element.frame.midY > top && element.frame.midY < bottom)) { return }
+            let bar = app.tabBars.firstMatch
+            var bottom = composerVisible ? input.frame.minY - 20 : (bar.exists && bar.isHittable ? bar.frame.minY - 12 : app.frame.maxY - 40)
+            if app.keyboards.firstMatch.exists { bottom = min(bottom, app.keyboards.firstMatch.frame.minY - 12) }
+            // Native controls may report hittable while their centre is behind
+            // a modal navigation bar. Check the actual visible content region.
+            if element.exists && element.isHittable && element.frame.midY > top && element.frame.midY < bottom { return }
             let down = element.exists && element.frame.midY < (top + bottom) / 2
-            if composerVisible {
-                // A partly visible row can report hittable while its centre is
-                // behind the fixed composer. Scroll in the real content gutter.
-                let lower = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: bottom - 8))
-                let upper = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: top + 8))
-                if down { upper.press(forDuration: 0.05, thenDragTo: lower) }
-                else { lower.press(forDuration: 0.05, thenDragTo: upper) }
-            } else if down { app.swipeDown(velocity: .slow) }
-            else { app.swipeUp(velocity: .slow) }
+            // Use the actual content gutter. A whole-app swipe can start on
+            // navigation or selectable text instead of moving the scroll view.
+            let lower = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: bottom - 8))
+            let upper = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: top + 8))
+            if down { upper.press(forDuration: 0.05, thenDragTo: lower) }
+            else { lower.press(forDuration: 0.05, thenDragTo: upper) }
         }
         snap("unreachable-element"); print(app.debugDescription)
         XCTFail("Element could not be brought into the visible content area")
@@ -671,33 +672,297 @@ final class LumenSmokeTests: XCTestCase {
         tab("Assistant")
     }
 
+    func openLabImport() {
+        tab("Library"); tap("Add document"); tap("Import lab results")
+        XCTAssertTrue(app.buttons["chooseLabFile"].waitForExistence(timeout: 5))
+    }
+    func chooseLabFile(_ name: String, chooseIdentifier: String = "chooseLabFile") throws {
+        let choose = app.buttons[chooseIdentifier].firstMatch; reveal(choose); revealLabExcerpt(choose); choose.tap()
+        let picker = app.collectionViews["File View"].firstMatch
+        XCTAssertTrue(picker.waitForExistence(timeout: 25))
+        if app.buttons["Browse"].firstMatch.exists { app.buttons["Browse"].firstMatch.tap() }
+        if app.buttons["On My iPhone"].firstMatch.exists { app.buttons["On My iPhone"].firstMatch.tap() }
+        else if app.staticTexts["On My iPhone"].firstMatch.exists { app.staticTexts["On My iPhone"].firstMatch.tap() }
+        let folder = app.cells.matching(NSPredicate(format: "identifier BEGINSWITH '00 Lumen lab checks'")).firstMatch
+        if folder.waitForExistence(timeout: 2) {
+            for _ in 0..<12 where !(folder.isHittable && folder.frame.minY > 170 && folder.frame.minY < 680) { app.swipeDown(velocity: .slow) }
+            folder.tap()
+        }
+        let cell = app.cells.matching(NSPredicate(format: "identifier BEGINSWITH %@", name)).firstMatch
+        for _ in 0..<24 {
+            if cell.exists && cell.isHittable && cell.frame.maxY > 220 && cell.frame.minY < 700 { break }
+            if cell.exists && cell.frame.maxY < 220 { app.swipeDown(velocity: .slow) } else { app.swipeUp(velocity: .slow) }
+        }
+        XCTAssertTrue(cell.exists && cell.isHittable, "Seed the small synthetic lab-file fixtures")
+        settleLabFrame(cell); cell.tap()
+    }
+    func continueLabFileMapping(hasSubject: Bool = true) {
+        let ready = app.staticTexts["labTableReady"].firstMatch
+        // The filename can leave the LazyVStack when this helper follows a
+        // separator change at the bottom of an already loaded mapping page.
+        if !app.buttons["continueLabMapping"].exists { XCTAssertTrue(ready.waitForExistence(timeout: 20)) }
+        XCTAssertFalse(app.alerts.firstMatch.exists)
+        let next = app.buttons["continueLabMapping"].firstMatch; reveal(next); XCTAssertTrue(next.isEnabled); next.tap()
+        let review = app.buttons["reviewLabImport"].firstMatch
+        if hasSubject { let subject = app.buttons["labSubject-0"].firstMatch; reveal(subject); subject.tap() }
+        XCTAssertFalse(review.isEnabled)
+        nativeSwitch("labPersonChecked", enabled: true); reveal(review); XCTAssertTrue(review.isEnabled); review.tap()
+        XCTAssertTrue(app.staticTexts["labImportIncludedCount"].waitForExistence(timeout: 10))
+        XCTAssertFalse(app.buttons["saveLabImport"].isEnabled)
+    }
+    func testLabFileImportLifecycle() throws {
+        app.terminate(); app.launchArguments = ["-resetForUITests", "-librarySearchRemoteUITestMode"]; app.launch()
+        finishOnboarding(); openLabImport(); snap("460-lab-import-intro")
+        try chooseLabFile("Lumen-lab-table")
+        XCTAssertTrue(app.staticTexts["labTableReady"].waitForExistence(timeout: 20)); snap("461-lab-import-columns")
+        let result = app.buttons["labColumn-result"].firstMatch; reveal(result); revealLabExcerpt(result); result.tap(); tap("Component")
+        let next = app.buttons["continueLabMapping"].firstMatch; reveal(next); XCTAssertFalse(next.isEnabled)
+        reveal(result); revealLabExcerpt(result); result.tap(); tap("Your value")
+        reveal(next); XCTAssertTrue(next.isEnabled); next.tap()
+        let second = app.buttons["labSubject-1"].firstMatch; reveal(second); second.tap()
+        nativeSwitch("labPersonChecked", enabled: true)
+        let first = app.buttons["labSubject-0"].firstMatch; reveal(first); first.tap()
+        XCTAssertTrue(first.isSelected); XCTAssertEqual(app.switches["labPersonChecked"].value as? String, "0"); settleLabFrame(first); snap("462-lab-import-person")
+        nativeSwitch("labPersonChecked", enabled: true); let review = app.buttons["reviewLabImport"].firstMatch; reveal(review); settleLabFrame(review); snap("495-lab-import-person-checked"); review.tap()
+        XCTAssertTrue(app.staticTexts["labImportIncludedCount"].waitForExistence(timeout: 10)); snap("463-lab-import-review")
+        let status = app.staticTexts["Reported status: Preliminary"].firstMatch; reveal(status); settleLabFrame(status); snap("496-lab-import-review-status")
+        nativeSwitch("includeLabImport-3", enabled: false)
+        nativeSwitch("acknowledgeLabImport", enabled: true); XCTAssertTrue(app.buttons["saveLabImport"].isEnabled)
+        let edit = app.buttons["editLabImport-1"].firstMatch; reveal(edit); edit.tap()
+        XCTAssertTrue(app.buttons["finishLabResult"].waitForExistence(timeout: 5)); XCTAssertFalse(app.buttons["chooseLabSource"].exists); snap("464-lab-import-edit-source")
+        labField("labReportedResult", value: "<4,0", replacing: true); snap("465-lab-import-corrected")
+        tap("finishLabResult"); XCTAssertEqual(app.switches["acknowledgeLabImport"].value as? String, "0"); XCTAssertFalse(app.buttons["saveLabImport"].isEnabled)
+        let source = app.buttons["labImportSource-1"].firstMatch; reveal(source); source.tap()
+        let text = app.staticTexts.matching(NSPredicate(format: "identifier == 'labImportSource-1' AND label BEGINSWITH 'Imported data row 1' ")).firstMatch
+        reveal(text); XCTAssertTrue(text.label.contains("\"<5,0\"")); XCTAssertFalse(text.label.contains("UNMAPPED-PRIVATE-CANARY")); snap("466-lab-import-source-before-save")
+        tap("cancelLabImport"); XCTAssertTrue(app.alerts["Discard this lab import?"].waitForExistence(timeout: 5)); tap("Keep reviewing")
+        let back = app.buttons["labImportBackToMapping"].firstMatch; reveal(back); back.tap()
+        XCTAssertTrue(app.alerts["Return to column mapping?"].waitForExistence(timeout: 5)); snap("467-lab-import-protected-review"); tap("Keep reviewing")
+        nativeSwitch("acknowledgeLabImport", enabled: true); tap("saveLabImport")
+        XCTAssertTrue(app.staticTexts["labImportSaved"].waitForExistence(timeout: 10)); XCTAssertTrue(app.staticTexts["labImportSaved"].label.contains("1 reviewed result")); snap("468-lab-import-complete")
+        tap("viewImportedLabRecord"); XCTAssertTrue(app.staticTexts["<4,0 µg/L"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["Reported collection wording: 20/10/2026"].exists); snap("469-lab-import-saved-fields")
+        let receipt = app.buttons["labImportReceipt"].firstMatch; reveal(receipt); receipt.tap(); snap("470-lab-import-receipt")
+        let sharing = app.switches["Use in assistant"].firstMatch; reveal(sharing); XCTAssertEqual(sharing.value as? String, "0")
+        app.terminate(); app.launchArguments = ["-librarySearchRemoteUITestMode"]; app.launch(); tab("Library"); openLabRecord("Lumen-lab-table")
+        XCTAssertTrue(app.staticTexts["<4,0 µg/L"].exists); snap("471-lab-import-relaunch")
+        app.navigationBars["Document"].buttons.element(boundBy: 0).tap()
+        openLabImport(); try chooseLabFile("Lumen-lab-table"); continueLabFileMapping()
+        nativeSwitch("acknowledgeLabImport", enabled: true); tap("saveLabImport")
+        XCTAssertTrue(app.alerts["Save another copy?"].waitForExistence(timeout: 5)); snap("472-lab-import-duplicate"); tap("Keep reviewing")
+        XCTAssertTrue(app.buttons["saveLabImport"].isEnabled); tap("saveLabImport"); tap("Save another copy")
+        XCTAssertTrue(app.staticTexts["labImportSaved"].waitForExistence(timeout: 10)); tap("cancelLabImport")
+        XCTAssertEqual(app.buttons.matching(NSPredicate(format: "label == 'Lumen-lab-table' AND identifier BEGINSWITH 'library-record-' ")).count, 2)
+    }
+    func testLabFileImportPresentation() throws {
+        app.terminate(); app.launchArguments = ["-resetForUITests", "-librarySearchRemoteUITestMode", "-lumen.appearance", "dark"]; app.launch()
+        finishOnboarding(); openLabImport(); snap("473-lab-import-dark-intro")
+        try chooseLabFile("Lumen-lab-literal"); XCTAssertTrue(app.staticTexts["labTableReady"].waitForExistence(timeout: 20)); snap("474-lab-import-dark-columns")
+        continueLabFileMapping(hasSubject: false); snap("475-lab-import-dark-review")
+        let literal = app.buttons["editLabImport-1"].firstMatch; reveal(literal); literal.tap()
+        XCTAssertTrue(app.buttons["finishLabResult"].waitForExistence(timeout: 5)); snap("476-lab-import-dark-literal-source")
+        let result = openLabField("labReportedResult"); XCTAssertEqual(result.value as? String, "1.2300e-9"); snap("477-lab-import-dark-literal-result"); tap("finishLabField"); tap("finishLabResult")
+        nativeSwitch("acknowledgeLabImport", enabled: true); tap("saveLabImport"); XCTAssertTrue(app.staticTexts["labImportSaved"].waitForExistence(timeout: 10)); snap("478-lab-import-dark-complete"); tap("cancelLabImport")
+        app.terminate(); app.launchArguments = ["-librarySearchRemoteUITestMode", "-lumen.appearance", "light", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]; app.launch()
+        openLabImport(); snap("479-lab-import-large-intro"); try chooseLabFile("Lumen-lab-table")
+        XCTAssertTrue(app.staticTexts["labTableReady"].waitForExistence(timeout: 20)); snap("480-lab-import-large-columns")
+        let subjectColumn = app.buttons["labColumn-subject"].firstMatch; reveal(subjectColumn); snap("481-lab-import-large-subject-column")
+        let next = app.buttons["continueLabMapping"].firstMatch; reveal(next); next.tap()
+        let group = app.buttons["labSubject-0"].firstMatch; reveal(group); group.tap(); XCTAssertTrue(group.isSelected); settleLabFrame(group); snap("482-lab-import-large-person")
+        nativeSwitch("labPersonChecked", enabled: true); let review = app.buttons["reviewLabImport"].firstMatch; reveal(review); review.tap()
+        XCTAssertTrue(app.staticTexts["labImportIncludedCount"].waitForExistence(timeout: 10)); snap("483-lab-import-large-review")
+        let reported = app.staticTexts["Reported collection wording: 20/10/2026"].firstMatch; revealLabExcerpt(reported); snap("497-lab-import-large-review-timing")
+        nativeSwitch("includeLabImport-3", enabled: false)
+        let edit = app.buttons["editLabImport-1"].firstMatch; reveal(edit); edit.tap()
+        XCTAssertTrue(app.buttons["finishLabResult"].waitForExistence(timeout: 5)); snap("484-lab-import-large-source-editor")
+        labField("labReportedResult", value: "<4,0", replacing: true)
+        let field = openLabField("labReportedResult"); XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 5)); settleLabFrame(field); snap("485-lab-import-large-keyboard"); tap("finishLabField")
+        let timing = openLabField("labReportedTiming"); XCTAssertEqual(timing.value as? String, "20/10/2026"); snap("486-lab-import-large-reported-timing"); tap("finishLabField"); tap("finishLabResult")
+        nativeSwitch("acknowledgeLabImport", enabled: true); snap("487-lab-import-large-acknowledgement"); tap("saveLabImport")
+        XCTAssertTrue(app.staticTexts["labImportSaved"].waitForExistence(timeout: 10)); snap("488-lab-import-large-complete")
+        let completedAction = app.buttons["viewImportedLabRecord"].firstMatch; revealLabExcerpt(completedAction); snap("498-lab-import-large-complete-action")
+        let footer = app.staticTexts["Keep the original file separately. The saved record contains your included fields and mapped source cells."].firstMatch; revealLabExcerpt(footer); snap("499-lab-import-large-complete-footer"); revealLabExcerpt(completedAction); completedAction.tap()
+        XCTAssertTrue(app.staticTexts["<4,0 µg/L"].waitForExistence(timeout: 5)); snap("489-lab-import-large-saved")
+    }
+    func testLabFileImportFormatsAndCancellation() throws {
+        app.terminate(); app.launchArguments = ["-resetForUITests", "-librarySearchRemoteUITestMode"]; app.launch()
+        finishOnboarding(); openLabImport(); try chooseLabFile("Lumen-lab-invalid")
+        XCTAssertTrue(app.alerts["Couldn't read lab file"].waitForExistence(timeout: 20)); snap("490-lab-import-malformed"); tap("OK")
+        XCTAssertTrue(app.buttons["chooseLabFile"].exists); XCTAssertFalse(app.buttons["saveLabImport"].exists)
+        tap("cancelLabImport"); tap("Discard draft")
+        openLabImport(); tap("labSeparator"); tap("Semicolon"); try chooseLabFile("Lumen-lab-regional")
+        XCTAssertTrue(app.staticTexts["labTableReady"].waitForExistence(timeout: 20))
+        let delimiter = app.buttons["Change separator"].firstMatch; reveal(delimiter); delimiter.tap(); tap("labSeparator"); tap("Comma")
+        XCTAssertFalse(app.buttons["continueLabMapping"].isEnabled); XCTAssertTrue(app.staticTexts["labSeparatorNeedsRead"].exists); snap("500-lab-import-separator-needs-read")
+        tap("labSeparator"); tap("Semicolon"); continueLabFileMapping(hasSubject: false)
+        XCTAssertTrue(app.staticTexts["<5,0 µg/L"].exists); snap("491-lab-import-regional"); tap("cancelLabImport"); tap("Discard draft")
+        openLabImport(); try chooseLabFile("Lumen-lab-tab"); continueLabFileMapping(hasSubject: false)
+        XCTAssertTrue(app.staticTexts["12.00 mg/L"].exists); snap("492-lab-import-tsv"); tap("cancelLabImport"); tap("Discard draft")
+        openLabImport(); try chooseLabFile("Lumen-lab-paged"); continueLabFileMapping(hasSubject: false)
+        let selection = app.buttons["labImportSelection"].firstMatch; reveal(selection); selection.tap(); tap("Exclude all results")
+        nativeSwitch("includeLabImport-1", enabled: true)
+        let nextPage = app.buttons["Next"].firstMatch; reveal(nextPage); nextPage.tap()
+        XCTAssertTrue(app.staticTexts["Synthetic row 11"].waitForExistence(timeout: 5)); snap("501-lab-import-next-page")
+        let pages = app.buttons["labImportPagePicker"].firstMatch; reveal(pages); pages.tap(); tap("Results 21–21")
+        XCTAssertTrue(app.staticTexts["Synthetic row 21"].waitForExistence(timeout: 5)); nativeSwitch("includeLabImport-21", enabled: true); snap("493-lab-import-last-page")
+        reveal(pages); pages.tap(); tap("Results 1–10"); XCTAssertEqual(app.switches["includeLabImport-1"].value as? String, "1"); snap("502-lab-import-retained-first-page")
+        reveal(pages); pages.tap(); tap("Results 21–21"); XCTAssertEqual(app.switches["includeLabImport-21"].value as? String, "1")
+        nativeSwitch("acknowledgeLabImport", enabled: true); XCTAssertTrue(app.buttons["saveLabImport"].isEnabled)
+        let back = app.buttons["labImportBackToMapping"].firstMatch; reveal(back); back.tap(); tap("Discard row review")
+        XCTAssertTrue(app.staticTexts["labTableReady"].waitForExistence(timeout: 5)); snap("494-lab-import-mapping-return")
+        tap("cancelLabImport"); tap("Discard draft"); XCTAssertEqual(app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'library-record-' ")).count, 0)
+    }
+    func testLabFileImportLimitsAndLargeMapping() throws {
+        app.terminate(); app.launchArguments = ["-resetForUITests", "-librarySearchRemoteUITestMode"]; app.launch()
+        finishOnboarding(); openLabImport(); try chooseLabFile("Lumen-lab-limits"); continueLabFileMapping(hasSubject: false)
+        let longSource = app.staticTexts["labImportSourceIssue-1"].firstMatch; reveal(longSource); XCTAssertEqual(longSource.label, "These source cells exceed the \(2000.formatted())-character limit. Exclude this row or map fewer optional columns."); snap("503-lab-import-overlong-source")
+        nativeSwitch("acknowledgeLabImport", enabled: true); XCTAssertFalse(app.buttons["saveLabImport"].isEnabled)
+        nativeSwitch("includeLabImport-1", enabled: false)
+        let invalid = app.buttons["editLabImport-2"].firstMatch; reveal(invalid); invalid.tap()
+        XCTAssertTrue(app.buttons["finishLabResult"].waitForExistence(timeout: 5)); XCTAssertFalse(app.buttons["finishLabResult"].isEnabled)
+        let hint = app.staticTexts["labReportedResultIssue"].firstMatch; reveal(hint); XCTAssertEqual(hint.label, "Reported result is required."); snap("504-lab-import-missing-result")
+        let discarded = openLabField("labReportedResult"); discarded.typeText("Discard this synthetic change")
+        tap("cancelLabText"); XCTAssertTrue(app.alerts["Discard this text edit?"].waitForExistence(timeout: 5)); snap("521-lab-import-text-discard"); tap("Discard changes")
+        XCTAssertFalse(app.buttons["finishLabResult"].isEnabled); XCTAssertTrue(hint.exists)
+        labField("labReportedResult", value: String(repeating: "9", count: 501), searchUp: true)
+        reveal(hint); XCTAssertEqual(hint.label, "Reported result exceeds 500 characters."); XCTAssertFalse(app.buttons["finishLabResult"].isEnabled); snap("518-lab-import-specific-field-limit")
+        labField("labReportedResult", value: "2.00", replacing: true, searchUp: true, finish: false)
+        tap("cancelLabText"); tap("Keep editing"); XCTAssertEqual(app.textViews["labReportedResult"].value as? String, "2.00"); snap("522-lab-import-text-kept"); tap("finishLabField"); tap("finishLabResult")
+        labField("labImportTitle", value: String(repeating: "T", count: 501), replacing: true, doneIdentifier: "finishLabImportTitle", searchUp: true)
+        let titleHint = app.staticTexts["labImportTitleIssue"].firstMatch; reveal(titleHint); XCTAssertEqual(titleHint.label, "Record title exceeds 500 characters."); snap("505-lab-import-title-limit")
+        nativeSwitch("acknowledgeLabImport", enabled: true); XCTAssertFalse(app.buttons["saveLabImport"].isEnabled)
+        labField("labImportTitle", value: "Synthetic limits review", replacing: true, doneIdentifier: "finishLabImportTitle", searchUp: true)
+        nativeSwitch("acknowledgeLabImport", enabled: true); XCTAssertTrue(app.buttons["saveLabImport"].isEnabled)
+        tap("cancelLabImport"); tap("Discard draft")
+        app.terminate(); app.launchArguments = ["-librarySearchRemoteUITestMode", "-lumen.appearance", "light", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]; app.launch()
+        openLabImport(); try chooseLabFile("Lumen-lab-long-header"); XCTAssertTrue(app.staticTexts["labTableReady"].waitForExistence(timeout: 20))
+        let name = app.buttons["labColumn-test"].firstMatch; reveal(name); name.tap(); tap("Test name recorded by the laboratory")
+        revealLabExcerpt(name); XCTAssertEqual(name.value as? String, "Test name recorded by the laboratory"); snap("506-lab-import-large-long-heading")
+        let absent = app.buttons["labColumn-method"].firstMatch; reveal(absent); revealLabExcerpt(absent); XCTAssertEqual(absent.value as? String, "Not mapped"); snap("507-lab-import-large-unmapped-menu")
+        tap("cancelLabImport"); tap("Discard draft")
+    }
+
+    func testLabFileImportValidationPresentation() throws {
+        app.terminate(); app.launchArguments = ["-resetForUITests", "-librarySearchRemoteUITestMode"]; app.launch()
+        finishOnboarding()
+        app.terminate(); app.launchArguments = ["-librarySearchRemoteUITestMode", "-lumen.appearance", "light", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]; app.launch()
+        openLabImport(); try chooseLabFile("Lumen-lab-limits"); continueLabFileMapping(hasSubject: false)
+        let source = app.staticTexts["labImportSourceIssue-1"].firstMatch; reveal(source); revealLabExcerpt(source)
+        XCTAssertEqual(source.label, "These source cells exceed the \(2000.formatted())-character limit. Exclude this row or map fewer optional columns."); snap("519-lab-import-large-source-limit")
+        nativeSwitch("includeLabImport-1", enabled: false)
+        let edit = app.buttons["editLabImport-2"].firstMatch; reveal(edit); edit.tap()
+        let missing = app.staticTexts["labReportedResultIssue"].firstMatch; reveal(missing); revealLabExcerpt(missing)
+        XCTAssertEqual(missing.label, "Reported result is required."); XCTAssertFalse(app.buttons["finishLabResult"].isEnabled); snap("520-lab-import-large-missing-result")
+        labField("labReportedResult", value: "2.00", searchUp: true); tap("finishLabResult")
+        nativeSwitch("acknowledgeLabImport", enabled: true); XCTAssertTrue(app.buttons["saveLabImport"].isEnabled)
+        tap("cancelLabImport"); tap("Discard draft")
+    }
+
+    func testLabFileImportSmallScreen() throws {
+        app.terminate(); app.launchArguments = ["-resetForUITests", "-librarySearchRemoteUITestMode"]; app.launch()
+        XCTAssertEqual(app.frame.width, 375, accuracy: 0.1); XCTAssertEqual(app.frame.height, 667, accuracy: 0.1)
+        finishOnboarding(); openLabImport(); snap("508-lab-import-small-intro")
+        tap("labSeparator"); tap("Semicolon"); try chooseLabFile("Lumen-lab-regional")
+        XCTAssertTrue(app.staticTexts["labTableReady"].waitForExistence(timeout: 20)); snap("509-lab-import-small-columns")
+        let next = app.buttons["continueLabMapping"].firstMatch; reveal(next); next.tap()
+        XCTAssertFalse(app.buttons["reviewLabImport"].isEnabled)
+        nativeSwitch("labPersonChecked", enabled: true); snap("510-lab-import-small-person-check")
+        let review = app.buttons["reviewLabImport"].firstMatch; reveal(review); review.tap()
+        XCTAssertTrue(app.staticTexts["labImportIncludedCount"].waitForExistence(timeout: 10)); snap("511-lab-import-small-review")
+        let source = app.buttons["labImportSource-1"].firstMatch; reveal(source); source.tap()
+        let cells = app.staticTexts.matching(NSPredicate(format: "identifier == 'labImportSource-1' AND label BEGINSWITH 'Imported data row 1' ")).firstMatch
+        revealLabExcerpt(cells); XCTAssertTrue(cells.label.contains("<5,0")); snap("512-lab-import-small-source")
+        let edit = app.buttons["editLabImport-1"].firstMatch; reveal(edit); edit.tap()
+        XCTAssertTrue(app.buttons["finishLabResult"].waitForExistence(timeout: 5))
+        labField("labReportedResult", value: "<4,0", replacing: true)
+        labField("labReportedResult", value: String(repeating: "9", count: 501), replacing: true, finish: false)
+        let field = app.textViews["labReportedResult"].firstMatch
+        XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 5)); settleLabFrame(field)
+        XCTAssertLessThanOrEqual(field.frame.maxY, app.keyboards.firstMatch.frame.minY + 1); XCTAssertEqual(field.value as? String, String(repeating: "9", count: 501)); snap("523-lab-import-small-long-editor-keyboard")
+        labField("labReportedResult", value: "<4,0", replacing: true, finish: false, inOpenEditor: true)
+        snap("513-lab-import-small-keyboard"); tap("finishLabField"); tap("finishLabResult")
+        nativeSwitch("acknowledgeLabImport", enabled: true); tap("saveLabImport")
+        XCTAssertTrue(app.staticTexts["labImportSaved"].waitForExistence(timeout: 10)); snap("514-lab-import-small-complete")
+        let view = app.buttons["viewImportedLabRecord"].firstMatch; reveal(view); view.tap()
+        XCTAssertTrue(app.staticTexts["<4,0 µg/L"].waitForExistence(timeout: 5)); snap("515-lab-import-small-saved")
+        app.navigationBars["Document"].buttons.element(boundBy: 0).tap(); tap("cancelLabImport")
+        openLabImport(); tap("labSeparator"); tap("Semicolon"); try chooseLabFile("Lumen-lab-regional"); continueLabFileMapping(hasSubject: false)
+        nativeSwitch("acknowledgeLabImport", enabled: true); tap("saveLabImport")
+        XCTAssertTrue(app.alerts["Save another copy?"].waitForExistence(timeout: 5)); snap("516-lab-import-small-duplicate"); tap("Keep reviewing")
+        tap("cancelLabImport"); tap("Discard draft")
+        openRecordImport(); try chooseLabFile("Lumen-lab-regional", chooseIdentifier: "chooseRecordFile")
+        XCTAssertTrue(app.staticTexts["recordPreviewReady"].waitForExistence(timeout: 20))
+        nativeSwitch("acknowledgeRecordText", enabled: true); tap("saveReviewedRecord")
+        XCTAssertTrue(app.alerts["Save another copy?"].waitForExistence(timeout: 5)); snap("517-lab-import-small-general-route-duplicate"); tap("Keep reviewing"); tap("cancelRecordImport")
+        XCTAssertEqual(app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'library-record-' ")).count, 1)
+    }
+
+    func testLabImportReceiptAfterRemovingResults() throws {
+        app.terminate(); app.launchArguments = ["-resetForUITests", "-librarySearchRemoteUITestMode"]; app.launch()
+        finishOnboarding(); openLabImport(); tap("labSeparator"); tap("Semicolon"); try chooseLabFile("Lumen-lab-regional"); continueLabFileMapping(hasSubject: false)
+        nativeSwitch("acknowledgeLabImport", enabled: true); tap("saveLabImport")
+        XCTAssertTrue(app.staticTexts["labImportSaved"].waitForExistence(timeout: 10)); tap("viewImportedLabRecord")
+        XCTAssertTrue(app.staticTexts["<5,0 µg/L"].waitForExistence(timeout: 5)); let review = app.buttons["reviewSavedLabResults"].firstMatch; reveal(review); review.tap()
+        let remove = app.buttons["Remove Ferritin from draft"].firstMatch; reveal(remove); remove.tap(); tap("Remove result")
+        nativeSwitch("acknowledgeLabResults", enabled: true); tap("saveLabResults")
+        let sourceOnly = app.staticTexts["labImportSourceOnly"].firstMatch; XCTAssertTrue(sourceOnly.waitForExistence(timeout: 5)); reveal(sourceOnly); snap("524-lab-import-removed-transcriptions-keeps-receipt")
+        XCTAssertFalse(app.staticTexts["<5,0 µg/L"].exists)
+        let receipt = app.buttons["labImportReceipt"].firstMatch; reveal(receipt); receipt.tap()
+        let text = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH 'Originally imported mapped cells:' ")).firstMatch; revealLabExcerpt(text)
+        XCTAssertTrue(text.label.contains("Lumen-lab-regional.csv")); XCTAssertTrue(text.label.contains("Input SHA-256: dd6b39c9e7f43ee5ef13fff6ddb7fd9893ddf25f70f28e8000d4f3c4aaacdfdc")); snap("525-lab-import-source-only-receipt")
+        app.terminate(); app.launchArguments = ["-librarySearchRemoteUITestMode"]; app.launch(); tab("Library"); openLabRecord("Lumen-lab-regional")
+        XCTAssertTrue(sourceOnly.waitForExistence(timeout: 5)); XCTAssertFalse(app.staticTexts["<5,0 µg/L"].exists)
+        reveal(receipt); receipt.tap(); revealLabExcerpt(text); XCTAssertTrue(text.label.contains("Input SHA-256: dd6b39c9e7f43ee5ef13fff6ddb7fd9893ddf25f70f28e8000d4f3c4aaacdfdc")); snap("526-lab-import-source-only-relaunch")
+        app.navigationBars["Document"].buttons.element(boundBy: 0).tap()
+        openLabImport(); tap("labSeparator"); tap("Semicolon"); try chooseLabFile("Lumen-lab-regional"); continueLabFileMapping(hasSubject: false)
+        nativeSwitch("acknowledgeLabImport", enabled: true); tap("saveLabImport")
+        XCTAssertTrue(app.alerts["Save another copy?"].waitForExistence(timeout: 5)); snap("527-lab-import-source-only-duplicate"); tap("Keep reviewing"); tap("cancelLabImport"); tap("Discard draft")
+        XCTAssertEqual(app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'library-record-' ")).count, 1)
+    }
+
     func prepareLabLibrary() throws {
         app.terminate(); app.launchArguments = ["-resetForUITests", "-librarySearchRemoteUITestMode"]; app.launch()
         finishOnboarding(); openBackupSettings(); try chooseBackupFixture("Lumen-backup-labs")
         _ = backupPreview(); confirmBackupRestore()
         app.navigationBars["Backup & restore"].buttons.element(boundBy: 0).tap(); tap("Done"); tab("Library")
     }
-    func labField(_ identifier: String, value: String, replacing: Bool = false) {
-        let field = app.descendants(matching: .any).matching(identifier: identifier).firstMatch
-        reveal(field)
-        if replacing {
-            field.tap(); XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 5))
-            field.coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap()
-            let button = app.buttons["Select All"].firstMatch, menu = app.menuItems["Select All"].firstMatch
-            if !(button.exists || menu.exists) { field.press(forDuration: 1) }
-            // At XXXL the native edit menu pages its actions. The captured R2
-            // hierarchy exposes Select and Next Page before Select All.
-            for _ in 0..<6 where !(button.exists || menu.exists) {
-                let next = app.buttons["Next Page"].firstMatch
-                guard next.exists && next.isHittable else { break }; next.tap()
+    func openLabField(_ identifier: String, searchUp: Bool = false) -> XCUIElement {
+        let button = app.buttons["editFull-" + identifier].firstMatch
+        if searchUp {
+            for _ in 0..<8 where !button.exists || button.frame.isEmpty {
+                let top = app.navigationBars.firstMatch.frame.maxY + 24
+                let upper = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: top))
+                let lower = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: app.frame.maxY - 80))
+                upper.press(forDuration: 0.05, thenDragTo: lower)
             }
-            let selectAll = button.exists ? button : menu
-            XCTAssertTrue(selectAll.waitForExistence(timeout: 5)); selectAll.tap()
+        }
+        reveal(button); button.tap()
+        let field = app.textViews[identifier].firstMatch
+        XCTAssertTrue(field.waitForExistence(timeout: 5)); XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 5)); settleLabFrame(field)
+        return field
+    }
+    func labField(_ identifier: String, value: String, replacing: Bool = false, doneIdentifier: String = "finishLabField", searchUp: Bool = false, finish: Bool = true, inOpenEditor: Bool = false) {
+        let field = inOpenEditor ? app.textViews[identifier].firstMatch : openLabField(identifier, searchUp: searchUp)
+        if replacing {
+            XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 5))
+            let longValue = (field.value as? String)?.count == 501
+            let selectAll = app.buttons["selectAllLabText"].firstMatch
+            XCTAssertTrue(selectAll.waitForExistence(timeout: 5)); XCTAssertTrue(selectAll.isHittable); selectAll.tap()
+            if longValue { snap("528-lab-import-full-selection-action") }
             field.typeText(XCUIKeyboardKey.delete.rawValue)
+            let cleared = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in field.exists && field.value as? String == "" }, object: field)
+            let clearing = XCTWaiter.wait(for: [cleared], timeout: 5)
+            if clearing != .completed { print(app.debugDescription); snap("lab-field-not-cleared-" + identifier) }
+            XCTAssertEqual(clearing, .completed, "Wait for the native field to reflect the complete deletion")
             XCTAssertEqual(field.value as? String, "", "Clear the full selected value before entering the correction")
         } else { field.tap() }
-        field.typeText(value); XCTAssertEqual(field.value as? String, value)
-        tap("finishLabField")
+        field.typeText(value)
+        let entered = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in field.exists && field.value as? String == value }, object: field)
+        let entering = XCTWaiter.wait(for: [entered], timeout: 5)
+        if entering != .completed { print(app.debugDescription); snap("lab-field-incomplete-" + identifier) }
+        XCTAssertEqual(entering, .completed, "Wait for the native field to reflect all dispatched characters")
+        XCTAssertEqual(field.value as? String, value)
+        if finish { tap(doneIdentifier) }
     }
     func openLabRecord(_ title: String) {
         let document = app.buttons[title].firstMatch; reveal(document); document.tap()
@@ -718,15 +983,25 @@ final class LumenSmokeTests: XCTestCase {
         XCTAssertTrue(element.waitForExistence(timeout: 5)); settleLabFrame(element)
         for _ in 0..<12 {
             let top = app.navigationBars.firstMatch.frame.maxY + 12
-            let bottom = app.tabBars.firstMatch.exists ? app.tabBars.firstMatch.frame.minY - 12 : app.frame.maxY - 50
+            // A sheet covers the Library tab bar; its background AX node isn't
+            // an occluder. Only reserve a tab bar that can actually be touched.
+            let bar = app.tabBars.firstMatch
+            let bottom = bar.exists && bar.isHittable ? bar.frame.minY - 12 : app.frame.maxY - 40
             if element.frame.minY >= top && element.frame.maxY <= bottom { return }
-            let upper = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: top + 20))
-            let lower = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: bottom - 20))
-            if element.frame.minY < top { upper.press(forDuration: 0.05, thenDragTo: lower) }
-            else { lower.press(forDuration: 0.05, thenDragTo: upper) }
+            // Move only the measured overflow. A full-height drag can alternate
+            // a tall label between opposite clipped edges without ever fitting it.
+            let above = element.frame.minY < top
+            let overflow = above ? top - element.frame.minY : element.frame.maxY - bottom
+            let distance = min(bottom - top - 40, max(40, overflow + 12))
+            let startY = above ? top + 20 : bottom - 20
+            let endY = startY + (above ? distance : -distance)
+            let start = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: startY))
+            let end = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: endY))
+            start.press(forDuration: 0.05, thenDragTo: end)
             settleLabFrame(element)
         }
-        snap("lab-excerpt-not-fully-visible"); XCTFail("The fixture's complete source excerpt must be visible for capture")
+        print("Unreachable lab capture frame: \(element.frame)")
+        snap("lab-excerpt-not-fully-visible"); XCTFail("The fixture's complete content must be visible for capture")
     }
     func testReviewedLabRecords() throws {
         try prepareLabLibrary(); openLabRecord("Synthetic laboratory report"); snap("430-labs-before-review"); tap("reviewSavedLabResults")
@@ -778,10 +1053,10 @@ final class LumenSmokeTests: XCTestCase {
         nativeSwitch("acknowledgeLabResults", enabled: true); XCTAssertTrue(app.buttons["saveLabResults"].isEnabled)
         let edit = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'editLabResult-' ")).firstMatch; reveal(edit); edit.tap()
         XCTAssertTrue(app.buttons["finishLabResult"].waitForExistence(timeout: 5)); snap("445-labs-large-editor")
-        let unit = app.descendants(matching: .any).matching(identifier: "labUnit").firstMatch; reveal(unit); snap("446-labs-large-result-fields")
+        let unit = app.buttons["editFull-labUnit"].firstMatch; reveal(unit); snap("446-labs-large-result-fields")
         labField("labReportedResult", value: "<5,0\nSynthetic qualifier retained.", replacing: true)
-        let result = app.descendants(matching: .any).matching(identifier: "labReportedResult").firstMatch; reveal(result); result.tap()
-        XCTAssertTrue(app.keyboards.firstMatch.exists); settleLabFrame(result); snap("449-labs-large-editing-keyboard"); tap("finishLabField")
+        let result = openLabField("labReportedResult")
+        XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 5)); settleLabFrame(result); snap("449-labs-large-editing-keyboard"); tap("finishLabField")
         let day = app.switches["labHasCollectionDay"].firstMatch; reveal(day); snap("451-labs-large-collection-day")
     }
 

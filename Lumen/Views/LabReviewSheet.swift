@@ -124,45 +124,67 @@ struct LabReviewSheet: View {
     }
 }
 
-private struct LabObservationEditor: View {
+struct LabObservationEditor: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.dynamicTypeSize) private var typeSize
     @State var observation: LabObservation
     let sourceBody: String
+    let allowSourceChange: Bool
     var onDone: (LabObservation) -> Void
     private let original: LabObservation
-    private enum Field: Hashable { case test, result, unit, reference, flag, laboratory, specimen, method }
-    @FocusState private var focused: Field?
+    private enum Field: String, Identifiable {
+        case test = "labTestName", result = "labReportedResult", unit = "labUnit", reference = "labReference", flag = "labFlag", timing = "labReportedTiming", status = "labReportedStatus", laboratory = "labLaboratory", specimen = "labSpecimen", method = "labMethod"
+        var id: String { rawValue }
+        var title: String {
+            switch self {
+            case .test: return "Test name"
+            case .result: return "Reported result"
+            case .unit: return "Unit"
+            case .reference: return "Reference wording"
+            case .flag: return "Reported flag"
+            case .timing: return "Reported collection wording"
+            case .status: return "Reported status"
+            case .laboratory: return "Laboratory"
+            case .specimen: return "Specimen"
+            case .method: return "Method"
+            }
+        }
+        var limit: Int { switch self { case .test, .flag, .status: return 200; case .unit: return 100; case .reference: return 1000; default: return 500 } }
+        var required: Bool { self == .test || self == .result }
+    }
+    @State private var editingText: Field?
     @State private var choosing = false
     @State private var discard = false
-    init(observation: LabObservation, sourceBody: String, onDone: @escaping (LabObservation) -> Void) {
-        _observation = State(initialValue: observation); original = observation; self.sourceBody = sourceBody; self.onDone = onDone
+    init(observation: LabObservation, sourceBody: String, allowSourceChange: Bool = true, onDone: @escaping (LabObservation) -> Void) {
+        _observation = State(initialValue: observation); original = observation; self.sourceBody = sourceBody; self.allowSourceChange = allowSourceChange; self.onDone = onDone
     }
     var body: some View {
         NavigationStack {
             Form {
-                Section("Source excerpt") {
+                Section(allowSourceChange ? "Source excerpt" : "Mapped source cells") {
                     if observation.source.isValid {
                         Text(observation.source.excerpt).fixedSize(horizontal: false, vertical: true).textSelection(.enabled).accessibilityIdentifier("labSelectedSource")
                         if !observation.source.matches(sourceBody) { Text("This excerpt no longer matches the saved text. Choose its current wording.").foregroundStyle(Theme.secondary) }
                     }
-                    Button("Choose source text", systemImage: "text.magnifyingglass") { focused = nil; choosing = true }.accessibilityIdentifier("chooseLabSource")
-                    if observation.source.matches(sourceBody) {
+                    if allowSourceChange { Button("Choose source text", systemImage: "text.magnifyingglass") { choosing = true }.accessibilityIdentifier("chooseLabSource") }
+                    if allowSourceChange && observation.source.matches(sourceBody) {
                         Button("Include previous line") { if let source = LabReview.extending(observation.source, in: sourceBody, forward: false) { observation.source = source } }.disabled(LabReview.extending(observation.source, in: sourceBody, forward: false) == nil).accessibilityIdentifier("labPreviousSourceLine")
                         Button("Include next line") { if let source = LabReview.extending(observation.source, in: sourceBody, forward: true) { observation.source = source } }.disabled(LabReview.extending(observation.source, in: sourceBody, forward: true) == nil).accessibilityIdentifier("labNextSourceLine")
                         Text("Source excerpts can include up to 2,000 characters.").font(.footnote).foregroundStyle(Theme.secondary)
                     }
+                    if !allowSourceChange { Text("These original cell values are arranged by Lumen. Your corrections below do not change them. Keep the original file separately.").font(.footnote).foregroundStyle(Theme.secondary) }
                 }
                 Section("Reported result") {
-                    field("Test name", value: $observation.test, focus: .test, identifier: "labTestName")
-                    field("Reported result", value: $observation.result, focus: .result, identifier: "labReportedResult")
-                    field("Unit", value: $observation.unit, focus: .unit, identifier: "labUnit")
+                    field(.test)
+                    field(.result)
+                    field(.unit)
                 }
                 Section {
-                    field("Reference wording", value: $observation.reference, focus: .reference, identifier: "labReference")
-                    field("Reported flag", value: $observation.flag, focus: .flag, identifier: "labFlag")
+                    field(.reference)
+                    field(.flag)
                 } footer: { Text("Copy the report's wording and signs, including < or >. Blank optional fields stay unknown.").foregroundStyle(Theme.secondary) }
                 Section("Collection day") {
+                    field(.timing)
                     if typeSize.isAccessibilitySize {
                         VStack(alignment: .leading, spacing: 12) {
                             Text("Set collection day").fixedSize(horizontal: false, vertical: true)
@@ -175,33 +197,114 @@ private struct LabObservationEditor: View {
                     }
                 }
                 Section("Optional report details") {
-                    field("Laboratory", value: $observation.laboratory, focus: .laboratory, identifier: "labLaboratory")
-                    field("Specimen", value: $observation.specimen, focus: .specimen, identifier: "labSpecimen")
-                    field("Method", value: $observation.method, focus: .method, identifier: "labMethod")
+                    field(.status)
+                    field(.laboratory)
+                    field(.specimen)
+                    field(.method)
                 }
-                if !observation.isValid { Section { Text("Add a test name, reported result and source text. Keep names within 200 characters, results within 500, units within 100 and reference wording within 1,000.").font(.footnote).foregroundStyle(Theme.secondary) } }
-            }.scrollContentBackground(.hidden).background(Theme.bg).scrollDismissesKeyboard(.interactively)
-                .safeAreaInset(edge: .bottom) {
-                    if focused != nil { HStack { Spacer(); Button("Done") { focused = nil }.fontWeight(.semibold).accessibilityIdentifier("finishLabField") }.padding(.horizontal, Theme.gutter).padding(.vertical, 10).background(Theme.surface) }
-                }
+                if !observation.source.matches(sourceBody) { Section { Text(allowSourceChange ? "Choose current source text before saving this result." : "These source cells no longer match this draft. Go back to mapping and prepare the review again.").font(.footnote).foregroundStyle(Theme.secondary) } }
+            }.scrollContentBackground(.hidden).background(Theme.bg)
                 .navigationTitle(typeSize.isAccessibilitySize ? "Lab result" : "Edit lab result").navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) { Button("Cancel") { if observation != original { discard = true } else { dismiss() } } }
-                    ToolbarItem(placement: .confirmationAction) { Button("Done") { focused = nil; onDone(observation); dismiss() }.fontWeight(.bold).disabled(!observation.isValid || !observation.source.matches(sourceBody)).accessibilityIdentifier("finishLabResult") }
+                    ToolbarItem(placement: .confirmationAction) { Button("Done") { onDone(observation); dismiss() }.fontWeight(.bold).disabled(!observation.isValid || !observation.source.matches(sourceBody)).accessibilityIdentifier("finishLabResult") }
+                }
+                .sheet(item: $editingText) { field in
+                    let binding = value(for: field)
+                    LabTextEditor(text: binding.wrappedValue, title: field.title, limit: field.limit, required: field.required, identifier: field.id, doneIdentifier: "finishLabField") { binding.wrappedValue = $0 }
                 }
                 .sheet(isPresented: $choosing) { LabSourcePicker(body: sourceBody) { observation.source = $0 } }
                 .background(SheetDismissGuard(hasEdits: observation != original) { discard = true })
                 .alert("Discard this result's changes?", isPresented: $discard) { Button("Discard changes", role: .destructive) { dismiss() }; Button("Keep editing", role: .cancel) {} }
         }.tint(Theme.accent)
     }
-    private func field(_ title: String, value: Binding<String>, focus: Field, identifier: String) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(title).font(.subheadline).foregroundStyle(Theme.secondary)
-            TextField(title, text: value, axis: .vertical).textInputAutocapitalization(.never).autocorrectionDisabled(true).focused($focused, equals: focus).accessibilityIdentifier(identifier)
+    private func field(_ field: Field) -> some View {
+        let text = value(for: field).wrappedValue
+        return VStack(alignment: .leading, spacing: 8) {
+            Text(field.title).font(.subheadline).foregroundStyle(Theme.secondary)
+            LabTextEditButton(text: text, title: field.title, identifier: field.id) { editingText = field }
+            if let issue = LabReport.textIssue(text, limit: field.limit, required: field.required) {
+                Text(issue.message(for: field.title)).font(.footnote).foregroundStyle(Theme.secondary).fixedSize(horizontal: false, vertical: true).accessibilityIdentifier(field.id + "Issue")
+            }
         }.padding(.vertical, 4)
+    }
+    private func value(for field: Field) -> Binding<String> {
+        switch field {
+        case .test: return $observation.test
+        case .result: return $observation.result
+        case .unit: return $observation.unit
+        case .reference: return $observation.reference
+        case .flag: return $observation.flag
+        case .timing: return optional(\.reportedTiming)
+        case .status: return optional(\.reportedStatus)
+        case .laboratory: return $observation.laboratory
+        case .specimen: return $observation.specimen
+        case .method: return $observation.method
+        }
     }
     private var collectionToggle: some View {
         Toggle("Set collection day", isOn: Binding(get: { observation.collectedOn != nil }, set: { observation.collectedOn = $0 ? PlanDay.string(Date()) : nil })).accessibilityIdentifier("labHasCollectionDay")
+    }
+    private func optional(_ key: WritableKeyPath<LabObservation, String?>) -> Binding<String> {
+        Binding(get: { observation[keyPath: key] ?? "" }, set: { observation[keyPath: key] = $0.isEmpty ? nil : $0 })
+    }
+}
+
+struct LabTextEditButton: View {
+    let text: String
+    let title: String
+    let identifier: String
+    var edit: () -> Void
+    var body: some View {
+        let preview = LabTable.displayPreview(text, maxCharacters: 80)
+        VStack(alignment: .leading, spacing: 8) {
+            Button(action: edit) {
+                HStack(alignment: .top, spacing: 12) {
+                    Text(text.isEmpty ? "Add text" : (preview.text.isEmpty ? "Open full text" : preview.text)).foregroundStyle(text.isEmpty ? Theme.accent : Theme.text).fixedSize(horizontal: false, vertical: true)
+                    Spacer(minLength: 0)
+                    Image(systemName: "square.and.pencil").foregroundStyle(Theme.accent)
+                }.frame(maxWidth: .infinity, minHeight: 44, alignment: .leading).contentShape(Rectangle())
+            }.buttonStyle(.plain).accessibilityLabel("Edit " + title.lowercased()).accessibilityValue(preview.text).accessibilityIdentifier("editFull-" + identifier)
+            if preview.truncated { Text("Preview only. Open the full text to review or edit it.").font(.footnote).foregroundStyle(Theme.secondary) }
+        }
+    }
+}
+
+struct LabTextEditor: View {
+    let title: String
+    let limit: Int
+    let required: Bool
+    let identifier: String
+    let doneIdentifier: String
+    var onDone: (String) -> Void
+    @State private var text: String
+    @State private var selection: TextSelection?
+    private let initial: String
+    @State private var discard = false
+    @FocusState private var focused: Bool
+    @Environment(\.dismiss) private var dismiss
+    init(text: String, title: String, limit: Int, required: Bool, identifier: String, doneIdentifier: String, onDone: @escaping (String) -> Void) {
+        _text = State(initialValue: text); initial = text; self.title = title; self.limit = limit; self.required = required; self.identifier = identifier; self.doneIdentifier = doneIdentifier; self.onDone = onDone
+    }
+    var body: some View {
+        NavigationStack {
+            VStack(alignment: .leading, spacing: 12) {
+                Text(title).font(.subheadline).foregroundStyle(Theme.secondary).fixedSize(horizontal: false, vertical: true)
+                TextEditor(text: $text, selection: $selection).font(.body).foregroundStyle(Theme.text).scrollContentBackground(.hidden).focused($focused).textInputAutocapitalization(.never).autocorrectionDisabled().accessibilityLabel(title).accessibilityIdentifier(identifier)
+                if let issue = LabReport.textIssue(text, limit: limit, required: required) { Text(issue.message(for: title)).font(.footnote).foregroundStyle(Theme.secondary).fixedSize(horizontal: false, vertical: true).accessibilityIdentifier("activeLabTextIssue") }
+            }.padding(Theme.gutter).background(Theme.bg).navigationTitle("Edit text").navigationBarTitleDisplayMode(.inline)
+                .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Cancel") { if text != initial { discard = true } else { dismiss() } }.accessibilityIdentifier("cancelLabText") } }
+                .safeAreaInset(edge: .bottom, spacing: 0) {
+                    HStack {
+                        Button { focused = true; selection = TextSelection(range: text.startIndex..<text.endIndex) } label: { Text("Select all").frame(minWidth: 44, minHeight: 44).contentShape(Rectangle()) }.disabled(text.isEmpty).accessibilityIdentifier("selectAllLabText")
+                        Spacer()
+                        Button { focused = false; onDone(text); dismiss() } label: { Text("Done").fontWeight(.semibold).frame(minWidth: 44, minHeight: 44).contentShape(Rectangle()) }.accessibilityIdentifier(doneIdentifier)
+                    }.padding(.horizontal, Theme.gutter).background(.bar)
+                }
+                .background(SheetDismissGuard(hasEdits: text != initial) { discard = true })
+                .alert("Discard this text edit?", isPresented: $discard) { Button("Discard changes", role: .destructive) { dismiss() }; Button("Keep editing", role: .cancel) {} }
+                .task { focused = true }
+        }.tint(Theme.accent)
     }
 }
 
@@ -248,6 +351,9 @@ struct LabResultsSection: View {
                     Text("These earlier transcriptions need review. Their structured values are withheld from future assistant search until checked again.").font(.footnote).foregroundStyle(Theme.secondary)
                 }
                 Text("\(report.observations.count) \(report.observations.count == 1 ? "result" : "results") · reviewed \(report.reviewedAt.formatted(date: .abbreviated, time: .omitted))").font(.footnote).foregroundStyle(Theme.secondary)
+                if let origin = report.importedFrom {
+                    DisclosureGroup("Original lab-file import") { Text(origin.referenceText).font(.subheadline).fixedSize(horizontal: false, vertical: true).textSelection(.enabled).padding(.top, 8) }.accessibilityIdentifier("labImportReceipt")
+                }
                 ForEach(report.observations) { observation in
                     VStack(alignment: .leading, spacing: 10) {
                         Text(observation.test).font(.headline)
@@ -255,16 +361,23 @@ struct LabResultsSection: View {
                         if !observation.reference.isEmpty { Text("Reported reference: " + observation.reference).font(.subheadline).foregroundStyle(Theme.secondary) }
                         if !observation.flag.isEmpty { Text("Reported flag: " + observation.flag).font(.subheadline).foregroundStyle(Theme.secondary) }
                         Text("Collection day: " + (observation.collectedOn ?? "Not recorded")).font(.footnote).foregroundStyle(Theme.secondary)
+                        if let timing = observation.reportedTiming { Text("Reported collection wording: " + timing).font(.footnote).foregroundStyle(Theme.secondary) }
+                        if let status = observation.reportedStatus { Text("Reported status: " + status).font(.footnote).foregroundStyle(Theme.secondary) }
+                        if let row = observation.importRow { Text("Original import data row \(row)").font(.footnote).foregroundStyle(Theme.secondary) }
                         if !observation.laboratory.isEmpty { Text("Laboratory: " + observation.laboratory).font(.footnote).foregroundStyle(Theme.secondary) }
                         if !observation.specimen.isEmpty { Text("Specimen: " + observation.specimen).font(.footnote).foregroundStyle(Theme.secondary) }
                         if !observation.method.isEmpty { Text("Method: " + observation.method).font(.footnote).foregroundStyle(Theme.secondary) }
-                        DisclosureGroup("Saved source excerpt") { Text(observation.source.excerpt).fixedSize(horizontal: false, vertical: true).textSelection(.enabled).padding(.top, 8).accessibilityIdentifier("labSavedSourceText-\(observation.id)") }
+                        DisclosureGroup(observation.importRow != nil && report.matchesOriginalImportLayout(body: document.body) ? "Original source cells" : "Saved source excerpt") { Text(observation.source.excerpt).fixedSize(horizontal: false, vertical: true).textSelection(.enabled).padding(.top, 8).accessibilityIdentifier("labSavedSourceText-\(observation.id)") }
                     }.accessibilityElement(children: .contain).accessibilityIdentifier("savedLabResult-\(observation.id)")
                     Divider()
                 }
                 Text("Transcribed after review. Reported ranges and flags are copied wording; Lumen has not interpreted these results.").font(.footnote).foregroundStyle(Theme.secondary)
                 Button("Review lab results", systemImage: "pencil") { onReview() }.buttonStyle(LumenTonalButtonStyle()).accessibilityIdentifier("reviewSavedLabResults")
             } else {
+                if let origin = document.labImportOrigin, origin.isValid {
+                    DisclosureGroup("Original lab-file import") { Text(origin.referenceText).font(.subheadline).fixedSize(horizontal: false, vertical: true).textSelection(.enabled).padding(.top, 8) }.accessibilityIdentifier("labImportReceipt")
+                    Text("No lab transcriptions. The original import receipt remains with this record.").font(.footnote).foregroundStyle(Theme.secondary).accessibilityIdentifier("labImportSourceOnly")
+                }
                 Text("Keep reported values beside their exact source wording. Review each result before saving.").font(.subheadline).foregroundStyle(Theme.secondary)
                 Button("Add lab results", systemImage: "text.badge.plus") { onReview() }.buttonStyle(LumenTonalButtonStyle()).accessibilityIdentifier("reviewSavedLabResults")
             }
