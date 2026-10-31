@@ -1,8 +1,8 @@
-# Structured lab-file import · native evidence in progress
+# Structured lab-file import · native evidence
 
-Synthetic iPhone18 Pro and375×667 iPhoneSE / iOS27 screens. This batch is unpublished. Read [the contract](../../../docs/LAB_IMPORT.md), [verification](verification.json) and [the continuing critic](CRITIQUE.md) for exact source/result boundaries.
+Synthetic iPhone18 Pro and375×667 iPhoneSE / iOS27 screens. Batch21 is published as `c92331ed6085ad523b561637c8c9ba96102b92f2`. Read [the contract](../../../docs/LAB_IMPORT.md), [verification](verification.json) and [the continuing critic](CRITIQUE.md) for exact source/result boundaries.
 
-NativeR9 passes all five main-phone cases on BuildR10. NativeR8 passes its limits/cancellation/menu case on that same app source. BuildR11 adds record-owned origin and the source-only receipt branch; ReceiptR1 passes removal/relaunch/duplicate on that source. SmallR2/R3/R4 remain failed. SmallR5 passes320.678s on BuildR14 with visible native Select all and full same-editor replacement/save/duplicate proof. NativeR10 passes all three fresh main-phone editor/presentation/limits cases on BuildR14. ReceiptR2 passes227.853s with corrected singular wording; final builds include only the later aggregate-error sentence correction. No failed run is relabelled as passing.
+NativeR9 passes all five main-phone cases on BuildR10. NativeR8 passes its limits/cancellation/menu case on that same app source. BuildR11 adds record-owned origin and the source-only receipt branch; ReceiptR1 passes removal/relaunch/duplicate on that source. SmallR2/R3/R4 remain failed. SmallR5 passes 320.678s on BuildR14 with visible native Select all and full same-editor replacement/save/duplicate proof. NativeR10 passes all three fresh main-phone editor/presentation/limits cases on BuildR14. ReceiptR2 passes 227.853s with corrected singular wording; final builds include only the later aggregate-error sentence correction. No failed run is relabelled as passing.
 
 | State | Original screenshot |
 |---|---|
@@ -27,3 +27,5 @@ Original exported-file hashes, timestamps and test/source identities remain in e
 Native gestures, exact text, keyboard geometry, checked-save and relaunch assertions supply behavior separately from still images. Clinical accuracy, physical-device performance, VoiceOver, provider quality and release governance remain open gates. Raw temporary paths are historical references after scoped cleanup, not permanent archives.
 
 Final compact proof: [501-character editor](small-r5/523-lab-import-small-long-editor-keyboard.png), [native full selection](small-r5/528-lab-import-full-selection-action.png), [exact same-editor correction](small-r5/513-lab-import-small-keyboard.png), [saved record](small-r5/515-lab-import-small-saved.png), [general-route duplicate](small-r5/517-lab-import-small-general-route-duplicate.png).
+
+Scoped cleanup retains 96 originals and removes220 redundant working copies after exact GitHub confirmation. All removed originals remain recoverable in the published feature commit; retained provenance.json files preserve their source/exported-file hashes and identities. Raw temporary paths are historical. See [cleanup scope](storage-cleanup.json).

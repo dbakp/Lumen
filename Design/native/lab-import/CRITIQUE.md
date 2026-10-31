@@ -50,7 +50,7 @@ The same critic inspected all 48 R3 originals, R4/506, all ten `small-r1` origin
 | Native fluency | 4 | Menus, glass navigation, sheets and focus-bound Done adapt; 485 and small513 show actual keyboard clearance. |
 | Copy | 4 | Source boundaries, singular counts, person/duplicate decisions and field-specific validation are plain and factual. |
 
-Ten of eleven applicable lines (90.9%) reach4, none falls below3, and Concept/Finish/Native/Copy are4. **Done for the reviewed native visual/copy scope after two rounds.** No5 is claimed. The critic requests no further polish tasks or new UI changes.
+Ten of eleven applicable lines (90.9%) reach4, none falls below 3, and Concept/Finish/Native/Copy are4. **Done for the reviewed native visual/copy scope after two rounds.** No5 is claimed. The critic requests no further polish tasks or new UI changes.
 
 All five original requests are closed: R3/481 and R4/506 prove complete mapping labels; 463/475/496/497 expose reported status/raw timing before inclusion; 462/495/482 show the person gate; 464/466/476/477 retain plain source/correction boundaries and missing/null/false distinctions; 468/470/472/490 fix counts and recovery. Current source-cell labelling remains guarded by the original layout fingerprint.
 
@@ -74,7 +74,7 @@ Lab fields and the import record title now use bounded, explicitly labelled lite
 
 ## Round 3 final · done within the scoped native visual/copy review
 
-The same critic opened all40 R10 originals at original size, read their provenance and combined them with all12 SmallR5 and four ReceiptR2 originals. Earlier R8/R9 non-editor evidence keeps its recorded build/test boundaries. No concrete visible defect remains; all named requests are closed. No application change follows this verdict.
+The same critic opened all 40 R10 originals at original size, read their provenance and combined them with all 12 SmallR5 and four ReceiptR2 originals. Earlier R8/R9 non-editor evidence keeps its recorded build/test boundaries. No concrete visible defect remains; all named requests are closed. No application change follows this verdict.
 
 | Applicable line | Score | Visible evidence |
 |---|---:|---|
@@ -87,10 +87,10 @@ The same critic opened all40 R10 originals at original size, read their provenan
 | Richness | 3 | Restrained utility flow gains useful detail from literal source/timing/provenance; decoration is not warranted. |
 | Rhythm | 4 | Group spacing and stacked accessibility layouts preserve source/correction/acknowledgement reading order. |
 | Finish | 4 | Specific limits, singular counts, complete menus and the current editor footer resolve the named rough edges. |
-| Native | 4 | System keyboard, native selection and alerts fit375×667 and actual XXXL; Select all/Done clear the keyboard in477,449,485/486 and compact523/528/513. |
+| Native | 4 | System keyboard, native selection and alerts fit 375×667 and actual XXXL; Select all/Done clear the keyboard in 477,449,485/486 and compact 523/528/513. |
 | Copy | 4 | Source/correction boundaries, missing values, field errors, identity review and retained receipt wording are plain and factual. |
 
-The stop rule is met: three rounds, no applicable line below3, ten of11 lines at4 or above (90.9%), and Concept/Finish/Native/Copy all4. Total43/55. Signature/motion/icon/paywall/store work is outside this scoped scorecard. No additional decorative/portfolio pass is requested.
+The stop rule is met: three rounds, no applicable line below 3, ten of 11 lines at 4 or above (90.9%), and Concept/Finish/Native/Copy all 4. Total 43/55. Signature/motion/icon/paywall/store work is outside this scoped scorecard. No additional decorative/portfolio pass is requested.
 
 Closed requests include the five original asks, precise validation, bounded previews/full editors, reachable complete selection and exact same-editor replacement, local Discard/Keep editing, title invalidity blocking outer Save, full long-heading/Not mapped menus and the source-only receipt with singular grammar. The earlier inline defect and failed test-menu/partial-selection histories remain recorded. Partially preceding lines at a native TextEditor's internal scroll edge, and ordinary content continuing below a scroll viewport, are not fixed clipping; no claim is made that every long paragraph fits a viewport.
 

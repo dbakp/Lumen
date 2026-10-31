@@ -1,5 +1,5 @@
 {
-  "status": "Batch21 locally verified and continuing-critic Round3 done; publication pending. Full objective remains active.",
+  "status": "Batch21 published; scoped cleanup completed. Full objective remains active.",
   "publishedBaseline": "4e455c67560d9e5a46dad0ad63cf547fbcb431b6",
   "logicR5": {
     "exitCode": 0,
@@ -256,10 +256,7 @@
       "reason": "Golden test fixture incorrectly used source end 18 instead of the actual 19 Swift characters; the literal fixture was corrected. Independent published-format fingerprint now matches."
     }
   ],
-  "pending": [
-    "Publication and exact GitHub main read-back",
-    "Scoped cleanup after publication"
-  ],
+  "pending": [],
   "open": [
     "FHIR and broader clinical records",
     "Automatic OCR table reading",
@@ -2117,5 +2114,13 @@
     },
     "aggregateOverflowCopy": "Accepted as source-only wording; no new rendered-alert claim",
     "report": "CRITIQUE.md"
-  }
+  },
+  "publication": {
+    "applicationCommit": "c92331ed6085ad523b561637c8c9ba96102b92f2",
+    "remoteRef": "refs/heads/main",
+    "exactReadback": "c92331ed6085ad523b561637c8c9ba96102b92f2",
+    "publisher": "scripts/publish-batches.sh",
+    "beforeCleanup": true
+  },
+  "storageCleanup": "storage-cleanup.json"
 }
