@@ -32,7 +32,7 @@ public struct LabComparisonSnapshot: Codable, Sendable, Equatable {
         }
     }
     public func isValid(in document: HealthDocument) -> Bool {
-        isValid && document.labReport == nil && document.labImportOrigin == nil && sources.allSatisfy { $0.documentID != document.id } &&
+        isValid && document.labReport == nil && document.labImportOrigin == nil && document.fhirLabImport == nil && sources.allSatisfy { $0.documentID != document.id } &&
         document.body.count <= RecordReview.maxCharacters && document.body.utf8.count <= RecordRetrieval.maxDocumentBytes
     }
     public func isCurrent(body: String) -> Bool { isValid && LabReport.digest(body) == bodySHA256.lowercased() }
@@ -60,15 +60,18 @@ public struct LabComparisonSource: Codable, Sendable, Equatable, Identifiable {
     public var reviewedAt: Date
     public var origin: LabImportOrigin?
     public var observation: LabObservation
+    public var fhirOrigin: FHIRLabImportOrigin? = nil
+    public var fhirFieldsMatched: Bool? = nil
     public var id: String { LabHistory.key([documentID, observation.id]) }
 
     init(_ point: LabHistory.Point) {
         documentID = point.record.id; title = point.record.title; source = point.record.source
         fingerprint = point.record.fingerprint; reviewedAt = point.record.reviewedAt
         origin = point.record.origin; observation = point.observation
+        fhirOrigin = point.record.fhirOrigin; fhirFieldsMatched = observation.fhirSource == nil ? nil : point.fhirFieldsMatch
     }
     var point: LabHistory.Point {
-        .init(record: .init(id: documentID, title: title, source: source, fingerprint: fingerprint, reviewedAt: reviewedAt, origin: origin), observation: observation)
+        .init(record: .init(id: documentID, title: title, source: source, fingerprint: fingerprint, reviewedAt: reviewedAt, origin: origin, fhirOrigin: fhirOrigin), observation: observation, fhirFieldsMatch: fhirFieldsMatched ?? true)
     }
     public var isValid: Bool {
         LabReport.bounded(documentID, limit: 100, required: true, multiline: false) &&
@@ -76,12 +79,14 @@ public struct LabComparisonSource: Codable, Sendable, Equatable, Identifiable {
         LabReport.bounded(source, limit: 4000) && source.utf8.count <= 4000 &&
         fingerprint.count == 64 && fingerprint.allSatisfy { $0.isASCII && $0.isHexDigit } &&
         reviewedAt.timeIntervalSince1970.isFinite && observation.isValid && (origin?.isValid ?? true) &&
-        (observation.importRow.map { origin?.selectedRows.contains($0) == true } ?? true)
+        (observation.importRow.map { origin?.selectedRows.contains($0) == true } ?? true) &&
+        (fhirOrigin.map { $0.isValid && origin == nil } ?? true) &&
+        (observation.fhirSource.map { source in fhirFieldsMatched != nil && (fhirOrigin.map { source.inputSHA256.lowercased() == $0.sha256.lowercased() && $0.selectedPaths.contains(source.resultPath) } ?? false) } ?? (fhirFieldsMatched == nil))
     }
     enum State: String, Sendable { case matching, changed, removed, needsReview }
     func state(in documents: [HealthDocument]) -> State {
         guard let document = documents.first(where: { $0.id == documentID }) else { return .removed }
-        guard document.kind == .record, document.hasValidLabImportOrigin,
+        guard document.kind == .record, document.hasValidLabImportOrigin, document.hasValidFHIRLabImport,
               let report = document.labReport, report.isValid(in: document), report.isCurrent(body: document.body) else { return .needsReview }
         guard RecordRetrieval.fingerprint(document) == fingerprint.lowercased(),
               report.observations.first(where: { $0.id == observation.id }) == observation else { return .changed }

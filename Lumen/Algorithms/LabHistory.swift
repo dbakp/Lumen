@@ -49,7 +49,9 @@ enum LabHistory {
         let fingerprint: String
         let reviewedAt: Date
         let origin: LabImportOrigin?
+        var fhirOrigin: FHIRLabImportOrigin? = nil
         var personLabel: String {
+            if let fhirOrigin { return fhirOrigin.subjectLabel }
             guard let origin, let subject = origin.subject else { return "Person label not recorded" }
             return subject.isEmpty ? "Blank source subject cell" : subject
         }
@@ -61,15 +63,28 @@ enum LabHistory {
         let groupID: String
         let importedCellsID: String?
         let collectionDay: String?
-        init(record: SourceRecord, observation: LabObservation) {
+        let fhirFieldsMatch: Bool
+        init(record: SourceRecord, observation: LabObservation, fhirFieldsMatch: Bool = true) {
             self.record = record; self.observation = observation
+            self.fhirFieldsMatch = fhirFieldsMatch
             id = key([record.id, observation.id])
-            groupID = key([observation.test, observation.unit, observation.laboratory, observation.specimen, observation.method, observation.reportedStatus ?? ""])
+            var context = [observation.test, observation.unit, observation.laboratory, observation.specimen, observation.method, observation.reportedStatus ?? ""]
+            if let source = observation.fhirSource { context += ["Original FHIR coding", source.codingContext ?? "Invalid coding"] }
+            else if record.fhirOrigin != nil { context += ["Original FHIR coding", "Not retained for this transcription"] }
+            groupID = key(context)
             if let origin = record.origin, let row = observation.importRow {
                 let mapping = origin.mapping.keys.sorted().flatMap { [$0, origin.mapping[$0] ?? ""] }
                 importedCellsID = key([origin.sha256.lowercased(), String(row)] + mapping)
-            } else { importedCellsID = nil }
+            } else { importedCellsID = observation.fhirSource?.resultIdentity }
             collectionDay = observation.collectedOn.flatMap { PlanDay.date($0, timeZone: TimeZone(secondsFromGMT: 0)!) == nil ? nil : $0 }
+        }
+        var fhirScalarIssue: String? {
+            guard let source = observation.fhirSource else {
+                return record.fhirOrigin == nil ? nil : "This transcription has no retained original FHIR value-form proof. Kept as wording; no numeric interpretation was made."
+            }
+            if !fhirFieldsMatch { return "The captured FHIR fields no longer match this record's source text. Original coding is historical; no numeric interpretation was made." }
+            if !source.permitsScalar || !["preliminary", "final", "amended", "corrected"].contains(observation.reportedStatus ?? "") { return "The original FHIR result form or current reported status does not support an unqualified scalar comparison. Kept as wording." }
+            return nil
         }
     }
     struct Selection: Sendable {
@@ -106,15 +121,15 @@ enum LabHistory {
             guard let document = chosen.first(where: { $0.id == id }), document.kind == .record,
                   LabReport.bounded(id, limit: 100, required: true, multiline: false),
                   LabReport.bounded(document.title, limit: 4000), LabReport.bounded(document.source, limit: 4000),
-                  let report = document.labReport, document.hasValidLabImportOrigin,
+                  let report = document.labReport, document.hasValidLabImportOrigin, document.hasValidFHIRLabImport,
                   report.isValid(in: document), report.isCurrent(body: document.body),
                   let fingerprint = RecordRetrieval.fingerprint(document) else {
                 let title = chosen.first(where: { $0.id == id }).map { LabTable.displayPreview($0.title, maxCharacters: 100).text } ?? "the record"
                 throw Failure.source(title)
             }
-            let record = SourceRecord(id: document.id, title: document.title, source: document.source, fingerprint: fingerprint, reviewedAt: report.reviewedAt, origin: document.originalLabImport)
+            let record = SourceRecord(id: document.id, title: document.title, source: document.source, fingerprint: fingerprint, reviewedAt: report.reviewedAt, origin: document.originalLabImport, fhirOrigin: document.fhirLabImport)
             records.append(record)
-            points += report.observations.map { Point(record: record, observation: $0) }
+            points += report.observations.map { Point(record: record, observation: $0, fhirFieldsMatch: $0.fhirSource?.matchesSource(in: document.body) ?? true) }
         }
         try control.checkCancellation()
         guard now.timeIntervalSince1970.isFinite else { throw Failure.changed }
@@ -235,7 +250,7 @@ enum LabHistory {
     }
 
     enum PlotIssue: Equatable, Sendable {
-        case person, decimalChoice, unit, laboratory, duplicates, tooMany(Int), context, range, wordingOnly
+        case person, decimalChoice, unit, laboratory, duplicates, tooMany(Int), context, range, wordingOnly, fhir(String)
         var message: String {
             switch self {
             case .person: return "Check the intended person before showing numeric results."
@@ -247,6 +262,7 @@ enum LabHistory {
             case .context: return "These results have different recorded test or laboratory context."
             case .range: return "Choose a valid collection-day range."
             case .wordingOnly: return "Numeric view is off. Every reported value remains in the history below."
+            case .fhir(let message): return message
             }
         }
     }
@@ -284,6 +300,9 @@ enum LabHistory {
         if example.laboratory.isEmpty { blockers.append(.laboratory) }
         let origins = selected.compactMap(\.importedCellsID)
         if Set(origins).count != origins.count { blockers.append(.duplicates) }
+        let events = selected.compactMap { $0.observation.fhirSource?.eventIdentity }
+        if Set(events).count != events.count && !blockers.contains(.duplicates) { blockers.append(.duplicates) }
+        for issue in Set(selected.compactMap(\.fhirScalarIssue)).sorted() { blockers.append(.fhir(issue)) }
         let utc = TimeZone(secondsFromGMT: 0)!
         for point in selected {
             guard let day = point.collectionDay, let date = PlanDay.date(day, timeZone: utc) else { omitted.append(Omission(pointID: point.id, message: "Collection day not recorded. No date was inferred.")); continue }
@@ -320,6 +339,8 @@ enum LabHistory {
         if !personChecked { reasons.append(PlotIssue.person.message) }
         if first.id == second.id { reasons.append(Failure.pair.localizedDescription) }
         if first.importedCellsID != nil && first.importedCellsID == second.importedCellsID { reasons.append(Failure.duplicate.localizedDescription) }
+        if let event = first.observation.fhirSource?.eventIdentity, event == second.observation.fhirSource?.eventIdentity { reasons.append("These FHIR results belong to the same original observation event. They are not independent measurements.") }
+        for point in [first, second] { if let issue = point.fhirScalarIssue, !reasons.contains(issue) { reasons.append(issue) } }
         if first.groupID != second.groupID { reasons.append(PlotIssue.context.message) }
         if !LabReport.bounded(first.observation.unit, limit: 100, required: true, multiline: false) || !LabReport.bounded(second.observation.unit, limit: 100, required: true, multiline: false) { reasons.append(PlotIssue.unit.message) }
         if first.observation.laboratory.isEmpty || second.observation.laboratory.isEmpty { reasons.append(PlotIssue.laboratory.message) }
@@ -370,6 +391,7 @@ enum LabHistory {
         for (label, point) in [(result.chronological ? "Earlier result" : "First result", result.first), (result.chronological ? "Later result" : "Second result", result.second)] {
             body += "\n\n## \(label)\nRecord: \(point.record.title)\nRecord source: \(point.record.source)\nRecord ID: \(point.record.id)\nResult ID: \(point.observation.id)\nSource content SHA-256: \(point.record.fingerprint)\nSource review: \(iso.string(from: point.record.reviewedAt))\nOriginal person label: \(point.record.personLabel)\n\n\(point.observation.referenceText)\n\nExact saved source excerpt\n\(point.observation.source.excerpt)"
             if let origin = point.record.origin { body += "\n\nHistorical original-file receipt\n" + origin.referenceText }
+            if let origin = point.record.fhirOrigin { body += "\n\nHistorical FHIR import receipt\n" + origin.referenceText }
         }
         return body
     }

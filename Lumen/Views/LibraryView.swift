@@ -10,6 +10,7 @@ struct LibraryView: View {
     @State private var editing: HealthDocument?
     @State private var planning = false
     @State private var importingLabs = false
+    @State private var importingFHIR = false
     var filtered: [HealthDocument] {
         companion.documents.filter { (kind == nil || $0.kind == kind) && (search.isEmpty || $0.title.localizedCaseInsensitiveContains(search) || $0.body.localizedCaseInsensitiveContains(search)) }
     }
@@ -69,12 +70,14 @@ struct LibraryView: View {
                         Button("Make a multiweek plan", systemImage: "calendar.badge.plus") { planning = true }
                         Button("Import a record", systemImage: "doc.badge.plus") { importing = true }
                         Button("Import lab results", systemImage: "tablecells") { importingLabs = true }
+                        Button("Import FHIR lab results", systemImage: "doc.text.magnifyingglass") { importingFHIR = true }
                     } label: { Image(systemName: "plus") }.accessibilityLabel("Add document")
                 }
             }
             .sheet(item: $editing) { DocumentEditor(document: $0) }
             .sheet(isPresented: $planning) { ScheduledPlanSheet().environmentObject(health) }
             .sheet(isPresented: $importingLabs) { LabImportView { kind = .record; search = "" } }
+            .sheet(isPresented: $importingFHIR) { FHIRLabImportView { kind = .record; search = "" } }
             .sheet(isPresented: $importing, onDismiss: { recordWorkspace?.cleanup(); recordWorkspace = nil }) {
                 RecordImportView(onWorkspaceReady: { recordWorkspace = $0 }) { kind = .record; search = "" }
             }

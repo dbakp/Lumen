@@ -160,7 +160,9 @@ struct LabCapturedResultView: View {
         VStack(alignment: .leading, spacing: 16) {
             Text(label).font(.title2.bold())
             Text(point.observation.test).font(.headline).fixedSize(horizontal: false, vertical: true)
-            Text(point.observation.result).font(.title2.weight(.semibold)).fixedSize(horizontal: false, vertical: true).textSelection(.enabled).accessibilityIdentifier("capturedLabValue-" + point.id)
+            if point.record.fhirOrigin != nil { Text("Reviewed result").font(.footnote).foregroundStyle(Theme.secondary) }
+            Text(point.observation.result).font(point.record.fhirOrigin != nil && point.observation.fhirSource?.permitsScalar != true ? .headline : .title2.weight(.semibold)).fixedSize(horizontal: false, vertical: true).textSelection(.enabled).accessibilityIdentifier("capturedLabValue-" + point.id)
+            if let source = point.observation.fhirSource { FHIRResultProvenanceView(source: source) }
             LabHistoryField(label: "Collection day", value: point.collectionDay ?? "")
             LabHistoryField(label: "Reported unit", value: point.observation.unit)
             LabHistoryField(label: "Reported reference", value: point.observation.reference)
@@ -176,6 +178,9 @@ struct LabCapturedResultView: View {
             }
             if expandedSource { sourceText }
             else { DisclosureGroup("Captured source excerpt") { sourceText.padding(.top, 12) }.accessibilityIdentifier("historySourceDisclosure-" + point.id) }
+            if let issue = point.fhirScalarIssue {
+                Text(issue).font(.footnote).foregroundStyle(Theme.secondary).fixedSize(horizontal: false, vertical: true)
+            }
             LabHistoryField(label: "Source record", value: point.record.title)
             Text("Source review captured: " + point.record.reviewedAt.formatted(date: .abbreviated, time: .shortened)).font(.footnote).foregroundStyle(Theme.secondary)
             LabHistoryField(label: "Original person label", value: point.record.personLabel)
@@ -187,6 +192,9 @@ struct LabCapturedResultView: View {
                     LabHistoryField(label: "Saved source content SHA-256", value: point.record.fingerprint)
                     if let origin = point.record.origin {
                         Text(origin.referenceText).font(.footnote).fixedSize(horizontal: false, vertical: true).textSelection(.enabled)
+                    }
+                    if let origin = point.record.fhirOrigin {
+                        FHIRReaderLink("Captured FHIR import receipt") { FHIRTextReader(title: "Captured FHIR import", text: origin.referenceText) }
                     }
                 }.padding(.top, 12)
             }

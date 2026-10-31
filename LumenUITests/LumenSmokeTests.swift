@@ -268,7 +268,7 @@ final class LumenSmokeTests: XCTestCase {
         q.tap()
     }
 
-    func reveal(_ element: XCUIElement) {
+    func reveal(_ element: XCUIElement, towardsTop: Bool = false) {
         for _ in 0..<16 {
             let targetIdentifier = element.exists ? element.identifier : ""
             let input = app.descendants(matching: .any).matching(identifier: "coachInput").firstMatch
@@ -291,7 +291,9 @@ final class LumenSmokeTests: XCTestCase {
             // Native controls may report hittable while their centre is behind
             // a modal navigation bar. Check the actual visible content region.
             if element.exists && element.isHittable && element.frame.midY > top && element.frame.midY < bottom { return }
-            let down = element.exists && element.frame.midY < (top + bottom) / 2
+            // Lazy stacks can remove the target from the accessibility tree.
+            // A known earlier row then needs an explicit search direction.
+            let down = element.exists ? element.frame.midY < (top + bottom) / 2 : towardsTop
             // Use the actual content gutter. A whole-app swipe can start on
             // navigation or selectable text instead of moving the scroll view.
             let lower = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: bottom - 8))
@@ -717,12 +719,23 @@ final class LumenSmokeTests: XCTestCase {
     }
     func nativeSwitch(_ identifier: String, enabled: Bool) {
         let toggle = app.switches[identifier].firstMatch; reveal(toggle)
+        if identifier.contains("FHIR") { settleLabFrame(toggle) }
         if (toggle.value as? String) != (enabled ? "1" : "0") {
             let control = toggle.switches.firstMatch
-            if control.exists { reveal(control); control.tap() } else { toggle.tap() }
+            if control.exists {
+                reveal(control)
+                // Touch the visible native thumb. A labelled SwiftUI switch
+                // also exposes a larger outer AX rectangle; its centre can
+                // land on the label or a non-interactive part of the track.
+                if identifier.contains("FHIR") {
+                    control.coordinate(withNormalizedOffset: CGVector(dx: enabled ? 0.25 : 0.75, dy: 0.5)).tap()
+                } else { control.tap() }
+            } else { toggle.tap() }
         }
         let expected = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", enabled ? "1" : "0"), object: toggle)
-        XCTAssertEqual(XCTWaiter.wait(for: [expected], timeout: 5), .completed)
+        let result = XCTWaiter.wait(for: [expected], timeout: 5)
+        if result != .completed { snap("switch-state-" + identifier); print(app.debugDescription) }
+        XCTAssertEqual(result, .completed)
     }
     func openReadableRecovery() {
         openBackupSettings()
@@ -915,6 +928,162 @@ final class LumenSmokeTests: XCTestCase {
         tab("Assistant")
     }
 
+    func openFHIRImport() {
+        tab("Library"); tap("Add document"); tap("Import FHIR lab results")
+        XCTAssertTrue(app.buttons["chooseFHIRFile"].waitForExistence(timeout: 5))
+    }
+    func reviewFHIRFixture(capturePrefix: String? = nil) throws {
+        try chooseLabFile("Lumen-fhir-review", chooseIdentifier: "chooseFHIRFile")
+        XCTAssertTrue(app.staticTexts["fhirCoverageCounts"].waitForExistence(timeout: 25))
+        XCTAssertTrue(app.staticTexts["fhirCoverageCounts"].label.contains("7 entries"))
+        if let capturePrefix { snap(capturePrefix + "-coverage") }
+        nativeSwitch("acknowledgeFHIRCoverage", enabled: true)
+        let next = app.buttons["continueFHIRCoverage"].firstMatch; reveal(next); next.tap()
+        let person = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'fhirPerson-' AND label CONTAINS 'Synthetic Person A'")).firstMatch
+        XCTAssertTrue(person.waitForExistence(timeout: 5)); reveal(person); person.tap()
+        if let capturePrefix {
+            let reference = app.buttons["Read person reference"].firstMatch; reveal(reference); reference.tap()
+            XCTAssertTrue(app.staticTexts["fhirFullText"].waitForExistence(timeout: 5)); XCTAssertTrue(app.staticTexts["fhirFullText"].label.contains("Patient/a")); snap(capturePrefix + "-person-reference")
+            app.navigationBars.buttons.element(boundBy: 0).tap()
+        }
+        nativeSwitch("acknowledgeFHIRPerson", enabled: true)
+        if let capturePrefix { snap(capturePrefix + "-person") }
+        let review = app.buttons["reviewFHIRResults"].firstMatch; reveal(review)
+        if let capturePrefix { revealLabExcerpt(review); snap(capturePrefix + "-review-action") }
+        review.tap()
+        XCTAssertTrue(app.staticTexts["fhirIncludedCount"].waitForExistence(timeout: 15))
+    }
+    func testFHIRLabImportLifecycle() throws {
+        app.terminate(); app.launchArguments = ["-resetForUITests", "-librarySearchRemoteUITestMode"]; app.launch()
+        finishOnboarding(); openFHIRImport(); snap("600-fhir-intro")
+        try reviewFHIRFixture(capturePrefix: "609-fhir"); snap("601-fhir-results")
+        nativeSwitch("acknowledgeFHIRResults", enabled: true)
+        XCTAssertFalse(app.buttons["saveFHIRImport"].isEnabled)
+        nativeSwitch("includeFHIRResult-2", enabled: false)
+        nativeSwitch("acknowledgeFHIRResults", enabled: true)
+        XCTAssertTrue(app.buttons["saveFHIRImport"].isEnabled)
+        let edit = app.buttons["editFHIRResult-0"].firstMatch; reveal(edit); edit.tap()
+        XCTAssertTrue(app.buttons["finishLabResult"].waitForExistence(timeout: 5)); snap("602-fhir-edit")
+        let editorPrefix = app.frame.width < 390 ? "634-fhir-compact" : "634-fhir-normal"
+        let longEditorValue = String(repeating: "Long reported wording ", count: 20) + "END REPORTED VALUE"
+        labField("labReportedResult", value: longEditorValue, replacing: true, finish: false, capturePrefix: editorPrefix + "-long-end")
+        labField("labReportedResult", value: "13.25", replacing: true, inOpenEditor: true, capturePrefix: editorPrefix + "-correction"); tap("finishLabResult")
+        XCTAssertFalse(app.buttons["saveFHIRImport"].isEnabled)
+        let fields = app.buttons["fhirResultFields-0"].firstMatch; reveal(fields); fields.tap()
+        let quantity = app.buttons.matching(NSPredicate(format: "label CONTAINS '/entry/1/resource/valueQuantity'")).firstMatch
+        for _ in 0..<7 {
+            if quantity.exists { break }
+            let next = app.buttons["historyNextPage"].firstMatch; reveal(next)
+            guard next.exists && next.isEnabled else { break }
+            next.tap()
+        }
+        reveal(quantity); quantity.tap()
+        XCTAssertTrue(app.staticTexts["fhirFullText"].waitForExistence(timeout: 5)); XCTAssertTrue(app.staticTexts["fhirFullText"].label.contains("12.00")); snap("603-fhir-original-value")
+        app.navigationBars.buttons.element(boundBy: 0).tap(); app.navigationBars.buttons.element(boundBy: 0).tap()
+        for _ in 0..<8 {
+            let count = app.staticTexts["fhirIncludedCount"].firstMatch
+            if count.exists && count.isHittable { break }
+            app.swipeDown(velocity: .slow)
+        }
+        XCTAssertTrue(app.staticTexts["fhirIncludedCount"].waitForExistence(timeout: 5)); XCTAssertTrue(app.staticTexts["fhirIncludedCount"].label.contains("2 included"))
+        snap("622-fhir-draft-after-source-reader")
+        tap("cancelFHIRImport"); XCTAssertTrue(app.alerts["Discard this FHIR import?"].waitForExistence(timeout: 5)); tap("Keep reviewing")
+        nativeSwitch("acknowledgeFHIRResults", enabled: true); tap("saveFHIRImport")
+        XCTAssertTrue(app.staticTexts["fhirImportSaved"].waitForExistence(timeout: 20)); XCTAssertTrue(app.staticTexts["fhirImportSaved"].label.contains("2 reviewed results")); snap("604-fhir-saved")
+        tap("viewFHIRRecord"); XCTAssertTrue(app.staticTexts["13.25 g/dL"].waitForExistence(timeout: 5)); snap("605-fhir-record")
+        let receipt = app.buttons["fhirImportReceipt"].firstMatch; reveal(receipt); receipt.tap()
+        XCTAssertTrue(app.staticTexts["fhirFullText"].waitForExistence(timeout: 5)); XCTAssertTrue(app.staticTexts["fhirFullText"].label.contains("Next page reported: Yes")); snap("606-fhir-receipt")
+        app.navigationBars.buttons.element(boundBy: 0).tap(); app.navigationBars.buttons.element(boundBy: 0).tap(); tap("cancelFHIRImport")
+        app.terminate(); app.launchArguments = ["-librarySearchRemoteUITestMode"]; app.launch(); tab("Library"); openLabRecord("Lumen-fhir-review")
+        XCTAssertTrue(app.staticTexts["13.25 g/dL"].waitForExistence(timeout: 5)); snap("607-fhir-relaunch")
+        app.navigationBars.buttons.element(boundBy: 0).tap(); openFHIRImport(); try reviewFHIRFixture()
+        nativeSwitch("includeFHIRResult-2", enabled: false); nativeSwitch("acknowledgeFHIRResults", enabled: true); tap("saveFHIRImport")
+        XCTAssertTrue(app.alerts["Save another copy?"].waitForExistence(timeout: 5)); snap("608-fhir-duplicate"); tap("Keep reviewing"); tap("cancelFHIRImport"); tap("Discard draft")
+    }
+    func testFHIRLabImportPresentation() throws {
+        app.terminate(); app.launchArguments = ["-resetForUITests", "-librarySearchRemoteUITestMode", "-lumen.appearance", "dark"]; app.launch()
+        finishOnboarding(); openFHIRImport(); snap("610-fhir-dark-intro")
+        try reviewFHIRFixture(capturePrefix: "611-fhir-dark")
+        nativeSwitch("includeFHIRResult-2", enabled: false)
+        let first = app.staticTexts["Synthetic hemoglobin"].firstMatch; reveal(first, towardsTop: true); snap("612-fhir-dark-review")
+        nativeSwitch("acknowledgeFHIRResults", enabled: true); tap("saveFHIRImport")
+        XCTAssertTrue(app.staticTexts["fhirImportSaved"].waitForExistence(timeout: 20)); snap("613-fhir-dark-complete")
+        tap("viewFHIRRecord"); XCTAssertTrue(app.staticTexts["Collection day: Not recorded"].firstMatch.waitForExistence(timeout: 5)); snap("614-fhir-dark-record")
+        let darkWording = app.staticTexts["Kept as wording"].firstMatch; reveal(darkWording); snap("630-fhir-dark-coded")
+        app.terminate(); app.launchArguments = ["-librarySearchRemoteUITestMode", "-lumen.appearance", "light", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]; app.launch()
+        tab("Library"); openLabRecord("Lumen-fhir-review"); snap("615-fhir-xxxl-record")
+        let receipt = app.buttons["fhirImportReceipt"].firstMatch; reveal(receipt); receipt.tap()
+        XCTAssertTrue(app.staticTexts["fhirFullText"].waitForExistence(timeout: 5)); snap("616-fhir-xxxl-receipt")
+        app.navigationBars.buttons.element(boundBy: 0).tap(); app.navigationBars.buttons.element(boundBy: 0).tap()
+        openFHIRImport(); snap("617-fhir-xxxl-intro")
+        try reviewFHIRFixture(capturePrefix: "618-fhir-xxxl")
+        nativeSwitch("includeFHIRResult-2", enabled: false)
+        let inclusion = app.switches["includeFHIRResult-2"].firstMatch; revealLabExcerpt(inclusion); snap("640-fhir-xxxl-final-inclusion")
+        let reviewed = app.staticTexts["Synthetic hemoglobin"].firstMatch; reveal(reviewed, towardsTop: true); snap("619-fhir-xxxl-review")
+        let edit = app.buttons["editFHIRResult-0"].firstMatch; reveal(edit); edit.tap()
+        XCTAssertTrue(app.buttons["finishLabResult"].waitForExistence(timeout: 5)); snap("632-fhir-xxxl-edit")
+        let longEditorValue = String(repeating: "Long reported wording ", count: 20) + "END REPORTED VALUE"
+        labField("labReportedResult", value: longEditorValue, replacing: true, finish: false, capturePrefix: "636-fhir-xxxl-long-end")
+        labField("labReportedResult", value: "12.00", replacing: true, inOpenEditor: true, capturePrefix: "637-fhir-xxxl-correction"); tap("finishLabResult")
+        nativeSwitch("acknowledgeFHIRResults", enabled: true)
+        let privacy = app.staticTexts["Assistant sharing starts off. Saving creates a separate reviewed record; keep the original file."].firstMatch
+        reveal(privacy); revealLabExcerpt(privacy)
+        let acknowledgement = app.staticTexts["I checked the included results and original FHIR fields"].firstMatch
+        XCTAssertTrue(acknowledgement.exists); revealLabExcerpt(acknowledgement)
+        XCTAssertGreaterThanOrEqual(acknowledgement.frame.minY, app.navigationBars.firstMatch.frame.maxY + 12)
+        XCTAssertLessThanOrEqual(privacy.frame.maxY, app.frame.maxY - 40)
+        snap("638-fhir-xxxl-ack-privacy-footer")
+        tap("saveFHIRImport")
+        XCTAssertTrue(app.alerts["Save another copy?"].waitForExistence(timeout: 5)); tap("Save another copy")
+        XCTAssertTrue(app.staticTexts["fhirImportSaved"].waitForExistence(timeout: 20)); snap("620-fhir-xxxl-complete")
+        let savedAction = app.buttons["viewFHIRRecord"].firstMatch; reveal(savedAction); revealLabExcerpt(savedAction); snap("639-fhir-xxxl-complete-action")
+        tap("viewFHIRRecord"); XCTAssertTrue(app.staticTexts["12.00 g/dL"].firstMatch.waitForExistence(timeout: 5)); snap("621-fhir-xxxl-open")
+        let largeWording = app.staticTexts["Kept as wording"].firstMatch; reveal(largeWording); snap("631-fhir-xxxl-coded")
+    }
+    func testFHIRReceiptAfterRemovingResults() throws {
+        app.terminate(); app.launchArguments = ["-resetForUITests", "-librarySearchRemoteUITestMode"]; app.launch()
+        finishOnboarding(); openFHIRImport(); try reviewFHIRFixture()
+        nativeSwitch("includeFHIRResult-1", enabled: false); nativeSwitch("includeFHIRResult-2", enabled: false)
+        nativeSwitch("acknowledgeFHIRResults", enabled: true); tap("saveFHIRImport")
+        XCTAssertTrue(app.staticTexts["fhirImportSaved"].waitForExistence(timeout: 20)); tap("viewFHIRRecord")
+        let review = app.buttons["reviewSavedLabResults"].firstMatch; reveal(review); review.tap()
+        let remove = app.buttons["Remove Synthetic hemoglobin from draft"].firstMatch; reveal(remove); remove.tap(); tap("Remove result")
+        nativeSwitch("acknowledgeLabResults", enabled: true); tap("saveLabResults")
+        let sourceOnly = app.staticTexts["fhirSourceOnly"].firstMatch; XCTAssertTrue(sourceOnly.waitForExistence(timeout: 5)); reveal(sourceOnly); snap("623-fhir-source-only")
+        let receipt = app.buttons["fhirImportReceipt"].firstMatch; reveal(receipt); receipt.tap()
+        XCTAssertTrue(app.staticTexts["fhirFullText"].waitForExistence(timeout: 5)); XCTAssertTrue(app.staticTexts["fhirFullText"].label.contains("Lumen-fhir-review.json")); snap("624-fhir-source-only-receipt")
+        app.terminate(); app.launchArguments = ["-librarySearchRemoteUITestMode"]; app.launch(); tab("Library"); openLabRecord("Lumen-fhir-review")
+        XCTAssertTrue(sourceOnly.waitForExistence(timeout: 5)); reveal(sourceOnly); snap("625-fhir-source-only-relaunch")
+        app.navigationBars.buttons.element(boundBy: 0).tap(); openFHIRImport(); try reviewFHIRFixture()
+        nativeSwitch("includeFHIRResult-2", enabled: false); nativeSwitch("acknowledgeFHIRResults", enabled: true); tap("saveFHIRImport")
+        XCTAssertTrue(app.alerts["Save another copy?"].waitForExistence(timeout: 5)); snap("626-fhir-source-only-duplicate"); tap("Keep reviewing"); tap("cancelFHIRImport"); tap("Discard draft")
+    }
+    func testFHIRLongSourceFields() throws {
+        let method = "BEGIN ORIGINAL METHOD " + String(repeating: "synthetic method wording ", count: 160) + " END ORIGINAL METHOD"
+        app.terminate(); app.launchArguments = ["-resetForUITests", "-librarySearchRemoteUITestMode"]; app.launch()
+        finishOnboarding(); openFHIRImport(); try chooseLabFile("Lumen-fhir-long", chooseIdentifier: "chooseFHIRFile")
+        XCTAssertTrue(app.staticTexts["fhirCoverageCounts"].waitForExistence(timeout: 25))
+        nativeSwitch("acknowledgeFHIRCoverage", enabled: true); let next = app.buttons["continueFHIRCoverage"].firstMatch; reveal(next); next.tap()
+        let person = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'fhirPerson-'")).firstMatch; reveal(person); person.tap()
+        nativeSwitch("acknowledgeFHIRPerson", enabled: true); let review = app.buttons["reviewFHIRResults"].firstMatch; reveal(review); review.tap()
+        XCTAssertTrue(app.staticTexts["fhirIncludedCount"].waitForExistence(timeout: 15)); nativeSwitch("acknowledgeFHIRResults", enabled: true); XCTAssertFalse(app.buttons["saveFHIRImport"].isEnabled)
+        let fields = app.buttons["fhirResultFields-0"].firstMatch; reveal(fields); fields.tap()
+        let methodField = app.buttons.matching(NSPredicate(format: "label BEGINSWITH '/method,'")).firstMatch; reveal(methodField); methodField.tap()
+        var retained = ""
+        for _ in 0..<10 {
+            let text = app.staticTexts["fhirFullText"].firstMatch; XCTAssertTrue(text.waitForExistence(timeout: 5)); retained += text.label
+            let next = app.buttons["historyNextPage"].firstMatch
+            if !next.exists || !next.isEnabled { break }
+            reveal(next); next.tap()
+        }
+        XCTAssertEqual(retained, "{\"text\":\"" + method + "\"}"); snap("627-fhir-complete-long-method")
+        app.navigationBars.buttons.element(boundBy: 0).tap(); app.navigationBars.buttons.element(boundBy: 0).tap()
+        let edit = app.buttons["editFHIRResult-0"].firstMatch; reveal(edit); edit.tap()
+        labField("labMethod", value: "Reviewed synthetic method", replacing: true); tap("finishLabResult")
+        nativeSwitch("acknowledgeFHIRResults", enabled: true); tap("saveFHIRImport")
+        XCTAssertTrue(app.staticTexts["fhirImportSaved"].waitForExistence(timeout: 20)); snap("628-fhir-long-source-saved")
+        tap("viewFHIRRecord"); XCTAssertTrue(app.staticTexts["1.2300e-9 mg/L"].firstMatch.waitForExistence(timeout: 5)); snap("629-fhir-long-source-record")
+    }
     func openLabImport() {
         tab("Library"); tap("Add document"); tap("Import lab results")
         XCTAssertTrue(app.buttons["chooseLabFile"].waitForExistence(timeout: 5))
@@ -1184,13 +1353,14 @@ final class LumenSmokeTests: XCTestCase {
         XCTAssertTrue(field.waitForExistence(timeout: 5)); XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 5)); settleLabFrame(field)
         return field
     }
-    func labField(_ identifier: String, value: String, replacing: Bool = false, doneIdentifier: String = "finishLabField", searchUp: Bool = false, finish: Bool = true, inOpenEditor: Bool = false) {
+    func labField(_ identifier: String, value: String, replacing: Bool = false, doneIdentifier: String = "finishLabField", searchUp: Bool = false, finish: Bool = true, inOpenEditor: Bool = false, capturePrefix: String? = nil) {
         let field = inOpenEditor ? app.textViews[identifier].firstMatch : openLabField(identifier, searchUp: searchUp)
         if replacing {
             XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 5))
             let longValue = (field.value as? String)?.count == 501
             let selectAll = app.buttons["selectAllLabText"].firstMatch
             XCTAssertTrue(selectAll.waitForExistence(timeout: 5)); XCTAssertTrue(selectAll.isHittable); selectAll.tap()
+            if let capturePrefix { snap(capturePrefix + "-selection-keyboard") }
             if longValue { snap("528-lab-import-full-selection-action") }
             field.typeText(XCUIKeyboardKey.delete.rawValue)
             let cleared = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in field.exists && field.value as? String == "" }, object: field)
@@ -1205,6 +1375,11 @@ final class LumenSmokeTests: XCTestCase {
         if entering != .completed { print(app.debugDescription); snap("lab-field-incomplete-" + identifier) }
         XCTAssertEqual(entering, .completed, "Wait for the native field to reflect all dispatched characters")
         XCTAssertEqual(field.value as? String, value)
+        if let capturePrefix {
+            XCTAssertTrue(app.keyboards.firstMatch.exists)
+            XCTAssertTrue(app.buttons["selectAllLabText"].isHittable && app.buttons[doneIdentifier].isHittable)
+            snap(capturePrefix + "-keyboard-done")
+        }
         if finish { tap(doneIdentifier) }
     }
     func openLabRecord(_ title: String) {

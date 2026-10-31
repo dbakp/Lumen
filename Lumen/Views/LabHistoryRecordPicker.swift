@@ -96,6 +96,7 @@ struct LabHistoryRecordPicker: View {
         }
     }
     private func personLabel(_ document: HealthDocument) -> String {
+        if let origin = document.fhirLabImport { return origin.subjectLabel }
         guard let subject = document.originalLabImport?.subject else { return "Person label not recorded" }
         return subject.isEmpty ? "Blank source subject cell" : "Source subject: " + subject
     }

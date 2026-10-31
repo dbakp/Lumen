@@ -46,7 +46,7 @@ enum RecordReview {
     /// reviewed wording and patient identities never establish a file match.
     static func hasDuplicate(sha256: String, in documents: [HealthDocument]) -> Bool {
         let hash = sha256.lowercased()
-        return documents.contains { $0.originalLabImport?.sha256.lowercased() == hash || $0.extraction?.sha256.lowercased() == hash }
+        return documents.contains { $0.originalLabImport?.sha256.lowercased() == hash || $0.fhirLabImport?.sha256.lowercased() == hash || $0.extraction?.sha256.lowercased() == hash }
     }
     static let maxCharacters = 200_000
     static func body(_ pages: [RecordPageDraft]) throws -> String {

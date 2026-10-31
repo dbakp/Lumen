@@ -161,7 +161,7 @@ struct LabObservationEditor: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section(allowSourceChange ? "Source excerpt" : "Mapped source cells") {
+                Section {
                     if observation.source.isValid {
                         Text(observation.source.excerpt).fixedSize(horizontal: false, vertical: true).textSelection(.enabled).accessibilityIdentifier("labSelectedSource")
                         if !observation.source.matches(sourceBody) { Text("This excerpt no longer matches the saved text. Choose its current wording.").foregroundStyle(Theme.secondary) }
@@ -172,12 +172,16 @@ struct LabObservationEditor: View {
                         Button("Include next line") { if let source = LabReview.extending(observation.source, in: sourceBody, forward: true) { observation.source = source } }.disabled(LabReview.extending(observation.source, in: sourceBody, forward: true) == nil).accessibilityIdentifier("labNextSourceLine")
                         Text("Source excerpts can include up to 2,000 characters.").font(.footnote).foregroundStyle(Theme.secondary)
                     }
-                    if !allowSourceChange { Text("These original cell values are arranged by Lumen. Your corrections below do not change them. Keep the original file separately.").font(.footnote).foregroundStyle(Theme.secondary) }
+                    if !allowSourceChange { Text(observation.fhirSource == nil ? "These original cell values are arranged by Lumen. Your corrections below do not change them. Keep the original file separately." : "This original field is kept unchanged. Corrections below apply to the reviewed result.").font(.footnote).foregroundStyle(Theme.secondary) }
+                } header: {
+                    Text(allowSourceChange ? "Source excerpt" : (observation.fhirSource == nil ? "Mapped source cells" : "Original FHIR excerpt")).foregroundStyle(Theme.secondary)
                 }
-                Section("Reported result") {
+                Section {
                     field(.test)
                     field(.result)
                     field(.unit)
+                } header: {
+                    Text(observation.fhirSource == nil ? "Reported result" : "Reviewed result").foregroundStyle(Theme.secondary)
                 }
                 Section {
                     field(.reference)
@@ -345,6 +349,10 @@ struct LabResultsSection: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
             GroupLabel("Lab results")
+            if let origin = document.fhirLabImport, origin.isValid {
+                FHIRReaderLink("Original FHIR import") { FHIRTextReader(title: "Original FHIR import", text: origin.referenceText) }.accessibilityIdentifier("fhirImportReceipt")
+                if document.labReport == nil { Text("No lab transcriptions. The original FHIR import receipt remains with this record.").font(.footnote).foregroundStyle(Theme.secondary).accessibilityIdentifier("fhirSourceOnly") }
+            }
             if let report = document.labReport {
                 if !report.isCurrent(body: document.body) {
                     Text("Source text changed").font(.headline).accessibilityIdentifier("labSavedSourceChanged")
@@ -357,7 +365,14 @@ struct LabResultsSection: View {
                 ForEach(report.observations) { observation in
                     VStack(alignment: .leading, spacing: 10) {
                         Text(observation.test).font(.headline)
-                        Text(observation.result + (observation.unit.isEmpty ? "" : " " + observation.unit)).font(.title2.weight(.bold)).fixedSize(horizontal: false, vertical: true)
+                        if document.fhirLabImport != nil { Text("Reviewed result").font(.footnote).foregroundStyle(Theme.secondary) }
+                        Text(observation.result + (observation.unit.isEmpty ? "" : " " + observation.unit)).font(document.fhirLabImport != nil && observation.fhirSource?.permitsScalar != true ? .headline : .title2.weight(.bold)).fixedSize(horizontal: false, vertical: true)
+                        if let source = observation.fhirSource {
+                            FHIRResultProvenanceView(source: source, identifier: "savedFHIRFields-" + observation.id)
+                            if !source.matchesSource(in: document.body) { Text("Original FHIR fields are historical. They no longer match this record's arranged source text. Numeric interpretation is withheld.").font(.footnote).foregroundStyle(Theme.secondary) }
+                        } else if document.fhirLabImport != nil {
+                            Text("Original FHIR type not retained · kept as wording").font(.footnote).foregroundStyle(Theme.secondary)
+                        }
                         if !observation.reference.isEmpty { Text("Reported reference: " + observation.reference).font(.subheadline).foregroundStyle(Theme.secondary) }
                         if !observation.flag.isEmpty { Text("Reported flag: " + observation.flag).font(.subheadline).foregroundStyle(Theme.secondary) }
                         Text("Collection day: " + (observation.collectedOn ?? "Not recorded")).font(.footnote).foregroundStyle(Theme.secondary)

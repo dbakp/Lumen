@@ -18,6 +18,7 @@ public struct LabObservation: Identifiable, Codable, Sendable, Equatable {
     public var reportedTiming: String? = nil
     public var reportedStatus: String? = nil
     public var importRow: Int? = nil
+    public var fhirSource: FHIRResultSource? = nil
 
     private var textFields: [(label: String, value: String, limit: Int, required: Bool)] {
         [("Test name", test, 200, true), ("Reported result", result, 500, true),
@@ -38,7 +39,8 @@ public struct LabObservation: Identifiable, Codable, Sendable, Equatable {
         LabReport.bounded(id, limit: 100, required: true, multiline: false) &&
         textFields.allSatisfy { LabReport.bounded($0.value, limit: $0.limit, required: $0.required) } &&
         (collectedOn.map { PlanDay.date($0) != nil } ?? true) && source.isValid &&
-        (importRow.map { (1...1024).contains($0) } ?? true)
+        (importRow.map { (1...1024).contains($0) } ?? true) &&
+        (fhirSource.map { $0.isValid && importRow == nil } ?? true)
     }
     public var referenceText: String {
         var fields = ["Test: " + test, "Reported result: " + result, "Reported unit: " + (unit.isEmpty ? "Not recorded" : unit),
@@ -49,6 +51,7 @@ public struct LabObservation: Identifiable, Codable, Sendable, Equatable {
         if let reportedTiming { fields.append("Reported collection wording: " + reportedTiming) }
         if let reportedStatus { fields.append("Reported status: " + reportedStatus) }
         if let importRow { fields.append("Original import data row: " + String(importRow)) }
+        if let fhirSource { fields.append(fhirSource.referenceText) }
         fields.append("Transcribed from saved text characters \(source.start + 1)–\(source.end)")
         return fields.joined(separator: "\n")
     }
@@ -95,7 +98,7 @@ public struct LabReport: Codable, Sendable, Equatable {
     /// A changed source is a valid historical transcription, visibly stale. A
     /// matching body hash with invalid anchors is corrupt and cannot be restored.
     public func isValid(in document: HealthDocument) -> Bool {
-        isValid && (document.labImportOrigin.map { $0.isValid && importedFrom == $0 } ?? true) && document.kind == .record && document.body.count <= RecordReview.maxCharacters && document.body.utf8.count <= RecordRetrieval.maxDocumentBytes &&
+        isValid && document.hasValidFHIRLabImport && (document.labImportOrigin.map { $0.isValid && importedFrom == $0 } ?? true) && document.kind == .record && document.body.count <= RecordReview.maxCharacters && document.body.utf8.count <= RecordRetrieval.maxDocumentBytes &&
         (sourceBodySHA256 != Self.digest(document.body) || sourcesMatch(document.body))
     }
     private func sourcesMatch(_ body: String) -> Bool {

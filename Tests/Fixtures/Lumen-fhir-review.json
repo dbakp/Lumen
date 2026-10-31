@@ -1,0 +1,13 @@
+{
+  "resourceType":"Bundle", "type":"searchset",
+  "link":[{"relation":"next","url":"https://synthetic.example/not-downloaded"}],
+  "entry":[
+    {"fullUrl":"https://synthetic.example/fhir/Patient/a","resource":{"resourceType":"Patient","id":"a","name":[{"text":"Synthetic Person A"}]}},
+    {"fullUrl":"https://synthetic.example/fhir/Observation/quantity","resource":{"resourceType":"Observation","id":"quantity","status":"preliminary","subject":{"reference":"Patient/a"},"code":{"coding":[{"system":"http://loinc.org","code":"718-7","display":"Synthetic hemoglobin"}]},"effectiveDateTime":"2026-10-30T23:40:00-05:00","valueQuantity":{"value":12.00,"unit":"g/dL","system":"http://unitsofmeasure.org","code":"g/dL"},"referenceRange":[{"text":"Original synthetic reference 10–15"}],"method":{"text":"Synthetic assay"},"note":[{"text":"OMITTED-NOTE-CANARY"}]}},
+    {"fullUrl":"https://synthetic.example/fhir/Observation/coded","resource":{"resourceType":"Observation","id":"coded","status":"final","subject":{"reference":"Patient/a"},"code":{"text":"Synthetic coded result"},"valueCodeableConcept":{"text":"12.00","coding":[{"system":"urn:synthetic:result","code":"code-12"}]}}},
+    {"fullUrl":"https://synthetic.example/fhir/Observation/cancelled","resource":{"resourceType":"Observation","id":"cancelled","status":"cancelled","subject":{"reference":"Patient/a"},"code":{"text":"Synthetic cancelled result"},"valueInteger":7}},
+    {"fullUrl":"https://synthetic.example/fhir/Patient/b","resource":{"resourceType":"Patient","id":"b","name":[{"text":"Synthetic Person B"}],"address":[{"text":"OTHER-PERSON-CANARY"}]}},
+    {"fullUrl":"https://synthetic.example/fhir/Observation/other","resource":{"resourceType":"Observation","id":"other","status":"final","subject":{"reference":"Patient/b"},"code":{"text":"Other person's result"},"valueString":"OTHER-RESULT-CANARY"}},
+    {"request":{"method":"DELETE","url":"Observation/old"},"response":{"status":"204"}}
+  ]
+}

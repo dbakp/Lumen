@@ -200,3 +200,36 @@ Full native Round2 finds real ellipses inside the accessibility-size chart dates
 ### Batch 22 · Round 3 completion refinement
 
 Current R9/SmallR2 originals close the complete date ticks, essential-axis ink, plain current/captured decimal wording, edited snapshot distinction, stale unsaved sources, All tests affordance and compact evidence. R3 is42/55, not done: the XXXL completion icon/label cross the capsule contour. Match the established scheduled-plan accessibility treatment: full-size text only, centered multiline label,24pt horizontal and20pt vertical padding. Apply only at accessibility sizes; the passing normal/compact label remains unchanged. BuildR11/ReleaseR6 pass. NativeR10 passes361.227s with actual dark/XXXL review/save/completion/open/exact-source evidence. The same critic inspects all16 current originals in Round4 and closes the overflow:43/55,10/11 lines4+, no concrete defects. No UI source changes after sign-off.
+
+## Batch 23 · reviewed FHIR lab exports · planned native scope
+
+Self-authored continuation brief: carry the daylight-observatory direction into structured clinical-file review. Keep the existing app concept, navigation, icon, typography and teal action roles. No new concept exploration, paywall, store or motion scope. The backend foundation is implemented and logic-checked; these native surfaces are planned and unrendered.
+
+Core action: choose a FHIR JSON export, inspect file coverage and original person references, review selected result fields against exact source tokens, then explicitly save a sharing-off record. People, report context, collection/effective time roles and coded units remain distinct. Missing/ambiguous references remain visible; no remote link is fetched. Complete-value editing, cancellation, acknowledgement reset and duplicate decisions use the established native behaviors.
+
+Planned screens: file choice/progress; resource/result coverage; intended-person choice/review; paged result inclusion and correction; original source/code details; checked saving; saved receipt and relaunch. Draft exact copy and labels alongside result-model integration before rendering. Use actual light/dark/XXXL/compact simulator captures and the same continuing independent critic, at least two rounds. Do not claim the parser as a finished import flow. Follow docs/FHIR_LAB_IMPORT.md for delivery and compatibility gates.
+
+### Batch 23 · native content before layout
+
+Library action **Import FHIR lab results** opens **Bring in a clinical export.** / **Choose a FHIR file**. Supporting copy: **FHIR R4 JSON · up to 2 MB and 1,024 entries/resources. Read on this device. No links are downloaded.** The existing table route stays separate.
+
+Coverage: **Check what came in.** / filename / **N entries · N resources · N result proposals** / resource-type counts / **File coverage details** / **Read original JSON**. Explicit paging, deletion, unresolved result-link and omitted-field counts precede **I checked the file coverage and what will be left out** / **Continue**. Full details and original input use complete paged readers, with no clipped source values.
+
+Person: **Whose results?** / **Choose one observation person group. Names alone do not establish identity.** Each source group has **Read person reference** and a selected checkmark; unknown/unresolved labels remain literal. **I checked this is the intended person** gates **Review results**. Choosing another group clears acknowledgement. No profile is inferred or overwritten.
+
+Review: **Check each result.** / **N included of N results** / **Record title** / paged result previews / **Include result** / **Edit result** / **Original FHIR fields**. Source issues and complete reported status remain visible. **I checked the included results and original FHIR fields** gates **Save**. **Change person** asks before discarding corrections. Saving and reading retain a visible Cancel action; edited dismissal asks **Discard this FHIR import?** Duplicate bytes ask **Save another copy?**
+
+Completion: **Lab results saved.** / actual title / **N reviewed results · assistant sharing off** / **View saved record**. Saved records retain **Original FHIR import**, full selected original-field readers and exact-file identity even after every transcription is removed. Correction text stays separate from historical source fields. No new icon, motion, onboarding, paywall or store scope.
+
+### Batch 23 · first native critique corrections
+
+The same critic inspects all12 normal-phone R4 originals and scores38/55, not done. Follow its five requests before the appearance/compact round: visibly muted disabled primary actions; teal text with native chevrons for navigation and teal edit/back actions; singular-aware entry/result counts; Theme.secondary on the original-versus-reviewed form section headers; explicit **Reviewed result**, **Original result type: Quantity / Coded result / Text / …**, **Kept as wording** where the original form/status does not permit scalar use, and **Original number text: 12.00** beside the corrected value and original-field action. Keep raw FHIR keys in full source details.
+
+Person copy becomes **Choose whose results to review. Check the original person reference; names alone do not establish identity.** The person-reference reader must show actual source reference/Patient ID fields beside the display name. Editor copy becomes **This original field is kept unchanged. Corrections below apply to the reviewed result.** Single-part readers omit duplicated1–1 counters; longer readers name **Part N of N**. No UI source is changed while the critic reads its submitted render.
+
+Round2: the same critic inspects52 current originals, closes all five requests, and scores43/55 with10/11 lines4+. No new definite pixel/copy defect is named. Keep production UI unchanged; supplement settled complete actualXXXL actions/footer and the real full-value editor with keyboard, Select all, Done, long end and correction return atXXXL/compact. SmallR2 passes378.217s with compact editor captures; NativeR7 is running the remaining primary supplement. These are evidence gaps, not a reason to invent a layout defect. Final acceptance remains pending.
+
+
+### Batch 23 · final native acceptance
+
+Round2 visibly closes all five concrete requests at43/55. Its remaining two capture gaps are supplied without a production UI rewrite. SmallR2 passes the complete actual375×667 flow378.217s and R7 passes the actualXXXL supplement494.838s: fully contained person/completion actions, final inclusion, acknowledgement and privacy, actual full-value TextEditor, software keyboard, native selection, Select all/Done, long end marker and exact correction return. Production is unchanged from BuildR11 through R15. The same critic's Round3 is Done at43/55,10/11 applicable lines4+, required lines4, Richness3, with no new definite pixel/copy defect. No app UI change follows acceptance. Earlier failed runs remain failed in the compact evidence; physical-device/VoiceOver/clinical/release gates remain open.
