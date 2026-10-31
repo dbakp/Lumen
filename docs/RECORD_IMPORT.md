@@ -2,6 +2,8 @@
 
 Choose **Library → Add document → Import a record**. Lumen reads the selected file on the device, then opens a page-by-page review. Nothing is saved until you confirm that you checked the text and choose Save. This is reference text, not a diagnosis, interpretation or structured laboratory import. It does not write measurements to Health or Lumen's health logs.
 
+After saving a record, **Add lab results** opens a separate manual transcription/review flow. It can retain literal reported fields with exact saved-text excerpts; reading a file alone does not extract or commit structured results. See [Reviewed lab records](LAB_RECORDS.md).
+
 ## Supported files and bounds
 
 - PDF, including image-only scans; still JPEG, PNG and HEIC/HEIF images; UTF-8 text and Markdown.

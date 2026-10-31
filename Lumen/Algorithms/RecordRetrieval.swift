@@ -110,6 +110,11 @@ public enum RecordRetrieval {
     public static func text(_ document: HealthDocument) -> String? {
         guard document.body.utf8.count <= maxDocumentBytes, document.body.count <= maxDocumentCharacters, document.steps.count <= 1000, document.steps.allSatisfy({ $0.title.utf8.count <= 20_000 }) else { return nil }
         var value = document.body
+        if let report = document.labReport {
+            guard report.isValid(in: document) else { return nil }
+            if report.isCurrent(body: document.body) { value += "\n\n" + report.referenceText }
+            else { value += "\n\nEarlier lab transcriptions are withheld: the saved source text changed after their review." }
+        }
         if document.kind == .plan { value += "\n\nCurrent plan status: " + document.status.rawValue }
         if !document.steps.isEmpty {
             let iso = ISO8601DateFormatter()
@@ -178,7 +183,10 @@ public enum RecordRetrieval {
             var offset = 0, ordinal = 0, page: Int?
             for paragraph in text.components(separatedBy: "\n\n") {
                 defer { offset += paragraph.count + 2 }
-                if doc.extraction != nil && doc.extraction?.laterEditedAt == nil, paragraph.hasPrefix("## Page "), let number = Int(paragraph.dropFirst(8)),
+                // Appended metadata cannot inherit a page or introduce a new
+                // page heading. Boundary offsets also handle trailing newlines.
+                if offset >= doc.body.count { page = nil }
+                if offset < doc.body.count, doc.extraction != nil && doc.extraction?.laterEditedAt == nil, paragraph.hasPrefix("## Page "), let number = Int(paragraph.dropFirst(8)),
                    doc.extraction!.pages.contains(where: { $0.number == number && $0.method != .excluded }) { page = number; continue }
                 let chars = Array(paragraph)
                 var local = 0

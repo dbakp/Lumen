@@ -671,6 +671,120 @@ final class LumenSmokeTests: XCTestCase {
         tab("Assistant")
     }
 
+    func prepareLabLibrary() throws {
+        app.terminate(); app.launchArguments = ["-resetForUITests", "-librarySearchRemoteUITestMode"]; app.launch()
+        finishOnboarding(); openBackupSettings(); try chooseBackupFixture("Lumen-backup-labs")
+        _ = backupPreview(); confirmBackupRestore()
+        app.navigationBars["Backup & restore"].buttons.element(boundBy: 0).tap(); tap("Done"); tab("Library")
+    }
+    func labField(_ identifier: String, value: String, replacing: Bool = false) {
+        let field = app.descendants(matching: .any).matching(identifier: identifier).firstMatch
+        reveal(field)
+        if replacing {
+            field.tap(); XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 5))
+            field.coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap()
+            let button = app.buttons["Select All"].firstMatch, menu = app.menuItems["Select All"].firstMatch
+            if !(button.exists || menu.exists) { field.press(forDuration: 1) }
+            // At XXXL the native edit menu pages its actions. The captured R2
+            // hierarchy exposes Select and Next Page before Select All.
+            for _ in 0..<6 where !(button.exists || menu.exists) {
+                let next = app.buttons["Next Page"].firstMatch
+                guard next.exists && next.isHittable else { break }; next.tap()
+            }
+            let selectAll = button.exists ? button : menu
+            XCTAssertTrue(selectAll.waitForExistence(timeout: 5)); selectAll.tap()
+            field.typeText(XCUIKeyboardKey.delete.rawValue)
+            XCTAssertEqual(field.value as? String, "", "Clear the full selected value before entering the correction")
+        } else { field.tap() }
+        field.typeText(value); XCTAssertEqual(field.value as? String, value)
+        tap("finishLabField")
+    }
+    func openLabRecord(_ title: String) {
+        let document = app.buttons[title].firstMatch; reveal(document); document.tap()
+        let review = app.buttons["reviewSavedLabResults"].firstMatch; reveal(review)
+    }
+    func settleLabFrame(_ element: XCUIElement) {
+        var frame = CGRect.null
+        var stableSince = ProcessInfo.processInfo.systemUptime
+        let stable = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+            guard element.exists else { return false }
+            let next = element.frame, now = ProcessInfo.processInfo.systemUptime
+            if next != frame { frame = next; stableSince = now }
+            return !next.isEmpty && now - stableSince >= 0.5
+        }, object: element)
+        XCTAssertEqual(XCTWaiter.wait(for: [stable], timeout: 8), .completed)
+    }
+    func revealLabExcerpt(_ element: XCUIElement) {
+        XCTAssertTrue(element.waitForExistence(timeout: 5)); settleLabFrame(element)
+        for _ in 0..<12 {
+            let top = app.navigationBars.firstMatch.frame.maxY + 12
+            let bottom = app.tabBars.firstMatch.exists ? app.tabBars.firstMatch.frame.minY - 12 : app.frame.maxY - 50
+            if element.frame.minY >= top && element.frame.maxY <= bottom { return }
+            let upper = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: top + 20))
+            let lower = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: bottom - 20))
+            if element.frame.minY < top { upper.press(forDuration: 0.05, thenDragTo: lower) }
+            else { lower.press(forDuration: 0.05, thenDragTo: upper) }
+            settleLabFrame(element)
+        }
+        snap("lab-excerpt-not-fully-visible"); XCTFail("The fixture's complete source excerpt must be visible for capture")
+    }
+    func testReviewedLabRecords() throws {
+        try prepareLabLibrary(); openLabRecord("Synthetic laboratory report"); snap("430-labs-before-review"); tap("reviewSavedLabResults")
+        XCTAssertFalse(app.buttons["saveLabResults"].isEnabled); snap("431-labs-empty-review"); tap("addLabResult"); tap("chooseLabSource")
+        let search = app.searchFields.firstMatch; XCTAssertTrue(search.waitForExistence(timeout: 5)); search.tap(); search.typeText("Ferritin")
+        let source = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'labSource-' ")).firstMatch
+        XCTAssertTrue(source.waitForExistence(timeout: 5)); settleLabFrame(search)
+        XCTAssertLessThanOrEqual(search.frame.maxY, app.keyboards.firstMatch.frame.minY); snap("432-labs-source-picker"); source.tap()
+        XCTAssertTrue(app.staticTexts["labSelectedSource"].label.contains("Ferritin: <5,0 µg/L"))
+        tap("labNextSourceLine"); XCTAssertTrue(app.staticTexts["labSelectedSource"].label.contains("Specimen: Serum")); snap("447-labs-wrapped-source")
+        labField("labTestName", value: "Ferritin"); labField("labReportedResult", value: "<5,0"); labField("labUnit", value: "µg/L")
+        labField("labReference", value: "15–150"); labField("labFlag", value: "L"); snap("433-labs-entered-result")
+        tap("finishLabResult"); XCTAssertFalse(app.buttons["saveLabResults"].isEnabled)
+        let reviewSource = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'labReviewSource-' ")).firstMatch; reveal(reviewSource); reviewSource.tap()
+        let reviewText = app.staticTexts.matching(NSPredicate(format: "identifier BEGINSWITH 'labReviewSource-' AND label BEGINSWITH 'Ferritin:' ")).firstMatch; revealLabExcerpt(reviewText); XCTAssertTrue(reviewText.label.contains("Specimen: Serum")); snap("448-labs-source-before-save")
+        nativeSwitch("acknowledgeLabResults", enabled: true); XCTAssertTrue(app.buttons["saveLabResults"].isEnabled); snap("434-labs-review-ready"); tap("saveLabResults")
+        XCTAssertTrue(app.staticTexts["<5,0 µg/L"].waitForExistence(timeout: 5)); snap("435-labs-saved")
+        let excerpt = app.buttons["Saved source excerpt"].firstMatch; reveal(excerpt); excerpt.tap()
+        let savedSource = app.staticTexts.matching(NSPredicate(format: "identifier BEGINSWITH 'labSavedSourceText-' ")).firstMatch; revealLabExcerpt(savedSource)
+        XCTAssertTrue(savedSource.label.contains("Ferritin: <5,0 µg/L; reported reference")); snap("436-labs-exact-source")
+        app.terminate(); app.launchArguments = ["-librarySearchRemoteUITestMode"]; app.launch(); tab("Library"); openLabRecord("Synthetic laboratory report")
+        XCTAssertTrue(app.staticTexts["<5,0 µg/L"].exists); tap("reviewSavedLabResults"); nativeSwitch("acknowledgeLabResults", enabled: true)
+        let edit = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'editLabResult-' ")).firstMatch; reveal(edit); edit.tap()
+        labField("labReportedResult", value: "<4,0", replacing: true); tap("finishLabResult")
+        XCTAssertEqual(app.switches["acknowledgeLabResults"].value as? String, "0"); XCTAssertFalse(app.buttons["saveLabResults"].isEnabled); snap("437-labs-edit-resets-review")
+        tap("cancelLabReview"); XCTAssertTrue(app.alerts["Discard your lab review?"].waitForExistence(timeout: 5)); tap("Keep reviewing")
+        nativeSwitch("acknowledgeLabResults", enabled: true); tap("saveLabResults"); XCTAssertTrue(app.staticTexts["<4,0 µg/L"].waitForExistence(timeout: 5))
+        app.terminate(); app.launchArguments = ["-librarySearchRemoteUITestMode"]; app.launch(); tab("Library"); openLabRecord("Synthetic laboratory report")
+        XCTAssertTrue(app.staticTexts["<4,0 µg/L"].exists)
+        tap("Document actions"); tap("Edit")
+        let body = app.textViews.firstMatch; reveal(body); body.tap(); body.typeKey("a", modifierFlags: .command); body.typeText("Corrected synthetic source. This version replaces the earlier reported values.")
+        tap("Save")
+        let changed = app.staticTexts["labSavedSourceChanged"].firstMatch; reveal(changed); XCTAssertTrue(changed.exists); snap("438-labs-source-changed")
+        tap("reviewSavedLabResults")
+        let remove = app.buttons["Remove Ferritin from draft"].firstMatch; reveal(remove); remove.tap(); tap("Remove result")
+        nativeSwitch("acknowledgeLabResults", enabled: true); XCTAssertTrue(app.buttons["saveLabResults"].isEnabled); snap("439-labs-remove-preserves-record"); tap("saveLabResults")
+        XCTAssertTrue(app.buttons["Add lab results"].waitForExistence(timeout: 5)); XCTAssertFalse(app.staticTexts["<4,0 µg/L"].exists)
+    }
+    func testLabRecordPresentation() throws {
+        try prepareLabLibrary(); openLabRecord("Saved synthetic lab results")
+        app.terminate(); app.launchArguments = ["-librarySearchRemoteUITestMode", "-lumen.appearance", "dark"]; app.launch(); tab("Library"); openLabRecord("Saved synthetic lab results"); snap("440-labs-dark-saved")
+        let excerpt = app.buttons["Saved source excerpt"].firstMatch; reveal(excerpt); excerpt.tap()
+        let darkSource = app.staticTexts.matching(NSPredicate(format: "identifier BEGINSWITH 'labSavedSourceText-' ")).firstMatch; revealLabExcerpt(darkSource); snap("441-labs-dark-source")
+        app.terminate(); app.launchArguments = ["-librarySearchRemoteUITestMode", "-lumen.appearance", "light", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]; app.launch(); tab("Library"); openLabRecord("Saved synthetic lab results"); snap("442-labs-large-saved")
+        let largeExcerpt = app.buttons.matching(NSPredicate(format: "label == %@", "Saved source excerpt")).element(boundBy: 1); reveal(largeExcerpt); largeExcerpt.tap()
+        let largeSource = app.staticTexts.matching(NSPredicate(format: "identifier BEGINSWITH 'labSavedSourceText-' ")).firstMatch; revealLabExcerpt(largeSource); snap("450-labs-large-exact-source")
+        let review = app.buttons["reviewSavedLabResults"].firstMatch; reveal(review); review.tap(); settleLabFrame(app.buttons["addLabResult"].firstMatch); snap("443-labs-large-review")
+        let checked = app.switches["acknowledgeLabResults"].firstMatch; reveal(checked); snap("444-labs-large-acknowledgement")
+        nativeSwitch("acknowledgeLabResults", enabled: true); XCTAssertTrue(app.buttons["saveLabResults"].isEnabled)
+        let edit = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'editLabResult-' ")).firstMatch; reveal(edit); edit.tap()
+        XCTAssertTrue(app.buttons["finishLabResult"].waitForExistence(timeout: 5)); snap("445-labs-large-editor")
+        let unit = app.descendants(matching: .any).matching(identifier: "labUnit").firstMatch; reveal(unit); snap("446-labs-large-result-fields")
+        labField("labReportedResult", value: "<5,0\nSynthetic qualifier retained.", replacing: true)
+        let result = app.descendants(matching: .any).matching(identifier: "labReportedResult").firstMatch; reveal(result); result.tap()
+        XCTAssertTrue(app.keyboards.firstMatch.exists); settleLabFrame(result); snap("449-labs-large-editing-keyboard"); tap("finishLabField")
+        let day = app.switches["labHasCollectionDay"].firstMatch; reveal(day); snap("451-labs-large-collection-day")
+    }
+
     func askLibrary(_ question: String, replies: Int = 1) {
         let input = app.textFields["coachInput"].firstMatch
         let field = input.exists ? input : app.textViews["coachInput"].firstMatch

@@ -168,7 +168,7 @@ struct BackupArchive: Codable, Sendable {
               unique(snapshot.conversations), unique(snapshot.symptoms), unique(snapshot.checkIns), unique(snapshot.documents),
               unique(snapshot.importedDays), unique(snapshot.imports), unique(snapshot.habits) else { throw BackupError.invalid }
         guard snapshot.conversations.allSatisfy({ unique($0.messages) && $0.messages.allSatisfy { ($0.recordContext?.isValid ?? true) && ($0.role == .coach || $0.recordContext == nil) } }),
-              snapshot.documents.allSatisfy({ unique($0.steps) && $0.steps.allSatisfy({ $0.plannedDay.map { PlanDay.date($0) != nil } ?? true }) && ($0.extraction?.isValid ?? true) && ($0.recordContext?.isValid ?? true) }) else { throw BackupError.invalid }
+              snapshot.documents.allSatisfy({ unique($0.steps) && $0.steps.allSatisfy({ $0.plannedDay.map { PlanDay.date($0) != nil } ?? true }) && ($0.extraction?.isValid ?? true) && ($0.recordContext?.isValid ?? true) && ($0.labReport?.isValid(in: $0) ?? true) }) else { throw BackupError.invalid }
         guard snapshot.photos.allSatisfy({ safePhotoID($0.key) && !$0.value.isEmpty && $0.value.count <= maxPhotoBytes }),
               snapshot.meals.allSatisfy({ $0.photoID.map { safePhotoID($0) && (availablePhotoIDs?.contains($0) ?? (snapshot.photos[$0] != nil)) } ?? true }) else { throw BackupError.invalid }
         guard snapshot.symptoms.allSatisfy({ (1...10).contains($0.severity) }),

@@ -4,6 +4,9 @@ import Darwin
 @main struct ImportTests {
     static func main() async throws {
         setbuf(stdout, nil)
+        if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--lab-ui-fixtures" {
+            try LabReportChecks.fixtures(URL(fileURLWithPath: CommandLine.arguments[2])); return
+        }
         if CommandLine.arguments.count == 5, CommandLine.arguments[1] == "--semantic-benchmark" {
             try await MiniLMChecks.benchmark(source: URL(fileURLWithPath: CommandLine.arguments[2]), compiled: URL(fileURLWithPath: CommandLine.arguments[3]), output: URL(fileURLWithPath: CommandLine.arguments[4])); return
         }
@@ -32,6 +35,7 @@ import Darwin
         }
         try VoiceDraftChecks.run()
         try ScheduledPlanChecks.run()
+        try await LabReportChecks.run()
         try MiniLMChecks.run()
         try await MiniLMChecks.cacheChecks()
         let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)

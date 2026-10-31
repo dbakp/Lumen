@@ -92,6 +92,7 @@ struct DocumentDetailView: View {
     @State private var editing: HealthDocument?
     @State private var confirmDelete = false
     @State private var mutationError: String?
+    @State private var reviewingLabs = false
     var document: HealthDocument? { companion.documents.first { $0.id == documentID } }
     var body: some View {
         ScrollView {
@@ -110,6 +111,7 @@ struct DocumentDetailView: View {
                         }
                     }
                     if doc.kind == .plan { Text(doc.status.label).font(.subheadline.weight(.semibold)).foregroundStyle(Theme.accent) }
+                    if doc.kind == .record { LabResultsSection(document: doc) { reviewingLabs = true } }
                     if doc.kind != .plan || doc.steps.isEmpty { DocumentBodyView(text: doc.body) }
                     if doc.kind == .plan && !doc.steps.isEmpty { GroupLabel("Your plan steps") }
                     ForEach(doc.steps) { step in
@@ -149,6 +151,7 @@ struct DocumentDetailView: View {
                 }
             }
             .sheet(item: $editing) { DocumentEditor(document: $0) }
+            .sheet(isPresented: $reviewingLabs) { LabReviewSheet(documentID: documentID) }
             .alert("Couldn't update document", isPresented: Binding(get: { mutationError != nil }, set: { if !$0 { mutationError = nil } })) { Button("OK") { mutationError = nil } } message: { Text(mutationError ?? "") }
             .alert("Delete this document?", isPresented: $confirmDelete) {
                 Button("Keep document", role: .cancel) {}

@@ -52,8 +52,9 @@ public struct HealthDocument: Identifiable, Codable, Sendable {
     public var includeInAssistant = false
     public var extraction: RecordExtraction? = nil
     public var recordContext: RecordReplyContext? = nil
+    public var labReport: LabReport? = nil
     public var markdown: String {
-        "# \(title)\n\n\(body)\n\n" + steps.map { "- [\($0.isDone ? "x" : " ")] \($0.title)" + ($0.calendarDate.map { " (due " + $0.formatted(date: .abbreviated, time: .omitted) + ")" } ?? "") }.joined(separator: "\n") + "\n\nSource: \(source)\nUpdated: \(updatedAt.formatted())" + (recordContext?.markdownReferences ?? "")
+        "# \(title)\n\n\(body)\n\n" + steps.map { "- [\($0.isDone ? "x" : " ")] \($0.title)" + ($0.calendarDate.map { " (due " + $0.formatted(date: .abbreviated, time: .omitted) + ")" } ?? "") }.joined(separator: "\n") + "\n\nSource: \(source)\nUpdated: \(updatedAt.formatted())" + (recordContext?.markdownReferences ?? "") + (labReport?.markdown(body: body) ?? "")
     }
 }
 

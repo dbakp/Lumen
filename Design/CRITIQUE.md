@@ -446,3 +446,7 @@ The source map retains the exact boundaries: R11 normal delivery and R12 calenda
 ## Batch 19 · related-topic search · 31 October 2026
 
 The continuing App Designer Pro critic accepts R2 and supplemental cache-state/XXXL/final four-reference evidence at10/11 applicable lines at4, Richness3. All quoted copy/affordance/layout requests are closed; unknown source selection remains unrecorded and no confidence score is invented. Exact original pixels, source boundaries, earlier failures and the accepted scorecards are in [the native review](native/semantic-search/CRITIQUE.md). Passing simulator/visual results do not establish clinical relevance, live-provider quality, VoiceOver or physical-device performance.
+
+## Batch 20 · reviewed lab transcriptions
+
+The same continuing critic inspects13 original R1 frames, then22 settled NativeR3 originals. R1 is not done (9/11 lines4+, Finish3); R2 is done (10/11 lines4+, Richness3, Finish4), all five requests closed and no remaining concrete defects. Source comparison appears before acknowledgement; deletion/footers/search/large controls are refined. Exact glyphs, failed test history and the limits of stills versus behavioral checks remain in `native/labs/CRITIQUE.md` and `verification.json`. No app UI change follows sign-off.
