@@ -4,8 +4,12 @@ import Darwin
 @main struct ImportTests {
     static func main() async throws {
         setbuf(stdout, nil)
-        if CommandLine.arguments.count == 4, CommandLine.arguments[1] == "--retrieval-corpus-prepare" {
-            do { try RetrievalCorpusProbe.prepare(input: URL(fileURLWithPath: CommandLine.arguments[2]), output: URL(fileURLWithPath: CommandLine.arguments[3])); return }
+        if CommandLine.arguments.count == 4, CommandLine.arguments[1] == "--retrieval-challenge-keywords" {
+            do { try RetrievalCorpusProbe.keywordChallenge(input: URL(fileURLWithPath: CommandLine.arguments[2]), output: URL(fileURLWithPath: CommandLine.arguments[3])); return }
+            catch { FileHandle.standardError.write(Data(("Keyword challenge failed: \(error)\n").utf8)); exit(1) }
+        }
+        if (4...5).contains(CommandLine.arguments.count), CommandLine.arguments[1] == "--retrieval-corpus-prepare" {
+            do { try RetrievalCorpusProbe.prepare(input: URL(fileURLWithPath: CommandLine.arguments[2]), output: URL(fileURLWithPath: CommandLine.arguments[3]), sourceLabel: CommandLine.arguments.count == 5 ? CommandLine.arguments[4] : "BEIR NFCorpus public research"); return }
             catch { FileHandle.standardError.write(Data(("Corpus preparation failed: \(error)\n").utf8)); exit(1) }
         }
         if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--lab-normalization-ui-fixtures" {

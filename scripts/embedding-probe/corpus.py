@@ -46,8 +46,12 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("source", type=Path)
     parser.add_argument("output", type=Path)
+    parser.add_argument("--query-instruction", action="store_true", help="Only the separately predeclared MedEmbed/BGE dev experiment")
     args = parser.parse_args()
     qrels, query_bytes, _ = load_dev(args.source)
+    if args.query_instruction:
+        from query_variant import instruction_queries
+        query_bytes, _ = instruction_queries(query_bytes)
     args.output.mkdir(exist_ok=False)
     (args.output / "dev-queries.jsonl").write_bytes(query_bytes)
     (args.output / "dev-qrels.json").write_text(json.dumps(qrels, sort_keys=True))

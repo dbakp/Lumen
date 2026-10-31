@@ -19,6 +19,18 @@ The initial encoder computed incorrect relative artifact paths through macOS `/t
 
 Raw-query development results miss the predeclared model-promotion gate; no model/cutoff is selected. See `Design/native/retrieval-quality/dev-decision.json`.
 
+## Separately declared instruction and unsupported-query trials
+
+The original raw-query protocol/result remain unchanged. `instruction-protocol.json` was committed before the one fixed BGE query-prefix experiment; `instruction-dev-decision.json` was recorded before the separately committed `challenge-protocol.json`/synthetic labels. A ranking improvement alone does not select an app model or a direct-answer source policy.
+
+- Add `--query-instruction` to both `corpus.py` and `evaluate.py` for only the separately declared MedEmbed trial. It prepends the exact fixed instruction to every complete dev query, checks the original protocol/decision hashes and reuses the exact frozen candidate corpus matrix. No other prefix is accepted. Pass the resulting dev-query file to the unchanged native encoder; do not prefix passages or re-encode the corpus.
+- `python variant_checks.py ENCODER MODEL VOCAB WORK OUTCOME.json` checks literal Unicode/control/negation/number/identifier/whitespace preservation, rejection of undeclared prefixes/changed original protocols and explicit native rejection of an overlong prefixed query. Temporary mirrors/controls are removed after the checks.
+- `python challenge.py prepare WORK/challenge` writes only the synthetic fixture's corpus and raw/instructed queries. Run the production preparer with `--retrieval-corpus-prepare WORK/challenge/corpus.jsonl WORK/challenge/prepared 'Synthetic retrieval development challenge; no personal data'`; the optional final source label keeps synthetic provenance distinct from NFCorpus.
+- Encode `prepared/passages.jsonl` separately to `challenge/baseline-corpus` and `challenge/candidate-corpus`, and the respective `baseline-queries.jsonl`/`candidate-queries.jsonl` to `baseline-queries`/`candidate-queries` directories, with the pinned matching model/vocabulary. `python challenge.py evaluate WORK/challenge` checks both artifacts against the original native model receipts and reports every fixed cutoff, all supported/unsupported cases and complete document rankings. These are synthetic development labels for direct source support, not clinical truth.
+- `WORK/LogicBuild/debug/LumenLogicChecks --retrieval-challenge-keywords Tests/Fixtures/RetrievalChallenge.json OUTCOME.json` uses actual production keyword selection, source validity/currentness, sharing withdrawal and literal local replies. This does not reproduce semantic fusion or a live provider.
+
+The instruction trial passes the supplementary dev ranking gate. Neither model meets the small challenge's direct-support profile at any fixed cutoff. Actual keyword lookup also returns neighboring IDs for absent sample/invoice IDs. `instruction-challenge-decision.json` preserves these distinct findings; app/source policy and held-out test scoring remain open.
+
 Use Python3.12, Xcode and one task-owned workspace. Install dependencies into that workspace with `pip install --no-cache-dir -r scripts/embedding-probe/requirements.txt`; do not modify the shared bundled runtime. The complete measured environment is retained in `Design/native/retrieval-quality/evaluation-environment.txt`.
 
 ## Candidate parity workflow

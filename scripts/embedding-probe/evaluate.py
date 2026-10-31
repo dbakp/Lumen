@@ -69,9 +69,13 @@ def load_matrix(folder, kind, expected_sha, expected_rows):
     return report, matrix / norms[:, None]
 
 
-def evaluate(source, prepared, corpus_folder, query_folder):
+def evaluate(source, prepared, corpus_folder, query_folder, query_instruction=False):
     controls = metric_controls()
     qrels, query_bytes, corpus_ids = load_dev(source)
+    variant = None
+    if query_instruction:
+        from query_variant import instruction_queries
+        query_bytes, variant = instruction_queries(query_bytes)
     input_bytes = (prepared / "passages.jsonl").read_bytes()
     preparation = json.loads((prepared / "preparation.json").read_text())
     canonical = json.loads((Path(__file__).resolve().parents[2] / "Design/native/retrieval-quality/nfcorpus-source.json").read_text())
@@ -84,6 +88,8 @@ def evaluate(source, prepared, corpus_folder, query_folder):
     queries = [json.loads(line) for line in query_bytes.decode().splitlines()]
     cr, vectors = load_matrix(corpus_folder, "passages", sha(input_bytes), inputs)
     qr, query_vectors = load_matrix(query_folder, "queries", sha(query_bytes), queries)
+    if variant and cr["matrixSHA256"] != variant["corpusVectorsSHA256"]:
+        raise ValueError("Instruction experiment must reuse the frozen candidate corpus matrix")
     if cr["compiledModelFiles"] != qr["compiledModelFiles"] or cr["vocabularySHA256"] != qr["vocabularySHA256"]:
         raise ValueError("Corpus/query models differ")
     documents = sorted(corpus_ids)
@@ -125,16 +131,17 @@ def evaluate(source, prepared, corpus_folder, query_folder):
             (relevant_scores if qrels[query].get(doc, 0) > 0 else unjudged_scores).append(score)
     def quantiles(values):
         return {str(q): float(np.quantile(values, q)) for q in [0, .1, .5, .9, 1]} if values else {}
-    return {"version": 1, "split": "dev", "scope": "Offline document-max over all production-prepared windows; not app fusion, clinical validity or live budget", "testScoresInspected": False, "protocolSHA256": sha(protocol_bytes), "preparation": preparation, "sourceReports": {"corpus": sha((corpus_folder / "complete.json").read_bytes()), "queries": sha((query_folder / "complete.json").read_bytes())}, "native": {"corpusSeconds": cr["seconds"], "querySeconds": qr["seconds"], "vectors": cr["vectors"], "queryStatuses": {state: sum(value == state for value in query_status.values()) for state in sorted(set(query_status.values()))}, "compiledModelFiles": cr["compiledModelFiles"]}, "metricControls": controls, "grid": summaries, "top4ScoreQuantiles": {"judgedRelevant": quantiles(relevant_scores), "otherOrUnjudged": quantiles(unjudged_scores)}, "cases": cases}
+    return {"version": 1, "split": "dev", "scope": "Offline document-max over all production-prepared windows; not app fusion, clinical validity or live budget", "queryVariant": variant, "testScoresInspected": False, "protocolSHA256": sha(protocol_bytes), "preparation": preparation, "sourceReports": {"corpus": sha((corpus_folder / "complete.json").read_bytes()), "queries": sha((query_folder / "complete.json").read_bytes())}, "native": {"corpusSeconds": cr["seconds"], "querySeconds": qr["seconds"], "vectors": cr["vectors"], "queryStatuses": {state: sum(value == state for value in query_status.values()) for state in sorted(set(query_status.values()))}, "compiledModelFiles": cr["compiledModelFiles"]}, "metricControls": controls, "grid": summaries, "top4ScoreQuantiles": {"judgedRelevant": quantiles(relevant_scores), "otherOrUnjudged": quantiles(unjudged_scores)}, "cases": cases}
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ["source", "prepared", "corpus", "queries", "output"]:
         parser.add_argument(name, type=Path)
+    parser.add_argument("--query-instruction", action="store_true")
     args = parser.parse_args()
     if args.output.exists():
         raise ValueError("Output exists")
-    outcome = evaluate(args.source, args.prepared, args.corpus, args.queries)
+    outcome = evaluate(args.source, args.prepared, args.corpus, args.queries, args.query_instruction)
     args.output.write_text(json.dumps(outcome, indent=2, sort_keys=True) + "\n")
     print(json.dumps({"grid": outcome["grid"], "native": outcome["native"], "metricControls": outcome["metricControls"]}))

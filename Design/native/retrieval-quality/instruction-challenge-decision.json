@@ -1,0 +1,150 @@
+{
+  "actualKeywordLookup": {
+    "all17SupportedSharingWithdrawalsChecked": true,
+    "all32ContextValidityAndCurrentSourcesChecked": true,
+    "missingIdentifierExamples": [
+      {
+        "queryID": "u-test-id",
+        "selectedDocumentIDs": [
+          "positive-test",
+          "negative-test",
+          "iron",
+          "blood"
+        ]
+      },
+      {
+        "queryID": "u-invoice-id",
+        "selectedDocumentIDs": [
+          "invoice-a",
+          "invoice-b"
+        ]
+      }
+    ],
+    "scope": "Actual keyword selection/local literal reply only; no native UI/provider/semantic fusion claim",
+    "supportedInFour": 17,
+    "unsupportedWithSelectedText": 9
+  },
+  "challenge": {
+    "anyCutoffPassesDirectSupportProfile": false,
+    "bothModelsSupportedFirstRankAtNoCutoff": 17,
+    "candidateAt075": {
+      "cutoff": 0.75,
+      "groups": {
+        "exact-identifier": {
+          "correctFirst": 4,
+          "queries": 4
+        },
+        "missing-identifier": {
+          "queries": 2,
+          "withAnyTopic": 2
+        },
+        "negation-date": {
+          "correctFirst": 2,
+          "queries": 2
+        },
+        "supported-health": {
+          "correctFirst": 7,
+          "queries": 8
+        },
+        "supported-non-health": {
+          "correctFirst": 3,
+          "queries": 3
+        },
+        "unsupported-health": {
+          "queries": 8,
+          "withAnyTopic": 0
+        },
+        "unsupported-non-health": {
+          "queries": 5,
+          "withAnyTopic": 0
+        }
+      },
+      "passesDirectSupportProfile": false,
+      "supportedHit1Count": 16,
+      "supportedHit4Count": 16,
+      "supportedQueries": 17,
+      "unsupportedQueries": 15,
+      "unsupportedWithAnyTopic": 2
+    },
+    "candidateAt085": {
+      "cutoff": 0.85,
+      "groups": {
+        "exact-identifier": {
+          "correctFirst": 2,
+          "queries": 4
+        },
+        "missing-identifier": {
+          "queries": 2,
+          "withAnyTopic": 0
+        },
+        "negation-date": {
+          "correctFirst": 0,
+          "queries": 2
+        },
+        "supported-health": {
+          "correctFirst": 1,
+          "queries": 8
+        },
+        "supported-non-health": {
+          "correctFirst": 2,
+          "queries": 3
+        },
+        "unsupported-health": {
+          "queries": 8,
+          "withAnyTopic": 0
+        },
+        "unsupported-non-health": {
+          "queries": 5,
+          "withAnyTopic": 0
+        }
+      },
+      "passesDirectSupportProfile": false,
+      "supportedHit1Count": 5,
+      "supportedHit4Count": 5,
+      "supportedQueries": 17,
+      "unsupportedQueries": 15,
+      "unsupportedWithAnyTopic": 0
+    },
+    "documents": 17,
+    "interpretation": "Topic-related selection for an unsupported question does not prove a clinical error; a cosine threshold cannot establish direct source support on this challenge.",
+    "queries": 32,
+    "supported": 17,
+    "unsupported": 15
+  },
+  "challengeProtocolCommit": "2c14538",
+  "deltaVersusRawBaseline": {
+    "P_4": 0.030092592592592615,
+    "map_cut_100": 0.012903577361044444,
+    "ndcg_cut_10": 0.025617784522249387,
+    "recall_100": 0.017651276631247603,
+    "recall_4": 0.00817672519812368
+  },
+  "devNoCutoff": {
+    "P_4": 0.35030864197530864,
+    "cutoff": null,
+    "denominatorQueries": 324,
+    "map_cut_100": 0.1458133531592311,
+    "ndcg_cut_10": 0.3272839424517075,
+    "queriesWithResults": 324,
+    "recall_100": 0.3212429723931902,
+    "recall_4": 0.09530430593615835
+  },
+  "heldOutTestRetrievalScoresComputed": false,
+  "instructionProtocolCommit": "0a8e0b2",
+  "next": "Prioritize literal identifier lookup protection and distinguish keyword/topic matches from direct-answer support before any model integration. Freeze any final model/query/selection policy before held-out test scoring. Preserve complete NFCorpus matrices and source inputs.",
+  "pairedNDCGQueries": {
+    "equal": 109,
+    "improved": 127,
+    "worsened": 88
+  },
+  "recordedAtUTC": "2026-10-31T19:10:24.749107+00:00",
+  "status": "Instruction candidate passes dev ranking only; no selected app model/cutoff/query policy",
+  "verification": {
+    "logicChecksPassed": 1294,
+    "logicLogSHA256": "5a643dc611f6c61eba0be6599bd81815658e738aca841e6dc462110c986a49fe",
+    "originalBenchmarkProtocolSHA256": "82df2f8b1d205db3c0b2c6c1361e2f7fd4e8df517217766038266ef6fbaf3710",
+    "productionAppSourceUnchangedFrom": "f190b1d314299727f97788fb73665c6966f084ab",
+    "rawBaselineRegression": "All324 original query rankings, per-query metrics and fixed grid unchanged",
+    "variantControls": "instruction-controls.json"
+  }
+}
