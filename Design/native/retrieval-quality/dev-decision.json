@@ -1,0 +1,84 @@
+{
+  "absoluteDelta": {
+    "P_4": 0.013888888888888895,
+    "map_cut_100": 0.00802529396863616,
+    "ndcg_cut_10": 0.015214334348194136,
+    "recall_100": 0.013937121973457256,
+    "recall_4": 0.0027069539319126285
+  },
+  "appCommit": "f190b1d314299727f97788fb73665c6966f084ab",
+  "appUnchanged": true,
+  "baselineNoCutoff": {
+    "P_4": 0.32021604938271603,
+    "cutoff": null,
+    "denominatorQueries": 324,
+    "map_cut_100": 0.13290977579818666,
+    "ndcg_cut_10": 0.3016661579294581,
+    "queriesWithResults": 324,
+    "recall_100": 0.3035916957619426,
+    "recall_4": 0.08712758073803467
+  },
+  "candidateNoCutoff": {
+    "P_4": 0.3341049382716049,
+    "cutoff": null,
+    "denominatorQueries": 324,
+    "map_cut_100": 0.14093506976682282,
+    "ndcg_cut_10": 0.31688049227765225,
+    "queriesWithResults": 324,
+    "recall_100": 0.31752881773539987,
+    "recall_4": 0.0898345346699473
+  },
+  "gate": {
+    "exceptionTaken": false,
+    "maximumPrecision4Loss": 0.02,
+    "minimumNDCGImprovement": 0.02,
+    "observedNDCGImprovement": 0.015214334348194136,
+    "observedPrecision4Improvement": 0.013888888888888895,
+    "passed": false
+  },
+  "heldOutTestScoresComputed": false,
+  "logicRegression": {
+    "allPassed": true,
+    "logSHA256": "5a643dc611f6c61eba0be6599bd81815658e738aca841e6dc462110c986a49fe",
+    "passedChecks": 1294
+  },
+  "misses": {
+    "baseline": {
+      "queriesWithoutJudgedRelevantTop100": 46,
+      "queriesWithoutJudgedRelevantTop4": 129
+    },
+    "candidate": {
+      "queriesWithoutJudgedRelevantTop100": 40,
+      "queriesWithoutJudgedRelevantTop4": 123
+    }
+  },
+  "modelOrAppCutoffSelected": false,
+  "next": "Declare any supplementary development hypothesis before its scores; no-match/non-health/identifiers and actual app budget/fusion remain independent gates. Do not inspect test scores to rescue this missed gate.",
+  "originalProtocolSHA256": "82df2f8b1d205db3c0b2c6c1361e2f7fd4e8df517217766038266ef6fbaf3710",
+  "pairedNDCGQueries": {
+    "equal": 112,
+    "improved": 122,
+    "worsened": 90
+  },
+  "recordedAtUTC": "2026-10-31T18:49:52.092116+00:00",
+  "scope": "324 dev queries, 3633 complete public documents, 8239 production-prepared passages and 9166 windows per model. Offline document-max; not keyword fusion or clinical/app budget proof. Upstream training overlap unknown.",
+  "status": "Do not promote raw-query MedEmbed candidate; prespecified improvement gate missed",
+  "toolFailuresAndRepairs": [
+    {
+      "failure": "Initial corpus command used the wrong baseline vocabulary location",
+      "logSHA256": "a15b9785282d5a8bca8c510c05f1c1aab2232f7c0a5ef9e29b08b6e4e3b6fcb5",
+      "result": "Missing-file error, exit1 before output directory/model load; corrected to tokenizer/vocab.txt after terminal failure"
+    },
+    {
+      "failure": "Initial native receipt relative paths mishandled /tmp filesystem aliases",
+      "firstFailedControlLogSHA256": "8eb60cc957529e6c20746bd05c235fe927907eccd6dca7a2ca48daa95d580a10",
+      "repairedReceipts": "corpus-native-receipts.json",
+      "result": "All file sizes/hashes matched exactly. normalize_receipt.py corrected paths only and retained original receipt hashes; matrix/input/rows/timings unchanged. Native enumerator now obtains relative paths directly; rerun control verifies exact paths. First symlink-resolution-only fix failed the path control."
+    },
+    {
+      "failure": "Initial ranking preparation used ascending document-ID ties while trec_eval sorts descending",
+      "firstReportSHA256": "eb93fe4c04b606076934bb5ecd6941936495379d2e53208975df94c55e393f6f",
+      "result": "Metrics recomputed from unchanged matrices with descending document-ID ties; all aggregate baseline metrics were unchanged. Initial report remains only a historical hash."
+    }
+  ]
+}

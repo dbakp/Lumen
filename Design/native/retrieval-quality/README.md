@@ -20,7 +20,7 @@ The original R2 reference and R3 export producers are retained and hash-match th
 
 ## Resume the broader quality work
 
-The official BEIR NFCorpus archive is downloaded and matches its published MD5. `nfcorpus-source.json` records the archive/file hashes without redistributing text. `retrieval-protocol.json` is fixed before retrieval scores are inspected: calibrate on dev, record model/policy candidates before locally held-out test scoring, retain no-cutoff rankings and all misses/unsupported inputs, and separately check no-match/non-health/identifier cases and actual app fusion. Upstream training overlap is unknown. No dev/test retrieval score or new app cutoff has yet been computed or selected.
+The official BEIR NFCorpus archive is downloaded and matches its published MD5. `nfcorpus-source.json` records the archive/file hashes without redistributing text. `retrieval-protocol.json` is fixed before retrieval scores are inspected: calibrate on dev, record model/policy candidates before locally held-out test scoring, retain no-cutoff rankings and all misses/unsupported inputs, and separately check no-match/non-health/identifier cases and actual app fusion. Upstream training overlap is unknown. Development retrieval scores are now recorded below. Test retrieval scores remain uncomputed and no app cutoff/model is selected.
 
 Current retained inputs are:
 
@@ -31,8 +31,28 @@ Current retained inputs are:
 - `/tmp/LumenBatch26ModelEnv`:task-only Python environment needed for the next evaluation; no pip download cache was created.
 - `/tmp/LumenBatch26NFCorpus`:verified archive/extracted public inputs; keep them outside Git.
 
-The next safe action is a complete production-prepared corpus index and offline native corpus/dev-query encoding for both models, then metric/calibration analysis under the frozen protocol. Do not rerun successful79-case checks without a new source/artifact concern. Selected-model hosting, explicit upgrade/legacy/storage behavior, app/native/Release validation and any continuing UI critique remain future gates. No AppStore/clinical/physical-device claim follows.
+The complete production-prepared corpus and native corpus/dev encoding are now verified; see the dev result below. The next safe action is to declare a supplementary development hypothesis before its scores, then check no-match/non-health/identifiers and actual app behavior before any promotion. Do not inspect test scores to rescue the missed gate. Do not rerun successful79-case checks without a new source/artifact concern. Selected-model hosting, explicit upgrade/legacy/storage behavior, app/native/Release validation and any continuing UI critique remain future gates. No AppStore/clinical/physical-device claim follows.
 
 ## Storage
 
 About28GB was available at the last check. The original45MB MiniLM source and new133MB FP32 candidate are current inputs; no duplicate external model download is needed. The task-only Python environment was installed without pip cache. Keep source/provenance, useful compact outcomes, current model inputs and supplied skill. After required evidence reaches GitHub and all workers stop, remove obsolete graphs/raw vectors/build/cache output only within verified task-owned locations. Preserve other projects/processes, shared runtimes and global caches. No Batch26 cleanup has occurred yet.
+
+## Complete development evaluation · raw-query candidate not promoted
+
+All3,633 pinned public documents become8,239 passages through actual `RecordRetrieval.candidates`; no limit or unrepresented document is accepted. Both actual native encoders retain every9,166 passage window and encode all324 original dev queries. Offline document-max scoring has no live12-second budget or keyword fusion; it is not an app/clinical benchmark. Native corpus times are125.753s baseline and152.695s candidate on this Mac, not iPhone performance.
+
+| Dev metric, no cutoff | MiniLM | MedEmbed | Difference |
+| --- | ---: | ---: | ---: |
+| nDCG@10 | 0.301666 | 0.316880 | +0.015214 |
+| MAP@100 | 0.132910 | 0.140935 | +0.008025 |
+| Precision@4 | 0.320216 | 0.334105 | +0.013889 |
+| Recall@4 | 0.087128 | 0.089835 | +0.002707 |
+| Recall@100 | 0.303592 | 0.317529 | +0.013937 |
+
+The predeclared+0.02 nDCG gate is missed. No exception, model replacement or cutoff selection follows. Candidate nDCG improves for122 queries, worsens for90 and is unchanged for112.123 candidate queries have no judged-relevant top-four result, versus129 baseline;40 versus46 have none at100. Incomplete public judgments do not prove those results clinically irrelevant. Both score distributions retain strong relevant/unjudged overlap; the old0.42 cutoff does not transfer. Every dev query's metrics, top-four choices/judgments, first relevant rank and ranking digests remain in `baseline-dev-r1.json` and `medembed-dev-r1.json`; raw corpus/query text is not redistributed. `dev-decision.json` records the gate and test holdout.
+
+Six corpus controls pass: duplicate corpus/native IDs, complete-index rejection at5,001 documents, retained overlong-query rejection, corrupted matrix digest and dropped mapping. The accepted/overlong query control also verifies exact relative model paths. Independent graded/AP/empty-result/tie-order/window-max oracles pass with pytrec-eval-terrier0.5.11. All1,294 existing logic checks pass after adding the research CLI mode to the verification executable. Production app/UI source is unchanged; no new app build or design score is claimed.
+
+Failed initial vocabulary lookup, macOS alias path receipt defects, failed first path repair and corrected tie preparation are explicit in `dev-decision.json`. Receipt normalization proves the complete model file size/hash multiset unchanged and changes no vectors, inputs, mapping or timing. Native relative paths now come directly from the enumerator and pass the control. Exact original native producer, current tool hashes, corrected compact receipts and their original hashes are retained.
+
+Keep `corpus-prepared`, `dev-input`, `baseline-corpus`, `candidate-corpus` and current native encoder under `/tmp/LumenBatch26Probe` for immediate further research, alongside the canonical models/source/environment/dataset listed above. Raw temporary report paths are historical if later cleaned; pinned public inputs and retained code reproduce them.

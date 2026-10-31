@@ -50,7 +50,7 @@ Pending batch entries will record commit, validation and push outcome below.
 
 ### Batch26 — retrieval-quality investigation ·active
 
-Investigate the retained iron-stores/ferritin miss without tuning a threshold to the old nine examples. Portable pinned-source/offline native tools now verify79 tokenizer/window/controller cases and154 vectors against original upstream FP32, retaining failed exports and exact source hashes. No app model/cutoff/UI changes are selected. Public full-corpus dev calibration, locally held-out tests, no-match/non-health/identifier checks, current-app fusion/consent/legacy/resource verification and any selected model integration remain open. [The contract](RETRIEVAL_QUALITY.md) and [research evidence](../Design/native/retrieval-quality/README.md) define the frozen protocol and current retained inputs. This is not completed application delivery.
+The raw-query medical candidate passes numerical compatibility but misses the frozen dev promotion gate: nDCG@10 +0.015214, below+0.02; Precision@4 +0.013889. Complete evaluation uses3,633 documents/8,239 production passages/9,166 windows per model and all324 dev queries. No exception, selected model/cutoff or app/UI change follows; test scores remain uncomputed. Six tool controls, metric oracles and all1,294 existing logic checks pass. Declare any new development hypothesis before its scores; no-match/non-health/identifier, current-app fusion/consent/legacy/resource and integration checks remain open. [The contract](RETRIEVAL_QUALITY.md) and [evidence](../Design/native/retrieval-quality/dev-decision.json) retain every query, misses and failed tool attempts. This is not completed application delivery.
 
 ### Batch 25 — reviewed local NDJSON lab files · verified
 

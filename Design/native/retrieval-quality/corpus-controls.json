@@ -1,0 +1,44 @@
+{
+  "checks": [
+    {
+      "control": "duplicate corpus IDs",
+      "diagnostic": "invalidInput",
+      "exit": 1,
+      "noPartialOutput": true
+    },
+    {
+      "control": "5001 documents cannot silently become 5000",
+      "diagnostic": "incompleteIndex",
+      "exit": 1,
+      "noPartialOutput": true
+    },
+    {
+      "control": "duplicate native IDs",
+      "diagnostic": "duplicateID",
+      "exit": 1,
+      "noPartialOutput": true
+    },
+    {
+      "accepted": 1,
+      "control": "accepted and overlong queries",
+      "explicitlyRejected": 1,
+      "relativeModelPathsExact": true,
+      "samples": 2
+    },
+    {
+      "control": "forged matrix digest",
+      "rejected": "Incomplete or mismatched native matrix"
+    },
+    {
+      "control": "dropped mapping row",
+      "rejected": "Partial input mapping"
+    }
+  ],
+  "fixtureRetention": "Synthetic inputs, hard links and control outputs removed after checks; original matrices are read only",
+  "metricControls": {
+    "emptyResults": "zero",
+    "gradedAndBinaryMetrics": "hand-calculated values agree within 1e-12",
+    "package": "0.5.11",
+    "windowReduction": "later-window maximum retained"
+  }
+}
