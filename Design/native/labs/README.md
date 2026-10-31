@@ -1,6 +1,6 @@
 # Reviewed lab records · native evidence
 
-Synthetic iPhone 18 Pro / iOS 27 screens. NativeR3 fully passes both scoped cases. Read [the contract](../../../docs/LAB_RECORDS.md), [verification](verification.json) and [the continuing critic](CRITIQUE.md) for exact source/result boundaries. Publication is recorded separately after remote confirmation.
+Synthetic iPhone 18 Pro / iOS 27 screens. NativeR3 fully passes both scoped cases. Read [the contract](../../../docs/LAB_RECORDS.md), [verification](verification.json) and [the continuing critic](CRITIQUE.md) for exact source/result boundaries. Published as `4e455c67560d9e5a46dad0ad63cf547fbcb431b6` with matching GitHub main read-back.
 
 | State | Original final screenshot |
 |---|---|
@@ -20,3 +20,5 @@ Synthetic iPhone 18 Pro / iOS 27 screens. NativeR3 fully passes both scoped case
 | Actual XXXL editor, keyboard and date controls | [445](r3/445-labs-large-editor.png), [446](r3/446-labs-large-result-fields.png), [449](r3/449-labs-large-editing-keyboard.png), [451](r3/451-labs-large-collection-day.png) |
 
 All 22 final originals and exact exported-file hashes/timestamps are in `r3/captures.json`. The earlier failed bundles and their screenshots remain explicitly historical. A still shows its captured viewport, not every position in arbitrary text, checked storage, clinical accuracy, physical-device or VoiceOver behavior. Exact typed values/relaunch/removal are separate behavioral assertions. No image is relabelled as a different source or state. Temporary result paths become historical after scoped cleanup; useful pixels and compact provenance remain in Git.
+
+[Storage cleanup](storage-cleanup.json) records the measured 2.99 GB increase and exact ownership scope. All 22 final originals/four useful R1 defects remain locally; full earlier sets are recoverable at the application commit above. Temporary raw result paths are historical. No application build followed the documentation/cleanup checkpoint.

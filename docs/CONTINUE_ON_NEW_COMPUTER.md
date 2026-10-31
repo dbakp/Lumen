@@ -26,6 +26,8 @@ Batch 18 was published as `a0426827fcacedfc4026445e649ee2984fc91a50` on 30 Octob
 
 Batch 19 was published as `f957f1bec644e8da8e55da0b2feee390c78839d8` on 31 October 2026. It adds optional English on-device related-topic Library search, explicit model download/enable/off/delete, exact selection/coverage disclosures and four-excerpt local lookup. GitHub accepted the push through the batch publisher and `refs/heads/main` read-back matched before redundant artifacts were removed. See [Local related-topic search](SEMANTIC_SEARCH.md) for known relevance misses and remaining device/provider gates.
 
+Batch 20 was published as `4e455c67560d9e5a46dad0ad63cf547fbcb431b6` on 31 October 2026 through `scripts/publish-batches.sh`; GitHub main read-back matched before disposable artifacts were removed. It adds reviewed lab transcriptions with literal values/units/reference wording and retained source excerpts. The full goal remains active.
+
 The original prompt below remains the product brief. The full goal remains active. The retained Food/Sleep and companion availability audit, large/encrypted backups, incremental Health observation/replay and scanned-record review, question-based lexical Library retrieval and reviewed readable-export recovery are implemented within their documented scope. Continue additional ingestion/structured records, semantic retrieval quality, signed-device voice validation, provider and release work in coherent separately verified batches. Signed-iPhone background delivery, Watch water relay identity/acknowledgement, physical-device behavior and unseen widget/complication layouts remain open gates. Physical-device/provider gates are not satisfied by the simulator. The skill archive is intentionally outside Git; attach it again for a future computer/chat. Personal data and credentials still transfer separately.
 
 ## Continuation prompt
@@ -33,7 +35,7 @@ The original prompt below remains the product brief. The full goal remains activ
 /goal Continue developing Lumen into a world-class, primarily iOS, AI health assistant.
 
 Repository: https://github.com/dbakp/Lumen  
-Latest published application commit: `f957f1bec644e8da8e55da0b2feee390c78839d8`
+Latest published application commit: `4e455c67560d9e5a46dad0ad63cf547fbcb431b6`
 
 Branch: `main`
 
@@ -65,7 +67,7 @@ Clone the repository on this computer and inspect its current state before makin
 
 Use the attached App Designer Pro skill. Preserve the established design direction. Use one independent design critic for native UI changes, address substantive findings, and capture actual simulator screens. `Design/native-preview.html` presents captured screens; it is not the application.
 
-### Completed and published through batch 19
+### Completed and published through batch 20
 
 - Contextual Today, symptoms/check-ins, personal context and quiet reminders.
 - Persistent conversations with cancellation and reply ownership.
@@ -75,6 +77,7 @@ Use the attached App Designer Pro skill. Preserve the established design directi
 - Validated backup/restore, including meal photos, password-protected streamed archives, progress/cancellation, legacy JSON compatibility and guarded staged restoration.
 - Checked readable JSON creation/share and separately reviewed recovery of historical Lumen exports. Category selection and independent setting replacements precede confirmation; setting replacements start off. Read-only paging, explicit photo/demo/cache omissions, current-copy merge policy and private cleanup remain distinct from encrypted backups.
 - On-device scanned-PDF/still-image and selectable/UTF-8 record reading, private original/page comparison, source-version editing with keep/replace protection, explicit review/exclusion, assistant sharing off by default, duplicate-file decisions, checked Library mutations and compatible page/source provenance. Original files remain separate user-held copies.
+- Reviewed lab transcriptions on saved records, with literal reported fields, source-before-save comparison, checked saving, stale-source handling and compatible backup/readable sharing. This is a manual review foundation; automatic ingestion/comparison remain open.
 - Optional, explicit-download English on-device topic ranking supplements keyword search, with exact selection/coverage and four-excerpt local lookup; known relevance and device gates remain.
 - Question-based in-memory search over explicitly shared Library text, current plan/checklist state, immutable reply references, source validation and visible current/changed/sharing-off/deleted states. Earlier replies without saved references remain visible and support quoting into an editable unsent question. Backups and readable sharing preserve compatible reference provenance.
 - Optional Health observation with durable paged sleep/workout replay, explicit deletion evidence, permission-review rescans, checked application and guarded startup before protected data is readable. Background/sample delivery remains a signed-device gate.
@@ -88,14 +91,14 @@ Use the attached App Designer Pro skill. Preserve the established design directi
 
 ### Latest validation · Batch 20 · 31 October 2026
 
-Batch 20 is implemented and locally verified; publication follows GitHub read-back. It adds reviewed lab transcriptions to saved records, preserving literal result signs/decimals/units/reference/flags, optional dates/report details and exact source excerpts. Wrapped sources can include adjacent full lines. Checked saves preserve current consent and reject concurrent source/review changes. Later source edits mark old transcriptions as needing review and withhold their structured values from future assistant retrieval. Removing transcriptions preserves the record. See [Reviewed lab records](LAB_RECORDS.md).
+Batch 20 is implemented, locally verified and published; GitHub main read-back matched the application commit above. It adds reviewed lab transcriptions to saved records, preserving literal result signs/decimals/units/reference/flags, optional dates/report details and exact source excerpts. Wrapped sources can include adjacent full lines. Checked saves preserve current consent and reject concurrent source/review changes. Later source edits mark old transcriptions as needing review and withhold their structured values from future assistant retrieval. Removing transcriptions preserves the record. See [Reviewed lab records](LAB_RECORDS.md).
 
 - **633 production checks pass**, including actual encrypted/readable backup compatibility and stale/consent/source guards.
 - All five simulator targets build; unsigned generic-iOS Release passes, minimum iOS 18. Current app source equals ReleaseR3; only test gestures/selectors change afterward. Final equality covers 172 native/project/UI-test files and 25 package/test/script files. Native SHA-256: `27dd27f077eaf7aefbe57639f1e189f1c83715560964cb34b6baea86297124f9`.
 - NativeR3 fully passes presentation **221.019s** and reviewed lifecycle **224.023s**, zero failures/skips/recorded runtime warnings. Real Files recovery, source/typing/review/save/relaunch/correction/changed-source/removal and light/dark/XXXL keyboard/date/source paths are scoped in `Design/native/labs/verification.json`. Earlier failures remain failed.
 - The same critic completes two rounds at **10/11 lines at 4+, Richness 3**, Finish 4, no concrete defects. All 22 final originals remain. No app UI change follows sign-off.
 
-The full goal remains active. Portable/automatic lab ingestion, broader clinical/FHIR records, longitudinal comparison, comprehensive relevance/multilingual quality, live providers, signed-device Health/Watch/voice, physical accessibility/performance and release governance remain open. Confirm code/evidence on GitHub before deleting redundant task-owned artifacts, then record actual recovered space without a documentation-only rebuild.
+The full goal remains active. Portable/automatic lab ingestion, broader clinical/FHIR records, longitudinal comparison, comprehensive relevance/multilingual quality, live providers, signed-device Health/Watch/voice, physical accessibility/performance and release governance remain open. After GitHub confirmation, cleanup removed 66 task-owned roots and increased available space from 35,774,255,104 to 38,765,797,376 bytes: **2,991,542,272 bytes (about 2.99 GB)**. Both reused platform build directories, package scratch, obsolete mirror, raw bundles/exports/logs, one exact harness crash report and 22 redundant PNG working copies are gone. All 22 final originals, four useful R1 defects, compact outcomes, source/provenance maps, supplied skill, pinned model source and small current Library inputs remain. Full earlier pixels are recoverable in the application commit. Global caches, older/unrelated DerivedData, projects and simulators remain untouched; no links were followed or app build rerun for this cleanup checkpoint. See `Design/native/labs/storage-cleanup.json`.
 
 ### Batch 19 validation retained
 

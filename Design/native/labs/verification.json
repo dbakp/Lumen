@@ -1,6 +1,6 @@
 {
   "dateUTC": "2026-10-31T00:04:21.492997+00:00",
-  "status": "Implemented and locally verified. Two continuing-critic rounds complete; no concrete defects. Publication and storage cleanup are recorded after remote confirmation.",
+  "status": "Implemented, locally verified and published; GitHub main read-back matched before scoped disposable cleanup. Full objective remains active.",
   "baseApplicationCommit": "f957f1bec644e8da8e55da0b2feee390c78839d8",
   "productionLogicChecks": 633,
   "logicLog": "/tmp/lumen-batch20-logic-r6.log",
@@ -257,7 +257,6 @@
     "dedicatedSimulator": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481"
   },
   "open": [
-    "GitHub publication/read-back and scoped artifact cleanup",
     "Portable/automatic lab ingestion, full clinical-document/FHIR support and longitudinal comparison",
     "Real clinical accuracy review, physical performance/cache formats, live generative providers, broad accessibility/VoiceOver and release/privacy governance"
   ],
@@ -874,5 +873,12 @@
       "scripts/seed-import-ui-fixtures.py": "11edb8297038682a3f5373fd1d2187c0950e3d37de6393afbeb6068a150ea6a0",
       "scripts/test-imports.sh": "fbc59a9258cf0efb4e210ebd4fd32ebc952135bde79f86f7d7fd85964f55b8f4"
     }
+  },
+  "publication": {
+    "applicationCommit": "4e455c67560d9e5a46dad0ad63cf547fbcb431b6",
+    "remoteMainReadBackMatched": true,
+    "evidenceConfirmedBeforeDeletion": true,
+    "cleanup": "storage-cleanup.json",
+    "noAppBuildForDocumentationCleanup": true
   }
 }

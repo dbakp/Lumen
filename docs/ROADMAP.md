@@ -214,3 +214,11 @@ Saved records can retain individually reviewed test names, literal results/compa
 633 production checks, all five simulator targets and unsigned generic-iOS Release pass. Final NativeR3 presentation passes 221.019s and lifecycle 224.023s, zero failures/skips/recorded runtime warnings. Same critic R2 is done:10/11 lines4+, Richness 3, no concrete defects. Earlier failed tests and precise source boundaries remain in [the evidence](../Design/native/labs/verification.json). Publication/read-back follows as a separate checkpoint.
 
 This is a manual reviewed transcription foundation. Portable/automatic table ingestion, broader clinical/FHIR records, longitudinal comparison, comprehensive relevance, live providers, physical devices/VoiceOver and release governance remain open. The full goal stays active.
+
+## Batch 20 publication and scoped storage cleanup
+
+Application/source/evidence commit `4e455c67560d9e5a46dad0ad63cf547fbcb431b6` reached GitHub through the batch publisher; `refs/heads/main` read-back matched before deletion. Cleanup removed **66 task-owned roots**, including **22 redundant earlier PNG working copies** (full originals remain recoverable in the published application commit). All 22 final R3 originals and four useful R1 before defects remain in the working repository, alongside compact outcomes, hierarchy failure facts and source/capture hashes.
+
+Available bytes increased from **35,774,255,104 to 38,765,797,376**, a measured **2,991,542,272-byte increase (about 2.99 GB)**. Removed roots total 2,966,401,232 logical file bytes and 3,018,760,192 unique-inode allocated bytes; APFS accounting and concurrent activity can differ from the observed volume delta. Exact paths/hashes are in `Design/native/labs/storage-cleanup.json`.
+
+Both reused Xcode build directories, package scratch, obsolete source mirror, raw results/exports/logs and the exact failed-harness crash report are removed after workers stop. The repository, design skill/archive, pinned model source and small current Library inputs are retained. Global/system/browser/unrelated application caches, older/unknown DerivedData, other projects/runtimes/simulators and personal data were preserved. No links were followed. No new application build was run for this documentation/cleanup checkpoint. Temporary result paths are historical; the full product goal remains active.

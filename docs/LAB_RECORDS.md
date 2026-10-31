@@ -1,6 +1,6 @@
 # Reviewed lab records · Batch 20
 
-This batch adds structured, user-reviewed transcriptions to saved Library records. The implementation and scoped delivery checks are complete; publication is recorded after GitHub read-back. The original saved text remains separate and unchanged. No real patient data is used during development.
+This batch adds structured, user-reviewed transcriptions to saved Library records. The implementation and scoped delivery checks are complete, published as `4e455c67560d9e5a46dad0ad63cf547fbcb431b6` with matching GitHub main read-back. The original saved text remains separate and unchanged. No real patient data is used during development.
 
 ## Contract
 
@@ -36,3 +36,7 @@ All five simulator targets build for testing. Unsigned generic-iOS Release passe
 The continuing critic completes two rounds at ten of eleven applicable lines4+, Richness 3, with no remaining concrete defect. All 22 final originals and precise capture/result/source boundaries are retained in `Design/native/labs`. NativeR1/R2 and the initial test-compile failures remain explicitly failed; none is relabelled. A paginated system edit menu and propagated disclosure accessibility identifier required corrected test interactions, not product workarounds.
 
 Current delivery evidence is [verification.json](../Design/native/labs/verification.json), with native gallery and critique beside it. Exact preserved strings and storage are behavioral checks; individual stills do not prove every position in an arbitrary long value, VoiceOver, clinical accuracy or physical-device behavior. No real health data or live generative-provider requests were used. The full product goal remains active.
+
+## Storage checkpoint
+
+After remote confirmation, scoped cleanup removed 66 task-owned roots and increased available space by **2,991,542,272 bytes (about 2.99 GB)**. All 22 final originals and useful before defects remain; full earlier sets are recoverable in the application commit. The working repository, supplied design skill and current inputs are preserved. [Cleanup scope and accounting](../Design/native/labs/storage-cleanup.json) retain exact facts. Raw temporary report paths are historical; no app build followed this documentation-only checkpoint.
