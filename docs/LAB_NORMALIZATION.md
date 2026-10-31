@@ -22,7 +22,7 @@ Test grammar/precedence/case, prefixes and powers, all supported atom definition
 
 Build all products and unsigned Release, audit exact source equality, publish the coherent completed batch through the batch publisher and confirm GitHub main. After verification/publication and stopped workers, clear only task-owned obsolete output, keep compact evidence/current inputs/skill, and measure available-space change. Physical devices, VoiceOver, clinical validation, broader UCUM/terminology coverage, providers and release governance remain separate open work.
 
-## Acceptance evidence · verified before publication
+## Acceptance evidence · published and scoped cleanup complete
 
 | Requirement | Evidence | State |
 |---|---|---|
@@ -37,7 +37,7 @@ Build all products and unsigned Release, audit exact source equality, publish th
 | Full XXXL unit code/acknowledgement/switch containment | NativeR4/BuildR9,260.466s; unit-row layout unchanged by R10 menu repair | Pass |
 | Same continuing independent critic | Four rounds40/55→43/55→41/55→43/55; final10/11 lines4+, no concrete defect | Done within scope |
 | Final source audit |190 native/mirror,89 logic,188 Release inputs; fixture and158 original PNG hashes | Match |
-| Coherent GitHub publication/read-back and scoped cleanup | Required after verified source/evidence commit | Pending |
+| Coherent GitHub publication/read-back and scoped cleanup | Application `8ae4968`, exact read-back;66 roots/82 PNG copies and dedicated simulator removed,76 useful originals retained | Complete within batch |
 
 Exact hashes, historical failures and source boundaries are retained in `Design/native/lab-normalization/verification.json`. NativeR1/R2 remain failed mixed bundles; later passing cases do not rewrite them. R7–R9 change test capture handling only. R10 fixes one accessibility selected-label layout; normal-size choices, unit rows and all numerical/model inputs remain unchanged. No source/UI edit follows final acceptance. These scoped results do not establish clinical validity, signed-device behavior, VoiceOver, complete UCUM/terminology coverage or release readiness.
 
@@ -46,3 +46,5 @@ Exact hashes, historical failures and source boundaries are retained in `Design/
 - [UCUM2.2 specification](https://ucum.org/ucum): case-sensitive ASCII syntax, explicit products, left-to-right division, simple exponents and metric prefixes define unit expressions. Special and arbitrary units require their own semantics. This supports a bounded linear subset with explicit unsupported results; it does not validate Lumen's implementation.
 - [NLM LOINC overview](https://www.nlm.nih.gov/oet/ed/healthdatastandards/02-530.html): test identities distinguish component, property, time, system, scale and method. Different display labels can refer to one code; matching dimensions alone do not establish the same clinical observation.
 - [FHIR R4 Quantity](https://hl7.org/fhir/R4/datatypes.html#Quantity): display units and coded units are distinct fields. Retain their exact historical values beside reviewed assignments.
+
+Published application commit: `8ae4968a83c2f48f05284e6b60b42a8062cda1f8`. Scoped cleanup increased available space by a settled7,064,104,960 bytes (about7.06GB). Source and evidence reached GitHub first; raw temporary paths and removed PNG working paths are historical. Recover superseded originals from that commit. The full product goal and broader gates remain active.
