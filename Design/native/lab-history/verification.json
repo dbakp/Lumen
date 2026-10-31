@@ -1,5 +1,5 @@
 {
-  "status": "Batch22 verified locally, ready for publication. LogicR12 passes815; simulatorBuildR11 and unsignedReleaseR6/current source audit pass. NativeR10 presentation, NativeR9 source/edit states, SmallR2 compact and earlierR7 lifecycle/context cases pass within recorded source boundaries. Continuing criticRound4 done43/55. Publication/read-back and scoped cleanup remain pending; full goal active.",
+  "status": "Batch22 published asbf7fb78266d81df4b5456ec1f56404d5657f3eb3. Exact GitHub main matched before scoped cleanup. All required local checks and continuing design review complete; 7.84GB available recovered,97 useful originals retained. Full product goal remains active; physical-device/clinical/provider/release gates remain open.",
   "publishedBaseline": "c92331ed6085ad523b561637c8c9ba96102b92f2",
   "logicR1": {
     "exitCode": 0,
@@ -86,10 +86,7 @@
       "Package.resolved": "8e1a1d7de570f9bacd587f56f70f41fa0da6d077505047bdf26ed31437e9dfc1"
     }
   },
-  "pending": [
-    "Publish reviewed source/evidence through batch publisher, confirm exact GitHub main",
-    "Scoped disposable-output cleanup and documentation checkpoint"
-  ],
+  "pending": [],
   "open": [
     "Clinical validation and coding/unit normalization",
     "Broader clinical/FHIR/OCR ingestion",
@@ -804,5 +801,13 @@
     "done": true,
     "remainingConcreteDefects": [],
     "scope": "Sixteen currentR10 originals individually inspected plus retained compact action; all named requests closed. Richness3, other applicable lines4. No physical-device/VoiceOver/clinical inference."
+  },
+  "publication": {
+    "applicationCommit": "bf7fb78266d81df4b5456ec1f56404d5657f3eb3",
+    "publisher": "scripts/publish-batches.sh",
+    "exactRemoteMainMatchedBeforeDeletion": true,
+    "cleanup": "storage-cleanup.json",
+    "recoveredAvailableBytes": 7840112640,
+    "retainedOriginalPNGCount": 97
   }
 }

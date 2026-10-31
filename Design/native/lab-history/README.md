@@ -1,6 +1,6 @@
 # Lab history · Batch 22 verified delivery
 
-The full product goal remains active. This batch is verified locally and ready for publication. Follow [the feature contract](../../../docs/LAB_HISTORY.md); publication/read-back and scoped cleanup are recorded separately.
+The full product goal remains active. This batch was published as `bf7fb78266d81df4b5456ec1f56404d5657f3eb3`; exact GitHub main read-back matched before cleanup. Follow [the feature contract](../../../docs/LAB_HISTORY.md); publication/read-back and scoped cleanup are recorded in storage-cleanup.json.
 
 **815 production checks pass** in LogicR12, with 77 input hashes. They cover complete 2,560-result preparation, exact signed arithmetic/scale loss, strict Unicode source anchors, dates/context/duplicates/freshness, independent snapshots, edited-text retrieval and actual legacy/encrypted/readable backup round trips. Historical fingerprint goldens remain unchanged.
 
@@ -20,3 +20,5 @@ The continuing App Designer Pro critic closes all named requests after four roun
 Earlier failed/interrupted attempts remain failed in verification.json. Their compact outcomes/source hashes and diagnostic boundaries are preserved. Required source/evidence reaches GitHub before redundant copies are removed; raw temporary paths and removed earlier originals are historical afterward, with originals recoverable from the application commit. Useful native originals, current source manifests and compact outcomes remain here.
 
 All data is synthetic. Tests disable remote/model requests through a Debug-simulator-only route. Physical-device, VoiceOver, performance, clinical, provider and release/privacy gates remain open.
+
+Scoped cleanup recovered **7,840,112,640 available bytes (7.84GB)**, retaining97 useful native originals. Removed raw bundles/build caches and earlier redundant working PNGs are historical paths; required source/evidence originals remain recoverable from the published application commit. No new application build was run for this documentation/cleanup checkpoint.

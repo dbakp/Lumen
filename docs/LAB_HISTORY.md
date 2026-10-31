@@ -1,6 +1,6 @@
 # Lab history and reviewed comparisons · Batch 22
 
-This batch is verified locally and ready for publication. The full product goal remains active. The feature builds on reviewed lab records while preserving existing lab/import text and fingerprints.
+This batch was published as `bf7fb78266d81df4b5456ec1f56404d5657f3eb3`; exact GitHub main read-back matched before scoped cleanup. The full product goal remains active. The feature builds on reviewed lab records while preserving existing lab/import text and fingerprints.
 
 ## Delivery contract
 

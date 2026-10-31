@@ -30,7 +30,7 @@ Batch 20 was published as `4e455c67560d9e5a46dad0ad63cf547fbcb431b6` on 31 Octob
 
 Batch 21 was published as `c92331ed6085ad523b561637c8c9ba96102b92f2` on 31 October 2026 through the batch publisher; exact GitHub main read-back matched before cleanup. It adds reviewed CSV/TSV/flat JSON lab import, column/person mapping, literal source provenance, correction/exclusion, complete native text editing and retained exact-file identity after every transcription is removed. See [Lab-file import](LAB_IMPORT.md) and the scoped verification below. The full goal remains active.
 
-Batch 22 is verified locally and ready for publication. It adds [lab history and reviewed comparisons](LAB_HISTORY.md): explicit person/decimal review, exact recorded contexts and collection days, complete literal history, guarded neutral arithmetic and separate sharing-off snapshots with source-change/removal states. LogicR12 passes815; current BuildR11/unsignedReleaseR6 and final source audit pass. NativeR10 passes final dark/XXXL presentation; NativeR9 source/edit states and SmallR2 actual375×667 lifecycle pass; R7 retains earlier lifecycle/context evidence with recorded source boundaries. The same critic is done after Round4:43/55,10/11 lines4+, all concrete requests closed. Publish this coherent source/evidence batch through the publisher and confirm exact GitHub main before scoped cleanup. The full goal remains active.
+Batch 22 was published as `bf7fb78266d81df4b5456ec1f56404d5657f3eb3` through the batch publisher on31 October2026; exact GitHub main read-back matched before scoped cleanup. It adds [lab history and reviewed comparisons](LAB_HISTORY.md), preserving literal source context, complete history and separate sharing-off snapshots. LogicR12 passes815; current BuildR11/unsignedReleaseR6 and final source audit pass. NativeR10 passes final dark/XXXL presentation; NativeR9 source/edit states and SmallR2 actual375×667 lifecycle pass; R7 retains earlier lifecycle/context evidence with exact source boundaries. The same critic is done after Round4:43/55,10/11 lines4+, all concrete requests closed. Cleanup recovered 7,840,112,640 available bytes (about7.84GB), retaining97 useful originals, compact evidence, current small inputs and supplied skill. Source mirrors, build/package caches, raw bundles and the task-owned compact simulator are removed; primary/Watch simulators and unrelated data remain. Temporary paths are historical. Continue the broader roadmap; the full goal remains active.
 
 The original prompt below remains the product brief. The full goal remains active. The retained Food/Sleep and companion availability audit, large/encrypted backups, incremental Health observation/replay and scanned-record review, question-based lexical Library retrieval and reviewed readable-export recovery are implemented within their documented scope. Continue additional ingestion/structured records, semantic retrieval quality, signed-device voice validation, provider and release work in coherent separately verified batches. Signed-iPhone background delivery, Watch water relay identity/acknowledgement, physical-device behavior and unseen widget/complication layouts remain open gates. Physical-device/provider gates are not satisfied by the simulator. The skill archive is intentionally outside Git; attach it again for a future computer/chat. Personal data and credentials still transfer separately.
 
@@ -39,7 +39,7 @@ The original prompt below remains the product brief. The full goal remains activ
 /goal Continue developing Lumen into a world-class, primarily iOS, AI health assistant.
 
 Repository: https://github.com/dbakp/Lumen  
-Latest published application commit: `c92331ed6085ad523b561637c8c9ba96102b92f2`
+Latest published application commit: `bf7fb78266d81df4b5456ec1f56404d5657f3eb3`
 
 Branch: `main`
 
@@ -63,6 +63,8 @@ Clone the repository on this computer and inspect its current state before makin
 - [Import formats](IMPORT_FORMATS.md)
 - [Library retrieval and retained references](LIBRARY_RETRIEVAL.md)
 - [Reviewed lab results and source excerpts](LAB_RECORDS.md)
+- [Lab-file import](LAB_IMPORT.md)
+- [Lab history and reviewed comparisons](LAB_HISTORY.md)
 - [Readable export and reviewed recovery](READABLE_EXPORT.md)
 - [Conversational logging](CONVERSATIONAL_LOGGING.md)
 - [Reviewed voice drafts](VOICE_DRAFTS.md)
@@ -71,7 +73,7 @@ Clone the repository on this computer and inspect its current state before makin
 
 Use the attached App Designer Pro skill. Preserve the established design direction. Use one independent design critic for native UI changes, address substantive findings, and capture actual simulator screens. `Design/native-preview.html` presents captured screens; it is not the application.
 
-### Completed and published through batch 21
+### Completed and published through batch 22
 
 - Contextual Today, symptoms/check-ins, personal context and quiet reminders.
 - Persistent conversations with cancellation and reply ownership.
@@ -81,8 +83,9 @@ Use the attached App Designer Pro skill. Preserve the established design directi
 - Validated backup/restore, including meal photos, password-protected streamed archives, progress/cancellation, legacy JSON compatibility and guarded staged restoration.
 - Checked readable JSON creation/share and separately reviewed recovery of historical Lumen exports. Category selection and independent setting replacements precede confirmation; setting replacements start off. Read-only paging, explicit photo/demo/cache omissions, current-copy merge policy and private cleanup remain distinct from encrypted backups.
 - On-device scanned-PDF/still-image and selectable/UTF-8 record reading, private original/page comparison, source-version editing with keep/replace protection, explicit review/exclusion, assistant sharing off by default, duplicate-file decisions, checked Library mutations and compatible page/source provenance. Original files remain separate user-held copies.
-- Reviewed CSV/TSV/flat JSON lab-file import with explicit column mapping and intended-person review, literal source tokens, included-row correction/exclusion, exact-file duplicate decisions across both import routes and checked saving with sharing off. Full native text editors offer Select all/Cancel/Done; the historical receipt survives removal of every transcription. Broader clinical/FHIR/OCR-table ingestion and longitudinal comparison remain open.
-- Reviewed lab transcriptions on saved records, with literal reported fields, source-before-save comparison, checked saving, stale-source handling and compatible backup/readable sharing. This is a manual review foundation; automatic ingestion/comparison remain open.
+- Reviewed CSV/TSV/flat JSON lab-file import with explicit column mapping and intended-person review, literal source tokens, included-row correction/exclusion, exact-file duplicate decisions across both import routes and checked saving with sharing off. Full native text editors offer Select all/Cancel/Done; the historical receipt survives removal of every transcription. Broader clinical/FHIR/OCR-table ingestion and clinical interpretation remain open; reviewed history/comparison is separately implemented in Batch22.
+- Reviewed lab transcriptions on saved records, with literal reported fields, source-before-save comparison, checked saving, stale-source handling and compatible backup/readable sharing. This manual review foundation is extended by separately reviewed flat-table import in Batch21 and history/comparison in Batch22; broader automatic clinical ingestion remains open.
+- Lab history from explicitly selected current records, intended-person/decimal review, collection-day charts and complete literal lists; exact-context arithmetic and separate reviewed sharing-off comparison snapshots. Original changes/removal remain visible, and edited current text stays separate from historical captured facts. No clinical interpretation or unit conversion is inferred.
 - Optional, explicit-download English on-device topic ranking supplements keyword search, with exact selection/coverage and four-excerpt local lookup; known relevance and device gates remain.
 - Question-based in-memory search over explicitly shared Library text, current plan/checklist state, immutable reply references, source validation and visible current/changed/sharing-off/deleted states. Earlier replies without saved references remain visible and support quoting into an editable unsent question. Backups and readable sharing preserve compatible reference provenance.
 - Optional Health observation with durable paged sleep/workout replay, explicit deletion evidence, permission-review rescans, checked application and guarded startup before protected data is readable. Background/sample delivery remains a signed-device gate.
@@ -93,6 +96,13 @@ Use the attached App Designer Pro skill. Preserve the established design directi
 - Per-metric current readings with source/date/query evidence, explicit recorded zeros, guarded current assistant context, and local confirmed water/workout corrections/deletion with stable identity and retained provenance. External-source workouts remain separate.
 
 - Reviewed1/2/4/8-week plans with selected-provider proposals or an explicit local template, full wording/date review, fresh acknowledgement, checked saving, matching Library/agenda calendar days and sharing off by default.
+
+### Latest validation · Batch 22 · 31 October 2026
+
+- 815 production checks pass, including exact arithmetic, source freshness/Unicode fidelity, complete history, optional snapshot metadata and actual legacy/encrypted/readable backups.
+- Current simulatorBuildR11 and unsignedReleaseR6 pass; final equality covers180 app/build inputs,2 native-test files and77 logic inputs. Release audit is minimumiOS18, no model packages and absence of four specifically checked Debug markers.
+- NativeR10 final dark/XXXL361.227s; NativeR9 changed-source draft225.348s and edited snapshot130.112s; SmallR2 actual375×667 lifecycle238.987s. R7 earlier lifecycle380.958s and literal/context/paging/duplicate304.427s retain their exact source boundaries. All these bundles have zero failures/skips/recorded runtime warnings. No combined final-source six-case suite is claimed.
+- The continuing critic signs off Round4,43/55,10/11 lines4+, none below3, no concrete defects. Native originals, compact outcomes, source hashes and cleanup accounting remain in Design/native/lab-history. Physical-device/VoiceOver, clinical, live-provider and release/privacy gates remain open.
 
 ### Latest validation · Batch 21 · 31 October 2026
 
