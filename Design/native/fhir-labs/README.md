@@ -1,6 +1,6 @@
 # Reviewed FHIR lab import · Batch 23
 
-The local FHIR R4 JSON flow is implemented and verified within [the import contract](../../../docs/FHIR_LAB_IMPORT.md). Publication/read-back and subsequent storage cleanup are recorded in the handoff and VERIFICATION.md. The broader product goal remains active.
+Published application/source/evidence: `e82c6a0504f3ad4082b4c213a3527935e106e5c3`. The local FHIR R4 JSON flow is implemented and verified within [the import contract](../../../docs/FHIR_LAB_IMPORT.md). Publication/read-back and subsequent storage cleanup are recorded in the handoff and VERIFICATION.md. The broader product goal remains active.
 
 ## Verified behavior
 
@@ -46,3 +46,10 @@ The R15 logic round's equality assertion incorrectly compared fractional Date va
 ## Limits and remaining roadmap
 
 Synthetic input only. This local review neither authenticates a clinical author nor validates every FHIR profile. Remote references, paging links, attachments and terminology are not downloaded. Clinical interpretation, broader FHIR bulk/XML/NDJSON and OCR tables, coding/UCUM normalization, live providers, physical devices, VoiceOver and release/privacy governance remain open. Keep the original source file separately.
+
+
+## Storage checkpoint
+
+After exact GitHub read-back, cleanup removed114 task-owned roots,37 redundant screenshot working copies and the dedicated synthetic compact simulator. Actual available space increased by6,411,833,344 bytes (about6.41GB). The77 useful originals still match their hashes; deleted historical originals are recoverable from the application commit. Source/evidence, current tiny inputs and supplied skill remain. Primary/Watch simulators, runtimes and unrelated data/caches remain. See [the exact cleanup manifest](storage-cleanup.json). No app build was rerun for this documentation checkpoint.
+
+The immediate cleanup read-back showed3.51GB recovered; the later available-volume observation after simulator deletion/accounting settled showed6.41GB. The manifest retains both measurements and their accounting limits.

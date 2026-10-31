@@ -1,5 +1,5 @@
 {
-  "status": "Batch 23 verified on final audited production source and accepted by the continuing design critic after three rounds; unpublished.",
+  "status": "Batch 23 application/source/evidence published through the batch publisher with exact GitHub main read-back. Scoped storage cleanup completed after workers stopped. The broader product goal remains active.",
   "publishedBaseline": "1241f62e886f4967c6cc4917aafce01df2820448",
   "syntheticOnly": true,
   "logicR4": {
@@ -96,10 +96,7 @@
     "logicR3": "877 checks pass after Bundle-only pagination; before sliced-buffer/empty-parent refinements.",
     "logicR5": "884 checks pass with typed logical-reference lookup; one resource-limit fixture is subsequently refined so it reaches the contained-resource limit within1,024 entries rather than failing earlier at the entry limit."
   },
-  "pending": [
-    "Publish through scripts/publish-batches.sh and verify exact GitHub main read-back",
-    "After publication and stopped workers, remove task-owned disposable output and dedicated synthetic compact simulator; record measured available-space change"
-  ],
+  "pending": [],
   "storage": {
     "note": "One reusable source mirror, simulator DerivedData and package scratch retained for immediate active work; dedicated compact simulator now exists. No cleanup or recovered-space claim. Future tests suppress verbose sysdiagnose while keeping result bundles and screenshots."
   },
@@ -2771,7 +2768,8 @@
     "allScreenshotCount": 114,
     "manifestScreenshotCount": 114,
     "unindexedScreenshots": [],
-    "note": "Every listed PNG is present and matches its recorded hash. Compact direct terminal facts are retained before raw-log cleanup."
+    "note": "Before publication, all114 listed original PNGs matched their hashes. After confirmed GitHub delivery,37 redundant working copies were removed; full originals remain recoverable in the application commit. The77 retained current/useful PNGs were rechecked after cleanup.",
+    "phase": "Before application publication and scoped cleanup"
   },
   "terminalOutcomeAudit": {
     "logicR4": {
@@ -2970,5 +2968,69 @@
     "sha256": "457da32809fea359de0847fadc30261ab510543ef942b2d2b607cfde7dc7c44a",
     "openedOriginals": 17,
     "note": "All five R1 concrete fixes remain closed; both R2 unchanged-UI evidence gaps closed. No new definite pixel/copy defect or subsequent UI change. Physical-device, VoiceOver and clinical validation remain separate."
+  },
+  "publication": {
+    "applicationCommit": "e82c6a0504f3ad4082b4c213a3527935e106e5c3",
+    "githubMainReadBackBeforeCleanup": "e82c6a0504f3ad4082b4c213a3527935e106e5c3",
+    "method": "scripts/publish-batches.sh",
+    "forcePush": false
+  },
+  "storageCleanup": {
+    "path": "Design/native/fhir-labs/storage-cleanup.json",
+    "removedRootCount": 114,
+    "compactSimulatorDeleted": true,
+    "redundantPNGCount": 37,
+    "retainedPNGCount": 77,
+    "beforeAvailableBytes": 23706927104,
+    "afterAvailableBytes": 30118760448,
+    "recoveredAvailableBytes": 6411833344,
+    "rawTemporaryPathsAreHistorical": true,
+    "immediateAfterAvailableBytes": 27216134144,
+    "immediateRecoveredAvailableBytes": 3509207040
+  },
+  "postCleanupEvidenceAudit": {
+    "retainedPNGCount": 77,
+    "allRetainedHashesMatch": true,
+    "removedWorkingCopiesRecoverableFromCommit": "e82c6a0504f3ad4082b4c213a3527935e106e5c3",
+    "removedWorkingCopies": [
+      "Design/native/fhir-labs/r4/600-fhir-intro.png",
+      "Design/native/fhir-labs/r4/601-fhir-results.png",
+      "Design/native/fhir-labs/r4/603-fhir-original-value.png",
+      "Design/native/fhir-labs/r4/604-fhir-saved.png",
+      "Design/native/fhir-labs/r4/606-fhir-receipt.png",
+      "Design/native/fhir-labs/r4/607-fhir-relaunch.png",
+      "Design/native/fhir-labs/r4/608-fhir-duplicate.png",
+      "Design/native/fhir-labs/r4/609-fhir-coverage.png",
+      "Design/native/fhir-labs/r4/609-fhir-person.png",
+      "Design/native/fhir-labs/r4/622-fhir-draft-after-source-reader.png",
+      "Design/native/fhir-labs/r5/610-fhir-dark-intro.png",
+      "Design/native/fhir-labs/r5/611-fhir-dark-coverage.png",
+      "Design/native/fhir-labs/r5/611-fhir-dark-person-reference.png",
+      "Design/native/fhir-labs/r5/611-fhir-dark-person.png",
+      "Design/native/fhir-labs/r5/612-fhir-dark-review.png",
+      "Design/native/fhir-labs/r5/613-fhir-dark-complete.png",
+      "Design/native/fhir-labs/r5/614-fhir-dark-record.png",
+      "Design/native/fhir-labs/r5/615-fhir-xxxl-record.png",
+      "Design/native/fhir-labs/r5/616-fhir-xxxl-receipt.png",
+      "Design/native/fhir-labs/r5/617-fhir-xxxl-intro.png",
+      "Design/native/fhir-labs/r5/618-fhir-xxxl-coverage.png",
+      "Design/native/fhir-labs/r5/618-fhir-xxxl-person-reference.png",
+      "Design/native/fhir-labs/r5/618-fhir-xxxl-person.png",
+      "Design/native/fhir-labs/r5/630-fhir-dark-coded.png",
+      "Design/native/fhir-labs/r5/unreachable-element.png",
+      "Design/native/fhir-labs/small-r1/600-fhir-intro.png",
+      "Design/native/fhir-labs/small-r1/601-fhir-results.png",
+      "Design/native/fhir-labs/small-r1/602-fhir-edit.png",
+      "Design/native/fhir-labs/small-r1/603-fhir-original-value.png",
+      "Design/native/fhir-labs/small-r1/604-fhir-saved.png",
+      "Design/native/fhir-labs/small-r1/605-fhir-record.png",
+      "Design/native/fhir-labs/small-r1/606-fhir-receipt.png",
+      "Design/native/fhir-labs/small-r1/607-fhir-relaunch.png",
+      "Design/native/fhir-labs/small-r1/609-fhir-coverage.png",
+      "Design/native/fhir-labs/small-r1/609-fhir-person-reference.png",
+      "Design/native/fhir-labs/small-r1/609-fhir-person.png",
+      "Design/native/fhir-labs/small-r1/622-fhir-draft-after-source-reader.png"
+    ],
+    "note": "Historical round manifests intentionally retain deleted working paths and their original hashes. No app build was rerun for this documentation/cleanup change."
   }
 }
