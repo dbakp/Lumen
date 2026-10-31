@@ -1,0 +1,25 @@
+{
+  "comparison": "Same full corpus and metrics/grid as frozen raw-query protocol; compare against original raw-query MiniLM and MedEmbed outcomes, retaining all query regressions and misses.",
+  "corpusVectorsSHA256": "810d4c7f98cfc3f1084000617aad6ec7e050fad81ab2a79316dfb6b21ab95f57",
+  "declaredAtUTC": "2026-10-31T18:58:03.624028+00:00",
+  "declaredBeforeVariantEncodingOrScores": true,
+  "hypothesis": "The BGE base model documented short-query retrieval instruction may improve ranking with the MedEmbed fine-tune. This is a supplementary development hypothesis, not established MedEmbed training behavior.",
+  "model": "Exact numerically verified MedEmbed R3 compiled artifact; not a new export or weight set",
+  "name": "medembed-bge-query-instruction-dev",
+  "originalProtocolPreserved": true,
+  "originalProtocolSHA256": "82df2f8b1d205db3c0b2c6c1361e2f7fd4e8df517217766038266ef6fbaf3710",
+  "passages": "Reuse byte-identical complete production-prepared passage windows and existing candidate corpus vectors; no prefix on passages.",
+  "priorRawQueryDecisionSHA256": "404bb193cd7470c1f6ed603fdc0015aeab332df192f07543dfeab8547ec99d1d",
+  "promotionGate": {
+    "exceptionsAllowed": false,
+    "maximumPrecision4LossAgainstRawMiniLM": 0.02,
+    "minimumNDCG10ImprovementOverRawMiniLM": 0.02,
+    "scope": "Passing only permits further no-match/non-health/identifier/app-budget/fusion/consent/legacy/storage evaluation; not app integration or clinical validity."
+  },
+  "queryPrefix": "Represent this sentence for searching relevant passages: ",
+  "queryTransformation": "Exact fixed prefix followed by the complete original query; no rewriting, synonyms, identifier/number/qualifier/negation changes or truncation. If prefix plus query exceeds the native limit, retain an explicit rejection and zero metrics in the full denominator.",
+  "selectionDiscipline": "Evaluate this one published instruction once. Do not search additional prefix variants, lower the gate or use test scores to rescue failure. No app model/cutoff/query policy is selected by this trial.",
+  "source": "https://huggingface.co/BAAI/bge-small-en-v1.5#frequently-asked-questions",
+  "split": "dev only; no test retrieval scores",
+  "version": 1
+}
