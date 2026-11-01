@@ -1,5 +1,5 @@
 {
-  "status": "verified; awaiting coherent publication and stopped-worker cleanup",
+  "status": "verified and published; stopped-worker scoped cleanup complete",
   "baselineMain": "862938455a3d474ebd84780d36b4a3e008dda745",
   "publishedApplicationBaseline": "f190b1d314299727f97788fb73665c6966f084ab",
   "syntheticOnly": true,
@@ -45,7 +45,8 @@
     "expectedPoints": [
       375,
       667
-    ]
+    ],
+    "removedAfterPublication": true
   },
   "knownFailedAttempts": [
     {
@@ -199,10 +200,7 @@
     },
     "findings": "Cause-specific error copy; settled no-match audit and actual dark/XXXL/compact evidence. Capacity message accepted."
   },
-  "pending": [
-    "Publication and exact GitHub main read-back",
-    "Stopped-worker scoped cleanup"
-  ],
+  "pending": [],
   "remainingProductGates": [
     "Broader ingestion and terminology/clinical review",
     "Retrieval model/policy quality and held-out evaluation",
@@ -814,5 +812,21 @@
     "appUIChangedAfterAcceptance": false,
     "lineage": "Original continuing critic twice could not resume (Bad Request), with no new image inspection claimed. Replacement explicitly permitted by App Designer Pro references/critique.md; received prior scorecard/asks/declined scope and judged whether those asks landed. All70 originals individually viewed, initial0/1 reopened at original detail; no image-tool failure.",
     "report": "../../CRITIQUE.md"
+  },
+  "publication": {
+    "applicationCommit": "04678c0d952d90972041c7ff9d4b90951f879342",
+    "publisher": "scripts/publish-batches.sh",
+    "exactGitHubMainReadBack": true,
+    "confirmedBeforeRemoval": true
+  },
+  "cleanup": {
+    "report": "storage-cleanup.json",
+    "retainedCaptureManifest": "retained-captures.json",
+    "rootsRemoved": 7,
+    "redundantPNGcopiesRemoved": 58,
+    "retainedOriginals": 72,
+    "compactSimulatorRemoved": true,
+    "recoveredAvailableBytes": 5864390656,
+    "noCleanupOnlyBuild": true
   }
 }

@@ -48,7 +48,7 @@ Batches 9a/9 established per-metric presence, evidence and local corrections. Ba
 ## Completion log
 Pending batch entries will record commit, validation and push outcome below.
 
-### Batch27 — literal identifier lookup · verified logic and native flows
+### Batch27 — literal identifier lookup · published and verified
 
 Recognized sample/report/invoice identifiers now constrain eligible titles/excerpts before keyword or optional topic ranking. Complete tokens preserve zeros, versions and separators; missing or changed follow-up IDs cannot reuse a neighboring source. Combined requests reserve coverage for every recognized ID within the existing four-excerpt/two-per-record limits. Unsupported format, length, count and packet-capacity errors have separate recovery. No model, cutoff, query prefix or persisted schema changes. See [the contract](LIBRARY_RETRIEVAL.md) and [native evidence](../Design/native/literal-identifiers/README.md).
 
@@ -292,3 +292,5 @@ Batch26 development research publication: `23ee57a20dd3f1a3f9fcd63d1ff89582103ac
 Batch26 instruction/challenge publication: `ff0673bb9d5175e7b99fc8249b117d73cd5ec5b7` reached GitHub through the batch publisher, with exact main read-back before cleanup. The separately frozen protocols/labels are preserved in `0a8e0b2` and `2c14538`. The instruction passes dev ranking only; literal identifier/source-selection work remains next and no app model/query/cutoff change is selected. Stopped-worker cleanup removes obsolete full ranking copies/logs/limit controls/bytecode and recovers a measured21,155,840 available bytes (about21.16MB). Current model/source/env/dataset/prepared corpus/matrices, native helper/cache and one package scratch remain for immediate source-selection implementation; all unrelated data remain. Details: Design/native/retrieval-quality/instruction-storage-cleanup.json. Raw temporary paths are historical; no cleanup-only app build was run. The full goal stays active.
 
 Batch27 design: Round2 completes at43/55,10/11 applicable lines4+, Richness3, all concrete requests closed and no later app/UI edit. The original critic could not resume after two harness errors; a replacement permitted by the supplied skill reviewed all70 unique originals against the prior asks. Exact lineage/scorecards remain in Design/CRITIQUE.md. Publication/read-back and scoped cleanup follow separately.
+
+Batch27 publication/cleanup: `04678c0d952d90972041c7ff9d4b90951f879342` reached GitHub through the batch publisher with exact read-back. Stopped-worker cleanup removed7 owned roots,58 redundant PNGs and the dedicated compact simulator, recovering a measured5,864,390,656 available bytes (about5.86GB).72 useful originals and compact provenance/current inputs remain. No cleanup-only rebuild ran; the full goal stays active. See Design/native/literal-identifiers/storage-cleanup.json.
