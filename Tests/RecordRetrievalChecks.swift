@@ -41,11 +41,36 @@ enum RecordRetrievalChecks {
         check(unknown.1.invalidCitations == 3 && unknown.1.passages.allSatisfy { !$0.referenced } && !unknown.0.contains("[1]"), "stale fabricated and bare numeric citations cannot link to unrelated text")
         let linked = RecordRetrieval.resolving("Valid [\(passage.id)](https://untrusted.example/fake) bare [1](https://untrusted.example/other) upper [RECORD_UNKNOWN_9]", context: found)
         check(linked.0 == "Valid [1] bare [reference unavailable] upper [reference unavailable]" && linked.1.invalidCitations == 2, "Library citation markers cannot carry a model-supplied external link and case-varied fake IDs are rejected")
+        let accepted = RecordRetrieval.validatedModelReply("  Literal 12.5 mg/L [\(passage.id)](https://untrusted.example/fake)  ", context: found)
+        check(accepted?.0 == "Literal 12.5 mg/L [1]" && accepted?.1.passages[0].referenced == true && accepted?.1.mode == .model, "provider acceptance preserves exact current IDs while removing external citation destinations")
+        let rejectedResponses = [
+            ("stale request", "Invented value [\(again.passages[0].id)]"),
+            ("unknown source", "Invented value [record_fake_9]"),
+            ("bare source number", "Invented value [1]"),
+            ("mixed valid and invalid sources", "Literal [\(passage.id)] and invented [record_fake_9]"),
+            ("case changed ID", "Invented [\(passage.id.uppercased())]"),
+            ("punctuated ID", "Invented [\(passage.id).other]"),
+            ("spaced ID", "Invented [ \(passage.id)]"),
+            ("incomplete ID", "Invented [record_"),
+            ("multiline incomplete ID", "Invented [\nRECORD_fake"),
+            ("empty response", " \n\t ")
+        ]
+        for (reason, response) in rejectedResponses {
+            check(RecordRetrieval.validatedModelReply(response, context: found) == nil, "provider prose is rejected as a whole for " + reason)
+        }
+        check(RecordRetrieval.validatedModelReply("A general question without Library claims.", context: found)?.1.passages.allSatisfy { !$0.referenced } == true, "uncited general conversation does not claim a Library reference or a support guarantee")
+        var invalidPacket = found; invalidPacket.passages[0].start = -1
+        check(RecordRetrieval.validatedModelReply("Answer", context: invalidPacket) == nil, "provider acceptance rejects damaged request metadata")
+        check(RecordRetrieval.validatedModelReply("Answer", context: unknown.1) == nil, "provider acceptance cannot reuse a packet already carrying invalid references")
         let user = ChatMessage(role: .user, text: query)
         let reply = ChatMessage(role: .coach, text: resolved.0, recordContext: resolved.1)
         let follow = try RecordRetrieval.search(query: "Explain that", documents: docs, history: [user, reply])
         let replay = RecordRetrieval.history([user, reply], context: follow, documents: docs)
         check(replay.count == 2 && replay[1].text.contains(follow.passages[0].id) && !replay[1].text.contains(passage.id), "follow-up carries exact current sources with newly mapped IDs")
+        let rejectedHistorical = ChatMessage(role: .coach, text: unknown.0, recordContext: unknown.1)
+        check(unknown.1.isValid && RecordRetrieval.history([user, rejectedHistorical], context: follow, documents: docs).count == 1, "historical replies with unresolved references remain stored but their prose is omitted from provider history")
+        let historicalRoundTrip = try JSONDecoder().decode(ChatMessage.self, from: JSONEncoder().encode(rejectedHistorical))
+        check(historicalRoundTrip.text == rejectedHistorical.text && historicalRoundTrip.recordContext?.invalidCitations == 3 && RecordRetrieval.history([historicalRoundTrip], context: follow, documents: docs).isEmpty, "compatible historical storage preserves invalid-citation audit without reintroducing its prose into provider history")
         let unrelated = try RecordRetrieval.search(query: "walking", documents: docs, history: [user, reply])
         check(!unrelated.passages.contains { $0.documentID == passage.documentID }, "a short new topic does not force prior unrelated sources into the request")
         check(RecordRetrieval.history([user, reply], context: unrelated, documents: docs).count == 1, "prior sourced replies are omitted when their exact sources are not in the new request")

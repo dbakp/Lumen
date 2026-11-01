@@ -80,6 +80,18 @@ public final class AIService: ObservableObject {
 
     public func chat(instructions: String, history: [ChatMessage], user: String, using selectedBrain: Brain? = nil) async -> String? {
         isWorking = true; defer { isWorking = false }
+        #if DEBUG && targetEnvironment(simulator)
+        // Exercise the real post-provider acceptance/fallback path with only
+        // synthetic text, without credentials, network or model availability.
+        if ProcessInfo.processInfo.arguments.contains("-libraryCitationUITestMode") {
+            let idRange = instructions.range(of: #"record_[a-f0-9]{16}_[1-4]"#, options: .regularExpression)
+            let id = idRange.map { String(instructions[$0]) } ?? "record_missing_9"
+            if user.contains("Current citation control") { return "Synthetic current citation control. No provider request was sent. [\(id)]" }
+            if user.contains("Mixed citation control") { return "SYNTHETIC-REJECTED-ASSERTION [\(id)] and [record_missing_9]" }
+            if user.contains("Numbered citation control") { return "SYNTHETIC-REJECTED-ASSERTION [1]" }
+            return "SYNTHETIC-REJECTED-ASSERTION [record_missing_9]"
+        }
+        #endif
         let chosenBrain = selectedBrain ?? brain
         let transcript = history.suffix(10).map { ["role": $0.role == .user ? "user" : "assistant", "text": $0.text] }
         let json = (try? JSONSerialization.data(withJSONObject: transcript)).flatMap { String(data: $0, encoding: .utf8) } ?? "[]"

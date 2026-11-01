@@ -1,5 +1,7 @@
 # Lumen product gaps and delivery batches
 
+Latest verified scope: Batch29 rejects provider answers with invalid Library references as a whole, uses the existing current literal lookup, and omits historical invalid-citation prose from later provider history.1,398 logic checks, five simulator products, unsigned Release and a117.046s native synthetic-response flow pass. Evidence: [citation integrity](../Design/native/citation-integrity/verification.json). Publication/read-back and scoped cleanup follow. Valid reference identity still does not prove answer support; broader grounding/model/provider/device/accessibility/release work remains open.
+
 Audit date: 29 October 2026. Scope: the actual native repository, not the screenshot preview.
 
 ## Delivery rules

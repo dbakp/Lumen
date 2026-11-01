@@ -551,12 +551,26 @@ public enum RecordRetrieval {
         }
         return (text, result)
     }
+    /// Reference identity is a prerequisite for accepting provider prose, not
+    /// evidence that the cited text entails the claim. Currentness is checked
+    /// by the caller against the live Library after the provider returns.
+    public static func validatedModelReply(_ response: String, context: RecordReplyContext) -> (String, RecordReplyContext)? {
+        guard context.isValid, context.mode == .model, context.invalidCitations == 0 else { return nil }
+        let trimmed = response.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return nil }
+        let resolved = resolving(trimmed, context: context)
+        // Catch malformed or incomplete uses of the reserved Library citation
+        // namespace as well as the unknown/stale/numeric IDs resolved above.
+        guard resolved.1.invalidCitations == 0,
+              resolved.0.range(of: #"\[\s*record_"#, options: [.regularExpression, .caseInsensitive]) == nil else { return nil }
+        return resolved
+    }
     public static func history(_ messages: [ChatMessage], context: RecordReplyContext, documents: [HealthDocument]) -> [ChatMessage] {
         messages.compactMap { message in
             guard message.role == .coach else { return message }
             // Legacy replies have no source map. Keep them on screen, but require
             // an explicit quoted question rather than replaying unknown excerpts.
-            guard let previous = message.recordContext, previous.isValid else { return nil }
+            guard let previous = message.recordContext, previous.isValid, previous.invalidCitations == 0 else { return nil }
             guard previous.passages.allSatisfy({ p in isCurrent(p, documents: documents) && context.passages.contains { $0.documentID == p.documentID && $0.textSHA256 == p.textSHA256 && $0.start == p.start && $0.end == p.end } }) else { return nil }
             var result = message
             for prior in previous.passages {

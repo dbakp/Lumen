@@ -1,0 +1,119 @@
+{
+  "recordedAtUTC": "2026-11-01T05:56:45.199729+00:00",
+  "status": "verified; publication and cleanup pending",
+  "applicationBaseline": "d14d589c7024b6a18996aaad9fae30f66b28da62",
+  "sourceMap": "source-r1.json",
+  "sourceInputsMatched": 252,
+  "sourceMismatches": [],
+  "logic": {
+    "recordedAtUTC": "2026-11-01T05:54:12.552981+00:00",
+    "status": "passed",
+    "checks": 1398,
+    "logSHA256": "2ba8e7311702154505aefaa37cf61d17c005423d2cc0939bad90c479bbfe477a",
+    "sourceMap": "source-r1.json",
+    "newCoverage": [
+      "current exact-ID acceptance and destination removal",
+      "whole-answer rejection for stale/unknown/numeric/mixed/case-changed/punctuated/spaced/incomplete IDs and blank responses",
+      "uncited conversation retains no claimed references",
+      "invalid request metadata and prior invalid-citation packet rejected",
+      "historical invalid-citation prose omitted from provider history",
+      "compatible historical JSON round trip preserves text and invalid-citation audit"
+    ]
+  },
+  "simulatorBuild": {
+    "status": "passed",
+    "products": [
+      "Lumen.app",
+      "Lumen.app/PlugIns/LumenWidget.appex",
+      "Lumen.app/Watch/LumenWatch.app",
+      "Lumen.app/Watch/LumenWatch.app/PlugIns/LumenWatchWidget.appex",
+      "LumenUITests-Runner.app"
+    ]
+  },
+  "unsignedRelease": {
+    "status": "passed",
+    "audit": "release-audit-r1.json"
+  },
+  "native": {
+    "status": "passed",
+    "method": "testProviderCitationRejection",
+    "caseSeconds": 117.046,
+    "summary": {
+      "devicesAndConfigurations": [
+        {
+          "device": {
+            "architecture": "arm64",
+            "deviceId": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+            "deviceName": "Lumen continuation verification",
+            "modelName": "iPhone 18 Pro",
+            "osBuildNumber": "24A434",
+            "osVersion": "27.0",
+            "platform": "iOS Simulator"
+          },
+          "expectedFailures": 0,
+          "failedTests": 0,
+          "passedTests": 1,
+          "skippedTests": 0,
+          "testPlanConfiguration": {
+            "configurationId": "1",
+            "configurationName": "Test Scheme Action"
+          }
+        }
+      ],
+      "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+      "expectedFailures": 0,
+      "failedTests": 0,
+      "finishTime": 1793512561.314,
+      "passedTests": 1,
+      "result": "Passed",
+      "runtimeWarnings": [],
+      "skippedTests": 0,
+      "startTime": 1793512428.895,
+      "statistics": [],
+      "testFailures": [],
+      "title": "Test - Lumen",
+      "topInsights": [],
+      "totalTestCount": 1
+    },
+    "adapter": "Debug simulator-only synthetic AIService.chat response; no provider/model/network call",
+    "regularProductionTail": "adapter removed after relaunch; current sharing withdrawal returns no match",
+    "captures": "native-captures.json",
+    "review": "All four retained originals opened; display tool resized1206x2622 to942x2048. Behavioral evidence only; no new design score or original-size review claimed. Frame803 captures the no-match text during an ordinary transition and is not full-footer layout proof."
+  },
+  "logs": {
+    "logic-r1": {
+      "sha256": "2ba8e7311702154505aefaa37cf61d17c005423d2cc0939bad90c479bbfe477a",
+      "bytes": 113279
+    },
+    "build-r1": {
+      "sha256": "9fa1561d2682fae606272edde4bc2eae6fa4eb858681b3983e02cffdee220c50",
+      "bytes": 428394
+    },
+    "native-r1": {
+      "sha256": "19fcb86ff0bcf2b3e53c6090e42ce4b8449a0e3c60c261e6732033619011d1cb",
+      "bytes": 39499
+    },
+    "release-r1": {
+      "sha256": "36a33b1d848d03b63679b4897bc7ae336defa2834980e82c888151581ea1cefd",
+      "bytes": 396945
+    }
+  },
+  "auditPreparationNotes": [
+    "Initial product inventory assumed Watch products at the build folder root. Corrected to the actual embedded Watch/app-extension paths before producing this verified report; no source change or rebuild."
+  ],
+  "productionChanges": [
+    "RecordRetrieval.validatedModelReply and invalid-citation history omission",
+    "ChatCoachService rejects whole answer and returns existing current literal lookup"
+  ],
+  "unchanged": [
+    "UI/layout/product copy",
+    "model/query/cutoff/ranking",
+    "storage version/retained historical text"
+  ],
+  "limits": [
+    "Valid current reference IDs do not prove support for the claim.",
+    "Uncited general replies remain allowed.",
+    "Seven frozen unsupported-topic selections remain unresolved.",
+    "No live-provider/clinical/physical-device/accessibility/distribution-readiness proof."
+  ]
+}

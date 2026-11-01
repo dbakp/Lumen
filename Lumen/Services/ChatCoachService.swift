@@ -61,10 +61,18 @@ public final class ChatCoachService: ObservableObject {
                   references.passages.allSatisfy({ RecordRetrieval.isCurrent($0, documents: CompanionStore.shared.documents) }) else {
                 return "Library records or search settings changed during this reply. Send your question again to use the current settings."
             }
-            lastReplySource = selectedBrain.label
-            let resolved = RecordRetrieval.resolving(ai.trimmingCharacters(in: .whitespacesAndNewlines), context: references)
-            lastRecordContext = resolved.1
-            return resolved.0
+            if let resolved = RecordRetrieval.validatedModelReply(ai, context: references) {
+                lastReplySource = selectedBrain.label
+                lastRecordContext = resolved.1
+                return resolved.0
+            }
+            // Discard the whole rejected answer, including claims next to any
+            // valid citations. Literal lookup uses the freshly checked packet;
+            // even a plan request cannot retain prose with broken references.
+            let lookup = RecordRetrieval.localReply(references, query: text)
+            lastRecordContext = lookup.1
+            lastReplySource = "Library lookup · on this iPhone"
+            return lookup.0
         }
         guard !Task.isCancelled else { return "" }
         guard SemanticSearchService.shared.isCurrent(modelLease),

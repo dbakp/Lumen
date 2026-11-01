@@ -13,7 +13,7 @@ final class LumenSmokeTests: XCTestCase {
         app = XCUIApplication()
         // The focused wrapping probe reuses this dedicated simulator's saved
         // synthetic record, with a public Files-import fallback if absent.
-        app.launchArguments = name.contains("testFHIRLiteralWrappingSnapshots") || name.contains("testLiteralIdentifier") ? ["-librarySearchRemoteUITestMode"] : ["-resetForUITests"]
+        app.launchArguments = name.contains("testFHIRLiteralWrappingSnapshots") || name.contains("testLiteralIdentifier") || name.contains("testProviderCitationRejection") ? ["-librarySearchRemoteUITestMode"] : ["-resetForUITests"]
         app.launch()
     }
 
@@ -2601,6 +2601,44 @@ final class LumenSmokeTests: XCTestCase {
             let saved = app.buttons[title].firstMatch; reveal(saved); saved.tap()
             nativeSwitch("Use in assistant", enabled: shared)
             app.navigationBars["Document"].buttons.element(boundBy: 0).tap()
+    }
+    func testProviderCitationRejection() throws {
+        app.terminate(); app.launchArguments = ["-libraryCitationUITestMode"]; app.launch()
+        if app.buttons["Get started"].waitForExistence(timeout: 2) { finishOnboarding() }
+        prepareIdentifierNote("Sample one", "Sample TEST-AX1. Exact wording: not detected.")
+        tab("Assistant"); tap("Conversation actions"); tap("New conversation")
+        askLibrary("Find sample ID TEST-AX1. Invalid citation control.")
+        func assertLiteral(_ index: Int) {
+            let reply = app.staticTexts.matching(identifier: "coachMessage").element(boundBy: index)
+            XCTAssertTrue(reply.label.hasPrefix("Matching saved text"))
+            XCTAssertTrue(reply.label.contains("Sample TEST-AX1. Exact wording: not detected."))
+            XCTAssertFalse(reply.label.contains("SYNTHETIC-REJECTED-ASSERTION"))
+            XCTAssertFalse(reply.label.contains("reference unavailable"))
+        }
+        assertLiteral(0)
+        XCTAssertTrue(app.staticTexts["Library lookup · on this iPhone"].firstMatch.exists)
+        snap("800-citation-invalid-literal-fallback")
+        let disclosure = app.buttons["libraryReferencesToggle"].firstMatch; reveal(disclosure); disclosure.tap()
+        let source = app.buttons["library-reference-1"].firstMatch; reveal(source); source.tap()
+        let excerpt = app.staticTexts["reference-excerpt"].firstMatch
+        XCTAssertTrue(excerpt.waitForExistence(timeout: 5)); XCTAssertEqual(excerpt.label, "Sample TEST-AX1. Exact wording: not detected.")
+        snap("801-citation-fallback-exact-source"); tap("Done")
+        askLibrary("Find sample ID TEST-AX1. Mixed citation control.", replies: 2); assertLiteral(1)
+        askLibrary("Find sample ID TEST-AX1. Numbered citation control.", replies: 3); assertLiteral(2)
+        askLibrary("Find sample ID TEST-AX1. Current citation control.", replies: 4)
+        let accepted = app.staticTexts.matching(identifier: "coachMessage").element(boundBy: 3)
+        XCTAssertTrue(accepted.label.contains("Synthetic current citation control. No provider request was sent. [1]"))
+        XCTAssertFalse(accepted.label.contains("Matching saved text")); snap("802-citation-current-control")
+        // Switch off the adapter, retain the saved conversation and exercise
+        // ordinary production lookup and sharing withdrawal after relaunch.
+        app.terminate(); app.launchArguments = []; app.launch(); tab("Assistant")
+        XCTAssertFalse(app.staticTexts.matching(identifier: "coachMessage").allElementsBoundByIndex.contains { $0.label.contains("SYNTHETIC-REJECTED-ASSERTION") })
+        prepareIdentifierNote("Sample one", "Sample TEST-AX1. Exact wording: not detected.", shared: false)
+        tab("Assistant"); tap("Conversation actions"); tap("New conversation")
+        askLibrary("Find sample ID TEST-AX1")
+        let withdrawn = app.staticTexts.matching(identifier: "coachMessage").firstMatch
+        XCTAssertTrue(withdrawn.label.contains("No match in the shared documents searched"))
+        XCTAssertFalse(withdrawn.label.contains("not detected")); snap("803-citation-withdrawn-regular-lookup")
     }
     func testLiteralIdentifierLookupAndFollowup() throws {
         app.terminate(); app.launchArguments = []; app.launch()

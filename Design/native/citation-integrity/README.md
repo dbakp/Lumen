@@ -1,0 +1,13 @@
+# Batch 29 · provider citation acceptance
+
+The former reply path displayed provider prose after substituting `reference unavailable` for invalid citation markers. That preserved surrounding generated claims. A historical reply with an invalid-citation audit could also enter later provider history if its selected source snapshots remained current.
+
+New provider prose must pass `RecordRetrieval.validatedModelReply` after the existing live source/settings checks. Unknown/stale/numeric citations, malformed or incomplete bracketed uses of the reserved Library citation namespace, invalid request metadata and mixed valid/invalid references reject the entire answer. The service immediately returns the existing literal lookup and its lookup source label, including for a plan request. Rejected prose is neither displayed nor saved as the new reply. Existing stored replies/audits remain compatible and visible; replies with recorded invalid citations are omitted from future provider history.
+
+Exact current request IDs still become numbered references, with any attached model-supplied destination removed. Uncited general conversation remains allowed. Reference identity does not establish entailment, clinical correctness, answer completeness or that a retrieved related topic answers the question. The seven remaining unsupported-topic selections in the frozen research challenge are not repaired or relabelled by this batch. No model, query instruction, cutoff, retrieval ranking, storage schema, production UI layout or product copy changes.
+
+`logic-r1.json` records 1,398 passing production checks. `source-r1.json` hashes all 252 tracked code/test/build/resource/script inputs used for this batch. Final build/native/release outcomes and source equality belong in `verification.json`.
+
+The Debug simulator-only `-libraryCitationUITestMode` adapter supplies synthetic provider text at the actual `AIService.chat` boundary. It does not use credentials, network or inference. The native test exercises whole-answer fallback for unknown, mixed and bare numeric references; exact retained source navigation; a valid current-ID control; persistence; and ordinary sharing-off lookup after removing the adapter. This is response-routing proof, not a live-provider grounding or physical-device result. The Release audit must prove that this adapter's flag and synthetic assertion marker are absent.
+
+The existing literal lookup screens and wording are reused. No new interface/design score is claimed; the prior design acceptance retains its original source boundary. Raw temporary paths in evidence are historical after scoped cleanup.
