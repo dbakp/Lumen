@@ -1,0 +1,55 @@
+{
+  "logicChecks": 1488,
+  "focusedOrderingInitial": 19,
+  "focusedOrderingFinal": 23,
+  "legacyRace": "Both controlled legacy shapes complete deletion before save, then leave a record. Final ordering waits for save completion and removes it. Controlled callbacks, not actual HealthKit writes.",
+  "buildR1": "failed in test helper: extra towardsTop argument, source-r1.json; no runtime test executed",
+  "buildR2": "passed, source-r2.json; only test-helper repair since R1",
+  "simulatorProducts": {
+    "Lumen": {
+      "binarySHA256": "3a825d56b2e712a6bd0756c28408f0feb7ba330a9aa71b1f9beb51d9dee7b20f",
+      "bundleIdentifier": "com.dbakp.lumen"
+    },
+    "LumenWidget": {
+      "binarySHA256": "faaab934118d71a21b0e590d717a7edafed24ab539cd9b96d98a9867072435b3",
+      "bundleIdentifier": "com.dbakp.lumen.LumenWidget"
+    },
+    "LumenWatch": {
+      "binarySHA256": "75415ba9cdfa7100c80925b9281446d06835de3c3f1dfee2030c35ff3a6a255d",
+      "bundleIdentifier": "com.dbakp.lumen.watchkitapp"
+    },
+    "LumenWatchWidget": {
+      "binarySHA256": "d75a7d85e5e509b903eba32632616a8da4729c2285263965f2b94818b37b8b47",
+      "bundleIdentifier": "com.dbakp.lumen.watchkitapp.widgets"
+    },
+    "LumenUITests": {
+      "binarySHA256": "d2931e7708c6cafb5aaf10fde0332fce61271588203e28882c453fdb0d061c54",
+      "bundleIdentifier": "com.dbakp.lumen.LumenUITests"
+    }
+  },
+  "native": {
+    "test": "testQuickWaterAndMealMutationLifecycle",
+    "seconds": 84.623,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "runtimeWarnings": 0,
+    "sourceMap": "source-r2.json",
+    "scope": "Actual native local add/two undos, relaunch persistence, food selection/meal delete/relaunch; unconnected Health guard returns no removal attempted. No real HealthKit latency/race/permission proof."
+  },
+  "releaseR1": "passed unsigned minimumiOS18;20 development markers absent;no bundled model",
+  "allSourceInputsMatched": 235,
+  "onlySourceDifferenceR1toR2": [
+    "LumenUITests/LumenSmokeTests.swift"
+  ],
+  "productionUIFilesUnchanged": true,
+  "screenshots": "Five targeted original PNGs individually inspected. 900 shows amount250 with status partly below navigation;901/902/903 contain the full no-Health-removal status. Captures are scrolled viewports, not full page/designed text coverage.",
+  "remaining": [
+    "physical HealthKit permission/write/delete/retry/interruption validation",
+    "durable pending-write/deletion recovery across termination",
+    "checked local persistence/failure feedback for existing quick logging paths; meal photo deletion ordering under a local write failure",
+    "acknowledged identity-preserving Watch water delivery",
+    "broader source support/providers/languages/clinical/accessibility/privacy/release gates"
+  ],
+  "scope": "Backend ordering/timestamp fix only; no schema/production UI/copy/model/query/cutoff change, no new design score. Prior actual MiniLM28 checks retain their earlier source/runtime boundary; not rerun as a new claim."
+}

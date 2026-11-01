@@ -18,6 +18,7 @@ public final class HealthStore: ObservableObject {
     @Published public var waterLogs: [HydrationLog] = []
     @Published public private(set) var waterUndoStatus: String?
     private var waterUndoOperation = UUID()
+    private let healthWrites = OrderedHealthWrites()
     @Published public var readiness: Readiness?
     @Published public var plan: DayPlan?
     @Published public var insights: [Insight] = []
@@ -106,14 +107,18 @@ public final class HealthStore: ObservableObject {
 
     public func addMeal(_ meal: Meal) {
         meals.append(meal)
-        Task { await HealthKitService.shared.saveMeal(meal) }
+        healthWrites.enqueueSave(.meal(meal.id), isCurrent: { [weak self] in
+            self?.meals.contains(where: { $0.id == meal.id }) == true
+        }) {
+            await HealthKitService.shared.saveMeal(meal)
+        }
         persist(); refresh()
     }
 
     public func deleteMeal(_ id: String) {
         PhotoStore.delete(meals.first { $0.id == id }?.photoID)
         meals.removeAll { $0.id == id }
-        Task { await HealthKitService.shared.deleteMeal(id: id) }
+        healthWrites.enqueue(.meal(id)) { await HealthKitService.shared.deleteMeal(id: id) }
         persist(); refresh()
     }
 
@@ -122,7 +127,11 @@ public final class HealthStore: ObservableObject {
         waterUndoOperation = UUID(); waterUndoStatus = nil
         let log = HydrationLog(ml: ml)
         waterLogs.append(log)
-        Task { await HealthKitService.shared.saveWater(ml: ml, id: log.id) }
+        healthWrites.enqueueSave(.water(log.id), isCurrent: { [weak self] in
+            self?.waterLogs.contains(where: { $0.id == log.id && $0.logOrigin == nil }) == true
+        }) {
+            await HealthKitService.shared.saveWater(ml: ml, id: log.id, at: log.date)
+        }
         persist(); refresh()
     }
 
@@ -135,15 +144,15 @@ public final class HealthStore: ObservableObject {
             waterLogs = remaining; refresh()
             let operation = UUID(); waterUndoOperation = operation
             waterUndoStatus = "Removed from Lumen. Checking Apple Health…"
-            Task {
+            healthWrites.enqueue(.water(last.id)) { [weak self] in
                 let status: String
                 do {
                     if let count = try await HealthKitService.shared.deleteWater(id: last.id) {
                         status = count > 0 ? "Removed from Lumen and Apple Health." : "Removed from Lumen. No matching Apple Health entry was removed."
                     } else { status = "Removed from Lumen. No Apple Health removal was attempted." }
                 } catch { status = "Removed from Lumen. Apple Health removal failed; check the entry in Health." }
-                guard waterUndoOperation == operation else { return }
-                waterUndoStatus = status
+                guard let self, self.waterUndoOperation == operation else { return }
+                self.waterUndoStatus = status
             }
         } catch { AppRouter.shared.confirm("Couldn’t remove water. Try again.") }
     }
@@ -206,6 +215,10 @@ public final class HealthStore: ObservableObject {
     }
 
     func reloadAfterRestore() {
+        // A restore must not start an old queued write using restored content.
+        // Already-started Health callbacks cannot be recalled; their record's
+        // requested deletion still waits for completion through the same queue.
+        healthWrites.invalidatePendingSaves(); waterUndoOperation = UUID(); waterUndoStatus = nil
         goals = LocalStore.load(HealthGoals.self, from: "goals") ?? goals
         meals = LocalStore.load([Meal].self, from: "meals") ?? meals
         workouts = LocalStore.load([Workout].self, from: "workouts") ?? workouts
@@ -369,6 +382,7 @@ public final class HealthStore: ObservableObject {
 
     /// Start over: clears every log (Health data itself is untouched).
     public func resetAll() {
+        healthWrites.invalidatePendingSaves(); waterUndoOperation = UUID(); waterUndoStatus = nil
         conversationReady = false
         goals = HealthGoals(); meals = []; workouts = []; waterLogs = []; chat = []
         conversations = []; activeConversationID = nil

@@ -4,6 +4,9 @@ import Darwin
 @main struct ImportTests {
     static func main() async throws {
         setbuf(stdout, nil)
+        if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--health-write-order" {
+            try await HealthWriteOrderChecks.run(output: URL(fileURLWithPath: CommandLine.arguments[2])); return
+        }
         if CommandLine.arguments.count == 5, CommandLine.arguments[1] == "--retrieval-rerank-pools" {
             do { try RetrievalSelectionProbe.rerankPools(input: URL(fileURLWithPath: CommandLine.arguments[2]), protocolURL: URL(fileURLWithPath: CommandLine.arguments[3]), output: URL(fileURLWithPath: CommandLine.arguments[4])); return }
             catch { FileHandle.standardError.write(Data(("Rerank pools failed: \(error)\n").utf8)); exit(1) }
@@ -76,6 +79,7 @@ import Darwin
             try BackupUIFixtures.write(to: URL(fileURLWithPath: CommandLine.arguments[2])); return
         }
         try ProviderReplyChecks.run()
+        try await HealthWriteOrderChecks.run()
         try VoiceDraftChecks.run()
         try ScheduledPlanChecks.run()
         try await LabReportChecks.run()

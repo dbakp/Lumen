@@ -57,6 +57,10 @@ Batches 9a/9 established per-metric presence, evidence and local corrections. Ba
 ## Completion log
 Pending batch entries will record commit, validation and push outcome below.
 
+### Batch35 — optional Health save/delete ordering · verified
+
+Same-record quick-water and meal deletion waits for a pending save callback. Independent records/domains remain parallel, removed/reset/restored pending saves are suppressed, and water keeps its log timestamp.23 controlled ordering checks reproduce the old orphan and verify the production primitive;1,488 Release logic checks, all5 simulator products, actual84.623s native local water/meal/relaunch lifecycle and unsignedRelease/minimumiOS18/20-marker audit pass. Source boundaries and the test-helper-only failed build remain in [the evidence](../Design/native/health-write-order/README.md). No UI/copy/schema/model change or new design score. Durable retry, real Health permissions/interruption and Watch identity reconciliation remain open. Next checked local quick-log persistence/failure feedback and photo retention on failed local deletion; the full goal stays active.
+
 ### Batch34 — grounded-answer development trial · candidate rejected
 
 One predeclared local generative policy supplies complete free-form answers plus literal source quotes for all72 frozen cases. All outputs/anchors are mechanically valid, but wrong test/label/sample/unit/instruction attributions remain. New predeclared literal-clause completeness (16/17 per source pipeline,4/4 stress) stays separate from old exact whole-answer aliases (2/17 per pipeline,2/4 stress). Both source pipelines emit3/15 unsupported answers; all4 stress negatives emit answers. Primary review distinguishes6 actual attribution errors from4 correct absence statements that still fail the strict contract. No app promotion or public stage follows; that conditional stage is explicitly unrun. Exact controls/outputs/provenance and [decision](../Design/native/grounded-answer/README.md) remain. Continue semantic evidence binding and the broader data editing/reconciliation/provider/device/release roadmap; the full goal stays active.

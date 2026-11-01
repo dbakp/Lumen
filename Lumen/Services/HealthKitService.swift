@@ -291,9 +291,9 @@ public final class HealthKitService: ObservableObject {
         }
     }
 
-    public func saveWater(ml: Double, id: String? = nil) async {
+    public func saveWater(ml: Double, id: String? = nil, at date: Date = Date()) async {
         guard isAvailable, isAuthorized else { return }
-        let s = HKQuantitySample(type: HKQuantityType(.dietaryWater), quantity: HKQuantity(unit: .literUnit(with: .milli), doubleValue: ml), start: Date(), end: Date(), metadata: id.map { ["LumenWaterID": $0] })
+        let s = HKQuantitySample(type: HKQuantityType(.dietaryWater), quantity: HKQuantity(unit: .literUnit(with: .milli), doubleValue: ml), start: date, end: date, metadata: id.map { ["LumenWaterID": $0] })
         try? await store.save(s)
     }
 

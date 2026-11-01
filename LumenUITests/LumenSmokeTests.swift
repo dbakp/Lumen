@@ -3495,6 +3495,50 @@ final class LumenSmokeTests: XCTestCase {
         snap("135-water-deleted-reading")
     }
 
+    func testQuickWaterAndMealMutationLifecycle() throws {
+        finishOnboarding()
+        scrollAndTap("Food")
+        let water = app.staticTexts["foodWaterValue"]
+        reveal(water); XCTAssertEqual(water.label, "Not recorded")
+        tap("+ 250 ml"); tap("+ 250 ml")
+        XCTAssertEqual(water.label, "500 ml")
+        tap("undoQuickWater")
+        XCTAssertEqual(water.label, "250 ml")
+        let status = app.staticTexts["waterUndoStatus"]
+        let noHealthRemoval = NSPredicate(format: "label CONTAINS %@", "No Apple Health removal was attempted")
+        expectation(for: noHealthRemoval, evaluatedWith: status)
+        waitForExpectations(timeout: 10)
+        snap("900-ordered-water-first-undo")
+
+        app.terminate(); app.launchArguments = []; app.launch()
+        scrollAndTap("Food"); reveal(water)
+        XCTAssertEqual(water.label, "250 ml")
+        tap("undoQuickWater")
+        XCTAssertEqual(water.label, "Not recorded")
+        expectation(for: noHealthRemoval, evaluatedWith: status)
+        waitForExpectations(timeout: 10)
+        XCTAssertFalse(app.buttons["undoQuickWater"].isEnabled)
+        snap("901-ordered-water-persisted-undo")
+
+        let search = app.buttons["Search foods"].firstMatch
+        reveal(search, towardsTop: true); search.tap()
+        let espresso = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Espresso")).firstMatch
+        XCTAssertTrue(espresso.waitForExistence(timeout: 5)); espresso.tap()
+        let meal = app.staticTexts["Espresso"].firstMatch
+        reveal(meal); XCTAssertTrue(meal.exists)
+        snap("902-ordered-meal-added")
+        meal.press(forDuration: 1.2); tap("Delete")
+        XCTAssertTrue(meal.waitForNonExistence(timeout: 5))
+        XCTAssertEqual(app.staticTexts["foodEnergyValue"].label, "Not recorded")
+        snap("903-ordered-meal-deleted")
+        app.terminate(); app.launchArguments = []; app.launch()
+        scrollAndTap("Food")
+        XCTAssertEqual(app.staticTexts["foodEnergyValue"].label, "Not recorded")
+        reveal(water); XCTAssertEqual(water.label, "Not recorded")
+        XCTAssertFalse(app.buttons["undoQuickWater"].isEnabled)
+        snap("904-ordered-mutations-after-relaunch")
+    }
+
     func testCurrentReadingConfidence() throws {
         finishOnboarding()
         scrollAndTap("Activity")

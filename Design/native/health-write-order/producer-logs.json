@@ -1,0 +1,199 @@
+{
+  "ordering-r1.log": {
+    "sha256": "e65de16a189e6142d9924bd77728ffa658e98ff1efa4cafab958a49e9a0dc9fe",
+    "bytes": 4388,
+    "diagnostics": [
+      "warning: 'zipfoundation': /Package@swift-5.9.swift:23:61: warning: 'v4' is deprecated: watchOS 9.0 is the oldest supported version [#DeprecatedDeclaration]",
+      "   |                                                             `- warning: 'v4' is deprecated: watchOS 9.0 is the oldest supported version [#DeprecatedDeclaration]",
+      "warning: 'zipfoundation': /tmp/LumenBatch35LogicBuild/checkouts/ZIPFoundation/Package@swift-5.9.swift:23:61: warning: 'v4' is deprecated: watchOS 9.0 is the oldest supported version [#DeprecatedDeclaration]",
+      "   |                                                             `- warning: 'v4' is deprecated: watchOS 9.0 is the oldest supported version [#DeprecatedDeclaration]",
+      "/Users/davidbakposada/Documents/ChatGPT/Lumen/Tests/ZIPImportChecks.swift:148:13: warning: will never be executed",
+      "    |             `- warning: will never be executed"
+    ],
+    "tail": [
+      "PASS: legacy water ordering leaves a saved record after deletion",
+      "PASS: legacy meal deletion can complete before a pending save",
+      "PASS: legacy meal ordering leaves a saved record after deletion",
+      "PASS: same-record deletion waits without blocking another record",
+      "PASS: only the unfinished original record retains a queue tail",
+      "PASS: ordered save completion precedes deletion and leaves no orphan",
+      "PASS: completed record tasks are released",
+      "PASS: same-record deletion waits without blocking another record",
+      "PASS: only the unfinished original record retains a queue tail",
+      "PASS: ordered save completion precedes deletion and leaves no orphan",
+      "PASS: completed record tasks are released",
+      "PASS: an older completion cannot remove a newer tail",
+      "PASS: meal and water namespaces remain independent for identical IDs",
+      "PASS: a third operation keeps the full record dependency chain",
+      "PASS: cancelling a queued task cannot let deletion overtake a save",
+      "PASS: an already-requested ordered deletion finishes after consumer cancellation",
+      "PASS: a failed save completes before the subsequent delete attempt",
+      "PASS: a handled service failure does not retain a completed tail"
+    ]
+  },
+  "ordering-r2.log": {
+    "sha256": "547814a737a34bda2e67fbb8fcdd1bfbe523e095d72d75ce49f603be2e0f6602",
+    "bytes": 2308,
+    "diagnostics": [
+      "warning: 'zipfoundation': /tmp/LumenBatch35LogicBuild/checkouts/ZIPFoundation/Package@swift-5.9.swift:23:61: warning: 'v4' is deprecated: watchOS 9.0 is the oldest supported version [#DeprecatedDeclaration]",
+      "   |                                                             `- warning: 'v4' is deprecated: watchOS 9.0 is the oldest supported version [#DeprecatedDeclaration]"
+    ],
+    "tail": [
+      "PASS: only the unfinished original record retains a queue tail",
+      "PASS: ordered save completion precedes deletion and leaves no orphan",
+      "PASS: completed record tasks are released",
+      "PASS: same-record deletion waits without blocking another record",
+      "PASS: only the unfinished original record retains a queue tail",
+      "PASS: ordered save completion precedes deletion and leaves no orphan",
+      "PASS: completed record tasks are released",
+      "PASS: an older completion cannot remove a newer tail",
+      "PASS: meal and water namespaces remain independent for identical IDs",
+      "PASS: a third operation keeps the full record dependency chain",
+      "PASS: cancelling a queued task cannot let deletion overtake a save",
+      "PASS: an already-requested ordered deletion finishes after consumer cancellation",
+      "PASS: a failed save completes before the subsequent delete attempt",
+      "PASS: a handled service failure does not retain a completed tail",
+      "PASS: reset/restore invalidates unstarted saves without dropping a requested deletion",
+      "PASS: a removed record cannot start a queued save",
+      "PASS: a fresh explicit log can save after invalidation",
+      "PASS: invalidation cannot skip completion of an already-started save before deleting it"
+    ]
+  },
+  "LogicR1.log": {
+    "sha256": "5ca322f24209d7880ad01b3d7b41b95c85eebd50a52d1434345c08ddde8f9c4e",
+    "bytes": 119277,
+    "diagnostics": [
+      "warning: 'zipfoundation': /tmp/LumenBatch35LogicBuild/checkouts/ZIPFoundation/Package@swift-5.9.swift:23:61: warning: 'v4' is deprecated: watchOS 9.0 is the oldest supported version [#DeprecatedDeclaration]",
+      "   |                                                             `- warning: 'v4' is deprecated: watchOS 9.0 is the oldest supported version [#DeprecatedDeclaration]",
+      "/Users/davidbakposada/Documents/ChatGPT/Lumen/Tests/ZIPImportChecks.swift:148:13: warning: will never be executed",
+      "    |             `- warning: will never be executed"
+    ],
+    "tail": [
+      "PASS: a prepared restore installs its merged records and streamed photos together",
+      "PASS: file-backed restore preserves unknown local domains",
+      "PASS: a prepared restore cannot be installed twice",
+      "PASS: a local write during preparation rejects the stale restore commit",
+      "PASS: a rejected stale restore leaves the newer edit intact",
+      "PASS: restore staging rejects paths outside its owned directory",
+      "PASS: restore cancellation stops before installing the prepared directory",
+      "PASS: cancelled restore removes staged files and preserves current records",
+      "PASS: restore refuses to copy symlinks from existing local storage",
+      "PASS: failed local writes retain their reported failure",
+      "PASS: even an attempted local mutation invalidates an in-flight restore",
+      "PASS: provider cancellation registered after a cancel request runs immediately",
+      "PASS: completed provider operations release their cancellation handler",
+      "PASS: a real concurrent local writer enters the storage barrier",
+      "PASS: restore cannot commit while a concurrent local writer holds the barrier",
+      "PASS: the waiting restore observes the completed write and rejects its stale revision",
+      "PASS: existing version-one JSON backups remain readable after the streamed format is introduced",
+      "All import, model, totals, history, plan, conversation, evidence, document and reminder checks passed."
+    ]
+  },
+  "BuildR1.log": {
+    "sha256": "994b8e25a7028078b94607e87bdba2a32c1950fdab9eb36674ff99834c7956f8",
+    "bytes": 386006,
+    "diagnostics": [
+      "/Users/davidbakposada/Documents/ChatGPT/Lumen/LumenUITests/LumenSmokeTests.swift:3523:50: error: extra argument 'towardsTop' in call",
+      "     |                                                  `- error: extra argument 'towardsTop' in call"
+    ],
+    "tail": [
+      "PruneExplicitPrecompiledModules /tmp/LumenBatch35Simulator/Build/Intermediates.noindex/ExplicitPrecompiledModules",
+      "",
+      "PruneExplicitPrecompiledModules /tmp/LumenBatch35Simulator/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules",
+      "",
+      "PruneExplicitPrecompiledModules /tmp/LumenBatch35Simulator/SDKExplicitPrecompiledModules",
+      "",
+      "",
+      "Result bundle written to path:",
+      "\t/tmp/LumenBatch35Checks/BuildR1.xcresult",
+      "",
+      "** TEST BUILD FAILED **",
+      "",
+      "",
+      "The following build commands failed:",
+      "\tSwiftCompile normal arm64 Compiling\\ LumenSmokeTests.swift /Users/davidbakposada/Documents/ChatGPT/Lumen/LumenUITests/LumenSmokeTests.swift (in target 'LumenUITests' from project 'Lumen')",
+      "\tSwiftCompile normal arm64 /Users/davidbakposada/Documents/ChatGPT/Lumen/LumenUITests/LumenSmokeTests.swift (in target 'LumenUITests' from project 'Lumen')",
+      "\tBuilding project Lumen for testing with scheme Lumen",
+      "(3 failures)"
+    ]
+  },
+  "BuildR2.log": {
+    "sha256": "ace6221fac19fa82b3697c10f0aa6d650a9d99daf697dcc8727690d4e3d0c270",
+    "bytes": 124822,
+    "diagnostics": [
+      "2026-11-01 15:02:24.332 appintentsmetadataprocessor[85900:39703620] warning: Metadata extraction skipped, no AppIntents.framework dependency found"
+    ],
+    "tail": [
+      "    builtin-RegisterExecutionPolicyException /tmp/LumenBatch35Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest",
+      "",
+      "Touch /tmp/LumenBatch35Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest (in target 'LumenUITests' from project 'Lumen')",
+      "    cd /Users/davidbakposada/Documents/ChatGPT/Lumen",
+      "    /usr/bin/touch -c /tmp/LumenBatch35Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest",
+      "",
+      "PruneExplicitPrecompiledModules /tmp/LumenBatch35Simulator/Build/Intermediates.noindex/ExplicitPrecompiledModules",
+      "",
+      "PruneExplicitPrecompiledModules /tmp/LumenBatch35Simulator/SDKExplicitPrecompiledModules",
+      "",
+      "PruneExplicitPrecompiledModules /tmp/LumenBatch35Simulator/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules",
+      "",
+      "",
+      "Result bundle written to path:",
+      "\t/tmp/LumenBatch35Checks/BuildR2.xcresult",
+      "",
+      "** TEST BUILD SUCCEEDED **",
+      ""
+    ]
+  },
+  "ReleaseR1.log": {
+    "sha256": "b84f619ca17c3319dafba94f2f19ed5133a2a70a2dd9ffb3b5ed245d55235bcd",
+    "bytes": 379848,
+    "diagnostics": [
+      "warning: All interface orientations must be supported unless the app requires full screen. (in target 'Lumen' from project 'Lumen')"
+    ],
+    "tail": [
+      "warning: All interface orientations must be supported unless the app requires full screen. (in target 'Lumen' from project 'Lumen')",
+      "",
+      "Touch /tmp/LumenBatch35Release/Build/Products/Release-iphoneos/Lumen.app (in target 'Lumen' from project 'Lumen')",
+      "    cd /Users/davidbakposada/Documents/ChatGPT/Lumen",
+      "    /usr/bin/touch -c /tmp/LumenBatch35Release/Build/Products/Release-iphoneos/Lumen.app",
+      "",
+      "PruneExplicitPrecompiledModules /tmp/LumenBatch35Release/SDKExplicitPrecompiledModules",
+      "",
+      "PruneExplicitPrecompiledModules /tmp/LumenBatch35Release/Build/Intermediates.noindex/ExplicitPrecompiledModules",
+      "",
+      "PruneExplicitPrecompiledModules /tmp/LumenBatch35Release/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules",
+      "",
+      "",
+      "Result bundle written to path:",
+      "\t/tmp/LumenBatch35Checks/ReleaseR1.xcresult",
+      "",
+      "** BUILD SUCCEEDED **",
+      ""
+    ]
+  },
+  "NativeR1.log": {
+    "sha256": "bd5662cdddc32d28504470ed6b7f11d1918aaf434a76eda599d94edccdd06c98",
+    "bytes": 31329,
+    "diagnostics": [],
+    "tail": [
+      "    t =    84.16s Tear Down",
+      "Test Case '-[LumenUITests.LumenSmokeTests testQuickWaterAndMealMutationLifecycle]' passed (84.623 seconds).",
+      "Test Suite 'LumenSmokeTests' passed at 2026-11-01 15:06:28.433.",
+      "\t Executed 1 test, with 0 failures (0 unexpected) in 84.623 (84.626) seconds",
+      "Test Suite 'LumenUITests.xctest' passed at 2026-11-01 15:06:28.433.",
+      "\t Executed 1 test, with 0 failures (0 unexpected) in 84.623 (84.627) seconds",
+      "Test Suite 'Selected tests' passed at 2026-11-01 15:06:28.433.",
+      "\t Executed 1 test, with 0 failures (0 unexpected) in 84.623 (84.628) seconds",
+      "2026-11-01 15:06:28.800 xcodebuild[86110:39705310] [MT] IDETestOperationsObserverDebug: 155.850 elapsed -- Testing started completed.",
+      "2026-11-01 15:06:28.800 xcodebuild[86110:39705310] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start",
+      "2026-11-01 15:06:28.800 xcodebuild[86110:39705310] [MT] IDETestOperationsObserverDebug: 155.850 sec, +155.850 sec -- end",
+      "",
+      "Test session results, code coverage, and logs:",
+      "\t/tmp/LumenBatch35Checks/NativeR1.xcresult",
+      "",
+      "** TEST EXECUTE SUCCEEDED **",
+      "",
+      "Testing started"
+    ]
+  }
+}
