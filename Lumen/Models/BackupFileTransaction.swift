@@ -16,10 +16,14 @@ final class BackupFileTransaction: @unchecked Sendable {
     }
 
     static func prepare(_ files: [String: Data], photoFiles: [String: URL], into directory: URL,
-                        control: BackupOperationControl = .init()) throws -> BackupFileTransaction {
+                        control: BackupOperationControl = .init(), preserveByLink: Bool = false) throws -> BackupFileTransaction {
         let fm = FileManager.default
         try control.checkCancellation()
         try BackupFiles.recover(directory)
+        if fm.fileExists(atPath: directory.path) {
+            let root = try directory.resourceValues(forKeys: [.isDirectoryKey, .isSymbolicLinkKey])
+            guard root.isDirectory == true, root.isSymbolicLink != true else { throw BackupError.invalid }
+        }
         let stage = directory.deletingLastPathComponent().appendingPathComponent(directory.lastPathComponent + ".restore-" + UUID().uuidString)
         try fm.createDirectory(at: stage, withIntermediateDirectories: true, attributes: [.posixPermissions: 0o700])
         var prepared = false
@@ -41,7 +45,12 @@ final class BackupFileTransaction: @unchecked Sendable {
                 if attributes.isDirectory == true { try fm.createDirectory(at: target, withIntermediateDirectories: true, attributes: [.posixPermissions: 0o700]) }
                 else {
                     guard attributes.isRegularFile == true else { throw BackupError.invalid }
-                    copied += try copyFile(source, to: target, control: control)
+                    // Local multi-file changes retain existing regular-file inodes.
+                    // Every LocalStore writer replaces its file atomically; staged
+                    // replacements below must do the same. Never link directories
+                    // or follow symbolic links. Restore keeps its independent copy.
+                    if preserveByLink { try fm.linkItem(at: source, to: target) }
+                    else { copied += try copyFile(source, to: target, control: control) }
                     control.update(.restoring, bytes: copied)
                 }
             }
@@ -54,7 +63,13 @@ final class BackupFileTransaction: @unchecked Sendable {
             guard safe(path), photoFiles[path] == nil else { throw BackupError.invalid }
             let target = stage.appendingPathComponent(path)
             try fm.createDirectory(at: target.deletingLastPathComponent(), withIntermediateDirectories: true)
+            #if DEBUG && targetEnvironment(simulator)
+            try QuickLogDiskFault.write(domain: preserveByLink ? path : "restore", target: target) {
+                try files[path]!.write(to: target, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
+            }
+            #else
             try files[path]!.write(to: target, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
+            #endif
             completed += 1; control.update(.restoring, completed: completed, total: total, bytes: copied)
         }
         for path in photoFiles.keys.sorted() {

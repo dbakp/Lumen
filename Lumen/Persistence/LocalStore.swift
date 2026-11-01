@@ -29,6 +29,20 @@ public enum LocalStore {
     static func commitRestore(_ transaction: BackupFileTransaction, revision: UInt64) throws {
         try writes.commit(ifUnchanged: revision) { try transaction.commit() }
     }
+    /// Encode on the caller's actor; prepare off-thread, then install only if no
+    /// local writer changed the captured state. No partial goals/today save.
+    @MainActor static func saveWeightChecked(goals: HealthGoals, snapshot: DayMetrics, canCommit: () -> Bool) async throws {
+        let encoder = JSONEncoder(); encoder.dateEncodingStrategy = .iso8601
+        let files = ["goals.json": try encoder.encode(goals), "today.json": try encoder.encode(snapshot)]
+        let root = directory, capturedRevision = revision
+        let transaction = try await Task.detached(priority: .userInitiated) {
+            try BackupFileTransaction.prepare(files, photoFiles: [:], into: root, preserveByLink: true)
+        }.value
+        // An uncommitted transaction removes its stage off-thread on release.
+        try Task.checkCancellation()
+        guard canCommit() else { throw BackupError.busy }
+        try commitRestore(transaction, revision: capturedRevision)
+    }
     private static let encoder: JSONEncoder = {
         let e = JSONEncoder(); e.dateEncodingStrategy = .iso8601; return e
     }()
@@ -66,7 +80,13 @@ public enum LocalStore {
     static func saveChecked<T: Encodable>(_ value: T, as name: String) throws {
         try performWrite {
             let data = try encoder.encode(value)
+            #if DEBUG && targetEnvironment(simulator)
+            try QuickLogDiskFault.write(domain: name, target: url(name)) {
+                try data.write(to: url(name), options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
+            }
+            #else
             try data.write(to: url(name), options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
+            #endif
         }
     }
 
@@ -114,15 +134,24 @@ public enum PhotoStore {
     }
     public static func url(_ id: String) -> URL { dir.appendingPathComponent("\(id).jpg") }
 
-    public static func save(_ image: UIImage, id: String) {
+    /// A fresh identifier belongs only to this pending meal. Never overwrite an
+    /// existing/shared image while preparing a new record.
+    static func saveNewChecked(_ image: UIImage, id: String) throws {
         let maxSide: CGFloat = 900
         let scale = min(1, maxSide / max(image.size.width, image.size.height))
         let size = CGSize(width: image.size.width * scale, height: image.size.height * scale)
         let resized = UIGraphicsImageRenderer(size: size).image { _ in image.draw(in: CGRect(origin: .zero, size: size)) }
-        LocalStore.performWrite {
-            if let data = resized.jpegData(compressionQuality: 0.75) {
-                try? data.write(to: url(id), options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
+        try LocalStore.performWrite {
+            let target = url(id)
+            guard !FileManager.default.fileExists(atPath: target.path),
+                  let data = resized.jpegData(compressionQuality: 0.75) else { throw BackupError.invalid }
+            #if DEBUG && targetEnvironment(simulator)
+            try QuickLogDiskFault.write(domain: "photo", target: target) {
+                try data.write(to: target, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
             }
+            #else
+            try data.write(to: target, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
+            #endif
         }
     }
 

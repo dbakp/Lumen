@@ -515,6 +515,12 @@ Normal scroll edges, wrapped identifiers and content longer than one viewport ar
 
 NativeR7, PresentationR4 and SmallR3 remain separate runtime evidence. This verdict establishes the shown simulator presentation, not VoiceOver, physical-device feel, provider behavior or clinical validity. No app/UI source change follows sign-off.
 
+## Batch36 · checked quick-log failures · two rounds complete
+
+The same continuing App Designer Pro critic completes43→43/55. Round1 finds incomplete evidence for the largest-text local-save sentence at the initial medium detent, not proven fixed clipping. Ordinary expansion supplies the complete sentence with value/controls/Cancel/Save; no smaller text or forced single-viewport layout is introduced. Final Round2 individually inspects all56 current indexed originals, including actual375×667 normal/dark AccessibilityXXXL, photo-failure/deletion/relaunch, retained drafts, busy-sync and Today/Log-sheet water states. No image inspection fails or is skipped. All concrete asks close;10/11 lines4+, Richness3, Concept/Finish/Native/Copy all4: **Done within scope**. No app/UI edit follows acceptance.
+
+Main1206×2622 and compact750×1334 originals retain their exact earlier/current source maps. NativeR3's immediate busy retry remains failed; current R4 waits actual readiness and passes. The access-requested weight-copy variant is source-reviewed, not visually assessed. Runtime assertions establish local persistence separately from pixels; no camera-quality, actual storage-exhaustion, power-loss, signed Health/Watch/voice, VoiceOver, provider, clinical or release proof is inferred. Optional decorative/portfolio expansion stays declined. [Full scorecards and evidence](native/local-commit/CRITIQUE.md).
+
 ## Batch31 · complete reviewed lab context · four rounds complete
 
 The same continuing App Designer Pro critic scores43→41→41→43/55. Round2 finds inserted discretionary hyphens in saved-source URLs/canary. Reusing the native literal reader repairs source and built-in replies. Round3 accepts those pixels but finds the same existing defect in the user's question. User messages gain literal native reading with on-accent ink and natural short-bubble width; model formatting remains unchanged.

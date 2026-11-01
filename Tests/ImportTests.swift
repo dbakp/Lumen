@@ -4,6 +4,9 @@ import Darwin
 @main struct ImportTests {
     static func main() async throws {
         setbuf(stdout, nil)
+        if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--local-commit" {
+            try LocalCommitChecks.run(output: URL(fileURLWithPath: CommandLine.arguments[2])); return
+        }
         if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--health-write-order" {
             try await HealthWriteOrderChecks.run(output: URL(fileURLWithPath: CommandLine.arguments[2])); return
         }
@@ -80,6 +83,7 @@ import Darwin
         }
         try ProviderReplyChecks.run()
         try await HealthWriteOrderChecks.run()
+        try LocalCommitChecks.run()
         try VoiceDraftChecks.run()
         try ScheduledPlanChecks.run()
         try await LabReportChecks.run()

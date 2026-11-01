@@ -17,6 +17,7 @@ public final class HealthStore: ObservableObject {
     @Published public var meals: [Meal] = []
     @Published public var waterLogs: [HydrationLog] = []
     @Published public private(set) var waterUndoStatus: String?
+    @Published var watchWaterSaveFailure: String?
     private var waterUndoOperation = UUID()
     private let healthWrites = OrderedHealthWrites()
     @Published public var readiness: Readiness?
@@ -105,74 +106,93 @@ public final class HealthStore: ObservableObject {
 
     // MARK: Mutations
 
-    public func addMeal(_ meal: Meal) {
-        meals.append(meal)
+    public func addMeal(_ meal: Meal, photo: UIImage? = nil) throws {
+        guard !meals.contains(where: { $0.id == meal.id }) else { throw BackupError.invalid }
+        var saved = meal
+        var ownedPhoto: String?
+        if let photo {
+            let id = UUID().uuidString
+            try PhotoStore.saveNewChecked(photo, id: id)
+            ownedPhoto = id; saved.photoID = id
+        }
+        let records = meals + [saved]
+        do { try LocalStore.saveChecked(records, as: "meals") }
+        catch { PhotoStore.delete(ownedPhoto); throw error }
+        meals = records
         healthWrites.enqueueSave(.meal(meal.id), isCurrent: { [weak self] in
             self?.meals.contains(where: { $0.id == meal.id }) == true
         }) {
             await HealthKitService.shared.saveMeal(meal)
         }
-        persist(); refresh()
+        refresh()
     }
 
-    public func deleteMeal(_ id: String) {
-        PhotoStore.delete(meals.first { $0.id == id }?.photoID)
-        meals.removeAll { $0.id == id }
+    public func deleteMeal(_ id: String) throws {
+        let photoIDs = Set(meals.filter { $0.id == id }.compactMap(\.photoID))
+        let remaining = meals.filter { $0.id != id }
+        guard remaining.count != meals.count else { return }
+        try LocalStore.saveChecked(remaining, as: "meals")
+        meals = remaining
+        for photoID in photoIDs where !remaining.contains(where: { $0.photoID == photoID }) { PhotoStore.delete(photoID) }
         healthWrites.enqueue(.meal(id)) { await HealthKitService.shared.deleteMeal(id: id) }
-        persist(); refresh()
+        refresh()
     }
 
-    public func addWater(ml: Double) {
-        guard ml.isFinite, ml > 0, ml <= 10000 else { return }
-        waterUndoOperation = UUID(); waterUndoStatus = nil
+    public func addWater(ml: Double) throws {
+        guard ml.isFinite, ml > 0, ml <= 10000 else { throw BackupError.invalid }
         let log = HydrationLog(ml: ml)
-        waterLogs.append(log)
+        let records = waterLogs + [log]
+        try LocalStore.saveChecked(records, as: "water")
+        waterUndoOperation = UUID(); waterUndoStatus = nil
+        waterLogs = records
         healthWrites.enqueueSave(.water(log.id), isCurrent: { [weak self] in
             self?.waterLogs.contains(where: { $0.id == log.id && $0.logOrigin == nil }) == true
         }) {
             await HealthKitService.shared.saveWater(ml: ml, id: log.id, at: log.date)
         }
-        persist(); refresh()
+        refresh()
     }
 
     public var canUndoQuickWater: Bool { LocalHealthCorrection.latestQuickWater(waterLogs) != nil }
-    public func undoLastWater() {
+    public func undoLastWater() throws {
         guard let last = LocalHealthCorrection.latestQuickWater(waterLogs) else { return }
         let remaining = waterLogs.filter { $0.id != last.id }
-        do {
-            try LocalStore.saveChecked(remaining, as: "water")
-            waterLogs = remaining; refresh()
-            let operation = UUID(); waterUndoOperation = operation
-            waterUndoStatus = "Removed from Lumen. Checking Apple Health…"
-            healthWrites.enqueue(.water(last.id)) { [weak self] in
-                let status: String
-                do {
-                    if let count = try await HealthKitService.shared.deleteWater(id: last.id) {
-                        status = count > 0 ? "Removed from Lumen and Apple Health." : "Removed from Lumen. No matching Apple Health entry was removed."
-                    } else { status = "Removed from Lumen. No Apple Health removal was attempted." }
-                } catch { status = "Removed from Lumen. Apple Health removal failed; check the entry in Health." }
-                guard let self, self.waterUndoOperation == operation else { return }
-                self.waterUndoStatus = status
-            }
-        } catch { AppRouter.shared.confirm("Couldn’t remove water. Try again.") }
+        try LocalStore.saveChecked(remaining, as: "water")
+        waterLogs = remaining; refresh()
+        let operation = UUID(); waterUndoOperation = operation
+        waterUndoStatus = "Removed from Lumen. Checking Apple Health…"
+        healthWrites.enqueue(.water(last.id)) { [weak self] in
+            let status: String
+            do {
+                if let count = try await HealthKitService.shared.deleteWater(id: last.id) {
+                    status = count > 0 ? "Removed from Lumen and Apple Health." : "Removed from Lumen. No matching Apple Health entry was removed."
+                } else { status = "Removed from Lumen. No Apple Health removal was attempted." }
+            } catch { status = "Removed from Lumen. Apple Health removal failed; check the entry in Health." }
+            guard let self, self.waterUndoOperation == operation else { return }
+            self.waterUndoStatus = status
+        }
     }
 
-    public func addManualWorkout(kind: WorkoutKind, minutes: Double, kcal: Double? = nil, start: Date = Date()) {
+    public func addManualWorkout(kind: WorkoutKind, minutes: Double, kcal: Double? = nil, start: Date = Date()) throws {
+        guard minutes.isFinite, minutes > 0, minutes <= 1440,
+              start.timeIntervalSince1970.isFinite, start <= Date(),
+              kcal.map({ $0.isFinite && $0 >= 0 }) ?? true else { throw BackupError.invalid }
         let w = Workout(kind: kind, title: kind.label, start: start, duration: minutes * 60,
                         activeCalories: kcal ?? kind.met * (minutes / 60) * (goals.weightKg ?? 75), source: .manual)
-        workouts.append(w)
-        workouts.sort { $0.start < $1.start }
-        persist(); refresh()
+        let records = (workouts + [w]).sorted { $0.start < $1.start }
+        try LocalStore.saveChecked(records, as: "workouts")
+        workouts = records; refresh()
     }
 
-    public func deleteWorkout(_ id: String) {
+    public func deleteWorkout(_ id: String) throws {
         if workouts.first(where: { $0.id == id }).map(LocalHealthCorrection.canEdit) == true {
-            do { try correctConfirmedWorkout(id, draft: nil) }
-            catch { AppRouter.shared.confirm("Couldn’t remove workout. Try again.") }
+            try correctConfirmedWorkout(id, draft: nil)
             return
         }
-        workouts.removeAll { $0.id == id && $0.source == .manual && $0.importOrigin == nil }
-        persist(); refresh()
+        let records = workouts.filter { !($0.id == id && $0.source == .manual && $0.importOrigin == nil) }
+        guard records.count != workouts.count else { return }
+        try LocalStore.saveChecked(records, as: "workouts")
+        workouts = records; refresh()
     }
 
     /// Confirmed conversational entries are local-only. Corrections never call HealthKit.
@@ -188,15 +208,26 @@ public final class HealthStore: ObservableObject {
         workouts = records; refresh()
     }
 
-    public func logWeight(kg: Double) {
-        guard kg.isFinite, kg > 0, kg <= 1000 else { return }
-        goals.weightKg = kg
-        if !Calendar.current.isDateInToday(healthSnapshot.date) { healthSnapshot = .empty }
-        if healthSnapshot.readings == nil { healthSnapshot = CurrentHealthEvidence.resolve(snapshot: healthSnapshot, imported: nil, meals: [], water: [], workouts: [], sleep: nil) }
+    public func logWeight(kg: Double) async throws {
+        guard kg.isFinite, kg > 0, kg <= 1000 else { throw BackupError.invalid }
+        // A refresh can change the in-memory snapshot before its final disk
+        // write. The storage revision alone cannot detect that suspended state.
+        if isSyncing {
+            #if DEBUG && targetEnvironment(simulator)
+            QuickWeightSyncFixture.release()
+            #endif
+            throw BackupError.busy
+        }
+        var savedGoals = goals, snapshot = healthSnapshot
+        savedGoals.weightKg = kg
+        if !Calendar.current.isDateInToday(snapshot.date) { snapshot = .empty }
+        if snapshot.readings == nil { snapshot = CurrentHealthEvidence.resolve(snapshot: snapshot, imported: nil, meals: [], water: [], workouts: [], sleep: nil) }
         let now = Date()
-        healthSnapshot.setReading(.init(components: [.init(value: kg, origin: .localLog, source: "Lumen weight log", start: now, end: now, lastSampleAt: now, aggregation: .latest)]), for: "weight")
-        Task { await HealthKitService.shared.saveWeight(kg: kg) }
-        persist(); refresh()
+        snapshot.setReading(.init(components: [.init(value: kg, origin: .localLog, source: "Lumen weight log", start: now, end: now, lastSampleAt: now, aggregation: .latest)]), for: "weight")
+        try await LocalStore.saveWeightChecked(goals: savedGoals, snapshot: snapshot, canCommit: { !self.isSyncing })
+        goals = savedGoals; healthSnapshot = snapshot
+        Task { await HealthKitService.shared.saveWeight(kg: kg, at: now) }
+        refresh()
     }
 
     public func updateGoals(_ g: HealthGoals) {
@@ -215,6 +246,7 @@ public final class HealthStore: ObservableObject {
     }
 
     func reloadAfterRestore() {
+        watchWaterSaveFailure = nil
         // A restore must not start an old queued write using restored content.
         // Already-started Health callbacks cannot be recalled; their record's
         // requested deletion still waits for completion through the same queue.
@@ -382,6 +414,7 @@ public final class HealthStore: ObservableObject {
 
     /// Start over: clears every log (Health data itself is untouched).
     public func resetAll() {
+        watchWaterSaveFailure = nil
         healthWrites.invalidatePendingSaves(); waterUndoOperation = UUID(); waterUndoStatus = nil
         conversationReady = false
         goals = HealthGoals(); meals = []; workouts = []; waterLogs = []; chat = []

@@ -1,5 +1,13 @@
 # Verification · 29 October 2026
 
+## Batch36 · checked quick-log storage
+
+All1,505 Release logic checks pass, including17 production staged-transaction checks using actual Foundation disk operations. All97 selected logic inputs remain exact. SimulatorBuildR1–R5 pass all five products. NativeR2 passes7 cases; current NativeR4 busy/readiness/retry/relaunch passes70.716s and NativeR5 Today/Log-sheet water passes122.659s. Actual375×667 SmallR1 passes3 cases392.861s, including normal/dark AccessibilityXXXL weight, complete disclosure through ordinary expansion and failed photo deletion surviving relaunch before retry. Passing summaries record0failures/skips/runtime warnings. Final195 app/build,97 logic and216 selected-source inputs match their separate maps. UnsignedReleaseR3 passes minimumiOS18/27 absent development markers/no bundled models.
+
+NativeR1's wrong empty-draft search helper and NativeR3's immediate retry into a still-busy sync remain explicit failures. The latter preserves the second honest busy alert; R4 waits observable readiness without bypassing the guard or sleeping. The first focused-component command uses a wrong binary path and executes no checks; corrected invocation passes17. The same design critic completes two rounds43→43/55,10/11 lines4+, all concrete asks closed after individually opening56 current indexed originals. No app/UI change follows acceptance.
+
+[Detailed results, source maps, compact producer logs and screenshots](../Design/native/local-commit/README.md) preserve exact boundaries. NativeR2 uses earlier app r2; R3 uses app r3; R4/SmallR1/R5 use final app r5 with separate test-source maps. Earlier actual MiniLM checks are not relabelled as current runs. Directory-destination I/O failure and controlled queue suspension do not establish actual storage exhaustion, power-loss durability, signed-device Health/Watch/voice, provider/clinical/language quality, full VoiceOver/privacy or release acceptance. Publication and cleanup are recorded after exact GitHub read-back; the full goal stays active.
+
 
 ## Batch32 development research ·1 November2026
 

@@ -139,6 +139,7 @@ public struct MainTabView: View {
 struct LogSheet: View {
     @EnvironmentObject var health: HealthStore
     @Environment(\.dismiss) var dismiss
+    @State private var saveFailure: LocalSaveFailure?
     var router: AppRouter { .shared }
 
     var body: some View {
@@ -148,7 +149,8 @@ struct LogSheet: View {
                 logButton("Check-in", "Energy, mood and stress", "face.smiling", Theme.accent) { next(.checkIn) }
                 logButton("Meal", "Snap a photo of your plate", "camera.fill", Theme.food) { next(.meal(camera: true)) }
                 logButton("Water", "Add a glass · 250 ml", "drop.fill", Theme.water) {
-                    health.addWater(ml: 250); dismiss(); router.confirm("Added 250 ml of water")
+                    do { try health.addWater(ml: 250); dismiss(); router.confirm("Added 250 ml of water") }
+                    catch { saveFailure = .saving("water", error: error) }
                 }
                 logButton("Workout", "Log a session", "figure.run", Theme.move) { next(.workout) }
                 logButton("Sleep", "Add a night", "bed.double.fill", Theme.sleep) { next(.sleepLog) }
@@ -162,6 +164,7 @@ struct LogSheet: View {
             .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Close") { dismiss() } } }
         }
         .presentationDetents([.fraction(0.68), .large])
+        .localSaveAlert($saveFailure)
         .presentationBackground(Theme.bg)
         .tint(Theme.accent)
     }

@@ -7,6 +7,7 @@ public struct ActivityView: View {
     @EnvironmentObject var sleep: SleepStore
     @ObservedObject private var hk = HealthKitService.shared
     @Environment(\.dynamicTypeSize) private var typeSize
+    @State private var saveFailure: LocalSaveFailure?
     var router: AppRouter { .shared }
 
     public init() {}
@@ -37,6 +38,7 @@ public struct ActivityView: View {
             }
         }
         .refreshable { await SyncCoordinator.syncEverything(sleep: sleep, health: health) }
+        .localSaveAlert($saveFailure)
     }
 
     // MARK: Rings
@@ -122,7 +124,9 @@ public struct ActivityView: View {
                         NavigationLink { WorkoutDetailView(workout: w, units: units) } label: { WorkoutRow(w, units: units) }.buttonStyle(.plain)
                             .contextMenu {
                                 if w.source == .manual && w.importOrigin == nil && w.logOrigin == nil {
-                                    Button("Delete", systemImage: "trash", role: .destructive) { health.deleteWorkout(w.id) }
+                                    Button("Delete", systemImage: "trash", role: .destructive) {
+                                        do { try health.deleteWorkout(w.id) } catch { saveFailure = .removing("workout") }
+                                    }
                                 }
                             }
                     }
@@ -172,6 +176,7 @@ public struct ActivityView: View {
 // MARK: - All workouts
 
 struct AllWorkoutsView: View {
+    @State private var saveFailure: LocalSaveFailure?
     @EnvironmentObject var health: HealthStore
     @EnvironmentObject var sleep: SleepStore
     var groups: [(day: Date, items: [Workout])] {
@@ -186,7 +191,11 @@ struct AllWorkoutsView: View {
                         NavigationLink { WorkoutDetailView(workout: w, units: sleep.profile.unitSystem) } label: { WorkoutRow(w, units: sleep.profile.unitSystem) }
                             .listRowBackground(Theme.surface)
                             .swipeActions {
-                                if w.source == .manual && w.importOrigin == nil && w.logOrigin == nil { Button("Delete", role: .destructive) { health.deleteWorkout(w.id) } }
+                                if w.source == .manual && w.importOrigin == nil && w.logOrigin == nil {
+                                    Button("Delete", role: .destructive) {
+                                        do { try health.deleteWorkout(w.id) } catch { saveFailure = .removing("workout") }
+                                    }
+                                }
                             }
                     }
                 }
@@ -195,6 +204,7 @@ struct AllWorkoutsView: View {
         .scrollContentBackground(.hidden)
         .background(AuroraBackground(Theme.move))
         .navigationTitle("Workouts")
+        .localSaveAlert($saveFailure)
     }
 }
 
@@ -217,6 +227,7 @@ struct ManualWorkoutSheet: View {
     @State private var kind: WorkoutKind = .walk
     @State private var minutes = 30.0
     @State private var start = Date().addingTimeInterval(-1800)
+    @State private var saveFailure: LocalSaveFailure?
 
     var kcal: Int { Int(kind.met * (minutes / 60) * (health.goals.weightKg ?? 75)) }
 
@@ -252,9 +263,11 @@ struct ManualWorkoutSheet: View {
             }
             .safeAreaInset(edge: .bottom) {
                 Button("Save \(kind.label.lowercased())") {
-                    health.addManualWorkout(kind: kind, minutes: minutes, start: start)
-                    dismiss()
-                    AppRouter.shared.confirm("\(kind.label) saved")
+                    do {
+                        try health.addManualWorkout(kind: kind, minutes: minutes, start: start)
+                        dismiss()
+                        AppRouter.shared.confirm("\(kind.label) saved")
+                    } catch { saveFailure = .saving("workout", error: error, draft: true) }
                 }
                 .buttonStyle(LumenPrimaryButtonStyle())
                 .padding(.horizontal, Theme.gutter).padding(.bottom, 8)
@@ -264,5 +277,6 @@ struct ManualWorkoutSheet: View {
             .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } } }
         }
         .tint(Theme.accent)
+        .localSaveAlert($saveFailure)
     }
 }

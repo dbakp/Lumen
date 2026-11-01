@@ -10,6 +10,9 @@ public enum SyncCoordinator {
         await queue.run(includeProviders: !background) { providers in
             health.isSyncing = true
             defer { health.isSyncing = false }
+            #if DEBUG && targetEnvironment(simulator)
+            await QuickWeightSyncFixture.holdIfRequested()
+            #endif
             sleep.resetHabitsIfNewDay()
             let hk = HealthKitService.shared
             if hk.isAuthorized {

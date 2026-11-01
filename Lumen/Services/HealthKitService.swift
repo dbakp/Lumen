@@ -303,9 +303,9 @@ public final class HealthKitService: ObservableObject {
         return try await store.deleteObjects(of: HKQuantityType(.dietaryWater), predicate: predicate)
     }
 
-    public func saveWeight(kg: Double) async {
+    public func saveWeight(kg: Double, at date: Date = Date()) async {
         guard isAvailable, isAuthorized else { return }
-        let s = HKQuantitySample(type: HKQuantityType(.bodyMass), quantity: HKQuantity(unit: .gramUnit(with: .kilo), doubleValue: kg), start: Date(), end: Date())
+        let s = HKQuantitySample(type: HKQuantityType(.bodyMass), quantity: HKQuantity(unit: .gramUnit(with: .kilo), doubleValue: kg), start: date, end: date)
         try? await store.save(s)
     }
 

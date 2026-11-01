@@ -333,31 +333,50 @@ struct WeightLogSheet: View {
     @EnvironmentObject var health: HealthStore
     @Environment(\.dismiss) var dismiss
     @State private var kg: Double = 72
+    @State private var saving = false
+    @State private var saveFailure: LocalSaveFailure?
     var units: UnitSystem { sleep.profile.unitSystem }
     var body: some View {
         NavigationStack {
-            VStack(spacing: 24) {
-                Text(Units.weight(kg, units)).font(.system(size: 52, weight: .bold, design: .rounded).monospacedDigit())
+            ScrollView { VStack(spacing: 24) {
+                Text(Units.weight(kg, units)).font(.system(.largeTitle, design: .rounded, weight: .bold).monospacedDigit())
+                    .accessibilityIdentifier("weightDraftValue")
                     .contentTransition(.numericText()).foregroundStyle(Theme.text)
                 Slider(value: $kg, in: 35...200, step: units == .metric ? 0.1 : 0.04536).tint(Theme.accent)
                 HStack(spacing: 24) {
-                    Button { kg -= units == .metric ? 0.1 : 0.4536 } label: { Image(systemName: "minus.circle.fill").font(.largeTitle) }
-                    Button { kg += units == .metric ? 0.1 : 0.4536 } label: { Image(systemName: "plus.circle.fill").font(.largeTitle) }
+                    Button { kg -= units == .metric ? 0.1 : 0.4536 } label: { Image(systemName: "minus.circle.fill").font(.largeTitle).frame(minWidth: 44, minHeight: 44) }
+                        .accessibilityLabel("Decrease weight").accessibilityIdentifier("decreaseWeight")
+                    Button { kg += units == .metric ? 0.1 : 0.4536 } label: { Image(systemName: "plus.circle.fill").font(.largeTitle).frame(minWidth: 44, minHeight: 44) }
+                        .accessibilityLabel("Increase weight").accessibilityIdentifier("increaseWeight")
                 }
                 .foregroundStyle(Theme.text)
-                Text(HealthKitService.shared.isAuthorized ? "Saved to Apple Health too." : "Saved on this iPhone.")
-                    .font(.caption).foregroundStyle(Theme.text.opacity(0.6))
-                Spacer()
-                Button("Save weight") { health.logWeight(kg: (kg * 10).rounded() / 10); haptic(.medium); dismiss() }
-                    .buttonStyle(LumenPrimaryButtonStyle())
+                Text(HealthKitService.shared.isAuthorized ? "Save on this iPhone, then try Apple Health. Check Health to confirm it was added." : "Save on this iPhone.")
+                    .font(.footnote).foregroundStyle(Theme.secondary)
+            }.padding(24) }
+            .disabled(saving)
+            .safeAreaInset(edge: .bottom) {
+                Button(saving ? "Saving…" : "Save weight") {
+                    guard !saving else { return }
+                    let value = (kg * 10).rounded() / 10
+                    saving = true
+                    Task {
+                        do { try await health.logWeight(kg: value); haptic(.medium); dismiss() }
+                        catch { saveFailure = .saving("weight", error: error, draft: true) }
+                        saving = false
+                    }
+                }
+                .buttonStyle(LumenPrimaryButtonStyle()).disabled(saving)
+                .accessibilityValue(saving ? "Saving" : health.isSyncing ? "Health is syncing" : "Ready to save")
+                .padding(.horizontal, 24).padding(.bottom, 8)
             }
-            .padding(24)
             .background(AuroraBackground())
             .navigationTitle("Log weight").navigationBarTitleDisplayMode(.inline)
-            .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } } }
+            .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() }.disabled(saving) } }
             .onAppear { kg = health.goals.weightKg ?? 72 }
         }
-        .presentationDetents([.medium])
+        .presentationDetents([.medium, .large])
+        .interactiveDismissDisabled(saving)
+        .localSaveAlert($saveFailure)
     }
 }
 

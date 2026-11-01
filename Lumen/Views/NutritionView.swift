@@ -6,6 +6,7 @@ public struct NutritionView: View {
     @EnvironmentObject var health: HealthStore
     @EnvironmentObject var sleep: SleepStore
     @State private var showSearch = false
+    @State private var saveFailure: LocalSaveFailure?
     @Environment(\.dynamicTypeSize) private var typeSize
     var router: AppRouter { .shared }
 
@@ -35,10 +36,11 @@ public struct NutritionView: View {
         }
         .sheet(isPresented: $showSearch) {
             FoodSearchSheet { food in
-                health.addMeal(Meal(type: MealType.forHour(Calendar.current.component(.hour, from: Date())), items: [food]))
+                try health.addMeal(Meal(type: MealType.forHour(Calendar.current.component(.hour, from: Date())), items: [food]))
                 router.confirm("\(food.name) added")
             }
         }
+        .localSaveAlert($saveFailure)
     }
 
     // MARK: Hero
@@ -100,14 +102,20 @@ public struct NutritionView: View {
                 Text(value.map { Units.water($0, units) } ?? "Not recorded").font(.title2.weight(.semibold)).monospacedDigit().accessibilityIdentifier("foodWaterValue")
                 Text("Estimated target: \((units == .metric ? (target / 1000).formatted(.number.precision(.fractionLength(1))) + " L" : (target / 29.5735).formatted(.number.precision(.fractionLength(0))) + " fl oz"))").font(.footnote).foregroundStyle(Theme.secondary)
                 HStack(spacing: 12) {
-                    Button("Undo quick log", systemImage: "arrow.uturn.backward") { health.undoLastWater() }
+                    Button("Undo quick log", systemImage: "arrow.uturn.backward") {
+                        do { try health.undoLastWater() } catch { saveFailure = .removing("water") }
+                    }
                         .disabled(!health.canUndoQuickWater).frame(minHeight: 44).accessibilityIdentifier("undoQuickWater")
                     Spacer(minLength: 8)
-                    Button("+ 250 ml") { health.addWater(ml: 250); haptic(.light) }.frame(minHeight: 44)
+                    Button("+ 250 ml") {
+                        do { try health.addWater(ml: 250); haptic(.light) }
+                        catch { saveFailure = .saving("water", error: error) }
+                    }.frame(minHeight: 44)
                 }.font(.subheadline.weight(.semibold))
                 if let value { Bar(value / max(1, target), color: Theme.water, height: 6).accessibilityHidden(true) }
                 Text("Undo removes the latest quick log from Lumen. Confirmed entries can be changed in Journal.").font(.footnote).foregroundStyle(Theme.secondary)
                 if let status = health.waterUndoStatus { Text(status).font(.footnote).foregroundStyle(Theme.secondary).accessibilityIdentifier("waterUndoStatus") }
+                if let failure = health.watchWaterSaveFailure { Text(failure).font(.footnote).foregroundStyle(Theme.secondary) }
             }.padding(16).surface()
         }
     }
@@ -127,7 +135,10 @@ public struct NutritionView: View {
                         if i > 0 { RowDivider() }
                         MealRow(meal: meal)
                             .contextMenu {
-                                Button("Delete", systemImage: "trash", role: .destructive) { withAnimation { health.deleteMeal(meal.id) } }
+                                Button("Delete", systemImage: "trash", role: .destructive) {
+                                    do { try withAnimation { try health.deleteMeal(meal.id) } }
+                                    catch { saveFailure = .removing("meal") }
+                                }
                             }
                     }
                 }
@@ -170,7 +181,7 @@ struct MealRow: View {
         HStack(spacing: 14) {
             Group {
                 if let img = PhotoStore.load(meal.photoID) {
-                    Image(uiImage: img).resizable().scaledToFill()
+                    Image(uiImage: img).resizable().scaledToFill().accessibilityLabel("Meal photo").accessibilityIdentifier("savedMealPhoto")
                 } else {
                     Image(systemName: "fork.knife").font(.subheadline).foregroundStyle(Theme.food)
                         .frame(maxWidth: .infinity, maxHeight: .infinity).background(Theme.surfaceRaised)

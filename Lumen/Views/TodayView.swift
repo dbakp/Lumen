@@ -9,6 +9,7 @@ public struct TodayView: View {
     @ObservedObject private var companion = CompanionStore.shared
     @ObservedObject private var hk = HealthKitService.shared
     @State private var showingEvidence = false
+    @State private var saveFailure: LocalSaveFailure?
     @Environment(\.dynamicTypeSize) private var typeSize
     public init() {}
     var perspective: DailyPerspective { companion.perspective(health: health) }
@@ -68,6 +69,7 @@ public struct TodayView: View {
                 ToolbarItem(placement: .topBarTrailing) { Button { AppRouter.shared.show(.settings) } label: { Image(systemName: "person.crop.circle") }.accessibilityLabel("Settings") }
             }
             .refreshable { await SyncCoordinator.syncEverything(sleep: sleep, health: health) }
+            .localSaveAlert($saveFailure)
     }
     var perspectiveCard: some View {
         VStack(alignment: .leading, spacing: 18) {
@@ -115,8 +117,12 @@ public struct TodayView: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text("Water logged").font(.subheadline).foregroundStyle(Theme.secondary)
                 Text(health.metrics.reading("water").value.map { Units.water($0, sleep.profile.unitSystem) } ?? "Not recorded").font(.title2.bold()).monospacedDigit().contentTransition(.numericText())
+                if let failure = health.watchWaterSaveFailure { Text(failure).font(.footnote).foregroundStyle(Theme.secondary) }
             }
-            Button("+ 250 ml") { health.addWater(ml: 250); AppRouter.shared.confirm("Added 250 ml") }
+            Button("+ 250 ml") {
+                do { try health.addWater(ml: 250); AppRouter.shared.confirm("Added 250 ml") }
+                catch { saveFailure = .saving("water", error: error) }
+            }
                 .font(.subheadline.bold()).padding(.horizontal, 16).frame(minHeight: 48).background(Theme.surfaceRaised, in: Capsule())
                 .accessibilityLabel("Add 250 millilitres of water")
     }

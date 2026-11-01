@@ -121,7 +121,8 @@ public final class WatchSync: NSObject, ObservableObject {
                 // Already written to Health by the Watch — just re-read it.
                 Task { await health.syncAll() }
             } else {
-                health.addWater(ml: ml)
+                do { try health.addWater(ml: ml); health.watchWaterSaveFailure = nil }
+                catch { health.watchWaterSaveFailure = "Water from your Watch couldn’t be saved on this iPhone. Check your log before adding it again." }
             }
         }
         if info[WatchMessage.requestSnapshot] != nil {

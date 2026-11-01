@@ -3495,6 +3495,202 @@ final class LumenSmokeTests: XCTestCase {
         snap("135-water-deleted-reading")
     }
 
+    func quickFault(_ specification: String, photo: Bool = false, large: Bool = false) {
+        app.terminate()
+        app.launchArguments = ["-resetForUITests", "-quick-save-fault", specification]
+            + (photo ? ["-quick-meal-photo"] : [])
+            + (large ? ["-lumen.appearance", "dark", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"] : ["-lumen.appearance", "light"])
+        app.launch(); finishOnboarding()
+    }
+
+    func assertQuickFailure(_ title: String, capture: String) {
+        let alert = app.alerts[title]
+        XCTAssertTrue(alert.waitForExistence(timeout: 8)); snap(capture)
+        alert.buttons["OK"].tap()
+    }
+
+    func testQuickWaterDiskFailures() throws {
+        for index in 1...2 {
+            quickFault("water:\(index)")
+            scrollAndTap("Food")
+            let value = app.staticTexts["foodWaterValue"]; reveal(value)
+            XCTAssertEqual(value.label, "Not recorded")
+            tap("+ 250 ml")
+            if index == 1 {
+                assertQuickFailure("Couldn’t save water", capture: "910-water-save-failed")
+                XCTAssertEqual(value.label, "Not recorded")
+                tap("+ 250 ml"); XCTAssertEqual(value.label, "250 ml")
+            } else {
+                XCTAssertEqual(value.label, "250 ml"); tap("undoQuickWater")
+                assertQuickFailure("Couldn’t remove water", capture: "911-water-undo-failed")
+                XCTAssertEqual(value.label, "250 ml"); tap("undoQuickWater")
+                XCTAssertEqual(value.label, "Not recorded")
+            }
+            app.terminate(); app.launchArguments = []; app.launch()
+            scrollAndTap("Food"); reveal(value)
+            XCTAssertEqual(value.label, index == 1 ? "250 ml" : "Not recorded")
+            snap("912-water-retry-relaunch-\(index)")
+        }
+    }
+
+    func testQuickWaterTodayAndSheetDiskFailures() throws {
+        for inSheet in [false, true] {
+            quickFault("water:1")
+            if inSheet { tap("Log"); scrollAndTap("Water") }
+            else { let action = app.buttons["Add 250 millilitres of water"].firstMatch; reveal(action); action.tap() }
+            assertQuickFailure("Couldn’t save water", capture: inSheet ? "930-water-log-sheet-failed" : "930-water-today-failed")
+            if inSheet {
+                XCTAssertTrue(app.navigationBars["Log"].exists); snap("931-water-log-sheet-retained")
+                scrollAndTap("Water")
+                XCTAssertTrue(app.navigationBars["Log"].waitForNonExistence(timeout: 5))
+            } else {
+                tap("currentReadingsShortcut"); tap("current-reading-water")
+                XCTAssertEqual(app.staticTexts["currentReadingValue"].label, "Not recorded")
+                app.navigationBars.buttons.element(boundBy: 0).tap(); app.navigationBars.buttons.element(boundBy: 0).tap()
+                let action = app.buttons["Add 250 millilitres of water"].firstMatch; reveal(action); action.tap()
+            }
+            app.terminate(); app.launchArguments = []; app.launch()
+            tap("currentReadingsShortcut"); tap("current-reading-water")
+            XCTAssertEqual(app.staticTexts["currentReadingValue"].label, "250 ml")
+            snap(inSheet ? "932-water-log-sheet-retry-relaunch" : "932-water-today-retry-relaunch")
+        }
+    }
+
+    func testQuickFoodSearchDiskFailure() throws {
+        quickFault("meals:1")
+        scrollAndTap("Food"); tap("Search foods")
+        let espresso = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Espresso")).firstMatch
+        XCTAssertTrue(espresso.waitForExistence(timeout: 5)); espresso.tap()
+        assertQuickFailure("Couldn’t save food", capture: "913-food-search-save-failed")
+        XCTAssertTrue(app.navigationBars["Add food"].exists)
+        espresso.tap()
+        XCTAssertTrue(app.navigationBars["Add food"].waitForNonExistence(timeout: 5))
+        let meal = app.staticTexts["Espresso"].firstMatch; reveal(meal); XCTAssertTrue(meal.exists)
+        snap("914-food-search-retried")
+        app.terminate(); app.launchArguments = []; app.launch(); scrollAndTap("Food")
+        reveal(meal); XCTAssertTrue(meal.exists)
+    }
+
+    func testQuickMealPhotoDiskFailures() throws {
+        for specification in ["photo:1", "meals:1", "meals:2"] {
+            quickFault(specification, photo: true)
+            tap("Log"); scrollAndTap("Meal")
+            let search = app.buttons["mealSearch"].firstMatch
+            if search.waitForExistence(timeout: 5) { reveal(search); search.tap() }
+            else { scrollAndTap("Search foods") }
+            let espresso = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Espresso")).firstMatch
+            XCTAssertTrue(espresso.waitForExistence(timeout: 5)); espresso.tap()
+            scrollAndTap("Add 2 kcal")
+            if specification != "meals:2" {
+                assertQuickFailure("Couldn’t save meal", capture: "915-meal-draft-failed-" + specification.replacingOccurrences(of: ":", with: "-"))
+                XCTAssertTrue(app.navigationBars["Review meal"].exists)
+                scrollAndTap("Add 2 kcal")
+            }
+            XCTAssertTrue(app.navigationBars["Review meal"].waitForNonExistence(timeout: 5))
+            scrollAndTap("Food")
+            let meal = app.staticTexts["Espresso"].firstMatch; reveal(meal); XCTAssertTrue(meal.exists)
+            XCTAssertTrue(app.images["savedMealPhoto"].exists)
+            snap("916-meal-photo-saved-" + specification.replacingOccurrences(of: ":", with: "-"))
+            if specification == "meals:2" {
+                meal.press(forDuration: 1.2); tap("Delete")
+                assertQuickFailure("Couldn’t remove meal", capture: "917-meal-photo-delete-failed")
+                XCTAssertTrue(meal.exists && app.images["savedMealPhoto"].exists)
+                app.terminate(); app.launchArguments = []; app.launch(); scrollAndTap("Food")
+                reveal(meal); XCTAssertTrue(meal.exists && app.images["savedMealPhoto"].exists)
+                snap("929-meal-photo-delete-failure-relaunch")
+                meal.press(forDuration: 1.2); tap("Delete")
+                XCTAssertTrue(meal.waitForNonExistence(timeout: 5))
+            }
+            app.terminate(); app.launchArguments = []; app.launch(); scrollAndTap("Food")
+            if specification == "meals:2" { XCTAssertEqual(app.staticTexts["foodEnergyValue"].label, "Not recorded") }
+            else { reveal(meal); XCTAssertTrue(meal.exists && app.images["savedMealPhoto"].exists) }
+        }
+    }
+
+    func testQuickWorkoutDiskFailure() throws {
+        for index in 1...2 {
+            quickFault("workouts:\(index)")
+            tap("Log"); scrollAndTap("Workout"); tap("Save walk")
+            if index == 1 {
+                assertQuickFailure("Couldn’t save workout", capture: "918-workout-save-failed")
+                XCTAssertTrue(app.navigationBars["Log a workout"].exists)
+                XCTAssertTrue(app.staticTexts["30 min"].exists); tap("Save walk")
+            }
+            XCTAssertTrue(app.navigationBars["Log a workout"].waitForNonExistence(timeout: 5))
+            scrollAndTap("Activity")
+            let workout = app.staticTexts["Walk"].firstMatch; reveal(workout); XCTAssertTrue(workout.exists)
+            if index == 2 {
+                workout.press(forDuration: 1.2); tap("Delete")
+                assertQuickFailure("Couldn’t remove workout", capture: "919-workout-delete-failed")
+                XCTAssertTrue(workout.exists); workout.press(forDuration: 1.2); tap("Delete")
+                XCTAssertTrue(workout.waitForNonExistence(timeout: 5))
+            }
+            snap("919-workout-retried-\(index)")
+            app.terminate(); app.launchArguments = []; app.launch(); scrollAndTap("Activity")
+            if index == 1 { reveal(workout); XCTAssertTrue(workout.exists) }
+            else { XCTAssertTrue(app.staticTexts["No workouts yet"].exists) }
+        }
+    }
+
+    func testQuickWeightDiskFailure() throws { try weightDiskFailure(large: false) }
+    func testQuickWeightDiskFailureLargeDark() throws { try weightDiskFailure(large: true) }
+    func testQuickWeightBusySync() throws {
+        app.terminate()
+        app.launchArguments = ["-resetForUITests", "-quick-weight-busy", "-lumen.appearance", "dark"]
+        app.launch(); finishOnboarding()
+        tap("Log"); scrollAndTap("Weight")
+        let value = app.staticTexts["weightDraftValue"]
+        XCTAssertTrue(value.waitForExistence(timeout: 5)); tap("increaseWeight")
+        let draft = value.label; tap("Save weight")
+        let alert = app.alerts["Couldn’t save weight"]
+        XCTAssertTrue(alert.waitForExistence(timeout: 5))
+        XCTAssertTrue(alert.staticTexts["Your weight is still here. Health is syncing. Wait for it to finish, then try saving again."].exists)
+        snap("925-weight-busy-sync"); alert.buttons["OK"].tap()
+        XCTAssertEqual(value.label, draft); snap("926-weight-busy-retained-draft")
+        let ready = NSPredicate(format: "value == %@", "Ready to save")
+        expectation(for: ready, evaluatedWith: app.buttons["Save weight"])
+        waitForExpectations(timeout: 30)
+        tap("Save weight"); XCTAssertTrue(app.navigationBars["Log weight"].waitForNonExistence(timeout: 8))
+        app.terminate(); app.launchArguments = []; app.launch()
+        tap("currentReadingsShortcut"); tap("current-reading-weight")
+        XCTAssertEqual(app.staticTexts["currentReadingValue"].label, draft); snap("927-weight-busy-retry-relaunch")
+    }
+    func weightDiskFailure(large: Bool) throws {
+        quickFault("today.json:1", large: large)
+        tap("Log"); scrollAndTap("Weight")
+        let value = app.staticTexts["weightDraftValue"]
+        XCTAssertTrue(value.waitForExistence(timeout: 5))
+        let original = value.label
+        let increase = app.buttons["increaseWeight"]; reveal(increase); increase.tap()
+        let draft = value.label; XCTAssertNotEqual(draft, original)
+        snap(large ? "920-weight-large-draft" : "920-weight-draft")
+        if large {
+            let copy = app.staticTexts["Save on this iPhone."]
+            let scroll = app.scrollViews.containing(.staticText, identifier: "weightDraftValue").firstMatch
+            let action = app.buttons["Save weight"]
+            for _ in 0..<5 {
+                if copy.exists && copy.frame.maxY < action.frame.minY - 4 && copy.frame.minY > app.navigationBars["Log weight"].frame.maxY { break }
+                scroll.swipeUp(velocity: .slow)
+            }
+            XCTAssertTrue(copy.exists && copy.frame.maxY < action.frame.minY - 4 && copy.frame.minY > app.navigationBars["Log weight"].frame.maxY)
+            snap("924-weight-large-local-save-disclosure")
+        }
+        tap("Save weight")
+        assertQuickFailure("Couldn’t save weight", capture: large ? "921-weight-large-failed" : "921-weight-failed")
+        XCTAssertEqual(value.label, draft)
+        if large { app.scrollViews.containing(.staticText, identifier: "weightDraftValue").firstMatch.swipeDown(velocity: .slow) }
+        snap(large ? "928-weight-large-retained-draft" : "928-weight-retained-draft")
+        tap("Save weight")
+        XCTAssertTrue(app.navigationBars["Log weight"].waitForNonExistence(timeout: 8))
+        app.terminate(); app.launchArguments = []; app.launch()
+        tap("Log"); scrollAndTap("Weight")
+        XCTAssertTrue(value.waitForExistence(timeout: 5)); XCTAssertEqual(value.label, draft)
+        snap("922-weight-retry-relaunch-" + (large ? "large" : "normal"))
+        tap("Cancel"); tap("currentReadingsShortcut"); tap("current-reading-weight")
+        XCTAssertEqual(app.staticTexts["currentReadingValue"].label, draft)
+        snap("923-weight-reading-relaunch-" + (large ? "large" : "normal"))
+    }
+
     func testQuickWaterAndMealMutationLifecycle() throws {
         finishOnboarding()
         scrollAndTap("Food")

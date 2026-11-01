@@ -28,6 +28,7 @@ public struct MealCaptureView: View {
     @State private var describing = false
     @State private var descriptionText = ""
     @State private var showSearch = false
+    @State private var saveFailure: LocalSaveFailure?
     @FocusState private var describeFocused: Bool
 
     public init(openCamera: Bool = false) { self.openCamera = openCamera }
@@ -85,9 +86,19 @@ public struct MealCaptureView: View {
                     if let data = try? await item?.loadTransferable(type: Data.self), let ui = UIImage(data: data) { use(ui) }
                 }
             }
-            .task { if openCamera && !hasContent { await startCamera() } }
+            .task {
+                #if DEBUG && targetEnvironment(simulator)
+                if ProcessInfo.processInfo.arguments.contains("-resetForUITests"), ProcessInfo.processInfo.arguments.contains("-quick-meal-photo") {
+                    photo = UIGraphicsImageRenderer(size: CGSize(width: 24, height: 24)).image { context in
+                        UIColor.systemTeal.setFill(); context.fill(CGRect(x: 0, y: 0, width: 24, height: 24))
+                    }
+                }
+                #endif
+                if openCamera && !hasContent { await startCamera() }
+            }
         }
         .tint(Theme.accent)
+        .localSaveAlert($saveFailure)
     }
 
     // MARK: Start
@@ -274,11 +285,11 @@ public struct MealCaptureView: View {
 
     func save() {
         let meal = Meal(type: mealType, items: items, photoID: nil, note: title.isEmpty ? nil : title)
-        var saved = meal
-        if let photo { PhotoStore.save(photo, id: meal.id); saved.photoID = meal.id }
-        health.addMeal(saved)
-        UINotificationFeedbackGenerator().notificationOccurred(.success)
-        dismiss()
+        do {
+            try health.addMeal(meal, photo: photo)
+            UINotificationFeedbackGenerator().notificationOccurred(.success)
+            dismiss()
+        } catch { saveFailure = .saving("meal", error: error, draft: true) }
     }
 
     func reset() {
@@ -325,7 +336,8 @@ struct FoodSearchSheet: View {
     @EnvironmentObject var health: HealthStore
     @Environment(\.dismiss) var dismiss
     @State private var query = ""
-    let onPick: (FoodItem) -> Void
+    @State private var saveFailure: LocalSaveFailure?
+    let onPick: (FoodItem) throws -> Void
 
     var recent: [FoodItem] { health.meals.suffix(30).flatMap(\.items).reversed() }
     var results: [FoodItem] { NutritionEngine.shared.search(query, recent: recent) }
@@ -351,12 +363,14 @@ struct FoodSearchSheet: View {
             }
         }
         .tint(Theme.accent)
+        .localSaveAlert($saveFailure)
     }
 
     var rows: some View {
         ForEach(results) { item in
             Button {
-                onPick(item); haptic(.light); dismiss()
+                do { try onPick(item); haptic(.light); dismiss() }
+                catch { saveFailure = .saving("food", error: error) }
             } label: {
                 HStack {
                     VStack(alignment: .leading, spacing: 2) {

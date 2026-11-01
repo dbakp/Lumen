@@ -144,6 +144,7 @@ let package = Package(
             "Tests/HealthLogDraftChecks.swift",
             "Tests/DataConfidenceChecks.swift",
             "Tests/HealthWriteOrderChecks.swift",
+            "Tests/LocalCommitChecks.swift",
             "Tests/RetainedEvidenceChecks.swift",
             "Tests/BackupPackageChecks.swift",
             "Tests/BackupUIFixtures.swift",
