@@ -45,8 +45,8 @@
   },
   "selectorGuardBoundary": "BuildR4 validates actual query language/index/error status as well as pool hashes, blocking forged fallback/index-error records. Challenge cases exactly equal BuildR3; all170 withdrawal and170 carried-exclusion checks pass in both.",
   "baselineReaderBoundary": "Initial public baseline comparison incorrectly included the prior outcome report's judgment annotation, absent from native source packets. Reader now allows only that annotation outside the exact six source fields; all324 public+32 synthetic source packets/statuses/languages match. No source, score or gate changes. All aggregate metrics remain identical after adding explicit per-query judgments/metrics to the compact report; scoring and native selection are not rerun for this reporting-only change.",
-  "status": "complete development trial verified; no policy meets joint gates; publication/cleanup pending",
-  "recordedAtUTC": "2026-11-01T12:07:34.520012+00:00",
+  "status": "complete negative development trial published; exact read-back and stopped-worker cleanup complete",
+  "recordedAtUTC": "2026-11-01T12:15:45.590796+00:00",
   "protocolPublished": "cd180fa926d794566b83faabbec0dac3c049a132",
   "baselinePacketsMatched": 356,
   "publicQueries": 324,
@@ -64,5 +64,17 @@
     "sha256": "ab6d3803b90264a90dbbc1dd1cbd9ffd1442f8910f835b857fff8339513f47c2",
     "sourceMap": "rerank-final-source-map.json"
   },
-  "decision": "rerank-decision.json"
+  "decision": "rerank-decision.json",
+  "publication": {
+    "researchCommit": "863b4d1f5a56251c979a73ffe2a2953576c27e2a",
+    "remoteMainReadBack": "863b4d1f5a56251c979a73ffe2a2953576c27e2a",
+    "publisher": "scripts/publish-batches.sh"
+  },
+  "storage": {
+    "proof": "rerank-storage-cleanup.json",
+    "availableBytesRecovered": 339525632,
+    "retainedInputBytes": 16522311,
+    "currentInputs": "rerank-current-inputs.json",
+    "scratchAndStandaloneHelperRetained": false
+  }
 }
