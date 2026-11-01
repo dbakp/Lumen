@@ -169,6 +169,7 @@ enum MiniLMChecks {
         let weights = try Data(contentsOf: source.appendingPathComponent(SemanticModelPackage.assets[2].path), options: .mappedIfSafe)
         check(zip(MiniLMRuntimeCache.sourceOffsets, MiniLMRuntimeCache.fingerprints).allSatisfy { offset, bytes in weights.subdata(in: offset..<(offset + 64)) == bytes }, "runtime cache fingerprints exactly match disjoint blocks of the fully verified pinned weights")
         let encoder = try MiniLMEncoder(compiledModel: compiled, vocabulary: Data(contentsOf: source.appendingPathComponent("tokenizer/vocab.txt")))
+        try await RecordRetrievalChecks.identifierModelChecks(encoder: encoder)
         let target = HealthDocument(id: "semantic-fatigue", title: "Consultation note", kind: .record, body: "Persistent tiredness and low energy over several weeks.", source: "Synthetic", includeInAssistant: true)
         let budget = HealthDocument(id: "semantic-budget", title: "Household budget", kind: .note, body: "The accountant prepared a summary of quarterly income and expenses.", source: "Synthetic", includeInAssistant: true)
         let lab = HealthDocument(id: "semantic-lab", title: "Laboratory report", kind: .record, body: "Ferritin 42 ug/L. Reference interval 20 to 200 ug/L.", source: "Synthetic", includeInAssistant: true)

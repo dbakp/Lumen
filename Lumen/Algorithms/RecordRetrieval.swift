@@ -76,6 +76,8 @@ struct RecordSearchIndex: Sendable {
     var rows: [Int: LibraryPassage] = [:]
     var keywordRows: [Int] = []
     var carried: [LibraryPassage] = []
+    var literalIdentifiers: Set<String> = []
+    var identifierCoverage: [Int: Set<String>] = [:]
 }
 
 public enum RecordRetrieval {
@@ -86,7 +88,175 @@ public enum RecordRetrieval {
     public static let maxCharacters = 20_000_000
     public static let maxPassages = 30_000
     private static let transient = unsafeBitCast(-1, to: sqlite3_destructor_type.self)
-    public enum SearchError: Error { case unavailable }
+    // Identifier punctuation is significant. Match complete tokens, preserving
+    // leading zeros, versions, Unicode dashes and the original saved excerpts.
+    private static let identifierToken = #"[\p{L}\p{N}\p{M}]+(?:[\p{Pd}_./]+[\p{L}\p{N}\p{M}]+)*"#
+    // Unsupported attached punctuation must not split a longer source value
+    // into an eligible shorter identifier. A colon followed by whitespace is
+    // still a sentence/field delimiter, as in "TEST-AX1: not detected".
+    private static let identifierTokens = try! NSRegularExpression(pattern: #"(?<![\p{L}\p{N}\p{M}\p{Pd}_/+@#%=|&:])"# + identifierToken + #"(?![\p{L}\p{N}\p{M}\p{Pd}_/+@#%=|&]|:\S)"#)
+    private static let identifierLabel = #"(?i)(?<![\p{L}\p{N}_])(?:samples?|specimens?|accessions?|invoices?|bookings?|reports?|records?|documents?|orders?|receipts?|files?|patients?|accounts?|cases?|references?)\s+(?:(?:identifiers?|references?|numbers?|codes?|ids?|nos?\.?)(?![\p{L}\p{N}_])\s*[:#]?\s*|[:#]\s*)"#
+    private static let identifierMarkers = try! NSRegularExpression(pattern: identifierLabel + #"[\"“]?("# + identifierToken + ")")
+    private static let identifierField = #"(?:\"([^\"]*)\"|“([^”]*)”|([^\s,;!?]+))"#
+    private static let labelledIdentifierFields = try! NSRegularExpression(pattern: identifierLabel + identifierField)
+    private static let directIdentifierFields = try! NSRegularExpression(pattern: #"(?i)(?<![\p{L}\p{N}_])(samples?|specimens?|accessions?|bookings?|invoices?)\s+"# + identifierField)
+    private static let directIdentifiers = try! NSRegularExpression(pattern: #"(?i)(?<![\p{L}\p{N}_])(samples?|specimens?|accessions?|bookings?|invoices?)\s+[\"“]?("# + identifierToken + ")")
+    private static let quotedIdentifiers = try! NSRegularExpression(pattern: #"[\"“]([^\"”\s]+)[\"”]"#)
+    private static let followingIdentifier = try! NSRegularExpression(pattern: #"(?i)^[\"”]?\s*(?:,\s*(?:(?:and|or)\s+)?|(?:and|or|versus|vs\.?)\s+)[\"“]?("# + identifierToken + #")[\"”]?"#)
+    private static func identifierKey(_ value: String) -> String {
+        value.folding(options: .caseInsensitive, locale: Locale(identifier: "en_US_POSIX"))
+    }
+    private static func identifierOccurrences(in text: String, required: Set<String>) -> [(key: String, range: NSRange)] {
+        guard required.contains(where: { text.range(of: $0, options: .caseInsensitive, locale: Locale(identifier: "en_US_POSIX")) != nil }) else { return [] }
+        let range = NSRange(text.startIndex..., in: text)
+        let quotes = quotedIdentifiers.matches(in: text, range: range)
+        var found: [(key: String, range: NSRange)] = []
+        for quote in quotes {
+            if let r = Range(quote.range(at: 1), in: text) {
+                let key = identifierKey(String(text[r]))
+                if required.contains(key) { found.append((key, quote.range(at: 1))) }
+            }
+        }
+        var quoteIndex = 0
+        for token in identifierTokens.matches(in: text, range: range) {
+            while quoteIndex < quotes.count && NSMaxRange(quotes[quoteIndex].range) <= token.range.location { quoteIndex += 1 }
+            // A quoted field is one literal value. A punctuation-bearing value
+            // such as "AF-740." must not also emit its shorter AF-740 token.
+            if quoteIndex < quotes.count && NSIntersectionRange(quotes[quoteIndex].range, token.range).length > 0 { continue }
+            if let r = Range(token.range, in: text) {
+                let key = identifierKey(String(text[r]))
+                if required.contains(key) { found.append((key, token.range)) }
+            }
+        }
+        return found.sorted { $0.range.location < $1.range.location }
+    }
+    /// Explicit ID/code/number labels, quoted numeric-bearing tokens, invoices,
+    /// and strongly shaped sample references. Ordinary B12/HbA1c/COVID-19 topic
+    /// questions are not reinterpreted as identifier lookups.
+    static func literalIdentifiers(_ query: String, history: [ChatMessage] = []) throws -> Set<String> {
+        func parse(_ text: String) throws -> Set<String> {
+            guard text.utf8.count <= 32_000 else { throw SearchError.queryLength }
+            let range = NSRange(text.startIndex..., in: text)
+            var result = Set<String>()
+            // Inspect the whole explicitly labelled field before extracting any
+            // token. Unsupported leading punctuation or a spaced quoted value
+            // must fail instead of silently reverting to broad topic search.
+            func validateField(_ match: NSTextCheckingResult, firstGroup: Int) throws {
+                let group = (firstGroup..<(firstGroup + 3)).first { match.range(at: $0).location != NSNotFound }!
+                guard let r = Range(match.range(at: group), in: text) else { return }
+                let quoted = group != firstGroup + 2
+                let raw = String(text[r])
+                let value = quoted ? raw : String(raw.reversed().drop(while: { ".:)]}".contains($0) }).reversed())
+                if !quoted && (stop.contains(identifierKey(value)) || ["unknown", "missing", "unavailable", "none", "not", "result", "results", "value"].contains(identifierKey(value))) { return }
+                guard value.count <= 96 else { throw SearchError.identifierLength }
+                guard value.range(of: "^(?:" + identifierToken + ")$", options: .regularExpression) != nil else { throw SearchError.identifierFormat }
+            }
+            for match in labelledIdentifierFields.matches(in: text, range: range) { try validateField(match, firstGroup: 1) }
+            for match in directIdentifierFields.matches(in: text, range: range) {
+                let group = (2...4).first { match.range(at: $0).location != NSNotFound }!
+                guard let r = Range(match.range(at: group), in: text), let label = Range(match.range(at: 1), in: text) else { continue }
+                let value = String(text[r]), parts = value.components(separatedBy: CharacterSet.alphanumerics.inverted).filter { !$0.isEmpty }
+                let shaped = text[label].lowercased().hasPrefix("invoice") ? value.contains(where: \.isLetter) : parts.count > 1 && parts.contains { $0.contains(where: \.isLetter) && $0.contains(where: \.isNumber) }
+                if value.contains(where: \.isNumber) && shaped { try validateField(match, firstGroup: 2) }
+            }
+            func unsupportedSuffix(_ value: String, after end: String.Index) -> Bool {
+                guard end < value.endIndex else { return false }
+                if value[end] == ":" {
+                    let next = value.index(after: end)
+                    return next < value.endIndex && !value[next].isWhitespace
+                }
+                return String(value[end]).range(of: #"[\p{Pd}_/+@#%=|&]"#, options: .regularExpression) != nil
+            }
+            func add(_ match: NSTextCheckingResult, group: Int) throws {
+                guard let r = Range(match.range(at: group), in: text) else { return }
+                let value = String(text[r])
+                guard value.count <= 96 else { throw SearchError.identifierLength }
+                guard value.range(of: "^(?:" + identifierToken + ")$", options: .regularExpression) != nil else { throw SearchError.identifierFormat }
+                if unsupportedSuffix(text, after: r.upperBound) { throw SearchError.identifierFormat }
+                result.insert(identifierKey(value))
+                guard result.count <= 16 else { throw SearchError.identifierCount }
+            }
+            func following(_ match: NSTextCheckingResult) throws {
+                guard let end = Range(match.range, in: text)?.upperBound else { return }
+                var suffix = String(text[end...])
+                while let next = followingIdentifier.firstMatch(in: suffix, range: NSRange(suffix.startIndex..., in: suffix)),
+                      let codeRange = Range(next.range(at: 1), in: suffix), let fullRange = Range(next.range, in: suffix) {
+                    let code = String(suffix[codeRange])
+                    guard code.contains(where: \.isNumber) else { break }
+                    guard code.count <= 96 else { throw SearchError.identifierLength }
+                    if unsupportedSuffix(suffix, after: codeRange.upperBound) { throw SearchError.identifierFormat }
+                    result.insert(identifierKey(code))
+                    guard result.count <= 16 else { throw SearchError.identifierCount }
+                    suffix = String(suffix[fullRange.upperBound...])
+                }
+            }
+            for match in identifierMarkers.matches(in: text, range: range) {
+                guard let r = Range(match.range(at: 1), in: text) else { continue }
+                let value = identifierKey(String(text[r]))
+                let quoted = r.lowerBound > text.startIndex && ["\"", "“"].contains(String(text[text.index(before: r.lowerBound)]))
+                if quoted || (!stop.contains(value) && !["unknown", "missing", "unavailable", "none", "not", "result", "results", "value"].contains(value)) { try add(match, group: 1); try following(match) }
+            }
+            for match in quotedIdentifiers.matches(in: text, range: range) {
+                if let r = Range(match.range(at: 1), in: text), text[r].contains(where: \.isNumber) { try add(match, group: 1); try following(match) }
+            }
+            for match in directIdentifiers.matches(in: text, range: range) {
+                guard let labelRange = Range(match.range(at: 1), in: text), let codeRange = Range(match.range(at: 2), in: text) else { continue }
+                let value = String(text[codeRange])
+                guard value.contains(where: \.isNumber) else { continue }
+                let parts = value.components(separatedBy: CharacterSet.alphanumerics.inverted).filter { !$0.isEmpty }
+                let shapedSample = parts.count > 1 && parts.contains { $0.contains(where: \.isLetter) && $0.contains(where: \.isNumber) }
+                let shapedInvoice = text[labelRange].lowercased().hasPrefix("invoice") && value.contains(where: \.isLetter)
+                if shapedInvoice || shapedSample { try add(match, group: 2); try following(match) }
+            }
+            return result
+        }
+        let current = try parse(query)
+        func isFollowup(_ text: String) -> Bool { followup(text.trimmingCharacters(in: .whitespacesAndNewlines)) }
+        if !current.isEmpty || !isFollowup(query) { return current }
+        // A new explicit ID replaces the old one. Unqualified follow-up chains
+        // inherit only through consecutive follow-ups, never across a new topic.
+        var followups = [query]
+        for message in history.reversed() where message.role == .user {
+            try Task.checkCancellation()
+            let previous = try parse(message.text)
+            if !previous.isEmpty {
+                func stem(_ value: String) -> String { value.replacingOccurrences(of: #"\p{N}+$"#, with: "", options: .regularExpression) }
+                let punctuation = CharacterSet(charactersIn: "\"“”'‘’()[]{}?,;:!.")
+                var inherited = previous
+                for text in followups.reversed() {
+                    try Task.checkCancellation()
+                    let stems = Set(inherited.map(stem))
+                    let mentioned = try Set(text.components(separatedBy: .whitespacesAndNewlines).compactMap { raw -> String? in
+                        let value = identifierKey(raw.trimmingCharacters(in: punctuation))
+                        let referenceShape = value.contains(where: \.isLetter) && value.contains(where: \.isNumber)
+                        guard inherited.contains(value) || (value.contains(where: \.isNumber) && stems.contains(stem(value))) || referenceShape else { return nil }
+                        guard value.count <= 96 else { throw SearchError.identifierLength }
+                        guard value.range(of: "^(?:" + identifierToken + ")$", options: .regularExpression) != nil else { throw SearchError.identifierFormat }
+                        return value
+                    })
+                    guard mentioned.count <= 16 else { throw SearchError.identifierCount }
+                    if !mentioned.isEmpty { inherited = mentioned }
+                }
+                return inherited
+            }
+            if !isFollowup(message.text) { return [] }
+            followups.append(message.text)
+        }
+        return []
+    }
+    public enum SearchError: LocalizedError, Equatable {
+        case unavailable, queryLength, identifierLength, identifierCount, identifierFormat, identifierCoverage
+        public var errorDescription: String? {
+            switch self {
+            case .unavailable: return "Library search couldn't finish. Try again, or open the record in Library."
+            case .queryLength: return "That question is too long for Library lookup. Ask a shorter question, or open the record in Library."
+            case .identifierLength: return "Library lookup supports identifiers up to 96 characters. Open the record in Library for this one."
+            case .identifierCount: return "Library lookup can check up to 16 identifiers at a time. Ask about fewer."
+            case .identifierFormat: return "Library lookup can't match that identifier format. Open the record in Library to check it."
+            case .identifierCoverage: return "Those identifiers need more source excerpts than this lookup can include. Ask about fewer at a time."
+            }
+        }
+    }
     private static let stop = Set("a an and are as at be been but by can could did do does for from had has have how i in into is it its me my of on or our please record records document documents file files library saved say says show tell than that the their them there these they this those to us was were what when where which who why will with would you your about find look search using use note notes report reports letter letters mention mentions mentioned information".split(separator: " ").map(String.init))
     static func words(_ text: String) -> [String] {
         var seen = Set<String>()
@@ -102,6 +272,7 @@ public enum RecordRetrieval {
         return ["what about", "how about", "and ", "that ", "those ", "step ", "explain more", "tell me more"].contains { q.hasPrefix($0) } || (words(query).count <= 3 && q.range(of: #"\b(it|that|those|this|second|third)\b"#, options: .regularExpression) != nil)
     }
     public static func isLibraryQuestion(_ query: String, history: [ChatMessage] = []) -> Bool {
+        if let identifiers = try? literalIdentifiers(query, history: history), !identifiers.isEmpty { return true }
         let q = query.lowercased()
         return ["library", "document", "my record", "the record", "record say", "saved note", "my file", "the file"].contains { q.contains($0) } || (followup(query) && !(history.last(where: { $0.role == .coach })?.recordContext?.passages.isEmpty ?? true))
     }
@@ -157,12 +328,17 @@ public enum RecordRetrieval {
     static func candidates(query: String, documents: [HealthDocument], history: [ChatMessage] = [], now: Date = Date()) throws -> RecordSearchIndex {
         try Task.checkCancellation()
         let shared = documents.filter(\.includeInAssistant)
+        let identifiers = try literalIdentifiers(query, history: history)
         var terms = words(query)
+        if !identifiers.isEmpty {
+            let literalTerms = words(identifiers.sorted().joined(separator: " "))
+            terms = literalTerms + terms.filter { !literalTerms.contains($0) }
+        }
         let isFollowup = followup(query)
         if isFollowup, let prior = history.last(where: { $0.role == .user && !words($0.text).isEmpty }) { terms += words(prior.text).filter { !terms.contains($0) } }
         terms = Array(terms.prefix(12))
         var result = RecordReplyContext(mode: .model, capturedAt: now, sharedDocuments: shared.count, searchedDocuments: 0, limited: false, passages: [])
-        guard !terms.isEmpty, !shared.isEmpty else { return RecordSearchIndex(context: result) }
+        guard !terms.isEmpty || !identifiers.isEmpty, !shared.isEmpty else { return RecordSearchIndex(context: result) }
         var db: OpaquePointer?
         guard sqlite3_open_v2(":memory:", &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE | SQLITE_OPEN_NOMUTEX, nil) == SQLITE_OK, let db else { if let db { sqlite3_close(db) }; throw SearchError.unavailable }
         defer { sqlite3_close(db) }
@@ -172,7 +348,7 @@ public enum RecordRetrieval {
         var insert: OpaquePointer?
         guard sqlite3_prepare_v2(db, "INSERT INTO passages(rowid,title,body) VALUES(?,?,?)", -1, &insert, nil) == SQLITE_OK, let insert else { throw SearchError.unavailable }
         defer { sqlite3_finalize(insert) }
-        var rows: [Int: LibraryPassage] = [:], characters = 0, bytes = 0
+        var rows: [Int: LibraryPassage] = [:], coverage: [Int: Set<String>] = [:], characters = 0, bytes = 0, preparedPassages = 0
         let sorted = shared.sorted {
             let left = words($0.title), right = words($1.title)
             let lc = terms.filter { left.contains($0) }.count, rc = terms.filter { right.contains($0) }.count
@@ -186,6 +362,7 @@ public enum RecordRetrieval {
             guard !doc.id.isEmpty, doc.id.count <= 500, doc.title.count <= 500, doc.source.count <= 500, let text = text(doc), let hash = fingerprint(doc) else { result.limited = true; continue }
             guard characters + text.count <= maxCharacters, bytes + text.utf8.count <= maxBytes else { result.limited = true; continue }
             characters += text.count; bytes += text.utf8.count; result.searchedDocuments += 1
+            let titleIdentifiers = identifiers.isEmpty ? Set<String>() : Set(identifierOccurrences(in: doc.title, required: identifiers).map(\.key))
             var offset = 0, ordinal = 0, page: Int?
             for paragraph in text.components(separatedBy: "\n\n") {
                 defer { offset += paragraph.count + 2 }
@@ -195,22 +372,38 @@ public enum RecordRetrieval {
                 if offset < doc.body.count, doc.extraction != nil && doc.extraction?.laterEditedAt == nil, paragraph.hasPrefix("## Page "), let number = Int(paragraph.dropFirst(8)),
                    doc.extraction!.pages.contains(where: { $0.number == number && $0.method != .excluded }) { page = number; continue }
                 let chars = Array(paragraph)
-                var local = 0
+                let occurrences = identifiers.isEmpty ? [] : identifierOccurrences(in: paragraph, required: identifiers)
+                var local = 0, utf16Offset = 0, occurrenceIndex = 0
                 while local < chars.count {
                     try Task.checkCancellation()
-                    guard rows.count < maxPassages else { result.limited = true; break outer }
+                    guard preparedPassages < maxPassages else { result.limited = true; break outer }
                     let end = min(chars.count, local + 900), excerpt = String(chars[local..<end])
+                    let utf16Length = occurrences.isEmpty ? 0 : excerpt.utf16.count
                     if excerpt.utf8.count > 16_000 { result.limited = true }
                     else if !excerpt.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                         ordinal += 1
+                        preparedPassages += 1
                         let row = rows.count + 1
-                        rows[row] = .init(id: "", number: 0, documentID: doc.id, title: String(doc.title.prefix(500)), source: String(doc.source.prefix(500)), updatedAt: doc.updatedAt,
+                        let passage = LibraryPassage(id: "", number: 0, documentID: doc.id, title: String(doc.title.prefix(500)), source: String(doc.source.prefix(500)), updatedAt: doc.updatedAt,
                                           textSHA256: hash, start: offset + local, end: offset + end, ordinal: ordinal, page: page, excerpt: excerpt)
-                        sqlite3_reset(insert); sqlite3_clear_bindings(insert)
-                        sqlite3_bind_int64(insert, 1, Int64(row)); sqlite3_bind_text(insert, 2, String(doc.title.prefix(500)), -1, transient); sqlite3_bind_text(insert, 3, excerpt, -1, transient)
-                        guard sqlite3_step(insert) == SQLITE_DONE else { throw SearchError.unavailable }
+                        var matched = titleIdentifiers
+                        while occurrenceIndex < occurrences.count && occurrences[occurrenceIndex].range.location < utf16Offset { occurrenceIndex += 1 }
+                        var candidate = occurrenceIndex
+                        while candidate < occurrences.count && occurrences[candidate].range.location < utf16Offset + utf16Length {
+                            if NSMaxRange(occurrences[candidate].range) <= utf16Offset + utf16Length { matched.insert(occurrences[candidate].key) }
+                            candidate += 1
+                        }
+                        if identifiers.isEmpty || !matched.isEmpty {
+                            rows[row] = passage
+                            if !identifiers.isEmpty { coverage[row] = matched }
+                            sqlite3_reset(insert); sqlite3_clear_bindings(insert)
+                            sqlite3_bind_int64(insert, 1, Int64(row)); sqlite3_bind_text(insert, 2, String(doc.title.prefix(500)), -1, transient); sqlite3_bind_text(insert, 3, excerpt, -1, transient)
+                            guard sqlite3_step(insert) == SQLITE_DONE else { throw SearchError.unavailable }
+                        }
                     }
-                    if end == chars.count { break }; local = end - 120
+                    if end == chars.count { break }
+                    if !occurrences.isEmpty { utf16Offset += utf16Length - String(chars[(end - 120)..<end]).utf16.count }
+                    local = end - 120
                 }
             }
         }
@@ -219,14 +412,16 @@ public enum RecordRetrieval {
         // and sharing still match. Every selected passage gets a new request ID.
         var selected: [LibraryPassage] = []
         if isFollowup, let previous = history.last(where: { $0.role == .coach })?.recordContext, previous.isValid {
-            selected = previous.passages.filter { isCurrent($0, documents: documents) }
+            selected = previous.passages.filter { passage in
+                isCurrent(passage, documents: documents) && (identifiers.isEmpty || rows.values.contains { $0.documentID == passage.documentID && $0.start == passage.start && $0.end == passage.end })
+            }
         }
         var statement: OpaquePointer?
-        let sql = "SELECT rowid FROM passages WHERE passages MATCH ? ORDER BY bm25(passages,4.0,1.0), rowid"
+        let sql = terms.isEmpty ? "SELECT rowid FROM passages ORDER BY rowid" : "SELECT rowid FROM passages WHERE passages MATCH ? ORDER BY bm25(passages,4.0,1.0), rowid"
         guard sqlite3_prepare_v2(db, sql, -1, &statement, nil) == SQLITE_OK, let statement else { throw SearchError.unavailable }
         defer { sqlite3_finalize(statement) }
         let match = terms.map { "\"\($0)\"" + ($0.count >= 4 ? "*" : "") }.joined(separator: " OR ")
-        sqlite3_bind_text(statement, 1, match, -1, transient)
+        if !terms.isEmpty { sqlite3_bind_text(statement, 1, match, -1, transient) }
         // Keep the complete bounded keyword ranking. Both retrieval paths use
         // the same source windows, consent, limits and final diversity rule.
         var keywordRows: [Int] = []
@@ -238,17 +433,54 @@ public enum RecordRetrieval {
             let row = Int(sqlite3_column_int64(statement, 0))
             if rows[row] != nil { keywordRows.append(row) }
         }
-        return RecordSearchIndex(context: result, rows: rows, keywordRows: keywordRows, carried: selected)
+        if !identifiers.isEmpty {
+            let covered = coverage.values.reduce(into: Set<String>()) { $0.formUnion($1) }
+            // A combined literal lookup must not silently stand in for a missing
+            // requested ID with whichever other ID happens to exist.
+            guard covered == identifiers else { return RecordSearchIndex(context: result, literalIdentifiers: identifiers) }
+            let ranked = Set(keywordRows)
+            keywordRows += rows.keys.sorted().filter { !ranked.contains($0) }
+        }
+        return RecordSearchIndex(context: result, rows: rows, keywordRows: keywordRows, carried: selected, literalIdentifiers: identifiers, identifierCoverage: coverage)
     }
     static func selecting(_ index: RecordSearchIndex, rankedRows: [Int], relatedRows: Set<Int> = [], audit: MeaningSearchAudit? = nil) throws -> RecordReplyContext {
         try Task.checkCancellation()
-        var result = index.context, selected = index.carried
+        func carriedCoverage(_ passage: LibraryPassage) -> Set<String> {
+            guard let row = index.rows.first(where: { $0.value.documentID == passage.documentID && $0.value.start == passage.start && $0.value.end == passage.end })?.key else { return [] }
+            return index.identifierCoverage[row, default: []]
+        }
+        var result = index.context, selected = index.carried.filter { index.literalIdentifiers.isEmpty || !carriedCoverage($0).isEmpty }
         for offset in selected.indices { selected[offset].selection = .carried }
         let keywords = Set(index.keywordRows)
-        for row in rankedRows {
+        var order = rankedRows
+        if !index.literalIdentifiers.isEmpty, !index.rows.isEmpty {
+            // Reserve an exact excerpt for each requested identifier before
+            // topic fusion can spend the four-passage budget on one record.
+            var missing = index.literalIdentifiers.subtracting(selected.reduce(into: Set<String>()) { $0.formUnion(carriedCoverage($1)) })
+            var preferred: [Int] = []
+            let coverage = index.identifierCoverage
+            while !missing.isEmpty {
+                guard selected.count + preferred.count < 4 else { throw SearchError.identifierCoverage }
+                let held = selected + preferred.compactMap { index.rows[$0] }
+                var best: Int?, bestCoverage = 0
+                for row in rankedRows {
+                    try Task.checkCancellation()
+                    guard let p = index.rows[row], !preferred.contains(row) else { continue }
+                    let count = coverage[row, default: []].intersection(missing).count
+                    guard count > bestCoverage, held.filter({ $0.documentID == p.documentID }).count < 2,
+                          !held.contains(where: { $0.documentID == p.documentID && $0.start < p.end && p.start < $0.end }) else { continue }
+                    best = row; bestCoverage = count
+                }
+                guard let row = best else { throw SearchError.identifierCoverage }
+                preferred.append(row); missing.subtract(coverage[row, default: []])
+            }
+            order = preferred + rankedRows.filter { !preferred.contains($0) }
+        }
+        for row in order {
             try Task.checkCancellation()
             if selected.count >= 4 { break }
-            guard var passage = index.rows[row], selected.filter({ $0.documentID == passage.documentID }).count < 2,
+            guard var passage = index.rows[row], index.literalIdentifiers.isEmpty || !index.identifierCoverage[row, default: []].isEmpty,
+                  selected.filter({ $0.documentID == passage.documentID }).count < 2,
                   !selected.contains(where: { $0.documentID == passage.documentID && $0.start < passage.end && passage.start < $0.end }) else { continue }
             passage.selection = relatedRows.contains(row) ? (keywords.contains(row) ? .keywordAndRelatedTopic : .relatedTopic) : .keyword
             selected.append(passage)

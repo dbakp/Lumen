@@ -1,6 +1,6 @@
 # Retrieval quality · Batch26 investigation
 
-The full product goal remains active. Batch25 is the latest published application. This work investigates the retained iron-stores/ferritin miss and broader retrieval quality. No new model, threshold, synonym substitution or app behavior is selected or shipped yet.
+The full product goal remains active. This research investigates the retained iron-stores/ferritin miss and broader retrieval quality. No replacement model, threshold, query prefix or synonym substitution is selected or shipped. The Batch26 checkpoints below retain their original Batch25 application boundary; [Batch27](LIBRARY_RETRIEVAL.md) subsequently protects literal identifiers without changing the model.
 
 ## Evidence before a product change
 
@@ -48,3 +48,7 @@ The separately committed synthetic challenge has17 documents and32 questions:17 
 Actual production keyword selection/local reply finds expected text within four passages for all17 supported questions, but selects text for9/15 unsupported questions. Missing `TEST-AX3` returns `TEST-AX2`/`TEST-AX1` and other lab text; missing `AF-742` returns the two existing neighboring invoices. The local reply quotes their literal values with its existing disclaimer; it does not invent a result. This is nevertheless a concrete reason to prioritize literal identifier lookup protection before adopting a new retrieval model. All32 selected contexts remain valid/current, and withdrawal of each supported source is honored.
 
 Current evidence is [instruction-challenge-decision.json](../Design/native/retrieval-quality/instruction-challenge-decision.json), with every dev case, every challenge ranking, native receipts, exact tool hashes, four instruction controls and a raw-baseline regression. All1,294 existing logic checks pass on current research-tool source. Production app/model/cutoff/UI remain Batch25 and NFCorpus test retrieval scores remain uncomputed. Freeze any surviving model/query/selection policy before test scoring; source support, exact identifiers, consent, actual app fusion/budget, legacy/storage, physical devices and clinical/provider validation remain independent gates.
+
+## Batch27 follow-through · literal source eligibility
+
+The unchanged frozen32-question fixture now runs against the literal-identifier guard. All17 supported expected sources remain within four passages, all32 contexts remain current/valid, and all17 sharing-withdrawal checks pass. Missing TEST-AX3 and AF-742 select zero excerpts rather than neighboring identifiers. Unsupported questions with selected topics fall9/15→7/15; those seven misses remain. This is actual production keyword selection/local literal reply, not a new entailment classifier or live-provider result. Pinned original MiniLM/CoreML checks separately verify eligible-ID fusion, prior-cache/follow-up rejection and the long-ID no-keyword path. [Source hashes, complete challenge output and exact scopes](../Design/native/literal-identifiers/README.md) are retained. Research scores/protocols and held-out test data are unchanged; no test retrieval scores have been computed.

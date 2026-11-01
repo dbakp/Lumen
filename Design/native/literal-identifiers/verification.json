@@ -1,0 +1,818 @@
+{
+  "status": "verified; awaiting coherent publication and stopped-worker cleanup",
+  "baselineMain": "862938455a3d474ebd84780d36b4a3e008dda745",
+  "publishedApplicationBaseline": "f190b1d314299727f97788fb73665c6966f084ab",
+  "syntheticOnly": true,
+  "sourceMap": "source-r11.json",
+  "logicSourceMap": "logic-source-r15.json",
+  "logicR8": {
+    "status": "passed",
+    "checks": 1366,
+    "logSHA256": "056ff3668eef696d2175d43db64b1a3edeb88a9b3d841bd3fdd3eb80680ac11d",
+    "buildLogSHA256": "41d3b95c7fbc161372e79d89dd923c30810be018927d4e0f3d1e3521a8271c80"
+  },
+  "actualModelR8": {
+    "status": "passed",
+    "checks": 26,
+    "logSHA256": "6bd55fc9fa692557f7c485b62078aa6b292dab4f0639e90c7967995a4bcfc8e1",
+    "model": "Original pinned MiniLM; unchanged cutoff/query policy",
+    "scope": "Actual CoreML inference, literal source eligibility plus existing fusion, cache/withdrawal, cancellation, backup/export and legacy checks"
+  },
+  "keywordChallenge": "challenge-comparison.json",
+  "simulatorBuildR6": {
+    "status": "passed",
+    "logSHA256": "bdaa36be782189d9e7d1488827917e883c033d90580e0ac96edf0384e795d8e1",
+    "nativeInputs": 192,
+    "products": [
+      "Lumen",
+      "LumenWidget",
+      "LumenWatch",
+      "LumenWatchWidget",
+      "LumenUITests"
+    ]
+  },
+  "releaseR3": {
+    "status": "passed",
+    "logSHA256": "b1ac6c2b4ba0b7087372e0953e1870afb22053c45e46f1f9d23f6b47a1d493b1",
+    "audit": "release-audit.json"
+  },
+  "compactSimulator": {
+    "name": "Lumen literal lookup compact",
+    "id": "77EE76FC-D26F-4C69-857F-5B38CE325232",
+    "createdForThisBatch": true,
+    "device": "iPhone SE (3rd generation)",
+    "runtime": "iOS27.0",
+    "expectedPoints": [
+      375,
+      667
+    ]
+  },
+  "knownFailedAttempts": [
+    {
+      "attempt": "NativeR1",
+      "status": "failed; wrapper explicitly terminated after test failure during diagnostic finalization",
+      "logSHA256": "16c08c3ccace518048d2f0c7ad04224744899b024c7c975d72770932f7f97da0",
+      "reason": "Fixture helper tried to reach Use in assistant while an editor keyboard remained active. Save first then change consent on normal detail screen. No app editor usability fix is claimed.",
+      "termination": "SIGINT then SIGTERM only PID88343; session exit143. Unrelated processes preserved.",
+      "invalidEvidence": "native-r1-failure.png is a home-screen capture after termination, not editor proof; not retained as app evidence."
+    },
+    {
+      "attempt": "NativeR2",
+      "status": "failed",
+      "logSHA256": "586e105aad6b5d16ce8ec3de51a078d42f10281f62b717989368dda09886b87c",
+      "summary": {
+        "devicesAndConfigurations": [
+          {
+            "device": {
+              "architecture": "arm64",
+              "deviceId": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+              "deviceName": "Lumen continuation verification",
+              "modelName": "iPhone 18 Pro",
+              "osBuildNumber": "24A434",
+              "osVersion": "27.0",
+              "platform": "iOS Simulator"
+            },
+            "expectedFailures": 0,
+            "failedTests": 1,
+            "passedTests": 0,
+            "skippedTests": 0,
+            "testPlanConfiguration": {
+              "configurationId": "1",
+              "configurationName": "Test Scheme Action"
+            }
+          }
+        ],
+        "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+        "expectedFailures": 0,
+        "failedTests": 1,
+        "finishTime": 1793476134.661,
+        "passedTests": 0,
+        "result": "Failed",
+        "runtimeWarnings": [],
+        "skippedTests": 0,
+        "startTime": 1793475955.177,
+        "statistics": [],
+        "testFailures": [
+          {
+            "failureText": "XCTAssertFalse failed",
+            "targetName": "LumenUITests",
+            "testIdentifier": 1,
+            "testIdentifierString": "LumenSmokeTests/testLiteralIdentifierLookupAndFollowup()",
+            "testIdentifierURL": "test://com.apple.xcode/Lumen/LumenUITests/LumenSmokeTests/testLiteralIdentifierLookupAndFollowup",
+            "testName": "testLiteralIdentifierLookupAndFollowup()"
+          }
+        ],
+        "title": "Test - Lumen",
+        "topInsights": [],
+        "totalTestCount": 1
+      },
+      "reason": "Wrong harness assumption that a no-match reply has no Library audit disclosure. Actual zero-selected-source disclosure is retained; corrected test checks zero reference buttons."
+    },
+    {
+      "attempt": "LogicBoundaryR7",
+      "status": "failed as new regression reproducer",
+      "logSHA256": "42c38996b6a6612cef011c0e41f625a0cb3212cd962cead50c3ea22145ab16f5",
+      "reason": "Saved AF-740+1 could match requested AF-740. Complete source-token boundaries now block attached unsupported punctuation and the full suite passes."
+    },
+    {
+      "attempt": "ActualModelR13",
+      "status": "failed precondition at strengthened optional-model audit assertion",
+      "logSHA256": "61aebfd833f65dc28bd36e8e868d5db449780c46b2abe971790e3e371c85737b",
+      "scope": "96-character quoted ID lookup returned the correct record, but audit was not used+one comparison. The earlier enabled-only check did not prove actual topic comparison for this input. Diagnostic R14 records the actual audit before choosing final test expectations. No app model policy changed."
+    },
+    {
+      "attempt": "DiagnosticModelR14",
+      "status": "failed strengthened audit assertion with observed diagnostic",
+      "logSHA256": "63f3bae6ceff9577ca45d2e86d385bead40794331976fb27a997e59b5d884a73",
+      "audit": {
+        "status": "unsupportedLanguage",
+        "modelID": null,
+        "indexedPassages": 1,
+        "comparedPassages": 0,
+        "limited": false
+      },
+      "finding": "The code-dominated Find query returns the exact record through documented keyword fallback. It is not proof of actual CoreML comparison. Final tests separate that audited path from a clearly English all-stop-word question that must report used+one comparison. App language policy remains unchanged."
+    }
+  ],
+  "earlierNativeR3": {
+    "status": "passed",
+    "summary": {
+      "devicesAndConfigurations": [
+        {
+          "device": {
+            "architecture": "arm64",
+            "deviceId": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+            "deviceName": "Lumen continuation verification",
+            "modelName": "iPhone 18 Pro",
+            "osBuildNumber": "24A434",
+            "osVersion": "27.0",
+            "platform": "iOS Simulator"
+          },
+          "expectedFailures": 0,
+          "failedTests": 0,
+          "passedTests": 1,
+          "skippedTests": 0,
+          "testPlanConfiguration": {
+            "configurationId": "1",
+            "configurationName": "Test Scheme Action"
+          }
+        }
+      ],
+      "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+      "expectedFailures": 0,
+      "failedTests": 0,
+      "finishTime": 1793476497.208,
+      "passedTests": 1,
+      "result": "Passed",
+      "runtimeWarnings": [],
+      "skippedTests": 0,
+      "startTime": 1793476313.629,
+      "statistics": [],
+      "testFailures": [],
+      "title": "Test - Lumen",
+      "topInsights": [],
+      "totalTestCount": 1
+    },
+    "sourceMap": "historical-source-r3.json",
+    "boundary": "Predates bare follow-up-chain/plural/boundary hardening and cause-specific input messages. Its eight r1 PNGs support Round1 only, not final app validation.",
+    "logSHA256": "d53e540c13c7453cc3581952e0d27b38e109f1aaa8a778d7edeecd1151e3558c",
+    "captures": "r1-captures.json"
+  },
+  "designRound1": {
+    "score": 41,
+    "maximum": 55,
+    "linesAtLeast4": 8,
+    "scoredLines": 11,
+    "done": false,
+    "scores": {
+      "concept": 4,
+      "category": 4,
+      "skillAverage": 4,
+      "hierarchy": 4,
+      "typography": 4,
+      "colour": 4,
+      "richness": 3,
+      "rhythm": 4,
+      "finish": 3,
+      "native": 4,
+      "copy": 3
+    },
+    "findings": "Cause-specific error copy; settled no-match audit and actual dark/XXXL/compact evidence. Capacity message accepted."
+  },
+  "pending": [
+    "Publication and exact GitHub main read-back",
+    "Stopped-worker scoped cleanup"
+  ],
+  "remainingProductGates": [
+    "Broader ingestion and terminology/clinical review",
+    "Retrieval model/policy quality and held-out evaluation",
+    "Live providers and multilingual grounding",
+    "Signed-device Health/Watch/voice and accessibility/performance",
+    "Privacy, governance and distribution readiness"
+  ],
+  "earlierNativeR4": {
+    "status": "passed",
+    "sourceMap": "source-r6.json",
+    "summary": {
+      "devicesAndConfigurations": [
+        {
+          "device": {
+            "architecture": "arm64",
+            "deviceId": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+            "deviceName": "Lumen continuation verification",
+            "modelName": "iPhone 18 Pro",
+            "osBuildNumber": "24A434",
+            "osVersion": "27.0",
+            "platform": "iOS Simulator"
+          },
+          "expectedFailures": 0,
+          "failedTests": 0,
+          "passedTests": 1,
+          "skippedTests": 0,
+          "testPlanConfiguration": {
+            "configurationId": "1",
+            "configurationName": "Test Scheme Action"
+          }
+        }
+      ],
+      "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+      "expectedFailures": 0,
+      "failedTests": 0,
+      "finishTime": 1793478528.968,
+      "passedTests": 1,
+      "result": "Passed",
+      "runtimeWarnings": [],
+      "skippedTests": 0,
+      "startTime": 1793478291.329,
+      "statistics": [],
+      "testFailures": [],
+      "title": "Test - Lumen",
+      "topInsights": [],
+      "totalTestCount": 1
+    },
+    "logSHA256": "3666307be10fd59e1a266a771800ad2f8ecf3b3d34c71410460e58244fe10b34",
+    "boundary": "Complete literal lifecycle including bare missing-ID follow-up chain and cause-specific format reply. Predates only isLibraryQuestion recognition of literal intent and normal built-in-route test coverage; test uses explicit local reply override. Final current lifecycle is NativeR5."
+  },
+  "supersededPresentationR1": {
+    "atUTC": "2026-10-31T20:29:25.201275+00:00",
+    "pids": [
+      4924
+    ],
+    "reason": "Superseded before final-source verification: normal built-in fallback routing was corrected and test override removed. NativeR4 has already completed successfully on earlier source-r6. This interrupted presentation attempt is not passing evidence.",
+    "exitCode": 75
+  },
+  "releaseR4": {
+    "status": "passed",
+    "logSHA256": "a590130c3e58407a0cbb3e6f3e07177bf7f5057453eed4f2904bccc426a26a9d",
+    "audit": "release-audit.json"
+  },
+  "logicR9": {
+    "status": "passed",
+    "checks": 1368,
+    "logSHA256": "aa83880e63d878617c5319a3bbc74364ed55924f606e3cdc13678609d1477fd6",
+    "buildLogSHA256": "934c79b6b361c848151a0a2d6febf57bbd8b2bc65dacbf9c10a8eb5847ad9f42"
+  },
+  "simulatorBuildR7": {
+    "status": "passed",
+    "logSHA256": "2aa67715ccd89a7f80f2b38cbb33ef811acbb5452801138edb747f5e3a74cc31",
+    "sourceMap": "source-r7.json",
+    "nativeInputs": 192,
+    "products": [
+      "Lumen",
+      "LumenWidget",
+      "LumenWatch",
+      "LumenWatchWidget",
+      "LumenUITests"
+    ]
+  },
+  "actualModelR9": {
+    "status": "passed",
+    "checks": 26,
+    "logSHA256": "6bd55fc9fa692557f7c485b62078aa6b292dab4f0639e90c7967995a4bcfc8e1",
+    "scope": "Actual CoreML inference, literal source eligibility plus existing fusion, cache/withdrawal, cancellation, backup/export and legacy checks",
+    "model": "Original pinned MiniLM; unchanged cutoff/query policy"
+  },
+  "keywordChallengeFinal": "challenge-keyword-r15.json",
+  "keywordChallengeUnchangedAfterRoutingCorrection": true,
+  "earlierNativeR5": {
+    "status": "passed",
+    "sourceMap": "source-r7.json",
+    "summary": {
+      "devicesAndConfigurations": [
+        {
+          "device": {
+            "architecture": "arm64",
+            "deviceId": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+            "deviceName": "Lumen continuation verification",
+            "modelName": "iPhone 18 Pro",
+            "osBuildNumber": "24A434",
+            "osVersion": "27.0",
+            "platform": "iOS Simulator"
+          },
+          "expectedFailures": 0,
+          "failedTests": 0,
+          "passedTests": 1,
+          "skippedTests": 0,
+          "testPlanConfiguration": {
+            "configurationId": "1",
+            "configurationName": "Test Scheme Action"
+          }
+        }
+      ],
+      "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+      "expectedFailures": 0,
+      "failedTests": 0,
+      "finishTime": 1793478798.549,
+      "passedTests": 1,
+      "result": "Passed",
+      "runtimeWarnings": [],
+      "skippedTests": 0,
+      "startTime": 1793478604.856,
+      "statistics": [],
+      "testFailures": [],
+      "title": "Test - Lumen",
+      "topInsights": [],
+      "totalTestCount": 1
+    },
+    "logSHA256": "976661fa6571faff9c959c5e5218fe63a98b7b3486f11e34371e88e2bcc71555",
+    "boundary": "Actual built-in routing with no local reply override; absent-ID chain, source view, withdrawal/private exclusion, capacity/format and relaunch. Predates only whole-field syntax preflight and its added leading-format native assertion."
+  },
+  "supersededPresentationR2": {
+    "atUTC": "2026-10-31T20:34:26.327987+00:00",
+    "pids": [
+      8395
+    ],
+    "reason": "Superseded final-source presentation after NativeR5 passed: validate complete explicit fields before token extraction, including unsupported leading punctuation and spaced quoted IDs. Current errors/screens unchanged; restart presentation after new app build. No pass claimed for interrupted attempt.",
+    "exitCode": 73
+  },
+  "logicR10": {
+    "status": "passed",
+    "checks": 1374,
+    "logSHA256": "6179ccf70337f5383c3a96ae282caf1448bb6e4dc2e6e99325848c45ed05f532"
+  },
+  "actualModelR10": {
+    "status": "passed",
+    "checks": 26,
+    "logSHA256": "6bd55fc9fa692557f7c485b62078aa6b292dab4f0639e90c7967995a4bcfc8e1",
+    "scope": "Actual CoreML inference, literal source eligibility plus existing fusion, cache/withdrawal, cancellation, backup/export and legacy checks",
+    "model": "Original pinned MiniLM; unchanged cutoff/query policy"
+  },
+  "releaseR5": {
+    "status": "passed",
+    "logSHA256": "9fa64b658c8065c04219765659d06d9ae865b0855d4911b3196ed4bde7ba2d4a",
+    "audit": "release-audit.json"
+  },
+  "simulatorBuildR8": {
+    "status": "passed",
+    "logSHA256": "a652ed6a137a7ab5bcbbded5e7784c58925a1c0cd04143e865dfce4372cf0ff1",
+    "sourceMap": "source-r8.json",
+    "nativeInputs": 192,
+    "products": [
+      "Lumen",
+      "LumenWidget",
+      "LumenWatch",
+      "LumenWatchWidget",
+      "LumenUITests"
+    ]
+  },
+  "nativeR6": {
+    "status": "passed",
+    "summary": {
+      "devicesAndConfigurations": [
+        {
+          "device": {
+            "architecture": "arm64",
+            "deviceId": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+            "deviceName": "Lumen continuation verification",
+            "modelName": "iPhone 18 Pro",
+            "osBuildNumber": "24A434",
+            "osVersion": "27.0",
+            "platform": "iOS Simulator"
+          },
+          "expectedFailures": 0,
+          "failedTests": 0,
+          "passedTests": 1,
+          "skippedTests": 0,
+          "testPlanConfiguration": {
+            "configurationId": "1",
+            "configurationName": "Test Scheme Action"
+          }
+        }
+      ],
+      "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+      "expectedFailures": 0,
+      "failedTests": 0,
+      "finishTime": 1793479140.046,
+      "passedTests": 1,
+      "result": "Passed",
+      "runtimeWarnings": [],
+      "skippedTests": 0,
+      "startTime": 1793478938.621,
+      "statistics": [],
+      "testFailures": [],
+      "title": "Test - Lumen",
+      "topInsights": [],
+      "totalTestCount": 1
+    },
+    "sessionSeconds": 201.42499995231628,
+    "logSHA256": "727295c80c17f88076dd5e6d79b427d52410bce1ffae8497dc39cca10d4a5727",
+    "sourceMap": "source-r8.json",
+    "captures": "flow-captures.json",
+    "normalBuiltInRoute": true,
+    "localReplyOverrideUsed": false,
+    "scope": "Actual UI-created synthetic notes/current consents, complete-ID current/absent lookup, bare missing-ID and unqualified chain, settled zero-source audit, literal source/Open in Library, withdrawal/private exclusion, capacity/format/leading-format errors and relaunch."
+  },
+  "presentationR3": {
+    "status": "passed",
+    "summary": {
+      "devicesAndConfigurations": [
+        {
+          "device": {
+            "architecture": "arm64",
+            "deviceId": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+            "deviceName": "Lumen continuation verification",
+            "modelName": "iPhone 18 Pro",
+            "osBuildNumber": "24A434",
+            "osVersion": "27.0",
+            "platform": "iOS Simulator"
+          },
+          "expectedFailures": 0,
+          "failedTests": 0,
+          "passedTests": 1,
+          "skippedTests": 0,
+          "testPlanConfiguration": {
+            "configurationId": "1",
+            "configurationName": "Test Scheme Action"
+          }
+        }
+      ],
+      "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+      "expectedFailures": 0,
+      "failedTests": 0,
+      "finishTime": 1793479445.429,
+      "passedTests": 1,
+      "result": "Passed",
+      "runtimeWarnings": [],
+      "skippedTests": 0,
+      "startTime": 1793479142.343,
+      "statistics": [],
+      "testFailures": [],
+      "title": "Test - Lumen",
+      "topInsights": [],
+      "totalTestCount": 1
+    },
+    "sessionSeconds": 303.0859999656677,
+    "logSHA256": "b492b0a561cabd644c1c6d0df426eac9169687481ce9a245a0b8315792ca3b29",
+    "sourceMap": "source-r8.json",
+    "captures": "main-captures.json",
+    "scope": "Actual light normal and dark AccessibilityXXXL, exact match/source/actions, settled zero-source no-match and capacity/format/identifier-length/count replies, Save footer reachability. Passing height assertion requires large capacity reply >1.3x normal height. Not 32,000-byte question UI coverage.",
+    "evidenceGap": "Largest-text reply/audit captures center only the end of long text. They prove reachable footers but not complete copy. R4 adds measured overlapping native captures from first line through last line, with no font/layout changes."
+  },
+  "logicR11": {
+    "status": "passed",
+    "checks": 1375,
+    "logSHA256": "6ca78bbbe26368875b78fa791a76361ac80013c0d0a7da80429931abbadb7fd5",
+    "buildLogSHA256": "af603a02d8e0ee28100dd3a2abdc5e0f26df299335c93c85d70d2dbaea737b39"
+  },
+  "actualModelR11": {
+    "status": "passed",
+    "checks": 26,
+    "logSHA256": "6bd55fc9fa692557f7c485b62078aa6b292dab4f0639e90c7967995a4bcfc8e1",
+    "scope": "Actual CoreML inference, literal source eligibility plus existing fusion, cache/withdrawal, cancellation, backup/export and legacy checks",
+    "model": "Original pinned MiniLM; unchanged cutoff/query policy"
+  },
+  "smallR1": {
+    "status": "failed",
+    "summary": {
+      "devicesAndConfigurations": [
+        {
+          "device": {
+            "architecture": "arm64",
+            "deviceId": "77EE76FC-D26F-4C69-857F-5B38CE325232",
+            "deviceName": "Lumen literal lookup compact",
+            "modelName": "iPhone SE (3rd generation)",
+            "osBuildNumber": "24A434",
+            "osVersion": "27.0",
+            "platform": "iOS Simulator"
+          },
+          "expectedFailures": 0,
+          "failedTests": 1,
+          "passedTests": 0,
+          "skippedTests": 0,
+          "testPlanConfiguration": {
+            "configurationId": "1",
+            "configurationName": "Test Scheme Action"
+          }
+        }
+      ],
+      "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+      "expectedFailures": 0,
+      "failedTests": 1,
+      "finishTime": 1793479584.266,
+      "passedTests": 0,
+      "result": "Failed",
+      "runtimeWarnings": [],
+      "skippedTests": 0,
+      "startTime": 1793479447.98,
+      "statistics": [],
+      "testFailures": [
+        {
+          "failureText": "XCTAssertTrue failed - New conversation missing",
+          "targetName": "LumenUITests",
+          "testIdentifier": 1,
+          "testIdentifierString": "LumenSmokeTests/testLiteralIdentifierPresentation()",
+          "testIdentifierURL": "test://com.apple.xcode/Lumen/LumenUITests/LumenSmokeTests/testLiteralIdentifierPresentation",
+          "testName": "testLiteralIdentifierPresentation()"
+        }
+      ],
+      "title": "Test - Lumen",
+      "topInsights": [],
+      "totalTestCount": 1
+    },
+    "logSHA256": "a5b1a2d0ab81e56dbeeb08f159fd8fd0c5529e592633ca7757cc8a98ef33a9c9",
+    "sourceMap": "source-r8.json",
+    "reason": "Fresh compact installation correctly has no New conversation action while chat is empty. The test incorrectly assumed existing history. New question now opens that action only when an existing reply is present. No app menu behavior changed."
+  },
+  "simulatorBuildR9": {
+    "status": "passed",
+    "logSHA256": "de05f216fee0f42a171359ff83e2521f813e5aedd577b27090e84cbcd0e087b1",
+    "sourceMap": "source-r10.json",
+    "nativeInputs": 192,
+    "products": [
+      "Lumen",
+      "LumenWidget",
+      "LumenWatch",
+      "LumenWatchWidget",
+      "LumenUITests"
+    ]
+  },
+  "releaseR6": {
+    "status": "passed",
+    "logSHA256": "3526644c282f62d9a52c9bb6835a7ca4736f581b02de967faa7a17b71b437e29",
+    "audit": "release-audit.json",
+    "sourceMap": "source-r9.json",
+    "note": "Only the native test harness changes between source-r9 and source-r10; production/UI inputs are equal."
+  },
+  "nativeR7": {
+    "status": "passed",
+    "summary": {
+      "devicesAndConfigurations": [
+        {
+          "device": {
+            "architecture": "arm64",
+            "deviceId": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+            "deviceName": "Lumen continuation verification",
+            "modelName": "iPhone 18 Pro",
+            "osBuildNumber": "24A434",
+            "osVersion": "27.0",
+            "platform": "iOS Simulator"
+          },
+          "expectedFailures": 0,
+          "failedTests": 0,
+          "passedTests": 1,
+          "skippedTests": 0,
+          "testPlanConfiguration": {
+            "configurationId": "1",
+            "configurationName": "Test Scheme Action"
+          }
+        }
+      ],
+      "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+      "expectedFailures": 0,
+      "failedTests": 0,
+      "finishTime": 1793479956.016,
+      "passedTests": 1,
+      "result": "Passed",
+      "runtimeWarnings": [],
+      "skippedTests": 0,
+      "startTime": 1793479710.695,
+      "statistics": [],
+      "testFailures": [],
+      "title": "Test - Lumen",
+      "topInsights": [],
+      "totalTestCount": 1
+    },
+    "sessionSeconds": 245.32100009918213,
+    "logSHA256": "c8530040469f050f28a11f78d50efbf815c7c91d5f172ba56bfc2596374d8a48",
+    "sourceMap": "source-r10.json",
+    "captures": "flow-final-captures.json",
+    "normalBuiltInRoute": true,
+    "localReplyOverrideUsed": false,
+    "scope": "Actual UI-created synthetic notes/current consents, complete-ID current/absent lookup, bare missing-ID and unqualified chain, settled zero-source audit, literal source/Open in Library, withdrawal/private exclusion, capacity/format/leading-format errors and relaunch. Also actual positive lookup of a quoted 96-character identifier with no ordinary keyword terms."
+  },
+  "presentationR4": {
+    "status": "passed",
+    "summary": {
+      "devicesAndConfigurations": [
+        {
+          "device": {
+            "architecture": "arm64",
+            "deviceId": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+            "deviceName": "Lumen continuation verification",
+            "modelName": "iPhone 18 Pro",
+            "osBuildNumber": "24A434",
+            "osVersion": "27.0",
+            "platform": "iOS Simulator"
+          },
+          "expectedFailures": 0,
+          "failedTests": 0,
+          "passedTests": 1,
+          "skippedTests": 0,
+          "testPlanConfiguration": {
+            "configurationId": "1",
+            "configurationName": "Test Scheme Action"
+          }
+        }
+      ],
+      "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+      "expectedFailures": 0,
+      "failedTests": 0,
+      "finishTime": 1793480468.04,
+      "passedTests": 1,
+      "result": "Passed",
+      "runtimeWarnings": [],
+      "skippedTests": 0,
+      "startTime": 1793479960.554,
+      "statistics": [],
+      "testFailures": [],
+      "title": "Test - Lumen",
+      "topInsights": [],
+      "totalTestCount": 1
+    },
+    "sessionSeconds": 507.48600006103516,
+    "logSHA256": "4a9c182ebb57884b2b65383430469de0ea0534ec1ac9ef5b9a2d52d1c5a6c5cd",
+    "sourceMap": "source-r10.json",
+    "captures": "main-final-captures.json",
+    "scope": "Actual light normal and dark AccessibilityXXXL, exact match/source/actions, settled zero-source no-match and capacity/format/identifier-length/count replies, Save footer reachability. Passing height assertion requires large capacity reply >1.3x normal height. Not 32,000-byte question UI coverage.",
+    "completeTextCaptureProtocol": "First-line alignment followed by measured overlapping native-scroll frames. Each next visible interval must start before the prior covered end, and the final interval must reach the full label/expanded-audit height. No font/layout changes."
+  },
+  "smallR2": {
+    "status": "failed",
+    "sourceMap": "source-r10.json",
+    "summary": {
+      "devicesAndConfigurations": [
+        {
+          "device": {
+            "architecture": "arm64",
+            "deviceId": "77EE76FC-D26F-4C69-857F-5B38CE325232",
+            "deviceName": "Lumen literal lookup compact",
+            "modelName": "iPhone SE (3rd generation)",
+            "osBuildNumber": "24A434",
+            "osVersion": "27.0",
+            "platform": "iOS Simulator"
+          },
+          "expectedFailures": 0,
+          "failedTests": 1,
+          "passedTests": 0,
+          "skippedTests": 0,
+          "testPlanConfiguration": {
+            "configurationId": "1",
+            "configurationName": "Test Scheme Action"
+          }
+        }
+      ],
+      "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+      "expectedFailures": 0,
+      "failedTests": 1,
+      "finishTime": 1793480745.174,
+      "passedTests": 0,
+      "result": "Failed",
+      "runtimeWarnings": [],
+      "skippedTests": 0,
+      "startTime": 1793480477.723,
+      "statistics": [],
+      "testFailures": [
+        {
+          "failureText": "XCTAssertLessThanOrEqual failed: (\"219.0\") is greater than (\"214.0\") - Native capture must not skip text",
+          "targetName": "LumenUITests",
+          "testIdentifier": 1,
+          "testIdentifierString": "LumenSmokeTests/testLiteralIdentifierPresentation()",
+          "testIdentifierURL": "test://com.apple.xcode/Lumen/LumenUITests/LumenSmokeTests/testLiteralIdentifierPresentation",
+          "testName": "testLiteralIdentifierPresentation()"
+        }
+      ],
+      "title": "Test - Lumen",
+      "topInsights": [],
+      "totalTestCount": 1
+    },
+    "logSHA256": "d4da1cab75f4baf40d14e692bf5f23e171e15fc38df1e75b41b79af79350d8dd",
+    "reason": "Complete-copy capture assertion catches a native scroll overshoot: next visible interval begins219 points after the label start while only212 points were covered. No complete compact largest-text proof is claimed. Driver now uses a smaller step and measures/reverses any overshoot before capturing, retaining the strict no-gap assertion. No app source/UI changes."
+  },
+  "currentProductionBoundary": "Production inputs are unchanged between source-r9, source-r10 and source-r11. Only native capture/empty-conversation test helpers change in the latter maps. NativeR7 lifecycle and main PresentationR4 cover current production; SmallR3 uses the final capture driver.",
+  "logicR15": {
+    "status": "passed",
+    "checks": 1375,
+    "logSHA256": "6ca78bbbe26368875b78fa791a76361ac80013c0d0a7da80429931abbadb7fd5",
+    "buildLogSHA256": "786f1c7a1ddec03a8ecc0e58b8d6c5594828a66c2381dff1f040ffc30634fd9c"
+  },
+  "actualModelR15": {
+    "status": "passed",
+    "checks": 28,
+    "logSHA256": "6e0d7f48aeafae82267530cadc005593b659e12978da5350a9e907cd2c653c8a",
+    "scope": "Actual pinned MiniLM/CoreML inference, exact-ID eligibility/fusion/cache/withdrawal, backup/export/legacy/cancellation checks. The 96-character code-dominated query records unsupportedLanguage with zero comparisons; a separate clearly English query containing only ordinary stop words plus the same quoted ID records used with one actual comparison. Both retain the exact record.",
+    "longIDLanguageFallback": {
+      "status": "unsupportedLanguage",
+      "indexedPassages": 1,
+      "comparedPassages": 0
+    },
+    "longIDActualComparison": {
+      "status": "used",
+      "modelID": "minilm-l6-v2-fp16-c683f20435a63c9884472f5de9f56865e865fd99",
+      "indexedPassages": 1,
+      "comparedPassages": 1,
+      "limited": false
+    }
+  },
+  "simulatorBuildR10": {
+    "status": "passed",
+    "logSHA256": "4ff5ee6855f92852d480d4206d93feccc53323c6498ba88f489235f9052a87ec",
+    "sourceMap": "source-r11.json",
+    "nativeInputs": 192,
+    "products": [
+      "Lumen",
+      "LumenWidget",
+      "LumenWatch",
+      "LumenWatchWidget",
+      "LumenUITests"
+    ]
+  },
+  "smallR3": {
+    "status": "passed",
+    "summary": {
+      "devicesAndConfigurations": [
+        {
+          "device": {
+            "architecture": "arm64",
+            "deviceId": "77EE76FC-D26F-4C69-857F-5B38CE325232",
+            "deviceName": "Lumen literal lookup compact",
+            "modelName": "iPhone SE (3rd generation)",
+            "osBuildNumber": "24A434",
+            "osVersion": "27.0",
+            "platform": "iOS Simulator"
+          },
+          "expectedFailures": 0,
+          "failedTests": 0,
+          "passedTests": 1,
+          "skippedTests": 0,
+          "testPlanConfiguration": {
+            "configurationId": "1",
+            "configurationName": "Test Scheme Action"
+          }
+        }
+      ],
+      "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+      "expectedFailures": 0,
+      "failedTests": 0,
+      "finishTime": 1793481484.921,
+      "passedTests": 1,
+      "result": "Passed",
+      "runtimeWarnings": [],
+      "skippedTests": 0,
+      "startTime": 1793480964.485,
+      "statistics": [],
+      "testFailures": [],
+      "title": "Test - Lumen",
+      "topInsights": [],
+      "totalTestCount": 1
+    },
+    "sessionSeconds": 520.4360001087189,
+    "logSHA256": "0bbb8da83c918d7ff96c4aa5bbd87e39ac72a091bfc212a8f7fb950c2a7bb062",
+    "sourceMap": "source-r11.json",
+    "captures": "small-final-captures.json",
+    "scope": "Actual light normal and dark AccessibilityXXXL, exact match/source/actions, settled zero-source no-match and capacity/format/identifier-length/count replies, Save footer reachability. Passing height assertion requires large capacity reply >1.3x normal height. Not 32,000-byte question UI coverage.",
+    "completeTextCaptureProtocol": "Same no-gap/full-height native capture assertions as main. Smaller scroll step and measured backward recovery before a screenshot if a native drag overshoots. Every final interval assertion passes. No app/UI/font changes."
+  },
+  "publicationInputAudit": "publication-input-audit.json",
+  "designRound2": {
+    "date": "2026-11-01",
+    "score": 43,
+    "maximum": 55,
+    "linesAtLeast4": 10,
+    "scoredLines": 11,
+    "done": true,
+    "scores": {
+      "concept": 4,
+      "category": 4,
+      "skillAverage": 4,
+      "hierarchy": 4,
+      "typography": 4,
+      "colour": 4,
+      "richness": 3,
+      "rhythm": 4,
+      "finish": 4,
+      "native": 4,
+      "copy": 4
+    },
+    "uniqueOriginalsInspected": 70,
+    "indexedPaths": 88,
+    "groupUniqueCounts": {
+      "flow": 11,
+      "main": 29,
+      "compact": 30
+    },
+    "allConcreteRequestsClosed": true,
+    "appUIChangedAfterAcceptance": false,
+    "lineage": "Original continuing critic twice could not resume (Bad Request), with no new image inspection claimed. Replacement explicitly permitted by App Designer Pro references/critique.md; received prior scorecard/asks/declined scope and judged whether those asks landed. All70 originals individually viewed, initial0/1 reopened at original detail; no image-tool failure.",
+    "report": "../../CRITIQUE.md"
+  }
+}

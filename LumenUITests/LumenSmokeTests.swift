@@ -13,7 +13,7 @@ final class LumenSmokeTests: XCTestCase {
         app = XCUIApplication()
         // The focused wrapping probe reuses this dedicated simulator's saved
         // synthetic record, with a public Files-import fallback if absent.
-        app.launchArguments = name.contains("testFHIRLiteralWrappingSnapshots") ? ["-librarySearchRemoteUITestMode"] : ["-resetForUITests"]
+        app.launchArguments = name.contains("testFHIRLiteralWrappingSnapshots") || name.contains("testLiteralIdentifier") ? ["-librarySearchRemoteUITestMode"] : ["-resetForUITests"]
         app.launch()
     }
 
@@ -2592,6 +2592,172 @@ final class LumenSmokeTests: XCTestCase {
         XCTAssertEqual(text.value as? String, body)
         if shared { nativeSwitch("Use in assistant", enabled: true) }
         tap("Save"); XCTAssertTrue(app.navigationBars["Library"].waitForExistence(timeout: 5))
+    }
+    func prepareIdentifierNote(_ title: String, _ body: String, shared: Bool = true) {
+            // Save first, then consent on the normal detail screen. This avoids
+            // asking the harness to scroll a switch behind an active editor.
+            tab("Library")
+            if !app.buttons[title].waitForExistence(timeout: 1) { createSemanticNote(title: title, body: body, shared: false) }
+            let saved = app.buttons[title].firstMatch; reveal(saved); saved.tap()
+            nativeSwitch("Use in assistant", enabled: shared)
+            app.navigationBars["Document"].buttons.element(boundBy: 0).tap()
+    }
+    func testLiteralIdentifierLookupAndFollowup() throws {
+        app.terminate(); app.launchArguments = []; app.launch()
+        if app.buttons["Get started"].waitForExistence(timeout: 2) { finishOnboarding() }
+        prepareIdentifierNote("Sample one", "Sample TEST-AX1. Exact wording: not detected.")
+        prepareIdentifierNote("Sample two", "Sample TEST-AX2. Exact wording: detected.")
+        prepareIdentifierNote("Invoice", "Invoice AF-740 totals 62.40 EUR. Payment status: paid.")
+        prepareIdentifierNote("Private sample", "Sample TEST-AX9. PRIVATE-ID-CANARY.", shared: false)
+        prepareIdentifierNote("Several samples", "Sample ID BX1: first wording.\n\nSample ID BX2: second wording.\n\nSample ID BX3: third wording.")
+        let longID = String(repeating: "X", count: 95) + "1"
+        prepareIdentifierNote("Long reference", "Sample " + longID + ". Exact wording: not detected.")
+        tab("Assistant"); tap("Conversation actions"); tap("New conversation")
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH 'Provider: Built-in coach.'")).firstMatch.waitForExistence(timeout: 5))
+        askLibrary("What is the wording for sample TEST-AX1?")
+        let first = app.staticTexts.matching(identifier: "coachMessage").firstMatch
+        XCTAssertTrue(first.label.contains("not detected")); XCTAssertFalse(first.label.contains("TEST-AX2")); XCTAssertFalse(first.label.contains("PRIVATE-ID-CANARY"))
+        XCTAssertTrue(app.staticTexts["Library lookup · on this iPhone"].firstMatch.exists)
+        snap("680-identifier-exact-sample")
+        askLibrary("What about TEST-AX3?", replies: 2)
+        let missing = app.staticTexts.matching(identifier: "coachMessage").element(boundBy: 1)
+        XCTAssertTrue(missing.label.contains("No match in the shared documents searched")); XCTAssertFalse(missing.label.contains("TEST-AX1")); XCTAssertFalse(missing.label.contains("TEST-AX2"))
+        snap("681-identifier-missing-followup")
+        askLibrary("Explain that", replies: 3)
+        XCTAssertTrue(app.staticTexts.matching(identifier: "coachMessage").element(boundBy: 2).label.contains("No match in the shared documents searched")); snap("688-identifier-missing-followup-chain")
+        tap("Conversation actions"); tap("New conversation")
+        askLibrary("Find invoice AF-742 and its payment status.")
+        XCTAssertTrue(app.staticTexts.matching(identifier: "coachMessage").firstMatch.label.contains("No match in the shared documents searched"))
+        let emptyDisclosure = app.buttons["libraryReferencesToggle"].firstMatch; reveal(emptyDisclosure); emptyDisclosure.tap()
+        XCTAssertFalse(app.buttons["library-reference-1"].exists)
+        let empty = app.staticTexts["No matching excerpts were selected."].firstMatch
+        XCTAssertTrue(empty.waitForExistence(timeout: 5)); settleLabFrame(empty); snap("682-identifier-missing-invoice")
+        askLibrary("Find invoice AF-740", replies: 2)
+        XCTAssertTrue(app.staticTexts.matching(identifier: "coachMessage").element(boundBy: 1).label.contains("62.40 EUR"))
+        let disclosure = app.buttons.matching(identifier: "libraryReferencesToggle").allElementsBoundByIndex.last!; reveal(disclosure); disclosure.tap()
+        let source = app.buttons["library-reference-1"].firstMatch; reveal(source); source.tap()
+        let excerpt = app.staticTexts["reference-excerpt"].firstMatch
+        XCTAssertTrue(excerpt.waitForExistence(timeout: 5)); XCTAssertEqual(excerpt.label, "Invoice AF-740 totals 62.40 EUR. Payment status: paid."); snap("683-identifier-literal-reference")
+        let open = app.buttons["Open in Library"].firstMatch; reveal(open); open.tap(); nativeSwitch("Use in assistant", enabled: false)
+        app.navigationBars["Document"].buttons.element(boundBy: 0).tap(); tap("Done")
+        tap("Conversation actions"); tap("New conversation")
+        askLibrary("Find invoice AF-740")
+        XCTAssertTrue(app.staticTexts.matching(identifier: "coachMessage").firstMatch.label.contains("No match in the shared documents searched"))
+        snap("684-identifier-sharing-off")
+        askLibrary("Find sample ID TEST-AX9", replies: 2)
+        XCTAssertTrue(app.staticTexts.matching(identifier: "coachMessage").element(boundBy: 1).label.contains("No match in the shared documents searched"))
+        tap("Conversation actions"); tap("New conversation")
+        askLibrary("Compare sample IDs BX1 and BX2 and BX3")
+        XCTAssertTrue(app.staticTexts.matching(identifier: "coachMessage").firstMatch.label.contains("Ask about fewer at a time")); snap("686-identifier-excerpt-limit")
+        askLibrary("Find invoice AF-740-", replies: 2)
+        XCTAssertTrue(app.staticTexts.matching(identifier: "coachMessage").element(boundBy: 1).label.contains("can't match that identifier format")); snap("687-identifier-format-limit")
+        askLibrary("Find sample ID /TEST-AX1", replies: 3)
+        XCTAssertTrue(app.staticTexts.matching(identifier: "coachMessage").element(boundBy: 2).label.contains("can't match that identifier format")); snap("689-identifier-leading-format")
+        app.terminate(); app.launchArguments = []; app.launch(); tab("Assistant")
+        tap("Conversation actions"); tap("New conversation"); askLibrary("Find sample identifier TEST-AX3")
+        XCTAssertTrue(app.staticTexts.matching(identifier: "coachMessage").firstMatch.label.contains("No match in the shared documents searched")); snap("685-identifier-missing-relaunch")
+        askLibrary("Find \"" + longID + "\"", replies: 2)
+        XCTAssertTrue(app.staticTexts.matching(identifier: "coachMessage").element(boundBy: 1).label.contains(longID)); snap("696-identifier-long-exact-match")
+    }
+    func captureIdentifierText(_ first: XCUIElement, through last: XCUIElement? = nil, prefix: String) {
+        let end = last ?? first
+        XCTAssertTrue(first.waitForExistence(timeout: 5) && end.exists)
+        settleLabFrame(first)
+        func frame() -> CGRect { first.frame.union(end.frame) }
+        func bounds() -> (CGFloat, CGFloat) {
+            let top = app.navigationBars.firstMatch.frame.maxY + 12
+            let input = app.descendants(matching: .any).matching(identifier: "coachInput").firstMatch
+            let bar = app.tabBars.firstMatch
+            let bottom = input.exists && input.isHittable ? input.frame.minY - 12 : (bar.exists && bar.isHittable ? bar.frame.minY - 12 : app.frame.maxY - 40)
+            return (top, bottom)
+        }
+        func move(down: Bool, distance: CGFloat) {
+            let (top, bottom) = bounds(), step = min(bottom - top - 40, max(20, distance))
+            let y = down ? top + 20 : bottom - 20
+            let start = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: y))
+            let finish = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: y + (down ? step : -step)))
+            start.press(forDuration: 0.05, thenDragTo: finish); settleLabFrame(first)
+        }
+        for _ in 0..<24 {
+            let (top, bottom) = bounds(), value = frame()
+            if value.minY >= top - 2 && value.minY < bottom - 44 { break }
+            move(down: value.minY < top, distance: abs(value.minY - top) + 12)
+        }
+        let (top, bottom) = bounds()
+        XCTAssertGreaterThanOrEqual(frame().minY, top - 2)
+        XCTAssertLessThan(frame().minY, bottom - 44)
+        var covered: CGFloat = 0
+        for part in 1...24 {
+            // Native drag settling can overshoot the requested distance. Move
+            // back before capturing if that would leave any text unrecorded.
+            for _ in 0..<8 {
+                let (top, _) = bounds(), value = frame()
+                let from = max(0, top - value.minY)
+                if from <= covered + 2 { break }
+                move(down: true, distance: from - covered + 24)
+            }
+            let (top, bottom) = bounds(), value = frame()
+            let from = max(0, top - value.minY), to = min(value.height, bottom - value.minY)
+            XCTAssertLessThanOrEqual(from, covered + 2, "Native capture must not skip text")
+            XCTAssertGreaterThan(to, from)
+            covered = max(covered, to)
+            print("Identifier capture \(prefix) part\(part): \(from)...\(to) of \(value.height) points")
+            snap(prefix + "-part\(part)")
+            if covered >= value.height - 2 { return }
+            move(down: false, distance: (bottom - top) * 0.45)
+        }
+        XCTFail("Complete identifier text was not captured through normal scrolling")
+    }
+    func testLiteralIdentifierPresentation() throws {
+        app.terminate(); app.launchArguments = ["-lumen.appearance", "light"]; app.launch()
+        if app.buttons["Get started"].waitForExistence(timeout: 2) { finishOnboarding() }
+        prepareIdentifierNote("Sample one", "Sample TEST-AX1. Exact wording: not detected.")
+        prepareIdentifierNote("Several samples", "Sample ID BX1: first wording.\n\nSample ID BX2: second wording.\n\nSample ID BX3: third wording.")
+        var lightHeight: CGFloat = 0
+        func newQuestion(_ query: String) -> XCUIElement {
+            tab("Assistant")
+            if app.staticTexts.matching(identifier: "coachMessage").firstMatch.exists { tap("Conversation actions"); tap("New conversation") }
+            askLibrary(query)
+            let reply = app.staticTexts.matching(identifier: "coachMessage").firstMatch
+            XCTAssertTrue(reply.waitForExistence(timeout: 5)); return reply
+        }
+        for large in [false, true] {
+            app.terminate()
+            app.launchArguments = ["-lumen.appearance", large ? "dark" : "light"] + (large ? ["-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"] : [])
+            app.launch(); tab("Assistant")
+            let prefix = large ? "dark-xxxl" : "light"
+            let matched = newQuestion("Find sample ID TEST-AX1")
+            XCTAssertTrue(matched.label.contains("not detected")); captureIdentifierText(matched, prefix: "690-identifier-" + prefix + "-match")
+            let disclosure = app.buttons["libraryReferencesToggle"].firstMatch; reveal(disclosure); disclosure.tap()
+            let source = app.buttons["library-reference-1"].firstMatch; reveal(source); source.tap()
+            let excerpt = app.staticTexts["reference-excerpt"].firstMatch
+            XCTAssertTrue(excerpt.waitForExistence(timeout: 5)); captureIdentifierText(excerpt, prefix: "691-identifier-" + prefix + "-source")
+            let open = app.buttons["Open in Library"].firstMatch; reveal(open); XCTAssertTrue(open.isHittable); snap("692-identifier-" + prefix + "-source-actions"); tap("Done")
+            let absent = newQuestion("Find sample ID TEST-AX3")
+            XCTAssertTrue(absent.label.contains("No match in the shared documents searched"))
+            captureIdentifierText(absent, prefix: "693a-identifier-" + prefix + "-no-match-reply")
+            let noSource = app.buttons["libraryReferencesToggle"].firstMatch; reveal(noSource); noSource.tap()
+            let empty = app.staticTexts["No matching excerpts were selected."].firstMatch
+            XCTAssertTrue(empty.waitForExistence(timeout: 5)); reveal(empty); settleLabFrame(empty)
+            XCTAssertFalse(app.buttons["library-reference-1"].exists)
+            captureIdentifierText(noSource, through: empty, prefix: "693-identifier-" + prefix + "-no-match-settled")
+            let emptySave = app.buttons["Save to Library"].firstMatch; reveal(emptySave); snap("693b-identifier-" + prefix + "-no-match-footer")
+            for (query, expected, name) in [
+                ("Compare sample IDs BX1 and BX2 and BX3", "Ask about fewer at a time", "capacity"),
+                ("Find invoice AF-740-", "can't match that identifier format", "format"),
+                ("Find sample ID " + String(repeating: "X", count: 97) + "1", "up to 96 characters", "length"),
+                ("Find sample IDs " + (0..<17).map { "X\($0)" }.joined(separator: ", "), "up to 16 identifiers", "count")
+            ] {
+                let reply = newQuestion(query); XCTAssertTrue(reply.label.contains(expected))
+                if name == "capacity" {
+                    if large { XCTAssertGreaterThan(reply.frame.height, lightHeight * 1.3) }
+                    else { lightHeight = reply.frame.height }
+                }
+                captureIdentifierText(reply, prefix: "694-identifier-" + prefix + "-" + name)
+                let save = app.buttons["Save to Library"].firstMatch; reveal(save); XCTAssertTrue(save.isHittable)
+                snap("695-identifier-" + prefix + "-" + name + "-footer")
+            }
+        }
     }
     func testRelatedTopicSearchLifecycle() throws {
         app.terminate(); app.launchArguments = ["-resetForUITests", "-librarySearchUITestMode"]; app.launch(); finishOnboarding()

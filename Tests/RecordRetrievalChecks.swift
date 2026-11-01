@@ -23,6 +23,7 @@ enum RecordRetrievalChecks {
         try BackupArchive.make(historical).write(to: folder.appendingPathComponent("Lumen-backup-reference-layout.json"))
     }
     static func run(snapshot: BackupSnapshot) async throws {
+        try await identifierChecks()
         func check(_ condition: @autoclosure () -> Bool, _ name: String) { precondition(condition(), name); print("PASS: " + name) }
         let docs = documents()
         let query = "What does my record say about ferritin?"
@@ -98,6 +99,8 @@ enum RecordRetrievalChecks {
         let dense = (0..<2).map { HealthDocument(id: "dense-\($0)", title: "Dense fixture", kind: .note, body: Array(repeating: "Narrow", count: 20_000).joined(separator: "\n\n"), source: "Synthetic", includeInAssistant: true) }
         let passageCap = try RecordRetrieval.search(query: "narrow", documents: dense)
         check(passageCap.limited && passageCap.isValid && passageCap.passages.count == 4, "passage-count limits preserve usable references while disclosing partial coverage")
+        let literalCap = try RecordRetrieval.search(query: "sample ID MISSING42", documents: dense)
+        check(literalCap.limited && literalCap.isValid && literalCap.passages.isEmpty, "literal filtering still counts nonmatching prepared passages toward the original index limit")
         let cancelled = Task { try Task.checkCancellation(); return try RecordRetrieval.search(query: query, documents: docs) }
         cancelled.cancel()
         do { _ = try await cancelled.value; preconditionFailure("cancelled search returned") } catch is CancellationError { print("PASS: cancelled retrieval discards its result") }
@@ -128,5 +131,147 @@ enum RecordRetrievalChecks {
         check(saved.markdown.contains(passage.excerpt) && !HealthDocument(title: "Unused", kind: .note, body: "No source", source: "Synthetic", recordContext: found).markdown.contains(passage.excerpt), "readable exports include referenced excerpts but omit uncited provider context")
         sample.documents[0].recordContext!.passages[0].id = "record_forged_1"
         do { _ = try BackupArchive.make(sample); preconditionFailure("invalid references accepted") } catch { print("PASS: backup validation rejects malformed source maps") }
+    }
+    static func identifierDocuments() -> [HealthDocument] {
+        [
+            HealthDocument(id: "sample-one", title: "Recorded test wording", kind: .record, body: "Sample TEST-AX1. The exact wording is: not detected.", source: "Synthetic", includeInAssistant: true),
+            HealthDocument(id: "sample-two", title: "Recorded test wording", kind: .record, body: "Sample TEST-AX2. The exact wording is: detected.", source: "Synthetic", includeInAssistant: true),
+            HealthDocument(id: "invoice-one", title: "Invoice", kind: .record, body: "Invoice AF-740 totals 62.40 EUR. Payment status: paid.", source: "Synthetic", includeInAssistant: true),
+            HealthDocument(id: "invoice-two", title: "Invoice", kind: .record, body: "Invoice AF-741 totals 91.20 EUR. Payment status: unpaid.", source: "Synthetic", includeInAssistant: true)
+        ]
+    }
+    static func identifierChecks() async throws {
+        func check(_ condition: @autoclosure () -> Bool, _ label: String) { precondition(condition(), label); print("PASS: " + label) }
+        let docs = identifierDocuments()
+        let longID = String(repeating: "X", count: 95) + "1"
+        let longRecord = HealthDocument(title: "Long literal reference", kind: .record, body: "Sample " + longID + ". Exact wording: not detected.", source: "Synthetic", includeInAssistant: true)
+        let longMatch = try RecordRetrieval.search(query: "Find \"" + longID + "\"", documents: [longRecord])
+        check(longMatch.passages.count == 1 && longMatch.passages[0].excerpt.contains(longID), "a complete quoted identifier at the 96-character boundary remains searchable even when ordinary keyword tokenization omits long words")
+        for query in ["Find sample ID /TEST-AX1", "Find sample ID \"TEST AX1\"", "Find invoice /AF-740", "Find invoice \"AF 740\"", "Find sample ID (TEST-AX1)", "Find sample ID TEST-AX1:2"] {
+            do { _ = try RecordRetrieval.search(query: query, documents: docs); preconditionFailure("unsupported explicit field fell back to broad topic search") }
+            catch let error as RecordRetrieval.SearchError { check(error == .identifierFormat, "complete explicit fields reject unsupported leading/spaced/composite syntax: " + query) }
+        }
+        for query in ["What is the wording for sample TEST-AX3?", "Find invoice AF-742 and its payment status.", "Find sample ID TEST-AX3", "Find sample identifier TEST-AX3", "Find report number AF-742", "Find \"TEST-AX3\"", "Find “AF-742”"] {
+            let context = try RecordRetrieval.search(query: query, documents: docs)
+            check(context.isValid && context.passages.isEmpty && context.searchedDocuments == docs.count, "missing complete identifier returns no neighboring source: " + query)
+        }
+        for (query, expected) in [("What is the wording for sample TEST-AX1?", "sample-one"), ("Find invoice af-740", "invoice-one"), ("Find sample code TEST-AX2", "sample-two"), ("Look for \"AF-741\"", "invoice-two")] {
+            let context = try RecordRetrieval.search(query: query, documents: docs)
+            check(!context.passages.isEmpty && context.passages.allSatisfy { $0.documentID == expected && RecordRetrieval.isCurrent($0, documents: docs) }, "literal lookup preserves exact current source: " + query)
+        }
+        for query in ["What do my records say about vitamin B12?", "Which HbA1c report is saved?", "What does my report say about COVID-19?", "Find my ICD-10 notes", "What is the sample ID for my ferritin report?", "Find invoices 2026"] {
+            let ids = try RecordRetrieval.literalIdentifiers(query)
+            check(ids.isEmpty, "ordinary medical topic or unknown-ID question keeps topic matching: " + query)
+        }
+        for token in ["AF-7400", "XAF-740", "AF-740.1", "AF-740/2", "AF_740", "AF‑740", "AF-0740", "AF-740-", "AF-740_", "AF-740+1", "AF-740@lab", "AF-740#2", "AF-740%2", "AF-740=2", "AF-740|2", "AF-740&2", "AF-740:2", "urn:AF-740"] {
+            let other = HealthDocument(title: "Invoice", kind: .record, body: "Invoice \(token).", source: "Synthetic", includeInAssistant: true)
+            let context = try RecordRetrieval.search(query: "Find invoice AF-740", documents: [other])
+            check(context.passages.isEmpty, "identifier boundaries preserve zeros/version/punctuation: " + token)
+        }
+        let zero = HealthDocument(id: "zero", title: "Sample", kind: .record, body: "Sample number 00042.", source: "Synthetic", includeInAssistant: true)
+        let foundZero = try RecordRetrieval.search(query: "sample number 00042", documents: [zero])
+        let wrongZero = try RecordRetrieval.search(query: "sample number 42", documents: [zero])
+        check(foundZero.passages.count == 1 && wrongZero.passages.isEmpty, "numeric-only explicit identifiers preserve leading zeros and sentence punctuation")
+        let mixed = HealthDocument(id: "mixed", title: "Two samples", kind: .record, body: "Sample TEST-AX1: not detected.\n\nSample TEST-AX2: detected.", source: "Synthetic", includeInAssistant: true)
+        let one = try RecordRetrieval.search(query: "sample TEST-AX1", documents: [mixed])
+        check(one.passages.count == 1 && one.passages[0].excerpt.contains("not detected") && !one.passages[0].excerpt.contains("TEST-AX2"), "a matching ID elsewhere in the same record cannot authorize the neighboring sample's paragraph")
+        let title = HealthDocument(id: "title", title: "Report FE-Q7", kind: .record, body: "Literal ferritin: 18 ng/mL.", source: "Synthetic", includeInAssistant: true)
+        let titleMatch = try RecordRetrieval.search(query: "report ID FE-Q7", documents: [title])
+        check(titleMatch.passages.count == 1 && titleMatch.passages[0].title == title.title, "an exact identifier in the retained title can identify its record")
+        let both = try RecordRetrieval.search(query: "Compare invoice AF-740 and AF-741", documents: docs)
+        check(Set(both.passages.map(\.documentID)) == ["invoice-one", "invoice-two"], "combined identifier lookup reserves sources for both requested invoices")
+        for query in ["Compare invoices AF-740 and AF-741", "Compare sample IDs TEST-AX1 and TEST-AX2", "Compare samples TEST-AX1 and TEST-AX2", "Compare sample identifiers TEST-AX1 and TEST-AX2"] {
+            let context = try RecordRetrieval.search(query: query, documents: docs)
+            let expected: Set<String> = query.contains("AF-") ? ["invoice-one", "invoice-two"] : ["sample-one", "sample-two"]
+            check(Set(context.passages.map(\.documentID)) == expected, "plural labels preserve complete combined identifier scope: " + query)
+        }
+        let missingOne = try RecordRetrieval.search(query: "Compare invoice AF-740 and AF-742", documents: docs)
+        check(missingOne.passages.isEmpty, "combined literal request cannot silently stand in for a missing ID with its existing neighbor")
+        let fourDocs = (0..<4).map { index in HealthDocument(id: "four-\(index)", title: index == 0 ? "Invoice AF-740" : "Invoice", kind: .record, body: index == 0 ? Array(repeating: "Payment status: paid.", count: 30).joined(separator: "\n\n") : "Invoice AF-\(740 + index). Payment status: paid.", source: "Synthetic", includeInAssistant: true) }
+        let four = try RecordRetrieval.search(query: "invoice AF-740, AF-741, AF-742 and AF-743", documents: fourDocs)
+        check(four.passages.count == 4 && Set(four.passages.map(\.documentID)) == Set(fourDocs.map(\.id)), "four explicit identifiers get four source slots before one titled invoice can consume two")
+        let fiveDocs = (0..<5).map { HealthDocument(id: "five-\($0)", title: "Sample", kind: .record, body: "Sample ID X\($0).", source: "Synthetic", includeInAssistant: true) }
+        do { _ = try RecordRetrieval.search(query: (0..<5).map { "sample ID X\($0)" }.joined(separator: " and "), documents: fiveDocs); preconditionFailure("partial five-ID packet accepted") }
+        catch RecordRetrieval.SearchError.identifierCoverage { print("PASS: literal requests that cannot fit the four-passage packet ask for fewer identifiers instead of silently omitting a requested ID") }
+        let sample = try RecordRetrieval.search(query: "sample TEST-AX1", documents: docs)
+        let history = [ChatMessage(role: .user, text: "sample TEST-AX1"), ChatMessage(role: .coach, text: "Literal", recordContext: sample)]
+        let changed = try RecordRetrieval.search(query: "What about sample TEST-AX2?", documents: docs, history: history)
+        let absent = try RecordRetrieval.search(query: "What about sample TEST-AX3?", documents: docs, history: history)
+        check(changed.passages.allSatisfy { $0.documentID == "sample-two" } && !changed.passages.isEmpty && absent.passages.isEmpty, "a new explicit follow-up ID replaces prior carried sources")
+        let bareChanged = try RecordRetrieval.search(query: "What about TEST-AX2?", documents: docs, history: history)
+        let bareAbsent = try RecordRetrieval.search(query: "What about TEST-AX3?", documents: docs, history: history)
+        check(bareChanged.passages.count == 1 && bareChanged.passages[0].documentID == "sample-two" && bareAbsent.passages.isEmpty, "a complete unlabelled ID in an identifier follow-up replaces the old constraint without abbreviation expansion")
+        let bareHistory = history + [ChatMessage(role: .user, text: "  What about TEST-AX2?"), ChatMessage(role: .coach, text: "Literal", recordContext: bareChanged)]
+        let afterBare = try RecordRetrieval.search(query: "  Explain that", documents: docs, history: bareHistory)
+        check(afterBare.passages.count == 1 && afterBare.passages[0].documentID == "sample-two", "unqualified follow-up chains preserve an intervening bare-ID change including leading whitespace")
+        let missingHistory = history + [ChatMessage(role: .user, text: "What about TEST-AX3?"), ChatMessage(role: .coach, text: "No match", recordContext: bareAbsent)]
+        let afterMissing = try RecordRetrieval.search(query: "Tell me more", documents: docs, history: missingHistory)
+        check(afterMissing.passages.isEmpty, "a follow-up after a missing bare identifier cannot revive the earlier neighboring sample")
+        check(RecordRetrieval.isLibraryQuestion("Find invoice AF-742") && RecordRetrieval.isLibraryQuestion("Find sample ID TEST-AX3"), "absent explicit identifiers retain real built-in Library lookup routing without a debug reply override")
+        check(RecordRetrieval.isLibraryQuestion("Explain that", history: missingHistory), "a follow-up after an absent identifier retains Library lookup intent even without prior selected passages")
+        for (query, expected) in [("What about TEST-AX3-?", RecordRetrieval.SearchError.identifierFormat), ("What about " + String(repeating: "X", count: 97) + "1?", .identifierLength), ("What about " + (0..<17).map { "X\($0)" }.joined(separator: " "), .identifierCount)] {
+            do { _ = try RecordRetrieval.search(query: query, documents: docs, history: history); preconditionFailure("malformed/oversized bare follow-up inherited an old ID") }
+            catch let error as RecordRetrieval.SearchError { check(error == expected, "malformed/over-limit bare follow-up fails with its actual reason and cannot inherit an earlier source") }
+        }
+        let firstFollow = try RecordRetrieval.search(query: "Explain that", documents: docs, history: history)
+        let chain = history + [ChatMessage(role: .user, text: "Explain that"), ChatMessage(role: .coach, text: "Literal", recordContext: firstFollow)]
+        let secondFollow = try RecordRetrieval.search(query: "Tell me more", documents: docs, history: chain)
+        check(secondFollow.passages.allSatisfy { $0.documentID == "sample-one" } && !secondFollow.passages.isEmpty, "consecutive unqualified follow-ups retain the original explicit identifier")
+        let newTopic = try RecordRetrieval.search(query: "invoice AF-741", documents: docs, history: chain)
+        check(newTopic.passages.count == 1 && newTopic.passages[0].documentID == "invoice-two", "a new non-follow-up question does not inherit an unrelated identifier")
+        var privateDocs = docs; privateDocs[0].includeInAssistant = false
+        let privateResult = try RecordRetrieval.search(query: "sample TEST-AX1", documents: privateDocs, history: history)
+        check(privateResult.passages.isEmpty && RecordRetrieval.history(history, context: privateResult, documents: privateDocs).allSatisfy { $0.role != .coach }, "sharing withdrawal prevents literal lookup, carry and replay of an earlier exact-ID source")
+        var edited = docs; edited[0].body = "Sample TEST-AX9: corrected identifier."
+        let editResult = try RecordRetrieval.search(query: "sample TEST-AX1", documents: edited, history: history)
+        check(editResult.passages.isEmpty && !RecordRetrieval.isCurrent(sample.passages[0], documents: edited), "source edits that remove an identifier cannot be filled from retained earlier wording")
+        let late = try RecordRetrieval.search(query: String(repeating: "please ", count: 1200) + "sample ID TEST-AX1", documents: docs)
+        check(late.passages.count == 1 && late.passages[0].documentID == "sample-one", "literal IDs after the ordinary keyword prefix are parsed completely and prioritized")
+        for (query, expected) in [(String(repeating: "x", count: 32001), RecordRetrieval.SearchError.queryLength), ("sample ID " + String(repeating: "A", count: 97) + "1", .identifierLength), ((0..<17).map { "sample ID X\($0)" }.joined(separator: " and "), .identifierCount), ("invoice AF-740-", .identifierFormat), ("Find \"AF-740-\"", .identifierFormat), ("sample ID urn:uuid:AF740", .identifierFormat)] {
+            do { _ = try RecordRetrieval.search(query: query, documents: docs); preconditionFailure("oversized literal query accepted") }
+            catch let error as RecordRetrieval.SearchError { check(error == expected, "unsupported or over-limit literal request reports its actual cause without truncation") }
+        }
+        check(RecordRetrieval.SearchError.identifierCoverage.localizedDescription.contains("fewer at a time") && RecordRetrieval.SearchError.identifierFormat.localizedDescription.contains("format") && RecordRetrieval.SearchError.identifierLength.localizedDescription.contains("96") && RecordRetrieval.SearchError.identifierCount.localizedDescription.contains("16"), "literal lookup failures name the actual format/length/count/packet limit without claiming record absence")
+        let quotedVersion = HealthDocument(title: "Invoice", kind: .record, body: "Invoice code \"AF-740.\".", source: "Synthetic", includeInAssistant: true)
+        let quotedPrefix = try RecordRetrieval.search(query: "invoice AF-740", documents: [quotedVersion])
+        check(quotedPrefix.passages.isEmpty, "a quoted punctuation-bearing source field cannot emit a shorter neighboring identifier token")
+        let atBoundary = HealthDocument(id: "boundary", title: "Invoice", kind: .record, body: String(repeating: "x", count: 893) + " AF-740.1", source: "Synthetic", includeInAssistant: true)
+        let partial = try RecordRetrieval.search(query: "invoice AF-740", documents: [atBoundary])
+        let complete = try RecordRetrieval.search(query: "invoice AF-740.1", documents: [atBoundary])
+        check(partial.passages.isEmpty && complete.passages.count == 1 && complete.passages[0].excerpt.contains("AF-740.1") && RecordRetrieval.isCurrent(complete.passages[0], documents: [atBoundary]), "a code clipped at the 900-character edge cannot become a shorter ID; overlap retains the complete original token")
+        var combinedBoundary = atBoundary; combinedBoundary.body += "\n\nSample ID BX1."
+        let falseCombined = try RecordRetrieval.search(query: "Compare invoice AF-740 and sample ID BX1", documents: [combinedBoundary])
+        check(falseCombined.passages.isEmpty, "a valid second ID cannot make a clipped neighboring-code fragment count as complete combined coverage")
+        let colon = try RecordRetrieval.search(query: "sample ID TEST-AX1: explain its wording", documents: docs)
+        check(colon.passages.count == 1 && colon.passages[0].documentID == "sample-one", "a colon followed by explanation remains sentence punctuation without accepting URI prefixes")
+        let named = HealthDocument(title: "Sample", kind: .record, body: "Sample ID \"NONE\". Exact supplied code.", source: "Synthetic", includeInAssistant: true)
+        let namedMatch = try RecordRetrieval.search(query: "sample ID \"NONE\"", documents: [named])
+        check(namedMatch.passages.count == 1, "an explicitly quoted labelled ID can use a word that would otherwise describe missing information")
+        let cancelled = Task { try Task.checkCancellation(); return try RecordRetrieval.search(query: "sample TEST-AX1", documents: docs) }; cancelled.cancel()
+        do { _ = try await cancelled.value; preconditionFailure("cancelled literal search returned") } catch is CancellationError { print("PASS: literal search retains cancellation") }
+    }
+    static func identifierModelChecks(encoder: MiniLMEncoder) async throws {
+        let docs = identifierDocuments()
+        let longID = String(repeating: "X", count: 95) + "1"
+        let longRecord = HealthDocument(id: "long-reference", title: "Long literal reference", kind: .record, body: "Sample " + longID + ". Exact wording: not detected.", source: "Synthetic", includeInAssistant: true)
+        let longMatch = try await HybridLibrarySearch.search(query: "Find \"" + longID + "\"", documents: docs + [longRecord], encoder: encoder, enabled: true)
+        precondition(longMatch.isValid && longMatch.passages.count == 1 && longMatch.passages[0].documentID == longRecord.id && RecordRetrieval.isCurrent(longMatch.passages[0], documents: [longRecord]))
+        precondition(longMatch.meaningSearch?.status == .used || (longMatch.meaningSearch?.status == .unsupportedLanguage && longMatch.meaningSearch?.comparedPassages == 0))
+        print("PASS: quoted 96-character identifier remains searchable with the actual topic-policy audit: \(String(describing: longMatch.meaningSearch))")
+        let englishQuery = "Please tell me what the record says about \"" + longID + "\"."
+        precondition(RecordRetrieval.words(englishQuery).isEmpty)
+        let comparedLong = try await HybridLibrarySearch.search(query: englishQuery, documents: docs + [longRecord], encoder: encoder, enabled: true)
+        print("English long-ID audit: \(String(describing: comparedLong.meaningSearch))")
+        precondition(comparedLong.isValid && comparedLong.passages.count == 1 && comparedLong.passages[0].documentID == longRecord.id && comparedLong.meaningSearch?.status == .used && comparedLong.meaningSearch?.comparedPassages == 1)
+        print("PASS: actual CoreML comparison retains a complete quoted 96-character identifier when the English query has no ordinary keyword terms")
+        for (query, expected) in [("sample TEST-AX3", Set<String>()), ("invoice AF-742", []), ("sample TEST-AX1", ["sample-one"]), ("Compare invoice AF-740 and AF-741", ["invoice-one", "invoice-two"])] {
+            let context = try await HybridLibrarySearch.search(query: query, documents: docs, encoder: encoder, enabled: true)
+            precondition(context.isValid && Set(context.passages.map(\.documentID)) == expected && context.passages.allSatisfy { RecordRetrieval.isCurrent($0, documents: docs) })
+            print("PASS: actual CoreML topic ranking cannot bypass literal identifier scope: " + query)
+        }
+        let old = try RecordRetrieval.search(query: "sample TEST-AX1", documents: docs)
+        let next = try await HybridLibrarySearch.search(query: "What about sample TEST-AX3?", documents: docs, history: [ChatMessage(role: .user, text: "sample TEST-AX1"), ChatMessage(role: .coach, text: "Literal", recordContext: old)], encoder: encoder, enabled: true)
+        precondition(next.passages.isEmpty && next.meaningSearch?.comparedPassages == 0)
+        print("PASS: actual topic search with prior cached/carried sources cannot supply a missing new identifier")
     }
 }

@@ -488,3 +488,29 @@ The same continuing App Designer Pro critic scores40→41→43/55. R1 catches di
 BuildR9 separates the literal path and word-wrapping caption without changing source text, byte numbers or Dynamic Type. R3 individually inspects24 current light/dark/actualXXXL reader originals,14 main R6 originals and23 current compact originals. Caption, literal/digest, keyboard/Done, reviewed13.25 versus original12.00, completion, full receipt and duplicate actions close. Final43/55,10/11 lines4+, Richness3, Concept/Finish/Native/Copy all4: **Done within scope**, no concrete defect, no later app/UI edit.
 
 Main NativeR6 passes all3 cases on BuildR8 before only caption separation; current WrapR3 passes134.306s and complete current compact SmallR3 passes382.371s on BuildR9. No combined final-source main suite, clinical, physical-device, VoiceOver, full-profile or DOM-scan proof is claimed. [All scorecards, hashes and exact boundaries](native/fhir-ndjson/README.md) are retained.
+
+## Batch 27 · literal identifier lookup · Round 1
+
+The same continuing critic individually inspected all eight original native captures680–687 in `native/literal-identifiers/r1`. Scores: Concept4, Category4, Skill-average4, Hierarchy4, Typography4, Colour4, Richness3, Rhythm4, Finish3, Native4, Copy3: **41/55,8/11 lines4+, Not done**. This extends the established daylight-observatory direction within existing chat/reference surfaces; no navigation, icon, promotional or concept redesign is in scope.
+
+One concrete copy defect:687 asks **Find invoice AF-740-**, a short single-ID question, but the reply asks for **a shorter question with fewer identifiers**. Split the actual format, question-length, identifier-length and count failures and show representative inputs. Keep686's accepted capacity wording: **Those identifiers need more source excerpts than this lookup can include. Ask about fewer at a time.** Optional routes toward portfolio5s are not delivery requirements.
+
+682 appears mid-expansion, with faded/doubled disclosure content and near-touching zero-source text/Save. This is an evidence gap until a settled frame establishes a defect. Round2 needs settled zero-selected-source evidence, actual dark/AccessibilityXXXL and375×667 exact/no-match/limits/source controls. Ordinary scrolling and full-size text are required; no font shrinking or forced single-viewport conversation. Source/model/provider/clinical behavior is separately verified and cannot be inferred from these stills.
+
+The next implementation uses cause-specific messages in DIRECTION.md. At Round1, current native evidence and scores remained pending; no acceptance was inferred from logic or earlier native passes.
+
+### Round2 · scoped sign-off · 1 November2026
+
+The original continuing critic twice terminates with the harness error `Bad Request` when resumed for Round2. It claims no new image inspection. App Designer Pro `references/critique.md` explicitly permits a replacement when the critic cannot resume: give it the previous critique and judge whether those asks landed, rather than starting over. The replacement receives the full prior scorecard, concrete asks and declined decorative scope. It reads the required critique/copy/finish references and current direction, then individually opens all **70 unique original PNGs** in the frozen index, covering88 paths through exact-SHA aliases:11 flow,29 main and30 compact unique images. Initial resized images0/1 are reopened at original detail; no image-tool failure occurs. App/UI source and screenshots remain frozen throughout.
+
+| Concept | Category | Skill distinction | Hierarchy | Type | Colour | Richness | Rhythm | Finish | Native | Copy |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 4 | 4 | 4 | 4 | 4 | 4 | 3 | 4 | 4 | 4 | 4 |
+
+**43/55;10/11 lines4+; Done by the stop rule.** None below3; Concept/Finish/Native/Copy all4. The cool ground, teal questions/source actions, expanded source titles, native glass and evidence-first sheets sustain the established direction. Predominantly textual utility retains Richness3 without renewing decorative expansion. Every concrete Round1 request is closed; no remaining blocking pixel/copy defect or further UI edit is requested.
+
+Flow687/689 and main/compact format sequences now say **Library lookup can't match that identifier format. Open the record in Library to check it.** The short AF-740- input no longer receives shortening/count advice. Visible length and count cases independently name96characters and16identifiers; capacity retains the accepted excerpt explanation. The32,000-byte question branch remains logic evidence, not a native-pixel claim. Settled682 and693 sequences show one sharp chevron, readable **No matching excerpts were selected.** and separate Save. Dark/actualXXXL and375×667 exact/no-match/limits/source/actions retain complete wording through ordinary overlapping scrolls. TEST-AX1/**not detected** and invoice AF-740/**62.40 EUR**/**paid** remain literal source content; missing-ID replies do not substitute them.
+
+Normal scroll edges, wrapped identifiers and content longer than one viewport are not fixed clipping. No smaller type or forced single-screen conversation is requested. Optional routes toward5s remain a separately requested portfolio pass: a distinctive functional source object; stronger answer/source type differentiation; finer owned-teal material; tuned large-text group spacing; directly actionable Library destinations in limit replies. These are not delivery defects and are declined for this scoped batch, preserving the existing direction.
+
+NativeR7, PresentationR4 and SmallR3 remain separate runtime evidence. This verdict establishes the shown simulator presentation, not VoiceOver, physical-device feel, provider behavior or clinical validity. No app/UI source change follows sign-off.

@@ -31,6 +31,7 @@ public final class ChatCoachService: ObservableObject {
             references = try await withTaskCancellationHandler(operation: { try await search.value }, onCancel: { search.cancel() })
         } catch {
             if Task.isCancelled { return "" }
+            if let problem = error as? RecordRetrieval.SearchError { return problem.localizedDescription }
             return "Library search couldn't finish. Try again, or open the record in Library."
         }
         guard !Task.isCancelled else { return "" }

@@ -278,3 +278,18 @@ The same critic closes added JSON/digest hyphens, grouped line explanation, sett
 ### Batch25 · final scoped acceptance
 
 The same critic closes the separated human-caption correction and inspects all23 actual375×667 originals after all24 current wrapping and14 main-flow originals. Round3 is Done at43/55,10/11 lines4+, Richness3, all required lines4; no concrete defect. Main R6 predates only caption separation; current WrapR3 and full compact SmallR3 prove the changed/current surfaces. No app/UI edit follows acceptance. Broader device, clinical, terminology/provider and release gates remain open.
+
+
+## Batch 27 · literal identifier lookups
+
+Keep the daylight-observatory chat, native source sheets, typography and colour roles. No new navigation or model setting. Exact saved text stays in the current reference sheet; missing identifiers use the existing **No match in the shared documents searched** response, without neighboring sample/invoice text.
+
+New limit responses in the existing Assistant bubble:
+
+- **That question is too long for Library lookup. Ask a shorter question, or open the record in Library.**
+- **Library lookup supports identifiers up to 96 characters. Open the record in Library for this one.**
+- **Library lookup can check up to 16 identifiers at a time. Ask about fewer.**
+- **Library lookup can't match that identifier format. Open the record in Library to check it.**
+- **Those identifiers need more source excerpts than this lookup can include. Ask about fewer at a time.**
+
+Each message names the actual limit: question length, identifier length, identifier count, format or source-packet capacity. They occur before any provider request and preserve the editable conversation. Native normal, dark/largest-text and compact review will verify readability and the same continuing critic will review both rounds. No new concept, paywall, icon, promotional set or design score is claimed before that review.
