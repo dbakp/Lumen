@@ -1,0 +1,68 @@
+{
+  "auditBoundary": "Independent replayR1 exposes evidence pretty-print JSON key sorting, not changed model inputs. R2 restores the original id/title/savedText rendering order and all72 byte/token/prompt/raw-output replays pass. No inference, prompt, gold, gate or grader logic changes.",
+  "modelSourceSHA256": "b1edf0b90bf301f1f403a4ba3258eeba8450fe85f46faad06cdddc13a5de727c",
+  "preparedInputs": {
+    "groups": {
+      "baseline": 32,
+      "reranked": 32,
+      "stress": 8
+    },
+    "inputsSHA256": "317096b17901ee0c5df65868992f51d14859fa123d797f5185ff43dd04747c0e",
+    "protocolSHA256": "614a25920e72730f29aefc7256c6fdeae20e929aaa69c4a0a263a989df75f1f1",
+    "questions": 72,
+    "scope": "Only question and complete original source bodies/titles/opaque IDs go to the model. Ownership/hashes remain local. No gold/previous predictions passed to inference."
+  },
+  "producerSHA256": {
+    "scripts/grounded-answer-probe/common.py": "0d5ee5f06b78701cbf2b1d9610376305af8fd5c26ce4f54677c1e04026c64035",
+    "scripts/grounded-answer-probe/contract.py": "c2e1ec5d817cec2ed2e2944f9af89a1e3207129e1218ef87f022c1940775eca0",
+    "scripts/grounded-answer-probe/contract_controls.py": "40258cbb0d5d914c78e0bd7682f541e80c77e7fdb7c9f841d88e84ae1d0e82b1",
+    "scripts/grounded-answer-probe/evaluate.py": "460288af8c4a21ab2fead3245e92c19c89ceecdb3dca0b1b3cf8ca4cd38a7a7e",
+    "scripts/grounded-answer-probe/independent_checks.py": "c53aba6d343c8b28cbfd25dbdfef16064b2ff38ccb6b36ca996e9357ed9e7fe0",
+    "scripts/grounded-answer-probe/run.py": "f35aa18c861da49fe4163e7f6161391289f470e3b482af22cc40fbe7b97f1a8a"
+  },
+  "protocolPublicationCommit": "142da1c203c813a70256411cfea5bf613e24ee15",
+  "protocolSHA256": "614a25920e72730f29aefc7256c6fdeae20e929aaa69c4a0a263a989df75f1f1",
+  "publicStage": "Not run because frozen synthetic prerequisites fail; no new public, held-out, clinical, multilingual or native-device result.",
+  "rawArchives": {
+    "synthetic-inputs.jsonl.gz": {
+      "compressedBytes": 4344,
+      "compressedSHA256": "7b2b65119ac4861f7fd73595cae199b5cdbeec1f0e69f541463399d8ca5ffb9b",
+      "rawBytes": 36838,
+      "sourceSHA256": "317096b17901ee0c5df65868992f51d14859fa123d797f5185ff43dd04747c0e"
+    },
+    "synthetic-outputs.jsonl.gz": {
+      "compressedBytes": 10219,
+      "compressedSHA256": "b8396b5824ae16aba6449d1c4e9e852ee8b61892d09e7ac574a3ddac2cfde401",
+      "rawBytes": 61631,
+      "sourceSHA256": "ba4f08aa3acd0a61ce7e30ab49e92e2a7d6f5bb0ed332d271722cb89634c962d"
+    }
+  },
+  "renderedRawOutputFormat": "Exact original generated token IDs including final EOS, EOS-trimmed raw text with other special tokens unmodified, seeds, payload/prompt hashes and original sources/owner maps all retained. Exact input/output bytes additionally archived in compact gzip to preserve JSON key order.",
+  "run": {
+    "device": "mps",
+    "generatedTokens": 4315,
+    "generationSeconds": 556.0688689611852,
+    "goldLoadedByInference": false,
+    "inputsSHA256": "317096b17901ee0c5df65868992f51d14859fa123d797f5185ff43dd04747c0e",
+    "modelReceiptSHA256": "b1edf0b90bf301f1f403a4ba3258eeba8450fe85f46faad06cdddc13a5de727c",
+    "numericalControlsSHA256": "9dce0b9b68d401e09098a0e4383b406ac3fda29e0f07ef104dca3e28aa1431c0",
+    "outputsSHA256": "ba4f08aa3acd0a61ce7e30ab49e92e2a7d6f5bb0ed332d271722cb89634c962d",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "precision": "FP16",
+    "producerSHA256AtStart": {
+      "common.py": "0d5ee5f06b78701cbf2b1d9610376305af8fd5c26ce4f54677c1e04026c64035",
+      "run.py": "f35aa18c861da49fe4163e7f6161391289f470e3b482af22cc40fbe7b97f1a8a"
+    },
+    "protocolSHA256": "614a25920e72730f29aefc7256c6fdeae20e929aaa69c4a0a263a989df75f1f1",
+    "questions": 72,
+    "timingScope": "Synchronized MPS generation calls including sampling and finite guards; excludes loading/tokenizing/JSON validation. Not native/iPhone latency.",
+    "versions": {
+      "python": "3.12.14",
+      "torch": "2.7.0",
+      "transformers": "4.51.3"
+    }
+  },
+  "runtimeControlsSHA256": "9dce0b9b68d401e09098a0e4383b406ac3fda29e0f07ef104dca3e28aa1431c0",
+  "scope": "One sample per input, no resampling or repair. No real health data or credentials; only pinned model downloads use network. No Apple Intelligence setting change.",
+  "sourceFixtureSHA256": "e01bfa411c9521da506026840b5d8ae000c7bccec9533704d40d98ed760378da"
+}

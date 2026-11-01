@@ -57,6 +57,10 @@ Batches 9a/9 established per-metric presence, evidence and local corrections. Ba
 ## Completion log
 Pending batch entries will record commit, validation and push outcome below.
 
+### Batch34 — grounded-answer development trial · candidate rejected
+
+One predeclared local generative policy supplies complete free-form answers plus literal source quotes for all72 frozen cases. All outputs/anchors are mechanically valid, but wrong test/label/sample/unit/instruction attributions remain. New predeclared literal-clause completeness (16/17 per source pipeline,4/4 stress) stays separate from old exact whole-answer aliases (2/17 per pipeline,2/4 stress). Both source pipelines emit3/15 unsupported answers; all4 stress negatives emit answers. Primary review distinguishes6 actual attribution errors from4 correct absence statements that still fail the strict contract. No app promotion or public stage follows; that conditional stage is explicitly unrun. Exact controls/outputs/provenance and [decision](../Design/native/grounded-answer/README.md) remain. Continue semantic evidence binding and the broader data editing/reconciliation/provider/device/release roadmap; the full goal stays active.
+
 ### Batch28 — Library preparation · published and verified
 
 Remove repeated per-comparison title tokenization and repeated canonical-text validation/counting. Every call uses fresh current shared records; public text/fingerprints, source limits/privacy, model/query/cutoff policy and UI stay unchanged. The first title-only trial misses its frozen20% timing target at17.4% and remains recorded. A separately declared validated-text reuse reaches22.1% lower warmed Release Mac preparation time,1.147956s→0.894132s, with identical complete index/keyword signatures. All seven per-query medians improve. This is not physical-iPhone/whole-app latency.
