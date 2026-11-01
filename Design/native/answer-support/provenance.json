@@ -1,0 +1,97 @@
+{
+  "evaluationBoundary": "Initial evaluation R1 completes; later CLI output-destination repair R3 reproduces all four result artifacts byte-for-byte; inference producers remain unchanged.",
+  "initialEvaluationProducerSHA256": "b18f29168bcfd3543c474d17e765b7d506e17e4e1b7c76f115c2d86f4e9e3da9",
+  "inputPublicationArtifacts": {
+    "Design/native/retrieval-quality/rerank-challenge.json": "72d2714e6b382211478d198c2c9163756934237e6b9de0aad0b11e8a2f87b80a",
+    "Tests/Fixtures/AnswerSupportGold.json": "d17f4c876e41d42797a7d3f7c92989dee5b5e2998bd4dea6529b37a5727a7f43",
+    "Tests/Fixtures/AnswerSupportStress.json": "d01c78181dbd71423c6b7c22aee850cc3245599c6b56ab81a26a7f01d108a711",
+    "Tests/Fixtures/RetrievalChallenge.json": "e01bfa411c9521da506026840b5d8ae000c7bccec9533704d40d98ed760378da"
+  },
+  "modelLoading": "Only bert.pooler.dense bias/weight are reported unused by BertForQuestionAnswering; no missing/newly initialized QA head warning. Pinned complete input receipt retained.",
+  "modelReceipt": {
+    "bytes": 133704718,
+    "files": [
+      {
+        "bytes": 477,
+        "file": "config.json",
+        "sha256": "688d980e03e028843d378fb3bf9919dc4b677b24e2a6ef37c97815d5c056151b",
+        "upstreamGitBlob": "9be884b320235f5d251d7d75ff57462fb5844afb"
+      },
+      {
+        "bytes": 107,
+        "file": "tokenizer_config.json",
+        "sha256": "c95bd2738add69376f7b8dea64d917128f949f174daa48910c5d8bf87bad36e2",
+        "upstreamGitBlob": "773e3c672fcf3c2dd2f5801eb0f3410a36715ed3"
+      },
+      {
+        "bytes": 112,
+        "file": "special_tokens_map.json",
+        "sha256": "303df45a03609e4ead04bc3dc1536d0ab19b5358db685b6f3da123d05ec200e3",
+        "upstreamGitBlob": "e7b0375001f109a6b8873d756ad4f7bbb15fbaa5"
+      },
+      {
+        "bytes": 231508,
+        "file": "vocab.txt",
+        "sha256": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3",
+        "upstreamGitBlob": "fb140275c155a9c7c5a3b3e0e77a9e839594a938"
+      },
+      {
+        "bytes": 133466376,
+        "file": "model.safetensors",
+        "sha256": "240478c7251d5e55be35feb47177054b960259b9328af662ea3cee87ce9755a6",
+        "upstreamGitBlob": "47486e79abe79a03f2d5cb1416666c230ccaa283"
+      },
+      {
+        "bytes": 6138,
+        "file": "README.md",
+        "sha256": "4be17750ace7cfef930939987619382f61f77252bdb4b57422c369e9d6b589eb",
+        "upstreamGitBlob": "66f8f9b592be8bf50c6cb65ca865caeeccd955af"
+      }
+    ],
+    "license": "cc-by-4.0",
+    "protocolPublicationCommit": "e87f49dbf7af6d2b5ab9c9bbb8a24083505f6fdd",
+    "protocolSHA256": "85b1e6ad885d7064cbda9b75d71111162467036f75a99c08ddd816b2a1be8b99",
+    "repository": "deepset/minilm-uncased-squad2",
+    "revision": "934656cdda79824eabf503ed56e15c01ddbdbe3f"
+  },
+  "officialEvaluatorInspectedBeforeExecution": true,
+  "preparedInputs": {
+    "public": {
+      "groups": {
+        "public": 11873
+      },
+      "inputsSHA256": "22b4b871b1f0d6f1720a2d7253e6036cc7de57568ab2477b22b05ef4e7452bec",
+      "labelsSHA256": "0bf156c827f692cba7019a6ee0d1a0557061891ce9f6fcb7759e09ca6d645a64",
+      "protocolSHA256": "85b1e6ad885d7064cbda9b75d71111162467036f75a99c08ddd816b2a1be8b99",
+      "questions": 11873,
+      "scope": "Complete input/label files kept separate; model inference receives question/context/regions only, never gold answers."
+    },
+    "synthetic": {
+      "groups": {
+        "baseline": 32,
+        "reranked": 32,
+        "stress": 8
+      },
+      "inputsSHA256": "242ba8be7401bae80a12d0755e79e8306543d0948dba6de8258fab020bc5e542",
+      "labelsSHA256": "061f389662f256fa16cd3d7adc6e76bdc9a3a461a6d948ac8907f65dcb383e51",
+      "protocolSHA256": "85b1e6ad885d7064cbda9b75d71111162467036f75a99c08ddd816b2a1be8b99",
+      "questions": 72,
+      "scope": "Complete input/label files kept separate; model inference receives question/context/regions only, never gold answers."
+    }
+  },
+  "producerSHA256": {
+    "scripts/answer-support-probe/Availability.swift": "ef148e7caf352ae3169129e1cd044e9aedabd180b47ecb08c857bf911e8e5281",
+    "scripts/answer-support-probe/answer_decoder.py": "a3af01dc012a0c46ac2e691ec81000dbf80a2a5a58012c6d4ce16d5c91da3d84",
+    "scripts/answer-support-probe/common.py": "76e4a09876dc751a6dff0ccc26a9ec8addb1843130e1cce4ae11c503322b3581",
+    "scripts/answer-support-probe/coverage_controls.py": "b276b1a9ab4e5c0db6c1c1f8e0221c7da57e5d06672361daa5c83d68fe2d78de",
+    "scripts/answer-support-probe/decoder_controls.py": "f8125c7153204179b10a8e89ae56be553e1f348443debefa016a67565f5614be",
+    "scripts/answer-support-probe/evaluate.py": "53a26d13aa8ca0b03b020a3fe3260be5e4e72988f6ba49ea40fede229b3731a7",
+    "scripts/answer-support-probe/metric_controls.py": "c7a8ee18098baf9c0139cba43214fff214f780abebb29bb304fe4a9a325d1ce2",
+    "scripts/answer-support-probe/prepare.py": "5fc929baa6fd8a5dc395e7a0c0c2ec326fa9489884fdc88dd2e7815ddc899b31",
+    "scripts/answer-support-probe/score.py": "10a5ad15751c78835f59b68bb21784ca68d9d712a526b749797940a12acdc82f"
+  },
+  "protocolPublicationCommit": "e87f49dbf7af6d2b5ab9c9bbb8a24083505f6fdd",
+  "protocolSHA256": "85b1e6ad885d7064cbda9b75d71111162467036f75a99c08ddd816b2a1be8b99",
+  "publicOutcomeCompactionRoundTripCases": 11873,
+  "scope": "Exact synthetic input/gold/output retained; every public variable prediction/span/status field retained in compact gzip with independent metrics. Source character offsets are Python code points plus separately round-tripped original UTF8 bytes, not Swift Character offsets. No new app/provider/device inference."
+}

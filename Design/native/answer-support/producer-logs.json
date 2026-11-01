@@ -1,0 +1,98 @@
+{
+  "logs": {
+    "availability-build.log": "",
+    "coverage-controls-r1.log": "[{\"name\": \"ordinary-budget\", \"queryTokens\": 4, \"contextTokens\": 2050, \"windows\": 8, \"contiguousSpansVerified\": 61065}, {\"name\": \"minimum-budget\", \"queryTokens\": 349, \"contextTokens\": 80, \"windows\": 49, \"contiguousSpansVerified\": 1965}]\n",
+    "evaluation-r1.log": "{\n  \"public\": {\n    \"all\": {\n      \"questions\": 11873,\n      \"exactMatchPercent\": 76.18967405036638,\n      \"f1Percent\": 79.53411756334712,\n      \"emptyAnswers\": 4814\n    },\n    \"answerable\": {\n      \"questions\": 5928,\n      \"exactMatchPercent\": 78.4919028340081,\n      \"f1Percent\": 85.19038087544205,\n      \"emptyAnswers\": 421\n    },\n    \"unanswerable\": {\n      \"questions\": 5945,\n      \"exactMatchPercent\": 73.89402859545837,\n      \"f1Percent\": 73.89402859545837,\n      \"emptyAnswers\": 4393\n    }\n  },\n  \"synthetic\": {\n    \"baseline\": {\n      \"questions\": 32,\n      \"supported\": 17,\n      \"supportedComplete\": 10,\n      \"unsupported\": 15,\n      \"unsupportedNonempty\": 0,\n      \"sourceEmpty\": 8,\n      \"classificationCounts\": {\n        \"abstained-supported\": 2,\n        \"complete\": 10,\n        \"nonmatching-supported\": 5,\n        \"empty-unsupported\": 15\n      }\n    },\n    \"reranked\": {\n      \"questions\": 32,\n      \"supported\": 17,\n      \"supportedComplete\": 10,\n      \"unsupported\": 15,\n      \"unsupportedNonempty\": 0,\n      \"sourceEmpty\": 8,\n      \"classificationCounts\": {\n        \"abstained-supported\": 2,\n        \"complete\": 10,\n        \"nonmatching-supported\": 5,\n        \"empty-unsupported\": 15\n      }\n    },\n    \"stress\": {\n      \"questions\": 8,\n      \"supported\": 4,\n      \"supportedComplete\": 2,\n      \"unsupported\": 4,\n      \"unsupportedNonempty\": 2,\n      \"sourceEmpty\": 0,\n      \"classificationCounts\": {\n        \"empty-unsupported\": 2,\n        \"nonmatching-supported\": 2,\n        \"unsupported-nonempty\": 2,\n        \"complete\": 2\n      }\n    }\n  },\n  \"advance\": false\n}\n",
+    "evaluation-r2.log": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/scripts/answer-support-probe/evaluate.py\", line 166, in <module>\n    evaluate(args.work, args.output)\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/scripts/answer-support-probe/evaluate.py\", line 114, in evaluate\n    save(work / \"official-predictions-r1.json\", pred_map)\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/scripts/answer-support-probe/common.py\", line 28, in save\n    raise ValueError(\"Output already exists: \" + str(path))\nValueError: Output already exists: /tmp/LumenBatch33Answerability/official-predictions-r1.json\n",
+    "evaluation-r3.log": "{\n  \"public\": {\n    \"all\": {\n      \"questions\": 11873,\n      \"exactMatchPercent\": 76.18967405036638,\n      \"f1Percent\": 79.53411756334712,\n      \"emptyAnswers\": 4814\n    },\n    \"answerable\": {\n      \"questions\": 5928,\n      \"exactMatchPercent\": 78.4919028340081,\n      \"f1Percent\": 85.19038087544205,\n      \"emptyAnswers\": 421\n    },\n    \"unanswerable\": {\n      \"questions\": 5945,\n      \"exactMatchPercent\": 73.89402859545837,\n      \"f1Percent\": 73.89402859545837,\n      \"emptyAnswers\": 4393\n    }\n  },\n  \"synthetic\": {\n    \"baseline\": {\n      \"questions\": 32,\n      \"supported\": 17,\n      \"supportedComplete\": 10,\n      \"unsupported\": 15,\n      \"unsupportedNonempty\": 0,\n      \"sourceEmpty\": 8,\n      \"classificationCounts\": {\n        \"abstained-supported\": 2,\n        \"complete\": 10,\n        \"nonmatching-supported\": 5,\n        \"empty-unsupported\": 15\n      }\n    },\n    \"reranked\": {\n      \"questions\": 32,\n      \"supported\": 17,\n      \"supportedComplete\": 10,\n      \"unsupported\": 15,\n      \"unsupportedNonempty\": 0,\n      \"sourceEmpty\": 8,\n      \"classificationCounts\": {\n        \"abstained-supported\": 2,\n        \"complete\": 10,\n        \"nonmatching-supported\": 5,\n        \"empty-unsupported\": 15\n      }\n    },\n    \"stress\": {\n      \"questions\": 8,\n      \"supported\": 4,\n      \"supportedComplete\": 2,\n      \"unsupported\": 4,\n      \"unsupportedNonempty\": 2,\n      \"sourceEmpty\": 0,\n      \"classificationCounts\": {\n        \"empty-unsupported\": 2,\n        \"nonmatching-supported\": 2,\n        \"unsupported-nonempty\": 2,\n        \"complete\": 2\n      }\n    }\n  },\n  \"advance\": false\n}\n",
+    "fetch-prepare-r1.log": "Verified config.json 477\nVerified tokenizer_config.json 107\nVerified special_tokens_map.json 112\nVerified vocab.txt 231508\nVerified model.safetensors 133466376\nVerified README.md 6138\nVerified dev-v2.0.json 4370528\nVerified evaluate-v2.0.py 10547\nPrepared public 11873\nPrepared synthetic 72\n",
+    "public-score-r1.log": "Prepared public 11873 questions 12134 features\nSome weights of the model checkpoint at /tmp/LumenBatch33Answerability/model were not used when initializing BertForQuestionAnswering: ['bert.pooler.dense.bias', 'bert.pooler.dense.weight']\n- This IS expected if you are initializing BertForQuestionAnswering from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).\n- This IS NOT expected if you are initializing BertForQuestionAnswering from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).\npublic 0 questions 1 features\nYou're using a BertTokenizerFast tokenizer. Please note that with a fast tokenizer, using the `__call__` method is faster than using a method to encode the text followed by a call to the `pad` method to get a padded encoding.\npublic 500 questions 508 features\npublic 1000 questions 1008 features\npublic 1500 questions 1508 features\npublic 2000 questions 2008 features\npublic 2500 questions 2508 features\npublic 3000 questions 3008 features\npublic 3500 questions 3668 features\npublic 4000 questions 4188 features\npublic 4500 questions 4726 features\npublic 5000 questions 5226 features\npublic 5500 questions 5736 features\npublic 6000 questions 6236 features\npublic 6500 questions 6736 features\npublic 7000 questions 7251 features\npublic 7500 questions 7751 features\npublic 8000 questions 8260 features\npublic 8500 questions 8760 features\npublic 9000 questions 9260 features\npublic 9500 questions 9760 features\npublic 10000 questions 10260 features\npublic 10500 questions 10762 features\npublic 11000 questions 11262 features\npublic 11500 questions 11762 features\nFinished public 11873 {'answered': 7059, 'abstained': 4814} inference seconds 259.93247628980316\n",
+    "synthetic-score-r1.log": "Prepared synthetic 72 questions 56 features\nSome weights of the model checkpoint at /tmp/LumenBatch33Answerability/model were not used when initializing BertForQuestionAnswering: ['bert.pooler.dense.bias', 'bert.pooler.dense.weight']\n- This IS expected if you are initializing BertForQuestionAnswering from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).\n- This IS NOT expected if you are initializing BertForQuestionAnswering from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).\nsynthetic 0 questions 1 features\nYou're using a BertTokenizerFast tokenizer. Please note that with a fast tokenizer, using the `__call__` method is faster than using a method to encode the text followed by a call to the `pad` method to get a padded encoding.\nhuggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...\nTo disable this warning, you can either:\n\t- Avoid using `tokenizers` before the fork if possible\n\t- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)\nhuggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...\nTo disable this warning, you can either:\n\t- Avoid using `tokenizers` before the fork if possible\n\t- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)\nFinished synthetic 72 {'abstained': 20, 'answered': 36, 'noSource': 16} inference seconds 0.6317661667708308\n"
+  },
+  "metricControlHistory": {
+    "metric-controls-r1.json": {
+      "checks": [
+        "literal operator/comma/micro/unit preserved",
+        "operator/decimal/unit rewrite rejected",
+        "lost negation rejected",
+        "partial date/time rejected",
+        "missing fact has no accepted answer",
+        "whitespace and following sentence period accepted",
+        "unlisted prefix remains strict miss",
+        "case stays literal",
+        "public Unicode word boundaries/articles",
+        "public multiset token F1",
+        "public empty answer agreement",
+        "public multiple gold maximum"
+      ],
+      "controlSourceSHA256": "0a8d5169df16cbdda141eac14c00d263e7ee03cdd7db6bdf0a324560a5f61fd1",
+      "metricSourceSHA256": "c72aef35f59d85e14f6c695f8ab104c0a8a89aedf31e8ef944e26f1bc6a2ba04",
+      "passed": 12,
+      "scope": "Independent hand-expected metric controls; full official per-case comparison is separate."
+    },
+    "metric-controls-r2.json": {
+      "checks": [
+        "literal operator/comma/micro/unit preserved",
+        "operator/decimal/unit rewrite rejected",
+        "lost negation rejected",
+        "partial date/time rejected",
+        "missing fact has no accepted answer",
+        "whitespace and following sentence period accepted",
+        "unlisted prefix remains strict miss",
+        "case stays literal",
+        "public Unicode word boundaries/articles",
+        "public article removal preserves token boundaries",
+        "public multiset token F1",
+        "public empty answer agreement",
+        "public multiple gold maximum"
+      ],
+      "controlSourceSHA256": "c7a8ee18098baf9c0139cba43214fff214f780abebb29bb304fe4a9a325d1ce2",
+      "metricSourceSHA256": "b18f29168bcfd3543c474d17e765b7d506e17e4e1b7c76f115c2d86f4e9e3da9",
+      "passed": 13,
+      "scope": "Independent hand-expected metric controls; full official per-case comparison is separate."
+    },
+    "metric-controls-r3.json": {
+      "checks": [
+        "literal operator/comma/micro/unit preserved",
+        "operator/decimal/unit rewrite rejected",
+        "lost negation rejected",
+        "partial date/time rejected",
+        "missing fact has no accepted answer",
+        "whitespace and following sentence period accepted",
+        "unlisted prefix remains strict miss",
+        "case stays literal",
+        "public Unicode word boundaries/articles",
+        "public article removal preserves token boundaries",
+        "public multiset token F1",
+        "public empty answer agreement",
+        "public multiple gold maximum"
+      ],
+      "controlSourceSHA256": "c7a8ee18098baf9c0139cba43214fff214f780abebb29bb304fe4a9a325d1ce2",
+      "metricSourceSHA256": "e0892cc918e800ff7016d7cd8d3410e6c85730a47a5332195e07d7dfcacc5e61",
+      "passed": 13,
+      "scope": "Independent hand-expected metric controls; full official per-case comparison is separate."
+    },
+    "metric-controls-r4.json": {
+      "checks": [
+        "literal operator/comma/micro/unit preserved",
+        "operator/decimal/unit rewrite rejected",
+        "lost negation rejected",
+        "partial date/time rejected",
+        "missing fact has no accepted answer",
+        "whitespace and following sentence period accepted",
+        "unlisted prefix remains strict miss",
+        "case stays literal",
+        "public Unicode word boundaries/articles",
+        "public article removal preserves token boundaries",
+        "public multiset token F1",
+        "public empty answer agreement",
+        "public multiple gold maximum"
+      ],
+      "controlSourceSHA256": "c7a8ee18098baf9c0139cba43214fff214f780abebb29bb304fe4a9a325d1ce2",
+      "metricSourceSHA256": "53a26d13aa8ca0b03b020a3fe3260be5e4e72988f6ba49ea40fede229b3731a7",
+      "passed": 13,
+      "scope": "Independent hand-expected metric controls; full official per-case comparison is separate."
+    }
+  },
+  "scope": "Complete compact Batch33 logs and exact metric-control source boundaries retained, including R2 intermediate-output collision; no model/policy fitting."
+}

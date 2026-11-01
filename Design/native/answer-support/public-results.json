@@ -1,0 +1,114 @@
+{
+  "aggregateMetricComparisons": 9,
+  "datasetReceipt": {
+    "bytes": 4370528,
+    "gitBlobSHA": "c6fa1a89a12c90b7fbfa8f6fb437cfff27af41ca",
+    "path": "dataset/dev-v2.0.json",
+    "repository": "rajpurkar/SQuAD-explorer",
+    "scope": "Entire official DEVELOPMENT set, no sampling, training or hidden-test data. Reproduction/development only; model card explicitly uses this eval set.",
+    "sha256": "80a5225e94905956a6446d296ca1093975c4d3b3260f1d6c8f68bc2ab77182d8"
+  },
+  "evaluatorReceipt": {
+    "bytes": 10547,
+    "gitBlobSHA": "21f52c179c8c6547ae5999215f8afd36038f20ca",
+    "path": "evaluate-v2.0.py",
+    "repository": "rajpurkar/SQuAD-explorer",
+    "scope": "Inspect pinned source before execution. Compare official fixed-prediction EM/F1 without tuning no-answer probabilities or best thresholds.",
+    "sha256": "710840ce2c2c61716334c056777032f24660b83eb9869a451036e6a24d8103c4"
+  },
+  "metrics": {
+    "all": {
+      "emptyAnswers": 4814,
+      "exactMatchPercent": 76.18967405036638,
+      "f1Percent": 79.53411756334712,
+      "questions": 11873
+    },
+    "answerable": {
+      "emptyAnswers": 421,
+      "exactMatchPercent": 78.4919028340081,
+      "f1Percent": 85.19038087544205,
+      "questions": 5928
+    },
+    "unanswerable": {
+      "emptyAnswers": 4393,
+      "exactMatchPercent": 73.89402859545837,
+      "f1Percent": 73.89402859545837,
+      "questions": 5945
+    }
+  },
+  "officialCLI": {
+    "HasAns_exact": 78.4919028340081,
+    "HasAns_f1": 85.19038087544205,
+    "HasAns_total": 5928,
+    "NoAns_exact": 73.89402859545837,
+    "NoAns_f1": 73.89402859545837,
+    "NoAns_total": 5945,
+    "exact": 76.18967405036638,
+    "f1": 79.53411756334712,
+    "total": 11873
+  },
+  "outcomesSHA256": "233f351463c9ce5de1ebf128fd865558b588d7c0f3d1df47185ef6571034972b",
+  "perCaseMetricComparisons": 23746,
+  "protocolSHA256": "85b1e6ad885d7064cbda9b75d71111162467036f75a99c08ddd816b2a1be8b99",
+  "publicReproductionPassed": true,
+  "run": {
+    "contextCoverage": "Every original context token/offset matches its full-context slice; complete original question in each feature; every overlapping window represented.",
+    "features": 12134,
+    "goldLoadedByInference": false,
+    "inferenceOnlySeconds": 259.93247628980316,
+    "inferenceTimeScope": "CPU FP32 model forward calls only; excludes loading, tokenization, padding, decoding and control replays. Not native/iPhone latency.",
+    "inputsSHA256": "22b4b871b1f0d6f1720a2d7253e6036cc7de57568ab2477b22b05ef4e7452bec",
+    "modelReceiptSHA256": "24d13a754c0c9b4d723053fe5ecacf7f2a43ec6950fbffe63f1acbc0d26511b4",
+    "numericalControls": [
+      {
+        "featureIndex": 0,
+        "maximumAbsoluteLogitDifference": 0.0,
+        "passed": true
+      },
+      {
+        "featureIndex": 6067,
+        "maximumAbsoluteLogitDifference": 0.0,
+        "passed": true
+      },
+      {
+        "featureIndex": 12133,
+        "maximumAbsoluteLogitDifference": 0.0,
+        "passed": true
+      }
+    ],
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "predictionsSHA256": "05c7279ba4e02df36982801066c86ec9344133d58d0cae6275dc5c9f1209b67d",
+    "producerSHA256AtStart": {
+      "answer_decoder.py": "a3af01dc012a0c46ac2e691ec81000dbf80a2a5a58012c6d4ce16d5c91da3d84",
+      "common.py": "76e4a09876dc751a6dff0ccc26a9ec8addb1843130e1cce4ae11c503322b3581",
+      "score.py": "10a5ad15751c78835f59b68bb21784ca68d9d712a526b749797940a12acdc82f"
+    },
+    "protocolPublicationCommit": "e87f49dbf7af6d2b5ab9c9bbb8a24083505f6fdd",
+    "protocolSHA256": "85b1e6ad885d7064cbda9b75d71111162467036f75a99c08ddd816b2a1be8b99",
+    "questions": 11873,
+    "scope": "Development/replication component research only. No production reader/model change.",
+    "statusCounts": {
+      "abstained": 4814,
+      "answered": 7059
+    },
+    "threads": 4,
+    "versions": {
+      "numpy": "2.2.6",
+      "python": "3.12.14",
+      "torch": "2.7.0",
+      "transformers": "4.51.3"
+    },
+    "windowControls": {
+      "checks": [
+        "all overlapping context tokens and adjacent boundary pairs represented",
+        "complete oversized question retained as explicit inputLimit",
+        "empty sources have explicit noSource",
+        "changed source body rejected",
+        "overlapping source regions rejected"
+      ],
+      "longContextWindows": 8,
+      "passed": 5
+    }
+  },
+  "scope": "Full SQuAD2 development replication, not unseen generalization or clinical validation. No best-threshold/probability fitting. Public derived outcomes CC BY-SA4.0; see ATTRIBUTION.md."
+}
