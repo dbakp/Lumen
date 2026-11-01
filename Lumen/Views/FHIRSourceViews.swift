@@ -3,8 +3,12 @@ import UIKit
 
 /// Literal source text must wrap without adding discretionary punctuation.
 /// Keep UIKit's native read-only text selection; this is not an editor bridge.
-private struct FHIRLiteralText: UIViewRepresentable {
+struct FHIRLiteralText: UIViewRepresentable {
     let text: String
+    var identifier = "fhirFullText"
+    var lineSpacing: CGFloat = 0
+    var color: Color = Theme.text
+    var fitsContentWidth = false
     @Environment(\.dynamicTypeSize) private var typeSize
     final class Coordinator: NSObject, NSLayoutManagerDelegate {
         func layoutManager(_ layoutManager: NSLayoutManager, shouldBreakLineByHyphenatingBeforeCharacterAt charIndex: Int) -> Bool { false }
@@ -20,11 +24,11 @@ private struct FHIRLiteralText: UIViewRepresentable {
         view.layoutManager.delegate = context.coordinator
         view.adjustsFontForContentSizeCategory = true
         view.isAccessibilityElement = true
-        view.accessibilityIdentifier = "fhirFullText"
+        view.accessibilityIdentifier = identifier
         return view
     }
     func updateUIView(_ view: UITextView, context: Context) {
-        let value = FHIRLiteralTypography.value(text, size: typeSize, color: UIColor(Theme.text), wrapping: .byWordWrapping)
+        let value = FHIRLiteralTypography.value(text, size: typeSize, color: UIColor(color), wrapping: .byWordWrapping, lineSpacing: lineSpacing)
         if view.attributedText?.isEqual(to: value) != true {
             let range = view.selectedRange
             view.attributedText = value
@@ -32,13 +36,17 @@ private struct FHIRLiteralText: UIViewRepresentable {
             view.selectedRange = NSRange(location: start, length: min(range.length, value.length - start))
         }
         view.accessibilityLabel = text
-        view.accessibilityIdentifier = "fhirFullText"
+        view.accessibilityIdentifier = identifier
         view.tintColor = UIColor(Theme.accent)
     }
     func sizeThatFits(_ proposal: ProposedViewSize, uiView: UITextView, context: Context) -> CGSize? {
         guard let width = proposal.width, width.isFinite, width > 0 else { return nil }
-        let size = uiView.sizeThatFits(CGSize(width: width, height: .greatestFiniteMagnitude))
-        return CGSize(width: width, height: ceil(size.height))
+        // Short question bubbles keep their natural width; long questions use
+        // the proposed wrapping width. Source readers retain their full width.
+        let naturalWidth = fitsContentWidth ? ceil(uiView.attributedText.size().width) + 1 : width
+        let fittedWidth = naturalWidth.isFinite ? min(width, max(1, naturalWidth)) : width
+        let size = uiView.sizeThatFits(CGSize(width: fittedWidth, height: .greatestFiniteMagnitude))
+        return CGSize(width: fittedWidth, height: ceil(size.height))
     }
 }
 
@@ -72,7 +80,7 @@ private struct FHIRLiteralLabel: UIViewRepresentable {
 }
 
 private enum FHIRLiteralTypography {
-    static func value(_ text: String, size: DynamicTypeSize, color: UIColor, style: UIFont.TextStyle = .body, wrapping: NSLineBreakMode = .byCharWrapping) -> NSAttributedString {
+    static func value(_ text: String, size: DynamicTypeSize, color: UIColor, style: UIFont.TextStyle = .body, wrapping: NSLineBreakMode = .byCharWrapping, lineSpacing: CGFloat = 0) -> NSAttributedString {
         let category: UIContentSizeCategory
         switch size {
         case .xSmall: category = .extraSmall
@@ -92,6 +100,7 @@ private enum FHIRLiteralTypography {
         let paragraph = NSMutableParagraphStyle()
         paragraph.lineBreakMode = wrapping
         paragraph.lineBreakStrategy = []
+        paragraph.lineSpacing = lineSpacing
         paragraph.hyphenationFactor = 0; paragraph.usesDefaultHyphenation = false
         let font = UIFont.preferredFont(forTextStyle: style, compatibleWith: UITraitCollection(preferredContentSizeCategory: category))
         return NSAttributedString(string: text, attributes: [.font: font, .foregroundColor: color, .paragraphStyle: paragraph])

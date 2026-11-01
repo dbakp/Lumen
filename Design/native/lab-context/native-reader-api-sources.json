@@ -1,0 +1,18 @@
+{
+  "purpose": "Official API references consulted for native content-sized user bubbles; these do not prove runtime or pixel correctness.",
+  "sources": [
+    {
+      "title": "NSAttributedString.size()",
+      "url": "https://developer.apple.com/documentation/foundation/nsattributedstring/size()"
+    },
+    {
+      "title": "UIViewRepresentable.sizeThatFits(_:uiView:context:)",
+      "url": "https://developer.apple.com/documentation/swiftui/uiviewrepresentable/sizethatfits(_:uiview:context:)"
+    },
+    {
+      "title": "NSAttributedString.boundingRect(with:options:context:)",
+      "url": "https://developer.apple.com/documentation/foundation/nsattributedstring/boundingrect(with:options:context:)"
+    }
+  ],
+  "implementation": "The opt-in user branch measures attributed natural width, caps it at the proposed width and asks the same native text view for fitted height. Default source/lookup readers keep the full proposed width. Apple documentation Markdown fetching returned unsupported-content-type for size(); the public SDK/build and native checks remain the implementation authority."
+}

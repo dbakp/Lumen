@@ -105,6 +105,7 @@ let package = Package(
             "Lumen/Algorithms/JSONFieldAudit.swift",
             "Tests/ReadableExportChecks.swift",
             "Tests/RecordRetrievalChecks.swift",
+            "Tests/LibraryLabContextChecks.swift",
             "Lumen/Algorithms/ZIPPreflight.swift",
             "Lumen/Algorithms/ImportedMetrics.swift",
             "Lumen/Algorithms/WorkoutReconciliation.swift",

@@ -1,0 +1,62 @@
+{
+  "status": "failed",
+  "sourceMap": "source-r13.json",
+  "caseSeconds": 900.777,
+  "summary": {
+    "devicesAndConfigurations": [
+      {
+        "device": {
+          "architecture": "arm64",
+          "deviceId": "C5F84641-E9B2-4184-8EA8-C57878961137",
+          "deviceName": "Lumen Batch31 compact",
+          "modelName": "iPhone SE (3rd generation)",
+          "osBuildNumber": "24A434",
+          "osVersion": "27.0",
+          "platform": "iOS Simulator"
+        },
+        "expectedFailures": 0,
+        "failedTests": 1,
+        "passedTests": 0,
+        "skippedTests": 0,
+        "testPlanConfiguration": {
+          "configurationId": "1",
+          "configurationName": "Test Scheme Action"
+        }
+      }
+    ],
+    "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+    "expectedFailures": 0,
+    "failedTests": 1,
+    "finishTime": 1793528296.563,
+    "passedTests": 0,
+    "result": "Failed",
+    "runtimeWarnings": [],
+    "skippedTests": 0,
+    "startTime": 1793527383.026,
+    "statistics": [],
+    "testFailures": [
+      {
+        "failureText": "failed - Element could not be brought into the visible content area",
+        "targetName": "LumenUITests",
+        "testIdentifier": 1,
+        "testIdentifierString": "LumenSmokeTests/testReviewedLabContextSourceStatesPresentation()",
+        "testIdentifierURL": "test://com.apple.xcode/Lumen/LumenUITests/LumenSmokeTests/testReviewedLabContextSourceStatesPresentation",
+        "testName": "testReviewedLabContextSourceStatesPresentation()"
+      }
+    ],
+    "title": "Test - Lumen",
+    "topInsights": [],
+    "totalTestCount": 1
+  },
+  "logSHA256": "01888d38424b36a74558f0759cc76d2e6602de31d03e08df5c83028bfe92d23c",
+  "finding": "Normal states and full dark chat/source/retained caption/footer pass their substage assertions. The subsequent crowded-document sharing switch is visually visible at outer AX frame(24,297.5,327,125.5), but the generic outer-centre hittability condition never accepts it. Current helper verifies the trailing native control point is within visible content, touches it and still waits for the actual requested value; no direct data mutation or weakened saved-value assertion.",
+  "repairBoundary": "sharing-thumb-capture-boundary.diff",
+  "failureOriginal": {
+    "path": "Design/native/lab-context/small-r5-failed/visible-sharing-thumb.png",
+    "sha256": "866ac85b7badbefb26cb749220eaf0c927e3038d98306fce65739b083ebb9f6d",
+    "exportedFileName": "AEB743C4-BDE6-4681-A460-7486C51894EF.png"
+  },
+  "exitCode": 65,
+  "correctedCause": "Later SharingProbeR2 proves the16-step scroll budget ends immediately before the17th visibility check; the visible control is hittable/enabled. The earlier thumb-target interpretation was wrong and its changes are reverted.",
+  "diagnosisProof": "sharing-probe-r2.json"
+}

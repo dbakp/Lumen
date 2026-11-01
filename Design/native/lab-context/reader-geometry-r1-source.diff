@@ -1,0 +1,47 @@
+--- source-r4/LumenSmokeTests.swift
++++ ReaderGeometryR1/LumenSmokeTests.swift
+@@ -1,5 +1,44 @@
+ import XCTest
+ import CryptoKit
++
++// Temporary observational probe: preserve the dedicated simulator's failed
++// source-reader state and report raw AX geometry without resetting its data.
++final class LumenReaderGeometryProbe: XCTestCase {
++    func testRetainedFooterGeometry() throws {
++        let app = XCUIApplication()
++        app.launchArguments = ["-lumen.appearance", "dark", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]
++        app.launch(); app.buttons["Assistant"].firstMatch.tap()
++        let disclosure = app.buttons["libraryReferencesToggle"].firstMatch
++        for _ in 0..<20 { if disclosure.isHittable { break }; app.swipeUp(velocity: .slow) }
++        XCTAssertTrue(disclosure.isHittable); disclosure.tap()
++        let source = app.buttons["library-reference-1"].firstMatch
++        for _ in 0..<20 { if source.isHittable { break }; app.swipeUp(velocity: .slow) }
++        XCTAssertTrue(source.isHittable); source.tap()
++        XCTAssertTrue(app.navigationBars["Saved reference"].waitForExistence(timeout: 5))
++        let retained = app.staticTexts.matching(NSPredicate(format: "label CONTAINS 'This saved excerpt and its reviewed fields stay with the earlier reply.'")).firstMatch
++        for _ in 0..<20 { if retained.isHittable { break }; app.swipeUp(velocity: .slow) }
++        XCTAssertTrue(retained.isHittable)
++        let footer = app.staticTexts["Saved text may contain errors. Check names, numbers and units against the original."].firstMatch
++        for phase in ["initial", "after-drag"] {
++            if phase == "after-drag" {
++                let top = app.navigationBars.firstMatch.frame.maxY + 12, bottom = app.frame.maxY - 12
++                let start = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: bottom - 35))
++                let end = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: bottom - 35 - (bottom - top) * 0.55))
++                start.press(forDuration: 0.1, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.3)
++            }
++            for sample in 0..<10 {
++                let exists = footer.exists
++                print("Reader geometry \(phase) \(sample): exists=\(exists)")
++                if exists {
++                    let frame = footer.frame
++                    print("Reader raw frame \(phase) \(sample): \(String(format: "%.17g,%.17g,%.17g,%.17g", frame.minX, frame.minY, frame.width, frame.height)); empty=\(frame.isEmpty)")
++                }
++                Thread.sleep(forTimeInterval: 0.1)
++            }
++            let shot = XCTAttachment(screenshot: app.screenshot()); shot.name = "834-reader-geometry-" + phase; shot.lifetime = .keepAlways; add(shot)
++        }
++    }
++}
+ 
+ // MARK: - Lumen smoke test: fresh onboarding → every tab → logging → coach.
+ // Screenshots are attached to the result bundle for visual review.

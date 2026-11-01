@@ -514,3 +514,11 @@ Flow687/689 and main/compact format sequences now say **Library lookup can't mat
 Normal scroll edges, wrapped identifiers and content longer than one viewport are not fixed clipping. No smaller type or forced single-screen conversation is requested. Optional routes toward5s remain a separately requested portfolio pass: a distinctive functional source object; stronger answer/source type differentiation; finer owned-teal material; tuned large-text group spacing; directly actionable Library destinations in limit replies. These are not delivery defects and are declined for this scoped batch, preserving the existing direction.
 
 NativeR7, PresentationR4 and SmallR3 remain separate runtime evidence. This verdict establishes the shown simulator presentation, not VoiceOver, physical-device feel, provider behavior or clinical validity. No app/UI source change follows sign-off.
+
+## Batch31 · complete reviewed lab context · four rounds complete
+
+The same continuing App Designer Pro critic scores43→41→41→43/55. Round2 finds inserted discretionary hyphens in saved-source URLs/canary. Reusing the native literal reader repairs source and built-in replies. Round3 accepts those pixels but finds the same existing defect in the user's question. User messages gain literal native reading with on-accent ink and natural short-bubble width; model formatting remains unchanged.
+
+Round4 individually inspects all84 current compact originals, six current main user originals and31 current main lab-chat originals: **121 current indexed PNGs**, no skipped/failed inspection. Earlier accepted NativeR6 source/assistant proof retains its exact boundary. Complete normal/dark AccessibilityXXXL source/fields/footer, sharing-off retention, all-five omission, question/reply and reachable native actions close every concrete ask. Final **43/55,10/11 lines4+, Richness3**, Concept/Finish/Native/Copy all4: **Done within scope**. No later app/UI edit. Optional decorative/portfolio expansion remains declined.
+
+[Full scorecards and exact boundaries](native/lab-context/CRITIQUE.md) retain per-line visible evidence/routes-to5, quoted defects, actual original dimensions and every earlier failed attempt. SmallR7's972.691s full compact pass is separate runtime evidence. No VoiceOver, physical-display1:1, provider, clinical or full-release proof is claimed.

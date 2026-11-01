@@ -1,5 +1,17 @@
 # Verification · 29 October 2026
 
+## Batch31 checkpoint ·1 November2026 ·local verification
+
+Current Xcode is27.0, iOS Simulator27.0; the original build section below describes the earlier29October checkpoint. Complete reviewed lab observations now accompany actually overlapping Library excerpts, with original/reviewed wording, unknown fields, whole-set omissions and source/sharing currentness preserved. Native literal readers preserve source punctuation, user questions and built-in lookup replies at full Dynamic Type. [Contract](REVIEWED_LAB_CONTEXT.md), [compact evidence](../Design/native/lab-context/README.md) and [scorecards](../Design/native/lab-context/CRITIQUE.md).
+
+LogicR8 passes1,465 checks; actual pinned MiniLM/CoreML R2 passes28. All4,272 complete development source packets remain identical against9f261a9; a later prompt-only FHIR-provenance sentence has an explicit replay boundary. No held-out retrieval score or lab-answer-support proof is claimed. BuildR21 passes all five simulator scheme products on258 matched source-r17 inputs. Unsigned generic-iOS ReleaseR3 uses current app source-r9: minimumiOS18, no bundled model, pinned vocabulary/ZIP and19 checked development markers absent. Only native tests change afterward.
+
+NativeR5 passes citation rejection122.874s and regular built-in lab lifecycle275.029s inside a mixed bundle whose source-state capture fails233.288s. NativeR6 passes809.780s with71 main normal/dark AccessibilityXXXL source/retained/omission/chat originals before only the user-text UI repair. Current keyboard behavior passes53.247s in mixed NativeR7; current focused user presentation passes203.649s in NativeR8; current whole dark AccessibilityXXXL lab-chat transition passes356.880s in NativeR10. These remain separate exact-source results, not one combined final-source suite.
+
+Final375×667 SmallR7 passes972.691s with zero failures/skips,84 originals, six complete source/footer sweeps, four continuous chat segments and two full retained-caption sequences. Earlier compact failures remain explicitly failed: Files-directory handling, disappearing offscreen native question frames, an oversized retained paragraph and the test scroll budget. SharingProbeR2 passes226.137s and measures the real switch value0→1 on check17; the former helper stopped after16 checks. Final r17 restores the earlier helpers with only a16→32 search-budget change. It does not change the app. Final Round4 accepts all84 compact plus37 current main originals at43/55,10/11 lines4+, all concrete asks closed. No later app/UI edit. Publication and stopped-worker cleanup follow.
+
+All270 indexed originals match their SHA256; capture indexes retain timestamps and portable repository paths. The continuing critic has inspected all71 earlier source/assistant originals plus all37 current user/chat originals. Round3 remains41/55 and Not done after finding the user-glyph defect; Round4 closes that defect and all requested compact evidence. VoiceOver, signed iPhone/Watch/voice, live-provider grounding, multilingual/clinical quality, performance, independent privacy/security and distribution remain open. No personal health data or credentials are used.
+
 ## Build
 
 All five scheme targets compile with Xcode 27.1: iPhone, iPhone widget, Watch, Watch widget and UI tests. Generic simulator build and build-for-testing passed. Latest native flow run is tracked below. iOS 18 remains the deployment target; newer model APIs are availability-checked.

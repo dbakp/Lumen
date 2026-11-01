@@ -1,0 +1,11 @@
+--- /tmp/LumenBatch31Verification/UITest-source-r13.swift	2026-11-01 11:24:02
++++ LumenUITests/LumenSmokeTests.swift	2026-11-01 11:55:05
+@@ -456,7 +456,7 @@
+     }
+ 
+     func reveal(_ element: XCUIElement, towardsTop: Bool = false) {
+-        for _ in 0..<16 {
++        for _ in 0..<32 {
+             let targetIdentifier = element.exists ? element.identifier : ""
+             let input = app.descendants(matching: .any).matching(identifier: "coachInput").firstMatch
+             let composerVisible = input.exists && input.isHittable && targetIdentifier != "coachInput"

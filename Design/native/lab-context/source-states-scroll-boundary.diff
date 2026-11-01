@@ -1,0 +1,31 @@
+--- SourceStatesR1/LumenSmokeTests.swift
++++ SourceStatesR2/LumenSmokeTests.swift
+@@ -1749,7 +1749,9 @@
+         let stable = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+             guard element.exists else { return false }
+             let next = element.frame, now = ProcessInfo.processInfo.systemUptime
+-            if next != frame { frame = next; stableSince = now }
++            if frame.isNull || abs(next.minX - frame.minX) > 0.5 || abs(next.minY - frame.minY) > 0.5 || abs(next.width - frame.width) > 0.5 || abs(next.height - frame.height) > 0.5 {
++                frame = next; stableSince = now
++            }
+             return !next.isEmpty && now - stableSince >= 0.5
+         }, object: element)
+         XCTAssertEqual(XCTWaiter.wait(for: [stable], timeout: 8), .completed)
+@@ -2675,7 +2677,7 @@
+         // UIKit can clip an oversized text view's AX frame to the screen.
+         // Capture ordinary overlapping gutter drags to a separate end marker;
+         // do not infer complete text coverage from that changing frame height.
+-        for part in 1...32 {
++        for part in 1...64 {
+             settleLabFrame(footer)
+             let top = app.navigationBars.firstMatch.frame.maxY + 12
+             let bottom = app.frame.maxY - 12
+@@ -2683,7 +2685,7 @@
+             print("Reviewed source sweep \(prefix) part\(part): footer \(frame), visible \(top)...\(bottom)")
+             snap(prefix + "-part\(part)")
+             if frame.minY >= top && frame.maxY <= bottom { return }
+-            let distance = min(200, (bottom - top) * 0.4)
++            let distance = (bottom - top) * 0.55
+             let start = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: bottom - 35))
+             let end = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: bottom - 35 - distance))
+             start.press(forDuration: 0.1, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.3)

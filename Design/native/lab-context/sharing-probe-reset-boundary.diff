@@ -1,0 +1,30 @@
+--- /tmp/LumenBatch31Verification/UITest-source-r15.swift	2026-11-01 11:48:37
++++ LumenUITests/LumenSmokeTests.swift	2026-11-01 11:48:37
+@@ -17,8 +17,7 @@
+         // The focused wrapping probe reuses this dedicated simulator's saved
+         // synthetic record, with a public Files-import fallback if absent.
+         app.launchArguments = name.contains("testFHIRLiteralWrappingSnapshots") || name.contains("testLiteralIdentifier") || name.contains("testProviderCitationRejection") || name.contains("testProviderTransportFallback") ? ["-librarySearchRemoteUITestMode"] : ["-resetForUITests"]
+-        if name.contains("testReviewedLabSharingControlProbe") { app.activate() }
+-        else { app.launch() }
++        app.launch()
+     }
+ 
+     func historyIdentity(_ fields: [String]) -> String {
+@@ -2795,11 +2794,12 @@
+         captureReviewedLabChat("837-lab-context-dark-xxxl-current-question-and-reply")
+     }
+     func testReviewedLabSharingControlProbe() throws {
+-        if !app.navigationBars["Document"].exists {
+-            tab("Library")
+-            let record = app.buttons["Several reviewed results"].firstMatch
+-            reveal(record); record.tap()
+-        }
++        try prepareReviewedLabContext(["-lumen.appearance", "light"])
++        app.terminate()
++        app.launchArguments = ["-lumen.appearance", "dark", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]
++        app.launch(); tab("Library")
++        let record = app.buttons["Several reviewed results"].firstMatch
++        reveal(record); record.tap()
+         let toggle = app.switches["Use in assistant"].firstMatch
+         XCTAssertTrue(toggle.waitForExistence(timeout: 5))
+         print("Sharing initial: frame \(toggle.frame), hittable \(toggle.isHittable), enabled \(toggle.isEnabled), value \(String(describing: toggle.value))")

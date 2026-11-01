@@ -1,0 +1,120 @@
+{
+  "status": "failed; no passing combined presentation inferred",
+  "summary": {
+    "devicesAndConfigurations": [
+      {
+        "device": {
+          "architecture": "arm64",
+          "deviceId": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+          "deviceName": "Lumen continuation verification",
+          "modelName": "iPhone 18 Pro",
+          "osBuildNumber": "24A434",
+          "osVersion": "27.0",
+          "platform": "iOS Simulator"
+        },
+        "expectedFailures": 0,
+        "failedTests": 1,
+        "passedTests": 0,
+        "skippedTests": 0,
+        "testPlanConfiguration": {
+          "configurationId": "1",
+          "configurationName": "Test Scheme Action"
+        }
+      }
+    ],
+    "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+    "expectedFailures": 0,
+    "failedTests": 1,
+    "finishTime": 1793518506.484,
+    "passedTests": 0,
+    "result": "Failed",
+    "runtimeWarnings": [],
+    "skippedTests": 0,
+    "startTime": 1793518065.542,
+    "statistics": [],
+    "testFailures": [
+      {
+        "failureText": "XCTAssertEqual failed: (\"XCTWaiterResult(rawValue: 2)\") is not equal to (\"XCTWaiterResult(rawValue: 1)\")",
+        "targetName": "LumenUITests",
+        "testIdentifier": 1,
+        "testIdentifierString": "LumenSmokeTests/testReviewedLabContextSourceStatesPresentation()",
+        "testIdentifierURL": "test://com.apple.xcode/Lumen/LumenUITests/LumenSmokeTests/testReviewedLabContextSourceStatesPresentation",
+        "testName": "testReviewedLabContextSourceStatesPresentation()"
+      }
+    ],
+    "title": "Test - Lumen",
+    "topInsights": [],
+    "totalTestCount": 1
+  },
+  "caseSeconds": 430.843,
+  "sourceMap": "source-r3.json",
+  "logSHA256": "e5ef51090e735df79cd8ceb4cf68368a57bf7394c811d2e8c51f5fb8b204c558",
+  "cause": "Exact-CGRect stability wait timed out during the long dark/XXXL source sweep. The final debug snapshots all round to footer{{24,940},{354,312.7}}. Exact subpixel motion is not recoverable from their rounded text; no product clipping defect is inferred.",
+  "repair": "Keep the existing half-second stable period but tolerate at most0.5point coordinate/dimension differences in the UI-test settling helper. Increase the sweep ceiling32\u219264 and use55% viewport slow gutter drags with a held end; actual adjacent frame displacement is retained and reviewed for overlap. Application/UI source and chosen text size are unchanged.",
+  "latestDebugSnapshots": [
+    {
+      "sha256": "5a36c7331fc0de8ac70d7a8c08b57333e9fce1bf5f96bdef2db6a59ec5008fb9",
+      "exportedFileName": "E0E4F89B-4420-4A05-AA10-1D774A477360.txt",
+      "timestamp": 1793518501.791,
+      "visibleAttributeLines": [
+        "Attributes: StaticText, 0x11093d2c0, {{24.0, 940.0}, {354.0, 312.7}}, label: 'Saved text may contain errors. Check names, numbers and units against the original.'"
+      ]
+    },
+    {
+      "sha256": "0449eb9f3d815743f8b9949c994da11a3470ea275fd4406134efce81470207ba",
+      "exportedFileName": "07F35CB1-D9C0-43B5-8D10-B2D6C554406D.txt",
+      "timestamp": 1793518502.813,
+      "visibleAttributeLines": [
+        "Attributes: StaticText, 0x11093d2c0, {{24.0, 940.0}, {354.0, 312.7}}, label: 'Saved text may contain errors. Check names, numbers and units against the original.'"
+      ]
+    },
+    {
+      "sha256": "039723cdfa7fecfd2721606c9c1efce40308bd266d9fb3ea724603a882e81295",
+      "exportedFileName": "F9CC289D-222B-49FD-AA77-AAB13C6CA8DD.txt",
+      "timestamp": 1793518503.412,
+      "visibleAttributeLines": [
+        "Attributes: StaticText, 0x11093d2c0, {{24.0, 940.0}, {354.0, 312.7}}, label: 'Saved text may contain errors. Check names, numbers and units against the original.'"
+      ]
+    }
+  ],
+  "measurements": [
+    "Reviewed source sweep 829-lab-context-light-source-through-footer part1: footer (24.0, 1322.333333333333, 333.6666666666667, 33.66666666666674), visible 144.0...862.0",
+    "Reviewed source sweep 829-lab-context-light-source-through-footer part2: footer (24.0, 1132.333333333333, 333.6666666666667, 33.66666666666674), visible 144.0...862.0",
+    "Reviewed source sweep 829-lab-context-light-source-through-footer part3: footer (24.0, 942.333333333333, 333.6666666666667, 33.66666666666663), visible 144.0...862.0",
+    "Reviewed source sweep 829-lab-context-light-source-through-footer part4: footer (24.0, 758.333333333333, 333.6666666666667, 33.66666666666663), visible 144.0...862.0",
+    "Reviewed source sweep 831-lab-context-light-retained-sharing-off part1: footer (24.0, 828.333333333333, 333.6666666666667, 33.66666666666663), visible 144.0...862.0",
+    "Reviewed source sweep 832-lab-context-light-complete-omission part1: footer (24.0, 717.3333333333334, 333.6666666666667, 33.666666666666515), visible 144.0...862.0",
+    "Reviewed source sweep 829-lab-context-dark-xxxl-source-through-footer part1: footer (24.0, 6450.004964192708, 354.0, 312.6666666666679), visible 144.0...862.0",
+    "Reviewed source sweep 829-lab-context-dark-xxxl-source-through-footer part2: footer (24.0, 6260.004964192708, 354.0, 312.6666666666679), visible 144.0...862.0",
+    "Reviewed source sweep 829-lab-context-dark-xxxl-source-through-footer part3: footer (24.0, 6070.004964192708, 354.0, 312.6666666666679), visible 144.0...862.0",
+    "Reviewed source sweep 829-lab-context-dark-xxxl-source-through-footer part4: footer (24.0, 5880.004964192708, 354.0, 312.6666666666679), visible 144.0...862.0",
+    "Reviewed source sweep 829-lab-context-dark-xxxl-source-through-footer part5: footer (24.0, 5690.004964192708, 354.0, 312.6666666666679), visible 144.0...862.0",
+    "Reviewed source sweep 829-lab-context-dark-xxxl-source-through-footer part6: footer (24.0, 5500.004964192708, 354.0, 312.6666666666679), visible 144.0...862.0",
+    "Reviewed source sweep 829-lab-context-dark-xxxl-source-through-footer part7: footer (24.0, 5310.004964192709, 354.0, 312.66666666666697), visible 144.0...862.0",
+    "Reviewed source sweep 829-lab-context-dark-xxxl-source-through-footer part8: footer (24.0, 5120.004964192709, 354.0, 312.66666666666697), visible 144.0...862.0",
+    "Reviewed source sweep 829-lab-context-dark-xxxl-source-through-footer part9: footer (24.0, 4930.004964192709, 354.0, 312.66666666666697), visible 144.0...862.0",
+    "Reviewed source sweep 829-lab-context-dark-xxxl-source-through-footer part10: footer (24.0, 4740.004964192709, 354.0, 312.66666666666697), visible 144.0...862.0",
+    "Reviewed source sweep 829-lab-context-dark-xxxl-source-through-footer part11: footer (24.0, 4550.004964192709, 354.0, 312.66666666666697), visible 144.0...862.0",
+    "Reviewed source sweep 829-lab-context-dark-xxxl-source-through-footer part12: footer (24.0, 4360.004964192709, 354.0, 312.66666666666697), visible 144.0...862.0",
+    "Reviewed source sweep 829-lab-context-dark-xxxl-source-through-footer part13: footer (24.0, 4170.004964192709, 354.0, 312.66666666666697), visible 144.0...862.0",
+    "Reviewed source sweep 829-lab-context-dark-xxxl-source-through-footer part14: footer (24.0, 3980.004964192709, 354.0, 312.66666666666697), visible 144.0...862.0",
+    "Reviewed source sweep 829-lab-context-dark-xxxl-source-through-footer part15: footer (24.0, 3790.004964192709, 354.0, 312.66666666666697), visible 144.0...862.0",
+    "Reviewed source sweep 829-lab-context-dark-xxxl-source-through-footer part16: footer (24.0, 3600.004964192709, 354.0, 312.6666666666674), visible 144.0...862.0",
+    "Reviewed source sweep 829-lab-context-dark-xxxl-source-through-footer part17: footer (24.0, 3410.004964192709, 354.0, 312.6666666666674), visible 144.0...862.0",
+    "Reviewed source sweep 829-lab-context-dark-xxxl-source-through-footer part18: footer (24.0, 3220.004964192709, 354.0, 312.6666666666674), visible 144.0...862.0",
+    "Reviewed source sweep 829-lab-context-dark-xxxl-source-through-footer part19: footer (24.0, 3030.004964192709, 354.0, 312.6666666666674), visible 144.0...862.0",
+    "Reviewed source sweep 829-lab-context-dark-xxxl-source-through-footer part20: footer (24.0, 2840.004964192709, 354.0, 312.6666666666674), visible 144.0...862.0",
+    "Reviewed source sweep 829-lab-context-dark-xxxl-source-through-footer part21: footer (24.0, 2650.004964192709, 354.0, 312.6666666666674), visible 144.0...862.0",
+    "Reviewed source sweep 829-lab-context-dark-xxxl-source-through-footer part22: footer (24.0, 2460.004964192709, 354.0, 312.6666666666674), visible 144.0...862.0",
+    "Reviewed source sweep 829-lab-context-dark-xxxl-source-through-footer part23: footer (24.0, 2270.004964192709, 354.0, 312.66666666666697), visible 144.0...862.0",
+    "Reviewed source sweep 829-lab-context-dark-xxxl-source-through-footer part24: footer (24.0, 2080.004964192709, 354.0, 312.66666666666697), visible 144.0...862.0",
+    "Reviewed source sweep 829-lab-context-dark-xxxl-source-through-footer part25: footer (24.0, 1890.004964192709, 354.0, 312.66666666666697), visible 144.0...862.0",
+    "Reviewed source sweep 829-lab-context-dark-xxxl-source-through-footer part26: footer (24.0, 1700.004964192709, 354.0, 312.66666666666697), visible 144.0...862.0",
+    "Reviewed source sweep 829-lab-context-dark-xxxl-source-through-footer part27: footer (24.0, 1510.004964192709, 354.0, 312.66666666666697), visible 144.0...862.0",
+    "Reviewed source sweep 829-lab-context-dark-xxxl-source-through-footer part28: footer (24.0, 1320.004964192709, 354.0, 312.66666666666697), visible 144.0...862.0",
+    "Reviewed source sweep 829-lab-context-dark-xxxl-source-through-footer part29: footer (24.0, 1130.004964192709, 354.0, 312.66666666666697), visible 144.0...862.0",
+    "Reviewed source sweep 829-lab-context-dark-xxxl-source-through-footer part30: footer (24.0, 940.0049641927089, 354.0, 312.66666666666697), visible 144.0...862.0"
+  ],
+  "correctedCause": "Recording inspection confirms the capture gesture enters Document through Open in Library. The footer is then correctly absent; previous frame-stability hypotheses were wrong. No app clipping defect is established.",
+  "recordingEvidence": "diagnostic-video/provenance.json"
+}

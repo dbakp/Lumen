@@ -4,6 +4,9 @@ import Darwin
 @main struct ImportTests {
     static func main() async throws {
         setbuf(stdout, nil)
+        if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--lab-source-ui-fixtures" {
+            try LibraryLabContextChecks.fixtures(URL(fileURLWithPath: CommandLine.arguments[2])); return
+        }
         if CommandLine.arguments.count == 4, CommandLine.arguments[1] == "--provider-transport-check" {
             try await ProviderReplyChecks.transport(endpoint: URL(string: CommandLine.arguments[2])!, output: URL(fileURLWithPath: CommandLine.arguments[3])); return
         }
@@ -68,6 +71,7 @@ import Darwin
         try VoiceDraftChecks.run()
         try ScheduledPlanChecks.run()
         try await LabReportChecks.run()
+        try LibraryLabContextChecks.run()
         try LabImportChecks.run()
         try LabHistoryChecks.run()
         try LabUnitChecks.run()

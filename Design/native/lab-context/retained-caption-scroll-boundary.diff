@@ -1,0 +1,12 @@
+--- /tmp/LumenBatch31Verification/UITest-source-r12.swift	2026-11-01 11:02:34
++++ LumenUITests/LumenSmokeTests.swift	2026-11-01 11:02:34
+@@ -2725,7 +2725,8 @@
+             open.tap(); nativeSwitch("Use in assistant", enabled: false)
+             app.navigationBars["Document"].buttons.element(boundBy: 0).tap()
+             let retained = app.staticTexts.matching(NSPredicate(format: "label CONTAINS 'This saved excerpt and its reviewed fields stay with the earlier reply.'")).firstMatch
+-            revealLabExcerpt(retained); captureReviewedSourceToFooter("831-lab-context-" + prefix + "-retained-sharing-off")
++            captureIdentifierText(retained, prefix: "831-lab-context-" + prefix + "-retained-caption", contentGestures: true)
++            captureReviewedSourceToFooter("831-lab-context-" + prefix + "-retained-sharing-off")
+             revealLabExcerpt(app.buttons["Open in Library"].firstMatch)
+             XCTAssertTrue(app.buttons["Open in Library"].isHittable && app.buttons["Done"].isHittable); tap("Done")
+             tab("Library"); let crowded = app.buttons["Several reviewed results"].firstMatch; reveal(crowded); crowded.tap()

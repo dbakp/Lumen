@@ -1,0 +1,561 @@
+--- a/Lumen/Views/CoachView.swift
++++ b/Lumen/Views/CoachView.swift
+@@ -228,17 +228,23 @@
+ struct ChatBubble: View {
+     let msg: ChatMessage
+     var isUser: Bool { msg.role == .user }
+-    var text: Text { msg.recordContext?.mode == .lookup ? Text(verbatim: msg.text) : Text(LocalizedStringKey(msg.text)) }
++    @ViewBuilder var messageText: some View {
++        if !isUser && msg.recordContext?.mode == .lookup {
++            FHIRLiteralText(text: msg.text, identifier: "coachMessage", lineSpacing: 3)
++                .frame(maxWidth: .infinity, alignment: .leading)
++        } else {
++            Text(LocalizedStringKey(msg.text)).font(.body).lineSpacing(3)
++                .foregroundStyle(isUser ? Theme.onAccent : Theme.text)
++                .textSelection(.enabled)
++                .accessibilityIdentifier(isUser ? "userMessage" : "coachMessage")
++        }
++    }
+     var body: some View {
+         HStack {
+             if isUser { Spacer(minLength: 48) }
+-            text
+-                .font(.body).lineSpacing(3)
+-                .foregroundStyle(isUser ? Theme.onAccent : Theme.text)
++            messageText
+                 .padding(.horizontal, isUser ? 16 : 0).padding(.vertical, isUser ? 11 : 4)
+                 .background(isUser ? Theme.accent : .clear, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+-                .textSelection(.enabled)
+-                .accessibilityIdentifier(isUser ? "userMessage" : "coachMessage")
+             if !isUser { Spacer(minLength: 24) }
+         }
+         .transition(.opacity.combined(with: .move(edge: .bottom)))
+--- a/Lumen/Views/FHIRSourceViews.swift
++++ b/Lumen/Views/FHIRSourceViews.swift
+@@ -6,6 +6,7 @@
+ struct FHIRLiteralText: UIViewRepresentable {
+     let text: String
+     var identifier = "fhirFullText"
++    var lineSpacing: CGFloat = 0
+     @Environment(\.dynamicTypeSize) private var typeSize
+     final class Coordinator: NSObject, NSLayoutManagerDelegate {
+         func layoutManager(_ layoutManager: NSLayoutManager, shouldBreakLineByHyphenatingBeforeCharacterAt charIndex: Int) -> Bool { false }
+@@ -25,7 +26,7 @@
+         return view
+     }
+     func updateUIView(_ view: UITextView, context: Context) {
+-        let value = FHIRLiteralTypography.value(text, size: typeSize, color: UIColor(Theme.text), wrapping: .byWordWrapping)
++        let value = FHIRLiteralTypography.value(text, size: typeSize, color: UIColor(Theme.text), wrapping: .byWordWrapping, lineSpacing: lineSpacing)
+         if view.attributedText?.isEqual(to: value) != true {
+             let range = view.selectedRange
+             view.attributedText = value
+@@ -73,7 +74,7 @@
+ }
+ 
+ private enum FHIRLiteralTypography {
+-    static func value(_ text: String, size: DynamicTypeSize, color: UIColor, style: UIFont.TextStyle = .body, wrapping: NSLineBreakMode = .byCharWrapping) -> NSAttributedString {
++    static func value(_ text: String, size: DynamicTypeSize, color: UIColor, style: UIFont.TextStyle = .body, wrapping: NSLineBreakMode = .byCharWrapping, lineSpacing: CGFloat = 0) -> NSAttributedString {
+         let category: UIContentSizeCategory
+         switch size {
+         case .xSmall: category = .extraSmall
+@@ -93,6 +94,7 @@
+         let paragraph = NSMutableParagraphStyle()
+         paragraph.lineBreakMode = wrapping
+         paragraph.lineBreakStrategy = []
++        paragraph.lineSpacing = lineSpacing
+         paragraph.hyphenationFactor = 0; paragraph.usesDefaultHyphenation = false
+         let font = UIFont.preferredFont(forTextStyle: style, compatibleWith: UITraitCollection(preferredContentSizeCategory: category))
+         return NSAttributedString(string: text, attributes: [.font: font, .foregroundColor: color, .paragraphStyle: paragraph])
+--- a/Lumen/Views/RecordSourcesView.swift
++++ b/Lumen/Views/RecordSourcesView.swift
+@@ -111,7 +111,8 @@
+                     }
+                     VStack(alignment: .leading, spacing: 10) {
+                         Text("Text saved with this reply").font(.headline)
+-                        Text(verbatim: passage.excerpt).font(.body).lineSpacing(4).textSelection(.enabled).accessibilityIdentifier("reference-excerpt")
++                        FHIRLiteralText(text: passage.excerpt, identifier: "reference-excerpt", lineSpacing: 4)
++                            .frame(maxWidth: .infinity, alignment: .leading)
+                         Text("Selected \(context.capturedAt.formatted(date: .abbreviated, time: .shortened)) · document updated \(passage.updatedAt.formatted(date: .abbreviated, time: .omitted))")
+                             .font(.caption).foregroundStyle(Theme.secondary)
+                     }
+--- a/LumenUITests/LumenSmokeTests.swift
++++ b/LumenUITests/LumenSmokeTests.swift
+@@ -6,6 +6,8 @@
+ 
+ final class LumenSmokeTests: XCTestCase {
+     var app: XCUIApplication!
++    var coachMessages: XCUIElementQuery { app.descendants(matching: .any).matching(identifier: "coachMessage") }
++    var referenceExcerpt: XCUIElement { app.descendants(matching: .any).matching(identifier: "reference-excerpt").firstMatch }
+     var fhirFullText: XCUIElement { app.descendants(matching: .any).matching(identifier: "fhirFullText").firstMatch }
+ 
+     override func setUpWithError() throws {
+@@ -587,9 +589,9 @@
+         XCTAssertTrue(app.navigationBars["Voice draft"].waitForNonExistence(timeout: 5))
+         XCTAssertTrue((composer.value as? String ?? "").contains("Keep this typed question.\nI drank 375"))
+         XCTAssertTrue((composer.value as? String ?? "").contains("shoulder pain"))
+-        XCTAssertFalse(app.staticTexts["userMessage"].exists); XCTAssertFalse(app.staticTexts["coachMessage"].exists); snap("305-voice-unsent-draft")
++        XCTAssertFalse(app.staticTexts["userMessage"].exists); XCTAssertFalse(coachMessages.firstMatch.exists); snap("305-voice-unsent-draft")
+         tap("coachSend")
+-        XCTAssertTrue(app.staticTexts["coachMessage"].firstMatch.waitForExistence(timeout: 30))
++        XCTAssertTrue(coachMessages.firstMatch.waitForExistence(timeout: 30))
+         XCTAssertEqual(app.staticTexts.matching(identifier: "userMessage").count, 1)
+         let review = app.buttons["Review health entries"].firstMatch; reveal(review); review.tap()
+         XCTAssertTrue(app.navigationBars["Review health entries"].waitForExistence(timeout: 10)); snap("306-voice-health-review")
+@@ -655,7 +657,7 @@
+         finishOnboarding(); tab("Assistant")
+         let input = app.descendants(matching: .any).matching(identifier: "coachInput").firstMatch
+         input.tap(); input.typeText("Synthetic keyboard submission.\n")
+-        XCTAssertTrue(app.staticTexts["coachMessage"].firstMatch.waitForExistence(timeout: 30))
++        XCTAssertTrue(coachMessages.firstMatch.waitForExistence(timeout: 30))
+         XCTAssertEqual(app.staticTexts.matching(identifier: "userMessage").count, 1)
+         XCTAssertEqual(app.staticTexts["userMessage"].firstMatch.label, "Synthetic keyboard submission.")
+         let cleared = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+@@ -763,17 +765,20 @@
+         let picker = app.collectionViews["File View"].firstMatch
+         XCTAssertTrue(picker.waitForExistence(timeout: 25))
+         if app.buttons["Browse"].firstMatch.exists { app.buttons["Browse"].firstMatch.tap() }
++        let cell = app.cells.matching(NSPredicate(format: "identifier BEGINSWITH %@", name)).firstMatch
+         if name == "Lumen-backup-lab-context" {
+-            // Browse changes the picker asynchronously. The location list can
+-            // appear after the initial collection and retain a scroll offset.
+-            let button = app.buttons["On My iPhone"].firstMatch
+-            let label = app.staticTexts["On My iPhone"].firstMatch
+-            let location = button.waitForExistence(timeout: 5) ? button : label
+-            reveal(location, towardsTop: true)
+-            XCTAssertTrue(location.exists && location.isHittable); location.tap()
++            // Browse may already open this directory. Its navigation title is
++            // not a location row to scroll or tap, especially on compact phones.
++            if !cell.waitForExistence(timeout: 5) && !app.navigationBars["On My iPhone"].exists {
++                let button = app.buttons["On My iPhone"].firstMatch
++                let label = app.staticTexts["On My iPhone"].firstMatch
++                let location = button.waitForExistence(timeout: 5) ? button : label
++                XCTAssertTrue(location.waitForExistence(timeout: 5))
++                for _ in 0..<8 where !location.isHittable { app.swipeDown(velocity: .slow) }
++                XCTAssertTrue(location.isHittable); location.tap()
++            }
+         } else if app.buttons["On My iPhone"].firstMatch.exists { app.buttons["On My iPhone"].firstMatch.tap() }
+         else if app.staticTexts["On My iPhone"].firstMatch.exists { app.staticTexts["On My iPhone"].firstMatch.tap() }
+-        let cell = app.cells.matching(NSPredicate(format: "identifier BEGINSWITH %@", name)).firstMatch
+         for _ in 0..<24 {
+             if cell.exists && cell.isHittable && cell.frame.maxY > 220 && cell.frame.minY < 700 { break }
+             if cell.exists && cell.frame.maxY < 220 { app.swipeDown(velocity: .slow) }
+@@ -1840,7 +1845,7 @@
+         let field = input.exists ? input : app.textViews["coachInput"].firstMatch
+         XCTAssertTrue(field.waitForExistence(timeout: 5)); field.tap(); field.typeText(question); tap("coachSend")
+         let count = NSPredicate(format: "count == %d", replies)
+-        expectation(for: count, evaluatedWith: app.staticTexts.matching(identifier: "coachMessage"))
++        expectation(for: count, evaluatedWith: coachMessages)
+         waitForExpectations(timeout: 30)
+     }
+ 
+@@ -1850,7 +1855,7 @@
+         if disclosure.value as? String == "Collapsed" { disclosure.tap() }
+         reveal(source); source.tap()
+         XCTAssertTrue(app.navigationBars["Saved reference"].waitForExistence(timeout: 5))
+-        XCTAssertTrue(app.staticTexts["reference-excerpt"].label.contains("12.5 mg/L"))
++        XCTAssertTrue(referenceExcerpt.label.contains("12.5 mg/L"))
+     }
+ 
+     func testLibraryRetrievalAndWithdrawal() throws {
+@@ -1861,10 +1866,10 @@
+         let allMatches = app.buttons["libraryReferencesToggle"].firstMatch; reveal(allMatches); allMatches.tap()
+         XCTAssertEqual(app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'library-reference-' ")).count, 4)
+         let fourth = app.buttons["library-reference-4"].firstMatch; reveal(fourth); snap("209-four-literal-library-matches"); fourth.tap()
+-        XCTAssertTrue(app.staticTexts["reference-excerpt"].waitForExistence(timeout: 5)); XCTAssertTrue(app.staticTexts["reference-excerpt"].label.contains("walking route")); tap("Done")
++        XCTAssertTrue(referenceExcerpt.waitForExistence(timeout: 5)); XCTAssertTrue(referenceExcerpt.label.contains("walking route")); tap("Done")
+         tap("Conversation actions"); tap("New conversation")
+         askLibrary("What does my record say about ferritin?")
+-        let reply = app.staticTexts["coachMessage"].firstMatch
++        let reply = coachMessages.firstMatch
+         XCTAssertTrue(reply.label.contains("12.5 mg/L")); XCTAssertFalse(reply.label.contains("PRIVATE-CANARY")); snap("211-library-search-reply")
+         let disclosure = app.buttons["Library matches"].firstMatch; reveal(disclosure); disclosure.tap()
+         XCTAssertEqual(disclosure.value as? String, "Expanded")
+@@ -1883,7 +1888,7 @@
+         app.terminate(); app.launchArguments = ["-librarySearchRemoteUITestMode"]; app.launch(); tab("Assistant")
+         openLibraryReference(); snap("217-library-reference-persisted"); tap("Done")
+         askLibrary("What does my record say about ferritin?", replies: 2)
+-        XCTAssertTrue(app.staticTexts.matching(identifier: "coachMessage").element(boundBy: 1).label.contains("No match in the shared documents searched"))
++        XCTAssertTrue(coachMessages.element(boundBy: 1).label.contains("No match in the shared documents searched"))
+         snap("218-library-no-match-after-withdrawal")
+         openLibraryReference()
+         let current = app.buttons["Open in Library"].firstMatch; reveal(current); current.tap()
+@@ -1917,7 +1922,7 @@
+         let field = app.textFields["coachInput"].firstMatch
+         let input = field.exists ? field : app.textViews["coachInput"].firstMatch
+         XCTAssertTrue((input.value as? String ?? "").contains("Synthetic earlier reply without source metadata.")); snap("234-library-legacy-quote-draft")
+-        XCTAssertEqual(app.staticTexts.matching(identifier: "coachMessage").count, 2, "Quoting must not send the draft")
++        XCTAssertEqual(coachMessages.count, 2, "Quoting must not send the draft")
+     }
+ 
+     func testLibraryReferencePresentation() throws {
+@@ -1929,7 +1934,7 @@
+         app.terminate(); app.launchArguments = ["-lumen.appearance", "light", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]; app.launch(); tab("Assistant")
+         let largeDisclosure = app.buttons["Library matches"].firstMatch; reveal(largeDisclosure); largeDisclosure.tap(); reveal(app.buttons["library-reference-1"].firstMatch); snap("222-library-large-references")
+         openLibraryReference(); snap("223-library-large-source")
+-        let excerpt = app.staticTexts["reference-excerpt"].firstMatch
++        let excerpt = referenceExcerpt
+         XCTAssertGreaterThan(excerpt.frame.height, 150)
+         for _ in 0..<8 {
+             let top = app.navigationBars["Saved reference"].frame.maxY + 16
+@@ -2232,7 +2237,7 @@
+         XCTAssertTrue(field.waitForExistence(timeout: 5))
+         field.tap(); field.typeText("Make a flexible plan for today")
+         tap("coachSend")
+-        XCTAssertTrue(app.staticTexts["coachMessage"].firstMatch.waitForExistence(timeout: 30))
++        XCTAssertTrue(coachMessages.firstMatch.waitForExistence(timeout: 30))
+         snap("30-assistant-plan")
+         tab("Library")
+         let plan = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'library-plan-'")).firstMatch
+@@ -2268,7 +2273,7 @@
+         XCTAssertTrue(app.staticTexts["Let’s put it\nin context."].waitForExistence(timeout: 5))
+         tap("Conversation history")
+         tap(originalID)
+-        XCTAssertTrue(app.staticTexts["coachMessage"].firstMatch.waitForExistence(timeout: 5))
++        XCTAssertTrue(coachMessages.firstMatch.waitForExistence(timeout: 5))
+         tab("Library")
+ 
+         // --- Records remain opt-in; new notes are editable ---
+@@ -2631,7 +2636,7 @@
+     func testReviewedLabContextLifecycle() throws {
+         try prepareReviewedLabContext()
+         askLibrary("COHERENCECANARY")
+-        let reply = app.staticTexts.matching(identifier: "coachMessage").firstMatch
++        let reply = coachMessages.firstMatch
+         XCTAssertTrue(reply.label.contains("Reported result: <4,0")); XCTAssertTrue(reply.label.contains("Collection day: 2026-10-20")); XCTAssertFalse(reply.label.contains("PRIVATE-LAB-CONTEXT-CANARY"))
+         XCTAssertTrue(reply.label.contains("*literal* [source](https://synthetic.invalid)"))
+         snap("820-lab-context-literal-reply")
+@@ -2644,10 +2649,10 @@
+         let retained = app.staticTexts.matching(NSPredicate(format: "label CONTAINS 'This saved excerpt and its reviewed fields stay with the earlier reply.'")).firstMatch
+         captureIdentifierText(retained, prefix: "828-lab-context-retained-sharing-off"); tap("Done")
+         tap("Conversation actions"); tap("New conversation"); askLibrary("Find COHERENCECANARY in Library")
+-        let withdrawn = app.staticTexts.matching(identifier: "coachMessage").firstMatch
++        let withdrawn = coachMessages.firstMatch
+         XCTAssertTrue(withdrawn.label.contains("No Library documents are shared with the assistant")); XCTAssertFalse(withdrawn.label.contains("<4,0")); snap("823-lab-context-sharing-off")
+         app.terminate(); app.launchArguments = []; app.launch(); tab("Assistant")
+-        XCTAssertTrue(app.staticTexts.matching(identifier: "coachMessage").firstMatch.label.contains("No Library documents are shared with the assistant"))
++        XCTAssertTrue(coachMessages.firstMatch.label.contains("No Library documents are shared with the assistant"))
+         tab("Library"); let crowded = app.buttons["Several reviewed results"].firstMatch; reveal(crowded); crowded.tap()
+         nativeSwitch("Use in assistant", enabled: true); app.navigationBars["Document"].buttons.element(boundBy: 0).tap(); tab("Assistant")
+         tap("Conversation actions"); tap("New conversation"); askLibrary("Ferritin")
+@@ -2661,7 +2666,7 @@
+         try prepareReviewedLabContext(["-lumen.appearance", "light"])
+         for large in [false, true] {
+             app.terminate(); app.launchArguments = ["-lumen.appearance", large ? "dark" : "light"] + (large ? ["-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"] : []); app.launch(); tab("Assistant")
+-            if !app.staticTexts.matching(identifier: "coachMessage").allElementsBoundByIndex.isEmpty { tap("Conversation actions"); tap("New conversation") }
++            if !coachMessages.allElementsBoundByIndex.isEmpty { tap("Conversation actions"); tap("New conversation") }
+             askLibrary("COHERENCECANARY")
+             let prefix = large ? "dark-xxxl" : "light"
+             let fact = openReviewedLabReference(); captureIdentifierText(fact, prefix: "825-lab-context-" + prefix + "-full-fields")
+@@ -2673,7 +2678,7 @@
+         let footer = app.staticTexts["Saved text may contain errors. Check names, numbers and units against the original."].firstMatch
+         XCTAssertTrue(footer.waitForExistence(timeout: 5))
+         // UIKit can clip an oversized text view's AX frame to the screen.
+-        // Capture ordinary overlapping gutter drags to a separate end marker;
++        // Capture ordinary overlapping content drags to a separate end marker;
+         // do not infer complete text coverage from that changing frame height.
+         for part in 1...64 {
+             settleLabFrame(footer)
+@@ -2704,9 +2709,15 @@
+         try prepareReviewedLabContext(["-lumen.appearance", "light"])
+         for large in [false, true] {
+             app.terminate(); app.launchArguments = ["-lumen.appearance", large ? "dark" : "light"] + (large ? ["-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"] : []); app.launch(); tab("Assistant")
+-            if !app.staticTexts.matching(identifier: "coachMessage").allElementsBoundByIndex.isEmpty { tap("Conversation actions"); tap("New conversation") }
++            if !coachMessages.allElementsBoundByIndex.isEmpty { tap("Conversation actions"); tap("New conversation") }
+             let prefix = large ? "dark-xxxl" : "light"
+-            askLibrary("COHERENCECANARY"); _ = openReviewedLabReference()
++            askLibrary("COHERENCECANARY")
++            let reply = coachMessages.firstMatch
++            XCTAssertTrue(reply.label.contains("*literal* [source](https://synthetic.invalid)") && reply.label.contains("COHERENCECANARY"))
++            let question = app.staticTexts["userMessage"].firstMatch
++            let references = app.buttons["libraryReferencesToggle"].firstMatch
++            captureIdentifierText(question, through: references, prefix: "835-lab-context-" + prefix + "-literal-chat", contentGestures: true)
++            _ = openReviewedLabReference()
+             let heading = app.staticTexts["Reference 1"].firstMatch; settleLabFrame(heading)
+             XCTAssertTrue(heading.isHittable)
+             captureReviewedSourceToFooter("829-lab-context-" + prefix + "-source-through-footer")
+@@ -2743,26 +2754,26 @@
+         tab("Assistant"); tap("Conversation actions"); tap("New conversation")
+         for (index, control) in ["Incomplete HTTP control", "Refusal HTTP control"].enumerated() {
+             askLibrary("Find sample ID TEST-AX1. " + control + ".", replies: index + 1)
+-            let reply = app.staticTexts.matching(identifier: "coachMessage").element(boundBy: index)
++            let reply = coachMessages.element(boundBy: index)
+             XCTAssertTrue(reply.label.hasPrefix("Matching saved text")); XCTAssertTrue(reply.label.contains("not detected"))
+             XCTAssertFalse(reply.label.contains("SYNTHETIC-INCOMPLETE-ASSERTION"))
+         }
+         snap("810-provider-incomplete-refusal-fallback")
+         askLibrary("Find sample ID TEST-AX1. Complete HTTP control.", replies: 3)
+-        let accepted = app.staticTexts.matching(identifier: "coachMessage").element(boundBy: 2)
++        let accepted = coachMessages.element(boundBy: 2)
+         XCTAssertTrue(accepted.label.contains("Synthetic complete HTTP control. Local server only. [1]"))
+         snap("811-provider-complete-http-control")
+         let input = app.textFields["coachInput"].firstMatch; input.tap(); input.typeText("Find sample ID TEST-AX1. Slow HTTP control."); tap("coachSend")
+         let stop = app.buttons["Stop response"].firstMatch; XCTAssertTrue(stop.waitForExistence(timeout: 5)); stop.tap()
+         XCTAssertTrue(app.buttons["coachSend"].waitForExistence(timeout: 5))
+         let stopped = NSPredicate(format: "exists == false"); expectation(for: stopped, evaluatedWith: stop); waitForExpectations(timeout: 8)
+-        XCTAssertEqual(app.staticTexts.matching(identifier: "coachMessage").count, 3)
++        XCTAssertEqual(coachMessages.count, 3)
+         snap("812-provider-http-cancelled")
+         app.terminate(); app.launchArguments = []; app.launch(); tab("Assistant")
+-        XCTAssertEqual(app.staticTexts.matching(identifier: "coachMessage").count, 3)
+-        XCTAssertFalse(app.staticTexts.matching(identifier: "coachMessage").allElementsBoundByIndex.contains { $0.label.contains("SYNTHETIC-INCOMPLETE-ASSERTION") })
++        XCTAssertEqual(coachMessages.count, 3)
++        XCTAssertFalse(coachMessages.allElementsBoundByIndex.contains { $0.label.contains("SYNTHETIC-INCOMPLETE-ASSERTION") })
+         tap("Conversation actions"); tap("New conversation"); askLibrary("Find sample ID TEST-AX1")
+-        XCTAssertTrue(app.staticTexts.matching(identifier: "coachMessage").firstMatch.label.contains("not detected"))
++        XCTAssertTrue(coachMessages.firstMatch.label.contains("not detected"))
+         snap("813-provider-regular-lookup-after-relaunch")
+     }
+     func testProviderCitationRejection() throws {
+@@ -2772,7 +2783,7 @@
+         tab("Assistant"); tap("Conversation actions"); tap("New conversation")
+         askLibrary("Find sample ID TEST-AX1. Invalid citation control.")
+         func assertLiteral(_ index: Int) {
+-            let reply = app.staticTexts.matching(identifier: "coachMessage").element(boundBy: index)
++            let reply = coachMessages.element(boundBy: index)
+             XCTAssertTrue(reply.label.hasPrefix("Matching saved text"))
+             XCTAssertTrue(reply.label.contains("Sample TEST-AX1. Exact wording: not detected."))
+             XCTAssertFalse(reply.label.contains("SYNTHETIC-REJECTED-ASSERTION"))
+@@ -2783,23 +2794,23 @@
+         snap("800-citation-invalid-literal-fallback")
+         let disclosure = app.buttons["libraryReferencesToggle"].firstMatch; reveal(disclosure); disclosure.tap()
+         let source = app.buttons["library-reference-1"].firstMatch; reveal(source); source.tap()
+-        let excerpt = app.staticTexts["reference-excerpt"].firstMatch
++        let excerpt = referenceExcerpt
+         XCTAssertTrue(excerpt.waitForExistence(timeout: 5)); XCTAssertEqual(excerpt.label, "Sample TEST-AX1. Exact wording: not detected.")
+         snap("801-citation-fallback-exact-source"); tap("Done")
+         askLibrary("Find sample ID TEST-AX1. Mixed citation control.", replies: 2); assertLiteral(1)
+         askLibrary("Find sample ID TEST-AX1. Numbered citation control.", replies: 3); assertLiteral(2)
+         askLibrary("Find sample ID TEST-AX1. Current citation control.", replies: 4)
+-        let accepted = app.staticTexts.matching(identifier: "coachMessage").element(boundBy: 3)
++        let accepted = coachMessages.element(boundBy: 3)
+         XCTAssertTrue(accepted.label.contains("Synthetic current citation control. No provider request was sent. [1]"))
+         XCTAssertFalse(accepted.label.contains("Matching saved text")); snap("802-citation-current-control")
+         // Switch off the adapter, retain the saved conversation and exercise
+         // ordinary production lookup and sharing withdrawal after relaunch.
+         app.terminate(); app.launchArguments = []; app.launch(); tab("Assistant")
+-        XCTAssertFalse(app.staticTexts.matching(identifier: "coachMessage").allElementsBoundByIndex.contains { $0.label.contains("SYNTHETIC-REJECTED-ASSERTION") })
++        XCTAssertFalse(coachMessages.allElementsBoundByIndex.contains { $0.label.contains("SYNTHETIC-REJECTED-ASSERTION") })
+         prepareIdentifierNote("Sample one", "Sample TEST-AX1. Exact wording: not detected.", shared: false)
+         tab("Assistant"); tap("Conversation actions"); tap("New conversation")
+         askLibrary("Find sample ID TEST-AX1")
+-        let withdrawn = app.staticTexts.matching(identifier: "coachMessage").firstMatch
++        let withdrawn = coachMessages.firstMatch
+         XCTAssertTrue(withdrawn.label.contains("No match in the shared documents searched"))
+         XCTAssertFalse(withdrawn.label.contains("not detected")); snap("803-citation-withdrawn-regular-lookup")
+     }
+@@ -2816,51 +2827,51 @@
+         tab("Assistant"); tap("Conversation actions"); tap("New conversation")
+         XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH 'Provider: Built-in coach.'")).firstMatch.waitForExistence(timeout: 5))
+         askLibrary("What is the wording for sample TEST-AX1?")
+-        let first = app.staticTexts.matching(identifier: "coachMessage").firstMatch
++        let first = coachMessages.firstMatch
+         XCTAssertTrue(first.label.contains("not detected")); XCTAssertFalse(first.label.contains("TEST-AX2")); XCTAssertFalse(first.label.contains("PRIVATE-ID-CANARY"))
+         XCTAssertTrue(app.staticTexts["Library lookup · on this iPhone"].firstMatch.exists)
+         snap("680-identifier-exact-sample")
+         askLibrary("What about TEST-AX3?", replies: 2)
+-        let missing = app.staticTexts.matching(identifier: "coachMessage").element(boundBy: 1)
++        let missing = coachMessages.element(boundBy: 1)
+         XCTAssertTrue(missing.label.contains("No match in the shared documents searched")); XCTAssertFalse(missing.label.contains("TEST-AX1")); XCTAssertFalse(missing.label.contains("TEST-AX2"))
+         snap("681-identifier-missing-followup")
+         askLibrary("Explain that", replies: 3)
+-        XCTAssertTrue(app.staticTexts.matching(identifier: "coachMessage").element(boundBy: 2).label.contains("No match in the shared documents searched")); snap("688-identifier-missing-followup-chain")
++        XCTAssertTrue(coachMessages.element(boundBy: 2).label.contains("No match in the shared documents searched")); snap("688-identifier-missing-followup-chain")
+         tap("Conversation actions"); tap("New conversation")
+         askLibrary("Find invoice AF-742 and its payment status.")
+-        XCTAssertTrue(app.staticTexts.matching(identifier: "coachMessage").firstMatch.label.contains("No match in the shared documents searched"))
++        XCTAssertTrue(coachMessages.firstMatch.label.contains("No match in the shared documents searched"))
+         let emptyDisclosure = app.buttons["libraryReferencesToggle"].firstMatch; reveal(emptyDisclosure); emptyDisclosure.tap()
+         XCTAssertFalse(app.buttons["library-reference-1"].exists)
+         let empty = app.staticTexts["No matching excerpts were selected."].firstMatch
+         XCTAssertTrue(empty.waitForExistence(timeout: 5)); settleLabFrame(empty); snap("682-identifier-missing-invoice")
+         askLibrary("Find invoice AF-740", replies: 2)
+-        XCTAssertTrue(app.staticTexts.matching(identifier: "coachMessage").element(boundBy: 1).label.contains("62.40 EUR"))
++        XCTAssertTrue(coachMessages.element(boundBy: 1).label.contains("62.40 EUR"))
+         let disclosure = app.buttons.matching(identifier: "libraryReferencesToggle").allElementsBoundByIndex.last!; reveal(disclosure); disclosure.tap()
+         let source = app.buttons["library-reference-1"].firstMatch; reveal(source); source.tap()
+-        let excerpt = app.staticTexts["reference-excerpt"].firstMatch
++        let excerpt = referenceExcerpt
+         XCTAssertTrue(excerpt.waitForExistence(timeout: 5)); XCTAssertEqual(excerpt.label, "Invoice AF-740 totals 62.40 EUR. Payment status: paid."); snap("683-identifier-literal-reference")
+         let open = app.buttons["Open in Library"].firstMatch; reveal(open); open.tap(); nativeSwitch("Use in assistant", enabled: false)
+         app.navigationBars["Document"].buttons.element(boundBy: 0).tap(); tap("Done")
+         tap("Conversation actions"); tap("New conversation")
+         askLibrary("Find invoice AF-740")
+-        XCTAssertTrue(app.staticTexts.matching(identifier: "coachMessage").firstMatch.label.contains("No match in the shared documents searched"))
++        XCTAssertTrue(coachMessages.firstMatch.label.contains("No match in the shared documents searched"))
+         snap("684-identifier-sharing-off")
+         askLibrary("Find sample ID TEST-AX9", replies: 2)
+-        XCTAssertTrue(app.staticTexts.matching(identifier: "coachMessage").element(boundBy: 1).label.contains("No match in the shared documents searched"))
++        XCTAssertTrue(coachMessages.element(boundBy: 1).label.contains("No match in the shared documents searched"))
+         tap("Conversation actions"); tap("New conversation")
+         askLibrary("Compare sample IDs BX1 and BX2 and BX3")
+-        XCTAssertTrue(app.staticTexts.matching(identifier: "coachMessage").firstMatch.label.contains("Ask about fewer at a time")); snap("686-identifier-excerpt-limit")
++        XCTAssertTrue(coachMessages.firstMatch.label.contains("Ask about fewer at a time")); snap("686-identifier-excerpt-limit")
+         askLibrary("Find invoice AF-740-", replies: 2)
+-        XCTAssertTrue(app.staticTexts.matching(identifier: "coachMessage").element(boundBy: 1).label.contains("can't match that identifier format")); snap("687-identifier-format-limit")
++        XCTAssertTrue(coachMessages.element(boundBy: 1).label.contains("can't match that identifier format")); snap("687-identifier-format-limit")
+         askLibrary("Find sample ID /TEST-AX1", replies: 3)
+-        XCTAssertTrue(app.staticTexts.matching(identifier: "coachMessage").element(boundBy: 2).label.contains("can't match that identifier format")); snap("689-identifier-leading-format")
++        XCTAssertTrue(coachMessages.element(boundBy: 2).label.contains("can't match that identifier format")); snap("689-identifier-leading-format")
+         app.terminate(); app.launchArguments = []; app.launch(); tab("Assistant")
+         tap("Conversation actions"); tap("New conversation"); askLibrary("Find sample identifier TEST-AX3")
+-        XCTAssertTrue(app.staticTexts.matching(identifier: "coachMessage").firstMatch.label.contains("No match in the shared documents searched")); snap("685-identifier-missing-relaunch")
++        XCTAssertTrue(coachMessages.firstMatch.label.contains("No match in the shared documents searched")); snap("685-identifier-missing-relaunch")
+         askLibrary("Find \"" + longID + "\"", replies: 2)
+-        XCTAssertTrue(app.staticTexts.matching(identifier: "coachMessage").element(boundBy: 1).label.contains(longID)); snap("696-identifier-long-exact-match")
+-    }
+-    func captureIdentifierText(_ first: XCUIElement, through last: XCUIElement? = nil, prefix: String) {
++        XCTAssertTrue(coachMessages.element(boundBy: 1).label.contains(longID)); snap("696-identifier-long-exact-match")
++    }
++    func captureIdentifierText(_ first: XCUIElement, through last: XCUIElement? = nil, prefix: String, contentGestures: Bool = false) {
+         let end = last ?? first
+         XCTAssertTrue(first.waitForExistence(timeout: 5) && end.exists)
+         settleLabFrame(first)
+@@ -2873,10 +2884,19 @@
+             return (top, bottom)
+         }
+         func move(down: Bool, distance: CGFloat) {
+-            let (top, bottom) = bounds(), step = min(bottom - top - 40, max(20, distance))
+-            let y = down ? top + 20 : bottom - 20
+-            let start = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: y))
+-            let finish = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: y + (down ? step : -step)))
++            let (top, bottom) = bounds()
++            var step = min(bottom - top - 40, max(20, distance))
++            let x = contentGestures ? app.frame.midX : 10
++            var y = down ? top + 20 : bottom - 20
++            if contentGestures {
++                let controls = [app.buttons["libraryReferencesToggle"].firstMatch, app.buttons["Save to Library"].firstMatch, app.buttons["Review health entries"].firstMatch]
++                    .filter(\.exists).map { $0.frame.insetBy(dx: -24, dy: -16) }
++                let candidates = down ? [y, bottom - step - 24, (top + bottom) / 2] : [y, top + step + 24, (top + bottom) / 2]
++                y = candidates.first { candidate in !controls.contains { $0.contains(CGPoint(x: x, y: candidate)) } } ?? (down ? bottom - 60 : top + 60)
++                step = min(step, down ? bottom - y - 20 : y - top - 20)
++            }
++            let start = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: x, dy: y))
++            let finish = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: x, dy: y + (down ? step : -step)))
+             start.press(forDuration: 0.05, thenDragTo: finish); settleLabFrame(first)
+         }
+         for _ in 0..<24 {
+@@ -2888,7 +2908,7 @@
+         XCTAssertGreaterThanOrEqual(frame().minY, top - 2)
+         XCTAssertLessThan(frame().minY, bottom - 44)
+         var covered: CGFloat = 0
+-        for part in 1...24 {
++        for part in 1...64 {
+             // Native drag settling can overshoot the requested distance. Move
+             // back before capturing if that would leave any text unrecorded.
+             for _ in 0..<8 {
+@@ -2917,9 +2937,9 @@
+         var lightHeight: CGFloat = 0
+         func newQuestion(_ query: String) -> XCUIElement {
+             tab("Assistant")
+-            if app.staticTexts.matching(identifier: "coachMessage").firstMatch.exists { tap("Conversation actions"); tap("New conversation") }
++            if coachMessages.firstMatch.exists { tap("Conversation actions"); tap("New conversation") }
+             askLibrary(query)
+-            let reply = app.staticTexts.matching(identifier: "coachMessage").firstMatch
++            let reply = coachMessages.firstMatch
+             XCTAssertTrue(reply.waitForExistence(timeout: 5)); return reply
+         }
+         for large in [false, true] {
+@@ -2931,7 +2951,7 @@
+             XCTAssertTrue(matched.label.contains("not detected")); captureIdentifierText(matched, prefix: "690-identifier-" + prefix + "-match")
+             let disclosure = app.buttons["libraryReferencesToggle"].firstMatch; reveal(disclosure); disclosure.tap()
+             let source = app.buttons["library-reference-1"].firstMatch; reveal(source); source.tap()
+-            let excerpt = app.staticTexts["reference-excerpt"].firstMatch
++            let excerpt = referenceExcerpt
+             XCTAssertTrue(excerpt.waitForExistence(timeout: 5)); captureIdentifierText(excerpt, prefix: "691-identifier-" + prefix + "-source")
+             let open = app.buttons["Open in Library"].firstMatch; reveal(open); XCTAssertTrue(open.isHittable); snap("692-identifier-" + prefix + "-source-actions"); tap("Done")
+             let absent = newQuestion("Find sample ID TEST-AX3")
+@@ -2965,7 +2985,7 @@
+         createSemanticNote(title: "Consultation note", body: "Persistent tiredness and low energy over several weeks.", shared: true)
+         createSemanticNote(title: "Private exhausted detail", body: "PRIVATE-SEMANTIC-CANARY Feeling exhausted after exercise.", shared: false)
+         tab("Assistant"); askLibrary("What did my saved notes say about feeling exhausted?")
+-        let first = app.staticTexts.matching(identifier: "coachMessage").firstMatch
++        let first = coachMessages.firstMatch
+         XCTAssertTrue(first.label.contains("No match")); snap("390-topic-keyword-default")
+         openLibrarySearchSettings(); snap("391-topic-model-off")
+         XCTAssertTrue(app.staticTexts["meaningSearchFixtureLabel"].exists)
+@@ -2977,24 +2997,24 @@
+         let toggle = app.switches["meaningSearchToggle"].firstMatch
+         XCTAssertTrue(toggle.waitForExistence(timeout: 90)); XCTAssertEqual(toggle.value as? String, "1"); snap("393-topic-model-enabled")
+         closeLibrarySearchSettings(); tab("Assistant"); askLibrary("What did my saved notes say about feeling exhausted?", replies: 2)
+-        let reply = app.staticTexts.matching(identifier: "coachMessage").element(boundBy: 1)
++        let reply = coachMessages.element(boundBy: 1)
+         XCTAssertTrue(reply.label.contains("Persistent tiredness")); XCTAssertFalse(reply.label.contains("PRIVATE-SEMANTIC-CANARY"))
+         let disclosure = app.buttons.matching(identifier: "libraryReferencesToggle").allElementsBoundByIndex.last!; reveal(disclosure); disclosure.tap()
+         let method = app.staticTexts["librarySearchMethod"].firstMatch; reveal(method)
+         XCTAssertTrue(method.label.contains("English related topics")); snap("394-topic-real-model-result")
+         let reference = app.buttons["library-reference-1"].firstMatch; reveal(reference); reference.tap()
+-        XCTAssertTrue(app.staticTexts["reference-excerpt"].waitForExistence(timeout: 5)); XCTAssertEqual(app.staticTexts["reference-excerpt"].label, "Persistent tiredness and low energy over several weeks.")
++        XCTAssertTrue(referenceExcerpt.waitForExistence(timeout: 5)); XCTAssertEqual(referenceExcerpt.label, "Persistent tiredness and low energy over several weeks.")
+         snap("395-topic-exact-reference"); tap("Done")
+         app.terminate(); app.launchArguments = ["-librarySearchUITestMode"]; app.launch()
+         openLibrarySearchSettings(); XCTAssertEqual(app.switches["meaningSearchToggle"].value as? String, "1"); snap("396-topic-relaunched")
+         closeLibrarySearchSettings(); tab("Assistant"); askLibrary("What did my saved notes say about feeling exhausted?", replies: 3)
+-        XCTAssertTrue(app.staticTexts.matching(identifier: "coachMessage").element(boundBy: 2).label.contains("Persistent tiredness"))
++        XCTAssertTrue(coachMessages.element(boundBy: 2).label.contains("Persistent tiredness"))
+         openLibrarySearchSettings()
+         nativeSwitch("meaningSearchToggle", enabled: false)
+         XCTAssertTrue(app.buttons["meaningSearchDelete"].waitForExistence(timeout: 15)); XCTAssertEqual(app.switches["meaningSearchToggle"].value as? String, "0"); snap("397-topic-disabled-kept")
+         tap("meaningSearchDelete"); XCTAssertTrue(app.buttons["meaningSearchDownload"].waitForExistence(timeout: 30)); snap("398-topic-model-deleted")
+         closeLibrarySearchSettings(); tab("Assistant"); askLibrary("What did my saved notes say about feeling exhausted?", replies: 4)
+-        XCTAssertTrue(app.staticTexts.matching(identifier: "coachMessage").element(boundBy: 3).label.contains("No match"))
++        XCTAssertTrue(coachMessages.element(boundBy: 3).label.contains("No match"))
+         snap("399-topic-keyword-after-delete")
+     }
+     func testRelatedTopicRemoteInstallAndErase() throws {
+@@ -3011,14 +3031,14 @@
+         XCTAssertTrue(retry.waitForExistence(timeout: 30)); snap("421-topic-real-download-cancelled"); retry.tap()
+         XCTAssertTrue(app.switches["meaningSearchToggle"].waitForExistence(timeout: 240)); XCTAssertFalse(app.staticTexts["meaningSearchError"].exists); snap("414-topic-real-download-installed")
+         closeLibrarySearchSettings(); tab("Assistant"); askLibrary("What did my saved notes say about feeling exhausted?")
+-        XCTAssertTrue(app.staticTexts["coachMessage"].label.contains("Persistent tiredness")); snap("415-topic-network-installed-inference")
++        XCTAssertTrue(coachMessages.firstMatch.label.contains("Persistent tiredness")); snap("415-topic-network-installed-inference")
+         app.terminate(); app.launchArguments = ["-librarySearchRemoteUITestMode"]; app.launch(); tab("Assistant")
+         askLibrary("What did my saved notes say about feeling exhausted?", replies: 2)
+-        XCTAssertTrue(app.staticTexts.matching(identifier: "coachMessage").element(boundBy: 1).label.contains("Persistent tiredness")); snap("416-topic-cold-inference")
++        XCTAssertTrue(coachMessages.element(boundBy: 1).label.contains("Persistent tiredness")); snap("416-topic-cold-inference")
+         tab("Library"); let note = app.buttons["Consultation note"].firstMatch; reveal(note); note.tap(); nativeSwitch("Use in assistant", enabled: false)
+         app.navigationBars["Document"].buttons.element(boundBy: 0).tap(); tab("Assistant")
+         askLibrary("What did my saved notes say about feeling exhausted?", replies: 3)
+-        let withdrawn = app.staticTexts.matching(identifier: "coachMessage").element(boundBy: 2)
++        let withdrawn = coachMessages.element(boundBy: 2)
+         XCTAssertTrue(withdrawn.label.contains("No Library documents are shared")); XCTAssertFalse(withdrawn.label.contains("Persistent tiredness")); snap("417-topic-sharing-withdrawn")
+         openLibrarySearchSettings(); nativeSwitch("meaningSearchToggle", enabled: false); snap("422-topic-remote-model-disabled-kept")
+         let delete = app.buttons["meaningSearchDelete"].firstMatch; reveal(delete); delete.tap()
+@@ -3040,7 +3060,7 @@
+         XCTAssertTrue(app.staticTexts["miniLMLicenseText"].waitForExistence(timeout: 5)); snap("403-topic-model-license")
+         app.navigationBars["Model & license"].buttons.element(boundBy: 0).tap(); closeLibrarySearchSettings(); tab("Assistant")
+         askLibrary("What did my saved notes say about feeling exhausted?")
+-        XCTAssertTrue(app.staticTexts["coachMessage"].label.contains("Persistent tiredness"))
++        XCTAssertTrue(coachMessages.firstMatch.label.contains("Persistent tiredness"))
+         app.terminate(); app.launchArguments = ["-librarySearchUITestMode", "-lumen.appearance", "dark"]; app.launch()
+         openLibrarySearchSettings(); snap("404-topic-dark-controls"); closeLibrarySearchSettings(); tab("Assistant")
+         let disclosure = app.buttons["libraryReferencesToggle"].firstMatch; reveal(disclosure); disclosure.tap()
+@@ -3052,8 +3072,8 @@
+         let privacy = app.staticTexts["Only shared Library text is searched. Topic matching runs on this iPhone; record text isn't sent to the model download host."].firstMatch
+         reveal(privacy); snap("409-topic-large-sharing")
+         closeLibrarySearchSettings(); tab("Assistant"); reveal(disclosure); disclosure.tap(); reveal(method); snap("410-topic-large-source-method")
+-        reveal(reference); reference.tap(); XCTAssertTrue(app.staticTexts["reference-excerpt"].waitForExistence(timeout: 5)); snap("411-topic-large-reference-heading")
+-        reveal(app.staticTexts["reference-excerpt"]); snap("412-topic-large-excerpt"); tap("Done")
++        reveal(reference); reference.tap(); XCTAssertTrue(referenceExcerpt.waitForExistence(timeout: 5)); snap("411-topic-large-reference-heading")
++        reveal(referenceExcerpt); snap("412-topic-large-excerpt"); tap("Done")
+     }
+     func testRelatedTopicLargeCoverage() throws {
+         app.terminate(); app.launchArguments = ["-resetForUITests", "-librarySearchUITestMode"]; app.launch(); finishOnboarding()
+@@ -3061,15 +3081,15 @@
+         openLibrarySearchSettings(); tap("meaningSearchDownload")
+         XCTAssertTrue(app.switches["meaningSearchToggle"].waitForExistence(timeout: 90)); closeLibrarySearchSettings(); tab("Assistant")
+         askLibrary("What did my saved notes say about feeling exhausted?")
+-        XCTAssertTrue(app.staticTexts["coachMessage"].label.contains("Persistent tiredness"))
++        XCTAssertTrue(coachMessages.firstMatch.label.contains("Persistent tiredness"))
+         app.terminate(); app.launchArguments = ["-librarySearchUITestMode", "-lumen.appearance", "light", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]; app.launch(); tab("Assistant")
+         let disclosure = app.buttons["libraryReferencesToggle"].firstMatch; reveal(disclosure); disclosure.tap()
+         let coverage = app.staticTexts["Related-topic search compared the only prepared excerpt."].firstMatch
+         reveal(coverage); XCTAssertTrue(coverage.isHittable); snap("424-topic-large-comparison-coverage")
+         let reference = app.buttons["library-reference-1"].firstMatch
+         reveal(reference); XCTAssertTrue(reference.isHittable); snap("425-topic-large-source-row")
+-        reference.tap(); XCTAssertTrue(app.staticTexts["reference-excerpt"].waitForExistence(timeout: 5))
+-        reveal(app.staticTexts["reference-excerpt"]); XCTAssertEqual(app.staticTexts["reference-excerpt"].label, "Persistent tiredness and low energy over several weeks.")
++        reference.tap(); XCTAssertTrue(referenceExcerpt.waitForExistence(timeout: 5))
++        reveal(referenceExcerpt); XCTAssertEqual(referenceExcerpt.label, "Persistent tiredness and low energy over several weeks.")
+         snap("426-topic-large-literal-source")
+     }
+     func enterPlanGoal(_ text: String, capture: String? = nil) {

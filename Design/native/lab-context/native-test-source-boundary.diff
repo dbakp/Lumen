@@ -1,0 +1,66 @@
+--- NativeR4-PresentationR1/LumenSmokeTests.swift
++++ SourceStates/LumenSmokeTests.swift
+@@ -2667,6 +2667,63 @@
+             let fact = openReviewedLabReference(); captureIdentifierText(fact, prefix: "825-lab-context-" + prefix + "-full-fields")
+             let open = app.buttons["Open in Library"].firstMatch; reveal(open); settleLabFrame(open)
+             XCTAssertTrue(open.isHittable && app.buttons["Done"].isHittable); snap("826-lab-context-" + prefix + "-actions"); tap("Done")
++        }
++    }
++    func captureReviewedSourceToFooter(_ prefix: String) {
++        let footer = app.staticTexts["Saved text may contain errors. Check names, numbers and units against the original."].firstMatch
++        XCTAssertTrue(footer.waitForExistence(timeout: 5))
++        // UIKit can clip an oversized text view's AX frame to the screen.
++        // Capture ordinary overlapping gutter drags to a separate end marker;
++        // do not infer complete text coverage from that changing frame height.
++        for part in 1...32 {
++            settleLabFrame(footer)
++            let top = app.navigationBars.firstMatch.frame.maxY + 12
++            let bottom = app.frame.maxY - 12
++            let frame = footer.frame
++            print("Reviewed source sweep \(prefix) part\(part): footer \(frame), visible \(top)...\(bottom)")
++            snap(prefix + "-part\(part)")
++            if frame.minY >= top && frame.maxY <= bottom { return }
++            let distance = min(200, (bottom - top) * 0.4)
++            let start = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: bottom - 35))
++            let end = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: bottom - 35 - distance))
++            start.press(forDuration: 0.1, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.3)
++        }
++        XCTFail("The complete source footer was not reached through ordinary overlapping scrolling")
++    }
++    func testReviewedLabContextSourceStatesPresentation() throws {
++        try prepareReviewedLabContext(["-lumen.appearance", "light"])
++        for large in [false, true] {
++            app.terminate(); app.launchArguments = ["-lumen.appearance", large ? "dark" : "light"] + (large ? ["-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"] : []); app.launch(); tab("Assistant")
++            if !app.staticTexts.matching(identifier: "coachMessage").allElementsBoundByIndex.isEmpty { tap("Conversation actions"); tap("New conversation") }
++            let prefix = large ? "dark-xxxl" : "light"
++            askLibrary("COHERENCECANARY"); _ = openReviewedLabReference()
++            let heading = app.staticTexts["Reference 1"].firstMatch; settleLabFrame(heading)
++            XCTAssertTrue(heading.isHittable)
++            captureReviewedSourceToFooter("829-lab-context-" + prefix + "-source-through-footer")
++            let open = app.buttons["Open in Library"].firstMatch; revealLabExcerpt(open)
++            XCTAssertTrue(open.isHittable && app.buttons["Done"].isHittable); snap("830-lab-context-" + prefix + "-source-actions")
++            open.tap(); nativeSwitch("Use in assistant", enabled: false)
++            app.navigationBars["Document"].buttons.element(boundBy: 0).tap()
++            let retained = app.staticTexts.matching(NSPredicate(format: "label CONTAINS 'This saved excerpt and its reviewed fields stay with the earlier reply.'")).firstMatch
++            revealLabExcerpt(retained); captureReviewedSourceToFooter("831-lab-context-" + prefix + "-retained-sharing-off")
++            revealLabExcerpt(app.buttons["Open in Library"].firstMatch)
++            XCTAssertTrue(app.buttons["Open in Library"].isHittable && app.buttons["Done"].isHittable); tap("Done")
++            tab("Library"); let crowded = app.buttons["Several reviewed results"].firstMatch; reveal(crowded); crowded.tap()
++            nativeSwitch("Use in assistant", enabled: true); app.navigationBars["Document"].buttons.element(boundBy: 0).tap(); tab("Assistant")
++            tap("Conversation actions"); tap("New conversation"); askLibrary("Ferritin")
++            let disclosure = app.buttons["libraryReferencesToggle"].firstMatch; reveal(disclosure); disclosure.tap()
++            let source = app.buttons["library-reference-1"].firstMatch; reveal(source); source.tap()
++            let omitted = app.staticTexts["reference-lab-facts-omitted"].firstMatch
++            XCTAssertTrue(omitted.waitForExistence(timeout: 5)); XCTAssertTrue(omitted.label.hasPrefix("5 overlapping reviewed results"))
++            XCTAssertFalse(app.descendants(matching: .any).matching(identifier: "reference-lab-fact-lab-context-overlap-0").firstMatch.exists)
++            captureReviewedSourceToFooter("832-lab-context-" + prefix + "-complete-omission")
++            let route = app.buttons["Open in Library"].firstMatch; revealLabExcerpt(route)
++            XCTAssertTrue(route.isHittable && app.buttons["Done"].isHittable); snap("833-lab-context-" + prefix + "-omission-actions")
++            if !large {
++                route.tap(); nativeSwitch("Use in assistant", enabled: false); app.navigationBars["Document"].buttons.element(boundBy: 0).tap(); tap("Done")
++                tab("Library"); let original = app.buttons["Reviewed source context"].firstMatch; reveal(original); original.tap()
++                nativeSwitch("Use in assistant", enabled: true); app.navigationBars["Document"].buttons.element(boundBy: 0).tap()
++            }
+         }
+     }
+     func testProviderTransportFallback() throws {

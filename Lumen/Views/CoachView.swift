@@ -228,16 +228,25 @@ public struct CoachView: View {
 struct ChatBubble: View {
     let msg: ChatMessage
     var isUser: Bool { msg.role == .user }
+    @ViewBuilder var messageText: some View {
+        if isUser {
+            FHIRLiteralText(text: msg.text, identifier: "userMessage", lineSpacing: 3, color: Theme.onAccent, fitsContentWidth: true)
+        } else if msg.recordContext?.mode == .lookup {
+            FHIRLiteralText(text: msg.text, identifier: "coachMessage", lineSpacing: 3)
+                .frame(maxWidth: .infinity, alignment: .leading)
+        } else {
+            Text(LocalizedStringKey(msg.text)).font(.body).lineSpacing(3)
+                .foregroundStyle(Theme.text)
+                .textSelection(.enabled)
+                .accessibilityIdentifier("coachMessage")
+        }
+    }
     var body: some View {
         HStack {
             if isUser { Spacer(minLength: 48) }
-            Text(LocalizedStringKey(msg.text))
-                .font(.body).lineSpacing(3)
-                .foregroundStyle(isUser ? Theme.onAccent : Theme.text)
+            messageText
                 .padding(.horizontal, isUser ? 16 : 0).padding(.vertical, isUser ? 11 : 4)
                 .background(isUser ? Theme.accent : .clear, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
-                .textSelection(.enabled)
-                .accessibilityIdentifier(isUser ? "userMessage" : "coachMessage")
             if !isUser { Spacer(minLength: 24) }
         }
         .transition(.opacity.combined(with: .move(edge: .bottom)))

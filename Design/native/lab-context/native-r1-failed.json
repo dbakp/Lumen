@@ -1,0 +1,61 @@
+{
+  "status": "failed first native assertion; remaining test intentionally interrupted",
+  "summary": {
+    "devicesAndConfigurations": [
+      {
+        "device": {
+          "architecture": "arm64",
+          "deviceId": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+          "deviceName": "Lumen continuation verification",
+          "modelName": "iPhone 18 Pro",
+          "osBuildNumber": "24A434",
+          "osVersion": "27.0",
+          "platform": "iOS Simulator"
+        },
+        "expectedFailures": 0,
+        "failedTests": 2,
+        "passedTests": 0,
+        "skippedTests": 0,
+        "testPlanConfiguration": {
+          "configurationId": "1",
+          "configurationName": "Test Scheme Action"
+        }
+      }
+    ],
+    "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+    "expectedFailures": 0,
+    "failedTests": 2,
+    "finishTime": 1793515108.054,
+    "passedTests": 0,
+    "result": "Failed",
+    "runtimeWarnings": [],
+    "skippedTests": 0,
+    "startTime": 1793514895.561,
+    "statistics": [],
+    "testFailures": [
+      {
+        "failureText": "XCTAssertTrue failed",
+        "targetName": "LumenUITests",
+        "testIdentifier": 1,
+        "testIdentifierString": "LumenSmokeTests/testReviewedLabContextLifecycle()",
+        "testIdentifierURL": "test://com.apple.xcode/Lumen/LumenUITests/LumenSmokeTests/testReviewedLabContextLifecycle",
+        "testName": "testReviewedLabContextLifecycle()"
+      },
+      {
+        "failureText": "Testing was canceled",
+        "targetName": "LumenUITests",
+        "testIdentifier": 2,
+        "testIdentifierString": "LumenSmokeTests/testReviewedLabContextPresentation()",
+        "testIdentifierURL": "test://com.apple.xcode/Lumen/LumenUITests/LumenSmokeTests/testReviewedLabContextPresentation",
+        "testName": "testReviewedLabContextPresentation()"
+      }
+    ],
+    "title": "Test - Lumen",
+    "topInsights": [],
+    "totalTestCount": 2
+  },
+  "logSHA256": "3396771367e25fadea460933414a0981f451008a9d4a353779fe830cb74390b2",
+  "cause": "Parent VStack accessibilityIdentifier overwrote child native text-view identifiers. Complete fields were present in the actual failure hierarchy at y809.3; desired child ID did not exist. Removed parent identifier and gave only the heading its own ID.",
+  "interruption": "After the first failure the remaining presentation case was stopped. xcodebuild ended75 with a result-finalization assertion; Info.plist appeared only after process termination. Early attachment export while finalizing failed; final summary/attachment export succeeded. No pass is inferred.",
+  "hierarchySHA256": "cdb7635aef10990ff9c5c4376259b55ea7932a30f69781a2bf2d1b5dfcca8dbc"
+}

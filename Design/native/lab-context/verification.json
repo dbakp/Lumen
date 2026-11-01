@@ -1,0 +1,342 @@
+{
+  "status": "verified and design accepted; publication/read-back and scoped cleanup pending",
+  "recordedAtUTC": "2026-11-01T11:20:05.216235+00:00",
+  "applicationBaseline": "109d6d037ac5bb974f44e1b51b4048e0259b0509",
+  "sourceMaps": {
+    "productionAndLogic": "source-r2.json",
+    "initialSourceStatesTests": "source-r3.json",
+    "currentNativeTests": "source-r17.json",
+    "appUIBoundary": "source-r9.json"
+  },
+  "sourceInputs": 258,
+  "sourceBoundary": "All258 current inputs match source-r17. Core logic/model inputs retain source-r2; app/UI last changes at source-r9. Later native tests only repair capture/scrolling and add scoped transition evidence. ReleaseR3 current-app boundary is unchanged.",
+  "logic": {
+    "status": "passed",
+    "checks": 1465,
+    "run": "LogicR8",
+    "history": "logic-history.json"
+  },
+  "actualPinnedModel": {
+    "status": "passed",
+    "checks": 28,
+    "run": "MacReleaseR2/modelR2",
+    "scope": "Actual retained MiniLM/CoreML encoder, not a replacement model or clinical quality test."
+  },
+  "simulatorBuild": {
+    "status": "passed",
+    "run": "BuildR21",
+    "sourceMap": "source-r17.json"
+  },
+  "unsignedRelease": {
+    "status": "passed",
+    "run": "ReleaseR3",
+    "audit": "release-audit-r3.json",
+    "absentDevelopmentMarkers": 19
+  },
+  "native": {
+    "lifecycle": {
+      "status": "passed",
+      "run": "NativeR4",
+      "case": "testReviewedLabContextLifecycle",
+      "caseSeconds": 261.145,
+      "summary": {
+        "devicesAndConfigurations": [
+          {
+            "device": {
+              "architecture": "arm64",
+              "deviceId": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+              "deviceName": "Lumen continuation verification",
+              "modelName": "iPhone 18 Pro",
+              "osBuildNumber": "24A434",
+              "osVersion": "27.0",
+              "platform": "iOS Simulator"
+            },
+            "expectedFailures": 0,
+            "failedTests": 0,
+            "passedTests": 1,
+            "skippedTests": 0,
+            "testPlanConfiguration": {
+              "configurationId": "1",
+              "configurationName": "Test Scheme Action"
+            }
+          }
+        ],
+        "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+        "expectedFailures": 0,
+        "failedTests": 0,
+        "finishTime": 1793517053.65,
+        "passedTests": 1,
+        "result": "Passed",
+        "runtimeWarnings": [],
+        "skippedTests": 0,
+        "startTime": 1793516784.014,
+        "statistics": [],
+        "testFailures": [],
+        "title": "Test - Lumen",
+        "topInsights": [],
+        "totalTestCount": 1
+      },
+      "captures": "native-r4-captures.json",
+      "mode": "Regular built-in production lookup; synthetic backup fixture, no local-reply override."
+    },
+    "initialPresentation": {
+      "status": "passed",
+      "run": "PresentationR1",
+      "caseSeconds": 286.853,
+      "proof": "presentation-r1.json",
+      "captures": "presentation-r1-captures.json"
+    },
+    "compact": {
+      "status": "passed",
+      "sizePoints": [
+        375,
+        667
+      ],
+      "earlierFailure": "small-r1-failed.json",
+      "earlierInterruption": "small-r2-interrupted.json",
+      "run": "SmallR7",
+      "sourceMap": "source-r17.json",
+      "priorCaptureFailure": "small-r6-failed.json",
+      "caseSeconds": 972.691,
+      "proof": "small-r7.json",
+      "captures": "small-r7-captures.json"
+    },
+    "earlierSourceStates": {
+      "status": "passed",
+      "run": "SourceStatesR4",
+      "caseSeconds": 575.647,
+      "proof": "source-states-r4.json",
+      "captures": "source-states-r4-captures.json"
+    },
+    "finalCombinedMain": {
+      "status": "mixed",
+      "run": "NativeR5",
+      "proof": "native-r5.json",
+      "passedCases": 2,
+      "failedCases": 1,
+      "scope": "Current application/source-r7, before only chat-capture-inset test change."
+    },
+    "currentSourceStates": {
+      "status": "passed",
+      "run": "NativeR6",
+      "caseSeconds": 809.78,
+      "proof": "native-r6.json",
+      "captures": "native-r6-captures.json",
+      "sourceMap": "source-r8.json"
+    },
+    "currentQuestionAndKeyboard": {
+      "status": "passed separately with exact source boundaries",
+      "keyboard": {
+        "run": "NativeR7",
+        "seconds": 53.247,
+        "proof": "native-r7.json",
+        "sourceMap": "source-r9.json"
+      },
+      "questions": {
+        "run": "NativeR8",
+        "seconds": 203.649,
+        "proof": "native-r8.json",
+        "captures": "native-r8-captures.json",
+        "sourceMap": "source-r10.json"
+      }
+    },
+    "currentLabChatTransition": {
+      "status": "passed",
+      "run": "NativeR10",
+      "caseSeconds": 356.88,
+      "sourceMap": "source-r12.json",
+      "proof": "native-r10.json",
+      "captures": "native-r10-captures.json",
+      "segments": 2,
+      "overlapLandmark": "Review health entries"
+    },
+    "sharingScrollProbe": {
+      "status": "passed observational probe",
+      "run": "SharingProbeR2",
+      "caseSeconds": 226.137,
+      "proof": "sharing-probe-r2.json",
+      "scope": "Actual sharing value0\u21921; visible control needs17 checks, former bounded helper checked16. Not full compact acceptance."
+    }
+  },
+  "replay": {
+    "questions": 356,
+    "policies": 12,
+    "completePackets": 4272,
+    "publicDevPackets": 3888,
+    "syntheticChallengePackets": 384,
+    "allEqual": true,
+    "baseline": "9f261a93790666d67c59d39aac598553508c0857",
+    "comparisons": [
+      "dev-packet-comparison-r1.json",
+      "challenge-packet-comparison-r1.json"
+    ],
+    "sourceBoundary": "replay-source-boundary.json",
+    "scope": "Plain packet/index selection outcomes are identical. The corpus replay contains no claim-support proof for lab-bearing answers and computes no held-out test score."
+  },
+  "design": {
+    "status": "Round4 Done; all concrete asks closed; no later app/UI edit",
+    "critic": "continuing skill-authorized /root/design_review_recovery",
+    "round1Scores": [
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      3,
+      4,
+      4,
+      4,
+      4
+    ],
+    "round1Total": 43,
+    "proof": "CRITIQUE.md",
+    "round2Scores": [
+      4,
+      4,
+      4,
+      4,
+      3,
+      4,
+      3,
+      4,
+      3,
+      4,
+      4
+    ],
+    "round2Total": 41,
+    "round3Scores": [
+      4,
+      4,
+      4,
+      4,
+      3,
+      4,
+      3,
+      4,
+      3,
+      4,
+      4
+    ],
+    "round3Total": 41,
+    "round4Scores": [
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      3,
+      4,
+      4,
+      4,
+      4
+    ],
+    "round4Total": 43,
+    "currentIndexedPNGsIndividuallyInspected": 121,
+    "compactOriginals": 84,
+    "mainCurrentOriginals": 37,
+    "inspectionFailures": 0,
+    "inspectionSkips": 0
+  },
+  "failedAndEarlierBoundaries": [
+    "logic-history.json",
+    "native-r1-failed.json",
+    "native-r2-failed.json",
+    "native-r3-failed.json",
+    "source-states-r1-failed.json",
+    "source-states-r2-failed.json",
+    "source-states-r3-failed.json",
+    "small-r1-failed.json",
+    {
+      "run": "NativeR5",
+      "proof": "native-r5.json",
+      "finding": "Chat capture required an extra inset above the actual upper-scroll-limit bubble; source-state case failed, citation/lifecycle cases passed."
+    },
+    {
+      "run": "SmallR2",
+      "proof": "small-r2-interrupted.json"
+    },
+    {
+      "run": "NativeR7",
+      "proof": "native-r7.json"
+    },
+    {
+      "run": "NativeR9",
+      "proof": "native-r9-failed.json"
+    },
+    {
+      "run": "SmallR3",
+      "proof": "small-r3-failed.json"
+    },
+    {
+      "run": "SmallR4",
+      "proof": "small-r4-failed.json"
+    },
+    {
+      "run": "SmallR5",
+      "proof": "small-r5-failed.json"
+    },
+    {
+      "run": "SmallR6",
+      "proof": "small-r6-failed.json"
+    },
+    {
+      "run": "SharingProbeR1",
+      "proof": "sharing-probe-r1-failed.json"
+    }
+  ],
+  "consoleNotes": [
+    "Xcode app-intents metadata extraction reports no AppIntents framework dependency.",
+    "Simulator logs include duplicate system accessibility loader classes; no global runtime/cache modification is made.",
+    "xcresult runtimeWarnings arrays describe their own runs; no globally silent console is claimed."
+  ],
+  "logs": {
+    "logic-r8": {
+      "sha256": "0600ee8c9c587441ebaccac76eca0ea5c3946e780d8c3652b4904087cc0c2908",
+      "bytes": 116569
+    },
+    "model-r2": {
+      "sha256": "6e0d7f48aeafae82267530cadc005593b659e12978da5350a9e907cd2c653c8a",
+      "bytes": 3096
+    },
+    "mac-release-r2": {
+      "sha256": "34b430c8216db07614df06eedfe093d7a295ff27974a632824c8ece51cab8f9d",
+      "bytes": 1759
+    },
+    "build-r6": {
+      "sha256": "ac23f66f8bebbd400f8e9555eda6bf78f6271e1fd28fef9ea48fdee03fcb7e5d",
+      "bytes": 57140
+    },
+    "build-r7": {
+      "sha256": "fa3f4c8cda326ecae7ea70d54514791da17e77c96563d4763a9624acdb645af5",
+      "bytes": 37200
+    },
+    "build-r8": {
+      "sha256": "e896c3c6e6f926026fc7cc9b2764e7954dd310fa24398cde42f02b8c5a785c98",
+      "bytes": 37586
+    },
+    "native-r4": {
+      "sha256": "ab49bd5ff3186f53852e43f415b17527ab8e73dba5a6ee674f7a6b6e790dde10",
+      "bytes": 106742
+    },
+    "presentation-r1": {
+      "sha256": "c5777409800d4967f4e9903d9a59a90fe30a037b6a8290e81830a6cb410f696d",
+      "bytes": 114214
+    },
+    "source-states-r1": {
+      "sha256": "e5ef51090e735df79cd8ceb4cf68368a57bf7394c811d2e8c51f5fb8b204c558",
+      "bytes": 224857
+    },
+    "release-r1": {
+      "sha256": "45f7c5a4035e5112f853202487d5b16bd2e731b2a924edc675cf2ff543dd9154",
+      "bytes": 397376
+    }
+  },
+  "remainingGates": [
+    "Seven unsupported-topic source selections remain. Complete reviewed fields and current citations do not establish claim support.",
+    "Live provider, multilingual/clinical and broader model quality.",
+    "Signed iPhone/Watch/voice behavior, VoiceOver, physical-device performance.",
+    "Independent privacy/security, clinical governance and distribution readiness."
+  ]
+}

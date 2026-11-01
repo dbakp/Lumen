@@ -1,0 +1,57 @@
+--- SourceStatesR3/LumenSmokeTests.swift
++++ SourceStatesR4/LumenSmokeTests.swift
+@@ -1746,25 +1746,13 @@
+     func settleLabFrame(_ element: XCUIElement) {
+         var frame = CGRect.null
+         var stableSince = ProcessInfo.processInfo.systemUptime
+-        let deadline = stableSince + 8
+-        var observations: [String] = []
+-        // Sample current native geometry directly. Observational source-sheet
+-        // probes retain stable raw frames despite intermittent predicate waits.
+-        while ProcessInfo.processInfo.systemUptime < deadline {
+-            if element.exists {
+-                let next = element.frame, now = ProcessInfo.processInfo.systemUptime
+-                if frame.isNull || abs(next.minX - frame.minX) > 0.5 || abs(next.minY - frame.minY) > 0.5 || abs(next.width - frame.width) > 0.5 || abs(next.height - frame.height) > 0.5 {
+-                    frame = next; stableSince = now
+-                }
+-                observations.append("\(next), stable \(now - stableSince)s")
+-                if observations.count > 12 { observations.removeFirst() }
+-                if !next.isEmpty && now - stableSince >= 0.5 { return }
+-            } else {
+-                observations.append("Element absent")
+-            }
+-            Thread.sleep(forTimeInterval: 0.1)
+-        }
+-        XCTFail("Native frame did not settle within half a point: " + observations.joined(separator: "; "))
++        let stable = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
++            guard element.exists else { return false }
++            let next = element.frame, now = ProcessInfo.processInfo.systemUptime
++            if next != frame { frame = next; stableSince = now }
++            return !next.isEmpty && now - stableSince >= 0.5
++        }, object: element)
++        XCTAssertEqual(XCTWaiter.wait(for: [stable], timeout: 8), .completed)
+     }
+     func revealLabExcerpt(_ element: XCUIElement) {
+         XCTAssertTrue(element.waitForExistence(timeout: 5)); settleLabFrame(element)
+@@ -2696,9 +2684,19 @@
+             snap(prefix + "-part\(part)")
+             if frame.minY >= top && frame.maxY <= bottom { return }
+             let distance = (bottom - top) * 0.55
+-            let start = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: bottom - 35))
+-            let end = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: bottom - 35 - distance))
++            let route = app.buttons["Open in Library"].firstMatch
++            let occupied = route.exists ? route.frame.insetBy(dx: -24, dy: -16) : CGRect.null
++            let x = app.frame.midX
++            var y = bottom - 35
++            if occupied.contains(CGPoint(x: x, y: y)) { y = top + distance + 24 }
++            if occupied.contains(CGPoint(x: x, y: y)) { y = top + 60 }
++            XCTAssertFalse(occupied.contains(CGPoint(x: x, y: y)), "Capture drag must not start on Library navigation")
++            let step = min(distance, y - top - 24)
++            let start = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: x, dy: y))
++            let end = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: x, dy: y - step))
++            print("Reviewed source drag \(prefix): (\(x),\(y)) to (\(x),\(y - step)); Library action \(occupied)")
+             start.press(forDuration: 0.1, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.3)
++            XCTAssertTrue(app.navigationBars["Saved reference"].exists, "Reader scrolling must not activate Library navigation")
+         }
+         XCTFail("The complete source footer was not reached through ordinary overlapping scrolling")
+     }

@@ -1,0 +1,78 @@
+--- /tmp/LumenBatch31Verification/UITest-source-r16.swift	2026-11-01 11:55:04
++++ LumenUITests/LumenSmokeTests.swift	2026-11-01 11:55:05
+@@ -455,8 +455,8 @@
+         q.tap()
+     }
+ 
+-    func reveal(_ element: XCUIElement, towardsTop: Bool = false, activationPoint: CGVector? = nil) {
+-        for step in 0..<32 {
++    func reveal(_ element: XCUIElement, towardsTop: Bool = false) {
++        for _ in 0..<32 {
+             let targetIdentifier = element.exists ? element.identifier : ""
+             let input = app.descendants(matching: .any).matching(identifier: "coachInput").firstMatch
+             let composerVisible = input.exists && input.isHittable && targetIdentifier != "coachInput"
+@@ -477,14 +477,7 @@
+             if app.keyboards.firstMatch.exists { bottom = min(bottom, app.keyboards.firstMatch.frame.minY - 12) }
+             // Native controls may report hittable while their centre is behind
+             // a modal navigation bar. Check the actual visible content region.
+-            if element.exists {
+-                let frame = element.frame
+-                let point = activationPoint.map { CGPoint(x: frame.minX + frame.width * $0.dx, y: frame.minY + frame.height * $0.dy) }
+-                let y = point?.y ?? frame.midY
+-                let reachable = point.map { $0.x > app.frame.minX + 12 && $0.x < app.frame.maxX - 12 } ?? element.isHittable
+-                if name.contains("testReviewedLabSharingControlProbe") { print("Sharing reveal step\(step): frame \(frame), point \(String(describing: point)), bounds \(top)...\(bottom), hittable \(element.isHittable), enabled \(element.isEnabled)") }
+-                if !frame.isEmpty && reachable && y > top && y < bottom { return }
+-            }
++            if element.exists && element.isHittable && element.frame.midY > top && element.frame.midY < bottom { return }
+             // Lazy stacks can remove the target from the accessibility tree.
+             // A known earlier row then needs an explicit search direction.
+             let down = element.exists ? element.frame.midY < (top + bottom) / 2 : towardsTop
+@@ -923,18 +916,10 @@
+         XCTAssertTrue(ready.waitForExistence(timeout: 90)); XCTAssertFalse(app.alerts.firstMatch.exists)
+     }
+     func nativeSwitch(_ identifier: String, enabled: Bool, towardsTop: Bool = false) {
+-        let toggle = app.switches[identifier].firstMatch
+-        // A very large SwiftUI label can make the outer switch's centre
+-        // non-hittable even while its native trailing control is visible.
+-        let sharingThumb: CGVector? = identifier == "Use in assistant" ? CGVector(dx: 0.9, dy: 0.5) : nil
+-        reveal(toggle, towardsTop: towardsTop, activationPoint: sharingThumb)
++        let toggle = app.switches[identifier].firstMatch; reveal(toggle, towardsTop: towardsTop)
+         let touchThumb = identifier.contains("FHIR") || identifier.hasPrefix("normalization") || identifier == "normalizeLabComparison"
+         if touchThumb { settleLabFrame(toggle) }
+         if (toggle.value as? String) != (enabled ? "1" : "0") {
+-            if let sharingThumb {
+-                XCTAssertTrue(toggle.isEnabled)
+-                toggle.coordinate(withNormalizedOffset: sharingThumb).tap()
+-            } else {
+             let control = toggle.switches.firstMatch
+             if control.exists {
+                 reveal(control)
+@@ -945,7 +930,6 @@
+                     control.coordinate(withNormalizedOffset: CGVector(dx: enabled ? 0.25 : 0.75, dy: 0.5)).tap()
+                 } else { control.tap() }
+             } else { toggle.tap() }
+-            }
+         }
+         let expected = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", enabled ? "1" : "0"), object: toggle)
+         let result = XCTWaiter.wait(for: [expected], timeout: 5)
+@@ -2793,20 +2777,6 @@
+         XCTAssertFalse(reply.label.contains("PRIVATE-LAB-CONTEXT-CANARY"))
+         captureReviewedLabChat("837-lab-context-dark-xxxl-current-question-and-reply")
+     }
+-    func testReviewedLabSharingControlProbe() throws {
+-        try prepareReviewedLabContext(["-lumen.appearance", "light"])
+-        app.terminate()
+-        app.launchArguments = ["-lumen.appearance", "dark", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]
+-        app.launch(); tab("Library")
+-        let record = app.buttons["Several reviewed results"].firstMatch
+-        reveal(record); record.tap()
+-        let toggle = app.switches["Use in assistant"].firstMatch
+-        XCTAssertTrue(toggle.waitForExistence(timeout: 5))
+-        print("Sharing initial: frame \(toggle.frame), hittable \(toggle.isHittable), enabled \(toggle.isEnabled), value \(String(describing: toggle.value))")
+-        nativeSwitch("Use in assistant", enabled: true)
+-        print("Sharing final: frame \(toggle.frame), hittable \(toggle.isHittable), enabled \(toggle.isEnabled), value \(String(describing: toggle.value))")
+-        snap("839-sharing-control-probe")
+-    }
+     func captureReviewedLabChat(_ prefix: String) {
+         // The native question frame clips when it scrolls offscreen. Capture
+         // it while visible, then continue from the shared SwiftUI action.

@@ -1,0 +1,77 @@
+{
+  "status": "failed before source-feature interaction",
+  "caseSeconds": 174.178,
+  "summary": {
+    "devicesAndConfigurations": [
+      {
+        "device": {
+          "architecture": "arm64",
+          "deviceId": "C5F84641-E9B2-4184-8EA8-C57878961137",
+          "deviceName": "Lumen Batch31 compact",
+          "modelName": "iPhone SE (3rd generation)",
+          "osBuildNumber": "24A434",
+          "osVersion": "27.0",
+          "platform": "iOS Simulator"
+        },
+        "expectedFailures": 0,
+        "failedTests": 1,
+        "passedTests": 0,
+        "skippedTests": 0,
+        "testPlanConfiguration": {
+          "configurationId": "1",
+          "configurationName": "Test Scheme Action"
+        }
+      }
+    ],
+    "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+    "expectedFailures": 0,
+    "failedTests": 1,
+    "finishTime": 1793521498.366,
+    "passedTests": 0,
+    "result": "Failed",
+    "runtimeWarnings": [],
+    "skippedTests": 0,
+    "startTime": 1793521280.032,
+    "statistics": [],
+    "testFailures": [
+      {
+        "failureText": "failed - Element could not be brought into the visible content area",
+        "targetName": "LumenUITests",
+        "testIdentifier": 1,
+        "testIdentifierString": "LumenSmokeTests/testReviewedLabContextSourceStatesPresentation()",
+        "testIdentifierURL": "test://com.apple.xcode/Lumen/LumenUITests/LumenSmokeTests/testReviewedLabContextSourceStatesPresentation",
+        "testName": "testReviewedLabContextSourceStatesPresentation()"
+      }
+    ],
+    "title": "Test - Lumen",
+    "topInsights": [],
+    "totalTestCount": 1
+  },
+  "sourceMap": "source-r6.json",
+  "logSHA256": "c61c4fa57e259be804134e95937e5496213a6c61ffa04defa05fdb7458b381b9",
+  "cause": "Browse already opened On My iPhone with the exact fixture visible. The helper mistook the fixed navigation title for a location row, tried to reveal it in the content area and dismissed the picker/backup sheets with repeated drags. Final screenshot is Today.",
+  "repair": "For this fixture, await the actual file cell first; do not select a location when already in the On My iPhone directory. Only use a real location row when needed. No backup product behavior changes.",
+  "nativeFailureStill": {
+    "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/lab-context/small-r1-failed/unreachable-element.png",
+    "sha256": "92473b4a8e68fa5ecb84d350f2caa0f9772acbe6055dd100e3cf847cb0cb462d"
+  },
+  "recordingSHA256": "e451dadbd964f0fe2af6c9c270683c576ab2156e75bd396a9f940670e8d7a558",
+  "recordingFrames": [
+    {
+      "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/lab-context/small-r1-failed/small-r1-video-68.png",
+      "sha256": "0f78b766b3cb131c923d47bb3dd22580bb6a37cfcd9c1eacf6681f600cb4eee9",
+      "kind": "read-only video-derived frame; requested seconds encoded in filename, actual extraction timestamp not read back"
+    },
+    {
+      "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/lab-context/small-r1-failed/small-r1-video-76.png",
+      "sha256": "fc7b9f191963a109e02ece17dcb30573a4a23aadd17ac4ab0b96bad8515f5875",
+      "kind": "read-only video-derived frame; requested seconds encoded in filename, actual extraction timestamp not read back"
+    },
+    {
+      "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/lab-context/small-r1-failed/small-r1-video-83.png",
+      "sha256": "29afbb98f48302d3b054e0b994bbe82cf64ba4b0b0fd4ff467e607c97ac3a9fc",
+      "kind": "read-only video-derived frame; requested seconds encoded in filename, actual extraction timestamp not read back"
+    }
+  ],
+  "scope": "No compact source, chat, dark or largest-text acceptance follows. The returned result is failure65, not a passing or cancelled suite."
+}

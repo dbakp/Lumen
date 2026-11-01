@@ -1,0 +1,32 @@
+--- /tmp/LumenBatch31Verification/UITest-source-r11.swift	2026-11-01 10:42:18
++++ LumenUITests/LumenSmokeTests.swift	2026-11-01 10:42:18
+@@ -2715,9 +2715,7 @@
+             askLibrary("COHERENCECANARY")
+             let reply = coachMessages.firstMatch
+             XCTAssertTrue(reply.label.contains("*literal* [source](https://synthetic.invalid)") && reply.label.contains("COHERENCECANARY"))
+-            let question = userMessages.firstMatch
+-            let references = app.buttons["libraryReferencesToggle"].firstMatch
+-            captureIdentifierText(question, through: references, prefix: "835-lab-context-" + prefix + "-literal-chat", contentGestures: true)
++            captureReviewedLabChat("835-lab-context-" + prefix + "-literal-chat")
+             _ = openReviewedLabReference()
+             let heading = app.staticTexts["Reference 1"].firstMatch; settleLabFrame(heading)
+             XCTAssertTrue(heading.isHittable)
+@@ -2776,8 +2774,16 @@
+         XCTAssertTrue(reply.label.hasPrefix("Matching saved text"))
+         XCTAssertTrue(reply.label.contains("Reported result: <4,0") && reply.label.contains("*literal* [source](https://synthetic.invalid)"))
+         XCTAssertFalse(reply.label.contains("PRIVATE-LAB-CONTEXT-CANARY"))
+-        captureIdentifierText(userMessages.firstMatch, through: app.buttons["libraryReferencesToggle"].firstMatch,
+-                              prefix: "837-lab-context-dark-xxxl-current-question-and-reply", contentGestures: true)
++        captureReviewedLabChat("837-lab-context-dark-xxxl-current-question-and-reply")
++    }
++    func captureReviewedLabChat(_ prefix: String) {
++        // The native question frame clips when it scrolls offscreen. Capture
++        // it while visible, then continue from the shared SwiftUI action.
++        // Both sequences include that complete action as an overlap landmark.
++        let review = app.buttons["Review health entries"].firstMatch
++        captureIdentifierText(userMessages.firstMatch, through: review, prefix: prefix + "-question", contentGestures: true)
++        captureIdentifierText(review, through: app.buttons["libraryReferencesToggle"].firstMatch,
++                              prefix: prefix + "-reply", contentGestures: true)
+     }
+     func testProviderTransportFallback() throws {
+         app.terminate(); app.launchArguments = ["-providerTransportUITestMode"]; app.launch()

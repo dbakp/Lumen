@@ -109,8 +109,20 @@ public struct LabReport: Codable, Sendable, Equatable {
         }
     }
     public var referenceText: String {
-        Self.heading + "\n\nReviewed transcription, not clinical interpretation. Values, units, flags and reference wording were entered during review; the saved source excerpt can differ. Missing fields are unknown. No unit conversions or clinical comparisons were made.\n\n" + (importedFrom.map { $0.referenceText + "\n\n" } ?? "") +
-        observations.enumerated().map { "Lab result \($0.offset + 1)\n" + $0.element.referenceText }.joined(separator: "\n\n")
+        referenceSections.text
+    }
+    /// Ranges come from construction, never from searching user-controlled
+    /// headings or field values. Canonical text remains byte-compatible.
+    var referenceSections: (text: String, ranges: [Range<Int>]) {
+        var text = Self.heading + "\n\nReviewed transcription, not clinical interpretation. Values, units, flags and reference wording were entered during review; the saved source excerpt can differ. Missing fields are unknown. No unit conversions or clinical comparisons were made.\n\n" + (importedFrom.map { $0.referenceText + "\n\n" } ?? "")
+        var offset = text.count, ranges: [Range<Int>] = []
+        for (index, observation) in observations.enumerated() {
+            if index > 0 { text += "\n\n"; offset += 2 }
+            let block = "Lab result \(index + 1)\n" + observation.referenceText
+            let end = offset + block.count
+            ranges.append(offset..<end); text += block; offset = end
+        }
+        return (text, ranges)
     }
     public func markdown(body: String) -> String {
         let state = isCurrent(body: body) ? "Source text matches the reviewed version." : "SOURCE TEXT CHANGED: these earlier transcriptions have not been checked against the current text."

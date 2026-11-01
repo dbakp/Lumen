@@ -1,0 +1,33 @@
+--- /tmp/LumenBatch31Verification/UITest-source-r9.swift	2026-11-01 10:29:07
++++ LumenUITests/LumenSmokeTests.swift	2026-11-01 10:29:07
+@@ -2893,7 +2893,6 @@
+     func captureIdentifierText(_ first: XCUIElement, through last: XCUIElement? = nil, prefix: String, contentGestures: Bool = false) {
+         let end = last ?? first
+         XCTAssertTrue(first.waitForExistence(timeout: 5) && end.exists)
+-        settleLabFrame(first)
+         func frame() -> CGRect { first.frame.union(end.frame) }
+         func bounds() -> (CGFloat, CGFloat) {
+             // The chat's first bubble rests just below native navigation at
+@@ -2919,8 +2918,21 @@
+             }
+             let start = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: x, dy: y))
+             let finish = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: x, dy: y + (down ? step : -step)))
+-            start.press(forDuration: 0.05, thenDragTo: finish); settleLabFrame(first)
++            start.press(forDuration: 0.05, thenDragTo: finish)
++            let firstFrame = first.frame
++            if !contentGestures || (!firstFrame.isEmpty && firstFrame.minY.isFinite && firstFrame.minX.isFinite) { settleLabFrame(first) }
++        }
++        if contentGestures {
++            // Offscreen native text views expose an empty AX frame. Bring
++            // the first marker back into view before asking it to settle.
++            for _ in 0..<64 {
++                let value = first.frame
++                if !value.isEmpty && value.minY.isFinite && value.minX.isFinite { break }
++                let (top, bottom) = bounds()
++                move(down: true, distance: (bottom - top) * 0.55)
++            }
+         }
++        settleLabFrame(first)
+         for _ in 0..<24 {
+             let (top, bottom) = bounds(), value = frame()
+             if value.minY >= top - 2 && value.minY < bottom - 44 { break }

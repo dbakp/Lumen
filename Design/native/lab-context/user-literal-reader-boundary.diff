@@ -1,0 +1,170 @@
+--- /tmp/LumenBatch31Verification/user-repair-before/CoachView.swift	2026-11-01 10:22:38
++++ Lumen/Views/CoachView.swift	2026-11-01 10:21:41
+@@ -229,14 +229,16 @@
+     let msg: ChatMessage
+     var isUser: Bool { msg.role == .user }
+     @ViewBuilder var messageText: some View {
+-        if !isUser && msg.recordContext?.mode == .lookup {
++        if isUser {
++            FHIRLiteralText(text: msg.text, identifier: "userMessage", lineSpacing: 3, color: Theme.onAccent, fitsContentWidth: true)
++        } else if msg.recordContext?.mode == .lookup {
+             FHIRLiteralText(text: msg.text, identifier: "coachMessage", lineSpacing: 3)
+                 .frame(maxWidth: .infinity, alignment: .leading)
+         } else {
+             Text(LocalizedStringKey(msg.text)).font(.body).lineSpacing(3)
+-                .foregroundStyle(isUser ? Theme.onAccent : Theme.text)
++                .foregroundStyle(Theme.text)
+                 .textSelection(.enabled)
+-                .accessibilityIdentifier(isUser ? "userMessage" : "coachMessage")
++                .accessibilityIdentifier("coachMessage")
+         }
+     }
+     var body: some View {
+--- /tmp/LumenBatch31Verification/user-repair-before/FHIRSourceViews.swift	2026-11-01 10:22:38
++++ Lumen/Views/FHIRSourceViews.swift	2026-11-01 10:21:41
+@@ -7,6 +7,8 @@
+     let text: String
+     var identifier = "fhirFullText"
+     var lineSpacing: CGFloat = 0
++    var color: Color = Theme.text
++    var fitsContentWidth = false
+     @Environment(\.dynamicTypeSize) private var typeSize
+     final class Coordinator: NSObject, NSLayoutManagerDelegate {
+         func layoutManager(_ layoutManager: NSLayoutManager, shouldBreakLineByHyphenatingBeforeCharacterAt charIndex: Int) -> Bool { false }
+@@ -26,7 +28,7 @@
+         return view
+     }
+     func updateUIView(_ view: UITextView, context: Context) {
+-        let value = FHIRLiteralTypography.value(text, size: typeSize, color: UIColor(Theme.text), wrapping: .byWordWrapping, lineSpacing: lineSpacing)
++        let value = FHIRLiteralTypography.value(text, size: typeSize, color: UIColor(color), wrapping: .byWordWrapping, lineSpacing: lineSpacing)
+         if view.attributedText?.isEqual(to: value) != true {
+             let range = view.selectedRange
+             view.attributedText = value
+@@ -39,8 +41,12 @@
+     }
+     func sizeThatFits(_ proposal: ProposedViewSize, uiView: UITextView, context: Context) -> CGSize? {
+         guard let width = proposal.width, width.isFinite, width > 0 else { return nil }
+-        let size = uiView.sizeThatFits(CGSize(width: width, height: .greatestFiniteMagnitude))
+-        return CGSize(width: width, height: ceil(size.height))
++        // Short question bubbles keep their natural width; long questions use
++        // the proposed wrapping width. Source readers retain their full width.
++        let naturalWidth = fitsContentWidth ? ceil(uiView.attributedText.size().width) + 1 : width
++        let fittedWidth = naturalWidth.isFinite ? min(width, max(1, naturalWidth)) : width
++        let size = uiView.sizeThatFits(CGSize(width: fittedWidth, height: .greatestFiniteMagnitude))
++        return CGSize(width: fittedWidth, height: ceil(size.height))
+     }
+ }
+ 
+--- /tmp/LumenBatch31Verification/user-repair-before/LumenSmokeTests.swift	2026-11-01 10:22:38
++++ LumenUITests/LumenSmokeTests.swift	2026-11-01 10:21:55
+@@ -7,6 +7,7 @@
+ final class LumenSmokeTests: XCTestCase {
+     var app: XCUIApplication!
+     var coachMessages: XCUIElementQuery { app.descendants(matching: .any).matching(identifier: "coachMessage") }
++    var userMessages: XCUIElementQuery { app.descendants(matching: .any).matching(identifier: "userMessage") }
+     var referenceExcerpt: XCUIElement { app.descendants(matching: .any).matching(identifier: "reference-excerpt").firstMatch }
+     var fhirFullText: XCUIElement { app.descendants(matching: .any).matching(identifier: "fhirFullText").firstMatch }
+ 
+@@ -589,10 +590,10 @@
+         XCTAssertTrue(app.navigationBars["Voice draft"].waitForNonExistence(timeout: 5))
+         XCTAssertTrue((composer.value as? String ?? "").contains("Keep this typed question.\nI drank 375"))
+         XCTAssertTrue((composer.value as? String ?? "").contains("shoulder pain"))
+-        XCTAssertFalse(app.staticTexts["userMessage"].exists); XCTAssertFalse(coachMessages.firstMatch.exists); snap("305-voice-unsent-draft")
++        XCTAssertFalse(userMessages.firstMatch.exists); XCTAssertFalse(coachMessages.firstMatch.exists); snap("305-voice-unsent-draft")
+         tap("coachSend")
+         XCTAssertTrue(coachMessages.firstMatch.waitForExistence(timeout: 30))
+-        XCTAssertEqual(app.staticTexts.matching(identifier: "userMessage").count, 1)
++        XCTAssertEqual(userMessages.count, 1)
+         let review = app.buttons["Review health entries"].firstMatch; reveal(review); review.tap()
+         XCTAssertTrue(app.navigationBars["Review health entries"].waitForExistence(timeout: 10)); snap("306-voice-health-review")
+         let water = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Water'")).firstMatch
+@@ -619,7 +620,7 @@
+         tap("cancelVoice"); XCTAssertTrue(app.alerts["Discard this voice draft?"].waitForExistence(timeout: 5)); snap("309-voice-discard-choice")
+         tap("Keep reviewing"); tap("cancelVoice"); tap("Discard draft")
+         XCTAssertTrue(app.navigationBars["Voice draft"].waitForNonExistence(timeout: 5))
+-        XCTAssertFalse(app.staticTexts["userMessage"].exists)
++        XCTAssertFalse(userMessages.firstMatch.exists)
+         tap("coachVoice")
+         let start = app.buttons["startVoice"].firstMatch; revealVoice(start); XCTAssertTrue(start.isHittable)
+         XCTAssertFalse(app.textViews["voiceDraftText"].exists); snap("310-voice-clean-reopen"); tap("cancelVoice")
+@@ -658,8 +659,8 @@
+         let input = app.descendants(matching: .any).matching(identifier: "coachInput").firstMatch
+         input.tap(); input.typeText("Synthetic keyboard submission.\n")
+         XCTAssertTrue(coachMessages.firstMatch.waitForExistence(timeout: 30))
+-        XCTAssertEqual(app.staticTexts.matching(identifier: "userMessage").count, 1)
+-        XCTAssertEqual(app.staticTexts["userMessage"].firstMatch.label, "Synthetic keyboard submission.")
++        XCTAssertEqual(userMessages.count, 1)
++        XCTAssertEqual(userMessages.firstMatch.label, "Synthetic keyboard submission.")
+         let cleared = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+             (input.value as? String ?? "").isEmpty && !self.app.buttons["coachSend"].isEnabled
+         }, object: input)
+@@ -668,7 +669,7 @@
+         input.tap(); input.typeText("My next unsent synthetic question.")
+         XCTAssertEqual(input.value as? String, "My next unsent synthetic question.")
+         XCTAssertTrue(app.buttons["coachSend"].isEnabled)
+-        XCTAssertEqual(app.staticTexts.matching(identifier: "userMessage").count, 1)
++        XCTAssertEqual(userMessages.count, 1)
+         snap("326-composer-new-unsent-text")
+     }
+     func testVoiceActualAvailability() throws {
+@@ -679,7 +680,7 @@
+         XCTAssertEqual(XCTWaiter.wait(for: [known], timeout: 30), .completed)
+         XCTAssertFalse(app.staticTexts["voiceFixture"].exists); snap("314-voice-actual-availability")
+         tap("cancelVoice"); XCTAssertTrue(app.navigationBars["Voice draft"].waitForNonExistence(timeout: 5))
+-        XCTAssertFalse(app.staticTexts["userMessage"].exists)
++        XCTAssertFalse(userMessages.firstMatch.exists)
+     }
+ 
+     private let backupPassword = "Synthetic backup passphrase 42"
+@@ -2532,7 +2533,7 @@
+         app.navigationBars["Review water"].buttons.element(boundBy: 0).tap(); tap("Close")
+         XCTAssertTrue(app.alerts["Discard your unsaved changes?"].waitForExistence(timeout: 5)); snap("337-water-large-discard")
+         tap("Keep reviewing"); tap("Close"); tap("Discard unsaved drafts")
+-        XCTAssertEqual(app.staticTexts.matching(identifier: "userMessage").count, 1)
++        XCTAssertEqual(userMessages.count, 1)
+     }
+ 
+     func testHealthLogSourceDisclosure() throws {
+@@ -2581,7 +2582,7 @@
+         XCTAssertEqual(amount.value as? String, "350"); snap("332-water-keyboard-dismissed")
+         let confirm = app.buttons["confirmChatHealthLog"].firstMatch; reveal(confirm); XCTAssertTrue(confirm.isEnabled)
+         app.navigationBars["Review water"].buttons.element(boundBy: 0).tap(); tap("Close")
+-        XCTAssertEqual(app.staticTexts.matching(identifier: "userMessage").count, 1)
++        XCTAssertEqual(userMessages.count, 1)
+     }
+ 
+     func openScheduledPlan() {
+@@ -2714,7 +2715,7 @@
+             askLibrary("COHERENCECANARY")
+             let reply = coachMessages.firstMatch
+             XCTAssertTrue(reply.label.contains("*literal* [source](https://synthetic.invalid)") && reply.label.contains("COHERENCECANARY"))
+-            let question = app.staticTexts["userMessage"].firstMatch
++            let question = userMessages.firstMatch
+             let references = app.buttons["libraryReferencesToggle"].firstMatch
+             captureIdentifierText(question, through: references, prefix: "835-lab-context-" + prefix + "-literal-chat", contentGestures: true)
+             _ = openReviewedLabReference()
+@@ -2747,6 +2748,24 @@
+             }
+         }
+     }
++    func testLiteralUserQuestionPresentation() throws {
++        finishOnboarding()
++        for large in [false, true] {
++            app.terminate()
++            app.launchArguments = ["-lumen.appearance", large ? "dark" : "light"] + (large ? ["-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"] : [])
++            app.launch(); tab("Assistant")
++            let appearance = large ? "dark-xxxl" : "light"
++            for (name, question) in [("identifier", "COHERENCECANARY"), ("source-characters", "*literal* [source](https://synthetic.invalid)"), ("short", "Hi")] {
++                if userMessages.count > 0 { tap("Conversation actions"); tap("New conversation") }
++                askLibrary(question)
++                let sent = userMessages.firstMatch
++                XCTAssertEqual(userMessages.count, 1); XCTAssertEqual(sent.label, question)
++                let review = app.buttons["Review health entries"].firstMatch
++                captureIdentifierText(sent, through: review, prefix: "836-user-question-" + appearance + "-" + name, contentGestures: true)
++                if !large && name == "short" { XCTAssertLessThan(sent.frame.width, 80, "Short user messages must retain a content-sized bubble") }
++            }
++        }
++    }
+     func testProviderTransportFallback() throws {
+         app.terminate(); app.launchArguments = ["-providerTransportUITestMode"]; app.launch()
+         if app.buttons["Get started"].waitForExistence(timeout: 2) { finishOnboarding() }

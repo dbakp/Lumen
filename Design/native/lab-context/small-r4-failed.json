@@ -1,0 +1,60 @@
+{
+  "status": "failed",
+  "sourceMap": "source-r12.json",
+  "case": "testReviewedLabContextSourceStatesPresentation",
+  "caseSeconds": 859.187,
+  "summary": {
+    "devicesAndConfigurations": [
+      {
+        "device": {
+          "architecture": "arm64",
+          "deviceId": "C5F84641-E9B2-4184-8EA8-C57878961137",
+          "deviceName": "Lumen Batch31 compact",
+          "modelName": "iPhone SE (3rd generation)",
+          "osBuildNumber": "24A434",
+          "osVersion": "27.0",
+          "platform": "iOS Simulator"
+        },
+        "expectedFailures": 0,
+        "failedTests": 1,
+        "passedTests": 0,
+        "skippedTests": 0,
+        "testPlanConfiguration": {
+          "configurationId": "1",
+          "configurationName": "Test Scheme Action"
+        }
+      }
+    ],
+    "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+    "expectedFailures": 0,
+    "failedTests": 1,
+    "finishTime": 1793527084.081,
+    "passedTests": 0,
+    "result": "Failed",
+    "runtimeWarnings": [],
+    "skippedTests": 0,
+    "startTime": 1793526214.609,
+    "statistics": [],
+    "testFailures": [
+      {
+        "failureText": "failed - The fixture's complete content must be visible for capture",
+        "targetName": "LumenUITests",
+        "testIdentifier": 1,
+        "testIdentifierString": "LumenSmokeTests/testReviewedLabContextSourceStatesPresentation()",
+        "testIdentifierURL": "test://com.apple.xcode/Lumen/LumenUITests/LumenSmokeTests/testReviewedLabContextSourceStatesPresentation",
+        "testName": "testReviewedLabContextSourceStatesPresentation()"
+      }
+    ],
+    "title": "Test - Lumen",
+    "topInsights": [],
+    "totalTestCount": 1
+  },
+  "logSHA256": "657742589df0b4304b75b25499e32ba15774fe253655f785a7ee9f27f4445f03",
+  "finding": "Normal chat/source/retained/omission/actions and complete dark chat/source through final footer were reached. The later retained-caption reveal helper required the entire522.5point paragraph in one viewport with very little remaining margin, and its measured-overflow drags alternated clipped edges. The actual failing frame is(24,304,327,522.5). No complete compact pass is inferred. Replace that one-frame requirement with bounded overlapping caption captures, then retain existing footer/action sweeps. No app/UI source changes.",
+  "repairBoundary": "retained-caption-scroll-boundary.diff",
+  "failureOriginal": {
+    "path": "Design/native/lab-context/small-r4-failed/retained-caption-single-frame.png",
+    "sha256": "294922f561a53bc9ff79805cfb4e424b070c7dffd1cbfd14124fe77ebf496cc1",
+    "exportedFileName": "9928669F-EC0F-4CE8-80BC-A4637B93E30E.png"
+  }
+}

@@ -1,0 +1,22 @@
+--- /tmp/LumenBatch31Verification/UITest-source-r10.swift	2026-11-01 10:34:03
++++ LumenUITests/LumenSmokeTests.swift	2026-11-01 10:34:04
+@@ -2766,6 +2766,19 @@
+             }
+         }
+     }
++    func testReviewedLabContextLiteralChatTransition() throws {
++        try prepareReviewedLabContext(["-lumen.appearance", "light"])
++        app.terminate()
++        app.launchArguments = ["-lumen.appearance", "dark", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]
++        app.launch(); tab("Assistant"); askLibrary("COHERENCECANARY")
++        XCTAssertEqual(userMessages.firstMatch.label, "COHERENCECANARY")
++        let reply = coachMessages.firstMatch
++        XCTAssertTrue(reply.label.hasPrefix("Matching saved text"))
++        XCTAssertTrue(reply.label.contains("Reported result: <4,0") && reply.label.contains("*literal* [source](https://synthetic.invalid)"))
++        XCTAssertFalse(reply.label.contains("PRIVATE-LAB-CONTEXT-CANARY"))
++        captureIdentifierText(userMessages.firstMatch, through: app.buttons["libraryReferencesToggle"].firstMatch,
++                              prefix: "837-lab-context-dark-xxxl-current-question-and-reply", contentGestures: true)
++    }
+     func testProviderTransportFallback() throws {
+         app.terminate(); app.launchArguments = ["-providerTransportUITestMode"]; app.launch()
+         if app.buttons["Get started"].waitForExistence(timeout: 2) { finishOnboarding() }

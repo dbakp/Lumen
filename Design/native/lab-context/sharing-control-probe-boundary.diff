@@ -1,0 +1,49 @@
+--- /tmp/LumenBatch31Verification/UITest-source-r14.swift	2026-11-01 11:46:48
++++ LumenUITests/LumenSmokeTests.swift	2026-11-01 11:46:48
+@@ -17,7 +17,8 @@
+         // The focused wrapping probe reuses this dedicated simulator's saved
+         // synthetic record, with a public Files-import fallback if absent.
+         app.launchArguments = name.contains("testFHIRLiteralWrappingSnapshots") || name.contains("testLiteralIdentifier") || name.contains("testProviderCitationRejection") || name.contains("testProviderTransportFallback") ? ["-librarySearchRemoteUITestMode"] : ["-resetForUITests"]
+-        app.launch()
++        if name.contains("testReviewedLabSharingControlProbe") { app.activate() }
++        else { app.launch() }
+     }
+ 
+     func historyIdentity(_ fields: [String]) -> String {
+@@ -456,7 +457,7 @@
+     }
+ 
+     func reveal(_ element: XCUIElement, towardsTop: Bool = false, activationPoint: CGVector? = nil) {
+-        for _ in 0..<16 {
++        for step in 0..<32 {
+             let targetIdentifier = element.exists ? element.identifier : ""
+             let input = app.descendants(matching: .any).matching(identifier: "coachInput").firstMatch
+             let composerVisible = input.exists && input.isHittable && targetIdentifier != "coachInput"
+@@ -482,6 +483,7 @@
+                 let point = activationPoint.map { CGPoint(x: frame.minX + frame.width * $0.dx, y: frame.minY + frame.height * $0.dy) }
+                 let y = point?.y ?? frame.midY
+                 let reachable = point.map { $0.x > app.frame.minX + 12 && $0.x < app.frame.maxX - 12 } ?? element.isHittable
++                if name.contains("testReviewedLabSharingControlProbe") { print("Sharing reveal step\(step): frame \(frame), point \(String(describing: point)), bounds \(top)...\(bottom), hittable \(element.isHittable), enabled \(element.isEnabled)") }
+                 if !frame.isEmpty && reachable && y > top && y < bottom { return }
+             }
+             // Lazy stacks can remove the target from the accessibility tree.
+@@ -2792,6 +2794,19 @@
+         XCTAssertFalse(reply.label.contains("PRIVATE-LAB-CONTEXT-CANARY"))
+         captureReviewedLabChat("837-lab-context-dark-xxxl-current-question-and-reply")
+     }
++    func testReviewedLabSharingControlProbe() throws {
++        if !app.navigationBars["Document"].exists {
++            tab("Library")
++            let record = app.buttons["Several reviewed results"].firstMatch
++            reveal(record); record.tap()
++        }
++        let toggle = app.switches["Use in assistant"].firstMatch
++        XCTAssertTrue(toggle.waitForExistence(timeout: 5))
++        print("Sharing initial: frame \(toggle.frame), hittable \(toggle.isHittable), enabled \(toggle.isEnabled), value \(String(describing: toggle.value))")
++        nativeSwitch("Use in assistant", enabled: true)
++        print("Sharing final: frame \(toggle.frame), hittable \(toggle.isHittable), enabled \(toggle.isEnabled), value \(String(describing: toggle.value))")
++        snap("839-sharing-control-probe")
++    }
+     func captureReviewedLabChat(_ prefix: String) {
+         // The native question frame clips when it scrolls offscreen. Capture
+         // it while visible, then continue from the shared SwiftUI action.

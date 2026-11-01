@@ -1,0 +1,14 @@
+--- /tmp/LumenBatch31Verification/UITest-source-r7.swift	2026-11-01 09:58:43
++++ LumenUITests/LumenSmokeTests.swift	2026-11-01 09:58:42
+@@ -2877,7 +2877,10 @@
+         settleLabFrame(first)
+         func frame() -> CGRect { first.frame.union(end.frame) }
+         func bounds() -> (CGFloat, CGFloat) {
+-            let top = app.navigationBars.firstMatch.frame.maxY + 12
++            // The chat's first bubble rests just below native navigation at
++            // its upper scroll limit. Measure visible content, rather than
++            // requiring the extra inset used by the standalone source sheet.
++            let top = app.navigationBars.firstMatch.frame.maxY + (contentGestures ? 2 : 12)
+             let input = app.descendants(matching: .any).matching(identifier: "coachInput").firstMatch
+             let bar = app.tabBars.firstMatch
+             let bottom = input.exists && input.isHittable ? input.frame.minY - 12 : (bar.exists && bar.isHittable ? bar.frame.minY - 12 : app.frame.maxY - 40)

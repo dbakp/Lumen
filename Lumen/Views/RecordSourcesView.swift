@@ -19,7 +19,9 @@ struct RecordSourcesView: View {
             }.buttonStyle(.plain).accessibilityValue(expanded ? "Expanded" : "Collapsed").accessibilityIdentifier("libraryReferencesToggle")
             if expanded {
             VStack(alignment: .leading, spacing: 12) {
-                Text(context.mode == .lookup ? "Exact excerpts from saved text. No AI interpretation." : "These excerpts accompanied the question. A reference marks text cited by the model; it doesn't verify the claim.")
+                Text(hasReviewedFields
+                     ? (context.mode == .lookup ? "Saved excerpts and reviewed lab fields. No AI interpretation." : "Saved excerpts and reviewed lab fields accompanied this question. A reference doesn't verify a claim.")
+                     : (context.mode == .lookup ? "Exact excerpts from saved text. No AI interpretation." : "These excerpts accompanied the question. A reference marks text cited by the model; it doesn't verify the claim."))
                     .font(.footnote).foregroundStyle(Theme.secondary)
                 Text(context.searchedDocuments == context.sharedDocuments
                      ? "\(context.sharedDocuments.formatted()) shared document\(context.sharedDocuments == 1 ? "" : "s") searched"
@@ -60,6 +62,7 @@ struct RecordSourcesView: View {
         }.tint(Theme.accent)
             .sheet(item: $selected) { RecordReferenceView(passage: $0, context: context) }
     }
+    private var hasReviewedFields: Bool { context.passages.contains { !($0.reviewedLabFacts ?? []).isEmpty } }
     private var method: String {
         switch context.meaningSearch?.status {
         case .used: return "Keyword search + English related topics · on this iPhone"
@@ -91,6 +94,7 @@ private struct RecordReferenceView: View {
     @ObservedObject private var companion = CompanionStore.shared
     @Environment(\.dismiss) private var dismiss
     var current: HealthDocument? { RecordRetrieval.currentDocument(for: passage, in: companion.documents) }
+    var hasReviewedFields: Bool { !(passage.reviewedLabFacts ?? []).isEmpty }
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -107,22 +111,40 @@ private struct RecordReferenceView: View {
                     }
                     VStack(alignment: .leading, spacing: 10) {
                         Text("Text saved with this reply").font(.headline)
-                        Text(verbatim: passage.excerpt).font(.body).lineSpacing(4).textSelection(.enabled).accessibilityIdentifier("reference-excerpt")
+                        FHIRLiteralText(text: passage.excerpt, identifier: "reference-excerpt", lineSpacing: 4)
+                            .frame(maxWidth: .infinity, alignment: .leading)
                         Text("Selected \(context.capturedAt.formatted(date: .abbreviated, time: .shortened)) · document updated \(passage.updatedAt.formatted(date: .abbreviated, time: .omitted))")
                             .font(.caption).foregroundStyle(Theme.secondary)
+                    }
+                    if !passage.reviewedLabText.isEmpty {
+                        VStack(alignment: .leading, spacing: 10) {
+                            Text("Reviewed lab fields").font(.headline).accessibilityIdentifier("reference-lab-fields-heading")
+                            if hasReviewedFields {
+                                Text("Kept with this excerpt. Reviewed fields can differ from the saved source.")
+                                    .font(.footnote).foregroundStyle(Theme.secondary)
+                            }
+                            ForEach(passage.reviewedLabFacts ?? [], id: \.observation.id) { fact in
+                                FHIRLiteralText(text: fact.referenceText, identifier: "reference-lab-fact-" + fact.observation.id)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            }
+                            if let omitted = passage.omittedReviewedLabFacts, omitted > 0 {
+                                Text("\(omitted) overlapping reviewed results could not fit here. Open the record in Library to read their complete fields.")
+                                    .font(.footnote).foregroundStyle(Theme.secondary).accessibilityIdentifier("reference-lab-facts-omitted")
+                            }
+                        }
                     }
                     Divider()
                     VStack(alignment: .leading, spacing: 12) {
                         if let current {
                             if !RecordRetrieval.isCurrent(passage, documents: companion.documents, requireSharing: false) {
-                                Label("The Library text has changed", systemImage: "pencil").font(.headline)
-                                Text("This reply keeps the earlier excerpt. Open Library to read the current version.").font(.subheadline).foregroundStyle(Theme.secondary)
+                                Label(hasReviewedFields ? "The Library record has changed" : "The Library text has changed", systemImage: "pencil").font(.headline)
+                                Text(hasReviewedFields ? "This reply keeps the earlier text and reviewed fields. Open Library to read the current version." : "This reply keeps the earlier excerpt. Open Library to read the current version.").font(.subheadline).foregroundStyle(Theme.secondary)
                             } else { Label("Matches the current saved text", systemImage: "checkmark").font(.headline) }
-                            if !current.includeInAssistant { Text("Assistant sharing is off for this document. This saved excerpt stays with the earlier reply.").font(.subheadline).foregroundStyle(Theme.secondary) }
+                            if !current.includeInAssistant { Text(hasReviewedFields ? "Assistant sharing is off for this document. This saved excerpt and its reviewed fields stay with the earlier reply." : "Assistant sharing is off for this document. This saved excerpt stays with the earlier reply.").font(.subheadline).foregroundStyle(Theme.secondary) }
                             NavigationLink { DocumentDetailView(documentID: current.id) } label: { Label("Open in Library", systemImage: "doc.text") }.foregroundStyle(Theme.accent).frame(minHeight: 44)
                         } else {
                             Label("Document removed from Library", systemImage: "doc.badge.minus").font(.headline)
-                            Text("This reply keeps the earlier excerpt. Delete the conversation and any saved copies to remove their excerpts.").font(.subheadline).foregroundStyle(Theme.secondary)
+                            Text(hasReviewedFields ? "This reply keeps the earlier text and reviewed fields. Delete the conversation and saved copies to remove them." : "This reply keeps the earlier excerpt. Delete the conversation and any saved copies to remove their excerpts.").font(.subheadline).foregroundStyle(Theme.secondary)
                         }
                         Text("Saved text may contain errors. Check names, numbers and units against the original.").font(.footnote).foregroundStyle(Theme.secondary)
                     }

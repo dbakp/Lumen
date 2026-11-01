@@ -1,0 +1,36 @@
+--- source-r4/LumenSmokeTests.swift
++++ SourceStatesR3/LumenSmokeTests.swift
+@@ -1746,15 +1746,25 @@
+     func settleLabFrame(_ element: XCUIElement) {
+         var frame = CGRect.null
+         var stableSince = ProcessInfo.processInfo.systemUptime
+-        let stable = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+-            guard element.exists else { return false }
+-            let next = element.frame, now = ProcessInfo.processInfo.systemUptime
+-            if frame.isNull || abs(next.minX - frame.minX) > 0.5 || abs(next.minY - frame.minY) > 0.5 || abs(next.width - frame.width) > 0.5 || abs(next.height - frame.height) > 0.5 {
+-                frame = next; stableSince = now
++        let deadline = stableSince + 8
++        var observations: [String] = []
++        // Sample current native geometry directly. Observational source-sheet
++        // probes retain stable raw frames despite intermittent predicate waits.
++        while ProcessInfo.processInfo.systemUptime < deadline {
++            if element.exists {
++                let next = element.frame, now = ProcessInfo.processInfo.systemUptime
++                if frame.isNull || abs(next.minX - frame.minX) > 0.5 || abs(next.minY - frame.minY) > 0.5 || abs(next.width - frame.width) > 0.5 || abs(next.height - frame.height) > 0.5 {
++                    frame = next; stableSince = now
++                }
++                observations.append("\(next), stable \(now - stableSince)s")
++                if observations.count > 12 { observations.removeFirst() }
++                if !next.isEmpty && now - stableSince >= 0.5 { return }
++            } else {
++                observations.append("Element absent")
+             }
+-            return !next.isEmpty && now - stableSince >= 0.5
+-        }, object: element)
+-        XCTAssertEqual(XCTWaiter.wait(for: [stable], timeout: 8), .completed)
++            Thread.sleep(forTimeInterval: 0.1)
++        }
++        XCTFail("Native frame did not settle within half a point: " + observations.joined(separator: "; "))
+     }
+     func revealLabExcerpt(_ element: XCUIElement) {
+         XCTAssertTrue(element.waitForExistence(timeout: 5)); settleLabFrame(element)
