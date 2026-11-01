@@ -2,7 +2,7 @@ import Foundation
 
 @MainActor
 enum HealthWriteOrderChecks {
-    private final class Gate {
+    @MainActor private final class Gate {
         private var open = false
         private var waiters: [CheckedContinuation<Void, Never>] = []
         func wait() async {
@@ -15,7 +15,7 @@ enum HealthWriteOrderChecks {
             for waiter in pending { waiter.resume() }
         }
     }
-    private final class Probe {
+    @MainActor private final class Probe {
         let entered = Gate(), release = Gate()
         var events: [String] = []
         var present = false

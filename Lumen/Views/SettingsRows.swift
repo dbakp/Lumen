@@ -1,5 +1,26 @@
 import SwiftUI
 
+struct SettingsToggle: View {
+    @Environment(\.dynamicTypeSize) private var textSize
+    let title: String
+    let selection: Binding<Bool>
+    let identifier: String
+    init(_ title: String, selection: Binding<Bool>, identifier: String) {
+        self.title = title; self.selection = selection; self.identifier = identifier
+    }
+    var body: some View {
+        Group {
+            if textSize.isAccessibilitySize {
+                VStack(alignment: .leading, spacing: 12) {
+                    Text(title).fixedSize(horizontal: false, vertical: true).accessibilityHidden(true)
+                    control.labelsHidden()
+                }
+            } else { control }
+        }
+    }
+    private var control: some View { Toggle(title, isOn: selection).accessibilityIdentifier(identifier) }
+}
+
 /// Keep values readable at full Dynamic Type instead of competing for two
 /// narrow columns. Ordinary text sizes retain the native grouped-form row.
 struct SettingsValueRow: View {

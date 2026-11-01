@@ -52,6 +52,7 @@ let package = Package(
             "Lumen/Services/SemanticSearchService.swift",
             "Lumen/Services/SyncCoordinator.swift",
             "Lumen/Services/ProfileSettingsCommit.swift",
+            "Lumen/Services/PreferenceNativeProbe.swift",
             "Lumen/Services/NutritionEngine.swift"
 ],
         sources: [
@@ -121,6 +122,8 @@ let package = Package(
             "Lumen/Algorithms/LocalHealthCorrection.swift",
             "Lumen/Algorithms/ProfileSettings.swift",
             "Lumen/Algorithms/OrderedHealthWrites.swift",
+            "Lumen/Algorithms/ReminderEnableRequests.swift",
+            "Lumen/Algorithms/OrderedReminderUpdates.swift",
             "Lumen/Algorithms/HealthContextPrompt.swift",
             "Lumen/Algorithms/CoachingEngine.swift",
             "Lumen/Algorithms/SleepAlgorithms.swift",
@@ -148,6 +151,7 @@ let package = Package(
             "Tests/HealthWriteOrderChecks.swift",
             "Tests/LocalCommitChecks.swift",
             "Tests/ProfileSettingsChecks.swift",
+            "Tests/PreferenceChecks.swift",
             "Tests/RetainedEvidenceChecks.swift",
             "Tests/BackupPackageChecks.swift",
             "Tests/BackupUIFixtures.swift",

@@ -7,6 +7,7 @@ struct ConnectionsView: View {
     @ObservedObject private var companion = CompanionStore.shared
     @ObservedObject private var hk = HealthKitService.shared
     @ObservedObject private var delivery = HealthBackgroundSync.shared
+    @ObservedObject private var notifications = NotificationManager.shared
     @Environment(\.dynamicTypeSize) private var typeSize
     @State private var importing = false
     @State private var parsing = false
@@ -18,6 +19,9 @@ struct ConnectionsView: View {
     @State private var filename = ""
     @State private var error: String?
     @State private var clear = false
+    @State private var reminderFailure: SettingsSaveFailure?
+    @State private var reminderOwner = UUID()
+    @State private var notificationAccessDenied = false
     private var deliveryStatus: String { delivery.enabled && !hk.isAuthorized ? "Waiting for Apple Health connection" : delivery.registration }
     private var backgroundToggle: some View {
         Toggle("Background Health updates", isOn: Binding(get: { delivery.enabled }, set: { delivery.setEnabled($0) }))
@@ -134,14 +138,32 @@ struct ConnectionsView: View {
                 if !companion.imports.isEmpty { Button("Clear imported history", role: .destructive) { clear = true } }
             }
             Section {
-                Toggle("Contextual check-ins", isOn: $companion.reminders.enabled)
-                    .onChange(of: companion.reminders.enabled) { _, on in
-                        if on { Task { if !(await NotificationManager.shared.request()) { companion.reminders.enabled = false }; NotificationManager.shared.refreshContext(health: health) } }
+                SettingsToggle("Contextual check-ins", selection: Binding(get: { companion.reminders.enabled }, set: { on in
+                    if on { enableCheckIns() }
+                    else { disableCheckIns() }
+                }), identifier: "contextualCheckIns").disabled(companion.requestingReminderAccess)
+                if companion.requestingReminderAccess { ProgressView("Requesting notification access…") }
+                if notificationAccessDenied {
+                    Text("Notifications are off in iPhone settings.").foregroundStyle(Theme.secondary)
+                    Button("Open notification settings") {
+                        if let url = URL(string: UIApplication.openNotificationSettingsURLString) { UIApplication.shared.open(url) }
                     }
-                Picker("Quiet hours start", selection: $companion.reminders.quietStart) { ForEach(0..<24, id: \.self) { Text(String(format: "%02d:00", $0)).tag($0) } }
-                Picker("Quiet hours end", selection: $companion.reminders.quietEnd) { ForEach(0..<24, id: \.self) { Text(String(format: "%02d:00", $0)).tag($0) } }
-                Toggle("Show health details on lock screen", isOn: $companion.reminders.showDetails)
-            } header: { Text("Fewer, more useful reminders") } footer: { Text("At most one contextual check-in a day, only when your current logs suggest a useful action. Today's pending check-in is updated when you log or sync. No repeating generic nudges. Lumen must run to read new data; a scheduled check-in may not reflect changes made elsewhere afterwards. Equal start and end means quiet all day. Health details stay hidden by default.") }
+                }
+                SettingsPicker("Quiet hours start", value: String(format: "%02d:00", companion.reminders.quietStart),
+                    selection: reminderBinding(\.quietStart, "quiet hours start"), identifier: "reminderQuietStart") {
+                    ForEach(0..<24, id: \.self) { Text(String(format: "%02d:00", $0)).tag($0) }
+                }
+                SettingsPicker("Quiet hours end", value: String(format: "%02d:00", companion.reminders.quietEnd),
+                    selection: reminderBinding(\.quietEnd, "quiet hours end"), identifier: "reminderQuietEnd") {
+                    ForEach(0..<24, id: \.self) { Text(String(format: "%02d:00", $0)).tag($0) }
+                }
+                SettingsToggle("Show health details on lock screen", selection: reminderBinding(\.showDetails, "lock-screen details"), identifier: "reminderDetails")
+                if let issue = notifications.schedulingIssue {
+                    Text(issue).foregroundStyle(Theme.secondary).accessibilityIdentifier("reminderSchedulingIssue")
+                    Button("Retry check-in") { notifications.refreshContext(health: health) }
+                }
+            } header: { Text("Fewer, more useful reminders") } footer: { Text("At most one contextual check-in a day, only when your current logs suggest a useful action. Today's pending check-in is updated when you log or sync. No repeating generic nudges. Lumen must run to read new data; a scheduled check-in may not reflect changes made elsewhere afterwards. Equal start and end means quiet all day. Health details stay hidden by default.").foregroundStyle(Theme.secondary).accessibilityIdentifier("reminderDisclosure") }
+                .settingsSaveAlert($reminderFailure)
         }.scrollContentBackground(.hidden).background(Theme.bg).navigationTitle("Connections").navigationBarTitleDisplayMode(.inline).tint(Theme.accent)
             .toolbar {
                 if parsing {
@@ -152,10 +174,28 @@ struct ConnectionsView: View {
                     }
                 }
             }
-            .onDisappear { cancelImport(showMessage: false) }
+            .onDisappear { cancelImport(showMessage: false); companion.cancelReminderEnable(owner: reminderOwner) }
+            .task { await notifications.refreshAuthorization() }
             .fileImporter(isPresented: $importing, allowedContentTypes: [.zip, .xml, .commaSeparatedText, .json]) { result in read(result) }
             .alert("Couldn't import health data", isPresented: Binding(get: { error != nil }, set: { if !$0 { error = nil } })) { Button("OK") { error = nil } } message: { Text(error ?? "") }
             .confirmationDialog("Clear imported measurements and exported workouts?", isPresented: $clear, titleVisibility: .visible) { Button("Clear imported history", role: .destructive) { companion.clearImports() } }
+    }
+    func reminderBinding<T>(_ key: WritableKeyPath<ReminderPreferences, T>, _ label: String) -> Binding<T> {
+        Binding(get: { companion.reminders[keyPath: key] }, set: { value in reminderSetting(label) { $0[keyPath: key] = value } })
+    }
+    func reminderSetting(_ label: String, _ change: @escaping (inout ReminderPreferences) -> Void) {
+        do { try companion.updateRemindersChecked(change) }
+        catch { reminderFailure = .init(label, error: error, retry: { reminderSetting(label, change) }) }
+    }
+    func disableCheckIns() {
+        do { try companion.disableRemindersChecked() }
+        catch { reminderFailure = .init("reminders", error: error, retry: disableCheckIns) }
+    }
+    func enableCheckIns() {
+        Task {
+            do { notificationAccessDenied = try await companion.enableReminders(owner: reminderOwner) == .denied }
+            catch { reminderFailure = .init("reminders", error: error, retry: enableCheckIns) }
+        }
     }
     func cancelImport(showMessage: Bool = true) {
         guard let activeImport else { return }

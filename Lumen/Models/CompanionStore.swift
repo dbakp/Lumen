@@ -9,14 +9,11 @@ public final class CompanionStore: ObservableObject {
     @Published public private(set) var documents: [HealthDocument] = []
     @Published public private(set) var importedDays: [ImportedHealthDay] = []
     @Published public private(set) var imports: [ImportReceipt] = []
-    @Published public var personalContext = PersonalHealthContext() { didSet { if hasLoaded { persist() } } }
-    private var hasLoaded = false
-    @Published public var reminders = ReminderPreferences() {
-        didSet {
-            guard hasLoaded else { return }
-            persist(); NotificationManager.shared.refreshContext(health: .shared)
-        }
-    }
+    @Published public private(set) var personalContext = PersonalHealthContext()
+    @Published public private(set) var reminders = ReminderPreferences()
+    @Published private(set) var requestingReminderAccess = false
+    private(set) var personalContextRevision = UUID()
+    private let reminderEnables = ReminderEnableRequests()
 
     public init() {
         symptoms = LocalStore.load([SymptomEntry].self, from: "symptoms") ?? []
@@ -26,17 +23,49 @@ public final class CompanionStore: ObservableObject {
         imports = LocalStore.load([ImportReceipt].self, from: "import-receipts") ?? []
         reminders = LocalStore.load(ReminderPreferences.self, from: "reminder-preferences") ?? ReminderPreferences()
         personalContext = LocalStore.load(PersonalHealthContext.self, from: "personal-context") ?? PersonalHealthContext()
-        hasLoaded = true
     }
     public var activeSymptoms: [SymptomEntry] { symptoms.filter(\.isActive).sorted { $0.date > $1.date } }
     public var todayImport: ImportedHealthDay? { importedDays.first { Calendar.current.isDateInToday($0.date) } }
     public var latestCheckIn: WellbeingCheckIn? { checkIns.filter { Calendar.current.isDateInToday($0.date) }.max { $0.date < $1.date } }
 
     public func persist() {
-        LocalStore.save(personalContext, as: "personal-context")
         LocalStore.save(symptoms, as: "symptoms"); LocalStore.save(checkIns, as: "check-ins")
         LocalStore.save(documents, as: "documents"); LocalStore.save(importedDays, as: "imported-days")
-        LocalStore.save(imports, as: "import-receipts"); LocalStore.save(reminders, as: "reminder-preferences")
+        LocalStore.save(imports, as: "import-receipts")
+    }
+
+    func savePersonalContextChecked(_ next: PersonalHealthContext, expectedRevision: UUID) throws {
+        guard personalContextRevision == expectedRevision else { throw BackupError.recordsChanged }
+        try LocalStore.saveChecked(next, as: "personal-context")
+        personalContextRevision = UUID(); personalContext = next
+    }
+
+    func updateRemindersChecked(_ change: (inout ReminderPreferences) -> Void) throws {
+        var next = reminders; change(&next)
+        guard (0..<24).contains(next.quietStart), (0..<24).contains(next.quietEnd) else { throw BackupError.invalid }
+        try LocalStore.saveChecked(next, as: "reminder-preferences")
+        reminders = next
+        NotificationManager.shared.refreshContext(health: .shared)
+    }
+
+    func disableRemindersChecked() throws {
+        cancelReminderEnable()
+        try updateRemindersChecked { $0.enabled = false }
+    }
+
+    func enableReminders(owner: UUID) async throws -> ReminderEnableRequests.Outcome {
+        requestingReminderAccess = true
+        defer { requestingReminderAccess = reminderEnables.isRequesting }
+        let result = try await reminderEnables.enable(owner: owner, authorize: { await NotificationManager.shared.request() }) {
+            try updateRemindersChecked { $0.enabled = true }
+        }
+        if result == .denied && reminders.enabled { try disableRemindersChecked() }
+        return result
+    }
+
+    func cancelReminderEnable(owner: UUID? = nil) {
+        reminderEnables.cancel(owner: owner)
+        requestingReminderAccess = reminderEnables.isRequesting
     }
     private func changed() { persist(); HealthStore.shared.refresh() }
     public func log(_ entry: SymptomEntry) {
@@ -107,20 +136,25 @@ public final class CompanionStore: ObservableObject {
     }
     public func clearImports() { importedDays = []; imports = []; HealthStore.shared.clearImportedWorkouts(); changed() }
     func reloadAfterRestore() {
-        hasLoaded = false
+        cancelReminderEnable(); personalContextRevision = UUID()
         symptoms = LocalStore.load([SymptomEntry].self, from: "symptoms") ?? symptoms
         checkIns = LocalStore.load([WellbeingCheckIn].self, from: "check-ins") ?? checkIns
         documents = LocalStore.load([HealthDocument].self, from: "documents") ?? documents
         importedDays = LocalStore.load([ImportedHealthDay].self, from: "imported-days") ?? importedDays
         imports = LocalStore.load([ImportReceipt].self, from: "import-receipts") ?? imports
         personalContext = LocalStore.load(PersonalHealthContext.self, from: "personal-context") ?? personalContext
-        hasLoaded = true
+        reminders = LocalStore.load(ReminderPreferences.self, from: "reminder-preferences") ?? reminders
     }
 
     public func reset() {
+        cancelReminderEnable(); personalContextRevision = UUID()
         symptoms = []; checkIns = []; documents = []; importedDays = []; imports = []
         personalContext = PersonalHealthContext()
-        reminders = ReminderPreferences(); persist()
+        reminders = ReminderPreferences()
+        // Legacy global reset remains separate from checked preference editing.
+        LocalStore.save(personalContext, as: "personal-context")
+        LocalStore.save(reminders, as: "reminder-preferences")
+        persist(); NotificationManager.shared.refreshContext(health: .shared)
     }
 
     public func timeline(health: HealthStore, sleep: SleepStore, on day: Date) -> [TimelineEvent] {

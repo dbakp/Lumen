@@ -37,6 +37,9 @@ private struct LumenReadyView: View {
     @AppStorage("lumen.appearance") private var appearance = "light"
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.scenePhase) private var scenePhase
+    #if DEBUG && targetEnvironment(simulator)
+    @StateObject private var preferenceProbe = PreferenceNativeProbe.shared
+    #endif
 
     var body: some View {
         RootView()
@@ -46,10 +49,24 @@ private struct LumenReadyView: View {
             .transaction { if reduceMotion { $0.animation = nil } }
             .tint(Theme.accent)
             .task {
+                #if DEBUG && targetEnvironment(simulator)
+                if PreferenceNativeProbe.requested { await preferenceProbe.run(); return }
+                try? PreferenceNativeProbe.prepareFixtures(health: health)
+                #endif
                 SyncCoordinator.propagate(sleep: sleep, health: health)
                 WatchSync.shared.activate(sleep: sleep, health: health)
                 HealthBackgroundSync.shared.start()
             }
+            #if DEBUG && targetEnvironment(simulator)
+            .overlay(alignment: .bottom) {
+                if PreferenceNativeProbe.requested {
+                    VStack(spacing: 4) {
+                        Text("Synthetic verification").font(.caption)
+                        Text(preferenceProbe.status).font(.footnote).accessibilityIdentifier("preferenceProbeStatus")
+                    }.padding().background(Theme.bg)
+                }
+            }
+            #endif
             .onChange(of: scenePhase) { _, phase in
                 guard phase == .active, sleep.profile.onboardingDone else { return }
                 Task { await SyncCoordinator.syncEverything(sleep: sleep, health: health) }

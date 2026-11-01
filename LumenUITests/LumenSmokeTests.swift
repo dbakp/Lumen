@@ -460,7 +460,10 @@ final class LumenSmokeTests: XCTestCase {
             let targetIdentifier = element.exists ? element.identifier : ""
             let input = app.descendants(matching: .any).matching(identifier: "coachInput").firstMatch
             let composerVisible = input.exists && input.isHittable && targetIdentifier != "coachInput"
-            let top = app.navigationBars.firstMatch.exists ? app.navigationBars.firstMatch.frame.maxY + 16 : 130
+            let contextBar = app.navigationBars["Personal context"].firstMatch
+            let personalContext = contextBar.exists && contextBar.isHittable
+            let navigation = personalContext ? contextBar : app.navigationBars.firstMatch
+            let top = navigation.exists ? navigation.frame.maxY + 16 : 130
             let bar = app.tabBars.firstMatch
             var bottom = composerVisible ? input.frame.minY - 20 : (bar.exists && bar.isHittable ? bar.frame.minY - 12 : app.frame.maxY - 40)
             // Lab history's comparison inset sits above the tab bar. Start
@@ -474,7 +477,13 @@ final class LumenSmokeTests: XCTestCase {
             }
             let selectionStatus = app.staticTexts["historyComparisonSelectionState"].firstMatch
             if selectionStatus.exists && selectionStatus.isHittable && !selectionStatus.frame.isEmpty && selectionStatus.frame.minY > top && selectionStatus.frame.minY < bottom { bottom = min(bottom, selectionStatus.frame.minY - 12) }
-            if app.keyboards.firstMatch.exists { bottom = min(bottom, app.keyboards.firstMatch.frame.minY - 12) }
+            if app.keyboards.firstMatch.exists {
+                bottom = min(bottom, app.keyboards.firstMatch.frame.minY - 12)
+                for identifier in ["SystemInputAssistantView", "inputView"] {
+                    let accessory = app.otherElements[identifier].firstMatch
+                    if accessory.exists && !accessory.frame.isEmpty { bottom = min(bottom, accessory.frame.minY - 12) }
+                }
+            }
             // Native controls may report hittable while their centre is behind
             // a modal navigation bar. Check the actual visible content region.
             if element.exists && element.isHittable && element.frame.midY > top && element.frame.midY < bottom { return }
@@ -483,8 +492,12 @@ final class LumenSmokeTests: XCTestCase {
             let down = element.exists ? element.frame.midY < (top + bottom) / 2 : towardsTop
             // Use the actual content gutter. A whole-app swipe can start on
             // navigation or selectable text instead of moving the scroll view.
-            let lower = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: bottom - 8))
-            let upper = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: top + 8))
+            // The inset personal-context form can leave the outer gutter
+            // outside its scrolling hit region. Pan inside this form; keep
+            // the existing gutter path for selectable Library readers.
+            let x = personalContext ? app.frame.maxX - 24 : 10
+            let lower = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: x, dy: bottom - 8))
+            let upper = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: x, dy: top + 8))
             if down { upper.press(forDuration: 0.05, thenDragTo: lower) }
             else { lower.press(forDuration: 0.05, thenDragTo: upper) }
         }
@@ -511,7 +524,7 @@ final class LumenSmokeTests: XCTestCase {
         XCTAssertEqual(field.value as? String, text, "Replace the complete amount before saving", file: file, line: line)
     }
 
-    func finishOnboarding() {
+    func finishOnboarding(reminderAction: (() -> Void)? = nil) {
         // --- Onboarding ---
         XCTAssertTrue(app.buttons["Get started"].waitForExistence(timeout: 10))
         snap("01-welcome")
@@ -527,7 +540,8 @@ final class LumenSmokeTests: XCTestCase {
         snap("04-body"); tap("Continue")
         snap("05-goal"); tap("Continue")
         snap("06-sleep"); tap("Continue")
-        snap("07-reminders"); tap("Maybe later")
+        snap("07-reminders")
+        if let reminderAction { reminderAction() } else { tap("Maybe later") }
         XCTAssertTrue(app.buttons["Start using Lumen"].waitForExistence(timeout: 10))
         snap("08-plan")
         tap("Start using Lumen")
@@ -917,16 +931,27 @@ final class LumenSmokeTests: XCTestCase {
     }
     func nativeSwitch(_ identifier: String, enabled: Bool, towardsTop: Bool = false) {
         let toggle = app.switches[identifier].firstMatch; reveal(toggle, towardsTop: towardsTop)
-        let touchThumb = identifier.contains("FHIR") || identifier.hasPrefix("normalization") || identifier == "normalizeLabComparison"
+        let preference = ["personalContextSharing", "contextualCheckIns", "reminderDetails"].contains(identifier)
+        let touchThumb = identifier.contains("FHIR") || identifier.hasPrefix("normalization") || identifier == "normalizeLabComparison" || preference
         if touchThumb { settleLabFrame(toggle) }
         if (toggle.value as? String) != (enabled ? "1" : "0") {
             let control = toggle.switches.firstMatch
+            if preference {
+                print("PREFERENCE SWITCH BEFORE", toggle.debugDescription)
+                if control.exists { print("PREFERENCE SWITCH CONTROL", control.debugDescription) }
+                snap("1006-preference-switch-before")
+            }
             if control.exists {
                 reveal(control)
                 // Touch the visible native thumb. A labelled SwiftUI switch
                 // also exposes a larger outer AX rectangle; its centre can
                 // land on the label or a non-interactive part of the track.
-                if touchThumb {
+                if preference {
+                    let frame = control.frame
+                    let point = CGVector(dx: frame.minX + frame.width * (enabled ? 0.25 : 0.75), dy: frame.midY)
+                    print("PREFERENCE SWITCH ABSOLUTE POINT", point)
+                    app.coordinate(withNormalizedOffset: .zero).withOffset(point).tap()
+                } else if touchThumb {
                     control.coordinate(withNormalizedOffset: CGVector(dx: enabled ? 0.25 : 0.75, dy: 0.5)).tap()
                 } else { control.tap() }
             } else { toggle.tap() }
@@ -3496,6 +3521,310 @@ final class LumenSmokeTests: XCTestCase {
     }
 
     func testSettingsNameRepeatedDiskFailures() throws { settingsNameRepeatedDiskFailures(large: false) }
+
+    func openPersonalPreferences() {
+        tap("Settings"); scrollAndTap("Personal context")
+        XCTAssertTrue(app.navigationBars["Personal context"].waitForExistence(timeout: 5))
+    }
+    func preferenceSwitch(_ identifier: String) -> XCUIElement {
+        let toggle = app.switches[identifier].firstMatch; reveal(toggle)
+        return toggle.switches.firstMatch.exists ? toggle.switches.firstMatch : toggle
+    }
+    func approveReminderAccess() {
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        let allow = springboard.alerts.buttons["Allow"].firstMatch
+        if allow.waitForExistence(timeout: 5) { allow.tap() }
+    }
+    func capturePreferenceAlert(_ alert: XCUIElement, prefix: String) {
+        snap(prefix + "-initial")
+        let scroll = alert.scrollViews.firstMatch
+        if scroll.exists {
+            for step in 1...8 {
+                let frame = scroll.frame
+                let start = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: frame.midX, dy: frame.maxY - 30))
+                let end = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: frame.midX, dy: max(frame.minY + 30, frame.maxY - 130)))
+                start.press(forDuration: 0.05, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.2)
+                snap(prefix + "-body-\(step)")
+                let bar = scroll.otherElements.matching(NSPredicate(format: "label BEGINSWITH 'Vertical scroll bar'")).firstMatch
+                if bar.exists && (bar.value as? String ?? "").contains("100") { break }
+            }
+        }
+        for action in alert.buttons.allElementsBoundByIndex {
+            print("PREFERENCE ALERT ACTION FRAME", prefix, action.label, action.frame, "application", app.frame, "alert", alert.frame)
+            XCTAssertTrue(action.isHittable, "The alert action must remain reachable: \(action.label)")
+            XCTAssertTrue(app.frame.insetBy(dx: -0.5, dy: -0.5).contains(action.frame),
+                          "The complete alert action must fit on screen: \(action.label)")
+            XCTAssertTrue(alert.frame.insetBy(dx: -0.5, dy: -0.5).contains(action.frame),
+                          "The complete action must fit inside its alert: \(action.label)")
+        }
+    }
+    func relaunchPreferences(large: Bool, personal: Bool) {
+        app.terminate()
+        app.launchArguments = large ? ["-lumen.appearance", "dark", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"] : ["-lumen.appearance", "light"]
+        app.launch()
+        if personal { openPersonalPreferences() } else { openHealthConnections() }
+    }
+    func capturePreferenceDisclosure(_ identifier: String, prefix: String) {
+        let text = app.staticTexts[identifier].firstMatch
+        for _ in 0..<24 where !text.exists { app.swipeUp(velocity: .slow) }
+        XCTAssertTrue(text.exists)
+        let contextBar = app.navigationBars["Personal context"].firstMatch
+        let navigation = contextBar.exists ? contextBar : app.navigationBars.firstMatch
+        // The compact verification phone has a physical Home button and no
+        // bottom safe area: its measured native footer ends at exactly667.
+        let bottom = app.frame.maxY - (app.frame.height <= 667 ? 0 : 24)
+        let top = navigation.frame.maxY + 16
+        func drag(up: Bool, distance: CGFloat) {
+            let startY = up ? bottom - 16 : top + 16
+            let endY = startY + (up ? -distance : distance)
+            let a = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: app.frame.midX, dy: startY))
+            let b = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: app.frame.midX, dy: endY))
+            a.press(forDuration: 0.05, thenDragTo: b, withVelocity: .slow, thenHoldForDuration: 0.2)
+        }
+        for _ in 0..<16 {
+            let y = text.frame.minY
+            if y >= top && y < top + 100 { break }
+            if text.frame.minY >= top && text.frame.maxY <= bottom { break }
+            drag(up: y > top, distance: min(150, abs(y - top)))
+            if abs(text.frame.minY - y) < 1 { break }
+        }
+        for step in 0..<12 {
+            print("PREFERENCE DISCLOSURE FRAME", identifier, text.frame, "application", app.frame, "viewport", top, bottom)
+            snap(prefix + "-segment-\(step)")
+            if text.frame.maxY <= bottom { return }
+            drag(up: true, distance: min(200, bottom - top - 40))
+        }
+        XCTFail("Complete preference disclosure was not reached")
+    }
+    func testPersonalContextCheckedRecovery() throws { personalContextCheckedRecovery(large: false) }
+    func testPersonalContextCheckedRecoveryLarge() throws { personalContextCheckedRecovery(large: true) }
+    func testPersonalContextSoftwareKeyboardLarge() throws {
+        quickFault("none:0", large: true); openPersonalPreferences()
+        let focus = app.descendants(matching: .any).matching(identifier: "personalFocus").firstMatch
+        reveal(focus); focus.tap()
+        // Actual software-key taps keep this distinct from hardware-assisted
+        // typeText: offscreen keyboard AX nodes are not occlusion evidence.
+        for letter in ["w", "a", "l", "k"] {
+            let key = app.keyboards.keys.matching(NSPredicate(format: "label ==[c] %@", letter)).firstMatch
+            XCTAssertTrue(key.waitForExistence(timeout: 5)); XCTAssertTrue(key.isHittable)
+            XCTAssertTrue(key.frame.intersects(app.frame)); key.tap()
+        }
+        let strip = app.otherElements["SystemInputAssistantView"].firstMatch
+        XCTAssertTrue(strip.exists && strip.frame.intersects(app.frame))
+        XCTAssertTrue(app.buttons["finishContextEditing"].isHittable)
+        let typed = focus.value as? String; XCTAssertTrue(typed?.lowercased().contains("walk") == true)
+        snap("1008-context-visible-software-keyboard")
+        finishContextInput(); XCTAssertEqual(focus.value as? String, typed)
+        let cancel = app.buttons["Cancel"].firstMatch; XCTAssertTrue(cancel.isHittable)
+        XCTAssertTrue(app.buttons["savePersonalContext"].isEnabled); snap("1008-context-keyboard-finished-draft")
+        cancel.tap()
+        let discard = app.alerts["Discard context changes?"]; XCTAssertTrue(discard.waitForExistence(timeout: 5))
+        capturePreferenceAlert(discard, prefix: "1008-context-keyboard-discard-choice")
+        discard.buttons["Keep draft"].tap(); reveal(focus, towardsTop: true)
+        XCTAssertEqual(focus.value as? String, typed)
+        snap("1008-context-keyboard-kept-draft")
+    }
+    func finishContextInput() {
+        let done = app.buttons["finishContextEditing"].firstMatch
+        XCTAssertTrue(done.waitForExistence(timeout: 5)); XCTAssertTrue(done.isHittable)
+        done.tap()
+        let keyboard = app.keyboards.firstMatch
+        let hidden = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+            !keyboard.exists || keyboard.frame.minY >= self.app.frame.maxY
+        }, object: keyboard)
+        XCTAssertEqual(XCTWaiter.wait(for: [hidden], timeout: 5), .completed)
+    }
+    func testPersonalContextFieldLabelsLarge() throws {
+        quickFault("none:0", large: true); openPersonalPreferences()
+        let labels = ["What would you like to work on?", "Food preferences", "Allergies you want to note",
+                      "Injuries or activity limitations", "Schedule and available time", "Anything else to remember"]
+        for (index, label) in labels.enumerated() {
+            capturePreferenceDisclosure(label, prefix: "1007-context-field-\(index)")
+        }
+        let focus = app.descendants(matching: .any).matching(identifier: "personalFocus").firstMatch
+        reveal(focus, towardsTop: true); focus.tap(); focus.typeText("Synthetic routine with time for a short walk")
+        XCTAssertTrue(app.keyboards.firstMatch.exists); snap("1007-context-field-keyboard")
+        finishContextInput()
+        XCTAssertEqual(focus.value as? String, "Synthetic routine with time for a short walk")
+        let sharing = app.switches["personalContextSharing"].firstMatch
+        reveal(sharing); XCTAssertTrue(sharing.isHittable)
+        // UIKit can retain offscreen keyboard AX nodes after dismissal.
+        XCTAssertTrue(!app.keyboards.firstMatch.exists || app.keyboards.firstMatch.frame.minY >= app.frame.maxY)
+        snap("1007-context-field-scrolled-sharing")
+        nativeSwitch("personalContextSharing", enabled: true)
+        let unsaved = app.staticTexts["personalContextUnsaved"].firstMatch; reveal(unsaved); XCTAssertTrue(unsaved.exists)
+        snap("1007-context-field-sharing-changed")
+    }
+    func personalContextCheckedRecovery(large: Bool) {
+        quickFault("personal-context:1,2", large: large); openPersonalPreferences()
+        let focus = app.descendants(matching: .any).matching(identifier: "personalFocus").firstMatch
+        reveal(focus); focus.tap(); focus.typeText("Synthetic steady routine")
+        snap("980-context-keyboard-draft")
+        finishContextInput()
+        nativeSwitch("personalContextSharing", enabled: true)
+        let saved = app.staticTexts["personalContextSavedSharing"]
+        reveal(saved); XCTAssertEqual(saved.label, "Saved sharing: Off"); snap("980-context-unsaved-sharing")
+        tap("savePersonalContext")
+        let alert = app.alerts["Couldn’t save context"]
+        XCTAssertTrue(alert.waitForExistence(timeout: 5)); capturePreferenceAlert(alert, prefix: "981-context-first-failure")
+        alert.buttons["Try again"].tap(); XCTAssertTrue(alert.waitForExistence(timeout: 5)); snap("982-context-repeated-failure")
+        alert.buttons["Not now"].tap()
+        reveal(focus, towardsTop: true)
+        XCTAssertEqual(focus.value as? String, "Synthetic steady routine")
+        reveal(saved); XCTAssertEqual(saved.label, "Saved sharing: Off")
+        let unsaved = app.staticTexts["personalContextUnsaved"].firstMatch; reveal(unsaved); XCTAssertTrue(unsaved.exists); snap("983-context-retained-draft")
+        tap("savePersonalContext"); XCTAssertTrue(app.navigationBars["Personal context"].waitForNonExistence(timeout: 5))
+        relaunchPreferences(large: large, personal: true)
+        reveal(focus); XCTAssertEqual(focus.value as? String, "Synthetic steady routine"); reveal(saved); XCTAssertEqual(saved.label, "Saved sharing: On"); snap("984-context-saved-relaunch")
+        reveal(focus, towardsTop: true); focus.tap(); focus.typeText(" draft"); finishContextInput()
+        let discardedDraft = focus.value as? String
+        XCTAssertTrue(discardedDraft?.contains("draft") == true)
+        tap("Cancel")
+        let discard = app.alerts["Discard context changes?"]
+        XCTAssertTrue(discard.waitForExistence(timeout: 5))
+        Thread.sleep(forTimeInterval: 0.5) // Settle only the confirmation animation before its screenshot.
+        capturePreferenceAlert(discard, prefix: "985-context-discard-choice")
+        discard.buttons["Keep draft"].tap(); reveal(focus, towardsTop: true)
+        XCTAssertEqual(focus.value as? String, discardedDraft)
+        XCTAssertTrue(app.buttons["savePersonalContext"].isEnabled)
+        snap("985-context-kept-draft")
+        tap("Cancel"); XCTAssertTrue(discard.waitForExistence(timeout: 5)); snap("985-context-discard-reopened")
+        discard.buttons["Discard"].tap()
+        XCTAssertTrue(app.navigationBars["Personal context"].waitForNonExistence(timeout: 5))
+        relaunchPreferences(large: large, personal: true)
+        reveal(focus); XCTAssertEqual(focus.value as? String, "Synthetic steady routine"); snap("986-context-discard-relaunch")
+        capturePreferenceDisclosure("personalContextDisclosure", prefix: "1004-context-disclosure")
+    }
+    func testPersonalContextWithdrawalFailure() throws {
+        quickFault("personal-context:2", large: true); openPersonalPreferences()
+        let focus = app.descendants(matching: .any).matching(identifier: "personalFocus").firstMatch
+        reveal(focus); focus.tap(); focus.typeText("Synthetic private reference")
+        finishContextInput()
+        nativeSwitch("personalContextSharing", enabled: true); tap("savePersonalContext")
+        XCTAssertTrue(app.navigationBars["Personal context"].waitForNonExistence(timeout: 5)); scrollAndTap("Personal context")
+        nativeSwitch("personalContextSharing", enabled: false); tap("savePersonalContext")
+        let alert = app.alerts["Couldn’t save context"]; XCTAssertTrue(alert.waitForExistence(timeout: 5))
+        capturePreferenceAlert(alert, prefix: "987-context-withdrawal-failed"); alert.buttons["Not now"].tap()
+        let saved = app.staticTexts["personalContextSavedSharing"]; reveal(saved); XCTAssertEqual(saved.label, "Saved sharing: On"); snap("988-context-saved-choice-unchanged")
+        tap("savePersonalContext"); XCTAssertTrue(app.navigationBars["Personal context"].waitForNonExistence(timeout: 5))
+        relaunchPreferences(large: true, personal: true); reveal(saved); XCTAssertEqual(saved.label, "Saved sharing: Off")
+        snap("989-context-withdrawn-relaunch"); reveal(focus, towardsTop: true)
+        XCTAssertEqual(focus.value as? String, "Synthetic private reference"); snap("989-context-withdrawn-notes-retained")
+    }
+    func testReminderCheckedRecovery() throws { reminderCheckedRecovery(large: false) }
+    func testReminderCheckedRecoveryLarge() throws { reminderCheckedRecovery(large: true) }
+    func selectReminderHour(_ label: String) {
+        let option = app.buttons[label].firstMatch
+        for _ in 0..<16 {
+            if option.exists && option.isHittable { option.tap(); return }
+            let hours = app.buttons.matching(NSPredicate(format: "label MATCHES '[0-9]{2}:00'")).allElementsBoundByIndex.filter { $0.isHittable }
+            guard let first = hours.first else { break }
+            let menu = app.collectionViews.containing(.button, identifier: first.label).firstMatch
+            guard menu.exists else { break }
+            var popup = menu.frame
+            for container in app.otherElements.containing(.button, identifier: first.label).allElementsBoundByIndex {
+                let frame = container.frame
+                if frame.width > 100 && frame.width < app.frame.width && frame.height > 60 {
+                    if frame.width * frame.height < popup.width * popup.height { popup = frame }
+                }
+            }
+            let top = max(app.frame.minY + 24, popup.minY + 24), bottom = min(app.frame.maxY - 24, popup.maxY - 24)
+            guard bottom - top > 60 else { break }
+            let upper = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: popup.midX, dy: top))
+            let lower = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: popup.midX, dy: bottom))
+            if label < first.label { upper.press(forDuration: 0.05, thenDragTo: lower) }
+            else { lower.press(forDuration: 0.05, thenDragTo: upper) }
+        }
+        print(app.debugDescription); XCTFail("Reminder hour was not reachable: " + label)
+    }
+    func reminderCheckedRecovery(large: Bool) {
+        quickFault("reminder-preferences:1,3,5", large: large); openHealthConnections()
+        preferenceSwitch("contextualCheckIns").tap(); approveReminderAccess()
+        let enabledError = app.alerts["Couldn’t save reminders"]
+        XCTAssertTrue(enabledError.waitForExistence(timeout: 10)); capturePreferenceAlert(enabledError, prefix: "990-reminder-enable-failed")
+        enabledError.buttons["Not now"].tap(); XCTAssertEqual(app.switches["contextualCheckIns"].firstMatch.value as? String, "0"); snap("991-reminder-enable-unchanged")
+        preferenceSwitch("contextualCheckIns").tap(); approveReminderAccess()
+        let enabled = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == '1'"), object: app.switches["contextualCheckIns"].firstMatch)
+        XCTAssertEqual(XCTWaiter.wait(for: [enabled], timeout: 10), .completed)
+        preferenceSwitch("reminderDetails").tap()
+        let detailsError = app.alerts["Couldn’t save lock-screen details"]; XCTAssertTrue(detailsError.waitForExistence(timeout: 5)); capturePreferenceAlert(detailsError, prefix: "992-reminder-details-failed")
+        detailsError.buttons["Not now"].tap(); XCTAssertEqual(app.switches["reminderDetails"].firstMatch.value as? String, "0"); snap("993-reminder-details-unchanged")
+        preferenceSwitch("reminderDetails").tap()
+        let quiet = app.buttons["reminderQuietStart"].firstMatch; reveal(quiet, towardsTop: true); quiet.tap(); selectReminderHour("20:00")
+        let quietError = app.alerts["Couldn’t save quiet hours start"]; XCTAssertTrue(quietError.waitForExistence(timeout: 5)); capturePreferenceAlert(quietError, prefix: "994-reminder-quiet-failed")
+        quietError.buttons["Try again"].tap(); XCTAssertTrue(quietError.waitForNonExistence(timeout: 5))
+        snap("995-reminder-settings-retried")
+        relaunchPreferences(large: large, personal: false)
+        let start = app.buttons["reminderQuietStart"].firstMatch; reveal(start); XCTAssertTrue((start.label + (start.value as? String ?? "")).contains("20:00"))
+        let checkIns = app.switches["contextualCheckIns"].firstMatch; reveal(checkIns, towardsTop: true); XCTAssertEqual(checkIns.value as? String, "1")
+        nativeSwitch("reminderDetails", enabled: false); nativeSwitch("contextualCheckIns", enabled: false, towardsTop: true); snap("996-reminders-disabled")
+        relaunchPreferences(large: large, personal: false)
+        let toggle = app.switches["contextualCheckIns"].firstMatch; reveal(toggle); XCTAssertEqual(toggle.value as? String, "0")
+        let details = app.switches["reminderDetails"].firstMatch; reveal(details); XCTAssertEqual(details.value as? String, "0"); snap("997-reminders-private-relaunch")
+        capturePreferenceDisclosure("reminderDisclosure", prefix: "1005-reminder-disclosure")
+    }
+    func testReminderOnboardingCheckedFailure() throws {
+        app.terminate(); app.launchArguments = ["-resetForUITests", "-quick-save-fault", "reminder-preferences:1"]; app.launch()
+        finishOnboarding(reminderAction: { [self] in
+            tap("Turn on reminders"); approveReminderAccess()
+            let alert = app.alerts["Couldn’t save reminders"]; XCTAssertTrue(alert.waitForExistence(timeout: 10)); snap("998-onboarding-reminders-failed"); alert.buttons["OK"].tap()
+            XCTAssertTrue(app.buttons["Turn on reminders"].exists); XCTAssertFalse(app.buttons["Start using Lumen"].exists); snap("998-onboarding-reminders-retained")
+            tap("Turn on reminders"); approveReminderAccess()
+        })
+        relaunchPreferences(large: false, personal: false)
+        let toggle = app.switches["contextualCheckIns"].firstMatch; reveal(toggle); XCTAssertEqual(toggle.value as? String, "1"); snap("998-onboarding-reminders-relaunch")
+    }
+    func testReminderSettingsCheckedFailure() throws {
+        quickFault("reminder-preferences:1"); tap("Settings")
+        let enable = app.buttons["settingsEnableReminders"].firstMatch; reveal(enable); enable.tap(); approveReminderAccess()
+        let alert = app.alerts["Couldn’t save reminders"]; XCTAssertTrue(alert.waitForExistence(timeout: 10)); snap("999-settings-reminders-failed"); alert.buttons["Not now"].tap()
+        XCTAssertTrue(enable.exists); snap("999-settings-reminders-unchanged"); enable.tap(); approveReminderAccess()
+        XCTAssertTrue(enable.waitForNonExistence(timeout: 10))
+        relaunchPreferences(large: false, personal: false)
+        let toggle = app.switches["contextualCheckIns"].firstMatch; reveal(toggle); XCTAssertEqual(toggle.value as? String, "1"); snap("999-settings-reminders-relaunch")
+    }
+    func testPreferenceNativeBackendProbe() throws {
+        app.terminate(); app.launchArguments = ["-resetForUITests", "-preference-native-probe"]; app.launch(); approveReminderAccess()
+        let status = app.staticTexts["preferenceProbeStatus"].firstMatch
+        let completed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label BEGINSWITH 'Preference checks passed' OR label BEGINSWITH 'Preference checks failed'"), object: status)
+        XCTAssertEqual(XCTWaiter.wait(for: [completed], timeout: 45), .completed)
+        XCTAssertEqual(status.label, "Preference checks passed"); snap("1000-preference-native-report")
+    }
+    func testPersonalContextStaleReload() throws {
+        quickFault("none:0", large: true, extra: ["-preference-context-change"]); openPersonalPreferences()
+        let focus = app.descendants(matching: .any).matching(identifier: "personalFocus").firstMatch
+        reveal(focus); focus.tap(); focus.typeText("Synthetic older draft"); finishContextInput()
+        nativeSwitch("personalContextSharing", enabled: true); tap("savePersonalContext")
+        let alert = app.alerts["Saved context changed"]; XCTAssertTrue(alert.waitForExistence(timeout: 5)); capturePreferenceAlert(alert, prefix: "1001-context-stale-choice")
+        alert.buttons["Keep draft"].tap(); reveal(focus, towardsTop: true); XCTAssertEqual(focus.value as? String, "Synthetic older draft")
+        snap("1001-context-kept-stale-draft")
+        tap("savePersonalContext"); XCTAssertTrue(alert.waitForExistence(timeout: 5)); snap("1001-context-reload-reopened")
+        alert.buttons["Reload"].tap()
+        reveal(focus, towardsTop: true); XCTAssertEqual(focus.value as? String, "Synthetic newer notes")
+        XCTAssertFalse(app.buttons["savePersonalContext"].isEnabled)
+        let saved = app.staticTexts["personalContextSavedSharing"]; reveal(saved); XCTAssertEqual(saved.label, "Saved sharing: Off"); XCTAssertFalse(app.staticTexts["personalContextUnsaved"].exists); snap("1001-context-reloaded")
+    }
+    func testPreferenceSchedulingFailurePresentation() throws {
+        quickFault("none:0", large: true, extra: ["-preference-schedule-failure"]); openHealthConnections()
+        preferenceSwitch("contextualCheckIns").tap(); approveReminderAccess()
+        let issue = app.staticTexts["Your settings were saved, but the check-in couldn’t be scheduled. Try again."].firstMatch
+        reveal(issue); XCTAssertTrue(issue.waitForExistence(timeout: 10)); snap("1003-reminder-schedule-failed")
+        capturePreferenceDisclosure("reminderSchedulingIssue", prefix: "1003-reminder-schedule-message")
+        let retry = app.buttons["Retry check-in"].firstMatch; reveal(retry); XCTAssertTrue(retry.isHittable); snap("1003-reminder-schedule-retry")
+        retry.tap(); XCTAssertTrue(issue.waitForNonExistence(timeout: 10))
+        let enabled = app.switches["contextualCheckIns"].firstMatch; reveal(enabled, towardsTop: true); XCTAssertEqual(enabled.value as? String, "1"); snap("1003-reminder-saved-choice")
+    }
+    func testPreferenceAccessPendingPresentation() throws {
+        quickFault("none:0", large: true, extra: ["-preference-access-hold"]); openHealthConnections()
+        let started = Date(); preferenceSwitch("contextualCheckIns").tap(); approveReminderAccess()
+        let pending = app.descendants(matching: .any).matching(NSPredicate(format: "label == 'Requesting notification access…'")).firstMatch
+        XCTAssertTrue(pending.waitForExistence(timeout: 5)); reveal(pending); snap("1002-reminder-requesting-access")
+        app.navigationBars["Connections"].buttons.element(boundBy: 0).tap()
+        let remaining = 18 - Date().timeIntervalSince(started)
+        if remaining > 0 { Thread.sleep(forTimeInterval: remaining) }
+        let link = app.buttons["Health imports & contextual reminders"].firstMatch; reveal(link); link.tap()
+        let enabled = app.switches["contextualCheckIns"].firstMatch; reveal(enabled); XCTAssertEqual(enabled.value as? String, "0"); snap("1002-reminder-departed-owner-off")
+    }
     func testSettingsNameLargeDiskFailures() throws { settingsNameRepeatedDiskFailures(large: true) }
 
     func settingsNameRepeatedDiskFailures(large: Bool) {
@@ -3764,10 +4093,10 @@ final class LumenSmokeTests: XCTestCase {
         }
     }
 
-    func quickFault(_ specification: String, photo: Bool = false, large: Bool = false) {
+    func quickFault(_ specification: String, photo: Bool = false, large: Bool = false, extra: [String] = []) {
         app.terminate()
         app.launchArguments = ["-resetForUITests", "-quick-save-fault", specification]
-            + (photo ? ["-quick-meal-photo"] : [])
+            + (photo ? ["-quick-meal-photo"] : []) + extra
             + (large ? ["-lumen.appearance", "dark", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"] : ["-lumen.appearance", "light"])
         app.launch(); finishOnboarding()
     }

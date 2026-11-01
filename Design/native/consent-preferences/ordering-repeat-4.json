@@ -1,0 +1,26 @@
+{
+  "checks" : 23,
+  "scope" : "Production ordering primitive with manually controlled asynchronous callbacks. Legacy task shape reproduced for water\/meal; not real HealthKit writes, physical-device behavior, durable retry or local-persistence fault coverage.",
+  "traces" : [
+    {
+      "case" : "legacy-water",
+      "events" : "save-start,delete,save-finish",
+      "finalRecord" : "present"
+    },
+    {
+      "case" : "legacy-meal",
+      "events" : "save-start,delete,save-finish",
+      "finalRecord" : "present"
+    },
+    {
+      "case" : "ordered-water(\"same-id\")",
+      "events" : "save-start,independent,save-finish,delete",
+      "finalRecord" : "absent"
+    },
+    {
+      "case" : "ordered-meal(\"same-id\")",
+      "events" : "save-start,independent,save-finish,delete",
+      "finalRecord" : "absent"
+    }
+  ]
+}

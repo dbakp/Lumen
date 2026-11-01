@@ -1,0 +1,28 @@
+{
+  "status": "app11 main strict actual software-keyboard case passes; compact current verification running",
+  "observations": [
+    "NativeR6/SmallR1: edge drags leave the active multiline field on screen; one bounded reveal failure and one canceled case in each stopped suite.",
+    "NativeR7/SmallR2: centre drags during editing also fail bounded reveal; both suites terminate failed and report one invalid-frame warning on field focus.",
+    "App7 offers one intrinsic native keyboard Done item without a flexible spacer, retains explicit focus clearing on Save/Cancel, and removes the scroll-phase callback.",
+    "Selected13 exercises the real Done action, verifies the retained draft and hidden/offscreen keyboard, then pans within the row padding. No successful flow is claimed before rerun.",
+    "App8 moves Done into native navigation while editing. Current app10 NativeR10/R11 and SmallR7 have zero runtime warnings; no exact internal UIKit root cause is claimed.",
+    "Round2 pixel review finds named keyboard stills show a caret and Done without visible software keys. Offscreen accessibility nodes and typeText cannot establish keyboard occlusion coverage.",
+    "Xcode27 uses Device Hub (com.apple.dt.Devices). The GUI Device > Keyboard > Toggle Software Keyboard makes actual QWERTY keys/predictions visible on the dedicated main simulator; only test simulators are selected. No physical devices, global settings or keyboard capture preference are modified.",
+    "NativeR12 app11/source20 passes73.873s: actual W/A/L/K key taps, visible intersecting key frames, hittability, prediction strip, navigation Done, identical retained draft, reachable Cancel, complete scrolling Discard Alert and Keep editing.",
+    "Compact Device Hub software keyboard toggle is applied after terminal SmallR7; SmallR8 app11/source20 separately checks actual keyboard and normal/XXXL context recovery.",
+    "SmallR8 terminates65: both current normal215.368s/XXXL283.019s context recovery cases pass, while the strict keyboard case54.781s fails at actual key hittability. The unfocused initial GUI toggle did not establish persistent visible keys; no app or assertion change follows.",
+    "After all tests on the compact device are terminal, root opens an ordinary context input through Device Hub, focuses it, then uses the actual Toggle Software Keyboard leaf. A normal text-size launch is used only to reach that field without repeated GUI scrolling; no notes are typed or saved. Actual QWERTY keys and I/The/I\u2019m prediction strip appear on the selected compact simulator. No whole-window image is retained because unrelated physical-device names are visible.",
+    "SmallR9 launches the identical strict case with its own explicit actual AccessibilityXXXL arguments; this final case is separate from standard-text GUI preparation and the failed SmallR8 keyboard result."
+  ],
+  "references": [
+    {
+      "url": "https://developer.apple.com/documentation/swiftui/view/onscrollphasechange(_:)-7mica",
+      "finding": "Official documentation describes callbacks from the first scroll view in the hierarchy, available from iOS18; it does not prove the current Form interaction."
+    },
+    {
+      "url": "https://developer.apple.com/documentation/swiftui/view/scrolldismisseskeyboard(_:)",
+      "finding": "Official documentation describes dismissal on a scroll drag, including List/TextEditor; a pan handled by an active multiline editor is not independent proof of the enclosing form scrolling."
+    }
+  ],
+  "scope": "Runtime traces/screens and completed native outcomes decide acceptance. Exact cause of the system frame warning is not established by the earlier source-only hypothesis."
+}

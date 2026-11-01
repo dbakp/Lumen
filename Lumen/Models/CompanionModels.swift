@@ -94,7 +94,7 @@ public struct ImportReceipt: Identifiable, Codable, Sendable {
     public var workouts: Int? = nil
 }
 
-public struct ReminderPreferences: Codable, Sendable {
+public struct ReminderPreferences: Codable, Equatable, Sendable {
     public var enabled = false
     public var quietStart = 21
     public var quietEnd = 8
@@ -121,7 +121,7 @@ public enum PlanState: String, Codable, CaseIterable, Sendable {
     public var label: String { rawValue.capitalized }
 }
 
-public struct PersonalHealthContext: Codable, Sendable {
+public struct PersonalHealthContext: Codable, Equatable, Sendable {
     public var focus = ""
     public var foodPreferences = ""
     public var allergies = ""

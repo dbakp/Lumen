@@ -7,6 +7,8 @@ import SwiftUI
 public struct OnboardingView: View {
     @EnvironmentObject var sleep: SleepStore
     @EnvironmentObject var health: HealthStore
+    @ObservedObject private var companion = CompanionStore.shared
+    @ObservedObject private var notifications = NotificationManager.shared
 
     enum Step: Int, CaseIterable { case welcome, name, health, body, goal, sleep, reminders, plan }
 
@@ -35,7 +37,8 @@ public struct OnboardingView: View {
     @State private var importedNights: [SleepEpisode] = []
     @State private var prefilled: [String] = []
     // Reminders
-    @State private var remindersOn = false
+    @State private var reminderOwner = UUID()
+    private var remindersOn: Bool { notifications.authorized && companion.reminders.enabled }
     // Plan reveal
     @State private var revealStage = 0
     @State private var savingSetup = false
@@ -60,6 +63,8 @@ public struct OnboardingView: View {
         }
         .animation(.spring(response: 0.5, dampingFraction: 0.86), value: step)
         .localSaveAlert($setupFailure)
+        .onChange(of: step) { old, new in if old == .reminders && new != .reminders { companion.cancelReminderEnable(owner: reminderOwner) } }
+        .onDisappear { companion.cancelReminderEnable(owner: reminderOwner) }
     }
 
     // MARK: Chrome
@@ -73,6 +78,7 @@ public struct OnboardingView: View {
                     .frame(width: 40, height: 40).background(Theme.surfaceRaised, in: Circle())
             }
             .accessibilityLabel("Back")
+            .disabled(companion.requestingReminderAccess)
             HStack(spacing: 5) {
                 ForEach(0..<total, id: \.self) { i in
                     Capsule().fill(i <= idx ? Theme.accent : Theme.hairline).frame(height: 3)
@@ -418,17 +424,19 @@ public struct OnboardingView: View {
                 if remindersOn {
                     continueButton()
                 } else {
-                    continueButton("Turn on reminders") {
-                        Task {
-                            let ok = await NotificationManager.shared.request()
-                            CompanionStore.shared.reminders.enabled = ok
-                            withAnimation { remindersOn = ok }
-                            go()
-                        }
-                    }
-                    Button("Maybe later") { go() }.buttonStyle(LumenSecondaryButtonStyle())
+                    continueButton(companion.requestingReminderAccess ? "Requesting access…" : "Turn on reminders") { enableReminders() }
+                        .disabled(companion.requestingReminderAccess)
+                    Button("Maybe later") { go() }.buttonStyle(LumenSecondaryButtonStyle()).disabled(companion.requestingReminderAccess)
                 }
             }
+        }
+    }
+    func enableReminders() {
+        Task {
+            do {
+                let result = try await companion.enableReminders(owner: reminderOwner)
+                if result != .cancelled { go() }
+            } catch { setupFailure = .saving("reminders", error: error) }
         }
     }
 

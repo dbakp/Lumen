@@ -1,0 +1,25 @@
+{
+  "stoppedUTC": "2026-11-01T21:17:35.118735+00:00",
+  "reason": "Compact normal context case has a terminal bounded reveal-helper failure214.796s. Main repeated outer-gutter drags leave the focus field on screen in the live capture. Both suites use this obsolete gutter helper. Stop the remaining obsolete verification work, preserve failures/incomplete boundaries and rerun only after changing this form-specific gesture path. This is not a timeout restart or a pass.",
+  "processes": [
+    {
+      "pid": 28468,
+      "producer": "NativeR6",
+      "verifiedCommand": "/Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -project Lumen.xcodeproj -scheme Lumen -destination id=AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481 -derivedDataPath /tmp/LumenBatch37Simulator -clonedSourcePackagesDirPath /tmp/LumenBatch37Packages -resultBundlePath /tmp/LumenBatch38Checks/NativeR6.xcresult -collect-test-diagnostics never -only-testing:LumenUITests/LumenSmokeTests/testPersonalContextCheckedRecoveryLarge -only-testing:LumenUITests/LumenSmokeTests/testPersonalContextWithdrawalFailure -only-testing:LumenUITests/LumenSmokeTests/testPersonalContextStaleReload -only-testing:LumenUITests/LumenSmokeTests/testPersonalContextFieldLabelsLarge CODE_SIGNING_ALLOWED=NO -jobs 2 test-without-building",
+      "signal": "SIGINT"
+    },
+    {
+      "pid": 28469,
+      "producer": "SmallR1",
+      "verifiedCommand": "/Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -project Lumen.xcodeproj -scheme Lumen -destination id=27A46A83-C8F5-4817-8F11-C5CC90A1D0B7 -derivedDataPath /tmp/LumenBatch37Simulator -clonedSourcePackagesDirPath /tmp/LumenBatch37Packages -resultBundlePath /tmp/LumenBatch38Checks/SmallR1.xcresult -collect-test-diagnostics never -only-testing:LumenUITests/LumenSmokeTests/testPersonalContextCheckedRecovery -only-testing:LumenUITests/LumenSmokeTests/testPersonalContextCheckedRecoveryLarge -only-testing:LumenUITests/LumenSmokeTests/testReminderCheckedRecovery -only-testing:LumenUITests/LumenSmokeTests/testReminderCheckedRecoveryLarge CODE_SIGNING_ALLOWED=NO -jobs 2 test-without-building",
+      "signal": "SIGINT"
+    }
+  ],
+  "source": "source-r10.json",
+  "applicationSource": "application-source-r6.json",
+  "terminalExitCodes": {
+    "NativeR6": 75,
+    "SmallR1": 75
+  },
+  "outcome": "Both result bundles finalized with one completed bounded reveal failure plus one canceled case; both retain one invalid-frame runtime warning. Xcode logs include its interruption assertion/backtrace. Remaining cases were not run; no pass is claimed."
+}

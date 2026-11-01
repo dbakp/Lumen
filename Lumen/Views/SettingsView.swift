@@ -8,6 +8,7 @@ public struct SettingsView: View {
     @ObservedObject private var hk = HealthKitService.shared
     @ObservedObject private var strava = StravaService.shared
     @ObservedObject private var notifications = NotificationManager.shared
+    @ObservedObject private var companion = CompanionStore.shared
     @ObservedObject private var llm = LLMConnectionService.shared
     @Environment(\.dynamicTypeSize) private var textSize
     @Environment(\.dismiss) private var dismiss
@@ -22,6 +23,7 @@ public struct SettingsView: View {
     @State private var savingProfilePair = false
     @State private var nameDraft = ""
     @State private var nameReady = false
+    @State private var reminderOwner = UUID()
 
     public init() {}
 
@@ -69,6 +71,7 @@ public struct SettingsView: View {
             }
             .task { await notifications.refreshAuthorization() }
             .onAppear { if !nameReady { nameDraft = sleep.profile.name; nameReady = true } }
+            .onDisappear { companion.cancelReminderEnable(owner: reminderOwner) }
             .onChange(of: sleep.profile.name) { old, new in if nameDraft == old { nameDraft = new } }
         }
         .tint(Theme.accent)
@@ -269,19 +272,17 @@ public struct SettingsView: View {
                 connectionIcon("bell.fill", .orange)
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Reminders")
-                    Text(notifications.authorized && CompanionStore.shared.reminders.enabled ? "Contextual check-ins" : "Off").font(.caption).foregroundStyle(.secondary)
+                    Text(companion.requestingReminderAccess ? "Requesting access…" : notifications.authorized && companion.reminders.enabled ? "Contextual check-ins" : "Off").font(.caption).foregroundStyle(.secondary)
                 }
                 Spacer()
-                if notifications.authorized {
+                if notifications.authorized && companion.reminders.enabled {
                     Image(systemName: "checkmark.circle.fill").foregroundStyle(.green)
                 } else {
                     Button("Turn on") {
-                        Task {
-                            if await notifications.request() { CompanionStore.shared.reminders.enabled = true; notifications.reschedule(from: sleep) }
-                            else if let url = URL(string: UIApplication.openNotificationSettingsURLString) { await UIApplication.shared.open(url) }
-                        }
+                        enableReminders()
                     }
                     .buttonStyle(.bordered).controlSize(.small)
+                    .disabled(companion.requestingReminderAccess).accessibilityIdentifier("settingsEnableReminders")
                 }
             }
             Button { showStravaSetup = true } label: {
@@ -299,6 +300,14 @@ public struct SettingsView: View {
                 Text("To change what Lumen can read, open the Health app → Sharing → Apps → Lumen.")
                     .font(.caption).foregroundStyle(.secondary)
             }
+        }
+    }
+    func enableReminders() {
+        Task {
+            do {
+                if try await companion.enableReminders(owner: reminderOwner) == .denied,
+                   let url = URL(string: UIApplication.openNotificationSettingsURLString) { await UIApplication.shared.open(url) }
+            } catch { settingsFailure = .init("reminders", error: error, retry: enableReminders) }
         }
     }
 

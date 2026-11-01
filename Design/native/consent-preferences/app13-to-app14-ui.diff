@@ -1,0 +1,11 @@
+--- app13/Lumen/Views/PersonalContextView.swift
++++ app14/Lumen/Views/PersonalContextView.swift
+@@ -57,7 +57,7 @@
+                 case .saving(let value):
+                 if value.stale {
+                     return Alert(title: Text("Saved context changed"), message: Text(value.message),
+-                          primaryButton: .destructive(Text("Reload saved notes"), action: reload), secondaryButton: .cancel(Text("Keep editing")))
++                          primaryButton: .destructive(Text("Reload"), action: reload), secondaryButton: .cancel(Text("Keep draft")))
+                 } else {
+                     return Alert(title: Text("Couldn’t save context"), message: Text(value.message),
+                           primaryButton: .default(Text("Try again"), action: save), secondaryButton: .cancel(Text("Not now")))

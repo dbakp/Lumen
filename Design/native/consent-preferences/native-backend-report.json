@@ -1,0 +1,139 @@
+{
+  "checks" : [
+    {
+      "name" : "saved-on context reaches the actual context builder",
+      "passed" : true
+    },
+    {
+      "name" : "saved withdrawal removes personal notes from the actual context builder",
+      "passed" : true
+    },
+    {
+      "name" : "withdrawn notes and consent are actually stored together",
+      "passed" : true
+    },
+    {
+      "name" : "unrelated record persistence preserves newer context on disk",
+      "passed" : true
+    },
+    {
+      "name" : "unrelated record persistence preserves newer reminder preferences on disk",
+      "passed" : true
+    },
+    {
+      "name" : "restore reload installs actual saved notes and reminder preferences",
+      "passed" : true
+    },
+    {
+      "name" : "stale draft cannot overwrite restored notes or re-enable sharing",
+      "passed" : true
+    },
+    {
+      "name" : "stale rejection preserves the saved context file",
+      "passed" : true
+    },
+    {
+      "name" : "real notification authorization and checked enable complete",
+      "passed" : true
+    },
+    {
+      "name" : "actual notification center contains one contextual request",
+      "passed" : true
+    },
+    {
+      "name" : "default pending notification contains only generic private copy",
+      "passed" : true
+    },
+    {
+      "name" : "actual contextual notification is non-repeating with a future trigger",
+      "passed" : true
+    },
+    {
+      "name" : "explicit details consent replaces the actual pending content",
+      "passed" : true
+    },
+    {
+      "name" : "withdrawing details replaces actual health text with generic copy",
+      "passed" : true
+    },
+    {
+      "name" : "saved check-ins-off removes actual pending notification requests",
+      "passed" : true
+    },
+    {
+      "name" : "disabled private reminder preferences match the saved file",
+      "passed" : true
+    }
+  ],
+  "scope" : "Actual production checked stores, Foundation files, context builder and UNUserNotificationCenter on a synthetic iOS simulator. Controlled callback races are separate pure checks. No notification delivery, signed-device, disk-exhaustion, power-loss, live-provider or clinical claim.",
+  "snapshots" : [
+    {
+      "date" : "2026-11-01T20:30:53Z",
+      "pending" : [
+        {
+          "body" : "A moment to check in with yourself. Open Lumen for your latest context.",
+          "identifier" : "lumen.contextual-check-in",
+          "nextTrigger" : "2026-11-01T20:50:53Z",
+          "title" : "Your Lumen check-in"
+        }
+      ],
+      "phase" : "generic-enabled",
+      "preferences" : {
+        "enabled" : true,
+        "quietEnd" : 4,
+        "quietStart" : 3,
+        "showDetails" : false
+      }
+    },
+    {
+      "date" : "2026-11-01T20:30:53Z",
+      "pending" : [
+        {
+          "body" : "No meal is logged after your workout. If you haven't eaten, consider a meal and some water. An empty log doesn't mean you skipped food.",
+          "identifier" : "lumen.contextual-check-in",
+          "nextTrigger" : "2026-11-01T20:50:52Z",
+          "title" : "Check in after your session."
+        }
+      ],
+      "phase" : "details-enabled",
+      "preferences" : {
+        "enabled" : true,
+        "quietEnd" : 4,
+        "quietStart" : 3,
+        "showDetails" : true
+      }
+    },
+    {
+      "date" : "2026-11-01T20:30:53Z",
+      "pending" : [
+        {
+          "body" : "A moment to check in with yourself. Open Lumen for your latest context.",
+          "identifier" : "lumen.contextual-check-in",
+          "nextTrigger" : "2026-11-01T20:50:52Z",
+          "title" : "Your Lumen check-in"
+        }
+      ],
+      "phase" : "details-withdrawn",
+      "preferences" : {
+        "enabled" : true,
+        "quietEnd" : 4,
+        "quietStart" : 3,
+        "showDetails" : false
+      }
+    },
+    {
+      "date" : "2026-11-01T20:30:53Z",
+      "pending" : [
+
+      ],
+      "phase" : "check-ins-disabled",
+      "preferences" : {
+        "enabled" : false,
+        "quietEnd" : 4,
+        "quietStart" : 3,
+        "showDetails" : false
+      }
+    }
+  ],
+  "status" : "Preference checks passed"
+}

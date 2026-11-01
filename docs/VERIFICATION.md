@@ -1,4 +1,17 @@
-# Verification · 29 October 2026
+# Lumen verification
+
+## Batch38 · checked personal context and reminders · 2 November2026
+
+Checked local preference saves now finish before publishing notes/consent or reminder choices. Failed saves retain drafts or saved controls and support retry; context revisions reject stale overwrites after restore. Unrelated persistence no longer rewrites preference files. Owner-scoped notification access prevents a departed/newer/reset intent from enabling through a late reply. Notification replacement waits for older add callbacks before final removal, reports scheduling failure separately from saved preferences and retains generic lock-screen copy by default. The queue is process-local; ongoing/historical provider context and durable external delivery remain separate work. See [behavior and limits](PREFERENCE_SAVES.md).
+
+- All1,546 Release logic checks pass at102 current inputs in logic-source-r3, including22 new controls. LogicR2's stopped harness stall remains incomplete; explicit actor isolation repairs only the verification gates. Five focused23-check order repeats pass separately.
+- Final BuildR18 passes all five simulator products; unsigned ReleaseR12 passes at202 app inputs, minimumiOS18,35 absent development markers and no bundled model packages. All224 selected inputs match source-r23. No signed-device claim.
+- Actual production stores/Foundation/context builder/UNUserNotificationCenter pass16 checks at NativeR12's app11 boundary, including pending requests1→1→1→0 for generic/details/generic/off, stored consent, unrelated-file preservation, restored notes/preferences and stale rejection. Retained current service bytes are unchanged; this is not notification delivery or a fabricated framework substitute.
+- App13/source22 main recovery251.776s and actual software keys74.024s pass; compact normal217.981s/XXXL281.657s/actual keys72.101s pass. Keep-return, reopened Discard and saved-state relaunch are captured. App14 changes only stale action labels; the complete Discard branch is byte-identical, with retained prior UI source, exact diff and current hash checks. These earlier runs retain their source boundary.
+- Current app14/source23 main stale/reload131.395s and compact145.678s pass, including retained old draft, reopened choice and actual saved notes/sharing-Off/disabled Save after Reload. All these selected runs have0fail/skip/runtimewarnings. Twenty actual action rectangles pass both application and Alert containment; full visible words are independently reviewed.
+- The continuing design process scores43→40→41→43/55. Round3 requires a documented successor after repeated harness continuation failures; inspection counts and overlaps remain separate from image-tool failures. Round4 same-successor inspection covers52/52 originals,41unique hashes,0skips/image failures. Ten of11 lines4+, all required lines4, every concrete request closed. No app/UI edit follows acceptance.
+
+Earlier native/helper/geometry failures remain explicit, including actual13.5pt and137.5pt compact action overflows caught by the strengthened guard. They are not passing evidence. Navigation Done replaces the warning-producing keyboard toolbar; actual keys/predictions are distinguished from earlier caret-only stills. Darker disclosure/prompt ink has scoped native contrast measurements. All726 useful PNGs, compact outcomes, complete compressed logs, input hashes and source boundaries are retained in [the evidence](../Design/native/consent-preferences/README.md). Publication/read-back and scoped stopped-worker cleanup follow separately; no cleanup-only build is required. The full product goal remains active.
 
 ## Batch37 · checked profile, goals and setup · 1 November2026
 
