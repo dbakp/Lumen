@@ -1,5 +1,5 @@
 {
-  "status": "all local gates verified; awaiting coherent publication and scoped cleanup",
+  "status": "verified and published; scoped stopped-worker cleanup complete",
   "applicationBaseline": "04678c0d952d90972041c7ff9d4b90951f879342",
   "timingProtocolPublicationCommit": "8b276eb8ffe4f6b5d98247dcfcb722e07d5916b7",
   "reuseSupplementPublicationCommit": "f2f2380a02b5562b718d094c84954f32d35bf50e",
@@ -74,9 +74,7 @@
   },
   "finalSourceBoundary": "The only change after the Release replay/model build is three additional assertions in the default RecordRetrievalChecks.run path. Current DebugR3 runs all1382. Production and replay driver are identical across R2/R3; native app inputs are unchanged.",
   "designScope": "No UI/layout/copy/icon/navigation change. Existing native surfaces are regression-tested; no new design score or decorative review is claimed.",
-  "pending": [
-    "Final source/evidence audit, publication/read-back and stopped-worker scoped cleanup"
-  ],
+  "pending": [],
   "remainingProductGates": [
     "Source-support/model/provider/language quality and held-out discipline",
     "Signed-device Health/Watch/voice, accessibility/performance and release/privacy readiness"
@@ -145,5 +143,21 @@
     "comparisonScriptSHA256": "82be7989b64c9281ad0c3704350705c945408f473ec6b47a72135771d3c3e1fd",
     "scope": "Release current driver vs published9f261a9 complete development outcomes. Replay elapsed times are excluded from equality/performance claims; all21+21 paired timing measurements use the same Release configuration. No held-out scores."
   },
-  "finalAudit": "final-source-audit.json"
+  "finalAudit": "final-source-audit.json",
+  "publication": {
+    "commit": "d14d589c7024b6a18996aaad9fae30f66b28da62",
+    "publisher": "scripts/publish-batches.sh",
+    "exactGitHubMainReadBack": true,
+    "confirmedBeforeRemoval": true
+  },
+  "cleanup": {
+    "report": "storage-cleanup.json",
+    "removedOwnedRoots": 7,
+    "removedSeparateRawReports": 2,
+    "recoveredAvailableBytes": 1816027136,
+    "retainedUsefulNativeOriginals": 5,
+    "currentResearchHelperRetainedAndVerifiedAfterCacheRemoval": true,
+    "packageXcodeAndTestCoreMLCachesRemoved": true,
+    "noCleanupOnlyAppBuild": true
+  }
 }
