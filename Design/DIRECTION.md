@@ -14,7 +14,7 @@ Keep all six input labels complete above their native fields at accessibility si
 
 Reminder controls use checked field writes; a permission request is **Requesting notification access…**, with no saved-on claim before authorization and storage success. A departed view, newer choice or reset invalidates pending enable replies. Errors use the existing setting-specific native retry alert. Full-size labels stack above native switches at accessibility sizes; quiet-hour menus reuse the accepted wrapping Picker pattern. Actual scheduling failure is separate from the saved preference and has **Retry check-in**. No new concept, promotional set, type reduction or invented integration is introduced.
 
-Batch38 closes four design rounds43→40→41→43/55 with documented continuing-reviewer harness recovery,10/11 lines4+ and all concrete asks closed. Final current main/compact stale and unchanged-branch Discard/actual-keyboard evidence retain their exact boundaries. No app/UI edit follows the verdict. Source/native/Release audits pass; publication/read-back and scoped cleanup follow separately. Physical-device, VoiceOver, delivery and broader product/release gates remain open.
+Batch38 closes four design rounds43→40→41→43/55 with documented continuing-reviewer harness recovery,10/11 lines4+ and all concrete asks closed. Final current main/compact stale and unchanged-branch Discard/actual-keyboard evidence retain their exact boundaries. No app/UI edit follows the verdict. Source/native/Release audits pass; application a83918a1d7dcd5a4739e8f37e0a71d95fd7f70d3 is published with exact read-back before scoped cleanup. Physical-device, VoiceOver, delivery and broader product/release gates remain open.
 
 ## Batch 37 · checked profile, goals and setup
 

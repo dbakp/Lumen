@@ -1,6 +1,6 @@
 # Batch38: checked context sharing and reminders
 
-Scoped verification and design review accepted; publication/read-back pending. The full product goal remains active.
+Scoped verification and design review accepted; published as `a83918a1d7dcd5a4739e8f37e0a71d95fd7f70d3` with exact GitHub read-back before cleanup. The full product goal remains active.
 
 Final checkpoint · 2November2026:1,546 logic checks at102 current inputs, BuildR18's five simulator products, and unsigned ReleaseR12/minimumiOS18/35-marker/no-model audit pass at202 app inputs. All224 selected inputs match source-r23. Actual backend files/context/notification checks pass16 at the unchanged service boundary; no delivery claim. Every earlier failed/stopped producer retains its outcome and version in the63-entry `producers.json` and complete compact logs.
 
@@ -67,3 +67,7 @@ LogicR2 is explicitly stopped as incomplete after a live idle sample/backtrace a
 The22 new pure controls use the actual production permission/order primitives with manually controlled callbacks. They reproduce the previous late-add orphan, then verify newer intent, owner/reset/task cancellation, coalescing, removal-after-add, failure reporting and retry. They do not impersonate UNUserNotificationCenter or establish actual notification delivery. Native I/O fault checks use the existing Debug-simulator-only directory destination and production Foundation write; actual disk exhaustion/power loss remain unproven.
 
 One native build directory and dependency checkout are reused from Batch37, rather than duplicating them. Check disk before substantial work; preserve useful evidence/source and verify GitHub before removing completed raw output. Current canonical research inputs and the supplied skill remain outside this batch’s disposable roots.
+
+## Publication and scoped cleanup
+
+Published application `a83918a1d7dcd5a4739e8f37e0a71d95fd7f70d3` reaches GitHub through the reviewed batch publisher. Fresh authenticated main/commit/tree read-back checks all1,268 required source/evidence blob identities before deletion. Stopped-worker cleanup removes three completed Batch38 roots, its newly created compact simulator and one exact synthetic native report. Immediate available bytes increase32,132,632,576→37,213,425,664, a measured5,080,793,088bytes (about5.08GB). A later reading reaches42,826,039,296, a measured10,693,406,720bytes (about10.69GB) above the starting value, including delayed APFS/simulator reclamation and concurrent volume activity. Logical file bytes8,566,303,812 and unique-inode allocation8,663,408,640 remain separate measures. All726 native evidence PNGs plus15 source icon PNGs are hash-checked after deletion. Working source, current inputs, supplied skill/archive, the one simulator build/dependency cache, primary/Watch/Taskfold/shared runtimes, unrelated files and global/system/browser/application caches remain. No symlink target is followed and no cleanup-only build runs. Exact inventory/accounting is in [the cleanup ledger](storage-cleanup.json). Raw temporary paths are historical; the full goal stays active.

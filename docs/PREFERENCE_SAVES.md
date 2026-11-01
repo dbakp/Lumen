@@ -1,6 +1,6 @@
 # Personal context and reminder saves
 
-Batch38 has passed its scoped verification and design review; publication/read-back follow separately. Current results, source boundaries and failed runs are recorded with [the evidence](../Design/native/consent-preferences/README.md). This page describes the implemented behavior, not release acceptance.
+Batch38 has passed its scoped verification and design review; published as `a83918a1d7dcd5a4739e8f37e0a71d95fd7f70d3` with exact GitHub read-back before scoped cleanup. Current results, source boundaries and failed runs are recorded with [the evidence](../Design/native/consent-preferences/README.md). This page describes the implemented behavior, not release acceptance.
 
 ## Personal notes and sharing
 
