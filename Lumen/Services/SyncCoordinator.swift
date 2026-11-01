@@ -30,6 +30,6 @@ public enum SyncCoordinator {
     }
 
     public static func propagate(sleep: SleepStore, health: HealthStore) {
-        health.recompute(sleepDebt: sleep.debt, sleepNeed: sleep.profile.sleepNeed, sleepEpisodes: sleep.episodes)
+        health.recompute(sleepDebt: sleep.debt, sleepNeed: sleep.profile.sleepNeed, sleepEpisodes: sleep.episodes, birthYear: sleep.profile.birthYear)
     }
 }

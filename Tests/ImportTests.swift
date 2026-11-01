@@ -84,6 +84,7 @@ import Darwin
         try ProviderReplyChecks.run()
         try await HealthWriteOrderChecks.run()
         try LocalCommitChecks.run()
+        try ProfileSettingsChecks.run()
         try VoiceDraftChecks.run()
         try ScheduledPlanChecks.run()
         try await LabReportChecks.run()

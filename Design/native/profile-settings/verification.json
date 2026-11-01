@@ -1,0 +1,49 @@
+{
+  "status": "scoped verification/design accepted; publication and cleanup recorded separately",
+  "logicChecks": 1524,
+  "profileSettingsChecks": 19,
+  "diskTransactionChecks": 17,
+  "applicationInputCount": 199,
+  "applicationSources": "application-source-r8.json",
+  "logicInputCount": 99,
+  "logicSources": "logic-source-r2.json",
+  "selectedInputCount": 220,
+  "selectedSources": "source-r23.json",
+  "finalSimulatorBuild": "BuildR19 passes all five products; only native Discard evidence/action assertions change after BuildR14",
+  "releaseAudit": "release-audit-r6.json",
+  "nativeFinalMain": "NativeR9 passes2 without failures/skips/runtime warnings; source r18/app r8",
+  "nativeCombinedEarlier": "NativeR4 passes9 at source r8/app r5; exact version differences remain in README",
+  "compactEarlier": "SmallR1 passes6 at source r15/app r6,750x1334 actual pixels; settled-label defect repaired afterward",
+  "compactFinal": "SmallR3 passes birth-year, goals/sleep and sex, but fails the generic-edge Discard reveal; SmallR4 records no centre drag before its failed hittable assertion; SmallR5 fails after gestures on the prediction strip; SmallR6 overscrolls the target; SmallR7 passes the focused full-visibility/Discard action at app r8/source r23",
+  "design": {
+    "round1": 43,
+    "round2": 41,
+    "maximum": 55,
+    "round3": 42,
+    "concreteAsks": "all five Round3 asks closed",
+    "round4": 43,
+    "linesAtLeastFour": 10,
+    "scoredLines": 11,
+    "noneBelowThree": true,
+    "verdict": "Done within scoped design review; broader release gates open"
+  },
+  "environment": {
+    "xcode": "27.0 (27A266a)",
+    "swift": "6.4 (swiftlang-6.4.0.34.1)",
+    "macOS": "26.6.2 (25G83)",
+    "architecture": "arm64",
+    "mainSimulator": "iPhone18Pro / iOS27.0 (24A434)",
+    "compactSimulator": "iPhoneSE3 / iOS27.0 (24A434)",
+    "minimumIOS": "18.0"
+  },
+  "remaining": [
+    "checked personal-context/consent and reminder preference persistence",
+    "conversation/archive and other historical persistence paths",
+    "durable optional Health save/delete retry and signed-device delivery",
+    "Watch acknowledgement/source reconciliation",
+    "answer support, providers, language/clinical quality, accessibility, privacy and distribution"
+  ],
+  "scope": "Local checked profile/goals/setup and scoped native presentation; no schema/model/query/cutoff change, no signed-device/actual disk-exhaustion/power-loss/VoiceOver or release acceptance",
+  "retainedPNGs": 282,
+  "currentReviewOriginals": 43
+}

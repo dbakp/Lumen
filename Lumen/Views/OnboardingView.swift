@@ -38,6 +38,8 @@ public struct OnboardingView: View {
     @State private var remindersOn = false
     // Plan reveal
     @State private var revealStage = 0
+    @State private var savingSetup = false
+    @State private var setupFailure: LocalSaveFailure?
 
     public init() {}
 
@@ -57,6 +59,7 @@ public struct OnboardingView: View {
             }
         }
         .animation(.spring(response: 0.5, dampingFraction: 0.86), value: step)
+        .localSaveAlert($setupFailure)
     }
 
     // MARK: Chrome
@@ -506,7 +509,8 @@ public struct OnboardingView: View {
                 .padding(.horizontal, 24)
             }
             if revealStage >= checks.count {
-                continueButton("Start using Lumen") { finish() }
+                continueButton(savingSetup ? "Saving…" : "Start using Lumen") { finish() }
+                    .disabled(savingSetup)
                     .padding(.horizontal, 24).padding(.bottom, 16)
                     .transition(.opacity)
             }
@@ -534,18 +538,24 @@ public struct OnboardingView: View {
     }
 
     func finish() {
-        let comps = Calendar.current.dateComponents([.hour, .minute], from: wake)
-        health.updateGoals(draftGoals)
-        sleep.completeOnboarding(
-            need: (needHours * 3600 / 300).rounded() * 300,
-            chronotype: chronotype,
-            wakeHour: comps.hour ?? 7,
-            wakeMinute: comps.minute ?? 0,
-            name: trimmedName,
-            birthYear: birthYear,
-            units: units
-        )
-        haptic(.heavy)
-        Task { await SyncCoordinator.syncEverything(sleep: sleep, health: health) }
+        guard !savingSetup else { return }
+        savingSetup = true
+        Task {
+            // Read existing settings when this actor task starts, rather than
+            // carrying a pre-task copy past potentially queued local changes.
+            let comps = Calendar.current.dateComponents([.hour, .minute], from: wake)
+            var profile = sleep.profile
+            profile.sleepNeed = (needHours * 3600 / 300).rounded() * 300
+            profile.chronotype = chronotype
+            profile.wakeGoal.hour = comps.hour ?? 7; profile.wakeGoal.minute = comps.minute ?? 0
+            profile.name = trimmedName; profile.birthYear = birthYear; profile.units = units
+            profile.createdAt = profile.createdAt ?? Date(); profile.onboardingDone = true
+            do {
+                try await ProfileSettingsCommit.onboarding(profile: profile, goals: draftGoals, sleep: sleep, health: health)
+                haptic(.heavy)
+                await SyncCoordinator.syncEverything(sleep: sleep, health: health)
+            } catch { setupFailure = .saving("setup", error: error, draft: true) }
+            savingSetup = false
+        }
     }
 }

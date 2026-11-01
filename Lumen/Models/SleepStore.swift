@@ -96,6 +96,11 @@ public final class SleepStore: ObservableObject {
     }
 
     public func recompute(now: Date = Date()) {
+        calculate(now: now)
+        persist()
+    }
+
+    private func calculate(now: Date) {
         let coveredDebt = CurrentHealthEvidence.estimatedSleepDebt(episodes, sleepNeed: profile.sleepNeed, now: now)
         debt = coveredDebt ?? 0 // Retained compatibility field, never displayed without presence.
         energyPotential = coveredDebt.map { CircadianModel.energyPotential(debt: $0) } ?? 0
@@ -113,7 +118,18 @@ public final class SleepStore: ObservableObject {
             suggestedBedtime = plan.bedtime
             bedtimeNote = plan.note
         }
-        persist()
+    }
+
+    func updateProfileChecked(_ change: (inout UserProfile) -> Void) throws {
+        var saved = profile; change(&saved)
+        try LocalStore.saveChecked(saved, as: "profile")
+        installCheckedProfile(saved)
+    }
+
+    func installCheckedProfile(_ saved: UserProfile) {
+        profile = saved
+        calculate(now: Date())
+        publishSnapshot()
     }
 
     // MARK: mutations
@@ -169,23 +185,14 @@ public final class SleepStore: ObservableObject {
         }
     }
 
-    public func completeOnboarding(need: TimeInterval, chronotype: Chronotype, wakeHour: Int, wakeMinute: Int, name: String, birthYear: Int?, units: UnitSystem) {
-        profile.sleepNeed = need
-        profile.birthYear = birthYear
-        profile.units = units
-        profile.createdAt = profile.createdAt ?? Date()
-        profile.chronotype = chronotype
-        profile.wakeGoal.hour = wakeHour
-        profile.wakeGoal.minute = wakeMinute
-        profile.name = name.trimmingCharacters(in: .whitespaces)
-        profile.onboardingDone = true
-        recompute()
-    }
-
     public func persist() {
         LocalStore.save(profile, as: "profile")
         LocalStore.save(episodes, as: "sleep")
         LocalStore.save(habits, as: "habits")
+        publishSnapshot()
+    }
+
+    private func publishSnapshot() {
         let d = AppGroup.defaults
         d.set(currentNight != nil, forKey: "widget.hasSleep")
         d.set(debt / 3600, forKey: "widget.debt")

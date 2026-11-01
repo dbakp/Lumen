@@ -9,6 +9,7 @@ public struct SettingsView: View {
     @ObservedObject private var strava = StravaService.shared
     @ObservedObject private var notifications = NotificationManager.shared
     @ObservedObject private var llm = LLMConnectionService.shared
+    @Environment(\.dynamicTypeSize) private var textSize
     @Environment(\.dismiss) private var dismiss
 
     @AppStorage("lumen.appearance") private var appearance = "light"
@@ -17,11 +18,16 @@ public struct SettingsView: View {
     @State private var showCoachSetup = false
     @State private var showStravaSetup = false
     @State private var syncing = false
+    @State private var settingsFailure: SettingsSaveFailure?
+    @State private var savingProfilePair = false
+    @State private var nameDraft = ""
+    @State private var nameReady = false
 
     public init() {}
 
     var units: UnitSystem { sleep.profile.unitSystem }
     var currentYear: Int { Calendar.current.component(.year, from: Date()) }
+    var nameDirty: Bool { nameReady && nameDraft != sleep.profile.name }
 
     public var body: some View {
         NavigationStack {
@@ -42,11 +48,17 @@ public struct SettingsView: View {
                 privacySection
                 aboutSection
             }
+            .disabled(savingProfilePair)
             .scrollContentBackground(.hidden)
             .background(AuroraBackground())
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() }.fontWeight(.semibold) } }
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) { Button("Done") { saveName(close: true) }.fontWeight(.semibold).disabled(savingProfilePair) }
+                ToolbarItem(placement: .topBarTrailing) {
+                    if savingProfilePair { ProgressView().accessibilityLabel("Saving birth year") }
+                }
+            }
             .sheet(isPresented: $showWeightLog) { WeightLogSheet() }
             .sheet(isPresented: $showCoachSetup) { CoachSetupSheet() }
             .sheet(isPresented: $showStravaSetup) { StravaSetupSheet() }
@@ -56,92 +68,148 @@ public struct SettingsView: View {
                 Text("Your profile, logs and settings are removed from this iPhone and you'll start fresh. Data in Apple Health isn't touched.")
             }
             .task { await notifications.refreshAuthorization() }
+            .onAppear { if !nameReady { nameDraft = sleep.profile.name; nameReady = true } }
+            .onChange(of: sleep.profile.name) { old, new in if nameDraft == old { nameDraft = new } }
         }
         .tint(Theme.accent)
+        .interactiveDismissDisabled(savingProfilePair || nameDirty)
+        .settingsSaveAlert($settingsFailure)
     }
 
     // MARK: Profile
 
     var profileHeader: some View {
         Section {
-            HStack(spacing: 14) {
-                Text(String(sleep.profile.name.prefix(1)).uppercased())
-                    .font(.title.weight(.bold)).foregroundStyle(Theme.text)
-                    .frame(width: 60, height: 60)
-                    .background(Theme.surfaceRaised, in: Circle())
-                VStack(alignment: .leading, spacing: 3) {
-                    TextField("Name", text: $sleep.profile.name)
-                        .font(.title3.weight(.bold))
-                        .onSubmit { sleep.persist() }
-                    if let created = sleep.profile.createdAt {
-                        Text("Member since \(created.formatted(.dateTime.month(.wide).year()))").font(.caption).foregroundStyle(.secondary)
-                    }
+            Group {
+                if textSize.isAccessibilitySize {
+                    VStack(alignment: .leading, spacing: 14) { profileAvatar; profileDetails }
+                } else {
+                    HStack(spacing: 14) { profileAvatar; profileDetails }
                 }
             }
             .padding(.vertical, 4)
         }
     }
 
+    var profileAvatar: some View {
+        Text(String(sleep.profile.name.prefix(1)).uppercased())
+            .font(.title.weight(.bold)).foregroundStyle(Theme.text)
+            .frame(width: 60, height: 60)
+            .background(Theme.surfaceRaised, in: Circle())
+    }
+
+    var profileDetails: some View {
+        VStack(alignment: .leading, spacing: 3) {
+            TextField("Name", text: $nameDraft)
+                .font(.title3.weight(.bold))
+                .onSubmit { saveName() }
+                .accessibilityIdentifier("settingsNameDraft")
+            if nameDirty {
+                Text("Name not saved").font(.footnote).foregroundStyle(Theme.secondary)
+                ViewThatFits(in: .horizontal) {
+                    HStack(spacing: 16) { nameActions }
+                    VStack(alignment: .leading, spacing: 4) { nameActions }
+                }
+            }
+            if let created = sleep.profile.createdAt {
+                Text("Member since \(created.formatted(.dateTime.month(.wide).year()))").font(.caption).foregroundStyle(.secondary)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
     // MARK: Body
 
     var bodySection: some View {
         Section("Body") {
-            Picker("Units", selection: Binding(get: { units }, set: { sleep.profile.units = $0; sleep.persist() })) {
+            Picker("Units", selection: Binding(get: { units }, set: { value in profileSetting("units") { $0.units = value } })) {
                 ForEach(UnitSystem.allCases, id: \.self) { Text($0.label).tag($0) }
             }
-            Picker("Sex", selection: goalBinding(\.sex)) {
+            SettingsPicker("Sex", value: health.goals.sex == .female ? "Female" : health.goals.sex == .male ? "Male" : "Not specified",
+                selection: goalBinding(\.sex, "sex"), identifier: "settingsSex") {
                 Text("Female").tag(HealthGoals.Sex.female)
                 Text("Male").tag(HealthGoals.Sex.male)
                 Text("Not specified").tag(HealthGoals.Sex.unspecified)
             }
-            Picker("Birth year", selection: Binding(
-                get: { sleep.profile.birthYear ?? (currentYear - (health.goals.age ?? 30)) },
-                set: { y in
-                    sleep.profile.birthYear = y; sleep.persist()
-                    var g = health.goals; g.age = currentYear - y; health.updateGoals(g)
-                })) {
-                ForEach((1930...(currentYear - 13)).reversed(), id: \.self) { Text(String($0)).tag($0) }
+            SettingsPicker("Birth year", value: sleep.profile.birthYear.map { String($0) } ?? "Not recorded",
+                selection: Binding<Int?>(get: { sleep.profile.birthYear }, set: { saveBirthYear($0) }), identifier: "settingsBirthYear") {
+                Text("Not recorded").tag(Int?.none)
+                ForEach((1930...(currentYear - 13)).reversed(), id: \.self) { Text(String($0)).tag(Optional($0)) }
             }
-            Stepper(value: Binding(get: { health.goals.heightCm ?? 172 }, set: { v in var g = health.goals; g.heightCm = v; health.updateGoals(g) }),
-                    in: 120...220, step: 1) {
-                LabeledContent("Height", value: Units.height(health.goals.heightCm ?? 172, units))
-            }
+            SettingsStepper("Height", value: Units.height(health.goals.heightCm ?? 172, units),
+                selection: Binding(get: { health.goals.heightCm ?? 172 }, set: { value in goalSetting("height") { $0.heightCm = value } }),
+                in: 120...220, step: 1, identifier: "settingsHeight")
             Button { showWeightLog = true } label: {
-                LabeledContent("Weight", value: health.goals.weightKg.map { Units.weight($0, units) } ?? "Add")
+                SettingsValueRow("Weight", value: health.goals.weightKg.map { Units.weight($0, units) } ?? "Add")
             }
             .foregroundStyle(.primary)
         }
     }
 
-    func goalBinding<T>(_ kp: WritableKeyPath<HealthGoals, T>) -> Binding<T> {
-        Binding(get: { health.goals[keyPath: kp] }, set: { v in var g = health.goals; g[keyPath: kp] = v; health.updateGoals(g) })
+    func goalBinding<T>(_ kp: WritableKeyPath<HealthGoals, T>, _ label: String) -> Binding<T> {
+        Binding(get: { health.goals[keyPath: kp] }, set: { value in goalSetting(label) { $0[keyPath: kp] = value } })
+    }
+
+    @ViewBuilder var nameActions: some View {
+        Button("Save name") { saveName() }.buttonStyle(.borderless).frame(minHeight: 44)
+        Button("Discard") { nameDraft = sleep.profile.name }.buttonStyle(.borderless).frame(minHeight: 44)
+    }
+
+    func saveName(close: Bool = false) {
+        guard nameDirty else { if close { dismiss() }; return }
+        do {
+            let value = nameDraft.trimmingCharacters(in: .whitespacesAndNewlines)
+            try sleep.updateProfileChecked { $0.name = value }
+            nameDraft = sleep.profile.name
+            if close { dismiss() }
+        } catch { settingsFailure = .init("name", error: error, retainedDraft: true, retry: { saveName(close: close) }) }
+    }
+
+    func goalSetting(_ label: String, _ change: @escaping (inout HealthGoals) -> Void) {
+        do { try health.updateGoalsChecked(change) }
+        catch { settingsFailure = .init(label, error: error, retry: { goalSetting(label, change) }) }
+    }
+
+    func profileSetting(_ label: String, _ change: @escaping (inout UserProfile) -> Void) {
+        do {
+            try sleep.updateProfileChecked(change)
+            SyncCoordinator.propagate(sleep: sleep, health: health)
+        } catch { settingsFailure = .init(label, error: error, retry: { profileSetting(label, change) }) }
+    }
+
+    func saveBirthYear(_ year: Int?) {
+        guard !savingProfilePair else { return }
+        savingProfilePair = true
+        Task {
+            do { try await ProfileSettingsCommit.birthYear(year, sleep: sleep, health: health) }
+            catch { settingsFailure = .init("birth year", error: error, retry: { saveBirthYear(year) }) }
+            savingProfilePair = false
+        }
     }
 
     // MARK: Goals
 
     var goalsSection: some View {
         Section {
-            Picker("Focus", selection: goalBinding(\.goal)) {
+            Picker("Focus", selection: goalBinding(\.goal, "focus")) {
                 ForEach(HealthGoals.BodyGoal.allCases, id: \.self) { Text($0.label).tag($0) }
             }
-            Picker("Activity level", selection: goalBinding(\.activityLevel)) {
+            Picker("Activity level", selection: goalBinding(\.activityLevel, "activity level")) {
                 ForEach(HealthGoals.ActivityLevel.allCases, id: \.self) { Text($0.label).tag($0) }
             }
-            Stepper(value: goalBinding(\.activeCalGoal), in: 150...1500, step: 25) {
-                LabeledContent("Move goal", value: "\(Int(health.goals.activeCalGoal)) kcal")
-            }
-            Stepper(value: goalBinding(\.exerciseGoalMin), in: 10...120, step: 5) {
-                LabeledContent("Exercise goal", value: "\(Int(health.goals.exerciseGoalMin)) min")
-            }
-            Stepper(value: goalBinding(\.stepGoal), in: 2000...30000, step: 500) {
-                LabeledContent("Step goal", value: Int(health.goals.stepGoal).formatted())
-            }
-            LabeledContent("Calories", value: "\(health.goals.calorieTarget()) kcal / day")
-            LabeledContent("Protein", value: "\(health.goals.proteinTarget()) g / day")
+            SettingsStepper("Move goal", value: "\(Int(health.goals.activeCalGoal)) kcal", selection: goalBinding(\.activeCalGoal, "move goal"),
+                in: 150...1500, step: 25, identifier: "settingsMoveGoal")
+            SettingsStepper("Exercise goal", value: "\(Int(health.goals.exerciseGoalMin)) min", selection: goalBinding(\.exerciseGoalMin, "exercise goal"),
+                in: 10...120, step: 5, identifier: "settingsExerciseGoal")
+            SettingsStepper("Step goal", value: Int(health.goals.stepGoal).formatted(), selection: goalBinding(\.stepGoal, "step goal"),
+                in: 2000...30000, step: 500, identifier: "settingsStepGoal")
+            SettingsValueRow("Calories", value: "\(health.goals.calorieTarget()) kcal / day")
+                .accessibilityIdentifier("settingsCalorieTarget")
+            SettingsValueRow("Protein", value: "\(health.goals.proteinTarget()) g / day")
         } header: {
             Text("Goals")
         } footer: {
-            Text("Calories are worked out from your body, activity level and focus. Protein scales with your weight.")
+            Text("Targets are estimates from your settings. Missing values use defaults.")
         }
     }
 
@@ -149,19 +217,17 @@ public struct SettingsView: View {
 
     var sleepSection: some View {
         Section {
-            Stepper(value: Binding(get: { sleep.profile.sleepNeed }, set: { sleep.profile.sleepNeed = $0; sleep.recompute() }),
-                    in: 5 * 3600...11.5 * 3600, step: 300) {
-                LabeledContent("Sleep need", value: SleepFormat.durationHM(sleep.profile.sleepNeed))
-            }
-            Picker("Body clock", selection: Binding(get: { sleep.profile.chronotype }, set: { sleep.profile.chronotype = $0; sleep.recompute() })) {
+            SettingsStepper("Sleep need", value: SleepFormat.durationHM(sleep.profile.sleepNeed),
+                selection: Binding(get: { sleep.profile.sleepNeed }, set: { value in profileSetting("sleep need") { $0.sleepNeed = value } }),
+                in: 5 * 3600...11.5 * 3600, step: 300, identifier: "settingsSleepNeed")
+            Picker("Body clock", selection: Binding(get: { sleep.profile.chronotype }, set: { value in profileSetting("body clock") { $0.chronotype = value } })) {
                 ForEach(Chronotype.allCases, id: \.self) { Text($0.label).tag($0) }
             }
             DatePicker("Wake goal", selection: Binding(
                 get: { sleep.wakeGoalToday },
                 set: { d in
                     let c = Calendar.current.dateComponents([.hour, .minute], from: d)
-                    sleep.profile.wakeGoal.hour = c.hour; sleep.profile.wakeGoal.minute = c.minute
-                    sleep.recompute(); NotificationManager.shared.reschedule(from: sleep)
+                    profileSetting("wake goal") { $0.wakeGoal.hour = c.hour; $0.wakeGoal.minute = c.minute }
                 }), displayedComponents: .hourAndMinute)
         } header: {
             Text("Sleep")
@@ -279,7 +345,7 @@ public struct SettingsView: View {
                     set: { on in
                         Task {
                             let ok = on ? await AppLock.shared.verify() : true
-                            if ok { sleep.profile.appLock = on; sleep.persist() }
+                            if ok { profileSetting("app lock") { $0.appLock = on } }
                         }
                     }))
             }

@@ -1,0 +1,17 @@
+# Profile and setup storage
+
+Batch37 has completed scoped verification and continuing design review. Publication/read-back and cleanup receipts are kept with [the evidence](../Design/native/profile-settings/README.md).
+
+Settings saves the edited goal or profile field against the latest live value. A checked disk write completes before the new value is published. Goal changes write only goals; profile changes write only profile, then recalculate the sleep presentation and companion snapshot. Legacy sleep mutations retain their existing persistence path and remain outside this repair.
+
+Name editing uses a separate draft. Save name, Return and Done attempt the checked save; Done closes only after success. A failure retains the draft, and Discard returns it to the currently saved name. Unsaved edits prevent interactive sheet dismissal.
+
+Birth year is stored in profile, while calculation age is stored in goals. The existing recoverable directory transaction prepares and commits these two JSON files together. Initial setup uses the same pair, including its onboarding-complete flag. Staging runs off the main actor; commit checks the storage revision and active Health sync. Successful disk commit and live installation run in the same main-actor turn. Concurrent changes reject the prepared pair instead of overwriting newer records. Unchanged regular files are linked using the existing Batch 36 policy; no photo-library copy or schema migration is added.
+
+Setup reads the existing profile inside its save task, before entering the paired service. The store, paired service and LocalStore entry points explicitly share main-actor isolation. The source audit relies on Swift's documented guarantee against interleaving at calls/returns with the same isolation; the detached staging wait is the actual suspension that requires revision and sync rechecks. See [Swift SE-0420, actor isolation](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0420-inheritance-of-actor-isolation.md#motivation). This is a source/isolation argument, separate from native failure/retry evidence.
+
+Valid birth years are 1930 through the current calendar year minus thirteen. An explicitly cleared year clears its derived age too; existing JSON encoding and decoding preserve both unknown values. Propagation from the sleep/profile store refreshes the approximate calculation age from a known valid year, including after a calendar-year change. Existing age-only preferences remain readable when no year is known. This does not establish an exact date of birth, continuous midnight refresh or clinical suitability of the target formulas.
+
+Failed writes show the actual setting or setup operation. A retry reapplies only that choice to current records. No preference or setup action creates an Apple Health sample. App-lock saving uses the checked profile path after the existing biometric check; actual biometric/device validation remains separate. Appearance, provider credentials, conversation deletion, manual sleep/habits, global erasure and other historical persistence paths are not claimed as repaired by this batch.
+
+All1,524 logic checks pass, including19 profile/age checks and17 existing actual filesystem-transaction checks. Simulator builds and unsigned Release pass. Scoped normal/main/compact native flows and four continuing review rounds establish the presentation and recovery boundaries recorded in the evidence. Full-device storage exhaustion, power-loss durability, signed Health delivery, VoiceOver and release governance remain open.

@@ -224,16 +224,22 @@ public final class HealthStore: ObservableObject {
         if snapshot.readings == nil { snapshot = CurrentHealthEvidence.resolve(snapshot: snapshot, imported: nil, meals: [], water: [], workouts: [], sleep: nil) }
         let now = Date()
         snapshot.setReading(.init(components: [.init(value: kg, origin: .localLog, source: "Lumen weight log", start: now, end: now, lastSampleAt: now, aggregation: .latest)]), for: "weight")
-        try await LocalStore.saveWeightChecked(goals: savedGoals, snapshot: snapshot, canCommit: { !self.isSyncing })
-        goals = savedGoals; healthSnapshot = snapshot
-        Task { await HealthKitService.shared.saveWeight(kg: kg, at: now) }
-        refresh()
+        try await LocalStore.saveWeightChecked(goals: savedGoals, snapshot: snapshot, canCommit: { !self.isSyncing }) {
+            goals = savedGoals; healthSnapshot = snapshot
+            Task { await HealthKitService.shared.saveWeight(kg: kg, at: now) }
+            refresh()
+        }
     }
 
-    public func updateGoals(_ g: HealthGoals) {
-        goals = g
-        persist(); refresh()
+    /// Settings change one field against the latest live goals. Do not publish
+    /// a new target or overwrite other record domains when storage rejects it.
+    func updateGoalsChecked(_ change: (inout HealthGoals) -> Void) throws {
+        var saved = goals; change(&saved)
+        try LocalStore.saveChecked(saved, as: "goals")
+        installCheckedGoals(saved)
     }
+
+    func installCheckedGoals(_ saved: HealthGoals) { goals = saved; refresh() }
 
     public func persist() {
         LocalStore.save(meals, as: "meals")
@@ -377,7 +383,9 @@ public final class HealthStore: ObservableObject {
     // MARK: Coaching
 
     /// Called by the sleep side whenever debt / need / last night change.
-    public func recompute(sleepDebt: TimeInterval, sleepNeed: TimeInterval, sleepEpisodes: [SleepEpisode]) {
+    public func recompute(sleepDebt: TimeInterval, sleepNeed: TimeInterval, sleepEpisodes: [SleepEpisode], birthYear: Int? = nil) {
+        let currentGoals = ProfileSettings.refreshedAge(goals: goals, birthYear: birthYear)
+        if currentGoals.age != goals.age { goals = currentGoals }
         self.sleepDebt = sleepDebt
         self.sleepNeed = sleepNeed
         self.sleepEpisodes = sleepEpisodes

@@ -51,6 +51,7 @@ let package = Package(
             "Lumen/Services/ChatCoachService.swift",
             "Lumen/Services/SemanticSearchService.swift",
             "Lumen/Services/SyncCoordinator.swift",
+            "Lumen/Services/ProfileSettingsCommit.swift",
             "Lumen/Services/NutritionEngine.swift"
 ],
         sources: [
@@ -118,6 +119,7 @@ let package = Package(
             "Lumen/Algorithms/HealthTotals.swift",
             "Lumen/Algorithms/CurrentHealthEvidence.swift",
             "Lumen/Algorithms/LocalHealthCorrection.swift",
+            "Lumen/Algorithms/ProfileSettings.swift",
             "Lumen/Algorithms/OrderedHealthWrites.swift",
             "Lumen/Algorithms/HealthContextPrompt.swift",
             "Lumen/Algorithms/CoachingEngine.swift",
@@ -145,6 +147,7 @@ let package = Package(
             "Tests/DataConfidenceChecks.swift",
             "Tests/HealthWriteOrderChecks.swift",
             "Tests/LocalCommitChecks.swift",
+            "Tests/ProfileSettingsChecks.swift",
             "Tests/RetainedEvidenceChecks.swift",
             "Tests/BackupPackageChecks.swift",
             "Tests/BackupUIFixtures.swift",

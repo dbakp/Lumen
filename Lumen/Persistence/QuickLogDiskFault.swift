@@ -14,7 +14,9 @@ enum QuickLogDiskFault {
         calls[domain, default: 0] += 1
         let count = calls[domain]!
         let requested = args.firstIndex(of: "-quick-save-fault").flatMap { args.indices.contains($0 + 1) ? args[$0 + 1] : nil }
-        let inject = args.contains("-resetForUITests") && requested == "\(domain):\(count)"
+        let specification = requested?.split(separator: ":", omittingEmptySubsequences: false) ?? []
+        let inject = args.contains("-resetForUITests") && specification.count == 2
+            && specification[0] == domain && specification[1].split(separator: ",").contains(Substring(String(count)))
         lock.unlock()
         guard inject else { return try operation() }
         let fm = FileManager.default

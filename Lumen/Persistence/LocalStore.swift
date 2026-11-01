@@ -31,9 +31,19 @@ public enum LocalStore {
     }
     /// Encode on the caller's actor; prepare off-thread, then install only if no
     /// local writer changed the captured state. No partial goals/today save.
-    @MainActor static func saveWeightChecked(goals: HealthGoals, snapshot: DayMetrics, canCommit: () -> Bool) async throws {
+    @MainActor static func saveWeightChecked(goals: HealthGoals, snapshot: DayMetrics, canCommit: () -> Bool, didCommit: () -> Void) async throws {
         let encoder = JSONEncoder(); encoder.dateEncodingStrategy = .iso8601
         let files = ["goals.json": try encoder.encode(goals), "today.json": try encoder.encode(snapshot)]
+        try await saveLinkedFilesChecked(files, canCommit: canCommit, didCommit: didCommit)
+    }
+
+    @MainActor static func saveProfileGoalsChecked(profile: UserProfile, goals: HealthGoals, canCommit: () -> Bool, didCommit: () -> Void) async throws {
+        let encoder = JSONEncoder(); encoder.dateEncodingStrategy = .iso8601
+        let files = ["profile.json": try encoder.encode(profile), "goals.json": try encoder.encode(goals)]
+        try await saveLinkedFilesChecked(files, canCommit: canCommit, didCommit: didCommit)
+    }
+
+    @MainActor private static func saveLinkedFilesChecked(_ files: [String: Data], canCommit: () -> Bool, didCommit: () -> Void) async throws {
         let root = directory, capturedRevision = revision
         let transaction = try await Task.detached(priority: .userInitiated) {
             try BackupFileTransaction.prepare(files, photoFiles: [:], into: root, preserveByLink: true)
@@ -42,6 +52,9 @@ public enum LocalStore {
         try Task.checkCancellation()
         guard canCommit() else { throw BackupError.busy }
         try commitRestore(transaction, revision: capturedRevision)
+        // Install the caller's live state in this same actor turn. Returning
+        // through an await must not open a gap after disk has committed.
+        didCommit()
     }
     private static let encoder: JSONEncoder = {
         let e = JSONEncoder(); e.dateEncodingStrategy = .iso8601; return e

@@ -3495,6 +3495,275 @@ final class LumenSmokeTests: XCTestCase {
         snap("135-water-deleted-reading")
     }
 
+    func testSettingsNameRepeatedDiskFailures() throws { settingsNameRepeatedDiskFailures(large: false) }
+    func testSettingsNameLargeDiskFailures() throws { settingsNameRepeatedDiskFailures(large: true) }
+
+    func settingsNameRepeatedDiskFailures(large: Bool) {
+        quickFault("profile:1,2", large: large)
+        tap("Settings")
+        let name = app.textFields["settingsNameDraft"]
+        XCTAssertTrue(name.waitForExistence(timeout: 5))
+        name.coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.5)).tap()
+        name.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: 40)); name.typeText("Alex Rivera")
+        XCTAssertEqual(name.value as? String, "Alex Rivera")
+        reveal(app.buttons["Save name"]); snap(large ? "951-name-large-draft-actions" : "951-name-draft-actions"); tap("Save name")
+        let alert = app.alerts["Couldn’t save name"]
+        XCTAssertTrue(alert.waitForExistence(timeout: 5)); snap("940-name-first-failure")
+        alert.buttons["Try again"].tap()
+        XCTAssertTrue(alert.waitForExistence(timeout: 5)); snap("941-name-repeated-failure")
+        alert.buttons["Not now"].tap()
+        XCTAssertEqual(name.value as? String, "Alex Rivera")
+        XCTAssertTrue(app.staticTexts["Name not saved"].exists); snap("942-name-retained-edit")
+        tap("Save name")
+        XCTAssertTrue(app.staticTexts["Name not saved"].waitForNonExistence(timeout: 5))
+        tap("Done"); reopenSettings(large: large)
+        XCTAssertEqual(name.value as? String, "Alex Rivera"); snap("943-name-relaunch")
+        if large {
+            name.coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap(); name.typeText(" draft")
+            let discard = app.buttons["Discard"].firstMatch
+            // Drag inside the form, above the keyboard. The generic left-edge
+            // gesture can land outside this compact sheet's scrolling content.
+            XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 5))
+            snap("971-large-name-before-discard-scroll")
+            func keyboardTop() -> CGFloat {
+                let keyboard = app.keyboards.firstMatch
+                guard keyboard.exists else { return app.frame.maxY - 40 }
+                var top = keyboard.frame.minY
+                // Keyboard excludes the prediction/accessory strip in this
+                // native hierarchy. Start above that strip, not on its keys.
+                for identifier in ["SystemInputAssistantView", "inputView"] {
+                    let accessory = app.otherElements[identifier].firstMatch
+                    if accessory.exists && !accessory.frame.isEmpty { top = min(top, accessory.frame.minY) }
+                }
+                return top
+            }
+            for attempt in 0..<8 {
+                let top = app.navigationBars["Settings"].frame.maxY + 16
+                let bottom = keyboardTop() - 12
+                if discard.exists && discard.isHittable && discard.frame.minY > top && discard.frame.maxY < bottom { break }
+                let moveUp = !discard.exists || discard.frame.maxY >= bottom
+                let gap = moveUp ? discard.frame.maxY - bottom : top - discard.frame.minY
+                let distance = min(100, max(40, gap + 16))
+                let startY = moveUp ? bottom - 8 : top + 8
+                let endY = startY + (moveUp ? -distance : distance)
+                let start = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: app.frame.midX, dy: startY))
+                let end = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: app.frame.midX, dy: endY))
+                start.press(forDuration: 0.05, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.3)
+                snap("972-large-name-discard-scroll-step-\(attempt + 1)")
+            }
+            print("SETTINGS DISCARD AFTER SCROLL", app.debugDescription)
+            XCTAssertTrue(discard.isHittable)
+            XCTAssertGreaterThan(discard.frame.minY, app.navigationBars.firstMatch.frame.maxY)
+            XCTAssertLessThan(discard.frame.maxY, keyboardTop())
+            snap("969-large-name-discard-reachable")
+            discard.tap(); XCTAssertEqual(name.value as? String, "Alex Rivera")
+            XCTAssertFalse(app.staticTexts["Name not saved"].exists); snap("970-large-name-discarded")
+        }
+    }
+
+    func testSettingsNameDoneFailureAndDiscard() throws {
+        quickFault("profile:1"); tap("Settings")
+        let name = app.textFields["settingsNameDraft"]
+        name.coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap(); name.typeText(" Taylor")
+        tap("Done")
+        let alert = app.alerts["Couldn’t save name"]
+        XCTAssertTrue(alert.waitForExistence(timeout: 5)); snap("952-name-done-failed")
+        alert.buttons["Not now"].tap()
+        XCTAssertEqual(name.value as? String, "Alex Taylor")
+        reveal(app.buttons["Discard"]); tap("Discard")
+        XCTAssertEqual(name.value as? String, "Alex")
+        XCTAssertFalse(app.staticTexts["Name not saved"].exists); snap("953-name-discarded")
+        name.coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap(); name.typeText(" Taylor"); tap("Done")
+        XCTAssertTrue(app.navigationBars["Settings"].waitForNonExistence(timeout: 5))
+        app.terminate(); app.launchArguments = []; app.launch(); tap("Settings")
+        XCTAssertEqual(name.value as? String, "Alex Taylor"); snap("954-name-done-relaunch")
+        name.coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap(); name.typeText(" Reed\n")
+        XCTAssertTrue(app.staticTexts["Name not saved"].waitForNonExistence(timeout: 5))
+        snap("959-name-return-saved")
+        app.terminate(); app.launchArguments = []; app.launch(); tap("Settings")
+        XCTAssertEqual(name.value as? String, "Alex Taylor Reed"); snap("959-name-return-relaunch")
+    }
+
+    func testSettingsGoalsAndSleepDiskFailures() throws { settingsGoalsAndSleepDiskFailures(large: false) }
+    func testSettingsGoalsAndSleepLargeDiskFailures() throws { settingsGoalsAndSleepDiskFailures(large: true) }
+
+    func settingsGoalsAndSleepDiskFailures(large: Bool) {
+        for profile in [false, true] {
+            quickFault(profile ? "profile:1" : "goals:1", large: large)
+            tap("Settings")
+            let control = app.steppers[profile ? "settingsSleepNeed" : "settingsMoveGoal"].firstMatch
+            reveal(control)
+            print("SETTINGS STEPPER " + control.debugDescription)
+            snap(profile ? "944-sleep-need-before" : "944-move-goal-before")
+            let before = control.label + (control.value as? String ?? "")
+            let increment = control.buttons[control.identifier + "-Increment"].firstMatch
+            XCTAssertTrue(increment.exists); increment.tap()
+            let alert = app.alerts[profile ? "Couldn’t save sleep need" : "Couldn’t save move goal"]
+            XCTAssertTrue(alert.waitForExistence(timeout: 5)); snap(profile ? "944-sleep-need-failed" : "944-move-goal-failed")
+            captureSettingsAlertBody(alert, prefix: profile ? "968-sleep-error-body" : "968-move-error-body")
+            alert.buttons["Not now"].tap(); XCTAssertEqual(control.label + (control.value as? String ?? ""), before)
+            snap(profile ? "958-sleep-need-unchanged" : "958-move-goal-unchanged")
+            increment.tap(); XCTAssertNotEqual(control.label + (control.value as? String ?? ""), before)
+            let saved = control.label + (control.value as? String ?? ""); snap(profile ? "945-sleep-need-retried" : "945-move-goal-retried")
+            tap("Done"); reopenSettings(large: large); reveal(control)
+            XCTAssertEqual(control.label + (control.value as? String ?? ""), saved)
+            let explanation = app.staticTexts["Targets are estimates from your settings. Missing values use defaults."].firstMatch
+            reveal(explanation, towardsTop: profile); fullyRevealSettingsDisclosure(explanation)
+            snap(profile ? "957-sleep-target-disclosure" : "957-goal-target-disclosure")
+        }
+    }
+
+    func testSettingsLargeDisclosure() throws {
+        app.terminate()
+        app.launchArguments = ["-resetForUITests", "-lumen.appearance", "dark", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]
+        app.launch(); finishOnboarding(); tap("Settings")
+        let explanation = app.staticTexts["Targets are estimates from your settings. Missing values use defaults."].firstMatch
+        reveal(explanation); fullyRevealSettingsDisclosure(explanation); snap("960-large-complete-target-disclosure")
+    }
+
+    func fullyRevealSettingsDisclosure(_ text: XCUIElement) {
+        let top = app.navigationBars["Settings"].frame.maxY + 16
+        let bottom = app.frame.maxY - 40
+        for _ in 0..<6 {
+            let frame = text.frame
+            if frame.minY >= top && frame.maxY <= bottom { return }
+            let distance = frame.minY < top ? min(220, top - frame.minY + 8) : -min(220, frame.maxY - bottom + 8)
+            let start = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: (top + bottom) / 2))
+            start.press(forDuration: 0.05, thenDragTo: start.withOffset(CGVector(dx: 0, dy: distance)))
+        }
+        XCTAssertGreaterThanOrEqual(text.frame.minY, top)
+        XCTAssertLessThanOrEqual(text.frame.maxY, bottom)
+    }
+
+    func testSettingsBirthYearPairedDiskFailure() throws { settingsBirthYearPairedDiskFailure(large: false) }
+    func testSettingsBirthYearLargeDiskFailure() throws { settingsBirthYearPairedDiskFailure(large: true) }
+
+    func testSettingsSexMenuDiskFailure() throws {
+        quickFault("goals:1", large: true); tap("Settings")
+        let sex = app.buttons["settingsSex"].firstMatch
+        reveal(sex)
+        let previous = sex.label + (sex.value as? String ?? "")
+        XCTAssertTrue(previous.contains("Not specified")); snap("961-large-sex-not-specified")
+        sex.tap(); tap("Female")
+        let alert = app.alerts["Couldn’t save sex"]
+        XCTAssertTrue(alert.waitForExistence(timeout: 5)); snap("962-large-sex-menu-failure")
+        captureSettingsAlertBody(alert, prefix: "968-sex-error-body")
+        XCTAssertEqual(sex.label + (sex.value as? String ?? ""), previous)
+        alert.buttons["Try again"].tap()
+        XCTAssertTrue(alert.waitForNonExistence(timeout: 5))
+        XCTAssertTrue((sex.label + (sex.value as? String ?? "")).contains("Female")); snap("963-large-sex-menu-retry")
+        tap("Done"); reopenSettings(large: true); reveal(sex)
+        XCTAssertTrue((sex.label + (sex.value as? String ?? "")).contains("Female")); snap("964-large-sex-menu-relaunch")
+    }
+
+    func settingsBirthYearPairedDiskFailure(large: Bool) {
+        quickFault("profile.json:2", large: large)
+        tap("Settings")
+        let row = app.buttons["settingsBirthYear"].firstMatch
+        reveal(row)
+        let previous = row.label + (row.value as? String ?? "")
+        row.tap()
+        let year = String(Calendar.current.component(.year, from: Date()) - 31)
+        print("BIRTH YEAR MENU " + app.debugDescription); snap("946-birth-year-menu")
+        selectBirthYearOption(year)
+        let alert = app.alerts["Couldn’t save birth year"]
+        XCTAssertTrue(alert.waitForExistence(timeout: 5)); snap("946-birth-year-paired-failure")
+        captureSettingsAlertBody(alert, prefix: "968-birth-year-error-body")
+        XCTAssertEqual(row.label + (row.value as? String ?? ""), previous)
+        alert.buttons["Try again"].tap()
+        XCTAssertTrue(alert.waitForNonExistence(timeout: 8))
+        if !app.navigationBars["Settings"].exists { app.navigationBars.buttons.element(boundBy: 0).tap() }
+        reveal(row); XCTAssertTrue((row.label + (row.value as? String ?? "")).contains(year)); snap("947-birth-year-paired-retried")
+        tap("Done"); reopenSettings(large: large); reveal(row)
+        XCTAssertTrue((row.label + (row.value as? String ?? "")).contains(year))
+        let calories = app.descendants(matching: .any).matching(identifier: "settingsCalorieTarget").firstMatch
+        reveal(calories); XCTAssertTrue((calories.label + (calories.value as? String ?? "")).contains("2421")); snap("948-birth-year-age-relaunch")
+        reveal(row, towardsTop: true); row.tap()
+        selectBirthYearOption("Not recorded", capture: "955-birth-year-not-recorded-choice")
+        reveal(row, towardsTop: true)
+        XCTAssertTrue((row.label + (row.value as? String ?? "")).contains("Not recorded")); snap("955-birth-year-cleared")
+        tap("Done"); reopenSettings(large: large); reveal(row)
+        XCTAssertTrue((row.label + (row.value as? String ?? "")).contains("Not recorded")); snap("956-birth-year-cleared-relaunch")
+    }
+
+    func reopenSettings(large: Bool) {
+        app.terminate()
+        app.launchArguments = large ? ["-lumen.appearance", "dark", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"] : ["-lumen.appearance", "light"]
+        app.launch(); tap("Settings")
+    }
+
+    func captureSettingsAlertBody(_ alert: XCUIElement, prefix: String) {
+        print("SETTINGS ALERT BEFORE SCROLL " + alert.debugDescription)
+        let scroll = alert.scrollViews.firstMatch
+        print("SETTINGS ALERT SCROLL COUNT \(alert.scrollViews.count)")
+        for index in 1...2 {
+            if scroll.exists {
+                scroll.swipeUp(velocity: .slow)
+            } else {
+                let message = alert.staticTexts["This change wasn’t applied. Try again."].firstMatch
+                let action = alert.buttons["Try again"].firstMatch
+                let startY = action.frame.minY - 20
+                let endY = max(alert.frame.minY + 36, message.frame.minY + 8)
+                let origin = app.coordinate(withNormalizedOffset: .zero)
+                let lower = origin.withOffset(CGVector(dx: alert.frame.midX, dy: startY))
+                let upper = origin.withOffset(CGVector(dx: alert.frame.midX, dy: endY))
+                lower.press(forDuration: 0.05, thenDragTo: upper)
+            }
+            snap(prefix + "-scroll-\(index)")
+        }
+        print("SETTINGS ALERT AFTER SCROLL " + alert.debugDescription)
+    }
+
+    func selectBirthYearOption(_ label: String, capture: String? = nil) {
+        let option = app.buttons[label].firstMatch
+        let screen = app.frame
+        // Native menus expose only their current rows. Scroll inside the year
+        // menu rather than swiping the form's gutter and dismissing it.
+        for _ in 0..<32 {
+            if option.exists && option.isHittable { if let capture { snap(capture) }; option.tap(); return }
+            let years = app.buttons.matching(NSPredicate(format: "label MATCHES '[0-9]{4}'")).allElementsBoundByIndex.filter { $0.isHittable }
+            guard let first = years.first else { break }
+            let menu = app.collectionViews.containing(.button, identifier: first.label).firstMatch
+            guard menu.exists else { break }
+            // Menu rows may extend above/below their actual clipping surface,
+            // even when XCTest calls them hittable. Use the enclosing popup's
+            // bounds so the pan cannot start on and scroll the background form.
+            var popup = menu.frame
+            let containers = app.otherElements.containing(.button, identifier: first.label).allElementsBoundByIndex
+            for container in containers {
+                let rectangle = container.frame
+                if rectangle.width > 100 && rectangle.width < screen.width && rectangle.height > 60 {
+                    if rectangle.width * rectangle.height < popup.width * popup.height { popup = rectangle }
+                }
+            }
+            let top = max(screen.minY + 24, popup.minY + 24)
+            let bottom = min(screen.maxY - 24, popup.maxY - 24)
+            guard bottom - top > 60 else { break }
+            let origin = app.coordinate(withNormalizedOffset: .zero)
+            let upper = origin.withOffset(CGVector(dx: popup.midX, dy: top))
+            let lower = origin.withOffset(CGVector(dx: popup.midX, dy: bottom))
+            let towardBeginning = Int(label).map { $0 > (Int(first.label) ?? $0) } ?? true
+            if towardBeginning { upper.press(forDuration: 0.05, thenDragTo: lower) }
+            else { lower.press(forDuration: 0.05, thenDragTo: upper) }
+        }
+        snap("unreachable-birth-year-option"); print(app.debugDescription)
+        XCTFail("Birth-year option must be reachable within the native menu: " + label)
+    }
+
+    func testOnboardingPairedDiskFailures() throws {
+        for domain in ["goals.json", "profile.json"] {
+            quickFault(domain + ":1")
+            let alert = app.alerts["Couldn’t save setup"]
+            XCTAssertTrue(alert.waitForExistence(timeout: 5)); snap("949-setup-failed-" + domain)
+            XCTAssertFalse(app.buttons["currentReadingsShortcut"].exists)
+            alert.buttons["OK"].tap()
+            tap("Start using Lumen")
+            XCTAssertTrue(app.buttons["Settings"].waitForExistence(timeout: 10))
+            app.terminate(); app.launchArguments = []; app.launch(); tap("Settings")
+            XCTAssertEqual(app.textFields["settingsNameDraft"].value as? String, "Alex"); snap("950-setup-retry-relaunch-" + domain)
+        }
+    }
+
     func quickFault(_ specification: String, photo: Bool = false, large: Bool = false) {
         app.terminate()
         app.launchArguments = ["-resetForUITests", "-quick-save-fault", specification]
