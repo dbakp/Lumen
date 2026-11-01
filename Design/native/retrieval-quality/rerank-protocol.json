@@ -1,0 +1,97 @@
+{
+  "version": 1,
+  "name": "question-passage-cross-encoder-dev",
+  "declaredAtUTC": "2026-11-01T11:32:01.583062+00:00",
+  "declaredBeforeModelScores": true,
+  "applicationBaseline": "5ef895b2d82323177d24f32a7a37ff99a3b66dea",
+  "hypothesis": "A small jointly encoded question/passage relevance stage can remove unsupported keyword-topic selections while improving complete native source-packet ranking. This is relevance research, not an entailment or clinical validator.",
+  "model": {
+    "repository": "cross-encoder/ms-marco-MiniLM-L6-v2",
+    "revision": "233902d25c440f23af6f7d6e94d2946bac0bee0a",
+    "weights": "model.safetensors",
+    "weightsSHA256": "821d1aa69520101d6e0737f78a042ae25b19e5cb9160701909d10434f4aeb0ae",
+    "weightsBytes": 90870598,
+    "precision": "upstream FP32, CPU eval, no gradients,4 PyTorch threads",
+    "activation": "raw scalar logit; never a probability or confidence",
+    "selectionReason": "Small22.7M-parameter question/passage reranker from the Sentence Transformers cross-encoder publisher; fixed before outcomes. No alternative model grid."
+  },
+  "sources": [
+    {
+      "url": "https://sbert.net/examples/sentence_transformer/applications/retrieve_rerank/README.html",
+      "role": "Joint question/passage second-stage ranking, with a first-stage candidate pool."
+    },
+    {
+      "url": "https://huggingface.co/cross-encoder/ms-marco-MiniLM-L6-v2",
+      "role": "Maintainer model card, paired Transformer inference, Apache2.0, V100 timings not iPhone estimates."
+    },
+    {
+      "url": "https://www.sbert.net/docs/cross_encoder/usage/usage.html",
+      "role": "MS MARCO outputs raw logits; sigmoid changes no ranking."
+    }
+  ],
+  "inputs": {
+    "selectionProtocolSHA256": "93a82da6f2e97975829e1b41e99cc9268082fb4a232dae0114670456ee2e822a",
+    "challengeFixtureSHA256": "e01bfa411c9521da506026840b5d8ae000c7bccec9533704d40d98ed760378da",
+    "selectionDecisionSHA256": "906262fffebdd1b3aa8f08fff6a6620c0e2c8589257ae1d0fa534256a1a019de",
+    "devConfigurationSHA256": "e0c72b82673ba74e0b66a0cd07353f563f48d447c6f40c663d975d620d7f9d72",
+    "challengeConfigurationSHA256": "ac72c8319f1dfce9e1ff81032d7795adfeab8ac75370ad31f0d0b01b521db7e1"
+  },
+  "splits": {
+    "public": "Every324 NFCorpus dev question, complete3633 documents/8239 prepared passages. No test queries/judgments/scores.",
+    "synthetic": "All unchanged32 frozen challenge questions/17 documents;17 supported,15 unsupported. Development-only; no independent clinical ground truth."
+  },
+  "candidatePool": {
+    "limit": 64,
+    "firstStage": "Actual current production candidates, original-query English gate, pinned original MiniLM offline native cosines >=0.42 and exact current keyword-leading RRF. No MedEmbed policy or new query prefix. All current literal-ID eligibility and source bounds apply.",
+    "text": "Exact existing prepared title-prefix160 + newline +900-character original excerpt; original complete query. No further character truncation.",
+    "languageFallback": "Non-English recognizer outputs retain unchanged baseline keyword selection and remain in the denominator; no unsupported-language rerank claim."
+  },
+  "pairedTokenization": {
+    "tokenizer": "Pinned upstream AutoTokenizer WordPiece; no remote code",
+    "maxSequenceTokens": 512,
+    "sequence": "[CLS] complete_query [SEP] passage_window [SEP]",
+    "passageBudget": "512-3-query_token_count; use every passage token in windows with stride max(1,floor(budget/2)); no query truncation.",
+    "overlengthQuery": "If budget<1, report explicit unscored-input error and zero proposed sources in every cutoff policy, retaining query in full denominator. Any incomplete/invalid score prevents promotion.",
+    "aggregation": "Maximum raw logit over every passage window; save window counts/input identity hashes.",
+    "batchSize": 16
+  },
+  "policies": {
+    "thresholds": [
+      null,
+      -8,
+      -6,
+      -4,
+      -2,
+      0,
+      2,
+      4,
+      6,
+      8
+    ],
+    "ordering": "Descending cross-encoder max logit, ties by original pool rank. No mandatory leading keyword after reranking. Threshold comparison is >=.",
+    "finalSelection": "Actual RecordRetrieval.selecting, at most4 nonoverlapping excerpts,2 per document; no independently implemented Python selector. Exact source currentness, IDs, privacy and optional complete lab facts retained.",
+    "controls": [
+      "Unchanged actual baseline packet for every question",
+      "No reranking reproduces frozen baseline source identities/statuses exactly",
+      "All eligible pool identities match full prepared text/offsets/fingerprints; no duplicate rows",
+      "Every selected source current/valid and from its scored pool",
+      "Original missing TEST-AX3/AF-742 never acquire neighboring IDs",
+      "Withdraw every expected synthetic source and exclude it from selection and carried follow-ups under every threshold",
+      "Reject changed protocol/pool/model/config/input hashes, incomplete/duplicate/nonfinite scores",
+      "Singleton-versus-padded-batch scores agree within1e-4 for fixed first/middle/last scored pairs"
+    ]
+  },
+  "metrics": [
+    "All324-query public nDCG@4,Precision@4,Recall@4,hit@4 and per-query regressions against current production; deduplicate documents in first-selected order while real duplicate excerpts spend slots",
+    "All32-query synthetic supported hit@1/hit@4 and unsupported-any-source, currentness/withdrawal/identifier checks for every threshold",
+    "Candidate recall before reranking, pair/window counts, explicit language/encoding/input errors, actual Mac CPU inference time and source/model/storage receipts"
+  ],
+  "decisionDiscipline": {
+    "publicRankingGate": "At least+0.02 absolute nDCG@4 against current0.336118659205229, no Precision@4 regression. This is a new separately declared packet metric gate, never a replacement for original document-max gates.",
+    "unchangedSupportProfile": "At least90% supported hit@4 and zero of15 unsupported questions selecting any source. Report all thresholds and all failures; do not relax this profile.",
+    "incompleteInputs": "No model candidate promoted with unscored/invalid/incomplete pairs or failed integrity controls.",
+    "nextIfPass": "Freeze one complete development policy before held-out scoring. Native CoreML conversion/tokenizer/parity, new download/legacy/storage consent, actual app fusion/cache/time budget, signed iPhone latency/energy and broader independent source-support/provider/language/clinical gates still required before app integration.",
+    "ifFail": "Preserve all outcomes and freeze no app model/policy; keep held-out scores uncomputed. No app/UI/model/cutoff/schema change from this experiment."
+  },
+  "storage": "One task-owned /tmp/LumenBatch32Rerank workspace and one /tmp/LumenBatch32LogicBuild scratch directory. Reuse existing Python env and canonical vectors/dataset. Fetch only pinned safetensors/tokenizer/config/card files, no duplicate bin/ONNX/OpenVINO. Compact results/source/provenance in Git; raw public text/scores outside Git. Publish before deleting redundant raw/build files, preserve current research inputs needed next."
+}
