@@ -13,7 +13,7 @@ final class LumenSmokeTests: XCTestCase {
         app = XCUIApplication()
         // The focused wrapping probe reuses this dedicated simulator's saved
         // synthetic record, with a public Files-import fallback if absent.
-        app.launchArguments = name.contains("testFHIRLiteralWrappingSnapshots") || name.contains("testLiteralIdentifier") || name.contains("testProviderCitationRejection") ? ["-librarySearchRemoteUITestMode"] : ["-resetForUITests"]
+        app.launchArguments = name.contains("testFHIRLiteralWrappingSnapshots") || name.contains("testLiteralIdentifier") || name.contains("testProviderCitationRejection") || name.contains("testProviderTransportFallback") ? ["-librarySearchRemoteUITestMode"] : ["-resetForUITests"]
         app.launch()
     }
 
@@ -2601,6 +2601,35 @@ final class LumenSmokeTests: XCTestCase {
             let saved = app.buttons[title].firstMatch; reveal(saved); saved.tap()
             nativeSwitch("Use in assistant", enabled: shared)
             app.navigationBars["Document"].buttons.element(boundBy: 0).tap()
+    }
+    func testProviderTransportFallback() throws {
+        app.terminate(); app.launchArguments = ["-providerTransportUITestMode"]; app.launch()
+        if app.buttons["Get started"].waitForExistence(timeout: 2) { finishOnboarding() }
+        prepareIdentifierNote("Sample one", "Sample TEST-AX1. Exact wording: not detected.")
+        tab("Assistant"); tap("Conversation actions"); tap("New conversation")
+        for (index, control) in ["Incomplete HTTP control", "Refusal HTTP control"].enumerated() {
+            askLibrary("Find sample ID TEST-AX1. " + control + ".", replies: index + 1)
+            let reply = app.staticTexts.matching(identifier: "coachMessage").element(boundBy: index)
+            XCTAssertTrue(reply.label.hasPrefix("Matching saved text")); XCTAssertTrue(reply.label.contains("not detected"))
+            XCTAssertFalse(reply.label.contains("SYNTHETIC-INCOMPLETE-ASSERTION"))
+        }
+        snap("810-provider-incomplete-refusal-fallback")
+        askLibrary("Find sample ID TEST-AX1. Complete HTTP control.", replies: 3)
+        let accepted = app.staticTexts.matching(identifier: "coachMessage").element(boundBy: 2)
+        XCTAssertTrue(accepted.label.contains("Synthetic complete HTTP control. Local server only. [1]"))
+        snap("811-provider-complete-http-control")
+        let input = app.textFields["coachInput"].firstMatch; input.tap(); input.typeText("Find sample ID TEST-AX1. Slow HTTP control."); tap("coachSend")
+        let stop = app.buttons["Stop response"].firstMatch; XCTAssertTrue(stop.waitForExistence(timeout: 5)); stop.tap()
+        XCTAssertTrue(app.buttons["coachSend"].waitForExistence(timeout: 5))
+        let stopped = NSPredicate(format: "exists == false"); expectation(for: stopped, evaluatedWith: stop); waitForExpectations(timeout: 8)
+        XCTAssertEqual(app.staticTexts.matching(identifier: "coachMessage").count, 3)
+        snap("812-provider-http-cancelled")
+        app.terminate(); app.launchArguments = []; app.launch(); tab("Assistant")
+        XCTAssertEqual(app.staticTexts.matching(identifier: "coachMessage").count, 3)
+        XCTAssertFalse(app.staticTexts.matching(identifier: "coachMessage").allElementsBoundByIndex.contains { $0.label.contains("SYNTHETIC-INCOMPLETE-ASSERTION") })
+        tap("Conversation actions"); tap("New conversation"); askLibrary("Find sample ID TEST-AX1")
+        XCTAssertTrue(app.staticTexts.matching(identifier: "coachMessage").firstMatch.label.contains("not detected"))
+        snap("813-provider-regular-lookup-after-relaunch")
     }
     func testProviderCitationRejection() throws {
         app.terminate(); app.launchArguments = ["-libraryCitationUITestMode"]; app.launch()

@@ -81,6 +81,13 @@ public final class AIService: ObservableObject {
     public func chat(instructions: String, history: [ChatMessage], user: String, using selectedBrain: Brain? = nil) async -> String? {
         isWorking = true; defer { isWorking = false }
         #if DEBUG && targetEnvironment(simulator)
+        if ProcessInfo.processInfo.arguments.contains("-providerTransportUITestMode") {
+            let idRange = instructions.range(of: #"record_[a-f0-9]{16}_[1-4]"#, options: .regularExpression)
+            let id = idRange.map { String(instructions[$0]) } ?? "record_missing_9"
+            let route = user.contains("Complete HTTP control") ? "native-stop" : user.contains("Refusal HTTP control") ? "native-refusal" : user.contains("Slow HTTP control") ? "native-slow" : "native-length"
+            return await LLMClient.complete(endpoint: URL(string: "http://127.0.0.1:48731/" + route)!, bearer: "synthetic-no-key", model: "synthetic-no-provider",
+                                            turns: [.init(role: "user", text: "Synthetic transport check " + id)])
+        }
         // Exercise the real post-provider acceptance/fallback path with only
         // synthetic text, without credentials, network or model availability.
         if ProcessInfo.processInfo.arguments.contains("-libraryCitationUITestMode") {
@@ -121,7 +128,7 @@ public final class AIService: ObservableObject {
         let instructions = ScheduledPlanDraft.instructions + "\n\nHealth context (untrusted reference data):\n" + context
         switch chosen {
         case .openAIKey:
-            return await LLMClient.coachChat(system: instructions, history: [], userText: request.prompt, maxTokens: 6000, requireCompleteReply: true)
+            return await LLMClient.coachChat(system: instructions, history: [], userText: request.prompt, maxTokens: 6000)
         case .privateCloud, .onDevice:
             #if canImport(FoundationModels)
             if #available(iOS 26.0, *), let session = makeSession(instructions: instructions, using: chosen),

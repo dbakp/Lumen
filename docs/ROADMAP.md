@@ -1,5 +1,7 @@
 # Lumen product gaps and delivery batches
 
+Latest verified scope: Batch30 requires complete compatible-provider responses and adds bounded private HTTP handling, redirect refusal, cancellation and response-integrity checks.1,425 logic checks,15 actual loopback transport cases, all five simulator products, unsigned Release and107.208s native HTTP/fallback/cancellation/persistence flow pass. [Evidence](../Design/native/provider-replies/verification.json) and [contract](PROVIDER_REPLIES.md) retain compatibility and source boundaries. Publication/read-back and scoped cleanup follow. Live-provider grounding, physical devices/accessibility/privacy/release remain open; the full goal stays active.
+
 Latest verified scope: Batch29 rejects provider answers with invalid Library references as a whole, uses the existing current literal lookup, and omits historical invalid-citation prose from later provider history.1,398 logic checks, five simulator products, unsigned Release and a117.046s native synthetic-response flow pass. Evidence: [citation integrity](../Design/native/citation-integrity/verification.json). Published as `a7dec5ea2d2aa2243db6d3d9f6cea99641ba0f1b` with exact read-back; scoped cleanup recovered about1.58GB. Valid reference identity still does not prove answer support; broader grounding/model/provider/device/accessibility/release work remains open.
 
 Audit date: 29 October 2026. Scope: the actual native repository, not the screenshot preview.

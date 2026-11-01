@@ -90,6 +90,8 @@ let package = Package(
             "Tests/RecordImportChecks.swift",
             "Lumen/Algorithms/DocumentBlocks.swift",
             "Lumen/Algorithms/RecordRetrieval.swift",
+            "Lumen/Algorithms/ProviderReplyTransport.swift",
+            "Tests/ProviderReplyChecks.swift",
             "Lumen/Algorithms/MiniLMTokenizer.swift",
             "Lumen/Algorithms/SemanticModelPackage.swift",
             "Lumen/Algorithms/HybridLibrarySearch.swift",

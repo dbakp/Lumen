@@ -4,6 +4,9 @@ import Darwin
 @main struct ImportTests {
     static func main() async throws {
         setbuf(stdout, nil)
+        if CommandLine.arguments.count == 4, CommandLine.arguments[1] == "--provider-transport-check" {
+            try await ProviderReplyChecks.transport(endpoint: URL(string: CommandLine.arguments[2])!, output: URL(fileURLWithPath: CommandLine.arguments[3])); return
+        }
         if CommandLine.arguments.count == 5, CommandLine.arguments[1] == "--retrieval-index-timing" {
             do { try RetrievalSelectionProbe.indexTiming(input: URL(fileURLWithPath: CommandLine.arguments[2]), protocolURL: URL(fileURLWithPath: CommandLine.arguments[3]), output: URL(fileURLWithPath: CommandLine.arguments[4])); return }
             catch { FileHandle.standardError.write(Data(("Index timing failed: \(error)\n").utf8)); exit(1) }
@@ -61,6 +64,7 @@ import Darwin
         if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--backup-ui-fixtures" {
             try BackupUIFixtures.write(to: URL(fileURLWithPath: CommandLine.arguments[2])); return
         }
+        try ProviderReplyChecks.run()
         try VoiceDraftChecks.run()
         try ScheduledPlanChecks.run()
         try await LabReportChecks.run()

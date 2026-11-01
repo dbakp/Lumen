@@ -14,6 +14,8 @@ The app checks consent and content again after the background search and before 
 
 ## Replies and references
 
+The compatible HTTP provider path first requires a complete, bounded response; see [provider reply handling](PROVIDER_REPLIES.md). A truncated/refused/invalid response falls back through the existing current lookup/guide behavior before citation acceptance. Completion status does not establish support for the answer.
+
 Literal lookup keeps the full bounded selection, up to four excerpts and two per document. Later related-topic results must not disappear behind leading keyword matches. Selection method and actual comparison coverage accompany new references; missing older selection metadata stays unrecorded. Topic similarity is not proof that an excerpt answers a question. Referenced Markdown sharing preserves that method/limit disclosure as well as exact text.
 
 Each selected passage gets a fresh request-specific identifier. The provider receives untrusted JSON reference blocks and instructions to cite only those exact identifiers. Lumen converts recognized identifiers to visible numbers and removes model-supplied Markdown destinations attached to them; a Library number cannot become an arbitrary external link. Before accepting new provider prose, Lumen rejects the whole response when any recognized citation is unknown, stale or a bare source number, or a malformed/incomplete bracketed Library identifier remains. It returns the existing literal lookup using the freshly rechecked sources, including for a plan request. A mix of valid and invalid references cannot preserve part of the generated answer. Older stored replies can still show **reference unavailable**; their retained text is not rewritten.
