@@ -1,0 +1,135 @@
+{
+  "version": 1,
+  "name": "extractive-answerability-development",
+  "declaredAtUTC": "2026-11-01T12:36:35.341476+00:00",
+  "declaredBeforeReaderScores": true,
+  "applicationBaseline": "73362aecdd0eaa4fd0e2952367e1c6f01e4f3ecc",
+  "researchBaseline": "362414227a025745aed06ad0a1a7c8d77cc6c3b5",
+  "hypothesis": "An extractive question-answering head trained with unanswerable questions may distinguish answer evidence from related context better than a single relevance cutoff. Test the complete question, exact answer ownership and abstention. This component does not replace general conversational synthesis, plans or provider validation.",
+  "model": {
+    "repository": "deepset/minilm-uncased-squad2",
+    "revision": "934656cdda79824eabf503ed56e15c01ddbdbe3f",
+    "weights": "model.safetensors",
+    "weightsBytes": 133466376,
+    "weightsSHA256": "240478c7251d5e55be35feb47177054b960259b9328af662ea3cee87ce9755a6",
+    "license": "cc-by-4.0",
+    "reason": "One fixed33.4M-parameter English extractive QA model with an explicit SQuAD2 no-answer objective, chosen before inference. Its maintainer already evaluates on SQuAD2 dev; public run is reproduction, not unseen generalization.",
+    "precision": "upstream FP32 CPU eval, no gradients,4 threads; no CoreML/app installation"
+  },
+  "publicDataset": {
+    "repository": "rajpurkar/SQuAD-explorer",
+    "path": "dataset/dev-v2.0.json",
+    "gitBlobSHA": "c6fa1a89a12c90b7fbfa8f6fb437cfff27af41ca",
+    "bytes": 4370528,
+    "queries": 11873,
+    "answerable": 5928,
+    "unanswerable": 5945,
+    "license": "cc-by-sa-4.0",
+    "scope": "Entire official DEVELOPMENT set, no sampling, training or hidden-test data. Reproduction/development only; model card explicitly uses this eval set."
+  },
+  "officialEvaluator": {
+    "repository": "rajpurkar/SQuAD-explorer",
+    "path": "evaluate-v2.0.py",
+    "gitBlobSHA": "21f52c179c8c6547ae5999215f8afd36038f20ca",
+    "bytes": 10547,
+    "scope": "Inspect pinned source before execution. Compare official fixed-prediction EM/F1 without tuning no-answer probabilities or best thresholds."
+  },
+  "synthetic": {
+    "originalFixtureSHA256": "e01bfa411c9521da506026840b5d8ae000c7bccec9533704d40d98ed760378da",
+    "goldSHA256": "d17f4c876e41d42797a7d3f7c92989dee5b5e2998bd4dea6529b37a5727a7f43",
+    "stressSHA256": "d01c78181dbd71423c6b7c22aee850cc3245599c6b56ab81a26a7f01d108a711",
+    "originalCases": 32,
+    "stressCases": 8,
+    "contextPolicies": [
+      "current production baseline four-source packet",
+      "Batch32 unthresholded research-reranked four-source packet"
+    ],
+    "scope": "Both complete native source selections already frozen/validated. New source eligibility or factual support is not inferred from a rerank logit. Eight stress contexts are provided-context diagnostics only."
+  },
+  "inputFiles": [
+    {
+      "path": "/tmp/LumenBatch32ReadingInputs/dev-pools.json",
+      "bytes": 13369856,
+      "sha256": "3fce9b1ebbc8691c46ec5709276a3800d0cde23a42fcb5e4b81e8d90123ebf08",
+      "scope": "Frozen public-development/synthetic candidate pool or relevance logits; raw text/scores remain local, no personal data."
+    },
+    {
+      "path": "/tmp/LumenBatch32ReadingInputs/challenge-pools.json",
+      "bytes": 30025,
+      "sha256": "5e96bcbfb614d4263ed1d7fb85ec11eceb81d118da3b451105e0baaec8e896a5",
+      "scope": "Frozen public-development/synthetic candidate pool or relevance logits; raw text/scores remain local, no personal data."
+    },
+    {
+      "path": "/tmp/LumenBatch32ReadingInputs/dev-scores.json",
+      "bytes": 3104533,
+      "sha256": "90b8051c6423db2e770024562c460c780cf81b734fb59e3db1be4e15fc6d3fba",
+      "scope": "Frozen public-development/synthetic candidate pool or relevance logits; raw text/scores remain local, no personal data."
+    },
+    {
+      "path": "/tmp/LumenBatch32ReadingInputs/challenge-scores.json",
+      "bytes": 17897,
+      "sha256": "9f94c6283b801df60fdeced28bc9c70015c5f6b31d4b1083cd60c5f53f6b3417",
+      "scope": "Frozen public-development/synthetic candidate pool or relevance logits; raw text/scores remain local, no personal data."
+    }
+  ],
+  "encoding": {
+    "maxTokens": 384,
+    "query": "Complete original question, no lowercase/text rewriting beyond pinned upstream tokenizer. No query truncation.",
+    "context": "Complete provided public paragraph or concatenated original selected excerpts, with source boundaries/ownership preserved. No raw source truncation.",
+    "overlapTokens": 128,
+    "minimumContextTokenBudget": 32,
+    "overflow": "Every context window, overlapping by min(128,budget-1). If query leaves fewer than32 context tokens, record explicit inputLimit and keep case in denominator.",
+    "batchSize": 16,
+    "allowedSpans": "Context tokens wholly inside one original source-body region. Never headers, query tokens, padding or a span crossing source regions. Original character and UTF8 byte offsets must round-trip."
+  },
+  "decoder": {
+    "maximumAnswerTokens": 30,
+    "spanScore": "Raw start_logit+end_logit. Exhaustive legal spans within30tokens; stable earliest-token tie break. No top-k endpoint approximation.",
+    "nullScore": "Minimum CLS start+end score over all context windows, the standard SQuAD2-style aggregate.",
+    "nullThreshold": 0,
+    "abstainWhen": "No eligible source/context, no legal span, or minNullScore-bestSpanScore>0. Ties retain the span. No probability/confidence interpretation.",
+    "fixedPolicy": "One declared default only. Do not tune a new null threshold or gold aliases after outputs. Preserve compound/date/unit failures, even if a partial span looks plausible."
+  },
+  "metrics": [
+    "Public full11873 official EM/F1, answerable/nonanswerable splits, per-case prediction status and source/span validity; no benchmark-best-threshold tuning",
+    "Both32-case selected-source pipelines: exact literal completion with correct original source, unsupported nonempty spans, partial/incorrect/missing answers and all raw outcomes",
+    "Eight provided-context controls: literal completion, source/qualifier/negation errors and unanswerable emissions",
+    "Window/input-error counts, fixed singleton/batch numerical controls, actual inference-only Mac CPU time and source/data/model receipts"
+  ],
+  "advancement": {
+    "publicReproduction": "EM>=74 and F1>=77 on all11873; unanswerable abstention>=70%. These are reproduction sanity gates near the published model card, not safe-app thresholds.",
+    "syntheticComponent": "At least16/17 strictly complete supported answers and zero/15 unsupported nonempty spans in at least one declared source pipeline. All four stress positives complete and all four negatives empty.",
+    "integrity": "No incomplete/unscored quality cases; all source/offset/window/finite-output controls pass.",
+    "scope": "Advancement only permits further component work/native parity. It does not promote Batch32 failed retrieval policies, relax their gates, establish clinical truth, replace full conversational reasoning, or close provider/device/privacy/release gates.",
+    "onFailure": "Retain every failure and freeze no app reader/model policy. Explicit absence wording returned as a nonempty span is still a strict abstention miss; report it distinctly from invented factual content in qualitative review."
+  },
+  "controls": [
+    "Independent brute-force decoder against optimized span search on fixed synthetic logits",
+    "Header/query/padding rejection, cross-source-span rejection, null/tie/no-context behavior",
+    "Literal negation/operators/units and Unicode char/UTF8 offset round-trip",
+    "Complete overlapping context-window coverage, no dropped boundary answers, explicit overlength-query status",
+    "Pinned data/model/protocol/pool/ownership/source hashes; reject changed or incomplete inputs",
+    "Singleton/padded-batch score checks within1e-4 for fixed first/middle/last features; reject nonfinite logits",
+    "Official fixed-prediction SQuAD2 metrics agree with independent EM/F1 implementation"
+  ],
+  "sources": [
+    {
+      "url": "https://huggingface.co/deepset/minilm-uncased-squad2",
+      "role": "Maintainer model task,training/eval set, architecture,license and replication reference."
+    },
+    {
+      "url": "https://huggingface.co/docs/transformers/tasks/question_answering",
+      "role": "Extractive versus abstractive task distinction and original-context offset mappings."
+    },
+    {
+      "url": "https://rajpurkar.github.io/SQuAD-explorer/",
+      "role": "Official development data/evaluation and adversarial unanswerable task; dataset CC BY-SA4.0."
+    }
+  ],
+  "appleAvailability": {
+    "evidence": "apple-availability.json",
+    "status": "unavailable: appleIntelligenceNotEnabled",
+    "scope": "Actual read-only Mac availability probe, no inference or system-setting change. This reader experiment is not an Apple/iPhone provider test."
+  },
+  "storage": "One /tmp/LumenBatch33Answerability workspace, reuse existing Python environment and frozen Batch32 reading inputs. Download safetensors only, no duplicate bin/ONNX weights. Raw public context stays outside Git. Compact outcomes/provenance and code are published before removing obsolete cache/build/weight/raw files with workers stopped. Preserve existing research inputs and supplied skill."
+}
