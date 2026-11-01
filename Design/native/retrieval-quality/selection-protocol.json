@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "name": "complete-selection-dev-replay",
+  "declaredAtUTC": "2026-11-01T04:20:07.831030+00:00",
+  "declaredBeforeNewPolicyScores": true,
+  "applicationBaseline": "04678c0d952d90972041c7ff9d4b90951f879342",
+  "scope": "Development-only offline replay of complete native vectors through actual current RecordRetrieval.candidates, HybridLibrarySearch.fused and RecordRetrieval.selecting. It includes original-query English language gate, literal eligibility, keyword leading retention, four-passage/two-per-document/non-overlap rules. No provider, cache timing or12-second budget simulation. Not actual live inference or iPhone performance.",
+  "hypothesis": "The separately successful instructed MedEmbed document-max gain may survive the actual keyword fusion and source-packet constraints; measure rather than assume this.",
+  "inputs": {
+    "retrievalProtocolSHA256": "82df2f8b1d205db3c0b2c6c1361e2f7fd4e8df517217766038266ef6fbaf3710",
+    "instructionProtocolSHA256": "6fbc83d9c95c605325d77f0b7005cd70dfdf03b917c0c19bb59d5fa4e7aba4e5",
+    "instructionDecisionSHA256": "c906332238a52ad566b0a7a7dac77fb824bd3699a86e55194a3300eb3f0913c1",
+    "challengeProtocolSHA256": "f55333a23f52f19395439c621f3b28c07fd4fa7594a482456aaef413032410bc",
+    "challengeFixtureSHA256": "e01bfa411c9521da506026840b5d8ae000c7bccec9533704d40d98ed760378da",
+    "nativeReceiptsSHA256": "2523bdac25d90b10aa5a02fe68a3d65f767e996dcb0e1cf718e18a1ac233dbc9"
+  },
+  "splits": {
+    "public": "All324 NFCorpus dev questions and complete3633-document/8239-passage corpus; never read test judgments or compute test retrieval scores.",
+    "synthetic": "All32 already-frozen challenge questions/17documents with original direct-support labels; development only."
+  },
+  "policies": [
+    {
+      "id": "keyword",
+      "semantic": "off"
+    },
+    {
+      "id": "minilm-production-042",
+      "semantic": "pinned original MiniLM/raw original query",
+      "cutoff": 0.42
+    },
+    {
+      "id": "medembed-instructed-grid",
+      "semantic": "canonical R3 candidate/exact separately frozen BGE instruction",
+      "cutoffs": [
+        null,
+        0.42,
+        0.55,
+        0.6,
+        0.65,
+        0.7,
+        0.75,
+        0.8,
+        0.85,
+        0.9
+      ]
+    }
+  ],
+  "rules": [
+    "Reuse every verified native window/vector; no re-encoding, corpus/query truncation, synonym expansion or new query prefix.",
+    "Gate language on the complete ORIGINAL query for both models before considering the instructed vector. Record keyword fallback and every explicit query/index error in the full denominator.",
+    "Each query constructs the actual current production index. Bind score rows to documentID, exact start/end, source fingerprint and original prepared text; never assume query-dependent SQLite row IDs equal prepared IDs.",
+    "Related score = maximum native cosine across all windows of each eligible passage; use exact production RRF and leading-keyword rule. Candidate thresholds are fixed grid values, not app defaults.",
+    "Select at most4 actual non-overlapping passages,2 per document. Deduplicate document IDs in first-selected order for doc-judged metrics; duplicate excerpts consume real source slots. Never replace this with top4 document-max ranking.",
+    "Every selected source must be current/valid. On the synthetic set withdraw each expected source and require no selection/carry of that source.",
+    "No application source/UI/model/cutoff/installation/schema change. No new app build or design sign-off claimed for a research-only tool change."
+  ],
+  "metrics": {
+    "public": [
+      "nDCG@4",
+      "Precision@4",
+      "Recall@4",
+      "hit@4",
+      "unique selected documents",
+      "source passage counts",
+      "query-language/input/index statuses",
+      "all per-query source IDs/offsets/methods/judgments"
+    ],
+    "synthetic": [
+      "supported hit@1/hit@4",
+      "unsupported with any selected source",
+      "exact-ID no-neighbor and source currentness/withdrawal",
+      "all selected literal source IDs and selection methods"
+    ]
+  },
+  "decisionDiscipline": "Retain original failed raw-query gate and separate passed instruction document-max gate. Do not rename nDCG@4 as nDCG@10 or use it to override an earlier result. Report every fixed-grid policy and every regression/miss against actual baseline. A surviving policy is only a development candidate: original synthetic direct-support profile >=90% supported hit@4 and zero unsupported selections remains unchanged and must be reported, not silently relaxed. If no policy meets it, freeze no app candidate and keep test scores uncomputed. No exception or app promotion follows from this replay.",
+  "integrityControls": [
+    "Reject changed protocols/fixture/native matrices or mismatched model pairs",
+    "Reject changed score hashes/dimensions/nonfinite values/duplicate or incomplete prepared identities",
+    "Independent native cosine spot checks against full-precision score preparation",
+    "Actual keyword-only selection matches normal production search",
+    "Above1 cutoff yields identical keyword selection",
+    "Native fusion tie and duplicate-document budget oracles",
+    "Retain exact source/tool hashes, all outcomes and any failed attempts before scoped cleanup"
+  ],
+  "storage": "Keep only compact per-query outcomes/summary/provenance in Git. Scores/raw public text stay in one task-owned temporary workspace. Publish before deleting redundant score matrices/build output; preserve canonical current research inputs."
+}
