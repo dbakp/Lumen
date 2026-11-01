@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "name": "validated-record-preparation-reuse",
+  "declaredAtUTC": "2026-11-01T05:07:45.635083+00:00",
+  "declaredBeforeSecondImplementationOrTimings": true,
+  "originalTimingProtocolSHA256": "38948cac807f3c213561310ae0b14a865ccb9c0aca4ec0b7037395d2f67fb398",
+  "firstCandidateSourceSHA256": "8461ae2721bbbcc0f693f14513f480a0d7d7e71dddd01013827db0d1de2f9061",
+  "firstCandidateTimingSHA256": "16602411b3503ac2ac958549239385c477e136fae4067c3632953bf019a7b6d6",
+  "firstCandidateOutcome": {
+    "gatePassed": false,
+    "medianReductionPercent": 17.431840074032856,
+    "allFullIndexAndKeywordSignaturesEqual": true,
+    "baselineAndCurrentLogicChecks": 1379,
+    "actualPinnedModelChecks": 28,
+    "simulatorAndUnsignedReleaseBuilds": "passed on first candidate; final source must be rebuilt"
+  },
+  "baselineExecutableSHA256": "673432ded02f995ce7707189f3994e6d6e7515f513d992dea71cb25cc89b7516",
+  "firstCandidateExecutableSHA256": "bd3b9e1fd336352656558eabda2986c19a70c363edd017a059976b4d8c09eecb",
+  "hypothesis": "In addition to per-search title keys, prepare each current validated canonical record text and its character/byte/body bounds once, then reuse it for source fingerprinting and passage preparation. Current code calls canonical text validation again for fingerprinting and repeats body counts inside paragraph iteration. Reuse only within the same immutable record snapshot/call; never retain a cross-search or cross-edit text cache.",
+  "requirements": [
+    "Keep all existing origin/FHIR/lab/comparison/checklist validity guards and every size/work limit; do not bypass validation to meet timings.",
+    "Keep the exact public text/fingerprint format, content fields/JSON ordering/hash and source/currentness/consent behavior.",
+    "Reuse the same original baseline binary, seven hash-selected queries, three paired Release process runs,20% median reduction target and no per-query median regression above10%. No relaxed gate or best-run selection.",
+    "Require full ordered index/keyword signatures and all324+32 complete development question/policy packets/metrics/statuses/privacy checks to match the published baseline. No held-out scores.",
+    "Rerun current logic/actual model/build/native gates after this additional production change; first-candidate passes retain only their earlier source scope."
+  ],
+  "timingProtocol": "sort-performance-protocol.json remains unchanged; this supplement declares the expanded implementation hypothesis without replacing or relabelling the failed first result.",
+  "scope": "Mac candidate-preparation performance; no physical-iPhone, whole-app, provider or model-quality promotion claim."
+}
