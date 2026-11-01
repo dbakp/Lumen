@@ -1,0 +1,199 @@
+{
+  "baselineApplication": "73362aecdd0eaa4fd0e2952367e1c6f01e4f3ecc",
+  "consideredNotUsed": {
+    "RGB": "Official RGB README specifies CC BY-NC-SA4.0 and commercial-use permission. No RGB data/model outputs are downloaded or scored for Lumen; do not imply an RGB result."
+  },
+  "declaredAtUTC": "2026-11-01T13:10:08.890470+00:00",
+  "declaredBeforeGenerativeOutputs": true,
+  "gold": {
+    "comparison": "New predeclared literal-clause and source-owner completeness; additionally report unchanged Batch33 strict whole-answer alias diagnostic. Neither is semantic entailment by itself.",
+    "path": "clause-gold.json",
+    "sha256": "df24422e2be0d4d4b81db237747ff8b96d6a465e2c368100d9b3a51fdf7a7381"
+  },
+  "hypothesis": "A small general generative model instructed to answer all requested parts and provide exact uniquely anchored source quotes may address the compound-answer and field/source-label failures of the fixed single-span reader. Exact quote provenance is necessary but not semantic entailment. No claim of complete provider or clinical validation.",
+  "integrityControls": [
+    "Strict JSON shape,duplicate-key,boolean/string/array/byte/count bounds; incomplete output rejected",
+    "Correct source IDs, exact contiguous quote substring, unique match, original UTF8 offset round-trip; altered/operator/unit/wrong-source quotes rejected",
+    "Literal-clause token boundaries, complete compound parts and negation conflicts; unchanged strict alias comparison",
+    "Fixed non-quality runtime controls first/middle/last across CPU FP32 and MPS FP16 next-token logits/finite checks; record differences, no claim of equivalent generation; actual MPS finite output required",
+    "Every question/source/prompt/model/gold hash pinned; no hidden truncation or skipped quality denominator",
+    "All completed raw outputs retained, one declared sampling seed, no retries or resampling to repair quality"
+  ],
+  "model": {
+    "choice": "One fixed general instruction model supported by installed transformers4.51.3 and this16GB Mac; local research capability, not a chosen production model or claim that it is state of the art. No downloaded code, quantization, fine-tuning or app installation.",
+    "downloadBytes": 4079448540,
+    "license": "apache-2.0",
+    "repository": "Qwen/Qwen3-1.7B",
+    "revision": "70d244cc86ccca08cf5af4e1e306ecf908b1ad5e",
+    "selectedFiles": [
+      {
+        "blobId": "6634c8cc3133b3848ec74b9f275acaaa1ea618ab",
+        "rfilename": "LICENSE",
+        "size": 11343
+      },
+      {
+        "blobId": "88aaef81cfe31bcdfe47203649a69ff12042826a",
+        "rfilename": "README.md",
+        "size": 13963
+      },
+      {
+        "blobId": "044a86ecf7cb32238f3fae4184e55d354787edec",
+        "rfilename": "config.json",
+        "size": 726
+      },
+      {
+        "blobId": "20a8a9156fc8c3f25295ca067f61fdf120d517c5",
+        "rfilename": "generation_config.json",
+        "size": 239
+      },
+      {
+        "blobId": "cd71f61a15a522601badb3dc960d800d9cb3766c",
+        "lfs": {
+          "pointerSize": 133,
+          "sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+          "size": 11422654
+        },
+        "rfilename": "tokenizer.json",
+        "size": 11422654
+      },
+      {
+        "blobId": "417d038a63fa3de29cfde265caedae14d1a58d92",
+        "rfilename": "tokenizer_config.json",
+        "size": 9732
+      },
+      {
+        "blobId": "4783fe10ac3adce15ac8f358ef5462739852c569",
+        "rfilename": "vocab.json",
+        "size": 2776833
+      },
+      {
+        "blobId": "31349551d90c7606f325fe0f11bbb8bd5fa0d7c7",
+        "rfilename": "merges.txt",
+        "size": 1671853
+      },
+      {
+        "blobId": "986d7db875b47d21f68530f6baac038f1b297b39",
+        "rfilename": "model.safetensors.index.json",
+        "size": 25605
+      },
+      {
+        "blobId": "1414f1bda72e17b63551d847c05c68e3396ba717",
+        "lfs": {
+          "pointerSize": 135,
+          "sha256": "169ad53ec313c3a34b06c0809216e4fc072cce444a5d4ff2b59690d064130ed5",
+          "size": 3441185608
+        },
+        "rfilename": "model-00001-of-00002.safetensors",
+        "size": 3441185608
+      },
+      {
+        "blobId": "4aab3b30a4b8c6c1d0437a2576e0bea08507f12c",
+        "lfs": {
+          "pointerSize": 134,
+          "sha256": "912becff8d60672aa8628ef08c05898d9adf17c2ad4ae3caf99b065622fdeff9",
+          "size": 622329984
+        },
+        "rfilename": "model-00002-of-00002.safetensors",
+        "size": 622329984
+      }
+    ]
+  },
+  "name": "grounded-complete-answer-development",
+  "previousResearch": "1f1bf2fb458151b8540c31dcce59959a0a31f53d",
+  "prompt": {
+    "path": "prompt.txt",
+    "sha256": "0b5ee6868688b711472aa1f0d72d1cde4d7492fc3b6913867a251877bbb0eac4"
+  },
+  "publicStage": {
+    "dataLicense": "CC BY-SA4.0",
+    "dataset": "All11873 SQuAD2 development questions, no sampling. Same pinned dataset as Batch33. Model training overlap unknown; public development diagnostic, not independent generalization.",
+    "datasetBytes": 4370528,
+    "datasetGitBlobSHA": "c6fa1a89a12c90b7fbfa8f6fb437cfff27af41ca",
+    "gates": {
+      "EMPercentAtLeast": 74,
+      "F1PercentAtLeast": 77,
+      "mechanicallyValidPercentAtLeast": 99.5,
+      "unanswerableAbstentionPercentAtLeast": 70
+    },
+    "inputs": "One complete paragraph as one savedText source; no history or additional retrieval. Same published prompt and sampling.",
+    "runOnlyIf": "Synthetic advancement gates all pass; otherwise stop before expensive public scoring and explicitly report it unrun. This is staged resource control, not a public pass or whole-goal completion.",
+    "scoring": "Official fixed-prediction public EM/F1; malformed/invalid/length/input failure scores zero for all metrics rather than gaining no-answer credit. No threshold, prompt, samples or aliases fitted. Exact quote anchors separately validated; full raw outcomes retained."
+  },
+  "runtime": {
+    "attention": "eager",
+    "continuation": "Persist every completed raw output/seed/token count before evaluation. Resume only missing cases after a terminal process, never rerun a completed quality answer to improve it. No native latency or deterministic cross-device promise.",
+    "device": "mps",
+    "maxPromptTokens": 8192,
+    "numericalControls": {
+      "gates": {
+        "allFinite": true,
+        "maximumAbsoluteLogitDifferenceAtMost": 0.25,
+        "top1TokenAgreementRequired": 3
+      },
+      "inputs": [
+        "Return the integer 7.",
+        "Write the words alpha beta.",
+        "Return JSON with one key named value and integer value 2."
+      ],
+      "reference": "CPU FP32 sequentially unloaded before loading MPS FP16, same fixed model revision, eager attention, evaluation mode.",
+      "scope": "Three non-quality numerical probes only. Does not establish full generation parity, CPU/FP32 quality, calibrated confidence or native/device latency. If a gate fails, stop before quality outputs; retain failure and require a new declared repair before rerunning.",
+      "template": "One user message per input, actual pinned tokenizer chat template with add_generation_prompt=True and enable_thinking=False; compare final-position logits before any sampling."
+    },
+    "overflow": "No source/question truncation. Explicit inputLimit retained as failed quality case; prompt+512 must fit model capacity. No prompt rewrite or second policy after scores.",
+    "precision": "FP16 weights and activations; explicit deviation from upstream BF16 storage, validated with separate non-quality numerical/runtime controls; not CPU/FP32/iPhone parity",
+    "sampling": {
+      "do_sample": true,
+      "max_new_tokens": 512,
+      "min_p": 0.0,
+      "num_beams": 1,
+      "repetition_penalty": 1.0,
+      "temperature": 0.7,
+      "top_k": 20,
+      "top_p": 0.8,
+      "use_cache": true
+    },
+    "seed": "Per-case integer from first8 hex digits SHA256 of UTF8 caseID; one sample per case; no resampling based on answers",
+    "thinking": false,
+    "tokenStop": "EOS required. Length-limit, generation failure, malformed/duplicate-key/nonfinite JSON, extra keys or unknown/ambiguous/nonliteral evidence are failures retained in denominator, not successful abstentions."
+  },
+  "sources": [
+    {
+      "role": "Official model/config/license and non-thinking recommended sampling settings; published context descriptions differ from config, runner enforces declared8192prompt+512 limit below both.",
+      "url": "https://huggingface.co/Qwen/Qwen3-1.7B/tree/70d244cc86ccca08cf5af4e1e306ecf908b1ad5e"
+    },
+    {
+      "role": "MPS device availability/use; local installed runtime capability is checked directly.",
+      "url": "https://docs.pytorch.org/docs/main/notes/mps.html"
+    }
+  ],
+  "storage": "One /tmp/LumenBatch34GroundedAnswer workspace, reuse existing Python environment; direct pinned downloads only, no duplicate cache/conversions. Keep current inputs while running, publish compact source/outcome evidence before stopped-worker cleanup. Preserve canonical older inputs, supplied skill and unrelated data.",
+  "synthetic": {
+    "cases": 72,
+    "groups": {
+      "baseline": 32,
+      "reranked": 32,
+      "stress": 8
+    },
+    "modelReceives": "Only question and all source savedText/title/opaque request-local IDs, no previous predictions/gold/expected document IDs. Every source body is byte-checked against frozen original region. Empty-source cases still receive one real model call and are reported separately.",
+    "scope": "All previously frozen self-authored development cases, known failures, not held-out or independently clinical.",
+    "sha256": "fd8cc956c06ba0dff47d24abad5e1bdc1f432a8c8299fe1b5849a81a9f3b295c",
+    "source": "Design/native/answer-support/synthetic-results.json"
+  },
+  "syntheticAdvancement": {
+    "additional": "All72 quality calls complete and outputs mechanically valid; no unsupported factual addition or wrong attribution in primary review. A valid quote alone cannot pass semantic review. Strict Batch33 alias diagnostic remains separate, with extra-wording misses honestly retained.",
+    "atLeastOneSourcePipeline": {
+      "supportedLiteralClauseCompleteAtLeast": 16,
+      "supportedTotal": 17,
+      "unsupportedNonemptyRequired": 0,
+      "unsupportedTotal": 15
+    },
+    "scope": "Only permits the declared public stage; no app promotion or relaxation of Batch32 ranking/support gates. Native parity, independent evaluation, providers, clinical/language/device/privacy/release work remain open.",
+    "stress": {
+      "completeSupportedRequired": 4,
+      "supportedTotal": 4,
+      "unsupportedNonemptyRequired": 0,
+      "unsupportedTotal": 4
+    }
+  },
+  "version": 1
+}
