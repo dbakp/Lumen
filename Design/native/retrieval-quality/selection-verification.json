@@ -1,5 +1,5 @@
 {
-  "status": "verified; awaiting source/evidence publication and scoped cleanup",
+  "status": "verified and published; stopped-worker scoped cleanup complete",
   "protocolPublicationCommit": "adeea491537cbf3dd78046bb777872e1f6b0183b",
   "protocolReachedGitHubBeforeScores": true,
   "applicationBaseline": "04678c0d952d90972041c7ff9d4b90951f879342",
@@ -31,9 +31,9 @@
     "nativeDriver": "Tests/RetrievalSelectionProbe.swift unchanged after BuildR2. Final full logic build/checks will include the separately added native exact-tie assertion."
   },
   "remainingGates": [
-    "Publication/exact GitHub main read-back and stopped-worker scoped cleanup",
-    "No complete candidate satisfies the frozen direct-support profile; keep held-out scores uncomputed",
-    "Model installation/cache/live-budget/provider/signed-device/clinical/privacy gates remain independent"
+    "No complete candidate meets the frozen direct-support profile; held-out scores remain uncomputed",
+    "Exact-output and meaningful-timing verification of measured per-search title-key optimization",
+    "Broader grounding/provider/language/model-installation/cache/live-budget/signed-device/clinical/privacy gates remain independent"
   ],
   "publicDevR1": {
     "status": "passed",
@@ -72,5 +72,18 @@
   "compactIntegrityControls": "selection-compact-controls.json",
   "decision": "selection-decision.json",
   "profile": "selection-profile.json",
-  "finalSourceReadBackAtUTC": "2026-11-01T04:47:29.802203+00:00"
+  "finalSourceReadBackAtUTC": "2026-11-01T04:47:29.802203+00:00",
+  "publication": {
+    "commit": "9f261a93790666d67c59d39aac598553508c0857",
+    "publisher": "scripts/publish-batches.sh",
+    "exactMainReadBack": true,
+    "confirmedBeforeRemoval": true
+  },
+  "cleanup": {
+    "report": "selection-storage-cleanup.json",
+    "removedFiles": 37,
+    "observedAvailableBytesRecovered": 12750848,
+    "retainedOnePackageScratchForImmediateReuse": true,
+    "currentScoreAndConfigInputsRetained": true
+  }
 }
