@@ -89,9 +89,35 @@ enum RecordRetrievalChecks {
         unicode.body = String(repeating: "x", count: 200001)
         let oversized = try RecordRetrieval.search(query: "cafe", documents: [unicode])
         check(oversized.limited && oversized.passages.isEmpty && oversized.searchedDocuments == 0, "oversized records disclose incomplete coverage and do not silently truncate")
+        for field in ["title", "source"] {
+            var metadata = HealthDocument(title: "Bounded metadata", kind: .note, body: "Needle source text.", source: "Synthetic", includeInAssistant: true)
+            let composed = "A" + String(repeating: "\u{0301}", count: 2100)
+            if field == "title" { metadata.title = composed } else { metadata.source = composed }
+            let rejected = try RecordRetrieval.search(query: "needle", documents: [metadata])
+            check(RecordRetrieval.text(metadata) == metadata.body && RecordRetrieval.fingerprint(metadata) == nil && rejected.limited && rejected.passages.isEmpty && rejected.searchedDocuments == 0, "prepared-text reuse preserves the UTF8 fingerprint bound for composed " + field + " metadata")
+        }
+        let appendedLimit = HealthDocument(title: "Plan at text limit", kind: .plan, body: String(repeating: "x", count: 199_990), source: "Synthetic", includeInAssistant: true)
+        let rejectedPlan = try RecordRetrieval.search(query: "needle", documents: [appendedLimit])
+        check(RecordRetrieval.text(appendedLimit) == nil && RecordRetrieval.fingerprint(appendedLimit) == nil && rejectedPlan.limited && rejectedPlan.passages.isEmpty && rejectedPlan.searchedDocuments == 0, "canonical metadata still counts toward the complete record character bound before indexing or fingerprinting")
         let many = (0...RecordRetrieval.maxDocuments).map { HealthDocument(id: "bounded-\($0)", title: "Boundary", kind: .note, body: "Bounded synthetic data", source: "Synthetic", includeInAssistant: true) }
         let capped = try RecordRetrieval.search(query: "bounded", documents: many)
         check(capped.limited && capped.searchedDocuments == RecordRetrieval.maxDocuments && capped.passages.count <= 4, "document limit is enforced and coverage remains explicit")
+        var latePriority = many
+        latePriority[latePriority.count - 1].title = "Priority42"
+        let priorityMatch = try RecordRetrieval.search(query: "priority42", documents: latePriority)
+        check(priorityMatch.limited && priorityMatch.searchedDocuments == RecordRetrieval.maxDocuments && priorityMatch.passages.count == 1 && priorityMatch.passages[0].documentID == latePriority.last!.id, "title priority includes a late saved record before applying the document-count limit")
+        var ordered = [
+            HealthDocument(id: "b", updatedAt: Date(timeIntervalSince1970: 20), title: "Needle", kind: .note, body: "One source.", source: "Synthetic", includeInAssistant: true),
+            HealthDocument(id: "a", updatedAt: Date(timeIntervalSince1970: 20), title: "Needle needle", kind: .note, body: "Another source.", source: "Synthetic", includeInAssistant: true),
+            HealthDocument(id: "two", updatedAt: Date(timeIntervalSince1970: 10), title: "Needle marker", kind: .note, body: "Both title terms.", source: "Synthetic", includeInAssistant: true),
+            HealthDocument(id: "zero", updatedAt: Date(timeIntervalSince1970: 30), title: "Unrelated", kind: .note, body: "No title terms.", source: "Synthetic", includeInAssistant: true),
+            HealthDocument(id: "private", updatedAt: Date(timeIntervalSince1970: 40), title: "Needle marker", kind: .note, body: "Private.", source: "Synthetic", includeInAssistant: false)
+        ]
+        let titleOrder = try RecordRetrieval.candidates(query: "needle marker", documents: ordered)
+        check(titleOrder.rows.keys.sorted().compactMap { titleOrder.rows[$0]?.documentID } == ["two", "a", "b", "zero"], "title priority counts unique title terms before recency and ID ties while excluding private records")
+        ordered[3].title = "Needle marker"
+        let editedOrder = try RecordRetrieval.candidates(query: "needle marker", documents: ordered)
+        check(editedOrder.rows.keys.sorted().compactMap { editedOrder.rows[$0]?.documentID } == ["zero", "two", "a", "b"], "each search recomputes title priority from current edited text without a retained title cache")
         let longMatch = HealthDocument(id: "long-match", title: "Ferritin ferritin ferritin", kind: .note, body: Array(repeating: "Ferritin ferritin synthetic paragraph.", count: 200).joined(separator: "\n\n"), source: "Synthetic", includeInAssistant: true)
         let secondMatch = HealthDocument(id: "second-match", title: "Another result", kind: .note, body: "Ferritin. " + String(repeating: "Other synthetic context. ", count: 25), source: "Synthetic", includeInAssistant: true)
         let diverse = try RecordRetrieval.search(query: "ferritin", documents: [longMatch, secondMatch])

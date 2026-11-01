@@ -279,7 +279,20 @@ public enum RecordRetrieval {
     /// Canonical text includes the current editable checklist, rather than treating
     /// a plan's old prose as its current completion/due-date state.
     public static func text(_ document: HealthDocument) -> String? {
-        guard document.hasValidLabImportOrigin, document.hasValidFHIRLabImport, document.body.utf8.count <= maxDocumentBytes, document.body.count <= maxDocumentCharacters, document.steps.count <= 1000, document.steps.allSatisfy({ $0.title.utf8.count <= 20_000 }) else { return nil }
+        preparedText(document)?.text
+    }
+    // One validated, immutable record snapshot for this call only. Reusing it
+    // avoids rebuilding/validating the same canonical text for its fingerprint.
+    private struct PreparedText {
+        let text: String
+        let bodyCharacters: Int
+        let characters: Int
+        let bytes: Int
+    }
+    private static func preparedText(_ document: HealthDocument) -> PreparedText? {
+        guard document.hasValidLabImportOrigin, document.hasValidFHIRLabImport, document.body.utf8.count <= maxDocumentBytes else { return nil }
+        let bodyCharacters = document.body.count
+        guard bodyCharacters <= maxDocumentCharacters, document.steps.count <= 1000, document.steps.allSatisfy({ $0.title.utf8.count <= 20_000 }) else { return nil }
         var value = document.body
         if let comparison = document.labComparison {
             guard comparison.isValid(in: document) else { return nil }
@@ -303,13 +316,21 @@ public enum RecordRetrieval {
                 return "[\(step.isDone ? "done" : "pending")] \(step.title)" + dateText
             }.joined(separator: "\n")
         }
-        return value.utf8.count <= maxDocumentBytes && value.count <= maxDocumentCharacters ? value : nil
+        let bytes = value.utf8.count
+        guard bytes <= maxDocumentBytes else { return nil }
+        let characters = value.count
+        guard characters <= maxDocumentCharacters else { return nil }
+        return PreparedText(text: value, bodyCharacters: bodyCharacters, characters: characters, bytes: bytes)
     }
     public static func fingerprint(_ document: HealthDocument) -> String? {
-        guard document.title.utf8.count <= 4000, document.source.utf8.count <= 4000, let text = text(document) else { return nil }
+        guard document.title.utf8.count <= 4000, document.source.utf8.count <= 4000, let prepared = preparedText(document) else { return nil }
+        return fingerprint(document, prepared: prepared)
+    }
+    private static func fingerprint(_ document: HealthDocument, prepared: PreparedText) -> String? {
+        guard document.title.utf8.count <= 4000, document.source.utf8.count <= 4000 else { return nil }
         // Update timestamps can change when consent changes and lose subsecond
         // precision in legacy storage. Hash the actual reference content instead.
-        let fields = [document.title, document.source, document.kind.rawValue, text]
+        let fields = [document.title, document.source, document.kind.rawValue, prepared.text]
         guard let bytes = try? JSONEncoder().encode(fields) else { return nil }
         return SHA256.hash(data: bytes).map { String(format: "%02x", $0) }.joined()
     }
@@ -318,7 +339,9 @@ public enum RecordRetrieval {
     }
     public static func isCurrent(_ passage: LibraryPassage, documents: [HealthDocument], requireSharing: Bool = true) -> Bool {
         guard passage.isValid, let doc = currentDocument(for: passage, in: documents), !requireSharing || doc.includeInAssistant,
-              fingerprint(doc) == passage.textSHA256, let text = text(doc) else { return false }
+              doc.title.utf8.count <= 4000, doc.source.utf8.count <= 4000, let prepared = preparedText(doc),
+              fingerprint(doc, prepared: prepared) == passage.textSHA256 else { return false }
+        let text = prepared.text
         return String(text.dropFirst(passage.start).prefix(passage.end - passage.start)) == passage.excerpt
     }
     public static func search(query: String, documents: [HealthDocument], history: [ChatMessage] = [], now: Date = Date()) throws -> RecordReplyContext {
@@ -349,27 +372,35 @@ public enum RecordRetrieval {
         guard sqlite3_prepare_v2(db, "INSERT INTO passages(rowid,title,body) VALUES(?,?,?)", -1, &insert, nil) == SQLITE_OK, let insert else { throw SearchError.unavailable }
         defer { sqlite3_finalize(insert) }
         var rows: [Int: LibraryPassage] = [:], coverage: [Int: Set<String>] = [:], characters = 0, bytes = 0, preparedPassages = 0
-        let sorted = shared.sorted {
-            let left = words($0.title), right = words($1.title)
-            let lc = terms.filter { left.contains($0) }.count, rc = terms.filter { right.contains($0) }.count
-            if lc != rc { return lc > rc }
-            if $0.updatedAt != $1.updatedAt { return $0.updatedAt > $1.updatedAt }
-            return $0.id < $1.id
+        // Tokenize each current shared title once, rather than for every sort
+        // comparison. Sort indices to avoid another array of record values.
+        let titleMatches = try shared.map { document in
+            try Task.checkCancellation()
+            let title = words(document.title)
+            return terms.filter { title.contains($0) }.count
         }
-        outer: for doc in sorted {
+        let sorted = shared.indices.sorted {
+            let lc = titleMatches[$0], rc = titleMatches[$1]
+            if lc != rc { return lc > rc }
+            if shared[$0].updatedAt != shared[$1].updatedAt { return shared[$0].updatedAt > shared[$1].updatedAt }
+            return shared[$0].id < shared[$1].id
+        }
+        outer: for index in sorted {
+            let doc = shared[index]
             try Task.checkCancellation()
             guard result.searchedDocuments < maxDocuments, characters < maxCharacters, bytes < maxBytes else { result.limited = true; break }
-            guard !doc.id.isEmpty, doc.id.count <= 500, doc.title.count <= 500, doc.source.count <= 500, let text = text(doc), let hash = fingerprint(doc) else { result.limited = true; continue }
-            guard characters + text.count <= maxCharacters, bytes + text.utf8.count <= maxBytes else { result.limited = true; continue }
-            characters += text.count; bytes += text.utf8.count; result.searchedDocuments += 1
+            guard !doc.id.isEmpty, doc.id.count <= 500, doc.title.count <= 500, doc.source.count <= 500, let prepared = preparedText(doc), let hash = fingerprint(doc, prepared: prepared) else { result.limited = true; continue }
+            let text = prepared.text
+            guard characters + prepared.characters <= maxCharacters, bytes + prepared.bytes <= maxBytes else { result.limited = true; continue }
+            characters += prepared.characters; bytes += prepared.bytes; result.searchedDocuments += 1
             let titleIdentifiers = identifiers.isEmpty ? Set<String>() : Set(identifierOccurrences(in: doc.title, required: identifiers).map(\.key))
             var offset = 0, ordinal = 0, page: Int?
             for paragraph in text.components(separatedBy: "\n\n") {
                 defer { offset += paragraph.count + 2 }
                 // Appended metadata cannot inherit a page or introduce a new
                 // page heading. Boundary offsets also handle trailing newlines.
-                if offset >= doc.body.count { page = nil }
-                if offset < doc.body.count, doc.extraction != nil && doc.extraction?.laterEditedAt == nil, paragraph.hasPrefix("## Page "), let number = Int(paragraph.dropFirst(8)),
+                if offset >= prepared.bodyCharacters { page = nil }
+                if offset < prepared.bodyCharacters, doc.extraction != nil && doc.extraction?.laterEditedAt == nil, paragraph.hasPrefix("## Page "), let number = Int(paragraph.dropFirst(8)),
                    doc.extraction!.pages.contains(where: { $0.number == number && $0.method != .excluded }) { page = number; continue }
                 let chars = Array(paragraph)
                 let occurrences = identifiers.isEmpty ? [] : identifierOccurrences(in: paragraph, required: identifiers)

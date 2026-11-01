@@ -49,6 +49,14 @@ Keep compact outcomes, all regressions/misses, source/producer hashes and failur
 
 Use Python3.12, Xcode and one task-owned workspace. Install dependencies into that workspace with `pip install --no-cache-dir -r scripts/embedding-probe/requirements.txt`; do not modify the shared bundled runtime. The complete measured environment is retained in `Design/native/retrieval-quality/evaluation-environment.txt`.
 
+## Preparation performance follow-through · Batch28
+
+`sort-performance-protocol.json` and the separate `preparation-reuse-protocol.json` preserve the original failed title-only trial and the successful expanded hypothesis. The `LumenLogicChecks --retrieval-index-timing CONFIG TIMING_PROTOCOL OUTPUT` research entry loads the current complete corpus, warms the seven hash-selected development questions and measures production `candidates` only. Full ordered-row/source/keyword signatures are generated outside timing and must agree between warm/measured runs and both implementations. Run three baseline/optimized process pairs in the declared order and use `compare_preparation.py timing WORK OUTPUT` to enforce the unchanged20%/per-query regression gate. Release binaries must bind exact producer hashes; do not compare Debug elapsed replay against Release latency.
+
+For output equivalence, run the complete current selector on both existing dev/challenge configurations, then `compare_preparation.py packets BASELINE_COMPACT CURRENT_WORK NFCORPUS OUTPUT`. It recomputes metrics and compares every complete case/policy/metric/status/language/privacy field against the published compact baseline. Only replay elapsed time is excluded. It retains a compact digest/outcome; raw expanded duplicates are disposable after publication.
+
+Batch28 preserves all4,272 packets exactly while reducing warmed Mac Release preparation22.1%. Public/native/model/device-performance limits remain in `Design/native/library-preparation`. A current Release research executable is retained outside Git as `LibrarySelectionProbe`, with source/binary/dependency metadata. Use its advertised research commands only; rebuild from current sources for full default logic tests or after production/driver changes. Clear obsolete build/scratch/raw copies after publication while keeping current model/vector inputs and the small helper needed next.
+
 ## Candidate parity workflow
 
 Run from the repository root. Choose new output paths; keep the same workspace for iteration.

@@ -48,6 +48,12 @@ Batches 9a/9 established per-metric presence, evidence and local corrections. Ba
 ## Completion log
 Pending batch entries will record commit, validation and push outcome below.
 
+### Batch28 — Library preparation · verified locally
+
+Remove repeated per-comparison title tokenization and repeated canonical-text validation/counting. Every call uses fresh current shared records; public text/fingerprints, source limits/privacy, model/query/cutoff policy and UI stay unchanged. The first title-only trial misses its frozen20% timing target at17.4% and remains recorded. A separately declared validated-text reuse reaches22.1% lower warmed Release Mac preparation time,1.147956s→0.894132s, with identical complete index/keyword signatures. All seven per-query medians improve. This is not physical-iPhone/whole-app latency.
+
+All324 public+32 frozen synthetic questions under12 policies retain all4,272 source packets/metrics/statuses/privacy results exactly against published9f261a9. Current1,382 logic checks,28 actual pinned-model checks, all five simulator products, unsigned Release and the regular built-in native lookup lifecycle238.879s pass. No UI/copy change or new design score. [Exact source/trial evidence](../Design/native/library-preparation/README.md) retains every failed/earlier boundary. Publish/read-back and scoped cleanup follow separately. Then resume broader grounding/provider/language/device/release work; the full goal stays active.
+
 ### Batch27 — literal identifier lookup · published and verified
 
 Recognized sample/report/invoice identifiers now constrain eligible titles/excerpts before keyword or optional topic ranking. Complete tokens preserve zeros, versions and separators; missing or changed follow-up IDs cannot reuse a neighboring source. Combined requests reserve coverage for every recognized ID within the existing four-excerpt/two-per-record limits. Unsupported format, length, count and packet-capacity errors have separate recovery. No model, cutoff, query prefix or persisted schema changes. See [the contract](LIBRARY_RETRIEVAL.md) and [native evidence](../Design/native/literal-identifiers/README.md).

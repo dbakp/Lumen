@@ -4,6 +4,10 @@ import Darwin
 @main struct ImportTests {
     static func main() async throws {
         setbuf(stdout, nil)
+        if CommandLine.arguments.count == 5, CommandLine.arguments[1] == "--retrieval-index-timing" {
+            do { try RetrievalSelectionProbe.indexTiming(input: URL(fileURLWithPath: CommandLine.arguments[2]), protocolURL: URL(fileURLWithPath: CommandLine.arguments[3]), output: URL(fileURLWithPath: CommandLine.arguments[4])); return }
+            catch { FileHandle.standardError.write(Data(("Index timing failed: \(error)\n").utf8)); exit(1) }
+        }
         if CommandLine.arguments.count == 4, CommandLine.arguments[1] == "--retrieval-selection-replay" {
             do { try RetrievalSelectionProbe.run(input: URL(fileURLWithPath: CommandLine.arguments[2]), output: URL(fileURLWithPath: CommandLine.arguments[3])); return }
             catch { FileHandle.standardError.write(Data(("Selection replay failed: \(error)\n").utf8)); exit(1) }

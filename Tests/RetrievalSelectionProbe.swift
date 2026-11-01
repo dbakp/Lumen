@@ -46,6 +46,53 @@ enum RetrievalSelectionProbe {
         guard let text = String(data: data, encoding: .utf8) else { throw Failure.invalidInput("UTF8") }
         return try text.split(separator: "\n").map { try JSONDecoder().decode(type, from: Data($0.utf8)) }
     }
+    static func indexTiming(input: URL, protocolURL: URL, output: URL) throws {
+        guard !FileManager.default.fileExists(atPath: output.path) else { throw Failure.outputExists }
+        let configData = try Data(contentsOf: input), protocolData = try Data(contentsOf: protocolURL)
+        let config = try JSONDecoder().decode(Configuration.self, from: configData)
+        guard let policy = try JSONSerialization.jsonObject(with: protocolData) as? [String: Any],
+              policy["name"] as? String == "per-search-title-key-performance",
+              let ids = policy["queryIDs"] as? [String], ids.count == 7,
+              config.split == "dev", config.expectedDocuments == 3633, config.expectedQueries == 324 else { throw Failure.invalidInput("timing protocol") }
+        let queryData = try read(config.queries)
+        guard digest(queryData) == policy["originalDevQueriesSHA256"] as? String else { throw Failure.invalidInput("timing queries") }
+        let queries = try lines(Question.self, data: queryData)
+        guard queries.count == config.expectedQueries,
+              Array(queries.map(\.id).sorted { digest(Data($0.utf8)) < digest(Data($1.utf8)) }.prefix(7)) == ids else { throw Failure.invalidInput("timing selection") }
+        let raw = try lines(Document.self, data: read(config.corpus))
+        guard raw.count == config.expectedDocuments, Set(raw.map(\._id)).count == raw.count else { throw Failure.invalidInput("timing corpus") }
+        let documents = raw.map { HealthDocument(id: $0._id, createdAt: Date(timeIntervalSince1970: 0), updatedAt: Date(timeIntervalSince1970: 0), title: $0.title, kind: .record, body: $0.text, source: config.sourceLabel, includeInAssistant: true) }
+        func signature(_ index: RecordSearchIndex) throws -> String {
+            guard !index.context.limited, index.context.searchedDocuments == documents.count else { throw Failure.incompleteIndex }
+            let rows: [[String: Any]] = index.rows.keys.sorted().map { row in
+                let p = index.rows[row]!
+                return ["row": row, "documentID": p.documentID, "title": p.title, "source": p.source, "start": p.start, "end": p.end, "ordinal": p.ordinal,
+                        "page": p.page.map { $0 as Any } ?? NSNull(), "sourceSHA256": p.textSHA256, "excerptSHA256": digest(Data(p.excerpt.utf8))]
+            }
+            let object: [String: Any] = ["rows": rows, "keywordRows": index.keywordRows, "literalIdentifiers": index.literalIdentifiers.sorted(),
+                                         "sharedDocuments": index.context.sharedDocuments, "searchedDocuments": index.context.searchedDocuments, "limited": index.context.limited]
+            return digest(try JSONSerialization.data(withJSONObject: object, options: [.sortedKeys]))
+        }
+        var warmed: [String: String] = [:], measured: [[String: Any]] = []
+        for id in ids {
+            guard let query = queries.first(where: { $0.id == id }) else { throw Failure.invalidInput("timing ID") }
+            warmed[id] = try signature(RecordRetrieval.candidates(query: query.text, documents: documents, now: Date(timeIntervalSince1970: 0)))
+        }
+        for id in ids {
+            let query = queries.first { $0.id == id }!
+            let started = ProcessInfo.processInfo.systemUptime
+            let index = try RecordRetrieval.candidates(query: query.text, documents: documents, now: Date(timeIntervalSince1970: 0))
+            let seconds = ProcessInfo.processInfo.systemUptime - started
+            let hash = try signature(index)
+            guard hash == warmed[id] else { throw Failure.oracle }
+            measured.append(["queryID": id, "seconds": seconds, "indexSHA256": hash, "preparedPassages": index.rows.count, "keywordCandidates": index.keywordRows.count])
+        }
+        let report: [String: Any] = ["complete": true, "protocolSHA256": digest(protocolData), "configurationSHA256": digest(configData),
+                                    "documents": documents.count, "queries": measured, "warmAndMeasuredSignaturesEqual": true,
+                                    "scope": "Warmed Mac Release production candidates only; signature generation/input loading outside timer. No model/UI/provider/iPhone latency claim."]
+        try JSONSerialization.data(withJSONObject: report, options: [.prettyPrinted, .sortedKeys]).write(to: output, options: .atomic)
+        print("Timed all seven predeclared questions; warm/measured full index signatures match.")
+    }
     static func run(input: URL, output: URL) throws {
         guard !FileManager.default.fileExists(atPath: output.path) else { throw Failure.outputExists }
         let configData = try Data(contentsOf: input)

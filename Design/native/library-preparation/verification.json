@@ -1,0 +1,149 @@
+{
+  "status": "all local gates verified; awaiting coherent publication and scoped cleanup",
+  "applicationBaseline": "04678c0d952d90972041c7ff9d4b90951f879342",
+  "timingProtocolPublicationCommit": "8b276eb8ffe4f6b5d98247dcfcb722e07d5916b7",
+  "reuseSupplementPublicationCommit": "f2f2380a02b5562b718d094c84954f32d35bf50e",
+  "productionFileChanged": "Lumen/Algorithms/RecordRetrieval.swift",
+  "nativeInputs": 192,
+  "sourceMaps": {
+    "baseline": "baseline-source-map.json",
+    "firstTitleOnlyCandidate": "native-source-r1.json",
+    "currentProduction": "native-source-r2.json",
+    "currentLogicAndTests": "logic-source-r3.json",
+    "releaseReplayDriverAndModelCheck": "logic-source-r2.json"
+  },
+  "firstTrial": {
+    "status": "failed frozen20percent performance gate; not shipped",
+    "timing": "title-keys-r1-timing.json",
+    "productionProducer": "title-keys-r1-source.swift",
+    "allFullIndexSignaturesEqual": true,
+    "reductionPercent": 17.431840074032856,
+    "baselineLogicChecks": 1379,
+    "candidateLogicChecks": 1379,
+    "actualModelChecks": 28,
+    "simulatorBuildLogSHA256": "035d4b9605a3c1bf49ebc8e32cd5207321706681e42468069fbcfaeb2fff13c8",
+    "unsignedReleaseLogSHA256": "a60846c0463e018c97244b5fe5d55b0a5acb855b7a93c3f643caac734aadc24d",
+    "note": "Passed first-candidate functional/build checks precede validated-text reuse. They are not final-source passes."
+  },
+  "currentTiming": {
+    "status": "passed",
+    "outcome": "timing-r2.json",
+    "all42MeasuredIndexAndKeywordSignaturesEqual": true,
+    "medianReductionPercent": 22.11097740362029,
+    "baselineMedianSeconds": 1.1479559999424964,
+    "optimizedMedianSeconds": 0.8941317081917077,
+    "allSevenPerQueryMediansImproved": true,
+    "baselineBinarySHA256": "673432ded02f995ce7707189f3994e6d6e7515f513d992dea71cb25cc89b7516",
+    "optimizedBinarySHA256": "62938609db66d790d5ac59734a1866cffdb6bdd8e60d4af35b21561212e72a7b",
+    "baselineReleaseBuildLogSHA256": "6d7bef7ecfae0a1f1c66259157d89b81ab5f9766ea2db4d58ab129ea68b2ab97",
+    "optimizedReleaseBuildLogSHA256": "bcdfb67d411c07ecb1b25b9d238ac776016e544d48e2202026001e122b46957a",
+    "scope": "Warmed Mac Release candidates only,21 measured questions per variant. No whole-app/cold-start/iPhone/model/provider latency claim."
+  },
+  "logicR3": {
+    "status": "passed",
+    "checks": 1382,
+    "logSHA256": "8432bdfa99d36891000c47487a6313b165e114dff152908c198d08c67f302921",
+    "buildLogSHA256": "6861fbf08ca6db0d1c2fa83c234ecc83bd76139089ce2b0e83bf8b91cadf2153",
+    "sourceMap": "logic-source-r3.json",
+    "newCoverage": "Title priority/recency/ID tie/edits/private exclusion and late-record limit; composed title/source UTF8 fingerprint bounds; complete appended canonical-metadata character limit."
+  },
+  "actualModelR2": {
+    "status": "passed",
+    "checks": 28,
+    "logSHA256": "6e0d7f48aeafae82267530cadc005593b659e12978da5350a9e907cd2c653c8a",
+    "sourceMap": "logic-source-r2.json",
+    "scope": "Actual pinned original MiniLM/CoreML, complete-ID eligibility/fusion/cache/privacy/cancellation and actual backup/export/legacy checks; model/query/cutoff unchanged."
+  },
+  "buildR2": {
+    "status": "passed",
+    "logSHA256": "a2559d7a640c563e504185a1ceb83e969a7edffc54f19f36fc7223f527107629",
+    "products": [
+      "Lumen",
+      "LumenWidget",
+      "LumenWatch",
+      "LumenWatchWidget",
+      "LumenUITests"
+    ],
+    "sourceMap": "native-source-r2.json"
+  },
+  "releaseR2": {
+    "status": "passed",
+    "logSHA256": "6ed1755498ed5d8916025ad9c990d02dcc96088ed2de425474d4d97e9f0f663f",
+    "audit": "release-audit-r2.json",
+    "sourceMap": "native-source-r2.json"
+  },
+  "finalSourceBoundary": "The only change after the Release replay/model build is three additional assertions in the default RecordRetrievalChecks.run path. Current DebugR3 runs all1382. Production and replay driver are identical across R2/R3; native app inputs are unchanged.",
+  "designScope": "No UI/layout/copy/icon/navigation change. Existing native surfaces are regression-tested; no new design score or decorative review is claimed.",
+  "pending": [
+    "Final source/evidence audit, publication/read-back and stopped-worker scoped cleanup"
+  ],
+  "remainingProductGates": [
+    "Source-support/model/provider/language quality and held-out discipline",
+    "Signed-device Health/Watch/voice, accessibility/performance and release/privacy readiness"
+  ],
+  "nativeR2": {
+    "status": "passed",
+    "summary": {
+      "devicesAndConfigurations": [
+        {
+          "device": {
+            "architecture": "arm64",
+            "deviceId": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+            "deviceName": "Lumen continuation verification",
+            "modelName": "iPhone 18 Pro",
+            "osBuildNumber": "24A434",
+            "osVersion": "27.0",
+            "platform": "iOS Simulator"
+          },
+          "expectedFailures": 0,
+          "failedTests": 0,
+          "passedTests": 1,
+          "skippedTests": 0,
+          "testPlanConfiguration": {
+            "configurationId": "1",
+            "configurationName": "Test Scheme Action"
+          }
+        }
+      ],
+      "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+      "expectedFailures": 0,
+      "failedTests": 0,
+      "finishTime": 1793510395.121,
+      "passedTests": 1,
+      "result": "Passed",
+      "runtimeWarnings": [],
+      "skippedTests": 0,
+      "startTime": 1793510156.242,
+      "statistics": [],
+      "testFailures": [],
+      "title": "Test - Lumen",
+      "topInsights": [],
+      "totalTestCount": 1
+    },
+    "sessionSeconds": 238.8789999485016,
+    "logSHA256": "116a30c6d11c147bec1d38bfe5ef16015a597eb445c891e0b61de3d3ff1a705a",
+    "sourceMap": "native-source-r2.json",
+    "captures": "native-captures.json",
+    "retainedOriginals": 5,
+    "normalBuiltInRoute": true,
+    "localReplyOverrideUsed": false,
+    "scope": "Actual UI-created synthetic records/consents; exact/missing and bare/unqualified follow-ups; settled zero-source audit; literal source/Open in Library; sharing withdrawal/private exclusion; capacity/format/leading format; relaunch and96-character positive lookup. No new UI/layout/clinical/device-performance claim."
+  },
+  "packetReplayR2": {
+    "status": "passed",
+    "sourceMap": "logic-source-r2.json",
+    "publicComparison": "dev-packet-comparison-r2.json",
+    "syntheticComparison": "challenge-packet-comparison-r2.json",
+    "publicQuestions": 324,
+    "syntheticQuestions": 32,
+    "policies": 12,
+    "publicPackets": 3888,
+    "syntheticPackets": 384,
+    "allSourcePacketsMetricsStatusesLanguagesAndPrivacyChecksEqualPublishedBaseline": true,
+    "publicLogSHA256": "9025da70e795a31c6706ffa147a5d821c8f0865aa87c69dad6d3fcba3ebbd38b",
+    "syntheticLogSHA256": "2142660e8811560be276d8f1e2902c2561f41d9d04020bfbb20d3dac2a68f831",
+    "comparisonScriptSHA256": "82be7989b64c9281ad0c3704350705c945408f473ec6b47a72135771d3c3e1fd",
+    "scope": "Release current driver vs published9f261a9 complete development outcomes. Replay elapsed times are excluded from equality/performance claims; all21+21 paired timing measurements use the same Release configuration. No held-out scores."
+  },
+  "finalAudit": "final-source-audit.json"
+}
