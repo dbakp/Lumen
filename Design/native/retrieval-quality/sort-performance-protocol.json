@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "name": "per-search-title-key-performance",
+  "declaredAtUTC": "2026-11-01T04:53:54.754585+00:00",
+  "declaredBeforeNewPerformanceMeasurements": true,
+  "baselineApplicationCommit": "04678c0d952d90972041c7ff9d4b90951f879342",
+  "baselineSourceEvaluationCommit": "9f261a93790666d67c59d39aac598553508c0857",
+  "baselineProductionSourceSHA256": "d1723de03ae0528930761b2859f87dbb28cb0d0e19bd24e2849f16283a4c06a7",
+  "hypothesis": "Compute title match counts once per shared document and sort indices by those keys, preserving descending match count/updatedAt and ascending ID, stable equal-key input order, source bounds and privacy. Avoid title tokenization/match counting inside every comparison.",
+  "timingQuerySelection": "Seven original dev query IDs with lexicographically lowest SHA256(id UTF8), selected without inspecting new timings.",
+  "queryIDs": [
+    "PLAIN-1866",
+    "PLAIN-2144",
+    "PLAIN-1846",
+    "PLAIN-3096",
+    "PLAIN-1097",
+    "PLAIN-2529",
+    "PLAIN-2007"
+  ],
+  "originalDevQueriesSHA256": "72ca9d4b20b7942ff0930407d916e2d22cb983666a020e505f8df68571adfa1a",
+  "timing": {
+    "configuration": "Optimized Release Mac standalone production-logic executable; current compiler/OS retained",
+    "warmup": "Every selected query once per process before the measured pass",
+    "measuredPassesPerProcess": 1,
+    "pairedProcessRuns": 3,
+    "sequence": [
+      "baseline1",
+      "optimized1",
+      "baseline2",
+      "optimized2",
+      "baseline3",
+      "optimized3"
+    ],
+    "measure": "RecordRetrieval.candidates only, over complete3633-record corpus, input loaded before timer; signature generation outside timer. No model inference/UI/provider work.",
+    "gate": "At least20% lower median preparation time across all21 measured queries, and no per-query three-run median regression above10%. Record every run, not only best timings. No exception to output equivalence.",
+    "limitations": "Warmed Mac Release preparation is not cold-start, whole-app, physical-iPhone, energy or worst-case resource behavior. Concurrent unrelated activity is not controlled or stopped."
+  },
+  "correctness": [
+    "Every measured warm/timed index must have equal full ordered-row/keyword-ranking/source signature before and after; no index exclusions.",
+    "Actual full native replay must retain all324 public dev and32 frozen synthetic per-query/per-policy source packets, offsets/fingerprints/methods/statuses/metrics exactly against published compact baseline. This remains development-only; no held-out scores.",
+    "Run current package logic, actual pinned original MiniLM checks and meaningful new title-priority/freshness/limit regressions. Preserve all prior identifier/privacy/history/bounds behavior.",
+    "Verify all five simulator products, unsigned iOS Release and current native regular built-in literal lookup/follow-up/withdrawal/source/relaunch flow. No UI/layout change is proposed, so no new decorative/design round."
+  ],
+  "storage": "Reuse the one package scratch and existing score/config inputs. Use one appropriate Xcode build directory per platform; publish source/useful compact evidence before stopped-worker cleanup. Preserve supplied skill, current research inputs, primary/Watch/shared runtimes and unrelated data."
+}
