@@ -57,9 +57,11 @@ Batches 9a/9 established per-metric presence, evidence and local corrections. Ba
 ## Completion log
 Pending batch entries will record commit, validation and push outcome below.
 
-### Batch35 — optional Health save/delete ordering · verified
+### Batch35 — optional Health save/delete ordering · published and verified
 
 Same-record quick-water and meal deletion waits for a pending save callback. Independent records/domains remain parallel, removed/reset/restored pending saves are suppressed, and water keeps its log timestamp.23 controlled ordering checks reproduce the old orphan and verify the production primitive;1,488 Release logic checks, all5 simulator products, actual84.623s native local water/meal/relaunch lifecycle and unsignedRelease/minimumiOS18/20-marker audit pass. Source boundaries and the test-helper-only failed build remain in [the evidence](../Design/native/health-write-order/README.md). No UI/copy/schema/model change or new design score. Durable retry, real Health permissions/interruption and Watch identity reconciliation remain open. Next checked local quick-log persistence/failure feedback and photo retention on failed local deletion; the full goal stays active.
+
+Application `05d2146137a85acb03af59f791539b0f3a8b878e` reaches GitHub with exact read-back. Scoped stopped-worker cleanup recovers1.79GB; five useful PNGs and compact/source evidence remain. Completed build/package/raw roots are removed; current canonical inputs, skill and unrelated data remain. No cleanup-only rebuild. Exact ownership/accounting remains in the batch ledger.
 
 ### Batch34 — grounded-answer development trial · candidate rejected
 
