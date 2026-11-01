@@ -4,6 +4,10 @@ import Darwin
 @main struct ImportTests {
     static func main() async throws {
         setbuf(stdout, nil)
+        if CommandLine.arguments.count == 4, CommandLine.arguments[1] == "--retrieval-selection-replay" {
+            do { try RetrievalSelectionProbe.run(input: URL(fileURLWithPath: CommandLine.arguments[2]), output: URL(fileURLWithPath: CommandLine.arguments[3])); return }
+            catch { FileHandle.standardError.write(Data(("Selection replay failed: \(error)\n").utf8)); exit(1) }
+        }
         if CommandLine.arguments.count == 4, CommandLine.arguments[1] == "--retrieval-challenge-keywords" {
             do { try RetrievalCorpusProbe.keywordChallenge(input: URL(fileURLWithPath: CommandLine.arguments[2]), output: URL(fileURLWithPath: CommandLine.arguments[3])); return }
             catch { FileHandle.standardError.write(Data(("Keyword challenge failed: \(error)\n").utf8)); exit(1) }

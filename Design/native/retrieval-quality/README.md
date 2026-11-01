@@ -1,6 +1,12 @@
 # Batch26 · retrieval-quality investigation · in progress
 
-Batch25 application `f190b1d` and checkpoint `f102497` remain published. The app/search model/threshold/UI are unchanged. This investigation follows [the acceptance contract](../../../docs/RETRIEVAL_QUALITY.md); the full product goal remains active.
+The original Batch26 checkpoints below used Batch25 application `f190b1d`. Batch27 subsequently published literal identifier protection as `04678c0`; the original search model/threshold/query prefix remain unchanged. This investigation follows [the acceptance contract](../../../docs/RETRIEVAL_QUALITY.md); the full product goal remains active.
+
+## Current complete-selection checkpoint
+
+`selection-protocol.json` reached GitHub as `adeea49` before the new policy scores. `selection-challenge.json` retains all32 frozen synthetic questions across12 policies through actual current native indexing/fusion/four-excerpt selection, with verified-vector replay rather than new inference or live-budget simulation. All17 supported expected sources and both absent-ID exclusions survive. Current MiniLM/keyword return topics for7 unsupported questions; candidate none/0.42 returns13,0.55 returns12,0.60 returns10,0.65 returns9,0.70 returns8 and0.75–0.90 returns7. None meets the unchanged direct-support profile. The high-threshold hits include the keyword floor, not proof of semantic retrieval on their own.
+
+All384 synthetic packets are current/valid and within bounds;204 sharing withdrawals and204 carried-source exclusions pass. `selection-controls.json` retains eight corruption/model-pair rejection controls. `selection-application-audit.json` matches all192 Batch27 app inputs. `selection-native-source-map.json` and `selection-verification.json` retain exact producer boundaries and the initial research-writer compile failure. No new app build, UI sign-off, model/prefix/cutoff or held-out score is claimed. Complete public dev results are below; publication and cleanup are recorded separately.
 
 ## Findings so far
 
@@ -77,3 +83,30 @@ Four instruction controls pass (`instruction-controls.json`); raw-baseline ranki
 
 
 Batch26 instruction/challenge publication: `ff0673bb9d5175e7b99fc8249b117d73cd5ec5b7` reached GitHub through the batch publisher, with exact main read-back before cleanup. The separately frozen protocols/labels are preserved in `0a8e0b2` and `2c14538`. The instruction passes dev ranking only; literal identifier/source-selection work remains next and no app model/query/cutoff change is selected. Stopped-worker cleanup removes obsolete full ranking copies/logs/limit controls/bytecode and recovers a measured21,155,840 available bytes (about21.16MB). Current model/source/env/dataset/prepared corpus/matrices, native helper/cache and one package scratch remain for immediate source-selection implementation; all unrelated data remain. Details: Design/native/retrieval-quality/instruction-storage-cleanup.json. Raw temporary paths are historical; no cleanup-only app build was run. The full goal stays active.
+
+## Complete public development replay · no app candidate frozen
+
+All324 questions and3633 records/8239 prepared excerpts pass actual native indexing/fusion/final selection with42 independent native cosine spots across public and synthetic inputs. All3888 public and384 synthetic packets retain current valid sources and obey the four-excerpt/two-per-document/non-overlap limits. Native keyword and above1-cutoff oracles match normal search for all356 questions across both sets. This replays verified native vectors without new inference or live12-second/cache/iPhone timing claims.
+
+| Native source-packet policy | Dev nDCG@4 | Dev Precision@4 | Synthetic unsupported selections /15 |
+|---|---:|---:|---:|
+| keyword | 0.319061 | 0.293981 | 7 |
+| minilm-production-042 | 0.336119 | 0.314043 | 7 |
+| medembed-instructed-no-cutoff | 0.345178 | 0.324074 | 13 |
+| medembed-instructed-0.42 | 0.345178 | 0.324074 | 13 |
+| medembed-instructed-0.55 | 0.345178 | 0.324074 | 12 |
+| medembed-instructed-0.6 | 0.345178 | 0.324074 | 10 |
+| medembed-instructed-0.65 | 0.344625 | 0.324074 | 9 |
+| medembed-instructed-0.7 | 0.344673 | 0.324846 | 8 |
+| medembed-instructed-0.75 | 0.335879 | 0.314043 | 7 |
+| medembed-instructed-0.8 | 0.326414 | 0.302469 | 7 |
+| medembed-instructed-0.85 | 0.318747 | 0.293210 | 7 |
+| medembed-instructed-0.9 | 0.319061 | 0.293981 | 7 |
+
+The best descriptive fixed-grid result gains **0.009059 native nDCG@4**, with54 improved/36 worsened/234 unchanged questions against current MiniLM.123 questions still have no judged-relevant source in that best packet. This differs from the earlier document-max nDCG@10 metric and neither overrides its failed raw gate nor revokes its passed supplementary instruction gate. At0.75 the candidate is slightly below native baseline; higher cutoffs lose more useful retrieval. All original-query language decisions remain visible:246 use semantic scores and78 fall back to keywords, without claiming those78 medical queries are truly non-English. Every query remains in the denominator.
+
+**No complete app candidate is frozen.** All12 policies fail the unchanged direct-support profile; high cutoffs cannot remove the existing keyword floor. Held-out test retrieval scores remain uncomputed. [selection-decision.json](selection-decision.json) retains every fixed-grid result/tradeoff and the next concrete work. `selection-dev.json`/`selection-challenge.json` preserve every question/policy/source/metric with lossless result deduplication; `selection.expand_report` verifies all hashes and restores the complete representation. Both saved artifacts round-trip exactly, and two deliberate compact-result/reference corruptions are rejected. Public text/vectors stay outside Git.
+
+Final package BuildR3 and **1,376 logic checks pass**, including a native exact-RRF-tie oracle and existing source-diversity budgets. Eight score/model/source integrity controls pass. Replay BuildR2 precedes only that default-test assertion and Python report/compact controls; native driver and every app input remain unchanged. The initial optional-method research-writer compile failure remains failed. No new app build/design score is claimed.
+
+A one-second Debug Mac sample observes repeated title tokenization inside the production document-sort comparator. It is a bounded performance hypothesis, not whole-run or physical-device proof. Next precompute per-search title-match keys while requiring exact source-packet equivalence and measured timing. Reuse the one package scratch and exact score/config inputs needed immediately; remove only redundant raw outputs after publication. Broader source-support/provider/language/model-installation/budget/signed-device/privacy gates remain open. The full goal stays active.

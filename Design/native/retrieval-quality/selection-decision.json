@@ -1,0 +1,368 @@
+{
+  "recordedAtUTC": "2026-11-01T04:46:16.205420+00:00",
+  "protocolPublicationCommit": "adeea491537cbf3dd78046bb777872e1f6b0183b",
+  "applicationBaseline": "04678c0d952d90972041c7ff9d4b90951f879342",
+  "decision": "No complete app model/query/cutoff candidate is frozen or promoted. Preserve original raw-query miss and supplementary instructed document-max pass. Complete native source-packet replay shows a modest ranking gain, but no tested policy meets the unchanged synthetic direct-support profile. Held-out test retrieval scores remain uncomputed.",
+  "publicScope": "All324 NFCorpus dev queries,3633 documents,8239 original prepared passages and every native window. Actual index/original-query language gate/RRF/four-passage selector with offline vector replay, no live inference/cache/budget or iPhone latency claim.",
+  "originalGatesUnchanged": {
+    "rawQueryDocumentMaxNDCG10": "Original+0.015214 missed original+0.02 gate; no exception.",
+    "instructedDocumentMaxNDCG10": "Separately predeclared+0.025618 passed its supplementary ranking gate; not undone or renamed by the different packet metric.",
+    "nativePacketNDCG4": "Report actual packet-level result and all regressions; not interchangeable with document-max nDCG@10."
+  },
+  "productionBaseline": {
+    "P_4": 0.3140432098765432,
+    "denominatorQueries": 324,
+    "hit_4": 0.6049382716049383,
+    "id": "minilm-production-042",
+    "ndcg_cut_4": 0.336118659205229,
+    "queriesWithResults": 306,
+    "queriesWithoutJudgedRelevantSource": 128,
+    "recall_4": 0.08401339939840324,
+    "selectedPassages": 1162,
+    "selectedUniqueDocuments": 1083,
+    "statusCounts": {
+      "unsupportedLanguage": 78,
+      "used": 246
+    }
+  },
+  "highestDevPacketNDCG4": {
+    "policy": "medembed-instructed-no-cutoff",
+    "ndcg_cut_4": 0.3451776137129145,
+    "P_4": 0.32407407407407407,
+    "paired": {
+      "improved": 54,
+      "meanDelta": 0.009058954507685487,
+      "unchanged": 234,
+      "worsened": 36
+    },
+    "unsupportedChallengeSelections": 13,
+    "note": "Descriptive best in the fixed development grid, not an app candidate selection."
+  },
+  "policies": [
+    {
+      "P_4": 0.29398148148148145,
+      "denominatorQueries": 324,
+      "hit_4": 0.5740740740740741,
+      "id": "keyword",
+      "ndcg_cut_4": 0.31906071041204226,
+      "queriesWithResults": 303,
+      "queriesWithoutJudgedRelevantSource": 138,
+      "recall_4": 0.07864250947628759,
+      "selectedPassages": 1148,
+      "selectedUniqueDocuments": 1067,
+      "statusCounts": {
+        "off": 324
+      },
+      "syntheticUnsupportedSelections": 7,
+      "passesUnchangedDirectSupportProfile": false
+    },
+    {
+      "P_4": 0.3140432098765432,
+      "denominatorQueries": 324,
+      "hit_4": 0.6049382716049383,
+      "id": "minilm-production-042",
+      "ndcg_cut_4": 0.336118659205229,
+      "queriesWithResults": 306,
+      "queriesWithoutJudgedRelevantSource": 128,
+      "recall_4": 0.08401339939840324,
+      "selectedPassages": 1162,
+      "selectedUniqueDocuments": 1083,
+      "statusCounts": {
+        "unsupportedLanguage": 78,
+        "used": 246
+      },
+      "syntheticUnsupportedSelections": 7,
+      "passesUnchangedDirectSupportProfile": false
+    },
+    {
+      "P_4": 0.32407407407407407,
+      "denominatorQueries": 324,
+      "hit_4": 0.6203703703703703,
+      "id": "medembed-instructed-no-cutoff",
+      "ndcg_cut_4": 0.3451776137129145,
+      "pairedNDCG4AgainstProductionBaseline": {
+        "improved": 54,
+        "meanDelta": 0.009058954507685487,
+        "unchanged": 234,
+        "worsened": 36
+      },
+      "queriesWithResults": 309,
+      "queriesWithoutJudgedRelevantSource": 123,
+      "recall_4": 0.09073747868282622,
+      "selectedPassages": 1192,
+      "selectedUniqueDocuments": 1117,
+      "statusCounts": {
+        "unsupportedLanguage": 78,
+        "used": 246
+      },
+      "syntheticUnsupportedSelections": 13,
+      "passesUnchangedDirectSupportProfile": false
+    },
+    {
+      "P_4": 0.32407407407407407,
+      "denominatorQueries": 324,
+      "hit_4": 0.6203703703703703,
+      "id": "medembed-instructed-0.42",
+      "ndcg_cut_4": 0.3451776137129145,
+      "pairedNDCG4AgainstProductionBaseline": {
+        "improved": 54,
+        "meanDelta": 0.009058954507685487,
+        "unchanged": 234,
+        "worsened": 36
+      },
+      "queriesWithResults": 309,
+      "queriesWithoutJudgedRelevantSource": 123,
+      "recall_4": 0.09073747868282622,
+      "selectedPassages": 1192,
+      "selectedUniqueDocuments": 1117,
+      "statusCounts": {
+        "unsupportedLanguage": 78,
+        "used": 246
+      },
+      "syntheticUnsupportedSelections": 13,
+      "passesUnchangedDirectSupportProfile": false
+    },
+    {
+      "P_4": 0.32407407407407407,
+      "denominatorQueries": 324,
+      "hit_4": 0.6203703703703703,
+      "id": "medembed-instructed-0.55",
+      "ndcg_cut_4": 0.3451776137129145,
+      "pairedNDCG4AgainstProductionBaseline": {
+        "improved": 54,
+        "meanDelta": 0.009058954507685487,
+        "unchanged": 234,
+        "worsened": 36
+      },
+      "queriesWithResults": 309,
+      "queriesWithoutJudgedRelevantSource": 123,
+      "recall_4": 0.09073747868282622,
+      "selectedPassages": 1192,
+      "selectedUniqueDocuments": 1117,
+      "statusCounts": {
+        "unsupportedLanguage": 78,
+        "used": 246
+      },
+      "syntheticUnsupportedSelections": 12,
+      "passesUnchangedDirectSupportProfile": false
+    },
+    {
+      "P_4": 0.32407407407407407,
+      "denominatorQueries": 324,
+      "hit_4": 0.6203703703703703,
+      "id": "medembed-instructed-0.6",
+      "ndcg_cut_4": 0.3451776137129145,
+      "pairedNDCG4AgainstProductionBaseline": {
+        "improved": 54,
+        "meanDelta": 0.009058954507685487,
+        "unchanged": 234,
+        "worsened": 36
+      },
+      "queriesWithResults": 309,
+      "queriesWithoutJudgedRelevantSource": 123,
+      "recall_4": 0.09073747868282622,
+      "selectedPassages": 1191,
+      "selectedUniqueDocuments": 1118,
+      "statusCounts": {
+        "unsupportedLanguage": 78,
+        "used": 246
+      },
+      "syntheticUnsupportedSelections": 10,
+      "passesUnchangedDirectSupportProfile": false
+    },
+    {
+      "P_4": 0.32407407407407407,
+      "denominatorQueries": 324,
+      "hit_4": 0.6234567901234568,
+      "id": "medembed-instructed-0.65",
+      "ndcg_cut_4": 0.3446249385942743,
+      "pairedNDCG4AgainstProductionBaseline": {
+        "improved": 52,
+        "meanDelta": 0.00850627938904528,
+        "unchanged": 237,
+        "worsened": 35
+      },
+      "queriesWithResults": 307,
+      "queriesWithoutJudgedRelevantSource": 122,
+      "recall_4": 0.09005160762658479,
+      "selectedPassages": 1177,
+      "selectedUniqueDocuments": 1104,
+      "statusCounts": {
+        "unsupportedLanguage": 78,
+        "used": 246
+      },
+      "syntheticUnsupportedSelections": 9,
+      "passesUnchangedDirectSupportProfile": false
+    },
+    {
+      "P_4": 0.3248456790123457,
+      "denominatorQueries": 324,
+      "hit_4": 0.6234567901234568,
+      "id": "medembed-instructed-0.7",
+      "ndcg_cut_4": 0.3446730590618636,
+      "pairedNDCG4AgainstProductionBaseline": {
+        "improved": 52,
+        "meanDelta": 0.008554399856634563,
+        "unchanged": 237,
+        "worsened": 35
+      },
+      "queriesWithResults": 306,
+      "queriesWithoutJudgedRelevantSource": 122,
+      "recall_4": 0.09011939386127063,
+      "selectedPassages": 1167,
+      "selectedUniqueDocuments": 1091,
+      "statusCounts": {
+        "unsupportedLanguage": 78,
+        "used": 246
+      },
+      "syntheticUnsupportedSelections": 8,
+      "passesUnchangedDirectSupportProfile": false
+    },
+    {
+      "P_4": 0.3140432098765432,
+      "denominatorQueries": 324,
+      "hit_4": 0.6018518518518519,
+      "id": "medembed-instructed-0.75",
+      "ndcg_cut_4": 0.3358786032805606,
+      "pairedNDCG4AgainstProductionBaseline": {
+        "improved": 45,
+        "meanDelta": -0.00024005592466839868,
+        "unchanged": 241,
+        "worsened": 38
+      },
+      "queriesWithResults": 304,
+      "queriesWithoutJudgedRelevantSource": 129,
+      "recall_4": 0.08401929816602523,
+      "selectedPassages": 1150,
+      "selectedUniqueDocuments": 1072,
+      "statusCounts": {
+        "unsupportedLanguage": 78,
+        "used": 246
+      },
+      "syntheticUnsupportedSelections": 7,
+      "passesUnchangedDirectSupportProfile": false
+    },
+    {
+      "P_4": 0.30246913580246915,
+      "denominatorQueries": 324,
+      "hit_4": 0.5895061728395061,
+      "id": "medembed-instructed-0.8",
+      "ndcg_cut_4": 0.32641423013402154,
+      "pairedNDCG4AgainstProductionBaseline": {
+        "improved": 43,
+        "meanDelta": -0.00970442907120745,
+        "unchanged": 240,
+        "worsened": 41
+      },
+      "queriesWithResults": 303,
+      "queriesWithoutJudgedRelevantSource": 133,
+      "recall_4": 0.07959912225880199,
+      "selectedPassages": 1148,
+      "selectedUniqueDocuments": 1069,
+      "statusCounts": {
+        "unsupportedLanguage": 78,
+        "used": 246
+      },
+      "syntheticUnsupportedSelections": 7,
+      "passesUnchangedDirectSupportProfile": false
+    },
+    {
+      "P_4": 0.2932098765432099,
+      "denominatorQueries": 324,
+      "hit_4": 0.5740740740740741,
+      "id": "medembed-instructed-0.85",
+      "ndcg_cut_4": 0.31874711418885737,
+      "pairedNDCG4AgainstProductionBaseline": {
+        "improved": 34,
+        "meanDelta": -0.017371545016371646,
+        "unchanged": 240,
+        "worsened": 50
+      },
+      "queriesWithResults": 303,
+      "queriesWithoutJudgedRelevantSource": 138,
+      "recall_4": 0.0785039736965792,
+      "selectedPassages": 1148,
+      "selectedUniqueDocuments": 1065,
+      "statusCounts": {
+        "unsupportedLanguage": 78,
+        "used": 246
+      },
+      "syntheticUnsupportedSelections": 7,
+      "passesUnchangedDirectSupportProfile": false
+    },
+    {
+      "P_4": 0.29398148148148145,
+      "denominatorQueries": 324,
+      "hit_4": 0.5740740740740741,
+      "id": "medembed-instructed-0.9",
+      "ndcg_cut_4": 0.31906071041204226,
+      "pairedNDCG4AgainstProductionBaseline": {
+        "improved": 36,
+        "meanDelta": -0.01705794879318673,
+        "unchanged": 238,
+        "worsened": 50
+      },
+      "queriesWithResults": 303,
+      "queriesWithoutJudgedRelevantSource": 138,
+      "recall_4": 0.07864250947628759,
+      "selectedPassages": 1148,
+      "selectedUniqueDocuments": 1067,
+      "statusCounts": {
+        "unsupportedLanguage": 78,
+        "used": 246
+      },
+      "syntheticUnsupportedSelections": 7,
+      "passesUnchangedDirectSupportProfile": false
+    }
+  ],
+  "languageGate": {
+    "englishAccepted": 246,
+    "keywordFallback": 78,
+    "total": 324,
+    "note": "Original-query NLLanguageRecognizer labels, not a claim that these78 public medical queries are actually non-English. Every query remains in the denominator. Do not use the instruction prefix to bypass this gate.",
+    "labels": {
+      "ca": 8,
+      "da": 3,
+      "de": 4,
+      "en": 246,
+      "es": 3,
+      "fi": 3,
+      "fr": 15,
+      "hr": 2,
+      "hu": 1,
+      "id": 6,
+      "it": 5,
+      "nb": 4,
+      "nl": 5,
+      "pl": 1,
+      "pt": 2,
+      "ro": 7,
+      "sv": 2,
+      "tr": 6,
+      "vi": 1
+    }
+  },
+  "sourceIntegrity": {
+    "publicPackets": 3888,
+    "syntheticPackets": 384,
+    "allCurrentValidAndBounded": true,
+    "supportedSourceWithdrawals": 204,
+    "priorCarriedExclusions": 204,
+    "missingIDNeighborsExcludedForAll12Policies": true,
+    "nativeCosineSpots": 42,
+    "keywordNormalSearchOracles": 356,
+    "noRelatedCeilingOracles": 356,
+    "independentIntegrityControls": 8,
+    "currentLogicChecks": 1376
+  },
+  "remainingFindings": [
+    "Candidate lower cutoffs increase unsupported-topic selections7\u219213; high cutoffs return to7 through the preserved keyword floor, not a proven answer-support mechanism.",
+    "Candidate0.75 native nDCG@4 is slightly below baseline;0.8\u20130.9 lose more useful retrieval. Every per-query regression is retained.",
+    "The exact English eligibility/fallback, source packet diversity and leading keyword rule materially change what a model-only benchmark establishes.",
+    "One1-second Debug Mac sample identifies repeated title tokenization inside the document-sort comparator as a performance hypothesis; not an app/iPhone speed claim."
+  ],
+  "nextWork": "Test precomputed per-search title-match keys against exact source-packet outputs and meaningful timings, preserving selection semantics. Reuse one package scratch and the exact score/config inputs. Broader answer-support/provider/language/model-installation/runtime/device/privacy work remains open; do not rescue a candidate with test scores.",
+  "appModelQueryCutoffSchemaUIChanged": false,
+  "testRetrievalScoresComputed": false,
+  "fullGoalStillActive": true
+}

@@ -278,6 +278,7 @@ enum MiniLMChecks {
         check(SemanticModelPackage.downloadBytes == 45_012_149 && Set(SemanticModelPackage.assets.map(\.path)).count == 3 && SemanticModelPackage.assets.allSatisfy { $0.url.scheme == "https" && $0.url.host == "huggingface.co" && $0.url.path.contains(SemanticModelPackage.revision) }, "model assets have a bounded fixed total and immutable revision URLs")
         check(HybridLibrarySearch.fused(keyword: [1, 2, 3], related: [4, 2, 5]).first == 1 && HybridLibrarySearch.fused(keyword: [1, 2, 3], related: [4, 2, 5])[1] == 2, "hybrid ranking preserves the leading keyword hit and promotes agreement between independent rankings")
         check(HybridLibrarySearch.fused(keyword: [], related: [9, 8]) == [9, 8], "meaning-only candidates remain eligible when no exact keywords match")
+        check(HybridLibrarySearch.fused(keyword: [10, 11, 12], related: [13, 12, 11]) == [10, 11, 12, 13], "exactly tied reciprocal-rank agreement keeps keyword order after the retained leading literal source")
         let invalidAudit = MeaningSearchAudit(status: .used, modelID: SemanticModelPackage.identifier, indexedPassages: 2, comparedPassages: 3)
         check(!invalidAudit.isValid && !MeaningSearchAudit(status: .used, indexedPassages: 2).isValid, "meaning-search metadata rejects impossible coverage and missing model identity")
     }

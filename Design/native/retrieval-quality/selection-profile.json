@@ -1,0 +1,18 @@
+{
+  "capturedAtLocal": "2026-11-01 05:36:21.565 +0100",
+  "tool": "macOS sample;1second,10ms interval;one snapshot of Debug Mac replay",
+  "rawReportSHA256": "ce597c45d2e219b615b5d3dfa2a1125199e0c7ec84137ce12f731a72d0e7955a",
+  "mainThreadSamples": 66,
+  "samplesInsideProductionDocumentSort": 47,
+  "productionLocation": "Lumen/Algorithms/RecordRetrieval.swift:352-356",
+  "observedStack": [
+    "RetrievalSelectionProbe.run keyword equivalence oracle",
+    "RecordRetrieval.search",
+    "RecordRetrieval.candidates",
+    "Sequence.sorted comparator",
+    "Repeated RecordRetrieval.words on source titles"
+  ],
+  "interpretation": "A measured local hotspot during this one window, not a whole-run percentage or an iPhone latency result. Current comparator repeats title tokenization and query match counts for each comparison.",
+  "nextHypothesis": "Precompute each current shared document title-match count once per search, preserving the exact descending match-count/updatedAt/id ordering, current bounds/consent/cancellation and all source packets. Require exact-output regression and meaningful timing before an application performance change.",
+  "applicationChanged": false
+}

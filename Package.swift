@@ -98,6 +98,7 @@ let package = Package(
             "Lumen/Services/MiniLMEncoder.swift",
             "Tests/MiniLMChecks.swift",
             "Tests/RetrievalCorpusProbe.swift",
+            "Tests/RetrievalSelectionProbe.swift",
             "Lumen/Algorithms/ReadableExport.swift",
             "Lumen/Algorithms/JSONFieldAudit.swift",
             "Tests/ReadableExportChecks.swift",

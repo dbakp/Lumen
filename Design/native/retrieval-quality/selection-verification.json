@@ -1,0 +1,76 @@
+{
+  "status": "verified; awaiting source/evidence publication and scoped cleanup",
+  "protocolPublicationCommit": "adeea491537cbf3dd78046bb777872e1f6b0183b",
+  "protocolReachedGitHubBeforeScores": true,
+  "applicationBaseline": "04678c0d952d90972041c7ff9d4b90951f879342",
+  "syntheticOutcome": "selection-challenge.json",
+  "controls": "selection-controls.json",
+  "nativeProducerSourceMap": "selection-native-source-map.json",
+  "applicationAudit": "selection-application-audit.json",
+  "buildR2": {
+    "status": "passed",
+    "logSHA256": "68fc9ac5bf0ed96dc1596cfad0c1639079d06ce47655ae3710121b89f9132fa9"
+  },
+  "knownFailures": [
+    {
+      "attempt": "BuildR1",
+      "status": "failed",
+      "logSHA256": "57d77644ac65f44e2511c296f57a0b962387884c0de4ea59fd3f8817bbd8214b",
+      "reason": "The research packet writer accessed the legacy-optional Selection field without unwrapping. Current native selections now require a nonnil method before report serialization; no app/source-selector change."
+    }
+  ],
+  "challengeR1": {
+    "status": "passed",
+    "logSHA256": "2142660e8811560be276d8f1e2902c2561f41d9d04020bfbb20d3dac2a68f831",
+    "nativeOutputSHA256": "5257f649b11fd0e5d7d1a2bcf2eac853d5f55c03013083c3e57a48771409b069",
+    "sourceMap": "selection-native-source-map.json",
+    "note": "102 recorded source/tool/input hashes. Later changes add only a default logic tie assertion and Python packet/model-pair controls; native replay driver and every production algorithm remain unchanged."
+  },
+  "sourceBoundaries": {
+    "scorePreparation": "Initial selection.py hash in selection-native-source-map.json; all rows/native artifacts verified. Later Python changes only validate packet invariants/add a rejected mismatched-model control. No score math/preparation change.",
+    "nativeDriver": "Tests/RetrievalSelectionProbe.swift unchanged after BuildR2. Final full logic build/checks will include the separately added native exact-tie assertion."
+  },
+  "remainingGates": [
+    "Publication/exact GitHub main read-back and stopped-worker scoped cleanup",
+    "No complete candidate satisfies the frozen direct-support profile; keep held-out scores uncomputed",
+    "Model installation/cache/live-budget/provider/signed-device/clinical/privacy gates remain independent"
+  ],
+  "publicDevR1": {
+    "status": "passed",
+    "logSHA256": "9025da70e795a31c6706ffa147a5d821c8f0865aa87c69dad6d3fcba3ebbd38b",
+    "nativeOutputSHA256": "063a3c7b657df03fc47d23cf0ae08f798180afb9fcddc2ca577fe7382fa84333",
+    "queries": 324,
+    "policies": 12,
+    "sourceMap": "selection-native-source-map.json",
+    "outcome": "selection-dev.json",
+    "packetChecks": 3888,
+    "scope": "Actual native selectors with verified-vector replay; no inference/live12-second budget/cache/iPhone-latency simulation."
+  },
+  "logicR3": {
+    "status": "passed",
+    "checks": 1376,
+    "logSHA256": "0366c1bfe36c36e361e8a964326158628caf390364b95a8c155025765b9bbf87",
+    "buildLogSHA256": "9bfa3e41e8214c938e9a64f606d15abbc3260cd6cc7a3c017dce3c546650e50a",
+    "sourceMap": "selection-final-source-map.json",
+    "newCoverage": "Exact native RRF tie preserves keyword order; existing duplicate-document source-budget test also passes."
+  },
+  "finalSourceBoundary": {
+    "inputs": 102,
+    "changesFromReplayMap": [
+      "Tests/MiniLMChecks.swift",
+      "scripts/embedding-probe/selection.py"
+    ],
+    "productionAndNativeDriverUnchanged": true,
+    "note": "Only default logic tie assertion and Python report packet/model-pair/compact controls were added after native replay compilation. Native driver and all production inputs are unchanged; no benchmark rerun is required."
+  },
+  "compactRoundTrip": {
+    "devLogSHA256": "b03ef19c2d3430d82e22bbdb0444e42ec7fc738cf3a68fcc55591d763248bff5",
+    "challengeLogSHA256": "37eaececa6408db87150ad3a7e0a4b50517be437e601bda64acf3daa8d2d3873",
+    "all324And32CasesAndEveryPolicyResultPreserved": true,
+    "schema": "1; deduplicated policyResults; selection.expand_report verifies every result hash and canonical complete outcome hash."
+  },
+  "compactIntegrityControls": "selection-compact-controls.json",
+  "decision": "selection-decision.json",
+  "profile": "selection-profile.json",
+  "finalSourceReadBackAtUTC": "2026-11-01T04:47:29.802203+00:00"
+}
