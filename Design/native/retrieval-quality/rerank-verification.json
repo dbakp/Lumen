@@ -1,0 +1,68 @@
+{
+  "fetchLogSHA256": "840f79f0fe50bca40661fde66268c4ee900edece29925b104b475f9835d2bf97",
+  "builds": {
+    "build-r1": {
+      "status": "failed",
+      "sha256": "4239ba3575f802eb6b2d08819e135ecac899bffb57e58166e2b5ba8acbe2a364",
+      "bytes": 41674,
+      "diagnostics": [
+        "/Users/davidbakposada/Documents/ChatGPT/Lumen/Tests/RetrievalSelectionProbe.swift:277:33: error: variable 'self.documents' captured by a closure before being initialized",
+        "    |                                 `- error: variable 'self.documents' captured by a closure before being initialized"
+      ],
+      "cause": "Research workspace initializer closure captured self.config before remaining stored properties initialized. A local sourceLabel repairs the initializer; production source unchanged."
+    },
+    "build-r2": {
+      "status": "passed",
+      "sha256": "338498e327dbd434e4bec33890c61c538aa3edde14046f910feae3ae9be2bd47",
+      "bytes": 1687,
+      "diagnostics": [
+        "Build complete! (101,74 secs)"
+      ]
+    },
+    "build-r3": {
+      "status": "passed",
+      "sha256": "6be23777126939c33a6ca1d5afa1c8b58122811ed717e5215e4aa83b98864be6",
+      "bytes": 1673,
+      "diagnostics": [
+        "Build complete! (74,63 secs)"
+      ]
+    },
+    "build-r4": {
+      "status": "passed",
+      "sha256": "8c2b77ccc2ba34aa84fefd49167ed49859e33ce642bea4435ba9d20d4825c3cc",
+      "bytes": 1722,
+      "diagnostics": [
+        "Build complete! (82,48 secs)"
+      ]
+    }
+  },
+  "logic": {
+    "run": "LogicR1",
+    "checksPrinted": 1465,
+    "passed": true,
+    "logSHA256": "80dcedb9ade1aded3b6b6d99807959bc9e3262276b95ac4e46467b9f21a241ca",
+    "sourceBoundary": "Release BuildR3; only research-input authenticity guards change in BuildR4. Default checks/app inputs unchanged."
+  },
+  "selectorGuardBoundary": "BuildR4 validates actual query language/index/error status as well as pool hashes, blocking forged fallback/index-error records. Challenge cases exactly equal BuildR3; all170 withdrawal and170 carried-exclusion checks pass in both.",
+  "baselineReaderBoundary": "Initial public baseline comparison incorrectly included the prior outcome report's judgment annotation, absent from native source packets. Reader now allows only that annotation outside the exact six source fields; all324 public+32 synthetic source packets/statuses/languages match. No source, score or gate changes. All aggregate metrics remain identical after adding explicit per-query judgments/metrics to the compact report; scoring and native selection are not rerun for this reporting-only change.",
+  "status": "complete development trial verified; no policy meets joint gates; publication/cleanup pending",
+  "recordedAtUTC": "2026-11-01T12:07:34.520012+00:00",
+  "protocolPublished": "cd180fa926d794566b83faabbec0dac3c049a132",
+  "baselinePacketsMatched": 356,
+  "publicQueries": 324,
+  "syntheticQueries": 32,
+  "negativeControlsPassed": 14,
+  "metricControls": {
+    "perQuery": 10692,
+    "aggregate": 74
+  },
+  "withdrawalAndCarriedChecks": {
+    "withdrawal": 170,
+    "carried": 170
+  },
+  "finalHelper": {
+    "sha256": "ab6d3803b90264a90dbbc1dd1cbd9ffd1442f8910f835b857fff8339513f47c2",
+    "sourceMap": "rerank-final-source-map.json"
+  },
+  "decision": "rerank-decision.json"
+}

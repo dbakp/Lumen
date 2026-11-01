@@ -221,3 +221,233 @@ enum RetrievalSelectionProbe {
         print("Completed \(queries.count) questions; \(policies.count) policies; all source and integrity checks passed.")
     }
 }
+
+// Research-only joint reranking. The production app never loads these scores.
+extension RetrievalSelectionProbe {
+    struct RerankPassage: Codable, Equatable {
+        var documentID: String; var start: Int; var end: Int; var ordinal: Int
+        var sourceSHA256: String; var selection: String
+        init(_ p: LibraryPassage) { documentID = p.documentID; start = p.start; end = p.end; ordinal = p.ordinal; sourceSHA256 = p.textSHA256; selection = p.selection?.rawValue ?? "absent" }
+    }
+    struct RerankRow: Codable, Equatable {
+        var row: Int; var preparedID: String; var documentID: String; var start: Int; var end: Int
+        var sourceSHA256: String; var text: String
+    }
+    struct RerankCase: Codable {
+        var queryID: String; var query: String; var language: String; var baselineStatus: String
+        var indexError: String?; var indexedPassages: Int; var baseline: [RerankPassage]; var pool: [RerankRow]
+    }
+    struct RerankPool: Codable {
+        var version: Int; var split: String; var protocolSHA256: String; var configurationSHA256: String
+        var preparedSHA256: String; var nativeCosineSpots: Int; var seconds: Double; var cases: [RerankCase]
+    }
+    struct RerankScore: Codable {
+        var row: Int; var preparedID: String; var inputSHA256: String; var score: Double; var windows: Int
+    }
+    struct RerankScoresCase: Codable {
+        var queryID: String; var status: String; var scores: [RerankScore]
+    }
+    struct RerankScores: Codable {
+        var version: Int; var protocolSHA256: String; var poolSHA256: String
+        var modelRevision: String; var weightsSHA256: String; var cases: [RerankScoresCase]
+    }
+    private struct RerankWorkspace {
+        var config: Configuration; var configHash: String; var protocolHash: String
+        var queries: [Question]; var documents: [HealthDocument]; var prepared: [Prepared]
+        var positions: [Identity: Int]; var scores: [Double]; var statuses: [String]; var spots: Int
+        init(input: URL, protocolURL: URL) throws {
+            let data = try Data(contentsOf: input), policyData = try Data(contentsOf: protocolURL)
+            guard data.count <= 2_000_000, policyData.count <= 100_000, digest(policyData) == "3551921b67fba043d21be0db174976633b144e2de0eecd64361e3108059ebd0c",
+                  let policy = try JSONSerialization.jsonObject(with: policyData) as? [String: Any],
+                  policy["name"] as? String == "question-passage-cross-encoder-dev",
+                  let inputs = policy["inputs"] as? [String: String],
+                  let pool = policy["candidatePool"] as? [String: Any], pool["limit"] as? Int == 64,
+                  HybridLibrarySearch.minimumSimilarity == 0.42 else { throw Failure.invalidInput("rerank protocol") }
+            config = try JSONDecoder().decode(Configuration.self, from: data)
+            guard config.version == 1, ["dev", "challenge"].contains(config.split),
+                  digest(data) == inputs[config.split + "ConfigurationSHA256"],
+                  digest(try read(config.protocolFile)) == inputs["selectionProtocolSHA256"] else { throw Failure.invalidInput("rerank frozen input") }
+            configHash = digest(data); protocolHash = digest(policyData)
+            let raw = try lines(Document.self, data: read(config.corpus))
+            queries = try lines(Question.self, data: read(config.queries))
+            prepared = try lines(Prepared.self, data: read(config.prepared))
+            guard raw.count == config.expectedDocuments, queries.count == config.expectedQueries, prepared.count == config.expectedPassages,
+                  Set(raw.map(\._id)).count == raw.count, Set(queries.map(\.id)).count == queries.count,
+                  prepared.enumerated().allSatisfy({ $1.id == String($0) }), Set(prepared.map(Identity.init)).count == prepared.count else { throw Failure.invalidInput("rerank complete identities") }
+            let sourceLabel = config.sourceLabel
+            documents = raw.map { HealthDocument(id: $0._id, createdAt: Date(timeIntervalSince1970: 0), updatedAt: Date(timeIntervalSince1970: 0), title: $0.title, kind: .record, body: $0.text, source: sourceLabel, includeInAssistant: true) }
+            positions = Dictionary(uniqueKeysWithValues: prepared.enumerated().map { (Identity($1), $0) })
+            guard let baseline = config.models.first(where: { $0.id == "baseline" }), config.models.filter({ $0.id == "baseline" }).count == 1 else { throw Failure.invalidInput("rerank baseline") }
+            let matrix = try read(baseline.scores), count = queries.count * prepared.count
+            guard matrix.count == count * 8, baseline.queryStatuses.count == queries.count,
+                  baseline.queryStatuses.allSatisfy({ ["used", "empty", "queryTooLong", "inputLimit"].contains($0) }) else { throw Failure.invalidInput("rerank score shape") }
+            scores = matrix.withUnsafeBytes { raw in (0..<count).map { Double(bitPattern: UInt64(littleEndian: raw.loadUnaligned(fromByteOffset: $0 * 8, as: UInt64.self))) } }
+            guard scores.allSatisfy({ $0.isFinite && (-1...1).contains($0) }) else { throw Failure.invalidInput("rerank score values") }
+            statuses = baseline.queryStatuses
+            let controls = config.spots.filter { $0.model == "baseline" }; spots = controls.count
+            guard spots >= 9 else { throw Failure.invalidInput("rerank native spots") }
+            for spot in controls {
+                guard queries.indices.contains(spot.queryIndex), prepared.indices.contains(spot.passageIndex), !spot.windows.isEmpty else { throw Failure.invalidInput("rerank spot identity") }
+                let similarities = spot.windows.compactMap { MiniLMEncoder.similarity(spot.queryVector, $0) }
+                guard similarities.count == spot.windows.count, let maximum = similarities.max(), abs(maximum - scores[spot.queryIndex * prepared.count + spot.passageIndex]) <= 1e-12 else { throw Failure.oracle }
+            }
+        }
+        func index(_ q: Question, documents current: [HealthDocument]? = nil) throws -> RecordSearchIndex {
+            let result = try RecordRetrieval.candidates(query: q.text, documents: current ?? documents, now: Date(timeIntervalSince1970: 0))
+            guard !result.context.limited, result.context.searchedDocuments == (current ?? documents).filter(\.includeInAssistant).count else { throw Failure.incompleteIndex }
+            for passage in result.rows.values {
+                guard let position = positions[Identity(passage)], prepared[position].ordinal == passage.ordinal,
+                      prepared[position].text == String(passage.title.prefix(160)) + "\n" + passage.excerpt else { throw Failure.mismatchedSource }
+            }
+            return result
+        }
+        func ranking(_ index: RecordSearchIndex, position: Int) throws -> (order: [Int], related: Set<Int>, audit: MeaningSearchAudit) {
+            var audit = MeaningSearchAudit(status: .off, indexedPassages: index.rows.count)
+            if index.rows.isEmpty { audit.status = .notNeeded; return (index.keywordRows, [], audit) }
+            if NLLanguageRecognizer.dominantLanguage(for: queries[position].text) != .english { audit.status = .unsupportedLanguage; return (index.keywordRows, [], audit) }
+            audit.modelID = SemanticModelPackage.identifier
+            guard statuses[position] == "used" else { audit.status = statuses[position] == "empty" ? .failed : .queryTooLong; return (index.keywordRows, [], audit) }
+            audit.status = .used; audit.comparedPassages = index.rows.count
+            var topics: [(Int, Double)] = []
+            for (row, passage) in index.rows {
+                guard let p = positions[Identity(passage)] else { throw Failure.mismatchedSource }
+                let value = scores[position * prepared.count + p]
+                if value >= 0.42 { topics.append((row, value)) }
+            }
+            topics.sort { $0.1 == $1.1 ? $0.0 < $1.0 : $0.1 > $1.1 }
+            return (HybridLibrarySearch.fused(keyword: index.keywordRows, related: topics.map(\.0)), Set(topics.map(\.0)), audit)
+        }
+        func pool(_ index: RecordSearchIndex, order: [Int]) throws -> [RerankRow] {
+            try order.prefix(64).map { row in
+                guard let p = index.rows[row], let n = positions[Identity(p)] else { throw Failure.mismatchedSource }
+                return RerankRow(row: row, preparedID: prepared[n].id, documentID: p.documentID, start: p.start, end: p.end, sourceSHA256: p.textSHA256, text: prepared[n].text)
+            }
+        }
+    }
+    private static func rerankPacket(_ context: RecordReplyContext, documents: [HealthDocument]) throws -> [RerankPassage] {
+        guard context.isValid, context.passages.allSatisfy({ RecordRetrieval.isCurrent($0, documents: documents) }) else { throw Failure.mismatchedSource }
+        return context.passages.map(RerankPassage.init)
+    }
+    static func rerankPools(input: URL, protocolURL: URL, output: URL) throws {
+        guard !FileManager.default.fileExists(atPath: output.path) else { throw Failure.outputExists }
+        let work = try RerankWorkspace(input: input, protocolURL: protocolURL), started = ProcessInfo.processInfo.systemUptime
+        var cases: [RerankCase] = []
+        for (position, query) in work.queries.enumerated() {
+            try Task.checkCancellation()
+            let language = NLLanguageRecognizer.dominantLanguage(for: query.text)?.rawValue ?? "undetermined"
+            do {
+                let index = try work.index(query), rank = try work.ranking(index, position: position)
+                let baseline = try RecordRetrieval.selecting(index, rankedRows: rank.order, relatedRows: rank.related, audit: rank.audit)
+                let pool = language == NLLanguage.english.rawValue ? try work.pool(index, order: rank.order) : []
+                cases.append(RerankCase(queryID: query.id, query: query.text, language: language, baselineStatus: rank.audit.status.rawValue, indexedPassages: index.rows.count, baseline: try rerankPacket(baseline, documents: work.documents), pool: pool))
+            } catch let error as RecordRetrieval.SearchError {
+                cases.append(RerankCase(queryID: query.id, query: query.text, language: language, baselineStatus: "indexError", indexError: String(describing: error), indexedPassages: 0, baseline: [], pool: []))
+            }
+            if (position + 1) % 25 == 0 { print("Prepared rerank pool \(position + 1)/\(work.queries.count).") }
+        }
+        let report = RerankPool(version: 1, split: work.config.split, protocolSHA256: work.protocolHash, configurationSHA256: work.configHash, preparedSHA256: work.config.prepared.sha256, nativeCosineSpots: work.spots, seconds: ProcessInfo.processInfo.systemUptime - started, cases: cases)
+        let encoder = JSONEncoder(); encoder.outputFormatting = [.sortedKeys]
+        try encoder.encode(report).write(to: output, options: .atomic)
+        print("Prepared all\(cases.count) original-query rerank pools; native source/currentness checks pass.")
+    }
+    static func rerankSelect(input: URL, protocolURL: URL, poolURL: URL, scoresURL: URL, output: URL) throws {
+        guard !FileManager.default.fileExists(atPath: output.path) else { throw Failure.outputExists }
+        let work = try RerankWorkspace(input: input, protocolURL: protocolURL)
+        let poolData = try Data(contentsOf: poolURL), scoreData = try Data(contentsOf: scoresURL)
+        guard poolData.count <= 80_000_000, scoreData.count <= 20_000_000 else { throw Failure.invalidInput("rerank result size") }
+        let pool = try JSONDecoder().decode(RerankPool.self, from: poolData), scores = try JSONDecoder().decode(RerankScores.self, from: scoreData)
+        guard pool.version == 1, scores.version == 1, pool.split == work.config.split,
+              pool.protocolSHA256 == work.protocolHash, scores.protocolSHA256 == work.protocolHash,
+              pool.configurationSHA256 == work.configHash, pool.preparedSHA256 == work.config.prepared.sha256, pool.nativeCosineSpots == work.spots,
+              scores.poolSHA256 == digest(poolData), scores.modelRevision == "233902d25c440f23af6f7d6e94d2946bac0bee0a",
+              scores.weightsSHA256 == "821d1aa69520101d6e0737f78a042ae25b19e5cb9160701909d10434f4aeb0ae",
+              pool.cases.count == work.queries.count, scores.cases.count == pool.cases.count else { throw Failure.invalidInput("rerank result identity") }
+        let cutoffs: [Double?] = [nil, -8, -6, -4, -2, 0, 2, 4, 6, 8]
+        var cases: [[String: Any]] = [], withdrawal = 0, carried = 0
+        for (position, query) in work.queries.enumerated() {
+            let saved = pool.cases[position], scored = scores.cases[position]
+            guard saved.queryID == query.id, saved.query == query.text, scored.queryID == query.id else { throw Failure.invalidInput("rerank query identity") }
+            let index: RecordSearchIndex
+            do { index = try work.index(query) }
+            catch let error as RecordRetrieval.SearchError {
+                guard saved.indexError == String(describing: error), saved.pool.isEmpty, saved.baseline.isEmpty,
+                      scored.status == "indexError", scored.scores.isEmpty else { throw Failure.invalidInput("rerank errored query") }
+                cases.append(["queryID": query.id, "indexError": String(describing: error), "policies": cutoffs.map { ["cutoff": $0 as Any? ?? NSNull(), "passages": []] }]); continue
+            }
+            let rank = try work.ranking(index, position: position)
+            guard saved.indexError == nil, saved.language == (NLLanguageRecognizer.dominantLanguage(for: query.text)?.rawValue ?? "undetermined"),
+                  saved.indexedPassages == index.rows.count, saved.baselineStatus == rank.audit.status.rawValue else { throw Failure.invalidInput("rerank live query status") }
+            let current = try RecordRetrieval.selecting(index, rankedRows: rank.order, relatedRows: rank.related, audit: rank.audit)
+            guard try rerankPacket(current, documents: work.documents) == saved.baseline else { throw Failure.oracle }
+            let expectedPool = saved.language == NLLanguage.english.rawValue ? try work.pool(index, order: rank.order) : []
+            guard expectedPool == saved.pool else { throw Failure.mismatchedSource }
+            let allowed = ["scored", "unsupportedLanguage", "notNeeded", "inputLimit"]
+            guard allowed.contains(scored.status), Set(scored.scores.map(\.row)).count == scored.scores.count else { throw Failure.invalidInput("rerank scores status") }
+            if scored.status == "scored" {
+                guard !saved.pool.isEmpty, scored.scores.count == saved.pool.count else { throw Failure.invalidInput("rerank missing pair") }
+                for (row, value) in zip(saved.pool, scored.scores) {
+                    guard row.row == value.row, row.preparedID == value.preparedID, value.windows > 0, value.score.isFinite,
+                          value.inputSHA256 == digest(Data((query.text + "\0" + row.text).utf8)) else { throw Failure.invalidInput("rerank pair identity") }
+                }
+            } else {
+                guard scored.scores.isEmpty,
+                      scored.status == "unsupportedLanguage" && saved.language != NLLanguage.english.rawValue ||
+                      scored.status == "notNeeded" && saved.pool.isEmpty ||
+                      scored.status == "inputLimit" && saved.language == NLLanguage.english.rawValue else { throw Failure.invalidInput("rerank unsupported status") }
+            }
+            let identities = Dictionary(uniqueKeysWithValues: zip(saved.pool, scored.scores).map { (Identity(index.rows[$0.0.row]!), $0.1.score) })
+            func select(_ currentIndex: RecordSearchIndex, currentRank: (order: [Int], related: Set<Int>, audit: MeaningSearchAudit), cutoff: Double?) throws -> RecordReplyContext {
+                let ranked: [Int]
+                if scored.status == "unsupportedLanguage" { ranked = currentRank.order }
+                else if scored.status != "scored" { ranked = [] }
+                else {
+                    let freshPool = try work.pool(currentIndex, order: currentRank.order)
+                    let scoredRows = try freshPool.enumerated().map { n, row -> (Int, Double, Int) in
+                        guard let p = currentIndex.rows[row.row], let value = identities[Identity(p)] else { throw Failure.invalidInput("rerank unscored fresh pool") }
+                        return (row.row, value, n)
+                    }
+                    ranked = scoredRows.filter { cutoff == nil || $0.1 >= cutoff! }.sorted { $0.1 == $1.1 ? $0.2 < $1.2 : $0.1 > $1.1 }.map(\.0)
+                }
+                return try RecordRetrieval.selecting(currentIndex, rankedRows: ranked, relatedRows: currentRank.related, audit: currentRank.audit)
+            }
+            func attempt(_ currentIndex: RecordSearchIndex, currentRank: (order: [Int], related: Set<Int>, audit: MeaningSearchAudit), cutoff: Double?) throws -> (context: RecordReplyContext, error: String?) {
+                do { return (try select(currentIndex, currentRank: currentRank, cutoff: cutoff), nil) }
+                catch let error as RecordRetrieval.SearchError {
+                    var empty = currentIndex.context; empty.passages = []; empty.meaningSearch = currentRank.audit
+                    return (empty, String(describing: error))
+                }
+            }
+            var policies: [[String: Any]] = []
+            for cutoff in cutoffs {
+                let selected = try attempt(index, currentRank: rank, cutoff: cutoff)
+                let packet = try rerankPacket(selected.context, documents: work.documents)
+                var result: [String: Any] = ["cutoff": cutoff as Any? ?? NSNull(),
+                    "passages": try JSONSerialization.jsonObject(with: JSONEncoder().encode(packet))]
+                if let error = selected.error { result["selectionError"] = error }
+                if let expected = work.config.expectedSources[query.id], !expected.isEmpty {
+                    var withdrawn = work.documents
+                    for n in withdrawn.indices where expected.contains(withdrawn[n].id) { withdrawn[n].includeInAssistant = false }
+                    let freshIndex = try work.index(query, documents: withdrawn), freshRank = try work.ranking(freshIndex, position: position)
+                    let fresh = try attempt(freshIndex, currentRank: freshRank, cutoff: cutoff)
+                    _ = try rerankPacket(fresh.context, documents: withdrawn)
+                    guard !fresh.context.passages.contains(where: { expected.contains($0.documentID) }) else { throw Failure.oracle }; withdrawal += 1
+                    let previous = [ChatMessage(role: .user, text: query.text), ChatMessage(role: .coach, text: "Synthetic retained reference", recordContext: selected.context)]
+                    let followup = try RecordRetrieval.candidates(query: "Tell me more", documents: withdrawn, history: previous, now: Date(timeIntervalSince1970: 0))
+                    guard !followup.carried.contains(where: { expected.contains($0.documentID) }) else { throw Failure.oracle }; carried += 1
+                    result["withdrawalAndCarriedExclusionChecked"] = true
+                    if let error = fresh.error { result["withdrawalSelectionError"] = error }
+                }
+                policies.append(result)
+            }
+            cases.append(["queryID": query.id, "language": saved.language, "rerankStatus": scored.status, "poolSize": saved.pool.count,
+                          "baseline": try JSONSerialization.jsonObject(with: JSONEncoder().encode(saved.baseline)), "policies": policies])
+            if (position + 1) % 25 == 0 { print("Selected rerank packets \(position + 1)/\(work.queries.count).") }
+        }
+        let report: [String: Any] = ["version": 1, "complete": true, "split": pool.split, "protocolSHA256": work.protocolHash,
+            "poolSHA256": digest(poolData), "scoresSHA256": digest(scoreData), "queries": cases.count,
+            "withdrawalChecks": withdrawal, "carriedExclusionChecks": carried, "cases": cases,
+            "scope": "Upstream FP32 relevance logits over current eligible first-stage pools; actual native final selector/currentness. No CoreML conversion, app model change, provider/clinical support or physical-device timing claim."]
+        try JSONSerialization.data(withJSONObject: report, options: [.sortedKeys]).write(to: output, options: .atomic)
+        print("Selected all\(cases.count) complete rerank cases under\(cutoffs.count) frozen cutoffs.")
+    }
+}

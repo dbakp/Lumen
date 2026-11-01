@@ -4,6 +4,14 @@ import Darwin
 @main struct ImportTests {
     static func main() async throws {
         setbuf(stdout, nil)
+        if CommandLine.arguments.count == 5, CommandLine.arguments[1] == "--retrieval-rerank-pools" {
+            do { try RetrievalSelectionProbe.rerankPools(input: URL(fileURLWithPath: CommandLine.arguments[2]), protocolURL: URL(fileURLWithPath: CommandLine.arguments[3]), output: URL(fileURLWithPath: CommandLine.arguments[4])); return }
+            catch { FileHandle.standardError.write(Data(("Rerank pools failed: \(error)\n").utf8)); exit(1) }
+        }
+        if CommandLine.arguments.count == 7, CommandLine.arguments[1] == "--retrieval-rerank-select" {
+            do { try RetrievalSelectionProbe.rerankSelect(input: URL(fileURLWithPath: CommandLine.arguments[2]), protocolURL: URL(fileURLWithPath: CommandLine.arguments[3]), poolURL: URL(fileURLWithPath: CommandLine.arguments[4]), scoresURL: URL(fileURLWithPath: CommandLine.arguments[5]), output: URL(fileURLWithPath: CommandLine.arguments[6])); return }
+            catch { FileHandle.standardError.write(Data(("Rerank selection failed: \(error)\n").utf8)); exit(1) }
+        }
         if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--lab-source-ui-fixtures" {
             try LibraryLabContextChecks.fixtures(URL(fileURLWithPath: CommandLine.arguments[2])); return
         }

@@ -1,0 +1,111 @@
+{
+  "passed": 14,
+  "cases": [
+    {
+      "name": "changed-published-protocol",
+      "rejected": true,
+      "exitCode": 1,
+      "diagnostic": "Rerank selection failed: invalidInput(\"rerank protocol\")",
+      "diagnosticSHA256": "f29f4b49c47a3ba89a8721efa4f5e21887d9ad52dfeaac7343af9ca062277da2"
+    },
+    {
+      "name": "changed-frozen-configuration",
+      "rejected": true,
+      "exitCode": 1,
+      "diagnostic": "Rerank selection failed: invalidInput(\"rerank frozen input\")",
+      "diagnosticSHA256": "b77459d794d75900a37de08f20224d21616355e34b183142fe545ab2719ad01c"
+    },
+    {
+      "name": "changed-passage-text",
+      "rejected": true,
+      "exitCode": 1,
+      "diagnostic": "Rerank selection failed: mismatchedSource",
+      "diagnosticSHA256": "9ea5d8e7045efbf4f4472c12c35be3a32f896658eb538e46e60d1cd7ad5d7d9d"
+    },
+    {
+      "name": "forged-language-fallback",
+      "rejected": true,
+      "exitCode": 1,
+      "diagnostic": "Rerank selection failed: invalidInput(\"rerank live query status\")",
+      "diagnosticSHA256": "89f1c65cdf304c125468dbb35dbdf6ef58defbf6690b282378c45f79cddfee39"
+    },
+    {
+      "name": "forged-index-error",
+      "rejected": true,
+      "exitCode": 1,
+      "diagnostic": "Rerank selection failed: invalidInput(\"rerank live query status\")",
+      "diagnosticSHA256": "89f1c65cdf304c125468dbb35dbdf6ef58defbf6690b282378c45f79cddfee39"
+    },
+    {
+      "name": "changed-live-index-count",
+      "rejected": true,
+      "exitCode": 1,
+      "diagnostic": "Rerank selection failed: invalidInput(\"rerank live query status\")",
+      "diagnosticSHA256": "89f1c65cdf304c125468dbb35dbdf6ef58defbf6690b282378c45f79cddfee39"
+    },
+    {
+      "name": "duplicate-score-row",
+      "rejected": true,
+      "exitCode": 1,
+      "diagnostic": "Rerank selection failed: invalidInput(\"rerank scores status\")",
+      "diagnosticSHA256": "2dcbc2ef445499093a7ddbf0fe49acf19b0bfb1927fbbe08d73d89c95ef2db53"
+    },
+    {
+      "name": "missing-score-pair",
+      "rejected": true,
+      "exitCode": 1,
+      "diagnostic": "Rerank selection failed: invalidInput(\"rerank missing pair\")",
+      "diagnosticSHA256": "285e85401d3cbe8c03388224b53e7336af81da70e460922c701be7463d7a6c3a"
+    },
+    {
+      "name": "changed-pair-input-hash",
+      "rejected": true,
+      "exitCode": 1,
+      "diagnostic": "Rerank selection failed: invalidInput(\"rerank pair identity\")",
+      "diagnosticSHA256": "ec5d900c84d696f60ad2001d4a4b31599d47bb86f21b1b3cde28b64498cd0cac"
+    },
+    {
+      "name": "changed-prepared-identity",
+      "rejected": true,
+      "exitCode": 1,
+      "diagnostic": "Rerank selection failed: invalidInput(\"rerank pair identity\")",
+      "diagnosticSHA256": "ec5d900c84d696f60ad2001d4a4b31599d47bb86f21b1b3cde28b64498cd0cac"
+    },
+    {
+      "name": "nonfinite-score",
+      "rejected": true,
+      "exitCode": 1,
+      "diagnostic": "Rerank selection failed: DecodingError.dataCorrupted: Data was corrupted. Debug description: The given data was not valid JSON.. Underlying error: Error Domain=NSCocoaErrorDomain Code=3840 \"Unexpected character 'N' around line 1, column 171.\" UserInfo={NSJSONSerializationErrorIndex=170, NSDebugDescription=Unexpected character 'N' around line 1, column 171.}",
+      "diagnosticSHA256": "b1aef3d43d602ff93a0e332ca62841eaa1471b5b9c65dff8076f06f2b8d48028"
+    },
+    {
+      "name": "changed-model-weight-pin",
+      "rejected": true,
+      "exitCode": 1,
+      "diagnostic": "Rerank selection failed: invalidInput(\"rerank result identity\")",
+      "diagnosticSHA256": "8074b2274633dca2dc80173bff30cf7e1692b6fd567a94737dfe8b371519ca0a"
+    },
+    {
+      "name": "changed-score-query",
+      "rejected": true,
+      "exitCode": 1,
+      "diagnostic": "Rerank selection failed: invalidInput(\"rerank query identity\")",
+      "diagnosticSHA256": "af97feac6e5cf347bbfac522391c1cac7b3f8555c60c71885e048caeab55c1ff"
+    },
+    {
+      "name": "reordered-score-pairs",
+      "rejected": true,
+      "exitCode": 1,
+      "diagnostic": "Rerank selection failed: invalidInput(\"rerank pair identity\")",
+      "diagnosticSHA256": "ec5d900c84d696f60ad2001d4a4b31599d47bb86f21b1b3cde28b64498cd0cac"
+    }
+  ],
+  "inputs": {
+    "protocol": "3551921b67fba043d21be0db174976633b144e2de0eecd64361e3108059ebd0c",
+    "pool": "5e96bcbfb614d4263ed1d7fb85ec11eceb81d118da3b451105e0baaec8e896a5",
+    "scores": "9f94c6283b801df60fdeced28bc9c70015c5f6b31d4b1083cd60c5f53f6b3417",
+    "helper": "ab6d3803b90264a90dbbc1dd1cbd9ffd1442f8910f835b857fff8339513f47c2",
+    "source": "fadfcf8ffe114ab0ec17c9d4d5c5c4ef8eba41dee7a6d71962bb12310386b91f"
+  },
+  "scope": "Malformed/forged input rejection, including self-consistent outer checksum mutations; no ranking, entailment or clinical accuracy claim."
+}

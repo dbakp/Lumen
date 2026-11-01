@@ -1,5 +1,14 @@
 # Verification · 29 October 2026
 
+
+## Batch32 development research ·1 November2026
+
+The question/passage reranking protocol is published as `cd180fa926d794566b83faabbec0dac3c049a132` before model scores. One pinned22.7M-parameter FP32 cross-encoder scores13,357 public and59 synthetic pairs from actual current top64 eligible candidate pools. All324 public+32 synthetic baseline packets/statuses/languages remain identical. The actual native final selector runs all10 cutoffs with current/valid sources,170 withdrawals and170 carried exclusions.1,465 default production checks pass;14 negative input controls,10,692 independent per-query metrics and74 aggregate/count comparisons pass. All191 app/build inputs remain published Batch31; no new app build, UI change or design score is claimed.
+
+No tested policy passes both gates. Unthresholded public nDCG@4 improves0.336119→0.357902 (+0.021783), Precision@4 0.314043→0.332562, while7/15 unsupported synthetic questions retain sources. Cutoff−8 passes ranking but retains3 unsupported. Cutoff0 retains16/17 supported and0/15 unsupported, but public nDCG@4 drops0.046899, Precision@4 drops0.060185. Hemoglobin is the supported miss. Every query, grade, regression, failed producer/check boundary and full fixed-grid policy remains in [the evidence](../Design/native/retrieval-quality/RERANK.md). No candidate is frozen/promoted; held-out scores remain uncomputed.
+
+Upstream paired token IDs agree for all13,416 pairs, with six singleton/batch score checks. Actual inference-only Mac CPU time is217.562s public/0.396s synthetic; this excludes load/tokenization/indexing and establishes no CoreML/iPhone/live-budget/provider/clinical performance. All sampled inputs fit a single window; long-window/native parity remains unverified. Preserve the distinct original document-max gates and current source/privacy constraints. Publication and stopped-worker scoped cleanup follow separately.
+
 ## Batch31 checkpoint ·1 November2026 ·published and verified
 
 Current Xcode is27.0, iOS Simulator27.0; the original build section below describes the earlier29October checkpoint. Complete reviewed lab observations now accompany actually overlapping Library excerpts, with original/reviewed wording, unknown fields, whole-set omissions and source/sharing currentness preserved. Native literal readers preserve source punctuation, user questions and built-in lookup replies at full Dynamic Type. [Contract](REVIEWED_LAB_CONTEXT.md), [compact evidence](../Design/native/lab-context/README.md) and [scorecards](../Design/native/lab-context/CRITIQUE.md).

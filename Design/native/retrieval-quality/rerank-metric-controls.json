@@ -1,0 +1,118 @@
+{
+  "passed": true,
+  "independentAggregateComparisons": 74,
+  "independentPerQueryMetricComparisons": 10692,
+  "completeQueryPolicyCells": 3564,
+  "denominator": 324,
+  "policies": [
+    {
+      "policyPosition": -1,
+      "independentMeans": {
+        "ndcg_cut_4": 0.336118659205229,
+        "P_4": 0.3140432098765432,
+        "recall_4": 0.08401339939840324,
+        "hit_4": 0.6049382716049383
+      }
+    },
+    {
+      "policyPosition": 0,
+      "independentMeans": {
+        "ndcg_cut_4": 0.3579020545311184,
+        "P_4": 0.3325617283950617,
+        "recall_4": 0.09019508168174668,
+        "hit_4": 0.6172839506172839
+      }
+    },
+    {
+      "policyPosition": 1,
+      "independentMeans": {
+        "ndcg_cut_4": 0.35645813510127367,
+        "P_4": 0.33024691358024694,
+        "recall_4": 0.08857838562060617,
+        "hit_4": 0.6141975308641975
+      }
+    },
+    {
+      "policyPosition": 2,
+      "independentMeans": {
+        "ndcg_cut_4": 0.3501048997357268,
+        "P_4": 0.32407407407407407,
+        "recall_4": 0.08432461621160801,
+        "hit_4": 0.6018518518518519
+      }
+    },
+    {
+      "policyPosition": 3,
+      "independentMeans": {
+        "ndcg_cut_4": 0.33938590652532025,
+        "P_4": 0.3125,
+        "recall_4": 0.07903274339600039,
+        "hit_4": 0.5833333333333334
+      }
+    },
+    {
+      "policyPosition": 4,
+      "independentMeans": {
+        "ndcg_cut_4": 0.31992635597300206,
+        "P_4": 0.28858024691358025,
+        "recall_4": 0.07259854943518802,
+        "hit_4": 0.5493827160493827
+      }
+    },
+    {
+      "policyPosition": 5,
+      "independentMeans": {
+        "ndcg_cut_4": 0.2892193377912222,
+        "P_4": 0.25385802469135804,
+        "recall_4": 0.06373057664678605,
+        "hit_4": 0.49691358024691357
+      }
+    },
+    {
+      "policyPosition": 6,
+      "independentMeans": {
+        "ndcg_cut_4": 0.22554168315174675,
+        "P_4": 0.19290123456790123,
+        "recall_4": 0.05032793602534879,
+        "hit_4": 0.4012345679012346
+      }
+    },
+    {
+      "policyPosition": 7,
+      "independentMeans": {
+        "ndcg_cut_4": 0.17081492164314002,
+        "P_4": 0.14429012345679013,
+        "recall_4": 0.0414266664591743,
+        "hit_4": 0.30864197530864196
+      }
+    },
+    {
+      "policyPosition": 8,
+      "independentMeans": {
+        "ndcg_cut_4": 0.12406279704634196,
+        "P_4": 0.10416666666666667,
+        "recall_4": 0.030595901822065143,
+        "hit_4": 0.2345679012345679
+      }
+    },
+    {
+      "policyPosition": 9,
+      "independentMeans": {
+        "ndcg_cut_4": 0.08917160696254632,
+        "P_4": 0.07716049382716049,
+        "recall_4": 0.02534219601396806,
+        "hit_4": 0.16049382716049382
+      }
+    }
+  ],
+  "existingMetricOracles": {
+    "gradedAndBinaryMetrics": "hand-calculated values agree within 1e-12",
+    "emptyResults": "zero",
+    "windowReduction": "later-window maximum retained",
+    "equalScores": "descending document-ID tie oracle agrees",
+    "package": "0.5.11"
+  },
+  "outcomeSHA256": "c9f24f772c6bb27951fb098ecad76c71a66eab7f75a4fac4752fcf883767ffa6",
+  "sourceSHA256": "81c5901b1ab63af01996ff8a3da32be5bb9ea4f9dc6f79d15a12ca88e5dc0538",
+  "scope": "Direct linear graded-DCG,Precision@4,Recall@4,hit@4 and paired-count computation from original dev judgments; no test queries/judgments read."
+}

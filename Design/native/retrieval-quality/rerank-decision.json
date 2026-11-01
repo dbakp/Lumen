@@ -1,0 +1,194 @@
+{
+  "recordedAtUTC": "2026-11-01T12:07:34.520012+00:00",
+  "protocolPublicationCommit": "cd180fa926d794566b83faabbec0dac3c049a132",
+  "protocolSHA256": "3551921b67fba043d21be0db174976633b144e2de0eecd64361e3108059ebd0c",
+  "applicationCommitUnchanged": "73362aecdd0eaa4fd0e2952367e1c6f01e4f3ecc",
+  "decision": "No complete model/query/cutoff candidate is frozen or promoted. The no-cutoff and -8 relevance policies pass the separate public packet-ranking gate but fail direct-support selection; cutoff0 alone passes the synthetic support profile but substantially reduces public ranking/Precision@4. No tested policy passes both. Preserve every outcome, keep held-out scores uncomputed and do not convert/install this model as an app replacement based on these results.",
+  "policies": [
+    {
+      "cutoff": null,
+      "publicNDCG4": 0.3579020545311184,
+      "publicDelta": 0.02178339532588941,
+      "precision4": 0.3325617283950617,
+      "publicGate": true,
+      "syntheticSupportedHit4": 17,
+      "syntheticUnsupportedSelections": 7,
+      "supportProfile": false,
+      "passesBoth": false
+    },
+    {
+      "cutoff": -8,
+      "publicNDCG4": 0.35645813510127367,
+      "publicDelta": 0.02033947589604468,
+      "precision4": 0.33024691358024694,
+      "publicGate": true,
+      "syntheticSupportedHit4": 17,
+      "syntheticUnsupportedSelections": 3,
+      "supportProfile": false,
+      "passesBoth": false
+    },
+    {
+      "cutoff": -6,
+      "publicNDCG4": 0.3501048997357268,
+      "publicDelta": 0.013986240530497795,
+      "precision4": 0.32407407407407407,
+      "publicGate": false,
+      "syntheticSupportedHit4": 17,
+      "syntheticUnsupportedSelections": 2,
+      "supportProfile": false,
+      "passesBoth": false
+    },
+    {
+      "cutoff": -4,
+      "publicNDCG4": 0.33938590652532025,
+      "publicDelta": 0.00326724732009126,
+      "precision4": 0.3125,
+      "publicGate": false,
+      "syntheticSupportedHit4": 17,
+      "syntheticUnsupportedSelections": 1,
+      "supportProfile": false,
+      "passesBoth": false
+    },
+    {
+      "cutoff": -2,
+      "publicNDCG4": 0.31992635597300206,
+      "publicDelta": -0.016192303232226923,
+      "precision4": 0.28858024691358025,
+      "publicGate": false,
+      "syntheticSupportedHit4": 16,
+      "syntheticUnsupportedSelections": 1,
+      "supportProfile": false,
+      "passesBoth": false
+    },
+    {
+      "cutoff": 0,
+      "publicNDCG4": 0.2892193377912222,
+      "publicDelta": -0.04689932141400677,
+      "precision4": 0.25385802469135804,
+      "publicGate": false,
+      "syntheticSupportedHit4": 16,
+      "syntheticUnsupportedSelections": 0,
+      "supportProfile": true,
+      "passesBoth": false
+    },
+    {
+      "cutoff": 2,
+      "publicNDCG4": 0.22554168315174675,
+      "publicDelta": -0.11057697605348224,
+      "precision4": 0.19290123456790123,
+      "publicGate": false,
+      "syntheticSupportedHit4": 14,
+      "syntheticUnsupportedSelections": 0,
+      "supportProfile": false,
+      "passesBoth": false
+    },
+    {
+      "cutoff": 4,
+      "publicNDCG4": 0.17081492164314002,
+      "publicDelta": -0.16530373756208896,
+      "precision4": 0.14429012345679013,
+      "publicGate": false,
+      "syntheticSupportedHit4": 11,
+      "syntheticUnsupportedSelections": 0,
+      "supportProfile": false,
+      "passesBoth": false
+    },
+    {
+      "cutoff": 6,
+      "publicNDCG4": 0.12406279704634196,
+      "publicDelta": -0.21205586215888703,
+      "precision4": 0.10416666666666667,
+      "publicGate": false,
+      "syntheticSupportedHit4": 8,
+      "syntheticUnsupportedSelections": 0,
+      "supportProfile": false,
+      "passesBoth": false
+    },
+    {
+      "cutoff": 8,
+      "publicNDCG4": 0.08917160696254632,
+      "publicDelta": -0.24694705224268265,
+      "precision4": 0.07716049382716049,
+      "publicGate": false,
+      "syntheticSupportedHit4": 2,
+      "syntheticUnsupportedSelections": 0,
+      "supportProfile": false,
+      "passesBoth": false
+    }
+  ],
+  "cutoff0": {
+    "cutoff": 0,
+    "publicNDCG4": 0.2892193377912222,
+    "publicDelta": -0.04689932141400677,
+    "precision4": 0.25385802469135804,
+    "publicGate": false,
+    "syntheticSupportedHit4": 16,
+    "syntheticUnsupportedSelections": 0,
+    "supportProfile": true,
+    "passesBoth": false,
+    "pairedPublic": {
+      "improved": 43,
+      "worsened": 78,
+      "unchanged": 203
+    },
+    "supportedMiss": "p-hemoglobin: What was the recorded hemoglobin?",
+    "scope": "16/17 supported and0/15 unsupported, development synthetic labels only; not independent clinical answerability."
+  },
+  "publicNoCutoff": {
+    "paired": {
+      "improved": 73,
+      "worsened": 48,
+      "unchanged": 203
+    },
+    "scope": "Every324 original dev question, including78 unchanged recognizer-language fallbacks; not document-max nDCG@10."
+  },
+  "inputCoverage": {
+    "publicQueries": 324,
+    "syntheticQueries": 32,
+    "publicPairs": 13357,
+    "syntheticPairs": 59,
+    "upstreamDirectPairTokenizerControls": 13416,
+    "singletonBatchControls": 6,
+    "unscoredInputErrors": 0,
+    "publicQueryStatuses": {
+      "notNeeded": 3,
+      "scored": 243,
+      "unsupportedLanguage": 78
+    },
+    "syntheticQueryStatuses": {
+      "notNeeded": 8,
+      "scored": 24
+    },
+    "fullBaselinePacketsStatusesLanguagesMatch": 356
+  },
+  "integrity": {
+    "negativeInputControls": 14,
+    "nativeCosineSpotsDev": 12,
+    "nativeCosineSpotsChallenge": 9,
+    "sourceWithdrawals": 170,
+    "carriedSourceExclusions": 170,
+    "perQueryMetricComparisons": 10692,
+    "aggregateMetricComparisons": 74,
+    "defaultProductionChecks": 1465,
+    "allSelectedSourcesCurrentAndValid": true
+  },
+  "timings": {
+    "publicFP32MacCPUInferenceSeconds": 217.5619270829484,
+    "syntheticFP32MacCPUInferenceSeconds": 0.3955334578640759,
+    "scope": "Four CPU threads; inference only, excludes loading/tokenization/indexing. No CoreML/iPhone/whole-app latency claim."
+  },
+  "sourceReports": {
+    "dev": "rerank-dev.json",
+    "synthetic": "rerank-challenge.json",
+    "inputControls": "rerank-controls.json",
+    "metricControls": "rerank-metric-controls.json",
+    "model": "rerank-model-source.json",
+    "sourceBoundaries": "rerank-producer-boundaries.json"
+  },
+  "next": "Investigate question/answerability or explicit claim evidence separately from passage relevance, under a new predeclared development protocol. Preserve current exact-source/privacy constraints and the failed joint gates; do not tune a new scalar cutoff to the observed hemoglobin miss or silently relabel a related source as support. Keep useful ranking evidence for an end-to-end reading/abstention trial.",
+  "remainingGates": [
+    "No held-out test queries/judgments/scores used in this trial.",
+    "No cross-encoder CoreML conversion/native-tokenizer parity, installation/legacy/cache/live-budget or signed-iPhone performance validation.",
+    "No independent clinical, provider-answer support, language, VoiceOver, signed device, privacy/distribution acceptance."
+  ]
+}
