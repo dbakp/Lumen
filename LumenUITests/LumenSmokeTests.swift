@@ -4650,6 +4650,17 @@ final class LumenSmokeTests: XCTestCase {
         snap("1101-library-authorization-native-checks")
     }
 
+    func testProviderAuthorizationBaseline() throws {
+        app.terminate()
+        app.launchArguments = ["-resetForUITests", "-personal-provenance-probe", "-provider-authorization-checks"]
+        app.launch()
+        let status = app.staticTexts["personalProvenanceProbeStatus"].firstMatch
+        let completed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label BEGINSWITH 'Provider baseline'"), object: status)
+        XCTAssertEqual(XCTWaiter.wait(for: [completed], timeout: 90), .completed)
+        XCTAssertEqual(status.label, "Provider baseline reproduced")
+        snap("1201-provider-baseline-native-checks")
+    }
+
     func testPersonalContextNativeProvenance() throws {
         app.terminate()
         app.launchArguments = ["-resetForUITests", "-personal-provenance-probe", "-quick-save-fault", "conversations.json:3"]

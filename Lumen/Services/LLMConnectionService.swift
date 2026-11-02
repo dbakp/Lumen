@@ -182,7 +182,7 @@ public final class LLMConnectionService: ObservableObject {
         req.httpBody = fields.map { "\($0.key)=\($0.value.urlEncoded)" }.joined(separator: "&").data(using: .utf8)
         req.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         do {
-            let (data, _) = try await URLSession.shared.data(for: req)
+            let (data, _) = try await tokenResponse(for: req)
             let tok = try JSONDecoder().decode(OAuthToken.self, from: data)
             SecureStore.set(tok.access_token, for: "lumen.llm.oauth.token")
             if let r = tok.refresh_token { SecureStore.set(r, for: "lumen.llm.oauth.refresh") }
@@ -202,7 +202,7 @@ public final class LLMConnectionService: ObservableObject {
         req.httpBody = fields.map { "\($0.key)=\($0.value.urlEncoded)" }.joined(separator: "&").data(using: .utf8)
         req.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         do {
-            let (data, _) = try await URLSession.shared.data(for: req)
+            let (data, _) = try await tokenResponse(for: req)
             let tok = try JSONDecoder().decode(OAuthToken.self, from: data)
             SecureStore.set(tok.access_token, for: "lumen.llm.oauth.token")
             UserDefaults.standard.set(Date().addingTimeInterval(TimeInterval(tok.expires_in)), forKey: "lumen.llm.oauth.expires")
@@ -215,6 +215,15 @@ public final class LLMConnectionService: ObservableObject {
         SecureStore.set(nil, for: "lumen.llm.oauth.refresh")
         UserDefaults.standard.removeObject(forKey: "lumen.llm.oauth.expires")
         if mode == .oauth { setMode(.onDevice) } else { refreshStatus() }
+    }
+
+    private func tokenResponse(for request: URLRequest) async throws -> (Data, URLResponse) {
+        #if DEBUG && targetEnvironment(simulator)
+        if ProviderAuthorizationNativeProbe.requested {
+            return try await ProviderAuthorizationNativeProbe.tokenResponse(for: request)
+        }
+        #endif
+        return try await URLSession.shared.data(for: request)
     }
 
     public func runTest() async {

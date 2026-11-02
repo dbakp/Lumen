@@ -55,6 +55,7 @@ let package = Package(
             "Lumen/Services/PreferenceNativeProbe.swift",
             "Lumen/Services/ConversationNativeProbe.swift",
             "Lumen/Services/PersonalContextNativeProbe.swift",
+            "Lumen/Services/ProviderAuthorizationNativeProbe.swift",
             "Lumen/Services/NutritionEngine.swift"
 ],
         sources: [
