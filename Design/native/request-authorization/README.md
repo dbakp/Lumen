@@ -2,7 +2,7 @@
 
 Current application R9 keeps the original Library authorization through credential preparation, request serialization and the final Foundation submission call. Each reply owns its text, provenance and automatic-plan decision together. Notices and ordinary prose cannot create automatic plans. Derived saved-note headings mark omitted words with an ellipsis; complete bodies remain intact.
 
-Published application `5c035b4ee53785cdb4adcd6079c94d4ccad0d85d` passes fresh connected GitHub main/root and649 required source/evidence blob-identity checks. See publication-readback.json. Cleanup remains pending until the readback checkpoint is also confirmed. The full product goal remains active.
+Published application `5c035b4ee53785cdb4adcd6079c94d4ccad0d85d` passes fresh connected GitHub main/root and649 required source/evidence blob-identity checks. See publication-readback.json. Checkpoint `2f37eeef0800a919a13c31f70b83dbfddfbee395` also matches651 required blob identities before cleanup. Six stopped Lumen-owned raw/Release/index roots are removed, with an immediate measured net available-space increase of1,693,851,648bytes (about1.69GB). All180 useful originals and compact outcomes/full small logs remain. See storage-cleanup.json; temporary raw paths are historical. Current Debug/dependency/logic caches remain for the next audit. APFS reclamation and concurrent volume activity are separate from logical/allocated file totals. The full product goal remains active.
 
 ## Behavior and limits
 
