@@ -1,6 +1,6 @@
 # Provider authorization · Batch42 baseline checkpoint
 
-**Defects reproduced; production repair remains open.** This is a verified starting point for the next implementation, not a completed application delivery. Batch41 remains the latest accepted application batch. The full product goal is active.
+**Defects reproduced; production repair remains open.** Checkpoint `a98ae762735c310366ffd5e7ba72943e3be2cd85` is published with246 exact GitHub source/evidence blob identities independently matched. This is a verified starting point for the next implementation, not a completed application delivery. Batch41 remains the latest accepted application batch. The full product goal is active.
 
 Signed simulator BaselineR3 traverses the actual shared refresh decoder, Keychain/defaults writes, private route resolver, coach preparation and final Foundation transport. The DEBUG-only seam changes only a validated fixed synthetic token request's HTTP destination. No live account, credential, provider or arbitrary health history is used.
 
@@ -34,4 +34,4 @@ Run `python3 Design/native/provider-authorization/audit-baseline.py` to reconstr
 
 Repeat actual fixed scenarios plus cached/API-key/final-preparation, overlapping refresh, stale login and typed storage-failure controls; include Library/personal/transport regression and exact source/Release audits. Any changed provider UI requires the same continuing critic and actual main/compact normal/largest captures. Durable Health intent, acknowledged Watch delivery and broader evidence/provider/device/accessibility/privacy/distribution gates remain afterward.
 
-Storage: one native/dependency/logic cache is reused. Keep the signed Debug cache for immediate repair work. Compact current evidence is retained; delete redundant completed raw bundles only after exact GitHub backup proof. No large fixture or model download is needed.
+Storage: one native/dependency/logic cache is reused. Keep the signed Debug cache for immediate repair work. After exact GitHub proof, the completed baseline raw root is removed: available bytes30,345,740,288→30,360,924,160, a measured immediate net increase of15,183,872bytes (about15.2MB). All useful originals, full small logs, source snapshots and compact outcomes remain. Logical14,570,396bytes/allocated15,187,968bytes and APFS/concurrent volume activity are separate. See storage-cleanup.json; raw paths are historical. No large fixture or model download is needed.
