@@ -1,6 +1,6 @@
 # Personal notes in requests and history · Batch40 policy
 
-Declared before implementation on2 November2026. Scoped local verification and three design rounds are complete in Design/native/personal-provenance; publication remains pending. Follow those exact source/outcome boundaries rather than treating this policy as broader product acceptance.
+Declared before implementation on2 November2026. Scoped local verification and three design rounds are complete in Design/native/personal-provenance; application commit `4851955c2ed7970d03add6a60d5693a83a876ab6` is published with exact GitHub source/evidence read-back. Follow those exact source/outcome boundaries rather than treating this policy as broader product acceptance.
 
 A request captures the committed personal-context revision before any asynchronous search. Any committed note/sharing change, reset or restoration/reload while it is preparing invalidates the result. Check that revision before sending and after returning, including local fallback. Do not display or save an old model answer as a current reply. Give a factual resend explanation without claiming input already sent was recalled.
 

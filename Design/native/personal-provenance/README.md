@@ -1,6 +1,6 @@
 # Personal-context provenance · Batch40
 
-**Local verification complete; publication pending.** The published application remains Batch39 `1ecb6938f9e81df6fa3926f1838c693e488d757f`, with checkpoint `a100678087b111db4b528381cc0975791fac3be8`. The full product goal remains active.
+**Published as [`4851955c2ed7970d03add6a60d5693a83a876ab6`](https://github.com/dbakp/Lumen/commit/4851955c2ed7970d03add6a60d5693a83a876ab6).** Fresh connected GitHub main/root and810 required source/evidence blob identities match before cleanup. The publication/cleanup checkpoint remains in progress; the full product goal stays active.
 
 ## Behavior
 
@@ -61,6 +61,6 @@ Synthetic predicates, loopback receipts, simulator rendering and unsigned Releas
 
 ## Publication, storage and next work
 
-Publish only after final review and exact source/evidence checks, then verify fresh GitHub main/root and required blob identities. [storage-cleanup-plan.json](storage-cleanup-plan.json) is prepared, not executed. Current completed raw bundles/logs remain until that proof and stopped-worker verification; recovered Batch40 space is0bytes so far. Keep the one native build directory, pinned dependency checkout, logic cache and exclusive synthetic compact simulator for the immediately following audit; preserve supplied skill/archive, canonical research inputs, working repository and useful evidence. Do not clear unrelated or global caches.
+The reviewed batch publisher succeeds. [publication-readback.json](publication-readback.json) verifies the immutable application commit/root and810 required blob identities, including every changed file and current native/logic/UI/server inputs; local working bytes also match unfiltered committed blobs. The publication log and this checkpoint are being published separately before raw-output cleanup. [storage-cleanup-plan.json](storage-cleanup-plan.json) is prepared, not executed. Current completed raw bundles/logs remain until that proof and stopped-worker verification; recovered Batch40 space is0bytes so far. Keep the one native build directory, pinned dependency checkout, logic cache and exclusive synthetic compact simulator for the immediately following audit; preserve supplied skill/archive, canonical research inputs, working repository and useful evidence. Do not clear unrelated or global caches.
 
 The [next audit policy](next-audit.md) carries Library/search authorization through credential preparation and makes automatic-plan eligibility explicit for notices, errors and urgent returns. [Source-only findings](follow-up-notice-plans.md) are not silently treated as fixed by personal-note UUID checks. Then continue durable Health save/delete intent, acknowledged identity-preserving Watch delivery and the broader evidence/provider/device/accessibility/performance/privacy/release gates. The full goal remains active.
