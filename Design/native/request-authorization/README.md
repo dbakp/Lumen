@@ -2,7 +2,7 @@
 
 Current application R9 keeps the original Library authorization through credential preparation, request serialization and the final Foundation submission call. Each reply owns its text, provenance and automatic-plan decision together. Notices and ordinary prose cannot create automatic plans. Derived saved-note headings mark omitted words with an ellipsis; complete bodies remain intact.
 
-This is a scoped local verification record. Publication and cleanup are recorded separately once complete. The full product goal remains active.
+Published application `5c035b4ee53785cdb4adcd6079c94d4ccad0d85d` passes fresh connected GitHub main/root and649 required source/evidence blob-identity checks. See publication-readback.json. Cleanup remains pending until the readback checkpoint is also confirmed. The full product goal remains active.
 
 ## Behavior and limits
 
