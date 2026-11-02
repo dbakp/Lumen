@@ -20,6 +20,7 @@ struct ScheduledPlanSheet: View {
     private var fixture: String? {
         #if DEBUG && targetEnvironment(simulator)
         let args = ProcessInfo.processInfo.arguments
+        guard args.contains("-resetForUITests") else { return nil }
         if let index = args.firstIndex(of: "-scheduledPlanUITestFixture"), args.indices.contains(index + 1) { return args[index + 1] }
         #endif
         return nil
@@ -107,7 +108,7 @@ struct ScheduledPlanSheet: View {
     private func prepare() {
         guard !working, ready() else { return }
         let selected = ai.brain, input = request, synthetic = fixture
-        let personal = CompanionStore.shared.personalContext.assistantText
+        let personalRevision = CompanionStore.shared.personalContextRevision
         let context = CompanionStore.shared.context(health: health) + "\n" + CoachingEngine.contextPrompt(metrics: health.metrics, readiness: health.readiness, goals: health.goals, workoutsToday: health.workoutsToday, estimatedSleepDebt: health.assistantSleepDebt)
         guard context.utf8.count <= 64_000 else { error = "The health summary is too large for this request. You can use and edit the planning template."; return }
         let ticket = UUID(); generationID = ticket; working = true; error = nil
@@ -121,6 +122,19 @@ struct ScheduledPlanSheet: View {
             var source = selected.label
             #if DEBUG && targetEnvironment(simulator)
             if let synthetic {
+                if ["context-change", "context-revert"].contains(synthetic) {
+                    do {
+                        try await Task.sleep(for: .milliseconds(300))
+                        let store = CompanionStore.shared, original = store.personalContext
+                        var changed = original; changed.includeInAssistant = false
+                        try store.savePersonalContextChecked(changed, expectedRevision: store.personalContextRevision)
+                        if synthetic == "context-revert" {
+                            try store.savePersonalContextChecked(original, expectedRevision: store.personalContextRevision)
+                        }
+                    } catch {
+                        stop(); self.error = "Synthetic context change failed."; return
+                    }
+                }
                 do { try await Task.sleep(nanoseconds: synthetic == "delayed" ? 8_000_000_000 : 250_000_000) } catch { return }
                 source = "Simulated plan · no AI request"
                 if synthetic == "invalid" { response = "An incomplete synthetic reply" }
@@ -129,13 +143,13 @@ struct ScheduledPlanSheet: View {
                     let object: [String: Any] = ["version": 1, "title": "A steady routine", "reason": "Synthetic planning text for interface verification. No provider or health inference.", "steps": steps]
                     response = String(data: try! JSONSerialization.data(withJSONObject: object), encoding: .utf8)
                 }
-            } else { response = await ai.scheduledPlan(request: input, context: context, using: selected) }
+            } else { response = await ai.scheduledPlan(request: input, context: context, using: selected, expectedPersonalContextRevision: personalRevision) }
             #else
-            response = await ai.scheduledPlan(request: input, context: context, using: selected)
+            response = await ai.scheduledPlan(request: input, context: context, using: selected, expectedPersonalContextRevision: personalRevision)
             #endif
             guard !Task.isCancelled, generationID == ticket else { return }
             timeout?.cancel(); timeout = nil; generationID = nil; working = false; generation = nil
-            guard personal == CompanionStore.shared.personalContext.assistantText else { error = "Your personal context changed while preparing. Prepare again to use your current sharing choice and text."; return }
+            guard personalRevision == CompanionStore.shared.personalContextRevision else { error = "Your personal context changed while preparing. Prepare again to use your current sharing choice and text. Input already sent to a provider can't be recalled."; return }
             guard let response else { error = "The provider couldn't prepare a draft. Your goal is still here. Try again, or use the planning template."; return }
             do { proposal = try ScheduledPlanDraft.parse(response, request: input, source: source) }
             catch { self.error = error.localizedDescription }

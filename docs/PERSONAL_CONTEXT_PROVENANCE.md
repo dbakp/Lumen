@@ -1,0 +1,19 @@
+# Personal notes in requests and history · Batch40 policy
+
+Declared before implementation on2 November2026. Scoped local verification and three design rounds are complete in Design/native/personal-provenance; publication remains pending. Follow those exact source/outcome boundaries rather than treating this policy as broader product acceptance.
+
+A request captures the committed personal-context revision before any asynchronous search. Any committed note/sharing change, reset or restoration/reload while it is preparing invalidates the result. Check that revision before sending and after returning, including local fallback. Do not display or save an old model answer as a current reply. Give a factual resend explanation without claiming input already sent was recalled.
+
+The original revision also follows chat and scheduled-plan calls through provider-route resolution. Credential refresh may suspend, so check that same revision again after resolution and before submitting the request. Do not capture a newer revision to authorize instructions prepared earlier. A changed-and-reverted note still invalidates the prepared request. The synthetic route-resolution check uses the shared production helper with a held credential-free resolver; it does not claim a live OAuth refresh was tested or an already-submitted request was recalled.
+
+New assistant messages record versioned provenance: either no personal notes were used, or a SHA256 identity of the exact bounded note text included in the request. The record contains no additional copy of the note text and is local provenance, not proof of authorship or anonymisation. Hashes do not encrypt notes. Unknown/invalid versions and missing legacy provenance remain visible but cannot automatically enter a provider request.
+
+Filter history before Library search and again before provider-history construction. User-authored questions remain eligible. An assistant message that used notes is eligible only while sharing is saved on and its exact included-note identity matches the currently included text. No-note replies remain eligible subject to existing Library reference rules. Turning sharing back on for identical included notes may make matching old replies eligible again; editing text beyond the existing2000-character field limit does not change the included snapshot. No deleted/withdrawn Library reference becomes eligible through this policy.
+
+Once a reply has returned and passed the revision check, storage retry preserves its exact packet and provenance even if notes subsequently change. It remains a reply made with earlier notes, and must be labelled accordingly. Retry never calls the provider, substitutes a fresh answer or rewrites its provenance. Later history filtering excludes it when its notes no longer match. Independently saved Library copies retain their separate consent boundaries; this policy does not erase them.
+
+Changing notes/sharing does not remove visible conversations, user questions, existing backups, independently confirmed entries, Library copies or inputs already sent. Explicit Quote in new question remains an editable, unsent user action. Its text is part of the eventual user question; do not silently remove it or send it automatically.
+
+Scheduled-plan preparation already checks personal-context text after its provider await. Audit that route against the same committed-revision rule. Health-entry preparation uses the selected user message and no personal-note context; it must not acquire notes accidentally.
+
+Acceptance requires actual outgoing synthetic request/history inspection, held response and search changes, pending storage retry, compatible JSON/encrypted/readable recovery, relaunch and native main/compact presentation. Pure filters and green build results cannot substitute for those gates. See Design/native/conversation-storage/next-audit.md. The full product goal remains active.

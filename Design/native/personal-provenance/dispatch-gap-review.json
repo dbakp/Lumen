@@ -1,0 +1,20 @@
+{
+  "checkedAtUTC": "2026-11-02T16:52:16.310326+00:00",
+  "status": "Closed at app6/UI5 service/HTTP boundary by NativeR5 43/43 and independent host/server checks. Scheduled-plan controller UI and full visual/release gates remain separate.",
+  "sources": [
+    "Lumen/Services/LLMConnectionService.swift: route() awaits validOAuthToken() before coachChat constructs/sends turns",
+    "Lumen/Services/AIService.swift: chat and scheduledPlan call coachChat without original personal-context revision",
+    "Lumen/Views/ScheduledPlanView.swift: post-await guard only"
+  ],
+  "risk": "A committed note/sharing change during an awaited credential refresh can happen after ChatCoachService pre-provider check and before actual provider request submission. Result rejection after return cannot prevent this unsent old-context request.",
+  "requiredChange": "Carry the original committed revision through AIService and validate again after route resolution, immediately before submitting the provider request. Preserve after-return guards and original captured revision; do not recapture it as current.",
+  "requiredEvidence": "Hold actual shared route-resolution helper, commit note change/withdrawal or change-revert, release resolution, assert zero new synthetic provider packets and no accepted old text; unchanged route resolution must still send normal production-built turns. Scheduled-plan controller needs its own held revision checks.",
+  "currentUIFreeze": "UIR5 app5/UI4 running. Preserve this run boundary and apply next coherent source revision after terminal result.",
+  "preparedSource": "application-source-r6.json",
+  "evidence": [
+    "native-r5-report.json",
+    "native-r5-server-audit.json",
+    "native-r5-host-readback.json",
+    "application-source-r6.json"
+  ]
+}

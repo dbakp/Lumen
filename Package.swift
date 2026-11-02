@@ -54,6 +54,7 @@ let package = Package(
             "Lumen/Services/ProfileSettingsCommit.swift",
             "Lumen/Services/PreferenceNativeProbe.swift",
             "Lumen/Services/ConversationNativeProbe.swift",
+            "Lumen/Services/PersonalContextNativeProbe.swift",
             "Lumen/Services/NutritionEngine.swift"
 ],
         sources: [
@@ -141,6 +142,7 @@ let package = Package(
             "Tests/VoiceDraftChecks.swift",
             "Lumen/Models/NutritionModels.swift",
             "Lumen/Models/ConversationModels.swift",
+            "Lumen/Models/PersonalContextProvenance.swift",
             "Lumen/Models/ConversationFiles.swift",
             "Lumen/Models/CompanionModels.swift",
             "Lumen/Services/HealthImportService.swift",
@@ -155,6 +157,7 @@ let package = Package(
             "Tests/ProfileSettingsChecks.swift",
             "Tests/PreferenceChecks.swift",
             "Tests/ConversationFileChecks.swift",
+            "Tests/PersonalContextProvenanceChecks.swift",
             "Tests/RetainedEvidenceChecks.swift",
             "Tests/BackupPackageChecks.swift",
             "Tests/BackupUIFixtures.swift",

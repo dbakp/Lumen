@@ -776,6 +776,7 @@ final class LumenSmokeTests: XCTestCase {
         // top is inside the composer, not the end of scrollable content.
         let bottom = min(scroll.frame.maxY - 8, input.frame.minY - 20)
         XCTAssertGreaterThan(bottom - top, 120)
+        snap(prefix + "-before-position")
         func drag(up: Bool, distance: CGFloat) {
             let y = up ? bottom - 12 : top + 12
             let x = app.frame.minX + 10
@@ -786,7 +787,7 @@ final class LumenSmokeTests: XCTestCase {
         for _ in 0..<24 {
             let y = heading.frame.minY
             if y >= top && heading.frame.maxY <= bottom { break }
-            drag(up: y > top, distance: min(180, abs(y - top)))
+            drag(up: y > top, distance: max(32, min(180, abs(y - top))))
         }
         XCTAssertGreaterThanOrEqual(heading.frame.minY, top - 1, "Start the retained packet with its complete unsaved heading")
         for step in 0..<20 {
@@ -2374,13 +2375,19 @@ final class LumenSmokeTests: XCTestCase {
         let document = app.buttons[title].firstMatch; reveal(document); document.tap()
         let review = app.buttons["reviewSavedLabResults"].firstMatch; reveal(review)
     }
-    func settleLabFrame(_ element: XCUIElement) {
+    func settleLabFrame(_ element: XCUIElement, pixelTolerance: CGFloat = 0) {
         var frame = CGRect.null
         var stableSince = ProcessInfo.processInfo.systemUptime
         let stable = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
             guard element.exists else { return false }
             let next = element.frame, now = ProcessInfo.processInfo.systemUptime
-            if next != frame { frame = next; stableSince = now }
+            let equal = pixelTolerance == 0 ? next == frame : !frame.isNull
+                && abs(next.minX - frame.minX) <= pixelTolerance && abs(next.minY - frame.minY) <= pixelTolerance
+                && abs(next.width - frame.width) <= pixelTolerance && abs(next.height - frame.height) <= pixelTolerance
+            if !equal {
+                if pixelTolerance > 0 { print("CONTEXT TEXT FRAME SETTLING", frame, "to", next) }
+                frame = next; stableSince = now
+            }
             return !next.isEmpty && now - stableSince >= 0.5
         }, object: element)
         XCTAssertEqual(XCTWaiter.wait(for: [stable], timeout: 8), .completed)
@@ -3565,7 +3572,9 @@ final class LumenSmokeTests: XCTestCase {
             let finish = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: x, dy: y + (down ? step : -step)))
             start.press(forDuration: 0.05, thenDragTo: finish)
             let firstFrame = first.frame
-            if !contentGestures || (!firstFrame.isEmpty && firstFrame.minY.isFinite && firstFrame.minX.isFinite) { settleLabFrame(first) }
+            if !contentGestures || (!firstFrame.isEmpty && firstFrame.minY.isFinite && firstFrame.minX.isFinite) {
+                settleLabFrame(first, pixelTolerance: contentGestures ? 0.25 : 0)
+            }
         }
         if contentGestures {
             // Offscreen native text views expose an empty AX frame. Bring
@@ -3577,7 +3586,7 @@ final class LumenSmokeTests: XCTestCase {
                 move(down: true, distance: (bottom - top) * 0.55)
             }
         }
-        settleLabFrame(first)
+        settleLabFrame(first, pixelTolerance: contentGestures ? 0.25 : 0)
         for _ in 0..<24 {
             let (top, bottom) = bounds(), value = frame()
             if value.minY >= top - 2 && value.minY < bottom - 44 { break }
@@ -4185,21 +4194,30 @@ final class LumenSmokeTests: XCTestCase {
             let y = text.frame.minY
             if y >= top && y < top + 100 { break }
             if text.frame.minY >= top && text.frame.maxY <= bottom { break }
-            drag(up: y > top, distance: min(150, abs(y - top)))
+            drag(up: y > top, distance: max(32, min(150, abs(y - top))))
             if abs(text.frame.minY - y) < 1 { break }
         }
-        for step in 0..<12 {
+        XCTAssertGreaterThanOrEqual(text.frame.minY, top - 2, "Start with the complete disclosure heading")
+        var covered: CGFloat = 0
+        for step in 0..<32 {
+            let value = text.frame
+            let from = max(0, top - value.minY), to = min(value.height, bottom - value.minY)
+            XCTAssertLessThanOrEqual(from, covered + 2, "Disclosure captures must not skip text")
+            XCTAssertGreaterThan(to, from)
+            covered = max(covered, to)
             print("PREFERENCE DISCLOSURE FRAME", identifier, text.frame, "application", app.frame, "viewport", top, bottom)
             snap(prefix + "-segment-\(step)")
-            if text.frame.maxY <= bottom { return }
+            if covered >= value.height - 2 { return }
             drag(up: true, distance: min(200, bottom - top - 40))
         }
         XCTFail("Complete preference disclosure was not reached")
     }
     func testPersonalContextCheckedRecovery() throws { personalContextCheckedRecovery(large: false) }
     func testPersonalContextCheckedRecoveryLarge() throws { personalContextCheckedRecovery(large: true) }
-    func testPersonalContextSoftwareKeyboardLarge() throws {
-        quickFault("none:0", large: true); openPersonalPreferences()
+    func testPersonalContextSoftwareKeyboard() throws { try personalContextSoftwareKeyboard(large: false) }
+    func testPersonalContextSoftwareKeyboardLarge() throws { try personalContextSoftwareKeyboard(large: true) }
+    func personalContextSoftwareKeyboard(large: Bool) throws {
+        quickFault("none:0", large: large); openPersonalPreferences()
         let focus = app.descendants(matching: .any).matching(identifier: "personalFocus").firstMatch
         reveal(focus); focus.tap()
         // Actual software-key taps keep this distinct from hardware-assisted
@@ -4400,6 +4418,291 @@ final class LumenSmokeTests: XCTestCase {
         XCTAssertEqual(XCTWaiter.wait(for: [completed], timeout: 90), .completed)
         XCTAssertEqual(status.label, "Conversation checks passed")
         snap("1033-conversation-native-report")
+    }
+
+    func testPersonalContextNativeProvenance() throws {
+        app.terminate()
+        app.launchArguments = ["-resetForUITests", "-personal-provenance-probe", "-quick-save-fault", "conversations.json:3"]
+        app.launch()
+        let status = app.staticTexts["personalProvenanceProbeStatus"].firstMatch
+        let completed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label BEGINSWITH 'Personal context checks passed' OR label BEGINSWITH 'Personal context checks failed'"), object: status)
+        XCTAssertEqual(XCTWaiter.wait(for: [completed], timeout: 90), .completed)
+        XCTAssertEqual(status.label, "Personal context checks passed")
+        snap("1080-personal-context-native-provenance")
+    }
+
+    func personalRequestAudit() throws -> [[String: Any]] {
+        try XCTUnwrap(JSONSerialization.jsonObject(with: conversationControl("/personal-audit")) as? [[String: Any]])
+    }
+    func waitPersonalRequest(_ count: Int) throws {
+        let deadline = Date().addingTimeInterval(15)
+        while Date() < deadline {
+            if try personalRequestAudit().count >= count { return }
+            RunLoop.current.run(until: Date().addingTimeInterval(0.1))
+        }
+        XCTFail("The actual synthetic personal request did not arrive")
+        throw URLError(.timedOut)
+    }
+    func personalCanary(_ packet: [String: Any], _ name: String, role: String) throws -> Int {
+        let canaries = try XCTUnwrap(packet["canaries"] as? [String: [String: Int]])
+        return try XCTUnwrap(canaries[name]?[role])
+    }
+    func savedPersonalNote() -> XCUIElement {
+        app.descendants(matching: .any).matching(NSPredicate(format: "identifier BEGINSWITH 'savedPersonalContext-' ")).firstMatch
+    }
+    func saveSyntheticPersonalNotes() {
+        openPersonalPreferences()
+        let field = app.descendants(matching: .any).matching(identifier: "personalFocus").firstMatch
+        reveal(field); field.tap(); field.typeText("SYNTHETIC-PERSONAL-NOTE-40-A")
+        finishContextInput(); nativeSwitch("personalContextSharing", enabled: true); tap("savePersonalContext")
+        XCTAssertTrue(app.navigationBars["Personal context"].waitForNonExistence(timeout: 5)); tap("Done"); tab("Assistant")
+    }
+    func openPersonalNotesFromAssistant() {
+        tab("Today"); openPersonalPreferences()
+    }
+    func withdrawSyntheticPersonalNotes() {
+        openPersonalNotesFromAssistant()
+        nativeSwitch("personalContextSharing", enabled: false); tap("savePersonalContext")
+        XCTAssertTrue(app.navigationBars["Personal context"].waitForNonExistence(timeout: 5)); tap("Done"); tab("Assistant")
+    }
+    func testPersonalContextPendingRetryUI() throws { try personalContextPendingRetryUI(large: false) }
+    func testPersonalContextPendingRetryUILarge() throws { try personalContextPendingRetryUI(large: true) }
+    func personalContextPendingRetryUI(large: Bool) throws {
+        app.launchEnvironment["LUMEN_PERSONAL_TEST_NONCE"] = UUID().uuidString
+        quickFault("conversations.json:3", large: large, extra: ["-personal-provenance-ui"])
+        let before = try personalRequestAudit().count
+        saveSyntheticPersonalNotes()
+        enterConversationQuestion("SYNTHETIC-PERSONAL-COMPLETE-40")
+        let alert = app.alerts["Couldn’t save reply"]
+        XCTAssertTrue(alert.waitForExistence(timeout: 20)); alert.buttons["OK"].tap()
+        let pending = app.staticTexts["unsavedConversationReply"].firstMatch
+        XCTAssertTrue(pending.waitForExistence(timeout: 5))
+        let note = app.descendants(matching: .any).matching(identifier: "pendingPersonalContext").firstMatch
+        XCTAssertEqual(note.label, "Used your shared personal notes.")
+        let exactReply = coachMessages.firstMatch.label
+        capturePendingConversationReply("1081-pending-current-personal-notes")
+        withdrawSyntheticPersonalNotes()
+        XCTAssertEqual(note.label, "Used earlier personal notes. This reply isn’t included with new questions. Retry saves this same reply.")
+        capturePendingConversationReply("1082-pending-earlier-personal-notes")
+        let retry = app.buttons["retryConversationReply"].firstMatch; reveal(retry); retry.tap()
+        XCTAssertTrue(pending.waitForNonExistence(timeout: 10)); XCTAssertEqual(coachMessages.firstMatch.label, exactReply)
+        let saved = savedPersonalNote()
+        XCTAssertTrue(saved.waitForExistence(timeout: 10))
+        XCTAssertEqual(saved.label, "Used earlier personal notes. This reply isn’t included with new questions.")
+        let saveID = "saveReplyToLibrary-" + String(saved.identifier.dropFirst("savedPersonalContext-".count))
+        captureConversationSection(heading: saved.identifier, action: saveID, prefix: "1083-saved-earlier-personal-notes")
+        XCTAssertEqual(try personalRequestAudit().count, before + 1, "Storage retry must not send a second provider request")
+        tap("Quote in new question")
+        let input = app.descendants(matching: .any).matching(identifier: "coachInput").firstMatch
+        XCTAssertTrue((input.value as? String)?.contains(exactReply) == true)
+        XCTAssertTrue((input.value as? String)?.hasSuffix("My question: ") == true)
+        XCTAssertEqual(try personalRequestAudit().count, before + 1, "Quoting prepares an editable draft without sending")
+        snap("1084-earlier-personal-reply-unsent-quote")
+        relaunchPersonalConversations(large: large); tab("Assistant")
+        XCTAssertTrue(coachMessages.firstMatch.waitForExistence(timeout: 10)); XCTAssertEqual(coachMessages.firstMatch.label, exactReply)
+        XCTAssertEqual(savedPersonalNote().label, "Used earlier personal notes. This reply isn’t included with new questions.")
+        captureConversationSection(heading: savedPersonalNote().identifier, action: saveID, prefix: "1085-earlier-personal-reply-relaunch")
+        let audit = try personalRequestAudit()
+        XCTAssertEqual(try personalCanary(audit[before], "noteA", role: "system"), 1)
+        enterConversationQuestion("SYNTHETIC-PERSONAL-COMPLETE-40")
+        let complete = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in self.coachMessages.count == 2 }, object: app)
+        XCTAssertEqual(XCTWaiter.wait(for: [complete], timeout: 20), .completed)
+        let afterRelaunch = try personalRequestAudit()
+        XCTAssertEqual(afterRelaunch.count, before + 2)
+        XCTAssertEqual(try personalCanary(afterRelaunch[before + 1], "noteA", role: "system"), 0)
+        XCTAssertEqual(try personalCanary(afterRelaunch[before + 1], "returned", role: "assistant"), 0)
+        snap("1093-actual-outgoing-after-personal-note-relaunch")
+    }
+
+    func relaunchPersonalConversations(large: Bool) {
+        app.terminate()
+        app.launchArguments = ["-personal-provenance-ui", "-lumen.appearance", large ? "dark" : "light"]
+            + (large ? ["-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"] : [])
+        app.launch()
+    }
+
+    func testPersonalContextHeldEditorUI() throws { try personalContextHeldEditorUI(large: false) }
+    func testPersonalContextHeldEditorUILarge() throws { try personalContextHeldEditorUI(large: true) }
+    func personalContextHeldEditorUI(large: Bool) throws {
+        app.launchEnvironment["LUMEN_PERSONAL_TEST_NONCE"] = UUID().uuidString
+        quickFault("none:0", large: large, extra: ["-personal-provenance-ui"])
+        var holding = false
+        defer { if holding { _ = try? conversationControl("/release-personal") } }
+        let before = try personalRequestAudit().count
+        saveSyntheticPersonalNotes()
+        _ = try conversationControl("/arm-personal")
+        holding = true
+        enterConversationQuestion("SYNTHETIC-PERSONAL-HELD-40")
+        try waitPersonalRequest(before + 1)
+        XCTAssertTrue(app.buttons["Stop response"].exists)
+        openPersonalNotesFromAssistant()
+        let field = app.descendants(matching: .any).matching(identifier: "personalFocus").firstMatch
+        reveal(field); field.tap(); field.typeText(" SYNTHETIC-PERSONAL-UNSAVED-40")
+        snap("1086-held-response-editor-actual-focus-draft")
+        finishContextInput()
+        XCTAssertTrue((field.value as? String)?.contains("SYNTHETIC-PERSONAL-UNSAVED-40") == true)
+        XCTAssertTrue(app.buttons["savePersonalContext"].isEnabled)
+        let unsaved = app.staticTexts["personalContextUnsaved"].firstMatch; reveal(unsaved); XCTAssertTrue(unsaved.exists)
+        XCTAssertEqual(app.staticTexts["personalContextSavedSharing"].label, "Saved sharing: On")
+        snap("1086-held-response-editor-unsaved-notes")
+        _ = try conversationControl("/release-personal")
+        holding = false
+        capturePreferenceDisclosure("personalContextSavedSharing", prefix: "1086-held-editor-saved-sharing")
+        capturePreferenceDisclosure("personalContextHistoryDisclosure", prefix: "1086-held-editor-full-history-disclosure")
+        tap("Cancel"); let discard = app.alerts["Discard context changes?"]
+        XCTAssertTrue(discard.waitForExistence(timeout: 5)); discard.buttons["Discard"].tap()
+        XCTAssertTrue(app.navigationBars["Personal context"].waitForNonExistence(timeout: 5)); tap("Done"); tab("Assistant")
+        XCTAssertTrue(coachMessages.firstMatch.waitForExistence(timeout: 15))
+        XCTAssertEqual(coachMessages.firstMatch.label, "SYNTHETIC-PERSONAL-REPLY-40")
+        XCTAssertEqual(savedPersonalNote().label, "Used your shared personal notes.")
+        captureConversationSection(heading: savedPersonalNote().identifier, action: "Save to Library", prefix: "1087-unsaved-editor-does-not-change-reply")
+        _ = try conversationControl("/arm-personal")
+        holding = true
+        enterConversationQuestion("Make a plan SYNTHETIC-PERSONAL-HELD-40")
+        try waitPersonalRequest(before + 2)
+        withdrawSyntheticPersonalNotes()
+        _ = try conversationControl("/release-personal")
+        holding = false
+        let notice = coachMessages.matching(NSPredicate(format: "label CONTAINS %@", "This reply wasn't kept")).firstMatch
+        XCTAssertTrue(notice.waitForExistence(timeout: 15))
+        XCTAssertEqual(coachMessages.count, 2)
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "identifier BEGINSWITH 'savedReplyProvider-' AND label == 'Lumen notice' ")).firstMatch.exists)
+        let noticeText = coachMessages.element(boundBy: 1)
+        XCTAssertEqual(noticeText.label, notice.label)
+        captureIdentifierText(noticeText, prefix: "1088-complete-changed-note-notice", contentGestures: true)
+        snap("1088-saved-withdrawal-discards-held-plan-reply")
+        tab("Library")
+        XCTAssertTrue(app.staticTexts["Keep what matters"].waitForExistence(timeout: 5))
+        XCTAssertEqual(app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'library-plan-' ")).count, 0)
+        snap("1089-changed-note-notice-has-no-plan-copy"); tab("Assistant")
+        enterConversationQuestion("SYNTHETIC-PERSONAL-COMPLETE-40")
+        let complete = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in self.coachMessages.count == 3 }, object: app)
+        XCTAssertEqual(XCTWaiter.wait(for: [complete], timeout: 15), .completed)
+        let noNotes = app.descendants(matching: .any).matching(NSPredicate(format: "identifier BEGINSWITH 'savedPersonalContext-' AND label == 'No personal notes used.' ")).firstMatch
+        XCTAssertTrue(noNotes.waitForExistence(timeout: 15)); snap("1090-withdrawn-notes-next-question")
+        let audit = try personalRequestAudit()
+        XCTAssertEqual(audit.count, before + 3)
+        XCTAssertEqual(try personalCanary(audit[before], "noteA", role: "system"), 1)
+        XCTAssertEqual(try personalCanary(audit[before], "unsaved", role: "system"), 0)
+        XCTAssertEqual(try personalCanary(audit[before + 2], "noteA", role: "system"), 0)
+        XCTAssertEqual(try personalCanary(audit[before + 2], "returned", role: "assistant"), 0)
+        relaunchPersonalConversations(large: large); tab("Assistant")
+        XCTAssertTrue(coachMessages.firstMatch.waitForExistence(timeout: 10)); XCTAssertEqual(coachMessages.count, 3)
+        XCTAssertEqual(savedPersonalNote().label, "Used earlier personal notes. This reply isn’t included with new questions.")
+        snap("1091-note-provenance-history-relaunch")
+    }
+
+    func testPersonalContextUnknownHistoryUI() throws { try personalContextUnknownHistoryUI(large: false) }
+    func testPersonalContextUnknownHistoryUILarge() throws { try personalContextUnknownHistoryUI(large: true) }
+    func personalContextUnknownHistoryUI(large: Bool) throws {
+        for mode in ["legacy", "invalid", "unknownSources"] {
+            app.terminate()
+            app.launchEnvironment["LUMEN_PERSONAL_TEST_NONCE"] = UUID().uuidString
+            app.launchArguments = ["-resetForUITests", "-personal-provenance-ui", "-personal-provenance-history-fixture", mode,
+                "-lumen.appearance", large ? "dark" : "light"]
+                + (large ? ["-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"] : [])
+            app.launch(); tab("Assistant")
+            let before = try personalRequestAudit().count
+            let note = app.descendants(matching: .any).matching(identifier: "savedPersonalContext-synthetic-personal-history-reply-40").firstMatch
+            XCTAssertTrue(note.waitForExistence(timeout: 10))
+            XCTAssertEqual(note.label, mode == "unknownSources" ? "No personal notes used." : "Whether this reply used personal notes isn’t recorded. It isn’t included with new questions.")
+            let quoteID = "quoteReply-synthetic-personal-history-reply-40"
+            captureConversationSection(heading: note.identifier, action: "saveReplyToLibrary-synthetic-personal-history-reply-40", prefix: "1094-unknown-personal-provenance-" + mode)
+            if mode == "unknownSources" { XCTAssertTrue(app.staticTexts["Sources weren’t recorded for this reply. It isn’t included with new questions."].exists) }
+            tap(quoteID)
+            let input = app.descendants(matching: .any).matching(identifier: "coachInput").firstMatch
+            XCTAssertTrue((input.value as? String)?.contains("Synthetic earlier reply with \(mode) provenance.") == true)
+            XCTAssertTrue((input.value as? String)?.hasSuffix("My question: ") == true)
+            XCTAssertEqual(try personalRequestAudit().count, before, "Unknown provenance never automatically sends an explicit quote")
+            snap("1095-unknown-personal-provenance-unsent-quote-" + mode)
+        }
+    }
+
+    func testPersonalContextPlanRevisionUI() throws { try personalContextPlanRevisionUI(large: false) }
+    func testPersonalContextPlanRevisionUILarge() throws { try personalContextPlanRevisionUI(large: true) }
+    func testPersonalContextRetainedPlanEditorUILarge() throws { try personalContextPlanRevisionUI(large: true, captureEditor: true) }
+    func personalContextPlanRevisionUI(large: Bool, captureEditor: Bool = false) throws {
+        for mode in ["context-change", "context-revert"] {
+            quickFault("none:0", large: large, extra: ["-scheduledPlanUITestFixture", mode])
+            saveSyntheticPersonalNotes()
+            let before = try personalRequestAudit().count
+            openScheduledPlan()
+            let goal = "Keep a flexible synthetic routine."
+            enterPlanGoal(goal)
+            let duration = app.buttons["scheduledPlanWeeks"].firstMatch
+            reveal(duration); duration.tap(); tap("4 weeks")
+            let end = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH 'Through '")).firstMatch
+            reveal(end); let originalEnd = end.label
+            XCTAssertTrue(originalEnd.hasPrefix("Through "))
+            reveal(app.buttons["prepareScheduledPlan"].firstMatch); tap("prepareScheduledPlan")
+            let error = app.staticTexts["scheduledPlanError"].firstMatch
+            // At the largest type size on the compact phone, the provider
+            // disclosure fills the viewport before this lazy Form row.
+            // Bring the warning into view before querying its exact wording.
+            reveal(error)
+            XCTAssertTrue(error.waitForExistence(timeout: 10))
+            XCTAssertEqual(error.label, "Your personal context changed while preparing. Prepare again to use your current sharing choice and text. Input already sent to a provider can't be recalled.")
+            if !captureEditor {
+                capturePreferenceDisclosure("scheduledPlanError", prefix: "1096-delayed-plan-context-" + mode, navigationTitle: "Make a plan")
+            }
+            XCTAssertFalse(app.staticTexts["scheduledPlanCount"].exists)
+            reveal(end, towardsTop: true); XCTAssertEqual(end.label, originalEnd)
+            reveal(app.staticTexts["scheduledPlanGoalPreview"].firstMatch, towardsTop: true)
+            XCTAssertEqual(app.staticTexts["scheduledPlanGoalPreview"].label, goal)
+            tap("editScheduledPlanGoal")
+            XCTAssertEqual(app.textViews["scheduledPlanGoal"].value as? String, goal)
+            if captureEditor { captureRetainedPlanEditor(goal: goal, mode: mode) }
+            else { snap("1097-delayed-plan-retained-goal-" + mode) }
+            tap("finishPlanText")
+            if captureEditor {
+                XCTAssertTrue(app.navigationBars["Make a plan"].waitForExistence(timeout: 5))
+                let preview = app.staticTexts["scheduledPlanGoalPreview"].firstMatch
+                reveal(preview, towardsTop: true); settleLabFrame(preview)
+                XCTAssertEqual(preview.label, goal)
+                snap("1099-retained-plan-after-done-goal-" + mode)
+                reveal(end); XCTAssertEqual(end.label, originalEnd); settleLabFrame(end)
+                snap("1099-retained-plan-after-done-timeframe-" + mode)
+                XCTAssertEqual(try personalRequestAudit().count, before)
+                // Other privacy/Library/footer checks already passed at app6.
+                // This repeat supplies only the remaining editor/Done evidence.
+                continue
+            }
+            tap("closeScheduledPlan"); tap("Discard draft"); tab("Library")
+            XCTAssertEqual(app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'library-plan-' ")).count, 0)
+            XCTAssertEqual(try personalRequestAudit().count, before, "Synthetic planning never calls a provider")
+            openPersonalNotesFromAssistant()
+            let saved = app.staticTexts["personalContextSavedSharing"].firstMatch; reveal(saved)
+            XCTAssertEqual(saved.label, mode == "context-revert" ? "Saved sharing: On" : "Saved sharing: Off")
+            capturePreferenceDisclosure("personalContextHistoryDisclosure", prefix: "1098-plan-context-history-disclosure-" + mode)
+        }
+    }
+
+    func captureRetainedPlanEditor(goal: String, mode: String) {
+        let editor = app.textViews["scheduledPlanGoal"].firstMatch
+        let keyboard = app.keyboards.firstMatch
+        let done = app.buttons["finishPlanText"].firstMatch
+        let visibleKey = app.keyboards.keys.matching(NSPredicate(format: "label ==[c] %@", "q")).firstMatch
+        XCTAssertTrue(keyboard.waitForExistence(timeout: 5))
+        settleLabFrame(editor); settleLabFrame(keyboard)
+        XCTAssertTrue(visibleKey.isHittable, "Actual on-screen keys must be visible")
+        XCTAssertEqual(editor.value as? String, goal)
+        editor.swipeDown(velocity: .slow); settleLabFrame(editor)
+        XCTAssertTrue(visibleKey.isHittable && done.isHittable)
+        snap("1099-retained-plan-editor-start-keyboard-" + mode)
+        // Reuse the native-key pattern from calendar editing and rename: text
+        // injection can hide the software keyboard, so tap actual visible keys.
+        let letter = app.keyboards.keys.matching(NSPredicate(format: "label ==[c] %@", "x")).firstMatch
+        XCTAssertTrue(letter.exists && letter.isHittable)
+        let literal = letter.label; letter.tap()
+        XCTAssertEqual(editor.value as? String, goal + literal)
+        settleLabFrame(editor); settleLabFrame(keyboard)
+        XCTAssertTrue(visibleKey.isHittable && done.isHittable)
+        XCTAssertLessThanOrEqual(done.frame.maxY, keyboard.frame.minY + 1)
+        let erase = app.keyboards.keys["delete"].firstMatch
+        XCTAssertTrue(erase.exists && erase.isHittable); erase.tap()
+        snap("1099-retained-plan-end-caret-keyboard-" + mode)
+        XCTAssertEqual(editor.value as? String, goal)
+        XCTAssertTrue(visibleKey.isHittable && done.isHittable)
     }
     func testPersonalContextStaleReload() throws {
         quickFault("none:0", large: true, extra: ["-preference-context-change"]); openPersonalPreferences()

@@ -56,12 +56,16 @@ public struct CoachView: View {
                                 }
                                 if message.role == .coach {
                                     Text(message.provider ?? "Provider not recorded").font(.caption).foregroundStyle(Theme.secondary).accessibilityIdentifier("savedReplyProvider-" + message.id)
+                                    PersonalReplyContextNote(message: message, current: .included(companion.personalContext))
                                     if let context = message.recordContext, context.mode != .guide {
                                         RecordSourcesView(context: context)
                                     } else if message.recordContext == nil {
-                                        Text("This earlier reply has no saved references and isn't included with new questions.").font(.caption).foregroundStyle(Theme.secondary)
+                                        Text("Sources weren’t recorded for this reply. It isn’t included with new questions.").font(.caption).foregroundStyle(Theme.secondary)
+                                    }
+                                    if message.recordContext == nil || message.personalContext?.allowsHistory(current: .included(companion.personalContext)) != true {
                                         Button("Quote in new question", systemImage: "quote.bubble") { draft = RecordRetrieval.quotedQuestion(from: message); focused = true }
                                             .font(.footnote).frame(minHeight: 44).disabled(isSending)
+                                            .accessibilityIdentifier("quoteReply-" + message.id)
                                     }
                                     if let saved = companion.documents.first(where: { $0.messageID == message.id }) {
                                         NavigationLink {
@@ -76,6 +80,7 @@ public struct CoachView: View {
                                                 AppRouter.shared.confirm("Saved to Library")
                                             } catch { saveError = "The reply wasn't saved. Try again." }
                                         }.font(.footnote).frame(minHeight: 44)
+                                        .accessibilityIdentifier("saveReplyToLibrary-" + message.id)
                                     }
                                 }
                             }
@@ -88,6 +93,7 @@ public struct CoachView: View {
                                 Label("Reply not saved", systemImage: "exclamationmark.circle").font(.headline).accessibilityIdentifier("unsavedConversationReply")
                                 ChatBubble(msg: pending.message)
                                 Text(pending.message.provider ?? "Provider not recorded").font(.caption).foregroundStyle(Theme.secondary).accessibilityIdentifier("pendingReplyProvider")
+                                PersonalReplyContextNote(message: pending.message, current: .included(companion.personalContext), pending: true)
                                 if let context = pending.message.recordContext, context.mode != .guide { RecordSourcesView(context: context) }
                                 Text("Keep Lumen open until this reply is saved. Retry saves it without another request.").font(.footnote).foregroundStyle(Theme.secondary)
                                 Button("Retry save", systemImage: "arrow.clockwise") { retryReply(pending.id) }
@@ -270,9 +276,9 @@ public struct CoachView: View {
                 guard !Task.isCancelled, health.ownsReply(sent.owner) else { return }
                 let answer = await coach.reply(to: t, health: health, sleepDebt: sleep.debt, conversationHistory: sent.history)
                 guard !Task.isCancelled, health.ownsReply(sent.owner) else { return }
-                let reply = ChatMessage(role: .coach, text: answer, provider: coach.lastReplySource, recordContext: coach.lastRecordContext)
+                let reply = ChatMessage(role: .coach, text: answer, provider: coach.lastReplySource, recordContext: coach.lastRecordContext, personalContext: coach.lastPersonalContext)
                 guard let id = health.retainConversationReply(reply, owner: sent.owner,
-                    savePlan: PlanBuilder.isRequest(t) && ChatCoachService.urgentResponse(for: t) == nil) else { return }
+                    savePlan: coach.lastReplyCanBecomePlan && PlanBuilder.isRequest(t) && ChatCoachService.urgentResponse(for: t) == nil) else { return }
                 do { saveReplyPlan(try await health.savePendingConversationReply(id)) }
                 catch {
                     if Task.isCancelled { health.discardConversationReply(id) }

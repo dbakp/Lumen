@@ -31,7 +31,12 @@ struct PersonalContextView: View {
                 Text(companion.personalContext.includeInAssistant ? "Saved sharing: On" : "Saved sharing: Off")
                     .foregroundStyle(Theme.secondary).accessibilityIdentifier("personalContextSavedSharing")
                 if dirty { Text("Changes not saved").foregroundStyle(Theme.secondary).accessibilityIdentifier("personalContextUnsaved") }
-            } footer: { Text("Changes apply when you save. Sharing is off by default. When saved on, these notes accompany questions to your selected provider. These are your reference notes; Lumen does not verify allergies or diagnose injuries.").foregroundStyle(Theme.secondary).accessibilityIdentifier("personalContextDisclosure") }
+            } footer: {
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("Changes apply when you save. Sharing is off by default. When saved on, these notes accompany questions to your selected provider. These are your reference notes; Lumen does not verify allergies or diagnose injuries.").accessibilityIdentifier("personalContextDisclosure")
+                    Text("Changing notes or sharing won’t erase saved replies or recall input already sent. Replies made with earlier notes stay visible but aren’t sent with new questions while those notes differ or sharing is off. Library copies have their own sharing choice.").accessibilityIdentifier("personalContextHistoryDisclosure")
+                }.foregroundStyle(Theme.secondary)
+            }
         }.scrollDismissesKeyboard(.immediately).scrollContentBackground(.hidden).background(Theme.bg)
             .navigationTitle("Personal context").navigationBarTitleDisplayMode(.inline)
             .toolbar { ToolbarItem(placement: .confirmationAction) {

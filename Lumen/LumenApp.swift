@@ -14,6 +14,8 @@ struct LumenApp: App {
             SemanticSearchService.resetForUITests()
             do { try ConversationNativeFixtures.prepareStartupIfRequested() }
             catch { preconditionFailure("Synthetic startup fixture could not be prepared: \(error)") }
+            do { try PersonalContextUIFixture.prepareIfRequested() }
+            catch { preconditionFailure("Synthetic personal fixture could not be prepared: \(error)") }
         }
         #endif
     }
@@ -42,6 +44,7 @@ private struct LumenReadyView: View {
     #if DEBUG && targetEnvironment(simulator)
     @StateObject private var preferenceProbe = PreferenceNativeProbe.shared
     @StateObject private var conversationProbe = ConversationNativeProbe.shared
+    @StateObject private var personalProbe = PersonalContextNativeProbe.shared
     #endif
 
     var body: some View {
@@ -55,6 +58,7 @@ private struct LumenReadyView: View {
                 #if DEBUG && targetEnvironment(simulator)
                 if PreferenceNativeProbe.requested { await preferenceProbe.run(); return }
                 if ConversationNativeProbe.requested { await conversationProbe.run(); return }
+                if PersonalContextNativeProbe.requested { await personalProbe.run(); return }
                 try? PreferenceNativeProbe.prepareFixtures(health: health)
                 #endif
                 SyncCoordinator.propagate(sleep: sleep, health: health)
@@ -71,6 +75,10 @@ private struct LumenReadyView: View {
                 }
                 if ConversationNativeProbe.requested {
                     Text(conversationProbe.status).font(.footnote).accessibilityIdentifier("conversationProbeStatus")
+                        .padding().background(Theme.bg)
+                }
+                if PersonalContextNativeProbe.requested {
+                    Text(personalProbe.status).font(.footnote).accessibilityIdentifier("personalProvenanceProbeStatus")
                         .padding().background(Theme.bg)
                 }
             }

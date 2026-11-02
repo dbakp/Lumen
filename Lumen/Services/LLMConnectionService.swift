@@ -299,8 +299,10 @@ public enum LLMClient {
         return try? await ProviderReplyTransport.send(req)
     }
 
+    typealias ChatRoute = (endpoint: URL, bearer: String, model: String)
+
     @MainActor
-    private static func route() async -> (endpoint: URL, bearer: String, model: String)? {
+    private static func route() async -> ChatRoute? {
         let svc = LLMConnectionService.shared
         switch svc.mode {
         case .onDevice:
@@ -315,12 +317,31 @@ public enum LLMClient {
     }
 
     /// Coach chat with full conversation history.
+    static func coachTurns(system: String, history: [(role: String, text: String)], userText: String) -> [ChatTurn] {
+        [ChatTurn(role: "system", text: system)] + history.map { ChatTurn(role: $0.role, text: $0.text) }
+            + [ChatTurn(role: "user", text: userText)]
+    }
+
     @MainActor
-    public static func coachChat(system: String, history: [(role: String, text: String)], userText: String, maxTokens: Int = 400) async -> String? {
-        guard let r = await route() else { return nil }
-        var turns = [ChatTurn(role: "system", text: system)]
-        turns += history.map { ChatTurn(role: $0.role, text: $0.text) }
-        turns.append(ChatTurn(role: "user", text: userText))
+    public static func coachChat(system: String, history: [(role: String, text: String)], userText: String, maxTokens: Int = 400,
+                                 expectedPersonalContextRevision: UUID? = nil) async -> String? {
+        await preparedCoachChat(system: system, history: history, userText: userText, maxTokens: maxTokens,
+                                expectedPersonalContextRevision: expectedPersonalContextRevision, resolving: { await route() })
+    }
+
+    @MainActor
+    static func personalContextIsCurrent(_ revision: UUID?) -> Bool {
+        revision.map { $0 == CompanionStore.shared.personalContextRevision } ?? true
+    }
+
+    /// Credential refresh can suspend. Recheck the original authorization after
+    /// that wait, before submitting health context to the resolved provider.
+    @MainActor
+    static func preparedCoachChat(system: String, history: [(role: String, text: String)], userText: String, maxTokens: Int = 400,
+                                  expectedPersonalContextRevision: UUID?, resolving resolve: () async -> ChatRoute?) async -> String? {
+        guard let r = await resolve(), !Task.isCancelled,
+              personalContextIsCurrent(expectedPersonalContextRevision) else { return nil }
+        let turns = coachTurns(system: system, history: history, userText: userText)
         return await complete(endpoint: r.endpoint, bearer: r.bearer, model: r.model, turns: turns, maxTokens: min(6000, max(400, maxTokens)))
     }
 

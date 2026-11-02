@@ -1,5 +1,21 @@
 # Lumen direction
 
+## Batch40 · personal notes used for replies
+
+Keep the approved daylight-observatory ground, teal actions, native conversation/form navigation and full Dynamic Type. This extends the current conversation metadata; it does not introduce another direction, icon set or promotional surface. Voice: state what was used; distinguish saved from unsaved; give an explicit recovery action without promising remote recall.
+
+### Content
+
+Under each assistant provider label, show **No personal notes used.**, **Used your shared personal notes.**, or **Used earlier personal notes. This reply isn’t included with new questions.** Unknown/invalid provenance says **Whether this reply used personal notes isn’t recorded. It isn’t included with new questions.** Saved text stays visible. Unknown source maps separately say **Sources weren’t recorded for this reply. It isn’t included with new questions.** Both unknown or outdated notes and unknown source maps offer **Quote in new question**, which prepares the existing editable unsent quote. It is not a silent history exception.
+
+An unsaved reply uses the same note record. If notes changed or sharing is off, add **Retry saves this same reply.** Keep the existing **Reply not saved**, full reply/provider/reference content and **Retry save** action. The saved packet is never substituted during retry. Metadata is native literal footnote text, full width and naturally scrollable, with no shrink-to-fit, manufactured breaks, new card chrome or raw hash/version details.
+
+Personal context keeps its checked editor and existing saved/draft distinction. Add a separate footer paragraph: **Changing notes or sharing won’t erase saved replies or recall input already sent. Replies made with earlier notes stay visible but aren’t sent with new questions while those notes differ or sharing is off. Library copies have their own sharing choice.** Keep the existing explanation of saved changes, sharing-off default and unverified allergies/injuries. Capture the complete paragraphs by ordinary overlapping scrolling at XXXL.
+
+Actual in-flight changes produce the factual Lumen notice already declared in the policy. Verify that it cannot auto-save a plan. Product-screen inspection, main/compact normal/XXXL, actual editing/keyboard evidence and the same continuing critic remain required; no design acceptance is claimed by this content contract.
+
+Scheduled-plan preparation keeps its goal and timeframe when the saved context revision changes. Its error reads **Your personal context changed while preparing. Prepare again to use your current sharing choice and text. Input already sent to a provider can't be recalled.** Capture the complete error and the retained editable goal/date boundary. Synthetic verification labels remain explicit and are excluded from Release.
+
 ## Batch38 · checked context sharing and reminders
 
 Preserve the native Personal context form, Connections and Settings/onboarding entry points. A context draft stays separate from saved notes/consent. **Saved sharing: On/Off** states the actual saved choice; **Changes not saved** marks the draft. Save commits before **Personal context saved** and navigation. Cancel offers **Discard context changes? / Discard / Keep draft**. A failed write says **Couldn’t save context**, retains the draft and discloses that saved notes/sharing are unchanged, with **Try again / Not now**. A stale draft offers explicit **Reload / Keep draft**, with the unsaved-edit replacement stated before reload.

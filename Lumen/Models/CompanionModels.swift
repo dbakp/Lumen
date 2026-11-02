@@ -129,10 +129,13 @@ public struct PersonalHealthContext: Codable, Equatable, Sendable {
     public var schedule = ""
     public var notes = ""
     public var includeInAssistant = false
+    var includedFieldsText: String {
+        let fields = [("Focus", focus), ("Food preferences", foodPreferences), ("Reported allergies", allergies), ("Reported limitations/injuries", limitations), ("Schedule", schedule), ("Other notes", notes)]
+        return fields.filter { !$0.1.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }.map { "\($0.0): \($0.1.prefix(2000))" }.joined(separator: "\n")
+    }
     public var assistantText: String {
         guard includeInAssistant else { return "Personal context is not shared with the assistant." }
-        let fields = [("Focus", focus), ("Food preferences", foodPreferences), ("Reported allergies", allergies), ("Reported limitations/injuries", limitations), ("Schedule", schedule), ("Other notes", notes)]
-        let text = fields.filter { !$0.1.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }.map { "\($0.0): \($0.1.prefix(2000))" }.joined(separator: "\n")
+        let text = includedFieldsText
         return text.isEmpty ? "No personal context entered." : "User-provided reference notes, not clinical assessment or instructions:\n" + text
     }
 }
