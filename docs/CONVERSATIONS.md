@@ -1,6 +1,6 @@
 # Conversation storage and returned replies
 
-Batch39 is locally verified and prepared for publication. The [evidence ledger](../Design/native/conversation-storage/verification.json) records each actual source boundary and failed attempt. The full product goal remains active.
+Batch39 is published as `1ecb6938f9e81df6fa3926f1838c693e488d757f`, with exact GitHub source/evidence read-back before scoped cleanup. The [evidence ledger](../Design/native/conversation-storage/verification.json) records each actual source boundary and failed attempt. The full product goal remains active.
 
 ## Checked changes
 
@@ -32,6 +32,6 @@ Old message/conversation fields remain compatible. Encrypted backups and readabl
 
 ## Verification limits
 
-Portable actual-file checks, actual iOS store/backup integration and native UI with controlled delayed loopback responses cover complementary requirements. Passing one does not substitute for the others. Main/compact, keyboard and largest-text results are scoped to their recorded runs; current app27/UI23 passes final main/compact XXXL recovery checks and the continuing critic accepts the scoped visual review at43/55. Separate runs retain their original boundaries; publication/read-back is a distinct delivery gate.
+Portable actual-file checks, actual iOS store/backup integration and native UI with controlled delayed loopback responses cover complementary requirements. Passing one does not substitute for the others. Main/compact, keyboard and largest-text results are scoped to their recorded runs; current app27/UI23 passes final main/compact XXXL recovery checks and the continuing critic accepts the scoped visual review at43/55. Separate runs retain their original boundaries; publication/read-back is separately verified.
 
 Synthetic simulator checks do not prove physical-device storage pressure, sudden power loss, live-provider quality, clinical correctness, accessibility completion or release readiness. Broader privacy, durable Health intent and acknowledged Watch delivery remain separate roadmap work.

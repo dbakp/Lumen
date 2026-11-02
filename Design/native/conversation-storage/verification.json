@@ -1,5 +1,5 @@
 {
-  "status": "Batch39 locally verified, publication pending.1,583 portable checks,49 actual native integration checks, current main/compact XXXL final recovery checks and unsigned ReleaseR3 audit pass at explicit source boundaries. Same critic Round4 Done43/55,10/11 lines4+, all required lines4. No app/UI edit after acceptance.",
+  "status": "Batch39 published as 1ecb6938f9e81df6fa3926f1838c693e488d757f. Current source/evidence identities backed up and checked before scoped stopped-worker cleanup. Same critic Round4 Done43/55, no app/UI change after acceptance. Full product goal remains active.",
   "logicR1": "failed: containing Persistence directory excluded from Swift package; helper moved to Models and explicit source list corrected",
   "logicR2": "1554pass/0fail, including8 actual file/format/transaction checks",
   "logicSources": "logic-source-r8.json",
@@ -560,9 +560,17 @@
       "rawPath": "/tmp/LumenBatch39Checks/NativeR27.log",
       "sha256": "698188793e27761e93f6d51780b03ea741ffadd791784aea0e40f9076dc800b6",
       "bytes": 11472
+    },
+    {
+      "producer": "Publication",
+      "exitCode": 0,
+      "path": "publication.log.gz",
+      "rawPath": "/tmp/LumenBatch39Publish.log",
+      "sha256": "f85b4d2d5aaf965d1a17a418eae62a3fbde3b881be3cb36859ac93fe43d21849",
+      "bytes": 196
     }
   ],
-  "remaining": "Publish reviewed coherent batch, verify exact GitHub source/evidence identities, then scoped stopped-worker cleanup. Continue personal-context request/history provenance per next-audit.md, durable Health intent and acknowledged Watch delivery. Full product goal remains active.",
+  "remaining": "Next separate personal-context request/history provenance audit per next-audit.md, then durable Health intent and acknowledged Watch delivery. Broader provider/device/accessibility/privacy/clinical/distribution gates remain open. Full product goal active.",
   "logicR3": "failed: throwing boolean test expression; test expression corrected before R4",
   "logicR4": "1564pass/0fail; 18 actual conversation file/recovery checks; interim test source before six paired-failure cases added",
   "logicR5": "1570pass/0fail, including24 actual conversation file/recovery/transaction checks",
@@ -570,7 +578,14 @@
   "buildR2": "five-product main-phone simulator test build passes; 203 current application/build hashes match",
   "applicationSources": "application-source-r27.json",
   "nativeR1": "testPreferenceNativeBackendProbe passes22.498s;1test/0fail/0skip;16 existing actual simulator backend checks pass. This is a shared-folder/checked-preference regression, not new conversation UI verification.",
-  "storage": "One simulator build directory/dependency checkout and one logic scratch reused and retained for immediate remaining work. Source, current inputs, supplied skill, compact logs/reports and useful originals retained. No deletion in this unfinished batch; actual recovered space0bytes. GitHub verification is still required before completed-batch cleanup.",
+  "storage": {
+    "status": "completed",
+    "ledger": "storage-cleanup.json",
+    "immediateRecoveredBytes": 3356659712,
+    "preservedBuild": "/tmp/LumenBatch37Simulator",
+    "preservedPackages": "/tmp/LumenBatch37Packages",
+    "noCleanupOnlyBuild": true
+  },
   "logicR6": "1575pass/0fail;29 actual conversation file/recovery/transaction/selection checks",
   "uiSources": "ui-source-r23.json",
   "buildR3": "all five simulator products pass at application-source-r2; initial full integration",
@@ -1213,5 +1228,12 @@
     "scoredLines": 11,
     "remainingConcreteAsks": 0,
     "codeFreeze": "No app/UI edits after app27/UI23 acceptance."
+  },
+  "publication": {
+    "commit": "1ecb6938f9e81df6fa3926f1838c693e488d757f",
+    "proof": "publication-readback.json",
+    "requiredBlobIdentities": 1038,
+    "collectedBlobIdentities": 1126,
+    "beforeCleanup": true
   }
 }
