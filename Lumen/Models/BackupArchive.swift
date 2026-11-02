@@ -224,6 +224,29 @@ enum BackupError: LocalizedError {
 /// Stage a complete directory, retain the old copy until the new one is installed.
 /// After interruption, recovery restores the previous directory if installation didn't finish.
 enum BackupFiles {
+    /// Opening storage is different from retiring the prior committed directory.
+    /// A reader must retain a previous copy while current content is unreadable,
+    /// and only an actual missing path permits recovery or fresh initialization.
+    static func openDirectory(_ directory: URL, createIfMissing: Bool) throws {
+        let fm = FileManager.default
+        func directoryExists(_ url: URL) throws -> Bool {
+            let attributes: [FileAttributeKey: Any]
+            do { attributes = try fm.attributesOfItem(atPath: url.path) }
+            catch let error as CocoaError where error.code == .fileReadNoSuchFile || error.code == .fileNoSuchFile {
+                return false
+            }
+            guard attributes[.type] as? FileAttributeType == .typeDirectory else { throw BackupError.currentDataInvalid }
+            return true
+        }
+        guard try !directoryExists(directory) else { return }
+        let previous = directory.appendingPathExtension("previous")
+        if try directoryExists(previous) {
+            try fm.moveItem(at: previous, to: directory)
+        } else if createIfMissing {
+            try fm.createDirectory(at: directory, withIntermediateDirectories: true, attributes: [.posixPermissions: 0o700])
+        }
+    }
+
     static func recover(_ directory: URL) throws {
         let fm = FileManager.default
         let previous = directory.appendingPathExtension("previous")

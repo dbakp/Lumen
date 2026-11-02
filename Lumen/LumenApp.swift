@@ -12,6 +12,8 @@ struct LumenApp: App {
         if ProcessInfo.processInfo.arguments.contains("-resetForUITests") {
             LocalStore.eraseAll()
             SemanticSearchService.resetForUITests()
+            do { try ConversationNativeFixtures.prepareStartupIfRequested() }
+            catch { preconditionFailure("Synthetic startup fixture could not be prepared: \(error)") }
         }
         #endif
     }
@@ -39,6 +41,7 @@ private struct LumenReadyView: View {
     @Environment(\.scenePhase) private var scenePhase
     #if DEBUG && targetEnvironment(simulator)
     @StateObject private var preferenceProbe = PreferenceNativeProbe.shared
+    @StateObject private var conversationProbe = ConversationNativeProbe.shared
     #endif
 
     var body: some View {
@@ -51,6 +54,7 @@ private struct LumenReadyView: View {
             .task {
                 #if DEBUG && targetEnvironment(simulator)
                 if PreferenceNativeProbe.requested { await preferenceProbe.run(); return }
+                if ConversationNativeProbe.requested { await conversationProbe.run(); return }
                 try? PreferenceNativeProbe.prepareFixtures(health: health)
                 #endif
                 SyncCoordinator.propagate(sleep: sleep, health: health)
@@ -64,6 +68,10 @@ private struct LumenReadyView: View {
                         Text("Synthetic verification").font(.caption)
                         Text(preferenceProbe.status).font(.footnote).accessibilityIdentifier("preferenceProbeStatus")
                     }.padding().background(Theme.bg)
+                }
+                if ConversationNativeProbe.requested {
+                    Text(conversationProbe.status).font(.footnote).accessibilityIdentifier("conversationProbeStatus")
+                        .padding().background(Theme.bg)
                 }
             }
             #endif

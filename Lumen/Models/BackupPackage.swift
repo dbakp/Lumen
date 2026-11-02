@@ -46,7 +46,9 @@ enum BackupPackage {
     }
 
     static func validateNewPassword(_ password: String) throws {
-        guard password.count >= 12, password.utf8.count <= 256 else { throw PackageError.passwordLength }
+        // AppleArchive's scrypt password setter requires at least 20 bytes.
+        // Twenty characters guarantees that boundary for every UTF-8 password.
+        guard password.count >= 20, password.utf8.count <= 256 else { throw PackageError.passwordLength }
     }
 
     static func write(_ snapshot: BackupSnapshot, photos: [String: URL], password: String, to destination: URL,
@@ -270,7 +272,7 @@ enum BackupPackage {
         case passwordLength, unlock, invalid, tooLarge, metadataTooLarge, file
         var errorDescription: String? {
             switch self {
-            case .passwordLength: return "Use a password with at least 12 characters. If it’s very long, shorten it."
+            case .passwordLength: return "Use a password with at least 20 characters. If it’s very long, shorten it."
             case .unlock: return "The password may be incorrect or this file may be damaged. Check the password or choose another copy. No records were changed."
             case .invalid: return "This file isn’t a supported Lumen backup. No records were changed."
             case .tooLarge: return "This backup exceeds the 2 GB archive or expanded-data limit. No records were changed."

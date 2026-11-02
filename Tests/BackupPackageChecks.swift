@@ -15,6 +15,16 @@ enum BackupPackageChecks {
         var photos: [String: URL] = [:]
         for (id, bytes) in sample.photos { let file = root.appendingPathComponent(id + ".jpg"); try bytes.write(to: file); photos[id] = file }
         let first = root.appendingPathComponent("first.lumenbackup")
+        for count in [12, 19] {
+            do { try BackupPackage.validateNewPassword(String(repeating: "x", count: count)); preconditionFailure("unsupported new password accepted") }
+            catch BackupPackage.PackageError.passwordLength { check(true, "new backup rejects \(count)-character ASCII password before AppleArchive can reject it") }
+        }
+        let minimumPassword = String(repeating: "x", count: 20)
+        let minimumFile = root.appendingPathComponent("minimum.lumenbackup")
+        try BackupPackage.write(snapshot, photos: photos, password: minimumPassword, to: minimumFile)
+        let minimumRestored = try BackupPackage.read(minimumFile, password: minimumPassword, temporaryRoot: previews)
+        defer { minimumRestored.removeTemporaryFiles() }
+        check(tryEqual(snapshot, minimumRestored.snapshot), "exactly 20 ASCII characters meets the new password boundary and completes an actual encrypted round trip")
         let now = Date(timeIntervalSince1970: 1_790_000_000)
         let control = BackupOperationControl()
         try BackupPackage.write(snapshot, photos: photos, password: password, to: first, now: now, control: control)

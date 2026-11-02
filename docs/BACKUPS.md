@@ -4,7 +4,7 @@ Settings → Privacy & data → Backup & restore. New backups are encrypted and 
 
 ## Save and bring back a copy
 
-Choose **Create backup**, enter and repeat a password of at least 12 characters, then choose **Create encrypted backup**. Lumen cannot recover the password. The app does not save it or include it in the archive. New passwords are limited to 256 UTF-8 bytes; passwords are compared byte for byte, including spaces.
+Choose **Create backup**, enter and repeat a password of at least 20 characters, then choose **Create encrypted backup**. This minimum meets AppleArchive's password requirement for every UTF-8 password. Lumen cannot recover the password. The app does not save it or include it in the archive. New passwords are limited to 256 UTF-8 bytes; passwords are compared byte for byte, including spaces. Reading existing backups keeps the original password rules and does not impose the new-creation minimum.
 
 When the file is ready, use **Save or share backup** to save it to Files. The share copy is temporary: leaving this screen removes it, and a successful replacement export replaces it. A failed or cancelled replacement keeps the previous share copy. A copy already saved in Files remains yours. Only encrypted output is retained for sharing; the export's temporary photo copies are removed after encryption.
 

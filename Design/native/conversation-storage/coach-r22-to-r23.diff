@@ -1,0 +1,13 @@
+--- application-source-r22/CoachView.swift
++++ application-source-r23/CoachView.swift
+@@ -157,7 +157,9 @@
+             VStack(alignment: .leading, spacing: 8) {
+                 Label("Today’s context", systemImage: "checkmark.shield").font(.headline)
+                 Text(companion.perspective(health: health).evidence.joined(separator: " · ")).font(.subheadline).foregroundStyle(Theme.secondary)
+-                Text("\(companion.activeSymptoms.count) ongoing symptom \(companion.activeSymptoms.count == 1 ? "log" : "logs") · \(companion.documents.filter(\.includeInAssistant).count) shared records").font(.footnote).foregroundStyle(Theme.secondary)
++                let sharedCount = companion.documents.filter(\.includeInAssistant).count
++                Text("\(companion.activeSymptoms.count) ongoing symptom \(companion.activeSymptoms.count == 1 ? "log" : "logs") · \(sharedCount) shared \(sharedCount == 1 ? "record" : "records")")
++                    .font(.footnote).foregroundStyle(Theme.secondary).accessibilityIdentifier("conversationContextCounts")
+                 Text("Provider: \(ai.brain.label). Relevant text is selected from shared Library documents for each question, alongside your current health summary.").font(.footnote).foregroundStyle(Theme.secondary)
+             }.padding(18).surface()
+             VStack(spacing: 10) {

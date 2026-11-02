@@ -84,7 +84,7 @@ public final class AIService: ObservableObject {
         if ProcessInfo.processInfo.arguments.contains("-providerTransportUITestMode") {
             let idRange = instructions.range(of: #"record_[a-f0-9]{16}_[1-4]"#, options: .regularExpression)
             let id = idRange.map { String(instructions[$0]) } ?? "record_missing_9"
-            let route = user.contains("Complete HTTP control") ? "native-stop" : user.contains("Refusal HTTP control") ? "native-refusal" : user.contains("Slow HTTP control") ? "native-slow" : "native-length"
+            let route = user.contains("Held HTTP control") ? "native-held" : user.contains("Complete HTTP control") ? "native-stop" : user.contains("Refusal HTTP control") ? "native-refusal" : user.contains("Slow HTTP control") ? "native-slow" : "native-length"
             return await LLMClient.complete(endpoint: URL(string: "http://127.0.0.1:48731/" + route)!, bearer: "synthetic-no-key", model: "synthetic-no-provider",
                                             turns: [.init(role: "user", text: "Synthetic transport check " + id)])
         }

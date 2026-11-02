@@ -86,6 +86,7 @@ import Darwin
         try LocalCommitChecks.run()
         try ProfileSettingsChecks.run()
         try await PreferenceChecks.run()
+        try ConversationFileChecks.run()
         try VoiceDraftChecks.run()
         try ScheduledPlanChecks.run()
         try await LabReportChecks.run()

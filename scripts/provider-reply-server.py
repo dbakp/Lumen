@@ -14,6 +14,8 @@ parser.add_argument("--report", type=Path, required=True)
 args = parser.parse_args()
 counts = {}
 lock = threading.Lock()
+held_gate = threading.Event()
+prepared_gate = threading.Event()
 
 
 def record(route, event):
@@ -32,6 +34,48 @@ class Handler(BaseHTTPRequestHandler):
 
     def log_message(self, *_):
         pass
+
+    def do_GET(self):
+        if self.path in ("/arm-prepared", "/release-prepared"):
+            if self.path == "/arm-prepared":
+                prepared_gate.clear()
+            else:
+                prepared_gate.set()
+                record("prepared-stage", "releases")
+            self.send_response(204)
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+            return
+        if self.path == "/prepared-hold":
+            record("prepared-stage", "requests")
+            if not prepared_gate.wait(timeout=85):
+                record("prepared-stage", "holdTimeouts")
+            self.send_response(200)
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+            record("prepared-stage", "responsesWritten")
+            return
+        if self.path in ("/arm-held", "/release-held"):
+            if self.path == "/arm-held":
+                held_gate.clear()
+            else:
+                held_gate.set()
+                record("native-held", "releases")
+            self.send_response(204)
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+            return
+        if self.path != "/counts":
+            self.send_error(404)
+            return
+        with lock:
+            payload = json.dumps(counts).encode()
+        self.send_response(200)
+        self.send_header("Content-Type", "application/json")
+        self.send_header("Cache-Control", "no-store")
+        self.send_header("Content-Length", str(len(payload)))
+        self.end_headers()
+        self.wfile.write(payload)
 
     def do_POST(self):
         route = self.path.strip("/")
@@ -54,7 +98,7 @@ class Handler(BaseHTTPRequestHandler):
                 # never the normal health summary, history or source excerpts.
                 source = re.search(rb"record_[a-f0-9]{16}_[1-4]", body)
                 token = source.group().decode() if source else "record_missing_9"
-                text = "Synthetic complete HTTP control. Local server only. [" + token + "]" if route == "native-stop" else "SYNTHETIC-INCOMPLETE-ASSERTION [" + token + "]"
+                text = "Synthetic complete HTTP control. Local server only. [" + token + "]" if route in ("native-stop", "native-held") else "SYNTHETIC-INCOMPLETE-ASSERTION [" + token + "]"
             payload = envelope(text=text, finish="length" if route in ("length", "native-length") else "content_filter" if route == "filter" else "tool_calls" if route == "tool" else "stop", refusal="Synthetic refusal" if route in ("refusal", "native-refusal") else None)
             if route == "utf8-chunks":
                 payload = envelope(text="Café 🧑🏽‍⚕️ · 12,5 µg/L")
@@ -73,6 +117,11 @@ class Handler(BaseHTTPRequestHandler):
             else:
                 self.send_header("Content-Length", "1000001" if route == "oversize-header" else str(len(payload)))
             self.end_headers()
+            if route == "native-held":
+                # A UI test explicitly releases this synthetic response after
+                # performing the competing action. Bound abandoned workers.
+                if not held_gate.wait(timeout=85):
+                    record(route, "holdTimeouts")
             if route in ("slow", "native-slow"):
                 time.sleep(5)
             if route == "oversize-header":

@@ -58,6 +58,7 @@ enum BackupService {
     /// Metadata is captured on the main actor. Photos stay in files throughout v2 operations.
     static func snapshot(sleep: SleepStore, health: HealthStore) throws -> BackupSnapshot {
         guard !health.isSyncing else { throw BackupError.busy }
+        guard health.conversationReady else { throw BackupError.currentDataInvalid }
         let companion = CompanionStore.shared
         return BackupSnapshot(profile: sleep.profile, goals: health.goals, habits: sleep.habits,
                               sleep: sleep.episodes, meals: health.meals, workouts: health.workouts, water: health.waterLogs,
@@ -187,7 +188,7 @@ enum BackupService {
         guard !health.isSyncing else { throw BackupError.busy }
         let revision = LocalStore.revision
         let local = try snapshot(sleep: sleep, health: health)
-        let directory = LocalStore.directory
+        let directory = try LocalStore.checkedDirectory()
         let transaction = try await Task.detached(priority: .userInitiated) {
             try control.checkCancellation()
             try BackupArchive.validate(incoming.snapshot, availablePhotoIDs: Set(incoming.photos.keys))
@@ -202,13 +203,16 @@ enum BackupService {
             let value = merged.snapshot
             try add(value.profile, "profile"); try add(value.goals, "goals"); try add(value.habits, "habits"); try add(value.sleep, "sleep")
             try add(value.meals, "meals"); try add(value.workouts, "workouts"); try add(value.water, "water")
-            try add(value.conversations, "conversations"); try add(value.symptoms, "symptoms"); try add(value.checkIns, "check-ins")
+            // Restore archive, compatibility mirror and explicit unsent selection
+            // in the same directory commit; reload must not repair them afterward.
+            files.merge(try ConversationFiles.encoded(value.conversations, activeID: nil)) { _, incoming in incoming }
+            try add(value.symptoms, "symptoms"); try add(value.checkIns, "check-ins")
             try add(value.documents, "documents"); try add(value.importedDays, "imported-days"); try add(value.imports, "import-receipts")
             try add(value.personalContext, "personal-context")
             guard files.values.reduce(0, { $0 + $1.count }) <= BackupPackage.maxMetadataBytes else { throw BackupPackage.PackageError.metadataTooLarge }
             // Keep incoming ownership alive until its file-backed photos have been copied.
             return try withExtendedLifetime(incoming) {
-                try BackupFileTransaction.prepare(files, photoFiles: Dictionary(uniqueKeysWithValues: merged.photos.map { ("photos/\($0.key).jpg", $0.value) }), into: directory, control: control)
+                try ConversationFiles.prepareRestore(files, photoFiles: Dictionary(uniqueKeysWithValues: merged.photos.map { ("photos/\($0.key).jpg", $0.value) }), into: directory, control: control)
             }
         }.value
         try control.checkCancellation()

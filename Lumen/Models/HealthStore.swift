@@ -25,10 +25,17 @@ public final class HealthStore: ObservableObject {
     @Published public var insights: [Insight] = []
     @Published public var lastSync: Date?
     @Published public var isSyncing = false
-    @Published public var chat: [ChatMessage] = [] { didSet { if conversationReady { saveActiveConversation() } } }
+    @Published public private(set) var chat: [ChatMessage] = []
     @Published public private(set) var conversations: [HealthConversation] = []
     @Published public private(set) var activeConversationID: String?
-    private var conversationReady = false
+    @Published public private(set) var conversationReady = false
+    @Published public private(set) var isConversationSaving = false
+    @Published public private(set) var conversationStorageIssue: String?
+    @Published private(set) var pendingConversationReplies: [PendingConversationReply] = []
+    private var conversationOperation = UUID()
+    private var conversationGeneration = UUID()
+    private var conversationLifetimes: [String: UUID] = [:]
+    private var conversationReplyCancellations: [String: (owner: ConversationReplyOwner, cancel: () -> Void)] = [:]
 
     /// Last Health snapshot for today (persisted so launch is instant).
     private var healthSnapshot = DayMetrics.empty
@@ -50,19 +57,13 @@ public final class HealthStore: ObservableObject {
         workouts = (LocalStore.load([Workout].self, from: "workouts", legacyKey: "lumen.health.workouts.v1") ?? [])
             .filter { $0.source != .sample }
         waterLogs = (LocalStore.load([HydrationLog].self, from: "water") ?? [])
-        chat = LocalStore.load([ChatMessage].self, from: "chat", legacyKey: "lumen.health.chat.v1") ?? []
-        conversations = ConversationArchive.migrate(legacy: chat, existing: LocalStore.load([HealthConversation].self, from: "conversations") ?? [])
-        let rememberedID = UserDefaults.standard.string(forKey: "lumen.conversation.active")
-        let selected = conversations.first { $0.id == rememberedID } ?? conversations.max { $0.updatedAt < $1.updatedAt }
-        activeConversationID = selected?.id
-        chat = selected?.messages ?? []
-        conversationReady = true
-        LocalStore.save(conversations, as: "conversations")
         if let snap = LocalStore.load(DayMetrics.self, from: "today"), Calendar.current.isDateInToday(snap.date) {
             healthSnapshot = snap
         }
         lastSync = AppGroup.defaults.object(forKey: "health.lastSync") as? Date
         refresh()
+        let operation = conversationOperation
+        Task { if self.conversationOperation == operation { await self.openConversationsChecked() } }
     }
 
     // MARK: Derived
@@ -245,8 +246,6 @@ public final class HealthStore: ObservableObject {
         LocalStore.save(meals, as: "meals")
         LocalStore.save(workouts, as: "workouts")
         LocalStore.save(goals, as: "goals")
-        LocalStore.save(conversations, as: "conversations")
-        LocalStore.save(chat, as: "chat")
         LocalStore.save(waterLogs, as: "water")
         LocalStore.save(healthSnapshot, as: "today")
     }
@@ -261,75 +260,179 @@ public final class HealthStore: ObservableObject {
         meals = LocalStore.load([Meal].self, from: "meals") ?? meals
         workouts = LocalStore.load([Workout].self, from: "workouts") ?? workouts
         waterLogs = LocalStore.load([HydrationLog].self, from: "water") ?? waterLogs
-        conversationReady = false
-        conversations = LocalStore.load([HealthConversation].self, from: "conversations") ?? conversations
-        if !conversations.contains(where: { $0.id == activeConversationID }) { activeConversationID = nil }
-        chat = conversations.first { $0.id == activeConversationID }?.messages ?? []
-        conversationReady = true
-        UserDefaults.standard.set(activeConversationID, forKey: "lumen.conversation.active")
-        LocalStore.save(chat, as: "chat")
+        invalidateConversationWork()
+        do {
+            let loaded = try LocalStore.loadConversationsChecked()
+            guard !loaded.needsMigration else { throw BackupError.currentDataInvalid }
+            installConversations(loaded.conversations, activeID: loaded.selection?.activeID)
+            conversationReady = true; conversationStorageIssue = nil
+        } catch { conversationStorageIssue = Self.conversationOpenFailure }
         refresh()
     }
 
     // MARK: Conversations
 
-    private func saveActiveConversation() {
-        guard conversationReady else { return }
-        if activeConversationID == nil {
-            guard !chat.isEmpty else { return }
-            let conversation = HealthConversation(title: ConversationArchive.suggestedTitle(chat), messages: chat)
-            conversations.insert(conversation, at: 0); activeConversationID = conversation.id
-        } else if let index = conversations.firstIndex(where: { $0.id == activeConversationID }) {
-            conversations[index].messages = chat
-            conversations[index].updatedAt = Date()
-            if conversations[index].title == "New conversation" { conversations[index].title = ConversationArchive.suggestedTitle(chat) }
+    private static let conversationOpenFailure = "Saved conversations couldn't be opened. Retry before sending or changing history. Your saved history hasn't been replaced."
+
+    func openConversationsChecked() async {
+        guard !isConversationSaving else { return }
+        let operation = UUID(); conversationOperation = operation
+        isConversationSaving = true; conversationReady = false; conversationStorageIssue = nil
+        cancelObsoleteConversationReplies()
+        defer { if conversationOperation == operation { isConversationSaving = false } }
+        for attempt in 0..<5 {
+            guard conversationOperation == operation else { return }
+            do {
+                let loaded = try LocalStore.loadConversationsChecked()
+                let selected: String?
+                if let selection = loaded.selection { selected = selection.activeID }
+                else {
+                    let remembered = UserDefaults.standard.string(forKey: "lumen.conversation.active")
+                    selected = loaded.conversations.first(where: { $0.id == remembered })?.id
+                        ?? loaded.conversations.max(by: { $0.updatedAt < $1.updatedAt })?.id
+                }
+                if loaded.needsMigration || loaded.selection == nil {
+                    try await LocalStore.saveConversationsChecked(loaded.conversations, activeID: selected,
+                        canCommit: { self.conversationOperation == operation }, didCommit: {
+                            self.installConversations(loaded.conversations, activeID: selected)
+                            self.conversationReady = true
+                        })
+                } else {
+                    guard conversationOperation == operation else { return }
+                    installConversations(loaded.conversations, activeID: selected); conversationReady = true
+                }
+                return
+            } catch BackupError.recordsChanged where attempt < 4 {
+                // Startup and Health refresh can write other domains together.
+                // Discard the obsolete stage and re-read current files; never
+                // retry decoding or I/O failures as if history were absent.
+                guard conversationOperation == operation else { return }
+                do { try await Task.sleep(for: .milliseconds(25 * (attempt + 1))) }
+                catch { return }
+            } catch {
+                if conversationOperation == operation { conversationStorageIssue = Self.conversationOpenFailure }
+                return
+            }
         }
-        UserDefaults.standard.set(activeConversationID, forKey: "lumen.conversation.active")
-        LocalStore.save(conversations, as: "conversations"); LocalStore.save(chat, as: "chat")
     }
 
-    @discardableResult public func ensureConversation() -> String {
-        if let activeConversationID { return activeConversationID }
-        let conversation = HealthConversation()
-        conversations.insert(conversation, at: 0); activeConversationID = conversation.id
-        saveActiveConversation(); return conversation.id
+    private func installConversations(_ saved: [HealthConversation], activeID: String?) {
+        conversations = saved; activeConversationID = activeID
+        chat = saved.first(where: { $0.id == activeID })?.messages ?? []
+        conversationLifetimes = Dictionary(uniqueKeysWithValues: saved.map { ($0.id, conversationLifetimes[$0.id] ?? UUID()) })
+        UserDefaults.standard.set(activeID, forKey: "lumen.conversation.active")
+        cancelObsoleteConversationReplies()
     }
 
-    public func newConversation() {
-        guard !chat.isEmpty else { return }
-        selectConversation(nil)
+    private func invalidateConversationWork() {
+        conversationOperation = UUID(); conversationGeneration = UUID(); conversationLifetimes = [:]
+        conversationReady = false; isConversationSaving = false; pendingConversationReplies = []
+        cancelObsoleteConversationReplies()
     }
 
-    public func selectConversation(_ id: String?) {
-        guard id == nil || conversations.contains(where: { $0.id == id }) else { return }
-        conversationReady = false
-        activeConversationID = id
-        chat = conversations.first { $0.id == id }?.messages ?? []
-        conversationReady = true
-        UserDefaults.standard.set(id, forKey: "lumen.conversation.active")
-        LocalStore.save(chat, as: "chat")
+    private func commitConversations(_ saved: [HealthConversation], activeID: String?, didCommit: () -> Void = {}) async throws {
+        guard conversationReady, !isConversationSaving else { throw ConversationSaveError.notReady }
+        let operation = UUID(); conversationOperation = operation; isConversationSaving = true
+        defer { if conversationOperation == operation { isConversationSaving = false } }
+        try await LocalStore.saveConversationsChecked(saved, activeID: activeID,
+            canCommit: { self.conversationOperation == operation && self.conversationReady }, didCommit: {
+                self.installConversations(saved, activeID: activeID); didCommit()
+            })
     }
 
-    public func renameConversation(_ id: String, title: String) {
+    public func newConversation() async throws { try await selectConversation(nil) }
+
+    public func selectConversation(_ id: String?) async throws {
+        guard id == nil || conversations.contains(where: { $0.id == id }) else { throw ConversationSaveError.changed }
+        try await commitConversations(conversations, activeID: id)
+    }
+
+    public func renameConversation(_ id: String, title: String, expectedTitle: String? = nil) async throws {
         let title = title.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !title.isEmpty, let index = conversations.firstIndex(where: { $0.id == id }) else { return }
-        conversations[index].title = String(title.prefix(100)); LocalStore.save(conversations, as: "conversations")
+        guard !title.isEmpty, let index = conversations.firstIndex(where: { $0.id == id }) else { throw ConversationSaveError.changed }
+        if let expectedTitle, conversations[index].title != expectedTitle { throw ConversationSaveError.changed }
+        var saved = conversations; saved[index].title = String(title.prefix(100))
+        try await commitConversations(saved, activeID: activeConversationID)
     }
 
-    public func deleteConversation(_ id: String) {
-        conversations.removeAll { $0.id == id }
-        if activeConversationID == id { selectConversation(nil) }
-        LocalStore.save(conversations, as: "conversations")
-    }
-
-    @discardableResult public func appendMessage(_ message: ChatMessage, to id: String) -> Bool {
-        guard conversations.contains(where: { $0.id == id }) else { return false }
-        if activeConversationID == id { chat.append(message) }
-        else {
-            conversations = ConversationArchive.appending(message, to: id, in: conversations)
-            LocalStore.save(conversations, as: "conversations")
+    public func deleteConversation(_ id: String) async throws {
+        guard conversations.contains(where: { $0.id == id }) else { throw ConversationSaveError.changed }
+        try await commitConversations(conversations.filter { $0.id != id }, activeID: activeConversationID == id ? nil : activeConversationID) {
+            self.pendingConversationReplies.removeAll { $0.owner.conversationID == id }
         }
+    }
+
+    public func clearConversationChecked() async throws {
+        guard let id = activeConversationID, let index = conversations.firstIndex(where: { $0.id == id }) else { return }
+        var saved = conversations; saved[index].messages = []; saved[index].updatedAt = Date()
+        try await commitConversations(saved, activeID: id) {
+            self.conversationLifetimes[id] = UUID()
+            self.pendingConversationReplies.removeAll { $0.owner.conversationID == id }
+        }
+    }
+
+    func sendUserMessageChecked(_ message: ChatMessage, expectedConversationID: String?) async throws -> ConversationSend {
+        guard activeConversationID == expectedConversationID, message.role == .user,
+              pendingConversationReplies.isEmpty else { throw ConversationSaveError.changed }
+        let history = chat
+        var saved = conversations
+        let id: String
+        if let activeConversationID {
+            id = activeConversationID; saved = ConversationArchive.appending(message, to: id, in: saved)
+        } else {
+            let conversation = HealthConversation(title: ConversationArchive.suggestedTitle([message]), messages: [message])
+            id = conversation.id; saved.insert(conversation, at: 0)
+        }
+        var owner: ConversationReplyOwner?
+        try await commitConversations(saved, activeID: id) {
+            if let lifetime = self.conversationLifetimes[id] {
+                owner = .init(conversationID: id, lifetime: lifetime, generation: self.conversationGeneration, questionID: message.id)
+            }
+        }
+        guard let owner else { throw ConversationSaveError.changed }
+        return ConversationSend(owner: owner, history: history)
+    }
+
+    func ownsReply(_ owner: ConversationReplyOwner) -> Bool {
+        conversationReady && owner.generation == conversationGeneration && conversationLifetimes[owner.conversationID] == owner.lifetime
+            && conversations.first(where: { $0.id == owner.conversationID })?.messages.last(where: { $0.role == .user })?.id == owner.questionID
+    }
+
+    /// The store owns invalidation even if reset removes the Assistant view.
+    /// Navigation and rename preserve a request to its still-intact origin.
+    func registerConversationReplyCancellation(_ owner: ConversationReplyOwner, cancel: @escaping () -> Void) -> Bool {
+        guard ownsReply(owner) else { cancel(); return false }
+        conversationReplyCancellations[owner.questionID] = (owner, cancel)
         return true
+    }
+
+    func finishConversationReply(_ owner: ConversationReplyOwner) {
+        if conversationReplyCancellations[owner.questionID]?.owner == owner {
+            conversationReplyCancellations.removeValue(forKey: owner.questionID)
+        }
+    }
+
+    private func cancelObsoleteConversationReplies() {
+        let obsolete = conversationReplyCancellations.filter { !ownsReply($0.value.owner) }
+        for key in obsolete.keys { conversationReplyCancellations.removeValue(forKey: key) }
+        for entry in obsolete.values { entry.cancel() }
+    }
+
+    func retainConversationReply(_ message: ChatMessage, owner: ConversationReplyOwner, savePlan: Bool) -> String? {
+        guard ownsReply(owner), message.role == .coach else { return nil }
+        let pending = PendingConversationReply(message: message, owner: owner, savePlan: savePlan)
+        pendingConversationReplies.append(pending); return pending.id
+    }
+
+    func discardConversationReply(_ id: String) { pendingConversationReplies.removeAll { $0.id == id } }
+
+    func savePendingConversationReply(_ id: String) async throws -> PendingConversationReply {
+        guard let pending = pendingConversationReplies.first(where: { $0.id == id }), ownsReply(pending.owner) else { throw ConversationSaveError.changed }
+        let saved = ConversationArchive.appending(pending.message, to: pending.owner.conversationID, in: conversations)
+        try await commitConversations(saved, activeID: activeConversationID) {
+            self.pendingConversationReplies.removeAll { $0.id == id }
+        }
+        return pending
     }
 
     // MARK: Sync
@@ -424,11 +527,11 @@ public final class HealthStore: ObservableObject {
     public func resetAll() {
         watchWaterSaveFailure = nil
         healthWrites.invalidatePendingSaves(); waterUndoOperation = UUID(); waterUndoStatus = nil
-        conversationReady = false
+        invalidateConversationWork()
         goals = HealthGoals(); meals = []; workouts = []; waterLogs = []; chat = []
         conversations = []; activeConversationID = nil
         UserDefaults.standard.removeObject(forKey: "lumen.conversation.active")
-        conversationReady = true
+        conversationReady = true; conversationStorageIssue = nil
         CompanionStore.shared.reset()
         healthSnapshot = .empty; lastSync = nil; hrvBaseline = nil; restingHRBaseline = nil; sleepEpisodes = []; sleepDebt = 0
         refresh()

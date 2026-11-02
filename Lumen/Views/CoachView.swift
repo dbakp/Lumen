@@ -9,6 +9,8 @@ public struct CoachView: View {
     @ObservedObject private var ai = AIService.shared
     @State private var draft = ""
     @State private var saveError: String?
+    @State private var conversationFailure: String?
+    @State private var conversationFailureTitle = "Couldn’t save conversation"
     @State private var voiceTarget: VoiceDraftTarget?
     @State private var keyboardSubmission: VoiceDraftTarget?
     @State private var historyPresented = false
@@ -32,10 +34,19 @@ public struct CoachView: View {
         ScrollViewReader { proxy in
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
+                    ConversationStorageStatus().environmentObject(health)
+                    ForEach(health.pendingConversationReplies.filter { $0.owner.conversationID != health.activeConversationID }) { pending in
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("A reply in another conversation hasn't been saved.").font(.footnote)
+                            Button("Open conversation") { changeConversation { try await health.selectConversation(pending.owner.conversationID) } }
+                                .frame(minHeight: 44).disabled(health.isConversationSaving)
+                        }.id(pending.id)
+                    }
                     #if DEBUG && targetEnvironment(simulator)
                     if SemanticSearchService.usesLocalReplyTest { Text("Local model test · no generative provider request").font(.footnote).foregroundStyle(Theme.secondary) }
                     #endif
-                    if health.chat.isEmpty { intro } else {
+                    if health.conversationReady, health.chat.isEmpty { intro }
+                    else if health.conversationReady {
                         ForEach(health.chat) { message in
                             VStack(alignment: .leading, spacing: 6) {
                                 ChatBubble(msg: message).id(message.id)
@@ -44,7 +55,7 @@ public struct CoachView: View {
                                     if message.text.count > 8000 { Text("Use a message under 8,000 characters to prepare health entries.").font(.caption).foregroundStyle(Theme.secondary) }
                                 }
                                 if message.role == .coach {
-                                    Text(message.provider ?? "Provider not recorded").font(.caption).foregroundStyle(Theme.secondary)
+                                    Text(message.provider ?? "Provider not recorded").font(.caption).foregroundStyle(Theme.secondary).accessibilityIdentifier("savedReplyProvider-" + message.id)
                                     if let context = message.recordContext, context.mode != .guide {
                                         RecordSourcesView(context: context)
                                     } else if message.recordContext == nil {
@@ -71,13 +82,31 @@ public struct CoachView: View {
                         }
                         if coach.isTyping { TypingBubble() }
                     }
+                    ForEach(health.pendingConversationReplies) { pending in
+                        if pending.owner.conversationID == health.activeConversationID {
+                            VStack(alignment: .leading, spacing: 12) {
+                                Label("Reply not saved", systemImage: "exclamationmark.circle").font(.headline).accessibilityIdentifier("unsavedConversationReply")
+                                ChatBubble(msg: pending.message)
+                                Text(pending.message.provider ?? "Provider not recorded").font(.caption).foregroundStyle(Theme.secondary).accessibilityIdentifier("pendingReplyProvider")
+                                if let context = pending.message.recordContext, context.mode != .guide { RecordSourcesView(context: context) }
+                                Text("Keep Lumen open until this reply is saved. Retry saves it without another request.").font(.footnote).foregroundStyle(Theme.secondary)
+                                Button("Retry save", systemImage: "arrow.clockwise") { retryReply(pending.id) }
+                                    .frame(minHeight: 44).disabled(health.isConversationSaving || isSending)
+                                    .accessibilityIdentifier("retryConversationReply")
+                            }
+                        }
+                    }
                     Color.clear.frame(height: 4).id("bottom")
                 }
                 .padding(.horizontal, Theme.gutter).padding(.top, 8)
             }
             .scrollDismissesKeyboard(.interactively)
-            .onChange(of: health.chat.count) { _, _ in withAnimation(.spring(response: 0.45)) { proxy.scrollTo("bottom", anchor: .bottom) } }
-            .onChange(of: coach.isTyping) { _, _ in withAnimation { proxy.scrollTo("bottom", anchor: .bottom) } }
+            .onChange(of: health.chat.count) { _, _ in scrollToRecoveryOrBottom(proxy) }
+            .onChange(of: coach.isTyping) { _, _ in scrollToRecoveryOrBottom(proxy) }
+            .onChange(of: health.pendingConversationReplies.map(\.id)) { _, _ in scrollToRecoveryOrBottom(proxy) }
+            .onChange(of: conversationFailure) { _, failure in
+                if failure == nil { scrollToRecoveryOrBottom(proxy) }
+            }
         }
         .safeAreaInset(edge: .bottom) { inputBar }
         .lumenScreen(Theme.calm)
@@ -90,11 +119,12 @@ public struct CoachView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu {
                         Button("Make a multiweek plan", systemImage: "calendar.badge.plus") { focused = false; planning = true }
-                        if !health.chat.isEmpty { Button("New conversation", systemImage: "square.and.pencil") { health.newConversation() } }
+                        if !health.chat.isEmpty { Button("New conversation", systemImage: "square.and.pencil") { changeConversation { try await health.newConversation() } }.disabled(health.isConversationSaving || !health.conversationReady) }
                     } label: { Image(systemName: "ellipsis") }.accessibilityLabel("Conversation actions")
                 }
         }
         .alert("Couldn't save reply", isPresented: Binding(get: { saveError != nil }, set: { if !$0 { saveError = nil } })) { Button("OK") { saveError = nil } } message: { Text(saveError ?? "") }
+        .alert(conversationFailureTitle, isPresented: Binding(get: { conversationFailure != nil }, set: { if !$0 { conversationFailure = nil } })) { Button("OK") { conversationFailure = nil } } message: { Text(conversationFailure ?? "") }
         .sheet(isPresented: Binding(get: { voiceTarget != nil }, set: { if !$0 { voiceTarget = nil } })) {
             if let target = voiceTarget {
                 VoiceDraftSheet(target: target) { text in
@@ -127,7 +157,9 @@ public struct CoachView: View {
             VStack(alignment: .leading, spacing: 8) {
                 Label("Today’s context", systemImage: "checkmark.shield").font(.headline)
                 Text(companion.perspective(health: health).evidence.joined(separator: " · ")).font(.subheadline).foregroundStyle(Theme.secondary)
-                Text("\(companion.activeSymptoms.count) ongoing symptom \(companion.activeSymptoms.count == 1 ? "log" : "logs") · \(companion.documents.filter(\.includeInAssistant).count) shared records").font(.footnote).foregroundStyle(Theme.secondary)
+                let sharedCount = companion.documents.filter(\.includeInAssistant).count
+                Text("\(companion.activeSymptoms.count) ongoing symptom \(companion.activeSymptoms.count == 1 ? "log" : "logs") · \(sharedCount) shared \(sharedCount == 1 ? "record" : "records")")
+                    .font(.footnote).foregroundStyle(Theme.secondary).accessibilityIdentifier("conversationContextCounts")
                 Text("Provider: \(ai.brain.label). Relevant text is selected from shared Library documents for each question, alongside your current health summary.").font(.footnote).foregroundStyle(Theme.secondary)
             }.padding(18).surface()
             VStack(spacing: 10) {
@@ -143,6 +175,7 @@ public struct CoachView: View {
                         .surface(18)
                     }
                     .buttonStyle(.plain)
+                    .disabled(!canStartRequest)
                 }
             }
             Button("Make a multiweek plan", systemImage: "calendar.badge.plus") { planning = true }.frame(minHeight: 44).accessibilityIdentifier("startScheduledPlan")
@@ -169,7 +202,7 @@ public struct CoachView: View {
                 focused = false
                 voiceTarget = .init(conversationID: health.activeConversationID, originalDraft: draft)
             } label: { Image(systemName: "mic").font(.system(size: 20)).frame(width: 44, height: 44) }
-                .disabled(isSending || coach.isTyping).accessibilityLabel("Speak a message").accessibilityIdentifier("coachVoice")
+                .disabled(isSending || coach.isTyping || !health.conversationReady || health.isConversationSaving).accessibilityLabel("Speak a message").accessibilityIdentifier("coachVoice")
             if isSending {
                 Button { responseTask?.cancel(); AppRouter.shared.confirm("Response stopped") } label: {
                     Image(systemName: "stop.fill").frame(width: 44, height: 44)
@@ -192,36 +225,100 @@ public struct CoachView: View {
         .background(Theme.bg)
     }
 
-    var canSend: Bool { !draft.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && !coach.isTyping && !isSending }
+    var canSend: Bool { !draft.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && canStartRequest }
+    var canStartRequest: Bool { !coach.isTyping && !isSending && health.conversationReady && !health.isConversationSaving && health.pendingConversationReplies.isEmpty }
+
+    func scrollToRecoveryOrBottom(_ proxy: ScrollViewProxy) {
+        if let pending = health.pendingConversationReplies.first(where: { $0.owner.conversationID != health.activeConversationID }) {
+            // The recovery row can be inserted in the same update that presents
+            // the save alert. Resolve its ID after layout, and again when the
+            // alert closes, rather than leaving recovery below a long intro.
+            DispatchQueue.main.async {
+                guard health.pendingConversationReplies.contains(where: { $0.id == pending.id && $0.owner.conversationID != health.activeConversationID }) else { return }
+                withAnimation { proxy.scrollTo(pending.id, anchor: .top) }
+            }
+        } else { withAnimation { proxy.scrollTo("bottom", anchor: .bottom) } }
+    }
 
     func requestKeyboardSubmission(_ text: String) {
         let value = text.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !value.isEmpty, !coach.isTyping, !isSending else { return }
+        guard !value.isEmpty, canStartRequest else { return }
         keyboardSubmission = .init(conversationID: health.activeConversationID, originalDraft: value)
     }
 
     func send(_ text: String) {
         let t = text.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !t.isEmpty, !coach.isTyping, !isSending else { return }
-        let conversationID = health.ensureConversation()
-        let history = health.chat
-        draft = ""; focused = false; isSending = true
-        health.appendMessage(ChatMessage(role: .user, text: t), to: conversationID)
-        health.persist()
+        guard !t.isEmpty, canStartRequest else { return }
+        let submittedDraft = draft, target = health.activeConversationID
+        isSending = true
         responseTask = Task {
-            defer { isSending = false; responseTask = nil }
-            let answer = await coach.reply(to: t, health: health, sleepDebt: sleep.debt, conversationHistory: history)
-            guard !Task.isCancelled else { return }
-            let reply = ChatMessage(role: .coach, text: answer, provider: coach.lastReplySource, recordContext: coach.lastRecordContext)
-            guard health.appendMessage(reply, to: conversationID) else { return }
-            health.persist()
-            if PlanBuilder.isRequest(t), ChatCoachService.urgentResponse(for: t) == nil {
-                do {
-                    try companion.saveChecked(HealthDocument(title: "Plan · \(Date().formatted(date: .abbreviated, time: .omitted))", kind: .plan, body: answer, steps: PlanBuilder.steps(from: answer), source: "Lumen assistant · \(coach.lastReplySource)", messageID: reply.id, recordContext: reply.recordContext))
-                    AppRouter.shared.confirm("Plan saved to Library")
-                } catch { saveError = "The reply is in this conversation, but its plan wasn't saved. Use Save to Library to try again." }
+            var replyOwner: ConversationReplyOwner?
+            defer {
+                if let replyOwner { health.finishConversationReply(replyOwner) }
+                isSending = false; responseTask = nil
+            }
+            do {
+                let sent = try await health.sendUserMessageChecked(ChatMessage(role: .user, text: t), expectedConversationID: target)
+                replyOwner = sent.owner
+                guard let runningTask = responseTask,
+                      health.registerConversationReplyCancellation(sent.owner, cancel: { runningTask.cancel() }) else { return }
+                if draft == submittedDraft, health.activeConversationID == sent.owner.conversationID {
+                    // Clearing a submitted question must never erase separately
+                    // entered text while its save was preparing off-thread.
+                    if submittedDraft.trimmingCharacters(in: .whitespacesAndNewlines) == t { draft = ""; focused = false }
+                }
+                guard !Task.isCancelled, health.ownsReply(sent.owner) else { return }
+                let answer = await coach.reply(to: t, health: health, sleepDebt: sleep.debt, conversationHistory: sent.history)
+                guard !Task.isCancelled, health.ownsReply(sent.owner) else { return }
+                let reply = ChatMessage(role: .coach, text: answer, provider: coach.lastReplySource, recordContext: coach.lastRecordContext)
+                guard let id = health.retainConversationReply(reply, owner: sent.owner,
+                    savePlan: PlanBuilder.isRequest(t) && ChatCoachService.urgentResponse(for: t) == nil) else { return }
+                do { saveReplyPlan(try await health.savePendingConversationReply(id)) }
+                catch {
+                    if Task.isCancelled { health.discardConversationReply(id) }
+                    else if case ConversationSaveError.notReady = error { /* The inline pending reply remains available after the other save. */ }
+                    else if health.ownsReply(sent.owner) {
+                        conversationFailureTitle = "Couldn’t save reply"
+                        conversationFailure = "This reply hasn't been saved. Keep Lumen open and use Retry save below. Your question won't be sent again."
+                    }
+                }
+            } catch is CancellationError {
+                // Stop can cancel preparation before a user message is committed.
+            } catch {
+                if submittedDraft.isEmpty, draft.isEmpty, health.activeConversationID == target { draft = t }
+                conversationFailureTitle = "Couldn’t save question"
+                if let error = error as? ConversationSaveError { conversationFailure = error.localizedDescription }
+                else { conversationFailure = "Your question wasn't saved or sent. Your draft is still available. Try sending again." }
             }
         }
+    }
+
+    func changeConversation(_ action: @escaping @MainActor () async throws -> Void) {
+        Task { do { try await action() } catch {
+            conversationFailureTitle = "Couldn’t change conversation"
+            conversationFailure = "The conversation change wasn't saved. Your saved history is unchanged. Try again."
+        } }
+    }
+
+    func retryReply(_ id: String) {
+        Task {
+            do { saveReplyPlan(try await health.savePendingConversationReply(id)) }
+            catch {
+                conversationFailureTitle = "Couldn’t save reply"
+                conversationFailure = "This reply still hasn't been saved. Keep Lumen open and try saving again."
+            }
+        }
+    }
+
+    func saveReplyPlan(_ pending: PendingConversationReply) {
+        guard pending.savePlan else { return }
+        let reply = pending.message
+        do {
+            try companion.saveChecked(HealthDocument(title: "Plan · \(Date().formatted(date: .abbreviated, time: .omitted))", kind: .plan,
+                body: reply.text, steps: PlanBuilder.steps(from: reply.text), source: "Lumen assistant · \(reply.provider ?? "Provider not recorded")",
+                messageID: reply.id, recordContext: reply.recordContext))
+            AppRouter.shared.confirm("Plan saved to Library")
+        } catch { saveError = "The reply is in this conversation, but its plan wasn't saved. Use Save to Library to try again." }
     }
 }
 

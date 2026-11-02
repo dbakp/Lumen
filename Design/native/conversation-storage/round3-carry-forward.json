@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "scope": "Exact CoachView22 reconstructed by replacing only the new count-label block with the published count line; SHA256 equals recorded app22. Pending reply/reference/retry/origin-recovery UI is byte-identical. Separate old native screenshot boundaries remain; no new combined-suite claim.",
+  "path": "Lumen/Views/CoachView.swift",
+  "priorSHA256": "f90c1011aa24884282862093242c967e0ca6823693bc05aeefebd591c6c9d33a",
+  "currentSHA256": "08cafd670bf6d5de10cd934c5c43018d7ce113289a2e72b07d3cf2469a958858",
+  "publishedCountLineRevision": "d907ed36231ded674be4897d33aafaa66cc36fb4",
+  "replacementBefore": "                Text(\"\\(companion.activeSymptoms.count) ongoing symptom \\(companion.activeSymptoms.count == 1 ? \"log\" : \"logs\") \u00b7 \\(companion.documents.filter(\\.includeInAssistant).count) shared records\").font(.footnote).foregroundStyle(Theme.secondary)\n",
+  "replacementAfter": "                let sharedCount = companion.documents.filter(\\.includeInAssistant).count\n                Text(\"\\(companion.activeSymptoms.count) ongoing symptom \\(companion.activeSymptoms.count == 1 ? \"log\" : \"logs\") \u00b7 \\(sharedCount) shared \\(sharedCount == 1 ? \"record\" : \"records\")\")\n                    .font(.footnote).foregroundStyle(Theme.secondary).accessibilityIdentifier(\"conversationContextCounts\")\n",
+  "diff": "coach-r22-to-r23.diff"
+}

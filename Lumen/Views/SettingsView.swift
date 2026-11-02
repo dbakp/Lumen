@@ -15,6 +15,7 @@ public struct SettingsView: View {
 
     @AppStorage("lumen.appearance") private var appearance = "light"
     @State private var confirmErase = false
+    @State private var confirmClearConversation = false
     @State private var showWeightLog = false
     @State private var showCoachSetup = false
     @State private var showStravaSetup = false
@@ -68,6 +69,13 @@ public struct SettingsView: View {
                 Button("Erase everything", role: .destructive) { eraseAll() }
             } message: {
                 Text("Your profile, logs and settings are removed from this iPhone and you'll start fresh. Data in Apple Health isn't touched.")
+            }
+            .sheet(isPresented: $confirmClearConversation) {
+                ConversationRemovalSheet(action: "Clear", scope: "Messages and any unsaved reply in this conversation will be removed.",
+                                         failureTitle: "Couldn’t clear chat",
+                                         failureMessage: "Your saved messages are unchanged. Try clearing again.") {
+                    try await health.clearConversationChecked()
+                }
             }
             .task { await notifications.refreshAuthorization() }
             .onAppear { if !nameReady { nameDraft = sleep.profile.name; nameReady = true } }
@@ -335,7 +343,8 @@ public struct SettingsView: View {
                 Label("Library search", systemImage: "text.magnifyingglass")
             }.accessibilityIdentifier("librarySearchSettings")
             if !health.chat.isEmpty {
-                Button("Clear coach conversation", role: .destructive) { health.chat = []; health.persist() }
+                Button("Clear coach conversation", role: .destructive) { confirmClearConversation = true }
+                    .disabled(health.isConversationSaving || !health.conversationReady)
             }
         } header: {
             Text("Coach")

@@ -9,6 +9,8 @@ struct FHIRLiteralText: UIViewRepresentable {
     var lineSpacing: CGFloat = 0
     var color: Color = Theme.text
     var fitsContentWidth = false
+    var style: UIFont.TextStyle = .body
+    var selectable = true
     @Environment(\.dynamicTypeSize) private var typeSize
     final class Coordinator: NSObject, NSLayoutManagerDelegate {
         func layoutManager(_ layoutManager: NSLayoutManager, shouldBreakLineByHyphenatingBeforeCharacterAt charIndex: Int) -> Bool { false }
@@ -16,7 +18,8 @@ struct FHIRLiteralText: UIViewRepresentable {
     func makeCoordinator() -> Coordinator { Coordinator() }
     func makeUIView(context: Context) -> UITextView {
         let view = UITextView(usingTextLayoutManager: false)
-        view.isEditable = false; view.isSelectable = true; view.isScrollEnabled = false
+        view.isEditable = false; view.isSelectable = selectable; view.isScrollEnabled = false
+        view.isUserInteractionEnabled = selectable
         view.dataDetectorTypes = []; view.backgroundColor = .clear
         view.textContainerInset = .zero; view.textContainer.lineFragmentPadding = 0
         view.textContainer.lineBreakMode = .byWordWrapping
@@ -28,7 +31,8 @@ struct FHIRLiteralText: UIViewRepresentable {
         return view
     }
     func updateUIView(_ view: UITextView, context: Context) {
-        let value = FHIRLiteralTypography.value(text, size: typeSize, color: UIColor(color), wrapping: .byWordWrapping, lineSpacing: lineSpacing)
+        let value = FHIRLiteralTypography.value(text, size: typeSize, color: UIColor(color), style: style, wrapping: .byWordWrapping, lineSpacing: lineSpacing)
+        view.isSelectable = selectable; view.isUserInteractionEnabled = selectable
         if view.attributedText?.isEqual(to: value) != true {
             let range = view.selectedRange
             view.attributedText = value

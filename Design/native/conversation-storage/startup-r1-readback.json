@@ -1,0 +1,80 @@
+{
+  "scope": "Actual synthetic iOS startup UI and host file read-back after each terminal test; no physical-device or power-loss claim.",
+  "runnerSHA256": "8635deb83d3c75be5ea57651008de7e6aebe86a81e2b37d9f07665b3bc317194",
+  "cases": [
+    {
+      "mode": "corrupt",
+      "method": "testConversationStartupCorrupt",
+      "exitCode": 0,
+      "exactOriginalArchiveRetained": true,
+      "files": {
+        "conversations.json": {
+          "bytes": 29,
+          "sha256": "b4cfec36c1e460501b0ee8968329a889a29c584c1aba872c7f1ea8d0ffce759d"
+        },
+        "chat.json": {
+          "bytes": 139,
+          "sha256": "16186b2f7806e8e10ca340a40f10fb792b8f41233036ec26d26761214ab4ea66"
+        }
+      },
+      "archivePermissions": "0o644",
+      "readbackPassed": true
+    },
+    {
+      "mode": "unreadable",
+      "method": "testConversationStartupUnreadable",
+      "exitCode": 0,
+      "hostReadDeniedBeforeInspection": true,
+      "temporarySyntheticReadPermissionRestored": true,
+      "exactOriginalArchiveRetained": true,
+      "files": {
+        "conversations.json": {
+          "bytes": 304,
+          "sha256": "e1c2812a717d43a19fc857c06b6f4d907d752add997381e5b74ed032c1bfd3a4"
+        },
+        "chat.json": {
+          "bytes": 139,
+          "sha256": "16186b2f7806e8e10ca340a40f10fb792b8f41233036ec26d26761214ab4ea66"
+        }
+      },
+      "archivePermissions": "0o0",
+      "readbackPassed": true
+    },
+    {
+      "mode": "legacy",
+      "method": "testConversationStartupLegacyRetry",
+      "exitCode": 0,
+      "legacyLiteralMessagesAndSelectionRetained": true,
+      "files": {
+        "conversations.json": {
+          "bytes": 324,
+          "sha256": "4024d8ff3326bde7e2be3bb64ce686a76ad5744b66945e5301e9756005e9d837"
+        },
+        "chat.json": {
+          "bytes": 139,
+          "sha256": "6fc4710c2c09ae63316d3b4595f7cf1d4b0e1e4b99fad4698d910fee3b22cf2e"
+        }
+      },
+      "archivePermissions": "0o644",
+      "readbackPassed": true
+    },
+    {
+      "mode": "empty",
+      "method": "testConversationStartupEmptyArchive",
+      "exitCode": 0,
+      "emptyArchiveRetainedDespiteStaleLegacyMirror": true,
+      "files": {
+        "conversations.json": {
+          "bytes": 2,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "chat.json": {
+          "bytes": 139,
+          "sha256": "8c18111ec9ca1ae2cec0797545be83835667d9d40e1625e6aa8a596ab22a4cad"
+        }
+      },
+      "archivePermissions": "0o644",
+      "readbackPassed": true
+    }
+  ]
+}

@@ -668,6 +668,606 @@ final class LumenSmokeTests: XCTestCase {
         tap("cancelVoiceEdit"); tap("Discard changes")
         tap("cancelVoice"); tap("Discard draft")
     }
+    func conversationControl(_ path: String = "/counts") throws -> Data {
+        final class Response: @unchecked Sendable {
+            private let lock = NSLock()
+            private var result: Result<Data, Error>?
+            func store(_ value: Result<Data, Error>) { lock.lock(); defer { lock.unlock() }; result = value }
+            func read() throws -> Data { lock.lock(); defer { lock.unlock() }; return try XCTUnwrap(result).get() }
+        }
+        let response = Response(), completed = XCTestExpectation(description: "Loopback request counts")
+        let configuration = URLSessionConfiguration.ephemeral
+        configuration.timeoutIntervalForRequest = 10
+        let session = URLSession(configuration: configuration)
+        defer { session.invalidateAndCancel() }
+        session.dataTask(with: URL(string: "http://127.0.0.1:48731" + path)!) { data, reply, error in
+            if let error { response.store(.failure(error)) }
+            else if let data, [200, 204].contains((reply as? HTTPURLResponse)?.statusCode ?? 0) { response.store(.success(data)) }
+            else { response.store(.failure(URLError(.badServerResponse))) }
+            completed.fulfill()
+        }.resume()
+        guard XCTWaiter.wait(for: [completed], timeout: 15) == .completed else { throw URLError(.timedOut) }
+        return try response.read()
+    }
+
+    func conversationRouteCounts(_ route: String) throws -> [String: Int] {
+        let counts = try XCTUnwrap(JSONSerialization.jsonObject(with: conversationControl()) as? [String: [String: Int]])
+        return counts[route] ?? [:]
+    }
+
+    func conversationRequestCount() throws -> Int {
+        let counts = try conversationRouteCounts("native-stop")
+        return counts["requests"] ?? 0
+    }
+
+    func armHeldConversation() throws -> Int {
+        _ = try conversationControl("/arm-held")
+        return try conversationRouteCounts("native-held")["requests"] ?? 0
+    }
+
+    func waitForHeldConversation(_ expected: Int, completed: Bool = false, route: String = "native-held") throws {
+        for _ in 0..<40 {
+            let counts = try conversationRouteCounts(route)
+            XCTAssertEqual(counts["holdTimeouts"] ?? 0, 0, "The response must remain explicitly controlled")
+            let value = completed ? (counts["responsesWritten"] ?? 0) + (counts["clientDisconnected"] ?? 0) : counts["requests"] ?? 0
+            if value == expected { return }
+            Thread.sleep(forTimeInterval: 0.2)
+        }
+        XCTFail("Controlled conversation request did not reach its expected state")
+        throw URLError(.timedOut)
+    }
+
+    func relaunchConversations(large: Bool) {
+        app.terminate()
+        app.launchArguments = ["-lumen.appearance", large ? "dark" : "light"]
+            + (large ? ["-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"] : [])
+        app.launch()
+    }
+
+    func captureConversationChoice(_ prefix: String, title: String, large: Bool) {
+        let removal = app.scrollViews["conversationRemovalBody"].firstMatch
+        if !app.alerts.firstMatch.exists && removal.exists {
+            let retained = app.descendants(matching: .any).matching(identifier: "conversationRemovalRetained").firstMatch
+            let action = title.hasPrefix("Delete") ? "Delete" : "Clear"
+            let bar = app.navigationBars[action == "Delete" ? "Delete chat?" : "Clear chat?"]
+            XCTAssertTrue(bar.exists && retained.exists)
+            var reachedEnd = false
+            for step in 0..<20 {
+                snap(prefix + "-body-\(step)")
+                let frame = removal.frame
+                let top = max(frame.minY + 8, bar.frame.maxY + 8)
+                let bottom = frame.maxY - 8
+                let viewport = CGRect(x: frame.minX, y: top, width: frame.width, height: bottom - top)
+                if retained.isHittable && viewport.contains(retained.frame) { reachedEnd = true; break }
+                let start = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: frame.minX + 10, dy: bottom - 20))
+                let end = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: frame.minX + 10, dy: max(top + 20, bottom - 200)))
+                start.press(forDuration: 0.05, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.2)
+            }
+            XCTAssertTrue(reachedEnd, "Capture the complete retained-data assurance before accepting the removal warning")
+            for label in ["Cancel", action] {
+                let button = bar.buttons[label]
+                XCTAssertTrue(button.isHittable && app.frame.insetBy(dx: -0.5, dy: -0.5).contains(button.frame))
+            }
+            return
+        }
+        if !large { snap(prefix); return }
+        let alert = app.alerts.firstMatch
+        let sheet = app.sheets.firstMatch
+        let container = alert.exists ? alert : sheet
+        XCTAssertTrue(container.waitForExistence(timeout: 5), "Identify the native confirmation before claiming complete content/action capture")
+        XCTAssertTrue(container.staticTexts[title].exists || container.label == title,
+                      "Capture the intended native choice, not its background sheet")
+        capturePreferenceAlert(container, prefix: prefix)
+    }
+
+    func capturePendingConversationReply(_ prefix: String) {
+        captureConversationSection(heading: "unsavedConversationReply", action: "retryConversationReply", prefix: prefix)
+    }
+
+    func captureConversationSection(heading headingID: String, action actionID: String, prefix: String) {
+        let heading = app.descendants(matching: .any).matching(identifier: headingID).firstMatch
+        let retry = app.buttons[actionID].firstMatch
+        XCTAssertTrue(heading.exists && retry.exists)
+        let scroll = app.scrollViews.firstMatch
+        XCTAssertTrue(scroll.exists)
+        let input = app.descendants(matching: .any).matching(identifier: "coachInput").firstMatch
+        let top = max(app.navigationBars["Assistant"].frame.maxY + 8, scroll.frame.minY + 8)
+        // At XXXL the mic is bottom-aligned in a much taller composer. Its
+        // top is inside the composer, not the end of scrollable content.
+        let bottom = min(scroll.frame.maxY - 8, input.frame.minY - 20)
+        XCTAssertGreaterThan(bottom - top, 120)
+        func drag(up: Bool, distance: CGFloat) {
+            let y = up ? bottom - 12 : top + 12
+            let x = app.frame.minX + 10
+            let start = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: x, dy: y))
+            let end = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: x, dy: y + (up ? -distance : distance)))
+            start.press(forDuration: 0.05, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.2)
+        }
+        for _ in 0..<24 {
+            let y = heading.frame.minY
+            if y >= top && heading.frame.maxY <= bottom { break }
+            drag(up: y > top, distance: min(180, abs(y - top)))
+        }
+        XCTAssertGreaterThanOrEqual(heading.frame.minY, top - 1, "Start the retained packet with its complete unsaved heading")
+        for step in 0..<20 {
+            print("PENDING REPLY SWEEP", prefix, "step", step, "viewport", top, bottom, "scroll", scroll.frame, "heading", heading.frame, "retry", retry.frame)
+            snap(prefix + "-segment-\(step)")
+            if retry.frame.minY >= top && retry.frame.maxY <= bottom && retry.isHittable { return }
+            drag(up: true, distance: min(180, bottom - top - 40))
+        }
+        XCTFail("Complete conversation section/action sweep was not reached")
+    }
+
+    func enterConversationQuestion(_ text: String) {
+        let input = app.descendants(matching: .any).matching(identifier: "coachInput").firstMatch
+        XCTAssertTrue(input.waitForExistence(timeout: 10)); input.tap(); input.typeText(text)
+        XCTAssertTrue(app.buttons["coachSend"].isEnabled); tap("coachSend")
+    }
+
+    func openConversationClearControl() {
+        tab("Today"); tap("Settings")
+        let clear = app.buttons["Clear coach conversation"].firstMatch
+        reveal(clear); clear.tap()
+    }
+
+    func replaceConversationTitle(_ field: XCUIElement, large: Bool) {
+        let replacement = "Conversation reliability check updated"
+        if !large { replaceAmount(field, with: replacement); return }
+        reveal(field); field.tap()
+        print("RENAME WAITING FOR SOFTWARE KEYBOARD BEFORE TITLE EDIT")
+        XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 60))
+        field.coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap()
+        let button = app.buttons["Select All"].firstMatch, menu = app.menuItems["Select All"].firstMatch
+        if !(button.exists || menu.exists) { field.press(forDuration: 1) }
+        // At XXXL the native edit menu has one item per page. Its real paging
+        // controls must be followed instead of treating an off-page item as absent.
+        for page in 0..<8 {
+            snap("1032-rename-native-selection-menu-page-\(page)")
+            if (button.exists && button.isHittable) || (menu.exists && menu.isHittable) { break }
+            let next = app.buttons["Next Page"].firstMatch
+            guard next.exists && next.isEnabled && next.isHittable else { break }
+            next.tap()
+        }
+        let selectAll = button.exists && button.isHittable ? button : menu
+        XCTAssertTrue(selectAll.exists && selectAll.isHittable, "Reach Select All through the native paged edit menu")
+        selectAll.tap(); field.typeText(replacement)
+        XCTAssertEqual(field.value as? String, replacement)
+    }
+
+    func testConversationQuestionSaveFailure() throws { try conversationQuestionSaveFailure(large: false) }
+    func testConversationQuestionMirrorFailure() throws { try conversationQuestionSaveFailure(large: false, fault: "chat.json:2") }
+
+    func testConversationCountGrammar() throws {
+        for count in 0...2 {
+            quickFault("none:0", extra: ["-conversation-startup-fixture", "counts", "-conversation-count", String(count)])
+            tab("Assistant"); tap("Conversation history")
+            let rows = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'conversation-' "))
+            if count == 0 { XCTAssertEqual(rows.count, 0) }
+            else {
+                XCTAssertTrue(rows.firstMatch.waitForExistence(timeout: 10))
+                XCTAssertTrue(rows.firstMatch.label.contains("\(count) \(count == 1 ? "message" : "messages") ·"))
+                XCTAssertFalse(rows.firstMatch.label.contains("1 messages"))
+            }
+            snap("1072-history-count-\(count)"); tap("Done")
+            if count > 0 { tap("Conversation actions"); tap("New conversation") }
+            let summary = app.staticTexts["conversationContextCounts"].firstMatch
+            XCTAssertTrue(summary.waitForExistence(timeout: 10))
+            XCTAssertEqual(summary.label, "0 ongoing symptom logs · \(count) shared \(count == 1 ? "record" : "records")")
+            snap("1071-shared-count-\(count)")
+        }
+    }
+
+    func testConversationStartupCorruptLarge() throws {
+        quickFault("none:0", large: true, extra: ["-conversation-startup-fixture", "corrupt"]); tab("Assistant")
+        XCTAssertTrue(app.staticTexts["conversationStorageIssue"].waitForExistence(timeout: 10))
+        captureConversationSection(heading: "conversationStorageIssue", action: "retryOpeningConversations", prefix: "1068-startup-complete-explanation")
+        tap("retryOpeningConversations")
+        XCTAssertTrue(app.staticTexts["conversationStorageIssue"].waitForExistence(timeout: 10))
+        XCTAssertEqual(userMessages.count, 0); XCTAssertFalse(app.buttons["coachSend"].isEnabled)
+    }
+
+    func testConversationStartupCorrupt() throws { try conversationStartupUnavailable(mode: "corrupt") }
+    func testConversationStartupUnreadable() throws { try conversationStartupUnavailable(mode: "unreadable") }
+    func conversationStartupUnavailable(mode: String) throws {
+        quickFault("none:0", extra: ["-conversation-startup-fixture", mode]); tab("Assistant")
+        let issue = app.staticTexts["conversationStorageIssue"]
+        XCTAssertTrue(issue.waitForExistence(timeout: 10))
+        XCTAssertEqual(userMessages.count, 0); XCTAssertEqual(coachMessages.count, 0)
+        let input = app.descendants(matching: .any).matching(identifier: "coachInput").firstMatch
+        input.tap(); input.typeText("Synthetic unsent draft")
+        XCTAssertFalse(app.buttons["coachSend"].isEnabled)
+        let retry = app.buttons["retryOpeningConversations"].firstMatch
+        retry.tap(); XCTAssertTrue(issue.waitForExistence(timeout: 10))
+        XCTAssertEqual(input.value as? String, "Synthetic unsent draft")
+        XCTAssertFalse(app.buttons["coachSend"].isEnabled); snap("1036-startup-" + mode)
+        relaunchConversations(large: false); tab("Assistant")
+        XCTAssertTrue(issue.waitForExistence(timeout: 10)); XCTAssertEqual(userMessages.count, 0)
+        snap("1037-startup-" + mode + "-relaunch")
+    }
+
+    func testConversationStartupLegacyRetry() throws {
+        quickFault("conversations.json:1", extra: ["-conversation-startup-fixture", "legacy"]); tab("Assistant")
+        XCTAssertTrue(app.staticTexts["conversationStorageIssue"].waitForExistence(timeout: 10))
+        XCTAssertEqual(userMessages.count, 0); snap("1038-migration-save-failed")
+        tap("retryOpeningConversations")
+        XCTAssertTrue(userMessages.firstMatch.waitForExistence(timeout: 10))
+        XCTAssertEqual(userMessages.firstMatch.label, "Synthetic saved question\nCafé · 12,5 µg/L")
+        XCTAssertEqual(userMessages.count, 1); snap("1039-migration-retry")
+        relaunchConversations(large: false); tab("Assistant")
+        XCTAssertTrue(userMessages.firstMatch.waitForExistence(timeout: 10)); XCTAssertEqual(userMessages.count, 1)
+        XCTAssertEqual(userMessages.firstMatch.label, "Synthetic saved question\nCafé · 12,5 µg/L"); snap("1040-migration-relaunch")
+    }
+
+    func testConversationStartupEmptyArchive() throws {
+        quickFault("none:0", large: true, extra: ["-conversation-startup-fixture", "empty"]); tab("Assistant")
+        XCTAssertTrue(app.staticTexts["Let’s put it\nin context."].waitForExistence(timeout: 10))
+        XCTAssertEqual(userMessages.count, 0); snap("1041-empty-archive-stale-mirror")
+        relaunchConversations(large: true); tab("Assistant")
+        XCTAssertTrue(app.staticTexts["Let’s put it\nin context."].waitForExistence(timeout: 10))
+        XCTAssertEqual(userMessages.count, 0); tap("Conversation history")
+        XCTAssertEqual(app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'conversation-' ")).count, 0)
+        snap("1042-empty-archive-relaunch-history")
+    }
+
+    func testConversationHistoryNewFailureLarge() throws {
+        quickFault("conversations.json:1", large: true, extra: ["-conversation-startup-fixture", "saved"]); tab("Assistant")
+        XCTAssertTrue(userMessages.firstMatch.waitForExistence(timeout: 10)); tap("Conversation history"); tap("New conversation")
+        let alert = app.alerts["Couldn’t start conversation"]
+        XCTAssertTrue(alert.waitForExistence(timeout: 10))
+        captureConversationChoice("1043-history-new-failed", title: "Couldn’t start conversation", large: true)
+        alert.buttons["Keep"].tap()
+        XCTAssertTrue(app.buttons["conversation-synthetic-startup-conversation-39"].exists)
+        tap("Done"); XCTAssertEqual(userMessages.count, 1)
+        tap("Conversation history"); tap("New conversation")
+        XCTAssertTrue(app.staticTexts["Let’s put it\nin context."].waitForExistence(timeout: 10)); XCTAssertEqual(userMessages.count, 0)
+        relaunchConversations(large: true); tab("Assistant")
+        XCTAssertTrue(app.staticTexts["Let’s put it\nin context."].waitForExistence(timeout: 10)); snap("1044-history-new-relaunch")
+    }
+
+    func testConversationToolbarNewFailure() throws {
+        quickFault("conversations.json:1", extra: ["-conversation-startup-fixture", "saved"]); tab("Assistant")
+        XCTAssertTrue(userMessages.firstMatch.waitForExistence(timeout: 10)); tap("Conversation actions"); tap("New conversation")
+        let alert = app.alerts["Couldn’t change conversation"]
+        XCTAssertTrue(alert.waitForExistence(timeout: 10)); snap("1045-toolbar-new-failed"); alert.buttons["OK"].tap()
+        XCTAssertEqual(userMessages.count, 1)
+        tap("Conversation actions"); tap("New conversation")
+        XCTAssertTrue(app.staticTexts["Let’s put it\nin context."].waitForExistence(timeout: 10)); XCTAssertEqual(userMessages.count, 0)
+        relaunchConversations(large: false); tab("Assistant")
+        XCTAssertTrue(app.staticTexts["Let’s put it\nin context."].waitForExistence(timeout: 10)); snap("1046-toolbar-new-relaunch")
+    }
+
+    func testConversationSelectionFailure() throws {
+        quickFault("conversations.json:2", extra: ["-conversation-startup-fixture", "saved"]); tab("Assistant")
+        XCTAssertTrue(userMessages.firstMatch.waitForExistence(timeout: 10)); tap("Conversation actions"); tap("New conversation")
+        XCTAssertTrue(app.staticTexts["Let’s put it\nin context."].waitForExistence(timeout: 10))
+        let input = app.descendants(matching: .any).matching(identifier: "coachInput").firstMatch
+        input.tap(); input.typeText("Synthetic independent draft")
+        tap("Conversation history"); tap("conversation-synthetic-startup-conversation-39")
+        let alert = app.alerts["Couldn’t open conversation"]
+        XCTAssertTrue(alert.waitForExistence(timeout: 10)); snap("1047-selection-failed"); alert.buttons["Keep"].tap()
+        tap("Done"); XCTAssertEqual(userMessages.count, 0)
+        XCTAssertEqual(input.value as? String, "Synthetic independent draft"); snap("1048-selection-draft-kept")
+        tap("Conversation history"); tap("conversation-synthetic-startup-conversation-39")
+        XCTAssertTrue(userMessages.firstMatch.waitForExistence(timeout: 10))
+        XCTAssertEqual(input.value as? String, "Synthetic independent draft")
+        relaunchConversations(large: false); tab("Assistant")
+        XCTAssertTrue(userMessages.firstMatch.waitForExistence(timeout: 10))
+        XCTAssertEqual(userMessages.firstMatch.label, "Synthetic saved question\nCafé · 12,5 µg/L"); snap("1049-selection-relaunch")
+    }
+
+    func testConversationStaleRenameLarge() throws {
+        quickFault("none:0", large: true, extra: ["-conversation-startup-fixture", "saved", "-conversation-rename-change"]); tab("Assistant")
+        XCTAssertTrue(userMessages.firstMatch.waitForExistence(timeout: 10)); tap("Conversation history")
+        let row = app.buttons["conversation-synthetic-startup-conversation-39"]
+        row.press(forDuration: 1); tap("Rename")
+        let title = app.descendants(matching: .any).matching(identifier: "conversationTitleDraft").firstMatch
+        replaceConversationTitle(title, large: true); tap("Save")
+        let failure = app.staticTexts["conversationRenameFailure"]
+        XCTAssertTrue(failure.waitForExistence(timeout: 10)); XCTAssertTrue(failure.label.contains("saved title changed"))
+        XCTAssertEqual(title.value as? String, "Conversation reliability check updated")
+        capturePreferenceDisclosure("conversationRenameFailure", prefix: "1060-stale-rename-explanation", navigationTitle: "Rename")
+        tap("Cancel"); XCTAssertTrue(row.label.contains("Synthetic external title change")); snap("1061-newer-title-kept")
+        tap("Done"); relaunchConversations(large: true); tab("Assistant"); tap("Conversation history")
+        XCTAssertTrue(row.waitForExistence(timeout: 10)); XCTAssertTrue(row.label.contains("Synthetic external title change"))
+        row.tap(); XCTAssertTrue(userMessages.firstMatch.waitForExistence(timeout: 10))
+        XCTAssertEqual(userMessages.firstMatch.label, "Synthetic saved question\nCafé · 12,5 µg/L"); snap("1062-stale-rename-relaunch")
+    }
+
+    func testConversationPreparedSaveKeepsNewTyping() throws {
+        quickFault("none:0", extra: ["-conversation-startup-fixture", "saved", "-conversation-preparation-ui-hold", "-providerTransportUITestMode"]); tab("Assistant")
+        _ = try conversationControl("/arm-prepared")
+        let before = try conversationRouteCounts("prepared-stage")["requests"] ?? 0
+        let beforeProvider = try conversationRequestCount()
+        enterConversationQuestion("Complete HTTP control")
+        try waitForHeldConversation(before + 1, route: "prepared-stage")
+        XCTAssertEqual(userMessages.count, 1); XCTAssertEqual(try conversationRequestCount(), beforeProvider)
+        let input = app.descendants(matching: .any).matching(identifier: "coachInput").firstMatch
+        XCTAssertEqual(input.value as? String, "Complete HTTP control")
+        replaceAmount(input, with: "Independent next draft")
+        snap("1063-new-draft-before-prepared-commit")
+        _ = try conversationControl("/release-prepared")
+        try waitForHeldConversation(before + 1, completed: true, route: "prepared-stage")
+        XCTAssertTrue(coachMessages.firstMatch.waitForExistence(timeout: 30))
+        XCTAssertEqual(userMessages.count, 2); XCTAssertEqual(userMessages.element(boundBy: 1).label, "Complete HTTP control")
+        XCTAssertEqual(input.value as? String, "Independent next draft")
+        XCTAssertEqual(try conversationRequestCount(), beforeProvider + 1); XCTAssertTrue(app.buttons["coachSend"].isEnabled)
+        snap("1064-new-draft-after-prepared-commit")
+    }
+
+    func testConversationHeldDelete() throws { try conversationHeldRemoval(clear: false) }
+    func testConversationHeldClear() throws { try conversationHeldRemoval(clear: true) }
+    func conversationHeldRemoval(clear: Bool) throws {
+        quickFault("none:0", extra: ["-conversation-startup-fixture", "saved", "-providerTransportUITestMode"]); tab("Assistant")
+        let before = try armHeldConversation()
+        enterConversationQuestion("Held HTTP control")
+        try waitForHeldConversation(before + 1)
+        XCTAssertTrue(app.buttons["Stop response"].exists)
+        if clear {
+            openConversationClearControl(); tap("Clear")
+            XCTAssertTrue(app.buttons["Clear coach conversation"].waitForNonExistence(timeout: 10))
+            tap("Done"); tab("Assistant")
+        } else {
+            tap("Conversation history")
+            let row = app.buttons["conversation-synthetic-startup-conversation-39"]
+            row.press(forDuration: 1); tap("Delete"); tap("Delete")
+            XCTAssertTrue(row.waitForNonExistence(timeout: 10)); tap("Done")
+        }
+        XCTAssertTrue(app.buttons["Stop response"].waitForNonExistence(timeout: 10), "Removing the origin must cancel its running request")
+        XCTAssertEqual(userMessages.count, 0)
+        let input = app.descendants(matching: .any).matching(identifier: "coachInput").firstMatch
+        input.tap(); input.typeText("Independent next draft")
+        XCTAssertTrue(app.buttons["coachSend"].isEnabled, "Send must recover before the held response is released")
+        snap(clear ? "1050-clear-cancelled-held-request" : "1051-delete-cancelled-held-request")
+        _ = try conversationControl("/release-held"); try waitForHeldConversation(before + 1, completed: true)
+        XCTAssertFalse(coachMessages.firstMatch.waitForExistence(timeout: 3)); XCTAssertEqual(userMessages.count, 0)
+        XCTAssertEqual(input.value as? String, "Independent next draft")
+        relaunchConversations(large: false); tab("Assistant")
+        XCTAssertEqual(userMessages.count, 0); XCTAssertEqual(coachMessages.count, 0)
+        snap(clear ? "1052-clear-late-response-relaunch" : "1053-delete-late-response-relaunch")
+    }
+
+    func testConversationHeldStopAndNewTyping() throws {
+        quickFault("none:0", extra: ["-conversation-startup-fixture", "saved", "-providerTransportUITestMode"]); tab("Assistant")
+        let before = try armHeldConversation(), beforeComplete = try conversationRequestCount()
+        enterConversationQuestion("Held HTTP control"); try waitForHeldConversation(before + 1)
+        let input = app.descendants(matching: .any).matching(identifier: "coachInput").firstMatch
+        input.tap(); input.typeText("Complete HTTP control")
+        XCTAssertFalse(app.buttons["coachSend"].isEnabled); tap("Stop response")
+        XCTAssertTrue(app.buttons["Stop response"].waitForNonExistence(timeout: 10))
+        XCTAssertEqual(input.value as? String, "Complete HTTP control"); XCTAssertTrue(app.buttons["coachSend"].isEnabled)
+        snap("1054-stopped-request-keeps-next-question"); tap("coachSend")
+        XCTAssertTrue(coachMessages.firstMatch.waitForExistence(timeout: 30)); XCTAssertEqual(coachMessages.count, 1)
+        _ = try conversationControl("/release-held"); try waitForHeldConversation(before + 1, completed: true)
+        XCTAssertEqual(try conversationRequestCount(), beforeComplete + 1)
+        relaunchConversations(large: false); tab("Assistant")
+        XCTAssertTrue(coachMessages.firstMatch.waitForExistence(timeout: 10))
+        XCTAssertEqual(coachMessages.count, 1); XCTAssertEqual(userMessages.count, 3); snap("1055-new-question-outlives-stopped-response")
+    }
+
+    func testConversationHeldResetFresh() throws {
+        // Run only on the newly created, Lumen-only synthetic compact device.
+        quickFault("none:0", extra: ["-conversation-startup-fixture", "saved", "-providerTransportUITestMode"]); tab("Assistant")
+        let before = try armHeldConversation()
+        enterConversationQuestion("Held HTTP control"); try waitForHeldConversation(before + 1)
+        tab("Today"); tap("Settings")
+        let erase = app.buttons["Erase all data"].firstMatch; reveal(erase); erase.tap(); tap("Erase everything")
+        XCTAssertTrue(app.buttons["Get started"].waitForExistence(timeout: 10))
+        _ = try conversationControl("/release-held"); try waitForHeldConversation(before + 1, completed: true)
+        snap("1065-reset-before-late-response")
+        finishOnboarding(); tab("Assistant")
+        XCTAssertTrue(app.staticTexts["Let’s put it\nin context."].waitForExistence(timeout: 10))
+        XCTAssertEqual(userMessages.count, 0); XCTAssertEqual(coachMessages.count, 0)
+        let input = app.descendants(matching: .any).matching(identifier: "coachInput").firstMatch
+        input.tap(); input.typeText("Fresh after reset"); XCTAssertTrue(app.buttons["coachSend"].isEnabled)
+        relaunchConversations(large: false); tab("Assistant")
+        XCTAssertTrue(app.staticTexts["Let’s put it\nin context."].waitForExistence(timeout: 10))
+        XCTAssertFalse(app.staticTexts["conversationStorageIssue"].exists)
+        input.tap(); input.typeText("Fresh after relaunch"); XCTAssertTrue(app.buttons["coachSend"].isEnabled)
+        XCTAssertEqual(userMessages.count, 0); XCTAssertEqual(coachMessages.count, 0); snap("1066-reset-late-response-relaunch")
+    }
+
+    func testConversationHeldRestore() throws {
+        quickFault("none:0", extra: ["-conversation-startup-fixture", "restore", "-providerTransportUITestMode"]); tab("Assistant")
+        let before = try armHeldConversation()
+        enterConversationQuestion("Held HTTP control"); try waitForHeldConversation(before + 1)
+        let heldAt = Date()
+        openBackupSettings(); unlockBackup(); _ = backupPreview()
+        XCTAssertLessThan(Date().timeIntervalSince(heldAt), 50, "Restore must occur before the real request deadline")
+        confirmBackupRestore()
+        app.navigationBars["Backup & restore"].buttons.element(boundBy: 0).tap(); tap("Done"); tab("Assistant")
+        XCTAssertTrue(app.buttons["Stop response"].waitForNonExistence(timeout: 10))
+        XCTAssertTrue(app.staticTexts["Let’s put it\nin context."].waitForExistence(timeout: 10))
+        let input = app.descendants(matching: .any).matching(identifier: "coachInput").firstMatch
+        input.tap(); input.typeText("Fresh after restore"); XCTAssertTrue(app.buttons["coachSend"].isEnabled)
+        XCTAssertLessThan(Date().timeIntervalSince(heldAt), 55, "Cancellation must be proved before the 60-second timeout")
+        _ = try conversationControl("/release-held"); try waitForHeldConversation(before + 1, completed: true)
+        XCTAssertFalse(coachMessages.firstMatch.waitForExistence(timeout: 3)); XCTAssertEqual(input.value as? String, "Fresh after restore")
+        tap("Conversation history")
+        XCTAssertTrue(app.buttons["conversation-synthetic-restore-missing-39"].exists)
+        tap("conversation-synthetic-startup-conversation-39")
+        XCTAssertTrue(userMessages.firstMatch.waitForExistence(timeout: 10)); XCTAssertEqual(userMessages.count, 2); XCTAssertEqual(coachMessages.count, 0)
+        relaunchConversations(large: false); tab("Assistant")
+        XCTAssertTrue(userMessages.firstMatch.waitForExistence(timeout: 10)); XCTAssertEqual(userMessages.count, 2); XCTAssertEqual(coachMessages.count, 0)
+        snap("1067-restored-origin-rejects-late-response")
+    }
+
+    func testConversationRestoreDisclosureLarge() throws {
+        quickFault("none:0", large: true, extra: ["-conversation-startup-fixture", "restore"])
+        openBackupSettings(); unlockBackup(); _ = backupPreview()
+        let restore = app.buttons["restoreBackup"].firstMatch; reveal(restore); restore.tap()
+        let alert = app.alerts["Restore missing records?"]
+        XCTAssertTrue(alert.waitForExistence(timeout: 10))
+        capturePreferenceAlert(alert, prefix: "1069-restore-reply-disclosure")
+        alert.buttons["Cancel"].tap()
+        XCTAssertTrue(app.buttons["restoreBackup"].exists)
+    }
+
+    func testConversationHeldReferenceReplyRecovery() throws {
+        quickFault("conversations.json:3", extra: ["-conversation-startup-fixture", "references", "-providerTransportUITestMode"]); tab("Assistant")
+        let before = try armHeldConversation()
+        enterConversationQuestion("Held HTTP control ferritin"); try waitForHeldConversation(before + 1)
+        tap("Conversation actions"); tap("New conversation")
+        XCTAssertTrue(app.staticTexts["Let’s put it\nin context."].waitForExistence(timeout: 10))
+        XCTAssertTrue(app.buttons["Stop response"].exists, "Navigation must preserve a request to its intact origin")
+        _ = try conversationControl("/release-held"); try waitForHeldConversation(before + 1, completed: true)
+        let failed = app.alerts["Couldn’t save reply"]
+        XCTAssertTrue(failed.waitForExistence(timeout: 10)); failed.buttons["OK"].tap()
+        let reopen = app.buttons["Open conversation"].firstMatch
+        XCTAssertTrue(reopen.waitForExistence(timeout: 5)); snap("1056-pending-recovery-before-visibility-assertion"); XCTAssertTrue(reopen.isHittable)
+        snap("1056-inactive-pending-recovery-visible"); reopen.tap()
+        let pending = app.descendants(matching: .any).matching(identifier: "unsavedConversationReply").firstMatch
+        XCTAssertTrue(pending.waitForExistence(timeout: 10))
+        let exactReply = coachMessages.firstMatch.label
+        XCTAssertTrue(exactReply.contains("Synthetic complete HTTP control."))
+        let provider = app.staticTexts["pendingReplyProvider"].firstMatch
+        XCTAssertTrue(provider.exists); let exactProvider = provider.label
+        capturePendingConversationReply("1057-pending-complete-packet")
+        reveal(provider); snap("1057-pending-provider")
+        openLibraryReference(); let exactReference = referenceExcerpt.label; snap("1057-pending-exact-reference"); tap("Done")
+        let retry = app.buttons["retryConversationReply"].firstMatch; reveal(retry); retry.tap()
+        XCTAssertTrue(pending.waitForNonExistence(timeout: 10)); XCTAssertEqual(coachMessages.firstMatch.label, exactReply)
+        XCTAssertEqual(app.staticTexts.matching(NSPredicate(format: "identifier BEGINSWITH 'savedReplyProvider-' ")).firstMatch.label, exactProvider)
+        openLibraryReference(); XCTAssertEqual(referenceExcerpt.label, exactReference); snap("1057-retried-exact-reference"); tap("Done")
+        XCTAssertEqual(try conversationRouteCounts("native-held")["requests"], before + 1)
+        let save = app.buttons["Save to Library"].firstMatch; reveal(save); save.tap(); snap("1058-reference-rich-reply-saved")
+        tap("Conversation history"); let row = app.buttons["conversation-synthetic-startup-conversation-39"]
+        row.press(forDuration: 1); tap("Delete"); tap("Delete"); XCTAssertTrue(row.waitForNonExistence(timeout: 10)); tap("Done")
+        tab("Library")
+        let saved = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Synthetic complete HTTP control' ")).firstMatch; reveal(saved); saved.tap()
+        XCTAssertTrue(app.navigationBars["Document"].waitForExistence(timeout: 10)); snap("1059-independent-library-copy-after-delete")
+    }
+    func testConversationQuestionSaveFailureLarge() throws { try conversationQuestionSaveFailure(large: true) }
+    func conversationQuestionSaveFailure(large: Bool, fault: String = "conversations.json:2") throws {
+        quickFault(fault, large: large, extra: ["-providerTransportUITestMode"]); tab("Assistant")
+        let before = try conversationRequestCount()
+        enterConversationQuestion("Complete HTTP control")
+        let alert = app.alerts["Couldn’t save question"]
+        XCTAssertTrue(alert.waitForExistence(timeout: 10)); captureConversationChoice("1010-question-save-failed", title: "Couldn’t save question", large: large)
+        XCTAssertEqual(userMessages.count, 0); XCTAssertEqual(coachMessages.count, 0)
+        XCTAssertEqual(try conversationRequestCount(), before, "A failed user save must start no provider request")
+        alert.buttons["OK"].tap()
+        let input = app.descendants(matching: .any).matching(identifier: "coachInput").firstMatch
+        XCTAssertEqual(input.value as? String, "Complete HTTP control"); snap("1011-question-draft-retained")
+        tap("coachSend"); XCTAssertTrue(coachMessages.firstMatch.waitForExistence(timeout: 30))
+        XCTAssertEqual(userMessages.count, 1); XCTAssertEqual(try conversationRequestCount(), before + 1)
+        snap("1012-question-retry-saved")
+        relaunchConversations(large: large); tab("Assistant")
+        XCTAssertTrue(coachMessages.firstMatch.waitForExistence(timeout: 10)); XCTAssertEqual(userMessages.count, 1)
+        XCTAssertEqual(userMessages.firstMatch.label, "Complete HTTP control"); snap("1013-question-relaunch")
+    }
+
+    func testConversationReplySaveFailure() throws { try conversationReplySaveFailure(large: false) }
+    func testConversationReplySaveFailureLarge() throws { try conversationReplySaveFailure(large: true) }
+    func conversationReplySaveFailure(large: Bool) throws {
+        quickFault("conversations.json:3", large: large, extra: ["-providerTransportUITestMode"]); tab("Assistant")
+        let before = try conversationRequestCount()
+        enterConversationQuestion("Complete HTTP control")
+        let alert = app.alerts["Couldn’t save reply"]
+        XCTAssertTrue(alert.waitForExistence(timeout: 30)); captureConversationChoice("1014-reply-save-failed", title: "Couldn’t save reply", large: large)
+        XCTAssertEqual(try conversationRequestCount(), before + 1)
+        alert.buttons["OK"].tap()
+        let unsaved = app.descendants(matching: .any).matching(identifier: "unsavedConversationReply").firstMatch
+        XCTAssertTrue(unsaved.waitForExistence(timeout: 5))
+        XCTAssertEqual(userMessages.count, 1)
+        let exactReply = coachMessages.firstMatch.label
+        if large { capturePendingConversationReply("1015-complete-pending-packet") }
+        let retry = app.buttons["retryConversationReply"].firstMatch; reveal(retry)
+        XCTAssertTrue(retry.isEnabled); snap("1015-reply-retained-before-retry"); retry.tap()
+        XCTAssertTrue(unsaved.waitForNonExistence(timeout: 10))
+        XCTAssertEqual(try conversationRequestCount(), before + 1, "Retry save must never call the provider again")
+        XCTAssertEqual(coachMessages.count, 1); XCTAssertEqual(coachMessages.firstMatch.label, exactReply)
+        snap("1016-reply-storage-retry")
+        relaunchConversations(large: large); tab("Assistant")
+        XCTAssertTrue(coachMessages.firstMatch.waitForExistence(timeout: 10))
+        XCTAssertEqual(coachMessages.count, 1); XCTAssertEqual(coachMessages.firstMatch.label, exactReply)
+        XCTAssertEqual(try conversationRequestCount(), before + 1); snap("1017-reply-relaunch")
+    }
+
+    func testConversationRenameFailureAndUnsentRelaunch() throws { try conversationRenameFailureAndUnsentRelaunch(large: false) }
+    func testConversationRenameFailureAndUnsentRelaunchLarge() throws { try conversationRenameFailureAndUnsentRelaunch(large: true) }
+    func conversationRenameFailureAndUnsentRelaunch(large: Bool) throws {
+        quickFault("conversations.json:4", large: large); tab("Assistant")
+        enterConversationQuestion("Conversation reliability check")
+        XCTAssertTrue(coachMessages.firstMatch.waitForExistence(timeout: 30))
+        tap("Conversation history")
+        let row = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'conversation-' ")).firstMatch
+        XCTAssertTrue(row.waitForExistence(timeout: 10)); let savedID = row.identifier
+        row.press(forDuration: 1); tap("Rename")
+        let title = app.descendants(matching: .any).matching(identifier: "conversationTitleDraft").firstMatch
+        XCTAssertTrue(title.waitForExistence(timeout: 5))
+        XCTAssertTrue(app.navigationBars["Rename"].exists)
+        replaceConversationTitle(title, large: large)
+        let key = app.keyboards.keys["x"].firstMatch
+        print("RENAME WAITING FOR VISIBLE SOFTWARE X KEY", large ? "XXXL" : "normal")
+        XCTAssertTrue(key.waitForExistence(timeout: 60) && key.isHittable); key.tap()
+        XCTAssertEqual(title.value as? String, "Conversation reliability check updatedx")
+        let delete = app.keyboards.keys["delete"].firstMatch
+        XCTAssertTrue(delete.exists && delete.isHittable); delete.tap()
+        XCTAssertEqual(title.value as? String, "Conversation reliability check updated")
+        let keyboard = app.keyboards.firstMatch
+        XCTAssertTrue(keyboard.frame.height > 100 && app.frame.insetBy(dx: -0.5, dy: -0.5).contains(keyboard.frame))
+        print("RENAME VISIBLE KEYBOARD FRAME", keyboard.frame, "application", app.frame)
+        snap("1034-rename-typed-keyboard"); tap("Save")
+        let failure = app.staticTexts["conversationRenameFailure"]
+        XCTAssertTrue(failure.waitForExistence(timeout: 10))
+        if large { reveal(failure) }
+        XCTAssertEqual(title.value as? String, "Conversation reliability check updated"); snap("1018-rename-draft-retained")
+        tap("Save"); XCTAssertTrue(app.navigationBars["Rename"].waitForNonExistence(timeout: 10))
+        XCTAssertTrue(app.buttons[savedID].label.contains("Conversation reliability check updated")); snap("1019-rename-saved")
+        tap("New conversation")
+        XCTAssertTrue(app.staticTexts["Let’s put it\nin context."].waitForExistence(timeout: 10))
+        relaunchConversations(large: large); tab("Assistant")
+        XCTAssertTrue(app.staticTexts["Let’s put it\nin context."].waitForExistence(timeout: 10)); XCTAssertEqual(userMessages.count, 0)
+        snap("1020-unsent-selection-relaunch"); tap("Conversation history")
+        XCTAssertTrue(app.buttons[savedID].waitForExistence(timeout: 10)); XCTAssertTrue(app.buttons[savedID].label.contains("Conversation reliability check updated"))
+        app.buttons[savedID].tap(); XCTAssertTrue(userMessages.firstMatch.waitForExistence(timeout: 10))
+        XCTAssertEqual(userMessages.firstMatch.label, "Conversation reliability check"); snap("1021-renamed-history-reopened")
+    }
+
+    func testConversationDeleteFailureAndFinalRelaunch() throws { try conversationDeleteFailureAndFinalRelaunch(large: false) }
+    func testConversationDeleteFailureAndFinalRelaunchLarge() throws { try conversationDeleteFailureAndFinalRelaunch(large: true) }
+    func conversationDeleteFailureAndFinalRelaunch(large: Bool) throws {
+        quickFault("conversations.json:4", large: large); tab("Assistant")
+        enterConversationQuestion("Synthetic final conversation")
+        XCTAssertTrue(coachMessages.firstMatch.waitForExistence(timeout: 30)); tap("Conversation history")
+        let row = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'conversation-' ")).firstMatch
+        XCTAssertTrue(row.waitForExistence(timeout: 10)); let savedID = row.identifier
+        row.press(forDuration: 1); tap("Delete"); captureConversationChoice("1022-delete-confirmation", title: "Delete this conversation?", large: large)
+        tap("Cancel")
+        XCTAssertTrue(app.buttons["Delete"].firstMatch.waitForNonExistence(timeout: 5)); XCTAssertTrue(app.buttons[savedID].exists)
+        snap("1022-delete-dismissed-keeps-history")
+        app.buttons[savedID].press(forDuration: 1); tap("Delete"); tap("Delete")
+        let alert = app.alerts["Couldn’t delete chat"]
+        XCTAssertTrue(alert.waitForExistence(timeout: 10)); captureConversationChoice("1023-delete-save-failed", title: "Couldn’t delete chat", large: large); alert.buttons["Keep"].tap()
+        XCTAssertTrue(app.buttons[savedID].exists); snap("1024-failed-delete-keeps-history")
+        app.buttons[savedID].press(forDuration: 1); tap("Delete"); tap("Delete")
+        XCTAssertTrue(app.buttons[savedID].waitForNonExistence(timeout: 10)); snap("1025-final-conversation-deleted"); tap("Done")
+        relaunchConversations(large: large); tab("Assistant")
+        XCTAssertTrue(app.staticTexts["Let’s put it\nin context."].waitForExistence(timeout: 10)); XCTAssertEqual(userMessages.count, 0)
+        tap("Conversation history"); XCTAssertEqual(app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'conversation-' ")).count, 0)
+        snap("1026-final-deletion-relaunch-empty")
+    }
+
+    func testConversationClearFailureAndRelaunch() throws { conversationClearFailureAndRelaunch(large: false) }
+    func testConversationClearFailureAndRelaunchLarge() throws { conversationClearFailureAndRelaunch(large: true) }
+    func conversationClearFailureAndRelaunch(large: Bool) {
+        quickFault("conversations.json:4", large: large); tab("Assistant")
+        enterConversationQuestion("Synthetic conversation to clear")
+        XCTAssertTrue(coachMessages.firstMatch.waitForExistence(timeout: 30))
+        openConversationClearControl()
+        captureConversationChoice("1027-clear-confirmation", title: "Clear this conversation?", large: large); tap("Clear")
+        let alert = app.alerts["Couldn’t clear chat"]
+        XCTAssertTrue(alert.waitForExistence(timeout: 10)); captureConversationChoice("1028-clear-save-failed", title: "Couldn’t clear chat", large: large)
+        alert.buttons["Keep"].tap(); tap("Done"); tab("Assistant")
+        XCTAssertEqual(userMessages.count, 1); XCTAssertEqual(coachMessages.count, 1); snap("1029-failed-clear-keeps-messages")
+        openConversationClearControl(); tap("Clear")
+        XCTAssertTrue(app.buttons["Clear coach conversation"].waitForNonExistence(timeout: 10)); tap("Done"); tab("Assistant")
+        XCTAssertTrue(app.staticTexts["Let’s put it\nin context."].waitForExistence(timeout: 10)); snap("1030-cleared-conversation")
+        relaunchConversations(large: large); tab("Assistant")
+        XCTAssertTrue(app.staticTexts["Let’s put it\nin context."].waitForExistence(timeout: 10))
+        XCTAssertEqual(userMessages.count, 0); XCTAssertEqual(coachMessages.count, 0); snap("1031-clear-relaunch-empty")
+    }
+
     func testComposerKeyboardReturn() throws {
         finishOnboarding(); tab("Assistant")
         let input = app.descendants(matching: .any).matching(identifier: "coachInput").firstMatch
@@ -767,8 +1367,8 @@ final class LumenSmokeTests: XCTestCase {
         reveal(restore); XCTAssertTrue(restore.waitForExistence(timeout: 30)); snap("117-backup-preview")
         app.swipeUp(velocity: .slow); snap("117a-backup-restore-options")
         restore.tap(); XCTAssertTrue(app.alerts["Restore missing records?"].waitForExistence(timeout: 5))
-        XCTAssertTrue(app.buttons["Keep reviewing"].exists); snap("118-backup-restore-confirmation")
-        tap("Keep reviewing"); restore.tap(); tap("Restore records")
+        XCTAssertTrue(app.buttons["Cancel"].exists); snap("118-backup-restore-confirmation")
+        tap("Cancel"); restore.tap(); tap("Restore records")
         XCTAssertTrue(app.staticTexts["backupRestored"].waitForExistence(timeout: 30))
         let share = app.buttons["shareBackup"].firstMatch; reveal(share)
         snap("119-backup-restored")
@@ -1876,7 +2476,7 @@ final class LumenSmokeTests: XCTestCase {
     }
 
     func openLibraryReference() {
-        let disclosure = app.buttons["Library matches"].firstMatch; reveal(disclosure)
+        let disclosure = app.buttons["libraryReferencesToggle"].firstMatch; reveal(disclosure)
         let source = app.buttons["library-reference-1"].firstMatch
         if disclosure.value as? String == "Collapsed" { disclosure.tap() }
         reveal(source); source.tap()
@@ -3564,12 +4164,12 @@ final class LumenSmokeTests: XCTestCase {
         app.launch()
         if personal { openPersonalPreferences() } else { openHealthConnections() }
     }
-    func capturePreferenceDisclosure(_ identifier: String, prefix: String) {
+    func capturePreferenceDisclosure(_ identifier: String, prefix: String, navigationTitle: String? = nil) {
         let text = app.staticTexts[identifier].firstMatch
         for _ in 0..<24 where !text.exists { app.swipeUp(velocity: .slow) }
         XCTAssertTrue(text.exists)
         let contextBar = app.navigationBars["Personal context"].firstMatch
-        let navigation = contextBar.exists ? contextBar : app.navigationBars.firstMatch
+        let navigation = navigationTitle.map { app.navigationBars[$0] } ?? (contextBar.exists ? contextBar : app.navigationBars.firstMatch)
         // The compact verification phone has a physical Home button and no
         // bottom safe area: its measured native footer ends at exactly667.
         let bottom = app.frame.maxY - (app.frame.height <= 667 ? 0 : 24)
@@ -3789,6 +4389,17 @@ final class LumenSmokeTests: XCTestCase {
         let completed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label BEGINSWITH 'Preference checks passed' OR label BEGINSWITH 'Preference checks failed'"), object: status)
         XCTAssertEqual(XCTWaiter.wait(for: [completed], timeout: 45), .completed)
         XCTAssertEqual(status.label, "Preference checks passed"); snap("1000-preference-native-report")
+    }
+
+    func testConversationNativeBackendProbe() throws {
+        app.terminate()
+        app.launchArguments = ["-resetForUITests", "-conversation-native-probe", "-quick-save-fault", "conversations.json:3,5,8"]
+        app.launch()
+        let status = app.staticTexts["conversationProbeStatus"].firstMatch
+        let completed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label BEGINSWITH 'Conversation checks passed' OR label BEGINSWITH 'Conversation checks failed'"), object: status)
+        XCTAssertEqual(XCTWaiter.wait(for: [completed], timeout: 90), .completed)
+        XCTAssertEqual(status.label, "Conversation checks passed")
+        snap("1033-conversation-native-report")
     }
     func testPersonalContextStaleReload() throws {
         quickFault("none:0", large: true, extra: ["-preference-context-change"]); openPersonalPreferences()

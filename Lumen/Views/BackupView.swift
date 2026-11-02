@@ -21,6 +21,9 @@ struct BackupView: View {
     @State private var preferences = false
     @State private var confirmRestore = false
     @State private var restored = false
+    #if DEBUG && targetEnvironment(simulator)
+    @State private var fixtureSelected = false
+    #endif
     private var busy: Bool { operation != nil }
     private var unavailable: Bool { busy || health.isSyncing }
     private var scrollTarget: String? {
@@ -126,13 +129,21 @@ struct BackupView: View {
         } message: { Text(errorMessage ?? "") }
         .alert("Restore missing records?", isPresented: $confirmRestore) {
             Button("Restore records") { restore() }
-            Button("Keep reviewing", role: .cancel) { }
+            Button("Cancel", role: .cancel) { }
         } message: {
-            Text(preferences ? "Missing records will be added and your profile and preferences will be replaced. Your current versions of existing records will be kept." : "Missing records will be added. Your current records, profile and preferences will be kept.")
+            Text((preferences ? "Missing records will be added and your profile and preferences will be replaced. Your current versions of existing records will be kept." : "Missing records will be added. Your current records, profile and preferences will be kept.") + " Restoring stops replies in progress and discards unsaved replies.")
         }
         .overlay(alignment: .bottom) {
             if health.isSyncing { Text("Health is syncing. Backup will be available shortly.").font(.footnote).padding().background(.regularMaterial, in: RoundedRectangle(cornerRadius: 16)).padding() }
         }
+        #if DEBUG && targetEnvironment(simulator)
+        .task {
+            if ConversationNativeFixtures.restoreRequested, !fixtureSelected {
+                fixtureSelected = true
+                select(ConversationNativeFixtures.restoreFixtureURL)
+            }
+        }
+        #endif
         .task(id: scrollTarget) {
             guard let target = scrollTarget else { return }
             // Let the new Form rows finish layout before resolving their scroll target.
@@ -248,7 +259,7 @@ private struct BackupPasswordView: View {
                         Text("Repeat password").font(.caption).foregroundStyle(Theme.secondary)
                         SecureField("Enter it again", text: $confirmation).textContentType(.newPassword).focused($field, equals: 2).submitLabel(.done).onSubmit { field = nil }.accessibilityLabel("Repeat password").accessibilityIdentifier("confirmBackupPassword")
                     }
-                } header: { Text("At least 12 characters").foregroundStyle(Theme.secondary) } footer: {
+                } header: { Text("At least 20 characters").foregroundStyle(Theme.secondary) } footer: {
                     if !confirmation.isEmpty, !matches { Text("The passwords don’t match.").foregroundStyle(Theme.secondary) }
                     else if password.utf8.count > 256 { Text("Use a shorter password.").foregroundStyle(Theme.secondary) }
                     else { Text("A few unrelated words can make a memorable password.").foregroundStyle(Theme.secondary) }

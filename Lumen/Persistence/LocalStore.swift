@@ -43,11 +43,30 @@ public enum LocalStore {
         try await saveLinkedFilesChecked(files, canCommit: canCommit, didCommit: didCommit)
     }
 
+    static func loadConversationsChecked() throws -> ConversationFiles.Loaded {
+        try ConversationFiles.load(from: checkedDirectory()) {
+            guard let data = UserDefaults.standard.data(forKey: "lumen.health.chat.v1") else { return [] }
+            // Pre-file defaults used JSONEncoder's original date representation.
+            return try JSONDecoder().decode([ChatMessage].self, from: data)
+        }
+    }
+
+    @MainActor static func saveConversationsChecked(_ conversations: [HealthConversation], activeID: String?,
+                                                    canCommit: () -> Bool, didCommit: () -> Void) async throws {
+        let files = try ConversationFiles.encoded(conversations, activeID: activeID)
+        try await saveLinkedFilesChecked(files, canCommit: canCommit, didCommit: didCommit)
+    }
+
     @MainActor private static func saveLinkedFilesChecked(_ files: [String: Data], canCommit: () -> Bool, didCommit: () -> Void) async throws {
-        let root = directory, capturedRevision = revision
+        let root = try checkedDirectory(), capturedRevision = revision
         let transaction = try await Task.detached(priority: .userInitiated) {
-            try BackupFileTransaction.prepare(files, photoFiles: [:], into: root, preserveByLink: true)
+            try ConversationFiles.prepareLinkedChange(files, into: root)
         }.value
+        #if DEBUG && targetEnvironment(simulator)
+        if files["conversations.json"] != nil, ConversationPreparedWriteFixture.armed {
+            try await ConversationPreparedWriteFixture.pauseIfArmed()
+        }
+        #endif
         // An uncommitted transaction removes its stage off-thread on release.
         try Task.checkCancellation()
         guard canCommit() else { throw BackupError.busy }
@@ -64,24 +83,26 @@ public enum LocalStore {
     }()
 
     public static var directory: URL {
-        _ = removeAbandonedStages
+        // Legacy optional readers still return nil on failure. Do not let their
+        // folder lookup discard a previous copy or create over failed recovery.
+        // Checked callers use checkedDirectory() and receive the actual error.
+        (try? checkedDirectory()) ?? storageRoot
+    }
+
+    private static var storageRoot: URL {
         let base = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: AppGroup.id)
             ?? FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
-        let dir = base.appendingPathComponent("LumenData", isDirectory: true)
-        let previous = dir.appendingPathExtension("previous")
-        if !FileManager.default.fileExists(atPath: dir.path), FileManager.default.fileExists(atPath: previous.path) {
-            try? FileManager.default.moveItem(at: previous, to: dir)
-        }
-        if FileManager.default.fileExists(atPath: dir.path), FileManager.default.fileExists(atPath: previous.path) {
-            try? FileManager.default.removeItem(at: previous)
-        }
-        if !FileManager.default.fileExists(atPath: dir.path) {
-            try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
-        }
+        return base.appendingPathComponent("LumenData", isDirectory: true)
+    }
+
+    static func checkedDirectory() throws -> URL {
+        _ = removeAbandonedStages
+        let dir = storageRoot
+        try BackupFiles.openDirectory(dir, createIfMissing: true)
         return dir
     }
 
-    private static func url(_ name: String) -> URL { directory.appendingPathComponent("\(name).json") }
+    private static func url(_ name: String) throws -> URL { try checkedDirectory().appendingPathComponent("\(name).json") }
 
     public static func save<T: Encodable>(_ value: T, as name: String) {
         performWrite {
@@ -94,7 +115,7 @@ public enum LocalStore {
         try performWrite {
             let data = try encoder.encode(value)
             #if DEBUG && targetEnvironment(simulator)
-            try QuickLogDiskFault.write(domain: name, target: url(name)) {
+            try QuickLogDiskFault.write(domain: name, target: try url(name)) {
                 try data.write(to: url(name), options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
             }
             #else
