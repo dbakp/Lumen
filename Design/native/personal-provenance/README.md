@@ -1,6 +1,6 @@
 # Personal-context provenance · Batch40
 
-**Published as [`4851955c2ed7970d03add6a60d5693a83a876ab6`](https://github.com/dbakp/Lumen/commit/4851955c2ed7970d03add6a60d5693a83a876ab6).** Fresh connected GitHub main/root and810 required source/evidence blob identities match before cleanup. The publication/cleanup checkpoint remains in progress; the full product goal stays active.
+**Published as [`4851955c2ed7970d03add6a60d5693a83a876ab6`](https://github.com/dbakp/Lumen/commit/4851955c2ed7970d03add6a60d5693a83a876ab6).** Fresh connected GitHub main/root and810 required source/evidence blob identities match before cleanup. The publication checkpoint also matches all812 required files; completed scoped cleanup is recorded below. The full product goal stays active.
 
 ## Behavior
 
@@ -61,6 +61,10 @@ Synthetic predicates, loopback receipts, simulator rendering and unsigned Releas
 
 ## Publication, storage and next work
 
-The reviewed batch publisher succeeds. [publication-readback.json](publication-readback.json) verifies the immutable application commit/root and810 required blob identities, including every changed file and current native/logic/UI/server inputs; local working bytes also match unfiltered committed blobs. The publication log and this checkpoint are being published separately before raw-output cleanup. [storage-cleanup-plan.json](storage-cleanup-plan.json) is prepared, not executed. Current completed raw bundles/logs remain until that proof and stopped-worker verification; recovered Batch40 space is0bytes so far. Keep the one native build directory, pinned dependency checkout, logic cache and exclusive synthetic compact simulator for the immediately following audit; preserve supplied skill/archive, canonical research inputs, working repository and useful evidence. Do not clear unrelated or global caches.
+The reviewed batch publisher succeeds. [publication-readback.json](publication-readback.json) verifies the immutable application commit/root and810 required blob identities. The [publication checkpoint](publication-checkpoint-readback.json) then verifies812 required identities, including the publication log and proof, before cleanup. Canonical local bytes also match unfiltered committed Git blobs.
+
+[storage-cleanup.json](storage-cleanup.json) records stopped-worker removal of20 exact task-owned raw roots/files. All39 primary raw logs match their published complete compressed copies before deletion. Settled available space rises24,371,634,176→26,011,254,784bytes: **1,639,620,608bytes (about1.64GB)**. This is the measured net increase during cleanup; APFS reclamation and concurrent volume activity remain distinct from the removed paths' referenced logical/allocated bytes. Raw temporary paths are now historical.
+
+All381 useful original PNGs,38 full verification logs plus the publication log, failed trials, exact source/provenance and compact outcomes remain. One native build/dependency/logic cache and the exclusive synthetic compact simulator remain for the immediate next audit. Primary/Watch/other simulators, shared runtimes, supplied skill/archive, canonical research inputs, working repository and unrelated data are preserved. No global caches are cleared and no cleanup-only build runs.
 
 The [next audit policy](next-audit.md) carries Library/search authorization through credential preparation and makes automatic-plan eligibility explicit for notices, errors and urgent returns. [Source-only findings](follow-up-notice-plans.md) are not silently treated as fixed by personal-note UUID checks. Then continue durable Health save/delete intent, acknowledged identity-preserving Watch delivery and the broader evidence/provider/device/accessibility/performance/privacy/release gates. The full goal remains active.
