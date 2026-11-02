@@ -1,0 +1,17 @@
+# Final submission boundary · source finding and declared protocol
+
+The post-credential check is on the main actor, but LLMClient.complete and ProviderReplyTransport.send perform request serialization/session preparation on a separate executor before Foundation begins the HTTP request. Source inspection therefore leaves a preparation interval after the existing authorization check. This is a source finding, not yet an observed runtime defect or accepted safety claim.
+
+Reproduce before repairing: use an explicitly armed DEBUG/simulator-only barrier inside the actual complete path after payload construction and before the real transport call. Hold an original Library packet, commit sharing withdrawal, release preparation, and inspect actual loopback packets. The existing post-response rejection must not be mistaken for blocking the send. Keep an unchanged control.
+
+If reproduced, carry the captured Library/search/history and personal-note authorization through complete and transport. Perform the final check on the main actor immediately before calling Foundation's HTTP submission API, after application-owned request serialization and session setup. Keep bounded response processing off the main actor. A failed final check must send no packet and return the factual existing notice. This is a submission cut-off, not remote recall: changes after submission cannot retrieve provider input.
+
+Verify held final-preparation withdrawal, unchanged control and personal-note change through the full coach, plus current native/store/overlap and ordinary transport regression. Retain exact baseline/fixed sources, packet-role canary facts and failures. Add every new fixture flag/type/token to Release exclusion auditing. Keep visible UI evidence at its actual compiled source version until any required final repeat.
+
+## Controlled result and repair
+
+SubmissionBaselineR6 reproduces the preparation interval with unchanged production authorization and only DEBUG barrier instrumentation: both the unchanged and withdrawn packets reach the real loopback server with two Library canary occurrences in the system role. Withdrawal is rejected only afterward. Exact two packets independently match the host read-back. The baseline report explicitly identifies defect reproduction, not product acceptance. Source-r6.json and its complete change snapshot preserve the original boundary.
+
+R7 passes19 native scenarios with nine actual packets independently matched. Final-preparation unchanged sends once; Library withdrawal and personal-note withdrawal send zero. Both notices pass through the actual checked conversation and plan-save path without an automatic plan. Existing overlap, source/history/search, failed/rejected/urgent and genuine-plan scopes remain. Current15 actual transport regression cases pass at the same transport source, with14 host-observed requests and no oversized-request or redirect-target submission.1,614 logic checks pass at recorded R7 inputs.
+
+The repair leaves serialization/session setup and bounded response processing off the main actor, then crosses to a small main-actor helper that validates cancellation and the captured callback immediately before invoking Foundation HTTP submission. The callback checks the original personal UUID and Library/search/history authorization. No app-owned preparation await intervenes after that final check. Foundation's network internals and already-submitted provider input are outside remote recall claims.

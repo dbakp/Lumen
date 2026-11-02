@@ -6,7 +6,10 @@ public final class CompanionStore: ObservableObject {
     public static let shared = CompanionStore()
     @Published public private(set) var symptoms: [SymptomEntry] = []
     @Published public private(set) var checkIns: [WellbeingCheckIn] = []
-    @Published public private(set) var documents: [HealthDocument] = []
+    // A request owns the original Library snapshot. Every committed mutation,
+    // including change-then-revert and restore/reset, invalidates that ownership.
+    @Published public private(set) var documents: [HealthDocument] = [] { didSet { libraryRevision = UUID() } }
+    private(set) var libraryRevision = UUID()
     @Published public private(set) var importedDays: [ImportedHealthDay] = []
     @Published public private(set) var imports: [ImportReceipt] = []
     @Published public private(set) var personalContext = PersonalHealthContext()

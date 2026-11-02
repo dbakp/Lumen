@@ -6,7 +6,7 @@ enum ProviderReplyTransport {
     static let maxRequestBytes = 12_000_000
     static let maxResponseBytes = 1_000_000
     enum Failure: Error, Equatable {
-        case requestSize, responseSize, http, malformed, incomplete, refusal, toolCall
+        case requestSize, responseSize, http, malformed, incomplete, refusal, toolCall, authorization
     }
 
     static func text(in data: Data) throws -> String {
@@ -42,7 +42,7 @@ enum ProviderReplyTransport {
 
     /// Accumulate at most the bounded decoded response body. Foundation/TLS
     /// buffers are separate; no whole-process memory ceiling is implied.
-    static func send(_ request: URLRequest) async throws -> String {
+    static func send(_ request: URLRequest, authorizing: @MainActor () -> Bool = { true }) async throws -> String {
         try Task.checkCancellation()
         guard let body = request.httpBody, !body.isEmpty, body.count <= maxRequestBytes else { throw Failure.requestSize }
         let configuration = URLSessionConfiguration.ephemeral
@@ -59,7 +59,7 @@ enum ProviderReplyTransport {
         var boundedRequest = request
         boundedRequest.timeoutInterval = min(60, request.timeoutInterval)
         boundedRequest.cachePolicy = .reloadIgnoringLocalCacheData
-        let (bytes, response) = try await session.bytes(for: boundedRequest)
+        let (bytes, response) = try await authorizedBytes(session: session, request: boundedRequest, authorizing: authorizing)
         guard let http = response as? HTTPURLResponse, (200..<300).contains(http.statusCode) else { throw Failure.http }
         guard response.expectedContentLength <= Int64(maxResponseBytes) else { throw Failure.responseSize }
         var data = Data()
@@ -70,6 +70,17 @@ enum ProviderReplyTransport {
         }
         try Task.checkCancellation()
         return try text(in: data)
+    }
+
+    /// All application-owned serialization/session setup is already complete.
+    /// Check the original packet on the main actor immediately before invoking
+    /// Foundation submission. Bounded response processing stays off that actor.
+    @MainActor
+    private static func authorizedBytes(session: URLSession, request: URLRequest,
+                                        authorizing: @MainActor () -> Bool) async throws -> (URLSession.AsyncBytes, URLResponse) {
+        try Task.checkCancellation()
+        guard authorizing() else { throw Failure.authorization }
+        return try await session.bytes(for: request)
     }
 
     // A configured endpoint must respond directly. Do not forward the health

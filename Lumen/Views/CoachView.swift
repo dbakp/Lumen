@@ -274,11 +274,11 @@ public struct CoachView: View {
                     if submittedDraft.trimmingCharacters(in: .whitespacesAndNewlines) == t { draft = ""; focused = false }
                 }
                 guard !Task.isCancelled, health.ownsReply(sent.owner) else { return }
-                let answer = await coach.reply(to: t, health: health, sleepDebt: sleep.debt, conversationHistory: sent.history)
+                let outcome = await coach.replyOutcome(to: t, health: health, sleepDebt: sleep.debt, conversationHistory: sent.history)
                 guard !Task.isCancelled, health.ownsReply(sent.owner) else { return }
-                let reply = ChatMessage(role: .coach, text: answer, provider: coach.lastReplySource, recordContext: coach.lastRecordContext, personalContext: coach.lastPersonalContext)
+                let reply = ChatMessage(role: .coach, text: outcome.text, provider: outcome.source, recordContext: outcome.recordContext, personalContext: outcome.personalContext)
                 guard let id = health.retainConversationReply(reply, owner: sent.owner,
-                    savePlan: coach.lastReplyCanBecomePlan && PlanBuilder.isRequest(t) && ChatCoachService.urgentResponse(for: t) == nil) else { return }
+                    savePlan: outcome.canBecomePlan && PlanBuilder.isRequest(t) && ChatCoachService.urgentResponse(for: t) == nil) else { return }
                 do { saveReplyPlan(try await health.savePendingConversationReply(id)) }
                 catch {
                     if Task.isCancelled { health.discardConversationReply(id) }

@@ -1,6 +1,6 @@
 # Reviewed multiweek plans
 
-Use **Make a multiweek plan** in Assistant or the Library add menu. Enter a goal, choose a start date and 1, 2, 4 or 8 weeks. This flow is separate from ordinary conversational plans, which retain their existing automatic Library draft behavior.
+Use **Make a multiweek plan** in Assistant or the Library add menu. Enter a goal, choose a start date and 1, 2, 4 or 8 weeks. This flow is separate from [ordinary conversational plans](CONVERSATIONS.md), whose automatic Library copy requires an accepted planning reply with explicit numbered steps.
 
 ## Preparation and data
 

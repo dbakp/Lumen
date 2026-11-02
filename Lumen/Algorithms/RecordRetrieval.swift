@@ -682,8 +682,20 @@ public enum RecordRetrieval {
             let heading = "Matching saved text\n\n"
             if body.hasPrefix(heading) { body = String(body.dropFirst(heading.count)) }
         }
-        return HealthDocument(title: String(title.trimmingCharacters(in: .whitespacesAndNewlines).prefix(80)), kind: .note, body: body,
+        return HealthDocument(title: savedTitle(title), kind: .note, body: body,
                               source: "Lumen assistant · \(message.provider ?? "Provider not recorded")", messageID: message.id, recordContext: message.recordContext)
+    }
+    /// A derived heading is a visibly marked excerpt, never an unmarked cut
+    /// word. The literal reply body and its provenance remain unchanged.
+    private static func savedTitle(_ title: String) -> String {
+        let value = title.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard value.count > 80 else { return value }
+        var prefix = String(value.prefix(79))
+        if value.dropFirst(79).first?.isWhitespace != true, prefix.last?.isWhitespace != true,
+           let boundary = prefix.lastIndex(where: \.isWhitespace) {
+            prefix = String(prefix[..<boundary])
+        }
+        return prefix.trimmingCharacters(in: .whitespacesAndNewlines) + "…"
     }
     public static func localReply(_ context: RecordReplyContext, query: String) -> (String, RecordReplyContext) {
         // Keep the complete bounded packet. A related-topic result can follow

@@ -12,6 +12,10 @@ If a returned reply cannot save, Lumen retains its exact message, provider label
 
 This pending reply is not a durable outbox. Keep Lumen open until it saves. Quitting can lose an unsaved reply; deleting its conversation, clearing it, reset or restore also discards pending work as disclosed by those actions. A recovery link returns to an inactive conversation containing an unsaved reply.
 
+Batch41 work carries each returned reply's text, source, personal/Library provenance and automatic-plan eligibility as one immutable outcome. The save path uses that request's outcome rather than shared last-reply display fields. A later completion cannot turn a notice into another request's plan. Pending save retries retain the original decision. This is locally verified work in progress; see the [current evidence and remaining gates](../Design/native/request-authorization/README.md).
+
+An ordinary conversation creates an automatic Library plan only for an accepted planning reply with at least two nonempty numbered steps. Urgent guidance, search/change notices, rejected model answers, literal lookups and prose without steps retain their conversation text without inventing checklist tasks. Explicit **Save to Library** remains available; existing plans are preserved. A numbered structure does not establish clinical or factual quality.
+
 ## Ownership and cancellation
 
 Navigation and New conversation preserve a request to its intact originating conversation. A reply completing elsewhere saves to that origin and preserves the current selection. Renaming does not change origin ownership.

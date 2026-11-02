@@ -79,18 +79,21 @@ public final class AIService: ObservableObject {
     // MARK: Chat
 
     public func chat(instructions: String, history: [ChatMessage], user: String, using selectedBrain: Brain? = nil,
-                     expectedPersonalContextRevision: UUID? = nil) async -> String? {
+                     expectedPersonalContextRevision: UUID? = nil, submissionAllowed: @MainActor () -> Bool = { true }) async -> String? {
         isWorking = true; defer { isWorking = false }
-        guard LLMClient.personalContextIsCurrent(expectedPersonalContextRevision) else { return nil }
+        guard LLMClient.personalContextIsCurrent(expectedPersonalContextRevision), submissionAllowed() else { return nil }
         let providerHistory = history.suffix(12).map { (role: $0.role == .user ? "user" : "assistant", text: $0.text) }
         #if DEBUG && targetEnvironment(simulator)
         let personalTest = ProcessInfo.processInfo.arguments.contains("-personal-provenance-ui") || ProcessInfo.processInfo.arguments.contains("-personal-provenance-probe")
         if personalTest {
             guard PersonalContextNativeProbe.usesSyntheticTransport else { return nil }
-            let route = user.contains("SYNTHETIC-PERSONAL-HELD-40") ? "personal-held" : "personal-complete"
+            let route = user.contains("SYNTHETIC-PERSONAL-HELD-40") ? "personal-held" :
+                user.contains("SYNTHETIC-PLAN-41") ? "personal-plan" :
+                user.contains("SYNTHETIC-REJECTED-41") ? "personal-rejected" :
+                user.contains("SYNTHETIC-FAILURE-41") ? "personal-failure" : "personal-complete"
             let syntheticRoute: LLMClient.ChatRoute = (URL(string: "http://127.0.0.1:48731/" + route)!, "synthetic-no-key", "synthetic-no-provider")
             return await LLMClient.preparedCoachChat(system: instructions, history: providerHistory, userText: user,
-                expectedPersonalContextRevision: expectedPersonalContextRevision,
+                expectedPersonalContextRevision: expectedPersonalContextRevision, submissionAllowed: submissionAllowed,
                 resolving: { await PersonalContextRouteFixture.resolve(syntheticRoute) })
         }
         if ProcessInfo.processInfo.arguments.contains("-providerTransportUITestMode") {
@@ -118,7 +121,7 @@ public final class AIService: ObservableObject {
         switch chosenBrain {
         case .openAIKey:
             return await LLMClient.coachChat(system: instructions, history: providerHistory, userText: user,
-                                            expectedPersonalContextRevision: expectedPersonalContextRevision)
+                                            expectedPersonalContextRevision: expectedPersonalContextRevision, submissionAllowed: submissionAllowed)
         case .privateCloud, .onDevice:
             #if canImport(FoundationModels)
             if #available(iOS 26.0, *) {

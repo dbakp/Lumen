@@ -49,6 +49,7 @@ import SwiftUI
 
     func run() async {
         guard Self.requested, !started else { return }; started = true
+        if ProcessInfo.processInfo.arguments.contains("-library-authorization-checks") { await runLibraryChecks(); return }
         var checks: [Check] = []
         func check(_ value: Bool, _ name: String) throws {
             checks.append(.init(name: name, passed: value))
@@ -244,6 +245,160 @@ import SwiftUI
             status = finalStatus
         } catch { status = "Personal context checks failed: report couldn't be saved" }
     }
+
+    /// Full production coach, shared preparation/HTTP and actual checked stores.
+    private func runLibraryChecks() async {
+        struct Observation: Encodable {
+            let mode: String
+            let requestCount: Int
+            let systemCanaryCount: Int
+            let assistantCanaryCount: Int
+            let reply: String
+            let eligible: Bool
+            let savedConversation: Bool
+            let automaticPlanCount: Int
+            let automaticStepCount: Int
+        }
+        var observations: [Observation] = []
+        let health = HealthStore.shared, companion = CompanionStore.shared, coach = ChatCoachService.shared
+        var task: Task<CoachReplyOutcome, Never>?
+        var held = false
+        var finalStatus = "Request authorization checks failed"
+        do {
+            for _ in 0..<200 where !health.conversationReady { try await Task.sleep(for: .milliseconds(50)) }
+            guard health.conversationReady, health.conversations.isEmpty else { throw Failure(name: "checks startup not empty") }
+            SemanticSearchService.shared.setEnabled(false)
+            for mode in ["unchanged", "history-unchanged", "withdraw", "edit", "remove", "revert", "history", "lease", "held", "plan", "rejected", "urgent", "search-error", "local", "overlap", "submission-unchanged", "submission-withdraw", "submission-personal"] {
+                var document = HealthDocument(title: "SYNTHETIC-LIBRARY-CONTEXT-41", kind: .note,
+                    body: "SYNTHETIC-LIBRARY-CONTEXT-41. A synthetic flexible routine for planning.", source: "Synthetic fixture", includeInAssistant: true)
+                try companion.saveChecked(document)
+                var query = "Make a plan using SYNTHETIC-LIBRARY-CONTEXT-41"
+                if ["held", "overlap"].contains(mode) { query += " SYNTHETIC-PERSONAL-HELD-40" }
+                if mode == "plan" { query += " SYNTHETIC-PLAN-41" }
+                if mode == "rejected" { query += " SYNTHETIC-REJECTED-41" }
+                if mode == "local" { query += " SYNTHETIC-FAILURE-41" }
+                if mode == "urgent" { query += " chest pain" }
+                if mode == "search-error" { query += " Sample ID: AF-" + String(repeating: "1", count: 100) }
+                if mode == "submission-personal" {
+                    var notes = PersonalHealthContext(); notes.includeInAssistant = true; notes.focus = "SYNTHETIC-PERSONAL-NOTE-40-A"
+                    try companion.savePersonalContextChecked(notes, expectedRevision: companion.personalContextRevision)
+                }
+                let finalPreparation = mode.hasPrefix("submission-")
+                var history: [ChatMessage] = []
+                if ["history", "history-unchanged"].contains(mode) {
+                    let context = try await HybridLibrarySearch.search(query: query, documents: companion.documents, encoder: nil, enabled: false)
+                    guard !context.passages.isEmpty else { throw Failure(name: "historical source not selected") }
+                    history = [.init(role: .coach, text: "SYNTHETIC-LIBRARY-CONTEXT-41", recordContext: context, personalContext: .withoutNotes)]
+                }
+                let oldPlans = Set(companion.documents.filter { $0.kind == .plan }.map(\.id))
+                let sent = try await health.sendUserMessageChecked(.init(role: .user, text: query), expectedConversationID: health.activeConversationID)
+                let before = try await audit().count
+                if ["held", "overlap"].contains(mode) { _ = try await get("arm-personal"); held = true }
+                let early = ["urgent", "search-error"].contains(mode)
+                if finalPreparation { PersonalContextSubmissionFixture.arm() } else if !early { PersonalContextRouteFixture.arm() }
+                task = Task { await coach.replyOutcome(to: query, health: health, sleepDebt: 0, conversationHistory: history) }
+                if !early {
+                    for _ in 0..<200 where !(finalPreparation ? PersonalContextSubmissionFixture.holding : PersonalContextRouteFixture.holding) { try await Task.sleep(for: .milliseconds(25)) }
+                    guard finalPreparation ? PersonalContextSubmissionFixture.holding : PersonalContextRouteFixture.holding else { throw Failure(name: mode + " route did not hold") }
+                }
+                switch mode {
+                case "withdraw", "history", "submission-withdraw": document.includeInAssistant = false; try companion.saveChecked(document)
+                case "edit": document.body += " Changed synthetic content."; try companion.saveChecked(document)
+                case "remove": try companion.deleteDocumentChecked(document.id)
+                case "revert":
+                    document.includeInAssistant = false; try companion.saveChecked(document)
+                    document.includeInAssistant = true; try companion.saveChecked(document)
+                case "lease": SemanticSearchService.shared.removeModel()
+                case "submission-personal":
+                    var notes = companion.personalContext; notes.includeInAssistant = false
+                    try companion.savePersonalContextChecked(notes, expectedRevision: companion.personalContextRevision)
+                default: break
+                }
+                PersonalContextRouteFixture.release(); PersonalContextSubmissionFixture.release()
+                var competing: (outcome: CoachReplyOutcome, owner: ConversationReplyOwner)?
+                if ["held", "overlap"].contains(mode) {
+                    try await waitForRequest(before + 1)
+                    if mode == "overlap" {
+                        try await health.newConversation()
+                        let secondQuery = "Make a plan using SYNTHETIC-LIBRARY-CONTEXT-41 SYNTHETIC-PLAN-41"
+                        let second = try await health.sendUserMessageChecked(.init(role: .user, text: secondQuery), expectedConversationID: nil)
+                        let result = await coach.replyOutcome(to: secondQuery, health: health, sleepDebt: 0, conversationHistory: [])
+                        guard result.canBecomePlan, result.source == "Synthetic local provider" else { throw Failure(name: "competing plan did not complete while first HTTP response held") }
+                        competing = (result, second.owner)
+                    }
+                    document.includeInAssistant = false; try companion.saveChecked(document)
+                    _ = try await get("release-personal"); held = false
+                }
+                let outcome = await task!.value; task = nil
+                let answer = outcome.text
+                let packets = try await audit(), newPackets = Array(packets.dropFirst(before))
+                let blocked = ["withdraw", "edit", "remove", "revert", "history", "lease", "urgent", "search-error", "submission-withdraw", "submission-personal"].contains(mode)
+                guard newPackets.count == (mode == "overlap" ? 2 : blocked ? 0 : 1) else { throw Failure(name: mode + " outgoing count") }
+                if !blocked { guard newPackets[0].count("library41", "system") > 0 else { throw Failure(name: mode + " source missing") } }
+                if mode == "history-unchanged" {
+                    guard newPackets[0].count("library41", "assistant") == 1 else { throw Failure(name: "unchanged historical reply missing") }
+                }
+                let eligible = outcome.canBecomePlan && PlanBuilder.isRequest(query) && ChatCoachService.urgentResponse(for: query) == nil
+                let expectedPlan = ["plan", "local"].contains(mode)
+                guard eligible == expectedPlan, outcome.canBecomePlan == expectedPlan else { throw Failure(name: mode + " service eligibility") }
+                if ["withdraw", "edit", "remove", "revert", "history", "lease", "held", "overlap"].contains(mode) {
+                    guard answer.contains("changed during this reply"), !answer.contains("SYNTHETIC-PERSONAL-REPLY-40") else { throw Failure(name: mode + " notice missing") }
+                }
+                if mode == "submission-personal" {
+                    guard answer.contains("Your personal notes or sharing choice changed"), outcome.personalContext == .withoutNotes else { throw Failure(name: "final submission personal authorization missing") }
+                }
+                guard !PersonalContextSubmissionFixture.timedOut else { throw Failure(name: "final preparation released by timeout") }
+                if mode == "submission-withdraw" {
+                    guard answer.contains("changed during this reply") else { throw Failure(name: "final Library submission notice missing") }
+                }
+                if let competing {
+                    guard !coach.lastReplyCanBecomePlan, competing.outcome.canBecomePlan else { throw Failure(name: "immutable outcomes mixed across completions") }
+                    let other = ChatMessage(role: .coach, text: competing.outcome.text, provider: competing.outcome.source,
+                        recordContext: competing.outcome.recordContext, personalContext: competing.outcome.personalContext)
+                    guard let otherID = health.retainConversationReply(other, owner: competing.owner, savePlan: competing.outcome.canBecomePlan) else { throw Failure(name: "competing reply owner lost") }
+                    CoachView().saveReplyPlan(try await health.savePendingConversationReply(otherID))
+                    let savedPlans = companion.documents.filter { $0.kind == .plan && $0.messageID == other.id }
+                    let savedReply = health.conversations.first { $0.id == competing.owner.conversationID }?.messages.last
+                    guard savedReply?.id == other.id, savedReply?.text == competing.outcome.text, savedReply?.provider == competing.outcome.source,
+                          savedPlans.count == 1, savedPlans[0].steps.count == 3 else { throw Failure(name: "competing immutable plan save mixed with notice") }
+                    observations.append(.init(mode: "overlap-plan", requestCount: 1, systemCanaryCount: newPackets[1].count("library41", "system"),
+                        assistantCanaryCount: newPackets[1].count("library41", "assistant"), reply: other.text, eligible: true,
+                        savedConversation: true, automaticPlanCount: 1, automaticStepCount: 3))
+                    try await health.selectConversation(sent.owner.conversationID)
+                }
+                let reply = ChatMessage(role: .coach, text: answer, provider: outcome.source,
+                    recordContext: outcome.recordContext, personalContext: outcome.personalContext)
+                guard let id = health.retainConversationReply(reply, owner: sent.owner, savePlan: eligible) else { throw Failure(name: mode + " owner lost") }
+                let pending = try await health.savePendingConversationReply(id)
+                CoachView().saveReplyPlan(pending)
+                let plans = companion.documents.filter { $0.kind == .plan && $0.messageID == reply.id }
+                guard health.chat.last?.id == reply.id, plans.count == (expectedPlan ? 1 : 0),
+                      oldPlans.isSubset(of: Set(companion.documents.filter { $0.kind == .plan }.map(\.id))) else { throw Failure(name: mode + " actual save path") }
+                if mode == "withdraw" {
+                    let manual = RecordRetrieval.savedDocument(from: reply, history: health.chat)
+                    try companion.saveChecked(manual)
+                    guard companion.documents.contains(where: { $0.id == manual.id && $0.body == answer && !$0.includeInAssistant && $0.kind == .note }) else { throw Failure(name: "manual save unavailable") }
+                }
+                observations.append(.init(mode: mode, requestCount: mode == "overlap" ? 1 : newPackets.count,
+                    systemCanaryCount: newPackets.first?.count("library41", "system") ?? 0,
+                    assistantCanaryCount: newPackets.first?.count("library41", "assistant") ?? 0,
+                    reply: answer, eligible: eligible, savedConversation: health.chat.last?.id == reply.id,
+                    automaticPlanCount: plans.count, automaticStepCount: plans.first?.steps.count ?? 0))
+                if mode != "remove" { try companion.deleteDocumentChecked(document.id) }
+            }
+            finalStatus = "Request authorization checks passed"
+        } catch { finalStatus = "Request authorization checks failed: " + error.localizedDescription }
+        struct Report: Encodable { let status: String; let observations: [Observation]; let packets: [Audit] }
+        let report = Report(status: finalStatus, observations: observations, packets: (try? await audit()) ?? [])
+        let encoder = JSONEncoder(); encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+        do {
+            try encoder.encode(report).write(to: FileManager.default.temporaryDirectory.appendingPathComponent("Lumen-library-checks-report.json"), options: .atomic)
+            status = finalStatus
+        } catch { status = "Request authorization checks failed: report couldn't be saved" }
+        task?.cancel(); PersonalContextRouteFixture.release(); PersonalContextSubmissionFixture.release()
+        if held { _ = try? await get("release-personal") }
+    }
+
 }
 
 /// A fresh reset creates an app-private receipt for one explicit synthetic UI
@@ -295,6 +450,16 @@ import SwiftUI
     static func arm() { precondition(PersonalContextNativeProbe.requested); armed = true; timedOut = false }
     static func release() { armed = false }
     static func waitIfArmed() async throws {
+        if PersonalContextUIFixture.isAuthorized && ProcessInfo.processInfo.arguments.contains("-library-search-hold-ui") {
+            let configuration = URLSessionConfiguration.ephemeral
+            configuration.urlCache = nil; configuration.httpCookieStorage = nil; configuration.urlCredentialStorage = nil
+            configuration.timeoutIntervalForRequest = 60
+            let session = URLSession(configuration: configuration)
+            defer { session.invalidateAndCancel() }
+            let (_, response) = try await session.data(from: URL(string: "http://127.0.0.1:48731/prepared-hold")!)
+            guard (response as? HTTPURLResponse)?.statusCode == 200 else { throw URLError(.badServerResponse) }
+            return
+        }
         guard PersonalContextNativeProbe.requested, armed else { return }
         holding = true
         defer { holding = false }
@@ -327,4 +492,24 @@ import SwiftUI
         return nil
     }
 }
+/// Holds only explicitly armed, synthetic final request preparation.
+@MainActor enum PersonalContextSubmissionFixture {
+    private static var armed = false
+    static private(set) var holding = false
+    static private(set) var timedOut = false
+    static func arm() { precondition(PersonalContextNativeProbe.requested); armed = true; timedOut = false }
+    static func release() { armed = false }
+    static func waitIfArmed() async {
+        guard PersonalContextNativeProbe.requested, armed else { return }
+        holding = true
+        defer { holding = false }
+        for _ in 0..<200 {
+            if Task.isCancelled { return }
+            if !armed { return }
+            try? await Task.sleep(for: .milliseconds(50))
+        }
+        timedOut = true; armed = false
+    }
+}
+
 #endif

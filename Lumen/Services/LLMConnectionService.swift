@@ -276,7 +276,7 @@ public enum LLMClient {
     }
 
     /// OpenAI-compatible chat completions. Returns assistant text or nil.
-    public static func complete(endpoint: URL, bearer: String, model: String, turns: [ChatTurn], maxTokens: Int = 400, temperature: Double = 0.7, imageData: Data? = nil) async -> String? {
+    public static func complete(endpoint: URL, bearer: String, model: String, turns: [ChatTurn], maxTokens: Int = 400, temperature: Double = 0.7, imageData: Data? = nil, submissionAllowed: @MainActor () -> Bool = { true }) async -> String? {
         guard !Task.isCancelled, (imageData?.count ?? 0) <= 8_000_000,
               turns.reduce(0, { $0 + $1.text.utf8.count }) <= ProviderReplyTransport.maxRequestBytes else { return nil }
         var req = URLRequest(url: endpoint)
@@ -296,7 +296,10 @@ public enum LLMClient {
         }
         let payload: [String: Any] = ["model": model, "messages": messages, "max_tokens": maxTokens, "temperature": temperature]
         req.httpBody = try? JSONSerialization.data(withJSONObject: payload)
-        return try? await ProviderReplyTransport.send(req)
+        #if DEBUG && targetEnvironment(simulator)
+        await PersonalContextSubmissionFixture.waitIfArmed()
+        #endif
+        return try? await ProviderReplyTransport.send(req, authorizing: submissionAllowed)
     }
 
     typealias ChatRoute = (endpoint: URL, bearer: String, model: String)
@@ -324,9 +327,9 @@ public enum LLMClient {
 
     @MainActor
     public static func coachChat(system: String, history: [(role: String, text: String)], userText: String, maxTokens: Int = 400,
-                                 expectedPersonalContextRevision: UUID? = nil) async -> String? {
+                                 expectedPersonalContextRevision: UUID? = nil, submissionAllowed: @MainActor () -> Bool = { true }) async -> String? {
         await preparedCoachChat(system: system, history: history, userText: userText, maxTokens: maxTokens,
-                                expectedPersonalContextRevision: expectedPersonalContextRevision, resolving: { await route() })
+                                expectedPersonalContextRevision: expectedPersonalContextRevision, submissionAllowed: submissionAllowed, resolving: { await route() })
     }
 
     @MainActor
@@ -338,11 +341,12 @@ public enum LLMClient {
     /// that wait, before submitting health context to the resolved provider.
     @MainActor
     static func preparedCoachChat(system: String, history: [(role: String, text: String)], userText: String, maxTokens: Int = 400,
-                                  expectedPersonalContextRevision: UUID?, resolving resolve: () async -> ChatRoute?) async -> String? {
+                                  expectedPersonalContextRevision: UUID?, submissionAllowed: @MainActor () -> Bool = { true }, resolving resolve: () async -> ChatRoute?) async -> String? {
         guard let r = await resolve(), !Task.isCancelled,
-              personalContextIsCurrent(expectedPersonalContextRevision) else { return nil }
+              personalContextIsCurrent(expectedPersonalContextRevision), submissionAllowed() else { return nil }
         let turns = coachTurns(system: system, history: history, userText: userText)
-        return await complete(endpoint: r.endpoint, bearer: r.bearer, model: r.model, turns: turns, maxTokens: min(6000, max(400, maxTokens)))
+        return await complete(endpoint: r.endpoint, bearer: r.bearer, model: r.model, turns: turns, maxTokens: min(6000, max(400, maxTokens)),
+                              submissionAllowed: { personalContextIsCurrent(expectedPersonalContextRevision) && submissionAllowed() })
     }
 
     /// Meal photo → raw JSON string (caller parses MealAnalysis).

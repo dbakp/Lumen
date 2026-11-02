@@ -1,0 +1,75 @@
+{
+  "status": "All scoped local acceptance gates passed; publication and cleanup pending",
+  "applicationSource": "application-source-r9.json",
+  "runtimeSource": "source-r11.json",
+  "logic": {
+    "run": "LogicR3",
+    "passed": 1619,
+    "failed": 0,
+    "inputs": 106
+  },
+  "native": {
+    "run": "NativeR9",
+    "source": "source-r9.json",
+    "scenarios": 19,
+    "actualPackets": 9,
+    "hostMatched": true
+  },
+  "personalRegression": {
+    "run": "RegressionR9",
+    "source": "source-r10.json",
+    "checks": 43,
+    "actualPackets": 8,
+    "hostMatched": true
+  },
+  "transport": {
+    "run": "TransportR7",
+    "cases": 15,
+    "actualRequests": 14,
+    "carry": "ProviderReplyTransport.swift unchanged at R9"
+  },
+  "currentUI": {
+    "ui-r8": {
+      "status": "passed",
+      "source": "source-r10.json",
+      "originals": 34,
+      "actualFilesMatched": true,
+      "markedTitleChecked": true
+    },
+    "ui-r9": {
+      "status": "passed",
+      "source": "source-r10.json",
+      "originals": 39,
+      "actualFilesMatched": true,
+      "markedTitleChecked": true
+    },
+    "ui-r11": {
+      "status": "passed",
+      "source": "source-r11.json",
+      "originals": 16,
+      "actualFilesMatched": true,
+      "markedTitleChecked": true
+    }
+  },
+  "release": "release-audit-r2.json",
+  "failedTrials": [
+    "NativeR2",
+    "UIR2",
+    "UIR3",
+    "UIR7",
+    "UIR10"
+  ],
+  "limits": "Synthetic local simulator and logic checks; no signed-device, live-provider, clinical, VoiceOver or distribution acceptance.",
+  "design": {
+    "scores": [
+      43,
+      42,
+      43
+    ],
+    "done": true,
+    "imageRecords": 111,
+    "errors": 0,
+    "skips": 0
+  },
+  "acceptanceResult": "acceptance-result.json"
+}

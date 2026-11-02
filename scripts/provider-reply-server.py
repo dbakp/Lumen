@@ -21,6 +21,7 @@ prepared_gate = threading.Event()
 personal_gate = threading.Event()
 personal_audit = []
 personal_canaries = {
+    "library41": "SYNTHETIC-LIBRARY-CONTEXT-41",
     "noteA": "SYNTHETIC-PERSONAL-NOTE-40-A",
     "noteB": "SYNTHETIC-PERSONAL-NOTE-40-B",
     "unsaved": "SYNTHETIC-PERSONAL-UNSAVED-40",
@@ -146,7 +147,7 @@ class Handler(BaseHTTPRequestHandler):
             self.send_error(413)
             return
         body = self.rfile.read(size)
-        if route in ("personal-held", "personal-complete"):
+        if route in ("personal-held", "personal-complete", "personal-plan", "personal-rejected", "personal-failure"):
             if not args.personal_audit:
                 self.send_error(404)
                 return
@@ -164,8 +165,12 @@ class Handler(BaseHTTPRequestHandler):
                 self.end_headers()
                 return
             text = "  Exact synthetic text.  "
-            if route in ("personal-held", "personal-complete"):
+            if route in ("personal-held", "personal-complete", "personal-plan", "personal-rejected", "personal-failure"):
                 text = personal_canaries["returned"]
+            if route == "personal-plan":
+                text = "Synthetic flexible plan\n1. Check how you feel.\n2. Take a comfortable break.\n3. Review tomorrow."
+            if route == "personal-rejected":
+                text = "SYNTHETIC-REJECTED-41 [record_missing_9]\n1. Rejected action.\n2. Rejected action."
             if route.startswith("native-"):
                 # The app adapter sends only a synthetic route and request ID,
                 # never the normal health summary, history or source excerpts.
@@ -181,7 +186,7 @@ class Handler(BaseHTTPRequestHandler):
                 payload += b" " * (1_000_000 - len(payload))
             if route == "oversize-chunked":
                 payload = b" " * 1_000_001
-            self.send_response(503 if route == "http-error" else 200)
+            self.send_response(503 if route in ("http-error", "personal-failure") else 200)
             self.send_header("Content-Type", "application/json")
             self.send_header("Cache-Control", "no-store")
             chunked = route in ("oversize-chunked", "utf8-chunks")

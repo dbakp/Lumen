@@ -6,6 +6,14 @@ public enum PlanBuilder {
         if t.range(of: #"\b(no plan|don’t|don't|do not|not asking for)\b"#, options: .regularExpression) != nil { return false }
         return t.range(of: #"^\s*plan\b|\b(make|create|build|draft|write|suggest|give|need|want|help|please|can|could)\b.*\b(plan|routine|schedule)\b"#, options: .regularExpression) != nil
     }
+    /// Automatic plans require an accepted planning reply with at least two
+    /// explicit numbered actions. Evidence bullets and prose never invent tasks.
+    /// Manual saving retains the existing flexible checklist conversion.
+    public static func hasAutomaticActions(_ text: String) -> Bool {
+        text.components(separatedBy: .newlines).filter {
+            $0.range(of: #"^\s*\d+[.)]\s+\S"#, options: .regularExpression) != nil
+        }.count >= 2
+    }
     public static func steps(from text: String) -> [PlanStep] {
         let lines = text.components(separatedBy: .newlines)
         let numbered = #"^\s*\d+[.)]\s+"#

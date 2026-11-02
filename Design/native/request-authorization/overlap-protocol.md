@@ -1,0 +1,7 @@
+# Overlapping reply ownership · declared runtime protocol
+
+Source inspection identifies shared last-reply fields as unsafe save inputs when async requests overlap. No controlled baseline concurrency reproduction is claimed. The production UI now uses immutable per-request outcomes; its display compatibility fields remain separate.
+
+Before accepting that repair, hold the first actual HTTP reply for conversation A. Create independent conversation B through the real checked store. Complete a genuine synthetic plan for B while A remains held, without yet saving B's outcome. Withdraw the shared source and release A. A must return a factual non-plan notice and overwrite the compatibility display fields. B's retained outcome must still contain its own accepted text, source, provenance and plan eligibility. Save B through actual retain/checked conversation/CoachView plan operations, verify its three explicit plan steps and exact conversation identity, then select A and save its own notice without an automatic plan. Preserve both questions and existing plans. Inspect both actual outgoing packets; do not count a post-submission rejection as prevention of A's already-submitted input.
+
+UI verification uses the normal Library sharing switch while an actual synthetic HTTP reply is held, then checks the saved visible notice, no automatic Library plan, explicit Save to Library, retained history after relaunch and a later genuine three-step plan. Main normal and compact largest-text scopes are separate; no live-provider or physical-device claim.

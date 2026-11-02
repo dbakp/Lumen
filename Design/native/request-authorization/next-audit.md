@@ -1,0 +1,23 @@
+# Next coherent audit · durable Health intent, then acknowledged Watch delivery
+
+The full continuation goal remains active. The newly inspected [provider disconnection/route-identity boundary](follow-up-provider-authorization.md) should be audited immediately after Batch41 publication, before the Health/Watch batches below. Finish Batch41's current UI/critique, Release, exact publication and cleanup gates before changing these product paths. The findings below are source inspection, not controlled runtime reproductions or accepted future behavior.
+
+## Durable existing Apple Health writes
+
+`OrderedHealthWrites` explicitly preserves save/delete order only in process. `HealthStore.addMeal`, `deleteMeal`, `addWater` and `undoLastWater` commit local arrays, then enqueue asynchronous operations; `logWeight(kg:)` starts a separate task inside its checked commit callback. `HealthKitService.saveMeal/saveWater/saveWeight` and meal deletion suppress underlying errors. A process ending between local commit and a successful external callback has no durable operation receipt to resume. Do not infer an external write succeeded from a local save or authorization flag.
+
+First declare and reproduce the restart/failure boundaries with the actual checked store and a controlled Health adapter. Persist an owned operation identity, original record identity/time/value and ordered save/delete intent in the same checked transaction as the local mutation. A failed local commit must cause no external operation; restart must preserve pending intent; acknowledged operations must not replay. Retries need stable per-record/type idempotency and typed success/unavailable/denied/failure outcomes, with no duplicate Health samples or resurrection after a later delete. Meal partial failures and weight identity need explicit contracts. Verify relevant HealthKit SDK behavior from primary documentation before selecting that contract.
+
+Preserve existing route semantics. Confirmed conversational water/workout entries and their corrections/deletions are intentionally Lumen-only, as documented in CONVERSATIONAL_LOGGING.md; this audit must not silently start writing them to Health. Reset, restore, migration, pending deletion, ownership and backup policy must be declared before implementation. Do not remove unrelated Apple Health data or claim remote recall. Show factual pending/failure/retry states while preserving local corrections and data confidence.
+
+Acceptance needs actual disk snapshots, held callbacks, failed writes, process termination/relaunch and restored queues, not only an in-memory predicate test. Repeat ordered save/delete, no-write-on-local-failure, stale reset/restore and existing logging/photo/backup flows at recorded sources. Keep signed-device denied-permission/background delivery as a separate gate if only simulator/adapter evidence is available.
+
+## Identity-preserving Watch acknowledgement
+
+`WatchStore.toggleRitual` sends a toggle string; duplicate delivery can repeat a toggle. `WatchStore.logWater` writes a sample, then sends only an amount if the session is already active. The phone's `WatchSync.handle` either refreshes Health based on its authorization flag or calls addWater with a new local identity/time. These paths do not persist an event/acknowledgement contract. This inspection does not establish observed radio-delivery behavior.
+
+Declare a versioned, bounded event with stable event/source-record identity, original timestamp/day/value and an explicit target ritual state. Persist outgoing events before transfer; keep them until an acknowledgement tied to the same event is received. The recipient must commit/deduplicate before acknowledging. Preserve the Watch Health sample's identity and confirmed write status; phone permission is not evidence that the original Watch sample exists or is absent. Do not turn a received amount into a newly timed duplicate or write it to Health twice. Declare expiry, timezone/day boundaries, malformed/legacy payloads, app upgrades, reset/restore and reconnect behavior before implementation.
+
+Use actual checked sender/recipient stores with controlled duplicate, delayed, reordered, failed-save, lost-ack and restart/reconnect delivery. Then verify the native pending/error/acknowledged experience and paired/signed hardware boundary. Keep primary/Watch/shared runtimes and unrelated user data intact; use only owned synthetic devices/data and check storage first.
+
+Evidence-support, clinical/live-provider quality, physical-device behavior, accessibility/VoiceOver, performance, privacy governance and distribution requirements continue alongside these batches. Neither source inspection nor a green local adapter suite completes the full product goal.

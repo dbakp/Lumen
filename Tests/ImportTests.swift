@@ -196,6 +196,10 @@ import Darwin
         check(!PlanBuilder.isRequest("I have an implant") && !PlanBuilder.isRequest("I don't want a plan"), "incidental and negated plan mentions do not create documents")
         check(PlanBuilder.steps(from: "My plan\n1. Check energy\n2) Take a break\n- [ ] Review tomorrow").map(\.title) == ["Check energy", "Take a break"], "numbered plan actions take priority over evidence bullets")
         check(PlanBuilder.steps(from: "- [ ] Walk if comfortable\n- Review tomorrow").map(\.title) == ["Walk if comfortable", "Review tomorrow"], "bullet-only plans become editable checklist steps")
+        check(!PlanBuilder.hasAutomaticActions("Search changed. Send again."), "notices cannot invent automatic plan actions")
+        check(!PlanBuilder.hasAutomaticActions("Evidence\n- Sleep recorded\n- Activity recorded"), "evidence bullets do not establish automatic planning success")
+        check(!PlanBuilder.hasAutomaticActions("1. Single action") && !PlanBuilder.hasAutomaticActions("1. \n2. "), "automatic planning requires at least two nonempty numbered actions")
+        check(PlanBuilder.hasAutomaticActions("Flexible plan\n1. Check energy\n2) Take a break"), "accepted planning replies retain explicit numbered actions")
         let oldStep = try JSONDecoder().decode(PlanStep.self, from: Data("{\"id\":\"old\",\"title\":\"Walk\",\"isDone\":false}".utf8))
         check(oldStep.dueDate == nil, "legacy plan steps decode without dates")
         var context = PersonalHealthContext(); context.allergies = "Peanuts"

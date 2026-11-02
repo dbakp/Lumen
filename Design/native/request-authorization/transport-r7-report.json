@@ -1,0 +1,82 @@
+{
+  "cases": [
+    {
+      "result": "exact text preserved",
+      "route": "stop",
+      "status": "passed"
+    },
+    {
+      "result": "exact text preserved",
+      "route": "utf8-chunks",
+      "status": "passed"
+    },
+    {
+      "result": "exact text preserved",
+      "route": "exact-limit",
+      "status": "passed"
+    },
+    {
+      "result": "incomplete",
+      "route": "length",
+      "status": "passed"
+    },
+    {
+      "result": "refusal",
+      "route": "refusal",
+      "status": "passed"
+    },
+    {
+      "result": "incomplete",
+      "route": "filter",
+      "status": "passed"
+    },
+    {
+      "result": "incomplete",
+      "route": "tool",
+      "status": "passed"
+    },
+    {
+      "result": "http",
+      "route": "http-error",
+      "status": "passed"
+    },
+    {
+      "result": "http",
+      "route": "redirect",
+      "status": "passed"
+    },
+    {
+      "result": "malformed",
+      "route": "nonjson",
+      "status": "passed"
+    },
+    {
+      "result": "responseSize",
+      "route": "oversize-header",
+      "status": "passed"
+    },
+    {
+      "result": "responseSize",
+      "route": "oversize-chunked",
+      "status": "passed"
+    },
+    {
+      "result": "rejected before networking",
+      "route": "request-must-not-arrive",
+      "status": "passed"
+    },
+    {
+      "result": "cancelled without partial reply",
+      "route": "slow",
+      "seconds": 0.203554542,
+      "status": "passed"
+    },
+    {
+      "result": "idle timeout without partial reply",
+      "route": "slow-timeout",
+      "status": "passed"
+    }
+  ],
+  "scope": "Actual URLSession loopback transport with synthetic bodies only; no credential, live provider or clinical claim.",
+  "status": "passed"
+}

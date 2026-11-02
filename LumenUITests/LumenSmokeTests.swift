@@ -4420,6 +4420,236 @@ final class LumenSmokeTests: XCTestCase {
         snap("1033-conversation-native-report")
     }
 
+    /// Bounded positioning avoids whole-viewport oscillation around a tall
+    /// Dynamic Type switch row. Operates the actual native thumb after settling.
+    func librarySharingSwitch(enabled: Bool) {
+        let toggle = app.switches["Use in assistant"].firstMatch
+        XCTAssertTrue(toggle.waitForExistence(timeout: 5))
+        let scroll = app.scrollViews.firstMatch
+        let top = max(app.navigationBars.firstMatch.frame.maxY + 16, scroll.frame.minY + 16)
+        let bottom = min(app.tabBars.firstMatch.frame.minY - 20, scroll.frame.maxY - 20)
+        let middle = (top + bottom) / 2
+        for _ in 0..<24 {
+            let frame = toggle.frame
+            print("LIBRARY SHARING POSITION", frame, "viewport", top, bottom)
+            if frame.minY >= top && frame.maxY <= bottom && toggle.isHittable { break }
+            let distance = min(180, max(-180, frame.midY - middle))
+            let start = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: middle))
+            let end = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: middle - distance))
+            start.press(forDuration: 0.05, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.2)
+        }
+        settleLabFrame(toggle)
+        XCTAssertGreaterThanOrEqual(toggle.frame.minY, top); XCTAssertLessThanOrEqual(toggle.frame.maxY, bottom)
+        if (toggle.value as? String) != (enabled ? "1" : "0") {
+            let thumb = toggle.switches.firstMatch
+            XCTAssertTrue(thumb.exists && thumb.isHittable)
+            thumb.coordinate(withNormalizedOffset: CGVector(dx: enabled ? 0.25 : 0.75, dy: 0.5)).tap()
+        }
+        let changed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", enabled ? "1" : "0"), object: toggle)
+        XCTAssertEqual(XCTWaiter.wait(for: [changed], timeout: 5), .completed)
+    }
+
+    func positionLibraryPlanStep(_ element: XCUIElement) {
+        let top = app.navigationBars.firstMatch.frame.maxY + 16
+        let bottom = app.tabBars.firstMatch.frame.minY - 20
+        let middle = (top + bottom) / 2
+        XCTAssertTrue(element.exists); XCTAssertLessThan(element.frame.height, bottom - top)
+        for _ in 0..<24 {
+            let frame = element.frame
+            print("LIBRARY COMPLETE STEP POSITION", frame, "viewport", top, bottom)
+            if frame.minY >= top && frame.maxY <= bottom && element.isHittable { break }
+            let distance = min(160, max(-160, frame.midY - middle))
+            let start = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: middle))
+            let end = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: middle - distance))
+            start.press(forDuration: 0.05, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.2)
+        }
+        settleLabFrame(element, pixelTolerance: 1)
+        XCTAssertGreaterThanOrEqual(element.frame.minY, top - 1)
+        XCTAssertLessThanOrEqual(element.frame.maxY, bottom + 1)
+        XCTAssertTrue(element.isHittable)
+    }
+
+    func captureLibraryConversationNotice(text: String, action: String) {
+        let scroll = app.scrollViews.firstMatch
+        let notice = scroll.descendants(matching: .any).matching(NSPredicate(format: "identifier == 'coachMessage' AND label == %@", text)).firstMatch
+        let save = app.buttons[action].firstMatch
+        XCTAssertTrue(notice.exists && save.exists); XCTAssertEqual(notice.label, text)
+        let navigation = app.navigationBars["Assistant"].firstMatch
+        settleLabFrame(navigation, pixelTolerance: 1)
+        let input = app.descendants(matching: .any).matching(identifier: "coachInput").firstMatch
+        let top = max(navigation.frame.maxY + 16, scroll.frame.minY + 16)
+        let bottom = min(scroll.frame.maxY - 12, input.frame.minY - 20)
+        XCTAssertGreaterThan(bottom - top, 180)
+        let middle = (top + bottom) / 2
+        let stride = min(140, (bottom - top) / 2)
+        func pan(_ distance: CGFloat) {
+            let start = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: middle))
+            let end = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: middle - distance))
+            start.press(forDuration: 0.05, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.2)
+        }
+        for _ in 0..<24 {
+            if notice.frame.minY >= top && (notice.frame.maxY <= bottom || notice.frame.minY <= top + 48) { break }
+            pan(min(stride, max(-stride, notice.frame.minY - (top + 16))))
+        }
+        settleLabFrame(notice, pixelTolerance: 1)
+        XCTAssertGreaterThanOrEqual(notice.frame.minY, top - 1)
+        if notice.frame.height <= bottom - top {
+            XCTAssertLessThanOrEqual(notice.frame.maxY, bottom + 1)
+        } else { XCTAssertLessThanOrEqual(notice.frame.minY, top + 48) }
+        for step in 0..<24 {
+            print("LIBRARY NOTICE COVERAGE", notice.frame, save.frame, "viewport", top, bottom)
+            snap("1111-complete-library-notice-\(step)")
+            if save.frame.minY >= top && save.frame.maxY <= bottom && save.isHittable { return }
+            pan(min(stride, max(32, save.frame.maxY - bottom)))
+        }
+        XCTFail("Complete Library notice and manual save action were not reached")
+    }
+
+    func captureSavedNoticeTitleAndBody(title: String, text: String) {
+        let scroll = app.scrollViews.firstMatch
+        let heading = scroll.staticTexts.matching(NSPredicate(format: "label == %@", title)).firstMatch
+        let body = scroll.staticTexts.matching(NSPredicate(format: "label == %@", text)).firstMatch
+        XCTAssertTrue(heading.waitForExistence(timeout: 5)); XCTAssertTrue(body.exists)
+        XCTAssertEqual(heading.label, title); XCTAssertEqual(body.label, text)
+        let top = app.navigationBars.firstMatch.frame.maxY + 16
+        let bottom = app.tabBars.firstMatch.frame.minY - 20
+        let middle = (top + bottom) / 2
+        func pan(_ distance: CGFloat) {
+            let start = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: middle))
+            let end = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: middle - distance))
+            start.press(forDuration: 0.05, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.2)
+        }
+        for _ in 0..<24 {
+            if heading.frame.minY >= top && heading.frame.minY <= top + 48 { break }
+            pan(min(160, max(-160, heading.frame.minY - (top + 16))))
+        }
+        settleLabFrame(heading, pixelTolerance: 1)
+        XCTAssertGreaterThanOrEqual(heading.frame.minY, top - 1)
+        XCTAssertLessThanOrEqual(heading.frame.minY, top + 48)
+        for step in 0..<30 {
+            print("SAVED NOTICE TITLE BODY COVERAGE", heading.frame, body.frame, "viewport", top, bottom)
+            snap("1110-saved-notice-title-body-\(step)")
+            if body.frame.maxY <= bottom && body.frame.maxY > top { return }
+            pan(min(160, max(32, body.frame.maxY - bottom)))
+        }
+        XCTFail("Complete saved-note title and body ending were not reached")
+    }
+
+    func captureLibrarySharingFooter(_ prefix: String) {
+        let text = "When enabled, matching text can be sent with your questions to the AI provider selected in Settings. Turning this off stops future retrieval. Earlier replies and saved copies keep their excerpts."
+        let footer = app.staticTexts.matching(NSPredicate(format: "label == %@", text)).firstMatch
+        XCTAssertTrue(footer.exists)
+        let top = app.navigationBars.firstMatch.frame.maxY + 16
+        let bottom = app.tabBars.firstMatch.frame.minY - 20
+        for step in 0..<20 {
+            snap(prefix + "-footer-\(step)")
+            print("LIBRARY FOOTER COVERAGE", footer.frame, "viewport", top, bottom)
+            if footer.frame.maxY <= bottom && footer.frame.maxY > top { return }
+            let middle = (top + bottom) / 2
+            let distance = min(160, max(32, footer.frame.maxY - bottom))
+            let start = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: middle + 60))
+            let end = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: middle + 60 - distance))
+            start.press(forDuration: 0.05, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.2)
+        }
+        XCTFail("Complete sharing disclosure ending was not reached")
+    }
+
+    func testLibraryNoticePlanUI() throws { try libraryNoticePlanUI(large: false) }
+    func testLibraryNoticePlanUILarge() throws { try libraryNoticePlanUI(large: true) }
+    func testLibrarySearchChangeUI() throws { try libraryNoticePlanUI(large: false, preSearch: true) }
+    func testLibrarySearchChangeUILarge() throws { try libraryNoticePlanUI(large: true, preSearch: true) }
+    func libraryNoticePlanUI(large: Bool, preSearch: Bool = false) throws {
+        app.terminate()
+        app.launchEnvironment["LUMEN_PERSONAL_TEST_NONCE"] = UUID().uuidString
+        app.launchArguments = ["-resetForUITests", "-personal-provenance-ui"] + (preSearch ? ["-library-search-hold-ui"] : [])
+            + (large ? ["-lumen.appearance", "dark", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"] : ["-lumen.appearance", "light"])
+        app.launch(); finishOnboarding()
+        createSemanticNote(title: "Shared routine", body: "SYNTHETIC-LIBRARY-CONTEXT-41. A synthetic flexible routine.", shared: false)
+        let shared = app.buttons["Shared routine"].firstMatch; reveal(shared); shared.tap()
+        librarySharingSwitch(enabled: true)
+        app.navigationBars["Document"].buttons.element(boundBy: 0).tap()
+        let before = try personalRequestAudit().count
+        let preparedBefore = try conversationRouteCounts("prepared-stage")["requests"] ?? 0
+        let release = preSearch ? "/release-prepared" : "/release-personal"
+        _ = try conversationControl(preSearch ? "/arm-prepared" : "/arm-personal")
+        defer { _ = try? conversationControl(release) }
+        tab("Assistant")
+        enterConversationQuestion("Make a plan using SYNTHETIC-LIBRARY-CONTEXT-41" + (preSearch ? "" : " SYNTHETIC-PERSONAL-HELD-40"))
+        if preSearch {
+            let deadline = Date().addingTimeInterval(15)
+            var held = false
+            while Date() < deadline {
+                let counts = try XCTUnwrap(JSONSerialization.jsonObject(with: conversationControl("/counts")) as? [String: [String: Int]])
+                if (counts["prepared-stage"]?["requests"] ?? 0) > preparedBefore { held = true; break }
+                RunLoop.current.run(until: Date().addingTimeInterval(0.1))
+            }
+            XCTAssertTrue(held)
+            XCTAssertEqual(try personalRequestAudit().count, before)
+        } else { try waitPersonalRequest(before + 1) }
+        tab("Library"); let source = app.buttons["Shared routine"].firstMatch; reveal(source); source.tap()
+        librarySharingSwitch(enabled: false)
+        snap("1102-library-withdrawn-during-reply")
+        app.navigationBars["Document"].buttons.element(boundBy: 0).tap()
+        _ = try conversationControl(release)
+        tab("Assistant")
+        XCTAssertTrue(coachMessages.firstMatch.waitForExistence(timeout: 20))
+        let notice = "Library records or search settings changed during this " + (preSearch ? "request" : "reply") + ". Send your question again to use the current settings."
+        XCTAssertEqual(coachMessages.firstMatch.label, notice)
+        let save = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'saveReplyToLibrary-' ")).firstMatch
+        reveal(save); XCTAssertTrue(save.isHittable)
+        let saveID = save.identifier
+        captureLibraryConversationNotice(text: notice, action: saveID)
+        tab("Library")
+        XCTAssertEqual(app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'library-plan-' ")).count, 0)
+        snap("1104-library-no-automatic-notice-plan")
+        tab("Assistant"); reveal(app.buttons[saveID]); app.buttons[saveID].tap()
+        let saved = app.buttons["View saved document"].firstMatch; reveal(saved); saved.tap()
+        XCTAssertTrue(app.navigationBars["Document"].waitForExistence(timeout: 5))
+        let expectedTitle = "Library records or search settings changed during this " + (preSearch ? "request" : "reply") + ". Send your…"
+        captureSavedNoticeTitleAndBody(title: expectedTitle, text: notice)
+        XCTAssertEqual(app.switches["Use in assistant"].firstMatch.value as? String, "0")
+        librarySharingSwitch(enabled: false)
+        snap("1105-explicitly-saved-notice")
+        captureLibrarySharingFooter("1105-explicitly-saved-notice")
+        app.navigationBars["Document"].buttons.element(boundBy: 0).tap()
+        app.terminate()
+        app.launchArguments = ["-personal-provenance-ui"]
+            + (large ? ["-lumen.appearance", "dark", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"] : ["-lumen.appearance", "light"])
+        app.launch(); tab("Assistant")
+        XCTAssertTrue(coachMessages.firstMatch.waitForExistence(timeout: 10)); XCTAssertEqual(coachMessages.firstMatch.label, notice)
+        tab("Library"); XCTAssertEqual(app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'library-plan-' ")).count, 0)
+        tab("Assistant")
+        askLibrary("Make a flexible plan SYNTHETIC-PLAN-41", replies: 2)
+        let plan = app.buttons["View saved plan"].firstMatch; reveal(plan); plan.tap()
+        for text in ["Incomplete: Check how you feel.", "Incomplete: Take a comfortable break.", "Incomplete: Review tomorrow."] {
+            let action = app.buttons[text].firstMatch; positionLibraryPlanStep(action); snap("1106-genuine-plan-step-" + text)
+        }
+        XCTAssertEqual(app.switches["Use in assistant"].firstMatch.value as? String, "0")
+        librarySharingSwitch(enabled: false)
+        snap("1106-genuine-plan-sharing-off")
+        captureLibrarySharingFooter("1106-genuine-plan-sharing")
+        app.navigationBars["Document"].buttons.element(boundBy: 0).tap()
+        tab("Library"); XCTAssertEqual(app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'library-plan-' ")).count, 1)
+        snap("1107-only-genuine-plan-in-library")
+        let audit = try personalRequestAudit()
+        XCTAssertEqual(audit.count, before + (preSearch ? 1 : 2))
+        if !preSearch { XCTAssertGreaterThan(try personalCanary(audit[before], "library41", role: "system"), 0) }
+        let latest = try XCTUnwrap(audit.last)
+        XCTAssertEqual(try personalCanary(latest, "library41", role: "system"), 0)
+        XCTAssertEqual(try personalCanary(latest, "library41", role: "assistant"), 0)
+    }
+
+    func testLibraryAuthorizationChecks() throws {
+        app.terminate()
+        app.launchArguments = ["-resetForUITests", "-personal-provenance-probe", "-library-authorization-checks"]
+        app.launch()
+        let status = app.staticTexts["personalProvenanceProbeStatus"].firstMatch
+        let completed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label BEGINSWITH 'Request authorization checks'"), object: status)
+        XCTAssertEqual(XCTWaiter.wait(for: [completed], timeout: 60), .completed)
+        XCTAssertEqual(status.label, "Request authorization checks passed")
+        snap("1101-library-authorization-native-checks")
+    }
+
     func testPersonalContextNativeProvenance() throws {
         app.terminate()
         app.launchArguments = ["-resetForUITests", "-personal-provenance-probe", "-quick-save-fault", "conversations.json:3"]

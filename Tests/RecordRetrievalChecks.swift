@@ -108,6 +108,24 @@ enum RecordRetrievalChecks {
         let localMessage = ChatMessage(role: .coach, text: local, recordContext: context)
         let localSaved = RecordRetrieval.savedDocument(from: localMessage, history: [user, localMessage])
         check(localSaved.title == query && !localSaved.body.hasPrefix("Matching saved text") && localSaved.recordContext?.isValid == true, "saved lookups use the question as title without repeating the generic heading")
+        for stage in ["reply", "request"] {
+            let text = "Library records or search settings changed during this \(stage). Send your question again to use the current settings."
+            let message = ChatMessage(role: .coach, text: text, recordContext: .guide())
+            let saved = RecordRetrieval.savedDocument(from: message, history: [message])
+            check(saved.title == "Library records or search settings changed during this \(stage). Send your…" && saved.body == text && saved.messageID == message.id,
+                  "saved \(stage) notice title marks word-boundary omission while retaining the full body and identity")
+        }
+        let exactHeading = String(repeating: "x", count: 80)
+        check(RecordRetrieval.savedDocument(from: .init(role: .coach, text: exactHeading), history: []).title == exactHeading,
+              "an already bounded eighty-character heading is not falsely marked as shortened")
+        let glyphs = String(repeating: "🧑🏽‍⚕️", count: 90)
+        let glyphDocument = RecordRetrieval.savedDocument(from: .init(role: .coach, text: glyphs), history: [])
+        check(glyphDocument.title == String(repeating: "🧑🏽‍⚕️", count: 79) + "…" && glyphDocument.body == glyphs,
+              "long unbroken headings shorten on complete extended graphemes with an explicit omission mark")
+        let longQuestion = ChatMessage(role: .user, text: String(repeating: "Please review this recorded context ", count: 4))
+        let savedLongLookup = RecordRetrieval.savedDocument(from: localMessage, history: [longQuestion, localMessage])
+        check(savedLongLookup.title.count <= 80 && savedLongLookup.title.hasSuffix("…") && savedLongLookup.body == localSaved.body && savedLongLookup.recordContext?.passages.first?.id == context.passages.first?.id,
+              "long lookup-question headings shorten visibly without rewriting literal excerpts or source identity")
         var unicode = HealthDocument(title: "Café", kind: .note, body: "🧑🏽‍⚕️ Synthetic café møde. Ferritin at 12.5 mg/L.", source: "Synthetic", includeInAssistant: true)
         let unicodeMatch = try RecordRetrieval.search(query: "cafe", documents: [unicode])
         check(!unicodeMatch.passages.isEmpty && RecordRetrieval.isCurrent(unicodeMatch.passages[0], documents: [unicode]), "FTS folds diacritics while excerpt offsets preserve extended graphemes")
