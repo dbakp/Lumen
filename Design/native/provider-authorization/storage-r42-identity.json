@@ -1,0 +1,107 @@
+{
+  "source": "connection-source-r37.json",
+  "installedMainApplicationSHA256": "c184a6cfa07002d22748e349fac925a72e8528d9340c2ce3ff60ba0ba94f81b1",
+  "reports": {
+    "Lumen-provider-reset-failure-prepare.json": {
+      "file": "storage-r42-Lumen-provider-reset-failure-prepare.json",
+      "sha256": "27f0ce375a16ad2f26b9f335592ab70a99db168f1cdb1472eda9c077985fe666",
+      "status": "Account reset checks passed: failure prepare",
+      "checks": 7,
+      "pid": 40380,
+      "originalPID": 40380
+    },
+    "Lumen-provider-removal-oauth-resume.json": {
+      "file": "storage-r42-Lumen-provider-removal-oauth-resume.json",
+      "sha256": "c867eab644063b71bc8708b106e1722c6ab693eedbb3cbd88919462d48396dfa",
+      "status": "Credential removal relaunch checks passed: oauth resume",
+      "checks": 11,
+      "pid": 40837,
+      "originalPID": 40712
+    },
+    "Lumen-provider-removal-all-prepare.json": {
+      "file": "storage-r42-Lumen-provider-removal-all-prepare.json",
+      "sha256": "500cc00e86b946f4ae622e394a33f7687a04c4eaf715ec50857411522d406b27",
+      "status": "Credential removal relaunch checks passed: all prepare",
+      "checks": 9,
+      "pid": 40865,
+      "originalPID": 40865
+    },
+    "Lumen-provider-removal-key-resume.json": {
+      "file": "storage-r42-Lumen-provider-removal-key-resume.json",
+      "sha256": "0425ffe071322d09beae4fe8dd2297836d146d91a9e7295c1752c7d33d39ef44",
+      "status": "Credential removal relaunch checks passed: key resume",
+      "checks": 11,
+      "pid": 41171,
+      "originalPID": 41049
+    },
+    "Lumen-provider-reset-failure-resume.json": {
+      "file": "storage-r42-Lumen-provider-reset-failure-resume.json",
+      "sha256": "78346f6527899d36e6dd64642ea6d0fe9dc514dfb7e67ac1adf7e03c8b87f19b",
+      "status": "Account reset checks passed: failure resume",
+      "checks": 17,
+      "pid": 40421,
+      "originalPID": 40380
+    },
+    "Lumen-provider-connection-report.json": {
+      "file": "storage-r42-Lumen-provider-connection-report.json",
+      "sha256": "6d737cb8e727874824d9b70f89c1502ae0f3c16ecd8b07f99dbdc070b2d2a465",
+      "status": "Connection storage checks passed",
+      "checks": 22,
+      "pid": null,
+      "originalPID": null
+    },
+    "Lumen-provider-removal-oauth-prepare.json": {
+      "file": "storage-r42-Lumen-provider-removal-oauth-prepare.json",
+      "sha256": "367fba3fd370e72c0e04991a7dcf0f61822a0d44fdcad6a7e3ac13380d4da136",
+      "status": "Credential removal relaunch checks passed: oauth prepare",
+      "checks": 9,
+      "pid": 40712,
+      "originalPID": 40712
+    },
+    "Lumen-provider-removal-key-prepare.json": {
+      "file": "storage-r42-Lumen-provider-removal-key-prepare.json",
+      "sha256": "a7a6ec49883af7a36f308c8efec70670e473100eeb9591c67d0fa0ae668cbcca",
+      "status": "Credential removal relaunch checks passed: key prepare",
+      "checks": 9,
+      "pid": 41049,
+      "originalPID": 41049
+    },
+    "Lumen-provider-storage-report.json": {
+      "file": "storage-r42-Lumen-provider-storage-report.json",
+      "sha256": "1063f5f14ccf6d7247f15f896d2eaa62e11293201a88ac9072586a31302a66ca",
+      "status": "Credential storage checks passed",
+      "checks": 26,
+      "pid": null,
+      "originalPID": null
+    },
+    "Lumen-provider-removal-all-resume.json": {
+      "file": "storage-r42-Lumen-provider-removal-all-resume.json",
+      "sha256": "768b5c38ff8dfa22416730f2aed29e265f9ab845a05fd42df91fdcf927848e0c",
+      "status": "Credential removal relaunch checks passed: all resume",
+      "checks": 11,
+      "pid": 40899,
+      "originalPID": 40865
+    },
+    "Lumen-provider-reset-after-secrets-prepare.json": {
+      "file": "storage-r42-Lumen-provider-reset-after-secrets-prepare.json",
+      "sha256": "247a52f31a4d702e00cb9424ecd0d98ca4fe983eb0a9ef7659b4872da7517afb",
+      "status": "Account reset checks passed: after-secrets prepare",
+      "checks": 7,
+      "pid": 40444,
+      "originalPID": 40444
+    },
+    "Lumen-provider-reset-after-secrets-resume.json": {
+      "file": "storage-r42-Lumen-provider-reset-after-secrets-resume.json",
+      "sha256": "bef5843de9b318e47b68c6a3f7ea6b4a1bd59a926fef7f5d0c6201704a0cac9f",
+      "status": "Account reset checks passed: after-secrets resume",
+      "checks": 17,
+      "pid": 40470,
+      "originalPID": 40444
+    }
+  },
+  "xctestsPassed": 4,
+  "processPairs": 5,
+  "images": 7,
+  "collectorNote": "Initial script copied native reports and checked installed binary/PIDs, then stopped on relative-vs-absolute path formatting before image manifest/identity. Resumed from unchanged actual files with corrected repository-relative image paths. No runtime rerun.",
+  "scope": "Synthetic checked storage and normal process restarts; no HTTP required. Power-loss/filesystem/Health background/late Strava and full UI acceptance remain open."
+}

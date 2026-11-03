@@ -1,0 +1,27 @@
+{
+  "runtimeTrial": 52,
+  "exactBuildSource": "connection-source-r43.json",
+  "applicationSource": "connection-source-r41.json",
+  "applicationSHA256": "8df737042fb483add6da61ea33c11c952e901df0ca5a664f155de5a35e116ca8",
+  "runtimeAcceptance": "scoped-test-passed",
+  "command": [
+    "xcodebuild",
+    "test-without-building",
+    "-xctestrun",
+    "/tmp/LumenBatch37Simulator/Build/Products/Lumen_Lumen_iphonesimulator27.0-arm64-x86_64.xctestrun",
+    "-destination",
+    "platform=iOS Simulator,id=922E011C-3895-4DB1-9C9A-1D3A977226CF",
+    "-parallel-testing-enabled",
+    "NO",
+    "-collect-test-diagnostics",
+    "never",
+    "-only-testing:LumenUITests/LumenSmokeTests/testProviderConnectionKeyboardUI",
+    "-only-testing:LumenUITests/LumenSmokeTests/testProviderConnectionKeyboardUIDark",
+    "-only-testing:LumenUITests/LumenSmokeTests/testProviderConnectionKeyboardUILargest",
+    "-resultBundlePath",
+    "/tmp/LumenBatch42Checks/ConnectionUICompactR52.xcresult"
+  ],
+  "hostWrapperSHA256": "575c7af79e891d15bdeb4532c2fa90ea900ee8fce9439e4c3bf340c9a04ffa5b",
+  "hostWrapperSource": "capture-ui-host-r52.py.gz",
+  "scope": "Three unchanged secure-keyboard tests. Wrapper captures native simulator display before keyboard-touched-key and keyboard-done readback replies; no app/UI/test edit. Actual pixel acceptance pending."
+}

@@ -1,0 +1,110 @@
+{
+  "checks": [
+    {
+      "name": "actual missing Keychain item is absent",
+      "passed": true
+    },
+    {
+      "name": "actual Keychain add persists exact synthetic value",
+      "passed": true
+    },
+    {
+      "name": "actual replacement updates existing item with complete Unicode",
+      "passed": true
+    },
+    {
+      "name": "explicit injected write status preserves actual prior Keychain value",
+      "passed": true
+    },
+    {
+      "name": "explicit unavailable-read status never substitutes or migrates legacy defaults",
+      "passed": true
+    },
+    {
+      "name": "explicit injected delete failure retains actual credential and legacy source for retry",
+      "passed": true
+    },
+    {
+      "name": "actual delete removes credential and its legacy rehydration source",
+      "passed": true
+    },
+    {
+      "name": "idempotent scoped deletion preserves another actual credential",
+      "passed": true
+    },
+    {
+      "name": "failed checked migration keeps its only legacy copy and no phantom Keychain value",
+      "passed": true
+    },
+    {
+      "name": "successful migration commits actual Keychain data before removing legacy source",
+      "passed": true
+    },
+    {
+      "name": "actual malformed UTF-8 yields typed decode failure without replacing it from stale defaults",
+      "passed": true
+    },
+    {
+      "name": "checked nil assignment performs actual scoped removal",
+      "passed": true
+    },
+    {
+      "name": "all dedicated synthetic credential and legacy fixtures are actually removed",
+      "passed": true
+    },
+    {
+      "name": "one actual Keychain record round-trips complete account identity, both tokens and expiry",
+      "passed": true
+    },
+    {
+      "name": "explicit injected account replacement failure preserves all actual prior credential bytes together",
+      "passed": true
+    },
+    {
+      "name": "stored account is never rebound to a replacement client or scope",
+      "passed": true
+    },
+    {
+      "name": "superseded generation rejects actual credential commit without changing the saved record",
+      "passed": true
+    },
+    {
+      "name": "failed disconnect persists removal intent and blocks credential loading while actual stored bytes remain",
+      "passed": true
+    },
+    {
+      "name": "actual disconnect retry removes the record and clears pending intent",
+      "passed": true
+    },
+    {
+      "name": "failed atomic account migration preserves both original defaults/Keychain sources without creating a legacy copy",
+      "passed": true
+    },
+    {
+      "name": "failed legacy cleanup returns no account while complete migrated credentials remain committed for retry",
+      "passed": true
+    },
+    {
+      "name": "migration cleanup retry retains the identical account and removes every redundant old source",
+      "passed": true
+    },
+    {
+      "name": "unknown or malformed present account cannot fall back to an old legacy account",
+      "passed": true
+    },
+    {
+      "name": "disconnect also removes malformed account and legacy fallback source",
+      "passed": true
+    },
+    {
+      "name": "failed actual-service erasure boundary persists blocked intent without claiming the explicitly injected failure erased credentials",
+      "passed": true
+    },
+    {
+      "name": "actual service erasure retry clears credentials and both removal intents",
+      "passed": true
+    }
+  ],
+  "scope": "Actual signed-simulator Keychain values, atomic credential records, legacy sources and persistent intent flags; failure statuses explicitly injected at the checked boundary. No actual process relaunch, physical-device protected-data, full provider lifecycle or live-account proof.",
+  "status": "Credential storage checks passed"
+}

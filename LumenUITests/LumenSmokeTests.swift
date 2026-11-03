@@ -4650,15 +4650,675 @@ final class LumenSmokeTests: XCTestCase {
         snap("1101-library-authorization-native-checks")
     }
 
-    func testProviderAuthorizationBaseline() throws {
+    func testProviderAuthorizationChecks() throws {
         app.terminate()
         app.launchArguments = ["-resetForUITests", "-personal-provenance-probe", "-provider-authorization-checks"]
         app.launch()
         let status = app.staticTexts["personalProvenanceProbeStatus"].firstMatch
-        let completed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label BEGINSWITH 'Provider baseline'"), object: status)
+        let completed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label BEGINSWITH 'Provider authorization checks'"), object: status)
         XCTAssertEqual(XCTWaiter.wait(for: [completed], timeout: 90), .completed)
-        XCTAssertEqual(status.label, "Provider baseline reproduced")
-        snap("1201-provider-baseline-native-checks")
+        XCTAssertEqual(status.label, "Provider authorization checks passed")
+        snap("1203-provider-authorization-native-checks")
+    }
+
+    func testProviderCredentialStorage() throws {
+        app.terminate()
+        app.launchArguments = ["-resetForUITests", "-personal-provenance-probe", "-provider-credential-checks"]
+        app.launch()
+        let status = app.staticTexts["personalProvenanceProbeStatus"].firstMatch
+        let completed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label BEGINSWITH 'Credential storage checks'"), object: status)
+        XCTAssertEqual(XCTWaiter.wait(for: [completed], timeout: 60), .completed)
+        XCTAssertEqual(status.label, "Credential storage checks passed")
+        snap("1202-provider-credential-storage-checks")
+    }
+
+    func providerUIReadback(_ checkpoint: String, nonce: String) throws -> [String: Any] {
+        let ready = expectation(description: "Actual connection UI read-back")
+        var received: Data?, status: Int?, failure: Error?
+        let session = URLSession(configuration: .ephemeral)
+        session.dataTask(with: URL(string: "http://127.0.0.1:48733/ui-state?checkpoint=" + checkpoint)!) { data, response, error in
+            received = data; status = (response as? HTTPURLResponse)?.statusCode; failure = error; ready.fulfill()
+        }.resume()
+        wait(for: [ready], timeout: 10); session.invalidateAndCancel()
+        if let failure { throw failure }
+        XCTAssertEqual(status, 200)
+        let data = try XCTUnwrap(received), object = try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])
+        XCTAssertEqual(object["nonce"] as? String, nonce)
+        let attachment = XCTAttachment(data: data, uniformTypeIdentifier: "public.json"); attachment.name = "provider-ui-" + checkpoint; attachment.lifetime = .keepAlways; add(attachment)
+        return object
+    }
+
+    func testProviderConnectionDraftUI() throws { try runProviderConnectionDraftUI() }
+    func testProviderConnectionDraftUILargest() throws { try runProviderConnectionDraftUI(large: true) }
+    func testProviderConnectionDraftUIDark() throws { try runProviderConnectionDraftUI(dark: true) }
+    func testProviderConnectionKeyboardUI() throws { try runProviderConnectionKeyboardUI() }
+    func testProviderConnectionKeyboardUILargest() throws { try runProviderConnectionKeyboardUI(large: true) }
+    func testProviderConnectionKeyboardUIDark() throws { try runProviderConnectionKeyboardUI(dark: true) }
+    func testProviderConnectionModelKeyboardUI() throws { try runProviderConnectionKeyboardUI(secure: false) }
+    func testProviderConnectionModelKeyboardUILargest() throws { try runProviderConnectionKeyboardUI(large: true, secure: false) }
+    func testProviderConnectionModelKeyboardUIDark() throws { try runProviderConnectionKeyboardUI(dark: true, secure: false) }
+
+    func testProviderConnectionScopeEditingDiagnostic() throws {
+        app.terminate()
+        let nonce = UUID().uuidString
+        app.launchArguments = ["-resetForUITests", "-provider-connection-ui", "-provider-ui-nonce", nonce]
+        app.launch(); tap("openAIConnectionFixture")
+        let original = try providerUIReadback("scope-diagnostic-opened", nonce: nonce)
+        let mode = app.buttons["aiConnectionMode"].firstMatch; reveal(mode, towardsTop: true); mode.tap(); tap("Google OAuth")
+        replaceConnectionText("aiGoogleScopes", with: "openid email")
+        snap("1254-ai-scope-exact-edit")
+        let edited = try providerUIReadback("scope-diagnostic-edited", nonce: nonce)
+        XCTAssertEqual(edited["recordSHA256"] as? String, original["recordSHA256"] as? String)
+        XCTAssertEqual(edited["dirty"] as? Bool, true); XCTAssertEqual(edited["oauthScopeClass"] as? String, "fixture-a")
+        tap("closeAIConnection"); tap("Discard"); tap("openAIConnectionFixture")
+        XCTAssertEqual(try providerUIReadback("scope-diagnostic-discarded", nonce: nonce)["recordSHA256"] as? String, original["recordSHA256"] as? String)
+        let remove = app.buttons["removeAICredentials"].firstMatch; reveal(remove); remove.tap(); tap("Remove")
+        let cleaned = try providerUIReadback("scope-diagnostic-cleaned", nonce: nonce)
+        XCTAssertEqual(cleaned["apiKeyClass"] as? String, "missing"); XCTAssertEqual(cleaned["oauthAccountPresent"] as? Bool, false)
+    }
+
+    func testProviderConnectionEndpointEditingDiagnosticLargest() throws {
+        app.terminate()
+        let nonce = UUID().uuidString
+        app.launchArguments = ["-resetForUITests", "-provider-connection-ui", "-provider-ui-nonce", nonce,
+                               "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]
+        app.launch(); tap("openAIConnectionFixture")
+        let original = try providerUIReadback("endpoint-diagnostic-opened", nonce: nonce)
+        let mode = app.buttons["aiConnectionMode"].firstMatch; reveal(mode); mode.tap(); tap("Google OAuth")
+        replaceConnectionText("aiOAuthEndpoint", with: "http://127.0.0.1:48733/chat-b")
+        snap("1255-ai-endpoint-exact-edit")
+        let edited = try providerUIReadback("endpoint-diagnostic-edited", nonce: nonce)
+        XCTAssertEqual(edited["recordSHA256"] as? String, original["recordSHA256"] as? String)
+        XCTAssertEqual(edited["dirty"] as? Bool, true); XCTAssertEqual(edited["oauthEndpointClass"] as? String, "fixture-a")
+        tap("closeAIConnection"); tap("Discard"); tap("openAIConnectionFixture")
+        XCTAssertEqual(try providerUIReadback("endpoint-diagnostic-discarded", nonce: nonce)["recordSHA256"] as? String, original["recordSHA256"] as? String)
+        let remove = app.buttons["removeAICredentials"].firstMatch; reveal(remove); remove.tap(); tap("Remove")
+        let cleaned = try providerUIReadback("endpoint-diagnostic-cleaned", nonce: nonce)
+        XCTAssertEqual(cleaned["apiKeyClass"] as? String, "missing"); XCTAssertEqual(cleaned["oauthAccountPresent"] as? Bool, false)
+    }
+
+    func runProviderConnectionKeyboardUI(large: Bool = false, dark: Bool = false, secure: Bool = true) throws {
+        app.terminate()
+        let nonce = UUID().uuidString
+        app.launchArguments = ["-resetForUITests", "-provider-connection-ui", "-provider-ui-nonce", nonce]
+        if large { app.launchArguments += ["-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"] }
+        if dark { app.launchArguments.append("-provider-ui-dark") }
+        app.launch(); tap("openAIConnectionFixture")
+        let original = try providerUIReadback("keyboard-opened", nonce: nonce)
+        let key = secure ? app.secureTextFields["aiAPIKey"].firstMatch : connectionField("aiModel")
+        reveal(key); key.tap()
+        _ = try providerUIReadback("keyboard-focused", nonce: nonce)
+        let q = app.keys["q"].firstMatch
+        let visible = XCTNSPredicateExpectation(predicate: NSPredicate(format: "hittable == true"), object: q)
+        let result = XCTWaiter.wait(for: [visible], timeout: 60)
+        let structure = XCTAttachment(string: app.debugDescription); structure.name = "provider-visible-keyboard-structure"; structure.lifetime = .keepAlways; add(structure)
+        XCTAssertEqual(result, .completed)
+        guard result == .completed else { return }
+        XCTAssertTrue(app.frame.contains(q.frame)); XCTAssertGreaterThan(q.frame.width, 20); XCTAssertGreaterThan(q.frame.height, 20)
+        q.tap()
+        let delete = app.keyboards.keys["delete"].firstMatch
+        XCTAssertTrue(delete.isHittable); delete.tap(); XCTAssertTrue(q.isHittable); q.tap()
+        let keyboard = app.keyboards.firstMatch
+        XCTAssertGreaterThan(keyboard.frame.height, 100); XCTAssertTrue(app.frame.insetBy(dx: -0.5, dy: -0.5).contains(keyboard.frame))
+        snap("1260-ai-visible-software-keyboard")
+        let typed = try providerUIReadback("keyboard-touched-key", nonce: nonce)
+        XCTAssertEqual(typed["recordSHA256"] as? String, original["recordSHA256"] as? String)
+        XCTAssertEqual(typed["dirty"] as? Bool, true)
+        let done = app.buttons["Done"].firstMatch; XCTAssertTrue(done.isHittable); done.tap()
+        XCTAssertFalse(q.isHittable); snap("1261-ai-software-keyboard-done")
+        let after = try providerUIReadback("keyboard-done", nonce: nonce)
+        XCTAssertEqual(after["recordSHA256"] as? String, original["recordSHA256"] as? String)
+        tap("closeAIConnection"); tap("Discard"); tap("openAIConnectionFixture")
+        XCTAssertEqual(try providerUIReadback("keyboard-discard-reopened", nonce: nonce)["recordSHA256"] as? String, original["recordSHA256"] as? String)
+        let remove = app.buttons["removeAICredentials"].firstMatch; reveal(remove); remove.tap(); tap("Remove")
+        let cleaned = try providerUIReadback("keyboard-cleaned", nonce: nonce)
+        XCTAssertEqual(cleaned["apiKeyClass"] as? String, "missing"); XCTAssertEqual(cleaned["oauthAccountPresent"] as? Bool, false)
+    }
+
+    func testProviderConnectionModesUI() throws { try runProviderConnectionModesUI() }
+    func testProviderConnectionModesUILargest() throws { try runProviderConnectionModesUI(large: true) }
+    func testProviderConnectionModesUIDark() throws { try runProviderConnectionModesUI(dark: true) }
+
+    func testProviderConnectionChoiceMenuLargest() throws {
+        app.terminate()
+        let nonce = UUID().uuidString
+        app.launchArguments = ["-resetForUITests", "-provider-connection-ui", "-provider-ui-nonce", nonce,
+                               "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]
+        app.launch(); tap("openAIConnectionFixture")
+        let opened = try providerUIReadback("choice-menu-opened", nonce: nonce)
+        let mode = app.buttons["aiConnectionMode"].firstMatch; reveal(mode); mode.tap()
+        snap("1270-ai-choice-menu-start")
+        captureConnectionChoicesEnd(large: true)
+        tap("Google OAuth")
+        let edited = try providerUIReadback("choice-menu-edited", nonce: nonce)
+        XCTAssertEqual(edited["recordSHA256"] as? String, opened["recordSHA256"] as? String)
+        XCTAssertEqual(edited["dirty"] as? Bool, true)
+        tap("closeAIConnection"); tap("Discard"); tap("openAIConnectionFixture")
+        XCTAssertEqual(try providerUIReadback("choice-menu-discarded", nonce: nonce)["recordSHA256"] as? String, opened["recordSHA256"] as? String)
+        let remove = app.buttons["removeAICredentials"].firstMatch; reveal(remove); remove.tap(); tap("Remove")
+        let cleaned = try providerUIReadback("choice-menu-cleaned", nonce: nonce)
+        XCTAssertEqual(cleaned["apiKeyClass"] as? String, "missing"); XCTAssertEqual(cleaned["oauthAccountPresent"] as? Bool, false)
+    }
+
+    func captureConnectionChoicesEnd(large: Bool) {
+        guard large else { return }
+        let menu = app.collectionViews.containing(.button, identifier: "Google OAuth").firstMatch
+        XCTAssertTrue(menu.exists)
+        // Drag inside the visible middle option. The menu collection's AX
+        // frame can extend beyond its actual clipped popup on a small phone.
+        let middle = menu.buttons["API key"].firstMatch
+        XCTAssertTrue(middle.isHittable)
+        middle.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.75))
+            .press(forDuration: 0.1, thenDragTo: middle.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.05)), withVelocity: .slow, thenHoldForDuration: 0)
+        snap("1264-ai-connection-choices-end")
+        let structure = XCTAttachment(string: app.debugDescription)
+        structure.name = "provider-connection-choices-large-structure"; structure.lifetime = .keepAlways; add(structure)
+    }
+
+    func testProviderConnectionLongIdentifierEndLargest() throws {
+        app.terminate()
+        let nonce = UUID().uuidString
+        app.launchArguments = ["-resetForUITests", "-provider-connection-ui", "-provider-ui-nonce", nonce,
+                               "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]
+        app.launch(); tap("openAIConnectionFixture")
+        let original = try providerUIReadback("long-identifiers-opened", nonce: nonce)
+        replaceConnectionText("aiEndpoint", with: "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions", captureEditingEnd: true)
+        replaceConnectionText("aiModel", with: "organizations/synthetic-organization-42/models/synthetic-context-generation-v42-large", captureEditingEnd: true)
+        let mode = app.buttons["aiConnectionMode"].firstMatch; reveal(mode, towardsTop: true); mode.tap(); tap("Google OAuth")
+        replaceConnectionText("aiGoogleClient", with: "123456789012345678901234567890-synthetic42.apps.googleusercontent.com", captureEditingEnd: true)
+        let edited = try providerUIReadback("long-identifiers-edited", nonce: nonce)
+        XCTAssertEqual(edited["recordSHA256"] as? String, original["recordSHA256"] as? String)
+        XCTAssertEqual(edited["dirty"] as? Bool, true)
+        tap("closeAIConnection"); tap("Discard"); tap("openAIConnectionFixture")
+        XCTAssertEqual(try providerUIReadback("long-identifiers-discarded", nonce: nonce)["recordSHA256"] as? String, original["recordSHA256"] as? String)
+        let remove = app.buttons["removeAICredentials"].firstMatch; reveal(remove); remove.tap(); tap("Remove")
+        let cleaned = try providerUIReadback("long-identifiers-cleaned", nonce: nonce)
+        XCTAssertEqual(cleaned["apiKeyClass"] as? String, "missing"); XCTAssertEqual(cleaned["oauthAccountPresent"] as? Bool, false)
+    }
+
+    func connectionField(_ identifier: String) -> XCUIElement {
+        if app.textFields[identifier].exists { return app.textFields[identifier].firstMatch }
+        if app.textViews[identifier].exists { return app.textViews[identifier].firstMatch }
+        return app.descendants(matching: .any).matching(identifier: identifier).firstMatch
+    }
+
+    func replaceConnectionText(_ identifier: String, with value: String, captureEditingEnd: Bool = false) {
+        let field = connectionField(identifier); reveal(field); field.tap()
+        let selectAll = app.buttons["selectAllConnectionText"].firstMatch
+        guard selectAll.waitForExistence(timeout: 8) else {
+            let structure = XCTAttachment(string: app.debugDescription)
+            structure.name = "provider-selection-action-missing-" + identifier
+            structure.lifetime = .keepAlways; add(structure)
+            snap("1257-ai-selection-action-missing-" + identifier)
+            XCTFail("Keyboard Select all action did not appear for " + identifier)
+            return
+        }
+        if let original = field.value as? String, !original.isEmpty {
+            XCTAssertTrue(selectAll.isEnabled)
+            selectAll.tap()
+            snap("1254-ai-keyboard-select-all-" + identifier)
+        }
+        field.typeText(value)
+        XCTAssertEqual(field.value as? String, value)
+        if captureEditingEnd {
+            snap("1255-ai-typed-long-end-" + identifier)
+            captureConnectionContent(field, name: "1256-ai-long-field-" + identifier, large: true)
+            XCTAssertTrue(app.keyboards.firstMatch.exists)
+            XCTAssertTrue(app.buttons["Done"].firstMatch.isHittable)
+        }
+        tap("Done")
+    }
+
+    /// Capture literal content through real overlapping gutter pans. This does
+    /// not resize text, change the field value or manufacture an ending frame.
+    func captureConnectionContent(_ element: XCUIElement, name: String, large: Bool) {
+        guard large else { return }
+        reveal(element)
+        let top = app.navigationBars.firstMatch.frame.maxY + 4
+        var bottom = app.frame.maxY - 20
+        if app.keyboards.firstMatch.exists {
+            bottom = min(bottom, app.keyboards.firstMatch.frame.minY - 8)
+            let done = app.buttons["Done"].firstMatch
+            if done.exists { bottom = min(bottom, done.frame.minY - 8) }
+        }
+        XCTAssertGreaterThan(bottom - top, 80)
+        func pan(_ offset: CGFloat) {
+            let distance = min(max(abs(offset), 40), (bottom - top) * 0.45)
+            let start = offset > 0 ? bottom - 12 : top + 12
+            let finish = offset > 0 ? start - distance : start + distance
+            app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: start))
+                .press(forDuration: 0.1, thenDragTo: app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: finish)), withVelocity: .slow, thenHoldForDuration: 0)
+        }
+        for _ in 0..<24 {
+            let previous = element.frame
+            let offset = previous.minY - top
+            if abs(offset) < 8 { break }
+            pan(offset)
+            if abs(element.frame.minY - previous.minY) < 1 { break }
+        }
+        snap(name + "-start")
+        for part in 1...24 {
+            let previous = element.frame
+            if previous.maxY <= bottom { break }
+            pan(previous.maxY - bottom + 8)
+            snap(name + "-part-" + String(part))
+            if abs(element.frame.minY - previous.minY) < 1 { break }
+        }
+        XCTAssertLessThanOrEqual(element.frame.maxY, bottom + 2, "Literal content ending must be above fixed controls")
+        snap(name + "-end")
+    }
+
+    func captureConnectionAlertEnd(_ title: String, name: String, large: Bool) {
+        guard large else { return }
+        let alert = app.alerts[title].firstMatch
+        XCTContext.runActivity(named: "Native large-text alert structure") { activity in
+            let attachment = XCTAttachment(string: alert.debugDescription); attachment.name = name + "-structure"; attachment.lifetime = .keepAlways; activity.add(attachment)
+        }
+        let body = alert.scrollViews.firstMatch
+        if body.exists && !body.frame.isEmpty {
+            let message = body.staticTexts.firstMatch
+            for part in 1...12 {
+                let previous = message.exists ? message.frame : .null
+                body.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.8))
+                    .press(forDuration: 0.1, thenDragTo: body.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)), withVelocity: .slow, thenHoldForDuration: 0)
+                let next = message.exists ? message.frame : .null
+                if next == previous { break }
+                snap(name + "-message-part-" + String(part))
+            }
+            body.swipeUp(velocity: .slow); snap(name + "-message-end")
+        }
+    }
+
+    func runProviderConnectionModesUI(large: Bool = false, dark: Bool = false) throws {
+        app.terminate()
+        let nonce = UUID().uuidString
+        app.launchArguments = ["-resetForUITests", "-provider-connection-ui", "-provider-ui-nonce", nonce]
+        if large { app.launchArguments += ["-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"] }
+        if dark { app.launchArguments.append("-provider-ui-dark") }
+        app.launch(); tap("openAIConnectionFixture")
+        let opened = try providerUIReadback("modes-opened", nonce: nonce)
+        let original = try XCTUnwrap(opened["recordSHA256"] as? String), account = try XCTUnwrap(opened["oauthAccountSHA256"] as? String)
+        let preset = app.buttons["aiConnectionPreset"].firstMatch
+        reveal(preset); preset.tap(); settleLabFrame(app.buttons["OpenAI"].firstMatch, pixelTolerance: 1); snap("1230-ai-provider-choices"); tap("OpenAI")
+        let endpoint = connectionField("aiEndpoint"); reveal(endpoint)
+        XCTAssertEqual(endpoint.value as? String, "https://api.openai.com/v1/chat/completions")
+        let model = connectionField("aiModel"); reveal(model)
+        XCTAssertTrue(["", "Model"].contains(model.value as? String ?? ""))
+        XCTAssertEqual(try providerUIReadback("preset-openai-draft", nonce: nonce)["recordSHA256"] as? String, original)
+        reveal(preset, towardsTop: true); preset.tap(); tap("Google AI Studio")
+        reveal(endpoint); XCTAssertEqual(endpoint.value as? String, "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions")
+        reveal(model); XCTAssertEqual(model.value as? String, "gemini-3.8-flash"); snap("1231-ai-google-api-preset-draft")
+        let googlePreset = try providerUIReadback("preset-google-draft", nonce: nonce)
+        XCTAssertEqual(googlePreset["recordSHA256"] as? String, original)
+        XCTAssertEqual(googlePreset["authorizationRevision"] as? String, opened["authorizationRevision"] as? String)
+        reveal(preset, towardsTop: true); preset.tap(); tap("Custom")
+        replaceConnectionText("aiEndpoint", with: "http://127.0.0.1:48733/chat-b")
+        replaceConnectionText("aiModel", with: "synthetic-provider-42-b")
+        snap("1232-ai-edited-api-fields")
+        let preference = app.switches["preferAIConnection"].firstMatch; reveal(preference, towardsTop: true)
+        snap("1250-ai-preference-before-toggle")
+        preference.coordinate(withNormalizedOffset: CGVector(dx: 0.92, dy: 0.5)).tap()
+        let preferenceChanged = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == '0'"), object: preference)
+        let preferenceResult = XCTWaiter.wait(for: [preferenceChanged], timeout: 5)
+        snap("1251-ai-preference-after-toggle")
+        XCTAssertEqual(preferenceResult, .completed); XCTAssertEqual(preference.value as? String, "0")
+        let apiDraft = try providerUIReadback("api-settings-draft", nonce: nonce)
+        XCTAssertEqual(apiDraft["recordSHA256"] as? String, original)
+        XCTAssertEqual(apiDraft["authorizationRevision"] as? String, opened["authorizationRevision"] as? String)
+        XCTAssertEqual(apiDraft["preferExternal"] as? Bool, true); XCTAssertEqual(apiDraft["dirty"] as? Bool, true)
+        tap("saveAIConnection")
+        let apiSaved = try providerUIReadback("api-settings-saved", nonce: nonce)
+        XCTAssertEqual(apiSaved["apiEndpointClass"] as? String, "fixture-b"); XCTAssertEqual(apiSaved["modelClass"] as? String, "fixture-b")
+        XCTAssertEqual(apiSaved["preferExternal"] as? Bool, false); XCTAssertEqual(apiSaved["apiKeyClass"] as? String, "fixture-a")
+        XCTAssertEqual(apiSaved["oauthAccountSHA256"] as? String, account)
+        snap("1233-ai-api-settings-saved")
+        captureConnectionContent(app.staticTexts["The key stays in Keychain. Requests go to the saved endpoint."].firstMatch,
+                                 name: "1262-ai-key-storage-footer", large: large)
+        captureConnectionContent(app.staticTexts.matching(NSPredicate(format: "label == %@", "Requests can include health summaries, selected messages, shared notes and Library excerpts, depending on the feature. Photo requests also depend on your provider and model.")).firstMatch,
+                                 name: "1263-ai-content-disclosure", large: large)
+        tap("closeAIConnection"); tap("openAIConnectionFixture")
+        XCTAssertEqual(try providerUIReadback("api-settings-reopened", nonce: nonce)["recordSHA256"] as? String, apiSaved["recordSHA256"] as? String)
+        let mode = app.buttons["aiConnectionMode"].firstMatch; reveal(mode); mode.tap(); settleLabFrame(app.buttons["Google OAuth"].firstMatch, pixelTolerance: 1); snap("1234-ai-connection-choices")
+        captureConnectionChoicesEnd(large: large)
+        tap("Google OAuth")
+        let oauthDraft = try providerUIReadback("oauth-mode-draft", nonce: nonce)
+        XCTAssertEqual(oauthDraft["recordSHA256"] as? String, apiSaved["recordSHA256"] as? String); XCTAssertEqual(oauthDraft["mode"] as? String, "key")
+        let client = connectionField("aiGoogleClient"); reveal(client); XCTAssertEqual(client.value as? String, "123456789-synthetic42.apps.googleusercontent.com")
+        snap("1235-ai-google-draft-fields")
+        replaceConnectionText("aiGoogleClient", with: "123456789-synthetic43.apps.googleusercontent.com")
+        replaceConnectionText("aiGoogleScopes", with: "openid email")
+        replaceConnectionText("aiOAuthEndpoint", with: "http://127.0.0.1:48733/chat-b")
+        replaceConnectionText("aiOAuthModel", with: "synthetic-provider-42-b")
+        let connect = app.buttons["connectGoogleAI"].firstMatch; reveal(connect)
+        XCTAssertFalse(connect.isEnabled); snap("1236-ai-google-unsaved-signin-disabled")
+        let oauthFieldsDraft = try providerUIReadback("oauth-settings-draft", nonce: nonce)
+        XCTAssertEqual(oauthFieldsDraft["recordSHA256"] as? String, apiSaved["recordSHA256"] as? String)
+        XCTAssertEqual(oauthFieldsDraft["dirty"] as? Bool, true)
+        for key in ["oauthClientClass", "oauthScopeClass", "oauthEndpointClass", "oauthModelClass"] { XCTAssertEqual(oauthFieldsDraft[key] as? String, "fixture-a") }
+        tap("saveAIConnection")
+        let oauthSaved = try providerUIReadback("oauth-settings-saved", nonce: nonce)
+        XCTAssertEqual(oauthSaved["mode"] as? String, "oauth")
+        for key in ["oauthClientClass", "oauthScopeClass", "oauthEndpointClass", "oauthModelClass"] { XCTAssertEqual(oauthSaved[key] as? String, "fixture-b") }
+        XCTAssertEqual(oauthSaved["oauthAccountSHA256"] as? String, account)
+        XCTAssertEqual(oauthSaved["configured"] as? Bool, false)
+        reveal(connect); XCTAssertTrue(connect.isEnabled); snap("1237-ai-google-saved-signin-available")
+        captureConnectionContent(app.staticTexts.matching(NSPredicate(format: "label == %@", "Use an iOS client configured for this app. The endpoint must accept that client's tokens and requested scopes. Google sign-in alone doesn't grant access to every AI service.")).firstMatch,
+                                 name: "1265-ai-google-configuration-footer", large: large)
+        tap("closeAIConnection"); tap("openAIConnectionFixture")
+        let oauthReopened = try providerUIReadback("oauth-settings-reopened", nonce: nonce)
+        XCTAssertEqual(oauthReopened["recordSHA256"] as? String, oauthSaved["recordSHA256"] as? String)
+        for (identifier, value) in [("aiGoogleClient", "123456789-synthetic43.apps.googleusercontent.com"), ("aiGoogleScopes", "openid email"), ("aiOAuthEndpoint", "http://127.0.0.1:48733/chat-b"), ("aiOAuthModel", "synthetic-provider-42-b")] {
+            let field = connectionField(identifier); reveal(field); XCTAssertEqual(field.value as? String, value)
+        }
+        snap("1238-ai-google-reopened-fields")
+        reveal(mode, towardsTop: true); mode.tap(); tap("Apple or built-in")
+        XCTAssertEqual(try providerUIReadback("builtin-mode-draft", nonce: nonce)["recordSHA256"] as? String, oauthSaved["recordSHA256"] as? String)
+        snap("1239-ai-builtin-unsaved")
+        tap("saveAIConnection")
+        let builtIn = try providerUIReadback("builtin-mode-saved", nonce: nonce)
+        XCTAssertEqual(builtIn["mode"] as? String, "onDevice"); XCTAssertEqual(builtIn["configured"] as? Bool, false)
+        XCTAssertEqual(builtIn["apiKeyClass"] as? String, "fixture-a"); XCTAssertEqual(builtIn["oauthAccountSHA256"] as? String, account)
+        let detail = app.staticTexts["Uses built-in coaching. Apple Intelligence isn't available right now."].firstMatch
+        reveal(detail); XCTAssertTrue(detail.exists); snap("1240-ai-builtin-available-assistant")
+        captureConnectionContent(detail, name: "1266-ai-builtin-detail", large: large)
+        captureConnectionContent(app.staticTexts["Photo recognition, Not available"].firstMatch,
+                                 name: "1267-ai-photo-capability", large: large)
+        tap("closeAIConnection"); tap("openAIConnectionFixture")
+        XCTAssertEqual(try providerUIReadback("builtin-reopened", nonce: nonce)["recordSHA256"] as? String, builtIn["recordSHA256"] as? String)
+        reveal(mode, towardsTop: true); mode.tap(); tap("API key")
+        let restoredEndpoint = connectionField("aiEndpoint"); reveal(restoredEndpoint); XCTAssertEqual(restoredEndpoint.value as? String, "http://127.0.0.1:48733/chat-b")
+        let restoredModel = connectionField("aiModel"); reveal(restoredModel); XCTAssertEqual(restoredModel.value as? String, "synthetic-provider-42-b")
+        snap("1241-ai-api-draft-restored"); tap("saveAIConnection")
+        let restored = try providerUIReadback("api-mode-restored", nonce: nonce)
+        XCTAssertEqual(restored["mode"] as? String, "key"); XCTAssertEqual(restored["apiKeyClass"] as? String, "fixture-a")
+        XCTAssertEqual(restored["apiEndpointClass"] as? String, "fixture-b"); XCTAssertEqual(restored["modelClass"] as? String, "fixture-b")
+        XCTAssertEqual(restored["preferExternal"] as? Bool, false); XCTAssertEqual(restored["oauthAccountSHA256"] as? String, account)
+        let remove = app.buttons["removeAICredentials"].firstMatch; reveal(remove); remove.tap(); tap("Remove")
+        let removed = try providerUIReadback("modes-cleaned", nonce: nonce)
+        XCTAssertEqual(removed["apiKeyClass"] as? String, "missing"); XCTAssertEqual(removed["oauthAccountPresent"] as? Bool, false)
+        XCTAssertEqual(removed["configured"] as? Bool, false)
+    }
+
+    func runProviderConnectionDraftUI(large: Bool = false, dark: Bool = false) throws {
+        app.terminate()
+        let nonce = UUID().uuidString
+        app.launchArguments = ["-resetForUITests", "-provider-connection-ui", "-provider-ui-nonce", nonce, "-provider-ui-fail-save"]
+        if large { app.launchArguments += ["-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"] }
+        if dark { app.launchArguments.append("-provider-ui-dark") }
+        app.launch()
+        XCTAssertTrue(app.buttons["openAIConnectionFixture"].waitForExistence(timeout: 10))
+        let beforeOpen = try providerUIReadback("before-open", nonce: nonce)
+        tap("openAIConnectionFixture")
+        XCTAssertTrue(app.staticTexts["savedAIOrigin"].waitForExistence(timeout: 10))
+        let opened = try providerUIReadback("opened", nonce: nonce)
+        XCTAssertEqual(opened["apiKeyClass"] as? String, "fixture-a")
+        XCTAssertEqual(opened["endpoint"] as? String, "fixed-loopback")
+        XCTAssertEqual(opened["preset"] as? String, "custom")
+        XCTAssertEqual(opened["dirty"] as? Bool, false)
+        let original = try XCTUnwrap(opened["recordSHA256"] as? String)
+        XCTAssertEqual(opened["authorizationRevision"] as? String, beforeOpen["authorizationRevision"] as? String)
+        XCTAssertEqual(original, beforeOpen["recordSHA256"] as? String)
+        snap("1208-ai-connection-opened")
+        let key = app.secureTextFields["aiAPIKey"].firstMatch
+        reveal(key); key.coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap()
+        key.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: 100)); key.typeText("synthetic-key-42-b")
+        snap("1209-ai-connection-keyboard-draft")
+        tap("Done")
+        let typed = try providerUIReadback("typed", nonce: nonce)
+        XCTAssertEqual(typed["recordSHA256"] as? String, original)
+        XCTAssertEqual(typed["apiKeyClass"] as? String, "fixture-a")
+        XCTAssertEqual(typed["dirty"] as? Bool, true)
+        XCTAssertEqual(typed["authorizationRevision"] as? String, opened["authorizationRevision"] as? String)
+        tap("closeAIConnection")
+        XCTAssertTrue(app.alerts["Discard connection edits?"].waitForExistence(timeout: 5))
+        snap("1210-ai-connection-discard-confirmation")
+        captureConnectionAlertEnd("Discard connection edits?", name: "1246-ai-discard", large: large); tap("Keep draft")
+        let kept = try providerUIReadback("kept-draft", nonce: nonce)
+        XCTAssertEqual(kept["recordSHA256"] as? String, original)
+        XCTAssertEqual(kept["dirty"] as? Bool, true)
+        tap("saveAIConnection")
+        let issue = app.staticTexts["aiConnectionIssue"].firstMatch
+        reveal(issue, towardsTop: true); XCTAssertTrue(issue.waitForExistence(timeout: 5))
+        snap("1211-ai-connection-failed-save")
+        let retainedModel = app.descendants(matching: .any).matching(identifier: "aiModel").firstMatch
+        reveal(retainedModel); snap("1229-ai-failed-save-retained-fields")
+        let failed = try providerUIReadback("failed-save", nonce: nonce)
+        XCTAssertEqual(failed["recordSHA256"] as? String, original)
+        XCTAssertEqual(failed["apiKeyClass"] as? String, "fixture-a")
+        XCTAssertEqual(failed["dirty"] as? Bool, true)
+        tap("saveAIConnection")
+        XCTAssertFalse(app.staticTexts["aiConnectionIssue"].exists)
+        let saved = try providerUIReadback("saved", nonce: nonce)
+        XCTAssertEqual(saved["apiKeyClass"] as? String, "fixture-b")
+        XCTAssertNotEqual(saved["recordSHA256"] as? String, original)
+        XCTAssertEqual(saved["dirty"] as? Bool, false)
+        XCTAssertEqual(saved["configured"] as? Bool, true)
+        snap("1212-ai-connection-saved")
+        let testSaved = app.buttons["testSavedAIConnection"].firstMatch; reveal(testSaved); testSaved.tap()
+        let testResult = app.staticTexts["aiConnectionTestResult"].firstMatch
+        XCTAssertTrue(testResult.waitForExistence(timeout: 15)); XCTAssertEqual(testResult.label, "Lumen AI link OK")
+        let tested = try providerUIReadback("tested-saved", nonce: nonce)
+        XCTAssertEqual(tested["recordSHA256"] as? String, saved["recordSHA256"] as? String)
+        XCTAssertEqual(tested["testResultClass"] as? String, "success")
+        snap("1216-ai-saved-connection-tested")
+        tap("closeAIConnection"); tap("openAIConnectionFixture")
+        let reopened = try providerUIReadback("reopened", nonce: nonce)
+        XCTAssertEqual(reopened["recordSHA256"] as? String, saved["recordSHA256"] as? String)
+        app.terminate(); app.launchArguments.append("-provider-connection-ui-resume"); app.launch(); tap("openAIConnectionFixture")
+        let relaunched = try providerUIReadback("relaunched", nonce: nonce)
+        XCTAssertEqual(relaunched["recordSHA256"] as? String, saved["recordSHA256"] as? String)
+        XCTAssertNotEqual(relaunched["pid"] as? Int, opened["pid"] as? Int)
+        snap("1213-ai-connection-relaunched")
+        let remove = app.buttons["removeAICredentials"].firstMatch; reveal(remove); remove.tap()
+        XCTAssertTrue(app.alerts["Remove AI credentials?"].waitForExistence(timeout: 5)); snap("1214-ai-credential-removal-confirmation")
+        captureConnectionAlertEnd("Remove AI credentials?", name: "1247-ai-remove", large: large); tap("Remove")
+        let removed = try providerUIReadback("removed", nonce: nonce)
+        XCTAssertEqual(removed["apiKeyClass"] as? String, "missing")
+        XCTAssertEqual(removed["oauthAccountPresent"] as? Bool, false)
+        XCTAssertEqual(removed["legacyAPIKeyPresent"] as? Bool, false)
+        XCTAssertEqual(removed["mode"] as? String, "onDevice")
+        XCTAssertEqual(removed["configured"] as? Bool, false)
+        snap("1215-ai-credentials-removed")
+    }
+
+    func editSyntheticConnectionKey() {
+        let key = app.secureTextFields["aiAPIKey"].firstMatch
+        reveal(key); key.coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap()
+        key.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: 100)); key.typeText("synthetic-key-42-b"); tap("Done")
+    }
+
+    func testProviderConnectionRecoveryUI() throws { try runProviderConnectionRecoveryUI() }
+    func testProviderConnectionRecoveryUILargest() throws { try runProviderConnectionRecoveryUI(large: true) }
+    func testProviderConnectionRecoveryUIDark() throws { try runProviderConnectionRecoveryUI(dark: true) }
+
+    func runProviderConnectionRecoveryUI(large: Bool = false, dark: Bool = false) throws {
+        for mode in ["cleanup", "remove", "stale", "discard"] {
+            app.terminate()
+            let nonce = UUID().uuidString
+            app.launchArguments = ["-resetForUITests", "-provider-connection-ui", "-provider-ui-nonce", nonce]
+            if large { app.launchArguments += ["-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"] }
+            if dark { app.launchArguments.append("-provider-ui-dark") }
+            if mode != "discard" { app.launchArguments.append(mode == "stale" ? "-provider-ui-stale-save" : "-provider-ui-fail-" + mode) }
+            app.launch(); tap("openAIConnectionFixture")
+            XCTAssertTrue(app.staticTexts["savedAIOrigin"].waitForExistence(timeout: 10))
+            let before = try providerUIReadback(mode + "-opened", nonce: nonce)
+            if mode == "remove" {
+                let remove = app.buttons["removeAICredentials"].firstMatch; reveal(remove); remove.tap(); tap("Remove")
+                let retry = app.buttons["retryAICredentialRemoval"].firstMatch; reveal(retry, towardsTop: true); XCTAssertTrue(retry.waitForExistence(timeout: 5))
+            } else {
+                editSyntheticConnectionKey()
+                if mode == "discard" {
+                    tap("closeAIConnection"); tap("Discard"); tap("openAIConnectionFixture")
+                    let after = try providerUIReadback("discard-reopened", nonce: nonce)
+                    XCTAssertEqual(after["recordSHA256"] as? String, before["recordSHA256"] as? String); XCTAssertEqual(after["dirty"] as? Bool, false)
+                    snap("1224-ai-draft-discarded")
+                } else {
+                    if mode == "stale" {
+                        let savedStatus = app.staticTexts["savedAIStatus"].firstMatch; reveal(savedStatus, towardsTop: true)
+                        let changed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label CONTAINS 'synthetic-provider-42-b'"), object: savedStatus)
+                        XCTAssertEqual(XCTWaiter.wait(for: [changed], timeout: 10), .completed)
+                    }
+                    tap("saveAIConnection")
+                    let issue = app.staticTexts["aiConnectionIssue"].firstMatch; reveal(issue, towardsTop: true); XCTAssertTrue(issue.waitForExistence(timeout: 5))
+                }
+            }
+            if mode == "cleanup" || mode == "remove" {
+                let pending = try providerUIReadback(mode + "-pending", nonce: nonce)
+                XCTAssertEqual(pending[mode == "cleanup" ? "legacyCleanupPending" : "keyRemovalPending"] as? Bool, true)
+                XCTAssertEqual(pending["configured"] as? Bool, false)
+                XCTAssertEqual(pending["apiKeyClass"] as? String, mode == "cleanup" ? "fixture-b" : "fixture-a")
+                snap(mode == "cleanup" ? "1217-ai-cleanup-pending" : "1220-ai-removal-pending")
+                captureConnectionContent(app.staticTexts["aiConnectionIssue"].firstMatch,
+                                         name: "1271-ai-" + mode + "-issue", large: large)
+                app.terminate(); app.launchArguments.append("-provider-connection-ui-resume"); app.launch(); tap("openAIConnectionFixture")
+                let resumed = try providerUIReadback(mode + "-resumed", nonce: nonce)
+                XCTAssertEqual(resumed["recordSHA256"] as? String, pending["recordSHA256"] as? String)
+                XCTAssertNotEqual(resumed["pid"] as? Int, pending["pid"] as? Int)
+                XCTAssertEqual(resumed["configured"] as? Bool, false)
+                let retry = app.buttons[mode == "cleanup" ? "retryAIConnectionCleanup" : "retryAICredentialRemoval"].firstMatch
+                reveal(retry); snap(mode == "cleanup" ? "1218-ai-cleanup-after-restart" : "1221-ai-removal-after-restart"); retry.tap()
+                let recovered = try providerUIReadback(mode + "-retried", nonce: nonce)
+                XCTAssertEqual(recovered["legacyCleanupPending"] as? Bool, false); XCTAssertEqual(recovered["keyRemovalPending"] as? Bool, false)
+                XCTAssertEqual(recovered["legacyAPIKeyPresent"] as? Bool, false)
+                XCTAssertEqual(recovered["apiKeyClass"] as? String, mode == "cleanup" ? "fixture-b" : "missing")
+                XCTAssertEqual(recovered["configured"] as? Bool, mode == "cleanup")
+                snap(mode == "cleanup" ? "1219-ai-cleanup-retried" : "1222-ai-removal-retried")
+            }
+            if mode == "stale" {
+                let stale = try providerUIReadback("stale-rejected", nonce: nonce)
+                XCTAssertEqual(stale["modelClass"] as? String, "fixture-b"); XCTAssertEqual(stale["apiKeyClass"] as? String, "fixture-a")
+                XCTAssertEqual(stale["dirty"] as? Bool, true)
+                snap("1243-ai-stale-save-rejected")
+                captureConnectionContent(app.staticTexts["aiConnectionIssue"].firstMatch,
+                                         name: "1272-ai-stale-issue", large: large)
+                let reload = app.buttons["reloadAIConnection"].firstMatch; reveal(reload); reload.tap(); tap("Keep draft")
+                XCTAssertEqual(try providerUIReadback("stale-kept", nonce: nonce)["dirty"] as? Bool, true)
+                XCTAssertFalse(app.buttons["saveAIConnection"].isEnabled)
+                snap("1244-ai-stale-draft-kept")
+                reload.tap(); snap("1223-ai-stale-reload-confirmation")
+                captureConnectionAlertEnd("Reload saved connection?", name: "1248-ai-reload", large: large); tap("Reload")
+                let reloaded = try providerUIReadback("stale-reloaded", nonce: nonce)
+                XCTAssertEqual(reloaded["recordSHA256"] as? String, stale["recordSHA256"] as? String); XCTAssertEqual(reloaded["dirty"] as? Bool, false)
+                snap("1245-ai-stale-reloaded")
+            }
+            let remove = app.buttons["removeAICredentials"].firstMatch; reveal(remove); remove.tap(); tap("Remove")
+            let cleaned = try providerUIReadback(mode + "-cleaned", nonce: nonce)
+            XCTAssertEqual(cleaned["apiKeyClass"] as? String, "missing"); XCTAssertEqual(cleaned["oauthAccountPresent"] as? Bool, false)
+        }
+    }
+
+    func testProviderConnectionStorage() throws {
+        app.terminate()
+        app.launchArguments = ["-resetForUITests", "-personal-provenance-probe", "-provider-authorization-checks", "-provider-connection-checks"]
+        app.launch()
+        let status = app.staticTexts["personalProvenanceProbeStatus"].firstMatch
+        let completed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label BEGINSWITH 'Connection storage checks'"), object: status)
+        XCTAssertEqual(XCTWaiter.wait(for: [completed], timeout: 60), .completed)
+        XCTAssertEqual(status.label, "Connection storage checks passed")
+        snap("1207-provider-connection-storage-checks")
+    }
+
+    func testProviderCallerChecks() throws {
+        app.terminate()
+        app.launchArguments = ["-resetForUITests", "-personal-provenance-probe", "-provider-authorization-checks", "-provider-caller-checks"]
+        app.launch()
+        let status = app.staticTexts["personalProvenanceProbeStatus"].firstMatch
+        let completed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label BEGINSWITH 'Provider caller checks'"), object: status)
+        XCTAssertEqual(XCTWaiter.wait(for: [completed], timeout: 120), .completed)
+        XCTAssertEqual(status.label, "Provider caller checks passed")
+        snap("1206-provider-caller-checks")
+    }
+
+    func testProviderTokenTransportChecks() throws {
+        app.terminate()
+        app.launchArguments = ["-resetForUITests", "-personal-provenance-probe", "-provider-authorization-checks", "-provider-token-transport-checks"]
+        app.launch()
+        let status = app.staticTexts["personalProvenanceProbeStatus"].firstMatch
+        let completed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label BEGINSWITH 'Token transport checks'"), object: status)
+        XCTAssertEqual(XCTWaiter.wait(for: [completed], timeout: 120), .completed)
+        XCTAssertEqual(status.label, "Token transport checks passed")
+        snap("1228-provider-token-transport-checks")
+    }
+
+    func testProviderRemovalRelaunch() throws {
+        for mode in ["oauth", "all", "key"] {
+            for phase in ["prepare", "resume"] {
+                app.terminate()
+                app.launchArguments = ["-resetForUITests", "-personal-provenance-probe", "-provider-authorization-checks", "-provider-removal-relaunch", "-provider-removal-" + mode]
+                if phase == "resume" { app.launchArguments.append("-provider-removal-resume") }
+                app.launch()
+                let status = app.staticTexts["personalProvenanceProbeStatus"].firstMatch
+                let completed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label BEGINSWITH 'Credential removal relaunch checks'"), object: status)
+                XCTAssertEqual(XCTWaiter.wait(for: [completed], timeout: 30), .completed)
+                XCTAssertEqual(status.label, "Credential removal relaunch checks passed: " + mode + " " + phase)
+            }
+        }
+        snap("1205-provider-removal-relaunch-checks")
+    }
+
+    func testProviderAccountResetRelaunch() throws {
+        for mode in ["failure", "after-secrets"] {
+            for phase in ["prepare", "resume"] {
+                app.terminate()
+                app.launchArguments = ["-resetForUITests", "-personal-provenance-probe", "-provider-authorization-checks", "-provider-reset-checks", "-provider-reset-" + mode]
+                if phase == "resume" { app.launchArguments.append("-provider-reset-resume") }
+                app.launch()
+                let status = app.staticTexts["personalProvenanceProbeStatus"].firstMatch
+                let completed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label BEGINSWITH 'Account reset checks'"), object: status)
+                XCTAssertEqual(XCTWaiter.wait(for: [completed], timeout: 45), .completed)
+                XCTAssertEqual(status.label, "Account reset checks passed: " + mode + " " + phase)
+                snap("1225-reset-" + mode + "-" + phase)
+            }
+        }
+    }
+
+    func testProviderAccountResetUI() throws { try runProviderAccountResetUI() }
+    func testProviderAccountResetUILargest() throws { try runProviderAccountResetUI(large: true) }
+    func testProviderAccountResetUIDark() throws { try runProviderAccountResetUI(dark: true) }
+
+    func runProviderAccountResetUI(large: Bool = false, dark: Bool = false) throws {
+        app.terminate()
+        let nonce = UUID().uuidString
+        app.launchArguments = ["-resetForUITests", "-provider-connection-ui", "-provider-ui-nonce", nonce, "-provider-ui-fail-reset"]
+        if large { app.launchArguments += ["-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"] }
+        if dark { app.launchArguments.append("-provider-ui-dark") }
+        app.launch(); tap("openAIConnectionFixture")
+        let before = try providerUIReadback("reset-before", nonce: nonce)
+        let erase = app.buttons["eraseAllLumenData"].firstMatch; reveal(erase); erase.tap(); tap("Erase everything")
+        XCTAssertTrue(app.alerts["Couldn't erase Lumen"].waitForExistence(timeout: 10))
+        snap("1226-reset-credential-failure")
+        captureConnectionAlertEnd("Couldn't erase Lumen", name: "1249-reset-failure", large: large)
+        let failed = try providerUIReadback("reset-failed", nonce: nonce)
+        XCTAssertEqual(failed["profileSHA256"] as? String, before["profileSHA256"] as? String)
+        XCTAssertEqual(failed["recordSHA256"] as? String, before["recordSHA256"] as? String)
+        XCTAssertEqual(failed["globalRemovalPending"] as? Bool, true)
+        XCTAssertEqual(failed["configured"] as? Bool, false)
+        tap("Not now"); app.terminate(); app.launchArguments.append("-provider-connection-ui-resume"); app.launch(); tap("openAIConnectionFixture")
+        let resumed = try providerUIReadback("reset-resumed", nonce: nonce)
+        XCTAssertNotEqual(resumed["pid"] as? Int, failed["pid"] as? Int)
+        XCTAssertEqual(resumed["profileContentSHA256"] as? String, failed["profileContentSHA256"] as? String)
+        XCTAssertEqual(resumed["recordSHA256"] as? String, failed["recordSHA256"] as? String)
+        XCTAssertEqual(resumed["globalRemovalPending"] as? Bool, true)
+        let retryErase = app.buttons["eraseAllLumenData"].firstMatch; reveal(retryErase); retryErase.tap(); tap("Erase everything")
+        XCTAssertTrue(app.buttons["openAIConnectionFixture"].waitForExistence(timeout: 10))
+        let done = try providerUIReadback("reset-complete", nonce: nonce)
+        XCTAssertNotEqual(done["profileSHA256"] as? String, before["profileSHA256"] as? String)
+        XCTAssertEqual(done["apiKeyClass"] as? String, "missing")
+        XCTAssertEqual(done["oauthAccountPresent"] as? Bool, false)
+        XCTAssertEqual(done["globalRemovalPending"] as? Bool, false)
+        XCTAssertEqual(done["configured"] as? Bool, false)
+        snap("1227-reset-retry-complete")
+    }
+
+    func testProviderSignInChecks() throws {
+        app.terminate()
+        app.launchArguments = ["-resetForUITests", "-personal-provenance-probe", "-provider-authorization-checks", "-provider-signin-checks"]
+        app.launch()
+        let status = app.staticTexts["personalProvenanceProbeStatus"].firstMatch
+        let completed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label BEGINSWITH 'Provider sign-in checks'"), object: status)
+        XCTAssertEqual(XCTWaiter.wait(for: [completed], timeout: 90), .completed)
+        XCTAssertEqual(status.label, "Provider sign-in checks passed")
+        snap("1204-provider-signin-checks")
     }
 
     func testPersonalContextNativeProvenance() throws {

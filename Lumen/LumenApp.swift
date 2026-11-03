@@ -9,13 +9,15 @@ struct LumenApp: App {
         HealthZIPArchive.clearTemporaryFiles()
         #if DEBUG && targetEnvironment(simulator)
         // Clean slate only for dedicated simulator UI tests, before stores load.
-        if ProcessInfo.processInfo.arguments.contains("-resetForUITests") {
+        if ProcessInfo.processInfo.arguments.contains("-resetForUITests") && !ProviderAuthorizationNativeProbe.resumesRemovalCheck && !ProviderAuthorizationNativeProbe.resumesAccountResetCheck && !ProviderConnectionUIFixture.resuming {
             LocalStore.eraseAll()
             SemanticSearchService.resetForUITests()
             do { try ConversationNativeFixtures.prepareStartupIfRequested() }
             catch { preconditionFailure("Synthetic startup fixture could not be prepared: \(error)") }
             do { try PersonalContextUIFixture.prepareIfRequested() }
             catch { preconditionFailure("Synthetic personal fixture could not be prepared: \(error)") }
+            do { try ProviderConnectionUIFixture.prepareIfRequested() }
+            catch { preconditionFailure("Synthetic connection fixture could not be prepared: \(error)") }
         }
         #endif
     }
@@ -48,7 +50,14 @@ private struct LumenReadyView: View {
     #endif
 
     var body: some View {
-        RootView()
+        Group {
+            #if DEBUG && targetEnvironment(simulator)
+            if ProviderConnectionUIFixture.isAuthorized { ProviderConnectionUIRoot() }
+            else { RootView() }
+            #else
+            RootView()
+            #endif
+        }
             .environmentObject(sleep)
             .environmentObject(health)
             .preferredColorScheme(appearance == "system" ? nil : appearance == "dark" ? .dark : .light)
@@ -56,6 +65,7 @@ private struct LumenReadyView: View {
             .tint(Theme.accent)
             .task {
                 #if DEBUG && targetEnvironment(simulator)
+                if ProviderConnectionUIFixture.isAuthorized { return }
                 if PreferenceNativeProbe.requested { await preferenceProbe.run(); return }
                 if ConversationNativeProbe.requested { await conversationProbe.run(); return }
                 if PersonalContextNativeProbe.requested { await personalProbe.run(); return }
@@ -84,6 +94,9 @@ private struct LumenReadyView: View {
             }
             #endif
             .onChange(of: scenePhase) { _, phase in
+                #if DEBUG && targetEnvironment(simulator)
+                if ProviderConnectionUIFixture.isAuthorized { return }
+                #endif
                 guard phase == .active, sleep.profile.onboardingDone else { return }
                 Task { await SyncCoordinator.syncEverything(sleep: sleep, health: health) }
             }

@@ -1,0 +1,91 @@
+{
+  "runtimeTrial": 51,
+  "exactBuildSource": "connection-source-r43.json",
+  "applicationSource": "connection-source-r41.json",
+  "applicationSHA256": "8df737042fb483add6da61ea33c11c952e901df0ca5a664f155de5a35e116ca8",
+  "runtimeAcceptance": "scoped-test-passed",
+  "command": [
+    "xcodebuild",
+    "test-without-building",
+    "-xctestrun",
+    "/tmp/LumenBatch37Simulator/Build/Products/Lumen_Lumen_iphonesimulator27.0-arm64-x86_64.xctestrun",
+    "-destination",
+    "platform=iOS Simulator,id=922E011C-3895-4DB1-9C9A-1D3A977226CF",
+    "-parallel-testing-enabled",
+    "NO",
+    "-collect-test-diagnostics",
+    "never",
+    "-only-testing:LumenUITests/LumenSmokeTests/testProviderAccountResetUI",
+    "-only-testing:LumenUITests/LumenSmokeTests/testProviderAccountResetUIDark",
+    "-only-testing:LumenUITests/LumenSmokeTests/testProviderAccountResetUILargest",
+    "-only-testing:LumenUITests/LumenSmokeTests/testProviderConnectionDraftUI",
+    "-only-testing:LumenUITests/LumenSmokeTests/testProviderConnectionDraftUIDark",
+    "-only-testing:LumenUITests/LumenSmokeTests/testProviderConnectionDraftUILargest",
+    "-only-testing:LumenUITests/LumenSmokeTests/testProviderConnectionRecoveryUI",
+    "-only-testing:LumenUITests/LumenSmokeTests/testProviderConnectionRecoveryUIDark",
+    "-only-testing:LumenUITests/LumenSmokeTests/testProviderConnectionRecoveryUILargest",
+    "-only-testing:LumenUITests/LumenSmokeTests/testProviderConnectionModelKeyboardUI",
+    "-only-testing:LumenUITests/LumenSmokeTests/testProviderConnectionModelKeyboardUIDark",
+    "-only-testing:LumenUITests/LumenSmokeTests/testProviderConnectionModelKeyboardUILargest",
+    "-only-testing:LumenUITests/LumenSmokeTests/testProviderConnectionModesUI",
+    "-only-testing:LumenUITests/LumenSmokeTests/testProviderConnectionModesUIDark",
+    "-resultBundlePath",
+    "/tmp/LumenBatch42Checks/ConnectionUICompactR51.xcresult"
+  ],
+  "scope": "Compact reset/draft/recovery/model keyboard three styles; modes normal/dark. Source43 full recovery issue captures first execution.",
+  "interimPassedTests": [
+    {
+      "test": "testProviderAccountResetUI",
+      "durationSeconds": 61.668
+    },
+    {
+      "test": "testProviderAccountResetUIDark",
+      "durationSeconds": 59.365
+    },
+    {
+      "test": "testProviderAccountResetUILargest",
+      "durationSeconds": 111.422
+    },
+    {
+      "test": "testProviderConnectionDraftUI",
+      "durationSeconds": 135.875
+    },
+    {
+      "test": "testProviderConnectionDraftUIDark",
+      "durationSeconds": 94.406
+    },
+    {
+      "test": "testProviderConnectionDraftUILargest",
+      "durationSeconds": 118.718
+    },
+    {
+      "test": "testProviderConnectionModelKeyboardUI",
+      "durationSeconds": 44.442
+    },
+    {
+      "test": "testProviderConnectionModelKeyboardUIDark",
+      "durationSeconds": 41.869
+    },
+    {
+      "test": "testProviderConnectionModelKeyboardUILargest",
+      "durationSeconds": 59.331
+    },
+    {
+      "test": "testProviderConnectionModesUI",
+      "durationSeconds": 176.091
+    },
+    {
+      "test": "testProviderConnectionModesUIDark",
+      "durationSeconds": 188.926
+    },
+    {
+      "test": "testProviderConnectionRecoveryUI",
+      "durationSeconds": 229.485
+    },
+    {
+      "test": "testProviderConnectionRecoveryUIDark",
+      "durationSeconds": 226.056
+    }
+  ],
+  "interimScope": "Nonterminal snapshot: finalized result/host collection still pending. Keep test61796/server23410 and active build folder."
+}

@@ -1,0 +1,21 @@
+{
+  "checks": [
+    "exactly one dedicated removal mode",
+    "new process reads the original fixture marker without reseeding",
+    "removal intent remains set",
+    "original account bytes remain physically stored",
+    "original complete connection bytes remain physically stored",
+    "original key and both legacy sources remain physically stored",
+    "account read refuses pending removal instead of legacy fallback",
+    "pending removal blocks oauth route preparation",
+    "pending removal blocks key route preparation",
+    "actual retry clears intent and every account source",
+    "checked synthetic credential cleanup and marker removal complete"
+  ],
+  "mode": "oauth",
+  "originalPID": 88731,
+  "phase": "resume",
+  "pid": 88754,
+  "scope": "Fixed synthetic credentials; actual app terminate/relaunch and checked Keychain retry. Injected delete failure; no device power-loss or interrupted whole-app-reset proof.",
+  "status": "Credential removal relaunch checks passed: oauth resume"
+}

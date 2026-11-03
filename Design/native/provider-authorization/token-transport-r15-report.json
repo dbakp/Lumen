@@ -1,0 +1,475 @@
+{
+  "scope": "Synthetic production OAuth refresh/sign-in and bounded ephemeral URLSession. Invalid responses preserve exact account bytes; valid controls send actual chat. Cancellation distinguishes sign-in task, refresh withdrawal and one shared waiter. No live provider, browser or physical-device acceptance.",
+  "cleanupVerified": false,
+  "host": {
+    "loginResponses": 0,
+    "loginAudit": [],
+    "tokenResponses": 0,
+    "holdTimeouts": 0,
+    "tokenTransportResponses": 20,
+    "tokenTransportAudit": [
+      {
+        "payloadBytes": 166,
+        "formMatches": true,
+        "advertisedBytes": 166,
+        "statusCode": 200,
+        "cookieAbsent": true,
+        "caseName": "valid",
+        "requestKind": "refresh",
+        "bodySHA256": "ef317b188429ecc8cd8a966a30bbf2fd2e4b9ecb4b56fe6097b38a3aec22541c",
+        "streamStarted": false
+      },
+      {
+        "payloadBytes": 166,
+        "formMatches": true,
+        "advertisedBytes": 166,
+        "statusCode": 200,
+        "cookieAbsent": true,
+        "caseName": "mixed-case-bearer",
+        "requestKind": "refresh",
+        "bodySHA256": "ef317b188429ecc8cd8a966a30bbf2fd2e4b9ecb4b56fe6097b38a3aec22541c",
+        "streamStarted": false
+      },
+      {
+        "payloadBytes": 16,
+        "formMatches": true,
+        "advertisedBytes": 16,
+        "statusCode": 200,
+        "cookieAbsent": true,
+        "caseName": "malformed",
+        "requestKind": "refresh",
+        "bodySHA256": "f8b4ecc2f0666b73960bc4a926b8019a658c72d6e593cc1e51c7d58eb813a5b6",
+        "streamStarted": false
+      },
+      {
+        "payloadBytes": 213,
+        "formMatches": true,
+        "advertisedBytes": 213,
+        "statusCode": 200,
+        "cookieAbsent": true,
+        "caseName": "duplicate",
+        "requestKind": "refresh",
+        "bodySHA256": "46d21d9a250347347f5032fa9c40a7a7b08ca317f67dd0edef51d2e6dc474355",
+        "streamStarted": false
+      },
+      {
+        "payloadBytes": 218,
+        "formMatches": true,
+        "advertisedBytes": 218,
+        "statusCode": 200,
+        "cookieAbsent": true,
+        "caseName": "escaped-duplicate",
+        "requestKind": "refresh",
+        "bodySHA256": "46d21d9a250347347f5032fa9c40a7a7b08ca317f67dd0edef51d2e6dc474355",
+        "streamStarted": false
+      },
+      {
+        "payloadBytes": 187,
+        "formMatches": true,
+        "advertisedBytes": 187,
+        "statusCode": 200,
+        "cookieAbsent": true,
+        "caseName": "nested-duplicate",
+        "requestKind": "refresh",
+        "bodySHA256": "46d21d9a250347347f5032fa9c40a7a7b08ca317f67dd0edef51d2e6dc474355",
+        "streamStarted": false
+      },
+      {
+        "advertisedBytes": 197,
+        "statusCode": 200,
+        "requestKind": "refresh",
+        "payloadBytes": 197,
+        "caseName": "error",
+        "bodySHA256": "46d21d9a250347347f5032fa9c40a7a7b08ca317f67dd0edef51d2e6dc474355",
+        "formMatches": true,
+        "cookieAbsent": true,
+        "streamStarted": false
+      },
+      {
+        "advertisedBytes": 181,
+        "statusCode": 200,
+        "requestKind": "refresh",
+        "payloadBytes": 181,
+        "caseName": "null-error",
+        "bodySHA256": "46d21d9a250347347f5032fa9c40a7a7b08ca317f67dd0edef51d2e6dc474355",
+        "formMatches": true,
+        "cookieAbsent": true,
+        "streamStarted": false
+      },
+      {
+        "advertisedBytes": 166,
+        "statusCode": 503,
+        "requestKind": "refresh",
+        "payloadBytes": 166,
+        "caseName": "http-error",
+        "bodySHA256": "46d21d9a250347347f5032fa9c40a7a7b08ca317f67dd0edef51d2e6dc474355",
+        "formMatches": true,
+        "cookieAbsent": true,
+        "streamStarted": false
+      },
+      {
+        "advertisedBytes": 128001,
+        "statusCode": 200,
+        "requestKind": "refresh",
+        "payloadBytes": 128001,
+        "caseName": "oversized-header",
+        "bodySHA256": "46d21d9a250347347f5032fa9c40a7a7b08ca317f67dd0edef51d2e6dc474355",
+        "formMatches": true,
+        "cookieAbsent": true,
+        "streamStarted": false
+      },
+      {
+        "advertisedBytes": -1,
+        "statusCode": 200,
+        "requestKind": "refresh",
+        "payloadBytes": 128001,
+        "caseName": "oversized-chunked",
+        "bodySHA256": "f8b4ecc2f0666b73960bc4a926b8019a658c72d6e593cc1e51c7d58eb813a5b6",
+        "formMatches": true,
+        "cookieAbsent": true,
+        "streamStarted": false
+      },
+      {
+        "advertisedBytes": 166,
+        "statusCode": 307,
+        "requestKind": "refresh",
+        "payloadBytes": 166,
+        "caseName": "redirect",
+        "bodySHA256": "f8b4ecc2f0666b73960bc4a926b8019a658c72d6e593cc1e51c7d58eb813a5b6",
+        "formMatches": true,
+        "cookieAbsent": true,
+        "streamStarted": false
+      },
+      {
+        "advertisedBytes": 168,
+        "statusCode": 200,
+        "requestKind": "refresh",
+        "payloadBytes": 168,
+        "caseName": "wrong-type",
+        "bodySHA256": "f8b4ecc2f0666b73960bc4a926b8019a658c72d6e593cc1e51c7d58eb813a5b6",
+        "formMatches": true,
+        "cookieAbsent": true,
+        "streamStarted": false
+      },
+      {
+        "advertisedBytes": 165,
+        "statusCode": 200,
+        "requestKind": "refresh",
+        "payloadBytes": 165,
+        "caseName": "wrong-token-type",
+        "bodySHA256": "f8b4ecc2f0666b73960bc4a926b8019a658c72d6e593cc1e51c7d58eb813a5b6",
+        "formMatches": true,
+        "cookieAbsent": true,
+        "streamStarted": false
+      },
+      {
+        "advertisedBytes": 163,
+        "statusCode": 200,
+        "requestKind": "refresh",
+        "payloadBytes": 163,
+        "caseName": "zero-expiry",
+        "bodySHA256": "ef317b188429ecc8cd8a966a30bbf2fd2e4b9ecb4b56fe6097b38a3aec22541c",
+        "formMatches": true,
+        "cookieAbsent": true,
+        "streamStarted": false
+      },
+      {
+        "advertisedBytes": 163,
+        "statusCode": 200,
+        "requestKind": "refresh",
+        "payloadBytes": 163,
+        "caseName": "invalid-token",
+        "bodySHA256": "ef317b188429ecc8cd8a966a30bbf2fd2e4b9ecb4b56fe6097b38a3aec22541c",
+        "formMatches": true,
+        "cookieAbsent": true,
+        "streamStarted": false
+      },
+      {
+        "advertisedBytes": 167,
+        "statusCode": 200,
+        "requestKind": "refresh",
+        "payloadBytes": 167,
+        "caseName": "invalid-utf8",
+        "bodySHA256": "ef317b188429ecc8cd8a966a30bbf2fd2e4b9ecb4b56fe6097b38a3aec22541c",
+        "formMatches": true,
+        "cookieAbsent": true,
+        "streamStarted": false
+      },
+      {
+        "advertisedBytes": 168,
+        "statusCode": 200,
+        "requestKind": "refresh",
+        "payloadBytes": 168,
+        "caseName": "non-object",
+        "bodySHA256": "ef317b188429ecc8cd8a966a30bbf2fd2e4b9ecb4b56fe6097b38a3aec22541c",
+        "formMatches": true,
+        "cookieAbsent": true,
+        "streamStarted": false
+      },
+      {
+        "advertisedBytes": -1,
+        "statusCode": 200,
+        "requestKind": "refresh",
+        "payloadBytes": 166,
+        "caseName": "cancelled",
+        "bodySHA256": "ef317b188429ecc8cd8a966a30bbf2fd2e4b9ecb4b56fe6097b38a3aec22541c",
+        "formMatches": true,
+        "cookieAbsent": true,
+        "streamStarted": true
+      },
+      {
+        "advertisedBytes": 166,
+        "statusCode": 200,
+        "requestKind": "refresh",
+        "payloadBytes": 166,
+        "caseName": "valid",
+        "bodySHA256": "ef317b188429ecc8cd8a966a30bbf2fd2e4b9ecb4b56fe6097b38a3aec22541c",
+        "formMatches": true,
+        "cookieAbsent": true,
+        "streamStarted": false
+      }
+    ],
+    "tokenRedirectHits": 0,
+    "tokenRequests": 0,
+    "packets": [
+      {
+        "credential": "refreshed-fixture",
+        "model": "synthetic-provider-42-a",
+        "bodySHA256": "a736ee2467c0c1adac6e344baee49c78cf5f304bf87c3082349b1883316cf1d8",
+        "route": "/chat-a",
+        "systemCanary": true
+      },
+      {
+        "credential": "refreshed-fixture",
+        "model": "synthetic-provider-42-a",
+        "bodySHA256": "938a858622b2cf6b6a171aa0cd3c4a55e48d907625df4336d436f2e94eed884a",
+        "route": "/chat-a",
+        "systemCanary": true
+      }
+    ],
+    "loginRequests": 0
+  },
+  "observations": [
+    {
+      "chatPackets": 1,
+      "accountBytesPreserved": false,
+      "flow": "refresh",
+      "accountBeforeSHA256": "69e612c5ca2902de67f70fd73d206a644542345f99c3c19c685163ae54e5a0c9",
+      "mode": "valid",
+      "tokenExchanges": 1,
+      "accountAfterSHA256": "9ee0b0c6f220770c0c48914306b218ebb77f58d8727b689ba810f004bf02f94f",
+      "accepted": true,
+      "accountIdentityPreserved": true
+    },
+    {
+      "chatPackets": 1,
+      "accountBytesPreserved": false,
+      "flow": "refresh",
+      "accountBeforeSHA256": "2fa65169e263bda6fb3c05db9caf416772a31571fe6fd924275d43d992b519b8",
+      "mode": "mixed-case-bearer",
+      "tokenExchanges": 1,
+      "accountAfterSHA256": "d4ee8ab64918e5239fe3b46f6e67fc58db7cfbd2dca869f0ea2c6a5f3297ff17",
+      "accepted": true,
+      "accountIdentityPreserved": true
+    },
+    {
+      "chatPackets": 0,
+      "accountBytesPreserved": true,
+      "flow": "refresh",
+      "accountBeforeSHA256": "a0480fab69f18e1bf8f6b8b14258b044f65986a09c1a3ef3799d64a18557017e",
+      "mode": "malformed",
+      "tokenExchanges": 1,
+      "accountAfterSHA256": "a0480fab69f18e1bf8f6b8b14258b044f65986a09c1a3ef3799d64a18557017e",
+      "accepted": false,
+      "accountIdentityPreserved": true
+    },
+    {
+      "chatPackets": 0,
+      "accountBytesPreserved": true,
+      "flow": "refresh",
+      "accountBeforeSHA256": "bf20e6167a378e0f04a4085ca9c14030338542e1ab932239e75c186d111b40b6",
+      "mode": "duplicate",
+      "tokenExchanges": 1,
+      "accountAfterSHA256": "bf20e6167a378e0f04a4085ca9c14030338542e1ab932239e75c186d111b40b6",
+      "accepted": false,
+      "accountIdentityPreserved": true
+    },
+    {
+      "chatPackets": 0,
+      "accountBytesPreserved": true,
+      "flow": "refresh",
+      "accountBeforeSHA256": "3eaf7d4d07bbe59da9b58df04f3653e7e55b46781da813b8083868d8a3e7f303",
+      "mode": "escaped-duplicate",
+      "tokenExchanges": 1,
+      "accountAfterSHA256": "3eaf7d4d07bbe59da9b58df04f3653e7e55b46781da813b8083868d8a3e7f303",
+      "accepted": false,
+      "accountIdentityPreserved": true
+    },
+    {
+      "chatPackets": 0,
+      "accountBytesPreserved": true,
+      "flow": "refresh",
+      "accountBeforeSHA256": "f130d880063fa6f8540bec4a6dcbc0b3451c2640f241922f0825ca680c432cc9",
+      "mode": "nested-duplicate",
+      "tokenExchanges": 1,
+      "accountAfterSHA256": "f130d880063fa6f8540bec4a6dcbc0b3451c2640f241922f0825ca680c432cc9",
+      "accepted": false,
+      "accountIdentityPreserved": true
+    },
+    {
+      "accountAfterSHA256": "79a310abfcb350485316d377f6dcace9787d6b747569a43427f9990a9f472d33",
+      "accountBytesPreserved": true,
+      "chatPackets": 0,
+      "accountBeforeSHA256": "79a310abfcb350485316d377f6dcace9787d6b747569a43427f9990a9f472d33",
+      "flow": "refresh",
+      "accountIdentityPreserved": true,
+      "tokenExchanges": 1,
+      "accepted": false,
+      "mode": "error"
+    },
+    {
+      "accountAfterSHA256": "7f08cd68c5c76bd85b364266607eb9f13e5ec34b6118264437ebffacd43ac8a0",
+      "accountBytesPreserved": true,
+      "chatPackets": 0,
+      "accountBeforeSHA256": "7f08cd68c5c76bd85b364266607eb9f13e5ec34b6118264437ebffacd43ac8a0",
+      "flow": "refresh",
+      "accountIdentityPreserved": true,
+      "tokenExchanges": 1,
+      "accepted": false,
+      "mode": "null-error"
+    },
+    {
+      "accountAfterSHA256": "a9c5f6b804a34cff3e51547cb36070df71c18a46d8b3c4659216d34e14db56db",
+      "accountBytesPreserved": true,
+      "chatPackets": 0,
+      "accountBeforeSHA256": "a9c5f6b804a34cff3e51547cb36070df71c18a46d8b3c4659216d34e14db56db",
+      "flow": "refresh",
+      "accountIdentityPreserved": true,
+      "tokenExchanges": 1,
+      "accepted": false,
+      "mode": "http-error"
+    },
+    {
+      "accountAfterSHA256": "b6c8f413550dcb76a20893b652e98731d91deca98e9497b2125ce153f455ed2a",
+      "accountBytesPreserved": true,
+      "chatPackets": 0,
+      "accountBeforeSHA256": "b6c8f413550dcb76a20893b652e98731d91deca98e9497b2125ce153f455ed2a",
+      "flow": "refresh",
+      "accountIdentityPreserved": true,
+      "tokenExchanges": 1,
+      "accepted": false,
+      "mode": "oversized-header"
+    },
+    {
+      "accountAfterSHA256": "3be5bffb6cca97828c5d35463ce0ff9c03a7c45231e462f3f7232cc754d9aa90",
+      "accountBytesPreserved": true,
+      "chatPackets": 0,
+      "accountBeforeSHA256": "3be5bffb6cca97828c5d35463ce0ff9c03a7c45231e462f3f7232cc754d9aa90",
+      "flow": "refresh",
+      "accountIdentityPreserved": true,
+      "tokenExchanges": 1,
+      "accepted": false,
+      "mode": "oversized-chunked"
+    },
+    {
+      "accountAfterSHA256": "f5c15ad4f2cd6ee2ae2e530777b32313d3f57e6fe88a58501838723b074ab684",
+      "accountBytesPreserved": true,
+      "chatPackets": 0,
+      "accountBeforeSHA256": "f5c15ad4f2cd6ee2ae2e530777b32313d3f57e6fe88a58501838723b074ab684",
+      "flow": "refresh",
+      "accountIdentityPreserved": true,
+      "tokenExchanges": 1,
+      "accepted": false,
+      "mode": "redirect"
+    },
+    {
+      "accountAfterSHA256": "2bf164ff231d41fb99552873a62f8c91c826c4f314eb91389ea1da2661852ec5",
+      "accountBytesPreserved": true,
+      "chatPackets": 0,
+      "accountBeforeSHA256": "2bf164ff231d41fb99552873a62f8c91c826c4f314eb91389ea1da2661852ec5",
+      "flow": "refresh",
+      "accountIdentityPreserved": true,
+      "tokenExchanges": 1,
+      "accepted": false,
+      "mode": "wrong-type"
+    },
+    {
+      "accountAfterSHA256": "f343746ff75c9be9329ea372de9a5f0d61bd1a4c14d84118cfbd3a8dc15667ca",
+      "accountBytesPreserved": true,
+      "chatPackets": 0,
+      "accountBeforeSHA256": "f343746ff75c9be9329ea372de9a5f0d61bd1a4c14d84118cfbd3a8dc15667ca",
+      "flow": "refresh",
+      "accountIdentityPreserved": true,
+      "tokenExchanges": 1,
+      "accepted": false,
+      "mode": "wrong-token-type"
+    },
+    {
+      "accountAfterSHA256": "a9ecde5cc9852b72cb876812b4b2486801d0161c0c907c8fa32499053c121753",
+      "accountBytesPreserved": true,
+      "chatPackets": 0,
+      "accountBeforeSHA256": "a9ecde5cc9852b72cb876812b4b2486801d0161c0c907c8fa32499053c121753",
+      "flow": "refresh",
+      "accountIdentityPreserved": true,
+      "tokenExchanges": 1,
+      "accepted": false,
+      "mode": "zero-expiry"
+    },
+    {
+      "accountAfterSHA256": "f1b27f645e03bc484fa26322c641a8baf329ca59a018dfbc069c83efc597e62f",
+      "accountBytesPreserved": true,
+      "chatPackets": 0,
+      "accountBeforeSHA256": "f1b27f645e03bc484fa26322c641a8baf329ca59a018dfbc069c83efc597e62f",
+      "flow": "refresh",
+      "accountIdentityPreserved": true,
+      "tokenExchanges": 1,
+      "accepted": false,
+      "mode": "invalid-token"
+    },
+    {
+      "accountAfterSHA256": "eb9008c8060b1efe278eb9103eb1a827353f338bcf57f38eb779eb9599939d8e",
+      "accountBytesPreserved": true,
+      "chatPackets": 0,
+      "accountBeforeSHA256": "eb9008c8060b1efe278eb9103eb1a827353f338bcf57f38eb779eb9599939d8e",
+      "flow": "refresh",
+      "accountIdentityPreserved": true,
+      "tokenExchanges": 1,
+      "accepted": false,
+      "mode": "invalid-utf8"
+    },
+    {
+      "accountAfterSHA256": "c82bcaa1eba453acb5fc7fd690c6d12d9ac9be934f3abf0939ab75236a0df96c",
+      "accountBytesPreserved": true,
+      "chatPackets": 0,
+      "accountBeforeSHA256": "c82bcaa1eba453acb5fc7fd690c6d12d9ac9be934f3abf0939ab75236a0df96c",
+      "flow": "refresh",
+      "accountIdentityPreserved": true,
+      "tokenExchanges": 1,
+      "accepted": false,
+      "mode": "non-object"
+    },
+    {
+      "accountAfterSHA256": "ad2b4e2b717dfb48037611364d2fcaba28606474b001c64e4293dbd73d2f8170",
+      "accountBytesPreserved": true,
+      "chatPackets": 0,
+      "accountBeforeSHA256": "ad2b4e2b717dfb48037611364d2fcaba28606474b001c64e4293dbd73d2f8170",
+      "flow": "refresh",
+      "accountIdentityPreserved": true,
+      "tokenExchanges": 1,
+      "accepted": false,
+      "mode": "cancelled"
+    },
+    {
+      "accountAfterSHA256": "52d06f210c256d5f5f9adc913c12597f56eb4884aa2efac88e332648f3471e5c",
+      "accountBytesPreserved": false,
+      "chatPackets": 0,
+      "accountBeforeSHA256": "1b0fdccdc4a1cf5e71fae8badab9582162ad9c60266b22eb39811dcce4a55b66",
+      "flow": "refresh",
+      "accountIdentityPreserved": true,
+      "tokenExchanges": 1,
+      "accepted": false,
+      "mode": "cancel-before-task"
+    }
+  ],
+  "status": "Token transport checks failed: Token response observation failed: refresh/cancel-before-task"
+}

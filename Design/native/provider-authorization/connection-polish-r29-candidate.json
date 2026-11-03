@@ -1,0 +1,26 @@
+{
+  "source": "connection-source-r29.json",
+  "inputs": 216,
+  "buildStatus": "Not built; active test-without-building R31 still owns prior sourceR27 app cache",
+  "syntaxCheck": {
+    "arguments": [
+      "xcrun",
+      "swiftc",
+      "-frontend",
+      "-parse",
+      "Lumen/Views/SettingsView.swift",
+      "Lumen/Services/LLMConnectionService.swift"
+    ],
+    "observedExitCode": 0,
+    "log": "connection-polish-syntax-r29.log.gz",
+    "scope": "Syntax parse only, not typecheck/build/runtime or visual acceptance"
+  },
+  "audit": "repair-progress-r32-final-audit.log.gz",
+  "pending": [
+    "Wait for same R31 test74572/server72202 terminal; collect full results including1manual connectivity packet",
+    "Build current candidate in reused cache",
+    "Verify native accessibility menu choices, selected full labels/preference and factual status copy",
+    "Integrate and verify literal wrapping plus editing/focus/keyboard visibility",
+    "Same criticRound2, complete matrix/regressions/Release/publication"
+  ]
+}

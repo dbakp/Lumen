@@ -1,0 +1,95 @@
+{
+  "source": "connection-source-r41.json",
+  "applicationSHA256": "78bab382ebc2a2e2d375230e5b72091f33cd70e2b182d0384742f26d4e3ddd53",
+  "completedCases": [
+    {
+      "kind": "auth",
+      "observations": 27,
+      "passedTests": 1,
+      "providerPackets": 5,
+      "binarySHA256": "78bab382ebc2a2e2d375230e5b72091f33cd70e2b182d0384742f26d4e3ddd53",
+      "command": [
+        "xcodebuild",
+        "test-without-building",
+        "-xctestrun",
+        "/tmp/LumenBatch37Simulator/Build/Products/Lumen_Lumen_iphonesimulator27.0-arm64-x86_64.xctestrun",
+        "-destination",
+        "platform=iOS Simulator,id=AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+        "-parallel-testing-enabled",
+        "NO",
+        "-collect-test-diagnostics",
+        "never",
+        "-only-testing:LumenUITests/LumenSmokeTests/testProviderAuthorizationChecks",
+        "-resultBundlePath",
+        "/tmp/LumenBatch42Checks/FinalProviderR47-auth.xcresult"
+      ]
+    },
+    {
+      "kind": "signin",
+      "observations": 16,
+      "passedTests": 1,
+      "providerPackets": 0,
+      "binarySHA256": "78bab382ebc2a2e2d375230e5b72091f33cd70e2b182d0384742f26d4e3ddd53",
+      "command": [
+        "xcodebuild",
+        "test-without-building",
+        "-xctestrun",
+        "/tmp/LumenBatch37Simulator/Build/Products/Lumen_Lumen_iphonesimulator27.0-arm64-x86_64.xctestrun",
+        "-destination",
+        "platform=iOS Simulator,id=AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+        "-parallel-testing-enabled",
+        "NO",
+        "-collect-test-diagnostics",
+        "never",
+        "-only-testing:LumenUITests/LumenSmokeTests/testProviderSignInChecks",
+        "-resultBundlePath",
+        "/tmp/LumenBatch42Checks/FinalProviderR47-signin.xcresult"
+      ]
+    },
+    {
+      "kind": "token-transport",
+      "observations": 45,
+      "passedTests": 1,
+      "providerPackets": 5,
+      "binarySHA256": "78bab382ebc2a2e2d375230e5b72091f33cd70e2b182d0384742f26d4e3ddd53",
+      "command": [
+        "xcodebuild",
+        "test-without-building",
+        "-xctestrun",
+        "/tmp/LumenBatch37Simulator/Build/Products/Lumen_Lumen_iphonesimulator27.0-arm64-x86_64.xctestrun",
+        "-destination",
+        "platform=iOS Simulator,id=AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+        "-parallel-testing-enabled",
+        "NO",
+        "-collect-test-diagnostics",
+        "never",
+        "-only-testing:LumenUITests/LumenSmokeTests/testProviderTokenTransportChecks",
+        "-resultBundlePath",
+        "/tmp/LumenBatch42Checks/FinalProviderR47-token-transport.xcresult"
+      ]
+    },
+    {
+      "kind": "caller",
+      "observations": 33,
+      "passedTests": 1,
+      "providerPackets": 20,
+      "binarySHA256": "78bab382ebc2a2e2d375230e5b72091f33cd70e2b182d0384742f26d4e3ddd53",
+      "command": [
+        "xcodebuild",
+        "test-without-building",
+        "-xctestrun",
+        "/tmp/LumenBatch37Simulator/Build/Products/Lumen_Lumen_iphonesimulator27.0-arm64-x86_64.xctestrun",
+        "-destination",
+        "platform=iOS Simulator,id=AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+        "-parallel-testing-enabled",
+        "NO",
+        "-collect-test-diagnostics",
+        "never",
+        "-only-testing:LumenUITests/LumenSmokeTests/testProviderCallerChecks",
+        "-resultBundlePath",
+        "/tmp/LumenBatch42Checks/FinalProviderR47-caller.xcresult"
+      ]
+    }
+  ],
+  "scope": "Current native production providers through fixed loopback only; no live account/provider acceptance"
+}

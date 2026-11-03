@@ -1,0 +1,23 @@
+{
+  "source": "connection-source-r23.json",
+  "originalXCTestResult": "passed (109.920 seconds), six exact host readbacks and checked fixture cleanup",
+  "visualAcceptance": false,
+  "reason": "1260 is captured before the native key touch and shows Done but no drawn keys. Native hierarchy has a 375x216 keyboard at y451, a nonempty on-screen q key and positive hittability. Those assertions do not prove drawn keys. 1261 correctly shows the Done transition. Earlier commentary claiming visible-key proof was corrected after pixel inspection.",
+  "reviewedOriginals": [
+    {
+      "repositoryPath": "Design/native/provider-authorization/1261-ai-software-keyboard-done_0_818EC4CF-63BF-4E94-9F19-C4F945CD78B0.png",
+      "sha256": "1116c697cb91058966c478f9ba6d7204b03e63e1a35018d38b422e13ea67c813",
+      "bytes": 158494,
+      "testIdentifier": "LumenSmokeTests/testProviderConnectionKeyboardUI()",
+      "timestamp": 1793678512.901
+    },
+    {
+      "repositoryPath": "Design/native/provider-authorization/1260-ai-visible-software-keyboard_0_131BA2DB-6E27-47E5-9734-69D67010612B.png",
+      "sha256": "dd65f05610679c0c478ee3a0b66043eb6e3f184440df152390088aec9138d1da",
+      "bytes": 168550,
+      "testIdentifier": "LumenSmokeTests/testProviderConnectionKeyboardUI()",
+      "timestamp": 1793678508.613
+    }
+  ],
+  "next": "R24 captures after actual q/delete/q touches, using the existing verified rename/calendar approach, and retains exact saved-record assertions. Investigate a nonsecure field comparison if secure-field capture remains ambiguous."
+}

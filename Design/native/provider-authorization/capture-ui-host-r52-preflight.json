@@ -1,0 +1,7 @@
+{
+  "status": "source inspected and AST parsed; runtime pending",
+  "wrapperSHA256": "575c7af79e891d15bdeb4532c2fa90ea900ee8fce9439e4c3bf340c9a04ffa5b",
+  "actualServerProtocol": "HTTP/1.1",
+  "headerGate": "Checks parsed HTTP success status200 independent of protocol version. Initial unexecuted helper assumed HTTP/1.0; corrected before any test launch.",
+  "scope": "Capture before original response headers are flushed, while XCTest awaits its unchanged native-state readback. No production/test source change. Actual captured pixels and matched readbacks remain required."
+}

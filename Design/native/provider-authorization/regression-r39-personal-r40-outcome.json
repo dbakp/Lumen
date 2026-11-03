@@ -1,0 +1,27 @@
+{
+  "source": "connection-source-r34.json",
+  "binarySHA256": "ce4f1b2b44fe5be53785da5a9dc576c30b19cbda03756e00039203f8aa399792",
+  "deviceID": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+  "library": {
+    "checks": 19,
+    "run": "RegressionR39",
+    "exactHostMatched": true
+  },
+  "conversation": {
+    "checks": 49,
+    "run": "RegressionR39",
+    "allPassed": true
+  },
+  "personal": {
+    "checks": 43,
+    "run": "PersonalR40",
+    "requests": 8,
+    "exactHostMatched": true
+  },
+  "failedTrial": {
+    "run": "RegressionR39",
+    "reason": "Personal probe requires total audit count 1 at first request, but shared host already retains Library requests. Actual failed native report and mixed host preserved; no app/test changes for fresh-server R40 pass."
+  },
+  "originalsIndividuallyOpenedAndHashed": 3,
+  "scope": "Synthetic native regressions; completion overlays on onboarding are diagnostic seams, not product onboarding acceptance."
+}

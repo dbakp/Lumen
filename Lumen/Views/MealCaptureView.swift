@@ -82,8 +82,9 @@ public struct MealCaptureView: View {
                 Text("To snap meals, allow Lumen to use the camera in Settings.")
             }
             .onChange(of: pickerItem) { _, item in
+                let provider = ai.captureProvider()
                 Task {
-                    if let data = try? await item?.loadTransferable(type: Data.self), let ui = UIImage(data: data) { use(ui) }
+                    if let data = try? await item?.loadTransferable(type: Data.self), let ui = UIImage(data: data) { use(ui, using: provider) }
                 }
             }
             .task {
@@ -140,7 +141,8 @@ public struct MealCaptureView: View {
                         .lineLimit(2...4).focused($describeFocused)
                         .padding(14).surface(16)
                     Button {
-                        Task { await describe() }
+                        let provider = ai.captureProvider(), text = descriptionText
+                        Task { await describe(text, using: provider) }
                     } label: {
                         HStack { if analyzing { ProgressView().tint(.black) }; Text(analyzing ? "Estimating…" : "Estimate") }
                     }
@@ -226,17 +228,18 @@ public struct MealCaptureView: View {
         }
     }
 
-    func use(_ image: UIImage) {
+    func use(_ image: UIImage, using captured: AIService.ProviderSelection? = nil) {
+        let provider = captured ?? ai.captureProvider()
         photo = image
         items = []
-        Task { await analyze(image) }
+        Task { await analyze(image, using: provider) }
     }
 
-    func analyze(_ image: UIImage) async {
+    func analyze(_ image: UIImage, using provider: AIService.ProviderSelection) async {
         guard ai.canSeePhotos else { return }
         analyzing = true; analysisFailed = false
         defer { analyzing = false }
-        if let result = await ai.analyzeMeal(image: image) {
+        if let result = await ai.analyzeMeal(image: image, using: provider) {
             apply(result)
             haptic(.medium)
         } else {
@@ -244,12 +247,12 @@ public struct MealCaptureView: View {
         }
     }
 
-    func describe() async {
+    func describe(_ text: String, using provider: AIService.ProviderSelection) async {
         analyzing = true; defer { analyzing = false }
         describeFocused = false
-        if let result = await ai.estimateMeal(description: descriptionText) {
+        if let result = await ai.estimateMeal(description: text, using: provider) {
             apply(result)
-            if title.isEmpty { title = descriptionText.capitalizedFirst }
+            if title.isEmpty { title = text.capitalizedFirst }
         } else {
             analysisFailed = true
             showSearch = true

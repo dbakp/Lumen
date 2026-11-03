@@ -107,7 +107,8 @@ struct ScheduledPlanSheet: View {
     }
     private func prepare() {
         guard !working, ready() else { return }
-        let selected = ai.brain, input = request, synthetic = fixture
+        let provider = ai.captureProvider(), input = request, synthetic = fixture
+        let selected = provider.brain
         let personalRevision = CompanionStore.shared.personalContextRevision
         let context = CompanionStore.shared.context(health: health) + "\n" + CoachingEngine.contextPrompt(metrics: health.metrics, readiness: health.readiness, goals: health.goals, workoutsToday: health.workoutsToday, estimatedSleepDebt: health.assistantSleepDebt)
         guard context.utf8.count <= 64_000 else { error = "The health summary is too large for this request. You can use and edit the planning template."; return }
@@ -119,7 +120,7 @@ struct ScheduledPlanSheet: View {
         }
         generation = Task {
             let response: String?
-            var source = selected.label
+            var source = provider.source
             #if DEBUG && targetEnvironment(simulator)
             if let synthetic {
                 if ["context-change", "context-revert"].contains(synthetic) {
@@ -143,13 +144,14 @@ struct ScheduledPlanSheet: View {
                     let object: [String: Any] = ["version": 1, "title": "A steady routine", "reason": "Synthetic planning text for interface verification. No provider or health inference.", "steps": steps]
                     response = String(data: try! JSONSerialization.data(withJSONObject: object), encoding: .utf8)
                 }
-            } else { response = await ai.scheduledPlan(request: input, context: context, using: selected, expectedPersonalContextRevision: personalRevision) }
+            } else { response = await ai.scheduledPlan(request: input, context: context, using: selected, expectedPersonalContextRevision: personalRevision, expectedProviderRevision: provider.configuration.revision) }
             #else
-            response = await ai.scheduledPlan(request: input, context: context, using: selected, expectedPersonalContextRevision: personalRevision)
+            response = await ai.scheduledPlan(request: input, context: context, using: selected, expectedPersonalContextRevision: personalRevision, expectedProviderRevision: provider.configuration.revision)
             #endif
             guard !Task.isCancelled, generationID == ticket else { return }
             timeout?.cancel(); timeout = nil; generationID = nil; working = false; generation = nil
             guard personalRevision == CompanionStore.shared.personalContextRevision else { error = "Your personal context changed while preparing. Prepare again to use your current sharing choice and text. Input already sent to a provider can't be recalled."; return }
+            guard ai.isCurrent(provider) else { error = AIService.ProviderRequestFailure.changed.localizedDescription; return }
             guard let response else { error = "The provider couldn't prepare a draft. Your goal is still here. Try again, or use the planning template."; return }
             do { proposal = try ScheduledPlanDraft.parse(response, request: input, source: source) }
             catch { self.error = error.localizedDescription }

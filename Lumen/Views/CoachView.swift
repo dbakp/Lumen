@@ -256,6 +256,7 @@ public struct CoachView: View {
         let t = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !t.isEmpty, canStartRequest else { return }
         let submittedDraft = draft, target = health.activeConversationID
+        let providerConfiguration = LLMConnectionService.shared.configuration(), selectedBrain = ai.brain
         isSending = true
         responseTask = Task {
             var replyOwner: ConversationReplyOwner?
@@ -274,7 +275,8 @@ public struct CoachView: View {
                     if submittedDraft.trimmingCharacters(in: .whitespacesAndNewlines) == t { draft = ""; focused = false }
                 }
                 guard !Task.isCancelled, health.ownsReply(sent.owner) else { return }
-                let outcome = await coach.replyOutcome(to: t, health: health, sleepDebt: sleep.debt, conversationHistory: sent.history)
+                let outcome = await coach.replyOutcome(to: t, health: health, sleepDebt: sleep.debt, conversationHistory: sent.history,
+                                                       expectedProviderConfiguration: providerConfiguration, usingBrain: selectedBrain)
                 guard !Task.isCancelled, health.ownsReply(sent.owner) else { return }
                 let reply = ChatMessage(role: .coach, text: outcome.text, provider: outcome.source, recordContext: outcome.recordContext, personalContext: outcome.personalContext)
                 guard let id = health.retainConversationReply(reply, owner: sent.owner,

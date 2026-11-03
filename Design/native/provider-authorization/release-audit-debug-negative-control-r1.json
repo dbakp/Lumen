@@ -1,0 +1,18 @@
+{
+  "status": "expected rejection passed",
+  "command": [
+    "python3",
+    "Design/native/provider-authorization/audit-release.py",
+    "--bundle",
+    "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app",
+    "--debug-bundle",
+    "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app",
+    "--output",
+    "/tmp/LumenBatch42Checks/ReleaseAuditDebugNegativeControlR1.json"
+  ],
+  "exitCode": 1,
+  "positiveDebugBinaryIsRejectedAsRelease": true,
+  "passedReleaseReportCreated": false,
+  "fullLog": "ReleaseAuditDebugNegativeControlR1.log.gz",
+  "scope": "Actual current Debug bundle intentionally submitted to Release auditor. This proves the guard rejects that known development binary; it is not a failed or accepted Release build."
+}

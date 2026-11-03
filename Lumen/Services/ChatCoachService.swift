@@ -28,16 +28,19 @@ public final class ChatCoachService: ObservableObject {
         await replyOutcome(to: text, health: health, sleepDebt: sleepDebt, conversationHistory: conversationHistory).text
     }
 
-    func replyOutcome(to text: String, health: HealthStore, sleepDebt: TimeInterval, conversationHistory: [ChatMessage]? = nil) async -> CoachReplyOutcome {
+    func replyOutcome(to text: String, health: HealthStore, sleepDebt: TimeInterval, conversationHistory: [ChatMessage]? = nil,
+                      expectedProviderConfiguration: LLMConnectionService.Configuration? = nil, usingBrain: AIService.Brain? = nil) async -> CoachReplyOutcome {
         isTyping = true
         defer { isTyping = false }
-        let result = await makeReply(to: text, health: health, sleepDebt: sleepDebt, conversationHistory: conversationHistory)
+        let result = await makeReply(to: text, health: health, sleepDebt: sleepDebt, conversationHistory: conversationHistory,
+                                     expectedProviderConfiguration: expectedProviderConfiguration, usingBrain: usingBrain)
         lastReplySource = result.source; lastRecordContext = result.recordContext
         lastPersonalContext = result.personalContext; lastReplyCanBecomePlan = result.canBecomePlan
         return result
     }
 
-    private func makeReply(to text: String, health: HealthStore, sleepDebt: TimeInterval, conversationHistory: [ChatMessage]?) async -> CoachReplyOutcome {
+    private func makeReply(to text: String, health: HealthStore, sleepDebt: TimeInterval, conversationHistory: [ChatMessage]?,
+                           expectedProviderConfiguration: LLMConnectionService.Configuration?, usingBrain: AIService.Brain?) async -> CoachReplyOutcome {
         var lastReplySource = "Built-in guide"
         var lastRecordContext = RecordReplyContext.guide()
         var lastPersonalContext = PersonalContextProvenance.withoutNotes
@@ -57,7 +60,16 @@ public final class ChatCoachService: ObservableObject {
         let personalSnapshot = PersonalContextProvenance.included(CompanionStore.shared.personalContext)
         let previous = conversationHistory ?? Array(health.chat.dropLast()) // latest user message is `text`
         let history = PersonalContextProvenance.history(previous, current: personalSnapshot)
-        let selectedBrain = AIService.shared.brain
+        let providerConfiguration = expectedProviderConfiguration ?? LLMConnectionService.shared.configuration()
+        let selectedBrain = usingBrain ?? AIService.shared.brain
+        let providerSource = selectedBrain == .openAIKey ? LLMConnectionService.shared.providerLabel : selectedBrain.label
+        func providerNotice() -> String? {
+            guard LLMConnectionService.shared.configuration() != providerConfiguration else { return nil }
+            lastReplySource = "Lumen notice"; lastRecordContext = .guide()
+            lastPersonalContext = .withoutNotes; lastReplyCanBecomePlan = false
+            return "Your AI connection changed. This reply wasn't kept. Send your question again to use the current connection. Input already sent to a provider can't be recalled."
+        }
+        if let notice = providerNotice() { return finish(notice) }
         let libraryRevision = CompanionStore.shared.libraryRevision
         let documents = CompanionStore.shared.documents
         let modelLease = await SemanticSearchService.shared.lease()
@@ -75,11 +87,13 @@ public final class ChatCoachService: ObservableObject {
         } catch {
             if Task.isCancelled { return finish("") }
             if let notice = contextNotice(expected: personalRevision) { return finish(notice) }
+            if let notice = providerNotice() { return finish(notice) }
             if let problem = error as? RecordRetrieval.SearchError { return finish(problem.localizedDescription) }
             return finish("Library search couldn't finish. Try again, or open the record in Library.")
         }
         guard !Task.isCancelled else { return finish("") }
         if let notice = contextNotice(expected: personalRevision) { return finish(notice) }
+        if let notice = providerNotice() { return finish(notice) }
         guard CompanionStore.shared.libraryRevision == libraryRevision, SemanticSearchService.shared.isCurrent(modelLease) else {
             return finish("Library records or search settings changed during this request. Send your question again to use the current settings.")
         }
@@ -96,6 +110,7 @@ public final class ChatCoachService: ObservableObject {
         // Capture the original packet's authorization, never a freshly approved
         // replacement. The provider rechecks this after credential preparation.
         let submissionAllowed: @MainActor () -> Bool = {
+            LLMConnectionService.shared.configuration() == providerConfiguration &&
             CompanionStore.shared.libraryRevision == libraryRevision && SemanticSearchService.shared.isCurrent(modelLease) &&
             references.passages.allSatisfy { RecordRetrieval.isCurrent($0, documents: CompanionStore.shared.documents) } &&
             safeHistory.filter { $0.role == .coach }.allSatisfy { message in
@@ -112,16 +127,18 @@ public final class ChatCoachService: ObservableObject {
         }
         #endif
         if let ai = await AIService.shared.chat(instructions: fullInstructions, history: safeHistory, user: text, using: selectedBrain,
-                                              expectedPersonalContextRevision: personalRevision, submissionAllowed: submissionAllowed),
+                                              expectedPersonalContextRevision: personalRevision,
+                                              expectedProviderRevision: providerConfiguration.revision, submissionAllowed: submissionAllowed),
            !ai.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             if let notice = contextNotice(expected: personalRevision) { return finish(notice) }
+            if let notice = providerNotice() { return finish(notice) }
             guard !Task.isCancelled, submissionAllowed() else {
                 return finish("Library records or search settings changed during this reply. Send your question again to use the current settings.")
             }
             if let resolved = RecordRetrieval.validatedModelReply(ai, context: references) {
-                lastReplySource = selectedBrain.label
+                lastReplySource = providerSource
                 #if DEBUG && targetEnvironment(simulator)
-                if PersonalContextNativeProbe.usesSyntheticTransport { lastReplySource = "Synthetic local provider" }
+                if PersonalContextNativeProbe.usesSyntheticTransport && !ProviderAuthorizationNativeProbe.usesConfiguredCallerTransport { lastReplySource = "Synthetic local provider" }
                 #endif
                 lastRecordContext = resolved.1
                 lastPersonalContext = personalSnapshot
@@ -138,6 +155,7 @@ public final class ChatCoachService: ObservableObject {
         }
         guard !Task.isCancelled else { return finish("") }
         if let notice = contextNotice(expected: personalRevision) { return finish(notice) }
+        if let notice = providerNotice() { return finish(notice) }
         guard submissionAllowed() else {
             return finish("Library records or search settings changed during this reply. Send your question again to use the current settings.")
         }
@@ -150,6 +168,7 @@ public final class ChatCoachService: ObservableObject {
         try? await Task.sleep(nanoseconds: 500_000_000)
         guard !Task.isCancelled else { return finish("") }
         if let notice = contextNotice(expected: personalRevision) { return finish(notice) }
+        if let notice = providerNotice() { return finish(notice) }
         guard submissionAllowed() else {
             return finish("Library records or search settings changed during this reply. Send your question again to use the current settings.")
         }

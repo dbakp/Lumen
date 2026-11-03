@@ -1,5 +1,31 @@
 # Lumen direction
 
+## Batch42 · explicit AI connection drafts
+
+Keep the approved daylight-observatory ground, owned teal and native scrollable form/sheet navigation. This is the existing AI settings surface, with compatible API-key and Google OAuth configuration preserved. Voice: distinguish saved routing from editable fields, name the actual destination, and give an explicit recovery action without promising remote recall or universal model support.
+
+### Content
+
+Title **AI connection**. Toolbar **Close / Save**; failed legacy cleanup uses **Retry cleanup** when there are no additional edits. **Saved connection** leads with the actual mode, captured method/origin and checked status. Draft metadata says **Changes not saved**. Connection picker: **Apple or built-in / API key / Google OAuth**. Apple/built-in explains **Uses available Apple Intelligence or built-in coaching. Saved external credentials stay on this device until you remove them.**
+
+API fields: **Provider / Endpoint / Model / API key**. Presets are **OpenAI / Google AI Studio / Custom**. Choosing a preset changes only the local draft; opening never applies a preset. New OpenAI/custom model IDs are entered explicitly from the provider account; preserve previously saved choices with a deprecation notice where verified. Preference: **Prefer this connection**. Footer: **The key stays in Keychain. Requests go to the saved endpoint.** Add a separate disclosure: **Requests can include health summaries, selected messages, shared notes and Library excerpts, depending on the feature.** Saved-only **Test connection** never sends an unsaved draft.
+
+Google fields: **iOS client ID / Requested scopes / Endpoint / Model**. Footer: **Use an iOS client configured for this app. The endpoint must accept that client's tokens and requested scopes. Google sign-in alone doesn't grant access to every AI service.** **Sign in with Google** operates only after the draft is saved. Browser/live-client success remains a separate gate.
+
+Recovery is scrollable literal text, with **Reload saved connection** and explicit **Retry removal** when needed. **Remove AI credentials** confirms **Remove AI credentials?** and **Removes the saved API key and Google tokens from this device. Your health records stay here.** A pending service-wide removal retries the already recorded removal intent, with its own label. Save failures retain the draft. A committed tuple with failed old-source cleanup says **Connection saved; cleanup pending** and blocks routing until retry. Stale drafts require explicit reload; they never silently overwrite a newer saved connection.
+
+Dirty Close and Reload use native alerts with **Discard / Keep draft** and **Reload / Keep draft**. Body: **Edits in this form will be discarded.** Disable interactive dismissal while edits or an unresolved save remain. Keep full Dynamic Type, keyboard Done and naturally wrapping literal endpoint/model content; no smaller fixture text, extra decorative cards or technical hashes. Main/compact normal/largest and dark captures plus the same continuing critic remain required before acceptance.
+
+Literal client IDs, scopes, endpoints and model IDs wrap without adding characters. Their native keyboard offers **Select all / Done**: Select all selects the current field's entire value, while Done dismisses the keyboard and keeps the unsaved draft. This makes full replacement available without navigating a large text-selection menu. At accessibility sizes, keep the connection/provider value below its label and the full preference wording above the native switch. Long values and disclosures still need ordinary overlapping scrolling; a passing replacement assertion does not prove their complete visual coverage.
+
+Settings reset keeps its existing native confirmation. Checked credential removal runs before local data/defaults erasure. Failure adds a native alert, **Couldn't erase Lumen**, with **Retry erasure / Not now**. Body: **Credentials couldn't be removed. Your profile and logs are still here. AI connections are paused until removal finishes.** It states the failed phase and retained records; it does not claim a completed reset or promise remote credential revocation. Verify the alert and restart/retry through the actual Settings screen, alongside backend interruption controls.
+
+The built-in assistant detail says **Uses built-in coaching. Apple Intelligence isn't available right now.** State the current availability without promising that enabling a setting supplies model or photo capabilities on every supported device. This replaces the earlier activation/photo promise; the same critic must review the new copy in the remaining mode/size frames.
+
+### Batch42 · completed scoped visual verification
+
+The continuing critic completes two rounds,43→43/55. Round2 individually opens368 originals at original detail, with368 exact byte/hash matches, zero image failures/skips and no concrete defect remaining. Ten of11 scored lines are4+, including Concept, Finish, Native and Copy; Richness remains3 within the native settings scope. Source41 production and source43 tests remain unchanged after acceptance. Actual native secure keys/Done and masked post-Done values close the earlier capture gap. A largest-text secure label partly behind navigation glass is an ordinary retained scroll offset; its full permanent label is exposed in the preceding viewport. The critic treats focus-offset refinement as optional polish, not a required repair. Stop ornamental iteration. Live providers/browser sign-in, physical devices, VoiceOver, clinical quality and whole-product/privacy gates remain separate. See the exact scope and source carry in `Design/native/provider-authorization/critique-b42-r2.md`.
+
 ## Batch40 · personal notes used for replies
 
 Keep the approved daylight-observatory ground, teal actions, native conversation/form navigation and full Dynamic Type. This extends the current conversation metadata; it does not introduce another direction, icon set or promotional surface. Voice: state what was used; distinguish saved from unsaved; give an explicit recovery action without promising remote recall.

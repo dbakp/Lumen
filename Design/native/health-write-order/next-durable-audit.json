@@ -1,0 +1,80 @@
+{
+  "status": "Predeclared next audit; no new implementation or Health write performed",
+  "dependsOn": "Complete and publish accepted Batch42 connection repair first. Keep full product objective active.",
+  "source": {
+    "Lumen/Algorithms/OrderedHealthWrites.swift": {
+      "sha256": "adb836178e4cf76afbd335d38d71cee764e233cc897deef3ca260193eda7dda5",
+      "bytes": 1958
+    },
+    "Lumen/Models/HealthStore.swift": {
+      "sha256": "cd973bade5adf2d26de6b60a670775e6b34f344cc01dae3cc2d3994409152e59",
+      "bytes": 29882
+    },
+    "Lumen/Services/HealthKitService.swift": {
+      "sha256": "9a2e1323e3b5099dae3bd4cbecd49de884c49321d878d7f8b5d47816f91cae6f",
+      "bytes": 26184
+    },
+    "Lumen/Persistence/LocalStore.swift": {
+      "sha256": "7b9e75c45661f38f6aba158453264d855b3148f4da5dfb2525a22e5b5b348ee1",
+      "bytes": 10312
+    }
+  },
+  "observed": [
+    "OrderedHealthWrites stores only in-memory Task tails and explicitly disclaims durable retry. App termination loses pending operations.",
+    "HealthStore commits local meals/water before enqueueing optional Health work. A stop between those steps can leave no durable external intent.",
+    "HealthKit meal/water/weight saves suppress errors; meal deletion suppresses per-type errors. Water deletion reports errors only to process-local status.",
+    "Water and meals carry Lumen record-ID metadata; weight writes currently have no stable local event identity.",
+    "Restore/reset invalidate in-process queued saves. Existing reset says Health data itself remains untouched; restored records must not silently recreate external writes.",
+    "LocalStore already has checked linked-file transactions with revision and live-state guards for weight/profile/conversation persistence; inspect this boundary before choosing journal integration."
+  ],
+  "requiredInvariants": [
+    "Local record mutation and durable optional Health intent must commit consistently; failure must not publish a success, mutate live state, lose old records or send Health work.",
+    "Each event has stable source-owned identity, immutable payload, operation/revision and lifecycle ownership. Retry/restart must not create extra copies or delete another source\u2019s samples.",
+    "Acknowledgement is written durably only after verified Health operation outcome. A stop after Health success but before local acknowledgement must be safe to replay.",
+    "Save followed by undo/delete stays correctly ordered across process termination. No later saved callback may recreate an entry after completed deletion.",
+    "Failures, permissions and unavailable Health remain distinct from confirmed success. Keep retry intent and present an accurate recoverable state.",
+    "Cover meal component partial failures and weight events as well as water. Preserve checked local weight/goals/snapshot writes and local-only confirmed conversational corrections.",
+    "Restore/reset change the lifecycle safely: old in-flight completions cannot acknowledge or start work for a new lifecycle; restored records do not manufacture fresh Health writes. Preserve explicit pending deletion semantics.",
+    "Backups/readable exports/legacy decoding stay compatible; pending external actions must not be replayed on another device solely because they appear in an imported archive.",
+    "Watch identity-preserving acknowledged delivery remains a following separate requirement; process-local queue ordering is not its acceptance evidence."
+  ],
+  "predeclaredCases": [
+    {
+      "case": "failed combined local-and-intent commit",
+      "proof": "Inject each staging/commit failure; compare exact previous local/journal bytes, live records, and zero external operations."
+    },
+    {
+      "case": "stop after local commit before worker begins",
+      "proof": "New process reads the same immutable pending identity/payload and performs only the authorized operation."
+    },
+    {
+      "case": "stop after Health success before acknowledgement",
+      "proof": "New-process replay preserves one logical external record through a documented idempotency/reconciliation mechanism; controlled adapter and separately real Health evidence."
+    },
+    {
+      "case": "save/undo interleavings",
+      "proof": "Hold save, commit delete, terminate at every persistence/callback boundary, resume and verify no final external record plus durable completed/pending distinction."
+    },
+    {
+      "case": "partial meal and weight failures",
+      "proof": "Per-component failure, independent record order, one denied type, checked acknowledgement-write failure, retry without duplicate nutrition/weight events."
+    },
+    {
+      "case": "lifecycle, source and archive boundaries",
+      "proof": "Foreign source/ID collision, reset, restore, late callback, corrupt/legacy journal, encrypted/readable backup roundtrip and import on another lifecycle."
+    },
+    {
+      "case": "accurate native recovery",
+      "proof": "Actual normal/dark/largest UI, pending/error/retry/relaunch states, exact persisted readback and independent current critic when UI changes."
+    },
+    {
+      "case": "signed device Health gate",
+      "proof": "Real signed-iPhone permissions, background/locked execution and Health samples/source identities. Simulator controlled adapter evidence must remain scoped separately."
+    }
+  ],
+  "notEstablished": [
+    "No durable implementation or HealthKit idempotency API selected by this plan.",
+    "No actual Health permission, sample write/delete, physical-device or background delivery verified here.",
+    "No completion claim for Batch42, Health, Watch, evidence quality or product release."
+  ]
+}

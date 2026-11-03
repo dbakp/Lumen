@@ -1,0 +1,34 @@
+{
+  "status": "Current primary references checked; no live Google acceptance or source change",
+  "checkedAt": "2026-11-03",
+  "source": {
+    "path": "Lumen/Services/LLMConnectionService.swift",
+    "sha256": "6c41c0764e3cff73497b74e3a387eb1884c6c83c4880ae0948c80983b984b6a2"
+  },
+  "references": [
+    {
+      "url": "https://developers.google.com/identity/sign-in/ios/start-integrating",
+      "scope": "Current Google Sign-In SDK setup: iOS OAuth client, bundle configuration and reversed-client callback scheme. SDK-specific configuration requirements are not automatically requirements of a separate ASWebAuthenticationSession integration."
+    },
+    {
+      "url": "https://developers.google.com/identity/protocols/oauth2/native-app",
+      "scope": "Current page explicitly describes desktop applications and sends mobile readers to their platform guides. Its mixed historical custom-scheme examples do not prove this iOS integration works."
+    },
+    {
+      "url": "https://developer.apple.com/documentation/authenticationservices/aswebauthenticationsession/callback/customscheme(_:)",
+      "scope": "Apple custom-scheme callback API; installed SDK confirms callback initializer available iOS17.4, below app minimum18."
+    }
+  ],
+  "installedSDKHeaderSHA256": "94e01acce8ae4e94c6fbf11b296060d2272ea3db13921bdd1c33fa0b3484b036",
+  "observedImplementation": [
+    "Derives a reversed client-ID URI ending /oauth2redirect/google; requires Google client suffix. Uses a system ASWebAuthenticationSession custom-scheme callback.",
+    "Authorization carries original state, PKCE S256 verifier/challenge and exact redirect; callback/exchange tests validate original attempt/configuration.",
+    "No real Google client or browser callback is exercised by the synthetic suite. Info.plist currently registers the separate Strava lumen scheme; do not infer a Google browser callback defect solely from Google SDK setup requirements."
+  ],
+  "remainingProof": [
+    "Configure an actual iOS OAuth client for the signed bundle and declared scopes, then verify the system browser consent/callback/exchange without exposing tokens in evidence.",
+    "Verify that the intended compatible gateway actually accepts the Google access token and granted scopes. Google sign-in alone establishes no generic AI-service access.",
+    "Evaluate Google-recommended SDK integration versus current manual contract with actual platform evidence before claiming live support; retain callback/cancellation/account-boundary invariants whichever is chosen."
+  ],
+  "scope": "Read-only follow-up for repair-design item7 and later live-provider gate. No dependency download, credential access, account sign-in or production UI/source edit."
+}

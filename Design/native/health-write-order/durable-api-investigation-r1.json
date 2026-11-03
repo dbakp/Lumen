@@ -1,0 +1,71 @@
+{
+  "status": "Read-only API/source investigation while Batch42 UI runs; no Health implementation/write or acceptance",
+  "inspectedAt": "2026-11-03",
+  "dependsOn": "Publish accepted Batch42 repair before Health implementation",
+  "source": {
+    "Lumen/Algorithms/OrderedHealthWrites.swift": {
+      "sha256": "adb836178e4cf76afbd335d38d71cee764e233cc897deef3ca260193eda7dda5",
+      "bytes": 1958
+    },
+    "Lumen/Models/HealthStore.swift": {
+      "sha256": "cd973bade5adf2d26de6b60a670775e6b34f344cc01dae3cc2d3994409152e59",
+      "bytes": 29882
+    },
+    "Lumen/Services/HealthKitService.swift": {
+      "sha256": "9a2e1323e3b5099dae3bd4cbecd49de884c49321d878d7f8b5d47816f91cae6f",
+      "bytes": 26184
+    },
+    "Lumen/Persistence/LocalStore.swift": {
+      "sha256": "7b9e75c45661f38f6aba158453264d855b3148f4da5dfb2525a22e5b5b348ee1",
+      "bytes": 10312
+    },
+    "Lumen/Models/ConversationFiles.swift": {
+      "sha256": "cb75648b77b359816d8a84415342e3614fa648ef1e130d2100524cbfcca2ffed",
+      "bytes": 4888
+    },
+    "Lumen/Models/BackupFileTransaction.swift": {
+      "sha256": "72231fc2fd22108ee64f558ad31f22c38cf8b17bd6b79978420646903c7e4a0f",
+      "bytes": 8152
+    }
+  },
+  "sdkHeader": {
+    "path": "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk/System/Library/Frameworks/HealthKit.framework/Headers/HKMetadata.h",
+    "sha256": "ce1c107200f9e330d66347f0bf22c8529bf102b26302eb8ef49b16d9945a353d",
+    "inspectedLines": [
+      138,
+      157
+    ]
+  },
+  "primaryReferences": [
+    {
+      "url": "https://developer.apple.com/documentation/healthkit/hkmetadatakeysyncidentifier",
+      "markdownURL": "https://developer.apple.com/documentation/healthkit/hkmetadatakeysyncidentifier.md",
+      "fetchedBytes": 1689,
+      "sha256": "64ff684cc67d174b9ff6041b388e894c589853923ba9e65ac2d4ad5c191763e3"
+    },
+    {
+      "url": "https://developer.apple.com/documentation/healthkit/hkmetadatakeysyncversion",
+      "markdownURL": "https://developer.apple.com/documentation/healthkit/hkmetadatakeysyncversion.md",
+      "fetchedBytes": 1388,
+      "sha256": "881cf576636fbf582876590d6498500621d3c94f71271e1ae6e0571d3695c0a8"
+    }
+  ],
+  "established": [
+    "Apple documents paired source sync identifier/string and sync version/number, available from iOS11. Greater versions replace prior matching identifiers; the installed SDK agrees.",
+    "Current meal/water metadata is a custom local ID, without HealthKit sync identity/version. Weight has neither stable event identity nor durable external intent.",
+    "Existing linked-file staging can place several changed files into one recoverable local directory swap; preserving exact unrelated files and revision/live-state guards remains necessary."
+  ],
+  "notEstablished": [
+    "The retrieved symbol pages do not explicitly establish callback outcome and replay behavior for equal versions, source collisions, deleted identifiers or multi-component arrays. Do not infer exactly-once delivery from greater-version replacement.",
+    "No actual same-version Health replay, source isolation, permission denial, partial meal outcome or signed-device result has been tested.",
+    "No queue schema, idempotency API or migration policy has been accepted or implemented."
+  ],
+  "designQuestionsToResolve": [
+    "Stable payload identity must distinguish water, meal nutrient component and each weight event; do not reuse one meal identifier for all sample types without proving HealthKit matching scope.",
+    "Acknowledgement failure and success-before-ack replay need adapter and separately real Health evidence, including same-version semantics.",
+    "A journal inside the replaced data directory risks losing pending deletes during restore; a separate file risks a non-atomic local/intent commit. Resolve that transaction and lifecycle boundary explicitly.",
+    "Archive import must not replay another device\u2019s external intent. Reset currently leaves Health data untouched; do not silently change that contract.",
+    "Per-type write permission and unavailable Health must remain pending/failed states, not fabricated success. Scope deletions to this source and stable record identity."
+  ],
+  "next": "Retain original eight adversarial groups in next-durable-audit.json. Implement full water/meal/weight and lifecycle contract after the current accepted batch; no reduced water-only completion."
+}

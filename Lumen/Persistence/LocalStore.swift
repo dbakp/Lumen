@@ -150,10 +150,12 @@ public enum LocalStore {
 
     /// Wipe everything Lumen stores locally (account reset).
     public static func eraseAll() {
-        performWrite {
-            for f in allFiles() { try? FileManager.default.removeItem(at: f) }
-            if let bundle = Bundle.main.bundleIdentifier { UserDefaults.standard.removePersistentDomain(forName: bundle) }
-            AppGroup.defaults.removePersistentDomain(forName: AppGroup.id)
+        ProviderAuthorizationRevision.mutate {
+            performWrite {
+                for f in allFiles() { try? FileManager.default.removeItem(at: f) }
+                if let bundle = Bundle.main.bundleIdentifier { UserDefaults.standard.removePersistentDomain(forName: bundle) }
+                AppGroup.defaults.removePersistentDomain(forName: AppGroup.id)
+            }
         }
     }
 }

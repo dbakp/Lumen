@@ -1,0 +1,668 @@
+{
+  "checks": [
+    {
+      "name": "actual empty startup is ready before synthetic personal-context checks",
+      "passed": true
+    },
+    {
+      "name": "actual production HTTP request arrives once at the synthetic audit route",
+      "passed": true
+    },
+    {
+      "name": "actual outgoing role order contains only eligible history plus the new question",
+      "passed": true
+    },
+    {
+      "name": "actual system instructions include committed notes only, without the uncommitted local draft",
+      "passed": true
+    },
+    {
+      "name": "actual outgoing history keeps known/matching assistants and omits changed-note and legacy assistants",
+      "passed": true
+    },
+    {
+      "name": "the accepted synthetic provider reply records the exact included-note snapshot and preserves the literal question",
+      "passed": true
+    },
+    {
+      "name": "test source label never claims an actual AI provider ran",
+      "passed": true
+    },
+    {
+      "name": "actual Cocoa file-write failure preserves all three saved files byte-for-byte and retains the pending reply",
+      "passed": true
+    },
+    {
+      "name": "storage retry after withdrawal saves the identical reply packet and original note provenance",
+      "passed": true
+    },
+    {
+      "name": "actual pending storage retry performs no second provider request",
+      "passed": true
+    },
+    {
+      "name": "actual conversation reopening preserves old-note provenance, reply text and user identity after withdrawal",
+      "passed": true
+    },
+    {
+      "name": "the next actual request after withdrawal reaches the server",
+      "passed": true
+    },
+    {
+      "name": "actual withdrawn-note request contains neither private note context nor the retained old-note reply",
+      "passed": true
+    },
+    {
+      "name": "actual withdrawn history retains user questions and no-note assistants without upgrading legacy provenance",
+      "passed": true
+    },
+    {
+      "name": "actual held response after edit becomes a factual notice, never stale provider prose",
+      "passed": true
+    },
+    {
+      "name": "edit notice has no-note provenance and cannot become an automatic plan",
+      "passed": true
+    },
+    {
+      "name": "actual held response after withdraw becomes a factual notice, never stale provider prose",
+      "passed": true
+    },
+    {
+      "name": "withdraw notice has no-note provenance and cannot become an automatic plan",
+      "passed": true
+    },
+    {
+      "name": "actual held response after revert becomes a factual notice, never stale provider prose",
+      "passed": true
+    },
+    {
+      "name": "revert notice has no-note provenance and cannot become an automatic plan",
+      "passed": true
+    },
+    {
+      "name": "actual held response after reload becomes a factual notice, never stale provider prose",
+      "passed": true
+    },
+    {
+      "name": "reload notice has no-note provenance and cannot become an automatic plan",
+      "passed": true
+    },
+    {
+      "name": "actual held response after reset becomes a factual notice, never stale provider prose",
+      "passed": true
+    },
+    {
+      "name": "reset notice has no-note provenance and cannot become an automatic plan",
+      "passed": true
+    },
+    {
+      "name": "actual completed background search is suspended before its acceptance boundary",
+      "passed": true
+    },
+    {
+      "name": "a note change during the held background search rejects the stale result after explicit release",
+      "passed": true
+    },
+    {
+      "name": "changed-note background search makes no provider request",
+      "passed": true
+    },
+    {
+      "name": "all five held HTTP responses were explicitly released before timeout",
+      "passed": true
+    },
+    {
+      "name": "provenance checks never remove visible saved question/reply history",
+      "passed": true
+    },
+    {
+      "name": "shared provider route resolution is actually suspended before edit",
+      "passed": true
+    },
+    {
+      "name": "actual coach route-resolution edit uses original revision: changed context sends zero HTTP requests; unchanged context still sends",
+      "passed": true
+    },
+    {
+      "name": "shared provider route resolution is actually suspended before withdraw",
+      "passed": true
+    },
+    {
+      "name": "actual coach route-resolution withdraw uses original revision: changed context sends zero HTTP requests; unchanged context still sends",
+      "passed": true
+    },
+    {
+      "name": "shared provider route resolution is actually suspended before revert",
+      "passed": true
+    },
+    {
+      "name": "actual coach route-resolution revert uses original revision: changed context sends zero HTTP requests; unchanged context still sends",
+      "passed": true
+    },
+    {
+      "name": "shared provider route resolution is actually suspended before unchanged",
+      "passed": true
+    },
+    {
+      "name": "actual coach route-resolution unchanged uses original revision: changed context sends zero HTTP requests; unchanged context still sends",
+      "passed": true
+    },
+    {
+      "name": "chat service refuses the caller's already-stale original revision before provider work",
+      "passed": true
+    },
+    {
+      "name": "scheduled-plan service refuses the caller's already-stale original revision before provider work",
+      "passed": true
+    },
+    {
+      "name": "actual iOS encrypted BackupService export/select/read retains the exact non-nil note provenance packet",
+      "passed": true
+    },
+    {
+      "name": "actual encrypted restore recovers old-note provenance without restoring sharing or inventing an active selection",
+      "passed": true
+    },
+    {
+      "name": "actual iOS readable export/select/conversion preserves the non-nil personal-note provenance",
+      "passed": true
+    },
+    {
+      "name": "actual readable restoration/reselection keeps literal history while excluding its old-note reply from new requests",
+      "passed": true
+    }
+  ],
+  "requests": [
+    {
+      "bodySHA256": "320ccfaefb96f0f1ee706be05122c086ea4c56009f4ee3c4b86fb9334f79d1d9",
+      "canaries": {
+        "known": {
+          "assistant": 1,
+          "system": 0,
+          "user": 0
+        },
+        "legacy": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "library41": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "matching": {
+          "assistant": 1,
+          "system": 0,
+          "user": 0
+        },
+        "noteA": {
+          "assistant": 0,
+          "system": 1,
+          "user": 0
+        },
+        "noteB": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "returned": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "stale": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "unsaved": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "user": {
+          "assistant": 0,
+          "system": 0,
+          "user": 1
+        }
+      },
+      "roles": [
+        "system",
+        "user",
+        "assistant",
+        "assistant",
+        "user"
+      ],
+      "route": "personal-complete"
+    },
+    {
+      "bodySHA256": "af6ebf71d60280bb6182a3dafd123f5ebf90e76e931e40217d6e68571e4f268d",
+      "canaries": {
+        "known": {
+          "assistant": 1,
+          "system": 0,
+          "user": 0
+        },
+        "legacy": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "library41": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "matching": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "noteA": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "noteB": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "returned": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "stale": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "unsaved": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "user": {
+          "assistant": 0,
+          "system": 0,
+          "user": 1
+        }
+      },
+      "roles": [
+        "system",
+        "user",
+        "assistant",
+        "user"
+      ],
+      "route": "personal-complete"
+    },
+    {
+      "bodySHA256": "c1a039551b606b6f28afa882bf3964fcc55348dc2f08a6c2fc0a0e4743717007",
+      "canaries": {
+        "known": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "legacy": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "library41": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "matching": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "noteA": {
+          "assistant": 0,
+          "system": 1,
+          "user": 0
+        },
+        "noteB": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "returned": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "stale": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "unsaved": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "user": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        }
+      },
+      "roles": [
+        "system",
+        "user"
+      ],
+      "route": "personal-held"
+    },
+    {
+      "bodySHA256": "452f33f199687eb36aab2dc45a3a02c778ca3bc0406e781bf37f5ef67ed2af62",
+      "canaries": {
+        "known": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "legacy": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "library41": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "matching": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "noteA": {
+          "assistant": 0,
+          "system": 1,
+          "user": 0
+        },
+        "noteB": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "returned": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "stale": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "unsaved": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "user": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        }
+      },
+      "roles": [
+        "system",
+        "user"
+      ],
+      "route": "personal-held"
+    },
+    {
+      "bodySHA256": "225568004d37dae9ce03784ab77755cb3df26805a7e7399d5e0782afcf146263",
+      "canaries": {
+        "known": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "legacy": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "library41": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "matching": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "noteA": {
+          "assistant": 0,
+          "system": 1,
+          "user": 0
+        },
+        "noteB": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "returned": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "stale": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "unsaved": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "user": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        }
+      },
+      "roles": [
+        "system",
+        "user"
+      ],
+      "route": "personal-held"
+    },
+    {
+      "bodySHA256": "f94c2ab028bde25825b2d6d52d456b689eb65af6e5fa6131915e0a9d2ea21f5b",
+      "canaries": {
+        "known": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "legacy": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "library41": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "matching": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "noteA": {
+          "assistant": 0,
+          "system": 1,
+          "user": 0
+        },
+        "noteB": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "returned": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "stale": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "unsaved": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "user": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        }
+      },
+      "roles": [
+        "system",
+        "user"
+      ],
+      "route": "personal-held"
+    },
+    {
+      "bodySHA256": "1daad1cb5f569a59fb22dcbb2e74689040a5c4fdf761c37d68bcbc8dba590251",
+      "canaries": {
+        "known": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "legacy": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "library41": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "matching": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "noteA": {
+          "assistant": 0,
+          "system": 1,
+          "user": 0
+        },
+        "noteB": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "returned": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "stale": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "unsaved": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "user": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        }
+      },
+      "roles": [
+        "system",
+        "user"
+      ],
+      "route": "personal-held"
+    },
+    {
+      "bodySHA256": "8b2d5d3fb396b301edd1df926d46e913e323e7f41da003707da368b520141644",
+      "canaries": {
+        "known": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "legacy": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "library41": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "matching": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "noteA": {
+          "assistant": 0,
+          "system": 1,
+          "user": 0
+        },
+        "noteB": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "returned": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "stale": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "unsaved": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        },
+        "user": {
+          "assistant": 0,
+          "system": 0,
+          "user": 0
+        }
+      },
+      "roles": [
+        "system",
+        "user"
+      ],
+      "route": "personal-complete"
+    }
+  ],
+  "status": "Personal context checks passed",
+  "writeFailure": {
+    "code": 4,
+    "domain": "NSCocoaErrorDomain"
+  }
+}

@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 // MARK: - Settings: profile, body, goals, sleep, connections, coach, privacy
 
@@ -15,6 +16,7 @@ public struct SettingsView: View {
 
     @AppStorage("lumen.appearance") private var appearance = "light"
     @State private var confirmErase = false
+    @State private var eraseFailed = false
     @State private var confirmClearConversation = false
     @State private var showWeightLog = false
     @State private var showCoachSetup = false
@@ -69,6 +71,12 @@ public struct SettingsView: View {
                 Button("Erase everything", role: .destructive) { eraseAll() }
             } message: {
                 Text("Your profile, logs and settings are removed from this iPhone and you'll start fresh. Data in Apple Health isn't touched.")
+            }
+            .alert("Couldn't erase Lumen", isPresented: $eraseFailed) {
+                Button("Retry erasure", role: .destructive) { eraseAll() }
+                Button("Not now", role: .cancel) { }
+            } message: {
+                Text("Credentials couldn't be removed. Your profile and logs are still here. AI connections are paused until removal finishes.")
             }
             .sheet(isPresented: $confirmClearConversation) {
                 ConversationRemovalSheet(action: "Clear", scope: "Messages and any unsaved reply in this conversation will be removed.",
@@ -373,7 +381,7 @@ public struct SettingsView: View {
             }.accessibilityIdentifier("readableExportSettings")
             Button(role: .destructive) { confirmErase = true } label: {
                 Label("Erase all data", systemImage: "trash")
-            }
+            }.accessibilityIdentifier("eraseAllLumenData")
         } header: {
             Text("Privacy & data")
         } footer: {
@@ -392,16 +400,37 @@ public struct SettingsView: View {
     }
 
     func eraseAll() {
+        do {
+            try AccountReset.eraseAll(health: health, sleep: sleep)
+            #if DEBUG && targetEnvironment(simulator)
+            ProviderConnectionUIFixture.capture(dirty: false)
+            #endif
+            dismiss()
+        } catch {
+            eraseFailed = true
+            #if DEBUG && targetEnvironment(simulator)
+            ProviderConnectionUIFixture.capture(dirty: false)
+            #endif
+        }
+    }
+}
+
+/// Credentials are the first destructive phase. A failed Keychain removal must
+/// retain both the durable removal intent and all local records/defaults.
+@MainActor enum AccountReset {
+    static func eraseAll(health: HealthStore, sleep: SleepStore) throws {
+        try SecureStore.eraseAllChecked()
+        #if DEBUG && targetEnvironment(simulator)
+        try AccountResetNativeFixture.interruptAfterCredentialsIfArmed()
+        #endif
         HealthBackgroundSync.shared.resetUserState()
         HealthKitService.shared.disconnectLocally()
         LocalStore.eraseAll()
         SemanticSearchService.shared.removeModel()
-        SecureStore.eraseAll()
         StravaService.shared.disconnect()
         UNUserNotificationCenterBridge.removeAll()
         health.resetAll()
         sleep.resetAll()
-        dismiss()
     }
 }
 
@@ -508,63 +537,394 @@ struct StravaSetupSheet: View {
 
 // MARK: - AI setup
 
+/// Literal identifiers must wrap without inserting typographic hyphens.
+/// UIKit owns editing and selection; the sheet still owns its detached draft.
+private struct ConnectionLiteralInput: UIViewRepresentable {
+    @Binding var text: String
+    @Binding var isFocused: Bool
+    let label: String
+    let identifier: String
+    let keyboardType: UIKeyboardType
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+    private var contentSizeCategory: UIContentSizeCategory {
+        switch dynamicTypeSize {
+        case .xSmall: .extraSmall
+        case .small: .small
+        case .medium: .medium
+        case .large: .large
+        case .xLarge: .extraLarge
+        case .xxLarge: .extraExtraLarge
+        case .xxxLarge: .extraExtraExtraLarge
+        case .accessibility1: .accessibilityMedium
+        case .accessibility2: .accessibilityLarge
+        case .accessibility3: .accessibilityExtraLarge
+        case .accessibility4: .accessibilityExtraExtraLarge
+        case .accessibility5: .accessibilityExtraExtraExtraLarge
+        @unknown default: .large
+        }
+    }
+
+    func makeCoordinator() -> Coordinator { Coordinator(self) }
+
+    func makeUIView(context: Context) -> UITextView {
+        let view = UITextView()
+        view.delegate = context.coordinator
+        view.isScrollEnabled = false
+        view.backgroundColor = .clear
+        view.textContainerInset = .zero
+        view.textContainer.lineFragmentPadding = 0
+        view.textContainer.lineBreakMode = .byCharWrapping
+        view.autocapitalizationType = .none
+        view.autocorrectionType = .no
+        view.spellCheckingType = .no
+        view.smartDashesType = .no
+        view.smartQuotesType = .no
+        view.smartInsertDeleteType = .no
+        view.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
+        toolbar.tintColor = UIColor(Theme.accent)
+        let selectAll = UIBarButtonItem(title: "Select all", style: .plain, target: context.coordinator, action: #selector(Coordinator.selectAllText))
+        selectAll.accessibilityIdentifier = "selectAllConnectionText"
+        context.coordinator.selectAllButton = selectAll
+        toolbar.items = [
+            selectAll,
+            UIBarButtonItem(systemItem: .flexibleSpace),
+            UIBarButtonItem(title: "Done", style: .plain, target: context.coordinator, action: #selector(Coordinator.finishEditing))
+        ]
+        view.inputAccessoryView = toolbar
+        context.coordinator.view = view
+        return view
+    }
+
+    func updateUIView(_ view: UITextView, context: Context) {
+        context.coordinator.parent = self
+        view.accessibilityLabel = label
+        view.accessibilityIdentifier = identifier
+        context.coordinator.selectAllButton?.isEnabled = !text.isEmpty
+        if view.isEditable != context.environment.isEnabled { view.isEditable = context.environment.isEnabled }
+        if view.keyboardType != keyboardType { view.keyboardType = keyboardType }
+        let font = UIFont.preferredFont(forTextStyle: .body, compatibleWith: UITraitCollection(preferredContentSizeCategory: contentSizeCategory))
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.lineBreakMode = .byCharWrapping
+        paragraph.hyphenationFactor = 0
+        let attributes: [NSAttributedString.Key: Any] = [.font: font, .foregroundColor: UIColor.label, .paragraphStyle: paragraph]
+        let fontChanged = view.font != font
+        let textChanged = view.text != text
+        if textChanged {
+            let selection = view.selectedRange
+            view.attributedText = NSAttributedString(string: text, attributes: attributes)
+            let location = min(selection.location, view.text.utf16.count)
+            view.selectedRange = NSRange(location: location, length: min(selection.length, view.text.utf16.count - location))
+        } else if fontChanged {
+            view.textStorage.addAttributes(attributes, range: NSRange(location: 0, length: view.text.utf16.count))
+        }
+        if fontChanged { view.font = font }
+        if textChanged || fontChanged {
+            view.textColor = .label
+            view.typingAttributes = attributes
+        }
+        if isFocused && view.isEditable && !view.isFirstResponder && view.window != nil { view.becomeFirstResponder() }
+        if !isFocused && view.isFirstResponder { view.resignFirstResponder() }
+    }
+
+    func sizeThatFits(_ proposal: ProposedViewSize, uiView: UITextView, context: Context) -> CGSize? {
+        guard let width = proposal.width, width.isFinite, width > 0 else { return nil }
+        let size = uiView.sizeThatFits(CGSize(width: width, height: .greatestFiniteMagnitude))
+        return CGSize(width: width, height: max(44, size.height))
+    }
+
+    final class Coordinator: NSObject, UITextViewDelegate {
+        var parent: ConnectionLiteralInput
+        weak var view: UITextView?
+        weak var selectAllButton: UIBarButtonItem?
+        init(_ parent: ConnectionLiteralInput) { self.parent = parent }
+        @objc func selectAllText() { view?.selectAll(nil) }
+        @objc func finishEditing() {
+            parent.isFocused = false
+            view?.resignFirstResponder()
+        }
+        func textViewDidChange(_ view: UITextView) {
+            parent.text = view.text
+            view.invalidateIntrinsicContentSize()
+        }
+        func textViewDidBeginEditing(_ view: UITextView) {
+            if !parent.isFocused { parent.isFocused = true }
+        }
+        func textViewDidEndEditing(_ view: UITextView) {
+            if parent.isFocused { parent.isFocused = false }
+        }
+    }
+}
+
 struct CoachSetupSheet: View {
     @ObservedObject var ai = AIService.shared
     @ObservedObject var llm = LLMConnectionService.shared
     @Environment(\.dismiss) var dismiss
-    @State private var key = ""
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    @State private var draft = ProviderConnectionStore.Record()
+    @State private var baseline: ProviderConnectionStore.Record?
+    @State private var expected: LLMConnectionService.Configuration?
+    @State private var loaded = false
+    @State private var appeared = false
+    @State private var issue: String?
+    @State private var stale = false
+    @State private var retrySave = false
     @State private var testing = false
+    @State private var testTask: Task<Void, Never>?
+    private enum Confirmation: String, Identifiable { case discard, reload, remove; var id: String { rawValue } }
+    @State private var confirmation: Confirmation?
+    private enum Input: Hashable { case endpoint, model, key, client, scope, oauthEndpoint, oauthModel }
+    @FocusState private var focused: Input?
+    @State private var literalFocused: Input?
+
+    private var dirty: Bool { loaded && draft != baseline }
+    private var cleanupPending: Bool { (try? llm.connectionDraft())?.legacyCleanupPending == true }
+    private var removalPending: Bool { SecureStore.erasurePending || OAuthCredentialStore.removalPending || ProviderConnectionStore.removalPending }
+    private var canUseSaved: Bool { loaded && !dirty && !retrySave && !stale && !cleanupPending && !testing && !llm.isAuthorizing }
 
     var body: some View {
         NavigationStack {
+            ScrollViewReader { position in
             Form {
                 Section {
-                    HStack(spacing: 14) {
-                        Image(systemName: ai.brain.isAI ? "sparkles" : "cpu").font(.title2).foregroundStyle(Theme.calm).frame(width: 36)
-                        VStack(alignment: .leading, spacing: 3) {
-                            Text(ai.brain.label).font(.headline)
-                            Text(ai.brain.detail).font(.footnote).foregroundStyle(.secondary)
-                        }
+                    Text(llm.mode.label).font(.headline)
+                    if llm.mode != .onDevice {
+                        Text(verbatim: llm.providerLabel).textSelection(.enabled).accessibilityIdentifier("savedAIOrigin")
                     }
-                    .padding(.vertical, 4)
-                    LabeledContent("Photo recognition", value: ai.canSeePhotos ? "On" : "Not available")
-                } footer: {
-                    if !ai.brain.isAI {
-                        Text("To turn it on: iPhone Settings → Apple Intelligence & Siri → Apple Intelligence.")
+                    if issue == nil && !cleanupPending { Text(verbatim: llm.status).font(.footnote).accessibilityIdentifier("savedAIStatus") }
+                    if cleanupPending {
+                        Text("Connection saved; cleanup pending").foregroundStyle(Theme.accent).accessibilityIdentifier("aiCleanupPending")
+                        Button("Retry cleanup") { save() }.disabled(dirty || stale || testing || llm.isAuthorizing).accessibilityIdentifier("retryAIConnectionCleanup")
                     }
-                }
+                    if dirty { Text("Changes not saved").foregroundStyle(Theme.accent).accessibilityIdentifier("aiConnectionDirty") }
+                } header: { Text("Saved connection") }
 
-                Section {
-                    SecureField("sk-…", text: $key)
-                        .textInputAutocapitalization(.never).autocorrectionDisabled()
-                        .onChange(of: key) { _, v in
-                            llm.applyPreset(.openAI)
-                            llm.apiKey = v.trimmingCharacters(in: .whitespacesAndNewlines)
-                            llm.setMode(v.isEmpty ? .onDevice : .key)
-                        }
-                    if !key.isEmpty {
-                        Toggle("Use OpenAI instead of Apple", isOn: Binding(get: { ai.preferOpenAI }, set: { ai.preferOpenAI = $0 }))
-                        Button {
-                            testing = true
-                            Task { await llm.runTest(); testing = false }
-                        } label: { HStack { Text("Test key"); Spacer(); if testing { ProgressView() } } }
-                        if let r = llm.lastTestResult { Text(r).font(.footnote) }
-                        Button("Remove key", role: .destructive) { key = ""; ai.preferOpenAI = false }
+                if let issue {
+                    Section {
+                        Text(verbatim: issue).accessibilityIdentifier("aiConnectionIssue")
+                        Button("Reload saved connection") { finishInputs(); if dirty || retrySave { confirmation = .reload } else { load() } }
+                            .accessibilityIdentifier("reloadAIConnection")
                     }
-                    Link("Get an OpenAI API key", destination: URL(string: "https://platform.openai.com/api-keys")!)
-                } header: {
-                    Text("Advanced · your own OpenAI key")
-                } footer: {
-                    Text("Optional. OpenAI doesn't offer sign-in for other apps yet, so this uses an API key from your OpenAI account. It's stored in the Keychain and only sent to OpenAI.")
                 }
+                if removalPending {
+                    Section {
+                        Button("Retry removal") { removeCredentials() }.accessibilityIdentifier("retryAICredentialRemoval")
+                    } footer: { Text("Retries the pending device credential removal.") }
+                }
+                if loaded {
+                    Section {
+                        if dynamicTypeSize.isAccessibilitySize {
+                            Menu {
+                                Picker("Connection", selection: $draft.mode) {
+                                    ForEach(LLMConnectionService.Mode.allCases, id: \.rawValue) { mode in Text(mode.label).tag(mode.rawValue) }
+                                }
+                            } label: {
+                                connectionChoiceLabel("Connection", value: LLMConnectionService.Mode(rawValue: draft.mode)?.label ?? draft.mode)
+                            }
+                            .accessibilityLabel("Connection")
+                            .accessibilityValue(LLMConnectionService.Mode(rawValue: draft.mode)?.label ?? draft.mode)
+                            .accessibilityIdentifier("aiConnectionMode")
+                        } else {
+                            Picker("Connection", selection: $draft.mode) {
+                                ForEach(LLMConnectionService.Mode.allCases, id: \.rawValue) { mode in Text(mode.label).tag(mode.rawValue) }
+                            }.accessibilityIdentifier("aiConnectionMode")
+                        }
+                        if draft.mode == "onDevice" {
+                            Text("Uses available Apple Intelligence or built-in coaching. Saved external credentials stay on this device until you remove them.").font(.footnote)
+                        } else {
+                            if dynamicTypeSize.isAccessibilitySize {
+                                VStack(alignment: .leading, spacing: 8) {
+                                    Text("Prefer this connection").lineLimit(nil).fixedSize(horizontal: false, vertical: true)
+                                    HStack {
+                                        Spacer()
+                                        Toggle("Prefer this connection", isOn: $draft.preferExternal).labelsHidden()
+                                            .accessibilityLabel("Prefer this connection").accessibilityIdentifier("preferAIConnection")
+                                    }
+                                }
+                            } else {
+                                Toggle("Prefer this connection", isOn: $draft.preferExternal).accessibilityIdentifier("preferAIConnection")
+                            }
+                        }
+                    }
+
+                    if draft.mode == "key" {
+                        Section {
+                            if dynamicTypeSize.isAccessibilitySize {
+                                Menu {
+                                    Picker("Provider", selection: Binding(get: { draft.preset }, set: choosePreset)) {
+                                        ForEach(LLMConnectionService.Preset.allCases, id: \.rawValue) { preset in Text(preset.label).tag(preset.rawValue) }
+                                    }
+                                } label: {
+                                    connectionChoiceLabel("Provider", value: LLMConnectionService.Preset(rawValue: draft.preset)?.label ?? draft.preset)
+                                }
+                                .accessibilityLabel("Provider")
+                                .accessibilityValue(LLMConnectionService.Preset(rawValue: draft.preset)?.label ?? draft.preset)
+                                .accessibilityIdentifier("aiConnectionPreset")
+                            } else {
+                                Picker("Provider", selection: Binding(get: { draft.preset }, set: choosePreset)) {
+                                    ForEach(LLMConnectionService.Preset.allCases, id: \.rawValue) { preset in Text(preset.label).tag(preset.rawValue) }
+                                }.accessibilityIdentifier("aiConnectionPreset")
+                            }
+                            field("Endpoint", text: $draft.endpoint, input: .endpoint, identifier: "aiEndpoint", url: true)
+                            field("Model", text: $draft.model, input: .model, identifier: "aiModel")
+                            VStack(alignment: .leading, spacing: 6) {
+                                Text("API key").font(.caption).foregroundStyle(.secondary)
+                                SecureField("API key", text: Binding(get: { draft.apiKey ?? "" }, set: { draft.apiKey = $0.isEmpty ? nil : $0 }))
+                                    .textInputAutocapitalization(.never).autocorrectionDisabled().focused($focused, equals: .key).accessibilityIdentifier("aiAPIKey")
+                            }.padding(.vertical, 3)
+                            if ["gpt-4o-mini", "gpt-4.1-mini", "gemini-2.0-flash"].contains(draft.model) {
+                                Text("This saved model is deprecated. Check the models available in your provider account.").font(.footnote)
+                            }
+                            Link("OpenAI models", destination: URL(string: "https://developers.openai.com/api/docs/models")!)
+                            Link("Google AI Studio models", destination: URL(string: "https://aistudio.google.com/docs/models")!)
+                        } header: { Text("API connection draft") } footer: {
+                            Text("The key stays in Keychain. Requests go to the saved endpoint.")
+                        }
+                    }
+                    if draft.mode == "oauth" {
+                        Section {
+                            field("iOS client ID", text: $draft.clientID, input: .client, identifier: "aiGoogleClient")
+                            field("Requested scopes", text: $draft.scope, input: .scope, identifier: "aiGoogleScopes")
+                            field("Endpoint", text: $draft.oauthEndpoint, input: .oauthEndpoint, identifier: "aiOAuthEndpoint", url: true)
+                            field("Model", text: $draft.oauthModel, input: .oauthModel, identifier: "aiOAuthModel")
+                            Button(llm.isOAuthConnected ? "Sign in again" : "Sign in with Google") {
+                                finishInputs(); llm.connectGoogle(); load()
+                            }.disabled(!canUseSaved || llm.mode != .oauth).accessibilityIdentifier("connectGoogleAI")
+                        } header: { Text("Google connection draft") } footer: {
+                            Text("Use an iOS client configured for this app. The endpoint must accept that client's tokens and requested scopes. Google sign-in alone doesn't grant access to every AI service.")
+                        }
+                    }
+                    if draft.mode != "onDevice" {
+                        Section {
+                            Button {
+                                finishInputs(); testing = true
+                                let original = llm.configuration()
+                                testTask = Task { await llm.runTest(expectedConfiguration: original); testing = false; testTask = nil }
+                            } label: { HStack { Text("Test connection"); Spacer(); if testing { ProgressView() } } }
+                                .disabled(!canUseSaved || !LLMClient.isConfigured()).accessibilityIdentifier("testSavedAIConnection")
+                            if let result = llm.lastTestResult { Text(verbatim: result).font(.footnote).accessibilityIdentifier("aiConnectionTestResult") }
+                        } footer: {
+                            Text("Requests can include health summaries, selected messages, shared notes and Library excerpts, depending on the feature. Photo requests also depend on your provider and model.")
+                        }
+                    }
+                }
+                Section {
+                    Button("Remove AI credentials", role: .destructive) { finishInputs(); confirmation = .remove }
+                        .disabled(testing || llm.isAuthorizing || SecureStore.erasurePending).accessibilityIdentifier("removeAICredentials")
+                }
+                Section {
+                    Text(ai.brain.label).font(.headline)
+                    Text(ai.brain.detail).font(.footnote).foregroundStyle(.secondary)
+                    LabeledContent("Photo recognition", value: ai.canSeePhotos ? "Available to try" : "Not available")
+                } header: { Text("Available assistant") }
             }
+            .disabled(llm.isAuthorizing)
             .scrollContentBackground(.hidden)
             .background(Theme.bg.ignoresSafeArea())
-            .navigationTitle("AI").navigationBarTitleDisplayMode(.inline)
-            .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } } }
-            .onAppear { key = llm.mode == .key ? llm.apiKey : "" }
+            .navigationTitle("AI connection").navigationBarTitleDisplayMode(.inline)
+            .onChange(of: literalFocused) { _, input in
+                if let input { withAnimation { position.scrollTo(input, anchor: .center) } }
+            }
+            .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardDidShowNotification)) { _ in
+                if let input = literalFocused { withAnimation { position.scrollTo(input, anchor: .center) } }
+            }
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Close") { finishInputs(); if dirty || retrySave { confirmation = .discard } else { dismiss() } }.accessibilityIdentifier("closeAIConnection")
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Save") { save() }
+                        .disabled(!loaded || stale || (!dirty && !retrySave) || (cleanupPending && !dirty) || testing || llm.isAuthorizing)
+                        .accessibilityIdentifier("saveAIConnection")
+                }
+                ToolbarItemGroup(placement: .keyboard) { Spacer(); Button("Done") { finishInputs() } }
+            }
+            .alert(item: $confirmation) { value in
+                switch value {
+                case .discard:
+                    return Alert(title: Text("Discard connection edits?"), message: Text("Edits in this form will be discarded."), primaryButton: .destructive(Text("Discard"), action: { dismiss() }), secondaryButton: .cancel(Text("Keep draft")))
+                case .reload:
+                    return Alert(title: Text("Reload saved connection?"), message: Text("Edits in this form will be discarded."), primaryButton: .destructive(Text("Reload"), action: load), secondaryButton: .cancel(Text("Keep draft")))
+                case .remove:
+                    return Alert(title: Text("Remove AI credentials?"), message: Text("Removes the saved API key and Google tokens from this device. Your health records stay here." + (dirty || retrySave ? " Edits in this form will also be discarded." : "")), primaryButton: .destructive(Text("Remove"), action: removeCredentials), secondaryButton: .cancel())
+                }
+            }
+            .onAppear { if !appeared { appeared = true; load() } }
+            #if DEBUG && targetEnvironment(simulator)
+            .onChange(of: draft) { _, _ in
+                ProviderConnectionUIFixture.capture(dirty: dirty)
+                ProviderConnectionUIFixture.changeSavedConnectionIfRequested(dirty: dirty)
+            }
+            .onChange(of: issue) { _, _ in ProviderConnectionUIFixture.capture(dirty: dirty) }
+            .onChange(of: llm.lastTestResult) { _, _ in ProviderConnectionUIFixture.capture(dirty: dirty) }
+            #endif
+            .onDisappear { testTask?.cancel(); testTask = nil; testing = false }
+            }
         }
+        .interactiveDismissDisabled(dirty || retrySave)
         .tint(Theme.accent)
+    }
+
+    private func connectionChoiceLabel(_ title: String, value: String) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text(title).foregroundStyle(.primary).lineLimit(nil).fixedSize(horizontal: false, vertical: true)
+            HStack(alignment: .firstTextBaseline) {
+                Text(value).lineLimit(nil).fixedSize(horizontal: false, vertical: true)
+                Spacer(minLength: 8)
+                Image(systemName: "chevron.up.chevron.down").font(.caption).accessibilityHidden(true)
+            }
+        }.frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private func field(_ label: String, text: Binding<String>, input: Input, identifier: String, url: Bool = false) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text(label).font(.caption).foregroundStyle(.secondary)
+            ConnectionLiteralInput(text: text, isFocused: Binding(
+                get: { literalFocused == input },
+                set: { active in if active { literalFocused = input } else if literalFocused == input { literalFocused = nil } }
+            ), label: label, identifier: identifier, keyboardType: url ? .URL : .default)
+        }
+        .padding(.vertical, 3)
+        .contentShape(Rectangle())
+        .simultaneousGesture(TapGesture().onEnded { literalFocused = input })
+        .id(input)
+    }
+    private func choosePreset(_ raw: String) {
+        guard let preset = LLMConnectionService.Preset(rawValue: raw) else { return }
+        draft.preset = raw
+        if preset != .custom { draft.endpoint = preset.endpoint; draft.model = preset.defaultModel }
+    }
+    private func finishInputs() { focused = nil; literalFocused = nil }
+    private func load() {
+        do {
+            let saved = try llm.connectionDraft(), configuration = llm.configuration()
+            guard saved.id == configuration.connectionID else { throw ProviderConnectionStore.Failure.corrupt }
+            draft = saved; baseline = saved; expected = configuration
+            loaded = true; issue = nil; stale = false; retrySave = false
+        } catch { loaded = false; issue = error.localizedDescription }
+    }
+    private func save() {
+        finishInputs()
+        guard let expected else { return }
+        do { try llm.saveConnectionChecked(draft, expected: expected); load(); AppRouter.shared.confirm("AI connection saved") }
+        catch ProviderConnectionStore.Failure.changed { stale = true; issue = ProviderConnectionStore.Failure.changed.localizedDescription }
+        catch {
+            self.expected = llm.configuration(); issue = error.localizedDescription; retrySave = true
+            if let saved = try? llm.connectionDraft(), saved.legacyCleanupPending {
+                var committed = draft; committed.id = saved.id; committed.legacyCleanupPending = true
+                if committed == saved {
+                    baseline = saved; draft = saved
+                    issue = "Your connection was saved, but old credential cleanup couldn't finish. Retry cleanup before sending."
+                }
+            }
+        }
+    }
+    private func removeCredentials() {
+        finishInputs()
+        do { try llm.removeAICredentialsChecked(); load(); AppRouter.shared.confirm("AI credentials removed") }
+        catch { issue = "AI credentials couldn't be fully removed. Retry removal."; loaded = false; retrySave = false }
     }
 }
 

@@ -1,0 +1,46 @@
+{
+  "status": "Read-only core code review at frozen candidate; no source edit",
+  "source": "connection-source-r43.json",
+  "applicationSource": "connection-source-r41.json",
+  "reviewedCoreFiles": {
+    "Lumen/Persistence/SecureStore.swift": {
+      "sha256": "d99aba29414d4bde5dd0b3fed6327732a72765f819c524127bcdf7354cd0cc47",
+      "bytes": 8367
+    },
+    "Lumen/Services/OAuthCredentialStore.swift": {
+      "sha256": "490640ac9e625ce464f54f732b22e6d1d28d752eb44a74ce25c06cf6825f67cd",
+      "bytes": 6160
+    },
+    "Lumen/Services/ProviderConnectionStore.swift": {
+      "sha256": "4164cbd124633964fb30a3ea8a5baee190de99e673f25f41c66f17affc79d759",
+      "bytes": 8501
+    },
+    "Lumen/Services/OAuthTokenTransport.swift": {
+      "sha256": "6b787de8c5dc6fb8990dc4df61531265c2dbde2db24220983dc79bed22790cb9",
+      "bytes": 2326
+    },
+    "Lumen/Services/LLMConnectionService.swift": {
+      "sha256": "6c41c0764e3cff73497b74e3a387eb1884c6c83c4880ae0948c80983b984b6a2",
+      "bytes": 35985
+    }
+  },
+  "reviewedBoundaries": [
+    "Checked Keychain replacement updates before add, reports typed failures and preserves legacy source on failed migration.",
+    "OAuth account identity/client/scope/tokens/expiry are one validated record; present malformed records do not fall back.",
+    "Whole connection/API key commit precedes checked legacy cleanup; failed cleanup/removal prevents routing, and explicit drafts retain original saved identity until commit.",
+    "Configuration/reset invalidation precedes mutation; credential commit checks original generation under the same process lock. Prepared requests retain captured record/account/endpoint/model, and source labels omit credential/query/path details.",
+    "Sign-in preserves original state/PKCE/redirect and attempt identity through exchange; refresh coalesces identical original accounts and rejects superseded results.",
+    "Token transport bounds form and decoded response, refuses redirects and omits shared cookie/cache/credential stores; ambiguous JSON/error-present responses are rejected before account construction."
+  ],
+  "engineeringEvidence": "Native R47 authorization27/signin16/token45/caller33 with four exact independent host audits, plus declared storage/restart, UI and Release reports remain authoritative runtime evidence. This review does not replace them.",
+  "additionalCoreDefectIdentified": false,
+  "limitations": [
+    "Associated UI/caller code read selectively; this is not a whole-app audit or a medical accuracy review.",
+    "Lock serialization is in-process; no device power-loss/disk durability or cross-process transaction claim.",
+    "Actual Google native-client/browser/gateway compatibility remains unverified by synthetic lifecycle tests.",
+    "Whole-reset unchecked filesystem behavior and late Strava callbacks remain separate full-goal work.",
+    "HTTP-compatible custom endpoints, actual model/photo capability and broader privacy/governance are not certified by request ownership checks.",
+    "Largest secure label visual concern remains with the independent critic; no acceptance override."
+  ],
+  "publication": "Still pending same critic final assessment and any concrete repair. No code/build/test rerun added solely for this receipt."
+}

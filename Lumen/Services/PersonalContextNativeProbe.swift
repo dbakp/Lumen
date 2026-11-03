@@ -49,7 +49,7 @@ import SwiftUI
 
     func run() async {
         guard Self.requested, !started else { return }; started = true
-        if ProviderAuthorizationNativeProbe.requested { status = await ProviderAuthorizationNativeProbe.runBaseline(); return }
+        if ProviderAuthorizationNativeProbe.requested { status = await ProviderAuthorizationNativeProbe.run(); return }
         if ProcessInfo.processInfo.arguments.contains("-library-authorization-checks") { await runLibraryChecks(); return }
         var checks: [Check] = []
         func check(_ value: Bool, _ name: String) throws {

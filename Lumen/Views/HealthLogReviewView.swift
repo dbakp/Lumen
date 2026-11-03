@@ -82,16 +82,19 @@ struct HealthLogReviewView: View {
     func suggest() {
         guard !working, drafts.isEmpty, saved.isEmpty, AIService.shared.brain.isAI else { return }
         error = nil; notice = nil; working = true
-        let provider = AIService.shared.brain.label
+        let provider = AIService.shared.captureProvider()
+        let message = selection.message
         request = Task { @MainActor in
-            let answer = await AIService.shared.chat(instructions: HealthLogDrafting.instructions, history: [], user: selection.message.text)
-            guard !Task.isCancelled else { return }
             defer { working = false; request = nil }
-            guard let answer else { error = "The provider couldn't prepare suggestions. You can add an entry yourself."; return }
             do {
-                drafts = try HealthLogDrafting.suggestions(answer, statement: selection.message.text, date: selection.message.date, provider: provider)
+                let prepared = try await AIService.shared.healthLogSuggestions(message: message, using: provider)
+                guard !Task.isCancelled else { return }
+                drafts = prepared
                 if drafts.isEmpty { notice = "No observations were found to log. You can add an entry yourself." }
-            } catch { self.error = "The suggestions could not be read. You can add an entry yourself." }
+            } catch {
+                guard !Task.isCancelled else { return }
+                self.error = (error as? AIService.ProviderRequestFailure)?.localizedDescription ?? "The suggestions could not be read. You can add an entry yourself."
+            }
         }
     }
 }

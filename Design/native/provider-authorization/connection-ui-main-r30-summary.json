@@ -1,0 +1,115 @@
+{
+  "devicesAndConfigurations": [
+    {
+      "device": {
+        "architecture": "arm64",
+        "deviceId": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+        "deviceName": "Lumen continuation verification",
+        "modelName": "iPhone 18 Pro",
+        "osBuildNumber": "24A434",
+        "osVersion": "27.0",
+        "platform": "iOS Simulator"
+      },
+      "expectedFailures": 0,
+      "failedTests": 6,
+      "passedTests": 9,
+      "skippedTests": 0,
+      "testPlanConfiguration": {
+        "configurationId": "1",
+        "configurationName": "Test Scheme Action"
+      }
+    }
+  ],
+  "environmentDescription": "Lumen \u00b7 Built with macOS 26.6.2",
+  "expectedFailures": 0,
+  "failedTests": 6,
+  "finishTime": 1793683299.352,
+  "passedTests": 9,
+  "result": "Failed",
+  "runtimeWarnings": [
+    {
+      "issueType": "Runtime Warning",
+      "message": "Invalid frame dimension (negative or non-finite)."
+    },
+    {
+      "issueType": "Runtime Warning",
+      "message": "Invalid frame dimension (negative or non-finite)."
+    },
+    {
+      "issueType": "Runtime Warning",
+      "message": "Invalid frame dimension (negative or non-finite)."
+    },
+    {
+      "issueType": "Runtime Warning",
+      "message": "Invalid frame dimension (negative or non-finite)."
+    },
+    {
+      "issueType": "Runtime Warning",
+      "message": "Invalid frame dimension (negative or non-finite)."
+    },
+    {
+      "issueType": "Runtime Warning",
+      "message": "Invalid frame dimension (negative or non-finite)."
+    },
+    {
+      "issueType": "Runtime Warning",
+      "message": "Invalid frame dimension (negative or non-finite)."
+    }
+  ],
+  "skippedTests": 0,
+  "startTime": 1793682406.163,
+  "statistics": [],
+  "testFailures": [
+    {
+      "failureText": "failed: caught error: \"Error Domain=NSURLErrorDomain Code=-1005 \"The network connection was lost.\" UserInfo={_kCFStreamErrorCodeKey=-4, NSUnderlyingError=0x1145ac6c0 {Error Domain=kCFErrorDomainCFNetwork Code=-1005 \"(null)\" UserInfo={NSErrorPeerAddressKey=<CFData 0x1145d9b30 [0x222429348]>{length = 16, capacity = 16, bytes = 0x1002be5d7f0000010000000000000000}, _kCFStreamErrorCodeKey=-4, _kCFStreamErrorDomainKey=4}}, _NSURLErrorFailingURLSessionTaskErrorKey=LocalDataTask <E7F34ABE-25D5-44D7-9494-D2A20B53C0BC>.<1>, _NSURLErrorRelatedURLSessionTaskErrorKey=(\n    \"LocalDataTask <E7F34ABE-25D5-44D7-9494-D2A20B53C0BC>.<1>\"\n), NSLocalizedDescription=The network connection was lost., NSErrorFailingURLStringKey=http://127.0.0.1:48733/ui-state?checkpoint=api-settings-saved, NSErrorFailingURLKey=http://127.0.0.1:48733/ui-state?checkpoint=api-settings-saved, _kCFStreamErrorDomainKey=4}\"",
+      "targetName": "LumenUITests",
+      "testIdentifier": 10,
+      "testIdentifierString": "LumenSmokeTests/testProviderConnectionModesUI()",
+      "testIdentifierURL": "test://com.apple.xcode/Lumen/LumenUITests/LumenSmokeTests/testProviderConnectionModesUI",
+      "testName": "testProviderConnectionModesUI()"
+    },
+    {
+      "failureText": "failed: caught error: \"Error Domain=NSURLErrorDomain Code=-1005 \"The network connection was lost.\" UserInfo={_kCFStreamErrorCodeKey=-4, NSUnderlyingError=0x1145ad200 {Error Domain=kCFErrorDomainCFNetwork Code=-1005 \"(null)\" UserInfo={NSErrorPeerAddressKey=<CFData 0x1145dba70 [0x222429348]>{length = 16, capacity = 16, bytes = 0x1002be5d7f0000010000000000000000}, _kCFStreamErrorCodeKey=-4, _kCFStreamErrorDomainKey=4}}, _NSURLErrorFailingURLSessionTaskErrorKey=LocalDataTask <345BA15F-637E-4805-8FDB-96BD02EA33B3>.<1>, _NSURLErrorRelatedURLSessionTaskErrorKey=(\n    \"LocalDataTask <345BA15F-637E-4805-8FDB-96BD02EA33B3>.<1>\"\n), NSLocalizedDescription=The network connection was lost., NSErrorFailingURLStringKey=http://127.0.0.1:48733/ui-state?checkpoint=modes-opened, NSErrorFailingURLKey=http://127.0.0.1:48733/ui-state?checkpoint=modes-opened, _kCFStreamErrorDomainKey=4}\"",
+      "targetName": "LumenUITests",
+      "testIdentifier": 11,
+      "testIdentifierString": "LumenSmokeTests/testProviderConnectionModesUIDark()",
+      "testIdentifierURL": "test://com.apple.xcode/Lumen/LumenUITests/LumenSmokeTests/testProviderConnectionModesUIDark",
+      "testName": "testProviderConnectionModesUIDark()"
+    },
+    {
+      "failureText": "failed: caught error: \"Error Domain=NSURLErrorDomain Code=-1005 \"The network connection was lost.\" UserInfo={_kCFStreamErrorCodeKey=-4, NSUnderlyingError=0x1145adc20 {Error Domain=kCFErrorDomainCFNetwork Code=-1005 \"(null)\" UserInfo={NSErrorPeerAddressKey=<CFData 0x1145d9b30 [0x222429348]>{length = 16, capacity = 16, bytes = 0x1002be5d7f0000010000000000000000}, _kCFStreamErrorCodeKey=-4, _kCFStreamErrorDomainKey=4}}, _NSURLErrorFailingURLSessionTaskErrorKey=LocalDataTask <B8901D14-3AF2-4EFF-A331-F4183F82086E>.<1>, _NSURLErrorRelatedURLSessionTaskErrorKey=(\n    \"LocalDataTask <B8901D14-3AF2-4EFF-A331-F4183F82086E>.<1>\"\n), NSLocalizedDescription=The network connection was lost., NSErrorFailingURLStringKey=http://127.0.0.1:48733/ui-state?checkpoint=modes-opened, NSErrorFailingURLKey=http://127.0.0.1:48733/ui-state?checkpoint=modes-opened, _kCFStreamErrorDomainKey=4}\"",
+      "targetName": "LumenUITests",
+      "testIdentifier": 12,
+      "testIdentifierString": "LumenSmokeTests/testProviderConnectionModesUILargest()",
+      "testIdentifierURL": "test://com.apple.xcode/Lumen/LumenUITests/LumenSmokeTests/testProviderConnectionModesUILargest",
+      "testName": "testProviderConnectionModesUILargest()"
+    },
+    {
+      "failureText": "failed: caught error: \"Error Domain=NSURLErrorDomain Code=-1005 \"The network connection was lost.\" UserInfo={_kCFStreamErrorCodeKey=-4, NSUnderlyingError=0x1145ad6e0 {Error Domain=kCFErrorDomainCFNetwork Code=-1005 \"(null)\" UserInfo={NSErrorPeerAddressKey=<CFData 0x1145dbe30 [0x222429348]>{length = 16, capacity = 16, bytes = 0x1002be5d7f0000010000000000000000}, _kCFStreamErrorCodeKey=-4, _kCFStreamErrorDomainKey=4}}, _NSURLErrorFailingURLSessionTaskErrorKey=LocalDataTask <01A3D6DD-CACA-4607-882A-371B045749D1>.<1>, _NSURLErrorRelatedURLSessionTaskErrorKey=(\n    \"LocalDataTask <01A3D6DD-CACA-4607-882A-371B045749D1>.<1>\"\n), NSLocalizedDescription=The network connection was lost., NSErrorFailingURLStringKey=http://127.0.0.1:48733/ui-state?checkpoint=cleanup-opened, NSErrorFailingURLKey=http://127.0.0.1:48733/ui-state?checkpoint=cleanup-opened, _kCFStreamErrorDomainKey=4}\"",
+      "targetName": "LumenUITests",
+      "testIdentifier": 13,
+      "testIdentifierString": "LumenSmokeTests/testProviderConnectionRecoveryUI()",
+      "testIdentifierURL": "test://com.apple.xcode/Lumen/LumenUITests/LumenSmokeTests/testProviderConnectionRecoveryUI",
+      "testName": "testProviderConnectionRecoveryUI()"
+    },
+    {
+      "failureText": "failed: caught error: \"Error Domain=NSURLErrorDomain Code=-1005 \"The network connection was lost.\" UserInfo={_kCFStreamErrorCodeKey=-4, NSUnderlyingError=0x1145aec40 {Error Domain=kCFErrorDomainCFNetwork Code=-1005 \"(null)\" UserInfo={NSErrorPeerAddressKey=<CFData 0x1145d9b30 [0x222429348]>{length = 16, capacity = 16, bytes = 0x1002be5d7f0000010000000000000000}, _kCFStreamErrorCodeKey=-4, _kCFStreamErrorDomainKey=4}}, _NSURLErrorFailingURLSessionTaskErrorKey=LocalDataTask <0850D0F2-816D-4B2A-B6E6-8D6D503020CE>.<1>, _NSURLErrorRelatedURLSessionTaskErrorKey=(\n    \"LocalDataTask <0850D0F2-816D-4B2A-B6E6-8D6D503020CE>.<1>\"\n), NSLocalizedDescription=The network connection was lost., NSErrorFailingURLStringKey=http://127.0.0.1:48733/ui-state?checkpoint=cleanup-opened, NSErrorFailingURLKey=http://127.0.0.1:48733/ui-state?checkpoint=cleanup-opened, _kCFStreamErrorDomainKey=4}\"",
+      "targetName": "LumenUITests",
+      "testIdentifier": 14,
+      "testIdentifierString": "LumenSmokeTests/testProviderConnectionRecoveryUIDark()",
+      "testIdentifierURL": "test://com.apple.xcode/Lumen/LumenUITests/LumenSmokeTests/testProviderConnectionRecoveryUIDark",
+      "testName": "testProviderConnectionRecoveryUIDark()"
+    },
+    {
+      "failureText": "failed: caught error: \"Error Domain=NSURLErrorDomain Code=-1005 \"The network connection was lost.\" UserInfo={_kCFStreamErrorCodeKey=-4, NSUnderlyingError=0x1145acb10 {Error Domain=kCFErrorDomainCFNetwork Code=-1005 \"(null)\" UserInfo={NSErrorPeerAddressKey=<CFData 0x1145db8e0 [0x222429348]>{length = 16, capacity = 16, bytes = 0x1002be5d7f0000010000000000000000}, _kCFStreamErrorCodeKey=-4, _kCFStreamErrorDomainKey=4}}, _NSURLErrorFailingURLSessionTaskErrorKey=LocalDataTask <2B922F90-E0F3-4A03-8451-7F498A50CD2F>.<1>, _NSURLErrorRelatedURLSessionTaskErrorKey=(\n    \"LocalDataTask <2B922F90-E0F3-4A03-8451-7F498A50CD2F>.<1>\"\n), NSLocalizedDescription=The network connection was lost., NSErrorFailingURLStringKey=http://127.0.0.1:48733/ui-state?checkpoint=cleanup-opened, NSErrorFailingURLKey=http://127.0.0.1:48733/ui-state?checkpoint=cleanup-opened, _kCFStreamErrorDomainKey=4}\"",
+      "targetName": "LumenUITests",
+      "testIdentifier": 15,
+      "testIdentifierString": "LumenSmokeTests/testProviderConnectionRecoveryUILargest()",
+      "testIdentifierURL": "test://com.apple.xcode/Lumen/LumenUITests/LumenSmokeTests/testProviderConnectionRecoveryUILargest",
+      "testName": "testProviderConnectionRecoveryUILargest()"
+    }
+  ],
+  "title": "Test - Lumen",
+  "topInsights": [],
+  "totalTestCount": 15
+}

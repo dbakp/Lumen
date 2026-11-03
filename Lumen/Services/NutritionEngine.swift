@@ -49,8 +49,8 @@ public final class NutritionEngine: ObservableObject {
 
     // MARK: OpenAI-key vision path
 
-    func analyzeWithLLM(imageData: Data) async -> MealAnalysis? {
-        guard let content = await LLMClient.visionMealJSON(imageData: imageData) else { return nil }
+    func analyzeWithLLM(imageData: Data, expectedProviderRevision: UUID? = nil) async -> MealAnalysis? {
+        guard let content = await LLMClient.visionMealJSON(imageData: imageData, expectedProviderRevision: expectedProviderRevision) else { return nil }
         return Self.parseMealJSON(content)
     }
 

@@ -1,0 +1,248 @@
+{
+  "tokenRequests": 0,
+  "tokenResponses": 0,
+  "holdTimeouts": 0,
+  "packets": [
+    {
+      "route": "/chat-a",
+      "model": "synthetic-provider-42-a",
+      "credential": "refreshed-fixture",
+      "systemCanary": true,
+      "bodySHA256": "a736ee2467c0c1adac6e344baee49c78cf5f304bf87c3082349b1883316cf1d8"
+    },
+    {
+      "route": "/chat-a",
+      "model": "synthetic-provider-42-a",
+      "credential": "refreshed-fixture",
+      "systemCanary": true,
+      "bodySHA256": "938a858622b2cf6b6a171aa0cd3c4a55e48d907625df4336d436f2e94eed884a"
+    }
+  ],
+  "loginRequests": 0,
+  "loginResponses": 0,
+  "loginAudit": [],
+  "tokenTransportAudit": [
+    {
+      "caseName": "valid",
+      "requestKind": "refresh",
+      "bodySHA256": "ef317b188429ecc8cd8a966a30bbf2fd2e4b9ecb4b56fe6097b38a3aec22541c",
+      "formMatches": true,
+      "cookieAbsent": true,
+      "statusCode": 200,
+      "payloadBytes": 166,
+      "advertisedBytes": 166,
+      "streamStarted": false
+    },
+    {
+      "caseName": "mixed-case-bearer",
+      "requestKind": "refresh",
+      "bodySHA256": "ef317b188429ecc8cd8a966a30bbf2fd2e4b9ecb4b56fe6097b38a3aec22541c",
+      "formMatches": true,
+      "cookieAbsent": true,
+      "statusCode": 200,
+      "payloadBytes": 166,
+      "advertisedBytes": 166,
+      "streamStarted": false
+    },
+    {
+      "caseName": "malformed",
+      "requestKind": "refresh",
+      "bodySHA256": "f8b4ecc2f0666b73960bc4a926b8019a658c72d6e593cc1e51c7d58eb813a5b6",
+      "formMatches": true,
+      "cookieAbsent": true,
+      "statusCode": 200,
+      "payloadBytes": 16,
+      "advertisedBytes": 16,
+      "streamStarted": false
+    },
+    {
+      "caseName": "duplicate",
+      "requestKind": "refresh",
+      "bodySHA256": "46d21d9a250347347f5032fa9c40a7a7b08ca317f67dd0edef51d2e6dc474355",
+      "formMatches": true,
+      "cookieAbsent": true,
+      "statusCode": 200,
+      "payloadBytes": 213,
+      "advertisedBytes": 213,
+      "streamStarted": false
+    },
+    {
+      "caseName": "escaped-duplicate",
+      "requestKind": "refresh",
+      "bodySHA256": "46d21d9a250347347f5032fa9c40a7a7b08ca317f67dd0edef51d2e6dc474355",
+      "formMatches": true,
+      "cookieAbsent": true,
+      "statusCode": 200,
+      "payloadBytes": 218,
+      "advertisedBytes": 218,
+      "streamStarted": false
+    },
+    {
+      "caseName": "nested-duplicate",
+      "requestKind": "refresh",
+      "bodySHA256": "46d21d9a250347347f5032fa9c40a7a7b08ca317f67dd0edef51d2e6dc474355",
+      "formMatches": true,
+      "cookieAbsent": true,
+      "statusCode": 200,
+      "payloadBytes": 187,
+      "advertisedBytes": 187,
+      "streamStarted": false
+    },
+    {
+      "caseName": "error",
+      "requestKind": "refresh",
+      "bodySHA256": "46d21d9a250347347f5032fa9c40a7a7b08ca317f67dd0edef51d2e6dc474355",
+      "formMatches": true,
+      "cookieAbsent": true,
+      "statusCode": 200,
+      "payloadBytes": 197,
+      "advertisedBytes": 197,
+      "streamStarted": false
+    },
+    {
+      "caseName": "null-error",
+      "requestKind": "refresh",
+      "bodySHA256": "46d21d9a250347347f5032fa9c40a7a7b08ca317f67dd0edef51d2e6dc474355",
+      "formMatches": true,
+      "cookieAbsent": true,
+      "statusCode": 200,
+      "payloadBytes": 181,
+      "advertisedBytes": 181,
+      "streamStarted": false
+    },
+    {
+      "caseName": "http-error",
+      "requestKind": "refresh",
+      "bodySHA256": "46d21d9a250347347f5032fa9c40a7a7b08ca317f67dd0edef51d2e6dc474355",
+      "formMatches": true,
+      "cookieAbsent": true,
+      "statusCode": 503,
+      "payloadBytes": 166,
+      "advertisedBytes": 166,
+      "streamStarted": false
+    },
+    {
+      "caseName": "oversized-header",
+      "requestKind": "refresh",
+      "bodySHA256": "46d21d9a250347347f5032fa9c40a7a7b08ca317f67dd0edef51d2e6dc474355",
+      "formMatches": true,
+      "cookieAbsent": true,
+      "statusCode": 200,
+      "payloadBytes": 128001,
+      "advertisedBytes": 128001,
+      "streamStarted": false
+    },
+    {
+      "caseName": "oversized-chunked",
+      "requestKind": "refresh",
+      "bodySHA256": "f8b4ecc2f0666b73960bc4a926b8019a658c72d6e593cc1e51c7d58eb813a5b6",
+      "formMatches": true,
+      "cookieAbsent": true,
+      "statusCode": 200,
+      "payloadBytes": 128001,
+      "advertisedBytes": -1,
+      "streamStarted": false
+    },
+    {
+      "caseName": "redirect",
+      "requestKind": "refresh",
+      "bodySHA256": "f8b4ecc2f0666b73960bc4a926b8019a658c72d6e593cc1e51c7d58eb813a5b6",
+      "formMatches": true,
+      "cookieAbsent": true,
+      "statusCode": 307,
+      "payloadBytes": 166,
+      "advertisedBytes": 166,
+      "streamStarted": false
+    },
+    {
+      "caseName": "wrong-type",
+      "requestKind": "refresh",
+      "bodySHA256": "f8b4ecc2f0666b73960bc4a926b8019a658c72d6e593cc1e51c7d58eb813a5b6",
+      "formMatches": true,
+      "cookieAbsent": true,
+      "statusCode": 200,
+      "payloadBytes": 168,
+      "advertisedBytes": 168,
+      "streamStarted": false
+    },
+    {
+      "caseName": "wrong-token-type",
+      "requestKind": "refresh",
+      "bodySHA256": "f8b4ecc2f0666b73960bc4a926b8019a658c72d6e593cc1e51c7d58eb813a5b6",
+      "formMatches": true,
+      "cookieAbsent": true,
+      "statusCode": 200,
+      "payloadBytes": 165,
+      "advertisedBytes": 165,
+      "streamStarted": false
+    },
+    {
+      "caseName": "zero-expiry",
+      "requestKind": "refresh",
+      "bodySHA256": "ef317b188429ecc8cd8a966a30bbf2fd2e4b9ecb4b56fe6097b38a3aec22541c",
+      "formMatches": true,
+      "cookieAbsent": true,
+      "statusCode": 200,
+      "payloadBytes": 163,
+      "advertisedBytes": 163,
+      "streamStarted": false
+    },
+    {
+      "caseName": "invalid-token",
+      "requestKind": "refresh",
+      "bodySHA256": "ef317b188429ecc8cd8a966a30bbf2fd2e4b9ecb4b56fe6097b38a3aec22541c",
+      "formMatches": true,
+      "cookieAbsent": true,
+      "statusCode": 200,
+      "payloadBytes": 163,
+      "advertisedBytes": 163,
+      "streamStarted": false
+    },
+    {
+      "caseName": "invalid-utf8",
+      "requestKind": "refresh",
+      "bodySHA256": "ef317b188429ecc8cd8a966a30bbf2fd2e4b9ecb4b56fe6097b38a3aec22541c",
+      "formMatches": true,
+      "cookieAbsent": true,
+      "statusCode": 200,
+      "payloadBytes": 167,
+      "advertisedBytes": 167,
+      "streamStarted": false
+    },
+    {
+      "caseName": "non-object",
+      "requestKind": "refresh",
+      "bodySHA256": "ef317b188429ecc8cd8a966a30bbf2fd2e4b9ecb4b56fe6097b38a3aec22541c",
+      "formMatches": true,
+      "cookieAbsent": true,
+      "statusCode": 200,
+      "payloadBytes": 168,
+      "advertisedBytes": 168,
+      "streamStarted": false
+    },
+    {
+      "caseName": "cancelled",
+      "requestKind": "refresh",
+      "bodySHA256": "ef317b188429ecc8cd8a966a30bbf2fd2e4b9ecb4b56fe6097b38a3aec22541c",
+      "formMatches": true,
+      "cookieAbsent": true,
+      "statusCode": 200,
+      "payloadBytes": 166,
+      "advertisedBytes": -1,
+      "streamStarted": true
+    },
+    {
+      "caseName": "valid",
+      "requestKind": "refresh",
+      "bodySHA256": "ef317b188429ecc8cd8a966a30bbf2fd2e4b9ecb4b56fe6097b38a3aec22541c",
+      "formMatches": true,
+      "cookieAbsent": true,
+      "statusCode": 200,
+      "payloadBytes": 166,
+      "advertisedBytes": 166,
+      "streamStarted": false
+    }
+  ],
+  "tokenTransportResponses": 20,
+  "tokenRedirectHits": 0
+}

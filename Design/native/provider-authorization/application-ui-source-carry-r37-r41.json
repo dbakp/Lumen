@@ -1,0 +1,17 @@
+{
+  "status": "Exact source carry verified",
+  "earlierSource": "connection-source-r37.json",
+  "currentProductionSource": "connection-source-r41.json",
+  "changedInputs": [
+    "Lumen/Views/SettingsView.swift",
+    "LumenUITests/LumenSmokeTests.swift"
+  ],
+  "unchangedInputs": 214,
+  "settingsBeforeSHA256": "0620ae0300704655abc91ec038e235d0be938f3228e55ec3018bf0331b3982de",
+  "settingsAfterSHA256": "a720f325fc9bcd0dd8028cfca9c0471301dbc227d0ee946aa211fdd5133a6a0d",
+  "exactBeforeHunk": "        }.padding(.vertical, 3).id(input)",
+  "exactAfterHunk": "        }\n        .padding(.vertical, 3)\n        .contentShape(Rectangle())\n        .simultaneousGesture(TapGesture().onEnded { literalFocused = input })\n        .id(input)",
+  "reconstruction": "Replacing only the one exact after hunk with before reconstructs the complete earlier SettingsView byte for byte. All other Settings source including reset, secure input, saved/draft/recovery/copy/styles remains exact.",
+  "diff": "--- Settings source37\n+++ Settings source41\n@@ -885,7 +885,11 @@\n                 get: { literalFocused == input },\n                 set: { active in if active { literalFocused = input } else if literalFocused == input { literalFocused = nil } }\n             ), label: label, identifier: identifier, keyboardType: url ? .URL : .default)\n-        }.padding(.vertical, 3).id(input)\n+        }\n+        .padding(.vertical, 3)\n+        .contentShape(Rectangle())\n+        .simultaneousGesture(TapGesture().onEnded { literalFocused = input })\n+        .id(input)\n     }\n     private func choosePreset(_ raw: String) {\n         guard let preset = LLMConnectionService.Preset(rawValue: raw) else { return }\n",
+  "carryScope": "Earlier actual reset/draft/recovery/model-keyboard originals retain exact rendering/copy except expanded literal-field tap hit shape. They are old runtime evidence with explicit source carry, not rerun on current full binary. Earlier mode focus failures remain failures; no whole UI or binary identity inferred. Current R48/R49 largest modes and R51 current compact matrix independently test repaired hit behavior."
+}

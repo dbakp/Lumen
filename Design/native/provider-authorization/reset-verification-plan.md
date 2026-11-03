@@ -1,0 +1,13 @@
+# Settings reset · R14 verification contract
+
+R13 production moves checked service-wide credential deletion before any Health-state, local-file or defaults reset. Settings retains its confirmation and adds a retryable native error. R14 keeps that production behavior unchanged. R13's failed restart trial remains preserved: the fixture wrote a synthetic profile to disk while the active SleepStore retained its original empty profile. R14 seeds the actual store as well.
+
+Before accepting this scoped repair, verify all of these cases at the frozen R14 source:
+
+1. **Secret deletion fails.** The production `AccountReset.eraseAll` throws the injected checked Keychain error before other reset actions. The immediate profile file bytes and the dedicated local fixture file bytes remain identical. Both standard/shared defaults canaries remain. The complete original API connection and OAuth account bytes remain, while the recorded removal intent blocks external routing. Terminate/relaunch without reseeding, verify the retained state and a distinct PID, then retry the actual reset and inspect credential/default/local cleanup.
+2. **Interruption after secrets, before local erasure.** A strict DEBUG fixture stops at that exact production boundary. The complete v3 connection, OAuth account and legacy key sources are already absent. The original profile contents/local fixture/defaults remain. Terminate/relaunch without reseeding, confirm external credentials cannot rehydrate, then complete the actual reset and inspect cleanup.
+3. **Actual Settings UI.** Use the dedicated synthetic simulator and unmodified Settings view. Confirm Erase, observe the credential failure alert and retained profile/connection, choose Not now, terminate/relaunch, confirm retained contents/blocking intent, and retry through the same Erase confirmation. Verify dismissal, a fresh profile and cleared credentials. Save the original error/completion screenshots and compare every app-state attachment with independent host reads.
+
+SleepStore normally re-encodes the profile on startup. Compare all canonical JSON profile values across a new process, without dropping fields; do not require encoder key order to remain stable. Separately require exact profile bytes immediately after the failed/interrupted call and exact dedicated local-file/connection/account bytes where applicable. This does not exempt a changed profile value.
+
+This establishes checked credential-first sequencing and normal restart recovery. It does not establish power-loss durability, successful erasure on a failing filesystem, background Health delivery, or protection against late Strava refresh completion. Those broader privacy/data-confidence gates remain open. No live account or personal record is used.
