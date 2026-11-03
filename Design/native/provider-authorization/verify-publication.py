@@ -63,6 +63,6 @@ result = {
              'source archives, helpers, acceptance/review/Release evidence and continuation policy. '
              'No cleanup performed and no live-provider/device/whole-product acceptance implied.',
 }
-output = args.output or base / 'publication-readback.json'
+output = args.output or base / 'repair-publication-readback.json'
 output.write_text(json.dumps(result, indent=2) + '\n')
 print('Verified remote main/root and', len(rows), 'required blob identities for', head)

@@ -1,5 +1,9 @@
 # Lumen product gaps and delivery batches
 
+Current publication: Batch42 is published as `31b30838d6c882f59b57477e54406a06e663d7ce`; fresh GitHub main/root and2,207 required file identities match. Design and scoped native/Release checks pass with no later application/UI edit. Next complete measured stopped-output cleanup after its verified checkpoint, then the full predeclared durable Health contract. Full product goal remains active.
+
+Earlier checkpoints below are historical.
+
 Current verified local scope is Batch42: original AI connection/account ownership, checked credential/configuration records and explicit native settings drafts with recoverable failures. Native providers121, scoped storage/restart/logic/caller regressions, main/compact UI, continuing design review43→43/55 and Release checks pass at their recorded boundaries. Publication and exact GitHub read-back are next. [Current verification and limits](../Design/native/provider-authorization/README.md). Durable Health save/delete intent and acknowledged Watch delivery remain next product work; answer-support policy, live providers, signed devices, accessibility, privacy and distribution gates remain open. The full objective is unchanged. The Batch39/38/37 entries below are historical checkpoints.
 
 Batch39 is published as `1ecb6938f9e81df6fa3926f1838c693e488d757f` after exact source/evidence read-back: checked conversation/archive persistence, retained question/reply drafts, storage-only reply retry, explicit startup recovery and late-work rejection. See [the contract](CONVERSATIONS.md) and [exact evidence](../Design/native/conversation-storage/README.md). Next is the separate personal-context request/history provenance audit, followed by durable Health save/delete intent and acknowledged Watch delivery. Full product and release gates remain open.

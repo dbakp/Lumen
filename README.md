@@ -2,7 +2,7 @@
 
 Continuing on another computer? Start with the [continuation handoff](docs/CONTINUE_ON_NEW_COMPUTER.md).
 
-The latest verified local batch binds AI requests and saved replies to their original connection, checks credential changes and keeps settings edits in explicit drafts. Native integration, main/compact form checks, independent design review and Release checks pass at recorded source boundaries; GitHub publication/read-back is pending. [Verification and limits](Design/native/provider-authorization/README.md). Durable Health retry, acknowledged Watch delivery and broader provider/device/privacy/release gates remain open.
+The latest published batch binds AI requests and saved replies to their original connection, checks credential changes and keeps settings edits in explicit drafts. Native integration, main/compact form checks, independent design review and Release checks pass at recorded source boundaries; published as `31b3083`, with2,207 required GitHub file identities verified. [Verification and limits](Design/native/provider-authorization/README.md). Durable Health retry, acknowledged Watch delivery and broader provider/device/privacy/release gates remain open.
 
 A native, local-first health companion for iPhone, with Apple Watch and widgets. Lumen combines what your devices record with how you actually feel, so your daily perspective, conversations and plans have context.
 
