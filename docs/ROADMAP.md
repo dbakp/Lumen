@@ -1,6 +1,6 @@
 # Lumen product gaps and delivery batches
 
-Current publication: Batch42 is published as `31b30838d6c882f59b57477e54406a06e663d7ce`; fresh GitHub main/root and2,207 required file identities match. Design and scoped native/Release checks pass with no later application/UI edit. Next complete measured stopped-output cleanup after its verified checkpoint, then the full predeclared durable Health contract. Full product goal remains active.
+Current publication: Batch42 is published as `31b30838d6c882f59b57477e54406a06e663d7ce`; fresh GitHub main/root and2,207 required file identities match. Design and scoped native/Release checks pass with no later application/UI edit. Scoped stopped-output cleanup is complete after its verified checkpoint, recovering an immediate measured3.52GB. Next implement the full predeclared durable Health contract. Full product goal remains active.
 
 Earlier checkpoints below are historical.
 

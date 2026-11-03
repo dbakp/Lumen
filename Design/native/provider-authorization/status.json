@@ -13,13 +13,12 @@
     "BaselineR2 malformed local response missing choice index0"
   ],
   "next": [
-    "Publish and freshly verify proof/cleanup metadata checkpoint",
-    "Remove only four stopped task-owned raw/Release roots, measure actual available space",
-    "Implement full predeclared durable Health contract, then acknowledged Watch delivery; full goal stays active"
+    "Implement full predeclared durable Health contract and adversarial verification",
+    "Continue acknowledged Watch delivery and full product gates"
   ],
-  "availableBytes": 22241046528,
-  "recoveredThisRunBytes": 0,
-  "storage": "No deletion or recovered bytes this run. Current evidence and immediately reused native/package/logic caches retained while workers run. Unrelated data and global caches preserved.",
+  "availableBytes": 25261281280,
+  "recoveredThisRunBytes": 3523010560,
+  "storage": "Only four stopped task-owned raw/Release roots. Symlinks unlinked without following targets. Simulator reports, both task simulators, current Debug/package/logic caches, working repo, supplied skill, current inputs, unrelated data and global caches preserved. No cleanup-only build. Available-volume delta includes APFS and concurrent activity; logical and allocated file bytes are separate measurements.",
   "checkpointCommit": "a98ae762735c310366ffd5e7ba72943e3be2cd85",
   "publicationProof": "publication-readback.json",
   "cleanup": "storage-cleanup.json",
@@ -401,6 +400,9 @@
   "repairPublication": {
     "commit": "31b30838d6c882f59b57477e54406a06e663d7ce",
     "proof": "repair-publication-readback.json",
-    "verifiedRequiredBlobs": 2207
-  }
+    "verifiedRequiredBlobs": 2207,
+    "checkpointCommit": "466d7b468aa633697dcf16d5064a677030a3c675",
+    "checkpointProof": "repair-publication-checkpoint-readback.json"
+  },
+  "repairCleanup": "repair-storage-cleanup-r1.json"
 }
