@@ -1,0 +1,241 @@
+{
+  "status": "passed: native Back cancels actual matching retained-record reader and closes its descriptor; fresh read retries exact137mL after host release; all protected bytes unchanged",
+  "source": "durable-source-r87.json",
+  "build": "health-held-read-native-build-r1.json",
+  "before": {
+    "chat.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "conversations.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "workouts.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "goals.json": {
+      "bytes": 177,
+      "sha256": "7ceaf16447d3539f90429200008aa6055612e0755964d4bccb5130278cbbc1d2",
+      "base64": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjEwMDAwLCJ3ZWlnaHRLZyI6NzV9"
+    },
+    "sleep.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "today.json": {
+      "bytes": 123,
+      "sha256": "39241fad7f0f936e0c8d5537d90d5c08703fa25236df0b63f9801a6212d35b50",
+      "base64": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDRUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9"
+    },
+    "meals.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "water.json": {
+      "bytes": 29,
+      "sha256": "0d3f4ef174c527390388c9fccb88964f5cc0b3bac224a4370cd215d61623e845",
+      "base64": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZVdhdGVyIjo="
+    },
+    "conversation-selection.json": {
+      "bytes": 2,
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "base64": "e30="
+    },
+    "habits.json": {
+      "bytes": 3170,
+      "sha256": "de468390401c35addb362605d22e20f4b1d2a90ca22f1bf06fe1359891e0052f",
+      "base64": "W3siZGV0YWlsIjoiMTAgbWluIG9mIGRheWxpZ2h0IHdpdGhpbiAzMCBtaW4gb2Ygd2FraW5nIGFuY2hvcnMgeW91ciBjbG9jay4iLCJpZCI6ImxpZ2h0IiwiYW5jaG9yIjoid2FrZVBsdXMiLCJvZmZzZXQiOjE4MDAsImlzRW5hYmxlZCI6dHJ1ZSwiaWNvbiI6InN1bi5tYXguZmlsbCIsInRpdGxlIjoiR2V0IGJyaWdodCBsaWdodCIsImRvbmVUb2RheSI6ZmFsc2V9LHsiZGV0YWlsIjoiTm8gY2FmZmVpbmUgd2l0aGluIDEwaCBvZiBiZWQg4oCUIGhhbGYtbGlmZSBpcyB+NmguIiwiaWQiOiJjYWZmZWluZSIsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsIm9mZnNldCI6MzYwMDAsImlzRW5hYmxlZCI6dHJ1ZSwiaWNvbiI6ImN1cC5hbmQuc2F1Y2VyLmZpbGwiLCJ0aXRsZSI6IkNhZmZlaW5lIGN1dG9mZiIsImRvbmVUb2RheSI6ZmFsc2V9LHsiZGV0YWlsIjoiMjArIG1pbi4gRmluaXNoIGludGVuc2Ugd29ya291dHMgM2grIGJlZm9yZSBiZWQuIiwiaWQiOiJleGVyY2lzZSIsImFuY2hvciI6Indha2VQbHVzIiwib2Zmc2V0IjoyMTYwMCwiaXNFbmFibGVkIjp0cnVlLCJpY29uIjoiZmlndXJlLnJ1biIsInRpdGxlIjoiTW92ZSB5b3VyIGJvZHkiLCJkb25lVG9kYXkiOmZhbHNlfSx7ImRldGFpbCI6IklmIG5hcHBpbmc6IDIw4oCTMzAgbWluLCBiZWZvcmUgeW91ciBkaXAgZW5kcy4gTm8gbGF0ZSBuYXBzLiIsImlkIjoibmFwIiwiYW5jaG9yIjoid2FrZVBsdXMiLCJvZmZzZXQiOjI1MjAwLCJpc0VuYWJsZWQiOnRydWUsImljb24iOiJtb29uLnp6ei5maWxsIiwidGl0bGUiOiJTbWFydCBuYXAgd2luZG93IiwiZG9uZVRvZGF5IjpmYWxzZX0seyJkZXRhaWwiOiJBbGNvaG9sIGZyYWdtZW50cyBzbGVlcCBldmVuIHdoZW4gaXQgc3BlZWRzIG9uc2V0LiIsImlkIjoiYWxjb2hvbCIsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsIm9mZnNldCI6MTQ0MDAsImlzRW5hYmxlZCI6dHJ1ZSwiaWNvbiI6IndpbmVnbGFzcyIsInRpdGxlIjoiU2tpcCBuaWdodGNhcCIsImRvbmVUb2RheSI6ZmFsc2V9LHsiZGV0YWlsIjoiRmluaXNoIGxhcmdlIG1lYWxzIDNoIGJlZm9yZSBiZWQ7IGxpZ2h0IHNuYWNrIE9LLiIsImlkIjoibWVhbCIsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsIm9mZnNldCI6MTA4MDAsImlzRW5hYmxlZCI6dHJ1ZSwiaWNvbiI6ImZvcmsua25pZmUiLCJ0aXRsZSI6Ikxhc3QgYmlnIG1lYWwiLCJkb25lVG9kYXkiOmZhbHNlfSx7ImRldGFpbCI6Ikxvd2VyIGJyaWdodG5lc3MgKyBOaWdodCBTaGlmdCAyaCBiZWZvcmUgYmVkLiIsImlkIjoic2NyZWVucyIsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsIm9mZnNldCI6NzIwMCwiaXNFbmFibGVkIjp0cnVlLCJpY29uIjoiaXBob25lLmdlbjIiLCJ0aXRsZSI6IkRpbSBzY3JlZW5zIiwiZG9uZVRvZGF5IjpmYWxzZX0seyJkZXRhaWwiOiJPdmVyaGVhZCBvZmYsIGxhbXBzIGxvdyDigJQgbGlnaHQgZGVsYXlzIG1lbGF0b25pbi4iLCJpZCI6ImxpZ2h0cyIsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsIm9mZnNldCI6NTQwMCwiaXNFbmFibGVkIjp0cnVlLCJpY29uIjoibGlnaHRidWxiLmZpbGwiLCJ0aXRsZSI6IkRpbSB0aGUgbGlnaHRzIiwiZG9uZVRvZGF5IjpmYWxzZX0seyJkZXRhaWwiOiIyMOKAkzMwIG1pbiByaXR1YWw6IHNob3dlciwgc3RyZXRjaCwgcmVhZCwgYnJlYXRoZS4iLCJpZCI6IndpbmRkb3duIiwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwib2Zmc2V0IjoyNzAwLCJpc0VuYWJsZWQiOnRydWUsImljb24iOiJ3aW5kIiwidGl0bGUiOiJXaW5kIGRvd24iLCJkb25lVG9kYXkiOmZhbHNlfSx7ImRldGFpbCI6IkhpdCB5b3VyIG1lbGF0b25pbiB3aW5kb3cg4oCUIHRoZSBlYXNpZXN0IGZhbGxpbmctYXNsZWVwLiIsImlkIjoiYmVkdGltZSIsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsIm9mZnNldCI6MCwiaXNFbmFibGVkIjp0cnVlLCJpY29uIjoiYmVkLmRvdWJsZS5maWxsIiwidGl0bGUiOiJJbiBiZWQgb24gdGltZSIsImRvbmVUb2RheSI6ZmFsc2V9LHsiZGV0YWlsIjoiNjXigJM2OMKwRiBcLyAxOOKAkzIwwrBDLCBibGFja291dCBkYXJrLCBxdWlldC4iLCJpZCI6ImNvb2wiLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJvZmZzZXQiOjE4MDAsImlzRW5hYmxlZCI6dHJ1ZSwiaWNvbiI6InRoZXJtb21ldGVyLnNub3dmbGFrZSIsInRpdGxlIjoiQ29vbCAmIGRhcmsgcm9vbSIsImRvbmVUb2RheSI6ZmFsc2V9LHsiZGV0YWlsIjoiU2FtZSB3YWtlIMKxMzAgbWluIOKAlCBldmVuIHdlZWtlbmRzLiAjMSByaHl0aG0gbGV2ZXIuIiwiaWQiOiJjb25zaXN0ZW50IiwiYW5jaG9yIjoid2FrZVBsdXMiLCJvZmZzZXQiOjAsImlzRW5hYmxlZCI6dHJ1ZSwiaWNvbiI6ImFsYXJtLmZpbGwiLCJ0aXRsZSI6IkNvbnNpc3RlbnQgd2FrZSIsImRvbmVUb2RheSI6ZmFsc2V9LHsiZGV0YWlsIjoiV2F0ZXIgKyBsaWdodCBiZWZvcmUgY29mZmVlIGJvb3N0cyBhbGVydG5lc3MuIiwiaWQiOiJoeWRyYXRpb24iLCJhbmNob3IiOiJ3YWtlUGx1cyIsIm9mZnNldCI6MzAwLCJpc0VuYWJsZWQiOnRydWUsImljb24iOiJkcm9wLmZpbGwiLCJ0aXRsZSI6Ik1vcm5pbmcgaHlkcmF0aW9uIiwiZG9uZVRvZGF5IjpmYWxzZX0seyJkZXRhaWwiOiIyLW1pbiB3b3JyeSBsaXN0IGFmdGVyIGRpbm5lciBjbGVhcnMgbmlnaHQgcnVtaW5hdGlvbi4iLCJpZCI6InN0cmVzcyIsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsIm9mZnNldCI6MTgwMDAsImlzRW5hYmxlZCI6dHJ1ZSwiaWNvbiI6InBlbmNpbC5hbmQubGlzdC5jbGlwYm9hcmQiLCJ0aXRsZSI6IkJyYWluIGR1bXAiLCJkb25lVG9kYXkiOmZhbHNlfSx7ImRldGFpbCI6IlN0aW11bGFudCDigJQgYXZvaWQgd2l0aGluIDRoIG9mIGJlZC4iLCJpZCI6Im5pY290aW5lIiwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwib2Zmc2V0IjoxNDQwMCwiaXNFbmFibGVkIjpmYWxzZSwiaWNvbiI6InNtb2tlLmZpbGwiLCJ0aXRsZSI6Ik5vIGxhdGUgbmljb3RpbmUiLCJkb25lVG9kYXkiOmZhbHNlfSx7ImRldGFpbCI6IkEgZHVzayB3YWxrIHNoYXJwZW5zIERMTU8gdGltaW5nLiIsImlkIjoic3Vuc2V0IiwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwib2Zmc2V0IjoxNDQwMCwiaXNFbmFibGVkIjpmYWxzZSwiaWNvbiI6InN1bnNldC5maWxsIiwidGl0bGUiOiJFdmVuaW5nIGxpZ2h0IHdhbGsiLCJkb25lVG9kYXkiOmZhbHNlfV0="
+    },
+    "profile.json": {
+      "bytes": 160,
+      "sha256": "e91cce3dfd74d9675fea9f3325838a58868fc827f6e20edb0e8f07f8de8d54f4",
+      "base64": "eyJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwid2FrZUdvYWwiOnsibWludXRlIjowLCJob3VyIjo3fSwic2xlZXBOZWVkQ29uZmlkZW5jZSI6MC4zLCJvbmJvYXJkaW5nRG9uZSI6ZmFsc2UsImlzU3Vic2NyaWJlZCI6ZmFsc2UsInNsZWVwTmVlZCI6Mjk0MDAsIm5hbWUiOiIifQ=="
+    },
+    "health-write-intent.json": {
+      "bytes": 123,
+      "sha256": "017a4a2166d05c69cfcd5530de799ab98fb42352b6e1957ec47d36a9b35ed960",
+      "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI0OTE0N0UwRi1EMjJDLTRERjYtOTI1Qi01MDYzNzkwQ0ExQkUiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+    },
+    ".health-recovery/discovered-4ded5827bde2703dc42bae01fea739576423cd316f1f0a8d54272076e28ba496/device-intent.json": {
+      "bytes": 123,
+      "sha256": "017a4a2166d05c69cfcd5530de799ab98fb42352b6e1957ec47d36a9b35ed960",
+      "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI0OTE0N0UwRi1EMjJDLTRERjYtOTI1Qi01MDYzNzkwQ0ExQkUiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+    },
+    ".health-recovery/discovered-4ded5827bde2703dc42bae01fea739576423cd316f1f0a8d54272076e28ba496/water.json": {
+      "bytes": 72,
+      "sha256": "1dc7d921432b620cf0fcd72262f29a4ffe06902fcd4d7e3cb546d370e3908291",
+      "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwibWwiOjEzN31d"
+    },
+    ".health-recovery/discovered-4ded5827bde2703dc42bae01fea739576423cd316f1f0a8d54272076e28ba496/manifest.json": {
+      "bytes": 97,
+      "sha256": "c8cd87117f6b99a6b4cde63e10b9362d80ee3fd04cbc3ff286b28ab50118645a",
+      "base64": "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTA0VDIzOjE4OjUxWiIsImRvbWFpbnMiOlsid2F0ZXIiXSwiaW50ZW50Ijp0cnVlLCJwaG90b3MiOmZhbHNlLCJ2ZXJzaW9uIjoxfQ=="
+    }
+  },
+  "after": {
+    "chat.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "conversations.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "workouts.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "goals.json": {
+      "bytes": 177,
+      "sha256": "7ceaf16447d3539f90429200008aa6055612e0755964d4bccb5130278cbbc1d2",
+      "base64": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjEwMDAwLCJ3ZWlnaHRLZyI6NzV9"
+    },
+    "sleep.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "today.json": {
+      "bytes": 123,
+      "sha256": "39241fad7f0f936e0c8d5537d90d5c08703fa25236df0b63f9801a6212d35b50",
+      "base64": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDRUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9"
+    },
+    "meals.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "water.json": {
+      "bytes": 29,
+      "sha256": "0d3f4ef174c527390388c9fccb88964f5cc0b3bac224a4370cd215d61623e845",
+      "base64": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZVdhdGVyIjo="
+    },
+    "conversation-selection.json": {
+      "bytes": 2,
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "base64": "e30="
+    },
+    "habits.json": {
+      "bytes": 3170,
+      "sha256": "de468390401c35addb362605d22e20f4b1d2a90ca22f1bf06fe1359891e0052f",
+      "base64": "W3siZGV0YWlsIjoiMTAgbWluIG9mIGRheWxpZ2h0IHdpdGhpbiAzMCBtaW4gb2Ygd2FraW5nIGFuY2hvcnMgeW91ciBjbG9jay4iLCJpZCI6ImxpZ2h0IiwiYW5jaG9yIjoid2FrZVBsdXMiLCJvZmZzZXQiOjE4MDAsImlzRW5hYmxlZCI6dHJ1ZSwiaWNvbiI6InN1bi5tYXguZmlsbCIsInRpdGxlIjoiR2V0IGJyaWdodCBsaWdodCIsImRvbmVUb2RheSI6ZmFsc2V9LHsiZGV0YWlsIjoiTm8gY2FmZmVpbmUgd2l0aGluIDEwaCBvZiBiZWQg4oCUIGhhbGYtbGlmZSBpcyB+NmguIiwiaWQiOiJjYWZmZWluZSIsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsIm9mZnNldCI6MzYwMDAsImlzRW5hYmxlZCI6dHJ1ZSwiaWNvbiI6ImN1cC5hbmQuc2F1Y2VyLmZpbGwiLCJ0aXRsZSI6IkNhZmZlaW5lIGN1dG9mZiIsImRvbmVUb2RheSI6ZmFsc2V9LHsiZGV0YWlsIjoiMjArIG1pbi4gRmluaXNoIGludGVuc2Ugd29ya291dHMgM2grIGJlZm9yZSBiZWQuIiwiaWQiOiJleGVyY2lzZSIsImFuY2hvciI6Indha2VQbHVzIiwib2Zmc2V0IjoyMTYwMCwiaXNFbmFibGVkIjp0cnVlLCJpY29uIjoiZmlndXJlLnJ1biIsInRpdGxlIjoiTW92ZSB5b3VyIGJvZHkiLCJkb25lVG9kYXkiOmZhbHNlfSx7ImRldGFpbCI6IklmIG5hcHBpbmc6IDIw4oCTMzAgbWluLCBiZWZvcmUgeW91ciBkaXAgZW5kcy4gTm8gbGF0ZSBuYXBzLiIsImlkIjoibmFwIiwiYW5jaG9yIjoid2FrZVBsdXMiLCJvZmZzZXQiOjI1MjAwLCJpc0VuYWJsZWQiOnRydWUsImljb24iOiJtb29uLnp6ei5maWxsIiwidGl0bGUiOiJTbWFydCBuYXAgd2luZG93IiwiZG9uZVRvZGF5IjpmYWxzZX0seyJkZXRhaWwiOiJBbGNvaG9sIGZyYWdtZW50cyBzbGVlcCBldmVuIHdoZW4gaXQgc3BlZWRzIG9uc2V0LiIsImlkIjoiYWxjb2hvbCIsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsIm9mZnNldCI6MTQ0MDAsImlzRW5hYmxlZCI6dHJ1ZSwiaWNvbiI6IndpbmVnbGFzcyIsInRpdGxlIjoiU2tpcCBuaWdodGNhcCIsImRvbmVUb2RheSI6ZmFsc2V9LHsiZGV0YWlsIjoiRmluaXNoIGxhcmdlIG1lYWxzIDNoIGJlZm9yZSBiZWQ7IGxpZ2h0IHNuYWNrIE9LLiIsImlkIjoibWVhbCIsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsIm9mZnNldCI6MTA4MDAsImlzRW5hYmxlZCI6dHJ1ZSwiaWNvbiI6ImZvcmsua25pZmUiLCJ0aXRsZSI6Ikxhc3QgYmlnIG1lYWwiLCJkb25lVG9kYXkiOmZhbHNlfSx7ImRldGFpbCI6Ikxvd2VyIGJyaWdodG5lc3MgKyBOaWdodCBTaGlmdCAyaCBiZWZvcmUgYmVkLiIsImlkIjoic2NyZWVucyIsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsIm9mZnNldCI6NzIwMCwiaXNFbmFibGVkIjp0cnVlLCJpY29uIjoiaXBob25lLmdlbjIiLCJ0aXRsZSI6IkRpbSBzY3JlZW5zIiwiZG9uZVRvZGF5IjpmYWxzZX0seyJkZXRhaWwiOiJPdmVyaGVhZCBvZmYsIGxhbXBzIGxvdyDigJQgbGlnaHQgZGVsYXlzIG1lbGF0b25pbi4iLCJpZCI6ImxpZ2h0cyIsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsIm9mZnNldCI6NTQwMCwiaXNFbmFibGVkIjp0cnVlLCJpY29uIjoibGlnaHRidWxiLmZpbGwiLCJ0aXRsZSI6IkRpbSB0aGUgbGlnaHRzIiwiZG9uZVRvZGF5IjpmYWxzZX0seyJkZXRhaWwiOiIyMOKAkzMwIG1pbiByaXR1YWw6IHNob3dlciwgc3RyZXRjaCwgcmVhZCwgYnJlYXRoZS4iLCJpZCI6IndpbmRkb3duIiwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwib2Zmc2V0IjoyNzAwLCJpc0VuYWJsZWQiOnRydWUsImljb24iOiJ3aW5kIiwidGl0bGUiOiJXaW5kIGRvd24iLCJkb25lVG9kYXkiOmZhbHNlfSx7ImRldGFpbCI6IkhpdCB5b3VyIG1lbGF0b25pbiB3aW5kb3cg4oCUIHRoZSBlYXNpZXN0IGZhbGxpbmctYXNsZWVwLiIsImlkIjoiYmVkdGltZSIsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsIm9mZnNldCI6MCwiaXNFbmFibGVkIjp0cnVlLCJpY29uIjoiYmVkLmRvdWJsZS5maWxsIiwidGl0bGUiOiJJbiBiZWQgb24gdGltZSIsImRvbmVUb2RheSI6ZmFsc2V9LHsiZGV0YWlsIjoiNjXigJM2OMKwRiBcLyAxOOKAkzIwwrBDLCBibGFja291dCBkYXJrLCBxdWlldC4iLCJpZCI6ImNvb2wiLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJvZmZzZXQiOjE4MDAsImlzRW5hYmxlZCI6dHJ1ZSwiaWNvbiI6InRoZXJtb21ldGVyLnNub3dmbGFrZSIsInRpdGxlIjoiQ29vbCAmIGRhcmsgcm9vbSIsImRvbmVUb2RheSI6ZmFsc2V9LHsiZGV0YWlsIjoiU2FtZSB3YWtlIMKxMzAgbWluIOKAlCBldmVuIHdlZWtlbmRzLiAjMSByaHl0aG0gbGV2ZXIuIiwiaWQiOiJjb25zaXN0ZW50IiwiYW5jaG9yIjoid2FrZVBsdXMiLCJvZmZzZXQiOjAsImlzRW5hYmxlZCI6dHJ1ZSwiaWNvbiI6ImFsYXJtLmZpbGwiLCJ0aXRsZSI6IkNvbnNpc3RlbnQgd2FrZSIsImRvbmVUb2RheSI6ZmFsc2V9LHsiZGV0YWlsIjoiV2F0ZXIgKyBsaWdodCBiZWZvcmUgY29mZmVlIGJvb3N0cyBhbGVydG5lc3MuIiwiaWQiOiJoeWRyYXRpb24iLCJhbmNob3IiOiJ3YWtlUGx1cyIsIm9mZnNldCI6MzAwLCJpc0VuYWJsZWQiOnRydWUsImljb24iOiJkcm9wLmZpbGwiLCJ0aXRsZSI6Ik1vcm5pbmcgaHlkcmF0aW9uIiwiZG9uZVRvZGF5IjpmYWxzZX0seyJkZXRhaWwiOiIyLW1pbiB3b3JyeSBsaXN0IGFmdGVyIGRpbm5lciBjbGVhcnMgbmlnaHQgcnVtaW5hdGlvbi4iLCJpZCI6InN0cmVzcyIsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsIm9mZnNldCI6MTgwMDAsImlzRW5hYmxlZCI6dHJ1ZSwiaWNvbiI6InBlbmNpbC5hbmQubGlzdC5jbGlwYm9hcmQiLCJ0aXRsZSI6IkJyYWluIGR1bXAiLCJkb25lVG9kYXkiOmZhbHNlfSx7ImRldGFpbCI6IlN0aW11bGFudCDigJQgYXZvaWQgd2l0aGluIDRoIG9mIGJlZC4iLCJpZCI6Im5pY290aW5lIiwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwib2Zmc2V0IjoxNDQwMCwiaXNFbmFibGVkIjpmYWxzZSwiaWNvbiI6InNtb2tlLmZpbGwiLCJ0aXRsZSI6Ik5vIGxhdGUgbmljb3RpbmUiLCJkb25lVG9kYXkiOmZhbHNlfSx7ImRldGFpbCI6IkEgZHVzayB3YWxrIHNoYXJwZW5zIERMTU8gdGltaW5nLiIsImlkIjoic3Vuc2V0IiwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwib2Zmc2V0IjoxNDQwMCwiaXNFbmFibGVkIjpmYWxzZSwiaWNvbiI6InN1bnNldC5maWxsIiwidGl0bGUiOiJFdmVuaW5nIGxpZ2h0IHdhbGsiLCJkb25lVG9kYXkiOmZhbHNlfV0="
+    },
+    "profile.json": {
+      "bytes": 160,
+      "sha256": "e91cce3dfd74d9675fea9f3325838a58868fc827f6e20edb0e8f07f8de8d54f4",
+      "base64": "eyJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwid2FrZUdvYWwiOnsibWludXRlIjowLCJob3VyIjo3fSwic2xlZXBOZWVkQ29uZmlkZW5jZSI6MC4zLCJvbmJvYXJkaW5nRG9uZSI6ZmFsc2UsImlzU3Vic2NyaWJlZCI6ZmFsc2UsInNsZWVwTmVlZCI6Mjk0MDAsIm5hbWUiOiIifQ=="
+    },
+    "health-write-intent.json": {
+      "bytes": 123,
+      "sha256": "017a4a2166d05c69cfcd5530de799ab98fb42352b6e1957ec47d36a9b35ed960",
+      "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI0OTE0N0UwRi1EMjJDLTRERjYtOTI1Qi01MDYzNzkwQ0ExQkUiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+    },
+    ".health-recovery/discovered-4ded5827bde2703dc42bae01fea739576423cd316f1f0a8d54272076e28ba496/device-intent.json": {
+      "bytes": 123,
+      "sha256": "017a4a2166d05c69cfcd5530de799ab98fb42352b6e1957ec47d36a9b35ed960",
+      "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI0OTE0N0UwRi1EMjJDLTRERjYtOTI1Qi01MDYzNzkwQ0ExQkUiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+    },
+    ".health-recovery/discovered-4ded5827bde2703dc42bae01fea739576423cd316f1f0a8d54272076e28ba496/water.json": {
+      "bytes": 72,
+      "sha256": "1dc7d921432b620cf0fcd72262f29a4ffe06902fcd4d7e3cb546d370e3908291",
+      "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwibWwiOjEzN31d"
+    },
+    ".health-recovery/discovered-4ded5827bde2703dc42bae01fea739576423cd316f1f0a8d54272076e28ba496/manifest.json": {
+      "bytes": 97,
+      "sha256": "c8cd87117f6b99a6b4cde63e10b9362d80ee3fd04cbc3ff286b28ab50118645a",
+      "base64": "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTA0VDIzOjE4OjUxWiIsImRvbWFpbnMiOlsid2F0ZXIiXSwiaW50ZW50Ijp0cnVlLCJwaG90b3MiOmZhbHNlLCJ2ZXJzaW9uIjoxfQ=="
+    }
+  },
+  "heldObservations": [
+    {
+      "record": {
+        "bytesRead": 97,
+        "descriptor": 5,
+        "file": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Shared/AppGroup/E300DD24-B5D1-4A6A-BF1B-E66173E3428B/LumenData/.health-recovery/discovered-4ded5827bde2703dc42bae01fea739576423cd316f1f0a8d54272076e28ba496/manifest.json",
+        "inode": 41442439,
+        "nonce": "BC6ACC1E-D803-4C38-8FFC-DFC974C3A6C0",
+        "ordinal": 1,
+        "phase": "held",
+        "pid": 35777,
+        "scope": "retained-record",
+        "size": 97,
+        "uiCancelled": false,
+        "workerControlMatchesUI": true
+      },
+      "sourceBytes": "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTA0VDIzOjE4OjUxWiIsImRvbWFpbnMiOlsid2F0ZXIiXSwiaW50ZW50Ijp0cnVlLCJwaG90b3MiOmZhbHNlLCJ2ZXJzaW9uIjoxfQ==",
+      "sourceSHA256": "c8cd87117f6b99a6b4cde63e10b9362d80ee3fd04cbc3ff286b28ab50118645a",
+      "openDescriptorReadback": "p35777\nf5\ntREG\ni41442439\nn/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Shared/AppGroup/E300DD24-B5D1-4A6A-BF1B-E66173E3428B/LumenData/.health-recovery/discovered-4ded5827bde2703dc42bae01fea739576423cd316f1f0a8d54272076e28ba496/manifest.json\n",
+      "treeMatchesBefore": true,
+      "observedAfterNativeAttachment": "retained-record-read-held"
+    },
+    {
+      "record": {
+        "bytesRead": 97,
+        "descriptor": 5,
+        "file": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Shared/AppGroup/E300DD24-B5D1-4A6A-BF1B-E66173E3428B/LumenData/.health-recovery/discovered-4ded5827bde2703dc42bae01fea739576423cd316f1f0a8d54272076e28ba496/manifest.json",
+        "inode": 41442439,
+        "nonce": "700E82DB-6FB5-460B-85C1-D71208C7073D",
+        "ordinal": 2,
+        "phase": "held",
+        "pid": 35777,
+        "scope": "retained-record",
+        "size": 97,
+        "uiCancelled": false,
+        "workerControlMatchesUI": true
+      },
+      "sourceBytes": "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTA0VDIzOjE4OjUxWiIsImRvbWFpbnMiOlsid2F0ZXIiXSwiaW50ZW50Ijp0cnVlLCJwaG90b3MiOmZhbHNlLCJ2ZXJzaW9uIjoxfQ==",
+      "sourceSHA256": "c8cd87117f6b99a6b4cde63e10b9362d80ee3fd04cbc3ff286b28ab50118645a",
+      "openDescriptorReadback": "p35777\nf5\ntREG\ni41442439\nn/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Shared/AppGroup/E300DD24-B5D1-4A6A-BF1B-E66173E3428B/LumenData/.health-recovery/discovered-4ded5827bde2703dc42bae01fea739576423cd316f1f0a8d54272076e28ba496/manifest.json\n",
+      "treeMatchesBefore": true,
+      "observedAfterNativeAttachment": "retained-record-read-retry-held"
+    }
+  ],
+  "protocol": {
+    "attempts": [
+      {
+        "bytesRead": 97,
+        "descriptor": 5,
+        "descriptorCloseSucceeded": true,
+        "file": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Shared/AppGroup/E300DD24-B5D1-4A6A-BF1B-E66173E3428B/LumenData/.health-recovery/discovered-4ded5827bde2703dc42bae01fea739576423cd316f1f0a8d54272076e28ba496/manifest.json",
+        "inode": 41442439,
+        "nonce": "BC6ACC1E-D803-4C38-8FFC-DFC974C3A6C0",
+        "ordinal": 1,
+        "phase": "cancelled",
+        "pid": 35777,
+        "scope": "retained-record",
+        "size": 97,
+        "uiCancelled": true,
+        "workerControlMatchesUI": true
+      },
+      {
+        "bytesRead": 97,
+        "descriptor": 5,
+        "descriptorCloseSucceeded": true,
+        "file": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Shared/AppGroup/E300DD24-B5D1-4A6A-BF1B-E66173E3428B/LumenData/.health-recovery/discovered-4ded5827bde2703dc42bae01fea739576423cd316f1f0a8d54272076e28ba496/manifest.json",
+        "inode": 41442439,
+        "nonce": "700E82DB-6FB5-460B-85C1-D71208C7073D",
+        "ordinal": 2,
+        "phase": "released",
+        "pid": 35777,
+        "scope": "retained-record",
+        "size": 97,
+        "uiCancelled": false,
+        "workerControlMatchesUI": true
+      }
+    ],
+    "root": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Shared/AppGroup/E300DD24-B5D1-4A6A-BF1B-E66173E3428B/LumenData"
+  },
+  "producerExitCode": 0,
+  "verifierSHA256": "b2884b09e762c16d929f27a67cb70b6b46c2b06efebe0850d752e645ac07d532",
+  "scope": "One main-normal retained-record Back/retry case. Held imports/selected records/photos, source mutation/replacement and full original contracts remain required."
+}

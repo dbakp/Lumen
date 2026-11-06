@@ -1,0 +1,80 @@
+{
+  "status": "FAILED109resource lifetime: actual native Cancel/retry/137mL/final-parent UI test passes1/0 terminal0, but independent host rejects original/extraction still present3.0244524s after final-parent capture. Driver1, no final cleanup acceptance.",
+  "source": "durable-source-r109.json",
+  "pureSource": "local-domain-pure-source-r63.json",
+  "contract": "health-encrypted-lifetime-r1-contract.json",
+  "build": "health-encrypted-lifetime-native-build-r1.json",
+  "observations": "health-encrypted-lifetime-record-cancel-r1-observations.json",
+  "summary": "health-encrypted-lifetime-record-cancel-r1-summary.json",
+  "nativePassed": 1,
+  "nativeFailed": 0,
+  "nativeExitCode": 0,
+  "driverExitCode": 1,
+  "hostFailure": "AssertionError('Last successful preview owner must release original/extraction within3s at final parent')",
+  "timedFinalSamples": [
+    {
+      "observedAtUnix": 1793847350.642089,
+      "secondsAfterFinalParentAttachmentSeen": 0.0030499169999984588,
+      "originalWorkspacePresent": true,
+      "extractedDirectoryPresent": true
+    },
+    {
+      "observedAtUnix": 1793847351.027385,
+      "secondsAfterFinalParentAttachmentSeen": 0.38834412500000326,
+      "originalWorkspacePresent": true,
+      "extractedDirectoryPresent": true
+    },
+    {
+      "observedAtUnix": 1793847351.4127722,
+      "secondsAfterFinalParentAttachmentSeen": 0.7737280830000088,
+      "originalWorkspacePresent": true,
+      "extractedDirectoryPresent": true
+    },
+    {
+      "observedAtUnix": 1793847351.799714,
+      "secondsAfterFinalParentAttachmentSeen": 1.1606679169999978,
+      "originalWorkspacePresent": true,
+      "extractedDirectoryPresent": true
+    },
+    {
+      "observedAtUnix": 1793847352.167785,
+      "secondsAfterFinalParentAttachmentSeen": 1.528737042000003,
+      "originalWorkspacePresent": true,
+      "extractedDirectoryPresent": true
+    },
+    {
+      "observedAtUnix": 1793847352.5366662,
+      "secondsAfterFinalParentAttachmentSeen": 1.8976154580000042,
+      "originalWorkspacePresent": true,
+      "extractedDirectoryPresent": true
+    },
+    {
+      "observedAtUnix": 1793847352.90714,
+      "secondsAfterFinalParentAttachmentSeen": 2.2680870830000117,
+      "originalWorkspacePresent": true,
+      "extractedDirectoryPresent": true
+    },
+    {
+      "observedAtUnix": 1793847353.297073,
+      "secondsAfterFinalParentAttachmentSeen": 2.6580179999999984,
+      "originalWorkspacePresent": true,
+      "extractedDirectoryPresent": true
+    },
+    {
+      "observedAtUnix": 1793847353.66351,
+      "secondsAfterFinalParentAttachmentSeen": 3.024452416999992,
+      "originalWorkspacePresent": true,
+      "extractedDirectoryPresent": true
+    }
+  ],
+  "protectedSavedFilesExact": true,
+  "protectedSavedFileCount": 12,
+  "lateIndependentAudit": {
+    "observedAtUnix": 1793847752.457088,
+    "originalWorkspaceStillPresent": true,
+    "extractedDirectoryStillPresent": true,
+    "actualProcessDescriptorScanExitCode": 1,
+    "openPathsUnderWorkspace": []
+  },
+  "scope": "Unused successful preview ownership/lifetime defect after all three real Back navigations. No host deletion, process reset or forced removal. All baseline/raw source/evidence retained; identify and release obsolete cached UI ownership while preserving actual workers."
+}

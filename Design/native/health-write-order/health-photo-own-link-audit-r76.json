@@ -1,0 +1,7 @@
+{
+  "status": "Source inspection; same-root retained-photo compatibility reproduction required before acceptance",
+  "source": "durable-source-r76.json",
+  "finding": "BackupFileTransaction now checks extracted source ctime after carryPrivateCopies. That operation creates hardlinks from current-root private copies into the stage, which can change the selected retained photo inode ctime without changing bytes. Current native photo binding checks use archive workspaces outside the target, and existing Foundation retained-photo recovery uses another root; neither proves same-root retained-photo installation.",
+  "next": "Create a real same-root previous/private meal-photo copy, prepare actual retained recovery while current meals are damaged, observe source inode/bytes/timestamps across carry and attempt commit. Retain baseline if rejected; repair own-hardlink handling while preserving strict outside-root archive-photo and stage change guards. Add independent second-photo/omission receipt checks and exact-nanosecond restored-mtime/ctime-only evidence to the Foundation suite.",
+  "scope": "Do not infer a current retained-copy photo recovery pass from image review or archive service checks. Full original/cancel/photo contracts remain open."
+}

@@ -1,0 +1,26 @@
+{
+  "status": "initial native integration passed; full batch verification incomplete",
+  "source": "durable-source-r2.json",
+  "sourceInputs": 222,
+  "tests": [
+    {
+      "name": "testDurableHealthNativeCombinedFailure",
+      "passed": true,
+      "durationSeconds": 16.608,
+      "checks": 16,
+      "report": "durable-native-combined-r1-report.json",
+      "hostProof": "durable-native-combined-r1-host-audit.json"
+    },
+    {
+      "name": "testDurableHealthNativeReceiptFailure",
+      "passed": true,
+      "durationSeconds": 14.849,
+      "checks": 16,
+      "report": "durable-native-receipt-r1-report.json",
+      "hostProof": "durable-native-receipt-r1-host-audit.json"
+    }
+  ],
+  "hostMatchedFilesPerTest": 5,
+  "controlledExternalComponentsPerTest": 7,
+  "scope": "Actual HealthStore/LocalStore, real I/O faults, current native binary/source and observable pending/permission/receipt/Undo state. Controlled adapter; not actual HealthKit sample, native process restart, full normal/dark/largest UI, design acceptance, signed device or finished batch."
+}

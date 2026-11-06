@@ -1,0 +1,270 @@
+{
+  "status": "checked local-domain core candidate passes native rejection/reload matrix and existing controls; full repair and batch acceptance remain incomplete",
+  "source": "durable-source-r11.json",
+  "sourceInputs": 228,
+  "nativeBuild": "local-domain-native-build-r2.json",
+  "failedBuildRetained": "local-domain-native-build-r1.json",
+  "pure": {
+    "focused": 30,
+    "full": 1699,
+    "executedAt": "local-domain-pure-source-r1.json",
+    "exactCompiledCarry": "local-domain-pure-carry-r1-r11.json",
+    "compiledSources": 111
+  },
+  "nativeRecovery": {
+    "xctests": 11,
+    "checks": 209,
+    "cases": [
+      {
+        "test": "WaterRecovery",
+        "domain": "water",
+        "afterOpen": false,
+        "checks": 19,
+        "label": "local-domain-waterrecovery-r1"
+      },
+      {
+        "test": "MealsRecovery",
+        "domain": "meals",
+        "afterOpen": false,
+        "checks": 21,
+        "label": "local-domain-mealsrecovery-r1"
+      },
+      {
+        "test": "WorkoutsRecovery",
+        "domain": "workouts",
+        "afterOpen": false,
+        "checks": 21,
+        "label": "local-domain-workoutsrecovery-r1"
+      },
+      {
+        "test": "GoalsRecovery",
+        "domain": "goals",
+        "afterOpen": false,
+        "checks": 19,
+        "label": "local-domain-goalsrecovery-r1"
+      },
+      {
+        "test": "TodayRecovery",
+        "domain": "today",
+        "afterOpen": false,
+        "checks": 16,
+        "label": "local-domain-todayrecovery-r1"
+      },
+      {
+        "test": "UnreadableRecovery",
+        "domain": "unreadable-water",
+        "afterOpen": false,
+        "checks": 19,
+        "label": "local-domain-unreadablerecovery-r1"
+      },
+      {
+        "test": "WaterAfterOpen",
+        "domain": "water",
+        "afterOpen": true,
+        "checks": 19,
+        "label": "local-domain-waterafteropen-r1"
+      },
+      {
+        "test": "MealsAfterOpen",
+        "domain": "meals",
+        "afterOpen": true,
+        "checks": 20,
+        "label": "local-domain-mealsafteropen-r1"
+      },
+      {
+        "test": "WorkoutsAfterOpen",
+        "domain": "workouts",
+        "afterOpen": true,
+        "checks": 21,
+        "label": "local-domain-workoutsafteropen-r1"
+      },
+      {
+        "test": "GoalsAfterOpen",
+        "domain": "goals",
+        "afterOpen": true,
+        "checks": 18,
+        "label": "local-domain-goalsafteropen-r1"
+      },
+      {
+        "test": "TodayAfterOpen",
+        "domain": "today",
+        "afterOpen": true,
+        "checks": 16,
+        "label": "local-domain-todayafteropen-r1"
+      }
+    ],
+    "hostReadbackBeforeEveryRecovery": true,
+    "scope": "Five damaged-current domains at startup and after model open, plus a non-regular water current path. Rejection, no stale legacy, applicable photo/deletion/import/goal/profile/correction guards, backup rejection, initial assistant notice, no new external work, independent healthy-domain mutation, explicit checked reload and final durable receipt controls. Controlled external adapter; not HealthKit."
+  },
+  "currentNativeControls": {
+    "outcome": "local-domain-controls-r1-outcome.json",
+    "xctests": 2,
+    "checks": 36
+  },
+  "currentNativeTotals": {
+    "xctests": 13,
+    "checks": 245
+  },
+  "images": {
+    "recovery": "local-domain-recovery-images-r1.json",
+    "controls": "local-domain-control-images-r1.json",
+    "allOriginalsIndividuallyInspected": 13,
+    "scope": "Diagnostic overlays; product recovery UI remains unimplemented/unaccepted."
+  },
+  "helpers": {
+    "run-local-domain-recovery.py": {
+      "sha256": "76f6c9df6468ee72e77550d1fda117aeb0d4bd79c8f4399bba42bc02012881b6",
+      "bytes": 9996
+    },
+    "collect-durable-native.py": {
+      "sha256": "f60add6d7590cb3c548b5fa13190c545db3526c11f512453f9efa2e803efc45c",
+      "bytes": 4092
+    }
+  },
+  "primaryLogs": {
+    "LocalDomainControlCombinedR1.log.gz": {
+      "originalBytes": 4527,
+      "originalSHA256": "5a07f49cf1280307b1e45fbf907c2c58ac0ea559d4cf02c89f42e260c2edf1e6"
+    },
+    "LocalDomainControlCombinedR1Audit.log.gz": {
+      "originalBytes": 127,
+      "originalSHA256": "2c513555123a8148deffb39889e9317814e424d66b423c73b1bc5c036a3afd2d"
+    },
+    "LocalDomainControlCombinedR1Export.log.gz": {
+      "originalBytes": 361,
+      "originalSHA256": "9a7b1b1baf5e2ca225775bf37d230be4c7b874f0fd9ea79abfb60427e16e0423"
+    },
+    "LocalDomainControlReceiptR1.log.gz": {
+      "originalBytes": 4520,
+      "originalSHA256": "e364ef51ea5328b36bd4fec175e593a5983b846b78077ecabab55476d468f22a"
+    },
+    "LocalDomainControlReceiptR1Audit.log.gz": {
+      "originalBytes": 127,
+      "originalSHA256": "2c513555123a8148deffb39889e9317814e424d66b423c73b1bc5c036a3afd2d"
+    },
+    "LocalDomainControlReceiptR1Export.log.gz": {
+      "originalBytes": 358,
+      "originalSHA256": "2a763b4b4ae95cfe0237174eb539042137f7fcd6314c376584fe1184937f83c3"
+    },
+    "LocalDomainFullLogicR1.log.gz": {
+      "originalBytes": 133901,
+      "originalSHA256": "146390fbf0151f531ffc88f525d457204e08e95108774d310e007f355ce35b2e"
+    },
+    "LocalDomainGoalsAfterOpenR1.log.gz": {
+      "originalBytes": 4485,
+      "originalSHA256": "af4ac198a02afa70cfb0d07018f60f3e758ede1a04a9b124b0646718928b547d"
+    },
+    "LocalDomainGoalsAfterOpenR1Export.log.gz": {
+      "originalBytes": 349,
+      "originalSHA256": "12dfd4dc09b471d5287d4fef65e0c7f60c87eed3efa756cde4c5ff6a02151757"
+    },
+    "LocalDomainGoalsRecoveryR1.log.gz": {
+      "originalBytes": 4476,
+      "originalSHA256": "598f7a9d248af9fd1420c2c818d006339de8dcb1602d567dec01a8d67b1e2d2a"
+    },
+    "LocalDomainGoalsRecoveryR1Export.log.gz": {
+      "originalBytes": 344,
+      "originalSHA256": "b4eb76faedff131b0fe0b8412eae92577d6f27360fe880ac5d12eb7e081d9203"
+    },
+    "LocalDomainLogicBuildR1.log.gz": {
+      "originalBytes": 975,
+      "originalSHA256": "26a85a4a9deb6bd2bcbb96f99a46025778ae9e5539f4dc08994a05d79170c348"
+    },
+    "LocalDomainMealsAfterOpenR1.log.gz": {
+      "originalBytes": 4485,
+      "originalSHA256": "9cf813f61764ed7c01b1087037aca8a8abc8a0723278be3470b41bbc6c15dbe5"
+    },
+    "LocalDomainMealsAfterOpenR1Export.log.gz": {
+      "originalBytes": 349,
+      "originalSHA256": "4dec3e9a1100eb736b8a7ec1a04855fc4edbae0f2805b016c56130d3c8fde5c9"
+    },
+    "LocalDomainMealsRecoveryR1.log.gz": {
+      "originalBytes": 4476,
+      "originalSHA256": "749795f3351a2021894cca8da5970a5d455c537d62772990b368c742fa711bd9"
+    },
+    "LocalDomainMealsRecoveryR1Export.log.gz": {
+      "originalBytes": 344,
+      "originalSHA256": "f288469624c9b7e1fab769dcaaa27d82c72fb4e8fa72cefb54fe52006af958f0"
+    },
+    "LocalDomainNativeBuildR1.log.gz": {
+      "originalBytes": 85394,
+      "originalSHA256": "37bccd36f67a91df885b22f7e9f09011d808c1d35712c9f8fe42e47dd42d1a94"
+    },
+    "LocalDomainNativeBuildR2.log.gz": {
+      "originalBytes": 74538,
+      "originalSHA256": "161cceb39cafbea3ace48c836caa20b935fa5d129bb4e82027b08f37ed1663d2"
+    },
+    "LocalDomainReaderR1.log.gz": {
+      "originalBytes": 2133,
+      "originalSHA256": "9cdf651e569eb42b977374523bac4d73c8d8ec666f0be7aea6e6c28d428910c3"
+    },
+    "LocalDomainRecoveryDriverR1.log.gz": {
+      "originalBytes": 1306,
+      "originalSHA256": "758542a9e71329d3fbd1f621dfb7fe4840566d3ad341b805fd6f1d5420cb3185"
+    },
+    "LocalDomainTodayAfterOpenR1.log.gz": {
+      "originalBytes": 4485,
+      "originalSHA256": "680a62be6907ec08e80af206be068d5f06f01e6f65052c185fbaa188ea15026a"
+    },
+    "LocalDomainTodayAfterOpenR1Export.log.gz": {
+      "originalBytes": 349,
+      "originalSHA256": "30583aebf324272eb35579e3e847a3f846d295ccf3325bc89ddcbc2b08513fbb"
+    },
+    "LocalDomainTodayRecoveryR1.log.gz": {
+      "originalBytes": 4476,
+      "originalSHA256": "3cf84d68889047190169706ee0762a35d0a6912624a1713fa595338b01248fbc"
+    },
+    "LocalDomainTodayRecoveryR1Export.log.gz": {
+      "originalBytes": 344,
+      "originalSHA256": "82b3d4efddee57269f8cdb672bad1efe05e418e3cda20f31b12ec1dcbafbb1cf"
+    },
+    "LocalDomainUnreadableRecoveryR1.log.gz": {
+      "originalBytes": 4517,
+      "originalSHA256": "37bca4975ace35c77a0f52e138dc2e2f6387fa424fdb241e7996798fabfbc3b6"
+    },
+    "LocalDomainUnreadableRecoveryR1Export.log.gz": {
+      "originalBytes": 365,
+      "originalSHA256": "3e44a41041f249c5f2b98f7b07ecd38e5ec65300dbf304fcb1f62dafc700a5e9"
+    },
+    "LocalDomainWaterAfterOpenR1.log.gz": {
+      "originalBytes": 4485,
+      "originalSHA256": "ee8e4c42264766945a158134778834e2296d3ecedaf9e87c1d55af35e4efb4c4"
+    },
+    "LocalDomainWaterAfterOpenR1Export.log.gz": {
+      "originalBytes": 349,
+      "originalSHA256": "2d0940ec3136d819c9472b67ff3c5d998b66e6aa74765981f37b0e1d44615e6c"
+    },
+    "LocalDomainWaterRecoveryR1.log.gz": {
+      "originalBytes": 4476,
+      "originalSHA256": "b255627d5686275c3f1e8e5f54f1f0609c9fe7d57e6ff2fe9974ef339674f9bd"
+    },
+    "LocalDomainWaterRecoveryR1Export.log.gz": {
+      "originalBytes": 344,
+      "originalSHA256": "5dcf391ea10fa9845360ea0c607ced8e375f7ba9ea2c64a6b7ab9a19bdfc7c3f"
+    },
+    "LocalDomainWorkoutsAfterOpenR1.log.gz": {
+      "originalBytes": 4506,
+      "originalSHA256": "a0355490d26fbed2b4f3918f6b9fd46fb03a996128e04b6f70ae5998a0b7d43c"
+    },
+    "LocalDomainWorkoutsAfterOpenR1Export.log.gz": {
+      "originalBytes": 358,
+      "originalSHA256": "bfec66513ccec6191415cbce09c719a7bec4951bd45c75a21b75a082cb1fd5f6"
+    },
+    "LocalDomainWorkoutsRecoveryR1.log.gz": {
+      "originalBytes": 4497,
+      "originalSHA256": "fcd309d70cc7afc39d03cff43af57e9fea2b7b99366bfa8ea3c5ef2adfb813fe"
+    },
+    "LocalDomainWorkoutsRecoveryR1Export.log.gz": {
+      "originalBytes": 353,
+      "originalSHA256": "58d021d6beb9bcca160c1f0bf050e7cab26bb4edd1a276988570e62329a29a81"
+    }
+  },
+  "allProducersTerminal": true,
+  "producerHandles": "Build7172/36192(exit65)/23915, logic87147, recovery65526, controls90139 all terminal; no native/logic producer process remains.",
+  "requiredNext": "local-domain-remaining-audit-r11.json",
+  "olderHealthKitBoundary": "Earlier102 actual process checks remain sourceR8 and47 standalone SDK checks sourceR6. These are not relabelled as current after HealthStore/LocalStore changes.",
+  "availableBytes": 24656482304,
+  "storageCheckedAtUTC": "2026-11-03T13:04:45.010815+00:00",
+  "manualCacheRecoveryCreditedBytes": 0,
+  "storage": "Keep all unpublished raw/compact evidence and reusable native/package/logic caches. No cache cleanup or broad synthetic Health deletion this turn. Test coordination sentinels are transient; each rejected checkpoint is retained canonically before the test proceeds."
+}

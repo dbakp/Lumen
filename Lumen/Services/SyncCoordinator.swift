@@ -16,6 +16,7 @@ public enum SyncCoordinator {
             sleep.resetHabitsIfNewDay()
             let hk = HealthKitService.shared
             if hk.isAuthorized {
+                health.retryHealthWrites()
                 HealthBackgroundSync.shared.start()
                 if providers { HealthBackgroundSync.shared.retryRegistration() }
                 do { try await HealthBackgroundSync.shared.synchronize(sleep: sleep, health: health, deadline: providers ? nil : Date().addingTimeInterval(20)) }

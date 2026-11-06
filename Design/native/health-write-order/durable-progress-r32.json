@@ -1,0 +1,68 @@
+{
+  "status": "PROGRESS; full goal active; Batch43 unpublished",
+  "source": "durable-source-r32.json",
+  "latestOutcome": "health-bounded-r1-outcome.json",
+  "nextRequired": [
+    {
+      "area": "Pending previous-copy discovery before any unrelated save",
+      "finding": "Source audit only: HealthRecoveryView.load calls checkedDirectory then previews; openDirectory only restores missing root and previews reads .health-recovery. A good .previous beside an existing damaged current root may not yet be listed. Current UI fixture archives it first; native core triggers paired writes first. Neither executes this starting condition.",
+      "required": "Execute the baseline. Prepare a safe immutable bounded snapshot and validate outside the common directory write lock; guard current/prior identities, cancellation and completed-erasure markers before publishing. Preserve prior conversations/intent and no reset resurrection; then verify normal Settings entry and immediate recovery discovery. Do not rely on an unrelated save."
+    },
+    {
+      "area": "Unavailable legacy and symlink targets",
+      "finding": "Current replacement retains invalid regular files and raw directory trees. Missing-current/failed legacy sources are not represented by the current-file quarantine API, and symlink paths reject rather than being explicitly recovered.",
+      "required": "Preserve failed legacy bytes and verify their source across preparation; support safe reviewable recovery without following symlinks or deleting referenced data. Keep failed/unreadable originals and explicit errors."
+    },
+    {
+      "area": "Backup/readable product integration and provenance",
+      "finding": "Actual encrypted/readable water inputs reach the new replacement core in Foundation checks. Existing product backup restoration still begins with a live snapshot/merge; new product recovery UI selects only retained local copies. Receipt backup source is currently a kind label, without original selected-file digest.",
+      "required": "Integrate reviewed encrypted/readable choices, keep source workspace ownership through navigation/cancellation, bind original file/provenance, preserve healthy merge and supply explicit cache rebuilding/replacement semantics. Do not claim today cache came from a backup that omits it."
+    },
+    {
+      "area": "Full product review/availability and outcomes",
+      "finding": "Current native UI matrix verifies one retained water record across sizes/appearance, off/on, reviewed record, Not now, success and relaunch. Meal/workout record lists and daily-cache review show an initial subset of fields; raw cache numeric fields need accurate unknown/source/date presentation.",
+      "required": "Complete record/metadata review, 0/2 counts, affected photo omissions/validation, damaged/incomplete copies, supported failure/retry/cancel and goals/profile/weight/cache coupling. Finish unavailable/empty-history/target UI and Watch/widget/reminder planning condition. Continue same critic. Extend largest main switch-label and copy-list healthy-data-footer overlapping captures; these are coverage gaps, not demonstrated fixed clipping. Keep busy Cancel/cancellation gate open."
+    },
+    {
+      "area": "Full original gates",
+      "required": "Keep original local-domain and previous-copy contracts plus eight durable groups: actual archival/install/reset interruption, in-flight Health callbacks/daemon termination, all-domain I/O/photo faults, owner/permission/foreign-source/reset/restore/archive lifecycle, suspended native sources, current actual HealthKit regressions, Release/signed-device/publication and broader product/accessibility/privacy/provider/performance/evidence requirements."
+    }
+  ],
+  "review": {
+    "round1": "critique-b43-recovery-r1.md",
+    "round2": "critique-b43-recovery-r2.md",
+    "round3": "critique-b43-recovery-r3.md",
+    "scores": [
+      42,
+      42,
+      43
+    ],
+    "maximum": 55,
+    "status": "Done by stop rule for supplied R32 retained-water presentation only; full recovery and Batch43 remain open",
+    "individuallyOpened": 101,
+    "hashByteRawMetadataMatches": 101,
+    "imageFailures": 0,
+    "skips": 0,
+    "ledger": "review-images-b43-recovery-r3.json",
+    "closed": "All three Round2 asks: conditional private-photo assurance, full main-largest Water Off/On label and healthy-data footer on both largest phones."
+  },
+  "storage": {
+    "availableBytes": 22945042432,
+    "recoveredBytesCredited": 0,
+    "manualCacheDeletion": false,
+    "note": "Passed new sparse capacity fixture roots removed by their checks; no task cache/raw result deletion. Current unpublished source/evidence and reusable caches retained. Sparse logical sizes are not recovered allocated space. APFS/concurrent changes not credited.",
+    "taskOwnedProducers": "All current Lumen producers terminal; unrelated active Taskfold build preserved."
+  },
+  "earlierNativeBoundaries": {
+    "saveUndoControls36": "R14",
+    "semantic634": "R12",
+    "localDomains209": "R11",
+    "actualHealthKitRestart102": "R8",
+    "actualHealthKit47": "R6"
+  },
+  "resolvedThisMilestone": [
+    "Fresh descriptor-size/regular-file checks before bounded reads; shared journal cap and writer validation. Actual exact-small-boundary, FIFO, symlink and sparse oversize controls pass; no full valid 100MiB workload claim.",
+    "Selection-scoped private-copy/photo wording; actual unselected healthy meal metadata/synthetic photo bytes stay live. Selected meal copy tests retain earlier controlled image-validator boundary.",
+    "Actual self-cancel regression fails R31 by publishing a false healthy-data incident; production R32 rethrows cancellation before preservation and keeps synchronous reader semantics. Same tests pass."
+  ]
+}

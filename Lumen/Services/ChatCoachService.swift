@@ -56,6 +56,15 @@ public final class ChatCoachService: ObservableObject {
             return text
         }
         if let urgent = Self.urgentResponse(for: text) { return finish(urgent) }
+        func localDataNotice() -> String? {
+            do { try health.requireAllLocalHealthData(); return nil }
+            catch {
+                lastReplySource = "Lumen notice"; lastRecordContext = .guide()
+                lastPersonalContext = .withoutNotes; lastReplyCanBecomePlan = false
+                return "Saved health data couldn't be opened, so I can't reliably use your history or targets for this reply. Open Settings and retry opening saved data. Your saved files haven't been replaced."
+            }
+        }
+        if let notice = localDataNotice() { return finish(notice) }
         let personalRevision = CompanionStore.shared.personalContextRevision
         let personalSnapshot = PersonalContextProvenance.included(CompanionStore.shared.personalContext)
         let previous = conversationHistory ?? Array(health.chat.dropLast()) // latest user message is `text`
@@ -104,12 +113,14 @@ public final class ChatCoachService: ObservableObject {
         }
         let personalHistory = PersonalContextProvenance.history(history, current: .included(CompanionStore.shared.personalContext))
         let safeHistory = RecordRetrieval.history(personalHistory, context: references, documents: currentDocuments)
+        if let notice = localDataNotice() { return finish(notice) }
         let instructions = CompanionStore.shared.context(health: health) + "\n\n" + CoachingEngine.contextPrompt(metrics: health.metrics, readiness: health.readiness, goals: health.goals,
                                                         workoutsToday: health.workoutsToday, estimatedSleepDebt: health.assistantSleepDebt) + "\nWhen asked for a plan, provide a short title, a brief reason tied to recorded data, and 3–5 numbered, flexible steps that can become a checklist. Do not alter medication or prescribe treatment."
         let fullInstructions = instructions + "\n\n" + RecordRetrieval.prompt(references)
         // Capture the original packet's authorization, never a freshly approved
         // replacement. The provider rechecks this after credential preparation.
         let submissionAllowed: @MainActor () -> Bool = {
+            (try? health.requireAllLocalHealthData()) != nil &&
             LLMConnectionService.shared.configuration() == providerConfiguration &&
             CompanionStore.shared.libraryRevision == libraryRevision && SemanticSearchService.shared.isCurrent(modelLease) &&
             references.passages.allSatisfy { RecordRetrieval.isCurrent($0, documents: CompanionStore.shared.documents) } &&

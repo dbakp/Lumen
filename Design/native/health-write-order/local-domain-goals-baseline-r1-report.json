@@ -1,0 +1,50 @@
+{
+  "checks": [
+    {
+      "name": "shared startup completed before synthetic file preparation",
+      "passed": true
+    },
+    {
+      "name": "existing synthetic current file has invalid JSON bytes",
+      "passed": true
+    },
+    {
+      "name": "new actual HealthStore completes unrelated conversation startup",
+      "passed": true
+    },
+    {
+      "name": "baseline reads stale legacy goals despite damaged current file",
+      "passed": true
+    },
+    {
+      "name": "baseline defect reproduced: successful new mutation replaces damaged current-file bytes",
+      "passed": true
+    },
+    {
+      "name": "baseline dispatches and acknowledges new external work after replacing damaged domain",
+      "passed": true
+    }
+  ],
+  "directoryRetained": false,
+  "domain": "goals",
+  "external": {
+    "com.dbakp.lumen.health.v1.01695DB8-4021-41A4-ABBF-63E03DB52DDD.F76F32D6-9ECE-4014-AA02-4999CCCCAF9F.weight": 76.25
+  },
+  "loadedMealIDs": [],
+  "loadedWaterIDs": [],
+  "loadedWeight": 61.25,
+  "originalDamagedBytes": "eyJzeW50aGV0aWNEYW1hZ2VkSGlzdG9yeSI6IFs=",
+  "persistedFiles": {
+    "goals.json": "eyJzdGVwR29hbCI6MTAwMDAsImFnZSI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsImFjdGl2ZUNhbEdvYWwiOjYwMCwic3RhbmRHb2FsIjoxMiwid2VpZ2h0S2ciOjc2LjI1LCJzZXgiOiJ1bnNwZWNpZmllZCIsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImV4ZXJjaXNlR29hbE1pbiI6MzB9",
+    "health-write-intent.json": "eyJldmVudHMiOlt7ImFja25vd2xlZGdlZCI6WyJ3ZWlnaHQiXSwiYWN0aW9uIjoic2F2ZSIsImNvbXBvbmVudHMiOlt7ImRhdGUiOjgxNTQwMjMwMC40MTA2MTksIm1ldHJpYyI6IndlaWdodCIsInZhbHVlIjo3Ni4yNX1dLCJkb21haW4iOiJ3ZWlnaHQiLCJnZW5lcmF0aW9uIjoiM0Q2MUQ3MjUtOUU0NS00NTNBLThBMEYtMDNBNkExMDVEQTZEIiwiaWQiOiJGNzZGMzJENi05RUNFLTQwMTQtQUEwMi00OTk5Q0NDQ0FGOUYiLCJpZGVudGl0eSI6InN5bmMiLCJsaWZlY3ljbGUiOiI2MTQ1NzFGNS04ODExLTRFQjAtOTY3NS00RTE4MDZCMDg3QUQiLCJsb2NhbElEIjoiMTg3QjZBREYtQkM4Ny00MjcwLUJEMzktMTUyOUM1Rjg5MTg1IiwicmVxdWVzdGVkQXQiOjgxNTQwMjMwMC40MzQzMzJ9XSwibGlmZWN5Y2xlIjoiNjE0NTcxRjUtODgxMS00RUIwLTk2NzUtNEUxODA2QjA4N0FEIiwib3duZXIiOiIwMTY5NURCOC00MDIxLTQxQTQtQUJCRi02M0UwM0RCNTJEREQiLCJ2ZXJzaW9uIjoxfQ==",
+    "today.json": "eyJhY3RpdmVDYWxvcmllcyI6MCwicmVhZGluZ3MiOnsiYWN0aXZlRW5lcmd5Ijp7ImNvbXBvbmVudHMiOltdLCJvdmVybGFwS2VwdFNlcGFyYXRlIjpmYWxzZX0sInJlc3BpcmF0b3J5UmF0ZSI6eyJjb21wb25lbnRzIjpbXSwib3ZlcmxhcEtlcHRTZXBhcmF0ZSI6ZmFsc2V9LCJzcG8yIjp7ImNvbXBvbmVudHMiOltdLCJvdmVybGFwS2VwdFNlcGFyYXRlIjpmYWxzZX0sInByb3RlaW4iOnsiY29tcG9uZW50cyI6W10sIm92ZXJsYXBLZXB0U2VwYXJhdGUiOmZhbHNlfSwiY2Fsb3JpZXMiOnsiY29tcG9uZW50cyI6W10sIm92ZXJsYXBLZXB0U2VwYXJhdGUiOmZhbHNlfSwiZmF0Ijp7ImNvbXBvbmVudHMiOltdLCJvdmVybGFwS2VwdFNlcGFyYXRlIjpmYWxzZX0sInJlc3RpbmdFbmVyZ3kiOnsiY29tcG9uZW50cyI6W10sIm92ZXJsYXBLZXB0U2VwYXJhdGUiOmZhbHNlfSwid2VpZ2h0Ijp7ImNvbXBvbmVudHMiOlt7ImlzRXN0aW1hdGUiOmZhbHNlLCJ2YWx1ZSI6NzYuMjUsIm9yaWdpbiI6ImxvY2FsTG9nIiwic3RhcnQiOiIyMDI2LTExLTAzVDEyOjM4OjIwWiIsInNvdXJjZSI6Ikx1bWVuIHdlaWdodCBsb2ciLCJhZ2dyZWdhdGlvbiI6ImxhdGVzdCIsImVuZCI6IjIwMjYtMTEtMDNUMTI6Mzg6MjBaIiwibGFzdFNhbXBsZUF0IjoiMjAyNi0xMS0wM1QxMjozODoyMFoifV0sIm92ZXJsYXBLZXB0U2VwYXJhdGUiOmZhbHNlfSwiYm1pIjp7ImNvbXBvbmVudHMiOltdLCJvdmVybGFwS2VwdFNlcGFyYXRlIjpmYWxzZX0sInN0ZXBzIjp7ImNvbXBvbmVudHMiOltdLCJvdmVybGFwS2VwdFNlcGFyYXRlIjpmYWxzZX0sInN0YW5kIjp7ImNvbXBvbmVudHMiOltdLCJvdmVybGFwS2VwdFNlcGFyYXRlIjpmYWxzZX0sIndhdGVyIjp7ImNvbXBvbmVudHMiOltdLCJvdmVybGFwS2VwdFNlcGFyYXRlIjpmYWxzZX0sImJvZHlGYXQiOnsiY29tcG9uZW50cyI6W10sIm92ZXJsYXBLZXB0U2VwYXJhdGUiOmZhbHNlfSwic2xlZXAiOnsiY29tcG9uZW50cyI6W10sIm92ZXJsYXBLZXB0U2VwYXJhdGUiOmZhbHNlfSwicmVzdGluZ0hSIjp7ImNvbXBvbmVudHMiOltdLCJvdmVybGFwS2VwdFNlcGFyYXRlIjpmYWxzZX0sImhydiI6eyJjb21wb25lbnRzIjpbXSwib3ZlcmxhcEtlcHRTZXBhcmF0ZSI6ZmFsc2V9LCJ2bzJtYXgiOnsiY29tcG9uZW50cyI6W10sIm92ZXJsYXBLZXB0U2VwYXJhdGUiOmZhbHNlfSwiZXhlcmNpc2UiOnsiY29tcG9uZW50cyI6W10sIm92ZXJsYXBLZXB0U2VwYXJhdGUiOmZhbHNlfSwiaGVhcnRSYXRlIjp7ImNvbXBvbmVudHMiOltdLCJvdmVybGFwS2VwdFNlcGFyYXRlIjpmYWxzZX0sImNhcmJzIjp7ImNvbXBvbmVudHMiOltdLCJvdmVybGFwS2VwdFNlcGFyYXRlIjpmYWxzZX19LCJ3YXRlck1MIjowLCJyZXN0aW5nQ2Fsb3JpZXMiOjAsInJlY29yZGVkVG90YWxLZXlzIjpbXSwic3RhbmRIb3VycyI6MCwid2VpZ2h0S2ciOjc2LjI1LCJzdGVwcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDJUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjB9"
+  },
+  "savedMealIDs": [],
+  "savedWaterIDs": [],
+  "savedWeight": 76.25,
+  "scope": "Pre-repair actual native HealthStore load/mutation baseline with controlled external adapter. Corrupt water/meals/goals replacement is a reproduced defect, not a repaired pass. Directory input proves a real Foundation read error, not physical-device lock/permission behavior.",
+  "status": "Local data baseline recorded",
+  "trace": [
+    "save:weight"
+  ]
+}

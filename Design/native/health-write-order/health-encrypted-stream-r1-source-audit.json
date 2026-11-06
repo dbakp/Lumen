@@ -1,0 +1,26 @@
+{
+  "status": "Source102encrypted next-stage inspection only; no implementation/runtime acceptance",
+  "source": "durable-source-r102.json",
+  "currentPackageSHA256": "01ec4fb72b4128d29a4c535b1f1d86b46ce01f79953d2cd2b6111674308a2293",
+  "sdkEvidence": {
+    "path": "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk/usr/lib/swift/AppleArchive.swiftmodule/arm64-apple-ios-simulator.swiftinterface",
+    "sha256": "704172e84008785cf79dd853ffec51759ad095f0a6ae4cade13339e717fd76ce",
+    "lineRange": "402-418",
+    "supportedAPIs": [
+      "ArchiveByteStream.read(into:)",
+      "ArchiveByteStream.cancel()",
+      "ArchiveByteStream.close()",
+      "ArchiveByteStream.fileStream(fd:automaticClose:)"
+    ],
+    "note": "Local official SDK interface inspected, not copied wholesale. Explicit fd ownership and cancellation API are available; actual read/close/cancel semantics still require native and pure verification."
+  },
+  "nextRequired": [
+    "Preserve source and failed baselines before any encrypted behavior repair. Existing bytes loop can request entire remaining32MiB record; retain compatible record/container limits but cap each actual decrypted read to64KiB and check actual control before/after read and decode error paths.",
+    "If using explicit descriptor, open no-follow/nonblocking/close-on-exec, fstat regular/size before allocation and bind stream to actual owned fd. Independently prove stream and descriptor close; never infer closure solely from UI state. Do not invent an SDK fd getter.",
+    "Investigate actual stream.cancel behavior before relying on a cross-thread cancellation handler. Avoid locks that would prevent Cancel from reaching a blocked reader. Preserve cancellation classification for framework failures. Atomic password derivation/attribute decode and internal framework compression-block latency remain separately unproven.",
+    "Register actual fresh unlock UI control, distinct from earlier selection control. Hold only after actual decrypted.read returns, with original/source descriptor open and extraction directory identified. First ack never releases. Observe real control/job ordinals; initial select then unlock do not necessarily start at held1.",
+    "Visible Cancel stays on Backup & restore and retains original owned file/inode for same-file password retry; extracted failed-preview directory must disappear and both streams/fd close. Back clears parent, but original survives until last reader/worker then cleans. Audit app open paths independently.",
+    "Fresh password entry starts a new actual unlock control. Host verifies first cancellation/close/source/root/extracted cleanup before releasing only retry. Normal preview/review off/246mL, unchanged saved files, correct live input/extracted lifetime, explicit final parent closure/cleanup where applicable.",
+    "Keep actual legacy/readable payload Back/Cancel, source/selection changes, partial multi-chunk/capacity/performance/appearance, selected photos, full resource lifetime, all original contracts/eight groups and wider goal. No product UI/design/Release/device/publication claim from SDK inspection."
+  ]
+}

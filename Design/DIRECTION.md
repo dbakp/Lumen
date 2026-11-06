@@ -1,5 +1,50 @@
 # Lumen direction
 
+## Daily readings recovery · content before layout
+
+Keep the accepted native Form, owned teal, semantic primary instructions and full Dynamic Type. No new concept or promotional surface. The separate **Daily readings** route is reachable from **Recover health data** and the omitted-daily-readings section of a selected file.
+
+Landing: **Saved readings** with one observed state: **No saved snapshot**, **Saved snapshot opens**, or **Saved snapshot couldn't be opened**. Body: **Backups and readable exports don't include daily readings.** Actions: **Check Apple Health**, **Review clearing readings**, and **Check saved readings**. Disconnected: **Connect Apple Health in Settings to rebuild readings.** A query or file error never chooses clear.
+
+Rebuild review: **Replace saved readings**; **These Apple Health results will replace the saved daily snapshot.** Counts are **Returned**, **No data**, **Couldn't check**, followed by the actual query window and **Review readings**. Each detailed metric shows its actual value or **Unknown**, source and query outcome/time. No-data is not denied permission. All failed queries produce an error, not an empty replacement.
+
+Clear review: **Clear saved readings**; **The saved daily snapshot will become unknown. This doesn't delete local logs, imported days or sleep history.** Both reviews say **Replaced files stay in a private copy on this iPhone.** Native action opens a short confirmation: **Replace saved readings?** or **Clear saved readings?**, with **Rebuild** or **Clear readings** and **Not now**. The full consequence remains primary Form text rather than depending on a dim system-alert message. Review is deliberate; neither action is preselected. The positive state says records **aren't deleted**, preserving the distinction between retained bytes and already-unavailable data. Unreadable retained copies name their included domain and say **Contents couldn't be opened**. Opening saved history remains distinct from syncing, with **Retry opening history** for a failed history read.
+
+Busy labels distinguish **Checking saved readings…**, **Checking Apple Health…**, and **Saving daily readings…**, with **Cancel** and native Back. Positive state follows actual installation: **Saved snapshot rebuilt** or **Saved snapshot cleared**. Error text names the failed phase, says saved readings have not been replaced and offers **Check saved readings**. A changed source/file/day/newer operation requires a fresh review. Same continuing critic and both-phone normal/dark/largest native captures are required; no new design acceptance is claimed before those rounds.
+
+Cancellation checkpoint,4 November: keep the existing native Form,owned teal and factual work/result wording. Same continuing critic accepts43→43/55:40 Source59 originals plus22 Source60 supplemental originals individually opened/matched,0image failures/skips,no concrete visible/copy repair. Eight Cancel/Back cases and three targeted choice-state captures preserve exact source boundaries; the supplements show actual retained-on,Back destination,reopened-off and explicit reselection. No cosmetic product edit was needed. The accepted application is Source56 through test-only Source60. Later Source63 adds only DEBUG baseline setup/normal Settings routing for three actual backup input failures; those reject valid selected files while current Water is unavailable. Next integrate checked backup/readable recovery,original-file identity/ownership and explicit missing-cache semantics,without changing this direction. All broader original contracts/all-domain/legacy/availability/Health/device/Release/publication and full goal remain open.
+
+Record-review R53 checkpoint: same continuing critic accepts expanded-record presentation42→43/55 (global5/6, expanded-record1/2). No concrete repair remains; all454 earlier and12 changed-copy originals are independently opened/matched,0image errors/skips. Sole production delta is “not a measured accuracy”→“not a measure of accuracy”; native Form hierarchy/owned teal and all other source bodies stay unchanged. Current six footer cases verify full score/footer in normal/dark/largest on both phones; exact source/data/readback audit and pure1,980/focused46/native31 pass. No further application/UI edit within that record-review boundary. Full typed record cases/selected22-row and water6 captures retain R49–R52 boundaries; no whole-neighbor/every-note-glyph claim. Broader recovery/backup/cancellation/legacy/availability/Health/device/Release/publication and full goal remain open. See native/health-write-order/health-record-r1-outcome.json and durable-progress-r53.json.
+
+## Batch43 · recovery of unavailable health data
+
+Keep the approved native Form, daylight-observatory ground, owned teal and full
+Dynamic Type. This extends storage recovery, not a new design direction.
+Settings entry **Recover health data**. Copy list: **Retained copies**, dated
+by the saved incident; incomplete entries say **Incomplete copy**. Read errors
+have **Retry opening data** and **Check copies again**. Do not call a failed
+read empty history. The review form lists each actual domain count and offers
+**Review records** before an initially off replacement toggle. Current healthy
+domains say **Current data opens** and cannot be selected. Missing domains say
+**Not included**; damaged copies say **Couldn't open this copy**.
+
+Meal review may explicitly choose **Recover without meal photos**. Missing
+photos never become silently omitted references. Permanent confirmation copy:
+**Damaged files and old meal photos stay in a private copy on this iPhone.**
+**Recovered entries won't be added to Apple Health. Earlier pending Health
+saves won't restart; pending removals can finish.** Alert **Replace selected
+data?**, actions **Recover / Not now**. Success **Selected data recovered**.
+Round1 repairs the unavailable message to **Water history couldn't be opened.
+Changes to this data are paused. Your saved files haven't been replaced.**,
+with equivalent record-type nouns for the other groups. Confirmation says
+**Selected data will be replaced by records from this copy. Damaged originals
+will stay on this iPhone.** Counts use **1 record** and **0/2 records**. Keep the
+same native controls, full type and permanent private-copy/Apple Health facts.
+Errors retain selection and offer another attempt. Full record review,
+backup/cache choices, unavailable targets, main/compact normal/dark/largest,
+retry/relaunch/cancellation and the same continuing critic remain acceptance
+requirements. No design score or accepted screen is claimed by this contract.
+
 ## Batch42 · explicit AI connection drafts
 
 Keep the approved daylight-observatory ground, owned teal and native scrollable form/sheet navigation. This is the existing AI settings surface, with compatible API-key and Google OAuth configuration preserved. Voice: distinguish saved routing from editable fields, name the actual destination, and give an explicit recovery action without promising remote recall or universal model support.
@@ -379,3 +424,17 @@ New limit responses in the existing Assistant bubble:
 - **Those identifiers need more source excerpts than this lookup can include. Ask about fewer at a time.**
 
 Each message names the actual limit: question length, identifier length, identifier count, format or source-packet capacity. They occur before any provider request and preserve the editable conversation. Native normal, dark/largest-text and compact review will verify readability and the same continuing critic will review both rounds. No new concept, paywall, icon, promotional set or design score is claimed before that review.
+
+
+## Batch43 recovery wording and capture follow-up · R32
+
+The retained-water review now says “Replaced files stay in a private copy on this iPhone. For meal recovery, this includes any old photos.” Healthy unselected meal photos remain live; actual Foundation synthetic-byte checks cover this boundary. Main/compact largest-text Water history labels and the copy-list healthy-data footer have overlapping native captures, with the full type size unchanged. Six current UI tests pass and101 originals remain. Same continuing critic Round3 accepts the supplied R32 retained-water presentation43/55, with101 originals individually opened/matched and all three Round2 asks closed. No broader recovery acceptance follows. Open busy-cancel/backup/meal/cache/target/full-batch gates remain recorded in the evidence directory.
+
+
+## Batch43 immediate discovery integration · R42
+
+The native recovery form now discovers an unarchived previous water copy before any unrelated save. Snapshot capture, bounded validation and guarded private publication preserve the established copy/selection/alert/success presentation. The synthetic launch fixture leaves previous unarchived so six current main/compact light/dark/largest flows exercise the product discovery path. Exact selected/damaged bytes and device-bound intent/receipt are independently matched after the final largest case on both phones.The same continuing critic's Round4 accepts the supplied water presentation43/55, individually opening/matching all101 current originals with zero failures/skips and no new concrete repair. Full record details, known/unknown/estimated workout and cache values, actual meal/photo/backup/failure/cancel/target and broader gates remain open; source audit health-record-review-audit-r42.json is required next work.
+
+## Batch43 denied import read · Source123
+
+Actual OS-denied opens on older, encrypted and readable imports preserve the original files and saved history, but Source122 shows a raw system error claiming a failed save and naming the private workspace. Keep the existing native alert, operation-specific title and OK action. The body becomes: **Lumen couldn’t read this file. Keep the original and choose it again. No records were imported.** This names the failed read, offers one reachable next step and states the verified import outcome without exposing a temporary filename or folder. Map permission errors only at initial file selection; cancellation, invalid format, integrity and other failures keep their distinct behavior. Full-size native main/compact appearance and continuing-critic gates remain required; this copy repair does not claim full Batch43 design acceptance.

@@ -1,6 +1,8 @@
 import Foundation
 import AppleArchive
 import System
+import CryptoKit
+import Darwin
 
 /// Password-protected, framed records inside an Apple Encrypted Archive.
 /// Photos and archive bytes are streamed; no whole-archive/base64 payload is built.
@@ -34,9 +36,11 @@ enum BackupPackage {
         let manifest: Manifest
         let snapshot: BackupSnapshot
         let photos: [String: URL]
+        let photoIdentities: [String: BackupPhotoIdentity]
         let directory: URL
-        init(manifest: Manifest, snapshot: BackupSnapshot, photos: [String: URL], directory: URL) {
+        init(manifest: Manifest, snapshot: BackupSnapshot, photos: [String: URL], photoIdentities: [String: BackupPhotoIdentity], directory: URL) {
             self.manifest = manifest; self.snapshot = snapshot; self.photos = photos; self.directory = directory
+            self.photoIdentities = photoIdentities
         }
         deinit {
             let folder = directory
@@ -146,6 +150,17 @@ enum BackupPackage {
         try fm.moveItem(at: partial, to: destination)
     }
 
+    /// Cancellation may arrive on another thread. Detach waits for an already
+    /// captured cancel callback before the worker destroys its stream. Reads
+    /// never hold this lock, so cancellation can reach an active stream.
+    private final class ReadCancellation: @unchecked Sendable {
+        private let lock = NSLock()
+        private var stream: ArchiveByteStream?
+        init(_ stream: ArchiveByteStream) { self.stream = stream }
+        func cancel() { lock.lock(); defer { lock.unlock() }; stream?.cancel() }
+        func detach() { lock.lock(); defer { lock.unlock() }; stream = nil }
+    }
+
     static func read(_ source: URL, password: String, temporaryRoot: URL = FileManager.default.temporaryDirectory,
                      control: BackupOperationControl = .init()) throws -> Contents {
         try control.checkCancellation()
@@ -153,24 +168,77 @@ enum BackupPackage {
         let attributes = try source.resourceValues(forKeys: [.isRegularFileKey, .isSymbolicLinkKey, .fileSizeKey])
         guard attributes.isRegularFile == true, attributes.isSymbolicLink != true, let size = attributes.fileSize, size > 0 else { throw PackageError.invalid }
         guard Int64(size) <= maxFileBytes else { throw PackageError.tooLarge }
-        guard let file = fileStream(source, writing: false) else { throw PackageError.file }
-        defer { try? file.close() }
-        guard let context = ArchiveEncryptionContext(from: file), context.profile == profile else { throw PackageError.invalid }
-        control.update(.unlocking)
-        do { try context.setPassword(password) } catch { throw PackageError.unlock }
-        guard context.decryptAttributes() else { throw PackageError.unlock }
+        let descriptor = Darwin.open(source.path, O_RDONLY | O_NOFOLLOW | O_NONBLOCK | O_CLOEXEC)
+        guard descriptor >= 0 else { throw PackageError.file }
+        defer {
+            let closed = Darwin.close(descriptor) == 0
+            #if DEBUG && targetEnvironment(simulator)
+            HealthReadUIFixture.didClose(control: control, descriptor: descriptor, succeeded: closed)
+            #else
+            _ = closed
+            #endif
+        }
+        var opened = stat()
+        guard fstat(descriptor, &opened) == 0, opened.st_mode & mode_t(S_IFMT) == mode_t(S_IFREG),
+              opened.st_size > 0, opened.st_size == Int64(size) else { throw PackageError.invalid }
         try control.checkCancellation()
+        guard let file = ArchiveByteStream.fileStream(fd: FileDescriptor(rawValue: descriptor), automaticClose: false) else { throw PackageError.file }
+        defer { try? file.close() }
+        let parsedContext = ArchiveEncryptionContext(from: file)
+        try control.checkCancellation()
+        guard let context = parsedContext, context.profile == profile else { throw PackageError.invalid }
+        control.update(.unlocking)
+        try control.checkCancellation()
+        #if DEBUG && targetEnvironment(simulator)
+        if ProcessInfo.processInfo.arguments.contains("-health-read-encrypted-unlock") {
+            try HealthReadUIFixture.pause(control: control, file: source, descriptor: descriptor, bytesRead: 0, unlocking: true)
+            HealthReadUIFixture.willProcessPassword(control: control, descriptor: descriptor)
+        }
+        #endif
+        do { try context.setPassword(password) } catch { try control.checkCancellation(); throw PackageError.unlock }
+        try control.checkCancellation()
+        let attributesDecrypted = context.decryptAttributes()
+        try control.checkCancellation()
+        guard attributesDecrypted else { throw PackageError.unlock }
         guard context.rawSize > 0, context.rawSize <= maxFileBytes,
               (1...4 * 1024 * 1024).contains(context.compressionBlockSize), context.compressionAlgorithm == .lzfse else { throw PackageError.tooLarge }
         guard context.containerSize == size else { throw PackageError.invalid }
         guard let decrypted = ArchiveByteStream.decryptionStream(readingFrom: file, encryptionContext: context, threadCount: 1) else { throw PackageError.unlock }
-        defer { try? decrypted.close() }
+        #if DEBUG && targetEnvironment(simulator)
+        HealthReadUIFixture.didCreateDecrypted(control: control, descriptor: descriptor)
+        #endif
+        let cancellation = ReadCancellation(decrypted)
+        control.setCancellationHandler { cancellation.cancel() }
+        var decryptedClosed = false
+        func closeDecrypted() throws {
+            control.setCancellationHandler(nil)
+            cancellation.detach()
+            if !decryptedClosed {
+                decryptedClosed = true
+                do {
+                    try decrypted.close()
+                    #if DEBUG && targetEnvironment(simulator)
+                    HealthReadUIFixture.didCloseDecrypted(control: control, descriptor: descriptor, error: nil)
+                    #endif
+                } catch {
+                    #if DEBUG && targetEnvironment(simulator)
+                    HealthReadUIFixture.didCloseDecrypted(control: control, descriptor: descriptor, error: String(reflecting: error))
+                    #endif
+                    throw error
+                }
+            }
+        }
+        defer { try? closeDecrypted() }
+        try control.checkCancellation()
         let directory = temporaryRoot.appendingPathComponent("LumenBackupPreview-\(UUID().uuidString)", isDirectory: true)
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true, attributes: [.posixPermissions: 0o700])
+        #if DEBUG && targetEnvironment(simulator)
+        HealthReadUIFixture.didCreateExtraction(control: control, descriptor: descriptor, directory: directory)
+        #endif
         var succeeded = false
         defer { if !succeeded { try? FileManager.default.removeItem(at: directory) } }
         var expanded: Int64 = 0, metadata = 0
-        func bytes(_ count: Int) throws -> Data {
+        func bytes(_ count: Int, recordKind: String? = nil) throws -> Data {
             try control.checkCancellation()
             guard count >= 0, expanded <= maxFileBytes - Int64(count) else { throw PackageError.tooLarge }
             var data = Data(count: count)
@@ -179,9 +247,22 @@ enum BackupPackage {
                 while offset < count {
                     try control.checkCancellation()
                     let n: Int
-                    do { n = try decrypted.read(into: UnsafeMutableRawBufferPointer(rebasing: buffer[offset...])) } catch { throw PackageError.unlock }
-                    guard n > 0, n <= count - offset else { throw PackageError.invalid }
+                    let end = min(offset + bufferBytes, count)
+                    do { n = try decrypted.read(into: UnsafeMutableRawBufferPointer(rebasing: buffer[offset..<end])) }
+                    catch { try control.checkCancellation(); throw PackageError.unlock }
+                    try control.checkCancellation()
+                    guard n > 0, n <= end - offset else { throw PackageError.invalid }
                     offset += n
+                    let progress = control.progress
+                    control.update(.reading, completed: progress.completed, total: progress.total, bytes: expanded + Int64(offset))
+                    #if DEBUG && targetEnvironment(simulator)
+                    if recordKind == "personalContext", count > bufferBytes, offset == bufferBytes {
+                        try HealthReadUIFixture.pause(control: control, file: source, descriptor: descriptor, bytesRead: n,
+                                                      encryptedRecordKind: recordKind, recordOffset: offset,
+                                                      recordLength: count, extractedDirectory: directory)
+                    }
+                    #endif
+                    try control.checkCancellation()
                 }
             }
             expanded += Int64(count)
@@ -191,23 +272,31 @@ enum BackupPackage {
             let prefix = try bytes(4)
             let length = prefix.reduce(UInt32(0)) { ($0 << 8) | UInt32($1) }
             guard length > 0, length <= 16_384 else { throw PackageError.invalid }
-            do { return try BackupArchive.decoder().decode(Frame.self, from: bytes(Int(length))) }
+            do {
+                let data = try bytes(Int(length)); try control.checkCancellation()
+                let value = try BackupArchive.decoder().decode(Frame.self, from: data)
+                try control.checkCancellation(); return value
+            }
             catch let error as PackageError { throw error }
             catch is CancellationError { throw CancellationError() }
-            catch { throw PackageError.invalid }
+            catch { try control.checkCancellation(); throw PackageError.invalid }
         }
         func record<T: Decodable>(_ header: Frame, as type: T.Type) throws -> T {
             guard header.id == nil, header.length > 0, header.length <= maxRecordBytes,
                   metadata <= maxMetadataBytes - header.length else { throw PackageError.metadataTooLarge }
             metadata += header.length
-            let data = try bytes(header.length)
-            do { return try BackupArchive.decoder().decode(type, from: data) } catch { throw PackageError.invalid }
+            let data = try bytes(header.length, recordKind: header.kind)
+            do {
+                try control.checkCancellation()
+                let value = try BackupArchive.decoder().decode(type, from: data)
+                try control.checkCancellation(); return value
+            } catch { try control.checkCancellation(); throw PackageError.invalid }
         }
         let first = try frame()
         guard first.kind == "manifest" else { throw PackageError.invalid }
         let manifest = try record(first, as: Manifest.self); try manifest.validate()
         var snapshot = BackupSnapshot(profile: .default, goals: .init(), habits: [], sleep: [], meals: [], workouts: [], water: [], conversations: [], symptoms: [], checkIns: [], documents: [], importedDays: [], imports: [], personalContext: .init(), photos: [:])
-        var photos: [String: URL] = [:], counts: [String: Int] = [:], completed = 0
+        var photos: [String: URL] = [:], photoIdentities: [String: BackupPhotoIdentity] = [:], counts: [String: Int] = [:], completed = 0
         let total = manifest.counts.values.reduce(0, +) + manifest.photoCount
         while true {
             let header = try frame()
@@ -223,10 +312,13 @@ enum BackupPackage {
                 try FileManager.default.setAttributes([.posixPermissions: 0o600], ofItemAtPath: url.path)
                 let output = try FileHandle(forWritingTo: url); defer { try? output.close() }
                 var remaining = header.length
+                var photoHash = SHA256()
                 while remaining > 0 {
-                    let chunk = try bytes(min(bufferBytes, remaining)); try output.write(contentsOf: chunk); remaining -= chunk.count
+                    let chunk = try bytes(min(bufferBytes, remaining)); photoHash.update(data: chunk)
+                    try output.write(contentsOf: chunk); remaining -= chunk.count
                 }
                 try output.close(); photos[id] = url
+                photoIdentities[id] = .init(byteCount: header.length, sha256: photoHash.finalize().map { String(format: "%02x", $0) }.joined())
             } else {
                 guard kinds.contains(header.kind), counts[header.kind, default: 0] < manifest.counts[header.kind, default: 0] else { throw PackageError.invalid }
                 counts[header.kind, default: 0] += 1
@@ -254,13 +346,19 @@ enum BackupPackage {
               Set(photos.keys) == Set(snapshot.meals.compactMap(\.photoID)) else { throw PackageError.invalid }
         var trailing = Data(count: 1)
         let end: Int
-        do { end = try trailing.withUnsafeMutableBytes { try decrypted.read(into: $0) }; try decrypted.close() }
-        catch { throw PackageError.unlock }
+        try control.checkCancellation()
+        do {
+            end = try trailing.withUnsafeMutableBytes { try decrypted.read(into: $0) }
+            try control.checkCancellation(); try closeDecrypted(); try control.checkCancellation()
+        }
+        catch { try control.checkCancellation(); throw PackageError.unlock }
         guard end == 0, expanded == context.rawSize else { throw PackageError.invalid }
-        try BackupArchive.validate(snapshot, availablePhotoIDs: Set(photos.keys))
+        try control.checkCancellation()
+        do { try BackupArchive.validate(snapshot, availablePhotoIDs: Set(photos.keys)) }
+        catch { try control.checkCancellation(); throw error }
         try control.checkCancellation()
         succeeded = true
-        return .init(manifest: manifest, snapshot: snapshot, photos: photos, directory: directory)
+        return .init(manifest: manifest, snapshot: snapshot, photos: photos, photoIdentities: photoIdentities, directory: directory)
     }
 
     private static func fileStream(_ url: URL, writing: Bool) -> ArchiveByteStream? {

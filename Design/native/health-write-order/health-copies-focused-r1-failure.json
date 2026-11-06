@@ -1,0 +1,56 @@
+{
+  "status": "failed before first successful assertion",
+  "source": "local-domain-pure-source-r7.json",
+  "exitCode": -5,
+  "binarySHA256": "e6051e1f0dcd4096b36dadd8d1b9e34809fd947a9730b30d0fdb928e653d8e00",
+  "reason": "New preservation candidate compared child URL identity with a differently represented stage URL; it deduplicated the stage against itself and discarded it. Fix excludes the exact stage basename. Production defect caught by the baseline preservation assertion.",
+  "rawSyntheticFixtures": [
+    {
+      "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/Lumen-recovery-copies-CA60EE51-C64B-4856-B3E7-A07B8256F47A",
+      "files": {
+        "baseline.restore-3CD38933-A8F7-43EB-8753-103C3F4A4711/chat.json": {
+          "bytes": 2,
+          "dataBase64": "W10="
+        },
+        "baseline.restore-3CD38933-A8F7-43EB-8753-103C3F4A4711/conversations.json": {
+          "bytes": 2,
+          "dataBase64": "W10="
+        },
+        "baseline.restore-3CD38933-A8F7-43EB-8753-103C3F4A4711/goals.json": {
+          "bytes": 177,
+          "dataBase64": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjEwMDAwLCJ3ZWlnaHRLZyI6ODB9"
+        },
+        "baseline.restore-3CD38933-A8F7-43EB-8753-103C3F4A4711/water.json": {
+          "bytes": 32,
+          "dataBase64": "e3N5bnRoZXRpYyBkYW1hZ2VkIGN1cnJlbnQgd2F0ZXI="
+        },
+        "baseline.restore-3CD38933-A8F7-43EB-8753-103C3F4A4711/conversation-selection.json": {
+          "bytes": 2,
+          "dataBase64": "e30="
+        },
+        "baseline/chat.json": {
+          "bytes": 2,
+          "dataBase64": "W10="
+        },
+        "baseline/conversations.json": {
+          "bytes": 2,
+          "dataBase64": "W10="
+        },
+        "baseline/goals.json": {
+          "bytes": 177,
+          "dataBase64": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjEwMDAwLCJ3ZWlnaHRLZyI6NzV9"
+        },
+        "baseline/water.json": {
+          "bytes": 32,
+          "dataBase64": "e3N5bnRoZXRpYyBkYW1hZ2VkIGN1cnJlbnQgd2F0ZXI="
+        },
+        "baseline/conversation-selection.json": {
+          "bytes": 2,
+          "dataBase64": "e30="
+        }
+      }
+    }
+  ],
+  "log": "HealthCopiesFocusedR1.log.gz",
+  "scope": "Actual Foundation candidate failure, not a repaired pass. Raw synthetic roots retained."
+}

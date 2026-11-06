@@ -1,0 +1,9 @@
+{
+  "status": "failed executed erasure-leftover regression; exit133",
+  "source": "durable-source-r41.json",
+  "pureSource": "local-domain-pure-source-r33.json",
+  "root": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/Lumen-recovery-copies-086E9017-3247-4F70-B90D-056B9960C7F3",
+  "binarySHA256": "f5419e07a58aa3cac74d985442e078c4c51efa3ebdf2ccb792bd8192331b1dfe",
+  "finding": "captureDiscovery correctly skips prior preservation for a completed-reset marker, but discover then calls the ordinary read-only catalog, exposing an existing leftover private copy. No current record or prior intent is installed; this is an available-choice leak under the completed-marker fixture.",
+  "checksBeforeFailure": 16
+}

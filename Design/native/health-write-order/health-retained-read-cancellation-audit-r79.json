@@ -1,0 +1,11 @@
+{
+  "status": "Source inspection only; not runtime defect acceptance",
+  "source": "durable-source-r79.json",
+  "finding": "Retained-copy record view awaits detached verification without cancellation control/onDisappear; records/photoData and verify create default controls or expose none. Shared photo view passes a control but retained photo closure checks it only before and after uncancellable copy verification/read. Preview control checks between domains/photos, while bounded reads and manifest audit use new/default controls.",
+  "paths": [
+    "Lumen/Views/HealthRecoveryView.swift",
+    "Lumen/Models/HealthRecoverySelection.swift",
+    "Lumen/Models/HealthRecoveryCopies.swift"
+  ],
+  "next": "After frozen Back tests finish, thread one actual control through retained verification/read helpers and UI task handlers; retain change/error semantics, rethrow CancellationError instead of classifying damaged data, verify held actual typed reads and source replacement. Avoid extending long common lock ownership. Full existing contracts preserved."
+}

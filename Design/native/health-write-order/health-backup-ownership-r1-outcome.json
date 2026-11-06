@@ -1,0 +1,96 @@
+{
+  "status": "PROGRESS; checked identity/shared ownership implemented;25 focused/2011 full and three current native input-path regressions pass; unavailable-domain recovery still incomplete",
+  "source": "durable-source-r66.json",
+  "pureSource": "local-domain-pure-source-r44.json",
+  "pureInputs": 126,
+  "compiledSwiftSources": 123,
+  "focusedChecks": 25,
+  "fullLogicChecks": 2011,
+  "pureBinarySHA256": "ee55e3ae773d64e025436ae79e8c36d27ed59b02d768a201088d2740d174063c",
+  "nativeBuild": "health-backup-ownership-native-build-r3.json",
+  "nativeRuntime": {
+    "status": "three actual normal Settings/Files input paths pass expected-unavailable baseline assertions; original private bytes observed with live app owner",
+    "source": "durable-source-r66.json",
+    "cases": [
+      {
+        "case": "legacy",
+        "source": "durable-source-r66.json",
+        "summary": "health-backup-baseline-legacy-ownedr1-summary.json",
+        "hostAudit": "health-backup-baseline-legacy-ownedr1-host-audit.json",
+        "images": "health-backup-baseline-legacy-ownedr1-images.json",
+        "liveSourceObservation": {
+          "directory": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/07166FD9-E0DB-442B-A3B6-7843ED5C1700/tmp/LumenBackupWork-v1-73194-451B031B-E99F-474B-971B-446B2B785D34",
+          "owner": {
+            "version": 1,
+            "id": "451B031B-E99F-474B-971B-446B2B785D34",
+            "pid": 73194
+          },
+          "originalFileName": "Lumen-backup-health-legacy-small.json",
+          "bytes": 1176,
+          "sha256": "c32309d29f91d34fc799480e862e1569975d3565fd58c7a100429059e50e8449",
+          "observedAfterNativeAttachment": "health-backup-baseline-legacy-current-unavailable",
+          "observedAtUnixTime": 1793821678.220182
+        }
+      },
+      {
+        "case": "encrypted",
+        "source": "durable-source-r66.json",
+        "summary": "health-backup-baseline-encrypted-ownedr1-summary.json",
+        "hostAudit": "health-backup-baseline-encrypted-ownedr1-host-audit.json",
+        "images": "health-backup-baseline-encrypted-ownedr1-images.json",
+        "liveSourceObservation": {
+          "directory": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/A8992DF4-B7CD-40A4-A96A-5E41330F0B34/tmp/LumenBackupWork-v1-74537-AC96B653-5799-4057-AE95-99CBC343D85D",
+          "owner": {
+            "id": "AC96B653-5799-4057-AE95-99CBC343D85D",
+            "pid": 74537,
+            "version": 1
+          },
+          "originalFileName": "Lumen-backup-health-encrypted-small.lumenbackup",
+          "bytes": 19456,
+          "sha256": "e34e3ba51212f83e961aba82d9565e7c7263dbb5bebf8af3db1c4e48d5aca9b1",
+          "observedAfterNativeAttachment": "health-backup-baseline-encrypted-current-unavailable",
+          "observedAtUnixTime": 1793821756.160558
+        }
+      },
+      {
+        "case": "readable",
+        "source": "durable-source-r66.json",
+        "summary": "health-backup-baseline-readable-ownedr1-summary.json",
+        "hostAudit": "health-backup-baseline-readable-ownedr1-host-audit.json",
+        "images": "health-backup-baseline-readable-ownedr1-images.json",
+        "liveSourceObservation": {
+          "directory": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/15CFDF87-9840-4D39-8BBE-DFBB65D837A4/tmp/LumenBackupWork-v1-76166-BC4359C2-7937-46F7-9006-FF3236DE10A7",
+          "owner": {
+            "version": 1,
+            "pid": 76166,
+            "id": "BC4359C2-7937-46F7-9006-FF3236DE10A7"
+          },
+          "originalFileName": "Lumen-readable-health-small.json",
+          "bytes": 831,
+          "sha256": "bad71f0672b2e44ec7d2828be49d3cc758b4dc48c57b6639d55be5a72bc9da38",
+          "observedAfterNativeAttachment": "health-backup-baseline-readable-valid-review",
+          "observedAtUnixTime": 1793821829.0831869
+        }
+      }
+    ],
+    "scope": "Shows private selected source present after actual reviewed/error state. Does not prove held reader/navigation/cancel/late completion or healthy-preview Source release; those remain required."
+  },
+  "implemented": [
+    "Bounded streaming selected-file name/format/length/SHA256 with descriptor/path/change checks, cancellation and re-verification before/after reading and before normal restore.",
+    "Private workspace shared ownership; cleanup is deferred until final release. Another live operation and replacement directories are preserved; only marked dead-process workspaces are reclaimed. Unknown legacy/symlink directories are preserved.",
+    "Backup previews retain the original selected Source, including legacy preview with a separate photo workspace. Readable sessions retain their Source across conversion/review/restore; explicit lifetime fences protect detached work."
+  ],
+  "failedBoundaries": [
+    "health-backup-source-ownership-r1-failure.json",
+    "health-backup-source-ownership-r2-failure.json"
+  ],
+  "scope": "Actual Foundation hash/file faults/cancellation and worker-owned files, including actual child process exit for workspace reclamation; native build only. NOT UIKit service held-worker/navigation/cancellation proof, original-source receipt provenance, all-domain/large/capacity/device or successful product recovery.",
+  "remaining": "Implement explicit unavailable-domain review/replacement, bound original-file provenance in recovery receipts and lease through installation; actual held read/prepare/Back/Cancel/source replacement and healthy merge/preview controls; separate absent-cache handling. Preserve full health-backup-recovery-r1-contract.json and all original/all-domain/legacy/availability/Health/device/Release/publication gates.",
+  "storage": {
+    "availableBytes": 22615134208,
+    "recoveredBytesCredited": 0,
+    "manualCacheDeletion": false,
+    "note": "Reusable caches/current inputs/unpublished evidence retained; no unrelated cache/files modified."
+  },
+  "activeProducers": []
+}

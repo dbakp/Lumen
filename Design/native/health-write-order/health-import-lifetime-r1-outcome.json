@@ -1,0 +1,125 @@
+{
+  "status": "PROGRESS:114legacy/readable actual payload Cancel, successful owner cleanup and same-parent fresh selection both pass; full goal active/Batch43 unpublished.",
+  "source": "durable-source-r114.json",
+  "productionSource": "durable-source-r113.json",
+  "pureSource": "local-domain-pure-source-r65.json",
+  "contract": "health-import-lifetime-r1-contract.json",
+  "build": "health-import-lifetime-native-build-r1.json",
+  "driver": "run-health-import-lifetime.py",
+  "driverArchive": "health-import-lifetime-driver-r1.py.gz",
+  "driverSHA256": "6858c0b6c3a0f5524db7e85cc6137fa6a9c4cce934f40e299fac4d6fd5a5b283",
+  "cases": [
+    {
+      "case": "legacy",
+      "source": "durable-source-r114.json",
+      "hostAudit": "health-import-lifetime-legacy-r1-host-audit.json",
+      "observations": "health-import-lifetime-legacy-r1-observations.json",
+      "summary": "health-import-lifetime-legacy-r1-summary.json",
+      "images": "health-import-lifetime-legacy-r1-images.json",
+      "readbacks": "health-import-lifetime-legacy-r1-readbacks.json",
+      "readback": {
+        "action": "cancel",
+        "cancelledReadyStableSeconds": 4.304680943489075,
+        "cancelMessage": "Cancelled. Your records haven\u2019t changed.",
+        "fileName": "Lumen-backup-health-legacy-small.json",
+        "finalLifetimeChecked": true,
+        "format": "legacy",
+        "parent": "Backup & restore",
+        "readBoundary": "original-payload",
+        "reselectedAmount": "Amount, 246 mL",
+        "reselectedChoiceInitiallyOff": true,
+        "retryAmount": "Amount, 246 mL",
+        "scope": "selected-import",
+        "stopStartedUnix": 1793851168.1804051,
+        "stopToClosedSeconds": 1.9463590383529663
+      },
+      "inputBytes": 1176,
+      "inputSHA256": "c32309d29f91d34fc799480e862e1569975d3565fd58c7a100429059e50e8449",
+      "actualOriginalControls": [
+        1,
+        2,
+        3
+      ],
+      "successfulReviewStages": 2,
+      "ownedWorkspacesPerReview": [
+        2,
+        2
+      ],
+      "savedFilesExact": 12,
+      "hostDeletedFiles": false
+    },
+    {
+      "case": "readable",
+      "source": "durable-source-r114.json",
+      "hostAudit": "health-import-lifetime-readable-r1-host-audit.json",
+      "observations": "health-import-lifetime-readable-r1-observations.json",
+      "summary": "health-import-lifetime-readable-r1-summary.json",
+      "images": "health-import-lifetime-readable-r1-images.json",
+      "readbacks": "health-import-lifetime-readable-r1-readbacks.json",
+      "readback": {
+        "action": "cancel",
+        "cancelledReadyStableSeconds": 4.315768003463745,
+        "cancelMessage": "Cancelled. Your saved data hasn't changed.",
+        "fileName": "Lumen-readable-health-small.json",
+        "finalLifetimeChecked": true,
+        "format": "readable",
+        "parent": "Recover export",
+        "readBoundary": "original-payload",
+        "reselectedAmount": "Amount, 246 mL",
+        "reselectedChoiceInitiallyOff": true,
+        "retryAmount": "Amount, 246 mL",
+        "scope": "selected-import",
+        "stopStartedUnix": 1793851405.077867,
+        "stopToClosedSeconds": 1.982424020767212
+      },
+      "inputBytes": 831,
+      "inputSHA256": "bad71f0672b2e44ec7d2828be49d3cc758b4dc48c57b6639d55be5a72bc9da38",
+      "actualOriginalControls": [
+        1,
+        2,
+        3
+      ],
+      "successfulReviewStages": 2,
+      "ownedWorkspacesPerReview": [
+        1,
+        1
+      ],
+      "savedFilesExact": 12,
+      "hostDeletedFiles": false
+    }
+  ],
+  "verification": {
+    "nativePassed": 2,
+    "nativeFailed": 0,
+    "producerExitCodes": [
+      0,
+      0
+    ],
+    "currentNativeInputs": 247,
+    "binaryFixtures": 3,
+    "fixtureScope": "2JPEG plus exact encrypted baseline input; existing legacy/readable actual seed/provider bytes separately independently matched",
+    "retainedPNGs": 22,
+    "selectedPNGsOpened": 10,
+    "retainedUnopenedPNGs": 12,
+    "nativeJSONReadbacksRead": 2,
+    "appBinaryExact113": true,
+    "pureInputsExact113": 128,
+    "compiledSwiftInputs": 125,
+    "full2173ExecutionBoundary": "Actual113/pure65, inputs unchanged114; not rerun114",
+    "nativeEncrypted4AndService25": "Actual113; app executable exact114, no extra runtime rerun claimed"
+  },
+  "scope": "Main-normal/small payloads. First actual payload hold never released; Cancel closes actual reader, removes unused first original and stays idle4s without late work. Real retry has new owner/source/control, exact provider bytes; initial off choice explicitly enabled without commit and246mL detail. Actual current-process marked original/photo workspaces inventoried (legacy2/readable1 per successful review); all absent/no open paths after first parent. Same parent Files selection starts distinct control3/source/owner, prior roots absent before host release, new choice off,246mL detail, final all roots absent/actual review-close marker/no open paths. All12saved/strict7baseline originals exact. No host deletion/reset or recovery commit. No exact tap-to-delete timing or photo-payload/active-worker/capacity/all-appearance acceptance inferred.",
+  "remaining": [
+    "Actual active selected record/photo workers and their ownership through parent close; photo zero/two/shared/missing/damaged/omitted and all domain recovery/ordinary merge/restore commits.",
+    "Non-cancellation error/fault cleanup, changed source/selection/late work, partial multi-chunk copying, atomic/in-flight key/attribute/Foundation latency/capacity, pre-password Back, both-phone appearances/VoiceOver/design critic.",
+    "Every full original contract/eight groups, cache/discovery/legacy/symlink/Health daemon/permissions/Watch/widget/reminder/interruption/current SDK/Release/signed-device/publication and broader product/evidence/privacy/provider/accessibility/performance goal."
+  ],
+  "logs": "health-backup-r1-logs.json",
+  "storage": {
+    "availableApproxGiB": 65,
+    "availableBytes": 70328913920,
+    "manualRecoveredBytes": 0,
+    "policy": "Keep current inputs/supplied skill/unpublished raw/frozen/original evidence and immediately reused single build roots. No bytecode cache generated (syntax checked by ast.parse), large fixture/download/new runtime/unrelated/global deletion or docs-only build. Product cleanup is functional evidence, not manual recovered-space credit."
+  },
+  "finalAudit": "health-import-lifetime-r1-final-audit.json"
+}

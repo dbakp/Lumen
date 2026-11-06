@@ -1,0 +1,22 @@
+{
+  "status": "passed requested cases",
+  "source": "durable-source-r72.json",
+  "build": "health-backup-cancel-native-build-r3.json",
+  "cases": [
+    {
+      "mode": "oriented",
+      "prefix": "health-file-photo-oriented-r1",
+      "test": "PhotoOriented",
+      "source": "durable-source-r72.json",
+      "passed": 1
+    },
+    {
+      "mode": "invalid",
+      "prefix": "health-file-photo-invalid-r1",
+      "test": "PhotoUnavailable",
+      "source": "durable-source-r72.json",
+      "passed": 1
+    }
+  ],
+  "scope": "Retained-copy shared photo page regression only: real EXIF-oriented JPEG rendering and actual invalid-photo error. No selected-backup-photo recovery, held typed-read cancellation, all-domain or device acceptance."
+}

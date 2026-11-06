@@ -112,7 +112,12 @@ public struct MainTabView: View {
         }
         .onChange(of: links.pending) { _, target in route(target) }
         .onAppear { route(links.pending) }
-        .task { await SyncCoordinator.syncEverything(sleep: store, health: health) }
+        .task {
+            #if DEBUG && targetEnvironment(simulator)
+            if HealthRecoveryUIFixture.backupRequested { return }
+            #endif
+            await SyncCoordinator.syncEverything(sleep: store, health: health)
+        }
         .onChange(of: router.tab) { _, tab in
             if tab == .sleep || tab == .activity || tab == .food {
                 router.show(tab == .sleep ? .sleepHome : tab == .activity ? .activityHome : .foodHome)

@@ -1,0 +1,627 @@
+{
+  "status": "shared semantic value validation candidate verified; previous-copy retention defect remains unresolved and publication is not accepted",
+  "source": "durable-source-r13.json",
+  "sourceInputs": 231,
+  "nativeExecutionSource": "durable-source-r12.json",
+  "nativeBuild": "local-values-native-build-r1.json",
+  "nativeExactApplicationCarry": "local-values-native-carry-r12-r13.json",
+  "baseline": "local-values-baseline-r1-outcome.json",
+  "baselineFixtureSourceUnchanged": true,
+  "pure": {
+    "reader": 30,
+    "semanticCurrentAndLegacy": 30,
+    "archiveIntegration": 65,
+    "full": 1794,
+    "source": "local-domain-pure-source-r5.json",
+    "compiledSources": 114,
+    "outcome": "localvaluesfulllogicr2-outcome.json"
+  },
+  "nativeSemantic": {
+    "invocations": 30,
+    "uniqueXCTestMethods": 1,
+    "frozenInvalidInputs": 15,
+    "phases": [
+      "startup",
+      "after open"
+    ],
+    "checks": 634,
+    "cases": [
+      {
+        "index": 0,
+        "case": "negative water",
+        "domain": "water",
+        "phase": "Startup",
+        "checks": 21,
+        "label": "local-values-case00-startup-r1"
+      },
+      {
+        "index": 1,
+        "case": "oversized single water log",
+        "domain": "water",
+        "phase": "Startup",
+        "checks": 21,
+        "label": "local-values-case01-startup-r1"
+      },
+      {
+        "index": 2,
+        "case": "duplicate water identities",
+        "domain": "water",
+        "phase": "Startup",
+        "checks": 21,
+        "label": "local-values-case02-startup-r1"
+      },
+      {
+        "index": 3,
+        "case": "duplicate meal identities",
+        "domain": "meals",
+        "phase": "Startup",
+        "checks": 23,
+        "label": "local-values-case03-startup-r1"
+      },
+      {
+        "index": 4,
+        "case": "duplicate food identities",
+        "domain": "meals",
+        "phase": "Startup",
+        "checks": 23,
+        "label": "local-values-case04-startup-r1"
+      },
+      {
+        "index": 5,
+        "case": "negative meal nutrient",
+        "domain": "meals",
+        "phase": "Startup",
+        "checks": 23,
+        "label": "local-values-case05-startup-r1"
+      },
+      {
+        "index": 6,
+        "case": "invalid food confidence",
+        "domain": "meals",
+        "phase": "Startup",
+        "checks": 23,
+        "label": "local-values-case06-startup-r1"
+      },
+      {
+        "index": 7,
+        "case": "duplicate workout identities",
+        "domain": "workouts",
+        "phase": "Startup",
+        "checks": 23,
+        "label": "local-values-case07-startup-r1"
+      },
+      {
+        "index": 8,
+        "case": "negative workout duration",
+        "domain": "workouts",
+        "phase": "Startup",
+        "checks": 23,
+        "label": "local-values-case08-startup-r1"
+      },
+      {
+        "index": 9,
+        "case": "reversed imported workout interval",
+        "domain": "workouts",
+        "phase": "Startup",
+        "checks": 23,
+        "label": "local-values-case09-startup-r1"
+      },
+      {
+        "index": 10,
+        "case": "unsafe numeric goal",
+        "domain": "goals",
+        "phase": "Startup",
+        "checks": 21,
+        "label": "local-values-case10-startup-r1"
+      },
+      {
+        "index": 11,
+        "case": "invalid goal age",
+        "domain": "goals",
+        "phase": "Startup",
+        "checks": 21,
+        "label": "local-values-case11-startup-r1"
+      },
+      {
+        "index": 12,
+        "case": "negative cached total",
+        "domain": "today",
+        "phase": "Startup",
+        "checks": 18,
+        "label": "local-values-case12-startup-r1"
+      },
+      {
+        "index": 13,
+        "case": "negative cached reading component",
+        "domain": "today",
+        "phase": "Startup",
+        "checks": 18,
+        "label": "local-values-case13-startup-r1"
+      },
+      {
+        "index": 14,
+        "case": "reversed cached reading interval",
+        "domain": "today",
+        "phase": "Startup",
+        "checks": 18,
+        "label": "local-values-case14-startup-r1"
+      },
+      {
+        "index": 0,
+        "case": "negative water",
+        "domain": "water",
+        "phase": "AfterOpen",
+        "checks": 21,
+        "label": "local-values-case00-afteropen-r1"
+      },
+      {
+        "index": 1,
+        "case": "oversized single water log",
+        "domain": "water",
+        "phase": "AfterOpen",
+        "checks": 21,
+        "label": "local-values-case01-afteropen-r1"
+      },
+      {
+        "index": 2,
+        "case": "duplicate water identities",
+        "domain": "water",
+        "phase": "AfterOpen",
+        "checks": 21,
+        "label": "local-values-case02-afteropen-r1"
+      },
+      {
+        "index": 3,
+        "case": "duplicate meal identities",
+        "domain": "meals",
+        "phase": "AfterOpen",
+        "checks": 22,
+        "label": "local-values-case03-afteropen-r1"
+      },
+      {
+        "index": 4,
+        "case": "duplicate food identities",
+        "domain": "meals",
+        "phase": "AfterOpen",
+        "checks": 22,
+        "label": "local-values-case04-afteropen-r1"
+      },
+      {
+        "index": 5,
+        "case": "negative meal nutrient",
+        "domain": "meals",
+        "phase": "AfterOpen",
+        "checks": 22,
+        "label": "local-values-case05-afteropen-r1"
+      },
+      {
+        "index": 6,
+        "case": "invalid food confidence",
+        "domain": "meals",
+        "phase": "AfterOpen",
+        "checks": 22,
+        "label": "local-values-case06-afteropen-r1"
+      },
+      {
+        "index": 7,
+        "case": "duplicate workout identities",
+        "domain": "workouts",
+        "phase": "AfterOpen",
+        "checks": 23,
+        "label": "local-values-case07-afteropen-r1"
+      },
+      {
+        "index": 8,
+        "case": "negative workout duration",
+        "domain": "workouts",
+        "phase": "AfterOpen",
+        "checks": 23,
+        "label": "local-values-case08-afteropen-r1"
+      },
+      {
+        "index": 9,
+        "case": "reversed imported workout interval",
+        "domain": "workouts",
+        "phase": "AfterOpen",
+        "checks": 23,
+        "label": "local-values-case09-afteropen-r1"
+      },
+      {
+        "index": 10,
+        "case": "unsafe numeric goal",
+        "domain": "goals",
+        "phase": "AfterOpen",
+        "checks": 20,
+        "label": "local-values-case10-afteropen-r1"
+      },
+      {
+        "index": 11,
+        "case": "invalid goal age",
+        "domain": "goals",
+        "phase": "AfterOpen",
+        "checks": 20,
+        "label": "local-values-case11-afteropen-r1"
+      },
+      {
+        "index": 12,
+        "case": "negative cached total",
+        "domain": "today",
+        "phase": "AfterOpen",
+        "checks": 18,
+        "label": "local-values-case12-afteropen-r1"
+      },
+      {
+        "index": 13,
+        "case": "negative cached reading component",
+        "domain": "today",
+        "phase": "AfterOpen",
+        "checks": 18,
+        "label": "local-values-case13-afteropen-r1"
+      },
+      {
+        "index": 14,
+        "case": "reversed cached reading interval",
+        "domain": "today",
+        "phase": "AfterOpen",
+        "checks": 18,
+        "label": "local-values-case14-afteropen-r1"
+      }
+    ],
+    "scope": "Actual native constructor, checked writers, invalid-new-payload rejection, no stale legacy, applicable record/photo/correction/profile/backup guards, healthy unrelated mutation and checked recovery. Every rejected payload is byte-identical to its frozen baseline and read by host before recovery; final files/live values/controlled adapter receipts independently matched. Not actual HealthKit."
+  },
+  "nativeControls": {
+    "outcome": "local-values-controls-r1-outcome.json",
+    "invocations": 2,
+    "checks": 36
+  },
+  "nativeTotals": {
+    "invocations": 32,
+    "uniqueXCTestMethods": 3,
+    "checks": 670
+  },
+  "archive": {
+    "report": "local-values-archives-r1-report.json",
+    "checks": 65,
+    "frozenBackedUpCases": 12,
+    "excludedCacheCases": 3,
+    "scope": "Invalid legacy creation/correctly hashed legacy read/readable import/readable export/encrypted export, plus healthy legacy/readable/actual encrypted controls. Not full restore/replacement or encrypted hostile-reader coverage."
+  },
+  "previousCopy": {
+    "reproduced": true,
+    "repaired": false,
+    "contract": "previous-health-copy-repair-contract-r1.json",
+    "productionFilesUnchangedSinceBaseline": [
+      "Lumen/Models/ConversationFiles.swift",
+      "Lumen/Models/BackupFileTransaction.swift"
+    ]
+  },
+  "images": {
+    "generated": 32,
+    "selectedIndividuallyInspected": 12,
+    "unselectedRawUninspected": 20,
+    "semantic": "local-values-images-r1.json",
+    "controls": "local-values-control-images-r1.json",
+    "scope": "Diagnostic overlays only; product recovery UI and continuing critic remain required."
+  },
+  "primaryLogs": {
+    "LocalValuesArchiveBuildR1.log.gz": {
+      "originalBytes": 974,
+      "originalSHA256": "532fa285c252e6febd468f8aba9df67f9716a1485dc9cedf022d76a96569db8b"
+    },
+    "LocalValuesArchivesR1.log.gz": {
+      "originalBytes": 4735,
+      "originalSHA256": "44663f4007b02d67505c01aeffac7d0810b52c81f66af078dac7390f66fa343b"
+    },
+    "LocalValuesBaselineBuildR1.log.gz": {
+      "originalBytes": 17402,
+      "originalSHA256": "6048a06eeba3b2a2e9433acd1bb931f3cac624e7e6535b5cdada7a1c4e9a8742"
+    },
+    "LocalValuesBaselineBuildR2.log.gz": {
+      "originalBytes": 920,
+      "originalSHA256": "11fe571f5b57d1a48ce79fd9386fed9098ea9372bb98a3b489add9dd2648a95b"
+    },
+    "LocalValuesBaselineR1.log.gz": {
+      "originalBytes": 114,
+      "originalSHA256": "4478c0a3a74436d619d504968893271d84ee157e262429dc9ce94cbe8efdae69"
+    },
+    "LocalValuesControlCombinedR1.log.gz": {
+      "originalBytes": 4527,
+      "originalSHA256": "bb6d2869e7c1ef23d1dec4119de726c1b99b738082427cd82b2ac96996838bac"
+    },
+    "LocalValuesControlCombinedR1Audit.log.gz": {
+      "originalBytes": 127,
+      "originalSHA256": "2c513555123a8148deffb39889e9317814e424d66b423c73b1bc5c036a3afd2d"
+    },
+    "LocalValuesControlCombinedR1Export.log.gz": {
+      "originalBytes": 361,
+      "originalSHA256": "86d390ea62ca2dd48534caa6e32e661145615541207679ea814bcc1aa2966351"
+    },
+    "LocalValuesControlReceiptR1.log.gz": {
+      "originalBytes": 4520,
+      "originalSHA256": "3939b3bae4918425f9fed37b156e1ef1b111d72c74dabc6adf4b9ee32c6f9631"
+    },
+    "LocalValuesControlReceiptR1Audit.log.gz": {
+      "originalBytes": 127,
+      "originalSHA256": "2c513555123a8148deffb39889e9317814e424d66b423c73b1bc5c036a3afd2d"
+    },
+    "LocalValuesControlReceiptR1Export.log.gz": {
+      "originalBytes": 358,
+      "originalSHA256": "23577941d0b3e99832ab5b3f226065cd457fac534aaef60d823a672da990b6b5"
+    },
+    "LocalValuesFocusedR1.log.gz": {
+      "originalBytes": 2688,
+      "originalSHA256": "c555e3a14589be5cffa8e01e30af6945eb7c78017dd3d45789777a2361f248d8"
+    },
+    "LocalValuesFullLogicR1.log.gz": {
+      "originalBytes": 136589,
+      "originalSHA256": "e42f471041b821afcab109fbf500209de2a3a0ac90f6a7f0294cd1364373673a"
+    },
+    "LocalValuesFullLogicR2.log.gz": {
+      "originalBytes": 141324,
+      "originalSHA256": "adf30d6ad09adc88dff8fcbeb627ad978b7da70826a2ca5cb32ff3c8deb1594a"
+    },
+    "LocalValuesLogicBuildR1.log.gz": {
+      "originalBytes": 988,
+      "originalSHA256": "b228c3daf21c21b173032e768ab4b0bba5f228c39e4a7b9caa096459fbc2ff32"
+    },
+    "LocalValuesNativeBuildR1.log.gz": {
+      "originalBytes": 87987,
+      "originalSHA256": "9a38cd2ccfa8a003a9661430858d5fc9e9eee9d4867fdba23013aca54e447451"
+    },
+    "LocalValuesNativeCase00AfterOpenR1.log.gz": {
+      "originalBytes": 4520,
+      "originalSHA256": "b5c0273bcc8a16aaa9acd108f71c02921d4625fb6407d7153667db2c34934325"
+    },
+    "LocalValuesNativeCase00AfterOpenR1Export.log.gz": {
+      "originalBytes": 366,
+      "originalSHA256": "5d36fb2ddeff33b87dacccec438cb7c332f9cae9bc220918ec71ac7681a42627"
+    },
+    "LocalValuesNativeCase00StartupR1.log.gz": {
+      "originalBytes": 4514,
+      "originalSHA256": "3eae1d1eb761a59713268695c9a7b9464c5a3bc9664f45d7b420687f7e4b22db"
+    },
+    "LocalValuesNativeCase00StartupR1Export.log.gz": {
+      "originalBytes": 364,
+      "originalSHA256": "df3d641e4e1fa769304e38b7ed57e13c6f7ea0b4306cd2e4a33e510af5135ba8"
+    },
+    "LocalValuesNativeCase01AfterOpenR1.log.gz": {
+      "originalBytes": 4520,
+      "originalSHA256": "9dcd746b7101897c19e3eae77441c00db7fef1b6ac4a617915727666332afc83"
+    },
+    "LocalValuesNativeCase01AfterOpenR1Export.log.gz": {
+      "originalBytes": 366,
+      "originalSHA256": "701e4c3a085a6dbf0d24eef174284b55435d0a44090eb7bdcf2a598695e54b3d"
+    },
+    "LocalValuesNativeCase01StartupR1.log.gz": {
+      "originalBytes": 4514,
+      "originalSHA256": "652c2abf89d83886b9292bf71df31b12f06416d9dc4d514f49729b8d30c78d4f"
+    },
+    "LocalValuesNativeCase01StartupR1Export.log.gz": {
+      "originalBytes": 364,
+      "originalSHA256": "87060068139aa81a35ae456adc90e5e7879b297f1f2034c0b4d47c85cd3c6c17"
+    },
+    "LocalValuesNativeCase02AfterOpenR1.log.gz": {
+      "originalBytes": 4520,
+      "originalSHA256": "6c885cdfef28092d56825640a3a8c2304d1e793f55dfa0ab0471a2ac21d6a56a"
+    },
+    "LocalValuesNativeCase02AfterOpenR1Export.log.gz": {
+      "originalBytes": 366,
+      "originalSHA256": "991a99571458df1e4255a3556d2fa5e40c3fc94d359b77174a27d85aa3fb5e09"
+    },
+    "LocalValuesNativeCase02StartupR1.log.gz": {
+      "originalBytes": 4514,
+      "originalSHA256": "144e33e4b8fca8fdd9e6bd2a4329975935bd918c46da3e794e6b44a327d2096b"
+    },
+    "LocalValuesNativeCase02StartupR1Export.log.gz": {
+      "originalBytes": 364,
+      "originalSHA256": "8ef9d4c8d36380f2055d71297ffd3878eccc0cdc73b4cd8515af87f929c7d4a0"
+    },
+    "LocalValuesNativeCase03AfterOpenR1.log.gz": {
+      "originalBytes": 4520,
+      "originalSHA256": "8ad6262c6e333a132ccd08e95e248445be5da32fb8a3d822861b43563e9eebc1"
+    },
+    "LocalValuesNativeCase03AfterOpenR1Export.log.gz": {
+      "originalBytes": 366,
+      "originalSHA256": "a0cc97bf87d4e5678299adc596768a7a2091058cca5c6dd08001523dc15e4b4d"
+    },
+    "LocalValuesNativeCase03StartupR1.log.gz": {
+      "originalBytes": 4514,
+      "originalSHA256": "084da3d1d5ae49106434e8d7829193643a8757f5e7bd5c337d7c3d2558fcb41f"
+    },
+    "LocalValuesNativeCase03StartupR1Export.log.gz": {
+      "originalBytes": 364,
+      "originalSHA256": "c968376517e0144597429c8096126be062f99bbad2ce402c4a7d043d6e064fb1"
+    },
+    "LocalValuesNativeCase04AfterOpenR1.log.gz": {
+      "originalBytes": 4520,
+      "originalSHA256": "df611dc387db5f9b94832f9244d336828a5cb12312f0f3829455b810dff53d46"
+    },
+    "LocalValuesNativeCase04AfterOpenR1Export.log.gz": {
+      "originalBytes": 366,
+      "originalSHA256": "99d100bbb6138377ec192f3222f1d357da74aec5fabfea5f0b7af94602c92d62"
+    },
+    "LocalValuesNativeCase04StartupR1.log.gz": {
+      "originalBytes": 4514,
+      "originalSHA256": "9299554b7616c3d48b28e4456174ee711a435d1f86652006849bbbd18c6a11d6"
+    },
+    "LocalValuesNativeCase04StartupR1Export.log.gz": {
+      "originalBytes": 364,
+      "originalSHA256": "9a45435f8f3e780887a8fe9e626450fe27b2131754c142ccbcb1ff2d3adab48b"
+    },
+    "LocalValuesNativeCase05AfterOpenR1.log.gz": {
+      "originalBytes": 4520,
+      "originalSHA256": "cd39b9e47c8594a61f2b3754ee633f8ff1a453bd2f5223e3e1234b88dc799daf"
+    },
+    "LocalValuesNativeCase05AfterOpenR1Export.log.gz": {
+      "originalBytes": 366,
+      "originalSHA256": "02b44d74604e0a67920fcd56f771d143a5513fb812a817392135144d67057ba0"
+    },
+    "LocalValuesNativeCase05StartupR1.log.gz": {
+      "originalBytes": 4514,
+      "originalSHA256": "dde5438f21f6f046bdc343ad0c67bdaeea90db51186f0491daf3408ce2b19b05"
+    },
+    "LocalValuesNativeCase05StartupR1Export.log.gz": {
+      "originalBytes": 364,
+      "originalSHA256": "d9097cab9d2651c185fffa30030efa87b20c8130758c6cccf1be21fc6ef712e7"
+    },
+    "LocalValuesNativeCase06AfterOpenR1.log.gz": {
+      "originalBytes": 4520,
+      "originalSHA256": "417a5eb6a49bae14c637017612a74a7edfe442d138f6d94abf5c908d8207aa3f"
+    },
+    "LocalValuesNativeCase06AfterOpenR1Export.log.gz": {
+      "originalBytes": 366,
+      "originalSHA256": "b1d2b5804703b066f70bd149a275f87f586627251d3bd40b07e90d1d2e5f3a57"
+    },
+    "LocalValuesNativeCase06StartupR1.log.gz": {
+      "originalBytes": 4514,
+      "originalSHA256": "6a9099e58877274b74438c2e72f65d3397bbafad76b17dc35fe3197cd58da268"
+    },
+    "LocalValuesNativeCase06StartupR1Export.log.gz": {
+      "originalBytes": 364,
+      "originalSHA256": "894436032df041d098989fad54f79ef1c99dc7b8559bedeac4dad42c2335f5f4"
+    },
+    "LocalValuesNativeCase07AfterOpenR1.log.gz": {
+      "originalBytes": 4520,
+      "originalSHA256": "e9fd4f97bb60611d2e83361001b3391b2d4a4b39cd48d2793a5e6c55bcc3a5b8"
+    },
+    "LocalValuesNativeCase07AfterOpenR1Export.log.gz": {
+      "originalBytes": 366,
+      "originalSHA256": "a945d2859d54cee18b9f2a57a3647f19cd4ca8afa8d881964672c79a96fb7d06"
+    },
+    "LocalValuesNativeCase07StartupR1.log.gz": {
+      "originalBytes": 4514,
+      "originalSHA256": "b263d86172d9aa1a2dc0504600de8d341766b2ce0ab3a1d2c6eeb2a18675dff9"
+    },
+    "LocalValuesNativeCase07StartupR1Export.log.gz": {
+      "originalBytes": 364,
+      "originalSHA256": "3a782ee7d613c19710ff59d51216bf31cacc20095010ee08f04bcec6d235e9b2"
+    },
+    "LocalValuesNativeCase08AfterOpenR1.log.gz": {
+      "originalBytes": 4520,
+      "originalSHA256": "92b537699c11ee59c640e701281e68e6ff5f4542f6a9e6db0456e15832a052ed"
+    },
+    "LocalValuesNativeCase08AfterOpenR1Export.log.gz": {
+      "originalBytes": 366,
+      "originalSHA256": "b22093d4ddf871bfd1bfb960b358127a1e9bed9b75994c6ac098a8b144e69e51"
+    },
+    "LocalValuesNativeCase08StartupR1.log.gz": {
+      "originalBytes": 4514,
+      "originalSHA256": "e39b211f6e0792b7f313fec7eea270690c55faab839df92f515da746b12112b3"
+    },
+    "LocalValuesNativeCase08StartupR1Export.log.gz": {
+      "originalBytes": 364,
+      "originalSHA256": "818a51f2e32076f5e881e7c4faa7d178c54da11fc29ace45557a1c600d7448bf"
+    },
+    "LocalValuesNativeCase09AfterOpenR1.log.gz": {
+      "originalBytes": 4520,
+      "originalSHA256": "b651b6acbd0bbc5f07ec6bbddf9c7dcb519e4523af7a409cad32fc139127a4b8"
+    },
+    "LocalValuesNativeCase09AfterOpenR1Export.log.gz": {
+      "originalBytes": 366,
+      "originalSHA256": "ee4a08b90e88bc1cccd260d2e0d2d3ec518c8b80cf1fbd274f5532067b4266d8"
+    },
+    "LocalValuesNativeCase09StartupR1.log.gz": {
+      "originalBytes": 4514,
+      "originalSHA256": "9bbfa04f3605f438b9c1a1c5596699a9ff025884f9c8e75cd3f7b80ec4a0c115"
+    },
+    "LocalValuesNativeCase09StartupR1Export.log.gz": {
+      "originalBytes": 364,
+      "originalSHA256": "0ec04472e1162df950b6aa1e4da4e5764f87da60178ca29bbec3418c900273c7"
+    },
+    "LocalValuesNativeCase10AfterOpenR1.log.gz": {
+      "originalBytes": 4520,
+      "originalSHA256": "cdc301f91f9b230f56a143474b523e93b03f4e5b605c4aee52ae9ef27cb6c79a"
+    },
+    "LocalValuesNativeCase10AfterOpenR1Export.log.gz": {
+      "originalBytes": 366,
+      "originalSHA256": "6479ae28c9a02eb92fc5bbfbcdc0d404c57bacd3c10134a2be86666e3bd8a7d1"
+    },
+    "LocalValuesNativeCase10StartupR1.log.gz": {
+      "originalBytes": 4514,
+      "originalSHA256": "88d68a44da21ac8918001bcff806cbc7ec53dc541c16c0424c7ef2748e968fe0"
+    },
+    "LocalValuesNativeCase10StartupR1Export.log.gz": {
+      "originalBytes": 364,
+      "originalSHA256": "dfcc21d32c954a8b9e7e16e770d4ce773311d82e078d45fc1fac407c8c5750dc"
+    },
+    "LocalValuesNativeCase11AfterOpenR1.log.gz": {
+      "originalBytes": 4520,
+      "originalSHA256": "0a3361e975b3cd25e521073c26537a207fbb9b129902b2a47403ca06cf922b78"
+    },
+    "LocalValuesNativeCase11AfterOpenR1Export.log.gz": {
+      "originalBytes": 366,
+      "originalSHA256": "f08d89613c6e9715c6a34046f76e44c0219049b20cbcf61cdb6b4c2137e2c840"
+    },
+    "LocalValuesNativeCase11StartupR1.log.gz": {
+      "originalBytes": 4514,
+      "originalSHA256": "b417eff3499601f924725ded63ce1f78ca36a98c24035af511731a3a55d7789b"
+    },
+    "LocalValuesNativeCase11StartupR1Export.log.gz": {
+      "originalBytes": 364,
+      "originalSHA256": "a9c92841e31f2a855f4667900bbce39a46eee06e9508babe792bfbc6f7ddee5f"
+    },
+    "LocalValuesNativeCase12AfterOpenR1.log.gz": {
+      "originalBytes": 4520,
+      "originalSHA256": "3a9640683f6a7a3a785c8cd3780852ecfb204b49d6829be148ffc56c2db9cd37"
+    },
+    "LocalValuesNativeCase12AfterOpenR1Export.log.gz": {
+      "originalBytes": 366,
+      "originalSHA256": "68d2d53d0556d1aa488a748cc1568bd65eb0e6bcc788178e4a5b0d546b64ca48"
+    },
+    "LocalValuesNativeCase12StartupR1.log.gz": {
+      "originalBytes": 4514,
+      "originalSHA256": "e5b705c0799a14a7b636172488824feae220fc33e10e42313cca53ffba99bf60"
+    },
+    "LocalValuesNativeCase12StartupR1Export.log.gz": {
+      "originalBytes": 364,
+      "originalSHA256": "5f5ffab1c7d3a639ed543f3179ac2083ff110bc5a070b10e35737381a84fea2f"
+    },
+    "LocalValuesNativeCase13AfterOpenR1.log.gz": {
+      "originalBytes": 4520,
+      "originalSHA256": "b6f8c9c92f39630f637999c23535ac81c4830abaa7d488bb07a40def06ac5c48"
+    },
+    "LocalValuesNativeCase13AfterOpenR1Export.log.gz": {
+      "originalBytes": 366,
+      "originalSHA256": "cf373c6988270ac7bb9ddb431914228403a62eb4bfbd8451387557b03cf3ebb0"
+    },
+    "LocalValuesNativeCase13StartupR1.log.gz": {
+      "originalBytes": 4514,
+      "originalSHA256": "fdfb6be43f4121c53a772838e3df87debbf79437b56c9425aca304190f21a7c2"
+    },
+    "LocalValuesNativeCase13StartupR1Export.log.gz": {
+      "originalBytes": 364,
+      "originalSHA256": "e22b2ff250e814361133b5a372eb9e7fb073194dfc35592e3dd65912c378d185"
+    },
+    "LocalValuesNativeCase14AfterOpenR1.log.gz": {
+      "originalBytes": 4520,
+      "originalSHA256": "5deaa215fafcf59976ce1361e5a133ce604004caa69564b25efa149ae330d7b8"
+    },
+    "LocalValuesNativeCase14AfterOpenR1Export.log.gz": {
+      "originalBytes": 366,
+      "originalSHA256": "745af322774a89a8b096d01e3a06c24b8cdb7da61bfbc4d3fc2f069a9c4555aa"
+    },
+    "LocalValuesNativeCase14StartupR1.log.gz": {
+      "originalBytes": 4514,
+      "originalSHA256": "8129d897c332af0c34807f0e1303ca7387eb32ebf280722589f3ffa84dfc1d5f"
+    },
+    "LocalValuesNativeCase14StartupR1Export.log.gz": {
+      "originalBytes": 364,
+      "originalSHA256": "4943f76e770008d96f4e74b9722fd6685c0c83a8032cf0e3d6e413691c93167a"
+    },
+    "LocalValuesNativeDriverR1.log.gz": {
+      "originalBytes": 4503,
+      "originalSHA256": "7f7fc2f43e9acdc1d5542f89fbd068fbeb18a6f5fa16ef0ba7ee3ff8574ba9ac"
+    }
+  },
+  "nativeDriver": {
+    "path": "run-local-values-native.py",
+    "sha256": "cb569b6a3124aedfcee64e6ff6faa1031248931c602c8651ff995aecff772be0"
+  },
+  "allProducersTerminal": true,
+  "producerHandles": "8254 failed helper build;95404 baseline build;98640/60795 logic;56490 native build;63917 native matrix;34152 controls;17504/89494 archive/full logic all terminal.",
+  "availableBytes": 24739299328,
+  "storageCheckedAtUTC": "2026-11-03T13:40:54.418405+00:00",
+  "manualCacheRecoveryCreditedBytes": 0,
+  "storage": "Keep all unpublished raw/compact evidence and immediate native/package/logic caches. Available volume space briefly fluctuated from about24.7GB to about19GB and back while known task roots measured about1.7GB allocated; no task cache removal or recovered space is credited. No large fixtures or actual HealthKit samples generated this turn.",
+  "requiredNext": "Repair previous-copy loss and explicit backup recovery; remaining local-domain contract, companion/UI/late-source gates and all original eight durable groups remain required."
+}

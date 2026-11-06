@@ -1,0 +1,32 @@
+{
+  "checks" : [
+    "source identity retains literal original name, declared format and exact byte length",
+    "chunked source fingerprint matches all original bytes across multiple chunks",
+    "source identity roundtrips without passwords, device state or local paths",
+    "format classification does not replace the checked file fingerprint",
+    "oversized input rejects before source hashing",
+    "invalid source limit rejects",
+    "maximum representable source ceiling does not overflow chunk arithmetic",
+    "empty input is not a selected backup source",
+    "source fingerprint never follows a symbolic link",
+    "source fingerprint rejects directory input",
+    "source fingerprint rejects a FIFO without blocking",
+    "same-length changed source bytes reject the original reviewed identity",
+    "source fingerprint observes cancellation before opening",
+    "source fingerprint stops between actual read chunks when its operation is cancelled",
+    "path replacement during an open descriptor read rejects even when original bytes were read",
+    "a cleanup request and UI-owner release cannot delete a worker-owned selected file",
+    "a new operation preserves another live workspace instead of globally clearing temporary sources",
+    "worker can still read exact source bytes after another owner requests cleanup",
+    "last workspace release removes only its own private directory",
+    "final release does not erase a replacement directory at the old workspace path",
+    "actual child process creates a private workspace and terminates before cleanup",
+    "terminated child's actual owned directory remains available for checked reclamation",
+    "new operation reclaims an actual terminated owner's marked workspace",
+    "abandoned-work scan never follows or removes a symbolic-link workspace",
+    "unknown legacy workspace is not treated as proven abandoned"
+  ],
+  "count" : 25,
+  "scope" : "Actual Foundation descriptor\/hash\/cancellation and shared-workspace file lifetime. No actual UIKit service ownership, held native navigation, capacity, recovery receipt or device acceptance.",
+  "status" : "passed"
+}

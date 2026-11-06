@@ -1,0 +1,112 @@
+{
+  "status": "three actual native corrupt-domain replacement defects reproduced; fourth unreadable-directory baseline recorded; repair remains required",
+  "source": "durable-source-r9.json",
+  "sourceInputs": 225,
+  "build": "durable-native-build-r8.json",
+  "productionChangesFromR8": [],
+  "nativeDiagnosticAndTestChanges": [
+    "Lumen/Services/HealthWriteNativeProbe.swift",
+    "LumenUITests/LumenSmokeTests.swift"
+  ],
+  "xctests": 4,
+  "nativeChecks": 23,
+  "cases": [
+    {
+      "case": "water",
+      "nativeChecks": 6,
+      "report": "local-domain-water-baseline-r1-report.json",
+      "hostAudit": "local-domain-water-baseline-r1-host-audit.json",
+      "log": "DurableLocalDomainCorruptWaterBaselineR1.log.gz",
+      "observed": "damaged current file replaced by a successful new mutation; acknowledged controlled external work follows",
+      "repaired": false
+    },
+    {
+      "case": "meals",
+      "nativeChecks": 6,
+      "report": "local-domain-meals-baseline-r1-report.json",
+      "hostAudit": "local-domain-meals-baseline-r1-host-audit.json",
+      "log": "DurableLocalDomainCorruptMealsBaselineR1.log.gz",
+      "observed": "damaged current file replaced by a successful new mutation; acknowledged controlled external work follows",
+      "repaired": false
+    },
+    {
+      "case": "goals",
+      "nativeChecks": 6,
+      "report": "local-domain-goals-baseline-r1-report.json",
+      "hostAudit": "local-domain-goals-baseline-r1-host-audit.json",
+      "log": "DurableLocalDomainCorruptGoalsBaselineR1.log.gz",
+      "observed": "damaged current file replaced by a successful new mutation; acknowledged controlled external work follows",
+      "repaired": false
+    },
+    {
+      "case": "unreadable-water",
+      "nativeChecks": 5,
+      "report": "local-domain-unreadable-water-baseline-r1-report.json",
+      "hostAudit": "local-domain-unreadable-water-baseline-r1-host-audit.json",
+      "log": "DurableLocalDomainUnreadableWaterBaselineR1.log.gz",
+      "observed": "failed read becomes empty live water; non-regular destination then rejects the new mutation with zero dispatch",
+      "repaired": false
+    }
+  ],
+  "images": "local-domain-baseline-images-r1.json",
+  "nativeOriginalsInspected": 4,
+  "uniqueImageHashes": 2,
+  "repairContract": "local-domain-repair-contract-r1.json",
+  "allProducersTerminal": true,
+  "scope": "Actual signed-simulator HealthStore constructor, load and mutation paths, real damaged JSON/non-regular file and actual Foundation commits. External operations are controlled, not HealthKit. Three cases intentionally reproduce unresolved defects; passing XCTest means expected baseline behavior was observed. Not full product UI, actual permission/lock, foreign-source or repaired acceptance.",
+  "availableBytes": 24484003840,
+  "storageCheckedAtUTC": "2026-11-03T12:41:11.655156+00:00",
+  "manualCacheRecoveryCreditedBytes": 0,
+  "storage": "All unpublished raw and compact evidence is retained. Reusable native/package/logic caches remain for the repair. No broad fixture, simulator, runtime or cache deletion.",
+  "verificationHelper": {
+    "path": "Design/native/health-write-order/run-local-domain-baseline.py",
+    "sha256": "6a8f939f45b0d0b87e029e4f44e365a62b90807d4f20c87483eb3cbd5f8023bc",
+    "syntax": "Python AST parse passed without creating bytecode"
+  },
+  "primaryLogs": {
+    "DurableNativeBuildR8.log.gz": {
+      "originalBytes": 74854,
+      "originalSHA256": "cbc8f7c5bd1b76dad67ae40f0bf38fc100ab92ec27434f8b56691b364abedb15"
+    },
+    "DurableLocalDomainBaselineDriverR1.log.gz": {
+      "originalBytes": 421,
+      "originalSHA256": "dcc0f6662b3d4dba22e15bf56aff9ae37e159d4f4728cec13ede11900a99bd7d"
+    },
+    "DurableLocalDomainCorruptGoalsBaselineR1.log.gz": {
+      "originalBytes": 4516,
+      "originalSHA256": "50a44fe9773bdacab7baffe375d9cabc508b8a24ae55af3fd66ce16e23472091"
+    },
+    "DurableLocalDomainCorruptMealsBaselineR1.log.gz": {
+      "originalBytes": 4516,
+      "originalSHA256": "00c5936b3997e299dddbb9e37753fda680553ec7168d23c1b506919344b3fbd8"
+    },
+    "DurableLocalDomainCorruptWaterBaselineR1.log.gz": {
+      "originalBytes": 4516,
+      "originalSHA256": "38c7d23c543b15d9e5c05ef928fafaed35cfa5586baa9356ee020d42037d1bfa"
+    },
+    "DurableLocalDomainUnreadableWaterBaselineR1.log.gz": {
+      "originalBytes": 4545,
+      "originalSHA256": "92f445ba9fe7b784a541b07f6afcdfe2a988d0aa1b3631a61167c5668042533f"
+    },
+    "DurableLocalDomainCorruptGoalsBaselineR1Export.log.gz": {
+      "originalBytes": 350,
+      "originalSHA256": "563eafe8e0813e2ddd9da135e31c2e5c4a4be736e00324d94e9ae855bdbb810e"
+    },
+    "DurableLocalDomainCorruptMealsBaselineR1Export.log.gz": {
+      "originalBytes": 350,
+      "originalSHA256": "d7b707ea50d95596b6d8ef189d9e035f77e1da8a5b78e075d268bf916aa94d36"
+    },
+    "DurableLocalDomainCorruptWaterBaselineR1Export.log.gz": {
+      "originalBytes": 350,
+      "originalSHA256": "b712d18c8db15aa12361ed57252b90d406f0711360340500ce73d5deaf8f0787"
+    },
+    "DurableLocalDomainUnreadableWaterBaselineR1Export.log.gz": {
+      "originalBytes": 367,
+      "originalSHA256": "24bc36e7270d2c4dda95f6c85181390af306b6b21019779ca73873f401a784d5"
+    }
+  },
+  "producerAudit": {
+    "nativeAndLogicProducers": [],
+    "driverProgress": "recorded; runningPID null; unified session72657 terminal exit0"
+  }
+}

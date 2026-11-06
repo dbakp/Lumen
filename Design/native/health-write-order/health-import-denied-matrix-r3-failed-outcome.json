@@ -1,0 +1,31 @@
+{
+  "status": "126two trials fail before first actual file-copy hold; no app fault exercised, no appearance acceptance",
+  "source": "durable-source-r126.json",
+  "cases": [
+    {
+      "device": "main",
+      "summary": "health-import-denied-matrix-main-legacy-largest-r3-summary.json",
+      "observations": "health-import-denied-matrix-main-legacy-largest-r3-observations.json",
+      "nativeExit": 65,
+      "nativeFailed": 1,
+      "nativePassed": 0,
+      "hostExit": 1,
+      "heldAttempts": 0,
+      "permissionFaultApplied": false,
+      "failure": "XCTAssertEqual failed: (\"XCTWaiterResult(rawValue: 2)\") is not equal to (\"XCTWaiterResult(rawValue: 1)\")"
+    },
+    {
+      "device": "compact",
+      "summary": "health-import-denied-matrix-compact-legacy-largest-r3-summary.json",
+      "observations": "health-import-denied-matrix-compact-legacy-largest-r3-observations.json",
+      "nativeExit": 65,
+      "nativeFailed": 1,
+      "nativePassed": 0,
+      "hostExit": 1,
+      "heldAttempts": 0,
+      "permissionFaultApplied": false,
+      "failure": "XCTAssertEqual failed: (\"XCTWaiterResult(rawValue: 2)\") is not equal to (\"XCTWaiterResult(rawValue: 1)\")"
+    }
+  ],
+  "limitation": "Shared Files frame-settle helper8second observation expires during slow AX snapshots. Retry unchanged126 sequentially per device; retain these failed trials. Final-parent repair not yet exercised."
+}

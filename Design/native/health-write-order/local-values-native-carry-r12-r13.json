@@ -1,0 +1,11 @@
+{
+  "status": "exact application and UI-test source match",
+  "from": "durable-source-r12.json",
+  "to": "durable-source-r13.json",
+  "changedExistingInputs": [
+    "Package.swift",
+    "Tests/ImportTests.swift"
+  ],
+  "addedPureTest": "Tests/HealthLocalArchiveChecks.swift",
+  "scope": "Only pure-test manifest/entry/added file change. Native app, UI-test implementation, Xcode settings/pin remain unchanged; retain actual native build/test R12 boundary."
+}

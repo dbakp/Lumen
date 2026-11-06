@@ -1,0 +1,76 @@
+{
+  "status": "Current138operation-owned fresh daily-query layer implemented;29focused/full2311/native compile pass;cache feature remains in progress",
+  "source": "durable-source-r138.json",
+  "pureSource": "local-domain-pure-source-r73.json",
+  "sourceAudit": "health-today-queries-r3-source-audit.json",
+  "parentContract": "health-daily-cache-r1-contract.json",
+  "focused": {
+    "count": 29,
+    "exitCode": 0,
+    "session": 79205,
+    "report": "health-today-queries-r3-checks.json",
+    "log": "HealthTodayQueriesR3Focused.log.gz",
+    "raceIterations": 100,
+    "scope": "Production gate/group/coordinator;real concurrent Tasks/continuations/held synthetic callbacks/actual deadline;not actual HealthKit callbacks."
+  },
+  "full": {
+    "count": 2311,
+    "exitCode": 0,
+    "session": 79263,
+    "log": "HealthTodayQueriesR3Full.log.gz",
+    "countMethod": "2177 actual PASS lines plus105 actual cache preconditions plus29 query checks in same full execution"
+  },
+  "pureBuild": {
+    "exitCode": 0,
+    "session": 79205,
+    "log": "HealthTodayQueriesR3Build.log.gz",
+    "binaryBytes": 16142336,
+    "sha256": "86178ce633601afc2b311a566174bece43e13bff966909bd77f9ff64641c5bf3"
+  },
+  "nativeBuild": {
+    "exitCode": 0,
+    "session": 55773,
+    "log": "HealthTodayQueriesR3NativeBuild.log.gz",
+    "binaryBytes": 44149280,
+    "sha256": "fa1e52fd6106d4b28c7e07b5ed625afe081572947d16e86eea4ab1091aa1028b"
+  },
+  "implementation": [
+    "Single-owner continuation gate handles cancellation before/during registration, synchronous completion, deadlines, repeated/late callbacks and stop-before-resume without duplicate continuation.",
+    "One query group owns all18 handles. New coordinator returns each operation own raw readings; source/request/day/calendar/timezone and caller cancellation gates publication.",
+    "Actual HKSampleQuery/HKStatisticsQuery execute/stop wiring uses each gate; source stop/reset/disconnect invalidates active query groups. Native compile only;runtime SDK stop/callback proof remains.",
+    "Normal refresh consumes its returned raw snapshot, never shared hk.today. Captured local revision and refresh-owner UUID reject older success/error; failed queries cannot drive stale weight-target updates.",
+    "138adds explicit post-await Task cancellation checks and a regression for cancellation after read completion before publication."
+  ],
+  "earlierIterations": [
+    {
+      "source": "durable-source-r136.json",
+      "pureSource": "local-domain-pure-source-r72.json",
+      "focused": 28,
+      "pureBuildExit": 0,
+      "nativeBuildExit": 0,
+      "observation": "Native build passed but introduced actor-isolated local result-builder warnings."
+    },
+    {
+      "source": "durable-source-r137.json",
+      "pureSource": "local-domain-pure-source-r72.json",
+      "full": 2310,
+      "nativeBuildExit": 0,
+      "observation": "Nonisolated pure callback builder removes those warnings;refresh-owner guard added. Earlier137pass is not138rerun."
+    }
+  ],
+  "currentCacheCoreChecks": 105,
+  "cacheCoreContractOutcome": "health-daily-cache-core-r4-outcome.json",
+  "scope": "No cache UI, actual held HealthKit query callbacks/permissions/daemon/native cache exchange or signed-device acceptance. Other history queries remain separate. Current LocalStore entry compiled but runtime/lifecycle/install proof remains. Full parent cache contract, six original nextRequired areas/full remainingScope/contracts/eightgroups/product/VoiceOver/Watch/widget/Release/device/publication remain active.",
+  "terminalLogArchivesDecodedVerified": 781,
+  "newTerminalLogs": [
+    "HealthTodayQueriesR1Build.log.gz",
+    "HealthTodayQueriesR1Focused.log.gz",
+    "HealthTodayQueriesR1NativeBuild.log.gz",
+    "HealthTodayQueriesR2Full.log.gz",
+    "HealthTodayQueriesR2NativeBuild.log.gz",
+    "HealthTodayQueriesR3Build.log.gz",
+    "HealthTodayQueriesR3Focused.log.gz",
+    "HealthTodayQueriesR3Full.log.gz",
+    "HealthTodayQueriesR3NativeBuild.log.gz"
+  ]
+}

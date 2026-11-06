@@ -1,0 +1,38 @@
+{
+  "status": "Signed current143 Release builds and passes signature/executable audit; attempted install fails CoreDevice4016 because phone unavailable. Earlier verified96 installation remains.",
+  "source": "durable-source-r143.json",
+  "buildExit": 0,
+  "binarySHA256": "c5dc6c451244a449e0e45c7e9d637486bbdf189bed1106b9667d0aea6defc854",
+  "binaryBytes": 40329792,
+  "version": "1.0",
+  "build": "1",
+  "signatureVerified": true,
+  "releaseAudit": "health-daily-cache-current-device-r2-audit.json",
+  "earlierFailedMarkerAudit": "health-daily-cache-current-device-r1-audit-failed.json",
+  "installAttempted": true,
+  "installVerified": false,
+  "installExit": 1,
+  "error": "CoreDevice4016: device cannot satisfy trusted-connectivity/CoreDevice-services/power assertions",
+  "normalLaunchVerified": false,
+  "uninstallOrResetPerformed": false,
+  "personalDataReadbackPerformed": false,
+  "logs": [
+    {
+      "rawSHA256": "64ead8993a83022b720f7da91468d2beb78479ef4764d54f630387e1582a5d0c",
+      "rawBytes": 107104,
+      "retained": "HealthDailyCacheCurrentDeviceR1Build.log.redacted.gz",
+      "retainedDecodedBytes": 104278,
+      "retainedDecodedSHA256": "3a76f1fd2c2881bb714e20b2753a27358ee91be7a8774f120562e5a146708043",
+      "redaction": "User-home path, phone UDID and account email only; terminal/build/error text retained."
+    },
+    {
+      "rawSHA256": "f51c13375a83ca4383240e008af1916f6407dc683f5fa536a8e0b57d6b74578e",
+      "rawBytes": 423,
+      "retained": "HealthDailyCacheCurrentDeviceR1Install.log.redacted.gz",
+      "retainedDecodedBytes": 423,
+      "retainedDecodedSHA256": "f51c13375a83ca4383240e008af1916f6407dc683f5fa536a8e0b57d6b74578e",
+      "redaction": "User-home path, phone UDID and account email only; terminal/build/error text retained."
+    }
+  ],
+  "scope": "Current signed build and executable/signature proof only. No current installation, normal launch, cache physical-device or full-product acceptance. Device build output retained for requested install."
+}

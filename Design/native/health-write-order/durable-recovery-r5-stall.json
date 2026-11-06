@@ -1,0 +1,8 @@
+{
+  "status": "stalled test fixture; deliberately terminated after verifying live handle",
+  "source": "durable-source-r3.json",
+  "passedBeforeStall": 48,
+  "cause": "The lifecycle test released its Gate but left it installed. A later newly-added water receipt-race check entered that already-consumed test Gate and could never be released.",
+  "repair": "R4 clears only disk.gate after the lifecycle hold finishes; all application/worker inputs remain byte-identical to R3.",
+  "scope": "Fixture defect, not a passing receipt-race result or a timeout proving production work stopped."
+}

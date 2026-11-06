@@ -1,0 +1,64 @@
+{
+  "status": "PROGRESS; full goal active; Batch43 unpublished",
+  "source": "durable-source-r28.json",
+  "latestOutcome": "health-replacement-r1-outcome.json",
+  "nextRequired": [
+    {
+      "area": "Bound legacy generic-retirement reads before allocation",
+      "finding": "HealthRecoveryCopies.preservePrevious currently calls Data(contentsOf:) before domain validation applies the 100000000-byte limit (line237). HealthWriteFiles.read likewise allocates before HealthWriteJournal.decode applies its 100*1024*1024 cap (line18). Selection intentData currently uses the smaller domain cap, which can reject a journal within the decoder limit. These are source-audit findings, not an executed oversized-file/device failure.",
+      "required": "Use a shared journal byte limit and check fresh file size before reads. Preserve compatibility at the exact boundary. Execute bounded/sparse capacity controls without reading huge input into memory; check space and remove passed task fixtures."
+    },
+    {
+      "area": "Selection-scoped photo assurance",
+      "finding": "Review form statically says damaged files and old meal photos stay privately. The transaction moves photos privately only when meals are selected; unselected healthy photos stay live. The water fixture has no photos, so it does not execute this broader case.",
+      "required": "Make assurances describe selected data and any affected meal photos accurately. Add actual healthy-unselected/selected-meal photo cases before full UI acceptance."
+    },
+    {
+      "area": "Unavailable legacy and symlink targets",
+      "finding": "Current replacement retains invalid regular files and raw directory trees. Missing-current/failed legacy sources are not represented by the current-file quarantine API, and symlink paths reject rather than being explicitly recovered.",
+      "required": "Preserve failed legacy bytes and verify their source across preparation; support safe reviewable recovery without following symlinks or deleting referenced data. Keep failed/unreadable originals and explicit errors."
+    },
+    {
+      "area": "Backup/readable product integration and provenance",
+      "finding": "Actual encrypted/readable water inputs reach the new replacement core in Foundation checks. Existing product backup restoration still begins with a live snapshot/merge; new product recovery UI selects only retained local copies. Receipt backup source is currently a kind label, without original selected-file digest.",
+      "required": "Integrate reviewed encrypted/readable choices, keep source workspace ownership through navigation/cancellation, bind original file/provenance, preserve healthy merge and supply explicit cache rebuilding/replacement semantics. Do not claim today cache came from a backup that omits it."
+    },
+    {
+      "area": "Full product review/availability and outcomes",
+      "finding": "Current native UI matrix verifies one retained water record across sizes/appearance, off/on, reviewed record, Not now, success and relaunch. Meal/workout record lists and daily-cache review show an initial subset of fields; raw cache numeric fields need accurate unknown/source/date presentation.",
+      "required": "Complete record/metadata review, 0/2 counts, affected photo omissions/validation, damaged/incomplete copies, supported failure/retry/cancel and goals/profile/weight/cache coupling. Finish unavailable/empty-history/target UI and Watch/widget/reminder planning condition. Continue same critic. Extend largest main switch-label and copy-list healthy-data-footer overlapping captures; these are coverage gaps, not demonstrated fixed clipping. Keep busy Cancel/cancellation gate open."
+    },
+    {
+      "area": "Full original gates",
+      "required": "Keep original local-domain and previous-copy contracts plus eight durable groups: actual archival/install/reset interruption, in-flight Health callbacks/daemon termination, all-domain I/O/photo faults, owner/permission/foreign-source/reset/restore/archive lifecycle, suspended native sources, current actual HealthKit regressions, Release/signed-device/publication and broader product/accessibility/privacy/provider/performance/evidence requirements."
+    }
+  ],
+  "review": {
+    "round1": "critique-b43-recovery-r1.md",
+    "round1Score": 42,
+    "round2": "critique-b43-recovery-r2.md",
+    "round2Score": 42,
+    "maximum": 55,
+    "round1Opened": 16,
+    "round2Opened": 90,
+    "round2HashByteRawMetadataMatches": 90,
+    "imageFailures": 0,
+    "skips": 0,
+    "status": "Not done by stop rule; full recovery acceptance open",
+    "closed": "All three Round1 word repairs visibly landed. No layout/ornamental redesign requested.",
+    "required": "Make private-copy/old-photo assurance selection-scoped. Extend main XXXL Water label ending and largest copy-list healthy-data footer captures. Complete busy Cancel and broader backup/meal/cache/failure and original gates."
+  },
+  "storage": {
+    "availableBytes": 21873987584,
+    "recoveredBytesCredited": 0,
+    "manualCacheDeletion": false,
+    "note": "No task cache/raw result deletion; all unpublished source/evidence and immediate out/native/package caches retained. First preview trial extra apple cache remains redundant pending required GitHub readback. New recovery fixtures are small; ordinary full-suite fixtures retain their existing temporary lifecycles. No actual Health sample generation. Concurrent/APFS/swap changes are not cleanup credit."
+  },
+  "earlierNativeBoundaries": {
+    "saveUndoControls36": "R14",
+    "semantic634": "R12",
+    "localDomains209": "R11",
+    "actualHealthKitRestart102": "R8",
+    "actualHealthKit47": "R6"
+  }
+}

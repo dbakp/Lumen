@@ -1,0 +1,85 @@
+{
+  "source": "durable-source-r161.json",
+  "status": "Historical161: three runtime/host passes, one intentionally interrupted dark case; no complete visual acceptance. Superseded by162 expanded133-prefix matrix; two current cases running.",
+  "contract": "health-daily-details-appearance-r1-contract.json",
+  "sizeContract": "health-daily-details-appearance-size-r1-contract.json",
+  "cases": [
+    {
+      "case": "compact-normal",
+      "device": "922E011C-3895-4DB1-9C9A-1D3A977226CF",
+      "logicalSize": [
+        375,
+        667
+      ],
+      "appearance": "light",
+      "contentSizeCategory": "UICTContentSizeCategoryL",
+      "status": "running",
+      "prefix": "health-daily-appearance-compact-normal-r1",
+      "session": 61767
+    },
+    {
+      "case": "compact-dark",
+      "device": "922E011C-3895-4DB1-9C9A-1D3A977226CF",
+      "logicalSize": [
+        375,
+        667
+      ],
+      "appearance": "dark",
+      "contentSizeCategory": "UICTContentSizeCategoryL",
+      "status": "required-unexecuted"
+    },
+    {
+      "case": "compact-largest",
+      "device": "922E011C-3895-4DB1-9C9A-1D3A977226CF",
+      "logicalSize": [
+        375,
+        667
+      ],
+      "appearance": "dark",
+      "contentSizeCategory": "UICTContentSizeCategoryAccessibilityXXXL",
+      "status": "native-host-metadata-files-passed;original-review-pending",
+      "prefix": "health-daily-details-compact-largest-r9",
+      "originals": 168,
+      "originalsReviewed": 120
+    },
+    {
+      "case": "main-normal",
+      "device": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+      "logicalSize": [
+        402,
+        874
+      ],
+      "appearance": "light",
+      "contentSizeCategory": "UICTContentSizeCategoryL",
+      "status": "native-host-metadata-files-passed;original-review-pending",
+      "prefix": "health-daily-appearance-main-normal-r1",
+      "originals": 149,
+      "originalsReviewed": 0
+    },
+    {
+      "case": "main-dark",
+      "device": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+      "logicalSize": [
+        402,
+        874
+      ],
+      "appearance": "dark",
+      "contentSizeCategory": "UICTContentSizeCategoryL",
+      "status": "running",
+      "prefix": "health-daily-appearance-main-dark-r1"
+    },
+    {
+      "case": "main-largest",
+      "device": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+      "logicalSize": [
+        402,
+        874
+      ],
+      "appearance": "dark",
+      "contentSizeCategory": "UICTContentSizeCategoryAccessibilityXXXL",
+      "status": "required-unexecuted"
+    }
+  ],
+  "scope": "Six-case mixed own-source SDK appearance matrix only; all original broader scope remains.",
+  "supersededBy": "health-daily-controls-appearance-r1-contract.json"
+}

@@ -1,0 +1,55 @@
+{
+  "checks" : [
+    {
+      "case" : "legacy valid cancelled worker",
+      "inputBytes" : 1136,
+      "inputSHA256" : "a767f5dbcb5de789174e1e419db6930398744f5562458e1c053250ff8aa184b4",
+      "observed" : "CancellationError",
+      "passed" : true
+    },
+    {
+      "case" : "legacy malformed cancelled worker",
+      "inputBytes" : 1,
+      "inputSHA256" : "021fb596db81e6d02bf3d2586ee3981fe519f275c0ac9ca76bbcf2ebb4097d96",
+      "observed" : "CancellationError",
+      "passed" : true
+    },
+    {
+      "case" : "legacy wrong hash cancelled worker",
+      "inputBytes" : 1136,
+      "inputSHA256" : "98741d138f6465e6f530018ca8606ec2e03c52b0bf1cb6b3e1fa8d56c5803758",
+      "observed" : "CancellationError",
+      "passed" : true
+    },
+    {
+      "case" : "readable valid cancelled worker",
+      "inputBytes" : 155,
+      "inputSHA256" : "9115504bb3f978f6173b7eedc530b3fa27bd6581981e36a1a94cb7241d52fb16",
+      "observed" : "CancellationError",
+      "passed" : true
+    },
+    {
+      "case" : "readable malformed cancelled worker",
+      "inputBytes" : 1,
+      "inputSHA256" : "021fb596db81e6d02bf3d2586ee3981fe519f275c0ac9ca76bbcf2ebb4097d96",
+      "observed" : "CancellationError",
+      "passed" : true
+    },
+    {
+      "case" : "healthy legacy retry",
+      "passed" : true
+    },
+    {
+      "case" : "healthy readable retry",
+      "passed" : true
+    },
+    {
+      "case" : "parent task remains uncancelled",
+      "passed" : true
+    }
+  ],
+  "failed" : 0,
+  "passed" : 8,
+  "scope" : "Actual precancelled Swift worker decoder calls and fresh healthy retries. No mid-decoder interruption, actual service\/native read, capacity or full-contract acceptance.",
+  "status" : "passed"
+}

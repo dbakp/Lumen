@@ -1,0 +1,268 @@
+{
+  "checks" : [
+    {
+      "name" : "actual checked native startup finishes before lifecycle verification",
+      "passed" : true
+    },
+    {
+      "name" : "other adapter and standalone SDK probes are disabled",
+      "passed" : true
+    },
+    {
+      "name" : "actual Health connection is requested before local changes",
+      "passed" : true
+    },
+    {
+      "name" : "dedicated preparation has no unrelated local or pending records",
+      "passed" : true
+    },
+    {
+      "name" : "actual local water\/meal\/weight and seven unacknowledged payloads commit before dispatch",
+      "passed" : true
+    },
+    {
+      "name" : "no actual adapter operation starts before all local commits",
+      "passed" : true
+    },
+    {
+      "name" : "seven exact payload identities remain durable at the termination boundary",
+      "passed" : true
+    },
+    {
+      "name" : "actual pre-termination Health samples match the precise dispatch boundary",
+      "passed" : true
+    },
+    {
+      "name" : "pending water action matches the actual local Undo decision",
+      "passed" : true
+    }
+  ],
+  "files" : {
+    "goals.json" : "eyJhZ2UiOjMwLCJzdGFuZEdvYWwiOjEyLCJoZWlnaHRDbSI6MTc4LCJhY3RpdmVDYWxHb2FsIjo2MDAsIndlaWdodEtnIjo3Ni4yNSwiZXhlcmNpc2VHb2FsTWluIjozMCwic2V4IjoidW5zcGVjaWZpZWQiLCJhY3Rpdml0eUxldmVsIjoibW9kZXJhdGUiLCJnb2FsIjoibWFpbnRhaW4iLCJzdGVwR29hbCI6MTAwMDB9",
+    "health-write-intent.json" : "eyJldmVudHMiOlt7ImFja25vd2xlZGdlZCI6W10sImFjdGlvbiI6InNhdmUiLCJjb21wb25lbnRzIjpbeyJkYXRlIjo4MTU0MDAzOTcuNTA5MjMxLCJtZXRyaWMiOiJ3YXRlciIsInZhbHVlIjoxMzd9XSwiZG9tYWluIjoid2F0ZXIiLCJnZW5lcmF0aW9uIjoiMkUyRDZGOTktODdEMy00MjMwLTg3MjEtMUJEQzVGMjQ4ODJGIiwiaWQiOiI4MEM2MDA3OC1DOUYxLTRCREEtQTUzOC0yOEQzOEUxNTlDOUMiLCJpZGVudGl0eSI6InN5bmMiLCJsaWZlY3ljbGUiOiI1Mjg0RUVCRC1BQjg4LTRCRkYtQkZDOS03MDg5RTBDNjZBNUMiLCJsb2NhbElEIjoiMTc4NTI4RDUtMjI0Ni00RUE5LUIyOTYtMUE1MjBERkVFMzhDIiwicmVxdWVzdGVkQXQiOjgxNTQwMDM5Ny41MTUyMjF9LHsiYWNrbm93bGVkZ2VkIjpbXSwiYWN0aW9uIjoic2F2ZSIsImNvbXBvbmVudHMiOlt7ImRhdGUiOjgxNTQwMDM5Ny41MzY1MTYsIm1ldHJpYyI6ImNhbG9yaWVzIiwidmFsdWUiOjIxM30seyJkYXRlIjo4MTU0MDAzOTcuNTM2NTE2LCJtZXRyaWMiOiJwcm90ZWluIiwidmFsdWUiOjExfSx7ImRhdGUiOjgxNTQwMDM5Ny41MzY1MTYsIm1ldHJpYyI6ImNhcmJzIiwidmFsdWUiOjIzfSx7ImRhdGUiOjgxNTQwMDM5Ny41MzY1MTYsIm1ldHJpYyI6ImZhdCIsInZhbHVlIjo5fSx7ImRhdGUiOjgxNTQwMDM5Ny41MzY1MTYsIm1ldHJpYyI6ImZpYmVyIiwidmFsdWUiOjR9XSwiZG9tYWluIjoibWVhbCIsImdlbmVyYXRpb24iOiIwNDc5NTA2Ri0xOEEwLTQwM0EtQkI0NS0yQ0MzNEUyQzk5NjEiLCJpZCI6IjgwRjRFNjk1LTA3NTMtNDQzRS05QThCLUU5MkE5MEMyMUQzRSIsImlkZW50aXR5Ijoic3luYyIsImxpZmVjeWNsZSI6IjUyODRFRUJELUFCODgtNEJGRi1CRkM5LTcwODlFMEM2NkE1QyIsImxvY2FsSUQiOiJzeW50aGV0aWMtcmVzdGFydC00My02OTI3N0EzNi04NjM4LTRGREYtODU1Mi1ERTMxRDZGMEE1MTEiLCJyZXF1ZXN0ZWRBdCI6ODE1NDAwMzk3LjU1NDAxM30seyJhY2tub3dsZWRnZWQiOltdLCJhY3Rpb24iOiJzYXZlIiwiY29tcG9uZW50cyI6W3siZGF0ZSI6ODE1NDAwMzk3LjU3NTM5LCJtZXRyaWMiOiJ3ZWlnaHQiLCJ2YWx1ZSI6NzYuMjV9XSwiZG9tYWluIjoid2VpZ2h0IiwiZ2VuZXJhdGlvbiI6IkMwNEFDOUEzLUFEOTYtNDZDQi04NTA1LTZFMDNFRjNFODgzMyIsImlkIjoiQkQzQTZEODctNDlDRi00OTY5LUJGOUItQjZFMTg3MzQwQjIyIiwiaWRlbnRpdHkiOiJzeW5jIiwibGlmZWN5Y2xlIjoiNTI4NEVFQkQtQUI4OC00QkZGLUJGQzktNzA4OUUwQzY2QTVDIiwibG9jYWxJRCI6IjQ4MTgwRkQ4LTk3MjItNEEwOC05RkNELTgzQjg4MDk4NTcyMyIsInJlcXVlc3RlZEF0Ijo4MTU0MDAzOTcuNTkyMzYxfV0sImxpZmVjeWNsZSI6IjUyODRFRUJELUFCODgtNEJGRi1CRkM5LTcwODlFMEM2NkE1QyIsIm93bmVyIjoiMDE2OTVEQjgtNDAyMS00MUE0LUFCQkYtNjNFMDNEQjUyREREIiwidmVyc2lvbiI6MX0=",
+    "meals.json" : "W3siaWQiOiJzeW50aGV0aWMtcmVzdGFydC00My02OTI3N0EzNi04NjM4LTRGREYtODU1Mi1ERTMxRDZGMEE1MTEiLCJ0eXBlIjoibHVuY2giLCJzb3VyY2UiOiJtYW51YWwiLCJkYXRlIjoiMjAyNi0xMS0wM1QxMjowNjozN1oiLCJpdGVtcyI6W3siZmliZXJHIjo0LCJwcm90ZWluRyI6MTEsImZhdEciOjksImdyYW1zIjoxMDAsImNhcmJzRyI6MjMsIm5hbWUiOiJTeW50aGV0aWMgcmVzdGFydCBtZWFsIiwiY2Fsb3JpZXMiOjIxMywiY29uZmlkZW5jZSI6MC44LCJpZCI6IjU0ODlGMDE1LUVBRDUtNEYzMC1BRjYyLTVDRkZFOEI0MDQxMyJ9XX1d",
+    "today.json" : "eyJ3ZWlnaHRLZyI6NzYuMjUsImRhdGUiOiIyMDI2LTExLTAyVDIzOjAwOjAwWiIsInJlYWRpbmdzIjp7InZvMm1heCI6eyJjb21wb25lbnRzIjpbXSwib3ZlcmxhcEtlcHRTZXBhcmF0ZSI6ZmFsc2V9LCJzcG8yIjp7ImNvbXBvbmVudHMiOltdLCJvdmVybGFwS2VwdFNlcGFyYXRlIjpmYWxzZX0sInJlc3RpbmdIUiI6eyJvdmVybGFwS2VwdFNlcGFyYXRlIjpmYWxzZSwiY29tcG9uZW50cyI6W119LCJleGVyY2lzZSI6eyJjb21wb25lbnRzIjpbXSwib3ZlcmxhcEtlcHRTZXBhcmF0ZSI6ZmFsc2V9LCJib2R5RmF0Ijp7ImNvbXBvbmVudHMiOltdLCJvdmVybGFwS2VwdFNlcGFyYXRlIjpmYWxzZX0sImFjdGl2ZUVuZXJneSI6eyJvdmVybGFwS2VwdFNlcGFyYXRlIjpmYWxzZSwiY29tcG9uZW50cyI6W119LCJzdGVwcyI6eyJjb21wb25lbnRzIjpbXSwib3ZlcmxhcEtlcHRTZXBhcmF0ZSI6ZmFsc2V9LCJoZWFydFJhdGUiOnsiY29tcG9uZW50cyI6W10sIm92ZXJsYXBLZXB0U2VwYXJhdGUiOmZhbHNlfSwiaHJ2Ijp7Im92ZXJsYXBLZXB0U2VwYXJhdGUiOmZhbHNlLCJjb21wb25lbnRzIjpbXX0sImJtaSI6eyJvdmVybGFwS2VwdFNlcGFyYXRlIjpmYWxzZSwiY29tcG9uZW50cyI6W119LCJyZXNwaXJhdG9yeVJhdGUiOnsiY29tcG9uZW50cyI6W10sIm92ZXJsYXBLZXB0U2VwYXJhdGUiOmZhbHNlfSwiY2Fsb3JpZXMiOnsiY29tcG9uZW50cyI6W10sIm92ZXJsYXBLZXB0U2VwYXJhdGUiOmZhbHNlfSwicmVzdGluZ0VuZXJneSI6eyJvdmVybGFwS2VwdFNlcGFyYXRlIjpmYWxzZSwiY29tcG9uZW50cyI6W119LCJ3YXRlciI6eyJjb21wb25lbnRzIjpbXSwib3ZlcmxhcEtlcHRTZXBhcmF0ZSI6ZmFsc2V9LCJzbGVlcCI6eyJvdmVybGFwS2VwdFNlcGFyYXRlIjpmYWxzZSwiY29tcG9uZW50cyI6W119LCJ3ZWlnaHQiOnsib3ZlcmxhcEtlcHRTZXBhcmF0ZSI6ZmFsc2UsImNvbXBvbmVudHMiOlt7Im9yaWdpbiI6ImxvY2FsTG9nIiwibGFzdFNhbXBsZUF0IjoiMjAyNi0xMS0wM1QxMjowNjozN1oiLCJpc0VzdGltYXRlIjpmYWxzZSwic3RhcnQiOiIyMDI2LTExLTAzVDEyOjA2OjM3WiIsInZhbHVlIjo3Ni4yNSwiZW5kIjoiMjAyNi0xMS0wM1QxMjowNjozN1oiLCJzb3VyY2UiOiJMdW1lbiB3ZWlnaHQgbG9nIiwiYWdncmVnYXRpb24iOiJsYXRlc3QifV19LCJwcm90ZWluIjp7Im92ZXJsYXBLZXB0U2VwYXJhdGUiOmZhbHNlLCJjb21wb25lbnRzIjpbXX0sImNhcmJzIjp7Im92ZXJsYXBLZXB0U2VwYXJhdGUiOmZhbHNlLCJjb21wb25lbnRzIjpbXX0sImZhdCI6eyJjb21wb25lbnRzIjpbXSwib3ZlcmxhcEtlcHRTZXBhcmF0ZSI6ZmFsc2V9LCJzdGFuZCI6eyJvdmVybGFwS2VwdFNlcGFyYXRlIjpmYWxzZSwiY29tcG9uZW50cyI6W119fSwiZXhlcmNpc2VNaW4iOjAsImFjdGl2ZUNhbG9yaWVzIjowLCJ3YXRlck1MIjowLCJyZXN0aW5nQ2Fsb3JpZXMiOjAsInJlY29yZGVkVG90YWxLZXlzIjpbXSwic3RlcHMiOjAsInN0YW5kSG91cnMiOjB9",
+    "water.json" : "W3siaWQiOiIxNzg1MjhENS0yMjQ2LTRFQTktQjI5Ni0xQTUyMERGRUUzOEMiLCJkYXRlIjoiMjAyNi0xMS0wM1QxMjowNjozN1oiLCJtbCI6MTM3fV0="
+  },
+  "journal" : {
+    "events" : [
+      {
+        "acknowledged" : [
+
+        ],
+        "action" : "save",
+        "components" : [
+          {
+            "date" : 815400397.509231,
+            "metric" : "water",
+            "value" : 137
+          }
+        ],
+        "domain" : "water",
+        "generation" : "2E2D6F99-87D3-4230-8721-1BDC5F24882F",
+        "id" : "80C60078-C9F1-4BDA-A538-28D38E159C9C",
+        "identity" : "sync",
+        "lifecycle" : "5284EEBD-AB88-4BFF-BFC9-7089E0C66A5C",
+        "localID" : "178528D5-2246-4EA9-B296-1A520DFEE38C",
+        "requestedAt" : 815400397.515221
+      },
+      {
+        "acknowledged" : [
+
+        ],
+        "action" : "save",
+        "components" : [
+          {
+            "date" : 815400397.536516,
+            "metric" : "calories",
+            "value" : 213
+          },
+          {
+            "date" : 815400397.536516,
+            "metric" : "protein",
+            "value" : 11
+          },
+          {
+            "date" : 815400397.536516,
+            "metric" : "carbs",
+            "value" : 23
+          },
+          {
+            "date" : 815400397.536516,
+            "metric" : "fat",
+            "value" : 9
+          },
+          {
+            "date" : 815400397.536516,
+            "metric" : "fiber",
+            "value" : 4
+          }
+        ],
+        "domain" : "meal",
+        "generation" : "0479506F-18A0-403A-BB45-2CC34E2C9961",
+        "id" : "80F4E695-0753-443E-9A8B-E92A90C21D3E",
+        "identity" : "sync",
+        "lifecycle" : "5284EEBD-AB88-4BFF-BFC9-7089E0C66A5C",
+        "localID" : "synthetic-restart-43-69277A36-8638-4FDF-8552-DE31D6F0A511",
+        "requestedAt" : 815400397.554013
+      },
+      {
+        "acknowledged" : [
+
+        ],
+        "action" : "save",
+        "components" : [
+          {
+            "date" : 815400397.57539,
+            "metric" : "weight",
+            "value" : 76.25
+          }
+        ],
+        "domain" : "weight",
+        "generation" : "C04AC9A3-AD96-46CB-8505-6E03EF3E8833",
+        "id" : "BD3A6D87-49CF-4969-BF9B-B6E187340B22",
+        "identity" : "sync",
+        "lifecycle" : "5284EEBD-AB88-4BFF-BFC9-7089E0C66A5C",
+        "localID" : "48180FD8-9722-4A08-9FCD-83B880985723",
+        "requestedAt" : 815400397.592361
+      }
+    ],
+    "lifecycle" : "5284EEBD-AB88-4BFF-BFC9-7089E0C66A5C",
+    "owner" : "01695DB8-4021-41A4-ABBF-63E03DB52DDD",
+    "version" : 1
+  },
+  "mealIDs" : [
+    "synthetic-restart-43-69277A36-8638-4FDF-8552-DE31D6F0A511"
+  ],
+  "nonce" : "69277A36-8638-4FDF-8552-DE31D6F0A511",
+  "pid" : 52396,
+  "samples" : [
+    {
+      "count" : 0,
+      "dates" : [
+
+      ],
+      "metric" : "water",
+      "sampleUUIDs" : [
+
+      ],
+      "sourceBundles" : [
+
+      ],
+      "syncIdentifier" : "com.dbakp.lumen.health.v1.01695DB8-4021-41A4-ABBF-63E03DB52DDD.80C60078-C9F1-4BDA-A538-28D38E159C9C.water",
+      "values" : [
+
+      ]
+    },
+    {
+      "count" : 0,
+      "dates" : [
+
+      ],
+      "metric" : "calories",
+      "sampleUUIDs" : [
+
+      ],
+      "sourceBundles" : [
+
+      ],
+      "syncIdentifier" : "com.dbakp.lumen.health.v1.01695DB8-4021-41A4-ABBF-63E03DB52DDD.80F4E695-0753-443E-9A8B-E92A90C21D3E.calories",
+      "values" : [
+
+      ]
+    },
+    {
+      "count" : 0,
+      "dates" : [
+
+      ],
+      "metric" : "protein",
+      "sampleUUIDs" : [
+
+      ],
+      "sourceBundles" : [
+
+      ],
+      "syncIdentifier" : "com.dbakp.lumen.health.v1.01695DB8-4021-41A4-ABBF-63E03DB52DDD.80F4E695-0753-443E-9A8B-E92A90C21D3E.protein",
+      "values" : [
+
+      ]
+    },
+    {
+      "count" : 0,
+      "dates" : [
+
+      ],
+      "metric" : "carbs",
+      "sampleUUIDs" : [
+
+      ],
+      "sourceBundles" : [
+
+      ],
+      "syncIdentifier" : "com.dbakp.lumen.health.v1.01695DB8-4021-41A4-ABBF-63E03DB52DDD.80F4E695-0753-443E-9A8B-E92A90C21D3E.carbs",
+      "values" : [
+
+      ]
+    },
+    {
+      "count" : 0,
+      "dates" : [
+
+      ],
+      "metric" : "fat",
+      "sampleUUIDs" : [
+
+      ],
+      "sourceBundles" : [
+
+      ],
+      "syncIdentifier" : "com.dbakp.lumen.health.v1.01695DB8-4021-41A4-ABBF-63E03DB52DDD.80F4E695-0753-443E-9A8B-E92A90C21D3E.fat",
+      "values" : [
+
+      ]
+    },
+    {
+      "count" : 0,
+      "dates" : [
+
+      ],
+      "metric" : "fiber",
+      "sampleUUIDs" : [
+
+      ],
+      "sourceBundles" : [
+
+      ],
+      "syncIdentifier" : "com.dbakp.lumen.health.v1.01695DB8-4021-41A4-ABBF-63E03DB52DDD.80F4E695-0753-443E-9A8B-E92A90C21D3E.fiber",
+      "values" : [
+
+      ]
+    },
+    {
+      "count" : 0,
+      "dates" : [
+
+      ],
+      "metric" : "weight",
+      "sampleUUIDs" : [
+
+      ],
+      "sourceBundles" : [
+
+      ],
+      "syncIdentifier" : "com.dbakp.lumen.health.v1.01695DB8-4021-41A4-ABBF-63E03DB52DDD.BD3A6D87-49CF-4969-BF9B-B6E187340B22.weight",
+      "values" : [
+
+      ]
+    }
+  ],
+  "scenario" : "before-worker",
+  "verifiedOperations" : [
+
+  ],
+  "waterIDs" : [
+    "178528D5-2246-4EA9-B296-1A520DFEE38C"
+  ],
+  "weight" : 76.25
+}

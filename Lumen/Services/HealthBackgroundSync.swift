@@ -96,6 +96,7 @@ final class HealthBackgroundSync: ObservableObject {
 
     func stop() {
         generation = UUID()
+        hk.invalidateTodayQueries()
         for query in observers { hk.store.stop(query) }; observers = []
         configureRegistration()
     }
@@ -138,6 +139,7 @@ final class HealthBackgroundSync: ObservableObject {
             try await self.hk.changePage(sleep: isSleep, start: start, anchor: anchor)
         }, save: { value in try await self.save(value, session: session) })
         try checkSession()
+        let workoutBoundary = try health.requireLocalHealthBoundary(.workouts)
         let currentSleep = sleep.episodes, currentWorkouts = health.workouts, captured = ledger
         let result = await Task.detached(priority: .utility) {
             (captured.reconciledSleep(currentSleep), captured.reconciledWorkouts(currentWorkouts))
@@ -146,7 +148,7 @@ final class HealthBackgroundSync: ObservableObject {
         // These checked writes precede publication. If either fails the ledger stays
         // pending; the next run derives both stores again without losing any cursor.
         try LocalStore.saveChecked(result.0, as: "sleep")
-        try LocalStore.saveChecked(result.1, as: "workouts")
+        try LocalStore.saveChecked(result.1, as: "workouts", healthBoundary: workoutBoundary)
         sleep.installHealthEpisodes(result.0); health.installHealthWorkouts(result.1)
         ledger.markApplied(); try await save(ledger, session: session)
         try checkSession()
@@ -228,6 +230,9 @@ private final class HealthQueryGate: @unchecked Sendable {
 @MainActor
 final class LumenAppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
+        #if DEBUG && targetEnvironment(simulator)
+        if HealthWriteLifecycleProbe.requested { return true }
+        #endif
         HealthBackgroundSync.shared.start()
         return true
     }

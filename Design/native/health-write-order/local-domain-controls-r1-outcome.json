@@ -1,0 +1,48 @@
+{
+  "status": "passed",
+  "source": "durable-source-r11.json",
+  "build": "local-domain-native-build-r2.json",
+  "xctests": 2,
+  "nativeChecks": 36,
+  "cases": [
+    {
+      "case": "Combined",
+      "report": "durable-native-combined-r3-report.json",
+      "hostAudit": "durable-native-combined-r3-host-audit.json",
+      "nativeChecks": 18
+    },
+    {
+      "case": "Receipt",
+      "report": "durable-native-receipt-r3-report.json",
+      "hostAudit": "durable-native-receipt-r3-host-audit.json",
+      "nativeChecks": 18
+    }
+  ],
+  "scope": "Current checked local-domain candidate retains prior combined I/O, partial permission, independent weight, receipt replay and held save/Undo controls with controlled adapter and host reads. Actual HealthKit restart/permission/UI/device gates remain separate.",
+  "producerArguments": {
+    "native": [
+      "xcodebuild",
+      "-project",
+      "Lumen.xcodeproj",
+      "-scheme",
+      "Lumen",
+      "-configuration",
+      "Debug",
+      "-destination",
+      "platform=iOS Simulator,id=922E011C-3895-4DB1-9C9A-1D3A977226CF",
+      "-derivedDataPath",
+      "/tmp/LumenBatch37Simulator",
+      "-clonedSourcePackagesDirPath",
+      "/tmp/LumenBatch37Packages",
+      "-disableAutomaticPackageResolution",
+      "-parallel-testing-enabled",
+      "NO",
+      "-only-testing:LumenUITests/LumenSmokeTests/testDurableHealthNative{CombinedFailure|ReceiptFailure}",
+      "-resultBundlePath",
+      "/tmp/LumenBatch43Checks/LocalDomainControl{Combined|Receipt}R1.xcresult",
+      "test-without-building"
+    ],
+    "host": "collect-durable-native.py 922E011C-3895-4DB1-9C9A-1D3A977226CF durable-native-{combined|receipt}-r3 --source durable-source-r11.json --build local-domain-native-build-r2.json",
+    "originals": "xcrun xcresulttool export attachments, --filter *.png; full per-command logs retained"
+  }
+}

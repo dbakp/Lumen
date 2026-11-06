@@ -1,0 +1,55 @@
+{
+  "status": "Source preparation only; no new runtime or dataset acceptance",
+  "source": "durable-source-r162.json",
+  "parent": "health-daily-cache-r1-contract.json",
+  "sourceEvidence": {
+    "Lumen/Services/HealthKitService.swift": {
+      "bytes": 28238,
+      "sha256": "20a9b98a2d27a2d3a9ff85b5a1944b5ceb1ca5a8975f931bfb15983dfe7996a3"
+    },
+    "Lumen/Algorithms/HealthTodayReadCoordinator.swift": {
+      "bytes": 4615,
+      "sha256": "d551dc3542f022f27a980d70d90732b80b81ee121e13eaa7115db9eea0abf076"
+    },
+    "Lumen/Models/HealthDailyCache.swift": {
+      "bytes": 8289,
+      "sha256": "15f72f7912047c130843d3c30f780bb741edd52406041f648a918d4579fea6fc"
+    },
+    "Lumen/Views/HealthRecoveryView.swift": {
+      "bytes": 52913,
+      "sha256": "97085f29226b8af8e203b6853ddd745349a7c4e254573aa1f2881f2a84297ac4"
+    }
+  },
+  "observations": [
+    "Actual current seed fixture writes only four own-source step/weight/heart-rate samples. It does not cover nutrition/water, foreign-source inclusion, genuine SDK errors or all-failed query sets.",
+    "Fresh recovery quantity queries exclude HKSource.default for water/calories/protein/carbs/fat. Seeding those types from the main Lumen process can prove exclusion, but cannot establish foreign-source inclusion. A separate signed simulator helper source is required for actual inclusion evidence.",
+    "quantityResult maps only HKErrorDomain/errorNoData to noData; other errors remain failed and discard quantities. Existing typed error controls are synthetic, not genuine SDK-failure evidence.",
+    "HealthDailyCache.rawReadings rejects a complete eighteen-key set when every query failed. Native UI must retain exact files and allow useful retry; failure must not silently become clear.",
+    "Existing fixture cleanup uses exact tag/source/UUID and expects four recorded rows for interrupted cleanup. Extending the dataset requires versioned validated source/UUID/type/value facts, including partial save failure; never broaden deletion to generic sample types."
+  ],
+  "nextCases": [
+    {
+      "case": "Own-source nutrition and water exclusion",
+      "proof": "Tagged SDK samples exist with exact type/value/source/UUID; actual fresh query remains unknown for excluded own-source quantities, local records counted once; exact cleanup readback empty."
+    },
+    {
+      "case": "Foreign-source nutrition and water inclusion",
+      "proof": "Separate helper bundle writes known tagged samples; Lumen actual query includes helper source, correct sums/units/windows and preserved local data; each helper-owned UUID cleanup verified."
+    },
+    {
+      "case": "Other measured/latest/stand values",
+      "proof": "Fresh actual supported SDK samples, correct units/percentage conversion/latest dates/stand-hour semantics and complete raw commit; all unrelated files exact."
+    },
+    {
+      "case": "Partial and all-failed SDK outcomes",
+      "proof": "Capture genuine SDK error domain/code at actual query callbacks using a controlled dedicated simulator condition. Do not relabel injected callback errors as actual SDK failures. Independently verify partial unknowns/all-failed rejection, unchanged files and retry."
+    }
+  ],
+  "freeze": "Do not modify source162app/tests while continuing critic Round1 reads. Prepare separate artifacts only; any subsequent changed binary needs fresh source/build/affected runtime provenance.",
+  "scope": "Every original nextRequired/full remainingScope/contracts/eight groups and broader product goal preserved. Physical iPhone actions withdrawn.",
+  "storage": {
+    "availableGiB": 53.57,
+    "manualBytesRecovered": 0,
+    "action": "No new build/download/fixtures; required unpublished evidence and immediately reused roots retained."
+  }
+}

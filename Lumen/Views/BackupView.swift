@@ -5,8 +5,12 @@ struct BackupView: View {
     @EnvironmentObject private var sleep: SleepStore
     @EnvironmentObject private var health: HealthStore
     @State private var shared: BackupService.Export?
-    @State private var source: BackupService.Source?
-    @State private var preview: BackupService.Preview?
+    @State private var selectedSource: BackupSelectedSourceSession?
+    @State private var previewSession: BackupPreviewSession?
+    private var source: BackupSelectedSourceSession.Summary? { selectedSource?.summary }
+    private var preview: BackupPreviewSession.Summary? { previewSession?.summary }
+    @State private var recoverySession: BackupRecoveryReviewSession?
+    @State private var reviewingRecovery = false
     @State private var choosingFile = false
     @State private var creatingPassword = false
     @State private var password = ""
@@ -17,6 +21,7 @@ struct BackupView: View {
     @State private var errorTitle = "Couldn’t open backup"
     @State private var errorMessage: String?
     @State private var statusMessage: String?
+    @State private var importReadFailure: String?
     @State private var conflictCount = 0
     @State private var preferences = false
     @State private var confirmRestore = false
@@ -26,8 +31,10 @@ struct BackupView: View {
     #endif
     private var busy: Bool { operation != nil }
     private var unavailable: Bool { busy || health.isSyncing }
+    private var allHealthAvailable: Bool { HealthLocalFiles.Domain.allCases.allSatisfy { health.localHealthAvailable($0) } }
     private var scrollTarget: String? {
         if busy { return "backupProgressSection" }
+        if importReadFailure != nil { return "backupChooseSection" }
         if restored || statusMessage != nil { return "backupStatusSection" }
         if preview != nil { return "backupPreviewSection" }
         if source?.encrypted == true { return "backupUnlockSection" }
@@ -61,10 +68,14 @@ struct BackupView: View {
                 Text(shared == nil ? "You’ll choose a password before creating the file. Saved connection details and device permissions are excluded." : "Save it to Files before leaving this screen. Lumen then removes this temporary copy.").foregroundStyle(Theme.secondary)
             }.disabled(unavailable)
             Section {
+                if let importReadFailure {
+                    Text(importReadFailure).foregroundStyle(.primary)
+                        .accessibilityIdentifier("importReadFailureInstructions")
+                }
                 Button("Choose backup", systemImage: "square.and.arrow.down") { choosingFile = true }.accessibilityIdentifier("chooseBackup")
             } header: { Text("Bring records back").foregroundStyle(Theme.secondary) } footer: {
                 Text("Encrypted Lumen backups up to 2 GB, or older JSON backups up to 100 MB. Review the contents before restoring.").foregroundStyle(Theme.secondary)
-            }.disabled(unavailable)
+            }.disabled(unavailable).id("backupChooseSection")
             Section {
                 NavigationLink("Recover a readable export") { ReadableRecoveryView() }.accessibilityIdentifier("readableRecovery")
             } footer: { Text("For JSON files made with Export my data. Review their contents separately before adding data.").foregroundStyle(Theme.secondary) }.disabled(unavailable)
@@ -76,7 +87,7 @@ struct BackupView: View {
                         SecureField("Enter password", text: $password).textContentType(.password).submitLabel(.done).autocorrectionDisabled().textInputAutocapitalization(.never).accessibilityLabel("Backup password").accessibilityIdentifier("unlockBackupPassword")
                     }
                     Button("Unlock preview") { unlock() }.fontWeight(.semibold).disabled(password.isEmpty).accessibilityIdentifier("unlockBackup")
-                    Button("Dismiss file", role: .cancel) { self.source = nil; password = "" }
+                    Button("Dismiss file", role: .cancel) { selectedSource?.close(); selectedSource = nil; password = "" }
                 } header: { Text("Password needed").foregroundStyle(Theme.secondary) } footer: {
                     Text("Use the password chosen when this backup was made. Lumen can’t recover it. Your current records haven’t changed.").foregroundStyle(Theme.secondary)
                 }.disabled(unavailable)
@@ -85,31 +96,49 @@ struct BackupView: View {
                 Section {
                     Label(preview.encrypted ? "Encrypted backup" : "Older, unencrypted backup", systemImage: preview.encrypted ? "lock.shield" : "doc").accessibilityElement(children: .combine).accessibilityIdentifier("backupPreviewKind").id("backupPreviewSection")
                     LabeledContent("Created", value: preview.createdAt.formatted(date: .abbreviated, time: .shortened))
-                    LabeledContent("Symptom logs", value: "\(preview.snapshot.symptoms.count.formatted())")
-                    LabeledContent("Check-ins", value: "\(preview.snapshot.checkIns.count.formatted())")
-                    LabeledContent("Meals & photos", value: "\(preview.snapshot.meals.count.formatted()) · \(preview.photos.count.formatted())")
-                    LabeledContent("Water logs", value: "\(preview.snapshot.water.count.formatted())")
+                    LabeledContent("Symptom logs", value: "\(preview.symptoms.formatted())")
+                    LabeledContent("Check-ins", value: "\(preview.checkIns.formatted())")
+                    LabeledContent("Meals & photos", value: "\(preview.meals.formatted()) · \(preview.photoCount.formatted())")
+                    LabeledContent("Water logs", value: "\(preview.water.formatted())")
                         .accessibilityElement(children: .ignore).accessibilityLabel("Water logs")
-                        .accessibilityValue(preview.snapshot.water.count.formatted()).accessibilityIdentifier("backupWaterCount")
-                    LabeledContent("Workouts & sleep logs", value: "\(preview.snapshot.workouts.count.formatted()) · \(preview.snapshot.sleep.count.formatted())")
-                    LabeledContent("Conversations", value: "\(preview.snapshot.conversations.count.formatted())")
-                    LabeledContent("Plans & documents", value: "\(preview.snapshot.documents.count.formatted())")
-                    LabeledContent("Imported health days", value: "\(preview.snapshot.importedDays.count.formatted())")
-                    LabeledContent("Already on this iPhone", value: "\(conflictCount.formatted())")
+                        .accessibilityValue(preview.water.formatted()).accessibilityIdentifier("backupWaterCount")
+                    LabeledContent("Workouts & sleep logs", value: "\(preview.workouts.formatted()) · \(preview.sleep.formatted())")
+                    LabeledContent("Conversations", value: "\(preview.conversations.formatted())")
+                    LabeledContent("Plans & documents", value: "\(preview.documents.formatted())")
+                    LabeledContent("Imported health days", value: "\(preview.importedDays.formatted())")
+                    if allHealthAvailable { LabeledContent("Already on this iPhone", value: "\(conflictCount.formatted())") }
                 } header: { Text("Backup preview").foregroundStyle(Theme.secondary) } footer: {
-                    Text("Your current versions of these records will be kept. Missing records and measurements will be added. Photos won’t overwrite current photos. Counts are records, not individual messages or measurements.").foregroundStyle(Theme.secondary)
+                    Text(allHealthAvailable ? "Your current versions of these records will be kept. Missing records and measurements will be added. Photos won’t overwrite current photos. Counts are records, not individual messages or measurements." : "Some current health data couldn't be opened. Review this file to choose which unavailable data to recover. Your saved files haven't been replaced.").foregroundStyle(Theme.secondary)
                 }.foregroundStyle(Theme.text, Theme.secondary)
-                Section {
+                if !allHealthAvailable, recoverySession != nil {
+                    Section {
+                        Button { reviewingRecovery = true } label: {
+                            HStack {
+                                Text("Review recovery options").foregroundStyle(Theme.text)
+                                Spacer()
+                                Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(.tertiary).accessibilityHidden(true)
+                            }
+                        }
+                            .accessibilityIdentifier("reviewBackupHealthRecovery")
+                        Button("Dismiss preview", role: .cancel) { clearPreview() }
+                    }
+                } else { Section {
                     Toggle("Restore profile & preferences", isOn: $preferences)
                     Button("Restore missing records") { confirmRestore = true }.fontWeight(.semibold).accessibilityIdentifier("restoreBackup")
                     Button("Dismiss preview", role: .cancel) { clearPreview() }
                 } footer: {
                     Text("Profile restore replaces your name, body goals, sleep settings, habits and personal notes. Your app lock, connections and reminders stay as they are. Restored documents and personal notes start with assistant sharing off. Restore doesn’t write to Apple Health.").foregroundStyle(Theme.secondary)
-                }.disabled(unavailable)
+                }.disabled(unavailable) }
             }
         }
         .scrollContentBackground(.hidden).background(Theme.bg)
         .navigationTitle("Backup & restore").navigationBarTitleDisplayMode(.inline)
+        .navigationDestination(isPresented: $reviewingRecovery) {
+            if let recoverySession { BackupFileRecoveryView(session: recoverySession) }
+        }
+        #if DEBUG && targetEnvironment(simulator)
+        .overlay(alignment: .bottom) { HealthImportReadUIProbe() }
+        #endif
         .toolbar {
             if busy {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -127,6 +156,9 @@ struct BackupView: View {
         .alert(errorTitle, isPresented: Binding(get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } })) {
             Button("OK", role: .cancel) { errorMessage = nil }
         } message: { Text(errorMessage ?? "") }
+        .onChange(of: errorMessage) { _, value in
+            if value == nil, importReadFailure != nil { proxy.scrollTo("backupChooseSection", anchor: .top) }
+        }
         .alert("Restore missing records?", isPresented: $confirmRestore) {
             Button("Restore records") { restore() }
             Button("Cancel", role: .cancel) { }
@@ -151,22 +183,43 @@ struct BackupView: View {
             proxy.scrollTo(target, anchor: .top)
         }
         .onDisappear {
-            cancelOperation(); clearPreview(); shared = nil; password = ""
+            cancelOperation()
+            clearPreview()
+            shared = nil; password = ""
         }
+        .onChange(of: reviewingRecovery) { _, active in if !active { clearPreview() } }
         }
     }
-    private func clearPreview() { preview = nil; source = nil; password = ""; preferences = false; conflictCount = 0 }
+    private func clearPreview() {
+        previewSession?.close(); previewSession = nil
+        selectedSource?.close(); selectedSource = nil
+        password = ""; preferences = false; conflictCount = 0
+        if !reviewingRecovery { recoverySession?.close(); recoverySession = nil }
+    }
     private func begin(errorTitle: String) -> (UUID, BackupOperationControl) {
         self.errorTitle = errorTitle
         let control = BackupOperationControl(), id = UUID()
-        operation = control; jobID = id; statusMessage = nil; restored = false; cancellationRequested = false
+        operation = control; jobID = id; statusMessage = nil; importReadFailure = nil; restored = false; cancellationRequested = false
         return (id, control)
     }
     private func finish(_ id: UUID, error: Error? = nil) {
         guard jobID == id else { return }
         operation = nil; work = nil
-        if error is CancellationError { statusMessage = "Cancelled. Your records haven’t changed." }
-        else if let error { errorMessage = error.localizedDescription }
+        if error is CancellationError {
+            // A cancelled initial plain-file read has no preview or same-file
+            // retry. Release this UI owner after its worker has finished;
+            // encrypted password retry and existing previews still need theirs.
+            if preview == nil, source?.encrypted == false { selectedSource?.close(); selectedSource = nil }
+            statusMessage = "Cancelled. Your records haven’t changed."
+        }
+        else if let error {
+            errorMessage = error.localizedDescription
+            // Native alerts support only unstyled message text. Keep the
+            // actionable instructions readable beside the retry chooser too.
+            if let failure = error as? BackupError, case .fileAccess = failure {
+                importReadFailure = error.localizedDescription
+            }
+        }
     }
     private func cancelOperation() {
         guard let operation else { return }
@@ -188,44 +241,60 @@ struct BackupView: View {
     private func select(_ url: URL) {
         clearPreview()
         let (id, control) = begin(errorTitle: "Couldn’t open backup")
+        #if DEBUG && targetEnvironment(simulator)
+        HealthReadUIFixture.register(control, scope: "selected-import")
+        #endif
         work = Task { @MainActor in
             do {
-                let selected = try await Task.detached(priority: .userInitiated) { try BackupService.select(url, control: control) }.value
-                try control.checkCancellation()
-                guard jobID == id else { throw CancellationError() }
-                source = selected
-                if !selected.encrypted {
-                    let value = try await Task.detached(priority: .userInitiated) { try BackupService.read(selected, password: "", control: control) }.value
-                    try show(value, id: id, control: control)
+                let selected = try await Task.detached(priority: .userInitiated) { BackupSelectedSourceSession(try BackupService.select(url, control: control)) }.value
+                do {
+                    try control.checkCancellation()
+                    guard jobID == id else { throw CancellationError() }
+                    selectedSource = selected
+                    if !selected.summary.encrypted {
+                        let value = try await Task.detached(priority: .userInitiated) { try selected.read(password: "", control: control) }.value
+                        try show(value, id: id, control: control)
+                    }
+                    finish(id)
+                } catch {
+                    selected.close(); throw error
                 }
-                finish(id)
             } catch { finish(id, error: error) }
         }
     }
     private func unlock() {
-        guard let source else { return }
+        guard let source = selectedSource else { return }
         let entered = password; password = ""
         let (id, control) = begin(errorTitle: "Couldn’t unlock backup")
+        #if DEBUG && targetEnvironment(simulator)
+        if ProcessInfo.processInfo.arguments.contains("-health-read-encrypted-record") || ProcessInfo.processInfo.arguments.contains("-health-read-encrypted-unlock") {
+            HealthReadUIFixture.register(control, scope: "selected-import")
+        }
+        #endif
         work = Task { @MainActor in
             do {
-                let value = try await Task.detached(priority: .userInitiated) { try BackupService.read(source, password: entered, control: control) }.value
+                let value = try await Task.detached(priority: .userInitiated) { try source.read(password: entered, control: control) }.value
                 try show(value, id: id, control: control); finish(id)
             } catch { finish(id, error: error) }
         }
     }
-    private func show(_ value: BackupService.Preview, id: UUID, control: BackupOperationControl) throws {
-        try control.checkCancellation()
-        guard jobID == id else { throw CancellationError() }
-        conflictCount = value.snapshot.conflicts(with: try BackupService.snapshot(sleep: sleep, health: health))
-        preview = value; source = nil
+    private func show(_ session: BackupPreviewSession, id: UUID, control: BackupOperationControl) throws {
+        do {
+            let value = try session.acquire(control: control)
+            guard jobID == id else { throw CancellationError() }
+            conflictCount = allHealthAvailable ? value.snapshot.conflicts(with: try BackupService.snapshot(sleep: sleep, health: health)) : 0
+            previewSession = session
+            selectedSource?.close(); selectedSource = nil
+            recoverySession = BackupService.recoveryInput(value).map(BackupRecoveryReviewSession.init)
+        } catch { session.close(); throw error }
     }
     private func restore() {
-        guard let preview else { return }
+        guard let preview = previewSession else { return }
         let restorePreferences = preferences
         let (id, control) = begin(errorTitle: "Couldn’t restore backup")
         work = Task { @MainActor in
             do {
-                try await BackupService.restore(preview, preferences: restorePreferences, sleep: sleep, health: health, control: control)
+                try await preview.restore(preferences: restorePreferences, sleep: sleep, health: health, control: control)
                 // The short commit has completed; show its outcome even if navigation cancelled afterward.
                 guard jobID == id else { return }
                 clearPreview(); restored = true; finish(id)

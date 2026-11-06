@@ -1,0 +1,13 @@
+{
+  "status": "failed candidates; focused exit133",
+  "sourceR2": "durable-source-r35.json",
+  "sourceR3": "durable-source-r36.json",
+  "diagnostic": "health-discovery-r3-stage-failure.json",
+  "finding": "FileManager enumeration returns /private/var URLs while root path uses /var. Relative dropFirst uses unequal prefix lengths, producing saction/goals.json and saction/.health-recovery. Private area exclusion misses and a newly discovered private copy invalidates an already prepared transaction.",
+  "boundary": "Actual failed native Foundation commit; originals unchanged before rejection. Top-level thrown-error unwinding removes passed outer synthetic tree, so no surviving full failed tree is claimed. SourceR36 only adds failure diagnostic; production identical R35.",
+  "checksBeforeFailure": {
+    "HealthDiscoveryFocusedR2.log": 16,
+    "HealthDiscoveryFocusedR3.log": 16,
+    "HealthDiscoveryFocusedR4.log": 16
+  }
+}

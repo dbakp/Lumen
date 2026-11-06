@@ -1,0 +1,17 @@
+{
+  "status": "Predeclared before native execution",
+  "source": "durable-source-r89.json",
+  "parent": "health-held-photo-r1-contract.json",
+  "cases": [
+    "In-place rewrite of actual open retained JPEG with other valid native JPEG",
+    "Atomic replacement of actual open retained JPEG path with other valid native JPEG"
+  ],
+  "required": [
+    "Actual photo UI and worker control match; independently read source/actual open descriptor/process/inode/size/all protected regular files after native held capture.",
+    "Mutate only dedicated synthetic source. Record all inode aliases before in-place write; expected host-changed paths include those aliases. For replacement, only replaced private path changes.",
+    "Release actual first verification JPEG hold after mutation, with old descriptor still open. Native must show expected changed-photo error, no image and actual closed reader.",
+    "Every other current/private/intent/receipt path and byte remains exact. Snapshot paths track regular files, not empty-directory metadata.",
+    "Preserve original native PNG/JSON, source/build/driver hashes and full terminal logs, including any failure.",
+    "No source restoration/retry, final payload-read window, selected-file or full parent-contract acceptance inferred."
+  ]
+}

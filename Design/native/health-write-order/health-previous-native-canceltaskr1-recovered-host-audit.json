@@ -1,0 +1,64 @@
+{
+  "status": "matched after recovery",
+  "test": "PreviousCopyTaskCancellation",
+  "nativeChecks": 39,
+  "source": "durable-source-r56.json",
+  "build": "health-cancel-native-build-r1.json",
+  "files": {
+    ".health-recovery/3F1D3B1F-23E1-4440-8886-15B9D76558D9/device-intent.json": {
+      "bytes": 123,
+      "sha256": "c954e7ce5d463d995d39fccaaf66f49b4eb642bb2357344ef793e6f44761d6d0"
+    },
+    ".health-recovery/3F1D3B1F-23E1-4440-8886-15B9D76558D9/manifest.json": {
+      "bytes": 97,
+      "sha256": "a736d5b1bd83d8f70737cf616744ea8d066f216796d22c004d3a94985826d1ae"
+    },
+    ".health-recovery/3F1D3B1F-23E1-4440-8886-15B9D76558D9/water.json": {
+      "bytes": 102,
+      "sha256": "e52dcc4b27a437c6e35aa77cb3a58dd5117c241d3e05aad7cd854d3564bee8f0"
+    },
+    ".health-recovery/DB6C03A7-3A84-42BD-92E9-01D482692609/device-intent.json": {
+      "bytes": 740,
+      "sha256": "f3caadeb29ecb94a8ee2f64fa4a5686ec781db39aaaa1f899a36b2b9b958bc11"
+    },
+    ".health-recovery/DB6C03A7-3A84-42BD-92E9-01D482692609/manifest.json": {
+      "bytes": 97,
+      "sha256": "2c6413f945e6b1d7049a1add2b9784fdd71ab3bf3f3cd94816bde1812ab20f60"
+    },
+    ".health-recovery/DB6C03A7-3A84-42BD-92E9-01D482692609/water.json": {
+      "bytes": 29,
+      "sha256": "765d3bf4bd660cf26e43ec4e2aba807c2cb8d636550d7f15a9b220e777066c1d"
+    },
+    "goals.json": {
+      "bytes": 177,
+      "sha256": "511ea8309a0e1c93bbaa1b5d4cb839885f8f714845676acad8466d57082dab9c"
+    },
+    "health-write-intent.json": {
+      "bytes": 1115,
+      "sha256": "e40701d92e8b997c1516adf028058e58cba3c84445d7a01efa389f6c9a4a4d57"
+    },
+    "meals.json": {
+      "bytes": 532,
+      "sha256": "bf9b75c318c462b64cc61fd124e1f0e0f613cabead07f332b41ae4a9dce0f687"
+    },
+    "profile.json": {
+      "bytes": 177,
+      "sha256": "5b97b8cc120de42b401b5d7bd8e372e00f107b640ba2e7466d1af830a9eb8563"
+    },
+    "today.json": {
+      "bytes": 159,
+      "sha256": "72235d7c73cfdb5e6f92f11efccb738d0ce5875e5bac762ce1cf65b931aedec7"
+    },
+    "water.json": {
+      "bytes": 159,
+      "sha256": "863d3bb4e3a9eba3a675cd13121c28dc1e540018373611a3cd40259db6b374a8"
+    },
+    "workouts.json": {
+      "bytes": 237,
+      "sha256": "1d35b1e1cced61b05683a7b3258b5f48e9c55250cebf2683ac01b8a3c826fcd9"
+    }
+  },
+  "externalComponents": 6,
+  "installedBinarySHA256": "ff734698a592ddeaaa44cda0d0a1181ba211b33832cc630105b67a42224418d5",
+  "scope": "Host compared actual rejected files before release of the test barrier, then actual recovered files, live IDs, controlled external identities/receipts and installed source/binary. No HealthKit/UI/device acceptance."
+}

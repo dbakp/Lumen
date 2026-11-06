@@ -1,0 +1,23 @@
+{
+  "status": "failed screen test: host released retry before native held-2 observation",
+  "source": "durable-source-r57.json",
+  "applicationSource": "durable-source-r56.json",
+  "producerExit": 65,
+  "actualSharedControlAndCancelObserved": true,
+  "cancelledStageAbsent": true,
+  "beforeRetryOriginalsIndependentlyMatched": true,
+  "retryInstalledWater137": true,
+  "receipt": {
+    "domains": [
+      "water"
+    ],
+    "recordDigests": {
+      "water.json": "1dc7d921432b620cf0fcd72262f29a4ffe06902fcd4d7e3cb546d370e3908291"
+    },
+    "recoveredAt": "2026-11-04T06:28:12Z",
+    "source": "retained:discovered-e8b52522f3e335cfcdb66beacafffae53ce40086434aede050613d7053229e46"
+  },
+  "retryHeldCaptureVerified": false,
+  "relaunchVerified": false,
+  "next": "Require actual retry-held XCTest attachment log acknowledgement before host release; same app/test binary."
+}

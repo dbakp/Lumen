@@ -142,16 +142,35 @@ struct BackupArchive: Codable, Sendable {
         guard data.count <= maxBytes else { throw BackupError.tooLarge }
         return data
     }
-    static func read(_ data: Data) throws -> (BackupArchive, BackupSnapshot) {
+    static func read(_ data: Data, control: BackupOperationControl = .init()) throws -> (BackupArchive, BackupSnapshot) {
+        try control.checkCancellation()
         guard data.count <= maxBytes else { throw BackupError.tooLarge }
         let archive: BackupArchive
-        do { archive = try decoder().decode(Self.self, from: data) } catch { throw BackupError.invalid }
+        do { archive = try decoder().decode(Self.self, from: data) }
+        catch { try control.checkCancellation(); throw BackupError.invalid }
+        try control.checkCancellation()
         guard archive.format == "LumenBackup" else { throw BackupError.invalid }
         guard archive.version == 1 else { throw BackupError.version }
-        guard digest(archive.payload) == archive.sha256 else { throw BackupError.integrity }
+        var hash = SHA256(), offset = 0
+        while offset < archive.payload.count {
+            try control.checkCancellation()
+            let end = min(offset + 64 * 1024, archive.payload.count)
+            hash.update(data: archive.payload[offset..<end]); offset = end
+            let progress = control.progress
+            if progress.stage == .preparing || progress.stage == .reading {
+                control.update(.reading, completed: progress.completed, total: progress.total,
+                               bytes: max(progress.bytes, Int64(offset)), detail: progress.detail)
+            }
+        }
+        try control.checkCancellation()
+        guard hash.finalize().map({ String(format: "%02x", $0) }).joined() == archive.sha256 else { throw BackupError.integrity }
         let snapshot: BackupSnapshot
-        do { snapshot = try decoder().decode(BackupSnapshot.self, from: archive.payload) } catch { throw BackupError.invalid }
-        try validate(snapshot)
+        do { snapshot = try decoder().decode(BackupSnapshot.self, from: archive.payload) }
+        catch { try control.checkCancellation(); throw BackupError.invalid }
+        try control.checkCancellation()
+        do { try validate(snapshot) }
+        catch { try control.checkCancellation(); throw error }
+        try control.checkCancellation()
         return (archive, snapshot)
     }
     static func safePhotoID(_ id: String) -> Bool {
@@ -164,7 +183,7 @@ struct BackupArchive: Codable, Sendable {
         func bounded(_ value: Double) -> Bool { value.isFinite && value >= 0 && value <= 1_000_000_000 }
         func optionalBounded(_ value: Double?) -> Bool { value.map(bounded) ?? true }
         guard snapshot.recordCount <= 500_000 else { throw BackupError.invalid }
-        guard unique(snapshot.sleep), unique(snapshot.meals), unique(snapshot.workouts), unique(snapshot.water),
+        guard unique(snapshot.sleep),
               unique(snapshot.conversations), unique(snapshot.symptoms), unique(snapshot.checkIns), unique(snapshot.documents),
               unique(snapshot.importedDays), unique(snapshot.imports), unique(snapshot.habits) else { throw BackupError.invalid }
         guard snapshot.conversations.allSatisfy({ unique($0.messages) && $0.messages.allSatisfy { ($0.recordContext?.isValid ?? true) && ($0.role == .coach || $0.recordContext == nil) } }),
@@ -172,25 +191,11 @@ struct BackupArchive: Codable, Sendable {
         guard snapshot.photos.allSatisfy({ safePhotoID($0.key) && !$0.value.isEmpty && $0.value.count <= maxPhotoBytes }),
               snapshot.meals.allSatisfy({ $0.photoID.map { safePhotoID($0) && (availablePhotoIDs?.contains($0) ?? (snapshot.photos[$0] != nil)) } ?? true }) else { throw BackupError.invalid }
         guard snapshot.symptoms.allSatisfy({ (1...10).contains($0.severity) }),
-              snapshot.checkIns.allSatisfy({ (1...5).contains($0.energy) && (1...5).contains($0.mood) && (1...5).contains($0.stress) }),
-              snapshot.water.allSatisfy({ $0.ml.isFinite && $0.ml > 0 && $0.ml <= 10000 }) else { throw BackupError.invalid }
+              snapshot.checkIns.allSatisfy({ (1...5).contains($0.energy) && (1...5).contains($0.mood) && (1...5).contains($0.stress) }) else { throw BackupError.invalid }
         guard snapshot.sleep.allSatisfy({ $0.wakeTime >= $0.bedtime && bounded($0.duration) }),
               snapshot.importedDays.allSatisfy({ $0.values.values.allSatisfy(bounded) }) else { throw BackupError.invalid }
-        guard snapshot.workouts.allSatisfy({ workout in
-            guard bounded(workout.duration), bounded(workout.activeCalories), optionalBounded(workout.distanceM), optionalBounded(workout.avgHR) else { return false }
-            guard let origin = workout.importOrigin else { return true }
-            return origin.end >= workout.start && origin.end.timeIntervalSince(workout.start) <= 7 * 86400 && workout.duration <= origin.end.timeIntervalSince(workout.start) + 60
-        }) else { throw BackupError.invalid }
-        for meal in snapshot.meals {
-            guard unique(meal.items) else { throw BackupError.invalid }
-            for food in meal.items {
-                guard (0...1).contains(food.confidence) else { throw BackupError.invalid }
-                guard [food.grams, food.calories, food.proteinG, food.carbsG, food.fatG, food.fiberG].allSatisfy(bounded) else { throw BackupError.invalid }
-            }
-        }
-        guard [snapshot.goals.stepGoal, snapshot.goals.activeCalGoal, snapshot.goals.exerciseGoalMin].allSatisfy(bounded),
-              optionalBounded(snapshot.goals.weightKg), optionalBounded(snapshot.goals.heightCm),
-              (0...150).contains(snapshot.goals.age ?? 30), (0...24).contains(snapshot.goals.standGoal) else { throw BackupError.invalid }
+        guard HealthRecordValidation.water(snapshot.water), HealthRecordValidation.meals(snapshot.meals),
+              HealthRecordValidation.workouts(snapshot.workouts), HealthRecordValidation.goals(snapshot.goals) else { throw BackupError.invalid }
         if let year = snapshot.profile.birthYear {
             guard (1850...Calendar.current.component(.year, from: Date())).contains(year) else { throw BackupError.invalid }
         }
@@ -206,9 +211,22 @@ struct BackupArchive: Codable, Sendable {
 }
 
 enum BackupError: LocalizedError {
-    case tooLarge, invalid, version, integrity, busy, missingPhoto, recordsChanged, currentDataInvalid
+    case tooLarge, invalid, version, integrity, busy, missingPhoto, recordsChanged, currentDataInvalid, fileAccess
+    /// FileHandle can describe a denied read as a write failure. Selection has
+    /// not imported anything, so describe that operation without private paths.
+    static func importReadFailure(_ error: Error) -> Error {
+        if error is CancellationError { return error }
+        let failure = error as NSError
+        let cocoaDenied = failure.domain == NSCocoaErrorDomain &&
+            [CocoaError.Code.fileReadNoPermission.rawValue, CocoaError.Code.fileWriteNoPermission.rawValue].contains(failure.code)
+        let posixDenied = failure.domain == NSPOSIXErrorDomain &&
+            [Int(POSIXErrorCode.EACCES.rawValue), Int(POSIXErrorCode.EPERM.rawValue)].contains(failure.code)
+        if cocoaDenied || posixDenied { return BackupError.fileAccess }
+        return error
+    }
     var errorDescription: String? {
         switch self {
+        case .fileAccess: return "Lumen couldn’t read this file. Keep the original and choose it again. No records were imported."
         case .tooLarge: return "This backup is over the 100 MB limit. Keep the original file; no records were changed."
         case .invalid: return "This file isn’t a valid Lumen backup. Choose a file created from Backup & restore. Older data exports can’t be restored here."
         case .version: return "This backup needs a newer version of Lumen. Update the app, then try again."
@@ -228,6 +246,7 @@ enum BackupFiles {
     /// A reader must retain a previous copy while current content is unreadable,
     /// and only an actual missing path permits recovery or fresh initialization.
     static func openDirectory(_ directory: URL, createIfMissing: Bool) throws {
+        try HealthRecoveryCopies.serialized {
         let fm = FileManager.default
         func directoryExists(_ url: URL) throws -> Bool {
             let attributes: [FileAttributeKey: Any]
@@ -245,15 +264,21 @@ enum BackupFiles {
         } else if createIfMissing {
             try fm.createDirectory(at: directory, withIntermediateDirectories: true, attributes: [.posixPermissions: 0o700])
         }
+        }
     }
 
     static func recover(_ directory: URL) throws {
-        let fm = FileManager.default
-        let previous = directory.appendingPathExtension("previous")
-        if !fm.fileExists(atPath: directory.path), fm.fileExists(atPath: previous.path) {
-            try fm.moveItem(at: previous, to: directory)
+        try HealthRecoveryCopies.serialized {
+            try openDirectory(directory, createIfMissing: false)
+            let previous = directory.appendingPathExtension("previous")
+            guard FileManager.default.fileExists(atPath: directory.path) else { return }
+            let erased = try HealthRecoveryCopies.completedErasure(in: directory)
+            if FileManager.default.fileExists(atPath: previous.path) {
+                if !erased { try HealthRecoveryCopies.preservePrevious(in: directory) }
+                try FileManager.default.removeItem(at: previous)
+            }
+            if erased { try HealthRecoveryCopies.finishErasure(in: directory) }
         }
-        if fm.fileExists(atPath: directory.path), fm.fileExists(atPath: previous.path) { try fm.removeItem(at: previous) }
     }
     static func install(_ files: [String: Data], into directory: URL) throws {
         let fm = FileManager.default

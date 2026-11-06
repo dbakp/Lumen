@@ -1,0 +1,284 @@
+{
+  "status": "passed: native back cancels original-copy read/write and closes both descriptors; abandoned original workspace removed; real Files reselection creates distinct original workspace and native246mL detail; saved bytes unchanged",
+  "source": "durable-source-r98.json",
+  "build": "health-original-import-copy-back-native-build-r1.json",
+  "before": {
+    "chat.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "conversations.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "workouts.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "goals.json": {
+      "bytes": 177,
+      "sha256": "7ceaf16447d3539f90429200008aa6055612e0755964d4bccb5130278cbbc1d2",
+      "base64": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjEwMDAwLCJ3ZWlnaHRLZyI6NzV9"
+    },
+    "sleep.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "today.json": {
+      "bytes": 123,
+      "sha256": "39241fad7f0f936e0c8d5537d90d5c08703fa25236df0b63f9801a6212d35b50",
+      "base64": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDRUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9"
+    },
+    "meals.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "water.json": {
+      "bytes": 29,
+      "sha256": "0d3f4ef174c527390388c9fccb88964f5cc0b3bac224a4370cd215d61623e845",
+      "base64": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZVdhdGVyIjo="
+    },
+    "conversation-selection.json": {
+      "bytes": 2,
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "base64": "e30="
+    },
+    "habits.json": {
+      "bytes": 3170,
+      "sha256": "b0907add65cbd317800d4e8dbb6231fb76aa2155be8ddddb5a7291db66bfc686",
+      "base64": "W3sib2Zmc2V0IjoxODAwLCJpZCI6ImxpZ2h0IiwiZGV0YWlsIjoiMTAgbWluIG9mIGRheWxpZ2h0IHdpdGhpbiAzMCBtaW4gb2Ygd2FraW5nIGFuY2hvcnMgeW91ciBjbG9jay4iLCJpY29uIjoic3VuLm1heC5maWxsIiwiZG9uZVRvZGF5IjpmYWxzZSwiYW5jaG9yIjoid2FrZVBsdXMiLCJpc0VuYWJsZWQiOnRydWUsInRpdGxlIjoiR2V0IGJyaWdodCBsaWdodCJ9LHsib2Zmc2V0IjozNjAwMCwiaWQiOiJjYWZmZWluZSIsImRldGFpbCI6Ik5vIGNhZmZlaW5lIHdpdGhpbiAxMGggb2YgYmVkIOKAlCBoYWxmLWxpZmUgaXMgfjZoLiIsImljb24iOiJjdXAuYW5kLnNhdWNlci5maWxsIiwiZG9uZVRvZGF5IjpmYWxzZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaXNFbmFibGVkIjp0cnVlLCJ0aXRsZSI6IkNhZmZlaW5lIGN1dG9mZiJ9LHsib2Zmc2V0IjoyMTYwMCwiaWQiOiJleGVyY2lzZSIsImRldGFpbCI6IjIwKyBtaW4uIEZpbmlzaCBpbnRlbnNlIHdvcmtvdXRzIDNoKyBiZWZvcmUgYmVkLiIsImljb24iOiJmaWd1cmUucnVuIiwiZG9uZVRvZGF5IjpmYWxzZSwiYW5jaG9yIjoid2FrZVBsdXMiLCJpc0VuYWJsZWQiOnRydWUsInRpdGxlIjoiTW92ZSB5b3VyIGJvZHkifSx7Im9mZnNldCI6MjUyMDAsImlkIjoibmFwIiwiZGV0YWlsIjoiSWYgbmFwcGluZzogMjDigJMzMCBtaW4sIGJlZm9yZSB5b3VyIGRpcCBlbmRzLiBObyBsYXRlIG5hcHMuIiwiaWNvbiI6Im1vb24uenp6LmZpbGwiLCJkb25lVG9kYXkiOmZhbHNlLCJhbmNob3IiOiJ3YWtlUGx1cyIsImlzRW5hYmxlZCI6dHJ1ZSwidGl0bGUiOiJTbWFydCBuYXAgd2luZG93In0seyJvZmZzZXQiOjE0NDAwLCJpZCI6ImFsY29ob2wiLCJkZXRhaWwiOiJBbGNvaG9sIGZyYWdtZW50cyBzbGVlcCBldmVuIHdoZW4gaXQgc3BlZWRzIG9uc2V0LiIsImljb24iOiJ3aW5lZ2xhc3MiLCJkb25lVG9kYXkiOmZhbHNlLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJpc0VuYWJsZWQiOnRydWUsInRpdGxlIjoiU2tpcCBuaWdodGNhcCJ9LHsib2Zmc2V0IjoxMDgwMCwiaWQiOiJtZWFsIiwiZGV0YWlsIjoiRmluaXNoIGxhcmdlIG1lYWxzIDNoIGJlZm9yZSBiZWQ7IGxpZ2h0IHNuYWNrIE9LLiIsImljb24iOiJmb3JrLmtuaWZlIiwiZG9uZVRvZGF5IjpmYWxzZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaXNFbmFibGVkIjp0cnVlLCJ0aXRsZSI6Ikxhc3QgYmlnIG1lYWwifSx7Im9mZnNldCI6NzIwMCwiaWQiOiJzY3JlZW5zIiwiZGV0YWlsIjoiTG93ZXIgYnJpZ2h0bmVzcyArIE5pZ2h0IFNoaWZ0IDJoIGJlZm9yZSBiZWQuIiwiaWNvbiI6ImlwaG9uZS5nZW4yIiwiZG9uZVRvZGF5IjpmYWxzZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaXNFbmFibGVkIjp0cnVlLCJ0aXRsZSI6IkRpbSBzY3JlZW5zIn0seyJvZmZzZXQiOjU0MDAsImlkIjoibGlnaHRzIiwiZGV0YWlsIjoiT3ZlcmhlYWQgb2ZmLCBsYW1wcyBsb3cg4oCUIGxpZ2h0IGRlbGF5cyBtZWxhdG9uaW4uIiwiaWNvbiI6ImxpZ2h0YnVsYi5maWxsIiwiZG9uZVRvZGF5IjpmYWxzZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaXNFbmFibGVkIjp0cnVlLCJ0aXRsZSI6IkRpbSB0aGUgbGlnaHRzIn0seyJvZmZzZXQiOjI3MDAsImlkIjoid2luZGRvd24iLCJkZXRhaWwiOiIyMOKAkzMwIG1pbiByaXR1YWw6IHNob3dlciwgc3RyZXRjaCwgcmVhZCwgYnJlYXRoZS4iLCJpY29uIjoid2luZCIsImRvbmVUb2RheSI6ZmFsc2UsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsImlzRW5hYmxlZCI6dHJ1ZSwidGl0bGUiOiJXaW5kIGRvd24ifSx7Im9mZnNldCI6MCwiaWQiOiJiZWR0aW1lIiwiZGV0YWlsIjoiSGl0IHlvdXIgbWVsYXRvbmluIHdpbmRvdyDigJQgdGhlIGVhc2llc3QgZmFsbGluZy1hc2xlZXAuIiwiaWNvbiI6ImJlZC5kb3VibGUuZmlsbCIsImRvbmVUb2RheSI6ZmFsc2UsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsImlzRW5hYmxlZCI6dHJ1ZSwidGl0bGUiOiJJbiBiZWQgb24gdGltZSJ9LHsib2Zmc2V0IjoxODAwLCJpZCI6ImNvb2wiLCJkZXRhaWwiOiI2NeKAkzY4wrBGIFwvIDE44oCTMjDCsEMsIGJsYWNrb3V0IGRhcmssIHF1aWV0LiIsImljb24iOiJ0aGVybW9tZXRlci5zbm93Zmxha2UiLCJkb25lVG9kYXkiOmZhbHNlLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJpc0VuYWJsZWQiOnRydWUsInRpdGxlIjoiQ29vbCAmIGRhcmsgcm9vbSJ9LHsib2Zmc2V0IjowLCJpZCI6ImNvbnNpc3RlbnQiLCJkZXRhaWwiOiJTYW1lIHdha2UgwrEzMCBtaW4g4oCUIGV2ZW4gd2Vla2VuZHMuICMxIHJoeXRobSBsZXZlci4iLCJpY29uIjoiYWxhcm0uZmlsbCIsImRvbmVUb2RheSI6ZmFsc2UsImFuY2hvciI6Indha2VQbHVzIiwiaXNFbmFibGVkIjp0cnVlLCJ0aXRsZSI6IkNvbnNpc3RlbnQgd2FrZSJ9LHsib2Zmc2V0IjozMDAsImlkIjoiaHlkcmF0aW9uIiwiZGV0YWlsIjoiV2F0ZXIgKyBsaWdodCBiZWZvcmUgY29mZmVlIGJvb3N0cyBhbGVydG5lc3MuIiwiaWNvbiI6ImRyb3AuZmlsbCIsImRvbmVUb2RheSI6ZmFsc2UsImFuY2hvciI6Indha2VQbHVzIiwiaXNFbmFibGVkIjp0cnVlLCJ0aXRsZSI6Ik1vcm5pbmcgaHlkcmF0aW9uIn0seyJvZmZzZXQiOjE4MDAwLCJpZCI6InN0cmVzcyIsImRldGFpbCI6IjItbWluIHdvcnJ5IGxpc3QgYWZ0ZXIgZGlubmVyIGNsZWFycyBuaWdodCBydW1pbmF0aW9uLiIsImljb24iOiJwZW5jaWwuYW5kLmxpc3QuY2xpcGJvYXJkIiwiZG9uZVRvZGF5IjpmYWxzZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaXNFbmFibGVkIjp0cnVlLCJ0aXRsZSI6IkJyYWluIGR1bXAifSx7Im9mZnNldCI6MTQ0MDAsImlkIjoibmljb3RpbmUiLCJkZXRhaWwiOiJTdGltdWxhbnQg4oCUIGF2b2lkIHdpdGhpbiA0aCBvZiBiZWQuIiwiaWNvbiI6InNtb2tlLmZpbGwiLCJkb25lVG9kYXkiOmZhbHNlLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJpc0VuYWJsZWQiOmZhbHNlLCJ0aXRsZSI6Ik5vIGxhdGUgbmljb3RpbmUifSx7Im9mZnNldCI6MTQ0MDAsImlkIjoic3Vuc2V0IiwiZGV0YWlsIjoiQSBkdXNrIHdhbGsgc2hhcnBlbnMgRExNTyB0aW1pbmcuIiwiaWNvbiI6InN1bnNldC5maWxsIiwiZG9uZVRvZGF5IjpmYWxzZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaXNFbmFibGVkIjpmYWxzZSwidGl0bGUiOiJFdmVuaW5nIGxpZ2h0IHdhbGsifV0="
+    },
+    "profile.json": {
+      "bytes": 184,
+      "sha256": "1cc469abf453cce3b50958a191d4669fe455ee523958b5657e75bf4f442b1868",
+      "base64": "eyJ3YWtlR29hbCI6eyJob3VyIjo3LCJtaW51dGUiOjB9LCJzbGVlcE5lZWRDb25maWRlbmNlIjowLjMsIm5hbWUiOiJTeW50aGV0aWMgYmFja3VwIGJhc2VsaW5lIiwiaXNTdWJzY3JpYmVkIjpmYWxzZSwib25ib2FyZGluZ0RvbmUiOnRydWUsInNsZWVwTmVlZCI6Mjk0MDAsImNocm9ub3R5cGUiOiJpbnRlcm1lZGlhdGUifQ=="
+    },
+    "health-write-intent.json": {
+      "bytes": 123,
+      "sha256": "3460764084c73c3549d175dc416bcb861af514e445c993da3619f3598b30b95c",
+      "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI0MjQzRDdBNi0xMEI1LTRCN0EtQTMzNi0zMkYxMUNBM0IyMzkiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+    }
+  },
+  "after": {
+    "chat.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "conversations.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "workouts.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "goals.json": {
+      "bytes": 177,
+      "sha256": "7ceaf16447d3539f90429200008aa6055612e0755964d4bccb5130278cbbc1d2",
+      "base64": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjEwMDAwLCJ3ZWlnaHRLZyI6NzV9"
+    },
+    "sleep.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "today.json": {
+      "bytes": 123,
+      "sha256": "39241fad7f0f936e0c8d5537d90d5c08703fa25236df0b63f9801a6212d35b50",
+      "base64": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDRUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9"
+    },
+    "meals.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "water.json": {
+      "bytes": 29,
+      "sha256": "0d3f4ef174c527390388c9fccb88964f5cc0b3bac224a4370cd215d61623e845",
+      "base64": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZVdhdGVyIjo="
+    },
+    "conversation-selection.json": {
+      "bytes": 2,
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "base64": "e30="
+    },
+    "habits.json": {
+      "bytes": 3170,
+      "sha256": "b0907add65cbd317800d4e8dbb6231fb76aa2155be8ddddb5a7291db66bfc686",
+      "base64": "W3sib2Zmc2V0IjoxODAwLCJpZCI6ImxpZ2h0IiwiZGV0YWlsIjoiMTAgbWluIG9mIGRheWxpZ2h0IHdpdGhpbiAzMCBtaW4gb2Ygd2FraW5nIGFuY2hvcnMgeW91ciBjbG9jay4iLCJpY29uIjoic3VuLm1heC5maWxsIiwiZG9uZVRvZGF5IjpmYWxzZSwiYW5jaG9yIjoid2FrZVBsdXMiLCJpc0VuYWJsZWQiOnRydWUsInRpdGxlIjoiR2V0IGJyaWdodCBsaWdodCJ9LHsib2Zmc2V0IjozNjAwMCwiaWQiOiJjYWZmZWluZSIsImRldGFpbCI6Ik5vIGNhZmZlaW5lIHdpdGhpbiAxMGggb2YgYmVkIOKAlCBoYWxmLWxpZmUgaXMgfjZoLiIsImljb24iOiJjdXAuYW5kLnNhdWNlci5maWxsIiwiZG9uZVRvZGF5IjpmYWxzZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaXNFbmFibGVkIjp0cnVlLCJ0aXRsZSI6IkNhZmZlaW5lIGN1dG9mZiJ9LHsib2Zmc2V0IjoyMTYwMCwiaWQiOiJleGVyY2lzZSIsImRldGFpbCI6IjIwKyBtaW4uIEZpbmlzaCBpbnRlbnNlIHdvcmtvdXRzIDNoKyBiZWZvcmUgYmVkLiIsImljb24iOiJmaWd1cmUucnVuIiwiZG9uZVRvZGF5IjpmYWxzZSwiYW5jaG9yIjoid2FrZVBsdXMiLCJpc0VuYWJsZWQiOnRydWUsInRpdGxlIjoiTW92ZSB5b3VyIGJvZHkifSx7Im9mZnNldCI6MjUyMDAsImlkIjoibmFwIiwiZGV0YWlsIjoiSWYgbmFwcGluZzogMjDigJMzMCBtaW4sIGJlZm9yZSB5b3VyIGRpcCBlbmRzLiBObyBsYXRlIG5hcHMuIiwiaWNvbiI6Im1vb24uenp6LmZpbGwiLCJkb25lVG9kYXkiOmZhbHNlLCJhbmNob3IiOiJ3YWtlUGx1cyIsImlzRW5hYmxlZCI6dHJ1ZSwidGl0bGUiOiJTbWFydCBuYXAgd2luZG93In0seyJvZmZzZXQiOjE0NDAwLCJpZCI6ImFsY29ob2wiLCJkZXRhaWwiOiJBbGNvaG9sIGZyYWdtZW50cyBzbGVlcCBldmVuIHdoZW4gaXQgc3BlZWRzIG9uc2V0LiIsImljb24iOiJ3aW5lZ2xhc3MiLCJkb25lVG9kYXkiOmZhbHNlLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJpc0VuYWJsZWQiOnRydWUsInRpdGxlIjoiU2tpcCBuaWdodGNhcCJ9LHsib2Zmc2V0IjoxMDgwMCwiaWQiOiJtZWFsIiwiZGV0YWlsIjoiRmluaXNoIGxhcmdlIG1lYWxzIDNoIGJlZm9yZSBiZWQ7IGxpZ2h0IHNuYWNrIE9LLiIsImljb24iOiJmb3JrLmtuaWZlIiwiZG9uZVRvZGF5IjpmYWxzZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaXNFbmFibGVkIjp0cnVlLCJ0aXRsZSI6Ikxhc3QgYmlnIG1lYWwifSx7Im9mZnNldCI6NzIwMCwiaWQiOiJzY3JlZW5zIiwiZGV0YWlsIjoiTG93ZXIgYnJpZ2h0bmVzcyArIE5pZ2h0IFNoaWZ0IDJoIGJlZm9yZSBiZWQuIiwiaWNvbiI6ImlwaG9uZS5nZW4yIiwiZG9uZVRvZGF5IjpmYWxzZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaXNFbmFibGVkIjp0cnVlLCJ0aXRsZSI6IkRpbSBzY3JlZW5zIn0seyJvZmZzZXQiOjU0MDAsImlkIjoibGlnaHRzIiwiZGV0YWlsIjoiT3ZlcmhlYWQgb2ZmLCBsYW1wcyBsb3cg4oCUIGxpZ2h0IGRlbGF5cyBtZWxhdG9uaW4uIiwiaWNvbiI6ImxpZ2h0YnVsYi5maWxsIiwiZG9uZVRvZGF5IjpmYWxzZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaXNFbmFibGVkIjp0cnVlLCJ0aXRsZSI6IkRpbSB0aGUgbGlnaHRzIn0seyJvZmZzZXQiOjI3MDAsImlkIjoid2luZGRvd24iLCJkZXRhaWwiOiIyMOKAkzMwIG1pbiByaXR1YWw6IHNob3dlciwgc3RyZXRjaCwgcmVhZCwgYnJlYXRoZS4iLCJpY29uIjoid2luZCIsImRvbmVUb2RheSI6ZmFsc2UsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsImlzRW5hYmxlZCI6dHJ1ZSwidGl0bGUiOiJXaW5kIGRvd24ifSx7Im9mZnNldCI6MCwiaWQiOiJiZWR0aW1lIiwiZGV0YWlsIjoiSGl0IHlvdXIgbWVsYXRvbmluIHdpbmRvdyDigJQgdGhlIGVhc2llc3QgZmFsbGluZy1hc2xlZXAuIiwiaWNvbiI6ImJlZC5kb3VibGUuZmlsbCIsImRvbmVUb2RheSI6ZmFsc2UsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsImlzRW5hYmxlZCI6dHJ1ZSwidGl0bGUiOiJJbiBiZWQgb24gdGltZSJ9LHsib2Zmc2V0IjoxODAwLCJpZCI6ImNvb2wiLCJkZXRhaWwiOiI2NeKAkzY4wrBGIFwvIDE44oCTMjDCsEMsIGJsYWNrb3V0IGRhcmssIHF1aWV0LiIsImljb24iOiJ0aGVybW9tZXRlci5zbm93Zmxha2UiLCJkb25lVG9kYXkiOmZhbHNlLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJpc0VuYWJsZWQiOnRydWUsInRpdGxlIjoiQ29vbCAmIGRhcmsgcm9vbSJ9LHsib2Zmc2V0IjowLCJpZCI6ImNvbnNpc3RlbnQiLCJkZXRhaWwiOiJTYW1lIHdha2UgwrEzMCBtaW4g4oCUIGV2ZW4gd2Vla2VuZHMuICMxIHJoeXRobSBsZXZlci4iLCJpY29uIjoiYWxhcm0uZmlsbCIsImRvbmVUb2RheSI6ZmFsc2UsImFuY2hvciI6Indha2VQbHVzIiwiaXNFbmFibGVkIjp0cnVlLCJ0aXRsZSI6IkNvbnNpc3RlbnQgd2FrZSJ9LHsib2Zmc2V0IjozMDAsImlkIjoiaHlkcmF0aW9uIiwiZGV0YWlsIjoiV2F0ZXIgKyBsaWdodCBiZWZvcmUgY29mZmVlIGJvb3N0cyBhbGVydG5lc3MuIiwiaWNvbiI6ImRyb3AuZmlsbCIsImRvbmVUb2RheSI6ZmFsc2UsImFuY2hvciI6Indha2VQbHVzIiwiaXNFbmFibGVkIjp0cnVlLCJ0aXRsZSI6Ik1vcm5pbmcgaHlkcmF0aW9uIn0seyJvZmZzZXQiOjE4MDAwLCJpZCI6InN0cmVzcyIsImRldGFpbCI6IjItbWluIHdvcnJ5IGxpc3QgYWZ0ZXIgZGlubmVyIGNsZWFycyBuaWdodCBydW1pbmF0aW9uLiIsImljb24iOiJwZW5jaWwuYW5kLmxpc3QuY2xpcGJvYXJkIiwiZG9uZVRvZGF5IjpmYWxzZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaXNFbmFibGVkIjp0cnVlLCJ0aXRsZSI6IkJyYWluIGR1bXAifSx7Im9mZnNldCI6MTQ0MDAsImlkIjoibmljb3RpbmUiLCJkZXRhaWwiOiJTdGltdWxhbnQg4oCUIGF2b2lkIHdpdGhpbiA0aCBvZiBiZWQuIiwiaWNvbiI6InNtb2tlLmZpbGwiLCJkb25lVG9kYXkiOmZhbHNlLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJpc0VuYWJsZWQiOmZhbHNlLCJ0aXRsZSI6Ik5vIGxhdGUgbmljb3RpbmUifSx7Im9mZnNldCI6MTQ0MDAsImlkIjoic3Vuc2V0IiwiZGV0YWlsIjoiQSBkdXNrIHdhbGsgc2hhcnBlbnMgRExNTyB0aW1pbmcuIiwiaWNvbiI6InN1bnNldC5maWxsIiwiZG9uZVRvZGF5IjpmYWxzZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaXNFbmFibGVkIjpmYWxzZSwidGl0bGUiOiJFdmVuaW5nIGxpZ2h0IHdhbGsifV0="
+    },
+    "profile.json": {
+      "bytes": 184,
+      "sha256": "1cc469abf453cce3b50958a191d4669fe455ee523958b5657e75bf4f442b1868",
+      "base64": "eyJ3YWtlR29hbCI6eyJob3VyIjo3LCJtaW51dGUiOjB9LCJzbGVlcE5lZWRDb25maWRlbmNlIjowLjMsIm5hbWUiOiJTeW50aGV0aWMgYmFja3VwIGJhc2VsaW5lIiwiaXNTdWJzY3JpYmVkIjpmYWxzZSwib25ib2FyZGluZ0RvbmUiOnRydWUsInNsZWVwTmVlZCI6Mjk0MDAsImNocm9ub3R5cGUiOiJpbnRlcm1lZGlhdGUifQ=="
+    },
+    "health-write-intent.json": {
+      "bytes": 123,
+      "sha256": "3460764084c73c3549d175dc416bcb861af514e445c993da3619f3598b30b95c",
+      "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI0MjQzRDdBNi0xMEI1LTRCN0EtQTMzNi0zMkYxMUNBM0IyMzkiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+    }
+  },
+  "heldObservations": [
+    {
+      "record": {
+        "bytesRead": 831,
+        "copyTarget": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/CFBDA2BE-5384-499B-8C1A-DE8CFBD6FEEA/tmp/LumenBackupWork-v1-29644-FFA9FD8E-FFFD-4170-B7EB-75146E74B3F8/selected-backup",
+        "descriptor": 7,
+        "file": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Shared/AppGroup/F1085B1A-CF05-478B-A5BD-DE328D3F99B8/File Provider Storage/00 Lumen readable checks/Lumen-readable-health-small.json",
+        "inode": 40968465,
+        "nonce": "0EB83BBB-5540-4A5F-A7FF-E1CF91746E73",
+        "ordinal": 1,
+        "outputDescriptor": 6,
+        "phase": "held",
+        "pid": 29644,
+        "readBoundary": "original-copy",
+        "scope": "selected-import",
+        "size": 831,
+        "uiCancelled": false,
+        "workerControlMatchesUI": true
+      },
+      "sourceBytes": "eyJhcHAiOiJMdW1lbiIsInJlYWRhYmxlVmVyc2lvbiI6MSwiZXhwb3J0ZWRBdCI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwicHJvZmlsZSI6eyJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwiaXNTdWJzY3JpYmVkIjpmYWxzZSwibmFtZSI6IlN5bnRoZXRpYyBiYWNrdXAgcmVjb3ZlcnkiLCJvbmJvYXJkaW5nRG9uZSI6ZmFsc2UsInNsZWVwTmVlZCI6Mjk0MDAsInNsZWVwTmVlZENvbmZpZGVuY2UiOjAuMywid2FrZUdvYWwiOnsiaG91ciI6NywibWludXRlIjowfX0sImdvYWxzIjp7ImFjdGl2ZUNhbEdvYWwiOjYwMCwiYWN0aXZpdHlMZXZlbCI6Im1vZGVyYXRlIiwiYWdlIjozMCwiZXhlcmNpc2VHb2FsTWluIjozMCwiZ29hbCI6Im1haW50YWluIiwiaGVpZ2h0Q20iOjE3OCwic2V4IjoidW5zcGVjaWZpZWQiLCJzdGFuZEdvYWwiOjEyLCJzdGVwR29hbCI6MTAwMDAsIndlaWdodEtnIjo3NX0sInBlcnNvbmFsLWNvbnRleHQiOnsiYWxsZXJnaWVzIjoiIiwiZm9jdXMiOiIiLCJmb29kUHJlZmVyZW5jZXMiOiIiLCJpbmNsdWRlSW5Bc3Npc3RhbnQiOmZhbHNlLCJsaW1pdGF0aW9ucyI6IiIsIm5vdGVzIjoiIiwic2NoZWR1bGUiOiIifSwiaGFiaXRzIjpbXSwic2xlZXAiOltdLCJtZWFscyI6W10sIndvcmtvdXRzIjpbXSwid2F0ZXIiOlt7ImRhdGUiOiIyMDI2LTExLTAyVDEyOjAwOjAwWiIsImlkIjoic3ludGhldGljLWJhY2t1cC1yZWNvdmVyeS13YXRlciIsIm1sIjoyNDZ9XSwiY29udmVyc2F0aW9ucyI6W10sInN5bXB0b21zIjpbXSwiY2hlY2staW5zIjpbXSwiZG9jdW1lbnRzIjpbXSwiaW1wb3J0ZWQtZGF5cyI6W10sImltcG9ydC1yZWNlaXB0cyI6W119",
+      "sourceSHA256": "bad71f0672b2e44ec7d2828be49d3cc758b4dc48c57b6639d55be5a72bc9da38",
+      "openDescriptorReadback": "p29644\nf7\ntREG\ni40968465\nn/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Shared/AppGroup/F1085B1A-CF05-478B-A5BD-DE328D3F99B8/File Provider Storage/00 Lumen readable checks/Lumen-readable-health-small.json\n",
+      "outputDescriptorReadback": "p29644\nf6\ntREG\ni41592374\nn/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/CFBDA2BE-5384-499B-8C1A-DE8CFBD6FEEA/tmp/LumenBackupWork-v1-29644-FFA9FD8E-FFFD-4170-B7EB-75146E74B3F8/selected-backup\n",
+      "treeMatchesBefore": true,
+      "workspace": {
+        "directory": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/CFBDA2BE-5384-499B-8C1A-DE8CFBD6FEEA/tmp/LumenBackupWork-v1-29644-FFA9FD8E-FFFD-4170-B7EB-75146E74B3F8",
+        "owner": {
+          "pid": 29644,
+          "id": "FFA9FD8E-FFFD-4170-B7EB-75146E74B3F8",
+          "version": 1
+        },
+        "originalFileName": "Lumen-readable-health-small.json",
+        "bytes": 831,
+        "sha256": "bad71f0672b2e44ec7d2828be49d3cc758b4dc48c57b6639d55be5a72bc9da38",
+        "providerSHA256": "bad71f0672b2e44ec7d2828be49d3cc758b4dc48c57b6639d55be5a72bc9da38",
+        "files": {
+          ".lumen-workspace-owner.json": {
+            "bytes": 69,
+            "sha256": "df698865b617475edaea01c770a586a8ce368149a66e03780781c65d22f9015b",
+            "base64": "eyJwaWQiOjI5NjQ0LCJpZCI6IkZGQTlGRDhFLUZGRkQtNDE3MC1CN0VCLTc1MTQ2RTc0QjNGOCIsInZlcnNpb24iOjF9"
+          },
+          "selected-backup": {
+            "bytes": 831,
+            "sha256": "bad71f0672b2e44ec7d2828be49d3cc758b4dc48c57b6639d55be5a72bc9da38",
+            "base64": "eyJhcHAiOiJMdW1lbiIsInJlYWRhYmxlVmVyc2lvbiI6MSwiZXhwb3J0ZWRBdCI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwicHJvZmlsZSI6eyJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwiaXNTdWJzY3JpYmVkIjpmYWxzZSwibmFtZSI6IlN5bnRoZXRpYyBiYWNrdXAgcmVjb3ZlcnkiLCJvbmJvYXJkaW5nRG9uZSI6ZmFsc2UsInNsZWVwTmVlZCI6Mjk0MDAsInNsZWVwTmVlZENvbmZpZGVuY2UiOjAuMywid2FrZUdvYWwiOnsiaG91ciI6NywibWludXRlIjowfX0sImdvYWxzIjp7ImFjdGl2ZUNhbEdvYWwiOjYwMCwiYWN0aXZpdHlMZXZlbCI6Im1vZGVyYXRlIiwiYWdlIjozMCwiZXhlcmNpc2VHb2FsTWluIjozMCwiZ29hbCI6Im1haW50YWluIiwiaGVpZ2h0Q20iOjE3OCwic2V4IjoidW5zcGVjaWZpZWQiLCJzdGFuZEdvYWwiOjEyLCJzdGVwR29hbCI6MTAwMDAsIndlaWdodEtnIjo3NX0sInBlcnNvbmFsLWNvbnRleHQiOnsiYWxsZXJnaWVzIjoiIiwiZm9jdXMiOiIiLCJmb29kUHJlZmVyZW5jZXMiOiIiLCJpbmNsdWRlSW5Bc3Npc3RhbnQiOmZhbHNlLCJsaW1pdGF0aW9ucyI6IiIsIm5vdGVzIjoiIiwic2NoZWR1bGUiOiIifSwiaGFiaXRzIjpbXSwic2xlZXAiOltdLCJtZWFscyI6W10sIndvcmtvdXRzIjpbXSwid2F0ZXIiOlt7ImRhdGUiOiIyMDI2LTExLTAyVDEyOjAwOjAwWiIsImlkIjoic3ludGhldGljLWJhY2t1cC1yZWNvdmVyeS13YXRlciIsIm1sIjoyNDZ9XSwiY29udmVyc2F0aW9ucyI6W10sInN5bXB0b21zIjpbXSwiY2hlY2staW5zIjpbXSwiZG9jdW1lbnRzIjpbXSwiaW1wb3J0ZWQtZGF5cyI6W10sImltcG9ydC1yZWNlaXB0cyI6W119"
+          }
+        }
+      },
+      "observedAfterNativeAttachment": "original-import-copy-readable-held"
+    },
+    {
+      "record": {
+        "bytesRead": 831,
+        "copyTarget": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/CFBDA2BE-5384-499B-8C1A-DE8CFBD6FEEA/tmp/LumenBackupWork-v1-29644-0F398CC1-6E6F-47EE-A9A1-9DF434C41120/selected-backup",
+        "descriptor": 6,
+        "file": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Shared/AppGroup/F1085B1A-CF05-478B-A5BD-DE328D3F99B8/File Provider Storage/00 Lumen readable checks/Lumen-readable-health-small.json",
+        "inode": 40968465,
+        "nonce": "90783BED-4154-4D2F-B178-BEBA3D26C0D8",
+        "ordinal": 2,
+        "outputDescriptor": 7,
+        "phase": "held",
+        "pid": 29644,
+        "readBoundary": "original-copy",
+        "scope": "selected-import",
+        "size": 831,
+        "uiCancelled": false,
+        "workerControlMatchesUI": true
+      },
+      "sourceBytes": "eyJhcHAiOiJMdW1lbiIsInJlYWRhYmxlVmVyc2lvbiI6MSwiZXhwb3J0ZWRBdCI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwicHJvZmlsZSI6eyJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwiaXNTdWJzY3JpYmVkIjpmYWxzZSwibmFtZSI6IlN5bnRoZXRpYyBiYWNrdXAgcmVjb3ZlcnkiLCJvbmJvYXJkaW5nRG9uZSI6ZmFsc2UsInNsZWVwTmVlZCI6Mjk0MDAsInNsZWVwTmVlZENvbmZpZGVuY2UiOjAuMywid2FrZUdvYWwiOnsiaG91ciI6NywibWludXRlIjowfX0sImdvYWxzIjp7ImFjdGl2ZUNhbEdvYWwiOjYwMCwiYWN0aXZpdHlMZXZlbCI6Im1vZGVyYXRlIiwiYWdlIjozMCwiZXhlcmNpc2VHb2FsTWluIjozMCwiZ29hbCI6Im1haW50YWluIiwiaGVpZ2h0Q20iOjE3OCwic2V4IjoidW5zcGVjaWZpZWQiLCJzdGFuZEdvYWwiOjEyLCJzdGVwR29hbCI6MTAwMDAsIndlaWdodEtnIjo3NX0sInBlcnNvbmFsLWNvbnRleHQiOnsiYWxsZXJnaWVzIjoiIiwiZm9jdXMiOiIiLCJmb29kUHJlZmVyZW5jZXMiOiIiLCJpbmNsdWRlSW5Bc3Npc3RhbnQiOmZhbHNlLCJsaW1pdGF0aW9ucyI6IiIsIm5vdGVzIjoiIiwic2NoZWR1bGUiOiIifSwiaGFiaXRzIjpbXSwic2xlZXAiOltdLCJtZWFscyI6W10sIndvcmtvdXRzIjpbXSwid2F0ZXIiOlt7ImRhdGUiOiIyMDI2LTExLTAyVDEyOjAwOjAwWiIsImlkIjoic3ludGhldGljLWJhY2t1cC1yZWNvdmVyeS13YXRlciIsIm1sIjoyNDZ9XSwiY29udmVyc2F0aW9ucyI6W10sInN5bXB0b21zIjpbXSwiY2hlY2staW5zIjpbXSwiZG9jdW1lbnRzIjpbXSwiaW1wb3J0ZWQtZGF5cyI6W10sImltcG9ydC1yZWNlaXB0cyI6W119",
+      "sourceSHA256": "bad71f0672b2e44ec7d2828be49d3cc758b4dc48c57b6639d55be5a72bc9da38",
+      "openDescriptorReadback": "p29644\nf6\ntREG\ni40968465\nn/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Shared/AppGroup/F1085B1A-CF05-478B-A5BD-DE328D3F99B8/File Provider Storage/00 Lumen readable checks/Lumen-readable-health-small.json\n",
+      "outputDescriptorReadback": "p29644\nf7\ntREG\ni41592442\nn/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/CFBDA2BE-5384-499B-8C1A-DE8CFBD6FEEA/tmp/LumenBackupWork-v1-29644-0F398CC1-6E6F-47EE-A9A1-9DF434C41120/selected-backup\n",
+      "treeMatchesBefore": true,
+      "workspace": {
+        "directory": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/CFBDA2BE-5384-499B-8C1A-DE8CFBD6FEEA/tmp/LumenBackupWork-v1-29644-0F398CC1-6E6F-47EE-A9A1-9DF434C41120",
+        "owner": {
+          "version": 1,
+          "id": "0F398CC1-6E6F-47EE-A9A1-9DF434C41120",
+          "pid": 29644
+        },
+        "originalFileName": "Lumen-readable-health-small.json",
+        "bytes": 831,
+        "sha256": "bad71f0672b2e44ec7d2828be49d3cc758b4dc48c57b6639d55be5a72bc9da38",
+        "providerSHA256": "bad71f0672b2e44ec7d2828be49d3cc758b4dc48c57b6639d55be5a72bc9da38",
+        "files": {
+          ".lumen-workspace-owner.json": {
+            "bytes": 69,
+            "sha256": "441f0d0561d5d0d800b6158970d38ee2460d173ed6cd2fa0b26a90ab3a4d1573",
+            "base64": "eyJ2ZXJzaW9uIjoxLCJpZCI6IjBGMzk4Q0MxLTZFNkYtNDdFRS1BOUExLTlERjQzNEM0MTEyMCIsInBpZCI6Mjk2NDR9"
+          },
+          "selected-backup": {
+            "bytes": 831,
+            "sha256": "bad71f0672b2e44ec7d2828be49d3cc758b4dc48c57b6639d55be5a72bc9da38",
+            "base64": "eyJhcHAiOiJMdW1lbiIsInJlYWRhYmxlVmVyc2lvbiI6MSwiZXhwb3J0ZWRBdCI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwicHJvZmlsZSI6eyJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwiaXNTdWJzY3JpYmVkIjpmYWxzZSwibmFtZSI6IlN5bnRoZXRpYyBiYWNrdXAgcmVjb3ZlcnkiLCJvbmJvYXJkaW5nRG9uZSI6ZmFsc2UsInNsZWVwTmVlZCI6Mjk0MDAsInNsZWVwTmVlZENvbmZpZGVuY2UiOjAuMywid2FrZUdvYWwiOnsiaG91ciI6NywibWludXRlIjowfX0sImdvYWxzIjp7ImFjdGl2ZUNhbEdvYWwiOjYwMCwiYWN0aXZpdHlMZXZlbCI6Im1vZGVyYXRlIiwiYWdlIjozMCwiZXhlcmNpc2VHb2FsTWluIjozMCwiZ29hbCI6Im1haW50YWluIiwiaGVpZ2h0Q20iOjE3OCwic2V4IjoidW5zcGVjaWZpZWQiLCJzdGFuZEdvYWwiOjEyLCJzdGVwR29hbCI6MTAwMDAsIndlaWdodEtnIjo3NX0sInBlcnNvbmFsLWNvbnRleHQiOnsiYWxsZXJnaWVzIjoiIiwiZm9jdXMiOiIiLCJmb29kUHJlZmVyZW5jZXMiOiIiLCJpbmNsdWRlSW5Bc3Npc3RhbnQiOmZhbHNlLCJsaW1pdGF0aW9ucyI6IiIsIm5vdGVzIjoiIiwic2NoZWR1bGUiOiIifSwiaGFiaXRzIjpbXSwic2xlZXAiOltdLCJtZWFscyI6W10sIndvcmtvdXRzIjpbXSwid2F0ZXIiOlt7ImRhdGUiOiIyMDI2LTExLTAyVDEyOjAwOjAwWiIsImlkIjoic3ludGhldGljLWJhY2t1cC1yZWNvdmVyeS13YXRlciIsIm1sIjoyNDZ9XSwiY29udmVyc2F0aW9ucyI6W10sInN5bXB0b21zIjpbXSwiY2hlY2staW5zIjpbXSwiZG9jdW1lbnRzIjpbXSwiaW1wb3J0ZWQtZGF5cyI6W10sImltcG9ydC1yZWNlaXB0cyI6W119"
+          }
+        }
+      },
+      "observedAfterNativeAttachment": "original-import-copy-readable-retry-held"
+    }
+  ],
+  "protocol": {
+    "attempts": [
+      {
+        "bytesRead": 831,
+        "copyTarget": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/CFBDA2BE-5384-499B-8C1A-DE8CFBD6FEEA/tmp/LumenBackupWork-v1-29644-FFA9FD8E-FFFD-4170-B7EB-75146E74B3F8/selected-backup",
+        "descriptor": 7,
+        "descriptorCloseSucceeded": true,
+        "file": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Shared/AppGroup/F1085B1A-CF05-478B-A5BD-DE328D3F99B8/File Provider Storage/00 Lumen readable checks/Lumen-readable-health-small.json",
+        "inode": 40968465,
+        "nonce": "0EB83BBB-5540-4A5F-A7FF-E1CF91746E73",
+        "ordinal": 1,
+        "outputDescriptor": 6,
+        "outputDescriptorCloseSucceeded": true,
+        "phase": "cancelled",
+        "pid": 29644,
+        "readBoundary": "original-copy",
+        "scope": "selected-import",
+        "size": 831,
+        "uiCancelled": true,
+        "workerControlMatchesUI": true
+      },
+      {
+        "bytesRead": 831,
+        "copyTarget": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/CFBDA2BE-5384-499B-8C1A-DE8CFBD6FEEA/tmp/LumenBackupWork-v1-29644-0F398CC1-6E6F-47EE-A9A1-9DF434C41120/selected-backup",
+        "descriptor": 6,
+        "descriptorCloseSucceeded": true,
+        "file": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Shared/AppGroup/F1085B1A-CF05-478B-A5BD-DE328D3F99B8/File Provider Storage/00 Lumen readable checks/Lumen-readable-health-small.json",
+        "inode": 40968465,
+        "nonce": "90783BED-4154-4D2F-B178-BEBA3D26C0D8",
+        "ordinal": 2,
+        "outputDescriptor": 7,
+        "outputDescriptorCloseSucceeded": true,
+        "phase": "released",
+        "pid": 29644,
+        "readBoundary": "original-copy",
+        "scope": "selected-import",
+        "size": 831,
+        "uiCancelled": false,
+        "workerControlMatchesUI": true
+      }
+    ],
+    "root": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Shared/AppGroup/E300DD24-B5D1-4A6A-BF1B-E66173E3428B/LumenData"
+  },
+  "stopObservation": {
+    "observedAfterNativeAttachment": "original-import-copy-readable-back-closed",
+    "observedAtUnix": 1793840816.980192,
+    "cancelledReaderClosed": true,
+    "originalWorkspaceAbsent": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/CFBDA2BE-5384-499B-8C1A-DE8CFBD6FEEA/tmp/LumenBackupWork-v1-29644-FFA9FD8E-FFFD-4170-B7EB-75146E74B3F8",
+    "allProtectedBytesExact": true,
+    "oldWorkspaceOpenPaths": [],
+    "actualProcessDescriptorScanSucceeded": true
+  },
+  "producerExitCode": 0,
+  "verifierSHA256": "9281f8e3b9e7219fdc373460bfe30662580852eee43e8803b69865354239011b",
+  "scope": "One main-normal readable original-copy input/output read back/reselection. Partial multi-chunk copy/later decode/unlock windows, changed bytes, selected-photo/full workspace lifetime/appearance and all original contracts remain required."
+}

@@ -1,0 +1,78 @@
+{
+  "status": "FAILED112cleanup: native UI passes, host still sees original/extraction3.058s after final parent although actual reviewOwnerClosedtrue; no accepted repair.",
+  "source": "durable-source-r112.json",
+  "pureSource": "local-domain-pure-source-r64.json",
+  "observations": "health-encrypted-lifetime-record-cancel-r3-observations.json",
+  "summary": "health-encrypted-lifetime-record-cancel-r3-summary.json",
+  "nativeExitCode": 0,
+  "driverExitCode": 1,
+  "hostFailure": "AssertionError('Last successful preview owner must release original/extraction within3s at final parent')",
+  "timedFinalSamples": [
+    {
+      "observedAtUnix": 1793848557.215455,
+      "secondsAfterFinalParentAttachmentSeen": 0.003374084000000721,
+      "originalWorkspacePresent": true,
+      "extractedDirectoryPresent": true,
+      "reviewOwnerClosed": true
+    },
+    {
+      "observedAtUnix": 1793848557.608087,
+      "secondsAfterFinalParentAttachmentSeen": 0.39600850000000776,
+      "originalWorkspacePresent": true,
+      "extractedDirectoryPresent": true,
+      "reviewOwnerClosed": true
+    },
+    {
+      "observedAtUnix": 1793848557.9720829,
+      "secondsAfterFinalParentAttachmentSeen": 0.7600061670000002,
+      "originalWorkspacePresent": true,
+      "extractedDirectoryPresent": true,
+      "reviewOwnerClosed": true
+    },
+    {
+      "observedAtUnix": 1793848558.38356,
+      "secondsAfterFinalParentAttachmentSeen": 1.171485292000014,
+      "originalWorkspacePresent": true,
+      "extractedDirectoryPresent": true,
+      "reviewOwnerClosed": true
+    },
+    {
+      "observedAtUnix": 1793848558.758642,
+      "secondsAfterFinalParentAttachmentSeen": 1.546572334000004,
+      "originalWorkspacePresent": true,
+      "extractedDirectoryPresent": true,
+      "reviewOwnerClosed": true
+    },
+    {
+      "observedAtUnix": 1793848559.124932,
+      "secondsAfterFinalParentAttachmentSeen": 1.912861709000012,
+      "originalWorkspacePresent": true,
+      "extractedDirectoryPresent": true,
+      "reviewOwnerClosed": true
+    },
+    {
+      "observedAtUnix": 1793848559.5039291,
+      "secondsAfterFinalParentAttachmentSeen": 2.291859875,
+      "originalWorkspacePresent": true,
+      "extractedDirectoryPresent": true,
+      "reviewOwnerClosed": true
+    },
+    {
+      "observedAtUnix": 1793848559.884299,
+      "secondsAfterFinalParentAttachmentSeen": 2.672232292000004,
+      "originalWorkspacePresent": true,
+      "extractedDirectoryPresent": true,
+      "reviewOwnerClosed": true
+    },
+    {
+      "observedAtUnix": 1793848560.270081,
+      "secondsAfterFinalParentAttachmentSeen": 3.0580164170000046,
+      "originalWorkspacePresent": true,
+      "extractedDirectoryPresent": true,
+      "reviewOwnerClosed": true
+    }
+  ],
+  "reviewOwnerClosedAtTerminal": true,
+  "savedFilesExact": true,
+  "next": "Review owner release is observed, so inspect remaining direct Source/Preview ownership in cached task results and UI values. Preserve completed-worker ownership until its real read ends."
+}

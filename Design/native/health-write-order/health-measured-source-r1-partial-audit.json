@@ -1,0 +1,58 @@
+{
+  "status": "PASS exact22sample SDK reinspection and ten returned metric facts; full case INCOMPLETE",
+  "run": "7B188477-0239-4093-9E40-FAC94BAB5646",
+  "source": "durable-source-r162.json",
+  "launch": "com.dbakp.lumen.fixture.health-source: 23014",
+  "started": 1793963428.3429508,
+  "ledgerUpdated": 1793963432.0770612,
+  "helperSamplesPresent": 22,
+  "recordedKeys": [
+    "activeEnergy",
+    "bodyFat",
+    "heartRate",
+    "hrv",
+    "respiratoryRate",
+    "restingEnergy",
+    "spo2",
+    "steps",
+    "vo2max",
+    "weight"
+  ],
+  "latestSampleDatesMatched": [
+    "bodyFat",
+    "hrv",
+    "respiratoryRate",
+    "spo2",
+    "vo2max",
+    "weight"
+  ],
+  "missingRequired": [
+    "restingHR"
+  ],
+  "unknownCount": 8,
+  "failedCount": 0,
+  "queryRequestID": "300AF172-25C2-41D0-80BA-B8B015693A90",
+  "originalContractPassed": false,
+  "saveAndRemovalControlVerified": false,
+  "samplesRemainForImmediateContinuation": true,
+  "sources": {
+    "health-measured-source-r1-contract.json": {
+      "bytes": 2156,
+      "sha256": "d183da85dd1b12055542166621960548292cc8a9ea2c54e39f0df6bd6ce6b776"
+    },
+    "health-measured-source-r1-reinspected.json": {
+      "bytes": 6493,
+      "sha256": "8a50ae9eef12e8809257619f33f662ccd539d7ff58695ebc3f81cdf2b3dafa8d"
+    },
+    "health-measured-lumen-r1-active-access-query.json": {
+      "bytes": 8921,
+      "sha256": "610c6ee247fd1306c31ff858858351c22b2818303f917e28c48053394160176e"
+    }
+  },
+  "postHelperCurrentFilesExact": 20,
+  "postHelperPriorFilesExact": 9,
+  "driverSHA256": "fd03b144185fce90fd84a5bc4823ddc4948deff03c4dd54ea40240e02d559e5b",
+  "permissionChooserSelection": "Selected35 topics in chooser, then cancelled viaX; no broader grant applied; visible ActiveEnergyLimited remains.",
+  "manualRecoveredBytes": 0,
+  "availableBytes": 55114620928
+}

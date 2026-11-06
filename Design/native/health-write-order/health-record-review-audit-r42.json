@@ -1,0 +1,22 @@
+{
+  "status": "source audit; required next implementation and actual cases, not an executed UI failure",
+  "source": "durable-source-r42.json",
+  "findings": [
+    {
+      "area": "Workout energy confidence",
+      "source": "HealthRecoveryRecordsView uses raw activeCalories while Workout.energyKcal/energyDescription distinguish energyKnown=false, legacy zero and estimates.",
+      "required": "Use the established known/unknown/estimated semantics in recovery review. Execute unknown legacy zero, explicitly known zero, supplied nonzero and estimated controls; retain all source fields and units."
+    },
+    {
+      "area": "Daily readings",
+      "source": "Recovery review prints raw steps/activeCalories/exerciseMin/waterML and omits the remaining cache fields and readings/query/component provenance. DayMetrics.empty contains numeric zeros without established measurements.",
+      "required": "Show missing measurements as unknown, distinguish recorded zero, estimates, source/date/query outcomes and overlapping components; expose all preserved fields without claiming cache was recovered from backups that omit it."
+    },
+    {
+      "area": "Complete record inspection",
+      "source": "Water review shows amount/date only. Meals show type/calories/date/names only. Workout review shows title/start/duration/raw energy only. Goals omit explicit unknown optional values. Source structures preserve IDs, edited time, origin, notes, item grams/nutrients/confidence, source, photo references and workout import metadata/location fields.",
+      "required": "Provide usable record details for the actual replacement choice, with complete preserved values/metadata and source information, safely inspect large records and photo consequences, and cover zero/two records and other domains in actual product UI. Do not infer those flows from the one-record water fixture."
+    }
+  ],
+  "otherRequiredWork": "Continue missing-current/failed-legacy/symlink recovery, actual encrypted/readable product selection/workspace ownership/original file provenance, supported failure/retry/busy Cancel, target/companion availability, both original recovery contracts and all eight durable groups, current actual HealthKit/interruption/Release/signed-device/publication plus the broader goal."
+}

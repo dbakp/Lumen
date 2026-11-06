@@ -1,0 +1,18 @@
+{
+  "source": "durable-source-r147.json",
+  "nativeSummary": "health-daily-cache-rebuild-r1-summary.json",
+  "hostAudit": "health-daily-cache-rebuild-r1-host-audit.json",
+  "nativePassed": 1,
+  "nativeFailed": 0,
+  "status": "Native/host commit-preservation checks pass, but empty SDK statistics are incorrectly classified as failures. Semantic acceptance withheld; defect confirmed148 and repair149 pending.",
+  "outcomes": {
+    "recorded": 0,
+    "noData": 8,
+    "failed": 10
+  },
+  "rootOriginalPNGOpened": 2,
+  "rootNativeJSONRead": 1,
+  "screenshotAcceptance": "Historical diagnostic capture set retained; incomplete root visual inspection, no design acceptance.",
+  "SDKNoDataDefect": "148 observed ten HKStatisticsQuery callback errors in com.apple.healthkit code11 (HKError.errorNoData), but encoded those as failed instead of noData. Other eight actual sample queries returned noData.",
+  "reference": "https://developer.apple.com/documentation/healthkit/hkerror/code/errornodata"
+}

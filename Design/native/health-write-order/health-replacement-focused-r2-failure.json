@@ -1,0 +1,13 @@
+{
+  "status": "failed test assertion; exit133",
+  "source": "durable-source-r21.json",
+  "pure": "local-domain-pure-source-r16.json",
+  "checksBeforeFailure": 66,
+  "failedRoot": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/Lumen-recovery-copies-B2977C0D-F82A-4A35-8B02-829302E3A267",
+  "actualWaterBytes": "W3siZGF0ZSI6IjIwMjYtMTEtMDNUMTM6MTY6MjVaIiwiaWQiOiJzeW50aGV0aWMtcHJpb3Itd2F0ZXIiLCJtbCI6MTM3fV0=",
+  "baselineWaterBytes": "W3siZGF0ZSI6IjIwMjYtMTEtMDNUMTM6MTY6MjVaIiwibWwiOjEzNywiaWQiOiJzeW50aGV0aWMtcHJpb3Itd2F0ZXIifV0=",
+  "decodedRecordsEqual": true,
+  "actualSHA256": "c2054058e7d146cfc0f1048024474923b29f19ff350d4d5ef20ecb048c6eb565",
+  "baselineSHA256": "ec6d4c53e0e1e2e8f7b49bce02bd35baa2297f48cb4653188993ae2ab040e59d",
+  "scope": "Retained-copy exact raw recovery and photo retry passed. Encrypted archive reconstructs typed records and re-encodes canonical JSON; the test incorrectly required baseline JSON key-order bytes. Both actual decoded records independently equal. Change archive assertion to exact canonical selected payload bytes, leaving production unchanged."
+}

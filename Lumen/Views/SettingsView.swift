@@ -17,6 +17,8 @@ public struct SettingsView: View {
     @AppStorage("lumen.appearance") private var appearance = "light"
     @State private var confirmErase = false
     @State private var eraseFailed = false
+    @State private var eraseFailureMessage = ""
+    @State private var confirmHealthDeviceSetup = false
     @State private var confirmClearConversation = false
     @State private var showWeightLog = false
     @State private var showCoachSetup = false
@@ -57,6 +59,9 @@ public struct SettingsView: View {
             .scrollContentBackground(.hidden)
             .background(AuroraBackground())
             .navigationTitle("Settings")
+        #if DEBUG && targetEnvironment(simulator)
+        .overlay(alignment: .bottom) { HealthImportReadUIProbe() }
+        #endif
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) { Button("Done") { saveName(close: true) }.fontWeight(.semibold).disabled(savingProfilePair) }
@@ -70,13 +75,18 @@ public struct SettingsView: View {
             .confirmationDialog("Erase all Lumen data?", isPresented: $confirmErase, titleVisibility: .visible) {
                 Button("Erase everything", role: .destructive) { eraseAll() }
             } message: {
-                Text("Your profile, logs and settings are removed from this iPhone and you'll start fresh. Data in Apple Health isn't touched.")
+                Text("Your profile, logs and settings are removed from this iPhone and you'll start fresh. Apple Health data stays there, apart from removals you've already requested.")
             }
             .alert("Couldn't erase Lumen", isPresented: $eraseFailed) {
                 Button("Retry erasure", role: .destructive) { eraseAll() }
                 Button("Not now", role: .cancel) { }
             } message: {
-                Text("Credentials couldn't be removed. Your profile and logs are still here. AI connections are paused until removal finishes.")
+                Text(eraseFailureMessage)
+            }
+            .confirmationDialog("Start new Health updates here?", isPresented: $confirmHealthDeviceSetup, titleVisibility: .visible) {
+                Button("Start new updates") { startHealthDeviceSetup() }
+            } message: {
+                Text("The old pending updates won't be sent. Your saved entries stay here. Only new changes will be queued for Apple Health.")
             }
             .sheet(isPresented: $confirmClearConversation) {
                 ConversationRemovalSheet(action: "Clear", scope: "Messages and any unsaved reply in this conversation will be removed.",
@@ -263,7 +273,7 @@ public struct SettingsView: View {
                 connectionIcon("heart.fill", .pink)
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Apple Health")
-                    Text(hk.isAuthorized ? (health.lastSync.map { "Synced \($0.formatted(.relative(presentation: .named)))" } ?? "Connected") : "Not connected")
+                    Text(hk.isAuthorized ? (health.lastSync.map { "Checked \($0.formatted(.relative(presentation: .named)))" } ?? "Access requested") : "Not connected")
                         .font(.caption).foregroundStyle(.secondary)
                 }
                 Spacer()
@@ -282,6 +292,18 @@ public struct SettingsView: View {
                         }
                     }
                     .buttonStyle(.borderedProminent).controlSize(.small).foregroundStyle(.black)
+                }
+            }
+            if let status = health.healthWriteStatus {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text(status).font(.footnote).accessibilityIdentifier("healthWriteStatus")
+                    if health.healthWriteNeedsDeviceSetup {
+                        Button("Start Health updates on this iPhone") { confirmHealthDeviceSetup = true }
+                            .accessibilityIdentifier("startHealthWritesOnThisDevice")
+                    } else {
+                        Button("Retry Apple Health updates") { health.retryHealthWrites() }
+                            .accessibilityIdentifier("retryHealthWrites")
+                    }
                 }
             }
             HStack {
@@ -325,6 +347,11 @@ public struct SettingsView: View {
                    let url = URL(string: UIApplication.openNotificationSettingsURLString) { await UIApplication.shared.open(url) }
             } catch { settingsFailure = .init("reminders", error: error, retry: enableReminders) }
         }
+    }
+
+    func startHealthDeviceSetup() {
+        do { try health.startHealthWritesOnThisDeviceChecked() }
+        catch { settingsFailure = .init("Apple Health updates", error: error, retry: startHealthDeviceSetup) }
     }
 
     func connectionIcon(_ name: String, _ tint: Color) -> some View {
@@ -376,6 +403,7 @@ public struct SettingsView: View {
                     }))
             }
             NavigationLink("Backup & restore") { BackupView() }.accessibilityIdentifier("backupSettings")
+            NavigationLink("Recover health data") { HealthRecoveryView() }.accessibilityIdentifier("healthRecoverySettings")
             NavigationLink { ReadableExportView() } label: {
                 Label("Export my data", systemImage: "square.and.arrow.up")
             }.accessibilityIdentifier("readableExportSettings")
@@ -407,6 +435,9 @@ public struct SettingsView: View {
             #endif
             dismiss()
         } catch {
+            eraseFailureMessage = error is SecureStore.Failure
+                ? "Credentials couldn't be removed. Your profile and logs are still here. AI connections are paused until removal finishes."
+                : "Local data couldn't be erased. Your saved profile and logs haven't been replaced. Retry to finish erasure."
             eraseFailed = true
             #if DEBUG && targetEnvironment(simulator)
             ProviderConnectionUIFixture.capture(dirty: false)
@@ -423,9 +454,9 @@ public struct SettingsView: View {
         #if DEBUG && targetEnvironment(simulator)
         try AccountResetNativeFixture.interruptAfterCredentialsIfArmed()
         #endif
+        try LocalStore.eraseAllChecked()
         HealthBackgroundSync.shared.resetUserState()
         HealthKitService.shared.disconnectLocally()
-        LocalStore.eraseAll()
         SemanticSearchService.shared.removeModel()
         StravaService.shared.disconnect()
         UNUserNotificationCenterBridge.removeAll()
@@ -463,7 +494,7 @@ struct WeightLogSheet: View {
                         .accessibilityLabel("Increase weight").accessibilityIdentifier("increaseWeight")
                 }
                 .foregroundStyle(Theme.text)
-                Text(HealthKitService.shared.isAuthorized ? "Save on this iPhone, then try Apple Health. Check Health to confirm it was added." : "Save on this iPhone.")
+                Text(HealthKitService.shared.isAuthorized ? "Save on this iPhone, then update Apple Health. Retry pending updates in Settings." : "Save on this iPhone.")
                     .font(.footnote).foregroundStyle(Theme.secondary)
             }.padding(24) }
             .disabled(saving)

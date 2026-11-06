@@ -1,0 +1,10 @@
+{
+  "status": "failed compiler trial retained",
+  "log": "DurableLogicBuildR1.log.gz",
+  "errors": [
+    "Nested test Gate/Disk classes lacked explicit MainActor annotations",
+    "Throwing test expressions appeared inside non-throwing precondition/short-circuit autoclosures"
+  ],
+  "repair": "Explicit actor annotations and pre-evaluated/outer-try test expressions; subsequent LogicBuildR2 passes. No failed runtime cases are relabeled as passes.",
+  "sourceLimit": "This first test-only compiler trial predates immutable source-r1/r2 archives; its full log is retained but no claim of an exact frozen initial compiler-input archive is made."
+}

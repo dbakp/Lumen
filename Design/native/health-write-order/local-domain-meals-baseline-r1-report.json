@@ -1,0 +1,62 @@
+{
+  "checks": [
+    {
+      "name": "shared startup completed before synthetic file preparation",
+      "passed": true
+    },
+    {
+      "name": "existing synthetic current file has invalid JSON bytes",
+      "passed": true
+    },
+    {
+      "name": "new actual HealthStore completes unrelated conversation startup",
+      "passed": true
+    },
+    {
+      "name": "baseline reads stale legacy meals despite damaged current file",
+      "passed": true
+    },
+    {
+      "name": "baseline defect reproduced: successful new mutation replaces damaged current-file bytes",
+      "passed": true
+    },
+    {
+      "name": "baseline dispatches and acknowledges new external work after replacing damaged domain",
+      "passed": true
+    }
+  ],
+  "directoryRetained": false,
+  "domain": "meals",
+  "external": {
+    "com.dbakp.lumen.health.v1.01695DB8-4021-41A4-ABBF-63E03DB52DDD.0C2656F1-82F6-4795-A0D2-9CDFECA82082.calories": 213,
+    "com.dbakp.lumen.health.v1.01695DB8-4021-41A4-ABBF-63E03DB52DDD.0C2656F1-82F6-4795-A0D2-9CDFECA82082.carbs": 23,
+    "com.dbakp.lumen.health.v1.01695DB8-4021-41A4-ABBF-63E03DB52DDD.0C2656F1-82F6-4795-A0D2-9CDFECA82082.fat": 9,
+    "com.dbakp.lumen.health.v1.01695DB8-4021-41A4-ABBF-63E03DB52DDD.0C2656F1-82F6-4795-A0D2-9CDFECA82082.fiber": 4,
+    "com.dbakp.lumen.health.v1.01695DB8-4021-41A4-ABBF-63E03DB52DDD.0C2656F1-82F6-4795-A0D2-9CDFECA82082.protein": 11
+  },
+  "loadedMealIDs": [
+    "synthetic-stale-legacy-meal"
+  ],
+  "loadedWaterIDs": [],
+  "loadedWeight": 75,
+  "originalDamagedBytes": "eyJzeW50aGV0aWNEYW1hZ2VkSGlzdG9yeSI6IFs=",
+  "persistedFiles": {
+    "health-write-intent.json": "eyJldmVudHMiOlt7ImFja25vd2xlZGdlZCI6WyJjYWxvcmllcyIsImNhcmJzIiwiZmF0IiwicHJvdGVpbiIsImZpYmVyIl0sImFjdGlvbiI6InNhdmUiLCJjb21wb25lbnRzIjpbeyJkYXRlIjo4MTU0MDIyNzcuNTcwMTU1LCJtZXRyaWMiOiJjYWxvcmllcyIsInZhbHVlIjoyMTN9LHsiZGF0ZSI6ODE1NDAyMjc3LjU3MDE1NSwibWV0cmljIjoicHJvdGVpbiIsInZhbHVlIjoxMX0seyJkYXRlIjo4MTU0MDIyNzcuNTcwMTU1LCJtZXRyaWMiOiJjYXJicyIsInZhbHVlIjoyM30seyJkYXRlIjo4MTU0MDIyNzcuNTcwMTU1LCJtZXRyaWMiOiJmYXQiLCJ2YWx1ZSI6OX0seyJkYXRlIjo4MTU0MDIyNzcuNTcwMTU1LCJtZXRyaWMiOiJmaWJlciIsInZhbHVlIjo0fV0sImRvbWFpbiI6Im1lYWwiLCJnZW5lcmF0aW9uIjoiRDE0OUQ5RTgtOUUwMC00N0EyLThGQTUtNEYwNzhCRUY3OThCIiwiaWQiOiIwQzI2NTZGMS04MkY2LTQ3OTUtQTBEMi05Q0RGRUNBODIwODIiLCJpZGVudGl0eSI6InN5bmMiLCJsaWZlY3ljbGUiOiIyNUVGQzE5RS02QzlFLTRFQzAtODc1MC0xQUVEQUQ0QTExNTQiLCJsb2NhbElEIjoic3ludGhldGljLW5ldy1jb3JydXB0LWJhc2VsaW5lLW1lYWwiLCJyZXF1ZXN0ZWRBdCI6ODE1NDAyMjc3LjU5NDI0MX1dLCJsaWZlY3ljbGUiOiIyNUVGQzE5RS02QzlFLTRFQzAtODc1MC0xQUVEQUQ0QTExNTQiLCJvd25lciI6IjAxNjk1REI4LTQwMjEtNDFBNC1BQkJGLTYzRTAzREI1MkRERCIsInZlcnNpb24iOjF9",
+    "meals.json": "W3siaXRlbXMiOlt7ImZhdEciOjMsImdyYW1zIjoxMDAsImZpYmVyRyI6NCwiaWQiOiI0QkM1RkUwMC0zNUE3LTQzMjItODM3Qi0zNTYzRUI3Qzc5MzUiLCJjYWxvcmllcyI6OTksInByb3RlaW5HIjoxLCJuYW1lIjoiU3ludGhldGljIHN0YWxlIG1lYWwiLCJjYXJic0ciOjIsImNvbmZpZGVuY2UiOjAuOH1dLCJzb3VyY2UiOiJtYW51YWwiLCJ0eXBlIjoibHVuY2giLCJpZCI6InN5bnRoZXRpYy1zdGFsZS1sZWdhY3ktbWVhbCIsImRhdGUiOiIyMDI2LTExLTAzVDEyOjM3OjU3WiJ9LHsiaXRlbXMiOlt7ImZhdEciOjksImdyYW1zIjoxMDAsImZpYmVyRyI6NCwiaWQiOiIwREM5MzBBQS1FOUNBLTRDRDQtOTEyQi0xMEEwRTkyRjNFOTAiLCJjYWxvcmllcyI6MjEzLCJwcm90ZWluRyI6MTEsIm5hbWUiOiJTeW50aGV0aWMgbmV3IG1lYWwiLCJjYXJic0ciOjIzLCJjb25maWRlbmNlIjowLjh9XSwic291cmNlIjoibWFudWFsIiwidHlwZSI6Imx1bmNoIiwiaWQiOiJzeW50aGV0aWMtbmV3LWNvcnJ1cHQtYmFzZWxpbmUtbWVhbCIsImRhdGUiOiIyMDI2LTExLTAzVDEyOjM3OjU3WiJ9XQ=="
+  },
+  "savedMealIDs": [
+    "synthetic-stale-legacy-meal",
+    "synthetic-new-corrupt-baseline-meal"
+  ],
+  "savedWaterIDs": [],
+  "savedWeight": 75,
+  "scope": "Pre-repair actual native HealthStore load/mutation baseline with controlled external adapter. Corrupt water/meals/goals replacement is a reproduced defect, not a repaired pass. Directory input proves a real Foundation read error, not physical-device lock/permission behavior.",
+  "status": "Local data baseline recorded",
+  "trace": [
+    "save:calories",
+    "save:protein",
+    "save:carbs",
+    "save:fat",
+    "save:fiber"
+  ]
+}

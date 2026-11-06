@@ -18,7 +18,7 @@ public enum LocalStore {
         let base = fm.containerURL(forSecurityApplicationGroupIdentifier: AppGroup.id)
             ?? fm.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
         let abandoned = ((try? fm.contentsOfDirectory(at: base, includingPropertiesForKeys: nil)) ?? []).filter {
-            $0.lastPathComponent.hasPrefix("LumenData.restore-") || $0.lastPathComponent.hasPrefix("LumenData.retired-")
+            $0.lastPathComponent.hasPrefix("LumenData.restore-") || $0.lastPathComponent.hasPrefix("LumenData.retired-") || $0.lastPathComponent.hasPrefix("LumenData.discovery-")
         }
         // Capture only leftovers present at first access, before a new restore can start.
         DispatchQueue.global(qos: .utility).async { for folder in abandoned { try? fm.removeItem(at: folder) } }
@@ -29,18 +29,114 @@ public enum LocalStore {
     static func commitRestore(_ transaction: BackupFileTransaction, revision: UInt64) throws {
         try writes.commit(ifUnchanged: revision) { try transaction.commit() }
     }
-    /// Encode on the caller's actor; prepare off-thread, then install only if no
-    /// local writer changed the captured state. No partial goals/today save.
-    @MainActor static func saveWeightChecked(goals: HealthGoals, snapshot: DayMetrics, canCommit: () -> Bool, didCommit: () -> Void) async throws {
-        let encoder = JSONEncoder(); encoder.dateEncodingStrategy = .iso8601
-        let files = ["goals.json": try encoder.encode(goals), "today.json": try encoder.encode(snapshot)]
-        try await saveLinkedFilesChecked(files, canCommit: canCommit, didCommit: didCommit)
+    static func commitRestore(_ transaction: BackupFileTransaction, revision: UInt64,
+                              control: BackupOperationControl) throws {
+        try writes.commit(ifUnchanged: revision) { try transaction.commit(control: control) }
+    }
+    @MainActor static func recoverHealthChecked(_ payload: HealthRecoverySelection.Payload,
+                                                control: BackupOperationControl = .init(),
+                                                canCommit: () -> Bool, didCommit: () -> Void) async throws {
+        try await withTaskCancellationHandler {
+            try control.checkCancellation()
+            let root = try checkedDirectory(), captured = revision, owner = try HealthWriteDeviceOwner.current()
+            let transaction = try await Task.detached(priority: .userInitiated) {
+                try HealthRecoverySelection.prepare(payload, into: root, owner: owner, control: control)
+            }.value
+            try Task.checkCancellation(); try control.checkCancellation()
+            guard canCommit() else { throw BackupError.recordsChanged }
+            try commitRestore(transaction, revision: captured, control: control)
+            // Installation has completed. A later cancellation must not turn
+            // the saved outcome into a rollback claim.
+            didCommit()
+        } onCancel: { control.cancel() }
     }
 
-    @MainActor static func saveProfileGoalsChecked(profile: UserProfile, goals: HealthGoals, canCommit: () -> Bool, didCommit: () -> Void) async throws {
+    /// Cache-only replacement preserves all pending external work. Capture
+    /// revision/owner before querying, not after the suspended query returns.
+    @MainActor static func replaceDailyCacheChecked(_ replacement: HealthDailyCache.Replacement,
+                                                    replacing boundary: HealthDailyCache.Boundary,
+                                                    expectedRevision: UInt64, expectedOwner: UUID,
+                                                    control: BackupOperationControl,
+                                                    canCommit: () -> Bool, didCommit: () -> Void) async throws {
+        try await withTaskCancellationHandler {
+            try Task.checkCancellation(); try control.checkCancellation()
+            guard revision == expectedRevision, try HealthWriteDeviceOwner.current() == expectedOwner,
+                  canCommit() else { throw BackupError.recordsChanged }
+            let root = try checkedDirectory()
+            let transaction = try await Task.detached(priority: .userInitiated) {
+                try HealthDailyCache.prepare(replacement, replacing: boundary, in: root, owner: expectedOwner, control: control)
+            }.value
+            try Task.checkCancellation(); try control.checkCancellation()
+            try writes.commit(ifUnchanged: expectedRevision) {
+                guard try HealthWriteDeviceOwner.current() == expectedOwner, canCommit() else { throw BackupError.recordsChanged }
+                try HealthDailyCache.verify(boundary, in: root, control: control)
+                try transaction.commit(control: control)
+            }
+            didCommit()
+        } onCancel: { control.cancel() }
+    }
+    /// Encode on the caller's actor; prepare off-thread, then install only if no
+    /// local writer changed the captured state. No partial goals/today save.
+    @MainActor static func saveWeightChecked(goals: HealthGoals, snapshot: DayMetrics,
+                                           healthEvent: HealthWriteJournal.Component? = nil,
+                                           healthBoundaries: [HealthLocalFiles.Domain: HealthLocalFiles.Boundary] = [:],
+                                           canCommit: () -> Bool, didCommit: () -> Void) async throws {
+        let captured = revision
+        let encoder = JSONEncoder(); encoder.dateEncodingStrategy = .iso8601
+        var files = ["goals.json": try encoder.encode(goals), "today.json": try encoder.encode(snapshot)]
+        if let healthEvent {
+            var journal = try healthWriteJournalChecked()
+            try journal.append(domain: .weight, localID: UUID().uuidString, components: [healthEvent])
+            files[HealthWriteFiles.name] = try journal.encoded()
+        }
+        try await saveLinkedFilesChecked(files, expectedRevision: captured, healthBoundaries: healthBoundaries, canCommit: canCommit, didCommit: didCommit)
+    }
+
+    @MainActor static func healthWriteJournalChecked() throws -> HealthWriteJournal {
+        try HealthWriteFiles.read(from: checkedDirectory(), owner: HealthWriteDeviceOwner.current())
+    }
+
+    /// Quick logs are synchronous throwing APIs. Stage both files and install
+    /// one recoverable directory swap before publishing either live state or
+    /// external work. Weight uses the asynchronous linked-file path above.
+    @MainActor static func saveHealthChangeChecked<T: Encodable>(_ records: T, as name: String,
+                                                               boundary: HealthLocalFiles.Boundary,
+                                                               change: (inout HealthWriteJournal) throws -> Void) throws {
+        let root = try checkedDirectory(), captured = revision
+        _ = try validateHealthSources([name + ".json"], expected: HealthLocalFiles.Domain(rawValue: name).map { [$0: boundary] } ?? [:])
+        var journal = try HealthWriteFiles.read(from: root, owner: HealthWriteDeviceOwner.current())
+        try change(&journal)
+        let data = try encoder.encode(records)
+        try validateNewHealthData(data, as: name)
+        let transaction = try HealthWriteFiles.prepare([name + ".json": data], journal: journal, into: root)
+        try commitRestore(transaction, revision: captured)
+    }
+
+    @MainActor static func saveHealthReceiptChecked(_ journal: HealthWriteJournal, replacing expected: HealthWriteJournal) throws {
+        try performWrite {
+            let root = try checkedDirectory()
+            guard try HealthWriteFiles.read(from: root, owner: HealthWriteDeviceOwner.current()) == expected else { throw BackupError.recordsChanged }
+            let target = root.appendingPathComponent(HealthWriteFiles.name), data = try journal.encoded()
+            #if DEBUG && targetEnvironment(simulator)
+            try QuickLogDiskFault.write(domain: "health-receipt", target: target) {
+                try data.write(to: target, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
+            }
+            #else
+            try data.write(to: target, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
+            #endif
+        }
+    }
+
+    @MainActor static func startHealthWritesOnThisDeviceChecked() throws {
+        let root = try checkedDirectory(), captured = revision
+        let transaction = try HealthWriteFiles.prepareDeviceSetup(into: root, owner: HealthWriteDeviceOwner.current())
+        try commitRestore(transaction, revision: captured)
+    }
+
+    @MainActor static func saveProfileGoalsChecked(profile: UserProfile, goals: HealthGoals, healthBoundaries: [HealthLocalFiles.Domain: HealthLocalFiles.Boundary] = [:], canCommit: () -> Bool, didCommit: () -> Void) async throws {
         let encoder = JSONEncoder(); encoder.dateEncodingStrategy = .iso8601
         let files = ["profile.json": try encoder.encode(profile), "goals.json": try encoder.encode(goals)]
-        try await saveLinkedFilesChecked(files, canCommit: canCommit, didCommit: didCommit)
+        try await saveLinkedFilesChecked(files, healthBoundaries: healthBoundaries, canCommit: canCommit, didCommit: didCommit)
     }
 
     static func loadConversationsChecked() throws -> ConversationFiles.Loaded {
@@ -57,8 +153,11 @@ public enum LocalStore {
         try await saveLinkedFilesChecked(files, canCommit: canCommit, didCommit: didCommit)
     }
 
-    @MainActor private static func saveLinkedFilesChecked(_ files: [String: Data], canCommit: () -> Bool, didCommit: () -> Void) async throws {
-        let root = try checkedDirectory(), capturedRevision = revision
+    @MainActor private static func saveLinkedFilesChecked(_ files: [String: Data], expectedRevision: UInt64? = nil, healthBoundaries: [HealthLocalFiles.Domain: HealthLocalFiles.Boundary] = [:], canCommit: () -> Bool, didCommit: () -> Void) async throws {
+        let root = try checkedDirectory(), capturedRevision = expectedRevision ?? revision
+        guard revision == capturedRevision else { throw BackupError.recordsChanged }
+        let sourceBoundaries = try validateHealthSources(Array(files.keys), expected: healthBoundaries)
+        for (name, data) in files where name.hasSuffix(".json") { try validateNewHealthData(data, as: String(name.dropLast(5))) }
         let transaction = try await Task.detached(priority: .userInitiated) {
             try ConversationFiles.prepareLinkedChange(files, into: root)
         }.value
@@ -70,6 +169,7 @@ public enum LocalStore {
         // An uncommitted transaction removes its stage off-thread on release.
         try Task.checkCancellation()
         guard canCommit() else { throw BackupError.busy }
+        for (domain, boundary) in sourceBoundaries { try verifyHealthBoundary(boundary, domain: domain) }
         try commitRestore(transaction, revision: capturedRevision)
         // Install the caller's live state in this same actor turn. Returning
         // through an await must not open a gap after disk has committed.
@@ -105,15 +205,20 @@ public enum LocalStore {
     private static func url(_ name: String) throws -> URL { try checkedDirectory().appendingPathComponent("\(name).json") }
 
     public static func save<T: Encodable>(_ value: T, as name: String) {
-        performWrite {
-            guard let data = try? encoder.encode(value) else { return }
-            try? data.write(to: url(name), options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
+        try? performWrite {
+            _ = try validateHealthSources([name + ".json"], expected: [:])
+            let data = try encoder.encode(value)
+            try validateNewHealthData(data, as: name)
+            try data.write(to: url(name), options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
         }
     }
 
-    static func saveChecked<T: Encodable>(_ value: T, as name: String) throws {
+    static func saveChecked<T: Encodable>(_ value: T, as name: String, healthBoundary: HealthLocalFiles.Boundary? = nil) throws {
         try performWrite {
+            let expected = HealthLocalFiles.Domain(rawValue: name).flatMap { domain in healthBoundary.map { [domain: $0] } } ?? [:]
+            _ = try validateHealthSources([name + ".json"], expected: expected)
             let data = try encoder.encode(value)
+            try validateNewHealthData(data, as: name)
             #if DEBUG && targetEnvironment(simulator)
             try QuickLogDiskFault.write(domain: name, target: try url(name)) {
                 try data.write(to: url(name), options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
@@ -125,22 +230,70 @@ public enum LocalStore {
     }
 
     static func saveEncodedChecked(_ data: Data, as name: String) throws {
-        try performWrite { try data.write(to: url(name), options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication]) }
+        try performWrite {
+            _ = try validateHealthSources([name + ".json"], expected: [:])
+            try validateNewHealthData(data, as: name)
+            try data.write(to: url(name), options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
+        }
     }
 
     public static func load<T: Decodable>(_ type: T.Type, from name: String) -> T? {
+        if let domain = HealthLocalFiles.Domain(rawValue: name) { return try? loadHealthDomainChecked(type, domain: domain).value }
         if let data = try? Data(contentsOf: url(name)), let v = try? decoder.decode(T.self, from: data) { return v }
         return nil
     }
 
     /// Load from file, falling back to a legacy UserDefaults key (pre-1.1 builds) once.
     public static func load<T: Decodable>(_ type: T.Type, from name: String, legacyKey: String) -> T? {
-        if let v = load(type, from: name) { return v }
-        if let data = UserDefaults.standard.data(forKey: legacyKey),
-           let v = try? JSONDecoder().decode(T.self, from: data) {
-            return v
+        if let domain = HealthLocalFiles.Domain(rawValue: name) { return try? loadHealthDomainChecked(type, domain: domain).value }
+        // Other legacy consumers also must not fall back after a failed current read.
+        do {
+            let file = try url(name)
+            do { _ = try FileManager.default.attributesOfItem(atPath: file.path) }
+            catch let error as CocoaError where error.code == .fileReadNoSuchFile || error.code == .fileNoSuchFile {
+                return try UserDefaults.standard.data(forKey: legacyKey).map { try JSONDecoder().decode(type, from: $0) }
+            }
+            return try decoder.decode(type, from: Data(contentsOf: file))
+        } catch { return nil }
+    }
+
+    private static func healthLegacyData(_ domain: HealthLocalFiles.Domain) throws -> Data? {
+        guard let key = domain.legacyKey, let value = UserDefaults.standard.object(forKey: key) else { return nil }
+        guard let data = value as? Data else { throw HealthLocalFiles.Failure.invalid }
+        return data
+    }
+
+    private static func validateNewHealthData(_ data: Data, as name: String) throws {
+        if let domain = HealthLocalFiles.Domain(rawValue: name) { try HealthLocalFiles.validateCurrentData(data, domain: domain) }
+    }
+
+    static func loadHealthDomainChecked<T: Decodable>(_ type: T.Type, domain: HealthLocalFiles.Domain) throws -> HealthLocalFiles.Loaded<T> {
+        try HealthLocalFiles.read(type, domain: domain, from: checkedDirectory()) { try healthLegacyData(domain) }
+    }
+
+    static func healthBoundaryChecked(_ domain: HealthLocalFiles.Domain) throws -> HealthLocalFiles.Boundary {
+        try HealthLocalFiles.boundary(domain, from: checkedDirectory()) { try healthLegacyData(domain) }
+    }
+
+    static func verifyHealthBoundary(_ boundary: HealthLocalFiles.Boundary, domain: HealthLocalFiles.Domain) throws {
+        try HealthLocalFiles.verify(boundary, domain: domain, from: checkedDirectory()) { try healthLegacyData(domain) }
+    }
+
+    private static func validateHealthSources(_ names: [String], expected: [HealthLocalFiles.Domain: HealthLocalFiles.Boundary]) throws -> [HealthLocalFiles.Domain: HealthLocalFiles.Boundary] {
+        var loaded: [HealthLocalFiles.Domain: HealthLocalFiles.Boundary] = [:]
+        for domain in HealthLocalFiles.Domain.allCases where names.contains(domain.rawValue + ".json") {
+            let boundary: HealthLocalFiles.Boundary
+            switch domain {
+            case .water: boundary = try loadHealthDomainChecked([HydrationLog].self, domain: domain).boundary
+            case .meals: boundary = try loadHealthDomainChecked([Meal].self, domain: domain).boundary
+            case .workouts: boundary = try loadHealthDomainChecked([Workout].self, domain: domain).boundary
+            case .goals: boundary = try loadHealthDomainChecked(HealthGoals.self, domain: domain).boundary
+            case .today: boundary = try loadHealthDomainChecked(DayMetrics.self, domain: domain).boundary
+            }
+            if let wanted = expected[domain], wanted != boundary { throw HealthLocalFiles.Failure.changed }
+            loaded[domain] = boundary
         }
-        return nil
+        return loaded
     }
 
     /// All stored files — used by export.
@@ -150,12 +303,18 @@ public enum LocalStore {
 
     /// Wipe everything Lumen stores locally (account reset).
     public static func eraseAll() {
-        ProviderAuthorizationRevision.mutate {
-            performWrite {
-                for f in allFiles() { try? FileManager.default.removeItem(at: f) }
-                if let bundle = Bundle.main.bundleIdentifier { UserDefaults.standard.removePersistentDomain(forName: bundle) }
-                AppGroup.defaults.removePersistentDomain(forName: AppGroup.id)
-            }
+        // Legacy synthetic callers retain their nonthrowing interface. The
+        // actual Settings reset uses eraseAllChecked and surfaces failure.
+        try? eraseAllChecked()
+    }
+
+    static func eraseAllChecked() throws {
+        try ProviderAuthorizationRevision.mutate {
+            let root = try checkedDirectory(), captured = revision
+            let transaction = try HealthWriteFiles.prepareReset(into: root, owner: HealthWriteDeviceOwner.current())
+            try commitRestore(transaction, revision: captured)
+            if let bundle = Bundle.main.bundleIdentifier { UserDefaults.standard.removePersistentDomain(forName: bundle) }
+            AppGroup.defaults.removePersistentDomain(forName: AppGroup.id)
         }
     }
 }

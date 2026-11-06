@@ -35,15 +35,19 @@ enum HealthLogConfirmation {
             let entry = WellbeingCheckIn(logOrigin: origin, id: draft.recordID, date: draft.date, energy: draft.energy!, mood: draft.mood!, stress: draft.stress!, note: draft.note)
             try CompanionStore.shared.confirmCheckIn(entry)
         case .water:
+            let boundary = try health.requireLocalHealthBoundary(.water)
             var log = HydrationLog(id: draft.recordID, date: draft.date, ml: draft.waterML!)
             log.logOrigin = origin; log.note = draft.note
             let records = health.waterLogs + [log]
-            try LocalStore.saveChecked(records, as: "water"); health.waterLogs = records; health.refresh()
+            try LocalStore.saveChecked(records, as: "water", healthBoundary: boundary)
+            health.waterLogs = records; health.acceptLocalHealthCommit([.water]); health.refresh()
         case .workout:
+            let boundary = try health.requireLocalHealthBoundary(.workouts)
             var workout = Workout(id: draft.recordID, kind: draft.workoutKind!, title: draft.name.isEmpty ? draft.workoutKind!.label : draft.name, start: draft.date, duration: draft.durationMinutes! * 60, activeCalories: draft.energyKcal ?? 0, source: .manual)
             workout.energyKnown = draft.energyKcal != nil; workout.energyIsEstimate = false; workout.logOrigin = origin; workout.note = draft.note
             let records = (health.workouts + [workout]).sorted { $0.start < $1.start }
-            try LocalStore.saveChecked(records, as: "workouts"); health.workouts = records; health.refresh()
+            try LocalStore.saveChecked(records, as: "workouts", healthBoundary: boundary)
+            health.workouts = records; health.acceptLocalHealthCommit([.workouts]); health.refresh()
         }
     }
 }

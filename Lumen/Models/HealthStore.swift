@@ -17,9 +17,27 @@ public final class HealthStore: ObservableObject {
     @Published public var meals: [Meal] = []
     @Published public var waterLogs: [HydrationLog] = []
     @Published public private(set) var waterUndoStatus: String?
+    @Published public private(set) var healthWriteStatus: String?
+    @Published public private(set) var healthWritePendingCount = 0
+    @Published public private(set) var healthWriteNeedsDeviceSetup = false
+    @Published public private(set) var localHealthStorageIssue: String?
+    @Published public private(set) var healthRefreshIssue: String?
+    private var localHealthBoundaries: [HealthLocalFiles.Domain: HealthLocalFiles.Boundary] = [:]
+    private var unavailableLocalHealth: Set<HealthLocalFiles.Domain> = []
     @Published var watchWaterSaveFailure: String?
-    private var waterUndoOperation = UUID()
-    private let healthWrites = OrderedHealthWrites()
+    private lazy var healthWrites = HealthWriteRecovery(
+        read: { try LocalStore.healthWriteJournalChecked() },
+        commit: { try LocalStore.saveHealthReceiptChecked($0, replacing: $1) },
+        operate: {
+            #if DEBUG && targetEnvironment(simulator)
+            if HealthWriteNativeProbe.requested { try await HealthWriteNativeProbe.operate($0); return }
+            #endif
+            try await HealthKitService.shared.performDurableWrite($0)
+            #if DEBUG && targetEnvironment(simulator)
+            HealthWriteLifecycleProbe.recordVerified($0)
+            #endif
+        },
+        changed: { [weak self] in self?.refreshHealthWriteStatus() })
     @Published public var readiness: Readiness?
     @Published public var plan: DayPlan?
     @Published public var insights: [Insight] = []
@@ -39,6 +57,9 @@ public final class HealthStore: ObservableObject {
 
     /// Last Health snapshot for today (persisted so launch is instant).
     private var healthSnapshot = DayMetrics.empty
+    private var healthSourceRefresh = UUID()
+    private var dailyCacheOperation = UUID()
+    private var dailyCacheControl: BackupOperationControl?
     private var hrvBaseline: Double?
     private var restingHRBaseline: Double?
     private var sleepDebt: TimeInterval = 0
@@ -51,19 +72,195 @@ public final class HealthStore: ObservableObject {
     public var usingLiveData: Bool { metrics.readings?.values.contains { $0.value != nil && $0.components.contains { $0.origin == .healthKit } } ?? false }
 
     public init() {
-        goals = LocalStore.load(HealthGoals.self, from: "goals", legacyKey: "lumen.health.goals.v1") ?? HealthGoals()
-        meals = (LocalStore.load([Meal].self, from: "meals", legacyKey: "lumen.health.meals.v1") ?? [])
-            .filter { $0.source != .sample }
-        workouts = (LocalStore.load([Workout].self, from: "workouts", legacyKey: "lumen.health.workouts.v1") ?? [])
-            .filter { $0.source != .sample }
-        waterLogs = (LocalStore.load([HydrationLog].self, from: "water") ?? [])
-        if let snap = LocalStore.load(DayMetrics.self, from: "today"), Calendar.current.isDateInToday(snap.date) {
-            healthSnapshot = snap
-        }
+        openLocalHealthDomains()
         lastSync = AppGroup.defaults.object(forKey: "health.lastSync") as? Date
         refresh()
         let operation = conversationOperation
         Task { if self.conversationOperation == operation { await self.openConversationsChecked() } }
+        refreshHealthWriteStatus()
+    }
+
+    private func openLocalHealthDomains() {
+        for domain in HealthLocalFiles.Domain.allCases {
+            do {
+                let boundary: HealthLocalFiles.Boundary
+                switch domain {
+                case .water:
+                    let loaded = try LocalStore.loadHealthDomainChecked([HydrationLog].self, domain: domain)
+                    waterLogs = loaded.value ?? []; boundary = loaded.boundary
+                case .meals:
+                    let loaded = try LocalStore.loadHealthDomainChecked([Meal].self, domain: domain)
+                    meals = (loaded.value ?? []).filter { $0.source != .sample }; boundary = loaded.boundary
+                case .workouts:
+                    let loaded = try LocalStore.loadHealthDomainChecked([Workout].self, domain: domain)
+                    workouts = (loaded.value ?? []).filter { $0.source != .sample }; boundary = loaded.boundary
+                case .goals:
+                    let loaded = try LocalStore.loadHealthDomainChecked(HealthGoals.self, domain: domain)
+                    goals = loaded.value ?? HealthGoals(); boundary = loaded.boundary
+                case .today:
+                    let loaded = try LocalStore.loadHealthDomainChecked(DayMetrics.self, domain: domain)
+                    healthSnapshot = loaded.value.flatMap { Calendar.current.isDateInToday($0.date) ? $0 : nil } ?? .empty
+                    boundary = loaded.boundary
+                }
+                localHealthBoundaries[domain] = boundary; unavailableLocalHealth.remove(domain)
+            } catch { unavailableLocalHealth.insert(domain) }
+        }
+        updateLocalHealthIssue()
+    }
+
+    private func updateLocalHealthIssue() {
+        let names = unavailableLocalHealth.map(\.label).sorted().joined(separator: ", ")
+        let subject = names.prefix(1).uppercased() + names.dropFirst()
+        localHealthStorageIssue = names.isEmpty ? nil : "\(subject) couldn't be opened. Changes to this data are paused. The affected files haven't been replaced."
+    }
+
+    func localHealthAvailable(_ domain: HealthLocalFiles.Domain) -> Bool {
+        localHealthBoundaries[domain] != nil && !unavailableLocalHealth.contains(domain)
+    }
+
+    /// A failed read stays unavailable until an explicit checked reload installs
+    /// the recovered content. Checking the file alone must not bless stale memory.
+    func requireLocalHealthBoundary(_ domain: HealthLocalFiles.Domain) throws -> HealthLocalFiles.Boundary {
+        guard localHealthAvailable(domain), let boundary = localHealthBoundaries[domain] else { throw HealthLocalFiles.Failure.unavailable }
+        do { try LocalStore.verifyHealthBoundary(boundary, domain: domain); return boundary }
+        catch {
+            unavailableLocalHealth.insert(domain); updateLocalHealthIssue(); refresh()
+            throw error
+        }
+    }
+
+    func requireAllLocalHealthData() throws {
+        for domain in HealthLocalFiles.Domain.allCases { _ = try requireLocalHealthBoundary(domain) }
+    }
+
+    func retryLocalHealthDataChecked() throws {
+        openLocalHealthDomains(); refresh()
+        guard unavailableLocalHealth.isEmpty else { throw HealthLocalFiles.Failure.unavailable }
+    }
+
+    func recoverUnavailableHealth(_ payload: HealthRecoverySelection.Payload,
+                                  control: BackupOperationControl = .init()) async throws {
+        try control.checkCancellation()
+        func canCommit() -> Bool {
+            conversationReady && !isSyncing && !payload.domains.isEmpty
+                && payload.domains.allSatisfy { !localHealthAvailable($0) }
+        }
+        guard canCommit() else { throw BackupError.recordsChanged }
+        try await LocalStore.recoverHealthChecked(payload, control: control, canCommit: canCommit) {
+            openLocalHealthDomains()
+            refresh()
+            retryHealthWrites()
+        }
+    }
+
+    enum DailyCacheAction { case clear, rebuild }
+    enum DailyCacheFailure: Error { case opening, busy, changed }
+    struct DailyCachePreview {
+        let boundary: HealthDailyCache.Boundary
+        let replacement: HealthDailyCache.Replacement
+        let readings: HealthTodayReadCoordinator.Readings?
+        fileprivate let operation: UUID
+        fileprivate let revision: UInt64
+        fileprivate let owner: UUID
+        fileprivate let source: HealthKitService.DailySourceBoundary
+    }
+
+    func inspectDailyCache(control: BackupOperationControl) async throws -> HealthDailyCache.Boundary.State {
+        let root = try LocalStore.checkedDirectory(), revision = LocalStore.revision
+        let boundary = try await Task.detached(priority: .userInitiated) {
+            try HealthDailyCache.capture(in: root, control: control)
+        }.value
+        try Task.checkCancellation(); try control.checkCancellation()
+        guard LocalStore.revision == revision else { throw DailyCacheFailure.changed }
+        return boundary.state
+    }
+
+    func cancelDailyCacheReview(control: BackupOperationControl) {
+        control.cancel()
+        guard dailyCacheControl === control else { return }
+        dailyCacheControl = nil; dailyCacheOperation = UUID()
+    }
+
+    func reviewDailyCache(_ action: DailyCacheAction, control: BackupOperationControl) async throws -> DailyCachePreview {
+        try Task.checkCancellation(); try control.checkCancellation()
+        guard conversationReady else { throw DailyCacheFailure.opening }
+        guard !isSyncing else { throw DailyCacheFailure.busy }
+        dailyCacheControl?.cancel()
+        let operation = UUID(); dailyCacheOperation = operation; dailyCacheControl = control
+        healthSourceRefresh = UUID()
+        let hk = HealthKitService.shared
+        hk.invalidateTodayQueries()
+        do {
+            return try await withTaskCancellationHandler {
+                let root = try LocalStore.checkedDirectory(), revision = LocalStore.revision
+                let owner = try HealthWriteDeviceOwner.current(), initialSource = hk.captureDailySource()
+                let boundary = try await Task.detached(priority: .userInitiated) {
+                    try HealthDailyCache.capture(in: root, control: control)
+                }.value
+                try Task.checkCancellation(); try control.checkCancellation()
+                guard dailyCacheOperation == operation, LocalStore.revision == revision,
+                      hk.dailySourceIsCurrent(initialSource) else { throw DailyCacheFailure.changed }
+                let readings: HealthTodayReadCoordinator.Readings?
+                let replacement: HealthDailyCache.Replacement
+                switch action {
+                case .clear:
+                    readings = nil; replacement = .clear(day: initialSource.selection.day)
+                case .rebuild:
+                    let query = Task { try await hk.queryTodayReadings() }
+                    control.setCancellationHandler { query.cancel() }
+                    do { readings = try await query.value }
+                    catch { control.setCancellationHandler(nil); throw error }
+                    control.setCancellationHandler(nil)
+                    replacement = .rebuild(readings!.raw)
+                }
+                let source = hk.captureDailySource()
+                try await Task.detached(priority: .userInitiated) {
+                    try HealthDailyCache.verify(boundary, in: root, control: control)
+                }.value
+                try Task.checkCancellation(); try control.checkCancellation()
+                guard dailyCacheOperation == operation, LocalStore.revision == revision, !isSyncing,
+                      try HealthWriteDeviceOwner.current() == owner, hk.dailySourceIsCurrent(source),
+                      initialSource.selection.matchesSourceAndDay(source.selection),
+                      initialSource.hardwareAvailable == source.hardwareAvailable, initialSource.connected == source.connected,
+                      readings.map(hk.readingsAreCurrent) ?? true else { throw DailyCacheFailure.changed }
+                return DailyCachePreview(boundary: boundary, replacement: replacement, readings: readings,
+                                         operation: operation, revision: revision, owner: owner, source: source)
+            } onCancel: { control.cancel() }
+        } catch {
+            cancelDailyCacheReview(control: control)
+            throw error
+        }
+    }
+
+    func installDailyCache(_ preview: DailyCachePreview, control: BackupOperationControl,
+                           didCommit: () -> Void) async throws {
+        let hk = HealthKitService.shared
+        func canCommit() -> Bool {
+            dailyCacheOperation == preview.operation && dailyCacheControl === control && !Task.isCancelled
+                && conversationReady && !isSyncing && hk.dailySourceIsCurrent(preview.source)
+                && (preview.readings.map(hk.readingsAreCurrent) ?? true)
+        }
+        guard canCommit() else { throw DailyCacheFailure.changed }
+        try await LocalStore.replaceDailyCacheChecked(preview.replacement, replacing: preview.boundary,
+            expectedRevision: preview.revision, expectedOwner: preview.owner, control: control, canCommit: canCommit) {
+                // This callback runs in the commit's actor turn. A later Cancel
+                // cannot relabel the already installed snapshot as unsaved.
+                healthSnapshot = preview.replacement.metrics
+                acceptLocalHealthCommit([.today]); healthRefreshIssue = nil; refresh()
+                if let readings = preview.readings { hk.publishToday(readings) }
+                dailyCacheControl = nil; dailyCacheOperation = UUID()
+                didCommit()
+            }
+    }
+
+    func acceptLocalHealthCommit(_ domains: [HealthLocalFiles.Domain]) {
+        // The commit has succeeded; a later read error reports unavailable state
+        // rather than falsely telling the caller the committed change rolled back.
+        for domain in domains {
+            do { localHealthBoundaries[domain] = try LocalStore.healthBoundaryChecked(domain); unavailableLocalHealth.remove(domain) }
+            catch { unavailableLocalHealth.insert(domain) }
+        }
+        updateLocalHealthIssue()
     }
 
     // MARK: Derived
@@ -82,13 +279,13 @@ public final class HealthStore: ObservableObject {
         if let debt = assistantSleepDebt { values["sleepDebt"] = debt / 3600; estimates.insert("sleepDebt") }
         return .init(day: metrics.date, capturedAt: Date(), values: values, estimates: estimates)
     }
-    public var mealsToday: [Meal] { today(meals.filter { $0.source != .sample }, \.date).sorted { $0.date < $1.date } }
+    public var mealsToday: [Meal] { localHealthAvailable(.meals) ? today(meals.filter { $0.source != .sample }, \.date).sorted { $0.date < $1.date } : [] }
     public var caloriesEaten: Double { metrics.reading("calories").value ?? 0 }
     public var proteinEaten: Double { metrics.reading("protein").value ?? 0 }
     public var carbsEaten: Double { metrics.reading("carbs").value ?? 0 }
     public var fatEaten: Double { metrics.reading("fat").value ?? 0 }
     public var waterTodayML: Double { metrics.waterML }
-    public var workoutsToday: [Workout] { today(workouts.filter { $0.source != .sample }, \.start) }
+    public var workoutsToday: [Workout] { localHealthAvailable(.workouts) ? today(workouts.filter { $0.source != .sample }, \.start) : [] }
     public var caloriesRemaining: Int { max(0, goals.calorieTarget() - Int(caloriesEaten)) }
     public var moveProgress: Double { min(1, metrics.activeCalories / max(1, goals.activeCalGoal)) }
     public var isCalibrating: Bool { readiness == nil }
@@ -107,7 +304,63 @@ public final class HealthStore: ObservableObject {
 
     // MARK: Mutations
 
+    func retryHealthWrites() {
+        #if DEBUG && targetEnvironment(simulator)
+        if HealthWriteLifecycleProbe.shouldHoldDispatch { refreshHealthWriteStatus(); return }
+        #endif
+        healthWrites.kick()
+    }
+
+    func startHealthWritesOnThisDeviceChecked() throws {
+        try LocalStore.startHealthWritesOnThisDeviceChecked()
+        retryHealthWrites()
+    }
+
+    private var queuesOptionalHealthWrites: Bool {
+        #if DEBUG && targetEnvironment(simulator)
+        if HealthWriteNativeProbe.requested { return true }
+        #endif
+        return HealthKitService.shared.isAuthorized
+    }
+    #if DEBUG && targetEnvironment(simulator)
+    func waitForHealthWriteVerification() async {
+        precondition(HealthWriteNativeProbe.requested || HealthWriteLifecycleProbe.requested)
+        await healthWrites.waitForCurrentWork()
+    }
+    #endif
+
+    private func refreshHealthWriteStatus() {
+        do {
+            let journal = try LocalStore.healthWriteJournalChecked()
+            healthWriteNeedsDeviceSetup = false
+            let pending = journal.pendingEvents
+            healthWritePendingCount = pending.count
+            if healthWrites.storageIssue {
+                healthWriteStatus = "Apple Health progress couldn't be saved. Your local entries are saved; retry to check the pending updates."
+            } else if pending.isEmpty { healthWriteStatus = nil }
+            else if !queuesOptionalHealthWrites {
+                healthWriteStatus = "Apple Health updates are pending. Connect to finish them; your local changes are saved."
+            } else if pending.contains(where: { $0.issue == .permission }) {
+                healthWriteStatus = "Apple Health updates need permission. Allow Lumen to write these types in Health, then retry. Your local changes are saved."
+            } else if pending.contains(where: { $0.issue != nil }) {
+                healthWriteStatus = "Apple Health updates need retry. Your local changes are saved."
+            } else { healthWriteStatus = "Your local changes are saved. Updating Apple Health…" }
+            if let last = journal.events.filter({ $0.domain == .water && $0.action == .delete }).max(by: { $0.requestedAt < $1.requestedAt }) {
+                waterUndoStatus = last.complete
+                    ? "Removed from Lumen. No matching Lumen entry remains in Apple Health."
+                    : "Removed from Lumen. Apple Health removal is pending; retry from Settings."
+            }
+        } catch HealthWriteJournal.Failure.foreignOwner {
+            healthWriteNeedsDeviceSetup = true
+            healthWriteStatus = "These pending Apple Health updates aren't linked to this iPhone. Your local entries are saved."
+        } catch {
+            healthWriteNeedsDeviceSetup = false
+            healthWriteStatus = "Pending Apple Health updates couldn't be opened. Their saved record hasn't been replaced."
+        }
+    }
+
     public func addMeal(_ meal: Meal, photo: UIImage? = nil) throws {
+        let boundary = try requireLocalHealthBoundary(.meals)
         guard !meals.contains(where: { $0.id == meal.id }) else { throw BackupError.invalid }
         var saved = meal
         var ownedPhoto: String?
@@ -117,99 +370,104 @@ public final class HealthStore: ObservableObject {
             ownedPhoto = id; saved.photoID = id
         }
         let records = meals + [saved]
-        do { try LocalStore.saveChecked(records, as: "meals") }
+        do {
+            if queuesOptionalHealthWrites {
+                let values: [(HealthWriteJournal.Metric, Double)] = [(.calories, meal.calories), (.protein, meal.protein), (.carbs, meal.carbs), (.fat, meal.fat), (.fiber, meal.fiber)]
+                guard values.allSatisfy({ $0.1.isFinite && $0.1 >= 0 }) else { throw BackupError.invalid }
+                let components = values.filter { $0.1 > 0 }.map { HealthWriteJournal.Component(metric: $0.0, value: $0.1, date: meal.date) }
+                if components.isEmpty { try LocalStore.saveChecked(records, as: "meals", healthBoundary: boundary) }
+                else { try LocalStore.saveHealthChangeChecked(records, as: "meals", boundary: boundary) { try $0.append(domain: .meal, localID: meal.id, components: components) } }
+            } else { try LocalStore.saveChecked(records, as: "meals", healthBoundary: boundary) }
+        }
         catch { PhotoStore.delete(ownedPhoto); throw error }
         meals = records
-        healthWrites.enqueueSave(.meal(meal.id), isCurrent: { [weak self] in
-            self?.meals.contains(where: { $0.id == meal.id }) == true
-        }) {
-            await HealthKitService.shared.saveMeal(meal)
-        }
+        acceptLocalHealthCommit([.meals])
+        retryHealthWrites()
         refresh()
     }
 
     public func deleteMeal(_ id: String) throws {
+        let boundary = try requireLocalHealthBoundary(.meals)
         let photoIDs = Set(meals.filter { $0.id == id }.compactMap(\.photoID))
         let remaining = meals.filter { $0.id != id }
         guard remaining.count != meals.count else { return }
-        try LocalStore.saveChecked(remaining, as: "meals")
+        try LocalStore.saveHealthChangeChecked(remaining, as: "meals", boundary: boundary) { try $0.requestDeletion(domain: .meal, localID: id) }
         meals = remaining
+        acceptLocalHealthCommit([.meals])
         for photoID in photoIDs where !remaining.contains(where: { $0.photoID == photoID }) { PhotoStore.delete(photoID) }
-        healthWrites.enqueue(.meal(id)) { await HealthKitService.shared.deleteMeal(id: id) }
+        retryHealthWrites()
         refresh()
     }
 
     public func addWater(ml: Double) throws {
+        let boundary = try requireLocalHealthBoundary(.water)
         guard ml.isFinite, ml > 0, ml <= 10000 else { throw BackupError.invalid }
         let log = HydrationLog(ml: ml)
         let records = waterLogs + [log]
-        try LocalStore.saveChecked(records, as: "water")
-        waterUndoOperation = UUID(); waterUndoStatus = nil
+        if queuesOptionalHealthWrites {
+            try LocalStore.saveHealthChangeChecked(records, as: "water", boundary: boundary) {
+                try $0.append(domain: .water, localID: log.id, components: [.init(metric: .water, value: ml, date: log.date)])
+            }
+        } else { try LocalStore.saveChecked(records, as: "water", healthBoundary: boundary) }
+        waterUndoStatus = nil
         waterLogs = records
-        healthWrites.enqueueSave(.water(log.id), isCurrent: { [weak self] in
-            self?.waterLogs.contains(where: { $0.id == log.id && $0.logOrigin == nil }) == true
-        }) {
-            await HealthKitService.shared.saveWater(ml: ml, id: log.id, at: log.date)
-        }
+        acceptLocalHealthCommit([.water])
+        retryHealthWrites()
         refresh()
     }
 
-    public var canUndoQuickWater: Bool { LocalHealthCorrection.latestQuickWater(waterLogs) != nil }
+    public var canUndoQuickWater: Bool { localHealthAvailable(.water) && LocalHealthCorrection.latestQuickWater(waterLogs) != nil }
     public func undoLastWater() throws {
+        let boundary = try requireLocalHealthBoundary(.water)
         guard let last = LocalHealthCorrection.latestQuickWater(waterLogs) else { return }
         let remaining = waterLogs.filter { $0.id != last.id }
-        try LocalStore.saveChecked(remaining, as: "water")
-        waterLogs = remaining; refresh()
-        let operation = UUID(); waterUndoOperation = operation
-        waterUndoStatus = "Removed from Lumen. Checking Apple Health…"
-        healthWrites.enqueue(.water(last.id)) { [weak self] in
-            let status: String
-            do {
-                if let count = try await HealthKitService.shared.deleteWater(id: last.id) {
-                    status = count > 0 ? "Removed from Lumen and Apple Health." : "Removed from Lumen. No matching Apple Health entry was removed."
-                } else { status = "Removed from Lumen. No Apple Health removal was attempted." }
-            } catch { status = "Removed from Lumen. Apple Health removal failed; check the entry in Health." }
-            guard let self, self.waterUndoOperation == operation else { return }
-            self.waterUndoStatus = status
-        }
+        try LocalStore.saveHealthChangeChecked(remaining, as: "water", boundary: boundary) { try $0.requestDeletion(domain: .water, localID: last.id) }
+        waterLogs = remaining; acceptLocalHealthCommit([.water]); refresh()
+        retryHealthWrites()
     }
 
     public func addManualWorkout(kind: WorkoutKind, minutes: Double, kcal: Double? = nil, start: Date = Date()) throws {
+        let boundary = try requireLocalHealthBoundary(.workouts)
+        if kcal == nil { _ = try requireLocalHealthBoundary(.goals) }
         guard minutes.isFinite, minutes > 0, minutes <= 1440,
               start.timeIntervalSince1970.isFinite, start <= Date(),
               kcal.map({ $0.isFinite && $0 >= 0 }) ?? true else { throw BackupError.invalid }
         let w = Workout(kind: kind, title: kind.label, start: start, duration: minutes * 60,
                         activeCalories: kcal ?? kind.met * (minutes / 60) * (goals.weightKg ?? 75), source: .manual)
         let records = (workouts + [w]).sorted { $0.start < $1.start }
-        try LocalStore.saveChecked(records, as: "workouts")
-        workouts = records; refresh()
+        try LocalStore.saveChecked(records, as: "workouts", healthBoundary: boundary)
+        workouts = records; acceptLocalHealthCommit([.workouts]); refresh()
     }
 
     public func deleteWorkout(_ id: String) throws {
+        let boundary = try requireLocalHealthBoundary(.workouts)
         if workouts.first(where: { $0.id == id }).map(LocalHealthCorrection.canEdit) == true {
             try correctConfirmedWorkout(id, draft: nil)
             return
         }
         let records = workouts.filter { !($0.id == id && $0.source == .manual && $0.importOrigin == nil) }
         guard records.count != workouts.count else { return }
-        try LocalStore.saveChecked(records, as: "workouts")
-        workouts = records; refresh()
+        try LocalStore.saveChecked(records, as: "workouts", healthBoundary: boundary)
+        workouts = records; acceptLocalHealthCommit([.workouts]); refresh()
     }
 
     /// Confirmed conversational entries are local-only. Corrections never call HealthKit.
     func correctConfirmedWater(_ id: String, draft: HealthLogDraft?) throws {
+        let boundary = try requireLocalHealthBoundary(.water)
         let records = try LocalHealthCorrection.water(id: id, draft: draft, records: waterLogs)
-        try LocalStore.saveChecked(records, as: "water")
-        waterLogs = records; refresh()
+        try LocalStore.saveChecked(records, as: "water", healthBoundary: boundary)
+        waterLogs = records; acceptLocalHealthCommit([.water]); refresh()
     }
 
     func correctConfirmedWorkout(_ id: String, draft: HealthLogDraft?) throws {
+        let boundary = try requireLocalHealthBoundary(.workouts)
         let records = try LocalHealthCorrection.workout(id: id, draft: draft, records: workouts)
-        try LocalStore.saveChecked(records, as: "workouts")
-        workouts = records; refresh()
+        try LocalStore.saveChecked(records, as: "workouts", healthBoundary: boundary)
+        workouts = records; acceptLocalHealthCommit([.workouts]); refresh()
     }
 
     public func logWeight(kg: Double) async throws {
+        let boundaries: [HealthLocalFiles.Domain: HealthLocalFiles.Boundary] = [.goals: try requireLocalHealthBoundary(.goals), .today: try requireLocalHealthBoundary(.today)]
         guard kg.isFinite, kg > 0, kg <= 1000 else { throw BackupError.invalid }
         // A refresh can change the in-memory snapshot before its final disk
         // write. The storage revision alone cannot detect that suspended state.
@@ -225,9 +483,11 @@ public final class HealthStore: ObservableObject {
         if snapshot.readings == nil { snapshot = CurrentHealthEvidence.resolve(snapshot: snapshot, imported: nil, meals: [], water: [], workouts: [], sleep: nil) }
         let now = Date()
         snapshot.setReading(.init(components: [.init(value: kg, origin: .localLog, source: "Lumen weight log", start: now, end: now, lastSampleAt: now, aggregation: .latest)]), for: "weight")
-        try await LocalStore.saveWeightChecked(goals: savedGoals, snapshot: snapshot, canCommit: { !self.isSyncing }) {
+        let event: HealthWriteJournal.Component? = queuesOptionalHealthWrites ? .init(metric: .weight, value: kg, date: now) : nil
+        try await LocalStore.saveWeightChecked(goals: savedGoals, snapshot: snapshot, healthEvent: event, healthBoundaries: boundaries, canCommit: { !self.isSyncing }) {
             goals = savedGoals; healthSnapshot = snapshot
-            Task { await HealthKitService.shared.saveWeight(kg: kg, at: now) }
+            acceptLocalHealthCommit([.goals, .today])
+            retryHealthWrites()
             refresh()
         }
     }
@@ -235,31 +495,22 @@ public final class HealthStore: ObservableObject {
     /// Settings change one field against the latest live goals. Do not publish
     /// a new target or overwrite other record domains when storage rejects it.
     func updateGoalsChecked(_ change: (inout HealthGoals) -> Void) throws {
+        let boundary = try requireLocalHealthBoundary(.goals)
         var saved = goals; change(&saved)
-        try LocalStore.saveChecked(saved, as: "goals")
+        try LocalStore.saveChecked(saved, as: "goals", healthBoundary: boundary)
         installCheckedGoals(saved)
     }
 
-    func installCheckedGoals(_ saved: HealthGoals) { goals = saved; refresh() }
-
-    public func persist() {
-        LocalStore.save(meals, as: "meals")
-        LocalStore.save(workouts, as: "workouts")
-        LocalStore.save(goals, as: "goals")
-        LocalStore.save(waterLogs, as: "water")
-        LocalStore.save(healthSnapshot, as: "today")
-    }
+    func installCheckedGoals(_ saved: HealthGoals) { goals = saved; acceptLocalHealthCommit([.goals]); refresh() }
 
     func reloadAfterRestore() {
         watchWaterSaveFailure = nil
         // A restore must not start an old queued write using restored content.
         // Already-started Health callbacks cannot be recalled; their record's
         // requested deletion still waits for completion through the same queue.
-        healthWrites.invalidatePendingSaves(); waterUndoOperation = UUID(); waterUndoStatus = nil
-        goals = LocalStore.load(HealthGoals.self, from: "goals") ?? goals
-        meals = LocalStore.load([Meal].self, from: "meals") ?? meals
-        workouts = LocalStore.load([Workout].self, from: "workouts") ?? workouts
-        waterLogs = LocalStore.load([HydrationLog].self, from: "water") ?? waterLogs
+        waterUndoStatus = nil
+        retryHealthWrites()
+        openLocalHealthDomains()
         invalidateConversationWork()
         do {
             let loaded = try LocalStore.loadConversationsChecked()
@@ -437,50 +688,79 @@ public final class HealthStore: ObservableObject {
 
     // MARK: Sync
 
-    func installHealthWorkouts(_ values: [Workout]) { workouts = values }
+    func installHealthWorkouts(_ values: [Workout]) { workouts = values; acceptLocalHealthCommit([.workouts]) }
 
     public func syncAll() async {
         await SyncCoordinator.syncEverything(sleep: SleepStore.shared, health: self)
     }
 
     func refreshSources(includeProviders: Bool) async {
+        let operation = UUID(); healthSourceRefresh = operation
+        healthRefreshIssue = nil
         let session = HealthBackgroundSync.shared.generation
         let hk = HealthKitService.shared
         if hk.isAuthorized {
-            await hk.refreshToday()
-            guard hk.isAuthorized, HealthBackgroundSync.shared.generation == session else { return }
-            healthSnapshot = CurrentHealthEvidence.merging(hk.today, into: healthSnapshot)
-            if let w = healthSnapshot.weightKg { goals.weightKg = (w * 10).rounded() / 10 }
+            let capturedRevision = LocalStore.revision
+            do {
+                let readings = try await hk.queryTodayReadings()
+                try Task.checkCancellation()
+                guard healthSourceRefresh == operation, hk.readingsAreCurrent(readings), HealthBackgroundSync.shared.generation == session,
+                      LocalStore.revision == capturedRevision else { throw BackupError.recordsChanged }
+                let boundary = try requireLocalHealthBoundary(.today)
+                let snapshot = CurrentHealthEvidence.merging(readings.raw.metrics, into: healthSnapshot)
+                try Task.checkCancellation()
+                try LocalStore.saveChecked(snapshot, as: "today", healthBoundary: boundary)
+                healthSnapshot = snapshot; acceptLocalHealthCommit([.today])
+                hk.publishToday(readings)
+                if !Task.isCancelled, readings.raw.metrics.weightKg != nil, localHealthAvailable(.today), let w = healthSnapshot.weightKg {
+                    do { try updateGoalsChecked { $0.weightKg = (w * 10).rounded() / 10 } }
+                    catch { healthRefreshIssue = "The latest weight couldn't be saved to your targets. Open saved data again, then retry syncing." }
+                }
+            } catch is CancellationError { return }
+            catch HealthTodayReadCoordinator.Failure.changed { return }
+            catch {
+                guard !Task.isCancelled, healthSourceRefresh == operation, hk.isAuthorized, HealthBackgroundSync.shared.generation == session else { return }
+                healthRefreshIssue = "Recent Apple Health readings couldn't be checked or saved. Open saved data again, then retry syncing."
+            }
+            guard healthSourceRefresh == operation, hk.isAuthorized, HealthBackgroundSync.shared.generation == session else { return }
             // Workouts are applied by the durable anchored pipeline.
             let hrvDays = await hk.dailySeries(.hrv, days: 30).filter { !Calendar.current.isDateInToday($0.date) }
             let hrDays = await hk.dailySeries(.restingHR, days: 30).filter { !Calendar.current.isDateInToday($0.date) }
-            guard hk.isAuthorized, HealthBackgroundSync.shared.generation == session else { return }
+            guard healthSourceRefresh == operation, hk.isAuthorized, HealthBackgroundSync.shared.generation == session else { return }
             hrvBaseline = hrvDays.count >= 7 ? hrvDays.map(\.value).reduce(0, +) / Double(hrvDays.count) : nil
             restingHRBaseline = hrDays.count >= 7 ? hrDays.map(\.value).reduce(0, +) / Double(hrDays.count) : nil
         }
         if includeProviders, StravaService.shared.isConnected {
             await StravaService.shared.sync()
-            guard HealthBackgroundSync.shared.generation == session else { return }
-            mergeWorkouts(StravaService.shared.activities)
+            guard healthSourceRefresh == operation, HealthBackgroundSync.shared.generation == session else { return }
+            do { try mergeWorkoutsChecked(StravaService.shared.activities) }
+            catch { healthRefreshIssue = "Recent workouts couldn't be saved. Open saved data again, then retry syncing." }
         }
+        guard healthSourceRefresh == operation else { return }
         lastSync = Date()
         AppGroup.defaults.set(lastSync, forKey: "health.lastSync")
-        persist(); refresh()
+        refresh()
     }
 
-    private func mergeWorkouts(_ incoming: [Workout]) {
-        workouts = WorkoutReconciliation.merge(incoming, into: workouts)
+    private func mergeWorkoutsChecked(_ incoming: [Workout]) throws {
+        let boundary = try requireLocalHealthBoundary(.workouts)
+        let records = WorkoutReconciliation.merge(incoming, into: workouts)
+        try LocalStore.saveChecked(records, as: "workouts", healthBoundary: boundary)
+        workouts = records; acceptLocalHealthCommit([.workouts])
     }
 
-    func importWorkouts(_ incoming: [Workout], filename: String) {
+    func importWorkouts(_ incoming: [Workout], filename: String) throws {
         let records = incoming.map { original in
             var workout = original; workout.importOrigin?.filename = filename; return workout
         }
-        mergeWorkouts(records); persist(); refresh()
+        try mergeWorkoutsChecked(records); refresh()
     }
 
-    func clearImportedWorkouts() {
-        workouts.removeAll { $0.importOrigin != nil }; persist(); refresh()
+    func clearImportedWorkouts() throws {
+        let boundary = try requireLocalHealthBoundary(.workouts)
+        let records = workouts.filter { $0.importOrigin == nil }
+        try LocalStore.saveChecked(records, as: "workouts", healthBoundary: boundary)
+        workouts = records; acceptLocalHealthCommit([.workouts]); refresh()
     }
 
     // MARK: Coaching
@@ -488,7 +768,7 @@ public final class HealthStore: ObservableObject {
     /// Called by the sleep side whenever debt / need / last night change.
     public func recompute(sleepDebt: TimeInterval, sleepNeed: TimeInterval, sleepEpisodes: [SleepEpisode], birthYear: Int? = nil) {
         let currentGoals = ProfileSettings.refreshedAge(goals: goals, birthYear: birthYear)
-        if currentGoals.age != goals.age { goals = currentGoals }
+        if localHealthAvailable(.goals), currentGoals.age != goals.age { goals = currentGoals }
         self.sleepDebt = sleepDebt
         self.sleepNeed = sleepNeed
         self.sleepEpisodes = sleepEpisodes
@@ -496,28 +776,38 @@ public final class HealthStore: ObservableObject {
     }
 
     public func refresh() {
-        let m = CurrentHealthEvidence.resolve(snapshot: healthSnapshot, imported: CompanionStore.shared.todayImport, meals: meals, water: waterLogs, workouts: workouts, sleep: SleepEvidence.today(sleepEpisodes))
+        var m = CurrentHealthEvidence.resolve(snapshot: localHealthAvailable(.today) ? healthSnapshot : .empty,
+                                             imported: CompanionStore.shared.todayImport,
+                                             meals: localHealthAvailable(.meals) ? meals : [],
+                                             water: localHealthAvailable(.water) ? waterLogs : [],
+                                             workouts: localHealthAvailable(.workouts) ? workouts : [], sleep: SleepEvidence.today(sleepEpisodes))
+        // A known incomplete local history cannot become an apparently complete
+        // total just because another source supplies part of today's reading.
+        if !localHealthAvailable(.water) { m.setReading(.unknown, for: "water") }
+        if !localHealthAvailable(.meals) { for key in ["calories", "protein", "carbs", "fat"] { m.setReading(.unknown, for: key) } }
+        if !localHealthAvailable(.workouts) { for key in ["exercise", "activeEnergy"] { m.setReading(.unknown, for: key) } }
         metrics = m
 
-        readiness = CoachingEngine.readinessIfAvailable(metrics: m, sleepDebt: assistantSleepDebt, workoutsToday: workoutsToday, goals: goals, hrvBaseline: hrvBaseline, restingHRBaseline: restingHRBaseline)
-        plan = CoachingEngine.dayPlan(metrics: m, readiness: readiness, goals: goals, sleepDebt: assistantSleepDebt, eaten: caloriesEaten, protein: proteinEaten, waterML: waterTodayML)
+        readiness = unavailableLocalHealth.isEmpty ? CoachingEngine.readinessIfAvailable(metrics: m, sleepDebt: assistantSleepDebt, workoutsToday: workoutsToday, goals: goals, hrvBaseline: hrvBaseline, restingHRBaseline: restingHRBaseline) : nil
+        plan = unavailableLocalHealth.isEmpty ? CoachingEngine.dayPlan(metrics: m, readiness: readiness, goals: goals, sleepDebt: assistantSleepDebt, eaten: caloriesEaten, protein: proteinEaten, waterML: waterTodayML) : nil
         let perspective = CompanionStore.shared.perspective(health: self)
         plan?.briefing = perspective.body
         if !CompanionStore.shared.activeSymptoms.isEmpty {
             plan?.bullets = ["Check how you feel before activity; keep your plans flexible.", "Keep notes on symptom timing and changes.", "For symptoms that persist, worsen or concern you, contact a clinician."]
             plan?.workoutSuggestion = "Check symptoms before exercise"
         }
-        insights = CoachingEngine.insights(metrics: m, readiness: readiness, goals: goals, mealsToday: mealsToday, workoutsToday: workoutsToday, sleepDebt: assistantSleepDebt)
+        insights = unavailableLocalHealth.isEmpty ? CoachingEngine.insights(metrics: m, readiness: readiness, goals: goals, mealsToday: mealsToday, workoutsToday: workoutsToday, sleepDebt: assistantSleepDebt) : []
 
         let d = AppGroup.defaults
         d.set(readiness?.score ?? 0, forKey: "widget.readiness")
         d.set(Int(caloriesEaten), forKey: "widget.eaten")
-        d.set(goals.calorieTarget(), forKey: "widget.target")
+        d.set(localHealthAvailable(.goals) ? goals.calorieTarget() : 0, forKey: "widget.target")
         d.set(Int(proteinEaten), forKey: "widget.protein")
-        d.set(goals.proteinTarget(), forKey: "widget.proteinTarget")
+        d.set(localHealthAvailable(.goals) ? goals.proteinTarget() : 0, forKey: "widget.proteinTarget")
         d.set(m.steps, forKey: "widget.steps")
         d.set(moveProgress, forKey: "widget.move")
         d.set(displayEvidence.encoded(), forKey: DisplayEvidence.widgetKey)
+        d.set(localHealthStorageIssue, forKey: "health.localStorageIssue")
         WidgetBridge.reload()
         WatchSync.shared.scheduleSend()
         NotificationManager.shared.refreshContext(health: self)
@@ -526,7 +816,8 @@ public final class HealthStore: ObservableObject {
     /// Start over: clears every log (Health data itself is untouched).
     public func resetAll() {
         watchWaterSaveFailure = nil
-        healthWrites.invalidatePendingSaves(); waterUndoOperation = UUID(); waterUndoStatus = nil
+        waterUndoStatus = nil
+        refreshHealthWriteStatus()
         invalidateConversationWork()
         goals = HealthGoals(); meals = []; workouts = []; waterLogs = []; chat = []
         conversations = []; activeConversationID = nil
@@ -534,6 +825,7 @@ public final class HealthStore: ObservableObject {
         conversationReady = true; conversationStorageIssue = nil
         CompanionStore.shared.reset()
         healthSnapshot = .empty; lastSync = nil; hrvBaseline = nil; restingHRBaseline = nil; sleepEpisodes = []; sleepDebt = 0
+        openLocalHealthDomains(); healthRefreshIssue = nil
         refresh()
     }
 }

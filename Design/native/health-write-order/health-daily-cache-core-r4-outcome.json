@@ -1,0 +1,82 @@
+{
+  "status": "Current135cache core105,full2282 and native build-for-testing pass; full cache feature remains in progress",
+  "source": "durable-source-r135.json",
+  "pureSource": "local-domain-pure-source-r71.json",
+  "parentContract": "health-daily-cache-r1-contract.json",
+  "nativeInputs": 249,
+  "nativeFixtures": 6,
+  "pureInputs": 130,
+  "pureFixtures": 4,
+  "focused": {
+    "count": 105,
+    "exitCode": 0,
+    "report": "health-daily-cache-core-r4-checks.json",
+    "log": "HealthDailyCacheCoreR4Focused.log.gz"
+  },
+  "full": {
+    "exitCode": 0,
+    "count": 2282,
+    "countMethod": "2177 actual PASS lines plus105 actual cache precondition checks in this same full execution",
+    "log": "HealthDailyCacheCoreR4Full.log.gz",
+    "session": 14321
+  },
+  "nativeBuild": {
+    "exitCode": 0,
+    "session": 77544,
+    "log": "HealthDailyCacheCoreR4NativeBuild.log.gz",
+    "sha256": "5121ebcc1783293487054bea22d38cc2c4d63dfd102a556863005fb24749c76c",
+    "binaryBytes": 44131040
+  },
+  "pureBuild": {
+    "exitCode": 0,
+    "session": 79771,
+    "log": "HealthDailyCacheCoreR4Build.log.gz",
+    "sha256": "23b819253dee11a1886c46b61388ed3a6c67c92497deecfb9afedb3438e56f28",
+    "binaryBytes": 15785584
+  },
+  "implementation": [
+    "Typed raw18-query builder preserves returned-zero/noData/failed outcomes and rejects all-query failure; explicit clear creates unknown readings.",
+    "Separate cache-only transaction never rewrites or rotates HealthWriteJournal.",
+    "Raw healthy/failed files and nested directories retained privately; absent cache handled explicitly; symlinks reject without reading target.",
+    "Preparation stays within stage and preserves live/previous bytes. Commit uses Darwin RENAME_SWAP, verified available in actual iOS27 SDK sys/stdio.h lines36,53; actual macOS exchange and failing permission path exercised.",
+    "LocalStore captures expected revision/owner before queries and checks mandatory caller canCommit under write lock; native compile passes, runtime entry-point/lifecycle proof remains."
+  ],
+  "failedTrials": [
+    {
+      "source": "durable-source-r132.json",
+      "pureSource": "local-domain-pure-source-r68.json",
+      "kind": "compile failure",
+      "log": "HealthDailyCacheCoreR1Build.log.gz",
+      "finding": "Throwing boolean expression in new focused test;no runtime acceptance."
+    },
+    {
+      "source": "durable-source-r133.json",
+      "pureSource": "local-domain-pure-source-r69.json",
+      "kind": "focused precondition failure",
+      "log": "HealthDailyCacheCoreR2Focused.log.gz",
+      "finding": "Aggregate missing/clear journal assertion failed.134test-only physical temp path canonicalization fixes aliased /var enumeration keys;app unchanged133->134. Failed trial remains failed."
+    }
+  ],
+  "earlier134": {
+    "source": "durable-source-r134.json",
+    "pureSource": "local-domain-pure-source-r70.json",
+    "focused": 79,
+    "full": 2256,
+    "nativeBuildExit": 0
+  },
+  "scope": "Core actual macOS files/atomic exchange and iOS compile only. No current native UI or actual iOS cache runtime, fresh operation-owned/cancellable HKQuery implementation, held query/lifecycle/day/revision tests, full .previous/interruption/capacity/symlink/legacy/device acceptance, cache design review, new Release/signed install or publication. Full parent contract, six nextRequired areas, remainingScope, original contracts/eightgroups and broader goal remain active.",
+  "terminalLogArchivesDecodedVerified": 772,
+  "newTerminalLogs": [
+    "HealthDailyCacheCoreR1Build.log.gz",
+    "HealthDailyCacheCoreR2Build.log.gz",
+    "HealthDailyCacheCoreR2Focused.log.gz",
+    "HealthDailyCacheCoreR3Build.log.gz",
+    "HealthDailyCacheCoreR3Focused.log.gz",
+    "HealthDailyCacheCoreR3Full.log.gz",
+    "HealthDailyCacheCoreR3NativeBuild.log.gz",
+    "HealthDailyCacheCoreR4Build.log.gz",
+    "HealthDailyCacheCoreR4Focused.log.gz",
+    "HealthDailyCacheCoreR4Full.log.gz",
+    "HealthDailyCacheCoreR4NativeBuild.log.gz"
+  ]
+}

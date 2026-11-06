@@ -9,7 +9,7 @@ struct LumenApp: App {
         HealthZIPArchive.clearTemporaryFiles()
         #if DEBUG && targetEnvironment(simulator)
         // Clean slate only for dedicated simulator UI tests, before stores load.
-        if ProcessInfo.processInfo.arguments.contains("-resetForUITests") && !ProviderAuthorizationNativeProbe.resumesRemovalCheck && !ProviderAuthorizationNativeProbe.resumesAccountResetCheck && !ProviderConnectionUIFixture.resuming {
+        if ProcessInfo.processInfo.arguments.contains("-resetForUITests") && !ProviderAuthorizationNativeProbe.resumesRemovalCheck && !ProviderAuthorizationNativeProbe.resumesAccountResetCheck && !ProviderConnectionUIFixture.resuming && !HealthWriteLifecycleProbe.resuming {
             LocalStore.eraseAll()
             SemanticSearchService.resetForUITests()
             do { try ConversationNativeFixtures.prepareStartupIfRequested() }
@@ -18,6 +18,8 @@ struct LumenApp: App {
             catch { preconditionFailure("Synthetic personal fixture could not be prepared: \(error)") }
             do { try ProviderConnectionUIFixture.prepareIfRequested() }
             catch { preconditionFailure("Synthetic connection fixture could not be prepared: \(error)") }
+            do { try HealthRecoveryUIFixture.prepareIfRequested() }
+            catch { preconditionFailure("Synthetic recovery fixture could not be prepared: \(error)") }
         }
         #endif
     }
@@ -47,12 +49,16 @@ private struct LumenReadyView: View {
     @StateObject private var preferenceProbe = PreferenceNativeProbe.shared
     @StateObject private var conversationProbe = ConversationNativeProbe.shared
     @StateObject private var personalProbe = PersonalContextNativeProbe.shared
+    @StateObject private var healthWriteProbe = HealthWriteNativeProbe.shared
+    @StateObject private var healthKitWriteProbe = HealthWriteHealthKitProbe.shared
+    @StateObject private var healthLifecycleProbe = HealthWriteLifecycleProbe.shared
     #endif
 
     var body: some View {
         Group {
             #if DEBUG && targetEnvironment(simulator)
             if ProviderConnectionUIFixture.isAuthorized { ProviderConnectionUIRoot() }
+            else if HealthRecoveryUIFixture.requested { NavigationStack { HealthRecoveryView() } }
             else { RootView() }
             #else
             RootView()
@@ -66,14 +72,22 @@ private struct LumenReadyView: View {
             .task {
                 #if DEBUG && targetEnvironment(simulator)
                 if ProviderConnectionUIFixture.isAuthorized { return }
+                if HealthRecoveryUIFixture.requested || HealthRecoveryUIFixture.backupRequested {
+                    if HealthRecoveryUIFixture.dailyRebuildRequested { await HealthDailyCacheHealthUIFixture.connect() }
+                    return
+                }
                 if PreferenceNativeProbe.requested { await preferenceProbe.run(); return }
                 if ConversationNativeProbe.requested { await conversationProbe.run(); return }
                 if PersonalContextNativeProbe.requested { await personalProbe.run(); return }
+                if HealthWriteNativeProbe.requested { await healthWriteProbe.run(); return }
+                if HealthWriteHealthKitProbe.requested { await healthKitWriteProbe.run(); return }
+                if HealthWriteLifecycleProbe.requested { await healthLifecycleProbe.run(); return }
                 try? PreferenceNativeProbe.prepareFixtures(health: health)
                 #endif
                 SyncCoordinator.propagate(sleep: sleep, health: health)
                 WatchSync.shared.activate(sleep: sleep, health: health)
                 HealthBackgroundSync.shared.start()
+                health.retryHealthWrites()
             }
             #if DEBUG && targetEnvironment(simulator)
             .overlay(alignment: .bottom) {
@@ -91,11 +105,31 @@ private struct LumenReadyView: View {
                     Text(personalProbe.status).font(.footnote).accessibilityIdentifier("personalProvenanceProbeStatus")
                         .padding().background(Theme.bg)
                 }
+                if HealthWriteNativeProbe.requested {
+                    Text(healthWriteProbe.status).font(.footnote).accessibilityIdentifier("healthWriteProbeStatus")
+                        .padding().background(Theme.bg)
+                }
+                if HealthWriteHealthKitProbe.requested {
+                    VStack {
+                        if healthKitWriteProbe.accessReturned {
+                            Text("Health access request finished").accessibilityIdentifier("healthKitProbeAccessReturned")
+                        }
+                        Text(healthKitWriteProbe.status).accessibilityIdentifier("healthKitWriteProbeStatus")
+                    }.font(.footnote).padding().background(Theme.bg)
+                }
+                if HealthWriteLifecycleProbe.requested {
+                    VStack {
+                        if healthLifecycleProbe.accessReturned {
+                            Text("Health restart access ready").accessibilityIdentifier("healthLifecycleAccessReady")
+                        }
+                        Text(healthLifecycleProbe.status).accessibilityIdentifier("healthLifecycleStatus")
+                    }.font(.footnote).padding().background(Theme.bg)
+                }
             }
             #endif
             .onChange(of: scenePhase) { _, phase in
                 #if DEBUG && targetEnvironment(simulator)
-                if ProviderConnectionUIFixture.isAuthorized { return }
+                if ProviderConnectionUIFixture.isAuthorized || HealthWriteLifecycleProbe.requested || HealthRecoveryUIFixture.backupRequested { return }
                 #endif
                 guard phase == .active, sleep.profile.onboardingDone else { return }
                 Task { await SyncCoordinator.syncEverything(sleep: sleep, health: health) }

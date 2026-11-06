@@ -1,0 +1,136 @@
+{
+  "baselineSHA256" : "724fe3dba5c7ce27833fe6a74e3149511f8422d70429cc93646231143f50f165",
+  "checks" : [
+    "negative water rejects legacy backup creation",
+    "negative water rejects a correctly hashed invalid legacy backup on read",
+    "negative water rejects invalid readable import",
+    "negative water rejects readable export before creating a file",
+    "negative water rejects encrypted export before creating a file",
+    "oversized single water log rejects legacy backup creation",
+    "oversized single water log rejects a correctly hashed invalid legacy backup on read",
+    "oversized single water log rejects invalid readable import",
+    "oversized single water log rejects readable export before creating a file",
+    "oversized single water log rejects encrypted export before creating a file",
+    "duplicate water identities rejects legacy backup creation",
+    "duplicate water identities rejects a correctly hashed invalid legacy backup on read",
+    "duplicate water identities rejects invalid readable import",
+    "duplicate water identities rejects readable export before creating a file",
+    "duplicate water identities rejects encrypted export before creating a file",
+    "duplicate meal identities rejects legacy backup creation",
+    "duplicate meal identities rejects a correctly hashed invalid legacy backup on read",
+    "duplicate meal identities rejects invalid readable import",
+    "duplicate meal identities rejects readable export before creating a file",
+    "duplicate meal identities rejects encrypted export before creating a file",
+    "duplicate food identities rejects legacy backup creation",
+    "duplicate food identities rejects a correctly hashed invalid legacy backup on read",
+    "duplicate food identities rejects invalid readable import",
+    "duplicate food identities rejects readable export before creating a file",
+    "duplicate food identities rejects encrypted export before creating a file",
+    "negative meal nutrient rejects legacy backup creation",
+    "negative meal nutrient rejects a correctly hashed invalid legacy backup on read",
+    "negative meal nutrient rejects invalid readable import",
+    "negative meal nutrient rejects readable export before creating a file",
+    "negative meal nutrient rejects encrypted export before creating a file",
+    "invalid food confidence rejects legacy backup creation",
+    "invalid food confidence rejects a correctly hashed invalid legacy backup on read",
+    "invalid food confidence rejects invalid readable import",
+    "invalid food confidence rejects readable export before creating a file",
+    "invalid food confidence rejects encrypted export before creating a file",
+    "duplicate workout identities rejects legacy backup creation",
+    "duplicate workout identities rejects a correctly hashed invalid legacy backup on read",
+    "duplicate workout identities rejects invalid readable import",
+    "duplicate workout identities rejects readable export before creating a file",
+    "duplicate workout identities rejects encrypted export before creating a file",
+    "negative workout duration rejects legacy backup creation",
+    "negative workout duration rejects a correctly hashed invalid legacy backup on read",
+    "negative workout duration rejects invalid readable import",
+    "negative workout duration rejects readable export before creating a file",
+    "negative workout duration rejects encrypted export before creating a file",
+    "reversed imported workout interval rejects legacy backup creation",
+    "reversed imported workout interval rejects a correctly hashed invalid legacy backup on read",
+    "reversed imported workout interval rejects invalid readable import",
+    "reversed imported workout interval rejects readable export before creating a file",
+    "reversed imported workout interval rejects encrypted export before creating a file",
+    "unsafe numeric goal rejects legacy backup creation",
+    "unsafe numeric goal rejects a correctly hashed invalid legacy backup on read",
+    "unsafe numeric goal rejects invalid readable import",
+    "unsafe numeric goal rejects readable export before creating a file",
+    "unsafe numeric goal rejects encrypted export before creating a file",
+    "invalid goal age rejects legacy backup creation",
+    "invalid goal age rejects a correctly hashed invalid legacy backup on read",
+    "invalid goal age rejects invalid readable import",
+    "invalid goal age rejects readable export before creating a file",
+    "invalid goal age rejects encrypted export before creating a file",
+    "all twelve backed-up invalid value cases use the exact frozen baseline inputs",
+    "healthy legacy backup still creates and reads",
+    "healthy readable export still writes and reads",
+    "healthy actual encrypted archive still writes and decrypts",
+    "all archive checks preserve the exact frozen baseline input"
+  ],
+  "count" : 65,
+  "excluded" : "Three today-cache cases are not backup domains; native\/local-file checks cover them.",
+  "payloads" : [
+    {
+      "case" : "negative water",
+      "domain" : "water",
+      "sha256" : "25fefdf937eae084ac42beec9e4cfb4965093a1aea6739971b8a5afc618f37f6"
+    },
+    {
+      "case" : "oversized single water log",
+      "domain" : "water",
+      "sha256" : "3715cd8650a30a401f7587f60c96e538bd5645367868627d582de5aae5f1b68b"
+    },
+    {
+      "case" : "duplicate water identities",
+      "domain" : "water",
+      "sha256" : "fce89c0f8ae408a67dba6d2765d210576e4917cea2f09bce4a82273a33f59e99"
+    },
+    {
+      "case" : "duplicate meal identities",
+      "domain" : "meals",
+      "sha256" : "eda2e8b7cb935472702d0c034e99da2c81283f826c7e6fe0661a352e896f35fb"
+    },
+    {
+      "case" : "duplicate food identities",
+      "domain" : "meals",
+      "sha256" : "903f9987401b3cc910497d49e2d683c800f3ec600347a55d39e8cb499fc03012"
+    },
+    {
+      "case" : "negative meal nutrient",
+      "domain" : "meals",
+      "sha256" : "7f3f4b9e44355fdca677e3c8ebb7c0c69cd58eb23231dc544cb2063fd1a3ff2e"
+    },
+    {
+      "case" : "invalid food confidence",
+      "domain" : "meals",
+      "sha256" : "505cf09e484a67b4fb34d055d42f45450a42f84e475ce6bd4f245bcdd7d17116"
+    },
+    {
+      "case" : "duplicate workout identities",
+      "domain" : "workouts",
+      "sha256" : "e414bd2d01212255cc016f08d0d72041d842e48fd2f16882cb93bfe985f36b1b"
+    },
+    {
+      "case" : "negative workout duration",
+      "domain" : "workouts",
+      "sha256" : "72d61e173f00f69ee5e1d253485b044eb1a47facaab715bfdbe2dcec771d426d"
+    },
+    {
+      "case" : "reversed imported workout interval",
+      "domain" : "workouts",
+      "sha256" : "643773ae6d2afffb748eab3fab9fa3682b9c9181dcb0e684dac4d2cc45654fc2"
+    },
+    {
+      "case" : "unsafe numeric goal",
+      "domain" : "goals",
+      "sha256" : "3d643ad82755347d12faf75e5b6046e51736f6548e265739c92027e0f1a51671"
+    },
+    {
+      "case" : "invalid goal age",
+      "domain" : "goals",
+      "sha256" : "49abd1172dc2da8b58e4cd7b7ee26adb51827277826299f46d8a08b2a247f347"
+    }
+  ],
+  "scope" : "Actual backup writer and correctly hashed legacy reader, readable import\/export and encrypted export rejection, plus healthy actual archive controls. No failed-domain replacement recovery or previous-copy repair acceptance.",
+  "status" : "passed"
+}

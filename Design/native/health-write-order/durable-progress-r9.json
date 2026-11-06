@@ -1,0 +1,63 @@
+{
+  "status": "local candidate with verified native restart recovery and newly reproduced corrupt local-domain replacement defects; unpublished/incomplete",
+  "source": "durable-source-r9.json",
+  "sourceInputs": 225,
+  "fullLogic": {
+    "passed": 1669,
+    "executedAt": "durable-source-r4.json",
+    "exactCurrentCarry": "durable-pure-source-carry-r4-r9.json",
+    "compiledPureSourcesUnchanged": 109
+  },
+  "focusedRecovery": 50,
+  "priorNativeControlledIntegration": {
+    "checks": 36,
+    "source": "durable-source-r3.json",
+    "testOnlyCarry": "durable-native-source-carry-r3-r4.json"
+  },
+  "priorStandaloneActualHealthKit": {
+    "checks": 47,
+    "source": "durable-source-r6.json",
+    "outcome": "actual-healthkit-r2-outcome.json"
+  },
+  "currentNativeProcessPairs": {
+    "pairs": 3,
+    "xctests": 6,
+    "nativeChecks": 102,
+    "source": "durable-source-r8.json",
+    "outcome": "native-health-restart-r1-outcome.json",
+    "nativeBuild": "durable-native-build-r7.json",
+    "hostMatchedFilesPerPhase": 5,
+    "differentPIDsVerified": true,
+    "cases": [
+      "local commit before worker dispatch",
+      "actual Health success before durable receipt, using real receipt I/O failures",
+      "actual save then local Undo before receipt, followed by termination"
+    ],
+    "observerAndDispatchIsolation": "DEBUG fixture setup holds dispatch and isolates observer refresh; actual HealthStore/LocalStore/worker/HealthKit run unchanged thereafter. This does not prove unmodified normal startup or in-flight daemon transaction termination.",
+    "exactSyntheticCleanupVerified": true
+  },
+  "inspectedCurrentProcessOriginals": 6,
+  "allProducersTerminal": true,
+  "availableBytes": 24484003840,
+  "storageCheckedAtUTC": "2026-11-03T12:41:11.655156+00:00",
+  "manualCacheRecoveryCreditedBytes": 0,
+  "storage": "All unpublished raw and compact evidence is retained. Reusable native/package/logic caches remain for the repair. No broad fixture, simulator, runtime or cache deletion.",
+  "requiredRemaining": [
+    "Implement full checked-domain read/readiness and mutation/backup/evidence recovery contract after the reproduced water/meals/goals defects; local-domain-repair-contract-r1.json",
+    "Comprehensive native combined local+intent staging/installation and receipt failures across water, meal/photo and weight/goals/today files",
+    "Stop during an actual in-flight Health daemon transaction/callback, beyond the now-verified known pre-dispatch/pre-receipt boundaries",
+    "Actual HealthKit foreign-source collisions and denied/partial per-type permissions",
+    "Actual reset/restore and encrypted/readable archive roundtrips with pending/legacy/corrupt/foreign-owner intent; no imported replay",
+    "Native normal/dark/largest pending/error/retry/relaunch/device-setup UI and same continuing critic",
+    "Final broader regressions, Release marker audit, signed-iPhone migration/background/locked gates and coherent publication/readback",
+    "Acknowledged Watch delivery and full evidence/provider/device/accessibility/privacy/distribution objective"
+  ],
+  "currentLocalDomainBaseline": {
+    "outcome": "local-domain-baseline-r1-outcome.json",
+    "xctests": 4,
+    "nativeChecks": 23,
+    "unresolvedReplacementDefects": 3,
+    "unreadableDirectoryCases": 1,
+    "repairImplemented": false
+  }
+}

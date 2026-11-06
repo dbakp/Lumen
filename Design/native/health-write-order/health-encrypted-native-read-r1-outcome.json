@@ -1,0 +1,111 @@
+{
+  "status": "PROGRESS: Source108actual encrypted record Cancel/Back/password retry both pass; full goal active/Batch43 unpublished.",
+  "source": "durable-source-r108.json",
+  "pureSource": "local-domain-pure-source-r62.json",
+  "build": "health-encrypted-read-native-build-r3.json",
+  "pureBuild": "health-encrypted-read-pure-build-r2.json",
+  "contract": "health-encrypted-native-read-r1-contract.json",
+  "failedSetup": "health-encrypted-native-read-r1-baseline-outcome.json",
+  "coreRepair": "health-encrypted-read-cancel-r1-outcome.json",
+  "seed": "health-encrypted-native-read-r1-seed.json",
+  "driver": "run-health-original-decrypt.py",
+  "driverArchive": "health-encrypted-native-read-driver-r2.py.gz",
+  "driverSHA256": "5f28f0953d70d101e0a8cd87bf5db3da445e86c5b1c8769920f0d4ed3108b1a7",
+  "cases": [
+    {
+      "action": "cancel",
+      "source": "durable-source-r108.json",
+      "hostAudit": "health-original-decrypt-cancel-r2-host-audit.json",
+      "observations": "health-original-decrypt-cancel-r2-observations.json",
+      "summary": "health-original-decrypt-cancel-r2-summary.json",
+      "images": "health-original-decrypt-cancel-r2-images.json",
+      "readbacks": "health-original-decrypt-cancel-r2-readbacks.json",
+      "stopToClosedSeconds": 1.8343039751052856,
+      "cancelledReadyStableSeconds": 4.274891972541809,
+      "parent": "Backup & restore",
+      "cancelMessage": "Cancelled. Your records haven\u2019t changed.",
+      "sameOriginalRetained": true,
+      "firstOrdinal": 2,
+      "retryOrdinal": 3,
+      "decryptedClose": {
+        "cancelledAttemptCount": 1,
+        "cancelledSucceeded": false,
+        "cancelledError": "AppleArchive.ArchiveError.ioError",
+        "retryAttemptCount": 1,
+        "retrySucceeded": true
+      }
+    },
+    {
+      "action": "back",
+      "source": "durable-source-r108.json",
+      "hostAudit": "health-original-decrypt-back-r1-host-audit.json",
+      "observations": "health-original-decrypt-back-r1-observations.json",
+      "summary": "health-original-decrypt-back-r1-summary.json",
+      "images": "health-original-decrypt-back-r1-images.json",
+      "readbacks": "health-original-decrypt-back-r1-readbacks.json",
+      "stopToClosedSeconds": 2.2245010137557983,
+      "cancelledReadyStableSeconds": 0,
+      "parent": "Settings",
+      "cancelMessage": "",
+      "sameOriginalRetained": false,
+      "firstOrdinal": 2,
+      "retryOrdinal": 4,
+      "decryptedClose": {
+        "cancelledAttemptCount": 1,
+        "cancelledSucceeded": false,
+        "cancelledError": "AppleArchive.ArchiveError.ioError",
+        "retryAttemptCount": 1,
+        "retrySucceeded": true
+      }
+    }
+  ],
+  "actualBoundary": {
+    "kind": "personalContext",
+    "plaintextRecordBytes": 204917,
+    "plaintextBytesReadBeforeHold": 65536,
+    "encryptedInputBytes": 20480,
+    "inputSHA256": "4cbecfaf960164ed1cfde124aba63c0e9c19678076f360ec8433586c1e9ff080",
+    "scope": "Pause after actual decrypted.read returns its first64KiB inside large record; next chunk/decode not completed. Not an in-flight C read/preemptible password test. Source rawfd independently observed by pid/inode/lsof; UI control identity matched. First hold acknowledgement never releases; only retry released."
+  },
+  "resourceProof": "Both first rawfd closes succeed; cancelled decrypted.close called exactly once and returns ioError after asynchronous cancellation. This is retained as failure return, not re-labelled successful. Failed extracted child directory absent before retry and no source/extraction paths open in actual process scan. Retry decrypted.close succeeds once; rawfd closes. Cancel original inode/workspace retained exact; Back oldworkspace absent, retry has different owner/workspace. Held extraction inventories prove actual empty directories, beyond regular-file-only snapshots. Successful preview directory remains with preview; final-parent release remains required.",
+  "SDKCloseContract": {
+    "path": "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk/usr/include/AppleArchive/AAByteStream.h",
+    "sha256": "0a640968e2dfe9f8ea635e783276490759933c293cdd27eeea5f66ca4a5da7cf",
+    "lines": "104-123",
+    "meaning": "Asynchronous cancel expects subsequent stream calls to fail; close destroys stream/releases resources and invalidates its handle, with a separate return status. API contract supports interpretation of cancelled close error; no independent heap-resource proof claimed."
+  },
+  "verification": {
+    "nativePassed": 2,
+    "nativeFailed": 0,
+    "producerExitCodes": [
+      0,
+      0
+    ],
+    "selectedNativeInputs": 247,
+    "pureSelectedInputs": 128,
+    "compiledSwiftInputs": 125,
+    "binaryFixtures": 3,
+    "fixtureScope": "2JPEG plus exact encrypted baseline file",
+    "pureFullPassed": 2166,
+    "pureExecutionBoundary": "107/pure62; all128selected source and3binary inputs exact at108, not rerun108",
+    "previousNativeService25": "Actual106R5; retained earlier binary boundary, no108execution claimed",
+    "retainedPNGs": 10,
+    "selectedPNGsOpened": 6,
+    "heldPNGsRetainedUnopened": 4,
+    "nativeJSONReadbacksRead": 2,
+    "failed107PNGs": 0
+  },
+  "remaining": [
+    "Actual unlock/password/key-derivation/attribute windows, in-flight stream/preemption and worst-case atomic Foundation/validation/capacity latency.",
+    "Final successful preview/parent/extracted resource release, non-cancellation failure lifetimes, partial multi-chunk copying, source/selection changes and late work.",
+    "Applicable selected-photo reads, all-domain/meal/photo/cache/healthy ordinary merge/preferences/profile/weight, both-phone appearances/continuing critic.",
+    "Every full original contract/eight groups, discovery/legacy/symlink, Health daemon/inflight permissions/Watch/widget/reminder/interruption/current SDK/Release/signed-device/publication and broader product/evidence/privacy/provider/accessibility/performance goal."
+  ],
+  "logs": "health-backup-r1-logs.json",
+  "storage": {
+    "availableApproxGiB": 66,
+    "availableBytes": 72292986880,
+    "manualRecoveredBytes": 0,
+    "policy": "Keep current inputs/supplied skill/unpublished evidence and single immediately reused roots. No large fixture/download/new runtime/unrelated/global cleanup or docs-only build."
+  }
+}

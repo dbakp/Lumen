@@ -1,0 +1,36 @@
+{
+  "boundaries" : [
+    {
+      "bytes" : 182512,
+      "cancelledAfterBytes" : 65536,
+      "format" : "legacy",
+      "retryRecords" : 2048,
+      "sha256" : "d5e1352514908435e5cee9f088f3c68a621c22b6534c805f6dae9a48594ea7f1"
+    },
+    {
+      "bytes" : 136832,
+      "cancelledAfterBytes" : 65536,
+      "format" : "readable",
+      "retryRecords" : 2048,
+      "sha256" : "e0c864a7846baefe87a25a979188265268b68ebb6133ac6f68191739fe4b840d"
+    }
+  ],
+  "checks" : [
+    "shared control cancels valid legacy decode before interpretation",
+    "shared control cancels malformed legacy decode before interpretation",
+    "shared control cancels wrong hash legacy decode before interpretation",
+    "uncancelled malformed legacy input keeps its format error",
+    "uncancelled changed payload keeps its integrity error",
+    "actual legacy payload hashing stops after its first64KiB chunk",
+    "fresh legacy retry verifies the same multi-chunk payload",
+    "actual legacy file load stops after first64KiB without yielding payload",
+    "fresh legacy actual file\/decode retry returns every original record",
+    "cancelled and retried legacy load retains exact source bytes",
+    "actual readable file load stops after first64KiB without yielding payload",
+    "fresh readable actual file\/decode retry returns every original record",
+    "cancelled and retried readable load retains exact source bytes"
+  ],
+  "passed" : 13,
+  "scope" : "Actual shared-control legacy decode\/hash and bounded real legacy\/readable file reads with fresh2048record retries and exact bytes. No mid-Foundation-decoder preemption, actual service\/native route hold, encrypted unlock or capacity\/full-contract acceptance.",
+  "status" : "passed"
+}

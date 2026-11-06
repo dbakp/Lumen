@@ -1,0 +1,86 @@
+{
+  "status": "passed",
+  "source": "durable-source-r8.json",
+  "sourceInputs": 225,
+  "nativeBuild": "durable-native-build-r7.json",
+  "nativeXCTests": 6,
+  "actualNativeProcessPairs": 3,
+  "nativeChecks": 102,
+  "cases": [
+    {
+      "scenario": "before-worker",
+      "phases": [
+        {
+          "phase": "prepare",
+          "xctestPassed": true,
+          "durationSeconds": 15.493,
+          "nativeChecks": 9,
+          "pid": 52396,
+          "hostProof": "native-health-restart-before-worker-prepare-r1-host-audit.json",
+          "nativeReport": "native-health-restart-before-worker-prepare-r1-report.json"
+        },
+        {
+          "phase": "resume",
+          "xctestPassed": true,
+          "durationSeconds": 18.887,
+          "nativeChecks": 24,
+          "pid": 52760,
+          "hostProof": "native-health-restart-before-worker-resume-r1-host-audit.json",
+          "nativeReport": "native-health-restart-before-worker-resume-r1-report.json"
+        }
+      ],
+      "differentActualPIDs": true
+    },
+    {
+      "scenario": "before-receipt",
+      "phases": [
+        {
+          "phase": "prepare",
+          "xctestPassed": true,
+          "durationSeconds": 15.525,
+          "nativeChecks": 11,
+          "pid": 53251,
+          "hostProof": "native-health-restart-before-receipt-prepare-r1-host-audit.json",
+          "nativeReport": "native-health-restart-before-receipt-prepare-r1-report.json"
+        },
+        {
+          "phase": "resume",
+          "xctestPassed": true,
+          "durationSeconds": 10.486,
+          "nativeChecks": 24,
+          "pid": 53397,
+          "hostProof": "native-health-restart-before-receipt-resume-r1-host-audit.json",
+          "nativeReport": "native-health-restart-before-receipt-resume-r1-report.json"
+        }
+      ],
+      "differentActualPIDs": true
+    },
+    {
+      "scenario": "undo-before-receipt",
+      "phases": [
+        {
+          "phase": "prepare",
+          "xctestPassed": true,
+          "durationSeconds": 15.349,
+          "nativeChecks": 11,
+          "pid": 53519,
+          "hostProof": "native-health-restart-undo-before-receipt-prepare-r1-host-audit.json",
+          "nativeReport": "native-health-restart-undo-before-receipt-prepare-r1-report.json"
+        },
+        {
+          "phase": "resume",
+          "xctestPassed": true,
+          "durationSeconds": 10.25,
+          "nativeChecks": 23,
+          "pid": 53807,
+          "hostProof": "native-health-restart-undo-before-receipt-resume-r1-host-audit.json",
+          "nativeReport": "native-health-restart-undo-before-receipt-resume-r1-report.json"
+        }
+      ],
+      "differentActualPIDs": true
+    }
+  ],
+  "independentHostMatchedFilesPerPhase": 5,
+  "exactSyntheticHealthCleanupVerified": true,
+  "scope": "Actual new native app processes and real HealthStore/LocalStore/journal/recovery/HealthKit. Dispatch is held during fixture setup, receipt errors are real Foundation I/O faults, and observer refresh is isolated. No OS power-loss/in-flight daemon termination, foreign-source, signed-device or background/locked proof."
+}
