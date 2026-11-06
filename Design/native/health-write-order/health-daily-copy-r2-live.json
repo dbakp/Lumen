@@ -1,28 +1,31 @@
 {
-  "status": "TERMINAL PASS main-normalR3native/host/files/metadata; root158PNGandcontinuingcriticreviewpending; fivecasespending",
-  "checkedAt": 1793974567.6615849,
+  "status": "RUNNING main-darkR3; main-normal terminal PASS; full visual review pending",
+  "checkedAt": 1793975135.5797582,
   "source": "durable-source-r163.json",
   "build": "health-daily-copy-r2-build.json",
-  "execSession": 3792,
-  "producerPID": 2835,
-  "nativePID": 2863,
-  "command": "python3 Design/native/health-write-order/health-daily-appearance-driver-r3.py --source durable-source-r163.json --build health-daily-copy-r2-build.json --trial R3 --phone main --mode normal",
-  "producerLog": "/tmp/LumenBatch43Checks/HealthDailyAppearanceMainNormalR3Producer.log",
-  "nativeLog": "/tmp/LumenBatch43Checks/HealthDailyAppearanceMainNormalR3.log",
-  "result": "/tmp/LumenBatch43Checks/HealthDailyAppearanceMainNormalR3.xcresult",
-  "mustWaitExistingHandle": "Historical session3792 terminated0; do not restart this case. Next case needs its own new handle.",
+  "execSession": 90034,
+  "producerPID": 68555,
+  "nativePID": 68567,
+  "command": "python3 Design/native/health-write-order/health-daily-appearance-driver-r3.py --source durable-source-r163.json --build health-daily-copy-r2-build.json --trial R3 --phone main --mode dark",
+  "producerLog": "/tmp/LumenBatch43Checks/HealthDailyAppearanceMainDarkR3Producer.log",
+  "nativeLog": "/tmp/LumenBatch43Checks/HealthDailyAppearanceMainDarkR3.log",
+  "result": "/tmp/LumenBatch43Checks/HealthDailyAppearanceMainDarkR3.xcresult",
+  "mustWaitExistingHandle": "Re-poll existing90034/PIDs and actual logs; do not restart on observation timeout. No concurrent native build/test in sameDerivedData.",
   "remainingCases": [
-    "main-darkR3",
     "main-largestR3",
     "compact-normalR3",
     "compact-darkR3",
     "compact-largestR3"
   ],
-  "rootPixelReview": "1/158 originals individually opened; native JSON read; remaining157pending",
-  "critic": "Continuing /root/design_review_resume checkpoint20/158; no Round2 score/acceptance",
+  "rootPixelReview": "main-normal9/158 individually opened and nativeJSON read",
+  "critic": "Continuing /root/design_review_resume checkpoint40/158 main-normal; no Round2 score/acceptance",
   "compactManualGuard": "ActualNotnow/Back/4sidle complete; preservesimmediate21newerfilebaseline. Older21longwaitidentityexpectationfailedretained; sourcecause notattributed.",
-  "producerExitCode": 0,
-  "nativeExitCode": 0,
-  "outcome": "health-daily-appearance-main-normal-r3-outcome.json",
-  "nextCase": "main-darkR3 after firstcaseevidenceGitHubbackup and storagecheck"
+  "case": "main-darkR3",
+  "previousCase": {
+    "case": "main-normalR3",
+    "nativeExitCode": 0,
+    "producerExitCode": 0,
+    "outcome": "health-daily-appearance-main-normal-r3-outcome.json",
+    "backedUpMain": "5403031fc9e7721b54383b03d23ecce0e87c2670"
+  }
 }
