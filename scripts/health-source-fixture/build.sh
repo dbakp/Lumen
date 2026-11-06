@@ -12,8 +12,8 @@ cat > "$app_path/Info.plist" <<'PLIST'
 <key>CFBundleIdentifier</key><string>com.dbakp.lumen.fixture.health-source</string>
 <key>CFBundleExecutable</key><string>LumenHealthSourceFixture</string>
 <key>CFBundleName</key><string>Lumen Health Source Fixture</string>
-<key>CFBundleVersion</key><string>3</string>
-<key>CFBundleShortVersionString</key><string>3.0</string>
+<key>CFBundleVersion</key><string>4</string>
+<key>CFBundleShortVersionString</key><string>4.0</string>
 <key>CFBundlePackageType</key><string>APPL</string>
 <key>MinimumOSVersion</key><string>18.0</string>
 <key>UIDeviceFamily</key><array><integer>1</integer></array>

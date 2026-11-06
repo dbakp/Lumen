@@ -23,9 +23,16 @@ private final class FixtureModel: ObservableObject {
     private let store = HKHealthStore()
     private var started = false
     private let source = "com.dbakp.lumen.fixture.health-source"
-    private enum Dataset: String, Codable { case nutrition, measured }
+    private enum Dataset: String, Codable { case nutrition, measured, zeroNutrition }
+    private func version(_ dataset: Dataset) -> Int {
+        switch dataset { case .nutrition: return 1; case .measured: return 2; case .zeroNutrition: return 4 }
+    }
     private func metadataKey(_ dataset: Dataset) -> String {
-        dataset == .nutrition ? "LumenForeignSourceFixtureV1" : "LumenMeasuredSourceFixtureV2"
+        switch dataset {
+        case .nutrition: return "LumenForeignSourceFixtureV1"
+        case .measured: return "LumenMeasuredSourceFixtureV2"
+        case .zeroNutrition: return "LumenZeroSourceFixtureV4"
+        }
     }
     private struct Definition {
         let type: HKQuantityTypeIdentifier
@@ -33,6 +40,13 @@ private final class FixtureModel: ObservableObject {
         let values: [Double]
     }
     private func definitions(_ dataset: Dataset) -> [Definition] {
+        if dataset == .zeroNutrition { return [
+            .init(type: .dietaryWater, unit: .literUnit(with: .milli), values: [0]),
+            .init(type: .dietaryEnergyConsumed, unit: .kilocalorie(), values: [0]),
+            .init(type: .dietaryProtein, unit: .gram(), values: [0]),
+            .init(type: .dietaryCarbohydrates, unit: .gram(), values: [0]),
+            .init(type: .dietaryFatTotal, unit: .gram(), values: [0])
+        ] }
         if dataset == .measured { return [
             .init(type: .stepCount, unit: .count(), values: [0, 240]),
             .init(type: .activeEnergyBurned, unit: .kilocalorie(), values: [20, 30]),
@@ -77,7 +91,7 @@ private final class FixtureModel: ObservableObject {
         guard !started else { return }; started = true
         do {
             let args = ProcessInfo.processInfo.arguments
-            guard args.count == 3, ["seed", "seed-measured", "inspect", "cleanup", "inspect-lumen"].contains(args[1]),
+            guard args.count == 3, ["seed", "seed-measured", "seed-zero-nutrition", "inspect", "cleanup", "inspect-lumen"].contains(args[1]),
                   let run = UUID(uuidString: args[2]) else { throw Failure.arguments }
             guard Bundle.main.bundleIdentifier == source, HKHealthStore.isHealthDataAvailable() else { throw Failure.identity }
             if args[1] == "inspect-lumen" {
@@ -87,6 +101,7 @@ private final class FixtureModel: ObservableObject {
             let url = try ledgerURL(run)
             switch args[1] {
             case "seed", "seed-measured": try await seed(run, dataset: args[1] == "seed-measured" ? .measured : .nutrition, url: url)
+            case "seed-zero-nutrition": try await seed(run, dataset: .zeroNutrition, url: url)
             default: try await inspect(run, url: url, cleanup: args[1] == "cleanup")
             }
         } catch { status = "Fixture stopped: \(error). No untagged samples were changed." }
@@ -116,7 +131,7 @@ private final class FixtureModel: ObservableObject {
     }
     private func validate(_ ledger: Ledger, run: UUID) throws {
         let dataset = ledger.dataset ?? .nutrition
-        guard ledger.version == (dataset == .nutrition ? 1 : 2), ledger.run == run, ledger.source == source,
+        guard ledger.version == version(dataset), ledger.run == run, ledger.source == source,
               Set(ledger.rows.map(\.uuid)).count == ledger.rows.count else { throw Failure.ledger }
         let expected = definitions(dataset).flatMap { d in d.values.map { (d.type.rawValue, d.unit.unitString, $0) } }
         guard ledger.rows.count <= expected.count else { throw Failure.ledger }
@@ -142,7 +157,7 @@ private final class FixtureModel: ObservableObject {
     }
     private func seed(_ run: UUID, dataset: Dataset, url: URL) async throws {
         guard !FileManager.default.fileExists(atPath: url.path) else { throw Failure.ledger }
-        var ledger = Ledger(version: dataset == .nutrition ? 1 : 2, run: run, source: source, dataset: dataset,
+        var ledger = Ledger(version: version(dataset), run: run, source: source, dataset: dataset,
                             status: "preparing", rows: [], observed: [])
         try write(ledger, to: url)
         do {

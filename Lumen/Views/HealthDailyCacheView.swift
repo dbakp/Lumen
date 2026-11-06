@@ -125,7 +125,7 @@ struct HealthDailyCacheView: View {
                 Button("Review readings") { showingReadings = true }.disabled(model.busy)
                     .accessibilityIdentifier("reviewDailyCacheReadings")
                 if count(.noData, readings: readings) > 0 || count(.failed, readings: readings) > 0 {
-                    Text("Empty or failed queries stay unknown. Empty results don't reveal read permission.")
+                    Text("Readings stay unknown when Apple Health returns no data or a check fails. No data doesn't tell us whether read access is allowed.")
                         .accessibilityIdentifier("dailyCacheQueryScope")
                 }
             } header: { Text("Apple Health results") }

@@ -1,0 +1,29 @@
+{
+  "status": "PREDECLARED before zero SDK seeding",
+  "createdAt": 1793970871.477963,
+  "source": "durable-source-r162.json",
+  "helperVersion": 4,
+  "simulator": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+  "run": "2252EAD9-3D5E-456F-8E26-30804C6B21E3",
+  "dataset": "zeroNutrition",
+  "expectedSamples": 5,
+  "expectedRaw": {
+    "water": 0,
+    "calories": 0,
+    "protein": 0,
+    "carbs": 0,
+    "fat": 0
+  },
+  "expectedQuery": {
+    "recorded": 5,
+    "noData": 13,
+    "failed": 0
+  },
+  "requires": [
+    "Actual independent helper SDK save and exact source/metadata/UUID/date/value readback after relaunch",
+    "Actual fresh Lumen query distinguishes recorded zero from noData; SDK rejection or noData is a retained failed expectation",
+    "Native confirmed raw cache save preserves unrelated file identities and retains previous snapshot/intent",
+    "Exact helper-source/run/UUID cleanup; independent SDK empty readback; fresh Lumen18noData; final navigation/file preservation"
+  ],
+  "scope": "Dedicated synthetic simulator only; no personal data or physical devices; all broader product/design/release gates remain"
+}
