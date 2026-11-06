@@ -1,0 +1,75 @@
+{
+  "afterOpen": false,
+  "checks": [
+    {
+      "name": "shared startup completes before synthetic domain setup",
+      "passed": true
+    },
+    {
+      "name": "actual test store completes checked conversation startup",
+      "passed": true
+    },
+    {
+      "name": "actual affected-domain mutation rejects damaged or unreadable source",
+      "passed": true
+    },
+    {
+      "name": "native model exposes unavailable domain and saved-data issue",
+      "passed": true
+    },
+    {
+      "name": "Undo cannot turn unreadable history into an empty rewrite",
+      "passed": true
+    },
+    {
+      "name": "local-only correction cannot overwrite unreadable water",
+      "passed": true
+    },
+    {
+      "name": "unavailable water history is unknown, not a recorded zero",
+      "passed": true
+    },
+    {
+      "name": "backup cannot export an unavailable domain as empty history",
+      "passed": true
+    },
+    {
+      "name": "assistant declines history/target-based planning before model or provider work",
+      "passed": true
+    },
+    {
+      "name": "failed source cannot produce default-goal coaching",
+      "passed": true
+    },
+    {
+      "name": "all rejected actions preserve exact domain/journal/profile files and original live values",
+      "passed": true
+    },
+    {
+      "name": "rejected actions dispatch no new external Health operation",
+      "passed": true
+    }
+  ],
+  "domain": "water",
+  "files": {
+    "goals.json": "ewogICJhY3RpdmVDYWxHb2FsIiA6IDYwMCwKICAiYWN0aXZpdHlMZXZlbCIgOiAibW9kZXJhdGUiLAogICJhZ2UiIDogMzAsCiAgImV4ZXJjaXNlR29hbE1pbiIgOiAzMCwKICAiZ29hbCIgOiAibWFpbnRhaW4iLAogICJoZWlnaHRDbSIgOiAxNzgsCiAgInNleCIgOiAidW5zcGVjaWZpZWQiLAogICJzdGFuZEdvYWwiIDogMTIsCiAgInN0ZXBHb2FsIiA6IDEwMDAwLAogICJ3ZWlnaHRLZyIgOiA3MAp9",
+    "health-write-intent.json": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI0NzVCMTdFRi0wQjhFLTQxMTgtODhFNi1ENDIyMDk5RUU4MjUiLCJvd25lciI6IjAxNjk1REI4LTQwMjEtNDFBNC1BQkJGLTYzRTAzREI1MkRERCIsInZlcnNpb24iOjF9",
+    "meals.json": "WwogIHsKICAgICJkYXRlIiA6ICIyMDI2LTExLTAzVDEyOjU3OjI2WiIsCiAgICAiaWQiIDogInN5bnRoZXRpYy1yZXRhaW5lZC1tZWFsIiwKICAgICJpdGVtcyIgOiBbCiAgICAgIHsKICAgICAgICAiY2Fsb3JpZXMiIDogMTAwLAogICAgICAgICJjYXJic0ciIDogMjAsCiAgICAgICAgImNvbmZpZGVuY2UiIDogMC44LAogICAgICAgICJmYXRHIiA6IDMsCiAgICAgICAgImZpYmVyRyIgOiAyLAogICAgICAgICJncmFtcyIgOiAxMDAsCiAgICAgICAgImlkIiA6ICJDNUIxNzUyNi0zMzBGLTREMTUtOENCRi0xNUE5OTlFODBCRTMiLAogICAgICAgICJuYW1lIiA6ICJTeW50aGV0aWMiLAogICAgICAgICJwcm90ZWluRyIgOiAxMAogICAgICB9CiAgICBdLAogICAgInNvdXJjZSIgOiAibWFudWFsIiwKICAgICJ0eXBlIiA6ICJsdW5jaCIKICB9Cl0=",
+    "profile.json": "eyJvbmJvYXJkaW5nRG9uZSI6ZmFsc2UsImlzU3Vic2NyaWJlZCI6ZmFsc2UsIm5hbWUiOiIiLCJzbGVlcE5lZWQiOjI5NDAwLCJzbGVlcE5lZWRDb25maWRlbmNlIjowLjMsIndha2VHb2FsIjp7ImhvdXIiOjcsIm1pbnV0ZSI6MH0sImNocm9ub3R5cGUiOiJpbnRlcm1lZGlhdGUifQ==",
+    "today.json": "ewogICJhY3RpdmVDYWxvcmllcyIgOiAwLAogICJkYXRlIiA6ICIyMDI2LTExLTAyVDIzOjAwOjAwWiIsCiAgImV4ZXJjaXNlTWluIiA6IDAsCiAgInJlc3RpbmdDYWxvcmllcyIgOiAwLAogICJzdGFuZEhvdXJzIiA6IDAsCiAgInN0ZXBzIiA6IDAsCiAgIndhdGVyTUwiIDogMAp9",
+    "water.json": "eyJzeW50aGV0aWNEYW1hZ2VkSGlzdG9yeSI6IFs=",
+    "workouts.json": "WwogIHsKICAgICJhY3RpdmVDYWxvcmllcyIgOiAyMCwKICAgICJkdXJhdGlvbiIgOiA2MDAsCiAgICAiZW5lcmd5S25vd24iIDogdHJ1ZSwKICAgICJpZCIgOiAic3ludGhldGljLXJldGFpbmVkLXdvcmtvdXQiLAogICAgImtpbmQiIDogIndhbGsiLAogICAgInNvdXJjZSIgOiAibWFudWFsIiwKICAgICJzdGFydCIgOiAiMjAyNi0xMS0wM1QxMjo1NzoyNloiLAogICAgInRpdGxlIiA6ICJTeW50aGV0aWMiCiAgfQpd"
+  },
+  "issue": "Saved water couldn't be opened. Changes to this data are paused. Retry opening saved data; the saved files haven't been replaced.",
+  "liveMealIDs": [
+    "synthetic-retained-meal"
+  ],
+  "liveWaterIDs": [],
+  "liveWeight": 70,
+  "liveWorkoutIDs": [
+    "synthetic-retained-workout"
+  ],
+  "missing": [],
+  "nonce": "C24550EF-0E9D-4E7D-9D17-0EAD913D349A",
+  "trace": []
+}

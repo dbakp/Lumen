@@ -1,0 +1,52 @@
+{
+  "status": "matched after recovery",
+  "test": "PreviousCopyRecovery",
+  "nativeChecks": 25,
+  "source": "durable-source-r14.json",
+  "build": "health-copies-native-build-r1.json",
+  "files": {
+    ".health-recovery/78673A6D-E2CF-4413-9FF2-B31DF22CFF8E/device-intent.json": {
+      "bytes": 123,
+      "sha256": "bfdf19a9d805aa76477a92e056f1818b18d61192f751004a02573f6321ccd963"
+    },
+    ".health-recovery/78673A6D-E2CF-4413-9FF2-B31DF22CFF8E/manifest.json": {
+      "bytes": 97,
+      "sha256": "46eaaf7f2b7cb79b1d27fecaea91934b7cdce0bfcafb96488617bdf724671367"
+    },
+    ".health-recovery/78673A6D-E2CF-4413-9FF2-B31DF22CFF8E/water.json": {
+      "bytes": 102,
+      "sha256": "acc7306989837e252e5c49060e317b474c85a61a19e4e6104dcdfee5728da5cc"
+    },
+    "goals.json": {
+      "bytes": 177,
+      "sha256": "01c2966e6903e6a16ec916dda713578cd4c228072f0c76ada43db595ade647a2"
+    },
+    "health-write-intent.json": {
+      "bytes": 1114,
+      "sha256": "e9e4eef2d087c1a13e9cd823369ccc695a1ced8928589e13e6543dcdaeac9851"
+    },
+    "meals.json": {
+      "bytes": 532,
+      "sha256": "288a990341ab4f0dd09674888ade6a6c5e76e9fca851a0d8c08e20ae6143ff76"
+    },
+    "profile.json": {
+      "bytes": 177,
+      "sha256": "cdceb8ce0f104ef9b912d3d4b88bd7f70520fb36ded89f65a779d93d324d3003"
+    },
+    "today.json": {
+      "bytes": 159,
+      "sha256": "72235d7c73cfdb5e6f92f11efccb738d0ce5875e5bac762ce1cf65b931aedec7"
+    },
+    "water.json": {
+      "bytes": 159,
+      "sha256": "2f15a121fbd23d6166ef687e9d8173ae6c6a3c8dffab7e7796bb1d6e0fb4929f"
+    },
+    "workouts.json": {
+      "bytes": 237,
+      "sha256": "f0c065722f37bed3b66103637c72ed8d6f5724a3a9188747599ccf60d679d356"
+    }
+  },
+  "externalComponents": 6,
+  "installedBinarySHA256": "fa3f077494e7366577db9400c1b19b74c380d086df89916b7d673865f056bf29",
+  "scope": "Host compared actual rejected files before release of the test barrier, then actual recovered files, live IDs, controlled external identities/receipts and installed source/binary. No HealthKit/UI/device acceptance."
+}

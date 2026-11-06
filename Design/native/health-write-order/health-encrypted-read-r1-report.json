@@ -1,0 +1,57 @@
+{
+  "checks" : [
+    {
+      "actualStageReached" : true,
+      "bytesAtCancel" : 0,
+      "case" : "correct password cancelled at unlock",
+      "completedAtCancel" : 0,
+      "largestReadingProgressStep" : 0,
+      "observed" : "CancellationError",
+      "passed" : true,
+      "totalAtCancel" : 0
+    },
+    {
+      "actualStageReached" : true,
+      "bytesAtCancel" : 0,
+      "case" : "wrong password cancelled at unlock",
+      "completedAtCancel" : 0,
+      "largestReadingProgressStep" : 0,
+      "observed" : "CancellationError",
+      "passed" : true,
+      "totalAtCancel" : 0
+    },
+    {
+      "actualStageReached" : true,
+      "bytesAtCancel" : 66409,
+      "case" : "cancel within a multi-chunk record",
+      "completedAtCancel" : 3,
+      "largestReadingProgressStep" : 65536,
+      "observed" : "CancellationError",
+      "passed" : true,
+      "totalAtCancel" : 4
+    },
+    {
+      "case" : "fresh encrypted retry returns every original field",
+      "passed" : true
+    },
+    {
+      "case" : "uncancelled incorrect password keeps unlock error",
+      "passed" : true
+    },
+    {
+      "case" : "all cancelled and retried reads retain exact encrypted input bytes",
+      "passed" : true
+    },
+    {
+      "case" : "failed and explicitly released preview directories are removed",
+      "passed" : true
+    }
+  ],
+  "failed" : 0,
+  "focusBytes" : 204800,
+  "inputBytes" : 20480,
+  "inputSHA256" : "4cbecfaf960164ed1cfde124aba63c0e9c19678076f360ec8433586c1e9ff080",
+  "passed" : 7,
+  "scope" : "Actual encrypted file\/password\/decryption, cancellation at actual unlock progress and within large final record progress, healthy exact-field retry, wrong-password error and failed-preview cleanup. No native held stream\/FD proof or atomic key-derivation preemption\/full capacity acceptance.",
+  "status" : "passed"
+}

@@ -1,0 +1,72 @@
+{
+  "status": "passed current131generic device Release dependency graph and embedded SDK products audit",
+  "source": "durable-source-r131.json",
+  "releaseBuild": "health-current-release-r2-outcome.json",
+  "releaseAudit": "health-current-release-r2-audit.json",
+  "targetDependencyGraph": [
+    "Lumen",
+    "LumenWidget",
+    "LumenWatch",
+    "LumenWatchWidget",
+    "ZIPFoundation-product",
+    "ZIPFoundation",
+    "ZIPFoundation_ZIPFoundation"
+  ],
+  "products": [
+    {
+      "bundle": ".",
+      "bundleIdentifier": "com.dbakp.lumen",
+      "minimumOSVersion": "18.0",
+      "architectures": [
+        "arm64"
+      ],
+      "platform": "iPhoneOS",
+      "executableBytes": 39627344,
+      "executableSHA256": "1df6399a7c7f3b5fbb7e4266ebb02f8b448962d88b3ad44c1dc3b2bdd2170d2d",
+      "infoPlistSHA256": "33468a3870aad739d29caa95bd37b95190c4379c9206c43f09c8b45e3537cb7b"
+    },
+    {
+      "bundle": "PlugIns/LumenWidget.appex",
+      "bundleIdentifier": "com.dbakp.lumen.LumenWidget",
+      "minimumOSVersion": "18.0",
+      "architectures": [
+        "arm64"
+      ],
+      "platform": "iPhoneOS",
+      "executableBytes": 530392,
+      "executableSHA256": "209aa497e4e64d9fb45a0f72d44ba096c6fffea1743c8a992aa0d2c245700bac",
+      "infoPlistSHA256": "0fb33c484ea06360748daa975a02e77cf514b6db77a2e4bba2b14a194b9be3cb"
+    },
+    {
+      "bundle": "Watch/LumenWatch.app",
+      "bundleIdentifier": "com.dbakp.lumen.watchkitapp",
+      "minimumOSVersion": "11.0",
+      "architectures": [
+        "arm64",
+        "arm64_32"
+      ],
+      "platform": "WatchOS",
+      "executableBytes": 1852584,
+      "executableSHA256": "556a53246703ead803f4578ab52d754d98618ca70136aeb1755631bf651e12c0",
+      "infoPlistSHA256": "74028163d88fe0e87dd4744e368ec8560e92820772d11c7dad2cd1c8676a37b6"
+    },
+    {
+      "bundle": "Watch/LumenWatch.app/PlugIns/LumenWatchWidget.appex",
+      "bundleIdentifier": "com.dbakp.lumen.watchkitapp.widgets",
+      "minimumOSVersion": "11.0",
+      "architectures": [
+        "arm64",
+        "arm64_32"
+      ],
+      "platform": "WatchOS",
+      "executableBytes": 1013088,
+      "executableSHA256": "d35d5fc93b5a9de304e70c3c522f33fb84ccbb828bfaf6a3039443680ed87774",
+      "infoPlistSHA256": "8ed962f685a1428aaa3f0bca6ae58bc876763f452cb3ebd5ed588ef930643397"
+    }
+  ],
+  "selectedSourceInputs": 247,
+  "fixtureInputs": 6,
+  "checkedUTC": "2026-11-05T10:23:46.526235+00:00",
+  "scope": "Actual current Xcode27.0 iPhoneOS27.0/WatchOS27.0 compilation graph with4embeddedapp/extension executable identities/minOS/architectures/relationships verified. Does not prove live HealthKit/WatchConnectivity/widget timeline/background/interruption/signeddevice/VoiceOver/wholeRelease or product acceptance. Main143development-marker audit is not a complete companion-development-hook audit.",
+  "sourceReviewFollowup": "WatchRootView initialpage reads -watchPage without DEBUG guard; it changes initial navigation only. Literal byte absence is inconclusive for short Swift smallstrings. WatchStore -watchPreview is DEBUG guarded. Shared preview data is legitimately used by context.isPreview/placeholder in widget galleries; runtime timelines use saved data. Preserve broader companion/Release checks; no wholehook-absence claim."
+}

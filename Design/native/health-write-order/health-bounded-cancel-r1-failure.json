@@ -1,0 +1,14 @@
+{
+  "status": "failed regression baseline; exit133",
+  "source": "durable-source-r31.json",
+  "pureSource": "local-domain-pure-source-r23.json",
+  "binarySHA256": "cd1c1c1939c97de7e7516a197e27972e445955302f7cda3f0c9a24017a1227a5",
+  "checksBeforeFailure": 20,
+  "failedRoot": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/Lumen-recovery-copies-370B9306-5F38-46C7-B115-6CDF82CA76F4",
+  "unwantedIncidentDomains": [
+    "goals",
+    "water"
+  ],
+  "healthyCurrentAndPriorWaterEqual": true,
+  "scope": "A real detached task cancels itself before preservation. Catch-all classification converts cancellation into failed-domain preservation and publishes a false healthy-water/goals incident. Originals remain intact. Exact synthetic tree and full failing log retained; no repaired pass claimed."
+}

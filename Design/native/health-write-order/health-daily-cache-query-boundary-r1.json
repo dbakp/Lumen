@@ -1,0 +1,109 @@
+{
+  "status": "Source-bound implementation preparation only; no app/test edits or runtime proof",
+  "source": "durable-source-r131.json",
+  "parentContract": "health-daily-cache-r1-contract.json",
+  "sourceEvidence": {
+    "Lumen/Services/HealthKitService.swift": {
+      "bytes": 24215,
+      "sha256": "b45785066dd6786f32f9a0591d4209dd706f13d18e51f19c69928da9053f10ab"
+    },
+    "Lumen/Models/HealthStore.swift": {
+      "bytes": 41124,
+      "sha256": "b0ea88cad361f2405be4be41ceb8735064ab1ecbbcfa7bfe9b0df69a5a969d26"
+    },
+    "Lumen/Models/HealthLocalFiles.swift": {
+      "bytes": 8225,
+      "sha256": "47658a43536f5817d334741e964ac1f25575044163dbb84e884c870e79b673ae"
+    },
+    "Lumen/Models/HealthModels.swift": {
+      "bytes": 7367,
+      "sha256": "7af21dc70808c00c75e6ebb40cf89b66b627a6ef75c05cbcb9ee2d87cceb6eba"
+    },
+    "Lumen/Persistence/LocalStore.swift": {
+      "bytes": 19619,
+      "sha256": "dad658a838d52e9a2ef9b6de8052887c36fabbdce3b1abf8692774902c2a9254"
+    },
+    "Lumen/Models/HealthRecoverySelection.swift": {
+      "bytes": 12880,
+      "sha256": "f41cd227862406d49345981a1fcf001f39f482ad2c72f6a6c7b46ae5da275920"
+    },
+    "Lumen/Models/HealthWriteJournal.swift": {
+      "bytes": 9382,
+      "sha256": "7e09abfb7b95831172870a8a60019814c6910828487731d996a10033d489cf0b"
+    },
+    "Lumen/Models/ConversationFiles.swift": {
+      "bytes": 6090,
+      "sha256": "0a825048bd00aff080b7a014bacf87a41239e09a3bff9620c50d72bda825317e"
+    },
+    "Lumen/Models/BackupFileTransaction.swift": {
+      "bytes": 17848,
+      "sha256": "d47c1771437400e0a40bd2f156eb07eb7743780141eca754220ffc4a7f1185c4"
+    }
+  },
+  "observedFacts": [
+    {
+      "symbol": "HealthKitService.refreshToday",
+      "finding": "Returns Void; early unavailable/disconnected return leaves shared today unchanged. Eighteen async readings use one start/end window and then unconditionally assign shared today/status after awaiting all results."
+    },
+    {
+      "symbol": "HealthKitService.quantityReading / standHoursReading",
+      "finding": "Current raw query helpers already return HealthMetricReading with healthQuery.start/end/checkedAt and recorded/noData/failed distinctions. Preserve that information; read permission cannot be inferred from empty results."
+    },
+    {
+      "symbol": "HealthStore.refreshSources",
+      "finding": "Captures HealthBackgroundSync generation, awaits Void refreshToday, checks generation and authorization, then reads shared hk.today. Requires a valid .today boundary before save; unavailable cache cannot be repaired through this normal save path."
+    },
+    {
+      "symbol": "HealthLocalFiles.Domain.today.legacyKey / LocalStore.healthLegacyData",
+      "finding": "The current daily-cache domain has no legacy UserDefaults key. Do not invent or silently migrate a today legacy key. Existing meals/workouts/goals legacy behavior and failed bytes remain part of the original overall scope."
+    },
+    {
+      "symbol": "DayMetrics.empty / HealthMetricReading.setReading",
+      "finding": "Empty uses legacy nil readings/recordedTotalKeys with numeric placeholders. Explicit clear/rebuild unknown state needs readings=[:] and recordedTotalKeys=[] bound to the captured day."
+    },
+    {
+      "symbol": "HealthRecoverySelection.prepare / HealthWriteJournal.rotateLifecycle / next / contains / pendingEvents",
+      "finding": "Generic record replacement rotates journal.lifecycle and writes the new journal. Old save events then fail lifecycle equality in next/contains/pendingEvents, while deletions remain eligible. Reusing this generic payload for a cache-only rebuild/clear would withdraw unrelated pending saves."
+    },
+    {
+      "symbol": "HealthStore.recoverUnavailableHealth",
+      "finding": "Generic guard requires every chosen domain unavailable. A genuinely missing today file is successfully loaded with a missing boundary and therefore available; the generic unavailable-only entry is not an absent-cache route."
+    },
+    {
+      "symbol": "ConversationFiles.prepareHealthRecovery / BackupFileTransaction.prepare",
+      "finding": "Lower-level checked recovery preparation accepts supplied replacement files independently of HealthRecoverySelection journal rotation, preserves prior conversation-copy protections and failed replaced-domain bytes, and clones unrelated files. A cache-specific caller can share these primitives without rewriting the journal."
+    }
+  ],
+  "inferencesNotRuntimeClaims": [
+    "A separate recovery caller must obtain the exact returned observation for its operation rather than reading the shared today property after a Void await. Concurrent refresh completion can otherwise make operation ownership ambiguous; no new concurrent runtime reproduction is claimed here.",
+    "A source-generation check at the HealthStore caller does not prevent the service itself publishing late today/status after disconnect. Query publication and recovery installation both need captured ownership checks."
+  ],
+  "implementationDecisions": [
+    {
+      "area": "Fresh observations",
+      "direction": "Extract a query operation returning its own raw DayMetrics and captured start/end/source-generation token. Keep ordinary refresh as a wrapper which publishes only while its captured source session remains current. Recovery consumes the returned value and never a previously published property."
+    },
+    {
+      "area": "Cancellation",
+      "direction": "Bind actual HKQuery handles and exactly-once continuation completion to the operation. Cancel/Back must stop or detach owned queries safely; check ownership after each await and again before installation. Do not weaken MainActor/generation/commit locks or use a synthetic successful read as actual Health evidence."
+    },
+    {
+      "area": "Commit",
+      "direction": "Implement a cache-specific checked transaction using lower-level ConversationFiles.prepareHealthRecovery/BackupFileTransaction preservation and LocalStore revision/commit guards. Do not route cache-only operations through HealthRecoverySelection.prepare, which rotates the Health-write lifecycle. Keep journal bytes/lifecycle/claim eligibility unchanged; revalidate current failed-source identity/root/revision/device owner/day/source token under existing locks. Store raw observations only; explicit clear remains a separate confirmed action."
+    },
+    {
+      "area": "No source / no data / failure",
+      "direction": "Unavailable/disconnected does not silently clear. A successful no-data query yields unknown with its query metadata. Partial failed queries retain distinct failed metadata and require truthful review; a failed rebuild never falls through to clear."
+    }
+  ],
+  "requiredFocusedEvidence": [
+    "Held two overlapping query operations return their own raw values despite reversed completion; stale operation cannot publish or install.",
+    "Seed shared today with an old positive reading, then unavailable/disconnected query; rebuild must never reuse that value.",
+    "Disconnect/reconnect, reset, local write, day rollover and newer operation during actual held query/preparation reject late mutation; Cancel and Back are independently observed.",
+    "Returned zero remains recorded, empty/no-data remains unknown, failed differs from no-data; explicit clear does not fabricate measured zeros.",
+    "Persist/relaunch raw source observations with local/imported/sleep values added once; exact unrelated current/prior/failed raw bytes and receipts remain preserved.",
+    "Seed pending save, pending deletion, partial acknowledgement and in-flight claimed Health events; cache-only rebuild and clear must keep exact journal bytes/lifecycle and pending/contains/next semantics, without a fabricated external acknowledgement.",
+    "For truly absent today.json, prove an explicit separate action reaches reviewed recovery while ordinary available/unavailable guards remain intact. Healthy-cache replacement still requires its own explicit decision; do not weaken generic unavailable record-replacement checks."
+  ],
+  "scope": "Additive source-bound preparation for full daily-cache implementation after Source131 producer/critic freeze. Nine source identities captured; generic record replacement journal rotation is deliberately not reused for cache-only actions. No app/test change/runtime proof. Full parent requirements/sixareas/remainingScope/eightgroups/product/physical-device/VoiceOver/publication unchanged."
+}

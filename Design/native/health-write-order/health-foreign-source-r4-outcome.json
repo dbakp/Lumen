@@ -1,0 +1,106 @@
+{
+  "status": "Helper-only actual simulator seed/relaunch-inspect/cleanup/relaunch-empty checks pass. No Lumen foreign-source query/commit acceptance yet.",
+  "source": {
+    "scripts/health-source-fixture/HealthSourceFixture.swift": {
+      "bytes": 8755,
+      "sha256": "9a5cac89ab017f7b5c4acd1d0a2a60c9994012907043cf1a879527acbb685328",
+      "archive": "health-foreign-source-r4-HealthSourceFixture.swift.gz"
+    },
+    "scripts/health-source-fixture/build.sh": {
+      "bytes": 2583,
+      "sha256": "e25abb483ead20542ca1005134f3bbd1d9ea04849bce164eb3b650a286494089",
+      "archive": "health-foreign-source-r4-build.sh.gz"
+    }
+  },
+  "device": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+  "bundle": "com.dbakp.lumen.fixture.health-source",
+  "run": "CCA71509-A399-4086-92E8-79E60CEEC535",
+  "buildExit": 0,
+  "signatureVerified": true,
+  "platform": "/tmp/LumenBatch43HealthSource/LumenHealthSourceFixture.app/LumenHealthSourceFixture:\nLoad command 11\n      cmd LC_BUILD_VERSION\n  cmdsize 32\n platform IOSSIMULATOR\n    minos 18.0\n      sdk 27.0\n   ntools 1\n     tool LD\n  version 27037.1\n",
+  "installedBinaryExact": true,
+  "binary": {
+    "bytes": 306896,
+    "sha256": "343810abfd283ef49f2d104f35ee4645b687925c13fa49b8c0992dbb579f67f7"
+  },
+  "ledgers": [
+    "health-foreign-source-r4-seeded.json",
+    "health-foreign-source-r4-inspected.json",
+    "health-foreign-source-r4-cleaned.json",
+    "health-foreign-source-r4-postcleanup.json"
+  ],
+  "actualSeededAndRelaunchObserved": 10,
+  "actualCleanupRemaining": 0,
+  "afterCleanupRelaunchRemaining": 0,
+  "expectedTotals": {
+    "waterMl": 400,
+    "foodEnergyKcal": 350,
+    "proteinG": 20,
+    "carbsG": 40,
+    "fatG": 12
+  },
+  "images": [
+    {
+      "file": "health-foreign-source-r4-seeded.png",
+      "bytes": 103043,
+      "sha256": "b343cacd8f53a3e1a521d7c19a12ef2d8546918d9ff2864335760cd2887edb0d",
+      "individuallyOpened": true
+    },
+    {
+      "file": "health-foreign-source-r4-cleaned.png",
+      "bytes": 102687,
+      "sha256": "5adfdf69683fd38e525448133aa5476a9df38d183244c1607f8cd9d549e12a86",
+      "individuallyOpened": true
+    }
+  ],
+  "logArchives": {
+    "HealthForeignSourceLaunchR2-launchd.log": {
+      "bytes": 179218,
+      "sha256": "93daf05af0af94222140cd4f76b660b75fcd64fd0a534c327f2b5240bc398b88",
+      "archive": "HealthForeignSourceLaunchR2-launchd.log.gz"
+    },
+    "HealthForeignSourceLaunchR1-system.log": {
+      "bytes": 44,
+      "sha256": "9f56fca152030dba9e8ee76dee4fc8967ab667507b5878f0f9ab819d55b6b9a6",
+      "archive": "HealthForeignSourceLaunchR1-system.log.gz"
+    },
+    "HealthForeignSourceLaunchR2-system.log": {
+      "bytes": 283176,
+      "sha256": "07223104be6a7a91393aa68177cedf7e238df0671157b20bfeb288270061fdcb",
+      "archive": "HealthForeignSourceLaunchR2-system.log.gz"
+    },
+    "HealthForeignSourceBuildR4.log": {
+      "bytes": 268,
+      "sha256": "45b43cf3a527faf72ea132850848ca8e978d2bbc7e4653555d7ddd088dc70c0f",
+      "archive": "HealthForeignSourceBuildR4.log.gz"
+    },
+    "HealthForeignSourceBuildR3.log": {
+      "bytes": 268,
+      "sha256": "45b43cf3a527faf72ea132850848ca8e978d2bbc7e4653555d7ddd088dc70c0f",
+      "archive": "HealthForeignSourceBuildR3.log.gz"
+    },
+    "HealthForeignSourceBuildR2.log": {
+      "bytes": 268,
+      "sha256": "45b43cf3a527faf72ea132850848ca8e978d2bbc7e4653555d7ddd088dc70c0f",
+      "archive": "HealthForeignSourceBuildR2.log.gz"
+    },
+    "HealthForeignSourceBuildR1.log": {
+      "bytes": 268,
+      "sha256": "45b43cf3a527faf72ea132850848ca8e978d2bbc7e4653555d7ddd088dc70c0f",
+      "archive": "HealthForeignSourceBuildR1.log.gz"
+    }
+  },
+  "earlierFailures": [
+    "R1installed but launchd163 security policy rejection with signed HealthKit entitlements. Failed executable retained gzip/SHA.",
+    "R2empty simulator signature launches but SDKCode4missing HealthKit entitlement;0rows/0observed.",
+    "R3embedded simulated HealthKit entitlement launches but SDKCode4missing application-identifier;0rows/0observed."
+  ],
+  "repair": "R4matches Xcode simulator layout: embedded simulated HealthKit+own application identifier, empty ad-hoc signing entitlements. No device signing or Lumen app-group access.",
+  "frozenJudgedAppAndTestsMatch": true,
+  "next": "After continuing critic returns, implement a distinct source-bound real Lumen SDK query/review/commit case using fresh helper run, own-source exclusion controls, independent exact live/prior/raw/intent audits and helper cleanup. Keep broader failed/partial/other-dataset/race/appearance/VoiceOver/companion/publication gates.",
+  "storage": {
+    "availableGiB": 54.48,
+    "manualBytesRecovered": 0,
+    "retained": "Required unpublished sources/evidence and immediately reused51MiBhelperbuildroot; no broad cleanup."
+  }
+}

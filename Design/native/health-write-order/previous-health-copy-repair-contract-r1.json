@@ -1,0 +1,24 @@
+{
+  "status": "actual previous-copy loss reproduced; required repair design, not implemented",
+  "baseline": "local-values-baseline-r1-report.json",
+  "baselineSource": "local-domain-pure-source-r3.json",
+  "defect": "With valid current conversations, a damaged current water file and a readable valid previous water file, prepareLinkedChange retires .previous before the unrelated new change commits. The baseline discards that new transaction and still observes the old water copy gone.",
+  "requiredStorageContract": [
+    "Before any generic retirement of .previous, establish whether current health files can be opened and retain every prior health file that may be needed to recover a failed current domain. Conversation readability alone is insufficient.",
+    "Retain exact original bytes and ownership/provenance; do not silently install the previous records into the live store or authorize old Health operations. A valid unrelated domain must remain usable when a safe recovery copy can be preserved.",
+    "Use a private recovery area inside the current data root so the existing explicit checked account-reset replacement can erase it coherently. Backups must continue to use explicit snapshot fields rather than automatically exporting private copies or journals.",
+    "Retain the affected domain files and required meal photos without recursively mirroring earlier recovery folders. Hard links may preserve immutable regular-file bytes on the same volume; no source mutation, symlink following or broad directory deletion.",
+    "Preserve prior private recovery copies that exist only in .previous. Reuse a duplicate only after actual byte/path comparison; an unreadable or ambiguous copy is not permission to delete it. Keep capacity and disk failure behavior explicit.",
+    "A failed archival/staging/installation step must leave the original current and prior data recoverable. A successful archive must exist durably before generic preparation can retire the old path.",
+    "Distinguish absent current domains from failed current reads. Do not revive data intentionally removed by reset. Explicit reset/restore/corrupt-journal/foreign-device semantics must retain their original durable Health contract.",
+    "An actual backup/local-copy recovery operation needs a preview and explicit replacement semantics for unavailable domains. A Retry button alone cannot repair permanently invalid bytes, and manually replacing files in a test is not a shipped recovery UI."
+  ],
+  "requiredProof": [
+    "Real current/previous Foundation trees: healthy/absent/corrupt/unreadable/non-regular/symlink combinations; the exact baseline good prior water survives unrelated successful updates and failed preparation.",
+    "Meals with shared and missing/unreadable photos, raw partially damaged prior data, existing private copies and exact duplicate/different-copy cases; no recursive archive growth or source mutation.",
+    "Faults before archival publication, during linked staging and during installation, plus actual interruption/reopen boundaries. Independently inspect original and retained copy bytes before recovery.",
+    "Checked reset removes private recovery data in the same coherent erasure lifecycle; failed reset retains it. Explicit encrypted/readable/retained-copy recovery preserves damaged originals and queues no imported Health writes.",
+    "Native unavailable/retry/replacement presentation on main/compact normal/dark/largest with the same continuing critic; all remaining original durable groups, final regressions/Release/publication and device gates remain required."
+  ],
+  "scope": "Required follow-up derived from an executed counterexample. The sourceR12 semantic-value repair does not modify ConversationFiles or BackupFileTransaction and does not close this defect."
+}

@@ -82,6 +82,7 @@ public final class HealthKitService: ObservableObject {
 
     let store = HKHealthStore()
     private let connectedKey = "lumen.health.connected"
+    private let todayReads = HealthTodayReadCoordinator()
     public var isAvailable: Bool { HKHealthStore.isHealthDataAvailable() }
 
     private init() {
@@ -109,6 +110,11 @@ public final class HealthKitService: ObservableObject {
         var s = Set<HKSampleType>()
         let quantities: [HKQuantityTypeIdentifier] = [.dietaryEnergyConsumed, .dietaryProtein, .dietaryCarbohydrates, .dietaryFatTotal, .dietaryFiber, .dietaryWater, .bodyMass]
         for id in quantities { if let t = HKObjectType.quantityType(forIdentifier: id) { s.insert(t) } }
+        #if DEBUG && targetEnvironment(simulator)
+        if HealthDailyCacheRecordedFixture.requested {
+            s.insert(HKQuantityType(.stepCount)); s.insert(HKQuantityType(.heartRate))
+        }
+        #endif
         return s
     }
 
@@ -116,12 +122,18 @@ public final class HealthKitService: ObservableObject {
     @discardableResult
     public func requestAuthorization() async -> Bool {
         guard isAvailable else { status = "Health isn't available on this device"; return false }
+        invalidateTodayQueries()
         do {
             try await store.requestAuthorization(toShare: shareTypes, read: readTypes)
             UserDefaults.standard.set(true, forKey: connectedKey)
             isAuthorized = true
             UserDefaults.standard.set(UUID().uuidString, forKey: "lumen.health.rescan")
             status = "Access requested"
+            #if DEBUG && targetEnvironment(simulator)
+            // The actual HealthKit probe isolates sample replay from observer
+            // refreshes. Permission and HealthKit operations remain real.
+            if HealthWriteHealthKitProbe.requested || HealthWriteLifecycleProbe.requested || HealthRecoveryUIFixture.dailyRebuildRequested { return true }
+            #endif
             HealthBackgroundSync.shared.start()
             return true
         } catch {
@@ -140,50 +152,77 @@ public final class HealthKitService: ObservableObject {
     // MARK: Today
 
     public func refreshToday() async {
-        guard isAvailable, isAuthorized else { return }
-        let start = Calendar.current.startOfDay(for: Date())
-        let end = Date()
-        async let r0 = quantityReading(.stepCount, unit: .count(), aggregation: .total, start: start, end: end, excludingLumen: false, multiplier: 1)
-        async let r1 = quantityReading(.activeEnergyBurned, unit: .kilocalorie(), aggregation: .total, start: start, end: end, excludingLumen: false, multiplier: 1)
-        async let r2 = quantityReading(.basalEnergyBurned, unit: .kilocalorie(), aggregation: .total, start: start, end: end, excludingLumen: false, multiplier: 1)
-        async let r3 = quantityReading(.appleExerciseTime, unit: .minute(), aggregation: .total, start: start, end: end, excludingLumen: false, multiplier: 1)
-        async let r4 = standHoursReading(start: start, end: end)
-        async let r5 = quantityReading(.dietaryWater, unit: .literUnit(with: .milli), aggregation: .total, start: start, end: end, excludingLumen: true, multiplier: 1)
-        async let r6 = quantityReading(.restingHeartRate, unit: HKUnit(from: "count/min"), aggregation: .latest, start: start, end: end, excludingLumen: false, multiplier: 1)
-        async let r7 = quantityReading(.heartRateVariabilitySDNN, unit: HKUnit(from: "ms"), aggregation: .latest, start: start, end: end, excludingLumen: false, multiplier: 1)
-        async let r8 = quantityReading(.oxygenSaturation, unit: .percent(), aggregation: .latest, start: start, end: end, excludingLumen: false, multiplier: 100)
-        async let r9 = quantityReading(.bodyMass, unit: .gramUnit(with: .kilo), aggregation: .latest, start: start, end: end, excludingLumen: false, multiplier: 1)
-        async let r10 = quantityReading(.respiratoryRate, unit: HKUnit(from: "count/min"), aggregation: .latest, start: start, end: end, excludingLumen: false, multiplier: 1)
-        async let r11 = quantityReading(.vo2Max, unit: HKUnit(from: "ml/(kg*min)"), aggregation: .latest, start: start, end: end, excludingLumen: false, multiplier: 1)
-        async let r12 = quantityReading(.heartRate, unit: HKUnit(from: "count/min"), aggregation: .average, start: start, end: end, excludingLumen: false, multiplier: 1)
-        async let r13 = quantityReading(.bodyFatPercentage, unit: .percent(), aggregation: .latest, start: start, end: end, excludingLumen: false, multiplier: 100)
-        async let r14 = quantityReading(.dietaryEnergyConsumed, unit: .kilocalorie(), aggregation: .total, start: start, end: end, excludingLumen: true, multiplier: 1)
-        async let r15 = quantityReading(.dietaryProtein, unit: .gram(), aggregation: .total, start: start, end: end, excludingLumen: true, multiplier: 1)
-        async let r16 = quantityReading(.dietaryCarbohydrates, unit: .gram(), aggregation: .total, start: start, end: end, excludingLumen: true, multiplier: 1)
-        async let r17 = quantityReading(.dietaryFatTotal, unit: .gram(), aggregation: .total, start: start, end: end, excludingLumen: true, multiplier: 1)
-        var m = DayMetrics.empty; m.date = start; m.readings = [:]; m.recordedTotalKeys = []
-        m.setReading(await r0, for: "steps")
-        m.setReading(await r1, for: "activeEnergy")
-        m.setReading(await r2, for: "restingEnergy")
-        m.setReading(await r3, for: "exercise")
-        m.setReading(await r4, for: "stand")
-        m.setReading(await r5, for: "water")
-        m.setReading(await r6, for: "restingHR")
-        m.setReading(await r7, for: "hrv")
-        m.setReading(await r8, for: "spo2")
-        m.setReading(await r9, for: "weight")
-        m.setReading(await r10, for: "respiratoryRate")
-        m.setReading(await r11, for: "vo2max")
-        m.setReading(await r12, for: "heartRate")
-        m.setReading(await r13, for: "bodyFat")
-        m.setReading(await r14, for: "calories")
-        m.setReading(await r15, for: "protein")
-        m.setReading(await r16, for: "carbs")
-        m.setReading(await r17, for: "fat")
-        m.excludesLumenNutrition = true
-        today = m
-        let available = m.readings?.values.filter { $0.value != nil }.count ?? 0
+        do { publishToday(try await queryTodayReadings()) }
+        catch { /* Keep the last actual check; never publish a stale fallback. */ }
+    }
+
+    func invalidateTodayQueries() { todayReads.invalidate() }
+
+    struct DailySourceBoundary: Sendable {
+        let selection: HealthTodayReadCoordinator.Selection
+        let hardwareAvailable: Bool
+        let connected: Bool
+    }
+
+    func captureDailySource() -> DailySourceBoundary {
+        DailySourceBoundary(selection: todayReads.captureSelection(available: isAvailable && isAuthorized),
+                            hardwareAvailable: isAvailable, connected: isAuthorized)
+    }
+
+    func dailySourceIsCurrent(_ boundary: DailySourceBoundary) -> Bool {
+        boundary.hardwareAvailable == isAvailable && boundary.connected == isAuthorized
+            && todayReads.isCurrent(boundary.selection, available: isAvailable && isAuthorized)
+    }
+
+    func queryTodayReadings() async throws -> HealthTodayReadCoordinator.Readings {
+        let result = try await todayReads.read(available: isAvailable && isAuthorized) { [self] key, start, end, operation in
+            try await todayReading(key, start: start, end: end, operation: operation)
+        }
+        try Task.checkCancellation()
+        guard readingsAreCurrent(result) else { throw HealthTodayReadCoordinator.Failure.changed }
+        #if DEBUG && targetEnvironment(simulator)
+        if HealthRecoveryUIFixture.dailyRebuildRequested { try HealthDailyCacheHealthUIFixture.record(result) }
+        #endif
+        return result
+    }
+
+    func readingsAreCurrent(_ result: HealthTodayReadCoordinator.Readings) -> Bool {
+        todayReads.isCurrent(result, available: isAvailable && isAuthorized)
+    }
+
+    func publishToday(_ result: HealthTodayReadCoordinator.Readings) {
+        guard readingsAreCurrent(result) else { return }
+        today = result.raw.metrics
+        let available = today.readings?.values.filter { $0.value != nil }.count ?? 0
         status = "Checked \(DateFormatter.localizedString(from: Date(), dateStyle: .none, timeStyle: .short)) · \(available) metrics returned"
+    }
+
+    private func todayReading(_ key: String, start: Date, end: Date, operation: HealthReadingQueryGroup) async throws -> HealthMetricReading {
+        if key == "stand" { return try await standHoursReading(start: start, end: end, operation: operation) }
+        let identifier: HKQuantityTypeIdentifier, unit: HKUnit, aggregation: HealthMetricComponent.Aggregation
+        var excludingLumen = false, multiplier = 1.0
+        switch key {
+        case "steps": identifier = .stepCount; unit = .count(); aggregation = .total
+        case "activeEnergy": identifier = .activeEnergyBurned; unit = .kilocalorie(); aggregation = .total
+        case "restingEnergy": identifier = .basalEnergyBurned; unit = .kilocalorie(); aggregation = .total
+        case "exercise": identifier = .appleExerciseTime; unit = .minute(); aggregation = .total
+        case "water": identifier = .dietaryWater; unit = .literUnit(with: .milli); aggregation = .total; excludingLumen = true
+        case "restingHR": identifier = .restingHeartRate; unit = HKUnit(from: "count/min"); aggregation = .latest
+        case "hrv": identifier = .heartRateVariabilitySDNN; unit = HKUnit(from: "ms"); aggregation = .latest
+        case "spo2": identifier = .oxygenSaturation; unit = .percent(); aggregation = .latest; multiplier = 100
+        case "weight": identifier = .bodyMass; unit = .gramUnit(with: .kilo); aggregation = .latest
+        case "respiratoryRate": identifier = .respiratoryRate; unit = HKUnit(from: "count/min"); aggregation = .latest
+        case "vo2max": identifier = .vo2Max; unit = HKUnit(from: "ml/(kg*min)"); aggregation = .latest
+        case "heartRate": identifier = .heartRate; unit = HKUnit(from: "count/min"); aggregation = .average
+        case "bodyFat": identifier = .bodyFatPercentage; unit = .percent(); aggregation = .latest; multiplier = 100
+        case "calories": identifier = .dietaryEnergyConsumed; unit = .kilocalorie(); aggregation = .total; excludingLumen = true
+        case "protein": identifier = .dietaryProtein; unit = .gram(); aggregation = .total; excludingLumen = true
+        case "carbs": identifier = .dietaryCarbohydrates; unit = .gram(); aggregation = .total; excludingLumen = true
+        case "fat": identifier = .dietaryFatTotal; unit = .gram(); aggregation = .total; excludingLumen = true
+        default: throw HealthLocalFiles.Failure.invalid
+        }
+        return try await quantityReading(identifier, unit: unit, aggregation: aggregation, start: start, end: end,
+                                         excludingLumen: excludingLumen, multiplier: multiplier, operation: operation)
     }
 
     // MARK: History (Trends)
@@ -266,101 +305,112 @@ public final class HealthKitService: ObservableObject {
         }
     }
 
-    // MARK: Write-back
-
-    public func saveMeal(_ meal: Meal) async {
-        guard isAvailable, isAuthorized else { return }
-        let t = meal.date
-        func qty(_ id: HKQuantityTypeIdentifier, _ value: Double, _ unit: HKUnit) -> HKQuantitySample? {
-            guard value > 0 else { return nil }
-            return HKQuantitySample(type: HKQuantityType(id), quantity: HKQuantity(unit: unit, doubleValue: value), start: t, end: t,
-                                    metadata: ["LumenMealID": meal.id])
-        }
-        let samples = [qty(.dietaryEnergyConsumed, meal.calories, .kilocalorie()), qty(.dietaryProtein, meal.protein, .gram()),
-                       qty(.dietaryCarbohydrates, meal.carbs, .gram()), qty(.dietaryFatTotal, meal.fat, .gram()),
-                       qty(.dietaryFiber, meal.fiber, .gram())].compactMap { $0 }
-        guard !samples.isEmpty else { return }
-        try? await store.save(samples)
-    }
-
-    public func deleteMeal(id: String) async {
-        guard isAvailable, isAuthorized else { return }
-        let pred = HKQuery.predicateForObjects(withMetadataKey: "LumenMealID", allowedValues: [id])
-        for t in [HKQuantityTypeIdentifier.dietaryEnergyConsumed, .dietaryProtein, .dietaryCarbohydrates, .dietaryFatTotal, .dietaryFiber] {
-            _ = try? await store.deleteObjects(of: HKQuantityType(t), predicate: pred)
-        }
-    }
-
-    public func saveWater(ml: Double, id: String? = nil, at date: Date = Date()) async {
-        guard isAvailable, isAuthorized else { return }
-        let s = HKQuantitySample(type: HKQuantityType(.dietaryWater), quantity: HKQuantity(unit: .literUnit(with: .milli), doubleValue: ml), start: date, end: date, metadata: id.map { ["LumenWaterID": $0] })
-        try? await store.save(s)
-    }
-
-    public func deleteWater(id: String) async throws -> Int? {
-        guard isAvailable, isAuthorized else { return nil }
-        let predicate = HKQuery.predicateForObjects(withMetadataKey: "LumenWaterID", allowedValues: [id])
-        return try await store.deleteObjects(of: HKQuantityType(.dietaryWater), predicate: predicate)
-    }
-
-    public func saveWeight(kg: Double, at date: Date = Date()) async {
-        guard isAvailable, isAuthorized else { return }
-        let s = HKQuantitySample(type: HKQuantityType(.bodyMass), quantity: HKQuantity(unit: .gramUnit(with: .kilo), doubleValue: kg), start: date, end: date)
-        try? await store.save(s)
-    }
+    // Checked write-back and source-owned verification live in
+    // HealthWriteHealthAdapter; only durable journal claims reach HealthKit.
 
     // MARK: Query helpers
 
-    private func standHoursReading(start: Date, end: Date) async -> HealthMetricReading {
+    private func standHoursReading(start: Date, end: Date, operation: HealthReadingQueryGroup) async throws -> HealthMetricReading {
         guard let type = HKObjectType.categoryType(forIdentifier: .appleStandHour) else {
             return .init(healthQuery: .init(start: start, end: end, checkedAt: Date(), outcome: .failed))
         }
-        return await withCheckedContinuation { continuation in
-            let query = HKSampleQuery(sampleType: type, predicate: HKQuery.predicateForSamples(withStart: start, end: end, options: .strictStartDate), limit: HKObjectQueryNoLimit, sortDescriptors: nil) { _, samples, error in
-                let samples = ((samples as? [HKCategorySample]) ?? []).filter { $0.value == HKCategoryValueAppleStandHour.stood.rawValue || $0.value == HKCategoryValueAppleStandHour.idle.rawValue }
-                let events = samples.map { CurrentHealthEvidence.StandHourEvent(start: $0.startDate, stood: $0.value == HKCategoryValueAppleStandHour.stood.rawValue) }
-                let count = CurrentHealthEvidence.standHours(events, start: start, end: end)
-                let checkedAt = Date()
-                let check = HealthMetricQuery(start: start, end: end, checkedAt: checkedAt, outcome: error != nil ? .failed : count == nil ? .noData : .recorded)
-                guard error == nil, let count else { continuation.resume(returning: .init(healthQuery: check)); return }
-                let names = Set(samples.map { $0.sourceRevision.source.name }).sorted().joined(separator: ", ")
-                let component = HealthMetricComponent(value: count, origin: .healthKit, source: names.isEmpty ? "Apple Health" : "Apple Health · " + names, start: start, end: end, checkedAt: checkedAt, aggregation: .total)
-                continuation.resume(returning: .init(components: [component], healthQuery: check))
-            }
-            self.store.execute(query)
+        let gate = HealthReadingQuery<HealthMetricReading>()
+        let query = HKSampleQuery(sampleType: type, predicate: HKQuery.predicateForSamples(withStart: start, end: end, options: .strictStartDate), limit: HKObjectQueryNoLimit, sortDescriptors: nil) { [weak gate] query, samples, error in
+            #if DEBUG && targetEnvironment(simulator)
+            HealthDailyCacheSDKCallbackObservation.record(identifier: "stand", kind: "sample", error: error)
+            #endif
+            let samples = ((samples as? [HKCategorySample]) ?? []).filter { $0.value == HKCategoryValueAppleStandHour.stood.rawValue || $0.value == HKCategoryValueAppleStandHour.idle.rawValue }
+            let events = samples.map { CurrentHealthEvidence.StandHourEvent(start: $0.startDate, stood: $0.value == HKCategoryValueAppleStandHour.stood.rawValue) }
+            let count = CurrentHealthEvidence.standHours(events, start: start, end: end)
+            let checkedAt = Date()
+            let check = HealthMetricQuery(start: start, end: end, checkedAt: checkedAt, outcome: Self.queryFailed(error) ? .failed : error != nil || count == nil ? .noData : .recorded)
+            guard error == nil, let count else { Self.deliverReading(gate, query: query, reading: .init(healthQuery: check)); return }
+            let names = Set(samples.map { $0.sourceRevision.source.name }).sorted().joined(separator: ", ")
+            let component = HealthMetricComponent(value: count, origin: .healthKit, source: names.isEmpty ? "Apple Health" : "Apple Health · " + names, start: start, end: end, checkedAt: checkedAt, aggregation: .total)
+            Self.deliverReading(gate, query: query, reading: .init(components: [component], healthQuery: check))
         }
+        return try await reading(query, gate: gate, operation: operation, start: start, end: end)
     }
 
     /// Query time and aggregation window are separate from a latest sample's actual date.
     /// Empty reads never establish denied or granted read authorization.
-    private func quantityReading(_ id: HKQuantityTypeIdentifier, unit: HKUnit, aggregation: HealthMetricComponent.Aggregation, start: Date, end: Date, excludingLumen: Bool, multiplier: Double) async -> HealthMetricReading {
+    private func quantityReading(_ id: HKQuantityTypeIdentifier, unit: HKUnit, aggregation: HealthMetricComponent.Aggregation, start: Date, end: Date, excludingLumen: Bool, multiplier: Double, operation: HealthReadingQueryGroup) async throws -> HealthMetricReading {
         let dates = HKQuery.predicateForSamples(withStart: start, end: end, options: .strictStartDate)
         let predicate = excludingLumen ? NSCompoundPredicate(andPredicateWithSubpredicates: [dates, NSCompoundPredicate(notPredicateWithSubpredicate: HKQuery.predicateForObjects(from: HKSource.default()))]) : dates
-        return await withCheckedContinuation { continuation in
-            func result(_ value: Double?, source: String, sampleStart: Date? = nil, sampleEnd: Date? = nil, failed: Bool) -> HealthMetricReading {
-                let checkedAt = Date()
-                let usable = value.flatMap { $0.isFinite && $0 >= 0 ? $0 * multiplier : nil }
-                let outcome: HealthMetricQuery.Outcome = failed ? .failed : usable == nil ? .noData : .recorded
-                let query = HealthMetricQuery(start: start, end: end, checkedAt: checkedAt, outcome: outcome)
-                guard let usable, !failed else { return .init(healthQuery: query) }
-                let component = HealthMetricComponent(value: usable, origin: .healthKit, source: source, start: sampleStart ?? start, end: sampleEnd ?? end, lastSampleAt: sampleEnd, checkedAt: checkedAt, aggregation: aggregation)
-                return .init(components: [component], healthQuery: query)
+        let gate = HealthReadingQuery<HealthMetricReading>()
+        let query: HKQuery
+        if aggregation == .latest {
+            query = HKSampleQuery(sampleType: HKQuantityType(id), predicate: predicate, limit: 1, sortDescriptors: [NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)]) { [weak gate] query, samples, error in
+                #if DEBUG && targetEnvironment(simulator)
+                HealthDailyCacheSDKCallbackObservation.record(identifier: id.rawValue, kind: "sample", error: error)
+                #endif
+                let sample = samples?.first as? HKQuantitySample
+                Self.deliverReading(gate, query: query, reading: Self.quantityResult(sample?.quantity.doubleValue(for: unit), source: sample.map { "Apple Health · " + $0.sourceRevision.source.name } ?? "Apple Health", sampleStart: sample?.startDate, sampleEnd: sample?.endDate, error: error, multiplier: multiplier, aggregation: aggregation, start: start, end: end))
             }
-            if aggregation == .latest {
-                let query = HKSampleQuery(sampleType: HKQuantityType(id), predicate: predicate, limit: 1, sortDescriptors: [NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)]) { _, samples, error in
-                    let sample = samples?.first as? HKQuantitySample
-                    continuation.resume(returning: result(sample?.quantity.doubleValue(for: unit), source: sample.map { "Apple Health · " + $0.sourceRevision.source.name } ?? "Apple Health", sampleStart: sample?.startDate, sampleEnd: sample?.endDate, failed: error != nil))
-                }
-                self.store.execute(query)
-            } else {
-                let options: HKStatisticsOptions = aggregation == .total ? .cumulativeSum : .discreteAverage
-                let query = HKStatisticsQuery(quantityType: HKQuantityType(id), quantitySamplePredicate: predicate, options: options) { _, statistics, error in
-                    let quantity = aggregation == .total ? statistics?.sumQuantity() : statistics?.averageQuantity()
-                    let names = statistics?.sources?.map(\.name).sorted().joined(separator: ", ") ?? ""
-                    continuation.resume(returning: result(quantity?.doubleValue(for: unit), source: names.isEmpty ? "Apple Health" : "Apple Health · " + names, failed: error != nil))
-                }
-                self.store.execute(query)
+        } else {
+            let options: HKStatisticsOptions = aggregation == .total ? .cumulativeSum : .discreteAverage
+            query = HKStatisticsQuery(quantityType: HKQuantityType(id), quantitySamplePredicate: predicate, options: options) { [weak gate] query, statistics, error in
+                #if DEBUG && targetEnvironment(simulator)
+                HealthDailyCacheSDKCallbackObservation.record(identifier: id.rawValue, kind: "statistics", error: error)
+                #endif
+                let quantity = aggregation == .total ? statistics?.sumQuantity() : statistics?.averageQuantity()
+                let names = statistics?.sources?.map(\.name).sorted().joined(separator: ", ") ?? ""
+                Self.deliverReading(gate, query: query, reading: Self.quantityResult(quantity?.doubleValue(for: unit), source: names.isEmpty ? "Apple Health" : "Apple Health · " + names, error: error, multiplier: multiplier, aggregation: aggregation, start: start, end: end))
             }
+        }
+        return try await reading(query, gate: gate, operation: operation, start: start, end: end)
+    }
+
+    /// Statistics queries report an empty predicate with HKError.errorNoData.
+    /// That is unknown data, not a failed check or proof of read permission.
+    nonisolated private static func queryFailed(_ error: Error?) -> Bool {
+        guard let error else { return false }
+        let platformError = error as NSError
+        return platformError.domain != HKErrorDomain || platformError.code != HKError.Code.errorNoData.rawValue
+    }
+
+    nonisolated static func quantityResult(_ value: Double?, source: String, sampleStart: Date? = nil,
+                                                   sampleEnd: Date? = nil, error: Error?, multiplier: Double,
+                                                   aggregation: HealthMetricComponent.Aggregation, start: Date, end: Date) -> HealthMetricReading {
+        let checkedAt = Date()
+        let failed = queryFailed(error)
+        // Ignore any accompanying quantity on an error, including no-data.
+        let usable = error == nil ? value.flatMap { $0.isFinite && $0 >= 0 ? $0 * multiplier : nil } : nil
+        let outcome: HealthMetricQuery.Outcome = failed ? .failed : usable == nil ? .noData : .recorded
+        let query = HealthMetricQuery(start: start, end: end, checkedAt: checkedAt, outcome: outcome)
+        guard let usable, !failed else { return .init(healthQuery: query) }
+        let component = HealthMetricComponent(value: usable, origin: .healthKit, source: source, start: sampleStart ?? start, end: sampleEnd ?? end, lastSampleAt: sampleEnd, checkedAt: checkedAt, aggregation: aggregation)
+        return .init(components: [component], healthQuery: query)
+    }
+
+    nonisolated private static func deliverReading(_ gate: HealthReadingQuery<HealthMetricReading>?, query: HKQuery, reading: HealthMetricReading) {
+        #if DEBUG && targetEnvironment(simulator)
+        if HealthDailyCacheSDKInterruptionFixture.hold(query: query, delivery: { [weak gate] in gate?.complete(.success(reading)) }) { return }
+        #endif
+        gate?.complete(.success(reading))
+    }
+
+    private func reading(_ query: HKQuery, gate: HealthReadingQuery<HealthMetricReading>,
+                         operation: HealthReadingQueryGroup, start: Date, end: Date) async throws -> HealthMetricReading {
+        let cancellation = operation.register { gate.cancel() }
+        defer { operation.detach(cancellation) }
+        let store = self.store
+        do {
+            return try await gate.value(start: {
+                #if DEBUG && targetEnvironment(simulator)
+                HealthDailyCacheSDKInterruptionFixture.executed(query)
+                #endif
+                store.execute(query)
+            }, stop: {
+                store.stop(query)
+                #if DEBUG && targetEnvironment(simulator)
+                HealthDailyCacheSDKInterruptionFixture.stopped(query)
+                #endif
+            })
+        } catch is CancellationError { throw CancellationError() }
+        catch {
+            try operation.checkCancellation()
+            return .init(healthQuery: .init(start: start, end: end, checkedAt: Date(), outcome: .failed))
         }
     }
 

@@ -1,0 +1,22 @@
+{
+  "status": "device-binding implementation and scoped tests pass; real migration/device gate remains open",
+  "source": "durable-source-r4.json",
+  "reference": {
+    "url": "https://developer.apple.com/documentation/security/ksecattraccessibleafterfirstunlockthisdeviceonly",
+    "fetchedBytes": 1425,
+    "sha256": "fb3b8740cec37d8027a1183fce658cfebb5aed5d9cacae34f12b9daf07e0aa04"
+  },
+  "implementation": [
+    "Nonsynchronizing Keychain item uses AfterFirstUnlockThisDeviceOnly and validates returned accessibility/data attributes on every read. Separate opaque owner service survives provider credential erasure, preserving same-device pending deletion identities.",
+    "Missing item creates a fresh UUID; the owner in a copied journal is never adopted. Runtime journal reads and actual adapter entry reject a foreign owner.",
+    "A copied journal is preserved and blocked. Explicit device setup replaces only that journal, preserving local records and generating no replay from imported history. Explicit account reset discards foreign work; same-device reset retains only minimal pending deletion identities."
+  ],
+  "verified": [
+    "50 focused recovery checks include copied save/delete refusal, zero dispatch, exact byte preservation, failed setup rollback, explicit setup/local-record preservation, same-device and foreign reset, bounded nine-event drain and competing receipt-write protection.",
+    "Two actual native controlled-adapter cases pass18 checks each, including actual checked Keychain owner validity and stability across provider credential erasure; five files per case and current installed binary match independent host readbacks."
+  ],
+  "limits": [
+    "The ThisDeviceOnly nonmigration property is documented by Apple and the actual Keychain accessibility is checked in the simulator. No physical-device backup/restore migration, locked/background Health or full Settings UI acceptance is claimed.",
+    "Real HealthKit sample replay test is running separately; these controlled-adapter results do not prove it."
+  ]
+}

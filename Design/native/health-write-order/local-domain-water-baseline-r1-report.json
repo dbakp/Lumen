@@ -1,0 +1,51 @@
+{
+  "checks": [
+    {
+      "name": "shared startup completed before synthetic file preparation",
+      "passed": true
+    },
+    {
+      "name": "existing synthetic current file has invalid JSON bytes",
+      "passed": true
+    },
+    {
+      "name": "new actual HealthStore completes unrelated conversation startup",
+      "passed": true
+    },
+    {
+      "name": "baseline publishes empty water history after failed current-file read",
+      "passed": true
+    },
+    {
+      "name": "baseline defect reproduced: successful new mutation replaces damaged current-file bytes",
+      "passed": true
+    },
+    {
+      "name": "baseline dispatches and acknowledges new external work after replacing damaged domain",
+      "passed": true
+    }
+  ],
+  "directoryRetained": false,
+  "domain": "water",
+  "external": {
+    "com.dbakp.lumen.health.v1.01695DB8-4021-41A4-ABBF-63E03DB52DDD.B10C266A-43DD-498C-9FA5-EDD3C749C734.water": 137
+  },
+  "loadedMealIDs": [],
+  "loadedWaterIDs": [],
+  "loadedWeight": 75,
+  "originalDamagedBytes": "eyJzeW50aGV0aWNEYW1hZ2VkSGlzdG9yeSI6IFs=",
+  "persistedFiles": {
+    "health-write-intent.json": "eyJldmVudHMiOlt7ImFja25vd2xlZGdlZCI6WyJ3YXRlciJdLCJhY3Rpb24iOiJzYXZlIiwiY29tcG9uZW50cyI6W3siZGF0ZSI6ODE1NDAyMjU0LjQ2OTU1NiwibWV0cmljIjoid2F0ZXIiLCJ2YWx1ZSI6MTM3fV0sImRvbWFpbiI6IndhdGVyIiwiZ2VuZXJhdGlvbiI6IjYwNzlBREUwLUQ0M0ItNDdERC04QkU4LTUyMDNBREY4RERBMyIsImlkIjoiQjEwQzI2NkEtNDNERC00OThDLTlGQTUtRUREM0M3NDlDNzM0IiwiaWRlbnRpdHkiOiJzeW5jIiwibGlmZWN5Y2xlIjoiQTE0OEIwRDEtNkU5OS00RjBDLTkxQUQtRTM0NzBFN0RDNEVEIiwibG9jYWxJRCI6IjQ5ODYyQTI0LTZDNkMtNDIzMS1CQzBCLTM0RDA4NDBBOUI3MyIsInJlcXVlc3RlZEF0Ijo4MTU0MDIyNTQuNDk1NjR9XSwibGlmZWN5Y2xlIjoiQTE0OEIwRDEtNkU5OS00RjBDLTkxQUQtRTM0NzBFN0RDNEVEIiwib3duZXIiOiIwMTY5NURCOC00MDIxLTQxQTQtQUJCRi02M0UwM0RCNTJEREQiLCJ2ZXJzaW9uIjoxfQ==",
+    "water.json": "W3sibWwiOjEzNywiaWQiOiI0OTg2MkEyNC02QzZDLTQyMzEtQkMwQi0zNEQwODQwQTlCNzMiLCJkYXRlIjoiMjAyNi0xMS0wM1QxMjozNzozNFoifV0="
+  },
+  "savedMealIDs": [],
+  "savedWaterIDs": [
+    "49862A24-6C6C-4231-BC0B-34D0840A9B73"
+  ],
+  "savedWeight": 75,
+  "scope": "Pre-repair actual native HealthStore load/mutation baseline with controlled external adapter. Corrupt water/meals/goals replacement is a reproduced defect, not a repaired pass. Directory input proves a real Foundation read error, not physical-device lock/permission behavior.",
+  "status": "Local data baseline recorded",
+  "trace": [
+    "save:water"
+  ]
+}

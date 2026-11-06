@@ -16,7 +16,8 @@ import Foundation
     }
 
     private static func commit(profile: UserProfile, goals: HealthGoals, sleep: SleepStore, health: HealthStore) async throws {
-        try await LocalStore.saveProfileGoalsChecked(profile: profile, goals: goals, canCommit: { !health.isSyncing }) {
+        let boundary = try health.requireLocalHealthBoundary(.goals)
+        try await LocalStore.saveProfileGoalsChecked(profile: profile, goals: goals, healthBoundaries: [.goals: boundary], canCommit: { !health.isSyncing }) {
             sleep.installCheckedProfile(profile)
             health.installCheckedGoals(goals)
             SyncCoordinator.propagate(sleep: sleep, health: health)

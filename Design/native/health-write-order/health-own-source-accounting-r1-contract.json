@@ -1,0 +1,66 @@
+{
+  "status": "PREDECLARED actual own-source case; helper simulator build/signature passed; runtime unexecuted",
+  "source": "durable-source-r162.json",
+  "helperFiles": {
+    "scripts/health-source-fixture/HealthSourceFixture.swift": {
+      "bytes": 10786,
+      "sha256": "116e1f5e9dbbb4420813b41a79f62e23ff05c4848ab266735e695c7ef03c45c6"
+    },
+    "scripts/health-source-fixture/LumenOwnedInspection.swift": {
+      "bytes": 6749,
+      "sha256": "f83f6d96d2275dd9981a4de37791d141c731307294bf53eecca02a17f6c89445"
+    },
+    "scripts/health-source-fixture/build.sh": {
+      "bytes": 2657,
+      "sha256": "d7a260603de251fa577ee572ee9aa9b91efeb7346af9203893a1a80e6069e564"
+    },
+    "scripts/health-source-fixture/README.md": {
+      "bytes": 4171,
+      "sha256": "fc61dfed8d716c4318299232f6e5350bfdcd6792358b3bb2788271e2c5bf48f0"
+    }
+  },
+  "helperBinary": {
+    "bytes": 497600,
+    "sha256": "619135f251804019e3926db410228321f055d1a04cf4b0d9158753c59e8a7efc"
+  },
+  "localUIInputs": {
+    "waterMl": 250,
+    "food": "Banana120g from frozen NutritionEngine catalog",
+    "calories": 105,
+    "protein": 1,
+    "carbs": 27,
+    "fat": 0,
+    "fiber": 3
+  },
+  "foreignSDKInputs": {
+    "water": 400,
+    "calories": 350,
+    "protein": 20,
+    "carbs": 40,
+    "fat": 12
+  },
+  "expectedRawAfterRebuild": {
+    "water": 400,
+    "calories": 350,
+    "protein": 20,
+    "carbs": 40,
+    "fat": 12
+  },
+  "expectedCombined": {
+    "water": 650,
+    "calories": 455,
+    "protein": 21,
+    "carbs": 67,
+    "fat": 12
+  },
+  "required": [
+    "Create local water and meal through actual Lumen UI and production checked journal/Health adapter; capture six source-owned sync metadata identities and complete acknowledgements, then independently observe six exact sampleUUID/source/value/date/syncVersion facts through the separate read-only helper.",
+    "With only Lumen-source nutrition present, actual raw daily queries exclude these samples; local display remains water250/calories105/protein1/carbs27/fat0. No measured absence/permission inference from empty reads.",
+    "Seed ten exact external helper nutrition samples; actual Lumen raw nutrition matches only external400/350/20/40/12, while resolved local plus external is650/455/21/67/12.",
+    "Confirm native cache rebuild; actual saved snapshot stays raw external values, never combined totals. Preserve exact local records, Health intent/acknowledgements, unrelated current/prior files; verify private copy/receipt/stage cleanup. Reopen/relaunch and compare resolved values and stable own sampleUUIDs; no duplicate source samples or replayed saves.",
+    "Use actual Lumen Undo/Delete to remove only own water/meal records and their six SDK samples. Independently requery own metadata empty, verify ten external helper sampleUUIDs remain exact, then cleanup the external run and observe0 independently. No type-wide/source-wide deletion.",
+    "Inspect useful native originals, retain exact manifests/query/cache/journal/file/source evidence. This case does not satisfy broader failed-query, all race, accessibility, companion, design or release gates."
+  ],
+  "inspectorBoundary": "Read-only exact manifest; no Health save/delete/ack. Completed authorization and empty reads never establish permission. Manifest must validate before request.",
+  "createdAt": 1793964787.70434
+}

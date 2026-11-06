@@ -1,0 +1,70 @@
+{
+  "status": "three small input formats roundtrip through actual readers; full pure regression passed; native product baselines not yet executed",
+  "source": "durable-source-r62.json",
+  "pureSource": "local-domain-pure-source-r41.json",
+  "pureInputs": 123,
+  "compiledSwiftSources": 120,
+  "fullLogicCount": 1986,
+  "binarySHA256": "656c4c89849041e1143bbb07cb4621fa6eb41081fb180ed29ce1b2ffd9089000",
+  "sets": [
+    {
+      "trial": 1,
+      "source": "durable-source-r61.json",
+      "files": [
+        {
+          "originalName": "Lumen-backup-health-small.json",
+          "retained": "health-backup-small-r1-Lumen-backup-health-small.json",
+          "raw": "/tmp/LumenBatch43Checks/HealthBackupSmallInputsR1/Lumen-backup-health-small.json",
+          "bytes": 1176,
+          "sha256": "c32309d29f91d34fc799480e862e1569975d3565fd58c7a100429059e50e8449"
+        },
+        {
+          "originalName": "Lumen-backup-health-small.lumenbackup",
+          "retained": "health-backup-small-r1-Lumen-backup-health-small.lumenbackup",
+          "raw": "/tmp/LumenBatch43Checks/HealthBackupSmallInputsR1/Lumen-backup-health-small.lumenbackup",
+          "bytes": 19456,
+          "sha256": "3ad6048de603d291471c630a1e9b921e6106f7c23b1d41d6cc5535b76ecc93f7"
+        },
+        {
+          "originalName": "Lumen-readable-health-small.json",
+          "retained": "health-backup-small-r1-Lumen-readable-health-small.json",
+          "raw": "/tmp/LumenBatch43Checks/HealthBackupSmallInputsR1/Lumen-readable-health-small.json",
+          "bytes": 831,
+          "sha256": "bad71f0672b2e44ec7d2828be49d3cc758b4dc48c57b6639d55be5a72bc9da38"
+        }
+      ],
+      "totalInputBytes": 21463
+    },
+    {
+      "trial": 2,
+      "source": "durable-source-r62.json",
+      "files": [
+        {
+          "originalName": "Lumen-backup-health-encrypted-small.lumenbackup",
+          "retained": "health-backup-small-r2-Lumen-backup-health-encrypted-small.lumenbackup",
+          "raw": "/tmp/LumenBatch43Checks/HealthBackupSmallInputsR2/Lumen-backup-health-encrypted-small.lumenbackup",
+          "bytes": 19456,
+          "sha256": "e34e3ba51212f83e961aba82d9565e7c7263dbb5bebf8af3db1c4e48d5aca9b1"
+        },
+        {
+          "originalName": "Lumen-backup-health-legacy-small.json",
+          "retained": "health-backup-small-r2-Lumen-backup-health-legacy-small.json",
+          "raw": "/tmp/LumenBatch43Checks/HealthBackupSmallInputsR2/Lumen-backup-health-legacy-small.json",
+          "bytes": 1176,
+          "sha256": "c32309d29f91d34fc799480e862e1569975d3565fd58c7a100429059e50e8449"
+        },
+        {
+          "originalName": "Lumen-readable-health-small.json",
+          "retained": "health-backup-small-r2-Lumen-readable-health-small.json",
+          "raw": "/tmp/LumenBatch43Checks/HealthBackupSmallInputsR2/Lumen-readable-health-small.json",
+          "bytes": 831,
+          "sha256": "bad71f0672b2e44ec7d2828be49d3cc758b4dc48c57b6639d55be5a72bc9da38"
+        }
+      ],
+      "totalInputBytes": 21463
+    }
+  ],
+  "currentSet": 2,
+  "purpose": "Use R2 distinct picker basenames for actual encrypted, legacy JSON and readable-export native baseline. R1 formats also valid; no native selection executed for either set.",
+  "scope": "Small synthetic 246mL water. No current unavailable UI, photo/capacity/workspace/receipt/device or full backup recovery acceptance."
+}

@@ -1,0 +1,28 @@
+{
+  "status": "FAILED105/pure60baseline: wrong-password cancellation misclassified and large final record completes before cancellation callback;2fail/5controls pass",
+  "source": "durable-source-r105.json",
+  "pureSource": "local-domain-pure-source-r60.json",
+  "buildExitCode": 0,
+  "executionExitCode": 1,
+  "report": "health-encrypted-read-r1-baseline-report.json",
+  "fixture": {
+    "file": "health-encrypted-read-r1-input.lumenbackup",
+    "bytes": 20480,
+    "sha256": "4cbecfaf960164ed1cfde124aba63c0e9c19678076f360ec8433586c1e9ff080"
+  },
+  "executableSHA256": "242d5b954b150cab386c579dd0c58e9fe9be85a16c98c29c855aec5f8a014ef8",
+  "logs": [
+    {
+      "retained": "HealthEncryptedReadBaselineBuildR1.log.gz",
+      "rawBytes": 869,
+      "rawSHA256": "caf4b93f0b9ace3ba274e1dc1ccf7e3c17bf6435553521a8444a53f22aed2b05"
+    },
+    {
+      "retained": "HealthEncryptedReadBaselineR1.log.gz",
+      "rawBytes": 470,
+      "rawSHA256": "a3a00d585f11f427cafb2675b6b1601d62d23e104c6b2a048e84035748bb1e47"
+    }
+  ],
+  "scope": "Actual encrypted file/password/decryption, cancellation at actual unlock progress and within large final record progress, healthy exact-field retry, wrong-password error and failed-preview cleanup. No native held stream/FD proof or atomic key-derivation preemption/full capacity acceptance.",
+  "next": "Repair using same encrypted bytes for replay; bounded actual decrypt reads, real control classification, safe async stream-handler/close and fd ownership. All full remaining scope open."
+}

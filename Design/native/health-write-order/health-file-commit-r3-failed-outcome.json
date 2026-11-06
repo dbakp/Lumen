@@ -1,0 +1,18 @@
+{
+  "status": "Native passed1/0/native0; host tail failed because habits JSON key order changed only on normal relaunch. Original driver remains failed. Fresh R4 verifier requires bytes exact through transaction/final parent and complete decoded profile/habits equality after relaunch.",
+  "source": "durable-source-r119.json",
+  "driverArchive": "health-file-commit-driver-r3.py.gz",
+  "observations": "health-file-commit-legacy-r3-driver-observations.json",
+  "summary": "health-file-commit-legacy-r3-summary.json",
+  "lateAudit": "health-file-commit-r3-relaunch-audit.json",
+  "nativePassed": 1,
+  "nativeFailed": 0,
+  "nativeExit": 0,
+  "hostExit": 1,
+  "hostFailure": "AssertionError: habits.json at post-relaunch raw-byte comparison",
+  "accepted": false,
+  "retainedPNG": 10,
+  "retainedJSON": 1,
+  "allAttachmentsIndividuallyOpened": false,
+  "sourceExplanation": "SleepStore.init calls recompute(), persist() writes profile, sleep and habits. Same complete JSON values, different key order; no product fix warranted by this audit."
+}

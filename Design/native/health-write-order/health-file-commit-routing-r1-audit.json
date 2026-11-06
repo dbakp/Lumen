@@ -1,0 +1,13 @@
+{
+  "status": "source audit of test routing defect; no product failure inferred",
+  "priorSource": "durable-source-r118.json",
+  "source": "durable-source-r119.json",
+  "finding": "name.contains(Back) matches Backup in every testHealthBackupFileRecovery name, requesting and entering cancellation branch even for ordinary default cases. Existing native historical boundaries retained; no passing ordinary-current claim from those names.",
+  "examples": {
+    "testHealthBackupFileRecoveryLegacy": true,
+    "testHealthBackupFileRecoveryEncrypted": true,
+    "testHealthBackupFileRecoveryReadable": true
+  },
+  "repair": "Explicit LegacyBack/EncryptedBack/ReadableBack match; commit variants have a separate healthy prepare/commit branch. Shared photo change readback timingScope text corrected at this necessary test build.",
+  "limits": "Static routing evidence only;3actual native commit cases must execute. No cancellation latency or old standard-case runtime inferred."
+}

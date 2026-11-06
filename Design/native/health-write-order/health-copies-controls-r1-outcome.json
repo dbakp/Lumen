@@ -1,0 +1,110 @@
+{
+  "status": "passed",
+  "source": "durable-source-r14.json",
+  "build": "health-copies-native-build-r1.json",
+  "xctests": 2,
+  "nativeChecks": 36,
+  "cases": [
+    {
+      "case": "Combined",
+      "nativeChecks": 18,
+      "report": "durable-native-combined-r5-report.json",
+      "hostAudit": "durable-native-combined-r5-host-audit.json",
+      "nativeCommand": [
+        "xcodebuild",
+        "-project",
+        "Lumen.xcodeproj",
+        "-scheme",
+        "Lumen",
+        "-configuration",
+        "Debug",
+        "-destination",
+        "platform=iOS Simulator,id=922E011C-3895-4DB1-9C9A-1D3A977226CF",
+        "-derivedDataPath",
+        "/tmp/LumenBatch37Simulator",
+        "-clonedSourcePackagesDirPath",
+        "/tmp/LumenBatch37Packages",
+        "-disableAutomaticPackageResolution",
+        "-parallel-testing-enabled",
+        "NO",
+        "-only-testing:LumenUITests/LumenSmokeTests/testDurableHealthNativeCombinedFailure",
+        "-resultBundlePath",
+        "/tmp/LumenBatch43Checks/HealthCopiesControlCombinedR1.xcresult",
+        "test-without-building"
+      ],
+      "hostCommand": [
+        "python3",
+        "Design/native/health-write-order/collect-durable-native.py",
+        "922E011C-3895-4DB1-9C9A-1D3A977226CF",
+        "durable-native-combined-r5",
+        "--source",
+        "durable-source-r14.json",
+        "--build",
+        "health-copies-native-build-r1.json"
+      ],
+      "exportCommand": [
+        "xcrun",
+        "xcresulttool",
+        "export",
+        "attachments",
+        "--path",
+        "/tmp/LumenBatch43Checks/HealthCopiesControlCombinedR1.xcresult",
+        "--output-path",
+        "/tmp/LumenBatch43Checks/HealthCopiesControlCombinedR1Attachments",
+        "--filter",
+        "*.png"
+      ]
+    },
+    {
+      "case": "Receipt",
+      "nativeChecks": 18,
+      "report": "durable-native-receipt-r5-report.json",
+      "hostAudit": "durable-native-receipt-r5-host-audit.json",
+      "nativeCommand": [
+        "xcodebuild",
+        "-project",
+        "Lumen.xcodeproj",
+        "-scheme",
+        "Lumen",
+        "-configuration",
+        "Debug",
+        "-destination",
+        "platform=iOS Simulator,id=922E011C-3895-4DB1-9C9A-1D3A977226CF",
+        "-derivedDataPath",
+        "/tmp/LumenBatch37Simulator",
+        "-clonedSourcePackagesDirPath",
+        "/tmp/LumenBatch37Packages",
+        "-disableAutomaticPackageResolution",
+        "-parallel-testing-enabled",
+        "NO",
+        "-only-testing:LumenUITests/LumenSmokeTests/testDurableHealthNativeReceiptFailure",
+        "-resultBundlePath",
+        "/tmp/LumenBatch43Checks/HealthCopiesControlReceiptR1.xcresult",
+        "test-without-building"
+      ],
+      "hostCommand": [
+        "python3",
+        "Design/native/health-write-order/collect-durable-native.py",
+        "922E011C-3895-4DB1-9C9A-1D3A977226CF",
+        "durable-native-receipt-r5",
+        "--source",
+        "durable-source-r14.json",
+        "--build",
+        "health-copies-native-build-r1.json"
+      ],
+      "exportCommand": [
+        "xcrun",
+        "xcresulttool",
+        "export",
+        "attachments",
+        "--path",
+        "/tmp/LumenBatch43Checks/HealthCopiesControlReceiptR1.xcresult",
+        "--output-path",
+        "/tmp/LumenBatch43Checks/HealthCopiesControlReceiptR1Attachments",
+        "--filter",
+        "*.png"
+      ]
+    }
+  ],
+  "scope": "Current native checked store/receipt/held save-Undo controls with controlled adapter and actual host files; full UI/process/device/private recovery selection gates remain separate."
+}

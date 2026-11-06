@@ -122,7 +122,7 @@ struct ConnectionsView: View {
                             Text("Imports supported measurements and workout summaries. Clinical documents and workout routes aren’t included. Add PDF or text records separately in Library.")
                                 .font(.footnote).foregroundStyle(Theme.secondary).accessibilityIdentifier("zipImportScope")
                         }
-                        Button("Import \(preview.coveredDays.count) day\(preview.coveredDays.count == 1 ? "" : "s")") { companion.commit(preview, filename: filename); self.preview = nil; AppRouter.shared.confirm("Health history imported") }.buttonStyle(.borderedProminent)
+                        Button("Import \(preview.coveredDays.count) day\(preview.coveredDays.count == 1 ? "" : "s")") { commitPreview(preview) }.buttonStyle(.borderedProminent)
                         Button("Discard preview", role: .cancel) { self.preview = nil }
                     }.padding(.vertical, 12)
                 }
@@ -178,7 +178,15 @@ struct ConnectionsView: View {
             .task { await notifications.refreshAuthorization() }
             .fileImporter(isPresented: $importing, allowedContentTypes: [.zip, .xml, .commaSeparatedText, .json]) { result in read(result) }
             .alert("Couldn't import health data", isPresented: Binding(get: { error != nil }, set: { if !$0 { error = nil } })) { Button("OK") { error = nil } } message: { Text(error ?? "") }
-            .confirmationDialog("Clear imported measurements and exported workouts?", isPresented: $clear, titleVisibility: .visible) { Button("Clear imported history", role: .destructive) { companion.clearImports() } }
+            .confirmationDialog("Clear imported measurements and exported workouts?", isPresented: $clear, titleVisibility: .visible) {
+                Button("Clear imported history", role: .destructive) {
+                    do { try companion.clearImports() } catch { self.error = error.localizedDescription }
+                }
+            }
+    }
+    private func commitPreview(_ value: HealthImportPreview) {
+        do { try companion.commit(value, filename: filename); preview = nil; AppRouter.shared.confirm("Health history imported") }
+        catch { self.error = error.localizedDescription }
     }
     func reminderBinding<T>(_ key: WritableKeyPath<ReminderPreferences, T>, _ label: String) -> Binding<T> {
         Binding(get: { companion.reminders[keyPath: key] }, set: { value in reminderSetting(label) { $0[keyPath: key] = value } })

@@ -1,0 +1,49 @@
+{
+  "status": "source-bound candidate evidence; previous failures retained",
+  "initial": "health-discovery-r1-failure.json",
+  "stage": "health-discovery-r2-r3-failure.json",
+  "erasure": "health-discovery-erasure-r1-failure.json",
+  "buildFailures": [
+    {
+      "source": "durable-source-r34.json",
+      "log": "HealthDiscoveryLogicBuildR2.log.gz",
+      "reason": "missing explicit try in throwing erasure guard"
+    },
+    {
+      "source": "durable-source-r39.json",
+      "log": "HealthDiscoveryLogicBuildR7.log.gz",
+      "reason": "new test-local name collisions and throwing Boolean operators"
+    }
+  ],
+  "additionalFailedTrials": [
+    {
+      "source": "durable-source-r37.json",
+      "log": "HealthDiscoveryFocusedR4.log.gz",
+      "reason": "Foundation URL resolver preserves /var while enumerator emits /private/var; canonical prefix guard rejects; fixed using actual realpath"
+    },
+    {
+      "log": "HealthDiscoveryFocusedR5.log.gz",
+      "reason": "Invocation mistakenly started before its dependent build completed; old binary fails currentDataInvalid. No reliable candidate binary attribution; excluded from acceptance. R6 rerun starts only after authoritative completed build and passes129."
+    }
+  ],
+  "passingMilestones": [
+    {
+      "source": "durable-source-r38.json",
+      "focused": 129
+    },
+    {
+      "source": "durable-source-r40.json",
+      "focused": 139,
+      "fullLogic": 1933,
+      "native": 31
+    },
+    {
+      "source": "durable-source-r42.json",
+      "focused": 140,
+      "fullLogic": 1934,
+      "native": 31,
+      "ui": "six main/compact normal/dark/largest passes; two final-largest-case host audits match; current presentation accepted43/55"
+    }
+  ],
+  "errata": "An earlier sourceR36 status says after17 checks; authoritative R2/R3/R4 logs show16 before the failed late transaction. Corrected failure JSON records16. Initial R33 baseline executes the old product open/catalog sequence; repaired assertion uses discover after the product load path was integrated with that API, retaining exact expected values."
+}

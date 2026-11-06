@@ -1,0 +1,319 @@
+{
+  "status": "passed: held selected-file recovery cancels promptly, retains choice and exact original source, retries and survives relaunch",
+  "source": "durable-source-r72.json",
+  "build": "health-backup-cancel-native-build-r3.json",
+  "case": "readable",
+  "before": {
+    "goals.json": {
+      "bytes": 177,
+      "sha256": "7ceaf16447d3539f90429200008aa6055612e0755964d4bccb5130278cbbc1d2",
+      "base64": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjEwMDAwLCJ3ZWlnaHRLZyI6NzV9"
+    },
+    "health-write-intent.json": {
+      "bytes": 123,
+      "sha256": "55bcd2148aa0c80fe03b023cbd04863f38f752a57899a2b93e07ec3bbfed961e",
+      "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI1ODkwRDUxQS1BNkMzLTRDMEItODhDMi1CNzE3MEVCODU0MTMiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+    },
+    "meals.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "profile.json": {
+      "bytes": 184,
+      "sha256": "19d8ef13cc3b6411fff12506429b44aeb12ddc1305c4e7c2aa756db35b380d51",
+      "base64": "eyJvbmJvYXJkaW5nRG9uZSI6dHJ1ZSwiaXNTdWJzY3JpYmVkIjpmYWxzZSwic2xlZXBOZWVkIjoyOTQwMCwid2FrZUdvYWwiOnsiaG91ciI6NywibWludXRlIjowfSwic2xlZXBOZWVkQ29uZmlkZW5jZSI6MC4zLCJuYW1lIjoiU3ludGhldGljIGJhY2t1cCBiYXNlbGluZSIsImNocm9ub3R5cGUiOiJpbnRlcm1lZGlhdGUifQ=="
+    },
+    "today.json": {
+      "bytes": 123,
+      "sha256": "60c33edd2592850a357f3a80449a9f50ecd26af93a8dedd156effbc4b41c17ce",
+      "base64": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDNUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9"
+    },
+    "water.json": {
+      "bytes": 29,
+      "sha256": "0d3f4ef174c527390388c9fccb88964f5cc0b3bac224a4370cd215d61623e845",
+      "base64": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZVdhdGVyIjo="
+    },
+    "workouts.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    }
+  },
+  "after": {
+    "goals.json": {
+      "bytes": 177,
+      "sha256": "7ceaf16447d3539f90429200008aa6055612e0755964d4bccb5130278cbbc1d2",
+      "base64": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjEwMDAwLCJ3ZWlnaHRLZyI6NzV9"
+    },
+    "health-write-intent.json": {
+      "bytes": 123,
+      "sha256": "e4aec4d6cb839cda55abfcb62c5d380b7baa85ca07b329f6c731e9c7e66f034e",
+      "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiJGNzFEOTFGMC03RTZGLTQ3NzMtODE0RC00NzU1MURGQzZDRDgiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+    },
+    "meals.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "profile.json": {
+      "bytes": 184,
+      "sha256": "4cfae3c3531d44d0a93f6ec9d30096e9ee483a15e468f3763069037946b69776",
+      "base64": "eyJzbGVlcE5lZWQiOjI5NDAwLCJuYW1lIjoiU3ludGhldGljIGJhY2t1cCBiYXNlbGluZSIsInNsZWVwTmVlZENvbmZpZGVuY2UiOjAuMywid2FrZUdvYWwiOnsibWludXRlIjowLCJob3VyIjo3fSwiY2hyb25vdHlwZSI6ImludGVybWVkaWF0ZSIsImlzU3Vic2NyaWJlZCI6ZmFsc2UsIm9uYm9hcmRpbmdEb25lIjp0cnVlfQ=="
+    },
+    "today.json": {
+      "bytes": 123,
+      "sha256": "60c33edd2592850a357f3a80449a9f50ecd26af93a8dedd156effbc4b41c17ce",
+      "base64": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDNUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9"
+    },
+    "water.json": {
+      "bytes": 81,
+      "sha256": "ec18725e1ff41827c6ad47a51a6b17955246ae25cb6721889bae4bb590cc1f92",
+      "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtYmFja3VwLXJlY292ZXJ5LXdhdGVyIiwibWwiOjI0Nn1d"
+    },
+    "workouts.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    }
+  },
+  "sourceObservations": [
+    {
+      "directory": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/E73D9B3D-64DB-4BFB-86CF-FFBB69E346D7/tmp/LumenBackupWork-v1-17669-A67C3B90-B9DE-420F-AAD6-298BD9420FFF",
+      "owner": {
+        "version": 1,
+        "pid": 17669,
+        "id": "A67C3B90-B9DE-420F-AAD6-298BD9420FFF"
+      },
+      "originalFileName": "Lumen-readable-health-small.json",
+      "bytes": 831,
+      "sha256": "bad71f0672b2e44ec7d2828be49d3cc758b4dc48c57b6639d55be5a72bc9da38",
+      "observedAfterNativeAttachment": "health-file-readable-source",
+      "observedAtUnixTime": 1793825110.9741929
+    },
+    {
+      "directory": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/E73D9B3D-64DB-4BFB-86CF-FFBB69E346D7/tmp/LumenBackupWork-v1-17669-A67C3B90-B9DE-420F-AAD6-298BD9420FFF",
+      "owner": {
+        "version": 1,
+        "pid": 17669,
+        "id": "A67C3B90-B9DE-420F-AAD6-298BD9420FFF"
+      },
+      "originalFileName": "Lumen-readable-health-small.json",
+      "bytes": 831,
+      "sha256": "bad71f0672b2e44ec7d2828be49d3cc758b4dc48c57b6639d55be5a72bc9da38",
+      "observedAfterNativeAttachment": "health-file-readable-cancel-held",
+      "observedAtUnixTime": 1793825167.5644648
+    },
+    {
+      "directory": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/E73D9B3D-64DB-4BFB-86CF-FFBB69E346D7/tmp/LumenBackupWork-v1-17669-A67C3B90-B9DE-420F-AAD6-298BD9420FFF",
+      "owner": {
+        "version": 1,
+        "pid": 17669,
+        "id": "A67C3B90-B9DE-420F-AAD6-298BD9420FFF"
+      },
+      "originalFileName": "Lumen-readable-health-small.json",
+      "bytes": 831,
+      "sha256": "bad71f0672b2e44ec7d2828be49d3cc758b4dc48c57b6639d55be5a72bc9da38",
+      "observedAfterNativeAttachment": "health-file-readable-retry-held",
+      "observedAtUnixTime": 1793825192.7024581
+    }
+  ],
+  "heldObservations": [
+    {
+      "record": {
+        "nonce": "2FCECBE2-75D2-48E6-B607-3965374DFA84",
+        "ordinal": 1,
+        "originals": {
+          "goals.json": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjEwMDAwLCJ3ZWlnaHRLZyI6NzV9",
+          "health-write-intent.json": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI1ODkwRDUxQS1BNkMzLTRDMEItODhDMi1CNzE3MEVCODU0MTMiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9",
+          "meals.json": "W10=",
+          "today.json": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDNUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9",
+          "water.json": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZVdhdGVyIjo=",
+          "workouts.json": "W10="
+        },
+        "phase": "held",
+        "stage": "LumenData.restore-6AEE62AB-3CEA-438E-BB08-7B0DA696BCD3",
+        "uiCancelled": false,
+        "workerControlMatchesUI": true
+      },
+      "originalSource": {
+        "directory": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/E73D9B3D-64DB-4BFB-86CF-FFBB69E346D7/tmp/LumenBackupWork-v1-17669-A67C3B90-B9DE-420F-AAD6-298BD9420FFF",
+        "owner": {
+          "version": 1,
+          "pid": 17669,
+          "id": "A67C3B90-B9DE-420F-AAD6-298BD9420FFF"
+        },
+        "originalFileName": "Lumen-readable-health-small.json",
+        "bytes": 831,
+        "sha256": "bad71f0672b2e44ec7d2828be49d3cc758b4dc48c57b6639d55be5a72bc9da38",
+        "observedAfterNativeAttachment": "health-file-readable-cancel-held",
+        "observedAtUnixTime": 1793825167.5644648
+      },
+      "originals": {
+        "goals.json": {
+          "bytes": 177,
+          "sha256": "7ceaf16447d3539f90429200008aa6055612e0755964d4bccb5130278cbbc1d2",
+          "base64": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjEwMDAwLCJ3ZWlnaHRLZyI6NzV9"
+        },
+        "health-write-intent.json": {
+          "bytes": 123,
+          "sha256": "55bcd2148aa0c80fe03b023cbd04863f38f752a57899a2b93e07ec3bbfed961e",
+          "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI1ODkwRDUxQS1BNkMzLTRDMEItODhDMi1CNzE3MEVCODU0MTMiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+        },
+        "meals.json": {
+          "bytes": 2,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "base64": "W10="
+        },
+        "profile.json": {
+          "bytes": 184,
+          "sha256": "19d8ef13cc3b6411fff12506429b44aeb12ddc1305c4e7c2aa756db35b380d51",
+          "base64": "eyJvbmJvYXJkaW5nRG9uZSI6dHJ1ZSwiaXNTdWJzY3JpYmVkIjpmYWxzZSwic2xlZXBOZWVkIjoyOTQwMCwid2FrZUdvYWwiOnsiaG91ciI6NywibWludXRlIjowfSwic2xlZXBOZWVkQ29uZmlkZW5jZSI6MC4zLCJuYW1lIjoiU3ludGhldGljIGJhY2t1cCBiYXNlbGluZSIsImNocm9ub3R5cGUiOiJpbnRlcm1lZGlhdGUifQ=="
+        },
+        "today.json": {
+          "bytes": 123,
+          "sha256": "60c33edd2592850a357f3a80449a9f50ecd26af93a8dedd156effbc4b41c17ce",
+          "base64": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDNUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9"
+        },
+        "water.json": {
+          "bytes": 29,
+          "sha256": "0d3f4ef174c527390388c9fccb88964f5cc0b3bac224a4370cd215d61623e845",
+          "base64": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZVdhdGVyIjo="
+        },
+        "workouts.json": {
+          "bytes": 2,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "base64": "W10="
+        }
+      },
+      "stageExists": true
+    },
+    {
+      "record": {
+        "nonce": "9BCAA8B5-A2C7-4CBD-807E-C2BC7C8A1BB4",
+        "ordinal": 2,
+        "originals": {
+          "goals.json": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjEwMDAwLCJ3ZWlnaHRLZyI6NzV9",
+          "health-write-intent.json": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI1ODkwRDUxQS1BNkMzLTRDMEItODhDMi1CNzE3MEVCODU0MTMiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9",
+          "meals.json": "W10=",
+          "today.json": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDNUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9",
+          "water.json": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZVdhdGVyIjo=",
+          "workouts.json": "W10="
+        },
+        "phase": "held",
+        "stage": "LumenData.restore-B5C55CD8-C4A2-4B4E-A452-B3090FB0B023",
+        "uiCancelled": false,
+        "workerControlMatchesUI": true
+      },
+      "originalSource": {
+        "directory": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/E73D9B3D-64DB-4BFB-86CF-FFBB69E346D7/tmp/LumenBackupWork-v1-17669-A67C3B90-B9DE-420F-AAD6-298BD9420FFF",
+        "owner": {
+          "version": 1,
+          "pid": 17669,
+          "id": "A67C3B90-B9DE-420F-AAD6-298BD9420FFF"
+        },
+        "originalFileName": "Lumen-readable-health-small.json",
+        "bytes": 831,
+        "sha256": "bad71f0672b2e44ec7d2828be49d3cc758b4dc48c57b6639d55be5a72bc9da38",
+        "observedAfterNativeAttachment": "health-file-readable-retry-held",
+        "observedAtUnixTime": 1793825192.7024581
+      },
+      "originals": {
+        "goals.json": {
+          "bytes": 177,
+          "sha256": "7ceaf16447d3539f90429200008aa6055612e0755964d4bccb5130278cbbc1d2",
+          "base64": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjEwMDAwLCJ3ZWlnaHRLZyI6NzV9"
+        },
+        "health-write-intent.json": {
+          "bytes": 123,
+          "sha256": "55bcd2148aa0c80fe03b023cbd04863f38f752a57899a2b93e07ec3bbfed961e",
+          "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI1ODkwRDUxQS1BNkMzLTRDMEItODhDMi1CNzE3MEVCODU0MTMiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+        },
+        "meals.json": {
+          "bytes": 2,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "base64": "W10="
+        },
+        "profile.json": {
+          "bytes": 184,
+          "sha256": "19d8ef13cc3b6411fff12506429b44aeb12ddc1305c4e7c2aa756db35b380d51",
+          "base64": "eyJvbmJvYXJkaW5nRG9uZSI6dHJ1ZSwiaXNTdWJzY3JpYmVkIjpmYWxzZSwic2xlZXBOZWVkIjoyOTQwMCwid2FrZUdvYWwiOnsiaG91ciI6NywibWludXRlIjowfSwic2xlZXBOZWVkQ29uZmlkZW5jZSI6MC4zLCJuYW1lIjoiU3ludGhldGljIGJhY2t1cCBiYXNlbGluZSIsImNocm9ub3R5cGUiOiJpbnRlcm1lZGlhdGUifQ=="
+        },
+        "today.json": {
+          "bytes": 123,
+          "sha256": "60c33edd2592850a357f3a80449a9f50ecd26af93a8dedd156effbc4b41c17ce",
+          "base64": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDNUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9"
+        },
+        "water.json": {
+          "bytes": 29,
+          "sha256": "0d3f4ef174c527390388c9fccb88964f5cc0b3bac224a4370cd215d61623e845",
+          "base64": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZVdhdGVyIjo="
+        },
+        "workouts.json": {
+          "bytes": 2,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "base64": "W10="
+        }
+      },
+      "stageExists": true
+    }
+  ],
+  "cancelProtocol": {
+    "attempts": [
+      {
+        "nonce": "2FCECBE2-75D2-48E6-B607-3965374DFA84",
+        "ordinal": 1,
+        "originals": {
+          "goals.json": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjEwMDAwLCJ3ZWlnaHRLZyI6NzV9",
+          "health-write-intent.json": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI1ODkwRDUxQS1BNkMzLTRDMEItODhDMi1CNzE3MEVCODU0MTMiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9",
+          "meals.json": "W10=",
+          "today.json": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDNUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9",
+          "water.json": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZVdhdGVyIjo=",
+          "workouts.json": "W10="
+        },
+        "phase": "cancelled",
+        "stage": "LumenData.restore-6AEE62AB-3CEA-438E-BB08-7B0DA696BCD3",
+        "uiCancelled": true,
+        "workerControlMatchesUI": true
+      },
+      {
+        "nonce": "9BCAA8B5-A2C7-4CBD-807E-C2BC7C8A1BB4",
+        "ordinal": 2,
+        "originals": {
+          "goals.json": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjEwMDAwLCJ3ZWlnaHRLZyI6NzV9",
+          "health-write-intent.json": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI1ODkwRDUxQS1BNkMzLTRDMEItODhDMi1CNzE3MEVCODU0MTMiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9",
+          "meals.json": "W10=",
+          "today.json": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDNUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9",
+          "water.json": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZVdhdGVyIjo=",
+          "workouts.json": "W10="
+        },
+        "phase": "released",
+        "stage": "LumenData.restore-B5C55CD8-C4A2-4B4E-A452-B3090FB0B023",
+        "uiCancelled": false,
+        "workerControlMatchesUI": true
+      }
+    ]
+  },
+  "receipt": {
+    "domains": [
+      "water"
+    ],
+    "fileSource": {
+      "byteCount": 831,
+      "fileName": "Lumen-readable-health-small.json",
+      "format": "readableExport",
+      "sha256": "bad71f0672b2e44ec7d2828be49d3cc758b4dc48c57b6639d55be5a72bc9da38"
+    },
+    "omittedPhotoCount": 0,
+    "recordDigests": {
+      "water.json": "ec18725e1ff41827c6ad47a51a6b17955246ae25cb6721889bae4bb590cc1f92"
+    },
+    "recoveredAt": "2026-11-04T20:46:24Z",
+    "source": "selected-file:bad71f0672b2e44ec7d2828be49d3cc758b4dc48c57b6639d55be5a72bc9da38"
+  },
+  "retainedDamagedWaterPaths": [
+    "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Shared/AppGroup/E300DD24-B5D1-4A6A-BF1B-E66173E3428B/LumenData/.health-recovery/0EA97637-4200-4446-BB37-4FAF4DABFFA1/water.json"
+  ],
+  "verifierSHA256": "38066a35f079640609351337f6a0a8b1fe43edde18f13cf28938650b59217686",
+  "scope": "Actual normal Settings/Files input, off/on choice, typed 246mL review, Not now, real held preparation, visible Cancel within3s without host release, retained choice/source and actual retry hold before host release, success and relaunch. Independent original canonical/source/stage/receipt audits. Typed-read runtime cancellation, Back/source replacement, photo/appearance/design/device gates remain required."
+}

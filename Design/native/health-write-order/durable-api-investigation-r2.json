@@ -1,0 +1,24 @@
+{
+  "status": "primary source contract review; adapter/device verification remains open",
+  "references": [
+    {
+      "url": "https://developer.apple.com/videos/play/wwdc2020/10184/",
+      "bytes": 158985,
+      "sha256": "9969ed2d5e52bd08d5638574bdd28e2a67021ecd251bc2dbcbd747838df9720b"
+    },
+    {
+      "url": "https://developer.apple.com/documentation/healthkit/authorizing-access-to-health-data.md",
+      "bytes": 13879,
+      "sha256": "8b519c4db8346c258b184bba2b48114a0177deb16adf130d662c9080055f0cd2"
+    }
+  ],
+  "established": [
+    "Apple WWDC2020 explicitly describes sync identifiers preventing duplicate samples and the same-version sample being ignored on another device. Unlike the earlier symbol-only review, replay deduplication now has a direct primary reference.",
+    "Apple authorization documentation states that denied read requests still return samples the app itself successfully saved.",
+    "The candidate uses separate component IDs, queries the default app source with owner/event metadata and verifies outcomes before persisting receipts. These are implementation decisions whose real HealthKit behavior still requires testing."
+  ],
+  "notEstablished": [
+    "No actual HealthKit sample/write/delete/permission or physical-device result has been obtained by this source review.",
+    "Cross-process save/delete completion ordering, reset/restore recovery, source collision and locked/background execution need their separately declared evidence."
+  ]
+}

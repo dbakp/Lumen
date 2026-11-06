@@ -1,0 +1,14 @@
+{
+  "status": "failed native check retained",
+  "exitCode": 65,
+  "source": "durable-source-r5.json",
+  "build": "durable-native-build-r4.json",
+  "nativeChecksPassed": 7,
+  "nativeChecksFailed": 1,
+  "failure": "Probe required equal-version replay to preserve HealthKit object UUID. Both production adapter calls returned after verifying one own-source matching identity/value/date/version; the probe fails only the additional UUID equality assertion.",
+  "originalRequirement": "One logical external record through replay, stable per-component sync identity and payload; no requirement to retain the framework object UUID.",
+  "evidenceLimit": "The R1 probe appended sample observations after its failing assertion, so its report contains no before/after UUID values. Do not invent those values or infer all seven components passed.",
+  "next": "Record actual sample observations before assertions; verify count, explicit sync metadata, actual quantities/dates/source and receipts. Keep UUID changes as observations, not a fabricated dedup failure.",
+  "exactSyntheticCleanupVerified": true,
+  "scope": "Actual simulator HealthKit, water replay only before failure; no complete seven-component/deletion/process/device acceptance."
+}

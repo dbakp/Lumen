@@ -1,0 +1,470 @@
+{
+  "checks" : [
+    {
+      "name" : "controlled adapter is disabled for actual HealthKit verification",
+      "passed" : true
+    },
+    {
+      "name" : "actual simulator HealthKit is available",
+      "passed" : true
+    },
+    {
+      "name" : "checked local startup finishes before HealthKit fixture commits",
+      "passed" : true
+    },
+    {
+      "name" : "actual native Health permission request returns without framework error",
+      "passed" : true
+    },
+    {
+      "name" : "actual HealthKit fixture starts without unrelated pending intent",
+      "passed" : true
+    },
+    {
+      "name" : "seven stable source-owned cleanup identities exist before any actual save",
+      "passed" : true
+    },
+    {
+      "name" : "actual first water save yields one source-owned sample",
+      "passed" : true
+    },
+    {
+      "name" : "actual equal-version water replay keeps one matching logical sync identity",
+      "passed" : true
+    },
+    {
+      "name" : "actual water replay preserves measured quantity and date",
+      "passed" : true
+    },
+    {
+      "name" : "actual water sample has this app's HealthKit source",
+      "passed" : true
+    },
+    {
+      "name" : "actual first calories save yields one source-owned sample",
+      "passed" : true
+    },
+    {
+      "name" : "actual equal-version calories replay keeps one matching logical sync identity",
+      "passed" : true
+    },
+    {
+      "name" : "actual calories replay preserves measured quantity and date",
+      "passed" : true
+    },
+    {
+      "name" : "actual calories sample has this app's HealthKit source",
+      "passed" : true
+    },
+    {
+      "name" : "actual first protein save yields one source-owned sample",
+      "passed" : true
+    },
+    {
+      "name" : "actual equal-version protein replay keeps one matching logical sync identity",
+      "passed" : true
+    },
+    {
+      "name" : "actual protein replay preserves measured quantity and date",
+      "passed" : true
+    },
+    {
+      "name" : "actual protein sample has this app's HealthKit source",
+      "passed" : true
+    },
+    {
+      "name" : "actual first carbs save yields one source-owned sample",
+      "passed" : true
+    },
+    {
+      "name" : "actual equal-version carbs replay keeps one matching logical sync identity",
+      "passed" : true
+    },
+    {
+      "name" : "actual carbs replay preserves measured quantity and date",
+      "passed" : true
+    },
+    {
+      "name" : "actual carbs sample has this app's HealthKit source",
+      "passed" : true
+    },
+    {
+      "name" : "actual first fat save yields one source-owned sample",
+      "passed" : true
+    },
+    {
+      "name" : "actual equal-version fat replay keeps one matching logical sync identity",
+      "passed" : true
+    },
+    {
+      "name" : "actual fat replay preserves measured quantity and date",
+      "passed" : true
+    },
+    {
+      "name" : "actual fat sample has this app's HealthKit source",
+      "passed" : true
+    },
+    {
+      "name" : "actual first fiber save yields one source-owned sample",
+      "passed" : true
+    },
+    {
+      "name" : "actual equal-version fiber replay keeps one matching logical sync identity",
+      "passed" : true
+    },
+    {
+      "name" : "actual fiber replay preserves measured quantity and date",
+      "passed" : true
+    },
+    {
+      "name" : "actual fiber sample has this app's HealthKit source",
+      "passed" : true
+    },
+    {
+      "name" : "actual first weight save yields one source-owned sample",
+      "passed" : true
+    },
+    {
+      "name" : "actual equal-version weight replay keeps one matching logical sync identity",
+      "passed" : true
+    },
+    {
+      "name" : "actual weight replay preserves measured quantity and date",
+      "passed" : true
+    },
+    {
+      "name" : "actual weight sample has this app's HealthKit source",
+      "passed" : true
+    },
+    {
+      "name" : "all seven actual verified saves have durable receipts",
+      "passed" : true
+    },
+    {
+      "name" : "only explicit water\/meal deletion intent reaches actual HealthKit",
+      "passed" : true
+    },
+    {
+      "name" : "actual water deletion leaves no matching own-source sample",
+      "passed" : true
+    },
+    {
+      "name" : "only explicit water\/meal deletion intent reaches actual HealthKit",
+      "passed" : true
+    },
+    {
+      "name" : "actual calories deletion leaves no matching own-source sample",
+      "passed" : true
+    },
+    {
+      "name" : "only explicit water\/meal deletion intent reaches actual HealthKit",
+      "passed" : true
+    },
+    {
+      "name" : "actual protein deletion leaves no matching own-source sample",
+      "passed" : true
+    },
+    {
+      "name" : "only explicit water\/meal deletion intent reaches actual HealthKit",
+      "passed" : true
+    },
+    {
+      "name" : "actual carbs deletion leaves no matching own-source sample",
+      "passed" : true
+    },
+    {
+      "name" : "only explicit water\/meal deletion intent reaches actual HealthKit",
+      "passed" : true
+    },
+    {
+      "name" : "actual fat deletion leaves no matching own-source sample",
+      "passed" : true
+    },
+    {
+      "name" : "only explicit water\/meal deletion intent reaches actual HealthKit",
+      "passed" : true
+    },
+    {
+      "name" : "actual fiber deletion leaves no matching own-source sample",
+      "passed" : true
+    }
+  ],
+  "exactFixtureCleanupVerified" : true,
+  "journalAfterDeletes" : {
+    "events" : [
+      {
+        "acknowledged" : [
+          "water"
+        ],
+        "action" : "delete",
+        "components" : [
+          {
+            "date" : 811692843,
+            "metric" : "water",
+            "value" : 137
+          }
+        ],
+        "domain" : "water",
+        "generation" : "562A010F-70BF-488D-A447-5BE78F0DA739",
+        "id" : "7351E0B8-D31F-430C-8A89-B60B5F5B3D87",
+        "identity" : "sync",
+        "lifecycle" : "A189AFC5-FE6C-4748-8D0D-89A913428D93",
+        "localID" : "synthetic-healthkit-43-B5F6AE5B-6EDE-4BBB-9AB4-AB7839707676-water",
+        "requestedAt" : 815398826.985994
+      },
+      {
+        "acknowledged" : [
+          "protein",
+          "fiber",
+          "carbs",
+          "fat",
+          "calories"
+        ],
+        "action" : "delete",
+        "components" : [
+          {
+            "date" : 811692843,
+            "metric" : "calories",
+            "value" : 213
+          },
+          {
+            "date" : 811692843,
+            "metric" : "protein",
+            "value" : 11
+          },
+          {
+            "date" : 811692843,
+            "metric" : "carbs",
+            "value" : 23
+          },
+          {
+            "date" : 811692843,
+            "metric" : "fat",
+            "value" : 9
+          },
+          {
+            "date" : 811692843,
+            "metric" : "fiber",
+            "value" : 4
+          }
+        ],
+        "domain" : "meal",
+        "generation" : "E9CCC20F-A7B6-41F9-B019-8E4797820202",
+        "id" : "B09C54EF-9451-4013-BE8B-7786DC0372C5",
+        "identity" : "sync",
+        "lifecycle" : "A189AFC5-FE6C-4748-8D0D-89A913428D93",
+        "localID" : "synthetic-healthkit-43-B5F6AE5B-6EDE-4BBB-9AB4-AB7839707676-meal",
+        "requestedAt" : 815398826.985995
+      },
+      {
+        "acknowledged" : [
+          "weight"
+        ],
+        "action" : "save",
+        "components" : [
+          {
+            "date" : 811692843,
+            "metric" : "weight",
+            "value" : 76.25
+          }
+        ],
+        "domain" : "weight",
+        "generation" : "2EB17735-8F74-432D-B6FD-BDA0D955DD14",
+        "id" : "2577E68F-3CDD-437B-AC2C-3300AAA53049",
+        "identity" : "sync",
+        "lifecycle" : "A189AFC5-FE6C-4748-8D0D-89A913428D93",
+        "localID" : "synthetic-healthkit-43-B5F6AE5B-6EDE-4BBB-9AB4-AB7839707676-weight",
+        "requestedAt" : 815398825.804723
+      }
+    ],
+    "lifecycle" : "A189AFC5-FE6C-4748-8D0D-89A913428D93",
+    "owner" : "01695DB8-4021-41A4-ABBF-63E03DB52DDD",
+    "version" : 1
+  },
+  "journalAfterSaves" : {
+    "events" : [
+      {
+        "acknowledged" : [
+          "water"
+        ],
+        "action" : "save",
+        "components" : [
+          {
+            "date" : 811692843,
+            "metric" : "water",
+            "value" : 137
+          }
+        ],
+        "domain" : "water",
+        "generation" : "35E7685B-4014-4328-BF3B-21C60F2D94F3",
+        "id" : "7351E0B8-D31F-430C-8A89-B60B5F5B3D87",
+        "identity" : "sync",
+        "lifecycle" : "A189AFC5-FE6C-4748-8D0D-89A913428D93",
+        "localID" : "synthetic-healthkit-43-B5F6AE5B-6EDE-4BBB-9AB4-AB7839707676-water",
+        "requestedAt" : 815398825.804692
+      },
+      {
+        "acknowledged" : [
+          "fiber",
+          "carbs",
+          "protein",
+          "calories",
+          "fat"
+        ],
+        "action" : "save",
+        "components" : [
+          {
+            "date" : 811692843,
+            "metric" : "calories",
+            "value" : 213
+          },
+          {
+            "date" : 811692843,
+            "metric" : "protein",
+            "value" : 11
+          },
+          {
+            "date" : 811692843,
+            "metric" : "carbs",
+            "value" : 23
+          },
+          {
+            "date" : 811692843,
+            "metric" : "fat",
+            "value" : 9
+          },
+          {
+            "date" : 811692843,
+            "metric" : "fiber",
+            "value" : 4
+          }
+        ],
+        "domain" : "meal",
+        "generation" : "5EA7E381-F5B6-44C1-8865-849CD3AA0BD5",
+        "id" : "B09C54EF-9451-4013-BE8B-7786DC0372C5",
+        "identity" : "sync",
+        "lifecycle" : "A189AFC5-FE6C-4748-8D0D-89A913428D93",
+        "localID" : "synthetic-healthkit-43-B5F6AE5B-6EDE-4BBB-9AB4-AB7839707676-meal",
+        "requestedAt" : 815398825.80472
+      },
+      {
+        "acknowledged" : [
+          "weight"
+        ],
+        "action" : "save",
+        "components" : [
+          {
+            "date" : 811692843,
+            "metric" : "weight",
+            "value" : 76.25
+          }
+        ],
+        "domain" : "weight",
+        "generation" : "2EB17735-8F74-432D-B6FD-BDA0D955DD14",
+        "id" : "2577E68F-3CDD-437B-AC2C-3300AAA53049",
+        "identity" : "sync",
+        "lifecycle" : "A189AFC5-FE6C-4748-8D0D-89A913428D93",
+        "localID" : "synthetic-healthkit-43-B5F6AE5B-6EDE-4BBB-9AB4-AB7839707676-weight",
+        "requestedAt" : 815398825.804723
+      }
+    ],
+    "lifecycle" : "A189AFC5-FE6C-4748-8D0D-89A913428D93",
+    "owner" : "01695DB8-4021-41A4-ABBF-63E03DB52DDD",
+    "version" : 1
+  },
+  "samples" : [
+    {
+      "afterReplayCount" : 1,
+      "afterReplayUUID" : "4E315916-6A30-4728-B6C4-9591B7F22379",
+      "beforeCount" : 1,
+      "beforeDate" : 811692843,
+      "beforeUUID" : "778C3667-C703-4E74-A9C2-AA6E76884440",
+      "beforeValue" : 137,
+      "date" : 811692843,
+      "metric" : "water",
+      "sourceBundle" : "com.dbakp.lumen",
+      "syncIdentifier" : "com.dbakp.lumen.health.v1.01695DB8-4021-41A4-ABBF-63E03DB52DDD.7351E0B8-D31F-430C-8A89-B60B5F5B3D87.water",
+      "value" : 137
+    },
+    {
+      "afterReplayCount" : 1,
+      "afterReplayUUID" : "101F3451-C9BA-4C43-B276-071E76967A6E",
+      "beforeCount" : 1,
+      "beforeDate" : 811692843,
+      "beforeUUID" : "145C95BE-BE39-42A4-B71A-E8C7B3FCD193",
+      "beforeValue" : 213,
+      "date" : 811692843,
+      "metric" : "calories",
+      "sourceBundle" : "com.dbakp.lumen",
+      "syncIdentifier" : "com.dbakp.lumen.health.v1.01695DB8-4021-41A4-ABBF-63E03DB52DDD.B09C54EF-9451-4013-BE8B-7786DC0372C5.calories",
+      "value" : 213
+    },
+    {
+      "afterReplayCount" : 1,
+      "afterReplayUUID" : "0A49BFC9-872A-4C2C-9FAD-AD11D619A707",
+      "beforeCount" : 1,
+      "beforeDate" : 811692843,
+      "beforeUUID" : "5FB54ABC-4C42-4D2E-BAF9-CE8BD4F870E0",
+      "beforeValue" : 11,
+      "date" : 811692843,
+      "metric" : "protein",
+      "sourceBundle" : "com.dbakp.lumen",
+      "syncIdentifier" : "com.dbakp.lumen.health.v1.01695DB8-4021-41A4-ABBF-63E03DB52DDD.B09C54EF-9451-4013-BE8B-7786DC0372C5.protein",
+      "value" : 11
+    },
+    {
+      "afterReplayCount" : 1,
+      "afterReplayUUID" : "8414AAE9-6442-4194-A256-B85367DC4201",
+      "beforeCount" : 1,
+      "beforeDate" : 811692843,
+      "beforeUUID" : "A1166C78-2A4D-4244-8C59-A5C9B56053AF",
+      "beforeValue" : 23,
+      "date" : 811692843,
+      "metric" : "carbs",
+      "sourceBundle" : "com.dbakp.lumen",
+      "syncIdentifier" : "com.dbakp.lumen.health.v1.01695DB8-4021-41A4-ABBF-63E03DB52DDD.B09C54EF-9451-4013-BE8B-7786DC0372C5.carbs",
+      "value" : 23
+    },
+    {
+      "afterReplayCount" : 1,
+      "afterReplayUUID" : "4B1811C1-44F6-45B4-A968-360ABE6BB215",
+      "beforeCount" : 1,
+      "beforeDate" : 811692843,
+      "beforeUUID" : "D00EBD30-B9CE-43AB-B827-533F78B7F5DF",
+      "beforeValue" : 9,
+      "date" : 811692843,
+      "metric" : "fat",
+      "sourceBundle" : "com.dbakp.lumen",
+      "syncIdentifier" : "com.dbakp.lumen.health.v1.01695DB8-4021-41A4-ABBF-63E03DB52DDD.B09C54EF-9451-4013-BE8B-7786DC0372C5.fat",
+      "value" : 9
+    },
+    {
+      "afterReplayCount" : 1,
+      "afterReplayUUID" : "D600D357-6193-4994-A1F3-5917FD2AA0C2",
+      "beforeCount" : 1,
+      "beforeDate" : 811692843,
+      "beforeUUID" : "3E16CB16-7A33-4741-B5AE-9E1F6FA51B74",
+      "beforeValue" : 4,
+      "date" : 811692843,
+      "metric" : "fiber",
+      "sourceBundle" : "com.dbakp.lumen",
+      "syncIdentifier" : "com.dbakp.lumen.health.v1.01695DB8-4021-41A4-ABBF-63E03DB52DDD.B09C54EF-9451-4013-BE8B-7786DC0372C5.fiber",
+      "value" : 4
+    },
+    {
+      "afterReplayCount" : 1,
+      "afterReplayUUID" : "15788F28-97AA-4A81-814F-D6EE8955123D",
+      "beforeCount" : 1,
+      "beforeDate" : 811692843,
+      "beforeUUID" : "15EACAF5-C01B-4805-9B3F-F3595FC56D20",
+      "beforeValue" : 76.25,
+      "date" : 811692843,
+      "metric" : "weight",
+      "sourceBundle" : "com.dbakp.lumen",
+      "syncIdentifier" : "com.dbakp.lumen.health.v1.01695DB8-4021-41A4-ABBF-63E03DB52DDD.2577E68F-3CDD-437B-AC2C-3300AAA53049.weight",
+      "value" : 76.25
+    }
+  ],
+  "scope" : "Actual simulator HealthKit permission\/save\/query\/equal-version replay and explicit water\/meal deletion through the production adapter; no controlled adapter, foreign-source collision, process termination, signed-iPhone or background\/locked acceptance.",
+  "status" : "HealthKit replay checks passed"
+}

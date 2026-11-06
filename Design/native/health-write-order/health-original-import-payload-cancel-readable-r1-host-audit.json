@@ -1,0 +1,273 @@
+{
+  "status": "passed: native cancel cancels actual payload file read and closes descriptor; abandoned original workspace removed; real Files reselection creates distinct original workspace and native246mL detail; saved bytes unchanged",
+  "source": "durable-source-r104.json",
+  "build": "health-original-import-payload-cancel-native-build-r2.json",
+  "before": {
+    "chat.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "conversations.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "workouts.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "goals.json": {
+      "bytes": 177,
+      "sha256": "7ceaf16447d3539f90429200008aa6055612e0755964d4bccb5130278cbbc1d2",
+      "base64": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjEwMDAwLCJ3ZWlnaHRLZyI6NzV9"
+    },
+    "sleep.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "today.json": {
+      "bytes": 123,
+      "sha256": "39241fad7f0f936e0c8d5537d90d5c08703fa25236df0b63f9801a6212d35b50",
+      "base64": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDRUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9"
+    },
+    "meals.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "water.json": {
+      "bytes": 29,
+      "sha256": "0d3f4ef174c527390388c9fccb88964f5cc0b3bac224a4370cd215d61623e845",
+      "base64": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZVdhdGVyIjo="
+    },
+    "conversation-selection.json": {
+      "bytes": 2,
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "base64": "e30="
+    },
+    "habits.json": {
+      "bytes": 3170,
+      "sha256": "4a74b70d04f38c4a016ce98fa1cc935800d131bd55f6fee01683deeb800ed4fb",
+      "base64": "W3sib2Zmc2V0IjoxODAwLCJpc0VuYWJsZWQiOnRydWUsImljb24iOiJzdW4ubWF4LmZpbGwiLCJkb25lVG9kYXkiOmZhbHNlLCJhbmNob3IiOiJ3YWtlUGx1cyIsImlkIjoibGlnaHQiLCJkZXRhaWwiOiIxMCBtaW4gb2YgZGF5bGlnaHQgd2l0aGluIDMwIG1pbiBvZiB3YWtpbmcgYW5jaG9ycyB5b3VyIGNsb2NrLiIsInRpdGxlIjoiR2V0IGJyaWdodCBsaWdodCJ9LHsib2Zmc2V0IjozNjAwMCwiaXNFbmFibGVkIjp0cnVlLCJpY29uIjoiY3VwLmFuZC5zYXVjZXIuZmlsbCIsImRvbmVUb2RheSI6ZmFsc2UsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsImlkIjoiY2FmZmVpbmUiLCJkZXRhaWwiOiJObyBjYWZmZWluZSB3aXRoaW4gMTBoIG9mIGJlZCDigJQgaGFsZi1saWZlIGlzIH42aC4iLCJ0aXRsZSI6IkNhZmZlaW5lIGN1dG9mZiJ9LHsib2Zmc2V0IjoyMTYwMCwiaXNFbmFibGVkIjp0cnVlLCJpY29uIjoiZmlndXJlLnJ1biIsImRvbmVUb2RheSI6ZmFsc2UsImFuY2hvciI6Indha2VQbHVzIiwiaWQiOiJleGVyY2lzZSIsImRldGFpbCI6IjIwKyBtaW4uIEZpbmlzaCBpbnRlbnNlIHdvcmtvdXRzIDNoKyBiZWZvcmUgYmVkLiIsInRpdGxlIjoiTW92ZSB5b3VyIGJvZHkifSx7Im9mZnNldCI6MjUyMDAsImlzRW5hYmxlZCI6dHJ1ZSwiaWNvbiI6Im1vb24uenp6LmZpbGwiLCJkb25lVG9kYXkiOmZhbHNlLCJhbmNob3IiOiJ3YWtlUGx1cyIsImlkIjoibmFwIiwiZGV0YWlsIjoiSWYgbmFwcGluZzogMjDigJMzMCBtaW4sIGJlZm9yZSB5b3VyIGRpcCBlbmRzLiBObyBsYXRlIG5hcHMuIiwidGl0bGUiOiJTbWFydCBuYXAgd2luZG93In0seyJvZmZzZXQiOjE0NDAwLCJpc0VuYWJsZWQiOnRydWUsImljb24iOiJ3aW5lZ2xhc3MiLCJkb25lVG9kYXkiOmZhbHNlLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJpZCI6ImFsY29ob2wiLCJkZXRhaWwiOiJBbGNvaG9sIGZyYWdtZW50cyBzbGVlcCBldmVuIHdoZW4gaXQgc3BlZWRzIG9uc2V0LiIsInRpdGxlIjoiU2tpcCBuaWdodGNhcCJ9LHsib2Zmc2V0IjoxMDgwMCwiaXNFbmFibGVkIjp0cnVlLCJpY29uIjoiZm9yay5rbmlmZSIsImRvbmVUb2RheSI6ZmFsc2UsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsImlkIjoibWVhbCIsImRldGFpbCI6IkZpbmlzaCBsYXJnZSBtZWFscyAzaCBiZWZvcmUgYmVkOyBsaWdodCBzbmFjayBPSy4iLCJ0aXRsZSI6Ikxhc3QgYmlnIG1lYWwifSx7Im9mZnNldCI6NzIwMCwiaXNFbmFibGVkIjp0cnVlLCJpY29uIjoiaXBob25lLmdlbjIiLCJkb25lVG9kYXkiOmZhbHNlLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJpZCI6InNjcmVlbnMiLCJkZXRhaWwiOiJMb3dlciBicmlnaHRuZXNzICsgTmlnaHQgU2hpZnQgMmggYmVmb3JlIGJlZC4iLCJ0aXRsZSI6IkRpbSBzY3JlZW5zIn0seyJvZmZzZXQiOjU0MDAsImlzRW5hYmxlZCI6dHJ1ZSwiaWNvbiI6ImxpZ2h0YnVsYi5maWxsIiwiZG9uZVRvZGF5IjpmYWxzZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaWQiOiJsaWdodHMiLCJkZXRhaWwiOiJPdmVyaGVhZCBvZmYsIGxhbXBzIGxvdyDigJQgbGlnaHQgZGVsYXlzIG1lbGF0b25pbi4iLCJ0aXRsZSI6IkRpbSB0aGUgbGlnaHRzIn0seyJvZmZzZXQiOjI3MDAsImlzRW5hYmxlZCI6dHJ1ZSwiaWNvbiI6IndpbmQiLCJkb25lVG9kYXkiOmZhbHNlLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJpZCI6IndpbmRkb3duIiwiZGV0YWlsIjoiMjDigJMzMCBtaW4gcml0dWFsOiBzaG93ZXIsIHN0cmV0Y2gsIHJlYWQsIGJyZWF0aGUuIiwidGl0bGUiOiJXaW5kIGRvd24ifSx7Im9mZnNldCI6MCwiaXNFbmFibGVkIjp0cnVlLCJpY29uIjoiYmVkLmRvdWJsZS5maWxsIiwiZG9uZVRvZGF5IjpmYWxzZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaWQiOiJiZWR0aW1lIiwiZGV0YWlsIjoiSGl0IHlvdXIgbWVsYXRvbmluIHdpbmRvdyDigJQgdGhlIGVhc2llc3QgZmFsbGluZy1hc2xlZXAuIiwidGl0bGUiOiJJbiBiZWQgb24gdGltZSJ9LHsib2Zmc2V0IjoxODAwLCJpc0VuYWJsZWQiOnRydWUsImljb24iOiJ0aGVybW9tZXRlci5zbm93Zmxha2UiLCJkb25lVG9kYXkiOmZhbHNlLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJpZCI6ImNvb2wiLCJkZXRhaWwiOiI2NeKAkzY4wrBGIFwvIDE44oCTMjDCsEMsIGJsYWNrb3V0IGRhcmssIHF1aWV0LiIsInRpdGxlIjoiQ29vbCAmIGRhcmsgcm9vbSJ9LHsib2Zmc2V0IjowLCJpc0VuYWJsZWQiOnRydWUsImljb24iOiJhbGFybS5maWxsIiwiZG9uZVRvZGF5IjpmYWxzZSwiYW5jaG9yIjoid2FrZVBsdXMiLCJpZCI6ImNvbnNpc3RlbnQiLCJkZXRhaWwiOiJTYW1lIHdha2UgwrEzMCBtaW4g4oCUIGV2ZW4gd2Vla2VuZHMuICMxIHJoeXRobSBsZXZlci4iLCJ0aXRsZSI6IkNvbnNpc3RlbnQgd2FrZSJ9LHsib2Zmc2V0IjozMDAsImlzRW5hYmxlZCI6dHJ1ZSwiaWNvbiI6ImRyb3AuZmlsbCIsImRvbmVUb2RheSI6ZmFsc2UsImFuY2hvciI6Indha2VQbHVzIiwiaWQiOiJoeWRyYXRpb24iLCJkZXRhaWwiOiJXYXRlciArIGxpZ2h0IGJlZm9yZSBjb2ZmZWUgYm9vc3RzIGFsZXJ0bmVzcy4iLCJ0aXRsZSI6Ik1vcm5pbmcgaHlkcmF0aW9uIn0seyJvZmZzZXQiOjE4MDAwLCJpc0VuYWJsZWQiOnRydWUsImljb24iOiJwZW5jaWwuYW5kLmxpc3QuY2xpcGJvYXJkIiwiZG9uZVRvZGF5IjpmYWxzZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaWQiOiJzdHJlc3MiLCJkZXRhaWwiOiIyLW1pbiB3b3JyeSBsaXN0IGFmdGVyIGRpbm5lciBjbGVhcnMgbmlnaHQgcnVtaW5hdGlvbi4iLCJ0aXRsZSI6IkJyYWluIGR1bXAifSx7Im9mZnNldCI6MTQ0MDAsImlzRW5hYmxlZCI6ZmFsc2UsImljb24iOiJzbW9rZS5maWxsIiwiZG9uZVRvZGF5IjpmYWxzZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaWQiOiJuaWNvdGluZSIsImRldGFpbCI6IlN0aW11bGFudCDigJQgYXZvaWQgd2l0aGluIDRoIG9mIGJlZC4iLCJ0aXRsZSI6Ik5vIGxhdGUgbmljb3RpbmUifSx7Im9mZnNldCI6MTQ0MDAsImlzRW5hYmxlZCI6ZmFsc2UsImljb24iOiJzdW5zZXQuZmlsbCIsImRvbmVUb2RheSI6ZmFsc2UsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsImlkIjoic3Vuc2V0IiwiZGV0YWlsIjoiQSBkdXNrIHdhbGsgc2hhcnBlbnMgRExNTyB0aW1pbmcuIiwidGl0bGUiOiJFdmVuaW5nIGxpZ2h0IHdhbGsifV0="
+    },
+    "profile.json": {
+      "bytes": 184,
+      "sha256": "62d0e10402a3c6c10c8f3397053a08050b734118118b4cc87c68b273f104a2bb",
+      "base64": "eyJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwic2xlZXBOZWVkIjoyOTQwMCwic2xlZXBOZWVkQ29uZmlkZW5jZSI6MC4zLCJ3YWtlR29hbCI6eyJtaW51dGUiOjAsImhvdXIiOjd9LCJpc1N1YnNjcmliZWQiOmZhbHNlLCJvbmJvYXJkaW5nRG9uZSI6dHJ1ZSwibmFtZSI6IlN5bnRoZXRpYyBiYWNrdXAgYmFzZWxpbmUifQ=="
+    },
+    "health-write-intent.json": {
+      "bytes": 123,
+      "sha256": "3bf87ac9d8b7e10d5749c17a7f85003572691ff24256a1383fee276a02f4c2e1",
+      "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI4MUJGQ0U1My0zNjY5LTRCMzAtQjUxMC0yRUYzRjI5QUIzNDUiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+    }
+  },
+  "after": {
+    "chat.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "conversations.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "workouts.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "goals.json": {
+      "bytes": 177,
+      "sha256": "7ceaf16447d3539f90429200008aa6055612e0755964d4bccb5130278cbbc1d2",
+      "base64": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjEwMDAwLCJ3ZWlnaHRLZyI6NzV9"
+    },
+    "sleep.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "today.json": {
+      "bytes": 123,
+      "sha256": "39241fad7f0f936e0c8d5537d90d5c08703fa25236df0b63f9801a6212d35b50",
+      "base64": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDRUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9"
+    },
+    "meals.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "water.json": {
+      "bytes": 29,
+      "sha256": "0d3f4ef174c527390388c9fccb88964f5cc0b3bac224a4370cd215d61623e845",
+      "base64": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZVdhdGVyIjo="
+    },
+    "conversation-selection.json": {
+      "bytes": 2,
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "base64": "e30="
+    },
+    "habits.json": {
+      "bytes": 3170,
+      "sha256": "4a74b70d04f38c4a016ce98fa1cc935800d131bd55f6fee01683deeb800ed4fb",
+      "base64": "W3sib2Zmc2V0IjoxODAwLCJpc0VuYWJsZWQiOnRydWUsImljb24iOiJzdW4ubWF4LmZpbGwiLCJkb25lVG9kYXkiOmZhbHNlLCJhbmNob3IiOiJ3YWtlUGx1cyIsImlkIjoibGlnaHQiLCJkZXRhaWwiOiIxMCBtaW4gb2YgZGF5bGlnaHQgd2l0aGluIDMwIG1pbiBvZiB3YWtpbmcgYW5jaG9ycyB5b3VyIGNsb2NrLiIsInRpdGxlIjoiR2V0IGJyaWdodCBsaWdodCJ9LHsib2Zmc2V0IjozNjAwMCwiaXNFbmFibGVkIjp0cnVlLCJpY29uIjoiY3VwLmFuZC5zYXVjZXIuZmlsbCIsImRvbmVUb2RheSI6ZmFsc2UsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsImlkIjoiY2FmZmVpbmUiLCJkZXRhaWwiOiJObyBjYWZmZWluZSB3aXRoaW4gMTBoIG9mIGJlZCDigJQgaGFsZi1saWZlIGlzIH42aC4iLCJ0aXRsZSI6IkNhZmZlaW5lIGN1dG9mZiJ9LHsib2Zmc2V0IjoyMTYwMCwiaXNFbmFibGVkIjp0cnVlLCJpY29uIjoiZmlndXJlLnJ1biIsImRvbmVUb2RheSI6ZmFsc2UsImFuY2hvciI6Indha2VQbHVzIiwiaWQiOiJleGVyY2lzZSIsImRldGFpbCI6IjIwKyBtaW4uIEZpbmlzaCBpbnRlbnNlIHdvcmtvdXRzIDNoKyBiZWZvcmUgYmVkLiIsInRpdGxlIjoiTW92ZSB5b3VyIGJvZHkifSx7Im9mZnNldCI6MjUyMDAsImlzRW5hYmxlZCI6dHJ1ZSwiaWNvbiI6Im1vb24uenp6LmZpbGwiLCJkb25lVG9kYXkiOmZhbHNlLCJhbmNob3IiOiJ3YWtlUGx1cyIsImlkIjoibmFwIiwiZGV0YWlsIjoiSWYgbmFwcGluZzogMjDigJMzMCBtaW4sIGJlZm9yZSB5b3VyIGRpcCBlbmRzLiBObyBsYXRlIG5hcHMuIiwidGl0bGUiOiJTbWFydCBuYXAgd2luZG93In0seyJvZmZzZXQiOjE0NDAwLCJpc0VuYWJsZWQiOnRydWUsImljb24iOiJ3aW5lZ2xhc3MiLCJkb25lVG9kYXkiOmZhbHNlLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJpZCI6ImFsY29ob2wiLCJkZXRhaWwiOiJBbGNvaG9sIGZyYWdtZW50cyBzbGVlcCBldmVuIHdoZW4gaXQgc3BlZWRzIG9uc2V0LiIsInRpdGxlIjoiU2tpcCBuaWdodGNhcCJ9LHsib2Zmc2V0IjoxMDgwMCwiaXNFbmFibGVkIjp0cnVlLCJpY29uIjoiZm9yay5rbmlmZSIsImRvbmVUb2RheSI6ZmFsc2UsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsImlkIjoibWVhbCIsImRldGFpbCI6IkZpbmlzaCBsYXJnZSBtZWFscyAzaCBiZWZvcmUgYmVkOyBsaWdodCBzbmFjayBPSy4iLCJ0aXRsZSI6Ikxhc3QgYmlnIG1lYWwifSx7Im9mZnNldCI6NzIwMCwiaXNFbmFibGVkIjp0cnVlLCJpY29uIjoiaXBob25lLmdlbjIiLCJkb25lVG9kYXkiOmZhbHNlLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJpZCI6InNjcmVlbnMiLCJkZXRhaWwiOiJMb3dlciBicmlnaHRuZXNzICsgTmlnaHQgU2hpZnQgMmggYmVmb3JlIGJlZC4iLCJ0aXRsZSI6IkRpbSBzY3JlZW5zIn0seyJvZmZzZXQiOjU0MDAsImlzRW5hYmxlZCI6dHJ1ZSwiaWNvbiI6ImxpZ2h0YnVsYi5maWxsIiwiZG9uZVRvZGF5IjpmYWxzZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaWQiOiJsaWdodHMiLCJkZXRhaWwiOiJPdmVyaGVhZCBvZmYsIGxhbXBzIGxvdyDigJQgbGlnaHQgZGVsYXlzIG1lbGF0b25pbi4iLCJ0aXRsZSI6IkRpbSB0aGUgbGlnaHRzIn0seyJvZmZzZXQiOjI3MDAsImlzRW5hYmxlZCI6dHJ1ZSwiaWNvbiI6IndpbmQiLCJkb25lVG9kYXkiOmZhbHNlLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJpZCI6IndpbmRkb3duIiwiZGV0YWlsIjoiMjDigJMzMCBtaW4gcml0dWFsOiBzaG93ZXIsIHN0cmV0Y2gsIHJlYWQsIGJyZWF0aGUuIiwidGl0bGUiOiJXaW5kIGRvd24ifSx7Im9mZnNldCI6MCwiaXNFbmFibGVkIjp0cnVlLCJpY29uIjoiYmVkLmRvdWJsZS5maWxsIiwiZG9uZVRvZGF5IjpmYWxzZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaWQiOiJiZWR0aW1lIiwiZGV0YWlsIjoiSGl0IHlvdXIgbWVsYXRvbmluIHdpbmRvdyDigJQgdGhlIGVhc2llc3QgZmFsbGluZy1hc2xlZXAuIiwidGl0bGUiOiJJbiBiZWQgb24gdGltZSJ9LHsib2Zmc2V0IjoxODAwLCJpc0VuYWJsZWQiOnRydWUsImljb24iOiJ0aGVybW9tZXRlci5zbm93Zmxha2UiLCJkb25lVG9kYXkiOmZhbHNlLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJpZCI6ImNvb2wiLCJkZXRhaWwiOiI2NeKAkzY4wrBGIFwvIDE44oCTMjDCsEMsIGJsYWNrb3V0IGRhcmssIHF1aWV0LiIsInRpdGxlIjoiQ29vbCAmIGRhcmsgcm9vbSJ9LHsib2Zmc2V0IjowLCJpc0VuYWJsZWQiOnRydWUsImljb24iOiJhbGFybS5maWxsIiwiZG9uZVRvZGF5IjpmYWxzZSwiYW5jaG9yIjoid2FrZVBsdXMiLCJpZCI6ImNvbnNpc3RlbnQiLCJkZXRhaWwiOiJTYW1lIHdha2UgwrEzMCBtaW4g4oCUIGV2ZW4gd2Vla2VuZHMuICMxIHJoeXRobSBsZXZlci4iLCJ0aXRsZSI6IkNvbnNpc3RlbnQgd2FrZSJ9LHsib2Zmc2V0IjozMDAsImlzRW5hYmxlZCI6dHJ1ZSwiaWNvbiI6ImRyb3AuZmlsbCIsImRvbmVUb2RheSI6ZmFsc2UsImFuY2hvciI6Indha2VQbHVzIiwiaWQiOiJoeWRyYXRpb24iLCJkZXRhaWwiOiJXYXRlciArIGxpZ2h0IGJlZm9yZSBjb2ZmZWUgYm9vc3RzIGFsZXJ0bmVzcy4iLCJ0aXRsZSI6Ik1vcm5pbmcgaHlkcmF0aW9uIn0seyJvZmZzZXQiOjE4MDAwLCJpc0VuYWJsZWQiOnRydWUsImljb24iOiJwZW5jaWwuYW5kLmxpc3QuY2xpcGJvYXJkIiwiZG9uZVRvZGF5IjpmYWxzZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaWQiOiJzdHJlc3MiLCJkZXRhaWwiOiIyLW1pbiB3b3JyeSBsaXN0IGFmdGVyIGRpbm5lciBjbGVhcnMgbmlnaHQgcnVtaW5hdGlvbi4iLCJ0aXRsZSI6IkJyYWluIGR1bXAifSx7Im9mZnNldCI6MTQ0MDAsImlzRW5hYmxlZCI6ZmFsc2UsImljb24iOiJzbW9rZS5maWxsIiwiZG9uZVRvZGF5IjpmYWxzZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaWQiOiJuaWNvdGluZSIsImRldGFpbCI6IlN0aW11bGFudCDigJQgYXZvaWQgd2l0aGluIDRoIG9mIGJlZC4iLCJ0aXRsZSI6Ik5vIGxhdGUgbmljb3RpbmUifSx7Im9mZnNldCI6MTQ0MDAsImlzRW5hYmxlZCI6ZmFsc2UsImljb24iOiJzdW5zZXQuZmlsbCIsImRvbmVUb2RheSI6ZmFsc2UsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsImlkIjoic3Vuc2V0IiwiZGV0YWlsIjoiQSBkdXNrIHdhbGsgc2hhcnBlbnMgRExNTyB0aW1pbmcuIiwidGl0bGUiOiJFdmVuaW5nIGxpZ2h0IHdhbGsifV0="
+    },
+    "profile.json": {
+      "bytes": 184,
+      "sha256": "62d0e10402a3c6c10c8f3397053a08050b734118118b4cc87c68b273f104a2bb",
+      "base64": "eyJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwic2xlZXBOZWVkIjoyOTQwMCwic2xlZXBOZWVkQ29uZmlkZW5jZSI6MC4zLCJ3YWtlR29hbCI6eyJtaW51dGUiOjAsImhvdXIiOjd9LCJpc1N1YnNjcmliZWQiOmZhbHNlLCJvbmJvYXJkaW5nRG9uZSI6dHJ1ZSwibmFtZSI6IlN5bnRoZXRpYyBiYWNrdXAgYmFzZWxpbmUifQ=="
+    },
+    "health-write-intent.json": {
+      "bytes": 123,
+      "sha256": "3bf87ac9d8b7e10d5749c17a7f85003572691ff24256a1383fee276a02f4c2e1",
+      "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI4MUJGQ0U1My0zNjY5LTRCMzAtQjUxMC0yRUYzRjI5QUIzNDUiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+    }
+  },
+  "heldObservations": [
+    {
+      "record": {
+        "bytesRead": 831,
+        "descriptor": 4,
+        "file": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/51142A33-0404-4AE6-BE3D-8F3105653DD0/tmp/LumenBackupWork-v1-59290-91320E48-1CFA-4474-B558-E0741229EFE5/selected-backup",
+        "inode": 41649468,
+        "nonce": "C34A0E29-50C0-44CA-8FCB-084009C6C281",
+        "ordinal": 1,
+        "phase": "held",
+        "pid": 59290,
+        "readBoundary": "original-payload",
+        "scope": "selected-import",
+        "size": 831,
+        "uiCancelled": false,
+        "workerControlMatchesUI": true
+      },
+      "sourceBytes": "eyJhcHAiOiJMdW1lbiIsInJlYWRhYmxlVmVyc2lvbiI6MSwiZXhwb3J0ZWRBdCI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwicHJvZmlsZSI6eyJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwiaXNTdWJzY3JpYmVkIjpmYWxzZSwibmFtZSI6IlN5bnRoZXRpYyBiYWNrdXAgcmVjb3ZlcnkiLCJvbmJvYXJkaW5nRG9uZSI6ZmFsc2UsInNsZWVwTmVlZCI6Mjk0MDAsInNsZWVwTmVlZENvbmZpZGVuY2UiOjAuMywid2FrZUdvYWwiOnsiaG91ciI6NywibWludXRlIjowfX0sImdvYWxzIjp7ImFjdGl2ZUNhbEdvYWwiOjYwMCwiYWN0aXZpdHlMZXZlbCI6Im1vZGVyYXRlIiwiYWdlIjozMCwiZXhlcmNpc2VHb2FsTWluIjozMCwiZ29hbCI6Im1haW50YWluIiwiaGVpZ2h0Q20iOjE3OCwic2V4IjoidW5zcGVjaWZpZWQiLCJzdGFuZEdvYWwiOjEyLCJzdGVwR29hbCI6MTAwMDAsIndlaWdodEtnIjo3NX0sInBlcnNvbmFsLWNvbnRleHQiOnsiYWxsZXJnaWVzIjoiIiwiZm9jdXMiOiIiLCJmb29kUHJlZmVyZW5jZXMiOiIiLCJpbmNsdWRlSW5Bc3Npc3RhbnQiOmZhbHNlLCJsaW1pdGF0aW9ucyI6IiIsIm5vdGVzIjoiIiwic2NoZWR1bGUiOiIifSwiaGFiaXRzIjpbXSwic2xlZXAiOltdLCJtZWFscyI6W10sIndvcmtvdXRzIjpbXSwid2F0ZXIiOlt7ImRhdGUiOiIyMDI2LTExLTAyVDEyOjAwOjAwWiIsImlkIjoic3ludGhldGljLWJhY2t1cC1yZWNvdmVyeS13YXRlciIsIm1sIjoyNDZ9XSwiY29udmVyc2F0aW9ucyI6W10sInN5bXB0b21zIjpbXSwiY2hlY2staW5zIjpbXSwiZG9jdW1lbnRzIjpbXSwiaW1wb3J0ZWQtZGF5cyI6W10sImltcG9ydC1yZWNlaXB0cyI6W119",
+      "sourceSHA256": "bad71f0672b2e44ec7d2828be49d3cc758b4dc48c57b6639d55be5a72bc9da38",
+      "openDescriptorReadback": "p59290\nf4\ntREG\ni41649468\nn/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/51142A33-0404-4AE6-BE3D-8F3105653DD0/tmp/LumenBackupWork-v1-59290-91320E48-1CFA-4474-B558-E0741229EFE5/selected-backup\n",
+      "treeMatchesBefore": true,
+      "workspace": {
+        "directory": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/51142A33-0404-4AE6-BE3D-8F3105653DD0/tmp/LumenBackupWork-v1-59290-91320E48-1CFA-4474-B558-E0741229EFE5",
+        "owner": {
+          "pid": 59290,
+          "version": 1,
+          "id": "91320E48-1CFA-4474-B558-E0741229EFE5"
+        },
+        "originalFileName": "Lumen-readable-health-small.json",
+        "bytes": 831,
+        "sha256": "bad71f0672b2e44ec7d2828be49d3cc758b4dc48c57b6639d55be5a72bc9da38",
+        "providerSHA256": "bad71f0672b2e44ec7d2828be49d3cc758b4dc48c57b6639d55be5a72bc9da38",
+        "files": {
+          ".lumen-workspace-owner.json": {
+            "bytes": 69,
+            "sha256": "ce6954a534162fe19df969b46d24bbeb318710d85a8b38d6ce8e06a8add3f999",
+            "base64": "eyJwaWQiOjU5MjkwLCJ2ZXJzaW9uIjoxLCJpZCI6IjkxMzIwRTQ4LTFDRkEtNDQ3NC1CNTU4LUUwNzQxMjI5RUZFNSJ9"
+          },
+          "selected-backup": {
+            "bytes": 831,
+            "sha256": "bad71f0672b2e44ec7d2828be49d3cc758b4dc48c57b6639d55be5a72bc9da38",
+            "base64": "eyJhcHAiOiJMdW1lbiIsInJlYWRhYmxlVmVyc2lvbiI6MSwiZXhwb3J0ZWRBdCI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwicHJvZmlsZSI6eyJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwiaXNTdWJzY3JpYmVkIjpmYWxzZSwibmFtZSI6IlN5bnRoZXRpYyBiYWNrdXAgcmVjb3ZlcnkiLCJvbmJvYXJkaW5nRG9uZSI6ZmFsc2UsInNsZWVwTmVlZCI6Mjk0MDAsInNsZWVwTmVlZENvbmZpZGVuY2UiOjAuMywid2FrZUdvYWwiOnsiaG91ciI6NywibWludXRlIjowfX0sImdvYWxzIjp7ImFjdGl2ZUNhbEdvYWwiOjYwMCwiYWN0aXZpdHlMZXZlbCI6Im1vZGVyYXRlIiwiYWdlIjozMCwiZXhlcmNpc2VHb2FsTWluIjozMCwiZ29hbCI6Im1haW50YWluIiwiaGVpZ2h0Q20iOjE3OCwic2V4IjoidW5zcGVjaWZpZWQiLCJzdGFuZEdvYWwiOjEyLCJzdGVwR29hbCI6MTAwMDAsIndlaWdodEtnIjo3NX0sInBlcnNvbmFsLWNvbnRleHQiOnsiYWxsZXJnaWVzIjoiIiwiZm9jdXMiOiIiLCJmb29kUHJlZmVyZW5jZXMiOiIiLCJpbmNsdWRlSW5Bc3Npc3RhbnQiOmZhbHNlLCJsaW1pdGF0aW9ucyI6IiIsIm5vdGVzIjoiIiwic2NoZWR1bGUiOiIifSwiaGFiaXRzIjpbXSwic2xlZXAiOltdLCJtZWFscyI6W10sIndvcmtvdXRzIjpbXSwid2F0ZXIiOlt7ImRhdGUiOiIyMDI2LTExLTAyVDEyOjAwOjAwWiIsImlkIjoic3ludGhldGljLWJhY2t1cC1yZWNvdmVyeS13YXRlciIsIm1sIjoyNDZ9XSwiY29udmVyc2F0aW9ucyI6W10sInN5bXB0b21zIjpbXSwiY2hlY2staW5zIjpbXSwiZG9jdW1lbnRzIjpbXSwiaW1wb3J0ZWQtZGF5cyI6W10sImltcG9ydC1yZWNlaXB0cyI6W119"
+          }
+        }
+      },
+      "observedAfterNativeAttachment": "original-import-payload-cancel-readable-held"
+    },
+    {
+      "record": {
+        "bytesRead": 831,
+        "descriptor": 4,
+        "file": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/51142A33-0404-4AE6-BE3D-8F3105653DD0/tmp/LumenBackupWork-v1-59290-DACBE71C-533F-48E1-9747-C8C381BB8086/selected-backup",
+        "inode": 41649634,
+        "nonce": "61C44FB7-58B9-411F-AB87-ACDF61460787",
+        "ordinal": 2,
+        "phase": "held",
+        "pid": 59290,
+        "readBoundary": "original-payload",
+        "scope": "selected-import",
+        "size": 831,
+        "uiCancelled": false,
+        "workerControlMatchesUI": true
+      },
+      "sourceBytes": "eyJhcHAiOiJMdW1lbiIsInJlYWRhYmxlVmVyc2lvbiI6MSwiZXhwb3J0ZWRBdCI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwicHJvZmlsZSI6eyJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwiaXNTdWJzY3JpYmVkIjpmYWxzZSwibmFtZSI6IlN5bnRoZXRpYyBiYWNrdXAgcmVjb3ZlcnkiLCJvbmJvYXJkaW5nRG9uZSI6ZmFsc2UsInNsZWVwTmVlZCI6Mjk0MDAsInNsZWVwTmVlZENvbmZpZGVuY2UiOjAuMywid2FrZUdvYWwiOnsiaG91ciI6NywibWludXRlIjowfX0sImdvYWxzIjp7ImFjdGl2ZUNhbEdvYWwiOjYwMCwiYWN0aXZpdHlMZXZlbCI6Im1vZGVyYXRlIiwiYWdlIjozMCwiZXhlcmNpc2VHb2FsTWluIjozMCwiZ29hbCI6Im1haW50YWluIiwiaGVpZ2h0Q20iOjE3OCwic2V4IjoidW5zcGVjaWZpZWQiLCJzdGFuZEdvYWwiOjEyLCJzdGVwR29hbCI6MTAwMDAsIndlaWdodEtnIjo3NX0sInBlcnNvbmFsLWNvbnRleHQiOnsiYWxsZXJnaWVzIjoiIiwiZm9jdXMiOiIiLCJmb29kUHJlZmVyZW5jZXMiOiIiLCJpbmNsdWRlSW5Bc3Npc3RhbnQiOmZhbHNlLCJsaW1pdGF0aW9ucyI6IiIsIm5vdGVzIjoiIiwic2NoZWR1bGUiOiIifSwiaGFiaXRzIjpbXSwic2xlZXAiOltdLCJtZWFscyI6W10sIndvcmtvdXRzIjpbXSwid2F0ZXIiOlt7ImRhdGUiOiIyMDI2LTExLTAyVDEyOjAwOjAwWiIsImlkIjoic3ludGhldGljLWJhY2t1cC1yZWNvdmVyeS13YXRlciIsIm1sIjoyNDZ9XSwiY29udmVyc2F0aW9ucyI6W10sInN5bXB0b21zIjpbXSwiY2hlY2staW5zIjpbXSwiZG9jdW1lbnRzIjpbXSwiaW1wb3J0ZWQtZGF5cyI6W10sImltcG9ydC1yZWNlaXB0cyI6W119",
+      "sourceSHA256": "bad71f0672b2e44ec7d2828be49d3cc758b4dc48c57b6639d55be5a72bc9da38",
+      "openDescriptorReadback": "p59290\nf4\ntREG\ni41649634\nn/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/51142A33-0404-4AE6-BE3D-8F3105653DD0/tmp/LumenBackupWork-v1-59290-DACBE71C-533F-48E1-9747-C8C381BB8086/selected-backup\n",
+      "treeMatchesBefore": true,
+      "workspace": {
+        "directory": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/51142A33-0404-4AE6-BE3D-8F3105653DD0/tmp/LumenBackupWork-v1-59290-DACBE71C-533F-48E1-9747-C8C381BB8086",
+        "owner": {
+          "id": "DACBE71C-533F-48E1-9747-C8C381BB8086",
+          "pid": 59290,
+          "version": 1
+        },
+        "originalFileName": "Lumen-readable-health-small.json",
+        "bytes": 831,
+        "sha256": "bad71f0672b2e44ec7d2828be49d3cc758b4dc48c57b6639d55be5a72bc9da38",
+        "providerSHA256": "bad71f0672b2e44ec7d2828be49d3cc758b4dc48c57b6639d55be5a72bc9da38",
+        "files": {
+          ".lumen-workspace-owner.json": {
+            "bytes": 69,
+            "sha256": "acb49751df82d1cbc5f199567ca04f86e293d0bdcc90ac01fb5f52eade8f5273",
+            "base64": "eyJpZCI6IkRBQ0JFNzFDLTUzM0YtNDhFMS05NzQ3LUM4QzM4MUJCODA4NiIsInBpZCI6NTkyOTAsInZlcnNpb24iOjF9"
+          },
+          "selected-backup": {
+            "bytes": 831,
+            "sha256": "bad71f0672b2e44ec7d2828be49d3cc758b4dc48c57b6639d55be5a72bc9da38",
+            "base64": "eyJhcHAiOiJMdW1lbiIsInJlYWRhYmxlVmVyc2lvbiI6MSwiZXhwb3J0ZWRBdCI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwicHJvZmlsZSI6eyJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwiaXNTdWJzY3JpYmVkIjpmYWxzZSwibmFtZSI6IlN5bnRoZXRpYyBiYWNrdXAgcmVjb3ZlcnkiLCJvbmJvYXJkaW5nRG9uZSI6ZmFsc2UsInNsZWVwTmVlZCI6Mjk0MDAsInNsZWVwTmVlZENvbmZpZGVuY2UiOjAuMywid2FrZUdvYWwiOnsiaG91ciI6NywibWludXRlIjowfX0sImdvYWxzIjp7ImFjdGl2ZUNhbEdvYWwiOjYwMCwiYWN0aXZpdHlMZXZlbCI6Im1vZGVyYXRlIiwiYWdlIjozMCwiZXhlcmNpc2VHb2FsTWluIjozMCwiZ29hbCI6Im1haW50YWluIiwiaGVpZ2h0Q20iOjE3OCwic2V4IjoidW5zcGVjaWZpZWQiLCJzdGFuZEdvYWwiOjEyLCJzdGVwR29hbCI6MTAwMDAsIndlaWdodEtnIjo3NX0sInBlcnNvbmFsLWNvbnRleHQiOnsiYWxsZXJnaWVzIjoiIiwiZm9jdXMiOiIiLCJmb29kUHJlZmVyZW5jZXMiOiIiLCJpbmNsdWRlSW5Bc3Npc3RhbnQiOmZhbHNlLCJsaW1pdGF0aW9ucyI6IiIsIm5vdGVzIjoiIiwic2NoZWR1bGUiOiIifSwiaGFiaXRzIjpbXSwic2xlZXAiOltdLCJtZWFscyI6W10sIndvcmtvdXRzIjpbXSwid2F0ZXIiOlt7ImRhdGUiOiIyMDI2LTExLTAyVDEyOjAwOjAwWiIsImlkIjoic3ludGhldGljLWJhY2t1cC1yZWNvdmVyeS13YXRlciIsIm1sIjoyNDZ9XSwiY29udmVyc2F0aW9ucyI6W10sInN5bXB0b21zIjpbXSwiY2hlY2staW5zIjpbXSwiZG9jdW1lbnRzIjpbXSwiaW1wb3J0ZWQtZGF5cyI6W10sImltcG9ydC1yZWNlaXB0cyI6W119"
+          }
+        }
+      },
+      "observedAfterNativeAttachment": "original-import-payload-cancel-readable-retry-held"
+    }
+  ],
+  "protocol": {
+    "attempts": [
+      {
+        "bytesRead": 831,
+        "descriptor": 4,
+        "descriptorCloseSucceeded": true,
+        "file": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/51142A33-0404-4AE6-BE3D-8F3105653DD0/tmp/LumenBackupWork-v1-59290-91320E48-1CFA-4474-B558-E0741229EFE5/selected-backup",
+        "inode": 41649468,
+        "nonce": "C34A0E29-50C0-44CA-8FCB-084009C6C281",
+        "ordinal": 1,
+        "phase": "cancelled",
+        "pid": 59290,
+        "readBoundary": "original-payload",
+        "scope": "selected-import",
+        "size": 831,
+        "uiCancelled": true,
+        "workerControlMatchesUI": true
+      },
+      {
+        "bytesRead": 831,
+        "descriptor": 4,
+        "descriptorCloseSucceeded": true,
+        "file": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/51142A33-0404-4AE6-BE3D-8F3105653DD0/tmp/LumenBackupWork-v1-59290-DACBE71C-533F-48E1-9747-C8C381BB8086/selected-backup",
+        "inode": 41649634,
+        "nonce": "61C44FB7-58B9-411F-AB87-ACDF61460787",
+        "ordinal": 2,
+        "phase": "released",
+        "pid": 59290,
+        "readBoundary": "original-payload",
+        "scope": "selected-import",
+        "size": 831,
+        "uiCancelled": false,
+        "workerControlMatchesUI": true
+      }
+    ],
+    "root": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Shared/AppGroup/E300DD24-B5D1-4A6A-BF1B-E66173E3428B/LumenData"
+  },
+  "stopObservation": {
+    "observedAfterNativeAttachment": "original-import-payload-cancel-readable-cancelled-ready",
+    "observedAtUnix": 1793843435.08586,
+    "cancelledReaderClosed": true,
+    "originalWorkspaceAbsent": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/51142A33-0404-4AE6-BE3D-8F3105653DD0/tmp/LumenBackupWork-v1-59290-91320E48-1CFA-4474-B558-E0741229EFE5",
+    "allProtectedBytesExact": true,
+    "oldWorkspaceOpenPaths": [],
+    "actualProcessDescriptorScanSucceeded": true
+  },
+  "producerExitCode": 0,
+  "verifierSHA256": "f752ed3090b90e6d9b21724ed4a9bf20a83aae34c79382bc88cd0c6408219329",
+  "cleanupWaitObservations": [],
+  "scope": "One main-normal readable original-import payload file read cancel/reselection. Copy/hash/atomic decode/unlock windows, changed bytes, selected-photo/full workspace lifetime/appearance and all original contracts remain required."
+}

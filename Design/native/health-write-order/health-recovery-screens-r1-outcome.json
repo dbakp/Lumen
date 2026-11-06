@@ -1,0 +1,13 @@
+{
+  "status": "failed visible candidate, no acceptance",
+  "source": "durable-source-r23.json",
+  "summary": "health-recovery-screens-r1-summary.json",
+  "failed": 3,
+  "passed": 0,
+  "testedDevice": "922E011C-3895-4DB1-9C9A-1D3A977226CF",
+  "mainDestination": "not executed; canceled after compact failures",
+  "exitCode": 73,
+  "reason": "Two tests waited for success static-text before revealing its offscreen section; largest waited for an offscreen copy row. R24 changes only test scrolling and element type; rerun must establish whether runtime recovery itself succeeded.",
+  "cancellation": "Sent interrupt to own xcodebuild after authoritative three-failure compact suite; then terminated its own simctl diagnose child 22097 to finish cancellation and avoid unnecessary large failure diagnostics. Shared runtimes/simulators/other projects untouched.",
+  "diagnosticFrame": "HealthRecoveryScreenR1-live.png is SpringBoard after compact tests; no product UI acceptance."
+}

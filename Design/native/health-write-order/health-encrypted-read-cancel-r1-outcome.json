@@ -1,0 +1,56 @@
+{
+  "status": "PROGRESS: Source106 encrypted read repair; exact baseline fixture replay7/7, current full2166/2166 and native backup/photo25/25 pass; full goal active/Batch43 unpublished.",
+  "source": "durable-source-r106.json",
+  "pureSource": "local-domain-pure-source-r61.json",
+  "contract": "health-encrypted-read-cancel-r1-contract.json",
+  "baseline": "health-encrypted-read-r1-baseline-outcome.json",
+  "report": "health-encrypted-read-r1-report.json",
+  "fixture": {
+    "file": "health-encrypted-read-r1-input.lumenbackup",
+    "bytes": 20480,
+    "sha256": "4cbecfaf960164ed1cfde124aba63c0e9c19678076f360ec8433586c1e9ff080",
+    "focusUTF8Bytes": 204800
+  },
+  "builds": [
+    "health-encrypted-read-pure-build-r1.json",
+    "health-encrypted-read-native-build-r1.json"
+  ],
+  "execution": {
+    "focusedPassed": 7,
+    "focusedExitCode": 0,
+    "fullPassed": 2166,
+    "fullExitCode": 0,
+    "nativeServicePassed": 25,
+    "nativeTestsPassed": 1,
+    "nativeTestsFailed": 0,
+    "nativeExitCode": 0,
+    "hostAudit": "health-backup-photo-native-r5-host-audit.json",
+    "nativeSummary": "health-backup-photo-native-r5-summary.json"
+  },
+  "productionChanges": [
+    "Owned no-follow/nonblocking regular-file descriptor with automaticClose false and explicit final fd close.",
+    "Actual decrypted read buffers capped at64KiB; progress/control checks inside a record, around password/attribute/decode/validation/error classification.",
+    "Actual cancellation handler reaches decrypted stream; lock gate detaches callbacks before stream destruction without holding the gate during reads; explicit/deferred decrypted close runs once.",
+    "Existing format/record/expanded/compression limits retained."
+  ],
+  "observedRepair": {
+    "cancelledWrongPassword": "PackageError.unlock at105 -> CancellationError at106",
+    "largeFinalRecord": {
+      "baselineCompletedAtCancel": 4,
+      "currentCompletedAtCancel": 3,
+      "total": 4,
+      "baselineLargestReadingProgressStep": 204963,
+      "currentLargestReadingProgressStep": 65536,
+      "currentBytesAtCancel": 66409
+    },
+    "retry": "Exact water137 and204800UTF8-byte focus restored; same encrypted input bytes unchanged; failed/explicitly released preview directories absent."
+  },
+  "scope": "Actual encrypted core file/password/decryption and exact-input replay. Native25 is service regression with independent archive/photo/receipt/omission/healthy-merge checks. One DEBUG status PNG retained unopened;0attachment JSON. No actual held native encrypted UI/control/descriptor/stream close or parent same-file password retry acceptance. Atomic key derivation/attributes/internal framework work/Foundation decode preemption and full capacity remain open.",
+  "remaining": "Keep full nextRequired/remainingScope in durable-progress-r106.json, all original contracts/eight groups, all-domain recovery/photos/cache/ordinary healthy merge/appearances/critic/Health daemon/Watch/widget/interruption/SDK/Release/device/publication and broader product goal.",
+  "logs": "health-backup-r1-logs.json",
+  "storage": {
+    "availableApproxGiB": 66,
+    "manualRecoveredBytes": 0,
+    "policy": "Keep unpublished evidence/current inputs/supplied skill and immediately reused native/pure/package roots; no large fixture/runtime download, unrelated/global cleanup or documentation-only build."
+  }
+}

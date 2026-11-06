@@ -1,0 +1,111 @@
+{
+  "checks": [
+    {
+      "name": "actual checked conversation startup is terminal before Health transactions",
+      "passed": true
+    },
+    {
+      "name": "dedicated synthetic launch has no unrelated pending external intent",
+      "passed": true
+    },
+    {
+      "name": "actual first water-plus-journal staging I/O failure reaches HealthStore caller",
+      "passed": true
+    },
+    {
+      "name": "failed combined native commit retains exact files/live records and sends no adapter operation",
+      "passed": true
+    },
+    {
+      "name": "actual water local record and durable payload exist before worker actor turn",
+      "passed": true
+    },
+    {
+      "name": "water retry or first acknowledgement completes one external identity",
+      "passed": true
+    },
+    {
+      "name": "actual meal saves calories then retains four components after denied protein",
+      "passed": true
+    },
+    {
+      "name": "saved meal remains visible with accurate permission/retry state",
+      "passed": true
+    },
+    {
+      "name": "actual paired goals/snapshot/weight intent commits and independent weight completes",
+      "passed": true
+    },
+    {
+      "name": "failed meal type remains pending while weight completes",
+      "passed": true
+    },
+    {
+      "name": "actual retry completes all seven water/meal/weight components without resending acknowledged calories",
+      "passed": true
+    },
+    {
+      "name": "actual second water reaches held adapter save",
+      "passed": true
+    },
+    {
+      "name": "actual Undo atomically removes local water and persists original-identity deletion",
+      "passed": true
+    },
+    {
+      "name": "native deletion cannot overtake the held save callback",
+      "passed": true
+    },
+    {
+      "name": "actual held save completes before delete, with no final orphaned adapter record",
+      "passed": true
+    },
+    {
+      "name": "native Undo status follows its own durable deletion acknowledgement",
+      "passed": true
+    }
+  ],
+  "external": {
+    "com.dbakp.lumen.health.v1.15AAB9D8-156F-4CC8-9C80-93A2765421A9.56FBCBB0-B02C-4DA5-BD9A-1D32EC30CE39.weight": 75,
+    "com.dbakp.lumen.health.v1.15AAB9D8-156F-4CC8-9C80-93A2765421A9.B9FFBC7C-119B-45DF-A64B-2D28B3493002.water": 250,
+    "com.dbakp.lumen.health.v1.15AAB9D8-156F-4CC8-9C80-93A2765421A9.F8649F76-BE46-460E-9F3F-5C652551C455.calories": 200,
+    "com.dbakp.lumen.health.v1.15AAB9D8-156F-4CC8-9C80-93A2765421A9.F8649F76-BE46-460E-9F3F-5C652551C455.carbs": 20,
+    "com.dbakp.lumen.health.v1.15AAB9D8-156F-4CC8-9C80-93A2765421A9.F8649F76-BE46-460E-9F3F-5C652551C455.fat": 8,
+    "com.dbakp.lumen.health.v1.15AAB9D8-156F-4CC8-9C80-93A2765421A9.F8649F76-BE46-460E-9F3F-5C652551C455.fiber": 3,
+    "com.dbakp.lumen.health.v1.15AAB9D8-156F-4CC8-9C80-93A2765421A9.F8649F76-BE46-460E-9F3F-5C652551C455.protein": 10
+  },
+  "externalComponents": 7,
+  "liveMealIDs": [
+    "synthetic-durable-43-meal"
+  ],
+  "liveWaterIDs": [
+    "88D6A6DB-0F3D-4B98-939E-FD35A18C3E82"
+  ],
+  "liveWeight": 75,
+  "pendingCount": 0,
+  "persistedFiles": {
+    "goals.json": "eyJnb2FsIjoibWFpbnRhaW4iLCJzdGFuZEdvYWwiOjEyLCJ3ZWlnaHRLZyI6NzUsImhlaWdodENtIjoxNzgsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImFjdGl2ZUNhbEdvYWwiOjYwMCwic3RlcEdvYWwiOjEwMDAwLCJleGVyY2lzZUdvYWxNaW4iOjMwLCJzZXgiOiJ1bnNwZWNpZmllZCJ9",
+    "health-write-intent.json": "eyJldmVudHMiOlt7ImFja25vd2xlZGdlZCI6WyJ3YXRlciJdLCJhY3Rpb24iOiJzYXZlIiwiY29tcG9uZW50cyI6W3siZGF0ZSI6ODE1Mzk3MjEwLjg0Njk5NiwibWV0cmljIjoid2F0ZXIiLCJ2YWx1ZSI6MjUwfV0sImRvbWFpbiI6IndhdGVyIiwiZ2VuZXJhdGlvbiI6IjEwNzRGMEVCLTM4MzEtNDcwQy1CRTFBLTUwNTQ3Njc0QTJGMCIsImlkIjoiQjlGRkJDN0MtMTE5Qi00NURGLUE2NEItMkQyOEIzNDkzMDAyIiwiaWRlbnRpdHkiOiJzeW5jIiwibGlmZWN5Y2xlIjoiNzVDQzE5NkUtRjk0Ny00QzIwLTgxMjItMEY0QTIyODdCNUU5IiwibG9jYWxJRCI6Ijg4RDZBNkRCLTBGM0QtNEI5OC05MzlFLUZEMzVBMThDM0U4MiIsInJlcXVlc3RlZEF0Ijo4MTUzOTcyMTAuODUyNjc2fSx7ImFja25vd2xlZGdlZCI6WyJmaWJlciIsImNhcmJzIiwiZmF0IiwicHJvdGVpbiIsImNhbG9yaWVzIl0sImFjdGlvbiI6InNhdmUiLCJjb21wb25lbnRzIjpbeyJkYXRlIjo4MTUzOTcyMTEuMjE0NTE2LCJtZXRyaWMiOiJjYWxvcmllcyIsInZhbHVlIjoyMDB9LHsiZGF0ZSI6ODE1Mzk3MjExLjIxNDUxNiwibWV0cmljIjoicHJvdGVpbiIsInZhbHVlIjoxMH0seyJkYXRlIjo4MTUzOTcyMTEuMjE0NTE2LCJtZXRyaWMiOiJjYXJicyIsInZhbHVlIjoyMH0seyJkYXRlIjo4MTUzOTcyMTEuMjE0NTE2LCJtZXRyaWMiOiJmYXQiLCJ2YWx1ZSI6OH0seyJkYXRlIjo4MTUzOTcyMTEuMjE0NTE2LCJtZXRyaWMiOiJmaWJlciIsInZhbHVlIjozfV0sImRvbWFpbiI6Im1lYWwiLCJnZW5lcmF0aW9uIjoiM0U4MTI5NzktQ0Y3Mi00MDA3LTlEQ0MtMDI2RjlFQkQ5QjM2IiwiaWQiOiJGODY0OUY3Ni1CRTQ2LTQ2MEUtOUYzRi01QzY1MjU1MUM0NTUiLCJpZGVudGl0eSI6InN5bmMiLCJsaWZlY3ljbGUiOiI3NUNDMTk2RS1GOTQ3LTRDMjAtODEyMi0wRjRBMjI4N0I1RTkiLCJsb2NhbElEIjoic3ludGhldGljLWR1cmFibGUtNDMtbWVhbCIsInJlcXVlc3RlZEF0Ijo4MTUzOTcyMTEuMjMxMjU4fSx7ImFja25vd2xlZGdlZCI6WyJ3ZWlnaHQiXSwiYWN0aW9uIjoic2F2ZSIsImNvbXBvbmVudHMiOlt7ImRhdGUiOjgxNTM5NzIxMS40MjA2MzYsIm1ldHJpYyI6IndlaWdodCIsInZhbHVlIjo3NX1dLCJkb21haW4iOiJ3ZWlnaHQiLCJnZW5lcmF0aW9uIjoiREFCQ0VFQTktQTJGRi00MURFLTg5RkYtNTk5MDU5MzFFMzRDIiwiaWQiOiI1NkZCQ0JCMC1CMDJDLTREQTUtQkQ5QS0xRDMyRUMzMENFMzkiLCJpZGVudGl0eSI6InN5bmMiLCJsaWZlY3ljbGUiOiI3NUNDMTk2RS1GOTQ3LTRDMjAtODEyMi0wRjRBMjI4N0I1RTkiLCJsb2NhbElEIjoiMTdCREQwNjAtMTg0RC00MjI4LTk5ODktNkUyNjA5QjlFNTdFIiwicmVxdWVzdGVkQXQiOjgxNTM5NzIxMS40MjYwNjF9LHsiYWNrbm93bGVkZ2VkIjpbIndhdGVyIl0sImFjdGlvbiI6ImRlbGV0ZSIsImNvbXBvbmVudHMiOlt7ImRhdGUiOjgxNTM5NzIxMS44NzI0MDYsIm1ldHJpYyI6IndhdGVyIiwidmFsdWUiOjMzM31dLCJkb21haW4iOiJ3YXRlciIsImdlbmVyYXRpb24iOiIzM0VFNzI3RC0xOTY1LTRDRUUtOERFRi0zNDE3RTc5NTVGNUMiLCJpZCI6IjEwNzFBM0Y1LTBDQUYtNDJGNS1CREFCLTA4QTU1QzZGRDAyQSIsImlkZW50aXR5Ijoic3luYyIsImxpZmVjeWNsZSI6Ijc1Q0MxOTZFLUY5NDctNEMyMC04MTIyLTBGNEEyMjg3QjVFOSIsImxvY2FsSUQiOiJDRkVDMUQwQS1ERUE2LTQ4ODQtQTMwRS05NzhDOEM1NUU0RkEiLCJyZXF1ZXN0ZWRBdCI6ODE1Mzk3MjExLjkxODA3OH1dLCJsaWZlY3ljbGUiOiI3NUNDMTk2RS1GOTQ3LTRDMjAtODEyMi0wRjRBMjI4N0I1RTkiLCJvd25lciI6IjE1QUFCOUQ4LTE1NkYtNENDOC05QzgwLTkzQTI3NjU0MjFBOSIsInZlcnNpb24iOjF9",
+    "meals.json": "W3siZGF0ZSI6IjIwMjYtMTEtMDNUMTE6MTM6MzFaIiwiaWQiOiJzeW50aGV0aWMtZHVyYWJsZS00My1tZWFsIiwidHlwZSI6Imx1bmNoIiwiaXRlbXMiOlt7InByb3RlaW5HIjoxMCwiY2Fsb3JpZXMiOjIwMCwiZ3JhbXMiOjEwMCwiaWQiOiIzQzMxMjRGNy1GNTM1LTRDQ0MtOEQ1Ri1DNDFCNkM3RjBGMzAiLCJmaWJlckciOjMsImNvbmZpZGVuY2UiOjAuOCwiY2FyYnNHIjoyMCwiZmF0RyI6OCwibmFtZSI6IlN5bnRoZXRpYyBkdXJhYmxlIG1lYWwifV0sInNvdXJjZSI6Im1hbnVhbCJ9XQ==",
+    "today.json": "eyJ3ZWlnaHRLZyI6NzUsInJlc3RpbmdDYWxvcmllcyI6MCwicmVhZGluZ3MiOnsicmVzdGluZ0VuZXJneSI6eyJjb21wb25lbnRzIjpbXSwib3ZlcmxhcEtlcHRTZXBhcmF0ZSI6ZmFsc2V9LCJzbGVlcCI6eyJjb21wb25lbnRzIjpbXSwib3ZlcmxhcEtlcHRTZXBhcmF0ZSI6ZmFsc2V9LCJhY3RpdmVFbmVyZ3kiOnsiY29tcG9uZW50cyI6W10sIm92ZXJsYXBLZXB0U2VwYXJhdGUiOmZhbHNlfSwiZmF0Ijp7Im92ZXJsYXBLZXB0U2VwYXJhdGUiOmZhbHNlLCJjb21wb25lbnRzIjpbXX0sInZvMm1heCI6eyJjb21wb25lbnRzIjpbXSwib3ZlcmxhcEtlcHRTZXBhcmF0ZSI6ZmFsc2V9LCJzdGVwcyI6eyJjb21wb25lbnRzIjpbXSwib3ZlcmxhcEtlcHRTZXBhcmF0ZSI6ZmFsc2V9LCJyZXNwaXJhdG9yeVJhdGUiOnsiY29tcG9uZW50cyI6W10sIm92ZXJsYXBLZXB0U2VwYXJhdGUiOmZhbHNlfSwiY2FyYnMiOnsiY29tcG9uZW50cyI6W10sIm92ZXJsYXBLZXB0U2VwYXJhdGUiOmZhbHNlfSwic3BvMiI6eyJjb21wb25lbnRzIjpbXSwib3ZlcmxhcEtlcHRTZXBhcmF0ZSI6ZmFsc2V9LCJyZXN0aW5nSFIiOnsiY29tcG9uZW50cyI6W10sIm92ZXJsYXBLZXB0U2VwYXJhdGUiOmZhbHNlfSwiaHJ2Ijp7Im92ZXJsYXBLZXB0U2VwYXJhdGUiOmZhbHNlLCJjb21wb25lbnRzIjpbXX0sImJvZHlGYXQiOnsib3ZlcmxhcEtlcHRTZXBhcmF0ZSI6ZmFsc2UsImNvbXBvbmVudHMiOltdfSwiY2Fsb3JpZXMiOnsiY29tcG9uZW50cyI6W10sIm92ZXJsYXBLZXB0U2VwYXJhdGUiOmZhbHNlfSwiZXhlcmNpc2UiOnsib3ZlcmxhcEtlcHRTZXBhcmF0ZSI6ZmFsc2UsImNvbXBvbmVudHMiOltdfSwic3RhbmQiOnsib3ZlcmxhcEtlcHRTZXBhcmF0ZSI6ZmFsc2UsImNvbXBvbmVudHMiOltdfSwiYm1pIjp7Im92ZXJsYXBLZXB0U2VwYXJhdGUiOmZhbHNlLCJjb21wb25lbnRzIjpbXX0sImhlYXJ0UmF0ZSI6eyJjb21wb25lbnRzIjpbXSwib3ZlcmxhcEtlcHRTZXBhcmF0ZSI6ZmFsc2V9LCJ3YXRlciI6eyJvdmVybGFwS2VwdFNlcGFyYXRlIjpmYWxzZSwiY29tcG9uZW50cyI6W119LCJ3ZWlnaHQiOnsib3ZlcmxhcEtlcHRTZXBhcmF0ZSI6ZmFsc2UsImNvbXBvbmVudHMiOlt7Im9yaWdpbiI6ImxvY2FsTG9nIiwibGFzdFNhbXBsZUF0IjoiMjAyNi0xMS0wM1QxMToxMzozMVoiLCJzdGFydCI6IjIwMjYtMTEtMDNUMTE6MTM6MzFaIiwidmFsdWUiOjc1LCJhZ2dyZWdhdGlvbiI6ImxhdGVzdCIsInNvdXJjZSI6Ikx1bWVuIHdlaWdodCBsb2ciLCJpc0VzdGltYXRlIjpmYWxzZSwiZW5kIjoiMjAyNi0xMS0wM1QxMToxMzozMVoifV19LCJwcm90ZWluIjp7Im92ZXJsYXBLZXB0U2VwYXJhdGUiOmZhbHNlLCJjb21wb25lbnRzIjpbXX19LCJhY3RpdmVDYWxvcmllcyI6MCwicmVjb3JkZWRUb3RhbEtleXMiOltdLCJleGVyY2lzZU1pbiI6MCwiZGF0ZSI6IjIwMjYtMTEtMDJUMjM6MDA6MDBaIiwic3RlcHMiOjAsIndhdGVyTUwiOjAsInN0YW5kSG91cnMiOjB9",
+    "water.json": "W3siZGF0ZSI6IjIwMjYtMTEtMDNUMTE6MTM6MzBaIiwiaWQiOiI4OEQ2QTZEQi0wRjNELTRCOTgtOTM5RS1GRDM1QTE4QzNFODIiLCJtbCI6MjUwfV0="
+  },
+  "scope": "Actual signed-simulator HealthStore/LocalStore transactions and observable state with controlled adapter and real Foundation I/O faults; not HealthKit samples, physical-device, full UI or complete batch acceptance.",
+  "sourceOwnedIdentities": [
+    "com.dbakp.lumen.health.v1.15AAB9D8-156F-4CC8-9C80-93A2765421A9.B9FFBC7C-119B-45DF-A64B-2D28B3493002.water",
+    "com.dbakp.lumen.health.v1.15AAB9D8-156F-4CC8-9C80-93A2765421A9.B9FFBC7C-119B-45DF-A64B-2D28B3493002.water",
+    "com.dbakp.lumen.health.v1.15AAB9D8-156F-4CC8-9C80-93A2765421A9.F8649F76-BE46-460E-9F3F-5C652551C455.calories",
+    "com.dbakp.lumen.health.v1.15AAB9D8-156F-4CC8-9C80-93A2765421A9.F8649F76-BE46-460E-9F3F-5C652551C455.protein",
+    "com.dbakp.lumen.health.v1.15AAB9D8-156F-4CC8-9C80-93A2765421A9.F8649F76-BE46-460E-9F3F-5C652551C455.carbs",
+    "com.dbakp.lumen.health.v1.15AAB9D8-156F-4CC8-9C80-93A2765421A9.F8649F76-BE46-460E-9F3F-5C652551C455.fat",
+    "com.dbakp.lumen.health.v1.15AAB9D8-156F-4CC8-9C80-93A2765421A9.F8649F76-BE46-460E-9F3F-5C652551C455.fiber",
+    "com.dbakp.lumen.health.v1.15AAB9D8-156F-4CC8-9C80-93A2765421A9.56FBCBB0-B02C-4DA5-BD9A-1D32EC30CE39.weight",
+    "com.dbakp.lumen.health.v1.15AAB9D8-156F-4CC8-9C80-93A2765421A9.1071A3F5-0CAF-42F5-BDAB-08A55C6FD02A.water"
+  ],
+  "status": "Health recovery checks passed",
+  "trace": [
+    "save:water",
+    "delete:water"
+  ],
+  "undoStatus": "Removed from Lumen. No matching Lumen entry remains in Apple Health."
+}

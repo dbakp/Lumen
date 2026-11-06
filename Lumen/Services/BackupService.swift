@@ -2,28 +2,6 @@ import Foundation
 import UIKit
 import ImageIO
 
-/// Each operation owns a private directory. Releasing a preview/share copy removes it
-/// off the main thread; a worker retains ownership until it has stopped using the files.
-final class BackupWorkspace: Sendable {
-    let directory: URL
-    private static let removeAbandonedWork: Void = {
-        let fm = FileManager.default
-        try? fm.removeItem(at: fm.temporaryDirectory.appendingPathComponent("LumenBackups", isDirectory: true))
-        for folder in (try? fm.contentsOfDirectory(at: fm.temporaryDirectory, includingPropertiesForKeys: nil)) ?? []
-        where folder.lastPathComponent.hasPrefix("LumenBackupWork-") { try? fm.removeItem(at: folder) }
-    }()
-    init() throws {
-        _ = Self.removeAbandonedWork
-        directory = FileManager.default.temporaryDirectory.appendingPathComponent("LumenBackupWork-" + UUID().uuidString, isDirectory: true)
-        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true, attributes: [.posixPermissions: 0o700])
-    }
-    func cleanup() { try? FileManager.default.removeItem(at: directory) }
-    deinit {
-        let folder = directory
-        DispatchQueue.global(qos: .utility).async { try? FileManager.default.removeItem(at: folder) }
-    }
-}
-
 /// Foundation documents cancel() as immediate and callable from any thread.
 /// Only that operation crosses threads; coordinating reads stays on its worker.
 private final class BackupCoordinatorCancellation: @unchecked Sendable {
@@ -38,8 +16,13 @@ enum BackupService {
         let url: URL
         let name: String
         let encrypted: Bool
+        let identity: BackupSourceIdentity
         fileprivate let workspace: BackupWorkspace
         func cleanup() { workspace.cleanup() }
+        nonisolated func verify(control: BackupOperationControl) throws {
+            defer { workspace.cleanup() }
+            try identity.verify(url, control: control)
+        }
     }
     struct Export: Sendable {
         let url: URL
@@ -51,14 +34,100 @@ enum BackupService {
         let createdAt: Date
         let encrypted: Bool
         let photos: [String: URL]
+        fileprivate let photoIdentities: [String: BackupPhotoIdentity]
         fileprivate let contents: BackupPackage.Contents?
         fileprivate let workspace: BackupWorkspace?
+        fileprivate let source: Source?
+        fileprivate init(snapshot: BackupSnapshot, createdAt: Date, encrypted: Bool, photos: [String: URL], photoIdentities: [String: BackupPhotoIdentity],
+             contents: BackupPackage.Contents?, workspace: BackupWorkspace?, source: Source? = nil) {
+            self.snapshot = snapshot; self.createdAt = createdAt; self.encrypted = encrypted
+            self.photos = photos; self.contents = contents; self.workspace = workspace; self.source = source
+            self.photoIdentities = photoIdentities
+        }
+    }
+
+    struct RecoveryInput: Sendable {
+        #if DEBUG && targetEnvironment(simulator)
+        var verificationSource: URL { resources.lease.file }
+        #endif
+        let snapshot: BackupSnapshot
+        let createdAt: Date
+        let present: Set<HealthLocalFiles.Domain>
+        let missingPhotos: Int
+        let identity: BackupSourceIdentity
+        fileprivate let photos: [String: URL]
+        fileprivate let resources: BackupRecoverySource
+        nonisolated func records(_ domain: HealthLocalFiles.Domain, control: BackupOperationControl = .init()) throws -> Data {
+            defer { withExtendedLifetime(self) {} }
+            try control.checkCancellation()
+            guard present.contains(domain) else { throw BackupError.invalid }
+            _ = try resources.lease.verifiedBoundary(control: control)
+            let encoder = BackupArchive.encoder()
+            let data: Data
+            switch domain {
+            case .water: data = try encoder.encode(snapshot.water)
+            case .meals: data = try encoder.encode(snapshot.meals)
+            case .workouts: data = try encoder.encode(snapshot.workouts)
+            case .goals: data = try encoder.encode(snapshot.goals)
+            case .today: throw BackupError.invalid
+            }
+            try control.checkCancellation()
+            return data
+        }
+        nonisolated func count(_ domain: HealthLocalFiles.Domain) -> Int {
+            switch domain {
+            case .water: return snapshot.water.count
+            case .meals: return snapshot.meals.count
+            case .workouts: return snapshot.workouts.count
+            case .goals: return 1
+            case .today: return 0
+            }
+        }
+        nonisolated var photoIDs: Set<String> { Set(snapshot.meals.compactMap(\.photoID)) }
+        nonisolated func photoData(_ id: String, control: BackupOperationControl = .init()) throws -> Data {
+            defer { withExtendedLifetime(self) {} }
+            try control.checkCancellation()
+            _ = try resources.lease.verifiedBoundary(control: control)
+            guard photoIDs.contains(id), let file = photos[id], let expected = resources.photoIdentities[id] else { throw BackupError.missingPhoto }
+            #if DEBUG && targetEnvironment(simulator)
+            HealthReadUIFixture.willReadSelectedPhoto(control: control, source: resources.lease.file, photo: file)
+            #endif
+            return try expected.read(file, control: control)
+        }
+        nonisolated func payload(domains: Set<HealthLocalFiles.Domain>, omitPhotos: Bool,
+                                 control: BackupOperationControl) throws -> HealthRecoverySelection.Payload {
+            defer { withExtendedLifetime(self) {} }
+            guard domains.isSubset(of: present) else { throw BackupError.invalid }
+            if domains.contains(.meals), missingPhotos > 0, !omitPhotos { throw BackupError.missingPhoto }
+            let omitted = domains.contains(.meals) && omitPhotos ? photoIDs : []
+            var ownership = resources
+            ownership.omittedPhotoCount = domains.contains(.meals) ? missingPhotos + omitted.count : 0
+            return try HealthRecoverySelection.backup(snapshot, photos: photos, domains: domains,
+                omittingPhotos: omitted, control: control, source: ownership, validPhoto: BackupService.validPhoto)
+        }
+    }
+
+    static func recoveryInput(_ preview: Preview) -> RecoveryInput? {
+        guard let source = preview.source else { return nil }
+        let resources = BackupRecoverySource(lease: BackupSourceLease(file: source.url, identity: source.identity, workspace: source.workspace),
+                                            photoWorkspace: preview.workspace, contents: preview.contents, photoIdentities: preview.photoIdentities)
+        return RecoveryInput(snapshot: preview.snapshot, createdAt: preview.createdAt, present: [.water, .meals, .workouts, .goals],
+                             missingPhotos: 0, identity: source.identity, photos: preview.photos, resources: resources)
+    }
+    static func recoveryInput(_ conversion: ReadableExport.Conversion, source: Source) -> RecoveryInput? {
+        guard source.identity.format == .readableExport, source.identity.sha256 == conversion.sha256 else { return nil }
+        let present = Set(conversion.present.compactMap { HealthLocalFiles.Domain(rawValue: $0.rawValue) })
+        let resources = BackupRecoverySource(lease: BackupSourceLease(file: source.url, identity: source.identity, workspace: source.workspace),
+                                            photoWorkspace: nil, contents: nil)
+        return RecoveryInput(snapshot: conversion.snapshot, createdAt: conversion.exportedAt, present: present,
+                             missingPhotos: conversion.missingPhotos, identity: source.identity, photos: [:], resources: resources)
     }
 
     /// Metadata is captured on the main actor. Photos stay in files throughout v2 operations.
     static func snapshot(sleep: SleepStore, health: HealthStore) throws -> BackupSnapshot {
         guard !health.isSyncing else { throw BackupError.busy }
         guard health.conversationReady else { throw BackupError.currentDataInvalid }
+        try health.requireAllLocalHealthData()
         let companion = CompanionStore.shared
         return BackupSnapshot(profile: sleep.profile, goals: health.goals, habits: sleep.habits,
                               sleep: sleep.episodes, meals: health.meals, workouts: health.workouts, water: health.waterLogs,
@@ -104,6 +173,10 @@ enum BackupService {
 
     /// Own the selected bytes before releasing Files/iCloud access or asking for a password.
     nonisolated static func select(_ url: URL, control: BackupOperationControl, limit: Int64 = BackupPackage.maxFileBytes) throws -> Source {
+        do { return try selectOwnedCopy(url, control: control, limit: limit) }
+        catch { throw BackupError.importReadFailure(error) }
+    }
+    nonisolated private static func selectOwnedCopy(_ url: URL, control: BackupOperationControl, limit: Int64) throws -> Source {
         let workspace = try BackupWorkspace(), target = workspace.directory.appendingPathComponent("selected-backup")
         var retained = false
         defer { if !retained { workspace.cleanup() } }
@@ -130,46 +203,61 @@ enum BackupService {
             guard size <= BackupArchive.maxBytes else { throw BackupError.tooLarge }
         }
         retained = true
-        return Source(url: target, name: url.lastPathComponent, encrypted: encrypted, workspace: workspace)
+        let identity = try BackupSourceIdentity.measure(target, named: url.lastPathComponent,
+            format: encrypted ? .encryptedBackup : .legacyJSONBackup, limit: limit, control: control)
+        return Source(url: target, name: url.lastPathComponent, encrypted: encrypted, identity: identity, workspace: workspace)
     }
     nonisolated static func read(_ source: Source, password: String, control: BackupOperationControl) throws -> Preview {
+        defer { source.cleanup() }
         try control.checkCancellation()
+        try source.verify(control: control)
         if source.encrypted {
             let contents = try BackupPackage.read(source.url, password: password, temporaryRoot: source.workspace.directory, control: control)
             var checked = 0
             control.update(.checkingPhotos, total: contents.photos.count)
-            for photo in contents.photos.values {
+            for id in contents.photos.keys.sorted() {
                 try control.checkCancellation()
-                guard validPhoto(photo) else { throw BackupError.invalid }
+                guard let photo = contents.photos[id], let identity = contents.photoIdentities[id],
+                      validPhotoData(try identity.read(photo, control: control)) else { throw BackupError.invalid }
                 checked += 1
                 control.update(.checkingPhotos, completed: checked, total: contents.photos.count)
             }
+            try source.verify(control: control)
             return Preview(snapshot: contents.snapshot, createdAt: contents.manifest.createdAt, encrypted: true,
-                           photos: contents.photos, contents: contents, workspace: source.workspace)
+                           photos: contents.photos, photoIdentities: contents.photoIdentities, contents: contents, workspace: source.workspace, source: source)
         }
         control.update(.reading)
-        let (archive, decoded) = try BackupArchive.read(Data(contentsOf: source.url, options: .mappedIfSafe))
+        let data = try readPayload(source, limit: BackupArchive.maxBytes, control: control, invalid: BackupError.invalid)
+        let (archive, decoded) = try BackupArchive.read(data, control: control)
         try control.checkCancellation()
         let workspace = try BackupWorkspace()
         var photos: [String: URL] = [:]
+        var photoIdentities: [String: BackupPhotoIdentity] = [:]
         for id in decoded.photos.keys.sorted() {
             try control.checkCancellation()
             let file = workspace.directory.appendingPathComponent("photo-\(photos.count).jpg")
             try decoded.photos[id]!.write(to: file, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
             try FileManager.default.setAttributes([.posixPermissions: 0o600], ofItemAtPath: file.path)
-            guard validPhoto(file) else { throw BackupError.invalid }
+            let identity = try BackupPhotoIdentity(data: decoded.photos[id]!)
+            guard validPhotoData(try identity.read(file, control: control)) else { throw BackupError.invalid }
             photos[id] = file
+            photoIdentities[id] = identity
             control.update(.reading, completed: photos.count, total: decoded.photos.count)
         }
         var snapshot = decoded; snapshot.photos = [:]
         try control.checkCancellation()
-        return Preview(snapshot: snapshot, createdAt: archive.createdAt, encrypted: false, photos: photos, contents: nil, workspace: workspace)
+        try source.verify(control: control)
+        return Preview(snapshot: snapshot, createdAt: archive.createdAt, encrypted: false, photos: photos, photoIdentities: photoIdentities, contents: nil, workspace: workspace, source: source)
     }
 
     /// Validate and decode one bounded JPEG at a time, off the main actor.
     nonisolated static func validPhoto(_ url: URL) -> Bool {
+        guard let data = try? HealthLocalFiles.readRegularData(url, limit: BackupArchive.maxPhotoBytes) else { return false }
+        return validPhotoData(data)
+    }
+    nonisolated private static func validPhotoData(_ data: Data) -> Bool {
         autoreleasepool {
-            guard let image = CGImageSourceCreateWithURL(url as CFURL, [kCGImageSourceShouldCache: false] as CFDictionary),
+            guard let image = CGImageSourceCreateWithData(data as CFData, [kCGImageSourceShouldCache: false] as CFDictionary),
                   CGImageSourceGetType(image) as String? == "public.jpeg",
                   CGImageSourceGetCount(image) == 1,
                   let properties = CGImageSourceCopyPropertiesAtIndex(image, 0, nil) as? [CFString: Any],
@@ -185,17 +273,39 @@ enum BackupService {
         try await restore(incoming, selection: preferences ? .all : [], sleep: sleep, health: health, control: control)
     }
     private static func restore(_ incoming: Preview, selection: BackupPreferenceSelection, sleep: SleepStore, health: HealthStore, control: BackupOperationControl) async throws {
+        defer { withExtendedLifetime(incoming) {} }
         guard !health.isSyncing else { throw BackupError.busy }
+        if let source = incoming.source {
+            try await Task.detached(priority: .userInitiated) { try source.verify(control: control) }.value
+        }
+        try control.checkCancellation()
         let revision = LocalStore.revision
         let local = try snapshot(sleep: sleep, health: health)
         let directory = try LocalStore.checkedDirectory()
+        var healthIntent = try LocalStore.healthWriteJournalChecked()
+        healthIntent.rotateLifecycle()
+        let healthIntentData = try healthIntent.encoded()
         let transaction = try await Task.detached(priority: .userInitiated) {
             try control.checkCancellation()
             try BackupArchive.validate(incoming.snapshot, availablePhotoIDs: Set(incoming.photos.keys))
             let merged = try incoming.snapshot.mergingFileBacked(into: local, preferences: selection, photoFiles: incoming.photos)
+            var identitiesByURL: [URL: BackupPhotoIdentity] = [:]
+            for (id, url) in incoming.photos {
+                guard let identity = incoming.photoIdentities[id] else { throw BackupError.missingPhoto }
+                identitiesByURL[url] = identity
+            }
+            var expectedPhotoDigests: [String: String] = [:]
+            for (id, url) in merged.photos {
+                guard let identity = identitiesByURL[url] else { throw BackupError.missingPhoto }
+                _ = try identity.read(url, control: control)
+                expectedPhotoDigests["photos/" + id + ".jpg"] = identity.sha256
+            }
             let availableIDs = Set(local.meals.compactMap(\.photoID)).union(merged.photos.keys)
             try BackupArchive.validate(merged.snapshot, availablePhotoIDs: availableIDs)
             var files: [String: Data] = [:]
+            // Preserve this installation's pending deletes, withdraw its older
+            // saves, and never import another archive's external work.
+            files[HealthWriteFiles.name] = healthIntentData
             func add<T: Encodable>(_ value: T, _ name: String) throws {
                 try control.checkCancellation()
                 files[name + ".json"] = try BackupArchive.encoder().encode(value)
@@ -212,7 +322,13 @@ enum BackupService {
             guard files.values.reduce(0, { $0 + $1.count }) <= BackupPackage.maxMetadataBytes else { throw BackupPackage.PackageError.metadataTooLarge }
             // Keep incoming ownership alive until its file-backed photos have been copied.
             return try withExtendedLifetime(incoming) {
-                try ConversationFiles.prepareRestore(files, photoFiles: Dictionary(uniqueKeysWithValues: merged.photos.map { ("photos/\($0.key).jpg", $0.value) }), into: directory, control: control)
+                let transaction = try ConversationFiles.prepareRestore(files, photoFiles: Dictionary(uniqueKeysWithValues: merged.photos.map { ("photos/\($0.key).jpg", $0.value) }), into: directory, control: control, photoDigests: expectedPhotoDigests)
+                if let source = incoming.source {
+                    let resources = BackupRecoverySource(lease: .init(file: source.url, identity: source.identity, workspace: source.workspace),
+                                                        photoWorkspace: incoming.workspace, contents: incoming.contents, photoIdentities: incoming.photoIdentities)
+                    try transaction.retainSource(resources, boundary: resources.lease.verifiedBoundary(control: control))
+                }
+                return transaction
             }
         }.value
         try control.checkCancellation()
@@ -241,22 +357,43 @@ enum BackupService {
         } catch { result.cleanup(); throw error }
     }
     nonisolated static func selectReadable(_ url: URL, control: BackupOperationControl) throws -> Source {
-        do { return try select(url, control: control, limit: Int64(ReadableExport.maxBytes)) }
+        do {
+            let source = try select(url, control: control, limit: Int64(ReadableExport.maxBytes))
+            guard !source.encrypted else { throw ReadableExport.Failure.format }
+            return Source(url: source.url, name: source.name, encrypted: false,
+                          identity: source.identity.reclassified(.readableExport), workspace: source.workspace)
+        }
         catch BackupError.invalid { throw ReadableExport.Failure.format }
         catch BackupError.tooLarge { throw ReadableExport.Failure.tooLarge }
         catch BackupPackage.PackageError.tooLarge { throw ReadableExport.Failure.tooLarge }
     }
     nonisolated static func convertReadable(_ source: Source, control: BackupOperationControl) throws -> ReadableExport.Conversion {
+        defer { source.cleanup() }
         guard !source.encrypted else { throw ReadableExport.Failure.format }
         control.update(.reading)
-        return try ReadableExport.read(Data(contentsOf: source.url, options: .mappedIfSafe), control: control)
+        try source.verify(control: control)
+        let data = try readPayload(source, limit: ReadableExport.maxBytes, control: control, invalid: ReadableExport.Failure.format)
+        let conversion = try ReadableExport.read(data, control: control)
+        try source.verify(control: control)
+        return conversion
     }
-    static func restoreReadable(_ conversion: ReadableExport.Conversion, domains: Set<ReadableExport.Domain>, sleep: SleepStore, health: HealthStore, control: BackupOperationControl) async throws {
+    static func restoreReadable(_ conversion: ReadableExport.Conversion, domains: Set<ReadableExport.Domain>, sleep: SleepStore, health: HealthStore, control: BackupOperationControl, source: Source? = nil) async throws {
         let (snapshot, preferences) = try conversion.selected(domains)
-        let preview = Preview(snapshot: snapshot, createdAt: conversion.exportedAt, encrypted: false, photos: [:], contents: nil, workspace: nil)
+        let preview = Preview(snapshot: snapshot, createdAt: conversion.exportedAt, encrypted: false, photos: [:], photoIdentities: [:], contents: nil, workspace: nil, source: source)
         try await restore(preview, selection: preferences, sleep: sleep, health: health, control: control)
     }
 
+    /// The selected source remains owned by the caller throughout this bounded
+    /// read; provenance is checked before and after decoding at the call sites.
+    nonisolated private static func readPayload(_ source: Source, limit: Int, control: BackupOperationControl, invalid: Error) throws -> Data {
+        #if DEBUG && targetEnvironment(simulator)
+        HealthReadUIFixture.willReadOriginalPayload(control: control)
+        #endif
+        do { return try HealthLocalFiles.readRegularData(source.url, limit: limit, control: control) }
+        catch is CancellationError { throw CancellationError() }
+        catch HealthLocalFiles.Failure.changed { throw BackupError.recordsChanged }
+        catch { try control.checkCancellation(); throw invalid }
+    }
     private static func photoURLs(_ snapshot: BackupSnapshot) throws -> [String: URL] {
         var photos: [String: URL] = [:]
         for id in Set(snapshot.meals.compactMap(\.photoID)) {
@@ -274,16 +411,38 @@ enum BackupService {
         try Data().write(to: target, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
         try FileManager.default.setAttributes([.posixPermissions: 0o600], ofItemAtPath: target.path)
         let input = try FileHandle(forReadingFrom: source), output = try FileHandle(forWritingTo: target)
+        #if DEBUG && targetEnvironment(simulator)
+        let inputDescriptor = input.fileDescriptor, outputDescriptor = output.fileDescriptor
+        var outputClosed = false
+        defer {
+            var inputClosed = false
+            do { try input.close(); inputClosed = true } catch { }
+            if !outputClosed { do { try output.close(); outputClosed = true } catch { } }
+            HealthReadUIFixture.didClose(control: control, descriptor: inputDescriptor, succeeded: inputClosed)
+            HealthReadUIFixture.didClose(control: control, descriptor: outputDescriptor, succeeded: outputClosed)
+        }
+        #else
         defer { try? input.close(); try? output.close() }
+        #endif
         var copied = 0
         while copied < size {
             try control.checkCancellation()
             guard let data = try input.read(upToCount: min(BackupPackage.bufferBytes, size - copied)), !data.isEmpty else { throw BackupError.invalid }
             try output.write(contentsOf: data); copied += data.count
             if report { control.update(.preparing, bytes: Int64(copied)) }
+            #if DEBUG && targetEnvironment(simulator)
+            if report {
+                try HealthReadUIFixture.pause(control: control, file: source, descriptor: inputDescriptor, bytesRead: data.count,
+                                              copyTarget: target, outputDescriptor: outputDescriptor)
+            }
+            #endif
         }
         guard try input.read(upToCount: 1)?.isEmpty != false else { throw BackupError.invalid }
-        try output.close(); try control.checkCancellation()
+        try output.close()
+        #if DEBUG && targetEnvironment(simulator)
+        outputClosed = true
+        #endif
+        try control.checkCancellation()
         return Int64(size)
     }
 }

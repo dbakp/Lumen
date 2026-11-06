@@ -1,0 +1,19 @@
+{
+  "status": "read-only source finding; native reproduction still required before corruption coverage closes",
+  "source": "durable-source-r8.json",
+  "files": {
+    "Lumen/Models/HealthStore.swift": {
+      "sha256": "af89138c89e073d38abe5c3914c092faec648acb0da6f723c98c5a195e770e1a"
+    },
+    "Lumen/Persistence/LocalStore.swift": {
+      "sha256": "76d22c8806397300256bd6b8730fb8e43d1da6e816f1713a3b532f4d754ef161"
+    }
+  },
+  "observed": [
+    "HealthStore initializes water/meals/goals through optional LocalStore.load and substitutes empty/default state when loading fails.",
+    "LocalStore.load uses try? for current file decode; its legacy overload can fall back to old defaults when the current file exists but is unreadable/corrupt.",
+    "Checked subsequent mutations validate new encoding/commit and the journal, but do not establish that the old domain file was successfully loaded. A corrupt local domain therefore needs a real startup/save test, not just journal-corruption tests."
+  ],
+  "requiredNext": "Reproduce corrupt/unreadable current water, meal and goals files with the actual native store, verify original bytes/live state and zero external operations. Implement checked domain readiness/missing-only legacy behavior if confirmed, then retain healthy restore/retry and local-only correction semantics.",
+  "scope": "Source-level risk path only, no reproduced data loss or complete corruption acceptance claimed. Existing 102 successful process checks remain valid within their healthy-input boundary."
+}

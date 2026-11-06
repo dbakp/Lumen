@@ -1,0 +1,78 @@
+{
+  "afterOpen": false,
+  "checks": [
+    {
+      "name": "shared startup completes before synthetic domain setup",
+      "passed": true
+    },
+    {
+      "name": "actual test store completes checked conversation startup",
+      "passed": true
+    },
+    {
+      "name": "actual affected-domain mutation rejects damaged or unreadable source",
+      "passed": true
+    },
+    {
+      "name": "native model exposes unavailable domain and saved-data issue",
+      "passed": true
+    },
+    {
+      "name": "damaged current goals never resurrect stale legacy weight",
+      "passed": true
+    },
+    {
+      "name": "goal settings reject unavailable source",
+      "passed": true
+    },
+    {
+      "name": "profile/goals paired change rejects unavailable goals",
+      "passed": true
+    },
+    {
+      "name": "backup cannot export an unavailable domain as empty history",
+      "passed": true
+    },
+    {
+      "name": "assistant declines history/target-based planning before model or provider work",
+      "passed": true
+    },
+    {
+      "name": "failed source cannot produce default-goal coaching",
+      "passed": true
+    },
+    {
+      "name": "all rejected actions preserve exact domain/journal/profile files and original live values",
+      "passed": true
+    },
+    {
+      "name": "rejected actions dispatch no new external Health operation",
+      "passed": true
+    }
+  ],
+  "domain": "goals",
+  "files": {
+    "goals.json": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjFlKzMwMCwid2VpZ2h0S2ciOjc1fQ==",
+    "health-write-intent.json": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiIxOEJFMzBEQS0xRUE0LTQ5QzAtQjc3MC1CRkU5MjlBNzZDMzkiLCJvd25lciI6IjAxNjk1REI4LTQwMjEtNDFBNC1BQkJGLTYzRTAzREI1MkRERCIsInZlcnNpb24iOjF9",
+    "meals.json": "WwogIHsKICAgICJkYXRlIiA6ICIyMDI2LTExLTAzVDEzOjI2OjUzWiIsCiAgICAiaWQiIDogInN5bnRoZXRpYy1yZXRhaW5lZC1tZWFsIiwKICAgICJpdGVtcyIgOiBbCiAgICAgIHsKICAgICAgICAiY2Fsb3JpZXMiIDogMTAwLAogICAgICAgICJjYXJic0ciIDogMjAsCiAgICAgICAgImNvbmZpZGVuY2UiIDogMC44LAogICAgICAgICJmYXRHIiA6IDMsCiAgICAgICAgImZpYmVyRyIgOiAyLAogICAgICAgICJncmFtcyIgOiAxMDAsCiAgICAgICAgImlkIiA6ICJCMEQ5MTc4Qi0wNDE2LTQ4RDEtOUM2Mi05NzFGOTc4NjMwOTkiLAogICAgICAgICJuYW1lIiA6ICJTeW50aGV0aWMiLAogICAgICAgICJwcm90ZWluRyIgOiAxMAogICAgICB9CiAgICBdLAogICAgInNvdXJjZSIgOiAibWFudWFsIiwKICAgICJ0eXBlIiA6ICJsdW5jaCIKICB9Cl0=",
+    "profile.json": "eyJzbGVlcE5lZWQiOjI5NDAwLCJpc1N1YnNjcmliZWQiOmZhbHNlLCJ3YWtlR29hbCI6eyJtaW51dGUiOjAsImhvdXIiOjd9LCJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwib25ib2FyZGluZ0RvbmUiOmZhbHNlLCJzbGVlcE5lZWRDb25maWRlbmNlIjowLjMsIm5hbWUiOiIifQ==",
+    "today.json": "ewogICJhY3RpdmVDYWxvcmllcyIgOiAwLAogICJkYXRlIiA6ICIyMDI2LTExLTAyVDIzOjAwOjAwWiIsCiAgImV4ZXJjaXNlTWluIiA6IDAsCiAgInJlc3RpbmdDYWxvcmllcyIgOiAwLAogICJzdGFuZEhvdXJzIiA6IDAsCiAgInN0ZXBzIiA6IDAsCiAgIndhdGVyTUwiIDogMAp9",
+    "water.json": "WwogIHsKICAgICJkYXRlIiA6ICIyMDI2LTExLTAzVDEzOjI2OjUzWiIsCiAgICAiaWQiIDogInN5bnRoZXRpYy1yZXRhaW5lZC13YXRlciIsCiAgICAibWwiIDogMTAwCiAgfQpd",
+    "workouts.json": "WwogIHsKICAgICJhY3RpdmVDYWxvcmllcyIgOiAyMCwKICAgICJkdXJhdGlvbiIgOiA2MDAsCiAgICAiZW5lcmd5S25vd24iIDogdHJ1ZSwKICAgICJpZCIgOiAic3ludGhldGljLXJldGFpbmVkLXdvcmtvdXQiLAogICAgImtpbmQiIDogIndhbGsiLAogICAgInNvdXJjZSIgOiAibWFudWFsIiwKICAgICJzdGFydCIgOiAiMjAyNi0xMS0wM1QxMzoyNjo1M1oiLAogICAgInRpdGxlIiA6ICJTeW50aGV0aWMiCiAgfQpd"
+  },
+  "inputCase": "unsafe numeric goal",
+  "issue": "Saved goals couldn't be opened. Changes to this data are paused. Retry opening saved data; the saved files haven't been replaced.",
+  "liveMealIDs": [
+    "synthetic-retained-meal"
+  ],
+  "liveWaterIDs": [
+    "synthetic-retained-water"
+  ],
+  "liveWeight": 75,
+  "liveWorkoutIDs": [
+    "synthetic-retained-workout"
+  ],
+  "missing": [],
+  "nonce": "B445613B-2E16-460E-95CD-509A9E6C146B",
+  "trace": []
+}

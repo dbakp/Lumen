@@ -1,0 +1,17 @@
+{
+  "status": "115native test setup fails waiting for departed review toolbar; no product cleanup failure inferred",
+  "source": "durable-source-r115.json",
+  "build": "health-selected-owner-unwind-native-build-r1.json",
+  "summary": "health-selected-owner-unwind-legacy-r1-summary.json",
+  "observations": "health-selected-owner-unwind-legacy-r1-observations.json",
+  "nativePassed": 0,
+  "nativeFailed": 1,
+  "nativeExit": 65,
+  "hostDriverExit": 1,
+  "actualWorkerObservedAfterOwnerClose": true,
+  "scope": "Actual owner-close marker/live rawFD/original/owned roots/saved bytes observed before host releases artificial unwind delay. Descriptor subsequently closed per checkpoint. Native waits for indicator on departed review screen and fails, so retry/final cleanup not accepted.116removes only that invalid UI wait; same app/driver.",
+  "driverArchive": "health-selected-owner-unwind-driver-r1.py.gz",
+  "retainedPNGs": 3,
+  "individuallyOpenedPNGs": 1,
+  "retainedNativeJSON": 0
+}

@@ -1,0 +1,36 @@
+{
+  "status": "passed",
+  "device": "922E011C-3895-4DB1-9C9A-1D3A977226CF",
+  "source": "durable-source-r4.json",
+  "nativeBuildSource": "durable-source-r3.json",
+  "testOnlySourceCarry": [
+    "Tests/HealthWriteRecoveryChecks.swift"
+  ],
+  "nativeChecks": 18,
+  "hostMatchedSavedFiles": 5,
+  "externalComponents": 7,
+  "installedBinarySHA256": "83d3bc129c9688ee7e5943a7febf409e2d2f079ae13eb9f6e5dccb28509656e6",
+  "files": {
+    "goals.json": {
+      "bytes": 177,
+      "sha256": "11544916a3f7f29ecf78941e26e276766b705e80d715b10dac79a13144e135f8"
+    },
+    "health-write-intent.json": {
+      "bytes": 1866,
+      "sha256": "4faec448513ac4b6dd4cfe9e1cf3ff8660684f6323cd279736dc32c6c9a427cb"
+    },
+    "meals.json": {
+      "bytes": 277,
+      "sha256": "d29ecf82dc20dcf5ee8adbd14a2be4fb831db1cca3d2867d33f2bc533ff1a69d"
+    },
+    "today.json": {
+      "bytes": 1491,
+      "sha256": "5f713a05008e4ab275a7b6a78974454133a84b71adb0e1b42d00f9e87ae8414c"
+    },
+    "water.json": {
+      "bytes": 86,
+      "sha256": "a52a29a9a781f8a6c8db846edebb63fa9ef21bcc0391c4e509279b3a89aa2bb7"
+    }
+  },
+  "scope": "Independent host reads match all native-reported saved bytes, live IDs/weight and controlled adapter components. Actual native test outcome, screenshots, real HealthKit and device gates remain separate."
+}

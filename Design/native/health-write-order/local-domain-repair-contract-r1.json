@@ -1,0 +1,33 @@
+{
+  "status": "required repair contract after actual native pre-repair reproduction; not implemented or accepted",
+  "baseline": "local-domain-baseline-r1-outcome.json",
+  "scope": ["water", "meals and photo ownership", "workouts including anchored/provider/imported and confirmed local-only entries", "goals including profile/setup pairs", "today cache including paired weight"],
+  "readContract": [
+    "A checked reader distinguishes a genuinely missing current file from corrupt, ambiguous JSON, unreadable and non-regular current files. Attribute/read/decode errors propagate.",
+    "Legacy defaults may be decoded only when the corresponding current file is genuinely missing. An existing damaged file must never authorize stale legacy fallback.",
+    "Missing legacy data may establish a new empty/default domain. Invalid existing legacy data must establish an issue rather than silent empty/default readiness.",
+    "The store records which domains loaded successfully and the exact read boundary used to derive mutable state. A failed domain cannot become writable merely because another action creates a valid current file.",
+    "Explicit checked reload/retry must install recovered current data before clearing the issue. Restore and checked reset must install coherent readiness and read boundaries for all affected domains."
+  ],
+  "mutationContract": [
+    "Reject mutation before deriving a replacement array, creating a photo, altering observable state or queuing external work when its source domain is unavailable.",
+    "Revalidate the current persisted source immediately before commit so damage or replacement after initialization cannot be overwritten by an old in-memory view. Linked asynchronous commits retain storage-revision and actor publication checks.",
+    "Apply the guard to quick add/Undo/delete, confirmed local-only create/correct/delete, weight/goals/today, goal settings and profile/setup pairs, anchored Health workouts, provider refresh and imported workout changes.",
+    "Generic persist must not silently write fallback or stale data into any failed domain. Checked writes must fail accurately; unrelated valid domains must not be represented as failed merely to simplify the implementation.",
+    "A rejected commit retains exact damaged bytes or non-regular destination, all prior journal bytes/receipts, existing photos and live records, and dispatches no new external work. Existing legitimate pending deletion ownership and recovery semantics remain unchanged.",
+    "Backup/export/merge must reject unavailable current source data instead of exporting or merging empty/default fallback content. Explicit recovery operations must preserve the original damaged data until their checked replacement is authorized and committed."
+  ],
+  "presentationContract": [
+    "Expose a concise saved-data issue and checked retry path. A failed load is not evidence of an empty history, a recorded zero or default targets.",
+    "Do not send fallback goals, incomplete totals or synthetic empty histories as reliable current evidence to AI, coaching, widgets or Watch. Preserve the existing unavailable-versus-zero distinction and source provenance.",
+    "Verify the recovery state in normal, dark and largest text on both existing simulator sizes and use the same continuing design critic before batch acceptance. The current diagnostic completion overlays do not meet this requirement."
+  ],
+  "verificationRequired": [
+    "Keep the frozen R9 baseline and original logs; do not relabel its successful defect-reproduction assertions as repaired passes.",
+    "Pure real-filesystem checks for missing-only migration, corrupt current plus valid legacy, corrupt legacy, duplicate/escaped JSON keys, wrong schema, non-regular/symlink destinations, byte preservation and healthy controls.",
+    "Native actual HealthStore startup and post-initialization damage for every affected domain; original files/journal/live records and zero new controlled adapter dispatch must match after rejection.",
+    "Native checked retry/reload after valid recovery, changed-file protection, weight paired rollback, meal-photo ownership, local-only confirmation/corrections and healthy normal-restart controls.",
+    "Independent host reads before any repair/retry that would replace a damaged destination, plus actual test-source/build/binary provenance and useful original captures.",
+    "Run the appropriate focused and full regressions after the implementation. Keep the original eight durable-audit groups and signed-device gates open until their own evidence exists."
+  ]
+}

@@ -1,0 +1,203 @@
+{
+  "checkpoint": {
+    "afterOpen": false,
+    "checks": [
+      {
+        "name": "shared startup completes before synthetic domain setup",
+        "passed": true
+      },
+      {
+        "name": "actual test store completes checked conversation startup",
+        "passed": true
+      },
+      {
+        "name": "actual affected-domain mutation rejects damaged or unreadable source",
+        "passed": true
+      },
+      {
+        "name": "native model exposes unavailable domain and saved-data issue",
+        "passed": true
+      },
+      {
+        "name": "Undo cannot turn unreadable history into an empty rewrite",
+        "passed": true
+      },
+      {
+        "name": "local-only correction cannot overwrite unreadable water",
+        "passed": true
+      },
+      {
+        "name": "unavailable water history is unknown, not a recorded zero",
+        "passed": true
+      },
+      {
+        "name": "backup cannot export an unavailable domain as empty history",
+        "passed": true
+      },
+      {
+        "name": "assistant declines history/target-based planning before model or provider work",
+        "passed": true
+      },
+      {
+        "name": "failed source cannot produce default-goal coaching",
+        "passed": true
+      },
+      {
+        "name": "all rejected actions preserve exact domain/journal/profile files and original live values",
+        "passed": true
+      },
+      {
+        "name": "rejected actions dispatch no new external Health operation",
+        "passed": true
+      }
+    ],
+    "domain": "water",
+    "files": {
+      "goals.json": "ewogICJhY3RpdmVDYWxHb2FsIiA6IDYwMCwKICAiYWN0aXZpdHlMZXZlbCIgOiAibW9kZXJhdGUiLAogICJhZ2UiIDogMzAsCiAgImV4ZXJjaXNlR29hbE1pbiIgOiAzMCwKICAiZ29hbCIgOiAibWFpbnRhaW4iLAogICJoZWlnaHRDbSIgOiAxNzgsCiAgInNleCIgOiAidW5zcGVjaWZpZWQiLAogICJzdGFuZEdvYWwiIDogMTIsCiAgInN0ZXBHb2FsIiA6IDEwMDAwLAogICJ3ZWlnaHRLZyIgOiA3MAp9",
+      "health-write-intent.json": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiJEOTU3NUY5Qi0zOURELTRCNEEtQjNFRC0xODRCN0YwRDEwNkEiLCJvd25lciI6IjAxNjk1REI4LTQwMjEtNDFBNC1BQkJGLTYzRTAzREI1MkRERCIsInZlcnNpb24iOjF9",
+      "meals.json": "WwogIHsKICAgICJkYXRlIiA6ICIyMDI2LTExLTAzVDEzOjIzOjMzWiIsCiAgICAiaWQiIDogInN5bnRoZXRpYy1yZXRhaW5lZC1tZWFsIiwKICAgICJpdGVtcyIgOiBbCiAgICAgIHsKICAgICAgICAiY2Fsb3JpZXMiIDogMTAwLAogICAgICAgICJjYXJic0ciIDogMjAsCiAgICAgICAgImNvbmZpZGVuY2UiIDogMC44LAogICAgICAgICJmYXRHIiA6IDMsCiAgICAgICAgImZpYmVyRyIgOiAyLAogICAgICAgICJncmFtcyIgOiAxMDAsCiAgICAgICAgImlkIiA6ICI1QzdCRjJCRS1DNjAwLTQ5NTktQjMxOC1EODEwNzREMkJDQzMiLAogICAgICAgICJuYW1lIiA6ICJTeW50aGV0aWMiLAogICAgICAgICJwcm90ZWluRyIgOiAxMAogICAgICB9CiAgICBdLAogICAgInNvdXJjZSIgOiAibWFudWFsIiwKICAgICJ0eXBlIiA6ICJsdW5jaCIKICB9Cl0=",
+      "profile.json": "eyJpc1N1YnNjcmliZWQiOmZhbHNlLCJzbGVlcE5lZWRDb25maWRlbmNlIjowLjMsImNocm9ub3R5cGUiOiJpbnRlcm1lZGlhdGUiLCJvbmJvYXJkaW5nRG9uZSI6ZmFsc2UsInNsZWVwTmVlZCI6Mjk0MDAsIndha2VHb2FsIjp7ImhvdXIiOjcsIm1pbnV0ZSI6MH0sIm5hbWUiOiIifQ==",
+      "today.json": "ewogICJhY3RpdmVDYWxvcmllcyIgOiAwLAogICJkYXRlIiA6ICIyMDI2LTExLTAyVDIzOjAwOjAwWiIsCiAgImV4ZXJjaXNlTWluIiA6IDAsCiAgInJlc3RpbmdDYWxvcmllcyIgOiAwLAogICJzdGFuZEhvdXJzIiA6IDAsCiAgInN0ZXBzIiA6IDAsCiAgIndhdGVyTUwiIDogMAp9",
+      "water.json": "W3siZGF0ZSI6IjIwMjMtMTEtMTRUMjI6MTM6MjBaIiwiaWQiOiJzeW50aGV0aWMtd2F0ZXIiLCJtbCI6MTAwMDF9XQ==",
+      "workouts.json": "WwogIHsKICAgICJhY3RpdmVDYWxvcmllcyIgOiAyMCwKICAgICJkdXJhdGlvbiIgOiA2MDAsCiAgICAiZW5lcmd5S25vd24iIDogdHJ1ZSwKICAgICJpZCIgOiAic3ludGhldGljLXJldGFpbmVkLXdvcmtvdXQiLAogICAgImtpbmQiIDogIndhbGsiLAogICAgInNvdXJjZSIgOiAibWFudWFsIiwKICAgICJzdGFydCIgOiAiMjAyNi0xMS0wM1QxMzoyMzozM1oiLAogICAgInRpdGxlIiA6ICJTeW50aGV0aWMiCiAgfQpd"
+    },
+    "inputCase": "oversized single water log",
+    "issue": "Saved water couldn't be opened. Changes to this data are paused. Retry opening saved data; the saved files haven't been replaced.",
+    "liveMealIDs": [
+      "synthetic-retained-meal"
+    ],
+    "liveWaterIDs": [],
+    "liveWeight": 70,
+    "liveWorkoutIDs": [
+      "synthetic-retained-workout"
+    ],
+    "missing": [],
+    "nonce": "83E4ACD4-913E-47F9-A6D9-A30D815DC402",
+    "trace": []
+  },
+  "checks": [
+    {
+      "name": "shared startup completes before synthetic domain setup",
+      "passed": true
+    },
+    {
+      "name": "actual test store completes checked conversation startup",
+      "passed": true
+    },
+    {
+      "name": "actual affected-domain mutation rejects damaged or unreadable source",
+      "passed": true
+    },
+    {
+      "name": "native model exposes unavailable domain and saved-data issue",
+      "passed": true
+    },
+    {
+      "name": "Undo cannot turn unreadable history into an empty rewrite",
+      "passed": true
+    },
+    {
+      "name": "local-only correction cannot overwrite unreadable water",
+      "passed": true
+    },
+    {
+      "name": "unavailable water history is unknown, not a recorded zero",
+      "passed": true
+    },
+    {
+      "name": "backup cannot export an unavailable domain as empty history",
+      "passed": true
+    },
+    {
+      "name": "assistant declines history/target-based planning before model or provider work",
+      "passed": true
+    },
+    {
+      "name": "failed source cannot produce default-goal coaching",
+      "passed": true
+    },
+    {
+      "name": "all rejected actions preserve exact domain/journal/profile files and original live values",
+      "passed": true
+    },
+    {
+      "name": "rejected actions dispatch no new external Health operation",
+      "passed": true
+    },
+    {
+      "name": "independent host matched all rejected current files before recovery was allowed",
+      "passed": true
+    },
+    {
+      "name": "unrelated healthy domain commits while damaged source remains paused",
+      "passed": true
+    },
+    {
+      "name": "healthy replacement file alone cannot bless the old unavailable live model",
+      "passed": true
+    },
+    {
+      "name": "explicit checked retry installs recovered data and clears its issue",
+      "passed": true
+    },
+    {
+      "name": "checked retry retains original healthy histories and original target weight",
+      "passed": true
+    },
+    {
+      "name": "new mutation after checked recovery completes its durable external work",
+      "passed": true
+    },
+    {
+      "name": "all domain source boundaries match after healthy recovery and mutation",
+      "passed": true
+    },
+    {
+      "name": "native writer rejects new negative water before commit",
+      "passed": true
+    },
+    {
+      "name": "invalid new payload retains all healthy files and queues no new external work",
+      "passed": true
+    }
+  ],
+  "external": {
+    "com.dbakp.lumen.health.v1.01695DB8-4021-41A4-ABBF-63E03DB52DDD.AE8F836E-D346-4638-AA0E-EE8C12DA8E20.calories": 213,
+    "com.dbakp.lumen.health.v1.01695DB8-4021-41A4-ABBF-63E03DB52DDD.AE8F836E-D346-4638-AA0E-EE8C12DA8E20.carbs": 23,
+    "com.dbakp.lumen.health.v1.01695DB8-4021-41A4-ABBF-63E03DB52DDD.AE8F836E-D346-4638-AA0E-EE8C12DA8E20.fat": 9,
+    "com.dbakp.lumen.health.v1.01695DB8-4021-41A4-ABBF-63E03DB52DDD.AE8F836E-D346-4638-AA0E-EE8C12DA8E20.fiber": 4,
+    "com.dbakp.lumen.health.v1.01695DB8-4021-41A4-ABBF-63E03DB52DDD.AE8F836E-D346-4638-AA0E-EE8C12DA8E20.protein": 11,
+    "com.dbakp.lumen.health.v1.01695DB8-4021-41A4-ABBF-63E03DB52DDD.B16B0688-A43F-4E2F-8529-5617C077C613.water": 137
+  },
+  "liveMealIDs": [
+    "synthetic-retained-meal",
+    "synthetic-new-recovered-meal"
+  ],
+  "liveWaterIDs": [
+    "synthetic-retained-water",
+    "BCCE3AAC-F1C3-4699-93EA-15EC292B2872"
+  ],
+  "liveWeight": 70,
+  "liveWorkoutIDs": [
+    "synthetic-retained-workout"
+  ],
+  "persistedFiles": {
+    "goals.json": "ewogICJhY3RpdmVDYWxHb2FsIiA6IDYwMCwKICAiYWN0aXZpdHlMZXZlbCIgOiAibW9kZXJhdGUiLAogICJhZ2UiIDogMzAsCiAgImV4ZXJjaXNlR29hbE1pbiIgOiAzMCwKICAiZ29hbCIgOiAibWFpbnRhaW4iLAogICJoZWlnaHRDbSIgOiAxNzgsCiAgInNleCIgOiAidW5zcGVjaWZpZWQiLAogICJzdGFuZEdvYWwiIDogMTIsCiAgInN0ZXBHb2FsIiA6IDEwMDAwLAogICJ3ZWlnaHRLZyIgOiA3MAp9",
+    "health-write-intent.json": "eyJldmVudHMiOlt7ImFja25vd2xlZGdlZCI6WyJjYXJicyIsInByb3RlaW4iLCJmYXQiLCJjYWxvcmllcyIsImZpYmVyIl0sImFjdGlvbiI6InNhdmUiLCJjb21wb25lbnRzIjpbeyJkYXRlIjo4MTU0MDUwMTMuNjU5MDI4LCJtZXRyaWMiOiJjYWxvcmllcyIsInZhbHVlIjoyMTN9LHsiZGF0ZSI6ODE1NDA1MDEzLjY1OTAyOCwibWV0cmljIjoicHJvdGVpbiIsInZhbHVlIjoxMX0seyJkYXRlIjo4MTU0MDUwMTMuNjU5MDI4LCJtZXRyaWMiOiJjYXJicyIsInZhbHVlIjoyM30seyJkYXRlIjo4MTU0MDUwMTMuNjU5MDI4LCJtZXRyaWMiOiJmYXQiLCJ2YWx1ZSI6OX0seyJkYXRlIjo4MTU0MDUwMTMuNjU5MDI4LCJtZXRyaWMiOiJmaWJlciIsInZhbHVlIjo0fV0sImRvbWFpbiI6Im1lYWwiLCJnZW5lcmF0aW9uIjoiRjVFN0RFQTItRjA0QS00Nzk2LTgwMEMtRkMxNjM2ODhFNjY4IiwiaWQiOiJBRThGODM2RS1EMzQ2LTQ2MzgtQUEwRS1FRThDMTJEQThFMjAiLCJpZGVudGl0eSI6InN5bmMiLCJsaWZlY3ljbGUiOiJEOTU3NUY5Qi0zOURELTRCNEEtQjNFRC0xODRCN0YwRDEwNkEiLCJsb2NhbElEIjoic3ludGhldGljLW5ldy1yZWNvdmVyZWQtbWVhbCIsInJlcXVlc3RlZEF0Ijo4MTU0MDUwMTQuMjAxMjMyfSx7ImFja25vd2xlZGdlZCI6WyJ3YXRlciJdLCJhY3Rpb24iOiJzYXZlIiwiY29tcG9uZW50cyI6W3siZGF0ZSI6ODE1NDA1MDE0LjU0MjMxMiwibWV0cmljIjoid2F0ZXIiLCJ2YWx1ZSI6MTM3fV0sImRvbWFpbiI6IndhdGVyIiwiZ2VuZXJhdGlvbiI6IjVEQkEzNDNFLTJFMDgtNEFBNy05QjZGLTAzMzc4ODJEM0Y2MSIsImlkIjoiQjE2QjA2ODgtQTQzRi00RTJGLTg1MjktNTYxN0MwNzdDNjEzIiwiaWRlbnRpdHkiOiJzeW5jIiwibGlmZWN5Y2xlIjoiRDk1NzVGOUItMzlERC00QjRBLUIzRUQtMTg0QjdGMEQxMDZBIiwibG9jYWxJRCI6IkJDQ0UzQUFDLUYxQzMtNDY5OS05M0VBLTE1RUMyOTJCMjg3MiIsInJlcXVlc3RlZEF0Ijo4MTU0MDUwMTQuNTQzOTA3fV0sImxpZmVjeWNsZSI6IkQ5NTc1RjlCLTM5REQtNEI0QS1CM0VELTE4NEI3RjBEMTA2QSIsIm93bmVyIjoiMDE2OTVEQjgtNDAyMS00MUE0LUFCQkYtNjNFMDNEQjUyREREIiwidmVyc2lvbiI6MX0=",
+    "meals.json": "W3siZGF0ZSI6IjIwMjYtMTEtMDNUMTM6MjM6MzNaIiwiaWQiOiJzeW50aGV0aWMtcmV0YWluZWQtbWVhbCIsInR5cGUiOiJsdW5jaCIsIml0ZW1zIjpbeyJmYXRHIjozLCJmaWJlckciOjIsIm5hbWUiOiJTeW50aGV0aWMiLCJncmFtcyI6MTAwLCJjYXJic0ciOjIwLCJjb25maWRlbmNlIjowLjgsInByb3RlaW5HIjoxMCwiY2Fsb3JpZXMiOjEwMCwiaWQiOiI1QzdCRjJCRS1DNjAwLTQ5NTktQjMxOC1EODEwNzREMkJDQzMifV0sInNvdXJjZSI6Im1hbnVhbCJ9LHsiZGF0ZSI6IjIwMjYtMTEtMDNUMTM6MjM6MzNaIiwiaWQiOiJzeW50aGV0aWMtbmV3LXJlY292ZXJlZC1tZWFsIiwidHlwZSI6Imx1bmNoIiwiaXRlbXMiOlt7ImZhdEciOjksImZpYmVyRyI6NCwibmFtZSI6IlN5bnRoZXRpYyBuZXciLCJncmFtcyI6MTAwLCJjYXJic0ciOjIzLCJjb25maWRlbmNlIjowLjgsInByb3RlaW5HIjoxMSwiY2Fsb3JpZXMiOjIxMywiaWQiOiJEMUQ0QkI3RS1DOTlFLTRCOTktOUMzMi1DM0FENTgzOUEzNUYifV0sInNvdXJjZSI6Im1hbnVhbCJ9XQ==",
+    "profile.json": "eyJpc1N1YnNjcmliZWQiOmZhbHNlLCJzbGVlcE5lZWRDb25maWRlbmNlIjowLjMsImNocm9ub3R5cGUiOiJpbnRlcm1lZGlhdGUiLCJvbmJvYXJkaW5nRG9uZSI6ZmFsc2UsInNsZWVwTmVlZCI6Mjk0MDAsIndha2VHb2FsIjp7ImhvdXIiOjcsIm1pbnV0ZSI6MH0sIm5hbWUiOiIifQ==",
+    "today.json": "ewogICJhY3RpdmVDYWxvcmllcyIgOiAwLAogICJkYXRlIiA6ICIyMDI2LTExLTAyVDIzOjAwOjAwWiIsCiAgImV4ZXJjaXNlTWluIiA6IDAsCiAgInJlc3RpbmdDYWxvcmllcyIgOiAwLAogICJzdGFuZEhvdXJzIiA6IDAsCiAgInN0ZXBzIiA6IDAsCiAgIndhdGVyTUwiIDogMAp9",
+    "water.json": "W3siaWQiOiJzeW50aGV0aWMtcmV0YWluZWQtd2F0ZXIiLCJkYXRlIjoiMjAyNi0xMS0wM1QxMzoyMzozM1oiLCJtbCI6MTAwfSx7ImlkIjoiQkNDRTNBQUMtRjFDMy00Njk5LTkzRUEtMTVFQzI5MkIyODcyIiwiZGF0ZSI6IjIwMjYtMTEtMDNUMTM6MjM6MzRaIiwibWwiOjEzN31d",
+    "workouts.json": "WwogIHsKICAgICJhY3RpdmVDYWxvcmllcyIgOiAyMCwKICAgICJkdXJhdGlvbiIgOiA2MDAsCiAgICAiZW5lcmd5S25vd24iIDogdHJ1ZSwKICAgICJpZCIgOiAic3ludGhldGljLXJldGFpbmVkLXdvcmtvdXQiLAogICAgImtpbmQiIDogIndhbGsiLAogICAgInNvdXJjZSIgOiAibWFudWFsIiwKICAgICJzdGFydCIgOiAiMjAyNi0xMS0wM1QxMzoyMzozM1oiLAogICAgInRpdGxlIiA6ICJTeW50aGV0aWMiCiAgfQpd"
+  },
+  "scope": "Actual signed-simulator HealthStore/LocalStore rejection and checked reload with real damaged/non-regular files, host readback barrier, controlled external adapter. Not HealthKit, UI/critic, locked-device or complete Batch43 acceptance.",
+  "status": "Saved-data checks passed",
+  "trace": [
+    "save:calories",
+    "save:protein",
+    "save:carbs",
+    "save:fat",
+    "save:fiber",
+    "save:water"
+  ]
+}

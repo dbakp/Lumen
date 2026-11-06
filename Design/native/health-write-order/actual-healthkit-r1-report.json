@@ -1,0 +1,42 @@
+{
+  "checks" : [
+    {
+      "name" : "controlled adapter is disabled for actual HealthKit verification",
+      "passed" : true
+    },
+    {
+      "name" : "actual simulator HealthKit is available",
+      "passed" : true
+    },
+    {
+      "name" : "checked local startup finishes before HealthKit fixture commits",
+      "passed" : true
+    },
+    {
+      "name" : "actual native Health permission request returns without framework error",
+      "passed" : true
+    },
+    {
+      "name" : "actual HealthKit fixture starts without unrelated pending intent",
+      "passed" : true
+    },
+    {
+      "name" : "seven stable source-owned cleanup identities exist before any actual save",
+      "passed" : true
+    },
+    {
+      "name" : "actual first water save yields one source-owned sample",
+      "passed" : true
+    },
+    {
+      "name" : "actual equal-version water replay retains the original sample UUID",
+      "passed" : false
+    }
+  ],
+  "exactFixtureCleanupVerified" : true,
+  "samples" : [
+
+  ],
+  "scope" : "Actual simulator HealthKit permission\/save\/query\/equal-version replay and explicit water\/meal deletion through the production adapter; no controlled adapter, foreign-source collision, process termination, signed-iPhone or background\/locked acceptance.",
+  "status" : "HealthKit replay checks failed: Failure(name: \"actual equal-version water replay retains the original sample UUID\")"
+}

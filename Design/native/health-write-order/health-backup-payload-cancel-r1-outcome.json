@@ -1,0 +1,145 @@
+{
+  "status": "PROGRESS: Source100production cancellation repair verified at current101/pure59;8decoder/13payload read-hash/2159full pass and25actual native backup/photo checks pass. Full goal active; Batch43 unpublished.",
+  "source": "durable-source-r101.json",
+  "productionSource": "durable-source-r100.json",
+  "pureSource": "local-domain-pure-source-r59.json",
+  "contract": "health-backup-decode-cancel-r1-contract.json",
+  "baseline": "health-backup-decode-cancel-r1-baseline-outcome.json",
+  "baselineFinding": "Source99/pure57valid legacy preview accepted despite cancelled worker; malformed/wrong-hash legacy errors misclassified;3failed/5positive-control passes, exit1 retained. Actual valid/malformed/readable bytes match100repair; wrong-hash envelope key order differed. No all-five-byte-equality claim.",
+  "repair": [
+    "BackupArchive.read accepts/passes actual shared/task cancellation before interpretation, around Foundation decodes/validation/error classification and during64KiB payload hashing. Hash format unchanged; read progress byte count never decreases.",
+    "BackupService.read legacy and convertReadable use bounded no-follow regular-file reads and actual control with existing format limits; original source remains owned and pre/post provenance verification retained. Cancellation preserved; changed paths classified as changed source, other invalid inputs retain format-specific error.",
+    "Source101only test refinement: sorted-key wrong-hash fixture and actual cancelled-task state; all production inputs and native app executable exact100. Two current8case reports exact across executions; no wrong-hash fixture replay claim against old99bytes."
+  ],
+  "checks": {
+    "decoder8": {
+      "passed": 8,
+      "failed": 0,
+      "twoDeterministicCurrentReportsExact": true,
+      "actualWorkerCancelledFlagsTrue": true
+    },
+    "payload13": {
+      "passed": 13,
+      "boundaries": [
+        {
+          "bytes": 182512,
+          "cancelledAfterBytes": 65536,
+          "format": "legacy",
+          "retryRecords": 2048,
+          "sha256": "d5e1352514908435e5cee9f088f3c68a621c22b6534c805f6dae9a48594ea7f1"
+        },
+        {
+          "bytes": 136832,
+          "cancelledAfterBytes": 65536,
+          "format": "readable",
+          "retryRecords": 2048,
+          "sha256": "e0c864a7846baefe87a25a979188265268b68ebb6133ac6f68191739fe4b840d"
+        }
+      ],
+      "scope": "Actual shared-control legacy decode/hash and bounded real legacy/readable file reads with fresh2048record retries and exact bytes. No mid-Foundation-decoder preemption, actual service/native route hold, encrypted unlock or capacity/full-contract acceptance."
+    },
+    "full": {
+      "HealthBackupPayloadFullR1": {
+        "passed": 2159,
+        "exitCode": 0
+      },
+      "HealthBackupPayloadFullR2": {
+        "passed": 2159,
+        "exitCode": 0
+      }
+    },
+    "existingFocusedAt100": {
+      "archive65": 65,
+      "ownership25": 25,
+      "localFiles30": 30,
+      "allAlsoExecutedInCurrent101Full": true
+    },
+    "actualNativeService": {
+      "passedChecks": 25,
+      "passedXCTests": 1,
+      "failedXCTests": 0,
+      "source": "durable-source-r101.json",
+      "hostAudit": "health-backup-photo-native-r4-host-audit.json",
+      "driverArchive": "health-backup-photo-driver-r2.py.gz",
+      "scope": "Actual native BackupService adapters and restore, original/changed JPEGs, isolated recovery/omission targets and live healthy merge. Independent bounded host bytes. Not actual Files/meal/photo UI or full interruption/device acceptance."
+    }
+  },
+  "builds": [
+    "health-backup-payload-pure-build-r2.json",
+    "health-backup-payload-native-build-r1.json",
+    "health-backup-payload-native-build-r2.json"
+  ],
+  "reports": [
+    {
+      "file": "health-backup-decode-cancel-r1-repair-report.json",
+      "source": "durable-source-r100.json",
+      "bytes": 1706,
+      "sha256": "249f55436e19acd3d0de60caccf8111169a47b6dc68ea297311dbb353e0f17c9"
+    },
+    {
+      "file": "health-backup-decode-cancel-r2-report.json",
+      "source": "durable-source-r101.json",
+      "bytes": 1881,
+      "sha256": "0c833b0d978f10cd80c5c9161ae5fe5f639478101e0a268de017cb4e51550548"
+    },
+    {
+      "file": "health-backup-decode-cancel-r3-report.json",
+      "source": "durable-source-r101.json",
+      "bytes": 1881,
+      "sha256": "0c833b0d978f10cd80c5c9161ae5fe5f639478101e0a268de017cb4e51550548"
+    },
+    {
+      "file": "health-backup-payload-focused-r1-report.json",
+      "source": "durable-source-r100.json",
+      "bytes": 1728,
+      "sha256": "7fa14424489ac4a39c846a55c15648c340f61670b552357eee1cfff2b89ba6b0"
+    },
+    {
+      "file": "health-backup-payload-focused-r2-report.json",
+      "source": "durable-source-r101.json",
+      "bytes": 1728,
+      "sha256": "7fa14424489ac4a39c846a55c15648c340f61670b552357eee1cfff2b89ba6b0"
+    },
+    {
+      "file": "health-backup-payload-archives-r1-report.json",
+      "source": "durable-source-r100.json",
+      "bytes": 7310,
+      "sha256": "92c04c30cf45ac841fcf16b23da92cba62e9137e7afb506b4ec5a759457bd0ed"
+    },
+    {
+      "file": "health-backup-payload-ownership-r1-report.json",
+      "source": "durable-source-r100.json",
+      "bytes": 2143,
+      "sha256": "ccf20991e01244f63d41ebfc7b62dbe34d11974646c77fe28c4d1734cea0aa8b"
+    },
+    {
+      "file": "health-backup-payload-files-r1-report.json",
+      "source": "durable-source-r100.json",
+      "bytes": 2367,
+      "sha256": "dc023e1dee6a99ba38ced0d0668d8e509ee0fe76eed56fd391ead2a1867a698a"
+    }
+  ],
+  "evidence": {
+    "availableLogs": 313,
+    "explicitlyIncompleteHistoricalLogs": 1,
+    "newCompleteLogs": 20,
+    "failedBaselineExecutionLogsIncluded": true,
+    "nativeOriginalPNGs": 1,
+    "nativePNGsIndividuallyOpened": 0,
+    "nativeAttachmentJSONs": 0,
+    "nativeServiceReportReadViaHostAudit": true,
+    "noNewProductUIOrDesignAcceptance": true
+  },
+  "phoneInstall": "current-iphone-install-r2-outcome.json",
+  "phoneScope": "Personal phone remains signed96Release in-place; normal launch still unverified after Locked/no new reply. Current101repair not installed; no personal reset/uninstall/fixtures/data readback.",
+  "earlierBoundaries": "Source95/96identity-read and97/98copy Back/Cancel retain actual earlier binary/production boundaries; current101production changes mean no full current native held-read carry claim. Prior broader contracts/results/failures remain.",
+  "storage": {
+    "availableApproxGiB": 68,
+    "manualRecoveredBytes": 0,
+    "currentPayloadFixtureDirectoriesRemaining": [],
+    "policy": "Small182512/136832byte synthetic payload fixtures removed by tests; no large fixture/download/new runtime. Keep working repo/current inputs/supplied skill/unpublished raw/frozen/original evidence and single immediately reused native/pure/package roots. No unrelated/global deletion or documentation-only build. No manual recovered-space credit."
+  },
+  "activeProducers": [],
+  "remainingScope": "Actual native held payload-file read Cancel/Back/retry for legacy/readable and separate encrypted unlock/decrypt/read control/stream close/resource lifetimes (encrypted Cancel retains original for same-file password retry); atomic Foundation decode/hash-validation capacity/performance remains unproven beyond checks around decode and64KiB hash. Later payload-file read/decode/unlock cancellation (see exact source audit), partial multi-chunk/capacity/copy source changes, other timing/appearance windows; changed selected-record/source/selection bytes and late work; applicable selected legacy/encrypted photo reads/source changes (readable photos absent), all extracted resource workspace lifetime/cleanup/appearances/performance. Preserve complete all-domain/meal/photo/zero-two-shared-missing-damaged-omitted/empty/fault/retry/capacity/cache/healthy-merge/preferences/profile/weight/both-phone appearances/continuing critic; every original full contract/eight groups, legacy/symlink/discovery/target/Watch/widget/reminder/Health daemon/actual interruption/SDK/current Release/signed-device/publication and broader product/evidence/privacy/provider/accessibility/performance goal.",
+  "next": "Add distinct actual legacy/readable payload reader holds and UI Cancel/Back/cleanup/retry proofs, then register true encrypted unlock control and bound/observe decrypt streams with correct parent-owned retry lifetime; keep all full remaining requirements."
+}

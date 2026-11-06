@@ -10,6 +10,9 @@ final class LumenSmokeTests: XCTestCase {
     var userMessages: XCUIElementQuery { app.descendants(matching: .any).matching(identifier: "userMessage") }
     var referenceExcerpt: XCUIElement { app.descendants(matching: .any).matching(identifier: "reference-excerpt").firstMatch }
     var fhirFullText: XCUIElement { app.descendants(matching: .any).matching(identifier: "fhirFullText").firstMatch }
+    private var healthFileRecoveryLeavesReview: Bool {
+        ["LegacyBack", "EncryptedBack", "ReadableBack"].contains { name.contains($0) }
+    }
 
     override func setUpWithError() throws {
         continueAfterFailure = false
@@ -17,6 +20,79 @@ final class LumenSmokeTests: XCTestCase {
         // The focused wrapping probe reuses this dedicated simulator's saved
         // synthetic record, with a public Files-import fallback if absent.
         app.launchArguments = name.contains("testFHIRLiteralWrappingSnapshots") || name.contains("testLiteralIdentifier") || name.contains("testProviderCitationRejection") || name.contains("testProviderTransportFallback") ? ["-librarySearchRemoteUITestMode"] : ["-resetForUITests"]
+        if name.contains("testDailyCacheClearCorrupt") {
+            app.launchArguments = ["-resetForUITests", "-health-recovery-ui-fixture", "-health-daily-cache-ui-fixture", "-health-recovery-cancel-ui",
+                                   "-lumen.appearance", "light", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryL"]
+        }
+        if name.contains("testDailyCacheRebuildHealthKit") {
+            app.launchArguments = ["-resetForUITests", "-health-recovery-ui-fixture", "-health-daily-cache-ui-fixture",
+                                   "-health-daily-cache-rebuild-ui", "-health-recovery-cancel-ui", "-lumen.appearance", name.contains("LargestDetails") || name.contains("DarkDetails") ? "dark" : "light",
+                                   "-UIPreferredContentSizeCategoryName", name.contains("LargestDetails") ? "UICTContentSizeCategoryAccessibilityXXXL" : "UICTContentSizeCategoryL"]
+            if name.contains("Recorded") { app.launchArguments.append("-health-daily-cache-recorded-ui") }
+        }
+        if name.contains("testDailyCacheHealthQuery") {
+            app.launchArguments = ["-resetForUITests", "-health-recovery-ui-fixture", "-health-daily-cache-ui-fixture",
+                                   "-health-daily-cache-rebuild-ui", "-health-daily-cache-query-interrupt-ui",
+                                   "-health-recovery-cancel-ui", "-lumen.appearance", "light",
+                                   "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryL"]
+        }
+        if name.contains("testDurableHealthRestart") {
+            let phase = name.contains("Resume") ? "resume" : "prepare"
+            let scenario = name.contains("Undo") ? "undo-before-receipt" : name.contains("BeforeReceipt") ? "before-receipt" : "before-worker"
+            app.launchArguments = ["-resetForUITests", "-health-write-lifecycle", phase, "-health-write-case", scenario]
+            if phase == "prepare", scenario != "before-worker" {
+                app.launchArguments += ["-quick-save-fault", "health-receipt:1,2,3,4,5,6,7"]
+            }
+        }
+        if name.contains("testHealthRecoveryScreen") {
+            app.launchArguments = ["-resetForUITests", "-health-recovery-ui-fixture", "-lumen.appearance", name.contains("Dark") || name.contains("Largest") ? "dark" : "light"]
+            if name.contains("Largest") { app.launchArguments += ["-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"] }
+            if name.contains("Cancel") { app.launchArguments += ["-health-recovery-cancel-ui"] }
+        }
+        if name.contains("testHealthRecoveryReadRetainedRecords") {
+            app.launchArguments = ["-resetForUITests", "-health-recovery-ui-fixture", "-health-read-ui"]
+        }
+        if name.contains("testHealthRecoveryReadRetainedPhoto") {
+            app.launchArguments = ["-resetForUITests", "-health-review-records-fixture", "-health-review-oriented-photo", "-health-read-ui", "-health-read-scope", "retained-photo"]
+        }
+        if name.contains("testHealthRecoveryReadRetainedPhotoPayload") {
+            app.launchArguments += ["-health-read-photo-payload"]
+        }
+        if name.contains("testHealthRecordReview") {
+            app.launchArguments = ["-resetForUITests", "-health-review-records-fixture", "-lumen.appearance", name.contains("Dark") || name.contains("Largest") ? "dark" : "light"]
+            if name.contains("Largest") { app.launchArguments += ["-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"] }
+            if name.contains("Empty") { app.launchArguments += ["-health-review-empty-fixture"] }
+            if name.contains("PhotoUnavailable") { app.launchArguments += ["-health-review-invalid-photo"] }
+            if name.contains("PhotoOriented") { app.launchArguments += ["-health-review-oriented-photo"] }
+        }
+        if name.contains("testHealthOriginalImport") {
+            let kind = name.contains("Encrypted") ? "encrypted" : name.contains("Readable") ? "readable" : "legacy"
+            app.launchArguments = ["-resetForUITests", "-health-backup-ui-fixture", "-health-backup-case", kind, "-health-read-ui", "-health-read-scope", "selected-import"]
+            if name.contains("OriginalImportCopy") { app.launchArguments.append("-health-read-original-copy") }
+            if name.contains("OriginalImportPayload") { app.launchArguments.append("-health-read-original-payload") }
+            if name.contains("OriginalImportDecrypt") { app.launchArguments.append("-health-read-encrypted-record") }
+            if name.contains("OriginalImportUnlock") { app.launchArguments.append("-health-read-encrypted-unlock") }
+            if name.contains("OriginalImportCopyDenied") {
+                app.launchArguments += ["-lumen.appearance", name.contains("Dark") || name.contains("Largest") ? "dark" : "light",
+                    "-UIPreferredContentSizeCategoryName", name.contains("Largest") ? "UICTContentSizeCategoryAccessibilityXXXL" : "UICTContentSizeCategoryL"]
+            }
+        }
+        if name.contains("testHealthBackupFileRead") {
+            let kind = name.contains("Encrypted") ? "encrypted" : name.contains("Readable") ? "readable" : "legacy"
+            app.launchArguments = ["-resetForUITests", "-health-backup-ui-fixture", "-health-backup-case", kind, "-health-read-ui", "-health-read-scope", "selected-record"]
+            if name.contains("OwnerUnwind") { app.launchArguments.append("-health-read-owner-unwind") }
+        }
+        if name.contains("testHealthBackupPhoto") {
+            let kind = name.contains("Encrypted") ? "encrypted" : "legacy"
+            app.launchArguments = ["-resetForUITests", "-health-backup-ui-fixture", "-health-backup-case", kind,
+                "-health-read-ui", "-health-read-scope", "selected-photo", "-health-read-photo-payload"]
+            if name.contains("OwnerUnwind") { app.launchArguments.append("-health-read-owner-unwind") }
+        }
+        if name.contains("testHealthBackupFileRecovery") {
+            let kind = name.contains("Encrypted") ? "encrypted" : name.contains("Readable") ? "readable" : "legacy"
+            app.launchArguments = ["-resetForUITests", "-health-backup-ui-fixture", "-health-backup-case", kind]
+            if name.contains("Cancel") || healthFileRecoveryLeavesReview || name.contains("RecoveryCommit") { app.launchArguments += ["-health-recovery-cancel-ui"] }
+        }
         app.launch()
     }
 
@@ -1329,9 +1405,15 @@ final class LumenSmokeTests: XCTestCase {
     func openBackupSettings() {
         tab("Today"); tap("Settings")
         let button = app.buttons["backupSettings"].firstMatch
-        for _ in 0..<28 {
-            if button.exists && button.isHittable { break }
-            app.swipeUp(velocity: .fast)
+        if name.contains("OriginalImportCopyDenied") {
+            reveal(button)
+            settleLabFrame(button, pixelTolerance: 1, timeout: 20)
+            snap("original-denied-settings-entry")
+        } else {
+            for _ in 0..<28 {
+                if button.exists && button.isHittable { break }
+                app.swipeUp(velocity: .fast)
+            }
         }
         XCTAssertTrue(button.exists && button.isHittable); button.tap()
         XCTAssertTrue(app.navigationBars["Backup & restore"].waitForExistence(timeout: 5))
@@ -1401,11 +1483,7 @@ final class LumenSmokeTests: XCTestCase {
             else { app.swipeUp(velocity: .slow) }
         }
         XCTAssertTrue(cell.exists && cell.isHittable, "Seed synthetic backup fixtures before this scenario")
-        var previous = CGRect.null
-        let stable = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
-            let current = cell.frame; defer { previous = current }; return current == previous
-        }, object: cell)
-        XCTAssertEqual(XCTWaiter.wait(for: [stable], timeout: 5), .completed)
+        settleLabFrame(cell, pixelTolerance: 1, timeout: self.name.contains("OriginalImportCopyDenied") ? 20 : 8)
         let frame = cell.frame
         app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: frame.midX, dy: max(210, min(720, frame.minY + 50)))).tap()
         if !picker.waitForNonExistence(timeout: 15) { print(app.debugDescription); XCTFail("Selecting a backup must leave Files") }
@@ -1532,8 +1610,30 @@ final class LumenSmokeTests: XCTestCase {
     }
     func nativeSwitch(_ identifier: String, enabled: Bool, towardsTop: Bool = false) {
         let toggle = app.switches[identifier].firstMatch; reveal(toggle, towardsTop: towardsTop)
+        if identifier.hasPrefix("recoverFile-") {
+            // The nested native AX switch can resolve a different tap origin
+            // while its surrounding sheet is settling. Use its measured app
+            // coordinate, and repeat only if the actual requested state did
+            // not change. Every change still comes from a real native touch.
+            let target = enabled ? "1" : "0"
+            for attempt in 1...2 {
+                if toggle.value as? String == target { return }
+                reveal(toggle); settleLabFrame(toggle)
+                let control = toggle.switches.firstMatch
+                XCTAssertTrue(control.exists && control.isEnabled)
+                let frame = control.frame
+                XCTAssertFalse(frame.isEmpty); XCTAssertTrue(app.frame.contains(frame))
+                let point = CGVector(dx: frame.minX + frame.width * (enabled ? 0.25 : 0.75), dy: frame.midY)
+                print("FILE RECOVERY SWITCH NATIVE TOUCH", attempt, frame, point)
+                app.coordinate(withNormalizedOffset: .zero).withOffset(point).tap()
+                let changed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", target), object: toggle)
+                if XCTWaiter.wait(for: [changed], timeout: 3) == .completed { return }
+            }
+            snap("switch-state-" + identifier); XCTFail("Native file recovery switch did not reach the requested state")
+            return
+        }
         let preference = ["personalContextSharing", "contextualCheckIns", "reminderDetails"].contains(identifier)
-        let touchThumb = identifier.contains("FHIR") || identifier.hasPrefix("normalization") || identifier == "normalizeLabComparison" || preference
+        let touchThumb = identifier.contains("FHIR") || identifier.hasPrefix("normalization") || identifier == "normalizeLabComparison" || identifier.hasPrefix("recoverFile-") || preference
         if touchThumb { settleLabFrame(toggle) }
         if (toggle.value as? String) != (enabled ? "1" : "0") {
             let control = toggle.switches.firstMatch
@@ -1586,11 +1686,7 @@ final class LumenSmokeTests: XCTestCase {
             else { app.swipeUp(velocity: .slow) }
         }
         XCTAssertTrue(cell.exists && cell.isHittable, "Seed synthetic readable fixtures before this scenario")
-        var previous = CGRect.null
-        let stable = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
-            let current = cell.frame; defer { previous = current }; return current == previous
-        }, object: cell)
-        XCTAssertEqual(XCTWaiter.wait(for: [stable], timeout: 5), .completed)
+        settleLabFrame(cell, pixelTolerance: 1, timeout: self.name.contains("OriginalImportCopyDenied") ? 20 : 8)
         let frame = cell.frame
         app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: frame.midX, dy: max(210, min(720, frame.minY + 50)))).tap()
         XCTAssertTrue(picker.waitForNonExistence(timeout: 15))
@@ -2375,7 +2471,7 @@ final class LumenSmokeTests: XCTestCase {
         let document = app.buttons[title].firstMatch; reveal(document); document.tap()
         let review = app.buttons["reviewSavedLabResults"].firstMatch; reveal(review)
     }
-    func settleLabFrame(_ element: XCUIElement, pixelTolerance: CGFloat = 0) {
+    func settleLabFrame(_ element: XCUIElement, pixelTolerance: CGFloat = 0, timeout: TimeInterval = 8) {
         var frame = CGRect.null
         var stableSince = ProcessInfo.processInfo.systemUptime
         let stable = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
@@ -2390,7 +2486,9 @@ final class LumenSmokeTests: XCTestCase {
             }
             return !next.isEmpty && now - stableSince >= 0.5
         }, object: element)
-        XCTAssertEqual(XCTWaiter.wait(for: [stable], timeout: 8), .completed)
+        let result = XCTWaiter.wait(for: [stable], timeout: timeout)
+        if result != .completed { snap("unsettled-native-frame"); print(element.debugDescription) }
+        XCTAssertEqual(result, .completed)
     }
     func revealLabExcerpt(_ element: XCUIElement) {
         XCTAssertTrue(element.waitForExistence(timeout: 5)); settleLabFrame(element)
@@ -3542,18 +3640,24 @@ final class LumenSmokeTests: XCTestCase {
         askLibrary("Find \"" + longID + "\"", replies: 2)
         XCTAssertTrue(coachMessages.element(boundBy: 1).label.contains(longID)); snap("696-identifier-long-exact-match")
     }
-    func captureIdentifierText(_ first: XCUIElement, through last: XCUIElement? = nil, prefix: String, contentGestures: Bool = false) {
+    func captureIdentifierText(_ first: XCUIElement, through last: XCUIElement? = nil, prefix: String, contentGestures: Bool = false, topInset: CGFloat = 12, bottomInset: CGFloat = 40, visibleBounds: (() -> CGRect)? = nil) {
         let end = last ?? first
         XCTAssertTrue(first.waitForExistence(timeout: 5) && end.exists)
         func frame() -> CGRect { first.frame.union(end.frame) }
         func bounds() -> (CGFloat, CGFloat) {
+            if let visibleBounds {
+                let viewport = visibleBounds().intersection(app.frame)
+                XCTAssertFalse(viewport.isNull)
+                XCTAssertGreaterThan(viewport.height, 44)
+                return (viewport.minY, viewport.maxY)
+            }
             // The chat's first bubble rests just below native navigation at
             // its upper scroll limit. Measure visible content, rather than
             // requiring the extra inset used by the standalone source sheet.
-            let top = app.navigationBars.firstMatch.frame.maxY + (contentGestures ? 2 : 12)
+            let top = app.navigationBars.firstMatch.frame.maxY + (contentGestures ? 2 : topInset)
             let input = app.descendants(matching: .any).matching(identifier: "coachInput").firstMatch
             let bar = app.tabBars.firstMatch
-            let bottom = input.exists && input.isHittable ? input.frame.minY - 12 : (bar.exists && bar.isHittable ? bar.frame.minY - 12 : app.frame.maxY - 40)
+            let bottom = input.exists && input.isHittable ? input.frame.minY - 12 : (bar.exists && bar.isHittable ? bar.frame.minY - 12 : app.frame.maxY - bottomInset)
             return (top, bottom)
         }
         func move(down: Bool, distance: CGFloat) {
@@ -4173,7 +4277,7 @@ final class LumenSmokeTests: XCTestCase {
         app.launch()
         if personal { openPersonalPreferences() } else { openHealthConnections() }
     }
-    func capturePreferenceDisclosure(_ identifier: String, prefix: String, navigationTitle: String? = nil) {
+    func capturePreferenceDisclosure(_ identifier: String, prefix: String, navigationTitle: String? = nil, bottomLimit: CGFloat? = nil) {
         let text = app.staticTexts[identifier].firstMatch
         for _ in 0..<24 where !text.exists { app.swipeUp(velocity: .slow) }
         XCTAssertTrue(text.exists)
@@ -4181,7 +4285,7 @@ final class LumenSmokeTests: XCTestCase {
         let navigation = navigationTitle.map { app.navigationBars[$0] } ?? (contextBar.exists ? contextBar : app.navigationBars.firstMatch)
         // The compact verification phone has a physical Home button and no
         // bottom safe area: its measured native footer ends at exactly667.
-        let bottom = app.frame.maxY - (app.frame.height <= 667 ? 0 : 24)
+        let bottom = min(app.frame.maxY - (app.frame.height <= 667 ? 0 : 24), bottomLimit ?? app.frame.maxY)
         let top = navigation.frame.maxY + 16
         func drag(up: Bool, distance: CGFloat) {
             let startY = up ? bottom - 16 : top + 16
@@ -4407,6 +4511,1538 @@ final class LumenSmokeTests: XCTestCase {
         let completed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label BEGINSWITH 'Preference checks passed' OR label BEGINSWITH 'Preference checks failed'"), object: status)
         XCTAssertEqual(XCTWaiter.wait(for: [completed], timeout: 45), .completed)
         XCTAssertEqual(status.label, "Preference checks passed"); snap("1000-preference-native-report")
+    }
+
+    func testDurableHealthNativeCombinedFailure() throws {
+        try durableHealthNativeProbe(receipt: false)
+    }
+
+    func testHealthLocalCorruptWaterBaseline() throws { try healthLocalDataBaseline("water") }
+    func testHealthLocalWaterRecovery() throws { try healthLocalDataRecovery("water") }
+    func testHealthPreviousCopyRecovery() throws { try healthLocalDataRecovery("previous-copy") }
+    func testHealthPreviousCopyTaskCancellation() throws { try healthLocalDataRecovery("previous-copy") }
+    func testBackupPhotoBindingChecks() throws {
+        app.terminate(); app.launchArguments = ["-resetForUITests", "-health-write-native-probe", "-health-photo-binding-checks"]; app.launch()
+        let status = app.staticTexts["healthWriteProbeStatus"].firstMatch
+        let completed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label BEGINSWITH 'Backup photo checks passed' OR label BEGINSWITH 'Backup photo checks failed'"), object: status)
+        XCTAssertEqual(XCTWaiter.wait(for: [completed], timeout: 90), .completed)
+        XCTAssertEqual(status.label, "Backup photo checks passed"); snap("backup-photo-binding-checks-passed")
+    }
+    func testHealthBackupFileRecoveryLegacy() throws { try healthBackupFileRecovery("legacy") }
+    func testHealthBackupFileRecoveryEncrypted() throws { try healthBackupFileRecovery("encrypted") }
+    func testHealthBackupFileRecoveryReadable() throws { try healthBackupFileRecovery("readable") }
+    func testHealthBackupFileRecoveryCommitLegacy() throws { try healthBackupFileRecovery("legacy") }
+    func testHealthBackupFileRecoveryCommitEncrypted() throws { try healthBackupFileRecovery("encrypted") }
+    func testHealthBackupFileRecoveryCommitReadable() throws { try healthBackupFileRecovery("readable") }
+    func testHealthBackupFileRecoveryLegacyCancel() throws { try healthBackupFileRecovery("legacy") }
+    func testHealthBackupFileRecoveryEncryptedCancel() throws { try healthBackupFileRecovery("encrypted") }
+    func testHealthBackupFileRecoveryReadableCancel() throws { try healthBackupFileRecovery("readable") }
+    func testHealthBackupFileRecoveryLegacyBack() throws { try healthBackupFileRecovery("legacy") }
+    func testHealthBackupFileRecoveryEncryptedBack() throws { try healthBackupFileRecovery("encrypted") }
+    func testHealthBackupFileRecoveryReadableBack() throws { try healthBackupFileRecovery("readable") }
+    func testHealthBackupFileReadLegacy() throws { try healthBackupFileRead("legacy") }
+    func testHealthBackupFileReadEncrypted() throws { try healthBackupFileRead("encrypted") }
+    func testHealthBackupFileReadReadable() throws { try healthBackupFileRead("readable") }
+    func testHealthOriginalImportBackLegacy() throws { try healthOriginalImportBack("legacy") }
+    func testHealthOriginalImportBackEncrypted() throws { try healthOriginalImportBack("encrypted") }
+    func testHealthOriginalImportBackReadable() throws { try healthOriginalImportBack("readable") }
+    func testHealthOriginalImportCancelLegacy() throws { try healthOriginalImportBack("legacy", cancel: true) }
+    func testHealthOriginalImportCancelEncrypted() throws { try healthOriginalImportBack("encrypted", cancel: true) }
+    func testHealthOriginalImportCancelReadable() throws { try healthOriginalImportBack("readable", cancel: true) }
+    func testHealthOriginalImportCopyCancelLegacy() throws { try healthOriginalImportBack("legacy", cancel: true, copying: true) }
+    func testHealthOriginalImportCopyCancelEncrypted() throws { try healthOriginalImportBack("encrypted", cancel: true, copying: true) }
+    func testHealthOriginalImportCopyCancelReadable() throws { try healthOriginalImportBack("readable", cancel: true, copying: true) }
+    func testHealthOriginalImportCopyBackLegacy() throws { try healthOriginalImportBack("legacy", copying: true) }
+    func testHealthOriginalImportCopyBackEncrypted() throws { try healthOriginalImportBack("encrypted", copying: true) }
+    func testHealthOriginalImportCopyBackReadable() throws { try healthOriginalImportBack("readable", copying: true) }
+    func testHealthOriginalImportPayloadBackLegacy() throws { try healthOriginalImportBack("legacy", payload: true) }
+    func testHealthOriginalImportPayloadBackReadable() throws { try healthOriginalImportBack("readable", payload: true) }
+    func testHealthOriginalImportPayloadCancelLegacy() throws { try healthOriginalImportBack("legacy", cancel: true, payload: true) }
+    func testHealthOriginalImportPayloadCancelReadable() throws { try healthOriginalImportBack("readable", cancel: true, payload: true) }
+    func testHealthOriginalImportPayloadLifetimeLegacy() throws { try healthOriginalImportBack("legacy", cancel: true, payload: true, lifetime: true) }
+    func testHealthOriginalImportPayloadLifetimeReadable() throws { try healthOriginalImportBack("readable", cancel: true, payload: true, lifetime: true) }
+    func testHealthOriginalImportDecryptCancelEncrypted() throws { try healthOriginalImportDecrypt(cancel: true) }
+    func testHealthOriginalImportDecryptBackEncrypted() throws { try healthOriginalImportDecrypt(cancel: false) }
+    func testHealthOriginalImportUnlockCancelEncrypted() throws { try healthOriginalImportDecrypt(cancel: true, unlocking: true) }
+    func testHealthOriginalImportUnlockWrongCancelEncrypted() throws { try healthOriginalImportDecrypt(cancel: true, unlocking: true, wrongPassword: true) }
+    private func healthOriginalImportDecrypt(cancel: Bool, unlocking: Bool = false, wrongPassword: Bool = false) throws {
+        executionTimeAllowance = 600
+        openBackupSettings()
+        try chooseBackupFixture("Lumen-encrypted-read-baseline")
+        unlockBackup(value: wrongPassword ? "Wrong synthetic encrypted passphrase 61" : "Synthetic encrypted read passphrase 61")
+        let state = app.descendants(matching: .any).matching(identifier: "healthImportReadState").firstMatch
+        func phase(_ value: String, timeout: TimeInterval = 10) {
+            XCTAssertTrue(state.waitForExistence(timeout: 10))
+            let expected = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", value), object: state)
+            XCTAssertEqual(XCTWaiter.wait(for: [expected], timeout: timeout), .completed)
+        }
+        // File selection registers1; the actual password job registers2.
+        phase("held-2")
+        let prefix = (unlocking ? "original-unlock-" : "original-decrypt-") + (wrongPassword ? "wrong-" : "") + (cancel ? "cancel" : "back")
+        snap(prefix + "-held"); phase("observed-2")
+        let cancelButton = app.buttons["cancelBackupOperation"].firstMatch
+        XCTAssertTrue(cancelButton.exists && cancelButton.isEnabled)
+        let started = Date()
+        if cancel { cancelButton.tap() }
+        else { app.navigationBars["Backup & restore"].buttons.element(boundBy: 0).tap() }
+        let parent = cancel ? "Backup & restore" : "Settings"
+        let stopped = XCTNSPredicateExpectation(predicate: NSPredicate { [self] _, _ in
+            app.navigationBars[parent].exists && state.exists && state.value as? String == "closed-2" && !cancelButton.exists
+        }, object: state)
+        XCTAssertEqual(XCTWaiter.wait(for: [stopped], timeout: 3), .completed)
+        let elapsed = Date().timeIntervalSince(started); XCTAssertLessThan(elapsed, 3)
+        var stableSeconds: TimeInterval = 0
+        var message = ""
+        if cancel {
+            let cancelled = app.staticTexts["Cancelled. Your records haven’t changed."].firstMatch
+            XCTAssertTrue(cancelled.waitForExistence(timeout: 5)); message = cancelled.label
+            let field = app.secureTextFields["unlockBackupPassword"].firstMatch
+            reveal(field); XCTAssertTrue(field.exists && field.isEnabled)
+            XCTAssertFalse(app.buttons["unlockBackup"].isEnabled)
+            XCTAssertFalse(app.descendants(matching: .any).matching(identifier: "backupProgress").firstMatch.exists)
+            snap(prefix + "-stopped")
+            let late = XCTNSPredicateExpectation(predicate: NSPredicate { [self] _, _ in
+                cancelButton.exists || app.descendants(matching: .any).matching(identifier: "backupProgress").firstMatch.exists
+                || app.buttons["reviewBackupHealthRecovery"].firstMatch.exists
+            }, object: app)
+            late.isInverted = true
+            let stableStart = Date(); XCTAssertEqual(XCTWaiter.wait(for: [late], timeout: 4), .completed)
+            stableSeconds = Date().timeIntervalSince(stableStart)
+        } else {
+            snap(prefix + "-stopped")
+            let reopen = app.buttons["backupSettings"].firstMatch; reveal(reopen); reopen.tap()
+            XCTAssertTrue(app.navigationBars["Backup & restore"].waitForExistence(timeout: 5))
+            try chooseBackupFixture("Lumen-encrypted-read-baseline")
+        }
+        // Cancel retries the same original without Files reselection; Back
+        // selects a new owned original. Both use a fresh password/read job.
+        unlockBackup(value: "Synthetic encrypted read passphrase 61")
+        phase(cancel ? "held-3" : "held-4")
+        snap(prefix + "-retry-held")
+        XCTAssertTrue(app.descendants(matching: .any).matching(identifier: "backupPreviewKind").firstMatch.waitForExistence(timeout: 30))
+        let link = app.buttons["reviewBackupHealthRecovery"].firstMatch; reveal(link); XCTAssertTrue(link.exists); link.tap()
+        let filename = app.staticTexts["recoveryFileName"].firstMatch
+        XCTAssertTrue(filename.waitForExistence(timeout: 10)); XCTAssertEqual(filename.label, "Lumen-encrypted-read-baseline.lumenbackup")
+        let observedFileName = filename.label
+        let choice = app.switches["recoverFile-water"].firstMatch; reveal(choice); XCTAssertEqual(choice.value as? String, "0")
+        snap(prefix + "-retry-off")
+        let records = app.buttons["reviewFile-water"].firstMatch; reveal(records, towardsTop: true); records.tap()
+        let record = app.buttons["recoveryRecord-0"].firstMatch; XCTAssertTrue(record.waitForExistence(timeout: 10)); record.tap()
+        let amount = app.descendants(matching: .any).matching(identifier: "recoveryField-0").firstMatch
+        XCTAssertTrue(amount.waitForExistence(timeout: 10)); XCTAssertTrue(amount.label.contains("137 mL"))
+        let observedAmount = amount.label
+        snap(prefix + "-retry-detail")
+        // Keep the real detail alive while the host observes the successful
+        // preview's owned original and extracted directory after stream close.
+        let premature = XCTNSPredicateExpectation(predicate: NSPredicate { [self] _, _ in app.alerts.firstMatch.exists }, object: app)
+        premature.isInverted = true
+        XCTAssertEqual(XCTWaiter.wait(for: [premature], timeout: 3), .completed)
+        for title in ["Water history", "Review recovery", "Backup & restore"] {
+            app.navigationBars.firstMatch.buttons.element(boundBy: 0).tap()
+            XCTAssertTrue(app.navigationBars[title].waitForExistence(timeout: 5))
+        }
+        let choose = app.buttons["chooseBackup"].firstMatch; reveal(choose, towardsTop: true)
+        XCTAssertTrue(choose.exists && choose.isEnabled)
+        XCTAssertFalse(app.secureTextFields["unlockBackupPassword"].firstMatch.exists)
+        XCTAssertFalse(app.buttons["reviewBackupHealthRecovery"].firstMatch.exists)
+        snap(prefix + "-final-parent")
+        let revived = XCTNSPredicateExpectation(predicate: NSPredicate { [self] _, _ in
+            app.buttons["cancelBackupOperation"].firstMatch.exists || app.buttons["reviewBackupHealthRecovery"].firstMatch.exists
+        }, object: app)
+        revived.isInverted = true
+        XCTAssertEqual(XCTWaiter.wait(for: [revived], timeout: 4), .completed)
+        let data = try JSONSerialization.data(withJSONObject: ["scope": "selected-import", "boundary": unlocking ? "encrypted-unlock" : "encrypted-record", "wrongPasswordFirst": wrongPassword, "action": cancel ? "cancel" : "back", "parent": parent, "stopToClosedSeconds": elapsed, "cancelMessage": message, "cancelledReadyStableSeconds": stableSeconds, "retryAmount": observedAmount, "fileName": observedFileName, "finalParent": "Backup & restore"], options: [.prettyPrinted, .sortedKeys])
+        let attachment = XCTAttachment(data: data, uniformTypeIdentifier: "public.json")
+        attachment.name = "original-decrypt-readback"; attachment.lifetime = .keepAlways; add(attachment)
+    }
+    func testHealthOriginalImportPayloadMalformedLegacy() throws { try healthOriginalImportMalformed("legacy") }
+    func testHealthOriginalImportPayloadMalformedReadable() throws { try healthOriginalImportMalformed("readable") }
+    func testHealthOriginalImportCopyDeniedLegacy() throws { try healthOriginalImportMalformed("legacy", denied: true) }
+    func testHealthOriginalImportCopyDeniedEncrypted() throws { try healthOriginalImportMalformed("encrypted", denied: true) }
+    func testHealthOriginalImportCopyDeniedReadable() throws { try healthOriginalImportMalformed("readable", denied: true) }
+    func testHealthOriginalImportCopyDeniedLegacyDark() throws { try healthOriginalImportMalformed("legacy", denied: true) }
+    func testHealthOriginalImportCopyDeniedEncryptedDark() throws { try healthOriginalImportMalformed("encrypted", denied: true) }
+    func testHealthOriginalImportCopyDeniedReadableDark() throws { try healthOriginalImportMalformed("readable", denied: true) }
+    func testHealthOriginalImportCopyDeniedLegacyLargest() throws { try healthOriginalImportMalformed("legacy", denied: true) }
+    func testHealthOriginalImportCopyDeniedEncryptedLargest() throws { try healthOriginalImportMalformed("encrypted", denied: true) }
+    func testHealthOriginalImportCopyDeniedReadableLargest() throws { try healthOriginalImportMalformed("readable", denied: true) }
+    private func healthOriginalImportMalformed(_ kind: String, denied: Bool = false) throws {
+        executionTimeAllowance = 600
+        let readable = kind == "readable", prefix = (denied ? "original-denied-" : "original-malformed-") + kind
+        let healthyName = readable ? "Lumen-readable-health-small" : "Lumen-backup-health-" + kind + "-small"
+        if readable { openReadableRecovery(); try chooseReadableFixture(denied ? healthyName : "Lumen-readable-health-malformed") }
+        else { openBackupSettings(); try chooseBackupFixture(denied ? healthyName : "Lumen-backup-health-malformed") }
+        let state = app.descendants(matching: .any).matching(identifier: "healthImportReadState").firstMatch
+        func phase(_ value: String) {
+            let expected = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", value), object: state)
+            XCTAssertEqual(XCTWaiter.wait(for: [expected], timeout: 15), .completed)
+        }
+        XCTAssertTrue(state.waitForExistence(timeout: 10)); phase("held-1")
+        let observedTraits = state.label
+        let expectedAppearance = name.contains("Dark") || name.contains("Largest") ? "dark" : "light"
+        let expectedType = name.contains("Largest") ? "accessibility5" : "large"
+        if denied { XCTAssertEqual(observedTraits, "Import read check; appearance=\(expectedAppearance); type=\(expectedType)") }
+        snap(prefix + "-held"); phase("observed-1"); snap(prefix + "-observed")
+        let title = readable ? "Couldn't read export" : "Couldn’t open backup"
+        let alert = app.alerts[title]
+        XCTAssertTrue(alert.waitForExistence(timeout: 20))
+        let expected = readable
+            ? "Choose a readable Lumen JSON file made with Export my data. Use Backup & restore for backup files."
+            : "This file isn’t a valid Lumen backup. Choose a file created from Backup & restore. Older data exports can’t be restored here."
+        let observedError = denied ? alert.staticTexts.allElementsBoundByIndex.map(\.label).joined(separator: "\n") : expected
+        var errorFrames: [String: Any] = [:]
+        if denied {
+            let body = alert.staticTexts["Lumen couldn’t read this file. Keep the original and choose it again. No records were imported."]
+            XCTAssertTrue(body.exists)
+            XCTAssertFalse(observedError.contains("selected-backup")); XCTAssertFalse(observedError.contains("LumenBackupWork-v1-"))
+            settleLabFrame(alert, pixelTolerance: 1)
+            let action = alert.buttons["OK"]
+            XCTAssertTrue(action.isHittable)
+            XCTAssertTrue(app.frame.insetBy(dx: -0.5, dy: -0.5).contains(action.frame))
+            XCTAssertTrue(alert.frame.insetBy(dx: -0.5, dy: -0.5).contains(action.frame))
+            func frame(_ value: CGRect) -> [String: Double] {
+                ["x": value.minX, "y": value.minY, "width": value.width, "height": value.height]
+            }
+            let fits = alert.frame.insetBy(dx: -0.5, dy: -0.5).contains(body.frame) && app.frame.insetBy(dx: -0.5, dy: -0.5).contains(body.frame)
+            errorFrames = ["application": frame(app.frame), "alert": frame(alert.frame), "body": frame(body.frame),
+                "action": frame(action.frame), "bodyFitsWithoutScrolling": fits, "actionHittable": action.isHittable]
+            if name.contains("Largest") || !fits { capturePreferenceAlert(alert, prefix: prefix + "-error-full") }
+        }
+        else { XCTAssertTrue(alert.staticTexts[expected].exists) }
+        snap(prefix + "-error")
+        if denied {
+            let layout: [String: Any] = ["scope": "selected-original-denied-error-layout", "format": kind,
+                "errorTitle": title, "errorMessage": observedError, "observedTraits": observedTraits,
+                "expectedAppearance": expectedAppearance, "expectedType": expectedType, "errorFrames": errorFrames,
+                "largestOverlappingCapturesRequired": name.contains("Largest")]
+            let capture = XCTAttachment(data: try JSONSerialization.data(withJSONObject: layout, options: [.prettyPrinted, .sortedKeys]), uniformTypeIdentifier: "public.json")
+            capture.name = "original-denied-error-layout-readback"; capture.lifetime = .keepAlways; add(capture)
+        }
+        alert.buttons["OK"].tap()
+        let instructions = app.staticTexts["importReadFailureInstructions"].firstMatch
+        if denied {
+            snap(prefix + "-instructions-initial")
+            capturePreferenceDisclosure("importReadFailureInstructions", prefix: prefix + "-instructions",
+                                        navigationTitle: readable ? "Recover export" : "Backup & restore",
+                                        bottomLimit: state.frame.minY - 12)
+            XCTAssertEqual(instructions.label, "Lumen couldn’t read this file. Keep the original and choose it again. No records were imported.")
+        }
+        let choose = app.buttons[readable ? "chooseReadableExport" : "chooseBackup"].firstMatch
+        reveal(choose); XCTAssertTrue(choose.exists && choose.isEnabled)
+        let link = app.buttons[readable ? "reviewReadableHealthRecovery" : "reviewBackupHealthRecovery"].firstMatch
+        XCTAssertFalse(link.exists); XCTAssertFalse(app.secureTextFields["unlockBackupPassword"].firstMatch.exists)
+        phase("closed-1"); snap(prefix + "-ready")
+        func idle() {
+            let late = XCTNSPredicateExpectation(predicate: NSPredicate { [self] _, _ in
+                app.alerts.firstMatch.exists || app.buttons[readable ? "cancelReadableOperation" : "cancelBackupOperation"].firstMatch.exists
+            }, object: app)
+            late.isInverted = true; XCTAssertEqual(XCTWaiter.wait(for: [late], timeout: 4), .completed)
+        }
+        idle()
+        if readable { try chooseReadableFixture(healthyName) }
+        else { try chooseBackupFixture(healthyName) }
+        phase("held-2"); snap(prefix + "-retry-held")
+        if denied { XCTAssertFalse(instructions.exists, "A fresh selection clears the previous failure instruction") }
+        if readable { waitForReadableReview() }
+        else {
+            if kind == "encrypted" { unlockBackup(value: "Synthetic backup passphrase 42") }
+            XCTAssertTrue(app.descendants(matching: .any).matching(identifier: "backupPreviewKind").firstMatch.waitForExistence(timeout: 30))
+        }
+        // Readable preview scrolls to file metadata below its recovery link.
+        reveal(link, towardsTop: readable); XCTAssertTrue(link.exists); link.tap()
+        let filename = app.staticTexts["recoveryFileName"].firstMatch
+        XCTAssertTrue(filename.waitForExistence(timeout: 10))
+        XCTAssertEqual(filename.label, healthyName + (kind == "encrypted" ? ".lumenbackup" : ".json"))
+        let observedFilename = filename.label
+        let choice = app.switches["recoverFile-water"].firstMatch; reveal(choice); XCTAssertEqual(choice.value as? String, "0")
+        snap(prefix + "-retry-off")
+        let records = app.buttons["reviewFile-water"].firstMatch; reveal(records, towardsTop: true); records.tap()
+        let record = app.buttons["recoveryRecord-0"].firstMatch; XCTAssertTrue(record.waitForExistence(timeout: 10)); record.tap()
+        let amount = app.descendants(matching: .any).matching(identifier: "recoveryField-0").firstMatch
+        XCTAssertTrue(amount.waitForExistence(timeout: 10)); XCTAssertTrue(amount.label.contains("246 mL")); snap(prefix + "-retry-detail")
+        for title in ["Water history", "Review recovery", readable ? "Recover export" : "Backup & restore"] {
+            app.navigationBars.firstMatch.buttons.element(boundBy: 0).tap()
+            XCTAssertTrue(app.navigationBars[title].waitForExistence(timeout: 5))
+        }
+        // Readable recovery closes and resets its parent form on Back; its
+        // chooser follows the intro. Backup keeps its earlier chooser offset.
+        reveal(choose, towardsTop: !readable); XCTAssertTrue(choose.exists && choose.isEnabled); XCTAssertFalse(link.exists)
+        snap(prefix + "-final-parent"); idle()
+        let data: [String: Any] = ["scope": denied ? "selected-original-copy-denied-read" : "selected-original-malformed-payload", "format": kind,
+            "errorTitle": title, "errorMessage": observedError, "retryFilename": observedFilename,
+            "observedTraits": observedTraits, "expectedAppearance": expectedAppearance, "expectedType": expectedType, "errorFrames": errorFrames,
+            "retryAmount": "246 mL", "retryChoiceOff": true, "recoveryCommitted": false,
+            "persistentReadInstructionsVerified": denied, "persistentReadInstructionsClearedOnRetry": denied,
+            "idleAfterFailureSeconds": 4, "idleAfterFinalParentSeconds": 4]
+        let attachment = XCTAttachment(data: try JSONSerialization.data(withJSONObject: data, options: [.prettyPrinted, .sortedKeys]), uniformTypeIdentifier: "public.json")
+        attachment.name = denied ? "original-denied-readback" : "original-malformed-readback"; attachment.lifetime = .keepAlways; add(attachment)
+    }
+    private func healthOriginalImportBack(_ kind: String, cancel: Bool = false, copying: Bool = false, payload: Bool = false, lifetime: Bool = false) throws {
+        executionTimeAllowance = 600
+        if kind == "readable" { openReadableRecovery() } else { openBackupSettings() }
+        func choose() throws {
+            if kind == "readable" { try chooseReadableFixture("Lumen-readable-health-small") }
+            else { try chooseBackupFixture("Lumen-backup-health-" + kind + "-small") }
+        }
+        try choose()
+        let state = app.descendants(matching: .any).matching(identifier: "healthImportReadState").firstMatch
+        func phase(_ value: String, timeout: TimeInterval) {
+            let expected = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", value), object: state)
+            XCTAssertEqual(XCTWaiter.wait(for: [expected], timeout: timeout), .completed)
+        }
+        XCTAssertTrue(state.waitForExistence(timeout: 10)); phase("held-1", timeout: 10)
+        let prefix = lifetime ? "original-lifetime-" + kind : "original-import-" + (payload ? "payload-" : copying ? "copy-" : "") + (cancel ? "cancel-" : "") + kind
+        snap(prefix + "-held"); phase("observed-1", timeout: 10)
+        let importTitle = kind == "readable" ? "Recover export" : "Backup & restore"
+        let cancelButton = app.buttons[kind == "readable" ? "cancelReadableOperation" : "cancelBackupOperation"].firstMatch
+        if cancel { XCTAssertTrue(cancelButton.exists && cancelButton.isEnabled) }
+        let started = Date()
+        if cancel { cancelButton.tap() }
+        else { app.navigationBars[importTitle].buttons.element(boundBy: 0).tap() }
+        let parent = cancel ? importTitle : kind == "readable" ? "Backup & restore" : "Settings"
+        let stopped = XCTNSPredicateExpectation(predicate: NSPredicate { [self] _, _ in
+            app.navigationBars[parent].exists && state.exists && state.value as? String == "closed-1" && (!cancel || !cancelButton.exists)
+        }, object: state)
+        XCTAssertEqual(XCTWaiter.wait(for: [stopped], timeout: 3), .completed)
+        let elapsed = Date().timeIntervalSince(started); XCTAssertLessThan(elapsed, 3)
+        var observedMessage = ""
+        var cancelledReadyStableSeconds: TimeInterval = 0
+        if cancel {
+            let expectedMessage = kind == "readable" ? "Cancelled. Your saved data hasn't changed." : "Cancelled. Your records haven’t changed."
+            let message = app.staticTexts[expectedMessage].firstMatch
+            XCTAssertTrue(message.waitForExistence(timeout: 5)); observedMessage = message.label
+            XCTAssertEqual(observedMessage, expectedMessage)
+            let choose = app.buttons[kind == "readable" ? "chooseReadableExport" : "chooseBackup"].firstMatch
+            reveal(choose, towardsTop: true); XCTAssertTrue(choose.exists && choose.isEnabled)
+            XCTAssertFalse(app.descendants(matching: .any).matching(identifier: kind == "readable" ? "readableProgress" : "backupProgress").firstMatch.exists)
+            snap(prefix + "-cancelled-ready")
+            if payload {
+                // Keep the actual ready page idle while checking that abandoned
+                // work cannot revive progress or publish a late preview. The
+                // host independently audits cleanup during this same window.
+                let lateWork = XCTNSPredicateExpectation(predicate: NSPredicate { [self] _, _ in
+                    cancelButton.exists || app.descendants(matching: .any).matching(identifier: kind == "readable" ? "readableProgress" : "backupProgress").firstMatch.exists
+                    || app.buttons[kind == "readable" ? "reviewReadableHealthRecovery" : "reviewBackupHealthRecovery"].firstMatch.exists
+                }, object: app)
+                lateWork.isInverted = true
+                let stableStarted = Date()
+                XCTAssertEqual(XCTWaiter.wait(for: [lateWork], timeout: 4), .completed)
+                cancelledReadyStableSeconds = Date().timeIntervalSince(stableStarted)
+            }
+        } else {
+            snap(prefix + "-back-closed")
+            let reopen = app.buttons[kind == "readable" ? "readableRecovery" : "backupSettings"].firstMatch
+            reveal(reopen); XCTAssertTrue(reopen.exists && reopen.isEnabled); reopen.tap()
+            XCTAssertTrue(app.navigationBars[importTitle].waitForExistence(timeout: 5))
+        }
+        try choose(); phase("held-2", timeout: 10)
+        snap(prefix + "-retry-held")
+        if kind == "readable" { waitForReadableReview() }
+        else {
+            if kind == "encrypted" { unlockBackup(value: "Synthetic backup passphrase 42") }
+            XCTAssertTrue(app.descendants(matching: .any).matching(identifier: "backupPreviewKind").firstMatch.waitForExistence(timeout: 30))
+        }
+        let link = app.buttons[kind == "readable" ? "reviewReadableHealthRecovery" : "reviewBackupHealthRecovery"].firstMatch
+        reveal(link); XCTAssertTrue(link.exists); link.tap()
+        let filename = app.staticTexts["recoveryFileName"].firstMatch
+        XCTAssertTrue(filename.waitForExistence(timeout: 10))
+        let expectedName = kind == "readable" ? "Lumen-readable-health-small.json" : "Lumen-backup-health-" + kind + "-small." + (kind == "encrypted" ? "lumenbackup" : "json")
+        XCTAssertEqual(filename.label, expectedName)
+        let choice = app.switches["recoverFile-water"].firstMatch; reveal(choice); XCTAssertEqual(choice.value as? String, "0")
+        snap(prefix + "-retry-off")
+        if lifetime {
+            nativeSwitch("recoverFile-water", enabled: true)
+            XCTAssertEqual(choice.value as? String, "1")
+            snap(prefix + "-retry-selected")
+        }
+        let records = app.buttons["reviewFile-water"].firstMatch; reveal(records, towardsTop: true); records.tap()
+        let record = app.buttons["recoveryRecord-0"].firstMatch; XCTAssertTrue(record.waitForExistence(timeout: 10)); record.tap()
+        let amount = app.descendants(matching: .any).matching(identifier: "recoveryField-0").firstMatch
+        XCTAssertTrue(amount.waitForExistence(timeout: 10)); XCTAssertTrue(amount.label.contains("246 mL"))
+        let observedAmount = amount.label
+        snap(prefix + "-retry-detail")
+        var reselectedAmount = ""
+        if lifetime {
+            func idle(_ seconds: TimeInterval) {
+                let late = XCTNSPredicateExpectation(predicate: NSPredicate { [self] _, _ in app.alerts.firstMatch.exists }, object: app)
+                late.isInverted = true
+                XCTAssertEqual(XCTWaiter.wait(for: [late], timeout: seconds), .completed)
+            }
+            func closeReview(_ tag: String) {
+                for title in ["Water history", "Review recovery", importTitle] {
+                    app.navigationBars.firstMatch.buttons.element(boundBy: 0).tap()
+                    XCTAssertTrue(app.navigationBars[title].waitForExistence(timeout: 5))
+                }
+                let choose = app.buttons[kind == "readable" ? "chooseReadableExport" : "chooseBackup"].firstMatch
+                reveal(choose, towardsTop: true); XCTAssertTrue(choose.exists && choose.isEnabled)
+                XCTAssertFalse(link.exists); XCTAssertFalse(cancelButton.exists)
+                snap(prefix + tag); idle(4)
+            }
+            idle(3); closeReview("-first-parent")
+            try choose(); phase("held-3", timeout: 10)
+            snap(prefix + "-reselected-held")
+            if kind == "readable" { waitForReadableReview() }
+            else { XCTAssertTrue(app.descendants(matching: .any).matching(identifier: "backupPreviewKind").firstMatch.waitForExistence(timeout: 30)) }
+            reveal(link); XCTAssertTrue(link.exists); link.tap()
+            XCTAssertTrue(filename.waitForExistence(timeout: 10)); XCTAssertEqual(filename.label, expectedName)
+            reveal(choice); XCTAssertEqual(choice.value as? String, "0", "A new file review must not inherit the previously enabled recovery choice")
+            snap(prefix + "-reselected-off")
+            reveal(records, towardsTop: true); records.tap()
+            XCTAssertTrue(record.waitForExistence(timeout: 10)); record.tap()
+            XCTAssertTrue(amount.waitForExistence(timeout: 10)); XCTAssertTrue(amount.label.contains("246 mL"))
+            reselectedAmount = amount.label
+            snap(prefix + "-reselected-detail")
+            idle(3); closeReview("-final-parent")
+        }
+        var readback: [String: Any] = ["scope": "selected-import", "action": cancel ? "cancel" : "back", "format": kind, "fileName": expectedName, "stopToClosedSeconds": elapsed, "stopStartedUnix": started.timeIntervalSince1970, "parent": parent, "retryAmount": observedAmount, "cancelMessage": observedMessage, "finalLifetimeChecked": lifetime, "reselectedAmount": reselectedAmount, "reselectedChoiceInitiallyOff": lifetime]
+        readback["readBoundary"] = payload ? "original-payload" : copying ? "original-copy" : "selected-source"
+        readback["cancelledReadyStableSeconds"] = cancelledReadyStableSeconds
+        if !cancel { readback["backToClosedSeconds"] = elapsed; readback["backStartedUnix"] = started.timeIntervalSince1970 }
+        let attachment = XCTAttachment(data: try JSONSerialization.data(withJSONObject: readback, options: [.prettyPrinted, .sortedKeys]), uniformTypeIdentifier: "public.json")
+        attachment.name = "original-import-readback"; attachment.lifetime = .keepAlways; add(attachment)
+    }
+    func testHealthBackupFileReadOwnerUnwindLegacy() throws { try healthBackupFileRead("legacy", ownerUnwind: true) }
+    func testHealthBackupFileReadOwnerUnwindEncrypted() throws { try healthBackupFileRead("encrypted", ownerUnwind: true) }
+    func testHealthBackupFileReadOwnerUnwindReadable() throws { try healthBackupFileRead("readable", ownerUnwind: true) }
+    func testHealthBackupPhotoOwnerUnwindLegacy() throws { try healthBackupPhotoOwnerUnwind("legacy") }
+    func testHealthBackupPhotoOwnerUnwindEncrypted() throws { try healthBackupPhotoOwnerUnwind("encrypted") }
+    func testHealthBackupPhotoChangeLegacyInPlace() throws { try healthBackupPhotoOwnerUnwind("legacy", mode: "in-place") }
+    func testHealthBackupPhotoChangeLegacyReplacement() throws { try healthBackupPhotoOwnerUnwind("legacy", mode: "replacement") }
+    func testHealthBackupPhotoChangeEncryptedInPlace() throws { try healthBackupPhotoOwnerUnwind("encrypted", mode: "in-place") }
+    func testHealthBackupPhotoChangeEncryptedReplacement() throws { try healthBackupPhotoOwnerUnwind("encrypted", mode: "replacement") }
+    private func healthBackupPhotoOwnerUnwind(_ kind: String, mode: String? = nil) throws {
+        executionTimeAllowance = 360
+        let prefix = mode.map { "selected-photo-change-" + kind + "-" + $0 } ?? "selected-photo-" + kind
+        let expectedName = "Lumen-backup-health-photo-" + kind + (kind == "encrypted" ? ".lumenbackup" : ".json")
+        let state = app.descendants(matching: .any).matching(identifier: "healthReadControlState").firstMatch
+        let loading = app.descendants(matching: .any).matching(identifier: "recoveryPhotoLoading").firstMatch
+        let link = app.buttons["reviewBackupHealthRecovery"].firstMatch
+        func phase(_ value: String, object: XCUIElement, timeout: TimeInterval = 15) {
+            let expected = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", value), object: object)
+            XCTAssertEqual(XCTWaiter.wait(for: [expected], timeout: timeout), .completed)
+        }
+        func idle(_ seconds: TimeInterval) {
+            let late = XCTNSPredicateExpectation(predicate: NSPredicate { [self] _, _ in app.alerts.firstMatch.exists }, object: app)
+            late.isInverted = true; XCTAssertEqual(XCTWaiter.wait(for: [late], timeout: seconds), .completed)
+        }
+        func openPhoto(_ tag: String) throws -> String {
+            try chooseBackupFixture("Lumen-backup-health-photo-" + kind)
+            if kind == "encrypted" { unlockBackup(value: "Synthetic backup passphrase 42") }
+            XCTAssertTrue(app.descendants(matching: .any).matching(identifier: "backupPreviewKind").firstMatch.waitForExistence(timeout: 30))
+            reveal(link); XCTAssertTrue(link.exists); link.tap()
+            let filename = app.staticTexts["recoveryFileName"].firstMatch
+            XCTAssertTrue(filename.waitForExistence(timeout: 10)); XCTAssertEqual(filename.label, expectedName)
+            let choice = app.switches["recoverFile-water"].firstMatch; reveal(choice); XCTAssertEqual(choice.value as? String, "0")
+            snap(prefix + tag + "-source")
+            let records = app.buttons["reviewFile-meals"].firstMatch; reveal(records); records.tap()
+            let meal = app.buttons["recoveryRecord-0"].firstMatch; XCTAssertTrue(meal.waitForExistence(timeout: 10)); meal.tap()
+            let mealTitle = app.navigationBars.firstMatch.identifier
+            let photoLink = app.buttons["recoveryChild-0"].firstMatch; reveal(photoLink); XCTAssertTrue(photoLink.exists); photoLink.tap()
+            XCTAssertTrue(loading.waitForExistence(timeout: 10))
+            return mealTitle
+        }
+        func parent(_ title: String) {
+            app.navigationBars.firstMatch.buttons.element(boundBy: 0).tap()
+            XCTAssertTrue(app.navigationBars[title].waitForExistence(timeout: 5))
+        }
+        openBackupSettings()
+        let firstMealTitle = try openPhoto("-first")
+        let choose = app.buttons["chooseBackup"].firstMatch
+        phase("held-1", object: loading); snap(prefix + "-held")
+        let mealTitle: String
+        var rejectedMessage = ""
+        if mode != nil {
+            let issue = app.staticTexts["This photo changed or couldn't be opened. Return to choose the file again."].firstMatch
+            XCTAssertTrue(issue.waitForExistence(timeout: 30)); phase("closed-1", object: state)
+            XCTAssertFalse(app.images["recoveryMealPhoto"].exists)
+            rejectedMessage = issue.label
+            snap(prefix + "-rejected"); idle(4)
+            parent(firstMealTitle)
+            let photoLink = app.buttons["recoveryChild-0"].firstMatch; reveal(photoLink); XCTAssertTrue(photoLink.exists); photoLink.tap()
+            XCTAssertTrue(loading.waitForExistence(timeout: 10)); mealTitle = firstMealTitle
+        } else {
+            phase("observed-1", object: loading)
+            parent(firstMealTitle); phase("unwinding-1", object: state)
+            for title in ["Meal history", "Review recovery", "Backup & restore"] { parent(title) }
+            XCTAssertFalse(link.exists); snap(prefix + "-owner-closed-worker-held")
+            reveal(choose, towardsTop: true); XCTAssertTrue(choose.exists && choose.isEnabled)
+            snap(prefix + "-worker-finished-parent"); idle(4)
+            mealTitle = try openPhoto("-retry")
+        }
+        phase("held-2", object: loading); XCTAssertFalse(app.images["recoveryMealPhoto"].exists); snap(prefix + "-retry-held")
+        let photo = app.images["recoveryMealPhoto"].firstMatch
+        XCTAssertTrue(photo.waitForExistence(timeout: 30)); reveal(photo); alignHealthRecordPhoto(photo)
+        XCTAssertTrue(photo.frame.width > 0 && photo.frame.height > photo.frame.width && app.frame.contains(photo.frame))
+        XCTAssertEqual(photo.label, "Meal photo from this file")
+        let photoLabel = photo.label
+        let frame = photo.frame
+        snap(prefix + "-retry-image"); idle(3)
+        for title in [mealTitle, "Meal history", "Review recovery", "Backup & restore"] { parent(title) }
+        XCTAssertFalse(link.exists); reveal(choose, towardsTop: true); XCTAssertTrue(choose.exists && choose.isEnabled)
+        snap(prefix + "-final-parent"); idle(4)
+        let readback: [String: Any] = ["scope": "selected-photo", "format": kind, "fileName": expectedName,
+            "photoLabel": photoLabel, "waterRecoveryInitiallyOff": true, "ownerUnwind": mode == nil,
+            "mutation": mode ?? "none", "rejectedMessage": rejectedMessage,
+            "x": frame.minX, "y": frame.minY, "width": frame.width, "height": frame.height,
+            "timingScope": mode == nil ? "Finite artificial cancellation-unwind hold; no cancellation latency measured" : "Host-held source-change/restoration reads; no cancellation latency measured"]
+        let attachment = XCTAttachment(data: try JSONSerialization.data(withJSONObject: readback, options: [.prettyPrinted, .sortedKeys]), uniformTypeIdentifier: "public.json")
+        attachment.name = "selected-photo-owner-readback"; attachment.lifetime = .keepAlways; add(attachment)
+    }
+    private func healthBackupFileRead(_ kind: String, ownerUnwind: Bool = false) throws {
+        executionTimeAllowance = 300
+        if kind == "readable" {
+            openReadableRecovery(); try chooseReadableFixture("Lumen-readable-health-small"); waitForReadableReview()
+        } else {
+            openBackupSettings(); try chooseBackupFixture("Lumen-backup-health-" + kind + "-small")
+            if kind == "encrypted" { unlockBackup(value: "Synthetic backup passphrase 42") }
+            XCTAssertTrue(app.descendants(matching: .any).matching(identifier: "backupPreviewKind").firstMatch.waitForExistence(timeout: 30))
+        }
+        let link = app.buttons[kind == "readable" ? "reviewReadableHealthRecovery" : "reviewBackupHealthRecovery"].firstMatch
+        reveal(link); XCTAssertTrue(link.waitForExistence(timeout: 10)); link.tap()
+        let filename = app.staticTexts["recoveryFileName"].firstMatch
+        XCTAssertTrue(filename.waitForExistence(timeout: 10))
+        let expectedName = kind == "readable" ? "Lumen-readable-health-small.json" : "Lumen-backup-health-" + kind + "-small." + (kind == "encrypted" ? "lumenbackup" : "json")
+        XCTAssertEqual(filename.label, expectedName)
+        snap("selected-record-" + kind + "-source")
+        let records = app.buttons["reviewFile-water"].firstMatch; reveal(records); records.tap()
+        let loading = app.descendants(matching: .any).matching(identifier: "fileRecordsLoading").firstMatch
+        func phase(_ value: String, object: XCUIElement, timeout: TimeInterval) {
+            let expected = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", value), object: object)
+            XCTAssertEqual(XCTWaiter.wait(for: [expected], timeout: timeout), .completed)
+        }
+        XCTAssertTrue(loading.waitForExistence(timeout: 10)); phase("held-1", object: loading, timeout: 10)
+        snap("selected-record-" + kind + "-held"); phase("observed-1", object: loading, timeout: 10)
+        let started = Date()
+        app.navigationBars["Water history"].buttons.element(boundBy: 0).tap()
+        let state = app.descendants(matching: .any).matching(identifier: "healthReadControlState").firstMatch
+        if ownerUnwind {
+            phase("unwinding-1", object: state, timeout: 10)
+            let parent = kind == "readable" ? "Recover export" : "Backup & restore"
+            app.navigationBars["Review recovery"].buttons.element(boundBy: 0).tap()
+            XCTAssertTrue(app.navigationBars[parent].waitForExistence(timeout: 5))
+            snap("selected-record-" + kind + "-owner-closed-worker-held")
+            // The review's debug indicator leaves the hierarchy with review.
+            // The host observes the live reader and releases its unwind delay
+            // during this parent window; it checks closure before retry release.
+            let choose = app.buttons[kind == "readable" ? "chooseReadableExport" : "chooseBackup"].firstMatch
+            reveal(choose, towardsTop: true); XCTAssertTrue(choose.exists && choose.isEnabled)
+            XCTAssertFalse(link.exists)
+            snap("selected-record-" + kind + "-worker-finished-parent")
+            let late = XCTNSPredicateExpectation(predicate: NSPredicate { [self] _, _ in app.alerts.firstMatch.exists || link.exists }, object: app)
+            late.isInverted = true
+            XCTAssertEqual(XCTWaiter.wait(for: [late], timeout: 4), .completed)
+            if kind == "readable" { try chooseReadableFixture("Lumen-readable-health-small"); waitForReadableReview() }
+            else {
+                try chooseBackupFixture("Lumen-backup-health-" + kind + "-small")
+                if kind == "encrypted" { unlockBackup(value: "Synthetic backup passphrase 42") }
+                XCTAssertTrue(app.descendants(matching: .any).matching(identifier: "backupPreviewKind").firstMatch.waitForExistence(timeout: 30))
+            }
+            reveal(link); XCTAssertTrue(link.exists); link.tap()
+        }
+        let stopped = XCTNSPredicateExpectation(predicate: NSPredicate { [self] _, _ in
+            app.navigationBars["Review recovery"].exists && state.exists && state.value as? String == "closed-1"
+        }, object: state)
+        XCTAssertEqual(XCTWaiter.wait(for: [stopped], timeout: 3), .completed)
+        let elapsed = Date().timeIntervalSince(started)
+        if !ownerUnwind { XCTAssertLessThan(elapsed, 3) }
+        let choice = app.switches["recoverFile-water"].firstMatch; reveal(choice)
+        XCTAssertEqual(choice.value as? String, "0")
+        snap("selected-record-" + kind + "-back-closed")
+        reveal(records, towardsTop: true); records.tap()
+        XCTAssertTrue(loading.waitForExistence(timeout: 5)); phase("held-2", object: loading, timeout: 10)
+        snap("selected-record-" + kind + "-retry-held")
+        let record = app.buttons["recoveryRecord-0"].firstMatch; XCTAssertTrue(record.waitForExistence(timeout: 30)); record.tap()
+        let amount = app.descendants(matching: .any).matching(identifier: "recoveryField-0").firstMatch
+        XCTAssertTrue(amount.waitForExistence(timeout: 10)); XCTAssertTrue(amount.label.contains("246 mL"))
+        XCTAssertFalse(app.staticTexts["This file changed or couldn't be opened. Return to choose the file again."].exists)
+        snap("selected-record-" + kind + "-retry-detail")
+        let observedAmount = amount.label
+        if ownerUnwind {
+            let inspect = XCTNSPredicateExpectation(predicate: NSPredicate { [self] _, _ in app.alerts.firstMatch.exists }, object: app)
+            inspect.isInverted = true; XCTAssertEqual(XCTWaiter.wait(for: [inspect], timeout: 3), .completed)
+            for title in ["Water history", "Review recovery", kind == "readable" ? "Recover export" : "Backup & restore"] {
+                app.navigationBars.firstMatch.buttons.element(boundBy: 0).tap()
+                XCTAssertTrue(app.navigationBars[title].waitForExistence(timeout: 5))
+            }
+            XCTAssertFalse(link.exists)
+            snap("selected-record-" + kind + "-final-parent")
+            let late = XCTNSPredicateExpectation(predicate: NSPredicate { [self] _, _ in app.alerts.firstMatch.exists || link.exists }, object: app)
+            late.isInverted = true; XCTAssertEqual(XCTWaiter.wait(for: [late], timeout: 4), .completed)
+        }
+        let attachment = XCTAttachment(data: try JSONSerialization.data(withJSONObject: ["scope": "selected-record", "format": kind, "fileName": expectedName, "backToClosedSeconds": elapsed, "retryAmount": observedAmount, "ownerUnwind": ownerUnwind, "timingScope": ownerUnwind ? "Deliberate host-held cancellation unwind plus fresh selection; not cancellation latency" : "Back to closed reader"], options: [.prettyPrinted, .sortedKeys]), uniformTypeIdentifier: "public.json")
+        attachment.name = "selected-record-readback"; attachment.lifetime = .keepAlways; add(attachment)
+    }
+    private func healthBackupFileRecovery(_ kind: String) throws {
+        let leaving = healthFileRecoveryLeavesReview
+        let commitLifetime = name.contains("RecoveryCommit")
+        executionTimeAllowance = leaving || commitLifetime ? 600 : 240
+        if kind == "readable" {
+            openReadableRecovery(); try chooseReadableFixture("Lumen-readable-health-small"); waitForReadableReview()
+        } else {
+            openBackupSettings(); try chooseBackupFixture("Lumen-backup-health-" + kind + "-small")
+            if kind == "encrypted" { unlockBackup(value: "Synthetic backup passphrase 42") }
+            XCTAssertTrue(app.descendants(matching: .any).matching(identifier: "backupPreviewKind").firstMatch.waitForExistence(timeout: 30))
+        }
+        let link = app.buttons[kind == "readable" ? "reviewReadableHealthRecovery" : "reviewBackupHealthRecovery"].firstMatch
+        reveal(link); XCTAssertTrue(link.waitForExistence(timeout: 10)); link.tap()
+        let filename = app.staticTexts["recoveryFileName"].firstMatch
+        XCTAssertTrue(filename.waitForExistence(timeout: 10))
+        XCTAssertEqual(filename.label, kind == "readable" ? "Lumen-readable-health-small.json" : "Lumen-backup-health-" + kind + "-small." + (kind == "encrypted" ? "lumenbackup" : "json"))
+        snap("health-file-" + kind + "-source")
+        let choice = app.switches["recoverFile-water"].firstMatch
+        reveal(choice); XCTAssertEqual(choice.value as? String, "0"); snap("health-file-" + kind + "-off")
+        let review = app.buttons["reviewFile-water"].firstMatch
+        reveal(review, towardsTop: true); review.tap()
+        let record = app.buttons["recoveryRecord-0"].firstMatch
+        XCTAssertTrue(record.waitForExistence(timeout: 10)); record.tap()
+        let amount = app.descendants(matching: .any).matching(identifier: "recoveryField-0").firstMatch
+        XCTAssertTrue(amount.waitForExistence(timeout: 5)); XCTAssertTrue(amount.label.contains("246 mL"))
+        snap("health-file-" + kind + "-record")
+        app.navigationBars.buttons.element(boundBy: 0).tap(); app.navigationBars.buttons.element(boundBy: 0).tap()
+        reveal(choice); nativeSwitch("recoverFile-water", enabled: true); XCTAssertEqual(choice.value as? String, "1")
+        snap("health-file-" + kind + "-on")
+        let confirm = app.buttons["confirmFileRecovery"].firstMatch
+        reveal(confirm); XCTAssertTrue(confirm.isEnabled); confirm.tap()
+        let alert = app.alerts["Replace selected data?"]
+        XCTAssertTrue(alert.waitForExistence(timeout: 5)); snap("health-file-" + kind + "-confirmation")
+        alert.buttons["Not now"].tap()
+        reveal(choice, towardsTop: true); XCTAssertEqual(choice.value as? String, "1")
+        reveal(confirm); confirm.tap(); XCTAssertTrue(alert.waitForExistence(timeout: 5)); alert.buttons["Recover"].tap()
+        if commitLifetime {
+            let busy = app.descendants(matching: .any).matching(identifier: "fileHealthRecoveryBusy").firstMatch
+            XCTAssertTrue(busy.waitForExistence(timeout: 10))
+            for value in ["held-1", "observed-1"] {
+                let held = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", value), object: busy)
+                XCTAssertEqual(XCTWaiter.wait(for: [held], timeout: 15), .completed)
+                snap("health-commit-" + kind + (value == "held-1" ? "-held" : "-observed"))
+            }
+        } else if name.contains("Cancel") || leaving {
+            let busy = app.descendants(matching: .any).matching(identifier: "fileHealthRecoveryBusy").firstMatch
+            XCTAssertTrue(busy.waitForExistence(timeout: 5))
+            let held = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", "held-1"), object: busy)
+            XCTAssertEqual(XCTWaiter.wait(for: [held], timeout: 10), .completed)
+            let cancel = app.buttons["cancelFileRecovery"].firstMatch
+            reveal(cancel); XCTAssertTrue(cancel.isHittable); snap("health-file-" + kind + "-cancel-held")
+            let observed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", "observed-1"), object: busy)
+            XCTAssertEqual(XCTWaiter.wait(for: [observed], timeout: 10), .completed)
+            if leaving {
+                app.navigationBars["Review recovery"].buttons.element(boundBy: 0).tap()
+                XCTAssertTrue(app.navigationBars[kind == "readable" ? "Recover export" : "Backup & restore"].waitForExistence(timeout: 3), "Back must return to the actual import screen")
+                let choose = app.buttons[kind == "readable" ? "chooseReadableExport" : "chooseBackup"].firstMatch
+                reveal(choose); XCTAssertTrue(choose.isEnabled)
+                snap("health-file-" + kind + "-back-import-screen")
+                if kind == "readable" {
+                    try chooseReadableFixture("Lumen-readable-health-small"); waitForReadableReview()
+                } else {
+                    try chooseBackupFixture("Lumen-backup-health-" + kind + "-small")
+                    if kind == "encrypted" { unlockBackup(value: "Synthetic backup passphrase 42") }
+                    XCTAssertTrue(app.descendants(matching: .any).matching(identifier: "backupPreviewKind").firstMatch.waitForExistence(timeout: 30))
+                }
+                reveal(link); link.tap(); XCTAssertTrue(filename.waitForExistence(timeout: 10))
+                reveal(choice); XCTAssertEqual(choice.value as? String, "0")
+                reveal(confirm); XCTAssertFalse(confirm.isEnabled)
+                snap("health-file-" + kind + "-back-reselected-off")
+                nativeSwitch("recoverFile-water", enabled: true, towardsTop: true)
+            } else {
+                cancel.tap()
+                XCTAssertTrue(confirm.waitForExistence(timeout: 3), "Cancel must reach held selected-file transaction preparation")
+                reveal(choice, towardsTop: true); XCTAssertEqual(choice.value as? String, "1")
+                snap("health-file-" + kind + "-cancel-retained-selection")
+            }
+            reveal(confirm); XCTAssertTrue(confirm.isEnabled); confirm.tap()
+            XCTAssertTrue(alert.waitForExistence(timeout: 5)); alert.buttons["Recover"].tap()
+            let retry = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", "held-2"), object: busy)
+            XCTAssertEqual(XCTWaiter.wait(for: [retry], timeout: 10), .completed)
+            reveal(cancel); snap("health-file-" + kind + "-retry-held")
+        }
+        let success = app.descendants(matching: .any).matching(identifier: "fileHealthRecovered").firstMatch
+        reveal(success, towardsTop: true); XCTAssertTrue(success.waitForExistence(timeout: 30))
+        snap("health-file-" + kind + "-success")
+        if commitLifetime {
+            app.navigationBars["Review recovery"].buttons.element(boundBy: 0).tap()
+            XCTAssertTrue(app.navigationBars[kind == "readable" ? "Recover export" : "Backup & restore"].waitForExistence(timeout: 5))
+            let choose = app.buttons[kind == "readable" ? "chooseReadableExport" : "chooseBackup"].firstMatch
+            reveal(choose, towardsTop: true); XCTAssertTrue(choose.exists && choose.isEnabled); XCTAssertFalse(link.exists)
+            snap("health-commit-" + kind + "-final-parent")
+            let late = XCTNSPredicateExpectation(predicate: NSPredicate { [self] _, _ in app.alerts.firstMatch.exists || link.exists }, object: app)
+            late.isInverted = true; XCTAssertEqual(XCTWaiter.wait(for: [late], timeout: 4), .completed)
+            let readback: [String: Any] = ["scope": "selected-file-water-commit", "format": kind,
+                "reviewedAmount": "246 mL", "initialChoiceOff": true, "notNowPreservesSelection": true,
+                "actualSuccessObserved": true, "returnedToImportParent": true]
+            let attachment = XCTAttachment(data: try JSONSerialization.data(withJSONObject: readback, options: [.prettyPrinted, .sortedKeys]), uniformTypeIdentifier: "public.json")
+            attachment.name = "selected-file-commit-readback"; attachment.lifetime = .keepAlways; add(attachment)
+        }
+        app.terminate(); app.launchArguments = []; app.launch()
+        openBackupSettings()
+        XCTAssertFalse(app.staticTexts["Saved health data couldn't be opened."].exists)
+        snap("health-file-" + kind + "-relaunch")
+    }
+    func testHealthRecoveryScreen() throws { try healthRecoveryScreen() }
+    func testDailyCacheClearCorrupt() throws {
+        executionTimeAllowance = 180
+        let manage = app.buttons["manageDailyCache"].firstMatch
+        reveal(manage); XCTAssertTrue(manage.waitForExistence(timeout: 10)); XCTAssertTrue(manage.isEnabled); manage.tap()
+        let state = app.staticTexts["dailyCacheFileState"].firstMatch
+        XCTAssertTrue(state.waitForExistence(timeout: 10)); XCTAssertEqual(state.label, "Saved snapshot couldn't be opened")
+        let initialLabel = state.label
+        snap("daily-cache-corrupt-initial")
+        let review = app.buttons["reviewClearDailyCache"].firstMatch; reveal(review); XCTAssertTrue(review.isEnabled); review.tap()
+        let consequence = app.staticTexts["dailyCacheConsequence"].firstMatch
+        XCTAssertTrue(consequence.waitForExistence(timeout: 10))
+        XCTAssertEqual(consequence.label, "The saved daily snapshot will become unknown. This doesn't delete local logs, imported days or sleep history.")
+        let consequenceLabel = consequence.label
+        snap("daily-cache-clear-review")
+        let confirm = app.buttons["confirmClearDailyCache"].firstMatch
+        reveal(confirm); confirm.tap()
+        let alert = app.alerts["Clear saved readings?"]
+        XCTAssertTrue(alert.waitForExistence(timeout: 5)); snap("daily-cache-clear-confirmation")
+        alert.buttons["Not now"].tap()
+        XCTAssertTrue(confirm.waitForExistence(timeout: 5)); XCTAssertFalse(app.staticTexts["dailyCacheSaved"].exists)
+        snap("daily-cache-clear-not-now")
+        confirm.tap(); XCTAssertTrue(alert.waitForExistence(timeout: 5)); alert.buttons["Clear readings"].tap()
+        let progress = app.descendants(matching: .any).matching(identifier: "dailyCacheProgress").firstMatch
+        XCTAssertTrue(progress.waitForExistence(timeout: 5))
+        let held = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", "held-1"), object: progress)
+        XCTAssertEqual(XCTWaiter.wait(for: [held], timeout: 10), .completed)
+        let heldValue = progress.value as? String ?? ""
+        snap("daily-cache-clear-held")
+        let saved = app.descendants(matching: .any).matching(identifier: "dailyCacheSaved").firstMatch
+        XCTAssertTrue(saved.waitForExistence(timeout: 35)); XCTAssertEqual(saved.label, "Saved snapshot cleared")
+        let savedLabel = saved.label
+        snap("daily-cache-clear-saved")
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        XCTAssertTrue(app.buttons["manageDailyCache"].waitForExistence(timeout: 10)); snap("daily-cache-clear-parent")
+        let idleStart = Date()
+        let lateBusy = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == true"), object: progress)
+        lateBusy.isInverted = true
+        XCTAssertEqual(XCTWaiter.wait(for: [lateBusy], timeout: 4), .completed)
+        let readback: [String: Any] = ["scope": "native-corrupt-cache-explicit-clear", "initialState": initialLabel,
+            "consequence": consequenceLabel, "notNowReturnedToReview": true, "heldValue": heldValue,
+            "savedLabel": savedLabel, "finalRecoveryParentVisible": app.buttons["manageDailyCache"].exists,
+            "idleAfterParentSeconds": Date().timeIntervalSince(idleStart)]
+        let attachment = XCTAttachment(data: try JSONSerialization.data(withJSONObject: readback, options: [.prettyPrinted, .sortedKeys]), uniformTypeIdentifier: "public.json")
+        attachment.name = "daily-cache-clear-readback"; attachment.lifetime = .keepAlways; add(attachment)
+    }
+    func testDailyCacheClearCorruptCancel() throws { try dailyCacheInterruptedClear(leaving: false) }
+    func testDailyCacheRebuildHealthKit() throws { try dailyCacheRebuildHealthKit(recorded: false) }
+    func testDailyCacheRebuildHealthKitRecorded() throws { try dailyCacheRebuildHealthKit(recorded: true) }
+    func testDailyCacheRebuildHealthKitRecordedLargestDetails() throws { try dailyCacheRebuildHealthKit(recorded: true) }
+    func testDailyCacheRebuildHealthKitRecordedNormalDetails() throws { try dailyCacheRebuildHealthKit(recorded: true) }
+    func testDailyCacheRebuildHealthKitRecordedDarkDetails() throws { try dailyCacheRebuildHealthKit(recorded: true) }
+    func testDailyCacheRebuildHealthKitRecordedMainNormalDetails() throws { try dailyCacheRebuildHealthKit(recorded: true) }
+    func testDailyCacheRebuildHealthKitRecordedMainDarkDetails() throws { try dailyCacheRebuildHealthKit(recorded: true) }
+    func testDailyCacheRebuildHealthKitRecordedMainLargestDetails() throws { try dailyCacheRebuildHealthKit(recorded: true) }
+    private func dailyCacheRebuildHealthKit(recorded: Bool) throws {
+        let fullDetails = name.contains("Details")
+        let largestDetails = name.contains("LargestDetails")
+        let mainPhone = name.contains("Main")
+        executionTimeAllowance = fullDetails ? 1800 : 360
+        if fullDetails {
+            XCTAssertEqual(app.frame.width, mainPhone ? 402 : 375)
+            XCTAssertEqual(app.frame.height, mainPhone ? 874 : 667)
+        }
+        let manage = app.buttons["manageDailyCache"].firstMatch
+        let selectAll = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH 'Select All'")).firstMatch
+        if selectAll.waitForExistence(timeout: 6) { selectAll.tap() }
+        for step in 0..<4 {
+            if app.navigationBars["Recover health data"].exists && app.navigationBars["Recover health data"].isHittable { break }
+            let range = app.descendants(matching: .any).matching(NSPredicate(format: "label BEGINSWITH 'All Recorded Data and Future Data'")).firstMatch
+            if range.exists && range.isHittable { range.tap() }
+            let actions = app.buttons.matching(NSPredicate(format: "identifier == 'UIA.Health.Allow.Button' OR label == 'Allow' OR label == 'Continue'"))
+            func visiblePermissionAction() -> XCUIElement? {
+                actions.allElementsBoundByIndex.first { $0.exists && $0.isHittable && $0.isEnabled }
+            }
+            for _ in 0..<10 where visiblePermissionAction() == nil {
+                // At accessibility sizes the historical-data option begins
+                // offscreen. Select it when scrolling has actually revealed it.
+                if range.exists && range.isHittable { range.tap() }
+                if visiblePermissionAction() == nil { app.swipeUp(velocity: .slow) }
+            }
+            guard let approve = visiblePermissionAction() else {
+                snap("daily-cache-health-permission-unavailable-" + String(step)); print(app.debugDescription)
+                XCTFail("A visible enabled native Health permission action is required"); return
+            }
+            snap("daily-cache-health-permission-" + String(step)); approve.tap()
+        }
+        reveal(manage)
+        XCTAssertTrue(manage.waitForExistence(timeout: 10))
+        if recorded {
+            let seed = app.buttons["checkHealthCopies"].firstMatch
+            reveal(seed)
+            let ready = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", "sdk-seed-ready"), object: seed)
+            XCTAssertEqual(XCTWaiter.wait(for: [ready], timeout: 15), .completed)
+        }
+        reveal(manage, towardsTop: recorded); manage.tap()
+        let state = app.staticTexts["dailyCacheFileState"].firstMatch
+        XCTAssertTrue(state.waitForExistence(timeout: 10)); XCTAssertEqual(state.label, "Saved snapshot couldn't be opened")
+        if fullDetails {
+            captureIdentifierText(state, prefix: "daily-initial-state")
+            let scope = app.staticTexts["dailyCacheBackupScope"].firstMatch
+            reveal(scope); captureIdentifierText(scope, prefix: "daily-initial-backup-scope")
+        }
+        let query = app.buttons["checkDailyCacheHealth"].firstMatch
+        reveal(query)
+        let enabled = XCTNSPredicateExpectation(predicate: NSPredicate(format: "enabled == true"), object: query)
+        XCTAssertEqual(XCTWaiter.wait(for: [enabled], timeout: 15), .completed)
+        snap("daily-cache-health-initial"); query.tap()
+        let confirm = app.buttons["confirmRebuildDailyCache"].firstMatch
+        var controlLabels: [String: String] = [:]
+        let consequence = app.staticTexts["dailyCacheConsequence"].firstMatch
+        reveal(consequence, towardsTop: true)
+        XCTAssertEqual(consequence.label, "These Apple Health results will replace the saved daily snapshot.")
+        snap("daily-cache-health-review")
+        if fullDetails {
+            captureIdentifierText(consequence, prefix: "daily-review-consequence")
+            for identifier in ["dailyCacheRetainedConsequence", "dailyCacheReturnedCount", "dailyCacheNoDataCount", "dailyCacheFailedCount", "dailyCacheQueryFrom", "dailyCacheQueryThrough", "dailyCacheQueryScope"] {
+                let item = app.descendants(matching: .any).matching(identifier: identifier).firstMatch
+                reveal(item); captureIdentifierText(item, prefix: "daily-review-" + identifier)
+            }
+            // Review the scrollable native confirmation before the lengthy
+            // metric-detail pass, so capture problems fail at the first screen.
+            reveal(confirm); confirm.tap()
+            let alert = app.alerts["Replace saved readings?"]
+            XCTAssertTrue(alert.waitForExistence(timeout: 5))
+            let title = alert.staticTexts["Replace saved readings?"].firstMatch
+            let message = alert.staticTexts["This changes the saved daily snapshot only. Your records and settings stay."].firstMatch
+            let scroll = alert.scrollViews.firstMatch
+            XCTAssertTrue(scroll.exists)
+            let viewport: () -> CGRect = {
+                let frame = scroll.frame.intersection(alert.frame)
+                let bottom = min(frame.maxY, min(alert.buttons["Rebuild"].frame.minY, alert.buttons["Not now"].frame.minY))
+                return CGRect(x: frame.minX, y: frame.minY + 1, width: frame.width, height: bottom - frame.minY - 2)
+            }
+            controlLabels["confirmationTitle"] = title.label
+            controlLabels["confirmationMessage"] = message.label
+            captureIdentifierText(title, prefix: "daily-confirmation-title", contentGestures: true, visibleBounds: viewport)
+            captureIdentifierText(message, prefix: "daily-confirmation-message", contentGestures: true, visibleBounds: viewport)
+            for (label, prefix) in [("Rebuild", "daily-confirmation-rebuild"), ("Not now", "daily-confirmation-not-now")] {
+                let button = alert.buttons[label]
+                controlLabels[label == "Rebuild" ? "rebuildAction" : "notNowAction"] = button.label
+                captureIdentifierText(button, prefix: prefix, bottomInset: 12)
+            }
+            snap("daily-cache-health-confirmation"); alert.buttons["Not now"].tap()
+            reveal(confirm); XCTAssertTrue(confirm.waitForExistence(timeout: 5))
+            XCTAssertFalse(app.staticTexts["dailyCacheSaved"].exists)
+            snap("daily-cache-health-not-now")
+        }
+        let readings = app.buttons["reviewDailyCacheReadings"].firstMatch
+        reveal(readings, towardsTop: fullDetails); readings.tap()
+        var values: [String: String] = [:]
+        var details: [String: [String: String]] = [:]
+        var valueHeights: [String: Double] = [:]
+        let keys = ["steps", "activeEnergy", "restingEnergy", "exercise", "stand", "restingHR", "hrv", "heartRate",
+                    "respiratoryRate", "spo2", "vo2max", "weight", "bodyFat", "calories", "protein", "carbs", "fat", "water"]
+        for key in keys {
+            let value = app.staticTexts["dailyCacheValue-" + key].firstMatch
+            reveal(value); XCTAssertTrue(value.exists && value.isHittable)
+            if fullDetails {
+                let heading = app.staticTexts["dailyCacheHeading-" + key].firstMatch
+                // Native pinned section headers begin at the navigation bar's
+                // lower edge. Preserve full coverage without an extra inset.
+                reveal(heading, towardsTop: true); captureIdentifierText(heading, prefix: "daily-detail-" + key + "-heading", topInset: 0)
+                details[key, default: [:]]["Heading"] = heading.label
+                reveal(value)
+            }
+            values[key] = value.label; snap("daily-cache-health-reading-" + key)
+            if fullDetails {
+                valueHeights[key] = value.frame.height
+                captureIdentifierText(value, prefix: "daily-detail-" + key + "-value")
+                var fields = ["Outcome", "Checked", "Start", "End"]
+                if ["steps", "weight", "heartRate"].contains(key) { fields.insert("Source", at: 0); fields.append("Period") }
+                for field in fields {
+                    let identifier = "dailyCache" + field + "-" + key + (field == "Period" ? "-0" : "")
+                    let item = app.descendants(matching: .any).matching(identifier: identifier).firstMatch
+                    reveal(item); XCTAssertTrue(item.exists && item.isHittable)
+                    details[key, default: [:]][field] = item.label
+                    // This form has no bottom toolbar. Its final AX label
+                    // includes padding below the visible text; retain the
+                    // complete frame inside the display with a 12pt margin.
+                    captureIdentifierText(item, prefix: "daily-detail-" + key + "-" + field.lowercased(), bottomInset: 12)
+                }
+            }
+        }
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        reveal(confirm); XCTAssertTrue(confirm.waitForExistence(timeout: 10)); confirm.tap()
+        let alert = app.alerts["Replace saved readings?"]
+        XCTAssertTrue(alert.waitForExistence(timeout: 5))
+        if !fullDetails {
+            snap("daily-cache-health-confirmation"); alert.buttons["Not now"].tap()
+            reveal(confirm); XCTAssertTrue(confirm.waitForExistence(timeout: 5)); XCTAssertFalse(app.staticTexts["dailyCacheSaved"].exists)
+            snap("daily-cache-health-not-now"); confirm.tap()
+        }
+        XCTAssertTrue(alert.waitForExistence(timeout: 5)); alert.buttons["Rebuild"].tap()
+        let progress = app.descendants(matching: .any).matching(identifier: "dailyCacheProgress").firstMatch
+        let cancel = app.buttons["cancelDailyCache"].firstMatch
+        reveal(fullDetails ? cancel : progress)
+        let held = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", "held-1"), object: progress)
+        XCTAssertEqual(XCTWaiter.wait(for: [held], timeout: 10), .completed)
+        if fullDetails {
+            controlLabels["heldProgress"] = progress.label; controlLabels["heldCancel"] = cancel.label
+            // Both complete controls precede the host's existing release marker.
+            // Keep the real worker's original finite30second barrier unchanged.
+            captureIdentifierText(progress, through: cancel, prefix: "daily-held-progress-and-cancel", bottomInset: 12)
+        }
+        snap("daily-cache-health-held")
+        let saved = app.descendants(matching: .any).matching(identifier: "dailyCacheSaved").firstMatch
+        reveal(saved, towardsTop: true)
+        XCTAssertTrue(saved.waitForExistence(timeout: 35)); XCTAssertEqual(saved.label, "Saved snapshot rebuilt")
+        let savedLabel = saved.label; snap("daily-cache-health-saved")
+        if fullDetails {
+            let explanation = app.staticTexts["Local logs, imported days and sleep history aren't deleted."].firstMatch
+            let unresolved = app.staticTexts["Water history couldn't be opened. Changes to this data are paused. The affected files haven't been replaced."].firstMatch
+            let check = app.buttons["Check saved readings"].firstMatch
+            for (key, item, prefix) in [("savedState", saved, "daily-saved-state"),
+                                        ("savedExplanation", explanation, "daily-saved-explanation"),
+                                        ("savedUnavailableDomain", unresolved, "daily-saved-unavailable-domain"),
+                                        ("savedCheckAction", check, "daily-saved-check-action")] {
+                reveal(item); XCTAssertTrue(item.exists && item.isHittable)
+                controlLabels[key] = item.label
+                captureIdentifierText(item, prefix: prefix, bottomInset: 12)
+            }
+        }
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        reveal(app.buttons["manageDailyCache"].firstMatch)
+        XCTAssertTrue(app.buttons["manageDailyCache"].waitForExistence(timeout: 10)); snap("daily-cache-health-parent")
+        let late = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == true"), object: progress); late.isInverted = true
+        XCTAssertEqual(XCTWaiter.wait(for: [late], timeout: 4), .completed)
+        if largestDetails { XCTAssertGreaterThan(valueHeights["steps"] ?? 0, 40, "Actual accessibility text must enlarge the native value") }
+        let report: [String: Any] = ["scope": "actual-simulator-HealthKit-cache-rebuild", "reviewedValues": values,
+            "fullDetails": details, "valueHeights": valueHeights, "largestDetailsRequested": largestDetails,
+            "fullControlLabels": controlLabels,
+            "fullDetailsRequested": fullDetails, "mainPhoneRequested": mainPhone,
+            "requestedAppearance": largestDetails || name.contains("DarkDetails") ? "dark" : "light",
+            "requestedContentSize": largestDetails ? "UICTContentSizeCategoryAccessibilityXXXL" : "UICTContentSizeCategoryL",
+            "logicalWidth": app.frame.width, "logicalHeight": app.frame.height,
+            "savedLabel": savedLabel, "notNowReturnedToReview": true, "heldValue": "held-1",
+            "finalRecoveryParentVisible": app.buttons["manageDailyCache"].exists, "idleSeconds": 4]
+        let attachment = XCTAttachment(data: try JSONSerialization.data(withJSONObject: report, options: [.prettyPrinted, .sortedKeys]), uniformTypeIdentifier: "public.json")
+        attachment.name = "daily-cache-health-readback"; attachment.lifetime = .keepAlways; add(attachment)
+    }
+    func testDailyCacheHealthQueryCancel() throws { try dailyCacheInterruptedHealthQuery(leaving: false) }
+    func testDailyCacheHealthQueryBack() throws { try dailyCacheInterruptedHealthQuery(leaving: true) }
+    private func dailyCacheInterruptedHealthQuery(leaving: Bool) throws {
+        executionTimeAllowance = 150
+        func enter() {
+            let manage = app.buttons["manageDailyCache"].firstMatch
+            XCTAssertTrue(manage.waitForExistence(timeout: 12)); reveal(manage); manage.tap()
+            let state = app.staticTexts["dailyCacheFileState"].firstMatch
+            XCTAssertTrue(state.waitForExistence(timeout: 10)); XCTAssertEqual(state.label, "Saved snapshot couldn't be opened")
+        }
+        enter()
+        let query = app.buttons["checkDailyCacheHealth"].firstMatch
+        reveal(query)
+        let enabled = XCTNSPredicateExpectation(predicate: NSPredicate(format: "enabled == true"), object: query)
+        XCTAssertEqual(XCTWaiter.wait(for: [enabled], timeout: 15), .completed)
+        query.tap()
+        let progress = app.descendants(matching: .any).matching(identifier: "dailyCacheProgress").firstMatch
+        func phase(_ value: String) {
+            let expectation = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", value), object: progress)
+            XCTAssertEqual(XCTWaiter.wait(for: [expectation], timeout: 20), .completed)
+        }
+        phase("sdk-held-18"); snap("daily-query-held")
+        phase("sdk-observed-18")
+        let began = Date()
+        if leaving { app.navigationBars.buttons.element(boundBy: 0).tap() }
+        else { let cancel = app.buttons["cancelDailyCache"].firstMatch; reveal(cancel); cancel.tap() }
+        let stopped = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"), object: progress)
+        XCTAssertEqual(XCTWaiter.wait(for: [stopped], timeout: 3), .completed)
+        let elapsed = Date().timeIntervalSince(began)
+        XCTAssertLessThan(elapsed, 3)
+        if leaving { XCTAssertTrue(app.buttons["manageDailyCache"].waitForExistence(timeout: 5)) }
+        else {
+            let issue = app.staticTexts["dailyCacheIssue"].firstMatch
+            XCTAssertTrue(issue.waitForExistence(timeout: 5)); XCTAssertEqual(issue.label, "Cancelled. Saved readings haven't changed.")
+        }
+        snap("daily-query-stopped")
+        let confirm = app.buttons["confirmRebuildDailyCache"].firstMatch
+        let late = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == true"), object: confirm); late.isInverted = true
+        XCTAssertEqual(XCTWaiter.wait(for: [late], timeout: 4), .completed)
+        snap("daily-query-late-idle")
+        if leaving { enter() }
+        reveal(query); XCTAssertTrue(query.isEnabled); query.tap()
+        XCTAssertTrue(confirm.waitForExistence(timeout: 35)); snap("daily-query-fresh-review")
+        let consequence = app.staticTexts["dailyCacheConsequence"].firstMatch
+        reveal(consequence, towardsTop: true)
+        XCTAssertEqual(consequence.label, "These Apple Health results will replace the saved daily snapshot.")
+        let notNow = app.buttons["Not now"].firstMatch
+        reveal(notNow); notNow.tap()
+        XCTAssertTrue(query.waitForExistence(timeout: 10))
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        XCTAssertTrue(app.buttons["manageDailyCache"].waitForExistence(timeout: 10)); snap("daily-query-final-parent")
+        let finalLate = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == true"), object: confirm); finalLate.isInverted = true
+        XCTAssertEqual(XCTWaiter.wait(for: [finalLate], timeout: 4), .completed)
+        let report: [String: Any] = ["action": leaving ? "Back" : "Cancel", "stoppedSeconds": elapsed,
+            "firstResultNeverReviewed": true, "idleAfterLateCallbacksSeconds": 4, "freshReviewReached": true,
+            "retryNotNow": true, "finalParent": app.buttons["manageDailyCache"].exists, "finalIdleSeconds": 4]
+        let attachment = XCTAttachment(data: try JSONSerialization.data(withJSONObject: report, options: [.prettyPrinted, .sortedKeys]), uniformTypeIdentifier: "public.json")
+        attachment.name = "daily-query-readback"; attachment.lifetime = .keepAlways; add(attachment)
+    }
+    func testDailyCacheClearCorruptBack() throws { try dailyCacheInterruptedClear(leaving: true) }
+    private func dailyCacheInterruptedClear(leaving: Bool) throws {
+        executionTimeAllowance = 180
+        func enter() {
+            let manage = app.buttons["manageDailyCache"].firstMatch
+            reveal(manage); XCTAssertTrue(manage.waitForExistence(timeout: 10)); manage.tap()
+            let state = app.staticTexts["dailyCacheFileState"].firstMatch
+            XCTAssertTrue(state.waitForExistence(timeout: 10)); XCTAssertEqual(state.label, "Saved snapshot couldn't be opened")
+        }
+        func start() {
+            let review = app.buttons["reviewClearDailyCache"].firstMatch
+            reveal(review); XCTAssertTrue(review.isEnabled); review.tap()
+            let confirm = app.buttons["confirmClearDailyCache"].firstMatch
+            XCTAssertTrue(confirm.waitForExistence(timeout: 10)); reveal(confirm); confirm.tap()
+            let alert = app.alerts["Clear saved readings?"]
+            XCTAssertTrue(alert.waitForExistence(timeout: 5)); alert.buttons["Clear readings"].tap()
+        }
+        let progress = app.descendants(matching: .any).matching(identifier: "dailyCacheProgress").firstMatch
+        func waitPhase(_ phase: String) {
+            XCTAssertTrue(progress.waitForExistence(timeout: 5))
+            let expected = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", phase), object: progress)
+            XCTAssertEqual(XCTWaiter.wait(for: [expected], timeout: 10), .completed)
+        }
+        enter(); start(); waitPhase("held-1"); snap("daily-cache-interrupt-held")
+        // Host acknowledgement means the actual stage and original files have
+        // been observed. It does not release the first worker's barrier.
+        waitPhase("observed-1")
+        let began = Date()
+        if leaving { app.navigationBars.buttons.element(boundBy: 0).tap() }
+        else { let cancel = app.buttons["cancelDailyCache"].firstMatch; reveal(cancel); XCTAssertTrue(cancel.isHittable); cancel.tap() }
+        let stopped = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"), object: progress)
+        XCTAssertEqual(XCTWaiter.wait(for: [stopped], timeout: 3), .completed)
+        let stopSeconds = Date().timeIntervalSince(began)
+        XCTAssertLessThan(stopSeconds, 3)
+        XCTAssertFalse(app.descendants(matching: .any).matching(identifier: "dailyCacheSaved").firstMatch.exists)
+        if leaving { XCTAssertTrue(app.buttons["manageDailyCache"].waitForExistence(timeout: 5)) }
+        else {
+            let issue = app.staticTexts["dailyCacheIssue"].firstMatch
+            XCTAssertTrue(issue.waitForExistence(timeout: 5)); XCTAssertEqual(issue.label, "Cancelled. Saved readings haven't changed.")
+        }
+        snap("daily-cache-interrupt-stopped")
+        let late = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == true"), object: progress)
+        late.isInverted = true
+        XCTAssertEqual(XCTWaiter.wait(for: [late], timeout: 4), .completed)
+        XCTAssertFalse(app.descendants(matching: .any).matching(identifier: "dailyCacheSaved").firstMatch.exists)
+        snap("daily-cache-interrupt-idle")
+        if leaving { enter() }
+        start(); waitPhase("held-2"); snap("daily-cache-interrupt-retry-held")
+        let saved = app.descendants(matching: .any).matching(identifier: "dailyCacheSaved").firstMatch
+        XCTAssertTrue(saved.waitForExistence(timeout: 35)); XCTAssertEqual(saved.label, "Saved snapshot cleared")
+        let retrySavedLabel = saved.label
+        snap("daily-cache-interrupt-retry-saved")
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        XCTAssertTrue(app.buttons["manageDailyCache"].waitForExistence(timeout: 10)); snap("daily-cache-interrupt-final-parent")
+        let finalLate = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == true"), object: progress)
+        finalLate.isInverted = true
+        XCTAssertEqual(XCTWaiter.wait(for: [finalLate], timeout: 4), .completed)
+        let readback: [String: Any] = ["scope": "native-corrupt-cache-interrupted-clear", "action": leaving ? "Back" : "Cancel",
+            "hostObservedFirstStage": true, "stoppedSeconds": stopSeconds, "firstAttemptSaved": false,
+            "idleBeforeRetrySeconds": 4, "retrySavedLabel": retrySavedLabel,
+            "finalRecoveryParentVisible": app.buttons["manageDailyCache"].exists, "finalIdleSeconds": 4]
+        let attachment = XCTAttachment(data: try JSONSerialization.data(withJSONObject: readback, options: [.prettyPrinted, .sortedKeys]), uniformTypeIdentifier: "public.json")
+        attachment.name = "daily-cache-interrupt-readback"; attachment.lifetime = .keepAlways; add(attachment)
+    }
+    func testHealthRecoveryReadRetainedRecords() throws {
+        executionTimeAllowance = 300
+        let copy = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'healthRecoveryCopy-'")).firstMatch
+        reveal(copy); XCTAssertTrue(copy.waitForExistence(timeout: 10)); copy.tap()
+        let records = app.buttons["reviewHealth-water"].firstMatch
+        reveal(records); XCTAssertTrue(records.isEnabled); records.tap()
+        let loading = app.descendants(matching: .any).matching(identifier: "recoveryRecordsLoading").firstMatch
+        func phase(_ value: String, object: XCUIElement, timeout: TimeInterval) {
+            let expected = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", value), object: object)
+            XCTAssertEqual(XCTWaiter.wait(for: [expected], timeout: timeout), .completed)
+        }
+        XCTAssertTrue(loading.waitForExistence(timeout: 10)); phase("held-1", object: loading, timeout: 10)
+        snap("retained-record-read-held")
+        phase("observed-1", object: loading, timeout: 10)
+        let backStarted = Date()
+        app.navigationBars["Water history"].buttons.element(boundBy: 0).tap()
+        let state = app.descendants(matching: .any).matching(identifier: "healthReadControlState").firstMatch
+        let stopped = XCTNSPredicateExpectation(predicate: NSPredicate { [self] _, _ in
+            app.navigationBars["Review recovery"].exists && state.exists && state.value as? String == "closed-1"
+        }, object: state)
+        XCTAssertEqual(XCTWaiter.wait(for: [stopped], timeout: 3), .completed)
+        let backElapsed = Date().timeIntervalSince(backStarted)
+        XCTAssertLessThan(backElapsed, 3, "Back must close the held reader promptly without host release")
+        snap("retained-record-read-cancelled-closed")
+        reveal(records, towardsTop: true); records.tap()
+        XCTAssertTrue(loading.waitForExistence(timeout: 5)); phase("held-2", object: loading, timeout: 10)
+        snap("retained-record-read-retry-held")
+        let record = app.buttons["recoveryRecord-0"].firstMatch
+        XCTAssertTrue(record.waitForExistence(timeout: 30)); record.tap()
+        let amount = app.descendants(matching: .any).matching(identifier: "recoveryField-0").firstMatch
+        XCTAssertTrue(amount.waitForExistence(timeout: 10)); XCTAssertTrue(amount.label.contains("137 mL"))
+        XCTAssertFalse(app.staticTexts["This copy changed or couldn't be opened. Return to check copies again."].exists)
+        snap("retained-record-read-retry-detail")
+        let readback = try JSONSerialization.data(withJSONObject: ["scope": "retained-record", "backToClosedSeconds": backElapsed, "retryAmount": amount.label], options: [.prettyPrinted, .sortedKeys])
+        let attachment = XCTAttachment(data: readback, uniformTypeIdentifier: "public.json")
+        attachment.name = "held-read-ui-readback"; attachment.lifetime = .keepAlways; add(attachment)
+    }
+    func testHealthRecoveryReadRetainedPhoto() throws {
+        executionTimeAllowance = 300
+        let copy = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'healthRecoveryCopy-'")).firstMatch
+        reveal(copy); XCTAssertTrue(copy.waitForExistence(timeout: 10)); copy.tap()
+        let records = app.buttons["reviewHealth-meals"].firstMatch; reveal(records); records.tap()
+        let meal = app.buttons["recoveryRecord-0"].firstMatch; reveal(meal); XCTAssertTrue(meal.exists); meal.tap()
+        let parentTitle = app.navigationBars.firstMatch.identifier
+        let photoLink = app.buttons["recoveryChild-2"].firstMatch; reveal(photoLink); XCTAssertTrue(photoLink.exists); photoLink.tap()
+        let loading = app.descendants(matching: .any).matching(identifier: "recoveryPhotoLoading").firstMatch
+        func phase(_ value: String, object: XCUIElement, timeout: TimeInterval) {
+            let expected = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", value), object: object)
+            XCTAssertEqual(XCTWaiter.wait(for: [expected], timeout: timeout), .completed)
+        }
+        XCTAssertTrue(loading.waitForExistence(timeout: 10)); phase("held-1", object: loading, timeout: 10)
+        snap("retained-photo-read-held"); phase("observed-1", object: loading, timeout: 10)
+        let backStarted = Date()
+        app.navigationBars["Meal photo"].buttons.element(boundBy: 0).tap()
+        let state = app.descendants(matching: .any).matching(identifier: "healthReadControlState").firstMatch
+        let stopped = XCTNSPredicateExpectation(predicate: NSPredicate { [self] _, _ in
+            app.navigationBars[parentTitle].exists && state.exists && state.value as? String == "closed-1"
+        }, object: state)
+        XCTAssertEqual(XCTWaiter.wait(for: [stopped], timeout: 3), .completed)
+        let elapsed = Date().timeIntervalSince(backStarted)
+        XCTAssertLessThan(elapsed, 3, "Back must close the held JPEG reader without host release")
+        snap("retained-photo-read-cancelled-closed")
+        reveal(photoLink, towardsTop: true); photoLink.tap()
+        XCTAssertTrue(loading.waitForExistence(timeout: 5)); phase("held-2", object: loading, timeout: 10)
+        snap("retained-photo-read-retry-held")
+        let photo = app.images["recoveryMealPhoto"].firstMatch
+        XCTAssertTrue(photo.waitForExistence(timeout: 30)); reveal(photo); alignHealthRecordPhoto(photo)
+        XCTAssertTrue(photo.frame.width > 0 && photo.frame.height > photo.frame.width)
+        XCTAssertTrue(app.frame.contains(photo.frame))
+        XCTAssertFalse(app.staticTexts["This photo changed or couldn't be opened. Return to check copies again."].exists)
+        snap("retained-photo-read-retry-image")
+        let readback = try JSONSerialization.data(withJSONObject: ["scope": "retained-photo", "backToClosedSeconds": elapsed, "retryPhotoLabel": photo.label, "x": photo.frame.minX, "y": photo.frame.minY, "width": photo.frame.width, "height": photo.frame.height], options: [.prettyPrinted, .sortedKeys])
+        let attachment = XCTAttachment(data: readback, uniformTypeIdentifier: "public.json")
+        attachment.name = "held-read-ui-readback"; attachment.lifetime = .keepAlways; add(attachment)
+    }
+    func testHealthRecoveryReadRetainedPhotoMutation() throws { try retainedPhotoChangedDuringRead(mode: "in-place") }
+    func testHealthRecoveryReadRetainedPhotoReplacement() throws { try retainedPhotoChangedDuringRead(mode: "replacement") }
+    func testHealthRecoveryReadRetainedPhotoPayloadMutation() throws { try retainedPhotoChangedDuringRead(mode: "in-place", payload: true) }
+    func testHealthRecoveryReadRetainedPhotoPayloadReplacement() throws { try retainedPhotoChangedDuringRead(mode: "replacement", payload: true) }
+    private func retainedPhotoChangedDuringRead(mode: String, payload: Bool = false) throws {
+        executionTimeAllowance = 300
+        let copy = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'healthRecoveryCopy-'")).firstMatch
+        reveal(copy); XCTAssertTrue(copy.waitForExistence(timeout: 10)); copy.tap()
+        let records = app.buttons["reviewHealth-meals"].firstMatch; reveal(records); records.tap()
+        let meal = app.buttons["recoveryRecord-0"].firstMatch; reveal(meal); XCTAssertTrue(meal.exists); meal.tap()
+        let parentTitle = app.navigationBars.firstMatch.identifier
+        let photoLink = app.buttons["recoveryChild-2"].firstMatch; reveal(photoLink); XCTAssertTrue(photoLink.exists); photoLink.tap()
+        let loading = app.descendants(matching: .any).matching(identifier: "recoveryPhotoLoading").firstMatch
+        XCTAssertTrue(loading.waitForExistence(timeout: 10))
+        let held = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", "held-1"), object: loading)
+        XCTAssertEqual(XCTWaiter.wait(for: [held], timeout: 10), .completed)
+        let prefix = "retained-photo-" + (payload ? "payload-" : "") + mode
+        snap(prefix + "-held")
+        let error = app.staticTexts["This photo changed or couldn't be opened. Return to check copies again."].firstMatch
+        XCTAssertTrue(error.waitForExistence(timeout: 30))
+        let state = app.descendants(matching: .any).matching(identifier: "healthReadControlState").firstMatch
+        let closed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", "closed-1"), object: state)
+        XCTAssertEqual(XCTWaiter.wait(for: [closed], timeout: 5), .completed)
+        XCTAssertFalse(app.images["recoveryMealPhoto"].exists)
+        XCTAssertFalse(loading.exists)
+        snap(prefix + "-rejected")
+        let readback = try JSONSerialization.data(withJSONObject: ["scope": "retained-photo", "mutation": mode, "error": error.label, "imageExists": app.images["recoveryMealPhoto"].exists, "readerState": state.value as? String ?? "missing"], options: [.prettyPrinted, .sortedKeys])
+        let attachment = XCTAttachment(data: readback, uniformTypeIdentifier: "public.json")
+        attachment.name = "held-photo-source-change-readback"; attachment.lifetime = .keepAlways; add(attachment)
+        if payload {
+            // The host restores only after the original rejection attachment.
+            // Actual navigation must then start a new reader of restored bytes.
+            app.navigationBars["Meal photo"].buttons.element(boundBy: 0).tap()
+            XCTAssertTrue(app.navigationBars[parentTitle].waitForExistence(timeout: 5))
+            reveal(photoLink, towardsTop: true); photoLink.tap()
+            XCTAssertTrue(loading.waitForExistence(timeout: 5))
+            let retry = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", "held-2"), object: loading)
+            XCTAssertEqual(XCTWaiter.wait(for: [retry], timeout: 10), .completed)
+            snap(prefix + "-restored-retry-held")
+            let photo = app.images["recoveryMealPhoto"].firstMatch
+            XCTAssertTrue(photo.waitForExistence(timeout: 30)); reveal(photo); alignHealthRecordPhoto(photo)
+            XCTAssertFalse(error.exists)
+            XCTAssertTrue(photo.frame.width > 0 && photo.frame.height > photo.frame.width)
+            XCTAssertTrue(app.frame.contains(photo.frame))
+            snap(prefix + "-restored-retry-image")
+            let frame = XCTAttachment(data: try JSONSerialization.data(withJSONObject: ["scope": "retained-photo-payload", "mutation": mode, "x": photo.frame.minX, "y": photo.frame.minY, "width": photo.frame.width, "height": photo.frame.height, "photoLabel": photo.label]), uniformTypeIdentifier: "public.json")
+            frame.name = "held-photo-restored-frame"; frame.lifetime = .keepAlways; add(frame)
+        }
+    }
+    func testHealthRecoveryScreenDark() throws { try healthRecoveryScreen() }
+    func testHealthRecoveryScreenLargest() throws { try healthRecoveryScreen() }
+    func testHealthRecoveryScreenCancel() throws { try healthRecoveryCancelScreen() }
+    func testHealthRecoveryScreenCancelDark() throws { try healthRecoveryCancelScreen() }
+    func testHealthRecoveryScreenCancelLargest() throws { try healthRecoveryCancelScreen() }
+    func testHealthRecoveryScreenCancelBack() throws { try healthRecoveryCancelScreen() }
+    func testHealthRecoveryScreenCancelBackDark() throws { try healthRecoveryCancelScreen() }
+    func testHealthRecoveryScreenCancelBackLargest() throws { try healthRecoveryCancelScreen() }
+    private func healthRecoveryCancelScreen() throws {
+        executionTimeAllowance = 180
+        let first = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'healthRecoveryCopy-'")).firstMatch
+        reveal(first); XCTAssertTrue(first.waitForExistence(timeout: 10)); let identity = first.identifier; first.tap()
+        let choice = app.switches["recoverHealth-water"].firstMatch
+        reveal(choice); XCTAssertEqual(choice.value as? String, "0"); nativeSwitch("recoverHealth-water", enabled: true)
+        XCTAssertEqual(choice.value as? String, "1")
+        let confirm = app.buttons["confirmHealthRecovery"].firstMatch
+        func start() {
+            reveal(confirm); XCTAssertTrue(confirm.isEnabled); confirm.tap()
+            let alert = app.alerts["Replace selected data?"]
+            XCTAssertTrue(alert.waitForExistence(timeout: 5)); alert.buttons["Recover"].tap()
+        }
+        start()
+        let busy = app.descendants(matching: .any).matching(identifier: "healthRecoveryBusy").firstMatch
+        XCTAssertTrue(busy.waitForExistence(timeout: 5))
+        let held = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", "held-1"), object: busy)
+        XCTAssertEqual(XCTWaiter.wait(for: [held], timeout: 10), .completed)
+        let leaving = name.contains("CancelBack")
+        let cancel = app.buttons["Cancel"].firstMatch; reveal(cancel)
+        XCTAssertTrue(cancel.isHittable); snap("health-recovery-cancel-held")
+        let stopped: Bool
+        if leaving {
+            app.navigationBars.buttons.element(boundBy: 0).tap()
+            let checked = app.buttons["checkHealthCopies"].firstMatch; reveal(checked)
+            let ended = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", "cancelled-1"), object: checked)
+            stopped = XCTWaiter.wait(for: [ended], timeout: 3) == .completed
+        } else { cancel.tap(); stopped = confirm.waitForExistence(timeout: 3) }
+        continueAfterFailure = true
+        XCTAssertTrue(stopped, "Cancel must reach held transaction preparation without waiting for host release")
+        continueAfterFailure = false
+        if !stopped {
+            // Preserve the expected baseline failure, then let the host release
+            // the real worker so its ordinary cancellation guard/cleanup runs.
+            XCTAssertTrue(confirm.waitForExistence(timeout: 30))
+            snap("health-recovery-cancel-late-stop")
+            return
+        }
+        if leaving {
+            snap("health-recovery-back-cancelled-destination")
+            let same = app.buttons[identity].firstMatch; reveal(same, towardsTop: true)
+            XCTAssertTrue(same.waitForExistence(timeout: 10)); same.tap()
+            reveal(choice); XCTAssertEqual(choice.value as? String, "0")
+            snap("health-recovery-back-reopened-unselected")
+            nativeSwitch("recoverHealth-water", enabled: true)
+        }
+        reveal(choice, towardsTop: true); XCTAssertEqual(choice.value as? String, "1")
+        snap(leaving ? "health-recovery-back-explicitly-reselected" : "health-recovery-cancel-retained-water-choice")
+        reveal(confirm); XCTAssertTrue(confirm.isEnabled); XCTAssertFalse(busy.exists)
+        XCTAssertFalse(app.staticTexts["Recovery couldn't finish. Your current files haven't been replaced. Check the copy and try again."].exists)
+        snap("health-recovery-cancel-retained-selection")
+        start()
+        let retry = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", "held-2"), object: busy)
+        XCTAssertEqual(XCTWaiter.wait(for: [retry], timeout: 10), .completed)
+        reveal(cancel); snap("health-recovery-cancel-retry-held")
+        let success = app.descendants(matching: .any).matching(identifier: "healthDataRecovered").firstMatch
+        reveal(success, towardsTop: true); XCTAssertTrue(success.waitForExistence(timeout: 30))
+        snap("health-recovery-cancel-retry-success")
+        app.terminate(); app.launchArguments = app.launchArguments.filter { $0 != "-resetForUITests" }; app.launch()
+        let same = app.buttons[identity].firstMatch; reveal(same)
+        XCTAssertTrue(same.waitForExistence(timeout: 10)); same.tap()
+        let healthy = app.staticTexts["Current data opens"].firstMatch; reveal(healthy)
+        XCTAssertTrue(healthy.exists); XCTAssertFalse(app.switches["recoverHealth-water"].exists)
+        snap("health-recovery-cancel-retry-relaunch")
+    }
+    func testHealthRecordReviewBaseline() throws {
+        let first = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'healthRecoveryCopy-'")).firstMatch
+        reveal(first); XCTAssertTrue(first.waitForExistence(timeout: 10)); first.tap()
+        let records = app.buttons["reviewHealth-workouts"].firstMatch; reveal(records); records.tap()
+        XCTAssertTrue(app.staticTexts["Synthetic unknown energy"].waitForExistence(timeout: 5))
+        snap("health-review-baseline-unknown-energy")
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label CONTAINS 'Energy not provided'")).firstMatch.waitForExistence(timeout: 5))
+    }
+    func testHealthRecordReviewEmpty() throws {
+        let first = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'healthRecoveryCopy-'")).firstMatch
+        reveal(first); XCTAssertTrue(first.waitForExistence(timeout: 10)); first.tap()
+        let records = app.buttons["reviewHealth-water"].firstMatch; reveal(records); records.tap()
+        XCTAssertTrue(app.staticTexts["No records in this copy."].waitForExistence(timeout: 5))
+        XCTAssertFalse(app.buttons["recoveryRecord-0"].exists); snap("health-record-empty-history")
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        let choice = app.switches["recoverHealth-water"].firstMatch; reveal(choice)
+        XCTAssertEqual(choice.value as? String, "0")
+    }
+    func testHealthRecordReviewScreen() throws { try healthRecordReviewScreen() }
+    func testHealthRecordReviewScreenDark() throws { try healthRecordReviewScreen() }
+    func testHealthRecordReviewScreenLargest() throws { try healthRecordReviewScreen() }
+    func testHealthRecordReviewPhotoUnavailable() throws { try healthRecordReviewPhotoUnavailable() }
+    func testHealthRecordReviewPhotoUnavailableDark() throws { try healthRecordReviewPhotoUnavailable() }
+    func testHealthRecordReviewPhotoUnavailableLargest() throws { try healthRecordReviewPhotoUnavailable() }
+    func testHealthRecordReviewConfidence() throws { try healthRecordReviewConfidence() }
+    func testHealthRecordReviewConfidenceDark() throws { try healthRecordReviewConfidence() }
+    func testHealthRecordReviewConfidenceLargest() throws { try healthRecordReviewConfidence() }
+    private func healthRecordReviewConfidence() throws {
+        let first = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'healthRecoveryCopy-'")).firstMatch
+        reveal(first); XCTAssertTrue(first.waitForExistence(timeout: 10)); first.tap()
+        let records = app.buttons["reviewHealth-meals"].firstMatch; reveal(records); records.tap()
+        let meal = app.buttons["recoveryRecord-0"].firstMatch; reveal(meal); XCTAssertTrue(meal.exists); meal.tap()
+        let food = app.buttons["recoveryChild-0"].firstMatch; reveal(food); XCTAssertTrue(food.exists); food.tap()
+        let score = app.descendants(matching: .any).matching(identifier: "recoveryField-7").firstMatch
+        reveal(score); XCTAssertTrue(score.waitForExistence(timeout: 5))
+        XCTAssertEqual(score.label, "Saved confidence score, " + "0.84".replacingOccurrences(of: ".", with: Locale.current.decimalSeparator ?? "."))
+        let observedScore = score.label
+        capturePreferenceDisclosure("recoveryField-7", prefix: "health-record-confidence-score")
+        let message = "This is a saved estimate score, not a measure of accuracy."
+        capturePreferenceDisclosure(message, prefix: "health-record-confidence-footer")
+        let footer = app.staticTexts[message].firstMatch; XCTAssertEqual(footer.label, message)
+        let attachment = XCTAttachment(data: try JSONSerialization.data(withJSONObject: ["score": observedScore, "footer": footer.label]), uniformTypeIdentifier: "public.json")
+        attachment.name = "health-record-confidence-readback"; attachment.lifetime = .keepAlways; add(attachment)
+    }
+    func testHealthRecordReviewPhotoOriented() throws {
+        let first = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'healthRecoveryCopy-'")).firstMatch
+        reveal(first); XCTAssertTrue(first.waitForExistence(timeout: 10)); first.tap()
+        let records = app.buttons["reviewHealth-meals"].firstMatch; reveal(records); records.tap()
+        let meal = app.buttons["recoveryRecord-0"].firstMatch; reveal(meal); XCTAssertTrue(meal.exists); meal.tap()
+        let photoLink = app.buttons["recoveryChild-2"].firstMatch; reveal(photoLink); XCTAssertTrue(photoLink.exists); photoLink.tap()
+        let photo = app.images["recoveryMealPhoto"].firstMatch
+        XCTAssertTrue(photo.waitForExistence(timeout: 10)); reveal(photo)
+        alignHealthRecordPhoto(photo)
+        snap("health-record-oriented-jpeg")
+        let frame = XCTAttachment(data: try JSONSerialization.data(withJSONObject: ["x": photo.frame.minX, "y": photo.frame.minY, "width": photo.frame.width, "height": photo.frame.height]), uniformTypeIdentifier: "public.json")
+        frame.name = "health-record-oriented-frame"; frame.lifetime = .keepAlways; add(frame)
+        // AX reports the padded Form row. Independent original-pixel checks
+        // compare exact rendered aspect/colour order with the EXIF JPEG.
+        XCTAssertTrue(photo.frame.width > 0 && photo.frame.height > photo.frame.width)
+        XCTAssertTrue(app.frame.contains(photo.frame))
+    }
+    private func alignHealthRecordPhoto(_ photo: XCUIElement) {
+        for _ in 0..<8 {
+            let top = app.navigationBars.firstMatch.frame.maxY + 12, bottom = app.frame.maxY - 28
+            let rect = photo.frame
+            if rect.minY >= top && rect.maxY <= bottom { break }
+            let delta = rect.maxY > bottom ? min(150, rect.maxY - bottom + 8) : max(-150, rect.minY - top - 8)
+            let start = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: app.frame.midX, dy: app.frame.maxY - 120))
+            let end = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: app.frame.midX, dy: app.frame.maxY - 120 - delta))
+            start.press(forDuration: 0.05, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.2)
+        }
+    }
+    private func healthRecordReviewPhotoUnavailable() throws {
+        let first = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'healthRecoveryCopy-'")).firstMatch
+        reveal(first); XCTAssertTrue(first.waitForExistence(timeout: 10)); first.tap()
+        let records = app.buttons["reviewHealth-meals"].firstMatch; reveal(records); records.tap()
+        let meal = app.buttons["recoveryRecord-0"].firstMatch; reveal(meal); XCTAssertTrue(meal.exists); meal.tap()
+        let photo = app.buttons["recoveryChild-2"].firstMatch; reveal(photo); XCTAssertTrue(photo.exists); photo.tap()
+        let message = "This photo changed or couldn't be opened. Return to check copies again."
+        XCTAssertTrue(app.staticTexts[message].waitForExistence(timeout: 10))
+        XCTAssertFalse(app.images["recoveryMealPhoto"].exists)
+        capturePreferenceDisclosure(message, prefix: "health-record-photo-unavailable")
+    }
+    private func healthRecordReviewScreen() throws {
+        executionTimeAllowance = 900
+        var observed: [String: String] = [:]
+        observed["context-locale"] = Locale.current.identifier
+        observed["context-timeZone"] = TimeZone.current.identifier
+        var previousDomain = 0
+        func back() { app.navigationBars.buttons.element(boundBy: 0).tap() }
+        func decimal(_ value: String) -> String { value.replacingOccurrences(of: ".", with: Locale.current.decimalSeparator ?? ".") }
+        func domain(_ value: String) {
+            let button = app.buttons["reviewHealth-" + value].firstMatch
+            let nextDomain = ["water","meals","workouts","goals","today"].firstIndex(of: value)!
+            reveal(button, towardsTop: nextDomain < previousDomain)
+            XCTAssertTrue(button.waitForExistence(timeout: 5)); button.tap()
+            previousDomain = nextDomain
+        }
+        func record(_ index: Int) {
+            let button = app.buttons["recoveryRecord-\(index)"].firstMatch
+            reveal(button); XCTAssertTrue(button.waitForExistence(timeout: 5)); button.tap()
+        }
+        func child(_ index: Int, towardsTop: Bool = false) {
+            let button = app.buttons["recoveryChild-\(index)"].firstMatch
+            reveal(button, towardsTop: towardsTop); XCTAssertTrue(button.waitForExistence(timeout: 5)); button.tap()
+        }
+        func field(_ index: Int, contains value: String, capture: String) {
+            let row = app.descendants(matching: .any).matching(identifier: "recoveryField-\(index)").firstMatch
+            reveal(row); XCTAssertTrue(row.waitForExistence(timeout: 5))
+            XCTAssertTrue(row.label.contains(value), row.debugDescription)
+            observed[capture] = row.label; snap("health-record-" + capture)
+            if name.contains("Largest") {
+                capturePreferenceDisclosure("recoveryField-\(index)", prefix: "health-record-" + capture + "-full")
+            }
+        }
+        let first = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'healthRecoveryCopy-'")).firstMatch
+        reveal(first); XCTAssertTrue(first.waitForExistence(timeout: 10)); first.tap()
+        domain("water")
+        XCTAssertTrue(app.buttons["recoveryRecord-1"].waitForExistence(timeout: 5)); snap("health-record-two-water")
+        record(0); field(0, contains: "137 mL", capture: "water-amount")
+        let note = app.buttons["recoveryText-2"].firstMatch; reveal(note); XCTAssertTrue(note.exists); note.tap()
+        var parts: [String] = []
+        for part in 0..<8 {
+            let text = app.staticTexts["recoveryFullText"].firstMatch
+            XCTAssertTrue(text.waitForExistence(timeout: 5)); parts.append(text.label)
+            if part == 0 { snap("health-record-long-first") }
+            let next = app.buttons["Next part"].firstMatch
+            XCTAssertTrue(next.exists); XCTAssertTrue(app.frame.contains(next.frame))
+            if !next.isEnabled {
+                XCTAssertTrue(text.label.contains("Exact final marker.")); XCTAssertTrue(app.frame.contains(text.frame))
+                snap("health-record-long-final"); break
+            }
+            next.tap(); XCTAssertTrue(app.staticTexts["Part \(part + 2)"].waitForExistence(timeout: 5))
+        }
+        XCTAssertEqual(parts.count, 3); XCTAssertTrue(parts.joined().count > 4000)
+        observed["longNote"] = parts.joined()
+        back(); child(0)
+        field(1, contains: "I drank 137 ml of water.", capture: "water-statement")
+        field(3, contains: "synthetic-review-conversation", capture: "water-source-id")
+        back(); back(); back()
+        domain("workouts"); record(0)
+        field(4, contains: "Energy not provided", capture: "workout-unknown")
+        back(); record(1)
+        field(4, contains: "0 kcal", capture: "workout-known-zero")
+        field(6, contains: decimal("94.5 bpm"), capture: "workout-heart-rate")
+        child(0); field(3, contains: "synthetic-health-export.zip", capture: "workout-import")
+        child(0); field(0, contains: "Synthetic import warning.", capture: "workout-warning")
+        back(); back(); back(); back()
+        domain("meals"); record(0); child(0)
+        field(3, contains: decimal("20.25 g"), capture: "food-protein")
+        field(7, contains: decimal("0.84"), capture: "food-score")
+        capturePreferenceDisclosure("This is a saved estimate score, not a measure of accuracy.", prefix: "health-record-food-confidence")
+        back(); child(2)
+        let photo = app.images["recoveryMealPhoto"].firstMatch
+        XCTAssertTrue(photo.waitForExistence(timeout: 10)); reveal(photo)
+        snap("health-record-square-before-alignment")
+        let frame = XCTAttachment(data: try JSONSerialization.data(withJSONObject: ["x": photo.frame.minX, "y": photo.frame.minY, "width": photo.frame.width, "height": photo.frame.height, "viewportWidth": app.frame.width, "viewportHeight": app.frame.height]), uniformTypeIdentifier: "public.json")
+        frame.name = "health-record-square-before-frame"; frame.lifetime = .keepAlways; add(frame)
+        alignHealthRecordPhoto(photo)
+        XCTAssertTrue(photo.frame.width > 0 && photo.frame.height > 0); XCTAssertTrue(app.frame.contains(photo.frame))
+        snap("health-record-real-jpeg")
+        back(); back(); back()
+        domain("goals"); record(0)
+        for index in [4,5,6] { field(index, contains: "Not provided", capture: "target-missing-\(index)") }
+        back(); back()
+        domain("today"); record(0); child(19)
+        field(0, contains: "No reading", capture: "day-water-unknown")
+        child(0); field(0, contains: "No samples returned", capture: "day-water-query")
+        back(); back(); child(1, towardsTop: true)
+        field(0, contains: "0 steps", capture: "day-recorded-zero")
+        back(); child(2)
+        field(0, contains: decimal("About 123.5 kcal"), capture: "day-estimate")
+        child(0); field(3, contains: "Reported day", capture: "day-aggregation")
+        field(8, contains: "Yes", capture: "day-estimate-flag")
+        back(); child(1); field(0, contains: "Samples found", capture: "day-query")
+        let checked = DateFormatter(); checked.dateStyle = .medium; checked.timeStyle = .long
+        field(3, contains: checked.string(from: Date(timeIntervalSince1970: 1_793_620_800 + 86500)), capture: "day-query-checked")
+        back(); back(); child(20)
+        field(12, contains: decimal("72.6 kg"), capture: "day-cache-weight")
+        capturePreferenceDisclosure("Stored zeros can mean no reading. The daily readings show which values were recorded.", prefix: "health-record-cache-presence")
+        let attachment = XCTAttachment(data: try JSONSerialization.data(withJSONObject: observed, options: [.sortedKeys,.prettyPrinted]), uniformTypeIdentifier: "public.json")
+        attachment.name = "health-record-ui-readback"; attachment.lifetime = .keepAlways; add(attachment)
+    }
+    private func healthRecoveryScreen() throws {
+        func captureLowerChoice(_ prefix: String) {
+            guard name.contains("Largest") else { return }
+            let start = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: app.frame.midX, dy: app.frame.maxY - 100))
+            let end = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: app.frame.midX, dy: app.frame.maxY - 240))
+            start.press(forDuration: 0.05, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.2)
+            snap(prefix + "-lower")
+        }
+        capturePreferenceDisclosure("Water history couldn't be opened. Changes to this data are paused. The affected files haven't been replaced.", prefix: "health-recovery-unavailable")
+        let first = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'healthRecoveryCopy-'")).firstMatch
+        reveal(first); XCTAssertTrue(first.waitForExistence(timeout: 10)); let identity = first.identifier
+        snap("health-recovery-copy-list")
+        capturePreferenceDisclosure("Review a copy before replacing unavailable data. Healthy data can't be replaced here.", prefix: "health-recovery-healthy-footer")
+        reveal(first, towardsTop: true); first.tap()
+        let water = app.switches["recoverHealth-water"].firstMatch
+        reveal(water); XCTAssertTrue(water.waitForExistence(timeout: 5)); XCTAssertEqual(water.value as? String, "0"); snap("health-recovery-initial-choice")
+        captureLowerChoice("health-recovery-initial-choice")
+        let records = app.buttons["reviewHealth-water"].firstMatch; reveal(records, towardsTop: true); records.tap()
+        XCTAssertTrue(app.staticTexts["137 mL"].waitForExistence(timeout: 5)); snap("health-recovery-reviewed-water")
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        nativeSwitch("recoverHealth-water", enabled: true)
+        XCTAssertEqual(water.value as? String, "1"); snap("health-recovery-selected-choice")
+        captureLowerChoice("health-recovery-selected-choice")
+        capturePreferenceDisclosure("Replaced files stay in a private copy on this iPhone. For meal recovery, this includes any old photos.", prefix: "health-recovery-retained-originals")
+        capturePreferenceDisclosure("Recovered entries won't be added to Apple Health. Earlier pending Health saves won't restart; pending removals can finish.", prefix: "health-recovery-health-work")
+        let confirm = app.buttons["confirmHealthRecovery"].firstMatch
+        reveal(confirm); XCTAssertTrue(confirm.isEnabled); snap("health-recovery-selection")
+        confirm.tap(); let alert = app.alerts["Replace selected data?"]
+        XCTAssertTrue(alert.waitForExistence(timeout: 5))
+        if name.contains("Largest") { capturePreferenceAlert(alert, prefix: "health-recovery-confirmation") }
+        else { snap("health-recovery-confirmation") }
+        alert.buttons["Not now"].tap()
+        XCTAssertTrue(confirm.isEnabled); confirm.tap(); alert.buttons["Recover"].tap()
+        snap("health-recovery-after-request")
+        let success = app.descendants(matching: .any).matching(identifier: "healthDataRecovered").firstMatch
+        reveal(success, towardsTop: true); snap("health-recovery-request-top")
+        XCTAssertTrue(success.waitForExistence(timeout: 10), app.debugDescription); snap("health-recovery-success")
+        app.terminate(); app.launchArguments = app.launchArguments.filter { $0 != "-resetForUITests" }; app.launch()
+        let sameCopy = app.buttons[identity].firstMatch
+        reveal(sameCopy); XCTAssertTrue(sameCopy.waitForExistence(timeout: 10)); sameCopy.tap()
+        let healthy = app.staticTexts["Current data opens"].firstMatch; reveal(healthy)
+        XCTAssertTrue(healthy.waitForExistence(timeout: 5))
+        XCTAssertFalse(app.switches["recoverHealth-water"].exists); snap("health-recovery-relaunch-healthy")
+    }
+    func testHealthLocalSemanticRecovery() throws { try healthLocalDataRecovery("semantic-fixture") }
+    func testHealthLocalMealsRecovery() throws { try healthLocalDataRecovery("meals") }
+    func testHealthLocalWorkoutsRecovery() throws { try healthLocalDataRecovery("workouts") }
+    func testHealthLocalGoalsRecovery() throws { try healthLocalDataRecovery("goals") }
+    func testHealthLocalTodayRecovery() throws { try healthLocalDataRecovery("today") }
+    func testHealthLocalUnreadableRecovery() throws { try healthLocalDataRecovery("unreadable-water") }
+    func testHealthLocalWaterAfterOpen() throws { try healthLocalDataRecovery("water", afterOpen: true) }
+    func testHealthLocalMealsAfterOpen() throws { try healthLocalDataRecovery("meals", afterOpen: true) }
+    func testHealthLocalWorkoutsAfterOpen() throws { try healthLocalDataRecovery("workouts", afterOpen: true) }
+    func testHealthLocalGoalsAfterOpen() throws { try healthLocalDataRecovery("goals", afterOpen: true) }
+    func testHealthLocalTodayAfterOpen() throws { try healthLocalDataRecovery("today", afterOpen: true) }
+    private func healthLocalDataRecovery(_ domain: String, afterOpen: Bool = false) throws {
+        app.terminate()
+        app.launchArguments = ["-resetForUITests", "-health-write-native-probe", "-health-local-repair", domain]
+        if name.contains("testHealthPreviousCopyTaskCancellation") { app.launchArguments.append("-health-recovery-task-cancel-probe") }
+        if afterOpen { app.launchArguments.append("-health-local-after-open") }
+        app.launch()
+        let status = app.staticTexts["healthWriteProbeStatus"].firstMatch
+        let completed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label BEGINSWITH 'Saved-data checks passed' OR label BEGINSWITH 'Saved-data checks failed'"), object: status)
+        XCTAssertEqual(XCTWaiter.wait(for: [completed], timeout: 120), .completed)
+        XCTAssertEqual(status.label, "Saved-data checks passed")
+        snap("local-data-recovery-" + domain + (afterOpen ? "-after-open" : "-startup"))
+    }
+    func testHealthLocalCorruptMealsBaseline() throws { try healthLocalDataBaseline("meals") }
+    func testHealthLocalCorruptGoalsBaseline() throws { try healthLocalDataBaseline("goals") }
+    func testHealthLocalUnreadableWaterBaseline() throws { try healthLocalDataBaseline("unreadable-water") }
+    private func healthLocalDataBaseline(_ domain: String) throws {
+        app.terminate()
+        app.launchArguments = ["-resetForUITests", "-health-write-native-probe", "-health-local-baseline", domain]
+        app.launch()
+        let status = app.staticTexts["healthWriteProbeStatus"].firstMatch
+        let completed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label BEGINSWITH 'Local data baseline recorded' OR label BEGINSWITH 'Local data baseline failed'"), object: status)
+        XCTAssertEqual(XCTWaiter.wait(for: [completed], timeout: 60), .completed)
+        XCTAssertEqual(status.label, "Local data baseline recorded")
+        snap("local-data-baseline-" + domain)
+    }
+
+    func testDurableHealthRestartBeforeWorkerPrepare() throws { try durableHealthLifecycle(resume: false) }
+    func testDurableHealthRestartBeforeWorkerResume() throws { try durableHealthLifecycle(resume: true) }
+    func testDurableHealthRestartBeforeReceiptPrepare() throws { try durableHealthLifecycle(resume: false) }
+    func testDurableHealthRestartBeforeReceiptResume() throws { try durableHealthLifecycle(resume: true) }
+    func testDurableHealthRestartUndoPrepare() throws { try durableHealthLifecycle(resume: false) }
+    func testDurableHealthRestartUndoResume() throws { try durableHealthLifecycle(resume: true) }
+    private func durableHealthLifecycle(resume: Bool) throws {
+        if !resume { approveSyntheticHealthAccess(until: app.staticTexts["healthLifecycleAccessReady"].firstMatch) }
+        let status = app.staticTexts["healthLifecycleStatus"].firstMatch
+        let complete = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label BEGINSWITH 'Health restart ready to stop' OR label BEGINSWITH 'Health restart checks passed' OR label BEGINSWITH 'Health restart checks failed'"), object: status)
+        XCTAssertEqual(XCTWaiter.wait(for: [complete], timeout: 90), .completed)
+        XCTAssertEqual(status.label, resume ? "Health restart checks passed" : "Health restart ready to stop")
+        snap(name.replacingOccurrences(of: " ", with: "-"))
+        app.terminate()
+        XCTAssertEqual(app.state, .notRunning, "The prepared/resumed native app process must actually terminate")
+    }
+    func testDurableHealthNativeReceiptFailure() throws {
+        try durableHealthNativeProbe(receipt: true)
+    }
+    func testDurableHealthKitReplayAndRemoval() throws {
+        app.terminate()
+        app.launchArguments = ["-resetForUITests", "-health-write-healthkit-probe"]
+        app.launch()
+        let access = app.staticTexts["healthKitProbeAccessReturned"].firstMatch
+        approveSyntheticHealthAccess(until: access)
+        let status = app.staticTexts["healthKitWriteProbeStatus"].firstMatch
+        let completed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label BEGINSWITH 'HealthKit replay checks passed' OR label BEGINSWITH 'HealthKit replay checks failed'"), object: status)
+        XCTAssertEqual(XCTWaiter.wait(for: [completed], timeout: 90), .completed)
+        XCTAssertEqual(status.label, "HealthKit replay checks passed")
+        snap("durable-healthkit-replay-report")
+    }
+    private func durableHealthNativeProbe(receipt: Bool) throws {
+        app.terminate()
+        app.launchArguments = ["-resetForUITests", "-health-write-native-probe", "-quick-save-fault", receipt ? "health-receipt:1" : "water.json:1"]
+        if receipt { app.launchArguments.append("-health-write-receipt-trial") }
+        app.launch()
+        let status = app.staticTexts["healthWriteProbeStatus"].firstMatch
+        let completed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label BEGINSWITH 'Health recovery checks passed' OR label BEGINSWITH 'Health recovery checks failed'"), object: status)
+        XCTAssertEqual(XCTWaiter.wait(for: [completed], timeout: 90), .completed)
+        XCTAssertEqual(status.label, "Health recovery checks passed")
+        snap(receipt ? "durable-health-receipt-failure-report" : "durable-health-combined-failure-report")
     }
 
     func testConversationNativeBackendProbe() throws {

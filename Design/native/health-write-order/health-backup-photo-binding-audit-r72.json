@@ -1,0 +1,10 @@
+{
+  "status": "Source-inspection finding; reproduction and repair required before selected-file photo recovery acceptance",
+  "source": "durable-source-r72.json",
+  "finding": "RecoveryInput retains original source identity but only file-backed extracted photo URLs. HealthRecoverySelection.backup computes photo digests when making the replacement payload, rather than retaining each original reviewed photo digest. A valid extracted photo changed between initial preview and payload creation therefore lacks a reviewed-byte comparison in this path. Retained-copy recovery has its separately observed digests; do not infer this gap there.",
+  "code": [
+    "Lumen/Services/BackupService.swift: RecoveryInput.photos, photoData and payload; Preview and read return sites",
+    "Lumen/Models/HealthRecoverySelection.swift: backup selectedPhotos/digests loop"
+  ],
+  "nextRequired": "Predeclare and reproduce real-file pre-payload valid-photo mutation, bind checked extracted photo bytes at initial preview to typed photo review and payload preparation, preserve explicit omission/zero/shared-photo behavior, and run all affected healthy/recovery paths. Preserve full existing contracts; no publication before acceptance."
+}

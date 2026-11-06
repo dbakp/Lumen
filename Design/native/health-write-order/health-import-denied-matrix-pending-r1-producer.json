@@ -1,0 +1,138 @@
+{
+  "status": "stopped: native/host case failed; no later cases started",
+  "source": "durable-source-r127.json",
+  "build": "health-import-denied-matrix-native-build-r4.json",
+  "priorOutcome": "health-import-denied-matrix-r5-outcome.json",
+  "wrapperSHA256": "40a8a031ba91718e3df5c6bdd30f71db13cda4e17495f15444c947b6d6f44d47",
+  "plannedCases": [
+    {
+      "device": "compact",
+      "format": "encrypted",
+      "mode": "largest"
+    },
+    {
+      "device": "main",
+      "format": "encrypted",
+      "mode": "largest"
+    },
+    {
+      "device": "compact",
+      "format": "readable",
+      "mode": "largest"
+    },
+    {
+      "device": "main",
+      "format": "readable",
+      "mode": "largest"
+    },
+    {
+      "device": "compact",
+      "format": "encrypted",
+      "mode": "normal"
+    },
+    {
+      "device": "compact",
+      "format": "encrypted",
+      "mode": "dark"
+    },
+    {
+      "device": "main",
+      "format": "encrypted",
+      "mode": "normal"
+    },
+    {
+      "device": "main",
+      "format": "encrypted",
+      "mode": "dark"
+    },
+    {
+      "device": "compact",
+      "format": "readable",
+      "mode": "normal"
+    },
+    {
+      "device": "compact",
+      "format": "readable",
+      "mode": "dark"
+    },
+    {
+      "device": "main",
+      "format": "readable",
+      "mode": "normal"
+    },
+    {
+      "device": "main",
+      "format": "readable",
+      "mode": "dark"
+    },
+    {
+      "device": "compact",
+      "format": "legacy",
+      "mode": "normal"
+    },
+    {
+      "device": "compact",
+      "format": "legacy",
+      "mode": "dark"
+    },
+    {
+      "device": "main",
+      "format": "legacy",
+      "mode": "normal"
+    },
+    {
+      "device": "main",
+      "format": "legacy",
+      "mode": "dark"
+    }
+  ],
+  "results": [
+    {
+      "device": "compact",
+      "format": "encrypted",
+      "mode": "largest",
+      "stem": "HealthImportDeniedMatrixCompactEncryptedLargestR5",
+      "prefix": "health-import-denied-matrix-compact-encrypted-largest-r5",
+      "driverExit": 0,
+      "driverPID": 68872,
+      "producerTerminal": true,
+      "pngExportExit": 0,
+      "jsonExportExit": 0,
+      "attachmentsRetained": true
+    },
+    {
+      "device": "main",
+      "format": "encrypted",
+      "mode": "largest",
+      "stem": "HealthImportDeniedMatrixMainEncryptedLargestR5",
+      "prefix": "health-import-denied-matrix-main-encrypted-largest-r5",
+      "driverExit": 0,
+      "driverPID": 75520,
+      "producerTerminal": true,
+      "pngExportExit": 0,
+      "jsonExportExit": 0,
+      "attachmentsRetained": true
+    },
+    {
+      "device": "compact",
+      "format": "readable",
+      "mode": "largest",
+      "stem": "HealthImportDeniedMatrixCompactReadableLargestR5",
+      "prefix": "health-import-denied-matrix-compact-readable-largest-r5",
+      "driverExit": 1,
+      "driverPID": 81264,
+      "producerTerminal": true,
+      "pngExportExit": 0,
+      "jsonExportExit": 0,
+      "attachmentsRetained": true
+    }
+  ],
+  "startedUnix": 1793864969.270968,
+  "scope": "Same archived fault driver, all gates unchanged; sequential native producers to avoid AX contention. No source edits, case skipping or retry inside this wrapper.",
+  "currentCase": {
+    "device": "compact",
+    "format": "readable",
+    "mode": "largest"
+  },
+  "currentDriverPID": 81264
+}

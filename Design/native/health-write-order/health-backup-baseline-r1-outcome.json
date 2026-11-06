@@ -1,0 +1,52 @@
+{
+  "status": "PROGRESS: actual product blocker reproduced in all three routes; no backup recovery repair yet; full goal active/Batch43 unpublished",
+  "source": "durable-source-r63.json",
+  "build": "health-backup-baseline-build-r1.json",
+  "cases": [
+    {
+      "case": "legacy",
+      "prefix": "health-backup-baseline-legacy-r2",
+      "source": "durable-source-r63.json",
+      "summary": "health-backup-baseline-legacy-r2-summary.json",
+      "hostAudit": "health-backup-baseline-legacy-r2-host-audit.json",
+      "images": "health-backup-baseline-legacy-r2-images.json",
+      "observedBoundary": "Actual native Files-picker opening, before file selection"
+    },
+    {
+      "case": "encrypted",
+      "prefix": "health-backup-baseline-encrypted-r1",
+      "source": "durable-source-r63.json",
+      "summary": "health-backup-baseline-encrypted-r1-summary.json",
+      "hostAudit": "health-backup-baseline-encrypted-r1-host-audit.json",
+      "images": "health-backup-baseline-encrypted-r1-images.json",
+      "observedBoundary": "Actual native Files-picker opening, before file selection"
+    },
+    {
+      "case": "readable",
+      "prefix": "health-backup-baseline-readable-r1",
+      "source": "durable-source-r63.json",
+      "summary": "health-backup-baseline-readable-r1-summary.json",
+      "hostAudit": "health-backup-baseline-readable-r1-host-audit.json",
+      "images": "health-backup-baseline-readable-r1-images.json",
+      "observedBoundary": "Actual native Files-picker opening, before file selection"
+    }
+  ],
+  "currentBaselineOriginals": 4,
+  "rootOpenedOriginals": 4,
+  "earlierFailedBoundary": "health-backup-baseline-legacy-r1-failure.json",
+  "fixtureOutcome": "health-backup-small-fixtures-r1-outcome.json",
+  "seededInputs": "health-backup-small-main-seed.json",
+  "fullContract": "health-backup-recovery-r1-contract.json",
+  "sourceAudit": "health-backup-integration-audit-r59.json",
+  "terminalLogIndex": "health-backup-r1-logs.json",
+  "activeProducers": [],
+  "finding": "Valid encrypted and legacy JSON backups fail before preview because show requires healthy current data. Readable export preview succeeds and shows selected Water entries1, but confirmed Add data fails on the same current-data boundary. All seven canonical files remain exact across the actual Files-opening/import boundary; no receipt is created.",
+  "scope": "Three small synthetic246mL inputs totalling21,463bytes through actual normal Root/Settings/Files routes, with background Health/Watch startup withheld. Baseline test pass means the product defect was observed, NOT successful recovery. Source file ownership/provenance and cache semantics still need implementation/held-worker proof. No all-domain/photo/capacity/actual daemon/device/publication acceptance.",
+  "next": "Implement checked original-file identity and strong source/workspace lifetime in BOTH BackupView and ReadableTransferSession, then explicit unavailable-domain review/replacement with healthy merge controls and separate absent-cache semantics. Preserve all original gates.",
+  "storage": {
+    "availableBytes": 22054223872,
+    "recoveredBytesCredited": 0,
+    "manualCacheDeletion": false,
+    "note": "Current inputs, supplied skill, unpublished evidence and immediately reusable native/pure/package caches retained; unrelated builds/data untouched."
+  }
+}

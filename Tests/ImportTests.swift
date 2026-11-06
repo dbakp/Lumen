@@ -3,7 +3,66 @@ import Darwin
 
 @main struct ImportTests {
     static func main() async throws {
+        if (3...4).contains(CommandLine.arguments.count), CommandLine.arguments[1] == "--encrypted-read-cancellation" {
+            let input = CommandLine.arguments.count == 4 ? URL(fileURLWithPath: CommandLine.arguments[2]) : nil
+            let output = URL(fileURLWithPath: CommandLine.arguments.last!)
+            let passed = try HealthLocalArchiveChecks.encryptedCancellation(input: input, output: output)
+            exit(passed ? 0 : 1)
+        }
+        if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--backup-decode-cancellation" {
+            let passed = try await HealthLocalArchiveChecks.decodeCancellation(output: URL(fileURLWithPath: CommandLine.arguments[2]))
+            exit(passed ? 0 : 1)
+        }
+        if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--backup-payload-cancellation" {
+            try HealthLocalArchiveChecks.payloadCancellation(output: URL(fileURLWithPath: CommandLine.arguments[2])); return
+        }
+        if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--photo-own-link-baseline" {
+            try BackupPhotoBindingChecks.runOwnLinkBaseline(output: URL(fileURLWithPath: CommandLine.arguments[2])); return
+        }
+        if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--backup-photo-binding" {
+            try BackupPhotoBindingChecks.run(output: URL(fileURLWithPath: CommandLine.arguments[2])); return
+        }
+        if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--backup-workspace-exit-check" {
+            try BackupSourceOwnershipChecks.leaveAbandonedWorkspace(at: URL(fileURLWithPath: CommandLine.arguments[2]))
+            return
+        }
+        if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--backup-source-ownership" {
+            try BackupSourceOwnershipChecks.run(output: URL(fileURLWithPath: CommandLine.arguments[2])); return
+        }
+        if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--backup-task-ownership" {
+            try await BackupSourceOwnershipChecks.completedTaskRetention(output: URL(fileURLWithPath: CommandLine.arguments[2])); return
+        }
         setbuf(stdout, nil)
+        if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--health-record-review" {
+            try HealthRecoveryRecordReviewChecks.run(output: URL(fileURLWithPath: CommandLine.arguments[2])); return
+        }
+        if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--health-recovery-copies" {
+            try HealthRecoveryCopyChecks.run(output: URL(fileURLWithPath: CommandLine.arguments[2])); return
+        }
+        if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--health-daily-cache" {
+            try HealthDailyCacheChecks.run(output: URL(fileURLWithPath: CommandLine.arguments[2])); return
+        }
+        if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--health-today-queries" {
+            try await HealthTodayQueryChecks.run(output: URL(fileURLWithPath: CommandLine.arguments[2])); return
+        }
+        if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--health-local-archives" {
+            try HealthLocalArchiveChecks.run(output: URL(fileURLWithPath: CommandLine.arguments[2])); return
+        }
+        if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--health-local-values-baseline" {
+            try HealthLocalValueChecks.baseline(output: URL(fileURLWithPath: CommandLine.arguments[2])); return
+        }
+        if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--health-local-values" {
+            try HealthLocalValueChecks.run(output: URL(fileURLWithPath: CommandLine.arguments[2])); return
+        }
+        if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--health-local-files" {
+            try HealthLocalFileChecks.run(output: URL(fileURLWithPath: CommandLine.arguments[2])); return
+        }
+        if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--health-write-recovery" {
+            try await HealthWriteRecoveryChecks.run(output: URL(fileURLWithPath: CommandLine.arguments[2])); return
+        }
+        if CommandLine.arguments.count == 4, CommandLine.arguments[1] == "--health-write-recovery-process" {
+            try await HealthWriteRecoveryChecks.processPhase(CommandLine.arguments[2], root: URL(fileURLWithPath: CommandLine.arguments[3])); return
+        }
         if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--local-commit" {
             try LocalCommitChecks.run(output: URL(fileURLWithPath: CommandLine.arguments[2])); return
         }
@@ -81,8 +140,30 @@ import Darwin
         if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--backup-ui-fixtures" {
             try BackupUIFixtures.write(to: URL(fileURLWithPath: CommandLine.arguments[2])); return
         }
+        if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--health-backup-ui-fixtures" {
+            try HealthBackupUIFixtures.write(to: URL(fileURLWithPath: CommandLine.arguments[2])); return
+        }
+        if CommandLine.arguments.count == 4, CommandLine.arguments[1] == "--health-backup-photo-ui-fixtures" {
+            try HealthBackupUIFixtures.writePhotos(to: URL(fileURLWithPath: CommandLine.arguments[2]), photo: URL(fileURLWithPath: CommandLine.arguments[3])); return
+        }
         try ProviderReplyChecks.run()
         try await HealthWriteOrderChecks.run()
+        try await HealthWriteRecoveryChecks.run()
+        try HealthLocalFileChecks.run()
+        try HealthLocalValueChecks.run()
+        try HealthLocalArchiveChecks.run()
+        let encryptedReadPassed = try HealthLocalArchiveChecks.encryptedCancellation()
+        precondition(encryptedReadPassed, "Encrypted read cancellation or chunk bounds failed")
+        let cancelledDecodePassed = try await HealthLocalArchiveChecks.decodeCancellation()
+        precondition(cancelledDecodePassed, "Cancelled decoder returned a preview or the wrong error")
+        try HealthLocalArchiveChecks.payloadCancellation()
+        try HealthRecoveryCopyChecks.run()
+        try HealthDailyCacheChecks.run()
+        try await HealthTodayQueryChecks.run()
+        try BackupPhotoBindingChecks.run()
+        try HealthRecoveryRecordReviewChecks.run()
+        try BackupSourceOwnershipChecks.run()
+        try await BackupSourceOwnershipChecks.completedTaskRetention()
         try LocalCommitChecks.run()
         try ProfileSettingsChecks.run()
         try await PreferenceChecks.run()
@@ -113,6 +194,27 @@ import Darwin
         func check(_ condition: @autoclosure () -> Bool, _ label: String) {
             guard condition() else { fatalError("FAIL: \(label)") }; print("PASS: \(label)")
         }
+        let deniedImport = directory.appendingPathComponent("private-import-copy")
+        try Data("synthetic permission probe".utf8).write(to: deniedImport)
+        if geteuid() != 0 {
+            try FileManager.default.setAttributes([.posixPermissions: 0], ofItemAtPath: deniedImport.path)
+            defer { try? FileManager.default.setAttributes([.posixPermissions: 0o600], ofItemAtPath: deniedImport.path) }
+            do {
+                let handle = try FileHandle(forReadingFrom: deniedImport); try handle.close()
+                fatalError("Denied import read unexpectedly opened")
+            } catch {
+                let failure = error as NSError
+                print("INFO: real denied read \(failure.domain)/\(failure.code)")
+                let message = BackupError.importReadFailure(error).localizedDescription
+                check(message.contains("couldn’t read this file") && message.contains("No records were imported.") && !message.contains("private-import-copy"), "actual OS-denied import read gives retry without private paths or false save claim")
+            }
+        } else { print("SKIP: real denied read needs non-root process") }
+        check(BackupError.importReadFailure(CancellationError()) is CancellationError, "import permission presentation preserves cancellation")
+        if let failure = BackupError.importReadFailure(BackupError.integrity) as? BackupError, case .integrity = failure {
+            check(true, "import permission presentation preserves integrity failure")
+        } else { fatalError("Integrity failure changed") }
+        let missingImport = NSError(domain: NSCocoaErrorDomain, code: CocoaError.Code.fileReadNoSuchFile.rawValue)
+        check((BackupError.importReadFailure(missingImport) as NSError) === missingImport, "import permission presentation preserves other filesystem failures")
         let csv = try parse("metrics.csv", "date,metric,value,unit,source\n2026-01-01,water,1.5,L,\"Bottle, manual\"\n2026-01-01,weight,150,lb,Scale\n2026-01-01,hrv,0.05,s,Watch\n2026-01-01,steps,8421,count,Watch\n2026-01-01,steps,8421,count,Watch\n2026-01-01,steps,-1,count,Watch\n2026-01-01,steps,nan,count,Watch\n2026-01-01,water,5,bananas,Other\n")
         check(csv.days.count == 1 && csv.samples == 4 && csv.skipped == 4, "duplicates, invalid values and unsupported units are skipped")
         check(csv.days[0].values["water"] == 1500, "litres convert to ml")

@@ -1,0 +1,161 @@
+{
+  "status": "PROGRESS:116 all3actual selected-record workers retain files through review-owner close, unwind/clean and fresh selection/final cleanup pass. Full goal active;Batch43 unpublished.",
+  "source": "durable-source-r116.json",
+  "instrumentationSource": "durable-source-r115.json",
+  "productionOwnershipSource": "durable-source-r113.json",
+  "pureSource": "local-domain-pure-source-r65.json",
+  "contract": "health-selected-owner-unwind-r1-contract.json",
+  "build": "health-selected-owner-unwind-native-build-r2.json",
+  "driver": "run-health-selected-owner-unwind.py",
+  "driverArchive": "health-selected-owner-unwind-driver-r3.py.gz",
+  "driverSHA256": "df802003a582ea7a1fb8483398917a540dbf8a3bbb360d87f62437dbe39e2f8a",
+  "cases": [
+    {
+      "case": "legacy",
+      "hostAudit": "health-selected-owner-unwind-legacy-r3-host-audit.json",
+      "observations": "health-selected-owner-unwind-legacy-r3-observations.json",
+      "summary": "health-selected-owner-unwind-legacy-r3-summary.json",
+      "images": "health-selected-owner-unwind-legacy-r3-images.json",
+      "readbacks": "health-selected-owner-unwind-legacy-r3-readbacks.json",
+      "readback": {
+        "backToClosedSeconds": 29.62157392501831,
+        "fileName": "Lumen-backup-health-legacy-small.json",
+        "format": "legacy",
+        "ownerUnwind": true,
+        "retryAmount": "Amount, 246 mL",
+        "scope": "selected-record",
+        "timingScope": "Deliberate host-held cancellation unwind plus fresh selection; not cancellation latency"
+      },
+      "inputBytes": 1176,
+      "inputSHA256": "c32309d29f91d34fc799480e862e1569975d3565fd58c7a100429059e50e8449",
+      "actualControls": [
+        1,
+        2,
+        3
+      ],
+      "actualPhases": [
+        "cancelled-worker-released",
+        "released",
+        "cancelled"
+      ],
+      "firstOwnedWorkspaceCount": 2,
+      "retryOwnedWorkspaceCount": 2,
+      "savedFilesExact": 12,
+      "originalFixtureFilesExact": 7,
+      "hostDeletedWorkspaces": false
+    },
+    {
+      "case": "encrypted",
+      "hostAudit": "health-selected-owner-unwind-encrypted-r3-host-audit.json",
+      "observations": "health-selected-owner-unwind-encrypted-r3-observations.json",
+      "summary": "health-selected-owner-unwind-encrypted-r3-summary.json",
+      "images": "health-selected-owner-unwind-encrypted-r3-images.json",
+      "readbacks": "health-selected-owner-unwind-encrypted-r3-readbacks.json",
+      "readback": {
+        "backToClosedSeconds": 41.54042208194733,
+        "fileName": "Lumen-backup-health-encrypted-small.lumenbackup",
+        "format": "encrypted",
+        "ownerUnwind": true,
+        "retryAmount": "Amount, 246 mL",
+        "scope": "selected-record",
+        "timingScope": "Deliberate host-held cancellation unwind plus fresh selection; not cancellation latency"
+      },
+      "inputBytes": 19456,
+      "inputSHA256": "e34e3ba51212f83e961aba82d9565e7c7263dbb5bebf8af3db1c4e48d5aca9b1",
+      "actualControls": [
+        1,
+        2,
+        3
+      ],
+      "actualPhases": [
+        "cancelled-worker-released",
+        "released",
+        "cancelled"
+      ],
+      "firstOwnedWorkspaceCount": 1,
+      "retryOwnedWorkspaceCount": 1,
+      "savedFilesExact": 12,
+      "originalFixtureFilesExact": 7,
+      "hostDeletedWorkspaces": false
+    },
+    {
+      "case": "readable",
+      "hostAudit": "health-selected-owner-unwind-readable-r3-host-audit.json",
+      "observations": "health-selected-owner-unwind-readable-r3-observations.json",
+      "summary": "health-selected-owner-unwind-readable-r3-summary.json",
+      "images": "health-selected-owner-unwind-readable-r3-images.json",
+      "readbacks": "health-selected-owner-unwind-readable-r3-readbacks.json",
+      "readback": {
+        "backToClosedSeconds": 41.898051023483276,
+        "fileName": "Lumen-readable-health-small.json",
+        "format": "readable",
+        "ownerUnwind": true,
+        "retryAmount": "Amount, 246 mL",
+        "scope": "selected-record",
+        "timingScope": "Deliberate host-held cancellation unwind plus fresh selection; not cancellation latency"
+      },
+      "inputBytes": 831,
+      "inputSHA256": "bad71f0672b2e44ec7d2828be49d3cc758b4dc48c57b6639d55be5a72bc9da38",
+      "actualControls": [
+        1,
+        2,
+        3
+      ],
+      "actualPhases": [
+        "cancelled-worker-released",
+        "released",
+        "cancelled"
+      ],
+      "firstOwnedWorkspaceCount": 1,
+      "retryOwnedWorkspaceCount": 1,
+      "savedFilesExact": 12,
+      "originalFixtureFilesExact": 7,
+      "hostDeletedWorkspaces": false
+    }
+  ],
+  "failedTrials": [
+    "health-selected-owner-unwind-r1-failed-outcome.json",
+    "health-selected-owner-unwind-r2-failed-outcome.json"
+  ],
+  "verification": {
+    "currentNativePassed": 3,
+    "currentNativeFailed": 0,
+    "currentProducerExitCodes": [
+      0,
+      0,
+      0
+    ],
+    "nativeInputs": 247,
+    "binaryFixtures": 3,
+    "fixtureScope": "2JPEG plus prior105encrypted20KiB fixture; these current trials use separate exact small provider inputs1176/19456/831bytes",
+    "currentPNGs": 24,
+    "selectedPNGsOpened": 15,
+    "retainedUnopenedPNGs": 9,
+    "nativeJSONReadbacksRead": 3,
+    "failedPNGs": 11,
+    "failedPNGsOpened": 1,
+    "failedJSONReadbacksRead": 1,
+    "availableLogsDecodedByteHashExact": 447,
+    "historicalIncompleteLogs": 1,
+    "appBinaryExact115": true,
+    "pureInputsExact65": 128,
+    "pureCompiledSwift": 125,
+    "full2173Execution": "actual113/pure65, inputs unchanged116; not rerun116",
+    "priorNativeEncrypted4AndService25": "Actual113, prior app binary.115DEBUG fixture changes executable; no exact113app carry or current rerun claimed."
+  },
+  "scope": "Main-normal small selected-record original-file verification workers only. Real Back cancels first actual held read; DEBUG finite artificial unwind delay keeps its actual stack/input/descriptor alive while UI releases final review owner. Host independently observes actual reviewOwnerClosed, matching live rawfd/inode/path/provider bytes and every marked owned workspace intact, then releases only post-cancellation delay. Original cancellation throws, FD closes and original/photo/extracted roots disappear/no open paths after parent capture3s guard. Saved12/strict7baseline files exact. Fresh Files selection creates distinct owner/source/control, actual off choice/246mL; successful workspace present during detail and gone/no open paths at final parent. Returning detail-to-list creates an additional actual read in all3cases; it is never host-released, real final Back cancels/closes it on same retry original. No recovery commit/reset/host workspace deletion after synthetic setup. No cancellation/tap-to-delete latency claim: existing readback backToClosedSeconds field includes artificial delay and fresh selection, explicitly labeled by timingScope.",
+  "sourceAudit": "health-import-failure-source-audit-r1.json",
+  "remaining": [
+    "Actual selected-photo workers and zero/two/shared/missing/damaged/omitted photos; actual record payload/atomic decode/large capacity/partial multi-chunk holds and source/selection changes/late work.",
+    "Ordinary backup/readable healthy merge/restore/recovery commits, goals/preferences/profile/weight, non-cancellation failed-import/fault cleanup and malformed/replaced inputs. Source audit finds existing selected.close/source.close on initial plain failures, but native failure coverage remains.",
+    "All domains/cache/discovery/legacy/missing/symlink/failing I/O/interruption/eight durable groups/full original contracts; both phones normal/dark/largest/VoiceOver/two continuing-critic rounds; Health daemon/permissions/Watch/widget/reminder/actual interruption/current SDK/Release/signed-device/publication and full broader product/evidence/privacy/provider/performance objective."
+  ],
+  "storage": {
+    "availableBytes": 70274568192,
+    "availableApproxGiB": 65,
+    "manualRecoveredBytes": 0,
+    "policy": "Current inputs, supplied skill, required unpublished raw/frozen/original evidence and immediately reused single native/pure/package roots retained. No large fixture/download/new runtime/global or unrelated deletion; syntax parsed without generating task bytecode cache. Product cleanup is test evidence, not manual storage recovery. No documentation-only build."
+  },
+  "logs": "health-backup-r1-logs.json",
+  "finalAudit": "health-selected-owner-unwind-r1-final-audit.json"
+}

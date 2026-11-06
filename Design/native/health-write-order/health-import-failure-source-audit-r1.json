@@ -1,0 +1,10 @@
+{
+  "status": "source audit, not runtime acceptance",
+  "source": "durable-source-r115.json",
+  "finding": "Initial non-cancellation plain-backup read/show failure already calls selected.close() in select inner catch. Readable conversion/review failure likewise calls source.close(). A cached closed session summary can remain, but its lease no longer owns the temporary Source. No additional production fix justified from this inspection.",
+  "locations": [
+    "Lumen/Views/BackupView.swift select(_:) inner catch",
+    "Lumen/Views/ReadableExportView.swift read(_:) inner catch"
+  ],
+  "remaining": "Actual malformed/replaced-input/failing-I/O native cleanup/retry evidence, unreadable originals preserved, encrypted same-file password retry, restore/recovery and late-work fault paths remain required."
+}

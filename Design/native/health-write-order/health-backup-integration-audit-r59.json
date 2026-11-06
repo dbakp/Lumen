@@ -1,0 +1,86 @@
+{
+  "status": "current source-only integration audit; native baseline not yet executed",
+  "source": "durable-source-r59.json",
+  "evidence": [
+    {
+      "file": "Lumen/Views/BackupView.swift",
+      "sha256": "629bf49bf460739725c0ee78a2384a67b7eec25563604fd86a1102a5f6767a9c",
+      "matches": [
+        {
+          "line": 219,
+          "text": "conflictCount = value.snapshot.conflicts(with: try BackupService.snapshot(sleep: sleep, health: health))"
+        },
+        {
+          "line": 220,
+          "text": "preview = value; source = nil"
+        }
+      ]
+    },
+    {
+      "file": "Lumen/Views/ReadableExportView.swift",
+      "sha256": "a02df1b67e9674f53801b08a611f01c9d28aab1df8aac4a2821cd224fa9a19bc",
+      "matches": [
+        {
+          "line": 59,
+          "text": "source.cleanup()"
+        },
+        {
+          "line": 62,
+          "text": "conversion = value; selection = value.defaultSelection; finish()"
+        },
+        {
+          "line": 63,
+          "text": "} catch { source.cleanup(); throw error }"
+        },
+        {
+          "line": 72,
+          "text": "try await BackupService.restoreReadable(conversion, domains: selected, sleep: sleep, health: health, control: control)"
+        }
+      ]
+    },
+    {
+      "file": "Lumen/Services/BackupService.swift",
+      "sha256": "46d12330c4c9b7e329877772f21b1878bbfc82b0fe7732389707342eaf35e368",
+      "matches": [
+        {
+          "line": 62,
+          "text": "try health.requireAllLocalHealthData()"
+        },
+        {
+          "line": 191,
+          "text": "let local = try snapshot(sleep: sleep, health: health)"
+        },
+        {
+          "line": 256,
+          "text": "nonisolated static func convertReadable(_ source: Source, control: BackupOperationControl) throws -> ReadableExport.Conversion {"
+        },
+        {
+          "line": 261,
+          "text": "static func restoreReadable(_ conversion: ReadableExport.Conversion, domains: Set<ReadableExport.Domain>, sleep: SleepStore, health: HealthStore, control: BackupOperationControl) async throws {"
+        }
+      ]
+    },
+    {
+      "file": "Lumen/Models/HealthRecoverySelection.swift",
+      "sha256": "4053ab53d7ac6f4a291be9ae750912c8506c9a520bd25bd973d4ec7f880ef016",
+      "matches": [
+        {
+          "line": 72,
+          "text": "guard !domains.isEmpty, !domains.contains(.today) else { throw BackupError.invalid }"
+        },
+        {
+          "line": 96,
+          "text": "omittingPhotos: omittingPhotos, source: \"reviewed-backup\","
+        }
+      ]
+    }
+  ],
+  "findings": [
+    "Encrypted and legacy JSON backups in BackupView require healthy current data before preview, then again before normal merge. Neither provides unavailable-domain replacement.",
+    "Readable export recovery is a DISTINCT product route via ReadableTransferSession/ReadableRecoveryView. Conversion preview can open without a local snapshot, but restoreReadable reaches the same healthy-current merge. It must not be conflated with legacy JSON backup preview.",
+    "ReadableTransferSession explicitly calls source.cleanup after conversion, discarding the selected private file before review. Conversion retains decoded data, not checked original-file provenance. Both routes need immutable selected-file identity and owned workspace lifetime.",
+    "Today is absent from these formats; explicit separate cache reconstruction/clearing with real availability is required. Valid empty-source replacement needs a separate explicit recovery choice, preserving normal additive import semantics."
+  ],
+  "requiredNext": "Execute all three actual product baselines: encrypted backup, legacy JSON backup and readable export conversion/restore; then implement the complete health-backup-recovery-r1-contract.json.",
+  "scope": "Source evidence only; no native runtime, actual Files selection, healthy merge, owner lifetime or broad completion inferred."
+}

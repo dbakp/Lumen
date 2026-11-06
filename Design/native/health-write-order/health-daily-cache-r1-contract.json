@@ -1,0 +1,71 @@
+{
+  "status": "PREDECLARED requirements/source audit only; no implementation/runtime/design acceptance",
+  "source": "durable-source-r129.json",
+  "parentContract": "health-backup-recovery-r1-contract.json",
+  "sourceEvidence": {
+    "Lumen/Models/HealthStore.swift": {
+      "bytes": 41124,
+      "sha256": "b0ea88cad361f2405be4be41ceb8735064ab1ecbbcfa7bfe9b0df69a5a969d26"
+    },
+    "Lumen/Models/HealthRecoverySelection.swift": {
+      "bytes": 12880,
+      "sha256": "f41cd227862406d49345981a1fcf001f39f482ad2c72f6a6c7b46ae5da275920"
+    },
+    "Lumen/Models/HealthLocalFiles.swift": {
+      "bytes": 8225,
+      "sha256": "47658a43536f5817d334741e964ac1f25575044163dbb84e884c870e79b673ae"
+    },
+    "Lumen/Algorithms/CurrentHealthEvidence.swift": {
+      "bytes": 11149,
+      "sha256": "1b906911a1193d83b7e5d45500e7beaec9b3560905dcf15f9363e7051c8c02a0"
+    },
+    "Lumen/Services/HealthKitService.swift": {
+      "bytes": 24215,
+      "sha256": "b45785066dd6786f32f9a0591d4209dd706f13d18e51f19c69928da9053f10ab"
+    },
+    "Lumen/Persistence/LocalStore.swift": {
+      "bytes": 19619,
+      "sha256": "dad658a838d52e9a2ef9b6de8052887c36fabbdce3b1abf8692774902c2a9254"
+    },
+    "Lumen/Models/BackupFileTransaction.swift": {
+      "bytes": 17848,
+      "sha256": "d47c1771437400e0a40bd2f156eb07eb7743780141eca754220ffc4a7f1185c4"
+    },
+    "Lumen/Views/HealthRecoveryView.swift": {
+      "bytes": 32453,
+      "sha256": "a12075ec7d7e5ed530c2109791037b19835b0138c3e3cc6f9a2bf136f933f71f"
+    },
+    "Lumen/Views/BackupFileRecoveryView.swift": {
+      "bytes": 16817,
+      "sha256": "5156b06fc96c64ceb9224193b21d5b4df51b89e047153ac607cb805cf229a544"
+    }
+  },
+  "observedGaps": [
+    "Selected-file recovery explicitly excludes today and only says daily readings are not included; current Recover health data offers retained copies/retry opening, without a separate rebuild/clear flow.",
+    "HealthStore loads a missing current file through the checked legacy fallback; unavailable and truly absent/empty cannot be conflated.",
+    "Normal refreshSources requires a valid today boundary before saving fresh Apple Health results, so it cannot itself repair an unreadable cache.",
+    "CurrentHealthEvidence.resolve derives combined values from raw snapshot plus local/imported records; persisting this resolved value as the raw cache risks counting local observations again on refresh.",
+    "HealthKitService.refreshToday mutates a shared today property only after its queries; its early authorization/availability return leaves earlier property contents. A recovery caller must establish fresh operation-bound query results, not assume that property was newly fetched."
+  ],
+  "requiredBehavior": [
+    "Keep archives and readable formats unchanged: daily readings are absent, never recovered from those files. Provide separate explicit daily-cache actions with factual source and replacement wording.",
+    "Distinguish healthy current cache, genuinely missing cache, unreadable current cache, and failed/available legacy fallback; protect healthy data from the unavailable-data replacement route. Preserve failed raw bytes and their identity, including directory trees/legacy where applicable; reject symlinks without following/deleting referenced data.",
+    "Clearing is an explicit confirmed choice producing unknown readings, not measured zero. Preserve local logs/imported days; do not erase health records, photos, goals, profile or source history.",
+    "Rebuilding uses fresh actual source observations with returned/no-data/failed distinctions and current-day/source identity. Neither an authorization request nor a completed query implies read access or available measurements. Unavailable/no-data readings stay unknown; do not invent default readings.",
+    "Persist the raw source snapshot only, never the combined resolved display totals. Continue deriving local/imported/sleep readings once through existing provenance logic; unreadable domains stay unavailable.",
+    "Capture operation, local revision, device owner/lifecycle, source generation/availability and date boundary; verify again under installation locks. Reject intervening writes, reset, disconnect, day rollover, source changes and newer selection. No late success or mutation after Cancel/Back.",
+    "Use existing checked prepare/install and preservation protections, keeping .previous and malformed raw bytes intact on every failed attempt. Completion follows actual commit; a later cancellation cannot claim rollback.",
+    "Preserve exact unrelated current/prior files, Health-write ownership and pending-removal semantics. No imported external-write intent, restarted stale saves or fabricated Health delivery acknowledgement.",
+    "Busy, query, read, validation, preparation and installation failures retain a useful retry and truthful state. Clear remains a separately chosen fallback; never silently convert a failed rebuild into clearing.",
+    "Existing normal backup/readable additive merge and selection preferences stay compatible. Link the absent-cache explanation to the separate flow where appropriate."
+  ],
+  "verificationRequired": [
+    "Meaningful real-file tests for truly missing/current corrupt/current directory/legacy present-invalid/legacy read failure/symlink/healthy controls; changed source and .previous protection.",
+    "Frozen-clock/provenance checks for explicit unknown versus recorded zero, no-data versus failed queries, partial actual observations, stale shared query property, day rollover and local/imported/sleep records counted once after relaunch.",
+    "Actual native UI baseline for unreadable and absent cache, explicit review/confirmation/Not now/Clear/Rebuild/Back/Cancel/retry/relaunch, exact independent files and actual state outcomes. Synthetic source checks must stay distinct from actual signed-device Health queries.",
+    "Real held source-query/preparation/workspace/installation boundaries and independent late-work audits; reset/disconnect/newer operation/local write/busy controls; no reduced guard or bypass to make tests pass.",
+    "Both phone sizes and normal/dark/largest appearance, full content/control capture and two rounds with same continuing critic for changed presentation. Physical-device VoiceOver and actual Health SDK/daemon/permissions/Release gates remain separate.",
+    "Full current meaningful logic and affected native backup/merge/recovery/profile/weight/availability/companion regressions; all original contracts/eight groups and full product/release/publication remain required."
+  ],
+  "storage": "Small fixtures first; df before builds/large cases; one native/pure/package root. Keep required unpublished evidence until GitHub backup/readback; only scoped disposable cleanup. No app/test edits while current denied-error critic reads."
+}

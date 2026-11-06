@@ -1,0 +1,40 @@
+{
+  "status": "matched after recovery",
+  "test": "WorkoutsRecovery",
+  "nativeChecks": 21,
+  "source": "durable-source-r11.json",
+  "build": "local-domain-native-build-r2.json",
+  "files": {
+    "goals.json": {
+      "bytes": 228,
+      "sha256": "be77da9016b1781b15e22f92c2369d2387f699c3e675be1d0e5445ebb01d9d43"
+    },
+    "health-write-intent.json": {
+      "bytes": 497,
+      "sha256": "64c3203d2c36f0b86a6f4c579627d6ae71a5b84adc40cfbe43eaff44fbc7cf6c"
+    },
+    "meals.json": {
+      "bytes": 422,
+      "sha256": "0f06ab13114e411bdc40e3b247e5690bb545fef0580b4e6e37fb8f99e8a2056c"
+    },
+    "profile.json": {
+      "bytes": 160,
+      "sha256": "1b4861d15686ef61537f4a1949e08ed5818e28c75b91ab56d482e8a45e0f3c57"
+    },
+    "today.json": {
+      "bytes": 159,
+      "sha256": "72235d7c73cfdb5e6f92f11efccb738d0ce5875e5bac762ce1cf65b931aedec7"
+    },
+    "water.json": {
+      "bytes": 159,
+      "sha256": "9fc3591f810e892b9533b3f79c571ac9f179ad8cd9acdd8174d8199eae18e458"
+    },
+    "workouts.json": {
+      "bytes": 352,
+      "sha256": "d243811f4285e46ecdf2932c09772a8bfdeca2501160dcaf32d1c8f6a0c1002a"
+    }
+  },
+  "externalComponents": 1,
+  "installedBinarySHA256": "d153c1b10d84ba966d668b73cc5514f2f96fa3ee42930731338a16fb0b3bb6f6",
+  "scope": "Host compared actual rejected files before release of the test barrier, then actual recovered files, live IDs, controlled external identities/receipts and installed source/binary. No HealthKit/UI/device acceptance."
+}

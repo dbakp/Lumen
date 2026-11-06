@@ -1,0 +1,54 @@
+{
+  "status": "local candidate with device binding and actual simulator HealthKit verified; unpublished and incomplete",
+  "source": "durable-source-r6.json",
+  "sourceInputs": 224,
+  "fullLogic": {
+    "passed": 1669,
+    "executedAt": "durable-source-r4.json",
+    "exactCurrentCarry": "durable-pure-source-carry-r4-r6.json",
+    "compiledPureSourcesUnchanged": 109
+  },
+  "focusedRecovery": 50,
+  "nativeControlledIntegration": {
+    "xctests": 2,
+    "checks": 36,
+    "compiledNativeSource": "durable-source-r3.json",
+    "testOnlyCarry": "durable-native-source-carry-r3-r4.json",
+    "reports": [
+      "durable-native-combined-r2-report.json",
+      "durable-native-receipt-r2-report.json"
+    ],
+    "hostMatchedFilesPerTest": 5
+  },
+  "actualHealthKit": {
+    "xctests": 1,
+    "checks": 47,
+    "source": "durable-source-r6.json",
+    "outcome": "actual-healthkit-r2-outcome.json",
+    "hostProof": "actual-healthkit-r2-host-audit.json",
+    "sampleTypes": 7,
+    "samplesBeforeAndAfterReplayPerType": 1,
+    "explicitWaterMealDeletionComponents": 6,
+    "exactSyntheticCleanupVerified": true,
+    "objectUUIDRetainedAcrossReplay": 0
+  },
+  "deviceBinding": "durable-device-binding-r1.json",
+  "priorFailedActualTrial": "actual-healthkit-r1-outcome.json",
+  "stalledTestFixture": "durable-recovery-r5-stall.json",
+  "historicalFoundationProcessPairs": 2,
+  "processPairBoundary": "durable-source-r2.json; controlled Foundation journal/worker, not native HealthStore restart or real HealthKit process replay",
+  "allProducersTerminal": true,
+  "availableBytes": 26358775808,
+  "manualCleanupRecoveredBytes": 0,
+  "storage": "Reuse current native/package/logic caches; keep all unpublished source/evidence and raw Batch43 results. No manual cache cleanup this turn. Actual HealthKit fixtures are removed only by exact own-source identities, verified with native API queries.",
+  "requiredRemaining": [
+    "Actual native HealthStore process termination after local commit/before worker and after Health success/before durable receipt; save/undo crash boundaries",
+    "Actual HealthKit foreign-source collisions and denied/partial per-type permissions; separate signed-iPhone migration/background/locked gate",
+    "Complete local+intent/receipt failure coverage across water, meals and weight, including lifecycle/archive/corrupt/legacy boundaries",
+    "Actual reset/restore and encrypted/readable roundtrips with pending work; no imported or foreign-owner replay",
+    "Native normal/dark/largest pending/error/retry/relaunch/device-setup UI and the same continuing design critic",
+    "Final broader regressions, Release development-marker audit and coherent publication/readback before cleanup",
+    "Acknowledged Watch delivery plus full evidence/provider/device/accessibility/privacy/distribution goal"
+  ],
+  "storageCheckedAtUTC": "2026-11-03T11:51:53.330862+00:00"
+}

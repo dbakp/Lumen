@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "exitCode": 0,
+  "nativeXCTests": 1,
+  "durationSeconds": 21.28,
+  "nativeChecks": 47,
+  "source": "durable-source-r6.json",
+  "sourceInputs": 224,
+  "nativeBuild": "durable-native-build-r5.json",
+  "hostProof": "actual-healthkit-r2-host-audit.json",
+  "sampleTypes": 7,
+  "equalVersionReplays": 7,
+  "countBeforeAndAfterReplayPerType": 1,
+  "sameObjectUUIDAcrossReplay": 0,
+  "explicitProductionDeletes": 6,
+  "exactFixtureCleanupVerified": true,
+  "observation": "All seven replay queries return one matching logical sample with unchanged quantity/date/source but a different framework object UUID. Receipt/deletion ownership uses stable sync metadata, not SDK UUID.",
+  "priorFailedTrial": "actual-healthkit-r1-outcome.json",
+  "scope": "Actual simulator HealthKit save/query/replay/delete plus persisted receipts. Real signed-iPhone, foreign-source collision, read-denied/write-denied, native crash/restart and background/locked gates remain separate."
+}

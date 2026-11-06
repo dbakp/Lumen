@@ -1,0 +1,219 @@
+{
+  "checkpoint": {
+    "afterOpen": false,
+    "checks": [
+      {
+        "name": "shared startup completes before synthetic domain setup",
+        "passed": true
+      },
+      {
+        "name": "actual test store completes checked conversation startup",
+        "passed": true
+      },
+      {
+        "name": "actual affected-domain mutation rejects damaged or unreadable source",
+        "passed": true
+      },
+      {
+        "name": "native model exposes unavailable domain and saved-data issue",
+        "passed": true
+      },
+      {
+        "name": "damaged current meals never resurrect stale legacy meal",
+        "passed": true
+      },
+      {
+        "name": "meal rejection precedes owned photo creation",
+        "passed": true
+      },
+      {
+        "name": "failed meal adds no orphaned photo",
+        "passed": true
+      },
+      {
+        "name": "meal deletion rejects unavailable history",
+        "passed": true
+      },
+      {
+        "name": "unavailable meal history is unknown, not a recorded zero",
+        "passed": true
+      },
+      {
+        "name": "backup cannot export an unavailable domain as empty history",
+        "passed": true
+      },
+      {
+        "name": "assistant declines history/target-based planning before model or provider work",
+        "passed": true
+      },
+      {
+        "name": "failed source cannot produce default-goal coaching",
+        "passed": true
+      },
+      {
+        "name": "all rejected actions preserve exact domain/journal/profile files and original live values",
+        "passed": true
+      },
+      {
+        "name": "rejected actions dispatch no new external Health operation",
+        "passed": true
+      }
+    ],
+    "domain": "meals",
+    "files": {
+      "goals.json": "ewogICJhY3RpdmVDYWxHb2FsIiA6IDYwMCwKICAiYWN0aXZpdHlMZXZlbCIgOiAibW9kZXJhdGUiLAogICJhZ2UiIDogMzAsCiAgImV4ZXJjaXNlR29hbE1pbiIgOiAzMCwKICAiZ29hbCIgOiAibWFpbnRhaW4iLAogICJoZWlnaHRDbSIgOiAxNzgsCiAgInNleCIgOiAidW5zcGVjaWZpZWQiLAogICJzdGFuZEdvYWwiIDogMTIsCiAgInN0ZXBHb2FsIiA6IDEwMDAwLAogICJ3ZWlnaHRLZyIgOiA3MAp9",
+      "health-write-intent.json": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiJFMDE2RUQ1Qi1DQTE0LTQ4RTMtODczOS1CMkUwMjlFNDdDNzIiLCJvd25lciI6IjAxNjk1REI4LTQwMjEtNDFBNC1BQkJGLTYzRTAzREI1MkRERCIsInZlcnNpb24iOjF9",
+      "meals.json": "W3siZGF0ZSI6IjIwMjMtMTEtMTRUMjI6MTM6MjBaIiwiaWQiOiJzeW50aGV0aWMtbWVhbCIsIml0ZW1zIjpbeyJjYWxvcmllcyI6MjAwLCJjYXJic0ciOjIwLCJjb25maWRlbmNlIjowLjgsImZhdEciOjMsImZpYmVyRyI6MiwiZ3JhbXMiOjEwMCwiaWQiOiJzeW50aGV0aWMtZm9vZCIsIm5hbWUiOiJTeW50aGV0aWMiLCJwcm90ZWluRyI6MTB9XSwic291cmNlIjoibWFudWFsIiwidHlwZSI6Imx1bmNoIn0seyJkYXRlIjoiMjAyMy0xMS0xNFQyMjoxMzoyMFoiLCJpZCI6InN5bnRoZXRpYy1tZWFsIiwiaXRlbXMiOlt7ImNhbG9yaWVzIjoyMDAsImNhcmJzRyI6MjAsImNvbmZpZGVuY2UiOjAuOCwiZmF0RyI6MywiZmliZXJHIjoyLCJncmFtcyI6MTAwLCJpZCI6InN5bnRoZXRpYy1mb29kIiwibmFtZSI6IlN5bnRoZXRpYyIsInByb3RlaW5HIjoxMH1dLCJzb3VyY2UiOiJtYW51YWwiLCJ0eXBlIjoibHVuY2gifV0=",
+      "profile.json": "eyJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwiaXNTdWJzY3JpYmVkIjpmYWxzZSwibmFtZSI6IiIsIndha2VHb2FsIjp7Im1pbnV0ZSI6MCwiaG91ciI6N30sIm9uYm9hcmRpbmdEb25lIjpmYWxzZSwic2xlZXBOZWVkQ29uZmlkZW5jZSI6MC4zLCJzbGVlcE5lZWQiOjI5NDAwfQ==",
+      "today.json": "ewogICJhY3RpdmVDYWxvcmllcyIgOiAwLAogICJkYXRlIiA6ICIyMDI2LTExLTAyVDIzOjAwOjAwWiIsCiAgImV4ZXJjaXNlTWluIiA6IDAsCiAgInJlc3RpbmdDYWxvcmllcyIgOiAwLAogICJzdGFuZEhvdXJzIiA6IDAsCiAgInN0ZXBzIiA6IDAsCiAgIndhdGVyTUwiIDogMAp9",
+      "water.json": "WwogIHsKICAgICJkYXRlIiA6ICIyMDI2LTExLTAzVDEzOjI0OjE3WiIsCiAgICAiaWQiIDogInN5bnRoZXRpYy1yZXRhaW5lZC13YXRlciIsCiAgICAibWwiIDogMTAwCiAgfQpd",
+      "workouts.json": "WwogIHsKICAgICJhY3RpdmVDYWxvcmllcyIgOiAyMCwKICAgICJkdXJhdGlvbiIgOiA2MDAsCiAgICAiZW5lcmd5S25vd24iIDogdHJ1ZSwKICAgICJpZCIgOiAic3ludGhldGljLXJldGFpbmVkLXdvcmtvdXQiLAogICAgImtpbmQiIDogIndhbGsiLAogICAgInNvdXJjZSIgOiAibWFudWFsIiwKICAgICJzdGFydCIgOiAiMjAyNi0xMS0wM1QxMzoyNDoxN1oiLAogICAgInRpdGxlIiA6ICJTeW50aGV0aWMiCiAgfQpd"
+    },
+    "inputCase": "duplicate meal identities",
+    "issue": "Saved meals couldn't be opened. Changes to this data are paused. Retry opening saved data; the saved files haven't been replaced.",
+    "liveMealIDs": [],
+    "liveWaterIDs": [
+      "synthetic-retained-water"
+    ],
+    "liveWeight": 70,
+    "liveWorkoutIDs": [
+      "synthetic-retained-workout"
+    ],
+    "missing": [],
+    "nonce": "4DDF84A4-0783-4D84-BC4A-A5477122FCEF",
+    "trace": []
+  },
+  "checks": [
+    {
+      "name": "shared startup completes before synthetic domain setup",
+      "passed": true
+    },
+    {
+      "name": "actual test store completes checked conversation startup",
+      "passed": true
+    },
+    {
+      "name": "actual affected-domain mutation rejects damaged or unreadable source",
+      "passed": true
+    },
+    {
+      "name": "native model exposes unavailable domain and saved-data issue",
+      "passed": true
+    },
+    {
+      "name": "damaged current meals never resurrect stale legacy meal",
+      "passed": true
+    },
+    {
+      "name": "meal rejection precedes owned photo creation",
+      "passed": true
+    },
+    {
+      "name": "failed meal adds no orphaned photo",
+      "passed": true
+    },
+    {
+      "name": "meal deletion rejects unavailable history",
+      "passed": true
+    },
+    {
+      "name": "unavailable meal history is unknown, not a recorded zero",
+      "passed": true
+    },
+    {
+      "name": "backup cannot export an unavailable domain as empty history",
+      "passed": true
+    },
+    {
+      "name": "assistant declines history/target-based planning before model or provider work",
+      "passed": true
+    },
+    {
+      "name": "failed source cannot produce default-goal coaching",
+      "passed": true
+    },
+    {
+      "name": "all rejected actions preserve exact domain/journal/profile files and original live values",
+      "passed": true
+    },
+    {
+      "name": "rejected actions dispatch no new external Health operation",
+      "passed": true
+    },
+    {
+      "name": "independent host matched all rejected current files before recovery was allowed",
+      "passed": true
+    },
+    {
+      "name": "unrelated healthy domain commits while damaged source remains paused",
+      "passed": true
+    },
+    {
+      "name": "healthy replacement file alone cannot bless the old unavailable live model",
+      "passed": true
+    },
+    {
+      "name": "explicit checked retry installs recovered data and clears its issue",
+      "passed": true
+    },
+    {
+      "name": "checked retry retains original healthy histories and original target weight",
+      "passed": true
+    },
+    {
+      "name": "new mutation after checked recovery completes its durable external work",
+      "passed": true
+    },
+    {
+      "name": "all domain source boundaries match after healthy recovery and mutation",
+      "passed": true
+    },
+    {
+      "name": "native meal writer rejects new invalid confidence before commit",
+      "passed": true
+    },
+    {
+      "name": "invalid new payload retains all healthy files and queues no new external work",
+      "passed": true
+    }
+  ],
+  "external": {
+    "com.dbakp.lumen.health.v1.01695DB8-4021-41A4-ABBF-63E03DB52DDD.A73B4456-A4B7-4E7D-B565-A734003891F7.calories": 213,
+    "com.dbakp.lumen.health.v1.01695DB8-4021-41A4-ABBF-63E03DB52DDD.A73B4456-A4B7-4E7D-B565-A734003891F7.carbs": 23,
+    "com.dbakp.lumen.health.v1.01695DB8-4021-41A4-ABBF-63E03DB52DDD.A73B4456-A4B7-4E7D-B565-A734003891F7.fat": 9,
+    "com.dbakp.lumen.health.v1.01695DB8-4021-41A4-ABBF-63E03DB52DDD.A73B4456-A4B7-4E7D-B565-A734003891F7.fiber": 4,
+    "com.dbakp.lumen.health.v1.01695DB8-4021-41A4-ABBF-63E03DB52DDD.A73B4456-A4B7-4E7D-B565-A734003891F7.protein": 11,
+    "com.dbakp.lumen.health.v1.01695DB8-4021-41A4-ABBF-63E03DB52DDD.E3FC8352-CBED-476D-8EDF-9E93B1CCE98A.water": 137
+  },
+  "liveMealIDs": [
+    "synthetic-retained-meal",
+    "synthetic-new-recovered-meal"
+  ],
+  "liveWaterIDs": [
+    "synthetic-retained-water",
+    "AB43B66C-C20F-4E41-850B-22137C3A0246"
+  ],
+  "liveWeight": 70,
+  "liveWorkoutIDs": [
+    "synthetic-retained-workout"
+  ],
+  "persistedFiles": {
+    "goals.json": "ewogICJhY3RpdmVDYWxHb2FsIiA6IDYwMCwKICAiYWN0aXZpdHlMZXZlbCIgOiAibW9kZXJhdGUiLAogICJhZ2UiIDogMzAsCiAgImV4ZXJjaXNlR29hbE1pbiIgOiAzMCwKICAiZ29hbCIgOiAibWFpbnRhaW4iLAogICJoZWlnaHRDbSIgOiAxNzgsCiAgInNleCIgOiAidW5zcGVjaWZpZWQiLAogICJzdGFuZEdvYWwiIDogMTIsCiAgInN0ZXBHb2FsIiA6IDEwMDAwLAogICJ3ZWlnaHRLZyIgOiA3MAp9",
+    "health-write-intent.json": "eyJldmVudHMiOlt7ImFja25vd2xlZGdlZCI6WyJ3YXRlciJdLCJhY3Rpb24iOiJzYXZlIiwiY29tcG9uZW50cyI6W3siZGF0ZSI6ODE1NDA1MDU4LjA4MDUwMSwibWV0cmljIjoid2F0ZXIiLCJ2YWx1ZSI6MTM3fV0sImRvbWFpbiI6IndhdGVyIiwiZ2VuZXJhdGlvbiI6IjY2NzhBQzAzLUM0RTUtNDA3RS1CMUQ5LTkyRjQyMEZGNTEyNiIsImlkIjoiRTNGQzgzNTItQ0JFRC00NzZELThFREYtOUU5M0IxQ0NFOThBIiwiaWRlbnRpdHkiOiJzeW5jIiwibGlmZWN5Y2xlIjoiRTAxNkVENUItQ0ExNC00OEUzLTg3MzktQjJFMDI5RTQ3QzcyIiwibG9jYWxJRCI6IkFCNDNCNjZDLUMyMEYtNEU0MS04NTBCLTIyMTM3QzNBMDI0NiIsInJlcXVlc3RlZEF0Ijo4MTU0MDUwNTguMTIzODM5fSx7ImFja25vd2xlZGdlZCI6WyJwcm90ZWluIiwiZmF0IiwiY2FyYnMiLCJmaWJlciIsImNhbG9yaWVzIl0sImFjdGlvbiI6InNhdmUiLCJjb21wb25lbnRzIjpbeyJkYXRlIjo4MTU0MDUwNTcuNDc4MjA5LCJtZXRyaWMiOiJjYWxvcmllcyIsInZhbHVlIjoyMTN9LHsiZGF0ZSI6ODE1NDA1MDU3LjQ3ODIwOSwibWV0cmljIjoicHJvdGVpbiIsInZhbHVlIjoxMX0seyJkYXRlIjo4MTU0MDUwNTcuNDc4MjA5LCJtZXRyaWMiOiJjYXJicyIsInZhbHVlIjoyM30seyJkYXRlIjo4MTU0MDUwNTcuNDc4MjA5LCJtZXRyaWMiOiJmYXQiLCJ2YWx1ZSI6OX0seyJkYXRlIjo4MTU0MDUwNTcuNDc4MjA5LCJtZXRyaWMiOiJmaWJlciIsInZhbHVlIjo0fV0sImRvbWFpbiI6Im1lYWwiLCJnZW5lcmF0aW9uIjoiRDhFQjZBNEEtNTJFMi00MjdELTk5QjUtN0E0MkZFNkY1M0ExIiwiaWQiOiJBNzNCNDQ1Ni1BNEI3LTRFN0QtQjU2NS1BNzM0MDAzODkxRjciLCJpZGVudGl0eSI6InN5bmMiLCJsaWZlY3ljbGUiOiJFMDE2RUQ1Qi1DQTE0LTQ4RTMtODczOS1CMkUwMjlFNDdDNzIiLCJsb2NhbElEIjoic3ludGhldGljLW5ldy1yZWNvdmVyZWQtbWVhbCIsInJlcXVlc3RlZEF0Ijo4MTU0MDUwNTguMzM4MzUxfV0sImxpZmVjeWNsZSI6IkUwMTZFRDVCLUNBMTQtNDhFMy04NzM5LUIyRTAyOUU0N0M3MiIsIm93bmVyIjoiMDE2OTVEQjgtNDAyMS00MUE0LUFCQkYtNjNFMDNEQjUyREREIiwidmVyc2lvbiI6MX0=",
+    "meals.json": "W3siZGF0ZSI6IjIwMjYtMTEtMDNUMTM6MjQ6MTdaIiwiaXRlbXMiOlt7ImdyYW1zIjoxMDAsIm5hbWUiOiJTeW50aGV0aWMiLCJjYXJic0ciOjIwLCJjb25maWRlbmNlIjowLjgsInByb3RlaW5HIjoxMCwiZmliZXJHIjoyLCJpZCI6IkE1Qjc5MUYyLTUzQjUtNDJFQy1CMzU5LThBODkxMDNERTU2MSIsImZhdEciOjMsImNhbG9yaWVzIjoxMDB9XSwic291cmNlIjoibWFudWFsIiwidHlwZSI6Imx1bmNoIiwiaWQiOiJzeW50aGV0aWMtcmV0YWluZWQtbWVhbCJ9LHsiZGF0ZSI6IjIwMjYtMTEtMDNUMTM6MjQ6MTdaIiwiaXRlbXMiOlt7ImdyYW1zIjoxMDAsIm5hbWUiOiJTeW50aGV0aWMgbmV3IiwiY2FyYnNHIjoyMywiY29uZmlkZW5jZSI6MC44LCJwcm90ZWluRyI6MTEsImZpYmVyRyI6NCwiaWQiOiI3MjVCRjI5Qy0wNEI0LTREOEQtOEU0Mi1CQkQwNkY2MDFEMkEiLCJmYXRHIjo5LCJjYWxvcmllcyI6MjEzfV0sInNvdXJjZSI6Im1hbnVhbCIsInR5cGUiOiJsdW5jaCIsImlkIjoic3ludGhldGljLW5ldy1yZWNvdmVyZWQtbWVhbCJ9XQ==",
+    "profile.json": "eyJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwiaXNTdWJzY3JpYmVkIjpmYWxzZSwibmFtZSI6IiIsIndha2VHb2FsIjp7Im1pbnV0ZSI6MCwiaG91ciI6N30sIm9uYm9hcmRpbmdEb25lIjpmYWxzZSwic2xlZXBOZWVkQ29uZmlkZW5jZSI6MC4zLCJzbGVlcE5lZWQiOjI5NDAwfQ==",
+    "today.json": "ewogICJhY3RpdmVDYWxvcmllcyIgOiAwLAogICJkYXRlIiA6ICIyMDI2LTExLTAyVDIzOjAwOjAwWiIsCiAgImV4ZXJjaXNlTWluIiA6IDAsCiAgInJlc3RpbmdDYWxvcmllcyIgOiAwLAogICJzdGFuZEhvdXJzIiA6IDAsCiAgInN0ZXBzIiA6IDAsCiAgIndhdGVyTUwiIDogMAp9",
+    "water.json": "W3sibWwiOjEwMCwiZGF0ZSI6IjIwMjYtMTEtMDNUMTM6MjQ6MTdaIiwiaWQiOiJzeW50aGV0aWMtcmV0YWluZWQtd2F0ZXIifSx7Im1sIjoxMzcsImRhdGUiOiIyMDI2LTExLTAzVDEzOjI0OjE4WiIsImlkIjoiQUI0M0I2NkMtQzIwRi00RTQxLTg1MEItMjIxMzdDM0EwMjQ2In1d",
+    "workouts.json": "WwogIHsKICAgICJhY3RpdmVDYWxvcmllcyIgOiAyMCwKICAgICJkdXJhdGlvbiIgOiA2MDAsCiAgICAiZW5lcmd5S25vd24iIDogdHJ1ZSwKICAgICJpZCIgOiAic3ludGhldGljLXJldGFpbmVkLXdvcmtvdXQiLAogICAgImtpbmQiIDogIndhbGsiLAogICAgInNvdXJjZSIgOiAibWFudWFsIiwKICAgICJzdGFydCIgOiAiMjAyNi0xMS0wM1QxMzoyNDoxN1oiLAogICAgInRpdGxlIiA6ICJTeW50aGV0aWMiCiAgfQpd"
+  },
+  "scope": "Actual signed-simulator HealthStore/LocalStore rejection and checked reload with real damaged/non-regular files, host readback barrier, controlled external adapter. Not HealthKit, UI/critic, locked-device or complete Batch43 acceptance.",
+  "status": "Saved-data checks passed",
+  "trace": [
+    "save:water",
+    "save:calories",
+    "save:protein",
+    "save:carbs",
+    "save:fat",
+    "save:fiber"
+  ]
+}

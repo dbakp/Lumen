@@ -1,0 +1,58 @@
+{
+  "status": "122file safety3/native+host pass; presentation defect3: denied read reported as save and exposes internal selected-backup/owner folder. Baseline retained before production repair, no message/design/full acceptance.",
+  "source": "durable-source-r122.json",
+  "appSource": "durable-source-r117.json",
+  "pureSource": "local-domain-pure-source-r66.json",
+  "contract": "health-import-denied-r1-contract.json",
+  "build": "health-import-denied-native-build-r1.json",
+  "driverArchive": "health-import-denied-driver-r1.py.gz",
+  "cases": [
+    {
+      "format": "legacy",
+      "hostAudit": "health-import-denied-legacy-r1-host-audit.json",
+      "summary": "health-import-denied-legacy-r1-summary.json",
+      "images": "health-import-denied-legacy-r1-images.json",
+      "readbacks": "health-import-denied-legacy-r1-readbacks.json",
+      "observations": "health-import-denied-legacy-r1-observations.json",
+      "nativeAndHostExit": 0,
+      "nativePassed": 1,
+      "currentFilesByteExact": 12,
+      "previousFilesByteExact": 10,
+      "OSOpenErrno": 13,
+      "presentationDefect": "Couldn\u2019t open backup\nYou don\u2019t have permission to save the file \u201cselected-backup\u201d in the folder \u201cLumenBackupWork-v1-78398-5AF797FE-33A5-4B5E-A94C-DD7E13D76577\u201d."
+    },
+    {
+      "format": "encrypted",
+      "hostAudit": "health-import-denied-encrypted-r1-host-audit.json",
+      "summary": "health-import-denied-encrypted-r1-summary.json",
+      "images": "health-import-denied-encrypted-r1-images.json",
+      "readbacks": "health-import-denied-encrypted-r1-readbacks.json",
+      "observations": "health-import-denied-encrypted-r1-observations.json",
+      "nativeAndHostExit": 0,
+      "nativePassed": 1,
+      "currentFilesByteExact": 12,
+      "previousFilesByteExact": 10,
+      "OSOpenErrno": 13,
+      "presentationDefect": "Couldn\u2019t open backup\nYou don\u2019t have permission to save the file \u201cselected-backup\u201d in the folder \u201cLumenBackupWork-v1-82511-E02475A5-0EA8-4900-B7A4-37D7B90DF85A\u201d."
+    },
+    {
+      "format": "readable",
+      "hostAudit": "health-import-denied-readable-r1-host-audit.json",
+      "summary": "health-import-denied-readable-r1-summary.json",
+      "images": "health-import-denied-readable-r1-images.json",
+      "readbacks": "health-import-denied-readable-r1-readbacks.json",
+      "observations": "health-import-denied-readable-r1-observations.json",
+      "nativeAndHostExit": 0,
+      "nativePassed": 1,
+      "currentFilesByteExact": 12,
+      "previousFilesByteExact": 10,
+      "OSOpenErrno": 13,
+      "presentationDefect": "Couldn't read export\nYou don\u2019t have permission to save the file \u201cselected-backup\u201d in the folder \u201cLumenBackupWork-v1-87113-CED81739-3052-4AEE-B9BE-AA281365521F\u201d."
+    }
+  ],
+  "originalPNG": 24,
+  "individuallyOpenedPNG": 9,
+  "nativeJSONReadbacksRead": 3,
+  "sameFaultForRepair": "R1exact archived driver, same healthy3inputs, actual copy control/read/write descriptors, verified disposable target chmod600to000 and host EACCES13, no provider mutation. Retest123must retain all original file-safety requirements plus plain read-error text/no internal names.",
+  "repairPending": true
+}

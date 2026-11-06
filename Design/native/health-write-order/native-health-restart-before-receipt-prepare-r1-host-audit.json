@@ -1,0 +1,39 @@
+{
+  "status": "passed",
+  "phase": "prepare",
+  "scenario": "before-receipt",
+  "source": "durable-source-r8.json",
+  "sourceInputs": 225,
+  "nativeBuild": "durable-native-build-r7.json",
+  "nativeChecks": 11,
+  "pid": 53251,
+  "preparedPID": 53251,
+  "nonce": "18C494D3-A666-4F20-B52C-C2D7002B5041",
+  "hostMatchedFiles": 5,
+  "sourceOwnedComponentIdentities": 7,
+  "installedBinarySHA256": "925b8692462fe759f88e310d0d8a8a957906fb4ff4cd09c6be9b381ca403cad7",
+  "reportSHA256": "846eb77c2aaefb24fab978d0d9c654fde0bcee97d290eb843b3fe54c0c1fbbd1",
+  "files": {
+    "goals.json": {
+      "bytes": 180,
+      "sha256": "cc010b54098b4f38cf2e1470474331dc39d1d2e7a78dc68c8dfff5f7d46b4d8d"
+    },
+    "health-write-intent.json": {
+      "bytes": 1467,
+      "sha256": "44030bc2dcfdabe8efc137dea55a9e51c500ea3edd9b4edb6b318aa2515a898b"
+    },
+    "meals.json": {
+      "bytes": 309,
+      "sha256": "cf3b12c85d4220083ffb35c07a04d8b6ed54ca2c71274c8fbbeb0b2c465c4db6"
+    },
+    "today.json": {
+      "bytes": 1497,
+      "sha256": "f35699803de2349034059533881d39c585135cd9846e9b0050289194b45be84d"
+    },
+    "water.json": {
+      "bytes": 86,
+      "sha256": "e55d83c83b432e46c5c3ae54aaaffa2995d522c596987df3cfd9f263d3a0fc21"
+    }
+  },
+  "scope": "Actual source/binary plus host reads of all five native files between or after app processes; native real-HealthKit observations and checked receipts. No direct host Health database query, OS power loss, in-flight daemon completion, physical-device or background/locked proof."
+}

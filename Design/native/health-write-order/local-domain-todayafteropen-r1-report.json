@@ -1,0 +1,163 @@
+{
+  "checkpoint": {
+    "afterOpen": true,
+    "checks": [
+      {
+        "name": "shared startup completes before synthetic domain setup",
+        "passed": true
+      },
+      {
+        "name": "actual test store completes checked conversation startup",
+        "passed": true
+      },
+      {
+        "name": "actual affected-domain mutation rejects damaged or unreadable source",
+        "passed": true
+      },
+      {
+        "name": "native model exposes unavailable domain and saved-data issue",
+        "passed": true
+      },
+      {
+        "name": "backup cannot export an unavailable domain as empty history",
+        "passed": true
+      },
+      {
+        "name": "assistant declines history/target-based planning before model or provider work",
+        "passed": true
+      },
+      {
+        "name": "failed source cannot produce default-goal coaching",
+        "passed": true
+      },
+      {
+        "name": "all rejected actions preserve exact domain/journal/profile files and original live values",
+        "passed": true
+      },
+      {
+        "name": "rejected actions dispatch no new external Health operation",
+        "passed": true
+      }
+    ],
+    "domain": "today",
+    "files": {
+      "goals.json": "ewogICJhY3RpdmVDYWxHb2FsIiA6IDYwMCwKICAiYWN0aXZpdHlMZXZlbCIgOiAibW9kZXJhdGUiLAogICJhZ2UiIDogMzAsCiAgImV4ZXJjaXNlR29hbE1pbiIgOiAzMCwKICAiZ29hbCIgOiAibWFpbnRhaW4iLAogICJoZWlnaHRDbSIgOiAxNzgsCiAgInNleCIgOiAidW5zcGVjaWZpZWQiLAogICJzdGFuZEdvYWwiIDogMTIsCiAgInN0ZXBHb2FsIiA6IDEwMDAwLAogICJ3ZWlnaHRLZyIgOiA3MAp9",
+      "health-write-intent.json": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiJFNDVDMTIzQS1EODlELTRCQ0YtOTZGMy1BRDUzRDUzOTNBNDMiLCJvd25lciI6IjAxNjk1REI4LTQwMjEtNDFBNC1BQkJGLTYzRTAzREI1MkRERCIsInZlcnNpb24iOjF9",
+      "meals.json": "WwogIHsKICAgICJkYXRlIiA6ICIyMDI2LTExLTAzVDEzOjAxOjA0WiIsCiAgICAiaWQiIDogInN5bnRoZXRpYy1yZXRhaW5lZC1tZWFsIiwKICAgICJpdGVtcyIgOiBbCiAgICAgIHsKICAgICAgICAiY2Fsb3JpZXMiIDogMTAwLAogICAgICAgICJjYXJic0ciIDogMjAsCiAgICAgICAgImNvbmZpZGVuY2UiIDogMC44LAogICAgICAgICJmYXRHIiA6IDMsCiAgICAgICAgImZpYmVyRyIgOiAyLAogICAgICAgICJncmFtcyIgOiAxMDAsCiAgICAgICAgImlkIiA6ICIxRjcxNUNEMS05RTgxLTRFRDEtQkNDQi1FM0RENjM2ODYwNjciLAogICAgICAgICJuYW1lIiA6ICJTeW50aGV0aWMiLAogICAgICAgICJwcm90ZWluRyIgOiAxMAogICAgICB9CiAgICBdLAogICAgInNvdXJjZSIgOiAibWFudWFsIiwKICAgICJ0eXBlIiA6ICJsdW5jaCIKICB9Cl0=",
+      "profile.json": "eyJ3YWtlR29hbCI6eyJtaW51dGUiOjAsImhvdXIiOjd9LCJzbGVlcE5lZWQiOjI5NDAwLCJpc1N1YnNjcmliZWQiOmZhbHNlLCJuYW1lIjoiIiwic2xlZXBOZWVkQ29uZmlkZW5jZSI6MC4zLCJvbmJvYXJkaW5nRG9uZSI6ZmFsc2UsImNocm9ub3R5cGUiOiJpbnRlcm1lZGlhdGUifQ==",
+      "today.json": "eyJzeW50aGV0aWNEYW1hZ2VkSGlzdG9yeSI6IFs=",
+      "water.json": "WwogIHsKICAgICJkYXRlIiA6ICIyMDI2LTExLTAzVDEzOjAxOjA0WiIsCiAgICAiaWQiIDogInN5bnRoZXRpYy1yZXRhaW5lZC13YXRlciIsCiAgICAibWwiIDogMTAwCiAgfQpd",
+      "workouts.json": "WwogIHsKICAgICJhY3RpdmVDYWxvcmllcyIgOiAyMCwKICAgICJkdXJhdGlvbiIgOiA2MDAsCiAgICAiZW5lcmd5S25vd24iIDogdHJ1ZSwKICAgICJpZCIgOiAic3ludGhldGljLXJldGFpbmVkLXdvcmtvdXQiLAogICAgImtpbmQiIDogIndhbGsiLAogICAgInNvdXJjZSIgOiAibWFudWFsIiwKICAgICJzdGFydCIgOiAiMjAyNi0xMS0wM1QxMzowMTowNFoiLAogICAgInRpdGxlIiA6ICJTeW50aGV0aWMiCiAgfQpd"
+    },
+    "issue": "Saved daily readings couldn't be opened. Changes to this data are paused. Retry opening saved data; the saved files haven't been replaced.",
+    "liveMealIDs": [
+      "synthetic-retained-meal"
+    ],
+    "liveWaterIDs": [
+      "synthetic-retained-water"
+    ],
+    "liveWeight": 70,
+    "liveWorkoutIDs": [
+      "synthetic-retained-workout"
+    ],
+    "missing": [],
+    "nonce": "D8E69441-0728-44AF-A2FF-7247C396283D",
+    "trace": []
+  },
+  "checks": [
+    {
+      "name": "shared startup completes before synthetic domain setup",
+      "passed": true
+    },
+    {
+      "name": "actual test store completes checked conversation startup",
+      "passed": true
+    },
+    {
+      "name": "actual affected-domain mutation rejects damaged or unreadable source",
+      "passed": true
+    },
+    {
+      "name": "native model exposes unavailable domain and saved-data issue",
+      "passed": true
+    },
+    {
+      "name": "backup cannot export an unavailable domain as empty history",
+      "passed": true
+    },
+    {
+      "name": "assistant declines history/target-based planning before model or provider work",
+      "passed": true
+    },
+    {
+      "name": "failed source cannot produce default-goal coaching",
+      "passed": true
+    },
+    {
+      "name": "all rejected actions preserve exact domain/journal/profile files and original live values",
+      "passed": true
+    },
+    {
+      "name": "rejected actions dispatch no new external Health operation",
+      "passed": true
+    },
+    {
+      "name": "independent host matched all rejected current files before recovery was allowed",
+      "passed": true
+    },
+    {
+      "name": "unrelated healthy domain commits while damaged source remains paused",
+      "passed": true
+    },
+    {
+      "name": "healthy replacement file alone cannot bless the old unavailable live model",
+      "passed": true
+    },
+    {
+      "name": "explicit checked retry installs recovered data and clears its issue",
+      "passed": true
+    },
+    {
+      "name": "checked retry retains original healthy histories and original target weight",
+      "passed": true
+    },
+    {
+      "name": "new mutation after checked recovery completes its durable external work",
+      "passed": true
+    },
+    {
+      "name": "all domain source boundaries match after healthy recovery and mutation",
+      "passed": true
+    }
+  ],
+  "external": {
+    "com.dbakp.lumen.health.v1.01695DB8-4021-41A4-ABBF-63E03DB52DDD.00C7CFCA-7DF8-4457-A1DA-3EDD476D0DA5.weight": 76.25,
+    "com.dbakp.lumen.health.v1.01695DB8-4021-41A4-ABBF-63E03DB52DDD.67EDA5EB-F6B5-43D4-B273-5A69E190EDB9.water": 137
+  },
+  "liveMealIDs": [
+    "synthetic-retained-meal"
+  ],
+  "liveWaterIDs": [
+    "synthetic-retained-water",
+    "0B7E7B98-853E-4EA0-9DB2-B59591116062"
+  ],
+  "liveWeight": 76.25,
+  "liveWorkoutIDs": [
+    "synthetic-retained-workout"
+  ],
+  "persistedFiles": {
+    "goals.json": "eyJhZ2UiOjMwLCJzdGFuZEdvYWwiOjEyLCJleGVyY2lzZUdvYWxNaW4iOjMwLCJzZXgiOiJ1bnNwZWNpZmllZCIsIndlaWdodEtnIjo3Ni4yNSwiZ29hbCI6Im1haW50YWluIiwic3RlcEdvYWwiOjEwMDAwLCJhY3Rpdml0eUxldmVsIjoibW9kZXJhdGUiLCJhY3RpdmVDYWxHb2FsIjo2MDAsImhlaWdodENtIjoxNzh9",
+    "health-write-intent.json": "eyJldmVudHMiOlt7ImFja25vd2xlZGdlZCI6WyJ3YXRlciJdLCJhY3Rpb24iOiJzYXZlIiwiY29tcG9uZW50cyI6W3siZGF0ZSI6ODE1NDAzNjY1LjIzMjQxNSwibWV0cmljIjoid2F0ZXIiLCJ2YWx1ZSI6MTM3fV0sImRvbWFpbiI6IndhdGVyIiwiZ2VuZXJhdGlvbiI6IkZDNTk0MUVCLUQ3M0UtNEJBNi05ODMxLUU1ODNGNzkyMzEyMiIsImlkIjoiNjdFREE1RUItRjZCNS00M0Q0LUIyNzMtNUE2OUUxOTBFREI5IiwiaWRlbnRpdHkiOiJzeW5jIiwibGlmZWN5Y2xlIjoiRTQ1QzEyM0EtRDg5RC00QkNGLTk2RjMtQUQ1M0Q1MzkzQTQzIiwibG9jYWxJRCI6IjBCN0U3Qjk4LTg1M0UtNEVBMC05REIyLUI1OTU5MTExNjA2MiIsInJlcXVlc3RlZEF0Ijo4MTU0MDM2NjUuMjU0NTUyfSx7ImFja25vd2xlZGdlZCI6WyJ3ZWlnaHQiXSwiYWN0aW9uIjoic2F2ZSIsImNvbXBvbmVudHMiOlt7ImRhdGUiOjgxNTQwMzY2NS4zNzMzNiwibWV0cmljIjoid2VpZ2h0IiwidmFsdWUiOjc2LjI1fV0sImRvbWFpbiI6IndlaWdodCIsImdlbmVyYXRpb24iOiIwQjE5RDNFNC1DNTRDLTRFNjUtODVDRi03MkE2QzVDRUM1NTQiLCJpZCI6IjAwQzdDRkNBLTdERjgtNDQ1Ny1BMURBLTNFREQ0NzZEMERBNSIsImlkZW50aXR5Ijoic3luYyIsImxpZmVjeWNsZSI6IkU0NUMxMjNBLUQ4OUQtNEJDRi05NkYzLUFENTNENTM5M0E0MyIsImxvY2FsSUQiOiJFQzQ4REFBMC1FOENDLTREMTQtOEQ4Qy1ERUY0OTU4RjE5RTEiLCJyZXF1ZXN0ZWRBdCI6ODE1NDAzNjY1LjM3NzQ1NX1dLCJsaWZlY3ljbGUiOiJFNDVDMTIzQS1EODlELTRCQ0YtOTZGMy1BRDUzRDUzOTNBNDMiLCJvd25lciI6IjAxNjk1REI4LTQwMjEtNDFBNC1BQkJGLTYzRTAzREI1MkRERCIsInZlcnNpb24iOjF9",
+    "meals.json": "WwogIHsKICAgICJkYXRlIiA6ICIyMDI2LTExLTAzVDEzOjAxOjA0WiIsCiAgICAiaWQiIDogInN5bnRoZXRpYy1yZXRhaW5lZC1tZWFsIiwKICAgICJpdGVtcyIgOiBbCiAgICAgIHsKICAgICAgICAiY2Fsb3JpZXMiIDogMTAwLAogICAgICAgICJjYXJic0ciIDogMjAsCiAgICAgICAgImNvbmZpZGVuY2UiIDogMC44LAogICAgICAgICJmYXRHIiA6IDMsCiAgICAgICAgImZpYmVyRyIgOiAyLAogICAgICAgICJncmFtcyIgOiAxMDAsCiAgICAgICAgImlkIiA6ICIxRjcxNUNEMS05RTgxLTRFRDEtQkNDQi1FM0RENjM2ODYwNjciLAogICAgICAgICJuYW1lIiA6ICJTeW50aGV0aWMiLAogICAgICAgICJwcm90ZWluRyIgOiAxMAogICAgICB9CiAgICBdLAogICAgInNvdXJjZSIgOiAibWFudWFsIiwKICAgICJ0eXBlIiA6ICJsdW5jaCIKICB9Cl0=",
+    "profile.json": "eyJ3YWtlR29hbCI6eyJtaW51dGUiOjAsImhvdXIiOjd9LCJzbGVlcE5lZWQiOjI5NDAwLCJpc1N1YnNjcmliZWQiOmZhbHNlLCJuYW1lIjoiIiwic2xlZXBOZWVkQ29uZmlkZW5jZSI6MC4zLCJvbmJvYXJkaW5nRG9uZSI6ZmFsc2UsImNocm9ub3R5cGUiOiJpbnRlcm1lZGlhdGUifQ==",
+    "today.json": "eyJzdGFuZEhvdXJzIjowLCJyZXN0aW5nQ2Fsb3JpZXMiOjAsImV4ZXJjaXNlTWluIjowLCJyZWFkaW5ncyI6eyJocnYiOnsiY29tcG9uZW50cyI6W10sIm92ZXJsYXBLZXB0U2VwYXJhdGUiOmZhbHNlfSwic3BvMiI6eyJjb21wb25lbnRzIjpbXSwib3ZlcmxhcEtlcHRTZXBhcmF0ZSI6ZmFsc2V9LCJjYWxvcmllcyI6eyJjb21wb25lbnRzIjpbXSwib3ZlcmxhcEtlcHRTZXBhcmF0ZSI6ZmFsc2V9LCJyZXNwaXJhdG9yeVJhdGUiOnsiY29tcG9uZW50cyI6W10sIm92ZXJsYXBLZXB0U2VwYXJhdGUiOmZhbHNlfSwid2VpZ2h0Ijp7ImNvbXBvbmVudHMiOlt7ImlzRXN0aW1hdGUiOmZhbHNlLCJ2YWx1ZSI6NzYuMjUsImVuZCI6IjIwMjYtMTEtMDNUMTM6MDE6MDVaIiwibGFzdFNhbXBsZUF0IjoiMjAyNi0xMS0wM1QxMzowMTowNVoiLCJhZ2dyZWdhdGlvbiI6ImxhdGVzdCIsIm9yaWdpbiI6ImxvY2FsTG9nIiwic291cmNlIjoiTHVtZW4gd2VpZ2h0IGxvZyIsInN0YXJ0IjoiMjAyNi0xMS0wM1QxMzowMTowNVoifV0sIm92ZXJsYXBLZXB0U2VwYXJhdGUiOmZhbHNlfSwiZXhlcmNpc2UiOnsiY29tcG9uZW50cyI6W10sIm92ZXJsYXBLZXB0U2VwYXJhdGUiOmZhbHNlfSwic2xlZXAiOnsiY29tcG9uZW50cyI6W10sIm92ZXJsYXBLZXB0U2VwYXJhdGUiOmZhbHNlfSwiYWN0aXZlRW5lcmd5Ijp7ImNvbXBvbmVudHMiOltdLCJvdmVybGFwS2VwdFNlcGFyYXRlIjpmYWxzZX0sInZvMm1heCI6eyJjb21wb25lbnRzIjpbXSwib3ZlcmxhcEtlcHRTZXBhcmF0ZSI6ZmFsc2V9LCJzdGFuZCI6eyJjb21wb25lbnRzIjpbXSwib3ZlcmxhcEtlcHRTZXBhcmF0ZSI6ZmFsc2V9LCJyZXN0aW5nRW5lcmd5Ijp7ImNvbXBvbmVudHMiOltdLCJvdmVybGFwS2VwdFNlcGFyYXRlIjpmYWxzZX0sImhlYXJ0UmF0ZSI6eyJjb21wb25lbnRzIjpbXSwib3ZlcmxhcEtlcHRTZXBhcmF0ZSI6ZmFsc2V9LCJzdGVwcyI6eyJjb21wb25lbnRzIjpbXSwib3ZlcmxhcEtlcHRTZXBhcmF0ZSI6ZmFsc2V9LCJwcm90ZWluIjp7ImNvbXBvbmVudHMiOltdLCJvdmVybGFwS2VwdFNlcGFyYXRlIjpmYWxzZX0sImJtaSI6eyJjb21wb25lbnRzIjpbXSwib3ZlcmxhcEtlcHRTZXBhcmF0ZSI6ZmFsc2V9LCJ3YXRlciI6eyJjb21wb25lbnRzIjpbXSwib3ZlcmxhcEtlcHRTZXBhcmF0ZSI6ZmFsc2V9LCJyZXN0aW5nSFIiOnsiY29tcG9uZW50cyI6W10sIm92ZXJsYXBLZXB0U2VwYXJhdGUiOmZhbHNlfSwiZmF0Ijp7ImNvbXBvbmVudHMiOltdLCJvdmVybGFwS2VwdFNlcGFyYXRlIjpmYWxzZX0sImNhcmJzIjp7ImNvbXBvbmVudHMiOltdLCJvdmVybGFwS2VwdFNlcGFyYXRlIjpmYWxzZX0sImJvZHlGYXQiOnsiY29tcG9uZW50cyI6W10sIm92ZXJsYXBLZXB0U2VwYXJhdGUiOmZhbHNlfX0sImRhdGUiOiIyMDI2LTExLTAyVDIzOjAwOjAwWiIsImFjdGl2ZUNhbG9yaWVzIjowLCJzdGVwcyI6MCwid2VpZ2h0S2ciOjc2LjI1LCJyZWNvcmRlZFRvdGFsS2V5cyI6W10sIndhdGVyTUwiOjB9",
+    "water.json": "W3siZGF0ZSI6IjIwMjYtMTEtMDNUMTM6MDE6MDRaIiwiaWQiOiJzeW50aGV0aWMtcmV0YWluZWQtd2F0ZXIiLCJtbCI6MTAwfSx7ImRhdGUiOiIyMDI2LTExLTAzVDEzOjAxOjA1WiIsImlkIjoiMEI3RTdCOTgtODUzRS00RUEwLTlEQjItQjU5NTkxMTE2MDYyIiwibWwiOjEzN31d",
+    "workouts.json": "WwogIHsKICAgICJhY3RpdmVDYWxvcmllcyIgOiAyMCwKICAgICJkdXJhdGlvbiIgOiA2MDAsCiAgICAiZW5lcmd5S25vd24iIDogdHJ1ZSwKICAgICJpZCIgOiAic3ludGhldGljLXJldGFpbmVkLXdvcmtvdXQiLAogICAgImtpbmQiIDogIndhbGsiLAogICAgInNvdXJjZSIgOiAibWFudWFsIiwKICAgICJzdGFydCIgOiAiMjAyNi0xMS0wM1QxMzowMTowNFoiLAogICAgInRpdGxlIiA6ICJTeW50aGV0aWMiCiAgfQpd"
+  },
+  "scope": "Actual signed-simulator HealthStore/LocalStore rejection and checked reload with real damaged/non-regular files, host readback barrier, controlled external adapter. Not HealthKit, UI/critic, locked-device or complete Batch43 acceptance.",
+  "status": "Saved-data checks passed",
+  "trace": [
+    "save:water",
+    "save:weight"
+  ]
+}

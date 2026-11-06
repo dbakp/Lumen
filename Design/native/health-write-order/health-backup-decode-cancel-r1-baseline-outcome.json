@@ -1,0 +1,23 @@
+{
+  "status": "FAILED baseline preserved:3legacy cancelled-worker cases do not report cancellation;5readable/healthy-parent/retry controls pass",
+  "source": "durable-source-r99.json",
+  "pureSource": "local-domain-pure-source-r57.json",
+  "buildExitCode": 0,
+  "baselineExitCode": 1,
+  "report": "health-backup-decode-cancel-r1-baseline-report.json",
+  "executableSHA256": "57cbe71b0fb94eea5260ed9ca8976d5ae93055edc7d5e1e2d302aff94233cdbc",
+  "logs": [
+    {
+      "retained": "HealthBackupDecodeBaselineBuildR1.log.gz",
+      "rawBytes": 833,
+      "rawSHA256": "8ec9acf743ed48e3e17d2539d3ef1e3721a680fc0e9b43fffce80e272bcbd033"
+    },
+    {
+      "retained": "HealthBackupDecodeBaselineR1.log.gz",
+      "rawBytes": 417,
+      "rawSHA256": "3aef25f9be3702f0a6e47167e8d5b07d927003dcb2c90f53ee4e84371fafed15"
+    }
+  ],
+  "scope": "Actual precancelled Swift worker decoder calls and fresh healthy retries. No mid-decoder interruption, actual service/native read, capacity or full-contract acceptance.",
+  "next": "Repair actual legacy decoder shared/task cancellation and bounded service payload reads; rerun unchanged8baseline cases and additional shared-control/file/compatibility/focused/full/native checks. All full parent contracts/goal remain open."
+}

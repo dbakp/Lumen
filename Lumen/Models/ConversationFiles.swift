@@ -19,9 +19,32 @@ enum ConversationFiles {
     }
 
     static func prepareRestore(_ files: [String: Data], photoFiles: [String: URL], into directory: URL,
-                               control: BackupOperationControl) throws -> BackupFileTransaction {
+                               control: BackupOperationControl, photoDigests: [String: String] = [:]) throws -> BackupFileTransaction {
         try protectPreviousCopy(in: directory)
-        return try BackupFileTransaction.prepare(files, photoFiles: photoFiles, into: directory, control: control)
+        return try BackupFileTransaction.prepare(files, photoFiles: photoFiles, into: directory, control: control, expectedPhotoDigests: photoDigests)
+    }
+
+    static func prepareHealthRecovery(_ files: [String: Data], photoFiles: [String: URL],
+                                      domains: Set<HealthLocalFiles.Domain>, photoDigests: [String: String],
+                                      into directory: URL, control: BackupOperationControl) throws -> BackupFileTransaction {
+        // Targeted recovery must keep the same conversation-copy protection as
+        // other linked changes before generic preparation retires .previous.
+        try protectPreviousCopy(in: directory)
+        return try BackupFileTransaction.prepare(files, photoFiles: photoFiles, into: directory, control: control,
+                                                  preserveByLink: true, recoveringHealthDomains: domains,
+                                                  expectedPhotoDigests: photoDigests)
+    }
+
+    static func prepareReplacement(_ files: [String: Data], into directory: URL) throws -> BackupFileTransaction {
+        try protectPreviousCopy(in: directory)
+        return try BackupFileTransaction.prepare(files, photoFiles: [:], into: directory, preserveExisting: false)
+    }
+
+    static func prepareDailyCache(_ files: [String: Data], into directory: URL,
+                                  control: BackupOperationControl) throws -> BackupFileTransaction {
+        try protectPreviousCopy(in: directory)
+        return try BackupFileTransaction.prepare(files, photoFiles: [:], into: directory, control: control,
+                                                  preserveByLink: true, replacingDailyCache: true)
     }
 
     private static func protectPreviousCopy(in directory: URL) throws {

@@ -12,29 +12,41 @@ private final class ReadableTransferSession: ObservableObject {
     @Published var cancellationRequested = false
     @Published var message: String?
     @Published var error: String?
+    @Published var importReadFailure: String?
     @Published var filename = ""
     @Published var recovered = false
+    @Published private(set) var recoveryReview: BackupRecoveryReviewSession?
+    private var selectedSource: BackupSelectedSourceSession?
     private var work: Task<Void, Never>?
     private var closed = false
     var busy: Bool { control != nil }
     func open() { closed = false }
     func close() {
-        closed = true; cancel()
+        closed = true; importReadFailure = nil; cancel()
         if !busy { releaseFiles() }
     }
-    private func releaseFiles() { shared?.cleanup(); shared = nil; conversion = nil; selection = [] }
+    private func releaseFiles() {
+        recoveryReview?.close(); recoveryReview = nil
+        selectedSource?.close(); selectedSource = nil
+        shared?.cleanup(); shared = nil; conversion = nil; selection = []
+    }
     func cancel() { guard let control else { return }; cancellationRequested = true; control.cancel(); work?.cancel() }
     private func begin(_ action: Action) -> BackupOperationControl? {
         guard !busy, !closed else { return nil }
         let value = BackupOperationControl(); self.action = action; control = value
-        message = nil; error = nil; cancellationRequested = false; recovered = false
+        message = nil; error = nil; importReadFailure = nil; cancellationRequested = false; recovered = false
         return value
     }
     private func finish(_ failure: Error? = nil) {
         control = nil; work = nil
         if closed { releaseFiles(); return }
         if failure is CancellationError { message = "Cancelled. Your saved data hasn't changed." }
-        else if let failure { error = failure.localizedDescription }
+        else if let failure {
+            error = failure.localizedDescription
+            if action == .reading, let backupFailure = failure as? BackupError, case .fileAccess = backupFailure {
+                importReadFailure = failure.localizedDescription
+            }
+        }
     }
     func create(sleep: SleepStore, health: HealthStore) {
         guard let control = begin(.exporting) else { return }
@@ -48,29 +60,35 @@ private final class ReadableTransferSession: ObservableObject {
     }
     func read(_ url: URL) {
         guard let control = begin(.reading) else { return }
-        conversion = nil; selection = []; filename = url.lastPathComponent
+        #if DEBUG && targetEnvironment(simulator)
+        HealthReadUIFixture.register(control, scope: "selected-import")
+        #endif
+        recoveryReview?.close(); recoveryReview = nil
+        conversion = nil; selection = []; selectedSource?.close(); selectedSource = nil; filename = url.lastPathComponent
         work = Task {
             do {
                 let source = try await Task.detached(priority: .userInitiated) {
-                    try BackupService.selectReadable(url, control: control)
+                    BackupSelectedSourceSession(try BackupService.selectReadable(url, control: control))
                 }.value
                 do {
-                    let value = try await Task.detached(priority: .userInitiated) { try BackupService.convertReadable(source, control: control) }.value
-                    source.cleanup()
+                    let value = try await Task.detached(priority: .userInitiated) { try source.convertReadable(control: control) }.value
                     try control.checkCancellation()
                     guard !closed, !Task.isCancelled else { throw CancellationError() }
-                    conversion = value; selection = value.defaultSelection; finish()
-                } catch { source.cleanup(); throw error }
+                    selectedSource = source; conversion = value; selection = value.defaultSelection
+                    recoveryReview = try source.readableReview(value, control: control)
+                    finish()
+                } catch { source.close(); throw error }
             } catch { finish(error) }
         }
     }
     func restore(sleep: SleepStore, health: HealthStore) {
-        guard let conversion, !selection.isEmpty, let control = begin(.restoring) else { return }
+        guard let conversion, let source = selectedSource, !selection.isEmpty, let control = begin(.restoring) else { return }
         let selected = selection
         work = Task {
             do {
-                try await BackupService.restoreReadable(conversion, domains: selected, sleep: sleep, health: health, control: control)
-                self.conversion = nil; selection = []
+                try await source.restoreReadable(conversion, domains: selected, sleep: sleep, health: health, control: control)
+                self.conversion = nil; selection = []; selectedSource?.close(); selectedSource = nil
+                recoveryReview?.close(); recoveryReview = nil
                 if !closed { recovered = true; message = "Selected data is saved. Current matching records were kept." }
                 finish()
             } catch { finish(error) }
@@ -121,8 +139,10 @@ struct ReadableRecoveryView: View {
     @State private var choosing = false
     @State private var confirming = false
     @State private var reviewing: ReadableExport.Domain?
+    @State private var reviewingRecovery = false
     @Environment(\.dismiss) private var dismiss
     @Environment(\.dynamicTypeSize) private var typeSize
+    private var allHealthAvailable: Bool { HealthLocalFiles.Domain.allCases.allSatisfy { health.localHealthAvailable($0) } }
     var body: some View {
         ScrollViewReader { proxy in
         Form {
@@ -137,12 +157,30 @@ struct ReadableRecoveryView: View {
                 Section {
                     Text("Review before\nadding.").font(.largeTitle.bold()).fontWidth(.expanded)
                     Text("Bring back data from a readable Lumen export. Choose what to add before anything changes.").foregroundStyle(Theme.secondary)
+                    if let message = session.importReadFailure {
+                        Text(message).foregroundStyle(.primary)
+                            .accessibilityIdentifier("importReadFailureInstructions")
+                            .id("readableReadFailure")
+                    }
                     Button("Choose export", systemImage: "doc.badge.plus") { choosing = true }.accessibilityIdentifier("chooseReadableExport")
-                }.listRowBackground(Color.clear).disabled(session.busy || health.isSyncing)
+                }.listRowBackground(Color.clear).disabled(session.busy || health.isSyncing).id("readableChooseSection")
             }
             if health.isSyncing { Section { Text("Health is syncing. Try again shortly.").foregroundStyle(Theme.secondary) } }
             if let control = session.control { ReadableTransferProgress(control: control, exporting: false).id("progress") }
             if let value = session.conversion {
+                if !allHealthAvailable, session.recoveryReview != nil {
+                    Section {
+                        Text("Some current health data couldn't be opened. Recover it separately from adding records.")
+                        Button { reviewingRecovery = true } label: {
+                            HStack {
+                                Text("Review recovery options").foregroundStyle(Theme.text)
+                                Spacer()
+                                Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(.tertiary).accessibilityHidden(true)
+                            }
+                        }
+                            .accessibilityIdentifier("reviewReadableHealthRecovery")
+                    }
+                }
                 Section {
                     Text(verbatim: session.filename).font(.headline)
                     LabeledContent("Exported") { Text(value.exportedAt.formatted(date: .abbreviated, time: .shortened)).foregroundStyle(Theme.secondary) }
@@ -188,11 +226,17 @@ struct ReadableRecoveryView: View {
                     Text("Added Library documents start with assistant sharing off. Recovery doesn't write to Apple Health.").foregroundStyle(Theme.secondary)
                 } header: { Text("What to expect").foregroundStyle(Theme.secondary) }
                 Section {
-                    Button("Add selected data") { confirming = true }.fontWeight(.semibold).disabled(session.selection.isEmpty || session.busy || health.isSyncing).accessibilityIdentifier("recoverReadableData")
+                    Button("Add selected data") { confirming = true }.fontWeight(.semibold).disabled(session.selection.isEmpty || session.busy || health.isSyncing || !allHealthAvailable).accessibilityIdentifier("recoverReadableData")
                 }
             }
             if let message = session.message, !session.recovered { Section { Text(message).foregroundStyle(Theme.secondary).accessibilityIdentifier("readableStatus") }.id("status") }
         }.scrollContentBackground(.hidden).background(Theme.bg).navigationTitle("Recover export").navigationBarTitleDisplayMode(.inline)
+        .navigationDestination(isPresented: $reviewingRecovery) {
+            if let recoveryReview = session.recoveryReview { BackupFileRecoveryView(session: recoveryReview) }
+        }
+        #if DEBUG && targetEnvironment(simulator)
+        .overlay(alignment: .bottom) { HealthImportReadUIProbe() }
+        #endif
             .toolbar { if session.busy { ToolbarItem(placement: .topBarTrailing) { ReadableCancelButton(session: session) } } }
             .fileImporter(isPresented: $choosing, allowedContentTypes: [.json]) { result in
                 switch result {
@@ -202,12 +246,16 @@ struct ReadableRecoveryView: View {
             }
             .sheet(item: $reviewing) { domain in if let value = session.conversion { ReadableRecordsReview(conversion: value, domain: domain) } }
             .alert(session.action == .restoring ? "Couldn't recover data" : "Couldn't read export", isPresented: $showingError) { Button("OK", role: .cancel) { session.error = nil } } message: { Text(session.error ?? "") }
-            .onChange(of: session.error) { _, value in showingError = value != nil }
+            .onChange(of: session.error) { _, value in
+                showingError = value != nil
+                if value == nil, session.importReadFailure != nil { proxy.scrollTo("readableReadFailure", anchor: .top) }
+            }
             .alert("Add selected data?", isPresented: $confirming) {
                 Button("Add data") { session.restore(sleep: sleep, health: health) }
                 Button("Keep reviewing", role: .cancel) {}
             } message: { Text("The selected records will be added. Records already saved are kept. Selected settings replace their current values.") }
-            .onAppear { session.open() }.onDisappear { session.close() }
+            .onAppear { session.open() }.onDisappear { if !reviewingRecovery { session.close() } }
+            .onChange(of: reviewingRecovery) { _, active in if !active { session.close(); session.open() } }
             .task(id: scrollTarget) {
                 guard let target = scrollTarget else { return }
                 do { try await Task.sleep(for: .milliseconds(100)) } catch { return }
@@ -215,7 +263,7 @@ struct ReadableRecoveryView: View {
             }
         }
     }
-    private var scrollTarget: String? { session.busy ? "progress" : session.conversion != nil ? "review" : session.message != nil ? "status" : nil }
+    private var scrollTarget: String? { session.busy ? "progress" : session.importReadFailure != nil ? "readableReadFailure" : session.conversion != nil ? "review" : session.message != nil ? "status" : nil }
     @ViewBuilder private func selection(_ domain: ReadableExport.Domain, count: Int) -> some View {
         let binding = Binding(get: { session.selection.contains(domain) }, set: { if $0 { session.selection.insert(domain) } else { session.selection.remove(domain) } })
         if typeSize.isAccessibilitySize {

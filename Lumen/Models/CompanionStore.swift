@@ -124,7 +124,9 @@ public final class CompanionStore: ObservableObject {
         let next = documents.filter { $0.id != id }
         try LocalStore.saveChecked(next, as: "documents"); documents = next
     }
-    public func commit(_ preview: HealthImportPreview, filename: String) {
+    public func commit(_ preview: HealthImportPreview, filename: String) throws {
+        // Validate and commit workouts before publishing imported day metadata.
+        try HealthStore.shared.importWorkouts(preview.workouts, filename: filename)
         // Replace metric/day values rather than adding: repeated imports are idempotent.
         for day in preview.days {
             if let i = importedDays.firstIndex(where: { $0.date == day.date }) {
@@ -133,11 +135,13 @@ public final class CompanionStore: ObservableObject {
             } else { importedDays.append(day) }
         }
         importedDays.sort { $0.date < $1.date }
-        HealthStore.shared.importWorkouts(preview.workouts, filename: filename)
         imports.insert(ImportReceipt(filename: filename, days: preview.coveredDays.count, samples: preview.samples, skipped: preview.skipped, workouts: preview.workouts.count), at: 0)
         changed()
     }
-    public func clearImports() { importedDays = []; imports = []; HealthStore.shared.clearImportedWorkouts(); changed() }
+    public func clearImports() throws {
+        try HealthStore.shared.clearImportedWorkouts()
+        importedDays = []; imports = []; changed()
+    }
     func reloadAfterRestore() {
         cancelReminderEnable(); personalContextRevision = UUID()
         symptoms = LocalStore.load([SymptomEntry].self, from: "symptoms") ?? symptoms

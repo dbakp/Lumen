@@ -1,0 +1,147 @@
+{
+  "status": "source-only current integration audit; all findings remain incomplete/unexecuted in this scope",
+  "source": "durable-source-r51.json",
+  "findings": [
+    {
+      "requirement": "Actual encrypted/readable backup recovery while local health is unavailable",
+      "status": "incomplete; source path contradicts availability",
+      "evidence": [
+        {
+          "file": "Lumen/Views/BackupView.swift",
+          "sourceSHA256": "629bf49bf460739725c0ee78a2384a67b7eec25563604fd86a1102a5f6767a9c",
+          "matchedLines": [
+            219
+          ],
+          "literal": "conflictCount = value.snapshot.conflicts(with: try BackupService.snapshot"
+        },
+        {
+          "file": "Lumen/Services/BackupService.swift",
+          "sourceSHA256": "46d12330c4c9b7e329877772f21b1878bbfc82b0fe7732389707342eaf35e368",
+          "matchedLines": [
+            62
+          ],
+          "literal": "try health.requireAllLocalHealthData()"
+        },
+        {
+          "file": "Lumen/Services/BackupService.swift",
+          "sourceSHA256": "46d12330c4c9b7e329877772f21b1878bbfc82b0fe7732389707342eaf35e368",
+          "matchedLines": [
+            191
+          ],
+          "literal": "let local = try snapshot(sleep: sleep, health: health)"
+        }
+      ],
+      "finding": "Normal preview calls snapshot for conflicts before setting preview. Normal restore also snapshots before merging. These checked snapshots require all local health domains. The current recovery view offers retained local copies only. Pure checked snapshot-to-payload controls do not establish actual product backup selection/review/replacement.",
+      "requiredEvidence": "Real readable and encrypted selected files, an unavailable local domain, native review with initially-off domain choices, exact original selected file SHA/bytes/provenance, unchanged healthy-domain records, retained damaged originals, cancel/retry/relaunch and installed receipt/live-values readback. Keep ordinary healthy merge behavior."
+    },
+    {
+      "requirement": "Selected-file identity and workspace ownership across backup review/navigation/cancellation",
+      "status": "incomplete; source-only audit",
+      "evidence": [
+        {
+          "file": "Lumen/Services/BackupService.swift",
+          "sourceSHA256": "46d12330c4c9b7e329877772f21b1878bbfc82b0fe7732389707342eaf35e368",
+          "matchedLines": [
+            37
+          ],
+          "literal": "struct Source: Sendable"
+        },
+        {
+          "file": "Lumen/Services/BackupService.swift",
+          "sourceSHA256": "46d12330c4c9b7e329877772f21b1878bbfc82b0fe7732389707342eaf35e368",
+          "matchedLines": [
+            49
+          ],
+          "literal": "struct Preview: Sendable"
+        },
+        {
+          "file": "Lumen/Services/BackupService.swift",
+          "sourceSHA256": "46d12330c4c9b7e329877772f21b1878bbfc82b0fe7732389707342eaf35e368",
+          "matchedLines": [
+            76,
+            108,
+            154,
+            238
+          ],
+          "literal": "let workspace = try BackupWorkspace()"
+        },
+        {
+          "file": "Lumen/Views/BackupView.swift",
+          "sourceSHA256": "629bf49bf460739725c0ee78a2384a67b7eec25563604fd86a1102a5f6767a9c",
+          "matchedLines": [
+            220
+          ],
+          "literal": "preview = value; source = nil"
+        },
+        {
+          "file": "Lumen/Models/HealthRecoverySelection.swift",
+          "sourceSHA256": "4053ab53d7ac6f4a291be9ae750912c8506c9a520bd25bd973d4ec7f880ef016",
+          "matchedLines": [
+            96
+          ],
+          "literal": "source: \"reviewed-backup\""
+        }
+      ],
+      "finding": "Source owns a private selected-file copy. Readable preview owns a different photo workspace; UI drops Source when showing preview. Preview has no selected-file fingerprint/name/length provenance and recovery payload currently records only reviewed-backup. Source-workspace lifetime and retained original selection must be explicit in product recovery, not inferred from the decoded snapshot or final photo digests.",
+      "requiredEvidence": "Checked immutable selected-file fingerprint plus source name/format in preview/receipt; strong workspace ownership through detached workers and navigation; held native read/prepare tests for cancellation, selection replacement, late completions and cleanup, with exact original input retained until workers stop. No shared temporary-directory cleanup while another operation owns it."
+    },
+    {
+      "requirement": "Today cache provenance in backup recovery",
+      "status": "explicit format limitation; product recovery incomplete",
+      "evidence": [
+        {
+          "file": "Lumen/Models/HealthRecoverySelection.swift",
+          "sourceSHA256": "4053ab53d7ac6f4a291be9ae750912c8506c9a520bd25bd973d4ec7f880ef016",
+          "matchedLines": [
+            72
+          ],
+          "literal": "!domains.contains(.today)"
+        }
+      ],
+      "finding": "Checked backup payload refuses today because readable/encrypted backup snapshot formats do not contain that cache. Product must separately explain and verify explicit rebuild/clear semantics while preserving damaged cache/raw records. Never present a cache as recovered from a backup that omitted it.",
+      "requiredEvidence": "Real product absent-cache preview, explicit user choice to rebuild/start cache, preserved damaged bytes, known/unknown readings after recovery, exact goals/profile/weight coupling and no fabricated external Health writes."
+    },
+    {
+      "requirement": "Busy Cancel reaches detached recovery preparation",
+      "status": "not verified; source propagation gap",
+      "evidence": [
+        {
+          "file": "Lumen/Views/HealthRecoveryView.swift",
+          "sourceSHA256": "648c6560118e19e37b61de086989961f4e2eda4c96d03a25131c786b62fd5d66",
+          "matchedLines": [
+            144
+          ],
+          "literal": "try await health.recoverUnavailableHealth(payload)"
+        },
+        {
+          "file": "Lumen/Models/HealthStore.swift",
+          "sourceSHA256": "2e7301bb0fae49646769ecfd08bc9819d278504e7399635c69642348a4dd6a9f",
+          "matchedLines": [
+            138
+          ],
+          "literal": "func recoverUnavailableHealth(_ payload:"
+        },
+        {
+          "file": "Lumen/Persistence/LocalStore.swift",
+          "sourceSHA256": "600ee3ed33b3a677020496cf259d34d2de638bbadf8b891b435cdf0d58f21a44",
+          "matchedLines": [
+            36
+          ],
+          "literal": "try HealthRecoverySelection.prepare(payload, into: root, owner: owner)"
+        },
+        {
+          "file": "Lumen/Persistence/LocalStore.swift",
+          "sourceSHA256": "600ee3ed33b3a677020496cf259d34d2de638bbadf8b891b435cdf0d58f21a44",
+          "matchedLines": [
+            38,
+            135
+          ],
+          "literal": "try Task.checkCancellation()"
+        }
+      ],
+      "finding": "UI control is passed to retained payload construction, but HealthStore/LocalStore recovery API does not pass that control into the detached transaction preparation. Caller cancellation is checked after preparation, preventing that cancelled caller from committing, but prompt preparation cancellation or bounded busy-Cancel completion is not proved. Preserve the current safety guard while passing the same operation control through and testing actual held work.",
+      "requiredEvidence": "Native preparation held before install, actual visible Cancel/Back, control propagation and task cancellation, zero install/live mutation/new external work, stage/workspace cleanup only after workers end, retained selection/retry and cancellation-after-commit outcome. Do not equate a post-prepare cancellation check with prompt detached-worker cancellation."
+    }
+  ],
+  "scope": "Adds concrete source locations and acceptance evidence to existing full backup/ownership/cache/cancel gates. No app/UI mutation or integration test performed by this audit; original contracts/eight durable groups, legacy/symlink, all-domain I/O, actual SDK/device/Release/publication and full goal remain required."
+}

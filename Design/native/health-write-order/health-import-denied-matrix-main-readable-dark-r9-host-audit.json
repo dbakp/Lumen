@@ -1,0 +1,445 @@
+{
+  "status": "passed: actual denied-open permission error and cleanup, fresh healthy off246mL review and final cleanup",
+  "source": "durable-source-r131.json",
+  "build": "health-import-instructions-native-build-r2.json",
+  "case": "readable",
+  "device": "main",
+  "deviceID": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+  "mode": "dark",
+  "producerExitCode": 0,
+  "before": {
+    "chat.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "conversations.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "workouts.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "goals.json": {
+      "bytes": 177,
+      "sha256": "7ceaf16447d3539f90429200008aa6055612e0755964d4bccb5130278cbbc1d2",
+      "base64": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjEwMDAwLCJ3ZWlnaHRLZyI6NzV9"
+    },
+    "sleep.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "today.json": {
+      "bytes": 123,
+      "sha256": "39241fad7f0f936e0c8d5537d90d5c08703fa25236df0b63f9801a6212d35b50",
+      "base64": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDRUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9"
+    },
+    "meals.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "water.json": {
+      "bytes": 29,
+      "sha256": "0d3f4ef174c527390388c9fccb88964f5cc0b3bac224a4370cd215d61623e845",
+      "base64": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZVdhdGVyIjo="
+    },
+    "conversation-selection.json": {
+      "bytes": 2,
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "base64": "e30="
+    },
+    "habits.json": {
+      "bytes": 3170,
+      "sha256": "90a3b7a994d84cc94fbd57028ca0a8aaacfa2884b88687cf4498cace782202fc",
+      "base64": "W3siaXNFbmFibGVkIjp0cnVlLCJ0aXRsZSI6IkdldCBicmlnaHQgbGlnaHQiLCJkZXRhaWwiOiIxMCBtaW4gb2YgZGF5bGlnaHQgd2l0aGluIDMwIG1pbiBvZiB3YWtpbmcgYW5jaG9ycyB5b3VyIGNsb2NrLiIsImRvbmVUb2RheSI6ZmFsc2UsImljb24iOiJzdW4ubWF4LmZpbGwiLCJvZmZzZXQiOjE4MDAsImFuY2hvciI6Indha2VQbHVzIiwiaWQiOiJsaWdodCJ9LHsiaXNFbmFibGVkIjp0cnVlLCJ0aXRsZSI6IkNhZmZlaW5lIGN1dG9mZiIsImRldGFpbCI6Ik5vIGNhZmZlaW5lIHdpdGhpbiAxMGggb2YgYmVkIOKAlCBoYWxmLWxpZmUgaXMgfjZoLiIsImRvbmVUb2RheSI6ZmFsc2UsImljb24iOiJjdXAuYW5kLnNhdWNlci5maWxsIiwib2Zmc2V0IjozNjAwMCwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaWQiOiJjYWZmZWluZSJ9LHsiaXNFbmFibGVkIjp0cnVlLCJ0aXRsZSI6Ik1vdmUgeW91ciBib2R5IiwiZGV0YWlsIjoiMjArIG1pbi4gRmluaXNoIGludGVuc2Ugd29ya291dHMgM2grIGJlZm9yZSBiZWQuIiwiZG9uZVRvZGF5IjpmYWxzZSwiaWNvbiI6ImZpZ3VyZS5ydW4iLCJvZmZzZXQiOjIxNjAwLCJhbmNob3IiOiJ3YWtlUGx1cyIsImlkIjoiZXhlcmNpc2UifSx7ImlzRW5hYmxlZCI6dHJ1ZSwidGl0bGUiOiJTbWFydCBuYXAgd2luZG93IiwiZGV0YWlsIjoiSWYgbmFwcGluZzogMjDigJMzMCBtaW4sIGJlZm9yZSB5b3VyIGRpcCBlbmRzLiBObyBsYXRlIG5hcHMuIiwiZG9uZVRvZGF5IjpmYWxzZSwiaWNvbiI6Im1vb24uenp6LmZpbGwiLCJvZmZzZXQiOjI1MjAwLCJhbmNob3IiOiJ3YWtlUGx1cyIsImlkIjoibmFwIn0seyJpc0VuYWJsZWQiOnRydWUsInRpdGxlIjoiU2tpcCBuaWdodGNhcCIsImRldGFpbCI6IkFsY29ob2wgZnJhZ21lbnRzIHNsZWVwIGV2ZW4gd2hlbiBpdCBzcGVlZHMgb25zZXQuIiwiZG9uZVRvZGF5IjpmYWxzZSwiaWNvbiI6IndpbmVnbGFzcyIsIm9mZnNldCI6MTQ0MDAsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsImlkIjoiYWxjb2hvbCJ9LHsiaXNFbmFibGVkIjp0cnVlLCJ0aXRsZSI6Ikxhc3QgYmlnIG1lYWwiLCJkZXRhaWwiOiJGaW5pc2ggbGFyZ2UgbWVhbHMgM2ggYmVmb3JlIGJlZDsgbGlnaHQgc25hY2sgT0suIiwiZG9uZVRvZGF5IjpmYWxzZSwiaWNvbiI6ImZvcmsua25pZmUiLCJvZmZzZXQiOjEwODAwLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJpZCI6Im1lYWwifSx7ImlzRW5hYmxlZCI6dHJ1ZSwidGl0bGUiOiJEaW0gc2NyZWVucyIsImRldGFpbCI6Ikxvd2VyIGJyaWdodG5lc3MgKyBOaWdodCBTaGlmdCAyaCBiZWZvcmUgYmVkLiIsImRvbmVUb2RheSI6ZmFsc2UsImljb24iOiJpcGhvbmUuZ2VuMiIsIm9mZnNldCI6NzIwMCwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaWQiOiJzY3JlZW5zIn0seyJpc0VuYWJsZWQiOnRydWUsInRpdGxlIjoiRGltIHRoZSBsaWdodHMiLCJkZXRhaWwiOiJPdmVyaGVhZCBvZmYsIGxhbXBzIGxvdyDigJQgbGlnaHQgZGVsYXlzIG1lbGF0b25pbi4iLCJkb25lVG9kYXkiOmZhbHNlLCJpY29uIjoibGlnaHRidWxiLmZpbGwiLCJvZmZzZXQiOjU0MDAsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsImlkIjoibGlnaHRzIn0seyJpc0VuYWJsZWQiOnRydWUsInRpdGxlIjoiV2luZCBkb3duIiwiZGV0YWlsIjoiMjDigJMzMCBtaW4gcml0dWFsOiBzaG93ZXIsIHN0cmV0Y2gsIHJlYWQsIGJyZWF0aGUuIiwiZG9uZVRvZGF5IjpmYWxzZSwiaWNvbiI6IndpbmQiLCJvZmZzZXQiOjI3MDAsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsImlkIjoid2luZGRvd24ifSx7ImlzRW5hYmxlZCI6dHJ1ZSwidGl0bGUiOiJJbiBiZWQgb24gdGltZSIsImRldGFpbCI6IkhpdCB5b3VyIG1lbGF0b25pbiB3aW5kb3cg4oCUIHRoZSBlYXNpZXN0IGZhbGxpbmctYXNsZWVwLiIsImRvbmVUb2RheSI6ZmFsc2UsImljb24iOiJiZWQuZG91YmxlLmZpbGwiLCJvZmZzZXQiOjAsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsImlkIjoiYmVkdGltZSJ9LHsiaXNFbmFibGVkIjp0cnVlLCJ0aXRsZSI6IkNvb2wgJiBkYXJrIHJvb20iLCJkZXRhaWwiOiI2NeKAkzY4wrBGIFwvIDE44oCTMjDCsEMsIGJsYWNrb3V0IGRhcmssIHF1aWV0LiIsImRvbmVUb2RheSI6ZmFsc2UsImljb24iOiJ0aGVybW9tZXRlci5zbm93Zmxha2UiLCJvZmZzZXQiOjE4MDAsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsImlkIjoiY29vbCJ9LHsiaXNFbmFibGVkIjp0cnVlLCJ0aXRsZSI6IkNvbnNpc3RlbnQgd2FrZSIsImRldGFpbCI6IlNhbWUgd2FrZSDCsTMwIG1pbiDigJQgZXZlbiB3ZWVrZW5kcy4gIzEgcmh5dGhtIGxldmVyLiIsImRvbmVUb2RheSI6ZmFsc2UsImljb24iOiJhbGFybS5maWxsIiwib2Zmc2V0IjowLCJhbmNob3IiOiJ3YWtlUGx1cyIsImlkIjoiY29uc2lzdGVudCJ9LHsiaXNFbmFibGVkIjp0cnVlLCJ0aXRsZSI6Ik1vcm5pbmcgaHlkcmF0aW9uIiwiZGV0YWlsIjoiV2F0ZXIgKyBsaWdodCBiZWZvcmUgY29mZmVlIGJvb3N0cyBhbGVydG5lc3MuIiwiZG9uZVRvZGF5IjpmYWxzZSwiaWNvbiI6ImRyb3AuZmlsbCIsIm9mZnNldCI6MzAwLCJhbmNob3IiOiJ3YWtlUGx1cyIsImlkIjoiaHlkcmF0aW9uIn0seyJpc0VuYWJsZWQiOnRydWUsInRpdGxlIjoiQnJhaW4gZHVtcCIsImRldGFpbCI6IjItbWluIHdvcnJ5IGxpc3QgYWZ0ZXIgZGlubmVyIGNsZWFycyBuaWdodCBydW1pbmF0aW9uLiIsImRvbmVUb2RheSI6ZmFsc2UsImljb24iOiJwZW5jaWwuYW5kLmxpc3QuY2xpcGJvYXJkIiwib2Zmc2V0IjoxODAwMCwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaWQiOiJzdHJlc3MifSx7ImlzRW5hYmxlZCI6ZmFsc2UsInRpdGxlIjoiTm8gbGF0ZSBuaWNvdGluZSIsImRldGFpbCI6IlN0aW11bGFudCDigJQgYXZvaWQgd2l0aGluIDRoIG9mIGJlZC4iLCJkb25lVG9kYXkiOmZhbHNlLCJpY29uIjoic21va2UuZmlsbCIsIm9mZnNldCI6MTQ0MDAsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsImlkIjoibmljb3RpbmUifSx7ImlzRW5hYmxlZCI6ZmFsc2UsInRpdGxlIjoiRXZlbmluZyBsaWdodCB3YWxrIiwiZGV0YWlsIjoiQSBkdXNrIHdhbGsgc2hhcnBlbnMgRExNTyB0aW1pbmcuIiwiZG9uZVRvZGF5IjpmYWxzZSwiaWNvbiI6InN1bnNldC5maWxsIiwib2Zmc2V0IjoxNDQwMCwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaWQiOiJzdW5zZXQifV0="
+    },
+    "profile.json": {
+      "bytes": 184,
+      "sha256": "913503cf5e7d81fac33d507a862393aab0cd1f14480568855865f8804263b7a2",
+      "base64": "eyJvbmJvYXJkaW5nRG9uZSI6dHJ1ZSwiaXNTdWJzY3JpYmVkIjpmYWxzZSwid2FrZUdvYWwiOnsibWludXRlIjowLCJob3VyIjo3fSwiY2hyb25vdHlwZSI6ImludGVybWVkaWF0ZSIsInNsZWVwTmVlZCI6Mjk0MDAsIm5hbWUiOiJTeW50aGV0aWMgYmFja3VwIGJhc2VsaW5lIiwic2xlZXBOZWVkQ29uZmlkZW5jZSI6MC4zfQ=="
+    },
+    "health-write-intent.json": {
+      "bytes": 123,
+      "sha256": "9abc999a5221c8a1593b11780c4235d23bc72ccee334000a628f8c6adfca0878",
+      "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiJBM0MxQzY3Ri01MzU4LTRBQUEtOTlCQS1GMkVCMEEzOTYzMTUiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+    }
+  },
+  "after": {
+    "chat.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "conversations.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "workouts.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "goals.json": {
+      "bytes": 177,
+      "sha256": "7ceaf16447d3539f90429200008aa6055612e0755964d4bccb5130278cbbc1d2",
+      "base64": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjEwMDAwLCJ3ZWlnaHRLZyI6NzV9"
+    },
+    "sleep.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "today.json": {
+      "bytes": 123,
+      "sha256": "39241fad7f0f936e0c8d5537d90d5c08703fa25236df0b63f9801a6212d35b50",
+      "base64": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDRUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9"
+    },
+    "meals.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "water.json": {
+      "bytes": 29,
+      "sha256": "0d3f4ef174c527390388c9fccb88964f5cc0b3bac224a4370cd215d61623e845",
+      "base64": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZVdhdGVyIjo="
+    },
+    "conversation-selection.json": {
+      "bytes": 2,
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "base64": "e30="
+    },
+    "habits.json": {
+      "bytes": 3170,
+      "sha256": "90a3b7a994d84cc94fbd57028ca0a8aaacfa2884b88687cf4498cace782202fc",
+      "base64": "W3siaXNFbmFibGVkIjp0cnVlLCJ0aXRsZSI6IkdldCBicmlnaHQgbGlnaHQiLCJkZXRhaWwiOiIxMCBtaW4gb2YgZGF5bGlnaHQgd2l0aGluIDMwIG1pbiBvZiB3YWtpbmcgYW5jaG9ycyB5b3VyIGNsb2NrLiIsImRvbmVUb2RheSI6ZmFsc2UsImljb24iOiJzdW4ubWF4LmZpbGwiLCJvZmZzZXQiOjE4MDAsImFuY2hvciI6Indha2VQbHVzIiwiaWQiOiJsaWdodCJ9LHsiaXNFbmFibGVkIjp0cnVlLCJ0aXRsZSI6IkNhZmZlaW5lIGN1dG9mZiIsImRldGFpbCI6Ik5vIGNhZmZlaW5lIHdpdGhpbiAxMGggb2YgYmVkIOKAlCBoYWxmLWxpZmUgaXMgfjZoLiIsImRvbmVUb2RheSI6ZmFsc2UsImljb24iOiJjdXAuYW5kLnNhdWNlci5maWxsIiwib2Zmc2V0IjozNjAwMCwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaWQiOiJjYWZmZWluZSJ9LHsiaXNFbmFibGVkIjp0cnVlLCJ0aXRsZSI6Ik1vdmUgeW91ciBib2R5IiwiZGV0YWlsIjoiMjArIG1pbi4gRmluaXNoIGludGVuc2Ugd29ya291dHMgM2grIGJlZm9yZSBiZWQuIiwiZG9uZVRvZGF5IjpmYWxzZSwiaWNvbiI6ImZpZ3VyZS5ydW4iLCJvZmZzZXQiOjIxNjAwLCJhbmNob3IiOiJ3YWtlUGx1cyIsImlkIjoiZXhlcmNpc2UifSx7ImlzRW5hYmxlZCI6dHJ1ZSwidGl0bGUiOiJTbWFydCBuYXAgd2luZG93IiwiZGV0YWlsIjoiSWYgbmFwcGluZzogMjDigJMzMCBtaW4sIGJlZm9yZSB5b3VyIGRpcCBlbmRzLiBObyBsYXRlIG5hcHMuIiwiZG9uZVRvZGF5IjpmYWxzZSwiaWNvbiI6Im1vb24uenp6LmZpbGwiLCJvZmZzZXQiOjI1MjAwLCJhbmNob3IiOiJ3YWtlUGx1cyIsImlkIjoibmFwIn0seyJpc0VuYWJsZWQiOnRydWUsInRpdGxlIjoiU2tpcCBuaWdodGNhcCIsImRldGFpbCI6IkFsY29ob2wgZnJhZ21lbnRzIHNsZWVwIGV2ZW4gd2hlbiBpdCBzcGVlZHMgb25zZXQuIiwiZG9uZVRvZGF5IjpmYWxzZSwiaWNvbiI6IndpbmVnbGFzcyIsIm9mZnNldCI6MTQ0MDAsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsImlkIjoiYWxjb2hvbCJ9LHsiaXNFbmFibGVkIjp0cnVlLCJ0aXRsZSI6Ikxhc3QgYmlnIG1lYWwiLCJkZXRhaWwiOiJGaW5pc2ggbGFyZ2UgbWVhbHMgM2ggYmVmb3JlIGJlZDsgbGlnaHQgc25hY2sgT0suIiwiZG9uZVRvZGF5IjpmYWxzZSwiaWNvbiI6ImZvcmsua25pZmUiLCJvZmZzZXQiOjEwODAwLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJpZCI6Im1lYWwifSx7ImlzRW5hYmxlZCI6dHJ1ZSwidGl0bGUiOiJEaW0gc2NyZWVucyIsImRldGFpbCI6Ikxvd2VyIGJyaWdodG5lc3MgKyBOaWdodCBTaGlmdCAyaCBiZWZvcmUgYmVkLiIsImRvbmVUb2RheSI6ZmFsc2UsImljb24iOiJpcGhvbmUuZ2VuMiIsIm9mZnNldCI6NzIwMCwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaWQiOiJzY3JlZW5zIn0seyJpc0VuYWJsZWQiOnRydWUsInRpdGxlIjoiRGltIHRoZSBsaWdodHMiLCJkZXRhaWwiOiJPdmVyaGVhZCBvZmYsIGxhbXBzIGxvdyDigJQgbGlnaHQgZGVsYXlzIG1lbGF0b25pbi4iLCJkb25lVG9kYXkiOmZhbHNlLCJpY29uIjoibGlnaHRidWxiLmZpbGwiLCJvZmZzZXQiOjU0MDAsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsImlkIjoibGlnaHRzIn0seyJpc0VuYWJsZWQiOnRydWUsInRpdGxlIjoiV2luZCBkb3duIiwiZGV0YWlsIjoiMjDigJMzMCBtaW4gcml0dWFsOiBzaG93ZXIsIHN0cmV0Y2gsIHJlYWQsIGJyZWF0aGUuIiwiZG9uZVRvZGF5IjpmYWxzZSwiaWNvbiI6IndpbmQiLCJvZmZzZXQiOjI3MDAsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsImlkIjoid2luZGRvd24ifSx7ImlzRW5hYmxlZCI6dHJ1ZSwidGl0bGUiOiJJbiBiZWQgb24gdGltZSIsImRldGFpbCI6IkhpdCB5b3VyIG1lbGF0b25pbiB3aW5kb3cg4oCUIHRoZSBlYXNpZXN0IGZhbGxpbmctYXNsZWVwLiIsImRvbmVUb2RheSI6ZmFsc2UsImljb24iOiJiZWQuZG91YmxlLmZpbGwiLCJvZmZzZXQiOjAsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsImlkIjoiYmVkdGltZSJ9LHsiaXNFbmFibGVkIjp0cnVlLCJ0aXRsZSI6IkNvb2wgJiBkYXJrIHJvb20iLCJkZXRhaWwiOiI2NeKAkzY4wrBGIFwvIDE44oCTMjDCsEMsIGJsYWNrb3V0IGRhcmssIHF1aWV0LiIsImRvbmVUb2RheSI6ZmFsc2UsImljb24iOiJ0aGVybW9tZXRlci5zbm93Zmxha2UiLCJvZmZzZXQiOjE4MDAsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsImlkIjoiY29vbCJ9LHsiaXNFbmFibGVkIjp0cnVlLCJ0aXRsZSI6IkNvbnNpc3RlbnQgd2FrZSIsImRldGFpbCI6IlNhbWUgd2FrZSDCsTMwIG1pbiDigJQgZXZlbiB3ZWVrZW5kcy4gIzEgcmh5dGhtIGxldmVyLiIsImRvbmVUb2RheSI6ZmFsc2UsImljb24iOiJhbGFybS5maWxsIiwib2Zmc2V0IjowLCJhbmNob3IiOiJ3YWtlUGx1cyIsImlkIjoiY29uc2lzdGVudCJ9LHsiaXNFbmFibGVkIjp0cnVlLCJ0aXRsZSI6Ik1vcm5pbmcgaHlkcmF0aW9uIiwiZGV0YWlsIjoiV2F0ZXIgKyBsaWdodCBiZWZvcmUgY29mZmVlIGJvb3N0cyBhbGVydG5lc3MuIiwiZG9uZVRvZGF5IjpmYWxzZSwiaWNvbiI6ImRyb3AuZmlsbCIsIm9mZnNldCI6MzAwLCJhbmNob3IiOiJ3YWtlUGx1cyIsImlkIjoiaHlkcmF0aW9uIn0seyJpc0VuYWJsZWQiOnRydWUsInRpdGxlIjoiQnJhaW4gZHVtcCIsImRldGFpbCI6IjItbWluIHdvcnJ5IGxpc3QgYWZ0ZXIgZGlubmVyIGNsZWFycyBuaWdodCBydW1pbmF0aW9uLiIsImRvbmVUb2RheSI6ZmFsc2UsImljb24iOiJwZW5jaWwuYW5kLmxpc3QuY2xpcGJvYXJkIiwib2Zmc2V0IjoxODAwMCwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaWQiOiJzdHJlc3MifSx7ImlzRW5hYmxlZCI6ZmFsc2UsInRpdGxlIjoiTm8gbGF0ZSBuaWNvdGluZSIsImRldGFpbCI6IlN0aW11bGFudCDigJQgYXZvaWQgd2l0aGluIDRoIG9mIGJlZC4iLCJkb25lVG9kYXkiOmZhbHNlLCJpY29uIjoic21va2UuZmlsbCIsIm9mZnNldCI6MTQ0MDAsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsImlkIjoibmljb3RpbmUifSx7ImlzRW5hYmxlZCI6ZmFsc2UsInRpdGxlIjoiRXZlbmluZyBsaWdodCB3YWxrIiwiZGV0YWlsIjoiQSBkdXNrIHdhbGsgc2hhcnBlbnMgRExNTyB0aW1pbmcuIiwiZG9uZVRvZGF5IjpmYWxzZSwiaWNvbiI6InN1bnNldC5maWxsIiwib2Zmc2V0IjoxNDQwMCwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaWQiOiJzdW5zZXQifV0="
+    },
+    "profile.json": {
+      "bytes": 184,
+      "sha256": "913503cf5e7d81fac33d507a862393aab0cd1f14480568855865f8804263b7a2",
+      "base64": "eyJvbmJvYXJkaW5nRG9uZSI6dHJ1ZSwiaXNTdWJzY3JpYmVkIjpmYWxzZSwid2FrZUdvYWwiOnsibWludXRlIjowLCJob3VyIjo3fSwiY2hyb25vdHlwZSI6ImludGVybWVkaWF0ZSIsInNsZWVwTmVlZCI6Mjk0MDAsIm5hbWUiOiJTeW50aGV0aWMgYmFja3VwIGJhc2VsaW5lIiwic2xlZXBOZWVkQ29uZmlkZW5jZSI6MC4zfQ=="
+    },
+    "health-write-intent.json": {
+      "bytes": 123,
+      "sha256": "9abc999a5221c8a1593b11780c4235d23bc72ccee334000a628f8c6adfca0878",
+      "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiJBM0MxQzY3Ri01MzU4LTRBQUEtOTlCQS1GMkVCMEEzOTYzMTUiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+    }
+  },
+  "previousBefore": {
+    "chat.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "conversations.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "workouts.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "goals.json": {
+      "bytes": 177,
+      "sha256": "7ceaf16447d3539f90429200008aa6055612e0755964d4bccb5130278cbbc1d2",
+      "base64": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjEwMDAwLCJ3ZWlnaHRLZyI6NzV9"
+    },
+    "today.json": {
+      "bytes": 123,
+      "sha256": "39241fad7f0f936e0c8d5537d90d5c08703fa25236df0b63f9801a6212d35b50",
+      "base64": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDRUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9"
+    },
+    "meals.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "water.json": {
+      "bytes": 72,
+      "sha256": "1dc7d921432b620cf0fcd72262f29a4ffe06902fcd4d7e3cb546d370e3908291",
+      "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwibWwiOjEzN31d"
+    },
+    "conversation-selection.json": {
+      "bytes": 2,
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "base64": "e30="
+    },
+    "profile.json": {
+      "bytes": 184,
+      "sha256": "233fff496e5b49e10ec22a5f4b94d52c307168dc8c8fac93b4e0c420291b6a2d",
+      "base64": "eyJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwiaXNTdWJzY3JpYmVkIjpmYWxzZSwibmFtZSI6IlN5bnRoZXRpYyBiYWNrdXAgYmFzZWxpbmUiLCJvbmJvYXJkaW5nRG9uZSI6dHJ1ZSwic2xlZXBOZWVkIjoyOTQwMCwic2xlZXBOZWVkQ29uZmlkZW5jZSI6MC4zLCJ3YWtlR29hbCI6eyJob3VyIjo3LCJtaW51dGUiOjB9fQ=="
+    },
+    "health-write-intent.json": {
+      "bytes": 123,
+      "sha256": "9abc999a5221c8a1593b11780c4235d23bc72ccee334000a628f8c6adfca0878",
+      "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiJBM0MxQzY3Ri01MzU4LTRBQUEtOTlCQS1GMkVCMEEzOTYzMTUiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+    }
+  },
+  "previousAfter": {
+    "chat.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "conversations.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "workouts.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "goals.json": {
+      "bytes": 177,
+      "sha256": "7ceaf16447d3539f90429200008aa6055612e0755964d4bccb5130278cbbc1d2",
+      "base64": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjEwMDAwLCJ3ZWlnaHRLZyI6NzV9"
+    },
+    "today.json": {
+      "bytes": 123,
+      "sha256": "39241fad7f0f936e0c8d5537d90d5c08703fa25236df0b63f9801a6212d35b50",
+      "base64": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDRUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9"
+    },
+    "meals.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "water.json": {
+      "bytes": 72,
+      "sha256": "1dc7d921432b620cf0fcd72262f29a4ffe06902fcd4d7e3cb546d370e3908291",
+      "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwibWwiOjEzN31d"
+    },
+    "conversation-selection.json": {
+      "bytes": 2,
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "base64": "e30="
+    },
+    "profile.json": {
+      "bytes": 184,
+      "sha256": "233fff496e5b49e10ec22a5f4b94d52c307168dc8c8fac93b4e0c420291b6a2d",
+      "base64": "eyJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwiaXNTdWJzY3JpYmVkIjpmYWxzZSwibmFtZSI6IlN5bnRoZXRpYyBiYWNrdXAgYmFzZWxpbmUiLCJvbmJvYXJkaW5nRG9uZSI6dHJ1ZSwic2xlZXBOZWVkIjoyOTQwMCwic2xlZXBOZWVkQ29uZmlkZW5jZSI6MC4zLCJ3YWtlR29hbCI6eyJob3VyIjo3LCJtaW51dGUiOjB9fQ=="
+    },
+    "health-write-intent.json": {
+      "bytes": 123,
+      "sha256": "9abc999a5221c8a1593b11780c4235d23bc72ccee334000a628f8c6adfca0878",
+      "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiJBM0MxQzY3Ri01MzU4LTRBQUEtOTlCQS1GMkVCMEEzOTYzMTUiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+    }
+  },
+  "heldObservations": [
+    {
+      "record": {
+        "bytesRead": 831,
+        "copyTarget": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/80DAFEF5-B792-45CD-8090-0355FDE4C8CC/tmp/LumenBackupWork-v1-69282-C49210FF-EA7E-43C4-B8F9-31BC0F47EA2D/selected-backup",
+        "descriptor": 6,
+        "file": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Shared/AppGroup/F1085B1A-CF05-478B-A5BD-DE328D3F99B8/File Provider Storage/00 Lumen readable checks/Lumen-readable-health-small.json",
+        "inode": 40968465,
+        "nonce": "42E6B093-0325-4514-8C31-EFC074D02509",
+        "ordinal": 1,
+        "outputDescriptor": 7,
+        "phase": "held",
+        "pid": 69282,
+        "readBoundary": "original-copy",
+        "scope": "selected-import",
+        "size": 831,
+        "uiCancelled": false,
+        "workerControlMatchesUI": true
+      },
+      "provider": {
+        "input": "/tmp/LumenBatch43Checks/HealthBackupSmallInputsR2/Lumen-readable-health-small.json",
+        "seeded": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Shared/AppGroup/F1085B1A-CF05-478B-A5BD-DE328D3F99B8/File Provider Storage/00 Lumen readable checks/Lumen-readable-health-small.json",
+        "bytes": 831,
+        "sha256": "bad71f0672b2e44ec7d2828be49d3cc758b4dc48c57b6639d55be5a72bc9da38"
+      },
+      "ownedRoots": {
+        "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/80DAFEF5-B792-45CD-8090-0355FDE4C8CC/tmp/LumenBackupWork-v1-69282-C49210FF-EA7E-43C4-B8F9-31BC0F47EA2D": {
+          "owner": {
+            "id": "C49210FF-EA7E-43C4-B8F9-31BC0F47EA2D",
+            "version": 1,
+            "pid": 69282
+          },
+          "files": {
+            ".lumen-workspace-owner.json": {
+              "bytes": 69,
+              "sha256": "3f08ea58da492c9539983cae4a66e72cc57f44011131f6a0c4df17c58b33bf4c",
+              "base64": "eyJpZCI6IkM0OTIxMEZGLUVBN0UtNDNDNC1COEY5LTMxQkMwRjQ3RUEyRCIsInZlcnNpb24iOjEsInBpZCI6NjkyODJ9"
+            },
+            "selected-backup": {
+              "bytes": 831,
+              "sha256": "bad71f0672b2e44ec7d2828be49d3cc758b4dc48c57b6639d55be5a72bc9da38",
+              "base64": "eyJhcHAiOiJMdW1lbiIsInJlYWRhYmxlVmVyc2lvbiI6MSwiZXhwb3J0ZWRBdCI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwicHJvZmlsZSI6eyJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwiaXNTdWJzY3JpYmVkIjpmYWxzZSwibmFtZSI6IlN5bnRoZXRpYyBiYWNrdXAgcmVjb3ZlcnkiLCJvbmJvYXJkaW5nRG9uZSI6ZmFsc2UsInNsZWVwTmVlZCI6Mjk0MDAsInNsZWVwTmVlZENvbmZpZGVuY2UiOjAuMywid2FrZUdvYWwiOnsiaG91ciI6NywibWludXRlIjowfX0sImdvYWxzIjp7ImFjdGl2ZUNhbEdvYWwiOjYwMCwiYWN0aXZpdHlMZXZlbCI6Im1vZGVyYXRlIiwiYWdlIjozMCwiZXhlcmNpc2VHb2FsTWluIjozMCwiZ29hbCI6Im1haW50YWluIiwiaGVpZ2h0Q20iOjE3OCwic2V4IjoidW5zcGVjaWZpZWQiLCJzdGFuZEdvYWwiOjEyLCJzdGVwR29hbCI6MTAwMDAsIndlaWdodEtnIjo3NX0sInBlcnNvbmFsLWNvbnRleHQiOnsiYWxsZXJnaWVzIjoiIiwiZm9jdXMiOiIiLCJmb29kUHJlZmVyZW5jZXMiOiIiLCJpbmNsdWRlSW5Bc3Npc3RhbnQiOmZhbHNlLCJsaW1pdGF0aW9ucyI6IiIsIm5vdGVzIjoiIiwic2NoZWR1bGUiOiIifSwiaGFiaXRzIjpbXSwic2xlZXAiOltdLCJtZWFscyI6W10sIndvcmtvdXRzIjpbXSwid2F0ZXIiOlt7ImRhdGUiOiIyMDI2LTExLTAyVDEyOjAwOjAwWiIsImlkIjoic3ludGhldGljLWJhY2t1cC1yZWNvdmVyeS13YXRlciIsIm1sIjoyNDZ9XSwiY29udmVyc2F0aW9ucyI6W10sInN5bXB0b21zIjpbXSwiY2hlY2staW5zIjpbXSwiZG9jdW1lbnRzIjpbXSwiaW1wb3J0ZWQtZGF5cyI6W10sImltcG9ydC1yZWNlaXB0cyI6W119"
+            }
+          }
+        }
+      },
+      "sourceBytes": "eyJhcHAiOiJMdW1lbiIsInJlYWRhYmxlVmVyc2lvbiI6MSwiZXhwb3J0ZWRBdCI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwicHJvZmlsZSI6eyJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwiaXNTdWJzY3JpYmVkIjpmYWxzZSwibmFtZSI6IlN5bnRoZXRpYyBiYWNrdXAgcmVjb3ZlcnkiLCJvbmJvYXJkaW5nRG9uZSI6ZmFsc2UsInNsZWVwTmVlZCI6Mjk0MDAsInNsZWVwTmVlZENvbmZpZGVuY2UiOjAuMywid2FrZUdvYWwiOnsiaG91ciI6NywibWludXRlIjowfX0sImdvYWxzIjp7ImFjdGl2ZUNhbEdvYWwiOjYwMCwiYWN0aXZpdHlMZXZlbCI6Im1vZGVyYXRlIiwiYWdlIjozMCwiZXhlcmNpc2VHb2FsTWluIjozMCwiZ29hbCI6Im1haW50YWluIiwiaGVpZ2h0Q20iOjE3OCwic2V4IjoidW5zcGVjaWZpZWQiLCJzdGFuZEdvYWwiOjEyLCJzdGVwR29hbCI6MTAwMDAsIndlaWdodEtnIjo3NX0sInBlcnNvbmFsLWNvbnRleHQiOnsiYWxsZXJnaWVzIjoiIiwiZm9jdXMiOiIiLCJmb29kUHJlZmVyZW5jZXMiOiIiLCJpbmNsdWRlSW5Bc3Npc3RhbnQiOmZhbHNlLCJsaW1pdGF0aW9ucyI6IiIsIm5vdGVzIjoiIiwic2NoZWR1bGUiOiIifSwiaGFiaXRzIjpbXSwic2xlZXAiOltdLCJtZWFscyI6W10sIndvcmtvdXRzIjpbXSwid2F0ZXIiOlt7ImRhdGUiOiIyMDI2LTExLTAyVDEyOjAwOjAwWiIsImlkIjoic3ludGhldGljLWJhY2t1cC1yZWNvdmVyeS13YXRlciIsIm1sIjoyNDZ9XSwiY29udmVyc2F0aW9ucyI6W10sInN5bXB0b21zIjpbXSwiY2hlY2staW5zIjpbXSwiZG9jdW1lbnRzIjpbXSwiaW1wb3J0ZWQtZGF5cyI6W10sImltcG9ydC1yZWNlaXB0cyI6W119",
+      "targetInode": 42156388,
+      "targetBytes": 831,
+      "targetMode": 384,
+      "uid": 501,
+      "inputDescriptorReadback": "p69282\nf6\ntREG\ni40968465\nn/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Shared/AppGroup/F1085B1A-CF05-478B-A5BD-DE328D3F99B8/File Provider Storage/00 Lumen readable checks/Lumen-readable-health-small.json\n",
+      "outputDescriptorReadback": "p69282\nf7\ntREG\ni42156388\nn/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/80DAFEF5-B792-45CD-8090-0355FDE4C8CC/tmp/LumenBackupWork-v1-69282-C49210FF-EA7E-43C4-B8F9-31BC0F47EA2D/selected-backup\n"
+    },
+    {
+      "record": {
+        "bytesRead": 831,
+        "copyTarget": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/80DAFEF5-B792-45CD-8090-0355FDE4C8CC/tmp/LumenBackupWork-v1-69282-3E194E68-E253-4EEB-8783-00DEE96C5A40/selected-backup",
+        "descriptor": 6,
+        "file": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Shared/AppGroup/F1085B1A-CF05-478B-A5BD-DE328D3F99B8/File Provider Storage/00 Lumen readable checks/Lumen-readable-health-small.json",
+        "inode": 40968465,
+        "nonce": "FA498B1F-28F7-437A-94C4-11151E88013D",
+        "ordinal": 2,
+        "outputDescriptor": 7,
+        "phase": "held",
+        "pid": 69282,
+        "readBoundary": "original-copy",
+        "scope": "selected-import",
+        "size": 831,
+        "uiCancelled": false,
+        "workerControlMatchesUI": true
+      },
+      "provider": {
+        "input": "/tmp/LumenBatch43Checks/HealthBackupSmallInputsR2/Lumen-readable-health-small.json",
+        "seeded": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Shared/AppGroup/F1085B1A-CF05-478B-A5BD-DE328D3F99B8/File Provider Storage/00 Lumen readable checks/Lumen-readable-health-small.json",
+        "bytes": 831,
+        "sha256": "bad71f0672b2e44ec7d2828be49d3cc758b4dc48c57b6639d55be5a72bc9da38"
+      },
+      "ownedRoots": {
+        "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/80DAFEF5-B792-45CD-8090-0355FDE4C8CC/tmp/LumenBackupWork-v1-69282-3E194E68-E253-4EEB-8783-00DEE96C5A40": {
+          "owner": {
+            "pid": 69282,
+            "version": 1,
+            "id": "3E194E68-E253-4EEB-8783-00DEE96C5A40"
+          },
+          "files": {
+            ".lumen-workspace-owner.json": {
+              "bytes": 69,
+              "sha256": "b2e5e1c6375fa7582dab7aa4e2762f2809b1c2469500a19b377b316e3e76dd15",
+              "base64": "eyJwaWQiOjY5MjgyLCJ2ZXJzaW9uIjoxLCJpZCI6IjNFMTk0RTY4LUUyNTMtNEVFQi04NzgzLTAwREVFOTZDNUE0MCJ9"
+            },
+            "selected-backup": {
+              "bytes": 831,
+              "sha256": "bad71f0672b2e44ec7d2828be49d3cc758b4dc48c57b6639d55be5a72bc9da38",
+              "base64": "eyJhcHAiOiJMdW1lbiIsInJlYWRhYmxlVmVyc2lvbiI6MSwiZXhwb3J0ZWRBdCI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwicHJvZmlsZSI6eyJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwiaXNTdWJzY3JpYmVkIjpmYWxzZSwibmFtZSI6IlN5bnRoZXRpYyBiYWNrdXAgcmVjb3ZlcnkiLCJvbmJvYXJkaW5nRG9uZSI6ZmFsc2UsInNsZWVwTmVlZCI6Mjk0MDAsInNsZWVwTmVlZENvbmZpZGVuY2UiOjAuMywid2FrZUdvYWwiOnsiaG91ciI6NywibWludXRlIjowfX0sImdvYWxzIjp7ImFjdGl2ZUNhbEdvYWwiOjYwMCwiYWN0aXZpdHlMZXZlbCI6Im1vZGVyYXRlIiwiYWdlIjozMCwiZXhlcmNpc2VHb2FsTWluIjozMCwiZ29hbCI6Im1haW50YWluIiwiaGVpZ2h0Q20iOjE3OCwic2V4IjoidW5zcGVjaWZpZWQiLCJzdGFuZEdvYWwiOjEyLCJzdGVwR29hbCI6MTAwMDAsIndlaWdodEtnIjo3NX0sInBlcnNvbmFsLWNvbnRleHQiOnsiYWxsZXJnaWVzIjoiIiwiZm9jdXMiOiIiLCJmb29kUHJlZmVyZW5jZXMiOiIiLCJpbmNsdWRlSW5Bc3Npc3RhbnQiOmZhbHNlLCJsaW1pdGF0aW9ucyI6IiIsIm5vdGVzIjoiIiwic2NoZWR1bGUiOiIifSwiaGFiaXRzIjpbXSwic2xlZXAiOltdLCJtZWFscyI6W10sIndvcmtvdXRzIjpbXSwid2F0ZXIiOlt7ImRhdGUiOiIyMDI2LTExLTAyVDEyOjAwOjAwWiIsImlkIjoic3ludGhldGljLWJhY2t1cC1yZWNvdmVyeS13YXRlciIsIm1sIjoyNDZ9XSwiY29udmVyc2F0aW9ucyI6W10sInN5bXB0b21zIjpbXSwiY2hlY2staW5zIjpbXSwiZG9jdW1lbnRzIjpbXSwiaW1wb3J0ZWQtZGF5cyI6W10sImltcG9ydC1yZWNlaXB0cyI6W119"
+            }
+          }
+        }
+      },
+      "sourceBytes": "eyJhcHAiOiJMdW1lbiIsInJlYWRhYmxlVmVyc2lvbiI6MSwiZXhwb3J0ZWRBdCI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwicHJvZmlsZSI6eyJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwiaXNTdWJzY3JpYmVkIjpmYWxzZSwibmFtZSI6IlN5bnRoZXRpYyBiYWNrdXAgcmVjb3ZlcnkiLCJvbmJvYXJkaW5nRG9uZSI6ZmFsc2UsInNsZWVwTmVlZCI6Mjk0MDAsInNsZWVwTmVlZENvbmZpZGVuY2UiOjAuMywid2FrZUdvYWwiOnsiaG91ciI6NywibWludXRlIjowfX0sImdvYWxzIjp7ImFjdGl2ZUNhbEdvYWwiOjYwMCwiYWN0aXZpdHlMZXZlbCI6Im1vZGVyYXRlIiwiYWdlIjozMCwiZXhlcmNpc2VHb2FsTWluIjozMCwiZ29hbCI6Im1haW50YWluIiwiaGVpZ2h0Q20iOjE3OCwic2V4IjoidW5zcGVjaWZpZWQiLCJzdGFuZEdvYWwiOjEyLCJzdGVwR29hbCI6MTAwMDAsIndlaWdodEtnIjo3NX0sInBlcnNvbmFsLWNvbnRleHQiOnsiYWxsZXJnaWVzIjoiIiwiZm9jdXMiOiIiLCJmb29kUHJlZmVyZW5jZXMiOiIiLCJpbmNsdWRlSW5Bc3Npc3RhbnQiOmZhbHNlLCJsaW1pdGF0aW9ucyI6IiIsIm5vdGVzIjoiIiwic2NoZWR1bGUiOiIifSwiaGFiaXRzIjpbXSwic2xlZXAiOltdLCJtZWFscyI6W10sIndvcmtvdXRzIjpbXSwid2F0ZXIiOlt7ImRhdGUiOiIyMDI2LTExLTAyVDEyOjAwOjAwWiIsImlkIjoic3ludGhldGljLWJhY2t1cC1yZWNvdmVyeS13YXRlciIsIm1sIjoyNDZ9XSwiY29udmVyc2F0aW9ucyI6W10sInN5bXB0b21zIjpbXSwiY2hlY2staW5zIjpbXSwiZG9jdW1lbnRzIjpbXSwiaW1wb3J0ZWQtZGF5cyI6W10sImltcG9ydC1yZWNlaXB0cyI6W119",
+      "targetInode": 42157066,
+      "targetBytes": 831,
+      "targetMode": 384,
+      "uid": 501,
+      "inputDescriptorReadback": "p69282\nf6\ntREG\ni40968465\nn/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Shared/AppGroup/F1085B1A-CF05-478B-A5BD-DE328D3F99B8/File Provider Storage/00 Lumen readable checks/Lumen-readable-health-small.json\n",
+      "outputDescriptorReadback": "p69282\nf7\ntREG\ni42157066\nn/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/80DAFEF5-B792-45CD-8090-0355FDE4C8CC/tmp/LumenBackupWork-v1-69282-3E194E68-E253-4EEB-8783-00DEE96C5A40/selected-backup\n"
+    }
+  ],
+  "protocol": {
+    "attempts": [
+      {
+        "bytesRead": 831,
+        "copyTarget": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/80DAFEF5-B792-45CD-8090-0355FDE4C8CC/tmp/LumenBackupWork-v1-69282-C49210FF-EA7E-43C4-B8F9-31BC0F47EA2D/selected-backup",
+        "descriptor": 6,
+        "descriptorCloseSucceeded": true,
+        "file": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Shared/AppGroup/F1085B1A-CF05-478B-A5BD-DE328D3F99B8/File Provider Storage/00 Lumen readable checks/Lumen-readable-health-small.json",
+        "inode": 40968465,
+        "nonce": "42E6B093-0325-4514-8C31-EFC074D02509",
+        "ordinal": 1,
+        "outputDescriptor": 7,
+        "outputDescriptorCloseSucceeded": true,
+        "phase": "released",
+        "pid": 69282,
+        "readBoundary": "original-copy",
+        "scope": "selected-import",
+        "size": 831,
+        "uiCancelled": false,
+        "workerControlMatchesUI": true
+      },
+      {
+        "bytesRead": 831,
+        "copyTarget": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/80DAFEF5-B792-45CD-8090-0355FDE4C8CC/tmp/LumenBackupWork-v1-69282-3E194E68-E253-4EEB-8783-00DEE96C5A40/selected-backup",
+        "descriptor": 6,
+        "descriptorCloseSucceeded": true,
+        "file": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Shared/AppGroup/F1085B1A-CF05-478B-A5BD-DE328D3F99B8/File Provider Storage/00 Lumen readable checks/Lumen-readable-health-small.json",
+        "inode": 40968465,
+        "nonce": "FA498B1F-28F7-437A-94C4-11151E88013D",
+        "ordinal": 2,
+        "outputDescriptor": 7,
+        "outputDescriptorCloseSucceeded": true,
+        "phase": "released",
+        "pid": 69282,
+        "readBoundary": "original-copy",
+        "scope": "selected-import",
+        "size": 831,
+        "uiCancelled": false,
+        "workerControlMatchesUI": true
+      }
+    ],
+    "root": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Shared/AppGroup/E300DD24-B5D1-4A6A-BF1B-E66173E3428B/LumenData"
+  },
+  "errorCleanup": {
+    "rootsAbsent": true,
+    "liveNoOpenPaths": "p69282\nfcwd\nn/\nftxt\nn/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Bundle/Application/7133F231-B4BB-4E93-9FDF-78760152A9B1/Lumen.app/Lumen\nftxt\nn/private/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/com.dbakp.lumen/5877834E-C22A-4008-9FD4-682BEFCB4C79-68844-0000228C5FF679FF/45D9DBE1-FABF-4C53-8451-F610F6CA13EF-69282.profraw\nftxt\nn/usr/lib/system/libsystem_kernel.dylib\nftxt\nn/usr/lib/dyld\nftxt\nn/usr/lib/system/libsystem_platform.dylib\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/usr/lib/dyld_sim\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/usr/lib/libMainThreadChecker.dylib\nftxt\nn/usr/lib/system/libsystem_pthread.dylib\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/usr/lib/libRPAC.dylib\nftxt\nn/private/var/db/timezone/tz/2026d.1.0/icutz/icutz44l.dat\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/usr/lib/libobjc-trampolines.dylib\nftxt\nn/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Bundle/Application/7133F231-B4BB-4E93-9FDF-78760152A9B1/Lumen.app/Assets.car\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/PrivateFrameworks/CoreUI.framework/DesignLibrary-iOS.bundle/iOSRepositories/LightStandard.car\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/PrivateFrameworks/AutomationMode.framework/AutomationMode\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/PrivateFrameworks/CoreUI.framework/DesignLibrary-iOS.bundle/iOSRepositories/DarkStandard.car\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/Developer/Library/PrivateFrameworks/XCTestSupport.framework/XCTestSupport\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/LinguisticData/en/US/hyphenation.dat\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/usr/share/icu/icudt78l.dat\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/Developer/Library/PrivateFrameworks/XCTAutomationSupport.framework/XCTAutomationSupport\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/PrivateFrameworks/DTXConnectionServices.framework/DTXConnectionServices\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/PrivateFrameworks/AccessibilityAudit.framework/AccessibilityAudit\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/IntentsUI.axbundle/IntentsUI\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/StoreKitFramework.axbundle/StoreKitFramework\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/RealityKit.axbundle/RealityKit\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/GeoServices.axbundle/GeoServices\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/AuthenticationServices.axbundle/AuthenticationServices\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/CameraEditKitFramework.axbundle/CameraEditKitFramework\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/MapKitFramework.axbundle/MapKitFramework\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/LinkPresentation.axbundle/LinkPresentation\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/VisionKitCore.axbundle/VisionKitCore\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/FrontBoard.axbundle/FrontBoard\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/QuickLook.axbundle/QuickLook\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/ARKit.axbundle/ARKit\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/FeedbackCore.axbundle/FeedbackCore\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/PrintKitUI.axbundle/PrintKitUI\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/PrivateFrameworks/UIUnderstanding.framework/UIUnderstanding\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/AssistantServices.axbundle/AssistantServices\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/iTunesStoreFramework.axbundle/iTunesStoreFramework\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebKit.axbundle/WebKit\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/MobileSafariFramework.axbundle/MobileSafariFramework\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/SafariServices.axbundle/SafariServices\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/SpriteKit.axbundle/SpriteKit\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/BaseBoardUI.axbundle/BaseBoardUI\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/TelephonyUIFramework.axbundle/TelephonyUIFramework\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/MapKitSwiftUI.axbundle/MapKitSwiftUI\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/MediaPlayerFramework.axbundle/MediaPlayerFramework\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/TemplateKit.axbundle/TemplateKit\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebKitLegacy.axbundle/WebKitLegacy\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/ProxCardKit.axbundle/ProxCardKit\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/SafariSharedUI.axbundle/SafariSharedUI\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/PhotoLibraryServices.axbundle/PhotoLibraryServices\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebCore.axbundle/WebCore\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/PrivateFrameworks/SFSymbols.framework/CoreGlyphs.bundle/Assets.car\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/Fonts/Core/SFUI.ttf\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/SearchFoundation.axbundle/SearchFoundation\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/PhotosFramework.axbundle/PhotosFramework\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/RealityFoundation.axbundle/RealityFoundation\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/HelpKit.axbundle/HelpKit\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/SpringBoardFoundation.axbundle/SpringBoardFoundation\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/DocumentManager.axbundle/DocumentManager\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/SceneKit.axbundle/SceneKit\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/SiriUICore.axbundle/SiriUICore\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebUI.axbundle/WebUI\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/CoverSheetKit.axbundle/CoverSheetKit\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/SocialLayer.axbundle/SocialLayer\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/SharedWithYouFramework.axbundle/SharedWithYouFramework\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/PhotoLibraryFramework.axbundle/PhotoLibraryFramework\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/SocialFramework.axbundle/SocialFramework\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/AnnotationKit.axbundle/AnnotationKit\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/Frameworks/FileProvider.framework/OverrideBundles/FileProviderOverride.bundle/FileProviderOverride\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/Frameworks/FileProvider.framework/OverrideBundles/iCloudDriveFileProviderOverride.bundle/iCloudDriveFileProviderOverride\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/PrivateFrameworks/SFSymbols.framework/CoreGlyphsPrivate.bundle/Assets.car\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/PrivateFrameworks/CoreNLP.framework/tokruleLE.data\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/PrivateFrameworks/UIKitCore.framework/Artwork.bundle/Assets.car\nftxt\nn/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/var/db/lsd/com.apple.LaunchServices-33554481-v2.csstore\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/usr/share/langid/langid.inv\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/Caches/com.apple.dyld/dyld_sim_shared_cache_arm64\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/Caches/com.apple.dyld/dyld_sim_shared_cache_arm64.01\nf0\nn/dev/null\nf1\nn/dev/ttys001\nf2\nn/dev/ttys001\nf3\nn->0x9495038c7ea74b37\nf5\nn/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/var/run/memory_warning_simulation\nf9\nn/System/Volumes/Preboot/Cryptexes/OS\n",
+    "saved12AndPrevious10Exact": true,
+    "observedAfterNativeAttachment": "original-denied-readable-ready",
+    "hostDeletedWorkspace": false,
+    "timingScope": "3s host guard after ready capture, not error-to-delete latency"
+  },
+  "successfulReview": {
+    "ownedRoots": {
+      "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/80DAFEF5-B792-45CD-8090-0355FDE4C8CC/tmp/LumenBackupWork-v1-69282-3E194E68-E253-4EEB-8783-00DEE96C5A40": {
+        "owner": {
+          "pid": 69282,
+          "version": 1,
+          "id": "3E194E68-E253-4EEB-8783-00DEE96C5A40"
+        },
+        "files": {
+          ".lumen-workspace-owner.json": {
+            "bytes": 69,
+            "sha256": "b2e5e1c6375fa7582dab7aa4e2762f2809b1c2469500a19b377b316e3e76dd15",
+            "base64": "eyJwaWQiOjY5MjgyLCJ2ZXJzaW9uIjoxLCJpZCI6IjNFMTk0RTY4LUUyNTMtNEVFQi04NzgzLTAwREVFOTZDNUE0MCJ9"
+          },
+          "selected-backup": {
+            "bytes": 831,
+            "sha256": "bad71f0672b2e44ec7d2828be49d3cc758b4dc48c57b6639d55be5a72bc9da38",
+            "base64": "eyJhcHAiOiJMdW1lbiIsInJlYWRhYmxlVmVyc2lvbiI6MSwiZXhwb3J0ZWRBdCI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwicHJvZmlsZSI6eyJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwiaXNTdWJzY3JpYmVkIjpmYWxzZSwibmFtZSI6IlN5bnRoZXRpYyBiYWNrdXAgcmVjb3ZlcnkiLCJvbmJvYXJkaW5nRG9uZSI6ZmFsc2UsInNsZWVwTmVlZCI6Mjk0MDAsInNsZWVwTmVlZENvbmZpZGVuY2UiOjAuMywid2FrZUdvYWwiOnsiaG91ciI6NywibWludXRlIjowfX0sImdvYWxzIjp7ImFjdGl2ZUNhbEdvYWwiOjYwMCwiYWN0aXZpdHlMZXZlbCI6Im1vZGVyYXRlIiwiYWdlIjozMCwiZXhlcmNpc2VHb2FsTWluIjozMCwiZ29hbCI6Im1haW50YWluIiwiaGVpZ2h0Q20iOjE3OCwic2V4IjoidW5zcGVjaWZpZWQiLCJzdGFuZEdvYWwiOjEyLCJzdGVwR29hbCI6MTAwMDAsIndlaWdodEtnIjo3NX0sInBlcnNvbmFsLWNvbnRleHQiOnsiYWxsZXJnaWVzIjoiIiwiZm9jdXMiOiIiLCJmb29kUHJlZmVyZW5jZXMiOiIiLCJpbmNsdWRlSW5Bc3Npc3RhbnQiOmZhbHNlLCJsaW1pdGF0aW9ucyI6IiIsIm5vdGVzIjoiIiwic2NoZWR1bGUiOiIifSwiaGFiaXRzIjpbXSwic2xlZXAiOltdLCJtZWFscyI6W10sIndvcmtvdXRzIjpbXSwid2F0ZXIiOlt7ImRhdGUiOiIyMDI2LTExLTAyVDEyOjAwOjAwWiIsImlkIjoic3ludGhldGljLWJhY2t1cC1yZWNvdmVyeS13YXRlciIsIm1sIjoyNDZ9XSwiY29udmVyc2F0aW9ucyI6W10sInN5bXB0b21zIjpbXSwiY2hlY2staW5zIjpbXSwiZG9jdW1lbnRzIjpbXSwiaW1wb3J0ZWQtZGF5cyI6W10sImltcG9ydC1yZWNlaXB0cyI6W119"
+          }
+        }
+      }
+    },
+    "saved12AndPrevious10Exact": true,
+    "observedAfterNativeAttachment": "original-denied-readable-retry-off"
+  },
+  "finalCleanup": {
+    "rootsAbsent": true,
+    "liveNoOpenPaths": "p69282\nfcwd\nn/\nftxt\nn/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Bundle/Application/7133F231-B4BB-4E93-9FDF-78760152A9B1/Lumen.app/Lumen\nftxt\nn/private/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/com.dbakp.lumen/5877834E-C22A-4008-9FD4-682BEFCB4C79-68844-0000228C5FF679FF/45D9DBE1-FABF-4C53-8451-F610F6CA13EF-69282.profraw\nftxt\nn/usr/lib/system/libsystem_kernel.dylib\nftxt\nn/usr/lib/dyld\nftxt\nn/usr/lib/system/libsystem_platform.dylib\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/usr/lib/dyld_sim\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/usr/lib/libMainThreadChecker.dylib\nftxt\nn/usr/lib/system/libsystem_pthread.dylib\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/usr/lib/libRPAC.dylib\nftxt\nn/private/var/db/timezone/tz/2026d.1.0/icutz/icutz44l.dat\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/usr/lib/libobjc-trampolines.dylib\nftxt\nn/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Bundle/Application/7133F231-B4BB-4E93-9FDF-78760152A9B1/Lumen.app/Assets.car\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/PrivateFrameworks/CoreUI.framework/DesignLibrary-iOS.bundle/iOSRepositories/LightStandard.car\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/PrivateFrameworks/AutomationMode.framework/AutomationMode\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/PrivateFrameworks/CoreUI.framework/DesignLibrary-iOS.bundle/iOSRepositories/DarkStandard.car\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/Developer/Library/PrivateFrameworks/XCTestSupport.framework/XCTestSupport\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/LinguisticData/en/US/hyphenation.dat\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/usr/share/icu/icudt78l.dat\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/Developer/Library/PrivateFrameworks/XCTAutomationSupport.framework/XCTAutomationSupport\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/PrivateFrameworks/DTXConnectionServices.framework/DTXConnectionServices\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/PrivateFrameworks/AccessibilityAudit.framework/AccessibilityAudit\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/IntentsUI.axbundle/IntentsUI\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/StoreKitFramework.axbundle/StoreKitFramework\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/RealityKit.axbundle/RealityKit\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/GeoServices.axbundle/GeoServices\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/AuthenticationServices.axbundle/AuthenticationServices\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/CameraEditKitFramework.axbundle/CameraEditKitFramework\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/MapKitFramework.axbundle/MapKitFramework\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/LinkPresentation.axbundle/LinkPresentation\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/VisionKitCore.axbundle/VisionKitCore\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/FrontBoard.axbundle/FrontBoard\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/QuickLook.axbundle/QuickLook\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/ARKit.axbundle/ARKit\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/FeedbackCore.axbundle/FeedbackCore\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/PrintKitUI.axbundle/PrintKitUI\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/PrivateFrameworks/UIUnderstanding.framework/UIUnderstanding\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/AssistantServices.axbundle/AssistantServices\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/iTunesStoreFramework.axbundle/iTunesStoreFramework\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebKit.axbundle/WebKit\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/MobileSafariFramework.axbundle/MobileSafariFramework\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/SafariServices.axbundle/SafariServices\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/SpriteKit.axbundle/SpriteKit\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/BaseBoardUI.axbundle/BaseBoardUI\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/TelephonyUIFramework.axbundle/TelephonyUIFramework\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/MapKitSwiftUI.axbundle/MapKitSwiftUI\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/MediaPlayerFramework.axbundle/MediaPlayerFramework\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/TemplateKit.axbundle/TemplateKit\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebKitLegacy.axbundle/WebKitLegacy\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/ProxCardKit.axbundle/ProxCardKit\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/SafariSharedUI.axbundle/SafariSharedUI\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/PhotoLibraryServices.axbundle/PhotoLibraryServices\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebCore.axbundle/WebCore\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/PrivateFrameworks/SFSymbols.framework/CoreGlyphs.bundle/Assets.car\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/Fonts/Core/SFUI.ttf\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/SearchFoundation.axbundle/SearchFoundation\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/PhotosFramework.axbundle/PhotosFramework\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/RealityFoundation.axbundle/RealityFoundation\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/HelpKit.axbundle/HelpKit\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/SpringBoardFoundation.axbundle/SpringBoardFoundation\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/DocumentManager.axbundle/DocumentManager\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/SceneKit.axbundle/SceneKit\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/SiriUICore.axbundle/SiriUICore\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebUI.axbundle/WebUI\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/CoverSheetKit.axbundle/CoverSheetKit\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/SocialLayer.axbundle/SocialLayer\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/SharedWithYouFramework.axbundle/SharedWithYouFramework\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/PhotoLibraryFramework.axbundle/PhotoLibraryFramework\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/SocialFramework.axbundle/SocialFramework\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/AnnotationKit.axbundle/AnnotationKit\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/Frameworks/FileProvider.framework/OverrideBundles/FileProviderOverride.bundle/FileProviderOverride\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/Frameworks/FileProvider.framework/OverrideBundles/iCloudDriveFileProviderOverride.bundle/iCloudDriveFileProviderOverride\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/PrivateFrameworks/SFSymbols.framework/CoreGlyphsPrivate.bundle/Assets.car\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/PrivateFrameworks/CoreNLP.framework/tokruleLE.data\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/PrivateFrameworks/UIKitCore.framework/Artwork.bundle/Assets.car\nftxt\nn/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/var/db/lsd/com.apple.LaunchServices-33554481-v2.csstore\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/usr/share/langid/langid.inv\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/Caches/com.apple.dyld/dyld_sim_shared_cache_arm64\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/Caches/com.apple.dyld/dyld_sim_shared_cache_arm64.01\nf0\nn/dev/null\nf1\nn/dev/ttys001\nf2\nn/dev/ttys001\nf3\nn->0x9495038c7ea74b37\nf5\nn/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/var/run/memory_warning_simulation\nf9\nn/System/Volumes/Preboot/Cryptexes/OS\n",
+    "saved12AndPrevious10Exact": true,
+    "hostDeletedWorkspace": false,
+    "observedAfterNativeAttachment": "original-denied-readable-final-parent"
+  },
+  "permissionFault": {
+    "target": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/80DAFEF5-B792-45CD-8090-0355FDE4C8CC/tmp/LumenBackupWork-v1-69282-C49210FF-EA7E-43C4-B8F9-31BC0F47EA2D/selected-backup",
+    "inode": 42156388,
+    "bytes": 831,
+    "modeBefore": 384,
+    "modeAfter": 0,
+    "actualHostOpenErrno": 13,
+    "actualAppAndHostUID": 501,
+    "appliedAfterNativeObservedCapture": true,
+    "providerUnchanged": true,
+    "hostDeletedWorkspace": false,
+    "inputDescriptorStillOpen": "p69282\nf6\ntREG\ni40968465\nn/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Shared/AppGroup/F1085B1A-CF05-478B-A5BD-DE328D3F99B8/File Provider Storage/00 Lumen readable checks/Lumen-readable-health-small.json\n",
+    "outputDescriptorStillOpen": "p69282\nf7\ntREG\ni42156388\nn/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/80DAFEF5-B792-45CD-8090-0355FDE4C8CC/tmp/LumenBackupWork-v1-69282-C49210FF-EA7E-43C4-B8F9-31BC0F47EA2D/selected-backup\n"
+  },
+  "verifierSHA256": "37f0054eccd9b20aef5d0a6ff801b9de159417d7d9cd8f97c7a7bae56a0185cb",
+  "scope": "Actual OS EACCES13 denied-open after tiny completed provider copy. Host changes only verified disposable copied target permissions600to000 after both descriptors/source bytes are observed; actual app/host share nonroot UID. Native permission error, both copy descriptors close without cancellation, failed workspace gone/no open paths. Original provider and saved12/prior10 unchanged, fresh healthy copy/review/final cleanup. Not EIO inside active read/midwrite/multichunk/capacity/all fault/appearance/full original gates."
+}

@@ -1,0 +1,63 @@
+{
+  "status": "Source98 code inspection; no new payload-stage runtime pass/failure or latency inferred",
+  "source": "durable-source-r98.json",
+  "inputs": {
+    "Lumen/Services/BackupService.swift": {
+      "bytes": 27347,
+      "sha256": "41a70809ea3c165ee6c117110cfe44ba83fd99b3e2279febbf8292066036d1b1"
+    },
+    "Lumen/Models/BackupArchive.swift": {
+      "bytes": 17024,
+      "sha256": "9c8daca0219ee0ff1368cb67a3d15023fef80857a8c17929f3c293edaf7d4cbe"
+    },
+    "Lumen/Models/BackupPackage.swift": {
+      "bytes": 21069,
+      "sha256": "01ec4fb72b4128d29a4c535b1f1d86b46ce01f79953d2cd2b6111674308a2293"
+    },
+    "Lumen/Algorithms/ReadableExport.swift": {
+      "bytes": 19331,
+      "sha256": "c2c03259625fc0d74e4b3cb4724d1ac46b880e1fd32b053b128f7f34e4d350c3"
+    },
+    "Lumen/Models/HealthLocalFiles.swift": {
+      "bytes": 8225,
+      "sha256": "47658a43536f5817d334741e964ac1f25575044163dbb84e884c870e79b673ae"
+    },
+    "Lumen/Views/BackupView.swift": {
+      "bytes": 21138,
+      "sha256": "94f25af2eb5e6162132f1cef84ad3ff5b54a3f67a76c3ff03fb301e7b9ec1b7a"
+    },
+    "Lumen/Views/ReadableExportView.swift": {
+      "bytes": 19502,
+      "sha256": "87538c9096c39fed6ec38b7bc8e820fb5c44c476a15f080dbd69436aaed4b823"
+    }
+  },
+  "findings": [
+    {
+      "route": "legacy JSON",
+      "actualPath": "BackupView.select -> BackupService.select -> BackupService.read -> source.verify -> Data(contentsOf:options:.mappedIfSafe) -> BackupArchive.read -> source.verify",
+      "finding": "File payload load has no shared control/chunk loop; BackupArchive.read accepts no control and performs two synchronous decoder calls plus whole-payload digest/validation. Caller checks cancellation after return. This is distinct from already-held copy/source-identity reads.",
+      "evidence": "BackupService.swift:219, BackupArchive.swift:145-155; exact source archive retained."
+    },
+    {
+      "route": "readable export",
+      "actualPath": "ReadableTransferSession.read -> selectReadable -> convertReadable -> source.verify -> Data(contentsOf:options:.mappedIfSafe) -> ReadableExport.read(control:) -> source.verify",
+      "finding": "Decoder/parser already uses actual operation control and JSONFieldAudit, but preceding file load has no shared control/chunk loop.",
+      "evidence": "BackupService.swift:366; ReadableExport.swift:149 onward."
+    },
+    {
+      "route": "encrypted",
+      "actualPath": "BackupView.unlock -> BackupService.read -> source.verify -> BackupPackage.read -> ArchiveByteStream decryption -> frame/record decode -> photo check -> source.verify",
+      "finding": "Unlock has a fresh actual control not currently registered by DEBUG selected-import probe. Stream bytes loop checks control before reads but requests the entire remaining record, up to32MiB, from decryption stream. Need actual mid-stream hold, cancellation and close/resource audits, not source verification counted as unlock proof.",
+      "evidence": "BackupView.swift:218 onward; BackupPackage.swift:152-271. No timing failure inferred."
+    }
+  ],
+  "requiredNext": [
+    "Preserve current exact source before changes and retain baseline defects if reproduced; actual normal Files routes and original-file provenance must remain intact.",
+    "Legacy/readable payload file loading should reuse bounded no-follow regular-file helper with same actual control, format limits and distinct stage. Preserve existing errors/preview compatibility; keep original verification before and after.",
+    "Add meaningful real-file and archive-control tests, including pre-cancelled/mid-read/malformed/changing/symlink/oversized inputs, healthy retry and unchanged sources; freeze selected pure/native inputs and rerun affected focused/full logic suites after production changes.",
+    "Separate original payload read holds from first identity/hash verification. Register actual encrypted unlock control, observe actual decrypt stream close and resource ownership; add native Back/Cancel/retry per applicable route.",
+    "Match each product lifetime: BackupView visible Cancel during encrypted unlock keeps its already selected original for same-file password retry; do not impose copy-stage removal while that parent still owns it. Audit decrypted/extracted cleanup separately. Actual Back clears parent ownership, but original/extracted cleanup must wait for last worker/reader; replacement must not delete another live input. ReadableTransferSession releases its source on failed conversion/closed session as its code specifies. Verify actual stages and fresh controls, not assumed ordinal1 across encrypted selection then unlock.",
+    "Do not claim synchronous Foundation decoder/digest calls become interruptible by checks around them. Measure bounded worst-case responsiveness and keep any unexercised decoding/capacity windows open.",
+    "Preserve all parent contracts/full nextRequired/original eight groups and broader goal; no new design acceptance or partial publication."
+  ]
+}

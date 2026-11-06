@@ -1,0 +1,67 @@
+{
+  "status": "PROGRESS: Source89 two main-normal actual retained verification-JPEG source-change cases pass; no stale image and no app writes. Full goal active; Batch43 unpublished.",
+  "source": "durable-source-r89.json",
+  "pureSource": "local-domain-pure-source-r54.json",
+  "contract": "health-held-photo-change-r1-contract.json",
+  "nativeBuild": "health-held-photo-change-native-build-r1.json",
+  "cases": [
+    {
+      "mode": "in-place",
+      "passedXCTests": 1,
+      "failedXCTests": 0,
+      "hostAudit": "health-held-photo-in-place-r1-host-audit.json",
+      "nativeReadback": "health-held-photo-in-place-r1-8581F471-3056-41CE-AEC5-FF58AA6F58F5.json",
+      "protectedFiles": 21,
+      "explicitHostChangedPaths": [
+        ".health-recovery/discovered-1dbb3ed6a7e316fa67a51bc1404df1b150133e33adba949004f2fc9618ecb5fe/photos/synthetic-review-photo.jpg"
+      ],
+      "unaffectedFiles": 20,
+      "heldSourceBytes": 1023,
+      "newPathInode": 41472150,
+      "openReaderInode": 41472150,
+      "nativeError": "This photo changed or couldn't be opened. Return to check copies again.",
+      "imageExists": false,
+      "descriptorClosed": true
+    },
+    {
+      "mode": "replacement",
+      "passedXCTests": 1,
+      "failedXCTests": 0,
+      "hostAudit": "health-held-photo-replacement-r1-host-audit.json",
+      "nativeReadback": "health-held-photo-replacement-r1-481EDFA2-61B6-47F1-8C1E-6351EEBFE12B.json",
+      "protectedFiles": 21,
+      "explicitHostChangedPaths": [
+        ".health-recovery/discovered-fa9c465793355c958ba17bdb77573950996b353dfb660b4c5b7b80ee6814975d/photos/synthetic-review-photo.jpg"
+      ],
+      "unaffectedFiles": 20,
+      "heldSourceBytes": 1023,
+      "newPathInode": 41474510,
+      "openReaderInode": 41474213,
+      "nativeError": "This photo changed or couldn't be opened. Return to check copies again.",
+      "imageExists": false,
+      "descriptorClosed": true
+    }
+  ],
+  "sourceCarry": {
+    "onlyChangedSelectedInput": "LumenUITests/LumenSmokeTests.swift",
+    "appBinaryExactSource88": true,
+    "productionAppInputsExactSource88": true,
+    "pure128SelectedInputsAndTwoJPEGFixturesExactSource88": true,
+    "pureCompiledSwiftInputs": 125,
+    "focused63AndFull2138ExecutionBoundary": "Source87; unchanged pure inputs, not rerun"
+  },
+  "originalPNGs": 4,
+  "originalJSONReadbacks": 2,
+  "rootOriginalPNGsOpened": 4,
+  "completeRetainedLogs": 203,
+  "scope": "Actual first retained photo verification read after its JPEG bytes have been read but before final descriptor/path checks, with real UI/worker control and actual open descriptor independently read before mutation/release. Host rewrites or replaces only dedicated synthetic private JPEG. Both expected native error/no-image/closed-state results pass. All other20 regular files including current photo/current records/private metadata/intent/receipts remain exact. No source restoration/retry or final payload-read-window acceptance.",
+  "remainingScope": "Retained-photo source mutation/replacement remains required; actual held photo cancellation/Back/retry now passes only main normal at88. Retained photo holds/source mutation; original import and typed record/photo held cancellation/source replacement across all3 file routes (readable photos explicitly absent); current full file/meal/photo/all-domain/empty/fault/retry/capacity/cache/healthy-merge/preferences/profile/weight/normal-dark-largest/both-phone/continuing critic; all original contracts/eight groups, legacy/symlink/discovery/target/Watch/widget/reminder/Health daemon/actual interruption/SDK/current Release/signed-device/publication and broader product/evidence/privacy/provider/accessibility/performance goal.",
+  "next": "Actual final retained photo payload-read source changes and restored-source retry, then all three selected-file import/typed record/applicable-photo hold/cancellation/source/selection/lifetime cases. Preserve every full parent/original contract, appearance/critic/device/Release/publication and broader product gate.",
+  "iphone": "Personal iPhone remains on requested normally launched Source84 signed Release; no fixture run/reset or later development install.",
+  "storage": {
+    "availableApproxGiB": 70,
+    "manualRecoveredBytes": 0,
+    "policy": "Current inputs/skill/unpublished evidence and single immediately reused native/pure/package roots kept. No global/unrelated cache/runtime cleanup. No docs-only rebuild."
+  },
+  "failuresThisPhase": []
+}
