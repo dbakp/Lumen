@@ -1,0 +1,28 @@
+{
+  "status": "CONFIRMED ancillary host report dimension field incorrect; original evidence retained",
+  "checkedAt": 1793976200.387682,
+  "source": "durable-source-r163.json",
+  "case": "main-normal-r3",
+  "driver": "health-daily-appearance-driver-r3.py",
+  "driverSHA256": "a4c4f614cfb29e70aa437fd090a47f2b349978e36e7d94cc6a8ce7edc8282624",
+  "hostAudit": "health-daily-appearance-main-normal-r3-host-audit.json",
+  "hostSHA256": "5b7fd5ca97596d01a2a6fba56f7cfc5af2746f8ecc573088596b50a9c4db571d",
+  "reportedLogicalDimensions": [
+    402,
+    "52.0"
+  ],
+  "nativeJSON": "health-daily-appearance-main-normal-r3-668A550F-5D02-4793-A381-E698185F7EBA.json",
+  "nativeJSONSHA256": "d9789e5035833ed25706fc23267b040dc96d984d22ec8da40584ff0e4a03fdf9",
+  "actualNativeLogicalDimensions": [
+    402,
+    874
+  ],
+  "actualPNGDimensions": [
+    1206,
+    2622
+  ],
+  "cause": "Driver line323 unpacks coverage match into height, replacing numeric simulator logical height with final element height string52.0. Native logical dimensions assertion ran earlier at line288 using correct874; final reporting field at line363 uses overwritten variable. Pixel dimensions use separate variables.",
+  "boundary": "Does not establish a product/render defect or invalidate the earlier actual native dimension assertion. Support report has a discrepancy and is not wholly clean. Do not rewrite frozen original host audit/packet or promote full matrix acceptance.",
+  "liveProducer": "DarkR3 uses same frozen driver and remains live session90034; do not change active producer, restart, or modify app/tests. Inspect actual dark result at terminal.",
+  "nextRequired": "After dark producer terminates, retain original cases and reporting discrepancy; fix coverage variable name in a separately versioned producer for subsequent cases, preserving full133prefix/SDK/host checks. Verify corrected reporting against nativeJSON and all PNG dimensions. All broader scopes/failed expectations remain."
+}
