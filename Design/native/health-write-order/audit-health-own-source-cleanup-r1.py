@@ -56,6 +56,22 @@ if outcome_path.exists():
     assert outcome["filesAfter"] == read(prefix + "before-query.json")["files"]
     assert outcome["preservedFiles"] == 21
     print("PASS fresh native query:18noData/0recorded/0failed; all21fileidentities preserved through archived checkpoint.")
-    print("Final navigation:", outcome["navigation"])
+    navigation = outcome["navigation"]
+    print("Final navigation:", {k: navigation[k] for k in ["notNow", "back", "idleAfterBackAtLeastSeconds", "originalLongWaitBaselinePreserved"] if k in navigation})
+    if navigation.get("notNow") is True:
+        baseline = read(navigation["beforeActionBaseline"])
+        assert navigation["back"] and navigation["idleAfterBackAtLeastSeconds"] >= 4
+        assert navigation["filesAfter"] == baseline["currentFiles"]
+        assert len(navigation["filesAfter"]) == 21
+        assert navigation["originalLongWaitBaselinePreserved"] is False
+        assert baseline["comparisonWithOriginalQueryBaseline"] is False
+        assert set(baseline["changes"]) == {"workouts.json", "sleep.json", "today.json", "healthSync.json", "habits.json", "profile.json"}
+        newer_raw = (root / "health-own-source-cleanup-r1-newer-raw.json").read_bytes()
+        import hashlib
+        assert hashlib.sha256(newer_raw).hexdigest() == navigation["filesAfter"]["today.json"]["sha256"]
+        newer = json.loads(newer_raw)
+        assert len(newer["readings"]) == 18
+        assert all(r["healthQuery"]["outcome"] == "noData" and r["components"] == [] for r in newer["readings"].values())
+        print("PASS actual Notnow/Back/idle preserves immediate21filebaseline including neweremptycache. Original long-wait21identityexpectation FAILED and retained; cause not attributed.")
 else:
     print("Final native navigation/file preservation outcome not yet archived.")
