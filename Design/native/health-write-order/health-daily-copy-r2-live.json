@@ -1,35 +1,34 @@
 {
-  "status": "TERMINAL main-largestR4 PASS; three compact captures and remaining visual review pending",
-  "checkedAt": 1793979996.4440808,
+  "status": "RUNNING compact-normalR4; all3main native cases terminal PASS; remaining visual reviews pending",
+  "checkedAt": 1793980216.416756,
   "source": "durable-source-r163.json",
   "build": "health-daily-copy-r2-build.json",
-  "execSession": 21136,
-  "producerPID": 25129,
-  "nativePID": 25157,
-  "command": "python3 Design/native/health-write-order/health-daily-appearance-driver-r4.py --source durable-source-r163.json --build health-daily-copy-r2-build.json --trial R4 --phone main --mode largest",
-  "producerLog": "/tmp/LumenBatch43Checks/HealthDailyAppearanceMainLargestR4Producer.log",
-  "nativeLog": "/tmp/LumenBatch43Checks/HealthDailyAppearanceMainLargestR4.log",
-  "result": "/tmp/LumenBatch43Checks/HealthDailyAppearanceMainLargestR4.xcresult",
-  "mustWaitExistingHandle": "21136 has ended0; do not restart. Independent live-file audit completed before any next fixture reset.",
-  "case": "main-largestR4",
+  "execSession": 39121,
+  "producerPID": 75085,
+  "nativePID": 75331,
+  "command": "python3 Design/native/health-write-order/health-daily-appearance-driver-r4.py --source durable-source-r163.json --build health-daily-copy-r2-build.json --trial R4 --phone compact --mode normal",
+  "producerLog": "/tmp/LumenBatch43Checks/HealthDailyAppearanceCompactNormalR4Producer.log",
+  "nativeLog": "/tmp/LumenBatch43Checks/HealthDailyAppearanceCompactNormalR4.log",
+  "result": "/tmp/LumenBatch43Checks/HealthDailyAppearanceCompactNormalR4.xcresult",
+  "mustWaitExistingHandle": "Re-poll existing39121/75085/75331; never restart on observation timeout, no concurrent native builds.",
+  "case": "compact-normalR4",
   "remainingCases": [
-    "compact-normalR4",
     "compact-darkR4",
     "compact-largestR4"
   ],
   "mainNormalReview": "158/158root+critic,1/1JSON,7supportfiles and corrected dimension supplement reviewed; original R3 report defect retained",
-  "mainDarkReview": "root116/158 originals,1/1 native JSON; continuing critic90/158, dark JSON/support pending",
+  "mainDarkReview": "root158/158 individually original detail and1/1full nativeJSON; critic100/158, darkJSON/support pending",
   "previousCase": {
-    "case": "main-darkR3",
+    "case": "main-largestR4",
     "producerExitCode": 0,
     "nativeExitCode": 0,
-    "outcome": "health-daily-appearance-main-dark-r3-outcome.json",
-    "backedUpMain": "cc5cfcf88692cbbfb825dc55d19c2dfcbca94245"
+    "outcome": "health-daily-appearance-main-largest-r4-outcome.json",
+    "backedUpMain": "0d1aa424b177244b8c1506e3d6e877cf94008ffd",
+    "exactGitHubEvidencePathsVerified": 191,
+    "beforeNextReset": true
   },
   "reportingRepair": "R4 first actual case terminal PASS; all173 original PNG/nativeJSON/host dimensions agree",
   "physicalIPhone": "no further action authorized",
   "storageCleanup": "health-daily-appearance-main-normal-r3-raw-export-cleanup.json;159verified rawduplicates removed,65,216,512 measured free bytes recovered; canonical originals retained",
-  "producerExitCode": 0,
-  "nativeExitCode": 0,
-  "outcome": "health-daily-appearance-main-largest-r4-outcome.json"
+  "mainLargestReview": "173originalPNG/1nativeJSON root and critic pending"
 }
