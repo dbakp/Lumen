@@ -1,7 +1,7 @@
 {
   "round": 2,
   "source": "durable-source-r163.json",
-  "scope": "First of six required appearances. Main-normal capture and all 158 original visual reviews plus 1 native JSON and seven support reads complete. Clean case support pass pending ancillary host logical-height discrepancy; overall Round2 incomplete, five appearances pending. No score, R1-C1 closure, broader acceptance or product completion.",
+  "scope": "First of six required appearances. Main-normal review complete: 158 original PNG, 1 native JSON, seven packet support files plus supplemental dimension audit. Correct dimensions independently resolved; original host logical-height defect retained, original report not clean. Five appearances pending; no overall Round2 score, R1-C1 closure or broader acceptance.",
   "packets": [
     {
       "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-daily-copy-r2-main-normal-packet.json",
@@ -6335,9 +6335,9 @@
         "remainingFixtureSamples": 0,
         "independentHostAndSDKHashesMatched": true
       },
-      "reviewComplete": false,
+      "reviewComplete": true,
       "allRequiredReadsComplete": true,
-      "status": "All case originals/native JSON/support reads complete; clean support pass pending resolution of ancillary logical-height discrepancy.",
+      "status": "Main-normal case review complete with independently resolved dimension fact via supplemental audit; original host reporting defect remains explicitly retained. Original host not relabelled clean.",
       "supportDiscrepancies": [
         {
           "file": "health-daily-appearance-main-normal-r3-host-audit.json",
@@ -6355,10 +6355,60 @@
             2622
           ],
           "finding": "Ancillary host logical-height field is inconsistent. Actual native JSON and all PNG sizes agree at 3x. No render defect inferred; support file not modified by critic.",
-          "blocksCleanCaseSupportPass": true,
-          "producerDiagnosticReportedByRoot": "Root confirmed unchanged R3 producer coverage loop shadows height with final capture height string 52.0 after earlier native logical-height assertion passed at 874. Reviewer independently verified native JSON 402x874 and all PNG 1206x2622; producer line diagnosis supplied by root, not independently source-read here. Original support/packet retained; no clean-support claim."
+          "blocksCleanCaseSupportPass": false,
+          "producerDiagnosticReportedByRoot": "Root confirmed unchanged R3 producer coverage loop shadows height with final capture height string 52.0 after earlier native logical-height assertion passed at 874. Reviewer independently verified native JSON 402x874 and all PNG 1206x2622; producer line diagnosis supplied by root, not independently source-read here. Original support/packet retained; no clean-support claim.",
+          "independentlyResolvedBySupplement": true,
+          "originalReportingDefectRetained": true
         }
-      ]
+      ],
+      "supplementalDimensionsReview": {
+        "reviewedUTC": "2026-11-06T14:47:05.732804+00:00",
+        "files": [
+          {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/audit-health-daily-appearance-dimensions-r1.py",
+            "bytes": 3476,
+            "sha256": "fded21725bc0417d18b2edbdf264e968cb0f6657c6ef6013d02b7ed1fba24bac"
+          },
+          {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-daily-appearance-main-normal-r3-dimensions-audit.json",
+            "bytes": 1145,
+            "sha256": "a50f4f8665059b95c5ac3250a9a1dfd71f2265efadf3292a7609e87a299aee6d"
+          },
+          {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-daily-appearance-driver-r3.py",
+            "bytes": 25036,
+            "sha256": "a4c4f614cfb29e70aa437fd090a47f2b349978e36e7d94cc6a8ce7edc8282624"
+          },
+          {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-daily-appearance-driver-r4.py",
+            "bytes": 25145,
+            "sha256": "333e519a02b1ca8296f5ad4ade217ed3fd3f2a4e4af9fb835a7b7524935cd17c"
+          }
+        ],
+        "readBoundary": "Full supplemental auditor and output read; complete R3-to-R4 textual diff examined and independently matched to only two coverage-variable substitutions and one final dimension equality assertion. R3 full unrelated producer body not re-reviewed.",
+        "independentChecks": {
+          "originalPNGCount": 158,
+          "nativeJSONCount": 1,
+          "allPNGHashLengthAndDimensionsMatched": true,
+          "nativeJSONHashAndDimensionsMatched": true,
+          "auditorHostNativeDriverSHA256Matched": true,
+          "actualNativeLogicalDimensions": [
+            402,
+            874
+          ],
+          "actualPNGDimensions": [
+            1206,
+            2622
+          ],
+          "originalHostDimensionFieldMatchesNative": false,
+          "originalHostUnchanged": true,
+          "immutablePacketAndFrozenFilesUnchanged": true
+        },
+        "correctedDimensionFactResolved": true,
+        "originalReportRelabelledClean": false,
+        "futureR4RuntimeExecuted": false,
+        "scope": "Supplemental dimension reporting correction only; no new render or live producer execution, no change to R1 history, dim native alert limitation, six-appearance or broader gates."
+      }
     }
   ],
   "requiredCases": [
@@ -6433,8 +6483,8 @@
   ],
   "nextUnopenedIndex": 158,
   "pendingProvidedOriginals": 0,
-  "lastCheckpointUTC": "2026-11-06T14:43:12.603177+00:00",
-  "storageCheckpointAvailableBytes": 60148129792,
+  "lastCheckpointUTC": "2026-11-06T14:47:05.733679+00:00",
+  "storageCheckpointAvailableBytes": 59731824640,
   "manualRecoveredBytes": 0,
-  "reviewStatus": "IN PROGRESS overall: main-normal 158/158 originals and 1/1 native JSON, 7/7 support files read. One ancillary support discrepancy blocks clean case pass; no new product visual failure. Five other appearances pending; no Round2 score/acceptance."
+  "reviewStatus": "IN PROGRESS overall: main-normal reviewed completely with documented supplemental reporting correction. Original host discrepancy retained; future R4 producer runtime unexecuted. Five appearances pending; no Round2 score/acceptance."
 }

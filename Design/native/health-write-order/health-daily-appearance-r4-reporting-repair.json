@@ -1,0 +1,20 @@
+{
+  "status": "Prepared producer-only report correction; no R4 native execution yet",
+  "checkedAt": 1793976398.323542,
+  "source": "durable-source-r163.json",
+  "sourceInputsVerified": 259,
+  "priorDriver": "health-daily-appearance-driver-r3.py",
+  "priorSHA256": "a4c4f614cfb29e70aa437fd090a47f2b349978e36e7d94cc6a8ce7edc8282624",
+  "newDriver": "health-daily-appearance-driver-r4.py",
+  "newSHA256": "333e519a02b1ca8296f5ad4ade217ed3fd3f2a4e4af9fb835a7b7524935cd17c",
+  "exactOnlyChanges": [
+    "Coverage match uses capture_height without replacing simulator height",
+    "Final host logical dimensions asserted equal actual nativeJSON dimensions"
+  ],
+  "pythonASTParse": "PASS both new files",
+  "full133PrefixSDKHostFlowUnchanged": true,
+  "mainNormalSupplement": "health-daily-appearance-main-normal-r3-dimensions-audit.json",
+  "originalR3ReportPreserved": true,
+  "currentDarkR3": "Still running existing90034/PIDs; R3 file unchanged; do not restart",
+  "nextRequired": "After dark terminal export, independent live files and metadata/dimension audit before reset; publish exact case evidence then use R4 full producer for remaining appearances. No product/test changes or reduced gate."
+}
