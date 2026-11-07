@@ -13,12 +13,34 @@ enum HealthRecoveryCopies {
     static func serialized<T>(_ work: () throws -> T) rethrows -> T {
         lock.lock(); defer { lock.unlock() }; return try work()
     }
+    private struct LegacyDescriptor: Codable, Equatable {
+        let file: String
+        let sha256: String
+    }
     private struct Manifest: Codable {
         let version: Int
         let createdAt: Date
         let domains: [String]
         let photos: Bool
         let intent: Bool?
+        var legacyOrigins: [String: LegacyDescriptor]? = nil
+    }
+
+    struct LegacyRetention: Sendable {
+        fileprivate let directory: String
+        fileprivate let files: [String: Data]
+    }
+    private static func legacyName(_ domain: HealthLocalFiles.Domain) -> String { "legacy-origin-" + domain.rawValue + ".json" }
+
+    static func verifyLegacyRetention(_ retained: LegacyRetention, in stage: URL, control: BackupOperationControl) throws {
+        try control.checkCancellation()
+        let directory = stage.appendingPathComponent(name).appendingPathComponent(retained.directory)
+        try realDirectory(directory)
+        for (path, expected) in retained.files {
+            let actual = try boundedData(directory.appendingPathComponent(path), limit: HealthLegacyRecoveryOrigin.envelopeLimit, control: control)
+            guard actual == expected else { throw HealthLocalFiles.Failure.changed }
+        }
+        try control.checkCancellation()
     }
 
     /// A catalog is an observation, never permission to overwrite current data.
@@ -292,7 +314,7 @@ enum HealthRecoveryCopies {
             do {
                 try JSONFieldAudit.check(bytes, control: control)
                 let value = try decoder.decode(Manifest.self, from: bytes)
-                guard value.version == 1, value.createdAt.timeIntervalSince1970.isFinite,
+                guard validManifestShape(value), try validManifestEncoding(bytes, manifest: value), value.createdAt.timeIntervalSince1970.isFinite,
                       abs(value.createdAt.timeIntervalSince1970) <= 1_000_000_000_000,
                       value.domains.count <= HealthLocalFiles.Domain.allCases.count,
                       Set(value.domains).count == value.domains.count,
@@ -302,9 +324,39 @@ enum HealthRecoveryCopies {
             catch { return nil }
         }
         var observations: [DomainPreview] = []
+        var legacyComplete = true
+        if let manifest, manifest.version == 2 {
+            var expected = Set(manifest.domains.map { manifest.legacyOrigins?[$0]?.file ?? $0 + ".json" })
+            expected.insert("manifest.json")
+            if manifest.photos { expected.insert("photos") }
+            if manifest.intent ?? false { expected.insert(intentProvenanceName) }
+            legacyComplete = Set(try children(directory).map(\.lastPathComponent)) == expected
+        }
+        let malformedLegacyManifest = manifest == nil && manifestData.flatMap {
+            (try? JSONSerialization.jsonObject(with: $0)) as? [String: Any]
+        }.map { ($0["version"] as? Int) == 2 || $0["legacyOrigins"] != nil } == true
         for domain in HealthLocalFiles.Domain.allCases {
             try control.checkCancellation()
             let file = directory.appendingPathComponent(domain.rawValue + ".json")
+            let originFile = directory.appendingPathComponent(legacyName(domain))
+            let descriptor = manifest?.legacyOrigins?[domain.rawValue]
+            let hasOriginPath: Bool
+            do { hasOriginPath = try attributes(originFile) != nil }
+            catch is CancellationError { throw CancellationError() }
+            catch { legacyComplete = false; observations.append(.init(domain: domain, state: .unavailable, recordCount: nil, digest: nil, photos: [])); continue }
+            if descriptor != nil || hasOriginPath || malformedLegacyManifest {
+                var provenanceDigest: String?
+                do {
+                    guard let descriptor, descriptor.file == legacyName(domain), try attributes(file) == nil else { throw HealthLocalFiles.Failure.invalid }
+                    let bytes = try boundedData(originFile, limit: HealthLegacyRecoveryOrigin.envelopeLimit, control: control)
+                    provenanceDigest = digest(bytes)
+                    guard provenanceDigest == descriptor.sha256,
+                          try HealthLegacyRecoveryOrigin.Value.decode(bytes, control: control).domain == domain else { throw HealthLocalFiles.Failure.invalid }
+                } catch is CancellationError { throw CancellationError() }
+                catch { legacyComplete = false }
+                observations.append(.init(domain: domain, state: .unavailable, recordCount: nil, digest: provenanceDigest, photos: []))
+                continue
+            }
             do {
                 guard try attributes(file) != nil else {
                     observations.append(.init(domain: domain, state: .notIncluded, recordCount: nil, digest: nil, photos: [])); continue
@@ -351,7 +403,7 @@ enum HealthRecoveryCopies {
         }
         // A manifest does not make missing or extra payload files trustworthy.
         let actualDomains = observations.filter { $0.state != .notIncluded }.map { $0.domain.rawValue }.sorted()
-        let complete = manifest.map { $0.domains.sorted() == actualDomains } == true && !id.hasPrefix("pending-")
+        let complete = manifest.map { $0.domains.sorted() == actualDomains } == true && legacyComplete && !id.hasPrefix("pending-")
         let provenance = (try? attributes(directory.appendingPathComponent(intentProvenanceName))) != nil
         try control.checkCancellation()
         return Preview(id: id, createdAt: manifest?.createdAt, complete: complete, domains: observations,
@@ -368,12 +420,20 @@ enum HealthRecoveryCopies {
     /// Operates only inside an uninstalled transaction stage. Its existing
     /// raw paths move into a private copy before replacements are written.
     /// Any error discards that stage, leaving the source root untouched.
-    static func preserveReplacedDomains(in stage: URL, domains: Set<HealthLocalFiles.Domain>) throws {
-        guard !domains.isEmpty else { return }
+    @discardableResult
+    static func preserveReplacedDomains(in stage: URL, domains: Set<HealthLocalFiles.Domain>,
+                                       legacyOrigins: [HealthLocalFiles.Domain: HealthLegacyRecoveryOrigin] = [:],
+                                       control: BackupOperationControl = .init()) throws -> LegacyRetention? {
+        guard !domains.isEmpty else { return nil }
+        try control.checkCancellation()
         try Task.checkCancellation()
         for domain in domains {
             try Task.checkCancellation()
             let file = stage.appendingPathComponent(domain.rawValue + ".json")
+            if legacyOrigins[domain] != nil {
+                guard try attributes(file) == nil else { throw HealthLocalFiles.Failure.changed }
+                continue
+            }
             guard try attributes(file) != nil else { throw HealthLocalFiles.Failure.changed }
             var readable = false
             do {
@@ -384,7 +444,7 @@ enum HealthRecoveryCopies {
             catch { /* Preserve the actual failed path; never use a default. */ }
             guard !readable else { throw HealthLocalFiles.Failure.changed }
         }
-        try preserveDomains(in: stage, domains: domains)
+        return try preserveDomains(in: stage, domains: domains, legacyOrigins: legacyOrigins, control: control)
     }
 
     /// Cache replacement is an explicit, separate decision. A healthy cache
@@ -393,16 +453,29 @@ enum HealthRecoveryCopies {
     static func preserveDailyCache(in stage: URL) throws {
         try Task.checkCancellation()
         guard try attributes(stage.appendingPathComponent("today.json")) != nil else { return }
-        try preserveDomains(in: stage, domains: [.today], deduplicating: true)
+        _ = try preserveDomains(in: stage, domains: [.today], deduplicating: true)
     }
 
-    private static func preserveDomains(in stage: URL, domains: Set<HealthLocalFiles.Domain>, deduplicating: Bool = false) throws {
+    private static func preserveDomains(in stage: URL, domains: Set<HealthLocalFiles.Domain>, deduplicating: Bool = false,
+                                        legacyOrigins: [HealthLocalFiles.Domain: HealthLegacyRecoveryOrigin] = [:],
+                                        control: BackupOperationControl = .init()) throws -> LegacyRetention? {
+        try control.checkCancellation()
+        guard Set(legacyOrigins.keys).isSubset(of: domains), legacyOrigins.allSatisfy({ $0.key == $0.value.value.domain }),
+              legacyOrigins.values.reduce(0, { $0 + $1.value.bytes.count }) <= HealthLegacyRecoveryOrigin.aggregateLimit else { throw HealthLocalFiles.Failure.invalid }
         let base = try privateDirectory(in: stage)
         let retained = base.appendingPathComponent(UUID().uuidString)
         try FileManager.default.createDirectory(at: retained, withIntermediateDirectories: false, attributes: [.posixPermissions: 0o700])
+        var descriptors: [String: LegacyDescriptor] = [:], exactFiles: [String: Data] = [:]
         for domain in domains {
+            try control.checkCancellation()
             let name = domain.rawValue + ".json"
-            try FileManager.default.moveItem(at: stage.appendingPathComponent(name), to: retained.appendingPathComponent(name))
+            if let origin = legacyOrigins[domain] {
+                let name = legacyName(domain), bytes = try origin.value.encoded(control: control)
+                try bytes.write(to: retained.appendingPathComponent(name), options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
+                descriptors[domain.rawValue] = LegacyDescriptor(file: name, sha256: digest(bytes)); exactFiles[name] = bytes
+            } else {
+                try FileManager.default.moveItem(at: stage.appendingPathComponent(name), to: retained.appendingPathComponent(name))
+            }
         }
         let photos = stage.appendingPathComponent("photos")
         let hasPhotoPath = try attributes(photos) != nil
@@ -411,15 +484,21 @@ enum HealthRecoveryCopies {
         let intent = stage.appendingPathComponent(HealthWriteFiles.name)
         let hasIntent = try attributes(intent) != nil
         if hasIntent { try linkTree(from: intent, to: retained.appendingPathComponent(intentProvenanceName)) }
-        let manifest = Manifest(version: 1, createdAt: Date(), domains: domains.map(\.rawValue).sorted(), photos: hasPhotos, intent: hasIntent)
+        let manifest = Manifest(version: descriptors.isEmpty ? 1 : 2, createdAt: Date(), domains: domains.map(\.rawValue).sorted(), photos: hasPhotos, intent: hasIntent,
+                                legacyOrigins: descriptors.isEmpty ? nil : descriptors)
         let encoder = JSONEncoder(); encoder.dateEncodingStrategy = .iso8601; encoder.outputFormatting = [.sortedKeys]
-        try encoder.encode(manifest).write(to: retained.appendingPathComponent("manifest.json"), options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
+        let manifestBytes = try encoder.encode(manifest)
+        try manifestBytes.write(to: retained.appendingPathComponent("manifest.json"), options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
+        try control.checkCancellation()
         // A quarantined directory must remain carryable by later transactions:
         // validate the same depth/type/entry limits used for private copies.
         guard try sameTree(retained, retained) else { throw HealthLocalFiles.Failure.invalid }
         if deduplicating, try hasCoveringCopy(for: retained, in: base) {
             try FileManager.default.removeItem(at: retained)
         }
+        guard !descriptors.isEmpty else { return nil }
+        exactFiles["manifest.json"] = manifestBytes
+        return LegacyRetention(directory: retained.lastPathComponent, files: exactFiles)
     }
 
     static func completedErasure(in root: URL) throws -> Bool {
@@ -437,7 +516,8 @@ enum HealthRecoveryCopies {
     /// Called under the common directory-swap lock, before .previous retires.
     /// Do not treat a missing domain as corrupt: an intentional reset must not
     /// resurrect deleted records. Existing failed reads retain raw prior data.
-    static func preservePrevious(in root: URL, from prior: URL? = nil, control: BackupOperationControl = .init()) throws {
+    static func preservePrevious(in root: URL, from prior: URL? = nil, control: BackupOperationControl = .init(),
+                                 recoveringLegacyDomains: Set<HealthLocalFiles.Domain> = []) throws {
         try control.checkCancellation()
         let previous = prior ?? root.appendingPathExtension("previous")
         guard try attributes(previous) != nil else { return }
@@ -449,7 +529,14 @@ enum HealthRecoveryCopies {
             let file = root.appendingPathComponent(domain.rawValue + ".json")
             var failed = false
             do {
-                guard try attributes(file) != nil else { continue }
+                guard try attributes(file) != nil else {
+                    // Only explicit failed-legacy recovery retains a selected
+                    // prior path despite an absent current path. Never load it
+                    // into live history or infer permission from absence alone.
+                    if recoveringLegacyDomains.contains(domain),
+                       try attributes(previous.appendingPathComponent(domain.rawValue + ".json")) != nil { domains.append(domain) }
+                    continue
+                }
                 try regularFile(file)
                 try HealthLocalFiles.validateCurrentData(boundedData(file, limit: HealthLocalFiles.limit), domain: domain)
             } catch is CancellationError { throw CancellationError() }
@@ -518,7 +605,7 @@ enum HealthRecoveryCopies {
     private static func matchingManifest(in directory: URL, _ wanted: Manifest) -> Bool {
         do {
             let saved = try readManifest(in: directory)
-            return saved.version == 1 && saved.domains == wanted.domains && saved.photos == wanted.photos && (saved.intent ?? false) == (wanted.intent ?? false)
+            return validManifestShape(saved) && saved.version == wanted.version && saved.domains == wanted.domains && saved.photos == wanted.photos && (saved.intent ?? false) == (wanted.intent ?? false) && saved.legacyOrigins == wanted.legacyOrigins
         } catch { return false }
     }
 
@@ -527,7 +614,31 @@ enum HealthRecoveryCopies {
         let data = try boundedData(directory.appendingPathComponent("manifest.json"), limit: 64_000)
         try JSONFieldAudit.check(data, control: .init())
         let decoder = JSONDecoder(); decoder.dateDecodingStrategy = .iso8601
-        return try decoder.decode(Manifest.self, from: data)
+        let manifest = try decoder.decode(Manifest.self, from: data)
+        guard validManifestShape(manifest), try validManifestEncoding(data, manifest: manifest) else { throw HealthLocalFiles.Failure.invalid }
+        return manifest
+    }
+
+    private static func validManifestEncoding(_ data: Data, manifest: Manifest) throws -> Bool {
+        guard manifest.version == 2 else { return true }
+        guard let object = try JSONSerialization.jsonObject(with: data) as? [String: Any],
+              Set(object.keys).isSubset(of: ["version", "createdAt", "domains", "photos", "intent", "legacyOrigins"]),
+              Set(["version", "createdAt", "domains", "photos", "legacyOrigins"]).isSubset(of: Set(object.keys)),
+              let origins = object["legacyOrigins"] as? [String: Any] else { return false }
+        return origins.values.allSatisfy { value in
+            guard let row = value as? [String: Any] else { return false }
+            return Set(row.keys) == ["file", "sha256"]
+        }
+    }
+
+    private static func validManifestShape(_ manifest: Manifest) -> Bool {
+        if manifest.version == 1 { return manifest.legacyOrigins == nil }
+        guard manifest.version == 2, let origins = manifest.legacyOrigins, !origins.isEmpty, origins.count <= 3 else { return false }
+        return origins.allSatisfy { key, descriptor in
+            guard let domain = HealthLocalFiles.Domain(rawValue: key), domain.legacyKey != nil,
+                  manifest.domains.contains(key), descriptor.file == legacyName(domain) else { return false }
+            return descriptor.sha256.utf8.count == 64 && descriptor.sha256.utf8.allSatisfy { (48...57).contains($0) || (97...102).contains($0) }
+        }
     }
 
     /// The candidate is disposable staging material. A superset manifest alone
@@ -537,12 +648,13 @@ enum HealthRecoveryCopies {
         try control.checkCancellation()
         try Task.checkCancellation()
         let wanted = try readManifest(in: candidate)
+        if wanted.version == 2 { guard try preview(candidate, control: control).complete else { return false } }
         let known = Set(HealthLocalFiles.Domain.allCases.map(\.rawValue))
         func paths(_ manifest: Manifest) -> Set<String>? {
             let domains = Set(manifest.domains)
-            guard manifest.version == 1, domains.count == manifest.domains.count,
+            guard validManifestShape(manifest), domains.count == manifest.domains.count,
                   domains.isSubset(of: known), !manifest.photos || domains.contains("meals") else { return nil }
-            var names = Set(domains.map { $0 + ".json" })
+            var names = Set(domains.map { manifest.legacyOrigins?[$0]?.file ?? $0 + ".json" })
             if manifest.photos { names.insert("photos") }
             if manifest.intent ?? false { names.insert(intentProvenanceName) }
             return names
@@ -554,6 +666,7 @@ enum HealthRecoveryCopies {
                 try control.checkCancellation()
                 try Task.checkCancellation()
                 let saved = try readManifest(in: existing)
+                if saved.version == 2 { guard try preview(existing, control: control).complete else { continue } }
                 guard let included = paths(saved), Set(wanted.domains).isSubset(of: Set(saved.domains)),
                       (saved.intent ?? false) == (wanted.intent ?? false),
                       !wanted.domains.contains("meals") || saved.photos == wanted.photos,

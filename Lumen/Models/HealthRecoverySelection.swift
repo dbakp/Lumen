@@ -12,6 +12,16 @@ enum HealthRecoverySelection {
         fileprivate let source: String
         fileprivate var fileSource: BackupRecoverySource? = nil
         fileprivate var reviewedPhotos: [String: BackupPhotoIdentity] = [:]
+        fileprivate var legacyOrigins: [HealthLocalFiles.Domain: HealthLegacyRecoveryOrigin] = [:]
+    }
+
+    /// Attach observations owned by the same explicit review; never recapture a
+    /// changed value while retrying or silently authorize an unselected domain.
+    static func bindingLegacyOrigins(_ origins: [HealthLocalFiles.Domain: HealthLegacyRecoveryOrigin], to payload: Payload) throws -> Payload {
+        guard payload.legacyOrigins.isEmpty, Set(origins.keys).isSubset(of: payload.domains),
+              origins.allSatisfy({ $0.key == $0.value.value.domain }),
+              origins.values.reduce(0, { $0 + $1.value.bytes.count }) <= HealthLegacyRecoveryOrigin.aggregateLimit else { throw BackupError.invalid }
+        var bound = payload; bound.legacyOrigins = origins; return bound
     }
 
     static func records(_ reviewed: HealthRecoveryCopies.Preview, domain: HealthLocalFiles.Domain, in root: URL,
@@ -145,7 +155,8 @@ enum HealthRecoverySelection {
     }
 
     static func prepare(_ payload: Payload, into root: URL, owner: UUID,
-                        control: BackupOperationControl = .init()) throws -> BackupFileTransaction {
+                        control: BackupOperationControl = .init(),
+                        legacy: @escaping @Sendable (String) throws -> Any? = { UserDefaults.standard.object(forKey: $0) }) throws -> BackupFileTransaction {
         try control.checkCancellation()
         let originalIntent = try intentData(in: root)
         var journal = try originalIntent.map(HealthWriteJournal.decode) ?? HealthWriteJournal(owner: owner)
@@ -165,7 +176,7 @@ enum HealthRecoverySelection {
         files[".health-recovery-history/" + UUID().uuidString + ".json"] = try JSONSerialization.data(withJSONObject: receipt, options: [.sortedKeys])
         let transaction = try ConversationFiles.prepareHealthRecovery(files, photoFiles: payload.photos,
                                                                       domains: payload.domains, photoDigests: payload.photoDigests,
-                                                                      into: root, control: control)
+                                                                      into: root, control: control, legacyOrigins: payload.legacyOrigins, legacy: legacy)
         guard try intentData(in: root) == originalIntent else { throw BackupError.recordsChanged }
         if let source = payload.fileSource {
             let boundary = try source.lease.verifiedBoundary(control: control)

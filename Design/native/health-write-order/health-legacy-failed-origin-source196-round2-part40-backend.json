@@ -1,0 +1,219 @@
+{
+  "schemaVersion": 1,
+  "part": 40,
+  "checkedAt": "2026-11-07T21:37:57.907990+00:00",
+  "status": "Actual backend evidence supported with acquisition limits; two substantive final-boundary source repairs required before integration acceptance",
+  "scope": "Source196 isolated defaults/direct production backend transaction and private v2 support. No LocalStore review capture/write-lock integration, actual standard-defaults recovery, new native UI/screenshots, source196 Release or product/design/full-parent acceptance.",
+  "sourceVerification": {
+    "currentAndFullArchiveTextExact": 257,
+    "currentAndFullArchiveFixtureExact": 9,
+    "changedSetExactlyEightFrom195": [
+      "Lumen/Models/BackupArchive.swift",
+      "Lumen/Models/BackupFileTransaction.swift",
+      "Lumen/Models/ConversationFiles.swift",
+      "Lumen/Models/HealthRecoveryCopies.swift",
+      "Lumen/Models/HealthRecoverySelection.swift",
+      "Package.swift",
+      "Tests/HealthLegacyRecoveryTransactionChecks.swift",
+      "Tests/ImportTests.swift"
+    ],
+    "readScope": "Full new backend test, full five-model diff versus immutable195; targeted surrounding stage/commit/private-catalog paths. Full actual path-probe/auditor/executed full-runner source read. No assertion of full unchanged-model reread.",
+    "pureInputsCurrentExact": {
+      "text": 137,
+      "fixtures": 4,
+      "swift": 134,
+      "nativeBoundText": 136,
+      "manifestAfterExecution": true,
+      "note": "Root Package.resolved additional pure input, not contemporaneous freeze proof; scoped after-execution manifest caveat retained."
+    },
+    "actualLogicBinaryRehashed": {
+      "bytes": 16788832,
+      "sha256": "c2f1dcc3a11e6127e8d48a47be22c70a8a539347f82d2a20d82611857b6030ce"
+    },
+    "compileTerminal": {
+      "exitCode": 0,
+      "session": 18213,
+      "producerPID": 38194,
+      "retainedAppRehashed": {
+        "bytes": 45254864,
+        "sha256": "b8deee0c7827f80a2e4464d199ba27deab4906b50a9a5f43372edf22c1a6a368"
+      },
+      "retainedUITestRehashed": {
+        "bytes": 5759248,
+        "sha256": "595ea28e1e623c3a3e28faf53bbdf7ae7c63efa7cd5abdb43bf21055a0c3427a"
+      },
+      "nativeRuntimeAccepted": false
+    }
+  },
+  "findings": [
+    {
+      "id": "P40-C1",
+      "priority": "Required source repair",
+      "file": "Lumen/Models/BackupFileTransaction.swift",
+      "boundary": "prepare final post-stage origin verification immediately before return",
+      "evidence": "Stage cleanup defer removes stage only if prepared remains false. New code sets prepared=true, then executes throwing origin.verify loop, then constructs/returns transaction. No transaction object exists to discard/deinit if that loop throws.",
+      "effect": "A changed defaults value/root or cancelled/operational final revalidation can reject preparation while leaving uninstalled restore stage and private provenance behind. Existing six rejection tests change after a successful prepare or before entering prepare, so do not exercise this newly exposed boundary.",
+      "requiredRepair": "Run every throwing post-stage verification while cleanup ownership remains local (prepared=false), then transfer ownership immediately before returning initialized transaction. Add deterministic final-prepare-read changed/cancelled/operational controls as relevant, checking actual error type where cancellation matters, unchanged current state and no restore stage.",
+      "basis": "Selected contract says any post-preparation error discards stage; no new generic guarantee for earlier prior-retirement effects."
+    },
+    {
+      "id": "P40-C2",
+      "priority": "Required final retained-shape repair",
+      "file": "Lumen/Models/HealthRecoveryCopies.swift",
+      "boundary": "verifyLegacyRetention called in final transaction commit locks",
+      "evidence": "LegacyRetention records exact envelope(s) and manifest. verifyLegacyRetention compares only those expected byte files. It does not check immediate child entry set/type or reject a newly added domain.json beside an origin or unexpected legacy-origin file. Catalog preview separately rejects such shape, but is not used in this final helper.",
+      "effect": "Post-prepare extra/dual-authority entries can survive final retention verification and be installed as an incomplete/ambiguous private v2 copy, despite exact expected envelope/manifest bytes. Existing dual/extra tests mutate an already installed copy and assert catalog incomplete; they do not prove final commit rejects the staged mutation.",
+      "requiredRepair": "Retain/validate the exact expected immediate copy entry set and safe expected types including mixed ordinary domains, photos and device intent, alongside exact envelope/manifest verification. Add post-prepare unexpected-origin and dual domain.json commit rejection/no-install cases. Preserve ordinary mixed unavailable-file semantics; no requirement to decode an intentionally failed file as healthy.",
+      "basis": "Contract/addendum require rejection of extra origin payload and dual authority and final private-copy checks."
+    }
+  ],
+  "backendAssessment": {
+    "authority": "Selected observation map is validated against selected domains and domain-to-token identity, aggregate raw cap enforced in binding/preflight/staging, token verified before prior protection and generic prepare. Missing targets only bypass194 rejection with explicit valid matching observations. No links/special fallback introduced.",
+    "finalDefaultsAndC1": "Immutable observations and injected Sendable fixed-key reader retained into transaction. After source/photo/private carry checks, final retention and origin verification occur before installation within transaction/private locks; cancellation is rechecked. Primitive explicit cancellation/operational distinction remains. Backend rejected() accepts any error, so six rejection passes alone do not prove cancellation error type or every C1 path.",
+    "C2": "Final callback default reads UserDefaults.standard directly and primitive does not enter LocalStore; no observed new writes-lock reentry in backend. Actual product writes\u2192transaction\u2192copies capture/commit integration is not wired and remains unaccepted. Injected fixture reader is not standard-defaults route proof.",
+    "privateV2": "Envelope descriptor sha/domain association, strict v2 fields and fixed paths, nil-count/unavailable catalog, no origin record/photo export, exact envelope carry and v1 compatibility pathways are coherent. Previous selected raw retained when current absent only under explicit recoveringLegacyDomains, without reviving prior records. Remaining final-shape gap is C2 above; existing file/private preservation and cancellation contracts stay in force.",
+    "receiptsPhotosIntent": "Actual single/mixed selection backend records receipts, fresh photo IDs/exact JPEG bytes on meal replacements and same device owner/no replay events; critic live mappings corroborate current bytes/v2 association. Does not establish native reviewed source/provider nonce route or full independent prior-chain because relevant historical maps are missing."
+  },
+  "actualEvidence": {
+    "focused": {
+      "session": 46442,
+      "exitCode": 0,
+      "checkRows": 117,
+      "allPassed": true,
+      "reportBytes": 70259,
+      "reportSHA256": "882fafa98958fa3bb51a13f8c73d39c0a81ddbfdc85fadbe3ba5f38ed72c6191",
+      "cases": 13,
+      "coverage": "Six Data/String successes across3closed domains, mixed2legacy+failedregular success, six before/afterprepare/staged-envelope/staged-manifest/cancel/operational rejections. Actual backend assertions passed; not proof of missing C1/C2 test cases.",
+      "logBound": "10686B SHAa04dacdf36bcb9915b84b6759736501dcf474c6c44f4afaed0ce100c5e417f18; terminal117PASS line read."
+    },
+    "fullSuite": {
+      "session": 73306,
+      "producerPID": 38196,
+      "exitCode": 0,
+      "countConvention": "2350=2177PASS lines+137daily-cache+36query observations, same established convention;117focused not added.",
+      "logBound": "171673B SHAcf495d3ce4c9497114472e8bc344145388c20601caa949fb0a1a4be26ddd35d1; actual current binary/source/runner/process/time/outcome separately bound. Deterministic log bytes equal194, so equality alone is not new-execution evidence.",
+      "outputAliasDefect": "Executed runner incorrectly wrote194canonical outcome/log names. Separate erratum records corrected196outcome/log reference and exact restored194outcome SHAfe725a7a5f76703826a57ef38c0ed1550d032725fa396b547b5c3644bb2a482e;194gzip never differed. Original misnamed196payload not archived separately before log-field correction. Preserve defect, no retroactive contemporaneous original-payload proof or producer rerun claimed."
+    }
+  },
+  "acquisitionAndIndependentLiveAudit": {
+    "originalReportUnchanged": true,
+    "producerKeyDefect": "Foundation enumerates /private/var while root URL retains /var; files() drops literal root-path length, creating a seven-character suffix prefix in reported map keys. Keys are not canonical relative paths.",
+    "retainedFailures": "Audit r1 KeyError and r2 incorrect canonical-string equality failures retained; neither earns live-byte credit. Critic initial comparison also rejected literal canonicalRoot spelling; corrected read-only comparison resolves filesystem paths, without producer/evidence mutation.",
+    "mapping": "Read actual separately executed Foundation probe; independently recomputed every producer key by exact observed-string slicing, then resolved actual enumerated path under resolved root and compared canonical relative path. Never guessed filename suffixes or rewrote original report maps. Probe canonicalRoot may retain /var spelling; resolved identity comparison required.",
+    "independentResults": {
+      "embeddedBeforeAfterBase64RowsDecoded": 253,
+      "actualLiveRegularFileBytesExact": 163,
+      "actualTypedPersistentPlistKeysExact": 14,
+      "actualV2EnvelopesAndManifestDescriptorsExact": 8,
+      "cases": 13
+    },
+    "method": "Direct read-only nofollow/nonblocking bounded regular file opens with fd/path inode/device/size/mtime checks; complete live file sets matched probe-mapped after maps. Exact known UUID plist keys/types/Data or UTF16LE values matched retained currentDefaults. All8 inner provenance hashes/raw types and manifest descriptor hashes matched and dual raw domain path absent. No producer/auditor module/probe rerun.",
+    "limits": "After maps have actual probe repair; before history not re-enumerated. Full prior-before raw maps absent for six single successes. Actual test selected-prior assertions valid, but no independent complete historical prior/private metadata-chain credit. Host persisted String values read as exact UTF16LE, not raw original plist-byte provenance. No Foundation in-process suite reread or continuous race claim.",
+    "requiredSuccessorAcquisitionFix": "Before future producer execution fix files() using one canonical root/path spelling and containment check; retain complete priorBefore maps/typed identities per case. Keep196report immutable; successor tests/evidence must own their source boundary."
+  },
+  "supportBindings": [
+    {
+      "file": "durable-source-r196.json",
+      "bytes": 43309,
+      "sha256": "44076c4a5246157a02ed851140dfa4bd5693066ebdb2acf8b91e4550f8235470"
+    },
+    {
+      "file": "durable-source-r196.json.gz",
+      "bytes": 918540,
+      "sha256": "9da693dcaae449d31228b92462dccace965a289c2301010d8ba4eb54058ff5f5"
+    },
+    {
+      "file": "source196-legacy-transaction-r1.json",
+      "bytes": 70259,
+      "sha256": "882fafa98958fa3bb51a13f8c73d39c0a81ddbfdc85fadbe3ba5f38ed72c6191"
+    },
+    {
+      "file": "source196-legacy-transaction-r1-outcome.json",
+      "bytes": 2837,
+      "sha256": "1a541eeba5b821c65b4a5d4b787e137e3c319c264b12b6cd15327fab6a9404a3"
+    },
+    {
+      "file": "source196-legacy-transaction-r1.log.gz",
+      "bytes": 1854,
+      "sha256": "0e65aad3c7004707ab0d6c9a56349c2ef3df4d8f6bbf21dba436ab19410a5b11"
+    },
+    {
+      "file": "source196-legacy-transaction-r1-path-probe.swift",
+      "bytes": 1622,
+      "sha256": "abf61ef7f14583330bfd4e95be49582ccffbe780732dd168f2f52f7acf597200"
+    },
+    {
+      "file": "source196-legacy-transaction-r1-path-probe.json",
+      "bytes": 68737,
+      "sha256": "215fd0d8deae03869334d99560f61d95e26260ad1ce00c1eb83cdf76a2288fc0"
+    },
+    {
+      "file": "audit-legacy-transaction-r3.py",
+      "bytes": 6252,
+      "sha256": "762b70f461007a0642784d0e293715a45da5c8b9c395ee999d03747850dc7425"
+    },
+    {
+      "file": "source196-legacy-transaction-r1-live-audit.json",
+      "bytes": 51406,
+      "sha256": "2ae6a841c822544750636fd1b3705c3c6232ff1afe99a1558a477033ec077eb2"
+    },
+    {
+      "file": "source196-legacy-transaction-r1-audit-acquisition-failure.json",
+      "bytes": 718,
+      "sha256": "c3acb587768187af52efbe80474486448141a44a1399539cc4609be0642ae873"
+    },
+    {
+      "file": "source196-legacy-transaction-r1-audit-r2-failure.json",
+      "bytes": 551,
+      "sha256": "9be08c01baf9028aa627226be5367795e4e60420b3c9c7e542a2a25b309b6671"
+    },
+    {
+      "file": "source196-full-logic-r1-outcome.json",
+      "bytes": 1213,
+      "sha256": "00294c3fa7c4f1a3127be1f18af6083711581be7706eb8831177846d3287d1e4"
+    },
+    {
+      "file": "source196-full-logic-r1.log.gz",
+      "bytes": 40210,
+      "sha256": "b1278f41a7df3114b9f35cd1aef1db8b625d4eeae79cf049384329ce23c98ed9"
+    },
+    {
+      "file": "source196-full-logic-r1-executed-runner.py",
+      "bytes": 2035,
+      "sha256": "06a4100ddc0124f25afd450cc7c8a2e6f17d642dc84dc9e19203e00c67f314b4"
+    },
+    {
+      "file": "source196-full-logic-r1-output-path-erratum.json",
+      "bytes": 1400,
+      "sha256": "a2b818935df3f831c94385941aee49c4017071a8ed71638cbc42a8813267b38d"
+    },
+    {
+      "file": "source196-legacy-transaction-native-build-r1-outcome.json",
+      "bytes": 904,
+      "sha256": "c82837563e22c9a18f1effc616c8940057b3e7ee30dc2f9b35280e32cced365f"
+    },
+    {
+      "file": "health-legacy-transaction-r1-build.json",
+      "bytes": 701,
+      "sha256": "e7dc4a841a8627aebf08f4d03e1b3ede0c441745c4e2a4580380ca62235a4456"
+    },
+    {
+      "file": "local-domain-pure-source-r83.json",
+      "bytes": 23306,
+      "sha256": "505c960b61bac0edcb7afe37521f25f09b7f75e12045d93b9d6d186daff9f240"
+    },
+    {
+      "file": "health-legacy-failed-origin-r2-addendum.json",
+      "bytes": 2655,
+      "sha256": "d55877941ebc8ef4990b1d152971146a455f7418e32c47254b962b3c0d9c31c2"
+    }
+  ],
+  "nextBoundary": "Preserve/exact-backup196source/evidence/failures, then separately freeze successor repairs for P40-C1/P40-C2 and producer mapping/prior-map retention. Rerun affected focused checks before later LocalStore/review/native integration. Parent acknowledgement proposes197 repairs; no implementation credit yet.",
+  "limits": "No source/test/build/Git/native/simulator/cleanup actions, no screenshots, new appearance, VoiceOver/motion/fullspeech/lateworker/all10rawprior/currentRelease/fullparent/design score/product acceptance. Actual195foundation and historical194 ordinary/core/Release retain their original scopes. Parent reports19524paths exactc200a4cc before196edits; no critic remote-readback claim.",
+  "storage": {
+    "freeBytesAtFinish": 37618208768,
+    "criticRecoveredBytes": 0,
+    "fixtureRetention": "13case roots/known UUID suites read-only retained during review, awaiting exact parent backup; no deletion or suite change."
+  },
+  "writeBoundary": "Only this new report written. Frozen196source/evidence/prior records remain unchanged."
+}

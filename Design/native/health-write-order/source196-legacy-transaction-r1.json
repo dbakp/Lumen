@@ -1,0 +1,964 @@
+{
+  "cases" : [
+    {
+      "after" : {
+        "ls-Data\/.health-recovery-history\/CC6F707E-C0FF-4989-9E76-61FB87B32991.json" : "eyJkb21haW5zIjpbIm1lYWxzIl0sInBob3RvRGlnZXN0cyI6eyJwaG90b3NcLzk0MTU2QjU0LTkzODItNEQ2RS04RDUxLTFFNEUzQkFDOUUzNy5qcGciOiIxMmFkMjc4M2Y3ZWNkOWZiMjI1MmRmZjdjNzk3ODFkOTJkMmE1MmY2MzdjMzNkN2Y0NmE2MGZkYjFlZjZmNGUzIiwicGhvdG9zXC80NTA2MzcyQi03MUVBLTQwNDItODkyRS1GRUM2OURDMEFBQUQuanBnIjoiNGFlYjM0MGYyMzNkZmJmZTU5MDY2ODg2ZjYzMjZlMmMzOTNkZmQyNzU5NmViOTE0YTc4OTVhZmYyM2E4ZTcyMCJ9LCJyZWNvcmREaWdlc3RzIjp7Im1lYWxzLmpzb24iOiJlMWJmZDYwMDg3NzgzMDI4MjlhMWYzN2Q0N2M4MDY4YjcxMmQ5YzI5NTZjMWIwYWEyOTlhNmE3YWI2N2Q1OTRhIn0sInJlY292ZXJlZEF0IjoiMjAyNi0xMS0wN1QyMToyNzo0NFoiLCJzb3VyY2UiOiJyZXZpZXdlZC1iYWNrdXAifQ==",
+        "ls-Data\/.health-recovery\/4E9A1395-48B5-4919-9373-9BDCD790D845\/device-intent.json" : "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiIyQ0M4N0VERC0zQUQzLTQyMDYtQjkxQi04RkYxOTQ3OEI1QUYiLCJvd25lciI6IkNGMDI3OTZGLUMxRkQtNEQ1Ni05MTlCLTI1QTdEN0IyQjQxMiIsInZlcnNpb24iOjF9",
+        "ls-Data\/.health-recovery\/4E9A1395-48B5-4919-9373-9BDCD790D845\/manifest.json" : "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTA3VDIxOjI3OjQ0WiIsImRvbWFpbnMiOlsibWVhbHMiXSwiaW50ZW50Ijp0cnVlLCJwaG90b3MiOmZhbHNlLCJ2ZXJzaW9uIjoxfQ==",
+        "ls-Data\/.health-recovery\/4E9A1395-48B5-4919-9373-9BDCD790D845\/meals.json" : "W10=",
+        "ls-Data\/.health-recovery\/CC0D6EF2-BD46-491A-B6C4-5020CA25468B\/device-intent.json" : "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI1NTk1OTlCRS02QzVFLTQ3ODktQjgwOC03NkUxRUIyREI5RjciLCJvd25lciI6IkNGMDI3OTZGLUMxRkQtNEQ1Ni05MTlCLTI1QTdEN0IyQjQxMiIsInZlcnNpb24iOjF9",
+        "ls-Data\/.health-recovery\/CC0D6EF2-BD46-491A-B6C4-5020CA25468B\/legacy-origin-meals.json" : "eyJkb21haW4iOiJtZWFscyIsImtleSI6Imx1bWVuLmhlYWx0aC5tZWFscy52MSIsInBheWxvYWQiOiJlM041Ym5Sb1pYUnBZeUJtWVdsc1pXUWdiR1ZuWVdONUlIUnlZVzV6WVdOMGFXOXUiLCJzY2hlbWFWZXJzaW9uIjoxLCJzaGEyNTYiOiI1ZWZmNjQ1MzhhYTNmMGJhYzljYmRjMTg4MmViYzEyZTkyYjRiMzVmYzZiMzIyYjYwYmJiMzVhYWQ1MmRkMTQzIiwidHlwZSI6ImRhdGEifQ==",
+        "ls-Data\/.health-recovery\/CC0D6EF2-BD46-491A-B6C4-5020CA25468B\/manifest.json" : "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTA3VDIxOjI3OjQ0WiIsImRvbWFpbnMiOlsibWVhbHMiXSwiaW50ZW50Ijp0cnVlLCJsZWdhY3lPcmlnaW5zIjp7Im1lYWxzIjp7ImZpbGUiOiJsZWdhY3ktb3JpZ2luLW1lYWxzLmpzb24iLCJzaGEyNTYiOiIzY2VkYTUwNzE4YTBjZGFlNTVlOTYxODhhZGFkNzczNzA1NzQzNjc2YTc1OWZkMWQzMzkwN2NhOTFhOWMxOGE4In19LCJwaG90b3MiOmZhbHNlLCJ2ZXJzaW9uIjoyfQ==",
+        "ls-Data\/chat.json" : "W10=",
+        "ls-Data\/conversation-selection.json" : "e30=",
+        "ls-Data\/conversations.json" : "W10=",
+        "ls-Data\/goals.json" : "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ==",
+        "ls-Data\/health-write-intent.json" : "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiIxQTY4QUQyNS01NjE4LTRDNEYtODA1NS0wMzQ3QjE4QkU1OUEiLCJvd25lciI6IkNGMDI3OTZGLUMxRkQtNEQ1Ni05MTlCLTI1QTdEN0IyQjQxMiIsInZlcnNpb24iOjF9",
+        "ls-Data\/meals.json" : "W3siZGF0ZSI6IjIwMjYtMTEtMDdUMjE6Mjc6NDRaIiwiaWQiOiJsZWdhY3ktcmVwbGFjZW1lbnQtYSIsIml0ZW1zIjpbXSwicGhvdG9JRCI6Ijk0MTU2QjU0LTkzODItNEQ2RS04RDUxLTFFNEUzQkFDOUUzNyIsInNvdXJjZSI6Im1hbnVhbCIsInR5cGUiOiJsdW5jaCJ9LHsiZGF0ZSI6IjIwMjYtMTEtMDdUMjE6Mjc6NDRaIiwiaWQiOiJsZWdhY3ktcmVwbGFjZW1lbnQtYiIsIml0ZW1zIjpbXSwicGhvdG9JRCI6IjQ1MDYzNzJCLTcxRUEtNDA0Mi04OTJFLUZFQzY5REMwQUFBRCIsInNvdXJjZSI6Im1hbnVhbCIsInR5cGUiOiJzbmFjayJ9XQ==",
+        "ls-Data\/photos\/94156B54-9382-4D6E-8D51-1E4E3BAC9E37.jpg" : "\/9j\/4AAQSkZJRgABAQAA2ADYAAD\/4QCMRXhpZgAATU0AKgAAAAgABQESAAMAAAABAAEAAAEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAABAAIAAIdpAAQAAAABAAAAWgAAAAAAAADYAAAAAQAAANgAAAABAAOgAQADAAAAAQABAACgAgAEAAAAAQAAAEigAwAEAAAAAQAAADAAAAAA\/+0AOFBob3Rvc2hvcCAzLjAAOEJJTQQEAAAAAAAAOEJJTQQlAAAAAAAQ1B2M2Y8AsgTpgAmY7PhCfv\/AABEIADAASAMBIgACEQEDEQH\/xAAfAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgv\/xAC1EAACAQMDAgQDBQUEBAAAAX0BAgMABBEFEiExQQYTUWEHInEUMoGRoQgjQrHBFVLR8CQzYnKCCQoWFxgZGiUmJygpKjQ1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4eLj5OXm5+jp6vHy8\/T19vf4+fr\/xAAfAQADAQEBAQEBAQEBAAAAAAAAAQIDBAUGBwgJCgv\/xAC1EQACAQIEBAMEBwUEBAABAncAAQIDEQQFITEGEkFRB2FxEyIygQgUQpGhscEJIzNS8BVictEKFiQ04SXxFxgZGiYnKCkqNTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2dri4+Tl5ufo6ery8\/T19vf4+fr\/2wBDAAEBAQEBAQIBAQIDAgICAwQDAwMDBAYEBAQEBAYHBgYGBgYGBwcHBwcHBwcICAgICAgJCQkJCQsLCwsLCwsLCwv\/2wBDAQICAgMDAwUDAwULCAYICwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwv\/3QAEAAX\/2gAMAwEAAhEDEQA\/APUKKKK\/pw\/xzCiiigAooooAKKKKACiiigD\/0PUKKKK\/pw\/xzCiiigAooooAKKKKACiiigD\/0fUKKKK\/pw\/xzCiiigAooooAKKKKACiiigD\/2Q==",
+        "ls-Data\/photos\/4506372B-71EA-4042-892E-FEC69DC0AAAD.jpg" : "\/9j\/4AAQSkZJRgABAQAA2ADYAAD\/4QCMRXhpZgAATU0AKgAAAAgABQESAAMAAAABAAEAAAEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAABAAIAAIdpAAQAAAABAAAAWgAAAAAAAADYAAAAAQAAANgAAAABAAOgAQADAAAAAQABAACgAgAEAAAAAQAAAEigAwAEAAAAAQAAADAAAAAA\/+0AOFBob3Rvc2hvcCAzLjAAOEJJTQQEAAAAAAAAOEJJTQQlAAAAAAAQ1B2M2Y8AsgTpgAmY7PhCfv\/AABEIADAASAMBIgACEQEDEQH\/xAAfAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgv\/xAC1EAACAQMDAgQDBQUEBAAAAX0BAgMABBEFEiExQQYTUWEHInEUMoGRoQgjQrHBFVLR8CQzYnKCCQoWFxgZGiUmJygpKjQ1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4eLj5OXm5+jp6vHy8\/T19vf4+fr\/xAAfAQADAQEBAQEBAQEBAAAAAAAAAQIDBAUGBwgJCgv\/xAC1EQACAQIEBAMEBwUEBAABAncAAQIDEQQFITEGEkFRB2FxEyIygQgUQpGhscEJIzNS8BVictEKFiQ04SXxFxgZGiYnKCkqNTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2dri4+Tl5ufo6ery8\/T19vf4+fr\/2wBDAAEBAQEBAQIBAQIDAgICAwQDAwMDBAYEBAQEBAYHBgYGBgYGBwcHBwcHBwcICAgICAgJCQkJCQsLCwsLCwsLCwv\/2wBDAQICAgMDAwUDAwULCAYICwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwv\/3QAEAAX\/2gAMAwEAAhEDEQA\/AP0gooor\/Oc\/0ECiiigAooooAKKKKACiiigD\/9D9IKKKK\/znP9BAooooAKKKKACiiigAooooA\/\/R\/SCiiiv85z\/QQKKKKACiiigAooooAKKKKAP\/2Q==",
+        "ls-Data\/synthetic-linked-marker.json" : "dHJ1ZQ==",
+        "ls-Data\/water.json" : "W3siZGF0ZSI6IjIwMjMtMTEtMTRUMjI6MTM6MjBaIiwiaWQiOiJsZWdhY3ktaGVhbHRoeS13YXRlciIsIm1sIjoxMzd9XQ==",
+        "ls-Data\/workouts.json" : "W10="
+      },
+      "before" : {
+        "ls-Data\/chat.json" : "W10=",
+        "ls-Data\/conversation-selection.json" : "e30=",
+        "ls-Data\/conversations.json" : "W10=",
+        "ls-Data\/goals.json" : "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ==",
+        "ls-Data\/health-write-intent.json" : "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI1NTk1OTlCRS02QzVFLTQ3ODktQjgwOC03NkUxRUIyREI5RjciLCJvd25lciI6IkNGMDI3OTZGLUMxRkQtNEQ1Ni05MTlCLTI1QTdEN0IyQjQxMiIsInZlcnNpb24iOjF9",
+        "ls-Data\/water.json" : "W3siZGF0ZSI6IjIwMjMtMTEtMTRUMjI6MTM6MjBaIiwiaWQiOiJsZWdhY3ktaGVhbHRoeS13YXRlciIsIm1sIjoxMzd9XQ==",
+        "ls-Data\/workouts.json" : "W10="
+      },
+      "currentDefaults" : {
+        "lumen.health.meals.v1" : {
+          "base64" : "e3N5bnRoZXRpYyBmYWlsZWQgbGVnYWN5IHRyYW5zYWN0aW9u",
+          "type" : "Data"
+        }
+      },
+      "key" : "lumen.health.meals.v1",
+      "label" : "meals-Data",
+      "originEnvelope" : "eyJkb21haW4iOiJtZWFscyIsImtleSI6Imx1bWVuLmhlYWx0aC5tZWFscy52MSIsInBheWxvYWQiOiJlM041Ym5Sb1pYUnBZeUJtWVdsc1pXUWdiR1ZuWVdONUlIUnlZVzV6WVdOMGFXOXUiLCJzY2hlbWFWZXJzaW9uIjoxLCJzaGEyNTYiOiI1ZWZmNjQ1MzhhYTNmMGJhYzljYmRjMTg4MmViYzEyZTkyYjRiMzVmYzZiMzIyYjYwYmJiMzVhYWQ1MmRkMTQzIiwidHlwZSI6ImRhdGEifQ==",
+      "root" : "\/var\/folders\/s8\/9jzwfsws6zb3qbg0ffyy_blm0000gn\/T\/Lumen-legacy-transaction-5BBBC67A-451E-4E81-8341-8BBC8D1CE896\/meals-Data",
+      "suite" : "com.dbakp.lumen.synthetic.legacy-transaction.8DAD9511-4CF7-4C42-B92A-6E5A74556E76",
+      "synchronized" : true
+    },
+    {
+      "after" : {
+        "-String\/.health-recovery-history\/3A3B1E5E-3384-404A-81D2-4514B948932F.json" : "eyJkb21haW5zIjpbIm1lYWxzIl0sInBob3RvRGlnZXN0cyI6eyJwaG90b3NcL0FCMzI4QUJCLTcwM0QtNEQzNi1CNzUxLUFCMDgyRDRFNTNFNi5qcGciOiIxMmFkMjc4M2Y3ZWNkOWZiMjI1MmRmZjdjNzk3ODFkOTJkMmE1MmY2MzdjMzNkN2Y0NmE2MGZkYjFlZjZmNGUzIiwicGhvdG9zXC9CRUZGOTk4NS1FODQ2LTQwRUYtQkY1OC04Qzg4RkQwNUMwMEIuanBnIjoiNGFlYjM0MGYyMzNkZmJmZTU5MDY2ODg2ZjYzMjZlMmMzOTNkZmQyNzU5NmViOTE0YTc4OTVhZmYyM2E4ZTcyMCJ9LCJyZWNvcmREaWdlc3RzIjp7Im1lYWxzLmpzb24iOiI4ZGVhYTJhMDVlNmY5M2E4ZDJiMzIxOTNiMjA4OGVjMTFkYzMyZmI0MjFmNzdhYmQyZmE5OWViYmM4MWM0ODRiIn0sInJlY292ZXJlZEF0IjoiMjAyNi0xMS0wN1QyMToyNzo0NFoiLCJzb3VyY2UiOiJyZXZpZXdlZC1iYWNrdXAifQ==",
+        "-String\/.health-recovery\/861D9654-8746-4820-839D-643C8245F604\/device-intent.json" : "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiJBRTFCOUQyRS0xNURGLTQyRjQtOEYzQS0yNEM5RDYzNDAxNzkiLCJvd25lciI6IjUxNEYzQkVELUIyNDAtNEU4Ri05NDg0LTdFNzgxNEQzNDg2NyIsInZlcnNpb24iOjF9",
+        "-String\/.health-recovery\/861D9654-8746-4820-839D-643C8245F604\/manifest.json" : "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTA3VDIxOjI3OjQ0WiIsImRvbWFpbnMiOlsibWVhbHMiXSwiaW50ZW50Ijp0cnVlLCJwaG90b3MiOmZhbHNlLCJ2ZXJzaW9uIjoxfQ==",
+        "-String\/.health-recovery\/861D9654-8746-4820-839D-643C8245F604\/meals.json" : "W10=",
+        "-String\/.health-recovery\/68539754-9E39-480D-A562-B1B26561EE46\/device-intent.json" : "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI2MkY1QjdGOS0xNzhELTRGQzktQjFENy0yOEQ5QjNCMTM5QzQiLCJvd25lciI6IjUxNEYzQkVELUIyNDAtNEU4Ri05NDg0LTdFNzgxNEQzNDg2NyIsInZlcnNpb24iOjF9",
+        "-String\/.health-recovery\/68539754-9E39-480D-A562-B1B26561EE46\/legacy-origin-meals.json" : "eyJkb21haW4iOiJtZWFscyIsImtleSI6Imx1bWVuLmhlYWx0aC5tZWFscy52MSIsInBheWxvYWQiOiJjd0I1QUc0QWRBQm9BR1VBZEFCcEFHTUFJQUJtQUdFQWFRQnNBR1VBWkFBZ0FHOEFiQUJrQUdVQWNnQWdBSFlBWVFCc0FIVUFaUUFnQUdVQUFRTT0iLCJzY2hlbWFWZXJzaW9uIjoxLCJzaGEyNTYiOiI3ZTY5NDIxN2M3MjVjYTJiOWI3ODE4YWU0Njk2MGUyZmZjMjIwM2ZkOWIxY2Q4ODY4MTdkYWQ2YzJiZThjYTM1IiwidHlwZSI6InN0cmluZ1VURjE2TEUifQ==",
+        "-String\/.health-recovery\/68539754-9E39-480D-A562-B1B26561EE46\/manifest.json" : "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTA3VDIxOjI3OjQ0WiIsImRvbWFpbnMiOlsibWVhbHMiXSwiaW50ZW50Ijp0cnVlLCJsZWdhY3lPcmlnaW5zIjp7Im1lYWxzIjp7ImZpbGUiOiJsZWdhY3ktb3JpZ2luLW1lYWxzLmpzb24iLCJzaGEyNTYiOiJhNDBhOGI2YjYwNjYzYjg0YzljNTQzNDc4YmM3YzRlN2Q0ZWUwOTU5MThjNDMwZjEyYTgzNmIzZWRkMDM2YTFlIn19LCJwaG90b3MiOmZhbHNlLCJ2ZXJzaW9uIjoyfQ==",
+        "-String\/chat.json" : "W10=",
+        "-String\/conversation-selection.json" : "e30=",
+        "-String\/conversations.json" : "W10=",
+        "-String\/goals.json" : "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ==",
+        "-String\/health-write-intent.json" : "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiIyQzM5QzQxNS0xNjQwLTQwOUItODFFQy1GRDIwRUREMEJGQzQiLCJvd25lciI6IjUxNEYzQkVELUIyNDAtNEU4Ri05NDg0LTdFNzgxNEQzNDg2NyIsInZlcnNpb24iOjF9",
+        "-String\/meals.json" : "W3siZGF0ZSI6IjIwMjYtMTEtMDdUMjE6Mjc6NDRaIiwiaWQiOiJsZWdhY3ktcmVwbGFjZW1lbnQtYSIsIml0ZW1zIjpbXSwicGhvdG9JRCI6IkFCMzI4QUJCLTcwM0QtNEQzNi1CNzUxLUFCMDgyRDRFNTNFNiIsInNvdXJjZSI6Im1hbnVhbCIsInR5cGUiOiJsdW5jaCJ9LHsiZGF0ZSI6IjIwMjYtMTEtMDdUMjE6Mjc6NDRaIiwiaWQiOiJsZWdhY3ktcmVwbGFjZW1lbnQtYiIsIml0ZW1zIjpbXSwicGhvdG9JRCI6IkJFRkY5OTg1LUU4NDYtNDBFRi1CRjU4LThDODhGRDA1QzAwQiIsInNvdXJjZSI6Im1hbnVhbCIsInR5cGUiOiJzbmFjayJ9XQ==",
+        "-String\/photos\/AB328ABB-703D-4D36-B751-AB082D4E53E6.jpg" : "\/9j\/4AAQSkZJRgABAQAA2ADYAAD\/4QCMRXhpZgAATU0AKgAAAAgABQESAAMAAAABAAEAAAEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAABAAIAAIdpAAQAAAABAAAAWgAAAAAAAADYAAAAAQAAANgAAAABAAOgAQADAAAAAQABAACgAgAEAAAAAQAAAEigAwAEAAAAAQAAADAAAAAA\/+0AOFBob3Rvc2hvcCAzLjAAOEJJTQQEAAAAAAAAOEJJTQQlAAAAAAAQ1B2M2Y8AsgTpgAmY7PhCfv\/AABEIADAASAMBIgACEQEDEQH\/xAAfAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgv\/xAC1EAACAQMDAgQDBQUEBAAAAX0BAgMABBEFEiExQQYTUWEHInEUMoGRoQgjQrHBFVLR8CQzYnKCCQoWFxgZGiUmJygpKjQ1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4eLj5OXm5+jp6vHy8\/T19vf4+fr\/xAAfAQADAQEBAQEBAQEBAAAAAAAAAQIDBAUGBwgJCgv\/xAC1EQACAQIEBAMEBwUEBAABAncAAQIDEQQFITEGEkFRB2FxEyIygQgUQpGhscEJIzNS8BVictEKFiQ04SXxFxgZGiYnKCkqNTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2dri4+Tl5ufo6ery8\/T19vf4+fr\/2wBDAAEBAQEBAQIBAQIDAgICAwQDAwMDBAYEBAQEBAYHBgYGBgYGBwcHBwcHBwcICAgICAgJCQkJCQsLCwsLCwsLCwv\/2wBDAQICAgMDAwUDAwULCAYICwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwv\/3QAEAAX\/2gAMAwEAAhEDEQA\/APUKKKK\/pw\/xzCiiigAooooAKKKKACiiigD\/0PUKKKK\/pw\/xzCiiigAooooAKKKKACiiigD\/0fUKKKK\/pw\/xzCiiigAooooAKKKKACiiigD\/2Q==",
+        "-String\/photos\/BEFF9985-E846-40EF-BF58-8C88FD05C00B.jpg" : "\/9j\/4AAQSkZJRgABAQAA2ADYAAD\/4QCMRXhpZgAATU0AKgAAAAgABQESAAMAAAABAAEAAAEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAABAAIAAIdpAAQAAAABAAAAWgAAAAAAAADYAAAAAQAAANgAAAABAAOgAQADAAAAAQABAACgAgAEAAAAAQAAAEigAwAEAAAAAQAAADAAAAAA\/+0AOFBob3Rvc2hvcCAzLjAAOEJJTQQEAAAAAAAAOEJJTQQlAAAAAAAQ1B2M2Y8AsgTpgAmY7PhCfv\/AABEIADAASAMBIgACEQEDEQH\/xAAfAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgv\/xAC1EAACAQMDAgQDBQUEBAAAAX0BAgMABBEFEiExQQYTUWEHInEUMoGRoQgjQrHBFVLR8CQzYnKCCQoWFxgZGiUmJygpKjQ1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4eLj5OXm5+jp6vHy8\/T19vf4+fr\/xAAfAQADAQEBAQEBAQEBAAAAAAAAAQIDBAUGBwgJCgv\/xAC1EQACAQIEBAMEBwUEBAABAncAAQIDEQQFITEGEkFRB2FxEyIygQgUQpGhscEJIzNS8BVictEKFiQ04SXxFxgZGiYnKCkqNTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2dri4+Tl5ufo6ery8\/T19vf4+fr\/2wBDAAEBAQEBAQIBAQIDAgICAwQDAwMDBAYEBAQEBAYHBgYGBgYGBwcHBwcHBwcICAgICAgJCQkJCQsLCwsLCwsLCwv\/2wBDAQICAgMDAwUDAwULCAYICwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwv\/3QAEAAX\/2gAMAwEAAhEDEQA\/AP0gooor\/Oc\/0ECiiigAooooAKKKKACiiigD\/9D9IKKKK\/znP9BAooooAKKKKACiiigAooooA\/\/R\/SCiiiv85z\/QQKKKKACiiigAooooAKKKKAP\/2Q==",
+        "-String\/synthetic-linked-marker.json" : "dHJ1ZQ==",
+        "-String\/water.json" : "W3siZGF0ZSI6IjIwMjMtMTEtMTRUMjI6MTM6MjBaIiwiaWQiOiJsZWdhY3ktaGVhbHRoeS13YXRlciIsIm1sIjoxMzd9XQ==",
+        "-String\/workouts.json" : "W10="
+      },
+      "before" : {
+        "-String\/chat.json" : "W10=",
+        "-String\/conversation-selection.json" : "e30=",
+        "-String\/conversations.json" : "W10=",
+        "-String\/goals.json" : "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ==",
+        "-String\/health-write-intent.json" : "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI2MkY1QjdGOS0xNzhELTRGQzktQjFENy0yOEQ5QjNCMTM5QzQiLCJvd25lciI6IjUxNEYzQkVELUIyNDAtNEU4Ri05NDg0LTdFNzgxNEQzNDg2NyIsInZlcnNpb24iOjF9",
+        "-String\/water.json" : "W3siZGF0ZSI6IjIwMjMtMTEtMTRUMjI6MTM6MjBaIiwiaWQiOiJsZWdhY3ktaGVhbHRoeS13YXRlciIsIm1sIjoxMzd9XQ==",
+        "-String\/workouts.json" : "W10="
+      },
+      "currentDefaults" : {
+        "lumen.health.meals.v1" : {
+          "base64" : "cwB5AG4AdABoAGUAdABpAGMAIABmAGEAaQBsAGUAZAAgAG8AbABkAGUAcgAgAHYAYQBsAHUAZQAgAGUAAQM=",
+          "type" : "StringUTF16LE"
+        }
+      },
+      "key" : "lumen.health.meals.v1",
+      "label" : "meals-String",
+      "originEnvelope" : "eyJkb21haW4iOiJtZWFscyIsImtleSI6Imx1bWVuLmhlYWx0aC5tZWFscy52MSIsInBheWxvYWQiOiJjd0I1QUc0QWRBQm9BR1VBZEFCcEFHTUFJQUJtQUdFQWFRQnNBR1VBWkFBZ0FHOEFiQUJrQUdVQWNnQWdBSFlBWVFCc0FIVUFaUUFnQUdVQUFRTT0iLCJzY2hlbWFWZXJzaW9uIjoxLCJzaGEyNTYiOiI3ZTY5NDIxN2M3MjVjYTJiOWI3ODE4YWU0Njk2MGUyZmZjMjIwM2ZkOWIxY2Q4ODY4MTdkYWQ2YzJiZThjYTM1IiwidHlwZSI6InN0cmluZ1VURjE2TEUifQ==",
+      "root" : "\/var\/folders\/s8\/9jzwfsws6zb3qbg0ffyy_blm0000gn\/T\/Lumen-legacy-transaction-5BBBC67A-451E-4E81-8341-8BBC8D1CE896\/meals-String",
+      "suite" : "com.dbakp.lumen.synthetic.legacy-transaction.D03E06D7-4B7C-445B-B79B-D367C745C50F",
+      "synchronized" : true
+    },
+    {
+      "after" : {
+        "ts-Data\/.health-recovery-history\/8F5C29BD-DFB4-4F07-982C-4BC64604EF3F.json" : "eyJkb21haW5zIjpbIndvcmtvdXRzIl0sInBob3RvRGlnZXN0cyI6e30sInJlY29yZERpZ2VzdHMiOnsid29ya291dHMuanNvbiI6IjRmNTNjZGExOGMyYmFhMGMwMzU0YmI1ZjlhM2VjYmU1ZWQxMmFiNGQ4ZTExYmE4NzNjMmYxMTE2MTIwMmI5NDUifSwicmVjb3ZlcmVkQXQiOiIyMDI2LTExLTA3VDIxOjI3OjQ0WiIsInNvdXJjZSI6InJldmlld2VkLWJhY2t1cCJ9",
+        "ts-Data\/.health-recovery\/2AC48B57-1C70-44C3-A41A-153DC5FD4834\/device-intent.json" : "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI5NEE2NzQyNC01RDQ5LTRFMzAtOUVFRC01NzVCOTlEQzEzNkIiLCJvd25lciI6IjE0OTFFQUZBLTgxQTUtNDFDNC04MUQzLThDRUNDNjNBRDY0RSIsInZlcnNpb24iOjF9",
+        "ts-Data\/.health-recovery\/2AC48B57-1C70-44C3-A41A-153DC5FD4834\/legacy-origin-workouts.json" : "eyJkb21haW4iOiJ3b3Jrb3V0cyIsImtleSI6Imx1bWVuLmhlYWx0aC53b3Jrb3V0cy52MSIsInBheWxvYWQiOiJlM041Ym5Sb1pYUnBZeUJtWVdsc1pXUWdiR1ZuWVdONUlIUnlZVzV6WVdOMGFXOXUiLCJzY2hlbWFWZXJzaW9uIjoxLCJzaGEyNTYiOiI1ZWZmNjQ1MzhhYTNmMGJhYzljYmRjMTg4MmViYzEyZTkyYjRiMzVmYzZiMzIyYjYwYmJiMzVhYWQ1MmRkMTQzIiwidHlwZSI6ImRhdGEifQ==",
+        "ts-Data\/.health-recovery\/2AC48B57-1C70-44C3-A41A-153DC5FD4834\/manifest.json" : "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTA3VDIxOjI3OjQ0WiIsImRvbWFpbnMiOlsid29ya291dHMiXSwiaW50ZW50Ijp0cnVlLCJsZWdhY3lPcmlnaW5zIjp7IndvcmtvdXRzIjp7ImZpbGUiOiJsZWdhY3ktb3JpZ2luLXdvcmtvdXRzLmpzb24iLCJzaGEyNTYiOiJlNWNkZmE0NDBjMmEyZjBkNTBkYTU5MTU3ZDVlNWI1ODg1N2M4M2MxZTVlNTY5YzY1OWFiODI2NDhiMjc4NjU5In19LCJwaG90b3MiOmZhbHNlLCJ2ZXJzaW9uIjoyfQ==",
+        "ts-Data\/.health-recovery\/5AAAFD6D-64A5-4E5C-9FCA-34E615296C6F\/device-intent.json" : "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI2Nzc5NDNEQS1BQkE1LTQzOTktOUU0QS05NUYxMjYyQzM1RjUiLCJvd25lciI6IjE0OTFFQUZBLTgxQTUtNDFDNC04MUQzLThDRUNDNjNBRDY0RSIsInZlcnNpb24iOjF9",
+        "ts-Data\/.health-recovery\/5AAAFD6D-64A5-4E5C-9FCA-34E615296C6F\/manifest.json" : "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTA3VDIxOjI3OjQ0WiIsImRvbWFpbnMiOlsid29ya291dHMiXSwiaW50ZW50Ijp0cnVlLCJwaG90b3MiOmZhbHNlLCJ2ZXJzaW9uIjoxfQ==",
+        "ts-Data\/.health-recovery\/5AAAFD6D-64A5-4E5C-9FCA-34E615296C6F\/workouts.json" : "W10=",
+        "ts-Data\/chat.json" : "W10=",
+        "ts-Data\/conversation-selection.json" : "e30=",
+        "ts-Data\/conversations.json" : "W10=",
+        "ts-Data\/goals.json" : "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ==",
+        "ts-Data\/health-write-intent.json" : "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI0QUM2MzU4Ny02NzQ5LTQ2MjktOEZCQi1FQ0Q1NzEzQjEyMjgiLCJvd25lciI6IjE0OTFFQUZBLTgxQTUtNDFDNC04MUQzLThDRUNDNjNBRDY0RSIsInZlcnNpb24iOjF9",
+        "ts-Data\/meals.json" : "W10=",
+        "ts-Data\/synthetic-linked-marker.json" : "dHJ1ZQ==",
+        "ts-Data\/water.json" : "W3siZGF0ZSI6IjIwMjMtMTEtMTRUMjI6MTM6MjBaIiwiaWQiOiJsZWdhY3ktaGVhbHRoeS13YXRlciIsIm1sIjoxMzd9XQ==",
+        "ts-Data\/workouts.json" : "W10="
+      },
+      "before" : {
+        "ts-Data\/chat.json" : "W10=",
+        "ts-Data\/conversation-selection.json" : "e30=",
+        "ts-Data\/conversations.json" : "W10=",
+        "ts-Data\/goals.json" : "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ==",
+        "ts-Data\/health-write-intent.json" : "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI5NEE2NzQyNC01RDQ5LTRFMzAtOUVFRC01NzVCOTlEQzEzNkIiLCJvd25lciI6IjE0OTFFQUZBLTgxQTUtNDFDNC04MUQzLThDRUNDNjNBRDY0RSIsInZlcnNpb24iOjF9",
+        "ts-Data\/meals.json" : "W10=",
+        "ts-Data\/water.json" : "W3siZGF0ZSI6IjIwMjMtMTEtMTRUMjI6MTM6MjBaIiwiaWQiOiJsZWdhY3ktaGVhbHRoeS13YXRlciIsIm1sIjoxMzd9XQ=="
+      },
+      "currentDefaults" : {
+        "lumen.health.workouts.v1" : {
+          "base64" : "e3N5bnRoZXRpYyBmYWlsZWQgbGVnYWN5IHRyYW5zYWN0aW9u",
+          "type" : "Data"
+        }
+      },
+      "key" : "lumen.health.workouts.v1",
+      "label" : "workouts-Data",
+      "originEnvelope" : "eyJkb21haW4iOiJ3b3Jrb3V0cyIsImtleSI6Imx1bWVuLmhlYWx0aC53b3Jrb3V0cy52MSIsInBheWxvYWQiOiJlM041Ym5Sb1pYUnBZeUJtWVdsc1pXUWdiR1ZuWVdONUlIUnlZVzV6WVdOMGFXOXUiLCJzY2hlbWFWZXJzaW9uIjoxLCJzaGEyNTYiOiI1ZWZmNjQ1MzhhYTNmMGJhYzljYmRjMTg4MmViYzEyZTkyYjRiMzVmYzZiMzIyYjYwYmJiMzVhYWQ1MmRkMTQzIiwidHlwZSI6ImRhdGEifQ==",
+      "root" : "\/var\/folders\/s8\/9jzwfsws6zb3qbg0ffyy_blm0000gn\/T\/Lumen-legacy-transaction-5BBBC67A-451E-4E81-8341-8BBC8D1CE896\/workouts-Data",
+      "suite" : "com.dbakp.lumen.synthetic.legacy-transaction.52F88CDC-F3E5-4A01-9A31-9E5AF2CF05DF",
+      "synchronized" : true
+    },
+    {
+      "after" : {
+        "-String\/.health-recovery-history\/3C97932E-FBD3-4AA7-A142-6832CB637B34.json" : "eyJkb21haW5zIjpbIndvcmtvdXRzIl0sInBob3RvRGlnZXN0cyI6e30sInJlY29yZERpZ2VzdHMiOnsid29ya291dHMuanNvbiI6IjRmNTNjZGExOGMyYmFhMGMwMzU0YmI1ZjlhM2VjYmU1ZWQxMmFiNGQ4ZTExYmE4NzNjMmYxMTE2MTIwMmI5NDUifSwicmVjb3ZlcmVkQXQiOiIyMDI2LTExLTA3VDIxOjI3OjQ1WiIsInNvdXJjZSI6InJldmlld2VkLWJhY2t1cCJ9",
+        "-String\/.health-recovery\/03098E32-3057-42A9-94A2-E237BEA6FEDA\/device-intent.json" : "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiIyNzc4QTEwMy05MDRBLTQzODEtODVCNi0wM0NCMzhBNThFRUIiLCJvd25lciI6IjQyMEMzQUEyLUMzNjQtNDJGQi1CMzM2LTlCNkE0RjY0MTE4RSIsInZlcnNpb24iOjF9",
+        "-String\/.health-recovery\/03098E32-3057-42A9-94A2-E237BEA6FEDA\/legacy-origin-workouts.json" : "eyJkb21haW4iOiJ3b3Jrb3V0cyIsImtleSI6Imx1bWVuLmhlYWx0aC53b3Jrb3V0cy52MSIsInBheWxvYWQiOiJjd0I1QUc0QWRBQm9BR1VBZEFCcEFHTUFJQUJtQUdFQWFRQnNBR1VBWkFBZ0FHOEFiQUJrQUdVQWNnQWdBSFlBWVFCc0FIVUFaUUFnQUdVQUFRTT0iLCJzY2hlbWFWZXJzaW9uIjoxLCJzaGEyNTYiOiI3ZTY5NDIxN2M3MjVjYTJiOWI3ODE4YWU0Njk2MGUyZmZjMjIwM2ZkOWIxY2Q4ODY4MTdkYWQ2YzJiZThjYTM1IiwidHlwZSI6InN0cmluZ1VURjE2TEUifQ==",
+        "-String\/.health-recovery\/03098E32-3057-42A9-94A2-E237BEA6FEDA\/manifest.json" : "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTA3VDIxOjI3OjQ1WiIsImRvbWFpbnMiOlsid29ya291dHMiXSwiaW50ZW50Ijp0cnVlLCJsZWdhY3lPcmlnaW5zIjp7IndvcmtvdXRzIjp7ImZpbGUiOiJsZWdhY3ktb3JpZ2luLXdvcmtvdXRzLmpzb24iLCJzaGEyNTYiOiIzMDhiMzQxMTY3YTQ2OTFjZThmMTMwMmQ5OWRkZWFhMDE2NmQzODYwOTYxMDAxZGUzZDBmOTYwYTFmNTNiOTRjIn19LCJwaG90b3MiOmZhbHNlLCJ2ZXJzaW9uIjoyfQ==",
+        "-String\/.health-recovery\/09767934-38C9-4857-A9B1-34213DCDDC12\/device-intent.json" : "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiIyREJBMTE1OS1BM0FBLTREMjYtQTBGMS03ODg0N0RDMjJBOTIiLCJvd25lciI6IjQyMEMzQUEyLUMzNjQtNDJGQi1CMzM2LTlCNkE0RjY0MTE4RSIsInZlcnNpb24iOjF9",
+        "-String\/.health-recovery\/09767934-38C9-4857-A9B1-34213DCDDC12\/manifest.json" : "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTA3VDIxOjI3OjQ1WiIsImRvbWFpbnMiOlsid29ya291dHMiXSwiaW50ZW50Ijp0cnVlLCJwaG90b3MiOmZhbHNlLCJ2ZXJzaW9uIjoxfQ==",
+        "-String\/.health-recovery\/09767934-38C9-4857-A9B1-34213DCDDC12\/workouts.json" : "W10=",
+        "-String\/chat.json" : "W10=",
+        "-String\/conversation-selection.json" : "e30=",
+        "-String\/conversations.json" : "W10=",
+        "-String\/goals.json" : "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ==",
+        "-String\/health-write-intent.json" : "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI4MzZGRTMyMi01ODhCLTRCNDYtQTk1Ny02NTM5NzZGNzEzMzgiLCJvd25lciI6IjQyMEMzQUEyLUMzNjQtNDJGQi1CMzM2LTlCNkE0RjY0MTE4RSIsInZlcnNpb24iOjF9",
+        "-String\/meals.json" : "W10=",
+        "-String\/synthetic-linked-marker.json" : "dHJ1ZQ==",
+        "-String\/water.json" : "W3siZGF0ZSI6IjIwMjMtMTEtMTRUMjI6MTM6MjBaIiwiaWQiOiJsZWdhY3ktaGVhbHRoeS13YXRlciIsIm1sIjoxMzd9XQ==",
+        "-String\/workouts.json" : "W10="
+      },
+      "before" : {
+        "-String\/chat.json" : "W10=",
+        "-String\/conversation-selection.json" : "e30=",
+        "-String\/conversations.json" : "W10=",
+        "-String\/goals.json" : "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ==",
+        "-String\/health-write-intent.json" : "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiIyNzc4QTEwMy05MDRBLTQzODEtODVCNi0wM0NCMzhBNThFRUIiLCJvd25lciI6IjQyMEMzQUEyLUMzNjQtNDJGQi1CMzM2LTlCNkE0RjY0MTE4RSIsInZlcnNpb24iOjF9",
+        "-String\/meals.json" : "W10=",
+        "-String\/water.json" : "W3siZGF0ZSI6IjIwMjMtMTEtMTRUMjI6MTM6MjBaIiwiaWQiOiJsZWdhY3ktaGVhbHRoeS13YXRlciIsIm1sIjoxMzd9XQ=="
+      },
+      "currentDefaults" : {
+        "lumen.health.workouts.v1" : {
+          "base64" : "cwB5AG4AdABoAGUAdABpAGMAIABmAGEAaQBsAGUAZAAgAG8AbABkAGUAcgAgAHYAYQBsAHUAZQAgAGUAAQM=",
+          "type" : "StringUTF16LE"
+        }
+      },
+      "key" : "lumen.health.workouts.v1",
+      "label" : "workouts-String",
+      "originEnvelope" : "eyJkb21haW4iOiJ3b3Jrb3V0cyIsImtleSI6Imx1bWVuLmhlYWx0aC53b3Jrb3V0cy52MSIsInBheWxvYWQiOiJjd0I1QUc0QWRBQm9BR1VBZEFCcEFHTUFJQUJtQUdFQWFRQnNBR1VBWkFBZ0FHOEFiQUJrQUdVQWNnQWdBSFlBWVFCc0FIVUFaUUFnQUdVQUFRTT0iLCJzY2hlbWFWZXJzaW9uIjoxLCJzaGEyNTYiOiI3ZTY5NDIxN2M3MjVjYTJiOWI3ODE4YWU0Njk2MGUyZmZjMjIwM2ZkOWIxY2Q4ODY4MTdkYWQ2YzJiZThjYTM1IiwidHlwZSI6InN0cmluZ1VURjE2TEUifQ==",
+      "root" : "\/var\/folders\/s8\/9jzwfsws6zb3qbg0ffyy_blm0000gn\/T\/Lumen-legacy-transaction-5BBBC67A-451E-4E81-8341-8BBC8D1CE896\/workouts-String",
+      "suite" : "com.dbakp.lumen.synthetic.legacy-transaction.5CAC94C3-D52C-409E-AAD1-E803EDB2AA23",
+      "synchronized" : true
+    },
+    {
+      "after" : {
+        "ls-Data\/.health-recovery-history\/36766C57-3A48-436C-AB80-9E74DFE36097.json" : "eyJkb21haW5zIjpbImdvYWxzIl0sInBob3RvRGlnZXN0cyI6e30sInJlY29yZERpZ2VzdHMiOnsiZ29hbHMuanNvbiI6IjljNTRmNDg4MjcwMzY2MjZmYTI3MzJlNzhkZDUzOWU4ZDljZjUwNDg2YTY5NmEzMDRiMTFlZTYyMjZkOGU5M2IifSwicmVjb3ZlcmVkQXQiOiIyMDI2LTExLTA3VDIxOjI3OjQ1WiIsInNvdXJjZSI6InJldmlld2VkLWJhY2t1cCJ9",
+        "ls-Data\/.health-recovery\/7582FC6C-688D-4543-A811-BA0BE58DC5F4\/device-intent.json" : "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI5MkUyODhGRi01NjI1LTQ5RkYtQkQzMi1EQzY4ODYxOTlDNzMiLCJvd25lciI6IjJFNzFFRjBCLTczNjQtNEUyQS1BQTRBLUMyRkEzNUJCNDc3MiIsInZlcnNpb24iOjF9",
+        "ls-Data\/.health-recovery\/7582FC6C-688D-4543-A811-BA0BE58DC5F4\/legacy-origin-goals.json" : "eyJkb21haW4iOiJnb2FscyIsImtleSI6Imx1bWVuLmhlYWx0aC5nb2Fscy52MSIsInBheWxvYWQiOiJlM041Ym5Sb1pYUnBZeUJtWVdsc1pXUWdiR1ZuWVdONUlIUnlZVzV6WVdOMGFXOXUiLCJzY2hlbWFWZXJzaW9uIjoxLCJzaGEyNTYiOiI1ZWZmNjQ1MzhhYTNmMGJhYzljYmRjMTg4MmViYzEyZTkyYjRiMzVmYzZiMzIyYjYwYmJiMzVhYWQ1MmRkMTQzIiwidHlwZSI6ImRhdGEifQ==",
+        "ls-Data\/.health-recovery\/7582FC6C-688D-4543-A811-BA0BE58DC5F4\/manifest.json" : "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTA3VDIxOjI3OjQ1WiIsImRvbWFpbnMiOlsiZ29hbHMiXSwiaW50ZW50Ijp0cnVlLCJsZWdhY3lPcmlnaW5zIjp7ImdvYWxzIjp7ImZpbGUiOiJsZWdhY3ktb3JpZ2luLWdvYWxzLmpzb24iLCJzaGEyNTYiOiI5YzRhYTRjZmRiMjljZGVmNzAyMjJmMmI0YTAyOWVkZjNjODI5ZGJiMGQ0ZmRkODVmNjVmYzMxNGE3YzBjNzQ4In19LCJwaG90b3MiOmZhbHNlLCJ2ZXJzaW9uIjoyfQ==",
+        "ls-Data\/.health-recovery\/F07FD21B-5A38-40A0-8C60-8E0AF7E1FE3D\/device-intent.json" : "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiJENjA1RjQ3NC04RDFFLTQzMEEtQTU2RS1EREUwMzY4MjhFNkMiLCJvd25lciI6IjJFNzFFRjBCLTczNjQtNEUyQS1BQTRBLUMyRkEzNUJCNDc3MiIsInZlcnNpb24iOjF9",
+        "ls-Data\/.health-recovery\/F07FD21B-5A38-40A0-8C60-8E0AF7E1FE3D\/goals.json" : "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ==",
+        "ls-Data\/.health-recovery\/F07FD21B-5A38-40A0-8C60-8E0AF7E1FE3D\/manifest.json" : "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTA3VDIxOjI3OjQ1WiIsImRvbWFpbnMiOlsiZ29hbHMiXSwiaW50ZW50Ijp0cnVlLCJwaG90b3MiOmZhbHNlLCJ2ZXJzaW9uIjoxfQ==",
+        "ls-Data\/chat.json" : "W10=",
+        "ls-Data\/conversation-selection.json" : "e30=",
+        "ls-Data\/conversations.json" : "W10=",
+        "ls-Data\/goals.json" : "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjMyMSwid2VpZ2h0S2ciOjg4LjV9",
+        "ls-Data\/health-write-intent.json" : "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI1NzJGN0JEQy1GOTM0LTQ5MUEtQTc4RS03QkJDODhCQkRBOUMiLCJvd25lciI6IjJFNzFFRjBCLTczNjQtNEUyQS1BQTRBLUMyRkEzNUJCNDc3MiIsInZlcnNpb24iOjF9",
+        "ls-Data\/meals.json" : "W10=",
+        "ls-Data\/synthetic-linked-marker.json" : "dHJ1ZQ==",
+        "ls-Data\/water.json" : "W3siZGF0ZSI6IjIwMjMtMTEtMTRUMjI6MTM6MjBaIiwiaWQiOiJsZWdhY3ktaGVhbHRoeS13YXRlciIsIm1sIjoxMzd9XQ==",
+        "ls-Data\/workouts.json" : "W10="
+      },
+      "before" : {
+        "ls-Data\/chat.json" : "W10=",
+        "ls-Data\/conversation-selection.json" : "e30=",
+        "ls-Data\/conversations.json" : "W10=",
+        "ls-Data\/health-write-intent.json" : "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI5MkUyODhGRi01NjI1LTQ5RkYtQkQzMi1EQzY4ODYxOTlDNzMiLCJvd25lciI6IjJFNzFFRjBCLTczNjQtNEUyQS1BQTRBLUMyRkEzNUJCNDc3MiIsInZlcnNpb24iOjF9",
+        "ls-Data\/meals.json" : "W10=",
+        "ls-Data\/water.json" : "W3siZGF0ZSI6IjIwMjMtMTEtMTRUMjI6MTM6MjBaIiwiaWQiOiJsZWdhY3ktaGVhbHRoeS13YXRlciIsIm1sIjoxMzd9XQ==",
+        "ls-Data\/workouts.json" : "W10="
+      },
+      "currentDefaults" : {
+        "lumen.health.goals.v1" : {
+          "base64" : "e3N5bnRoZXRpYyBmYWlsZWQgbGVnYWN5IHRyYW5zYWN0aW9u",
+          "type" : "Data"
+        }
+      },
+      "key" : "lumen.health.goals.v1",
+      "label" : "goals-Data",
+      "originEnvelope" : "eyJkb21haW4iOiJnb2FscyIsImtleSI6Imx1bWVuLmhlYWx0aC5nb2Fscy52MSIsInBheWxvYWQiOiJlM041Ym5Sb1pYUnBZeUJtWVdsc1pXUWdiR1ZuWVdONUlIUnlZVzV6WVdOMGFXOXUiLCJzY2hlbWFWZXJzaW9uIjoxLCJzaGEyNTYiOiI1ZWZmNjQ1MzhhYTNmMGJhYzljYmRjMTg4MmViYzEyZTkyYjRiMzVmYzZiMzIyYjYwYmJiMzVhYWQ1MmRkMTQzIiwidHlwZSI6ImRhdGEifQ==",
+      "root" : "\/var\/folders\/s8\/9jzwfsws6zb3qbg0ffyy_blm0000gn\/T\/Lumen-legacy-transaction-5BBBC67A-451E-4E81-8341-8BBC8D1CE896\/goals-Data",
+      "suite" : "com.dbakp.lumen.synthetic.legacy-transaction.5FE49BE9-DCB8-4EB6-900D-E82747E2156E",
+      "synchronized" : true
+    },
+    {
+      "after" : {
+        "-String\/.health-recovery-history\/5679BAC3-976D-4DFE-9605-097A728B0EF9.json" : "eyJkb21haW5zIjpbImdvYWxzIl0sInBob3RvRGlnZXN0cyI6e30sInJlY29yZERpZ2VzdHMiOnsiZ29hbHMuanNvbiI6IjljNTRmNDg4MjcwMzY2MjZmYTI3MzJlNzhkZDUzOWU4ZDljZjUwNDg2YTY5NmEzMDRiMTFlZTYyMjZkOGU5M2IifSwicmVjb3ZlcmVkQXQiOiIyMDI2LTExLTA3VDIxOjI3OjQ1WiIsInNvdXJjZSI6InJldmlld2VkLWJhY2t1cCJ9",
+        "-String\/.health-recovery\/8C1D505A-427E-44CB-9089-1A417FC7AC0B\/device-intent.json" : "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiJDM0Q0REE2RC1DMTJELTRGQkUtOUNGOS1BNTVFMDUzNTgyNUIiLCJvd25lciI6IkU4NEEwQkYyLUE0OEItNEJGMy04MEQ2LTNDMUZDRjJDQzNDNSIsInZlcnNpb24iOjF9",
+        "-String\/.health-recovery\/8C1D505A-427E-44CB-9089-1A417FC7AC0B\/goals.json" : "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ==",
+        "-String\/.health-recovery\/8C1D505A-427E-44CB-9089-1A417FC7AC0B\/manifest.json" : "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTA3VDIxOjI3OjQ1WiIsImRvbWFpbnMiOlsiZ29hbHMiXSwiaW50ZW50Ijp0cnVlLCJwaG90b3MiOmZhbHNlLCJ2ZXJzaW9uIjoxfQ==",
+        "-String\/.health-recovery\/BCA94C16-8BAC-45E9-8824-54148E84FE34\/device-intent.json" : "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI0RDZDQzM0Qi0xMzc5LTQ4NEQtODQ4RC03OEY5REVEMDYxQjQiLCJvd25lciI6IkU4NEEwQkYyLUE0OEItNEJGMy04MEQ2LTNDMUZDRjJDQzNDNSIsInZlcnNpb24iOjF9",
+        "-String\/.health-recovery\/BCA94C16-8BAC-45E9-8824-54148E84FE34\/legacy-origin-goals.json" : "eyJkb21haW4iOiJnb2FscyIsImtleSI6Imx1bWVuLmhlYWx0aC5nb2Fscy52MSIsInBheWxvYWQiOiJjd0I1QUc0QWRBQm9BR1VBZEFCcEFHTUFJQUJtQUdFQWFRQnNBR1VBWkFBZ0FHOEFiQUJrQUdVQWNnQWdBSFlBWVFCc0FIVUFaUUFnQUdVQUFRTT0iLCJzY2hlbWFWZXJzaW9uIjoxLCJzaGEyNTYiOiI3ZTY5NDIxN2M3MjVjYTJiOWI3ODE4YWU0Njk2MGUyZmZjMjIwM2ZkOWIxY2Q4ODY4MTdkYWQ2YzJiZThjYTM1IiwidHlwZSI6InN0cmluZ1VURjE2TEUifQ==",
+        "-String\/.health-recovery\/BCA94C16-8BAC-45E9-8824-54148E84FE34\/manifest.json" : "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTA3VDIxOjI3OjQ1WiIsImRvbWFpbnMiOlsiZ29hbHMiXSwiaW50ZW50Ijp0cnVlLCJsZWdhY3lPcmlnaW5zIjp7ImdvYWxzIjp7ImZpbGUiOiJsZWdhY3ktb3JpZ2luLWdvYWxzLmpzb24iLCJzaGEyNTYiOiI0NjNkYzdjNDJkODllZjFhNWY1MTY3N2E5MDczNjNhNjY2ZjcxZGNjY2I5ZjZmMTkyMGYwNWJiZmFhZTdlMTAzIn19LCJwaG90b3MiOmZhbHNlLCJ2ZXJzaW9uIjoyfQ==",
+        "-String\/chat.json" : "W10=",
+        "-String\/conversation-selection.json" : "e30=",
+        "-String\/conversations.json" : "W10=",
+        "-String\/goals.json" : "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjMyMSwid2VpZ2h0S2ciOjg4LjV9",
+        "-String\/health-write-intent.json" : "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI2NUEyQTE2Qi1DQjdDLTRDQTMtOTRFNi05RkQyRjEzRDFDMzIiLCJvd25lciI6IkU4NEEwQkYyLUE0OEItNEJGMy04MEQ2LTNDMUZDRjJDQzNDNSIsInZlcnNpb24iOjF9",
+        "-String\/meals.json" : "W10=",
+        "-String\/synthetic-linked-marker.json" : "dHJ1ZQ==",
+        "-String\/water.json" : "W3siZGF0ZSI6IjIwMjMtMTEtMTRUMjI6MTM6MjBaIiwiaWQiOiJsZWdhY3ktaGVhbHRoeS13YXRlciIsIm1sIjoxMzd9XQ==",
+        "-String\/workouts.json" : "W10="
+      },
+      "before" : {
+        "-String\/chat.json" : "W10=",
+        "-String\/conversation-selection.json" : "e30=",
+        "-String\/conversations.json" : "W10=",
+        "-String\/health-write-intent.json" : "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI0RDZDQzM0Qi0xMzc5LTQ4NEQtODQ4RC03OEY5REVEMDYxQjQiLCJvd25lciI6IkU4NEEwQkYyLUE0OEItNEJGMy04MEQ2LTNDMUZDRjJDQzNDNSIsInZlcnNpb24iOjF9",
+        "-String\/meals.json" : "W10=",
+        "-String\/water.json" : "W3siZGF0ZSI6IjIwMjMtMTEtMTRUMjI6MTM6MjBaIiwiaWQiOiJsZWdhY3ktaGVhbHRoeS13YXRlciIsIm1sIjoxMzd9XQ==",
+        "-String\/workouts.json" : "W10="
+      },
+      "currentDefaults" : {
+        "lumen.health.goals.v1" : {
+          "base64" : "cwB5AG4AdABoAGUAdABpAGMAIABmAGEAaQBsAGUAZAAgAG8AbABkAGUAcgAgAHYAYQBsAHUAZQAgAGUAAQM=",
+          "type" : "StringUTF16LE"
+        }
+      },
+      "key" : "lumen.health.goals.v1",
+      "label" : "goals-String",
+      "originEnvelope" : "eyJkb21haW4iOiJnb2FscyIsImtleSI6Imx1bWVuLmhlYWx0aC5nb2Fscy52MSIsInBheWxvYWQiOiJjd0I1QUc0QWRBQm9BR1VBZEFCcEFHTUFJQUJtQUdFQWFRQnNBR1VBWkFBZ0FHOEFiQUJrQUdVQWNnQWdBSFlBWVFCc0FIVUFaUUFnQUdVQUFRTT0iLCJzY2hlbWFWZXJzaW9uIjoxLCJzaGEyNTYiOiI3ZTY5NDIxN2M3MjVjYTJiOWI3ODE4YWU0Njk2MGUyZmZjMjIwM2ZkOWIxY2Q4ODY4MTdkYWQ2YzJiZThjYTM1IiwidHlwZSI6InN0cmluZ1VURjE2TEUifQ==",
+      "root" : "\/var\/folders\/s8\/9jzwfsws6zb3qbg0ffyy_blm0000gn\/T\/Lumen-legacy-transaction-5BBBC67A-451E-4E81-8341-8BBC8D1CE896\/goals-String",
+      "suite" : "com.dbakp.lumen.synthetic.legacy-transaction.EC042E64-3929-4A73-A44A-ADFD0676001A",
+      "synchronized" : true
+    },
+    {
+      "after" : {
+        "domains\/.health-recovery-history\/C559B620-F76B-4728-8AFF-1B466305EFAA.json" : "eyJkb21haW5zIjpbImdvYWxzIiwibWVhbHMiLCJ3b3Jrb3V0cyJdLCJwaG90b0RpZ2VzdHMiOnsicGhvdG9zXC81RkY2MjcwQi00RjIzLTREMDEtQjgyNy1EQTBBOEY1MDhCOEQuanBnIjoiNGFlYjM0MGYyMzNkZmJmZTU5MDY2ODg2ZjYzMjZlMmMzOTNkZmQyNzU5NmViOTE0YTc4OTVhZmYyM2E4ZTcyMCIsInBob3Rvc1wvNTQxMkM4OEMtQkQ3Qi00MDdCLUI1OTctNjEzMUMxQjA2RDdELmpwZyI6IjEyYWQyNzgzZjdlY2Q5ZmIyMjUyZGZmN2M3OTc4MWQ5MmQyYTUyZjYzN2MzM2Q3ZjQ2YTYwZmRiMWVmNmY0ZTMifSwicmVjb3JkRGlnZXN0cyI6eyJnb2Fscy5qc29uIjoiOWM1NGY0ODgyNzAzNjYyNmZhMjczMmU3OGRkNTM5ZThkOWNmNTA0ODZhNjk2YTMwNGIxMWVlNjIyNmQ4ZTkzYiIsIm1lYWxzLmpzb24iOiJjODZlOTEwYWQyYjY3OWFhMTQwNTFiNTdhNDMwOWMyY2QyYmFkNmFhMmU2MjljZDY4MWZlNDA5ODA0ODU5M2Q1Iiwid29ya291dHMuanNvbiI6IjRmNTNjZGExOGMyYmFhMGMwMzU0YmI1ZjlhM2VjYmU1ZWQxMmFiNGQ4ZTExYmE4NzNjMmYxMTE2MTIwMmI5NDUifSwicmVjb3ZlcmVkQXQiOiIyMDI2LTExLTA3VDIxOjI3OjQ1WiIsInNvdXJjZSI6InJldmlld2VkLWJhY2t1cCJ9",
+        "domains\/.health-recovery\/35CBD0EA-258C-4A48-A086-76D1A1E2AECD\/device-intent.json" : "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiJERUFCNkZCRC1DQzJFLTREN0QtQkZBMy0wRjM5NjMwM0EwMDIiLCJvd25lciI6IjY3MURCRTIyLUMzODAtNDU2Ri1BOUQxLTQwODJBOUU3RkQ4QyIsInZlcnNpb24iOjF9",
+        "domains\/.health-recovery\/35CBD0EA-258C-4A48-A086-76D1A1E2AECD\/legacy-origin-goals.json" : "eyJkb21haW4iOiJnb2FscyIsImtleSI6Imx1bWVuLmhlYWx0aC5nb2Fscy52MSIsInBheWxvYWQiOiJjd0I1QUc0QWRBQm9BR1VBZEFCcEFHTUFJQUJtQUdFQWFRQnNBR1VBWkFBZ0FHMEFhUUI0QUdVQVpBQWdBR2NBYndCaEFHd0Fjd0E9Iiwic2NoZW1hVmVyc2lvbiI6MSwic2hhMjU2IjoiYjA3ZTU5M2I4M2U0ZmQ5NTRlM2E3M2U3YTMwM2Q5ZjgzNDJkOTgyZTI5MWRiZjg5Y2RkNDk4MWFhNTU1MGUyYiIsInR5cGUiOiJzdHJpbmdVVEYxNkxFIn0=",
+        "domains\/.health-recovery\/35CBD0EA-258C-4A48-A086-76D1A1E2AECD\/legacy-origin-meals.json" : "eyJkb21haW4iOiJtZWFscyIsImtleSI6Imx1bWVuLmhlYWx0aC5tZWFscy52MSIsInBheWxvYWQiOiJlM041Ym5Sb1pYUnBZeUJtWVdsc1pXUWdiR1ZuWVdONUlIUnlZVzV6WVdOMGFXOXUiLCJzY2hlbWFWZXJzaW9uIjoxLCJzaGEyNTYiOiI1ZWZmNjQ1MzhhYTNmMGJhYzljYmRjMTg4MmViYzEyZTkyYjRiMzVmYzZiMzIyYjYwYmJiMzVhYWQ1MmRkMTQzIiwidHlwZSI6ImRhdGEifQ==",
+        "domains\/.health-recovery\/35CBD0EA-258C-4A48-A086-76D1A1E2AECD\/manifest.json" : "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTA3VDIxOjI3OjQ1WiIsImRvbWFpbnMiOlsiZ29hbHMiLCJtZWFscyIsIndvcmtvdXRzIl0sImludGVudCI6dHJ1ZSwibGVnYWN5T3JpZ2lucyI6eyJnb2FscyI6eyJmaWxlIjoibGVnYWN5LW9yaWdpbi1nb2Fscy5qc29uIiwic2hhMjU2IjoiZGU4ZWM0Y2YwMDQ3ZjE2ZjRjYmZiZTJlOTE3NzI2N2E3MDE3ZDc5YTZhMDcwZWUyNzViZjQ1YmFhYzRhODkxMCJ9LCJtZWFscyI6eyJmaWxlIjoibGVnYWN5LW9yaWdpbi1tZWFscy5qc29uIiwic2hhMjU2IjoiM2NlZGE1MDcxOGEwY2RhZTU1ZTk2MTg4YWRhZDc3MzcwNTc0MzY3NmE3NTlmZDFkMzM5MDdjYTkxYTljMThhOCJ9fSwicGhvdG9zIjpmYWxzZSwidmVyc2lvbiI6Mn0=",
+        "domains\/.health-recovery\/35CBD0EA-258C-4A48-A086-76D1A1E2AECD\/workouts.json" : "e3N5bnRoZXRpYyBmYWlsZWQgbGVnYWN5IHRyYW5zYWN0aW9u",
+        "domains\/.health-recovery\/ECDE6690-7354-414A-AF07-21B24DC97758\/device-intent.json" : "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI1MEVFRkFBQy0yQ0EzLTQ5Q0MtOEU1OS0zMkE3NUE4NDE4MkIiLCJvd25lciI6IjY3MURCRTIyLUMzODAtNDU2Ri1BOUQxLTQwODJBOUU3RkQ4QyIsInZlcnNpb24iOjF9",
+        "domains\/.health-recovery\/ECDE6690-7354-414A-AF07-21B24DC97758\/goals.json" : "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ==",
+        "domains\/.health-recovery\/ECDE6690-7354-414A-AF07-21B24DC97758\/manifest.json" : "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTA3VDIxOjI3OjQ1WiIsImRvbWFpbnMiOlsiZ29hbHMiLCJtZWFscyIsIndvcmtvdXRzIl0sImludGVudCI6dHJ1ZSwicGhvdG9zIjpmYWxzZSwidmVyc2lvbiI6MX0=",
+        "domains\/.health-recovery\/ECDE6690-7354-414A-AF07-21B24DC97758\/meals.json" : "W10=",
+        "domains\/.health-recovery\/ECDE6690-7354-414A-AF07-21B24DC97758\/workouts.json" : "W10=",
+        "domains\/chat.json" : "W10=",
+        "domains\/conversation-selection.json" : "e30=",
+        "domains\/conversations.json" : "W10=",
+        "domains\/goals.json" : "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjMyMSwid2VpZ2h0S2ciOjg4LjV9",
+        "domains\/health-write-intent.json" : "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiJFMDUxRURDOS02MDA4LTQzNTQtOUJDRi02MjRFNUQxNEYyODYiLCJvd25lciI6IjY3MURCRTIyLUMzODAtNDU2Ri1BOUQxLTQwODJBOUU3RkQ4QyIsInZlcnNpb24iOjF9",
+        "domains\/meals.json" : "W3siZGF0ZSI6IjIwMjYtMTEtMDdUMjE6Mjc6NDRaIiwiaWQiOiJsZWdhY3ktcmVwbGFjZW1lbnQtYSIsIml0ZW1zIjpbXSwicGhvdG9JRCI6IjU0MTJDODhDLUJEN0ItNDA3Qi1CNTk3LTYxMzFDMUIwNkQ3RCIsInNvdXJjZSI6Im1hbnVhbCIsInR5cGUiOiJsdW5jaCJ9LHsiZGF0ZSI6IjIwMjYtMTEtMDdUMjE6Mjc6NDRaIiwiaWQiOiJsZWdhY3ktcmVwbGFjZW1lbnQtYiIsIml0ZW1zIjpbXSwicGhvdG9JRCI6IjVGRjYyNzBCLTRGMjMtNEQwMS1CODI3LURBMEE4RjUwOEI4RCIsInNvdXJjZSI6Im1hbnVhbCIsInR5cGUiOiJzbmFjayJ9XQ==",
+        "domains\/photos\/5FF6270B-4F23-4D01-B827-DA0A8F508B8D.jpg" : "\/9j\/4AAQSkZJRgABAQAA2ADYAAD\/4QCMRXhpZgAATU0AKgAAAAgABQESAAMAAAABAAEAAAEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAABAAIAAIdpAAQAAAABAAAAWgAAAAAAAADYAAAAAQAAANgAAAABAAOgAQADAAAAAQABAACgAgAEAAAAAQAAAEigAwAEAAAAAQAAADAAAAAA\/+0AOFBob3Rvc2hvcCAzLjAAOEJJTQQEAAAAAAAAOEJJTQQlAAAAAAAQ1B2M2Y8AsgTpgAmY7PhCfv\/AABEIADAASAMBIgACEQEDEQH\/xAAfAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgv\/xAC1EAACAQMDAgQDBQUEBAAAAX0BAgMABBEFEiExQQYTUWEHInEUMoGRoQgjQrHBFVLR8CQzYnKCCQoWFxgZGiUmJygpKjQ1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4eLj5OXm5+jp6vHy8\/T19vf4+fr\/xAAfAQADAQEBAQEBAQEBAAAAAAAAAQIDBAUGBwgJCgv\/xAC1EQACAQIEBAMEBwUEBAABAncAAQIDEQQFITEGEkFRB2FxEyIygQgUQpGhscEJIzNS8BVictEKFiQ04SXxFxgZGiYnKCkqNTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2dri4+Tl5ufo6ery8\/T19vf4+fr\/2wBDAAEBAQEBAQIBAQIDAgICAwQDAwMDBAYEBAQEBAYHBgYGBgYGBwcHBwcHBwcICAgICAgJCQkJCQsLCwsLCwsLCwv\/2wBDAQICAgMDAwUDAwULCAYICwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwv\/3QAEAAX\/2gAMAwEAAhEDEQA\/AP0gooor\/Oc\/0ECiiigAooooAKKKKACiiigD\/9D9IKKKK\/znP9BAooooAKKKKACiiigAooooA\/\/R\/SCiiiv85z\/QQKKKKACiiigAooooAKKKKAP\/2Q==",
+        "domains\/photos\/5412C88C-BD7B-407B-B597-6131C1B06D7D.jpg" : "\/9j\/4AAQSkZJRgABAQAA2ADYAAD\/4QCMRXhpZgAATU0AKgAAAAgABQESAAMAAAABAAEAAAEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAABAAIAAIdpAAQAAAABAAAAWgAAAAAAAADYAAAAAQAAANgAAAABAAOgAQADAAAAAQABAACgAgAEAAAAAQAAAEigAwAEAAAAAQAAADAAAAAA\/+0AOFBob3Rvc2hvcCAzLjAAOEJJTQQEAAAAAAAAOEJJTQQlAAAAAAAQ1B2M2Y8AsgTpgAmY7PhCfv\/AABEIADAASAMBIgACEQEDEQH\/xAAfAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgv\/xAC1EAACAQMDAgQDBQUEBAAAAX0BAgMABBEFEiExQQYTUWEHInEUMoGRoQgjQrHBFVLR8CQzYnKCCQoWFxgZGiUmJygpKjQ1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4eLj5OXm5+jp6vHy8\/T19vf4+fr\/xAAfAQADAQEBAQEBAQEBAAAAAAAAAQIDBAUGBwgJCgv\/xAC1EQACAQIEBAMEBwUEBAABAncAAQIDEQQFITEGEkFRB2FxEyIygQgUQpGhscEJIzNS8BVictEKFiQ04SXxFxgZGiYnKCkqNTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2dri4+Tl5ufo6ery8\/T19vf4+fr\/2wBDAAEBAQEBAQIBAQIDAgICAwQDAwMDBAYEBAQEBAYHBgYGBgYGBwcHBwcHBwcICAgICAgJCQkJCQsLCwsLCwsLCwv\/2wBDAQICAgMDAwUDAwULCAYICwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwv\/3QAEAAX\/2gAMAwEAAhEDEQA\/APUKKKK\/pw\/xzCiiigAooooAKKKKACiiigD\/0PUKKKK\/pw\/xzCiiigAooooAKKKKACiiigD\/0fUKKKK\/pw\/xzCiiigAooooAKKKKACiiigD\/2Q==",
+        "domains\/water.json" : "W3siZGF0ZSI6IjIwMjMtMTEtMTRUMjI6MTM6MjBaIiwiaWQiOiJsZWdhY3ktaGVhbHRoeS13YXRlciIsIm1sIjoxMzd9XQ==",
+        "domains\/workouts.json" : "W10="
+      },
+      "before" : {
+        "domains\/chat.json" : "W10=",
+        "domains\/conversation-selection.json" : "e30=",
+        "domains\/conversations.json" : "W10=",
+        "domains\/health-write-intent.json" : "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiJERUFCNkZCRC1DQzJFLTREN0QtQkZBMy0wRjM5NjMwM0EwMDIiLCJvd25lciI6IjY3MURCRTIyLUMzODAtNDU2Ri1BOUQxLTQwODJBOUU3RkQ4QyIsInZlcnNpb24iOjF9",
+        "domains\/water.json" : "W3siZGF0ZSI6IjIwMjMtMTEtMTRUMjI6MTM6MjBaIiwiaWQiOiJsZWdhY3ktaGVhbHRoeS13YXRlciIsIm1sIjoxMzd9XQ==",
+        "domains\/workouts.json" : "e3N5bnRoZXRpYyBmYWlsZWQgbGVnYWN5IHRyYW5zYWN0aW9u"
+      },
+      "currentDefaults" : {
+        "lumen.health.goals.v1" : {
+          "base64" : "cwB5AG4AdABoAGUAdABpAGMAIABmAGEAaQBsAGUAZAAgAG0AaQB4AGUAZAAgAGcAbwBhAGwAcwA=",
+          "type" : "StringUTF16LE"
+        },
+        "lumen.health.meals.v1" : {
+          "base64" : "e3N5bnRoZXRpYyBmYWlsZWQgbGVnYWN5IHRyYW5zYWN0aW9u",
+          "type" : "Data"
+        }
+      },
+      "keys" : [
+        "lumen.health.meals.v1",
+        "lumen.health.goals.v1"
+      ],
+      "label" : "mixed-three-domains",
+      "root" : "\/var\/folders\/s8\/9jzwfsws6zb3qbg0ffyy_blm0000gn\/T\/Lumen-legacy-transaction-5BBBC67A-451E-4E81-8341-8BBC8D1CE896\/mixed-three-domains",
+      "suite" : "com.dbakp.lumen.synthetic.legacy-transaction.5320336F-60AE-47FF-8775-86BB36224848",
+      "synchronized" : true
+    },
+    {
+      "after" : {
+        "prepare\/chat.json" : "W10=",
+        "prepare\/conversation-selection.json" : "e30=",
+        "prepare\/conversations.json" : "W10=",
+        "prepare\/goals.json" : "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ==",
+        "prepare\/health-write-intent.json" : "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI3RjQ3MDkzNi1ENTFFLTQ0MEYtODMyQi1EQTY0RjhDRjZDQjYiLCJvd25lciI6IjY4NzZBN0Y1LTdCMDQtNDE4MC1BQkEwLTMwNzg1RTlEM0M1MSIsInZlcnNpb24iOjF9",
+        "prepare\/water.json" : "W3siZGF0ZSI6IjIwMjMtMTEtMTRUMjI6MTM6MjBaIiwiaWQiOiJsZWdhY3ktaGVhbHRoeS13YXRlciIsIm1sIjoxMzd9XQ==",
+        "prepare\/workouts.json" : "W10="
+      },
+      "before" : {
+        "prepare\/chat.json" : "W10=",
+        "prepare\/conversation-selection.json" : "e30=",
+        "prepare\/conversations.json" : "W10=",
+        "prepare\/goals.json" : "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ==",
+        "prepare\/health-write-intent.json" : "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI3RjQ3MDkzNi1ENTFFLTQ0MEYtODMyQi1EQTY0RjhDRjZDQjYiLCJvd25lciI6IjY4NzZBN0Y1LTdCMDQtNDE4MC1BQkEwLTMwNzg1RTlEM0M1MSIsInZlcnNpb24iOjF9",
+        "prepare\/water.json" : "W3siZGF0ZSI6IjIwMjMtMTEtMTRUMjI6MTM6MjBaIiwiaWQiOiJsZWdhY3ktaGVhbHRoeS13YXRlciIsIm1sIjoxMzd9XQ==",
+        "prepare\/workouts.json" : "W10="
+      },
+      "currentDefaults" : {
+        "lumen.health.meals.v1" : {
+          "base64" : "e2NoYW5nZWQgYmVmb3JlIHByZXBhcmF0aW9u",
+          "type" : "Data"
+        }
+      },
+      "key" : "lumen.health.meals.v1",
+      "label" : "reject-before-prepare",
+      "root" : "\/var\/folders\/s8\/9jzwfsws6zb3qbg0ffyy_blm0000gn\/T\/Lumen-legacy-transaction-5BBBC67A-451E-4E81-8341-8BBC8D1CE896\/reject-before-prepare",
+      "suite" : "com.dbakp.lumen.synthetic.legacy-transaction.758C3028-F0EA-4632-813E-4F5EE3A6A35B",
+      "synchronized" : true
+    },
+    {
+      "after" : {
+        "prepare\/chat.json" : "W10=",
+        "prepare\/conversation-selection.json" : "e30=",
+        "prepare\/conversations.json" : "W10=",
+        "prepare\/goals.json" : "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ==",
+        "prepare\/health-write-intent.json" : "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiJDODNCOUFFRi01NDIzLTQ4MUEtOEQzMS1GRTBDOEMwQ0IxQTEiLCJvd25lciI6IjZFQjczOUIwLTkwMDctNDkzQy05RUE2LUZFMDIwQTRFRDYxNCIsInZlcnNpb24iOjF9",
+        "prepare\/water.json" : "W3siZGF0ZSI6IjIwMjMtMTEtMTRUMjI6MTM6MjBaIiwiaWQiOiJsZWdhY3ktaGVhbHRoeS13YXRlciIsIm1sIjoxMzd9XQ==",
+        "prepare\/workouts.json" : "W10="
+      },
+      "before" : {
+        "prepare\/chat.json" : "W10=",
+        "prepare\/conversation-selection.json" : "e30=",
+        "prepare\/conversations.json" : "W10=",
+        "prepare\/goals.json" : "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ==",
+        "prepare\/health-write-intent.json" : "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiJDODNCOUFFRi01NDIzLTQ4MUEtOEQzMS1GRTBDOEMwQ0IxQTEiLCJvd25lciI6IjZFQjczOUIwLTkwMDctNDkzQy05RUE2LUZFMDIwQTRFRDYxNCIsInZlcnNpb24iOjF9",
+        "prepare\/water.json" : "W3siZGF0ZSI6IjIwMjMtMTEtMTRUMjI6MTM6MjBaIiwiaWQiOiJsZWdhY3ktaGVhbHRoeS13YXRlciIsIm1sIjoxMzd9XQ==",
+        "prepare\/workouts.json" : "W10="
+      },
+      "currentDefaults" : {
+        "lumen.health.meals.v1" : {
+          "base64" : "e2NoYW5nZWQgYWZ0ZXIgcHJlcGFyYXRpb24=",
+          "type" : "Data"
+        }
+      },
+      "key" : "lumen.health.meals.v1",
+      "label" : "reject-after-prepare",
+      "root" : "\/var\/folders\/s8\/9jzwfsws6zb3qbg0ffyy_blm0000gn\/T\/Lumen-legacy-transaction-5BBBC67A-451E-4E81-8341-8BBC8D1CE896\/reject-after-prepare",
+      "suite" : "com.dbakp.lumen.synthetic.legacy-transaction.978B3C75-980D-47F1-B0A7-DE69AC3D888B",
+      "synchronized" : true
+    },
+    {
+      "after" : {
+        "nvelope\/chat.json" : "W10=",
+        "nvelope\/conversation-selection.json" : "e30=",
+        "nvelope\/conversations.json" : "W10=",
+        "nvelope\/goals.json" : "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ==",
+        "nvelope\/health-write-intent.json" : "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiJFNjNEMzM2MS02MTM3LTQ4NDQtQUUzMC1BRjVEQzYxMTMxRkEiLCJvd25lciI6IkIzQkQzRjZELTZDQTgtNEMwMS05OEIyLUMwRUY0MkFGMDA1NCIsInZlcnNpb24iOjF9",
+        "nvelope\/water.json" : "W3siZGF0ZSI6IjIwMjMtMTEtMTRUMjI6MTM6MjBaIiwiaWQiOiJsZWdhY3ktaGVhbHRoeS13YXRlciIsIm1sIjoxMzd9XQ==",
+        "nvelope\/workouts.json" : "W10="
+      },
+      "before" : {
+        "nvelope\/chat.json" : "W10=",
+        "nvelope\/conversation-selection.json" : "e30=",
+        "nvelope\/conversations.json" : "W10=",
+        "nvelope\/goals.json" : "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ==",
+        "nvelope\/health-write-intent.json" : "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiJFNjNEMzM2MS02MTM3LTQ4NDQtQUUzMC1BRjVEQzYxMTMxRkEiLCJvd25lciI6IkIzQkQzRjZELTZDQTgtNEMwMS05OEIyLUMwRUY0MkFGMDA1NCIsInZlcnNpb24iOjF9",
+        "nvelope\/water.json" : "W3siZGF0ZSI6IjIwMjMtMTEtMTRUMjI6MTM6MjBaIiwiaWQiOiJsZWdhY3ktaGVhbHRoeS13YXRlciIsIm1sIjoxMzd9XQ==",
+        "nvelope\/workouts.json" : "W10="
+      },
+      "currentDefaults" : {
+        "lumen.health.meals.v1" : {
+          "base64" : "e3N5bnRoZXRpYyBmYWlsZWQgbGVnYWN5IHRyYW5zYWN0aW9u",
+          "type" : "Data"
+        }
+      },
+      "key" : "lumen.health.meals.v1",
+      "label" : "reject-stage-envelope",
+      "root" : "\/var\/folders\/s8\/9jzwfsws6zb3qbg0ffyy_blm0000gn\/T\/Lumen-legacy-transaction-5BBBC67A-451E-4E81-8341-8BBC8D1CE896\/reject-stage-envelope",
+      "suite" : "com.dbakp.lumen.synthetic.legacy-transaction.DE7AE37C-D7A8-492D-BBAC-E5D2C15017D0",
+      "synchronized" : true
+    },
+    {
+      "after" : {
+        "anifest\/chat.json" : "W10=",
+        "anifest\/conversation-selection.json" : "e30=",
+        "anifest\/conversations.json" : "W10=",
+        "anifest\/goals.json" : "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ==",
+        "anifest\/health-write-intent.json" : "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiJFOTA3RjdCNC1ENzgxLTRDNDMtQTYyNC0xMjAwQTk5RkU0MzIiLCJvd25lciI6IkY3N0RCNTFELTAzQTYtNEU0Qi05RjFCLTFDNjBCMkYwNkY1MiIsInZlcnNpb24iOjF9",
+        "anifest\/water.json" : "W3siZGF0ZSI6IjIwMjMtMTEtMTRUMjI6MTM6MjBaIiwiaWQiOiJsZWdhY3ktaGVhbHRoeS13YXRlciIsIm1sIjoxMzd9XQ==",
+        "anifest\/workouts.json" : "W10="
+      },
+      "before" : {
+        "anifest\/chat.json" : "W10=",
+        "anifest\/conversation-selection.json" : "e30=",
+        "anifest\/conversations.json" : "W10=",
+        "anifest\/goals.json" : "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ==",
+        "anifest\/health-write-intent.json" : "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiJFOTA3RjdCNC1ENzgxLTRDNDMtQTYyNC0xMjAwQTk5RkU0MzIiLCJvd25lciI6IkY3N0RCNTFELTAzQTYtNEU0Qi05RjFCLTFDNjBCMkYwNkY1MiIsInZlcnNpb24iOjF9",
+        "anifest\/water.json" : "W3siZGF0ZSI6IjIwMjMtMTEtMTRUMjI6MTM6MjBaIiwiaWQiOiJsZWdhY3ktaGVhbHRoeS13YXRlciIsIm1sIjoxMzd9XQ==",
+        "anifest\/workouts.json" : "W10="
+      },
+      "currentDefaults" : {
+        "lumen.health.meals.v1" : {
+          "base64" : "e3N5bnRoZXRpYyBmYWlsZWQgbGVnYWN5IHRyYW5zYWN0aW9u",
+          "type" : "Data"
+        }
+      },
+      "key" : "lumen.health.meals.v1",
+      "label" : "reject-stage-manifest",
+      "root" : "\/var\/folders\/s8\/9jzwfsws6zb3qbg0ffyy_blm0000gn\/T\/Lumen-legacy-transaction-5BBBC67A-451E-4E81-8341-8BBC8D1CE896\/reject-stage-manifest",
+      "suite" : "com.dbakp.lumen.synthetic.legacy-transaction.15EE3F7B-4A5C-4CBB-AD52-61F207192C20",
+      "synchronized" : true
+    },
+    {
+      "after" : {
+        "-cancel\/chat.json" : "W10=",
+        "-cancel\/conversation-selection.json" : "e30=",
+        "-cancel\/conversations.json" : "W10=",
+        "-cancel\/goals.json" : "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ==",
+        "-cancel\/health-write-intent.json" : "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiIwRjY4NURFQy1ENkFGLTRFMjktOEY0MC0xMjUxQ0MyOTUwRkYiLCJvd25lciI6IkFBMzg1M0FFLUZDREItNEI0MS04MDUyLTM0NjQwMjA0NkQzOCIsInZlcnNpb24iOjF9",
+        "-cancel\/water.json" : "W3siZGF0ZSI6IjIwMjMtMTEtMTRUMjI6MTM6MjBaIiwiaWQiOiJsZWdhY3ktaGVhbHRoeS13YXRlciIsIm1sIjoxMzd9XQ==",
+        "-cancel\/workouts.json" : "W10="
+      },
+      "before" : {
+        "-cancel\/chat.json" : "W10=",
+        "-cancel\/conversation-selection.json" : "e30=",
+        "-cancel\/conversations.json" : "W10=",
+        "-cancel\/goals.json" : "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ==",
+        "-cancel\/health-write-intent.json" : "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiIwRjY4NURFQy1ENkFGLTRFMjktOEY0MC0xMjUxQ0MyOTUwRkYiLCJvd25lciI6IkFBMzg1M0FFLUZDREItNEI0MS04MDUyLTM0NjQwMjA0NkQzOCIsInZlcnNpb24iOjF9",
+        "-cancel\/water.json" : "W3siZGF0ZSI6IjIwMjMtMTEtMTRUMjI6MTM6MjBaIiwiaWQiOiJsZWdhY3ktaGVhbHRoeS13YXRlciIsIm1sIjoxMzd9XQ==",
+        "-cancel\/workouts.json" : "W10="
+      },
+      "currentDefaults" : {
+        "lumen.health.meals.v1" : {
+          "base64" : "e3N5bnRoZXRpYyBmYWlsZWQgbGVnYWN5IHRyYW5zYWN0aW9u",
+          "type" : "Data"
+        }
+      },
+      "key" : "lumen.health.meals.v1",
+      "label" : "reject-cancel",
+      "root" : "\/var\/folders\/s8\/9jzwfsws6zb3qbg0ffyy_blm0000gn\/T\/Lumen-legacy-transaction-5BBBC67A-451E-4E81-8341-8BBC8D1CE896\/reject-cancel",
+      "suite" : "com.dbakp.lumen.synthetic.legacy-transaction.76F86AC7-1724-4158-AE05-6B0F77A0C07A",
+      "synchronized" : true
+    },
+    {
+      "after" : {
+        "ational\/chat.json" : "W10=",
+        "ational\/conversation-selection.json" : "e30=",
+        "ational\/conversations.json" : "W10=",
+        "ational\/goals.json" : "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ==",
+        "ational\/health-write-intent.json" : "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI2NzY5NUJGNi03OEYxLTQ0QTAtOEVDNy1DMjk3QTY3RTU3RkYiLCJvd25lciI6IkVGNUMxRDlFLTUyNUItNEMwRC1CMzI1LTVDMEE3NTNGMjczMiIsInZlcnNpb24iOjF9",
+        "ational\/water.json" : "W3siZGF0ZSI6IjIwMjMtMTEtMTRUMjI6MTM6MjBaIiwiaWQiOiJsZWdhY3ktaGVhbHRoeS13YXRlciIsIm1sIjoxMzd9XQ==",
+        "ational\/workouts.json" : "W10="
+      },
+      "before" : {
+        "ational\/chat.json" : "W10=",
+        "ational\/conversation-selection.json" : "e30=",
+        "ational\/conversations.json" : "W10=",
+        "ational\/goals.json" : "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ==",
+        "ational\/health-write-intent.json" : "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI2NzY5NUJGNi03OEYxLTQ0QTAtOEVDNy1DMjk3QTY3RTU3RkYiLCJvd25lciI6IkVGNUMxRDlFLTUyNUItNEMwRC1CMzI1LTVDMEE3NTNGMjczMiIsInZlcnNpb24iOjF9",
+        "ational\/water.json" : "W3siZGF0ZSI6IjIwMjMtMTEtMTRUMjI6MTM6MjBaIiwiaWQiOiJsZWdhY3ktaGVhbHRoeS13YXRlciIsIm1sIjoxMzd9XQ==",
+        "ational\/workouts.json" : "W10="
+      },
+      "currentDefaults" : {
+        "lumen.health.meals.v1" : {
+          "base64" : "e3N5bnRoZXRpYyBmYWlsZWQgbGVnYWN5IHRyYW5zYWN0aW9u",
+          "type" : "Data"
+        }
+      },
+      "key" : "lumen.health.meals.v1",
+      "label" : "reject-operational",
+      "root" : "\/var\/folders\/s8\/9jzwfsws6zb3qbg0ffyy_blm0000gn\/T\/Lumen-legacy-transaction-5BBBC67A-451E-4E81-8341-8BBC8D1CE896\/reject-operational",
+      "suite" : "com.dbakp.lumen.synthetic.legacy-transaction.C33E436F-DDFE-493C-BBAB-DDE79056680A",
+      "synchronized" : true
+    }
+  ],
+  "checks" : [
+    {
+      "name" : "meals-Data legacy key unchanged after actual installation",
+      "passed" : true
+    },
+    {
+      "name" : "meals-Data exact actual Data key retained",
+      "passed" : true
+    },
+    {
+      "name" : "meals-Data healthy water bytes preserved",
+      "passed" : true
+    },
+    {
+      "name" : "meals-Data unselected healthy goals preserved",
+      "passed" : true
+    },
+    {
+      "name" : "meals-Data failed legacy catalog unavailable\/count unknown",
+      "passed" : true
+    },
+    {
+      "name" : "meals-Data failed legacy cannot export records",
+      "passed" : true
+    },
+    {
+      "name" : "meals-Data private typed raw exactly retained",
+      "passed" : true
+    },
+    {
+      "name" : "meals-Data selected prior raw kept privately",
+      "passed" : true
+    },
+    {
+      "name" : "meals-Data actual receipt recorded once",
+      "passed" : true
+    },
+    {
+      "name" : "meals-Data receipt exact selected domain",
+      "passed" : true
+    },
+    {
+      "name" : "meals-Data two fresh photos and distinct identifiers installed",
+      "passed" : true
+    },
+    {
+      "name" : "meals-Data both exact photo byte payloads installed",
+      "passed" : true
+    },
+    {
+      "name" : "meals-Data same device owner\/no replay events",
+      "passed" : true
+    },
+    {
+      "name" : "meals-Data version2 copy carried through linked write",
+      "passed" : true
+    },
+    {
+      "name" : "meals-Data original review remains verifiable after carry",
+      "passed" : true
+    },
+    {
+      "name" : "meals-Data corrupt envelope incomplete",
+      "passed" : true
+    },
+    {
+      "name" : "meals-Data dual raw\/provenance authority incomplete",
+      "passed" : true
+    },
+    {
+      "name" : "meals-Data unexpected provenance file incomplete",
+      "passed" : true
+    },
+    {
+      "name" : "meals-String legacy key unchanged after actual installation",
+      "passed" : true
+    },
+    {
+      "name" : "meals-String exact actual String key retained",
+      "passed" : true
+    },
+    {
+      "name" : "meals-String healthy water bytes preserved",
+      "passed" : true
+    },
+    {
+      "name" : "meals-String unselected healthy goals preserved",
+      "passed" : true
+    },
+    {
+      "name" : "meals-String failed legacy catalog unavailable\/count unknown",
+      "passed" : true
+    },
+    {
+      "name" : "meals-String failed legacy cannot export records",
+      "passed" : true
+    },
+    {
+      "name" : "meals-String private typed raw exactly retained",
+      "passed" : true
+    },
+    {
+      "name" : "meals-String selected prior raw kept privately",
+      "passed" : true
+    },
+    {
+      "name" : "meals-String actual receipt recorded once",
+      "passed" : true
+    },
+    {
+      "name" : "meals-String receipt exact selected domain",
+      "passed" : true
+    },
+    {
+      "name" : "meals-String two fresh photos and distinct identifiers installed",
+      "passed" : true
+    },
+    {
+      "name" : "meals-String both exact photo byte payloads installed",
+      "passed" : true
+    },
+    {
+      "name" : "meals-String same device owner\/no replay events",
+      "passed" : true
+    },
+    {
+      "name" : "meals-String version2 copy carried through linked write",
+      "passed" : true
+    },
+    {
+      "name" : "meals-String original review remains verifiable after carry",
+      "passed" : true
+    },
+    {
+      "name" : "meals-String corrupt envelope incomplete",
+      "passed" : true
+    },
+    {
+      "name" : "meals-String dual raw\/provenance authority incomplete",
+      "passed" : true
+    },
+    {
+      "name" : "meals-String unexpected provenance file incomplete",
+      "passed" : true
+    },
+    {
+      "name" : "workouts-Data legacy key unchanged after actual installation",
+      "passed" : true
+    },
+    {
+      "name" : "workouts-Data exact actual Data key retained",
+      "passed" : true
+    },
+    {
+      "name" : "workouts-Data healthy water bytes preserved",
+      "passed" : true
+    },
+    {
+      "name" : "workouts-Data unselected healthy goals preserved",
+      "passed" : true
+    },
+    {
+      "name" : "workouts-Data failed legacy catalog unavailable\/count unknown",
+      "passed" : true
+    },
+    {
+      "name" : "workouts-Data failed legacy cannot export records",
+      "passed" : true
+    },
+    {
+      "name" : "workouts-Data private typed raw exactly retained",
+      "passed" : true
+    },
+    {
+      "name" : "workouts-Data selected prior raw kept privately",
+      "passed" : true
+    },
+    {
+      "name" : "workouts-Data actual receipt recorded once",
+      "passed" : true
+    },
+    {
+      "name" : "workouts-Data receipt exact selected domain",
+      "passed" : true
+    },
+    {
+      "name" : "workouts-Data same device owner\/no replay events",
+      "passed" : true
+    },
+    {
+      "name" : "workouts-Data version2 copy carried through linked write",
+      "passed" : true
+    },
+    {
+      "name" : "workouts-Data original review remains verifiable after carry",
+      "passed" : true
+    },
+    {
+      "name" : "workouts-Data corrupt envelope incomplete",
+      "passed" : true
+    },
+    {
+      "name" : "workouts-Data dual raw\/provenance authority incomplete",
+      "passed" : true
+    },
+    {
+      "name" : "workouts-Data unexpected provenance file incomplete",
+      "passed" : true
+    },
+    {
+      "name" : "workouts-String legacy key unchanged after actual installation",
+      "passed" : true
+    },
+    {
+      "name" : "workouts-String exact actual String key retained",
+      "passed" : true
+    },
+    {
+      "name" : "workouts-String healthy water bytes preserved",
+      "passed" : true
+    },
+    {
+      "name" : "workouts-String unselected healthy goals preserved",
+      "passed" : true
+    },
+    {
+      "name" : "workouts-String failed legacy catalog unavailable\/count unknown",
+      "passed" : true
+    },
+    {
+      "name" : "workouts-String failed legacy cannot export records",
+      "passed" : true
+    },
+    {
+      "name" : "workouts-String private typed raw exactly retained",
+      "passed" : true
+    },
+    {
+      "name" : "workouts-String selected prior raw kept privately",
+      "passed" : true
+    },
+    {
+      "name" : "workouts-String actual receipt recorded once",
+      "passed" : true
+    },
+    {
+      "name" : "workouts-String receipt exact selected domain",
+      "passed" : true
+    },
+    {
+      "name" : "workouts-String same device owner\/no replay events",
+      "passed" : true
+    },
+    {
+      "name" : "workouts-String version2 copy carried through linked write",
+      "passed" : true
+    },
+    {
+      "name" : "workouts-String original review remains verifiable after carry",
+      "passed" : true
+    },
+    {
+      "name" : "workouts-String corrupt envelope incomplete",
+      "passed" : true
+    },
+    {
+      "name" : "workouts-String dual raw\/provenance authority incomplete",
+      "passed" : true
+    },
+    {
+      "name" : "workouts-String unexpected provenance file incomplete",
+      "passed" : true
+    },
+    {
+      "name" : "goals-Data legacy key unchanged after actual installation",
+      "passed" : true
+    },
+    {
+      "name" : "goals-Data exact actual Data key retained",
+      "passed" : true
+    },
+    {
+      "name" : "goals-Data healthy water bytes preserved",
+      "passed" : true
+    },
+    {
+      "name" : "goals-Data failed legacy catalog unavailable\/count unknown",
+      "passed" : true
+    },
+    {
+      "name" : "goals-Data failed legacy cannot export records",
+      "passed" : true
+    },
+    {
+      "name" : "goals-Data private typed raw exactly retained",
+      "passed" : true
+    },
+    {
+      "name" : "goals-Data selected prior raw kept privately",
+      "passed" : true
+    },
+    {
+      "name" : "goals-Data actual receipt recorded once",
+      "passed" : true
+    },
+    {
+      "name" : "goals-Data receipt exact selected domain",
+      "passed" : true
+    },
+    {
+      "name" : "goals-Data same device owner\/no replay events",
+      "passed" : true
+    },
+    {
+      "name" : "goals-Data version2 copy carried through linked write",
+      "passed" : true
+    },
+    {
+      "name" : "goals-Data original review remains verifiable after carry",
+      "passed" : true
+    },
+    {
+      "name" : "goals-Data corrupt envelope incomplete",
+      "passed" : true
+    },
+    {
+      "name" : "goals-Data dual raw\/provenance authority incomplete",
+      "passed" : true
+    },
+    {
+      "name" : "goals-Data unexpected provenance file incomplete",
+      "passed" : true
+    },
+    {
+      "name" : "goals-String legacy key unchanged after actual installation",
+      "passed" : true
+    },
+    {
+      "name" : "goals-String exact actual String key retained",
+      "passed" : true
+    },
+    {
+      "name" : "goals-String healthy water bytes preserved",
+      "passed" : true
+    },
+    {
+      "name" : "goals-String failed legacy catalog unavailable\/count unknown",
+      "passed" : true
+    },
+    {
+      "name" : "goals-String failed legacy cannot export records",
+      "passed" : true
+    },
+    {
+      "name" : "goals-String private typed raw exactly retained",
+      "passed" : true
+    },
+    {
+      "name" : "goals-String selected prior raw kept privately",
+      "passed" : true
+    },
+    {
+      "name" : "goals-String actual receipt recorded once",
+      "passed" : true
+    },
+    {
+      "name" : "goals-String receipt exact selected domain",
+      "passed" : true
+    },
+    {
+      "name" : "goals-String same device owner\/no replay events",
+      "passed" : true
+    },
+    {
+      "name" : "goals-String version2 copy carried through linked write",
+      "passed" : true
+    },
+    {
+      "name" : "goals-String original review remains verifiable after carry",
+      "passed" : true
+    },
+    {
+      "name" : "goals-String corrupt envelope incomplete",
+      "passed" : true
+    },
+    {
+      "name" : "goals-String dual raw\/provenance authority incomplete",
+      "passed" : true
+    },
+    {
+      "name" : "goals-String unexpected provenance file incomplete",
+      "passed" : true
+    },
+    {
+      "name" : "mixed absent targets require explicit origin observations",
+      "passed" : true
+    },
+    {
+      "name" : "mixed unsupported preparation preserves current\/prior bytes",
+      "passed" : true
+    },
+    {
+      "name" : "wrong domain cannot borrow another origin token",
+      "passed" : true
+    },
+    {
+      "name" : "mixed two legacy values and failed regular file retained",
+      "passed" : true
+    },
+    {
+      "name" : "mixed Data provenance exact",
+      "passed" : true
+    },
+    {
+      "name" : "mixed String provenance exact",
+      "passed" : true
+    },
+    {
+      "name" : "mixed healthy water and defaults unchanged",
+      "passed" : true
+    },
+    {
+      "name" : "before-prepare rejects without live replacement",
+      "passed" : true
+    },
+    {
+      "name" : "before-prepare current bytes\/no receipt unchanged",
+      "passed" : true
+    },
+    {
+      "name" : "after-prepare actual commit rejects",
+      "passed" : true
+    },
+    {
+      "name" : "after-prepare current bytes\/no receipt unchanged",
+      "passed" : true
+    },
+    {
+      "name" : "stage-envelope actual commit rejects",
+      "passed" : true
+    },
+    {
+      "name" : "stage-envelope current bytes\/no receipt unchanged",
+      "passed" : true
+    },
+    {
+      "name" : "stage-manifest actual commit rejects",
+      "passed" : true
+    },
+    {
+      "name" : "stage-manifest current bytes\/no receipt unchanged",
+      "passed" : true
+    },
+    {
+      "name" : "cancel actual commit rejects",
+      "passed" : true
+    },
+    {
+      "name" : "cancel current bytes\/no receipt unchanged",
+      "passed" : true
+    },
+    {
+      "name" : "operational actual commit rejects",
+      "passed" : true
+    },
+    {
+      "name" : "operational current bytes\/no receipt unchanged",
+      "passed" : true
+    }
+  ],
+  "retainedRoot" : "\/var\/folders\/s8\/9jzwfsws6zb3qbg0ffyy_blm0000gn\/T\/Lumen-legacy-transaction-5BBBC67A-451E-4E81-8341-8BBC8D1CE896",
+  "scope" : "Isolated defaults\/direct production selection+transaction+private catalog. Actual LocalStore.standard\/write lock\/UI review\/native\/signed\/runtime origin routes unimplemented\/unverified. Fixtures and suites retained through independent audit\/exact backup; no allrace\/allmetadata\/allrawprior claim.",
+  "status" : "PASS actual backend legacy recovery transactions"
+}

@@ -10,6 +10,9 @@ final class BackupFileTransaction: @unchecked Sendable {
     private let preserveHealthCopies: Bool
     private let cachePreviousSnapshot: [String: Stamp]?
     private let sourceSnapshot: [String: Stamp]
+    private let legacyOrigins: [HealthLocalFiles.Domain: HealthLegacyRecoveryOrigin]
+    private let legacy: @Sendable (String) throws -> Any?
+    private let legacyRetention: HealthRecoveryCopies.LegacyRetention?
     private struct Stamp: Equatable {
         let kind: FileAttributeType; let inode: UInt64; let device: UInt64; let size: UInt64; let modified: Date?
     }
@@ -25,10 +28,13 @@ final class BackupFileTransaction: @unchecked Sendable {
     }
     private let stagedPhotos: [String: CheckedPhoto]
     private init(directory: URL, stage: URL, preserveHealthCopies: Bool, sourceSnapshot: [String: Stamp],
-                 stagedPhotos: [String: CheckedPhoto], cachePreviousSnapshot: [String: Stamp]? = nil) {
+                 stagedPhotos: [String: CheckedPhoto], cachePreviousSnapshot: [String: Stamp]? = nil,
+                 legacyOrigins: [HealthLocalFiles.Domain: HealthLegacyRecoveryOrigin],
+                 legacy: @escaping @Sendable (String) throws -> Any?, legacyRetention: HealthRecoveryCopies.LegacyRetention?) {
         self.directory = directory; self.stage = stage; self.preserveHealthCopies = preserveHealthCopies; self.sourceSnapshot = sourceSnapshot
         self.stagedPhotos = stagedPhotos
         self.cachePreviousSnapshot = cachePreviousSnapshot
+        self.legacyOrigins = legacyOrigins; self.legacy = legacy; self.legacyRetention = legacyRetention
     }
     deinit {
         if !committed {
@@ -42,16 +48,22 @@ final class BackupFileTransaction: @unchecked Sendable {
                         preserveExisting: Bool = true,
                         recoveringHealthDomains: Set<HealthLocalFiles.Domain> = [],
                         replacingDailyCache: Bool = false,
-                        expectedPhotoDigests: [String: String] = [:]) throws -> BackupFileTransaction {
+                        expectedPhotoDigests: [String: String] = [:],
+                        legacyOrigins: [HealthLocalFiles.Domain: HealthLegacyRecoveryOrigin] = [:],
+                        legacy: @escaping @Sendable (String) throws -> Any? = { UserDefaults.standard.object(forKey: $0) }) throws -> BackupFileTransaction {
         let fm = FileManager.default
         guard recoveringHealthDomains.isEmpty || (preserveExisting && recoveringHealthDomains.allSatisfy { files[$0.rawValue + ".json"] != nil }),
               Set(expectedPhotoDigests.keys).isSubset(of: Set(photoFiles.keys)),
+              Set(legacyOrigins.keys).isSubset(of: recoveringHealthDomains),
+              legacyOrigins.allSatisfy({ $0.key == $0.value.value.domain }),
+              legacyOrigins.values.reduce(0, { $0 + $1.value.bytes.count }) <= HealthLegacyRecoveryOrigin.aggregateLimit,
               !replacingDailyCache || (preserveExisting && recoveringHealthDomains.isEmpty && files["today.json"] != nil) else { throw BackupError.invalid }
         try control.checkCancellation()
+        for origin in legacyOrigins.values { try origin.verify(in: directory, legacy: legacy, control: control) }
         // Explicit cache replacement must not retire .previous merely because
         // preparation began. It uses an atomic directory exchange at commit.
         if replacingDailyCache { try BackupFiles.openDirectory(directory, createIfMissing: false) }
-        else { try BackupFiles.recover(directory) }
+        else { try BackupFiles.recover(directory, recoveringLegacyDomains: Set(legacyOrigins.keys)) }
         let cachePreviousSnapshot = replacingDailyCache ? try snapshot(directory.appendingPathExtension("previous")) : nil
         let sourceSnapshot = preserveExisting ? try snapshot(directory) : [:]
         if fm.fileExists(atPath: directory.path) {
@@ -101,7 +113,8 @@ final class BackupFileTransaction: @unchecked Sendable {
             }
             if let enumerationError { throw enumerationError }
         }
-        try HealthRecoveryCopies.preserveReplacedDomains(in: stage, domains: recoveringHealthDomains)
+        let legacyRetention = try HealthRecoveryCopies.preserveReplacedDomains(in: stage, domains: recoveringHealthDomains,
+                                                                             legacyOrigins: legacyOrigins, control: control)
         if replacingDailyCache {
             // Seed immutable current copies before comparing prior incidents;
             // otherwise each cache action duplicates unrelated failed history.
@@ -148,7 +161,9 @@ final class BackupFileTransaction: @unchecked Sendable {
         }
         try control.checkCancellation()
         prepared = true
-        return BackupFileTransaction(directory: directory, stage: stage, preserveHealthCopies: preserveExisting, sourceSnapshot: sourceSnapshot, stagedPhotos: stagedPhotos, cachePreviousSnapshot: cachePreviousSnapshot)
+        for origin in legacyOrigins.values { try origin.verify(in: directory, legacy: legacy, control: control) }
+        return BackupFileTransaction(directory: directory, stage: stage, preserveHealthCopies: preserveExisting, sourceSnapshot: sourceSnapshot, stagedPhotos: stagedPhotos, cachePreviousSnapshot: cachePreviousSnapshot,
+                                     legacyOrigins: legacyOrigins, legacy: legacy, legacyRetention: legacyRetention)
     }
 
     func commit() throws { try commit(control: nil) }
@@ -221,6 +236,11 @@ final class BackupFileTransaction: @unchecked Sendable {
             DispatchQueue.global(qos: .utility).async { try? fm.removeItem(at: oldCurrent) }
             return
         }
+        // Called inside the existing commit locks. This direct fixed-key reader
+        // must never reenter LocalStore's nonrecursive write/revision lock.
+        if let legacyRetention { try HealthRecoveryCopies.verifyLegacyRetention(legacyRetention, in: stage, control: control ?? .init()) }
+        for origin in legacyOrigins.values { try origin.verify(in: directory, legacy: legacy, control: control ?? .init()) }
+        try control?.checkCancellation()
         if fm.fileExists(atPath: directory.path) { try fm.moveItem(at: directory, to: previous) }
         do { try fm.moveItem(at: stage, to: directory); committed = true }
         catch { try? BackupFiles.recover(directory); throw error }

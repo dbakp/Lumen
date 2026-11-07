@@ -267,14 +267,14 @@ enum BackupFiles {
         }
     }
 
-    static func recover(_ directory: URL) throws {
+    static func recover(_ directory: URL, recoveringLegacyDomains: Set<HealthLocalFiles.Domain> = []) throws {
         try HealthRecoveryCopies.serialized {
             try openDirectory(directory, createIfMissing: false)
             let previous = directory.appendingPathExtension("previous")
             guard FileManager.default.fileExists(atPath: directory.path) else { return }
             let erased = try HealthRecoveryCopies.completedErasure(in: directory)
             if FileManager.default.fileExists(atPath: previous.path) {
-                if !erased { try HealthRecoveryCopies.preservePrevious(in: directory) }
+                if !erased { try HealthRecoveryCopies.preservePrevious(in: directory, recoveringLegacyDomains: recoveringLegacyDomains) }
                 try FileManager.default.removeItem(at: previous)
             }
             if erased { try HealthRecoveryCopies.finishErasure(in: directory) }
