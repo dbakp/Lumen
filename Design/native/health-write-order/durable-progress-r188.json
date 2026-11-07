@@ -51,8 +51,8 @@
     "scope": "Record presentation only, with explicit R49-R52 full-suite carry and R53 current changed-content verification. No full recovery, actual SDK/device, Release, publication or goal completion."
   },
   "storage": {
-    "availableBytes": 38426378240,
-    "measuredRecoveredBytesLatestCleanups": 4058500695,
+    "availableBytes": 38341476352,
+    "measuredRecoveredBytesLatestCleanups": 4085190231,
     "proofs": [
       "health-file-multi-r2-raw-cleanup.json",
       "source169-pure-cache-cleanup.json",
@@ -89,8 +89,8 @@
     "scope": "Task-owned disposable raw bundles and obsolete pure build only; no unrelated/global caches removed",
     "checkedAt": 1794066439.702156,
     "latestStateRawCleanup": "source184-state-raw-cleanup-r1-outcome.json",
-    "actualRecoveredBytesThisCleanup": 23687168,
-    "latestRawCleanup": "health-error-held-encrypted-cancel-r1-raw-cleanup.json",
+    "actualRecoveredBytesThisCleanup": 26689536,
+    "latestRawCleanup": "health-error-held-legacy-back-r1-raw-cleanup.json",
     "latestSelfcheckFixtureCleanup": "health-recovery-error-held-selfcheck-fixture-cleanup-r1-outcome.json"
   },
   "earlierNativeBoundaries": {
@@ -3498,8 +3498,16 @@
     },
     "criticReports": [
       "health-recovery-error-held-source188-round2-part17-legacy-cancel.json",
-      "health-recovery-error-held-source188-round2-part18-encrypted-cancel.json"
+      "health-recovery-error-held-source188-round2-part18-encrypted-cancel.json",
+      "health-recovery-error-held-source188-round2-part19-legacy-back.json"
     ]
   },
-  "latestBuildOutcome": "source188-error-held-build-r1-outcome.json"
+  "latestBuildOutcome": "source188-error-held-build-r1-outcome.json",
+  "ordinaryErrorStateRegression": {
+    "source": "durable-source-r188.json",
+    "status": "Prepared0/2 only; no runtime credit",
+    "plan": "source188-ordinary-error-state-regression-r1-plan.json",
+    "planCritic": "health-recovery-error-held-source188-round2-part19-legacy-back.json",
+    "passed": []
+  }
 }

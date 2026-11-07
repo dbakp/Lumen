@@ -1,0 +1,91 @@
+{
+  "status": "Prepared only;0/2 ordinary-state regression executions on changed188 app",
+  "source": "durable-source-r188.json",
+  "build": "health-recovery-error-held-r1-build.json",
+  "driver": "health-recovery-error-state-driver-r1.py",
+  "bindings": {
+    "durable-source-r188.json": {
+      "bytes": 42595,
+      "sha256": "b5a50e3e5498065e04afa52e53053ea751c386a2f0c7f3d8e7c140d10c56ca18"
+    },
+    "health-recovery-error-held-r1-build.json": {
+      "bytes": 663,
+      "sha256": "04657a9121f467fc7f11b27a21ca817c1e2516274a32c7ad4533090273e44751"
+    },
+    "health-recovery-error-state-driver-r1.py": {
+      "bytes": 45522,
+      "sha256": "2c0dbb9dcc62a448218df5d212f052573c19cb3f51352fce6a1e4e4d6cf652bf"
+    }
+  },
+  "parent": "health-recovery-error-visibility-state-r1-contract.json",
+  "predecessorActual": "Source184 two ordinary state cases, original app; not current188 runtime credit",
+  "executionOrder": [
+    "legacy",
+    "encrypted"
+  ],
+  "trial": "Source188R1",
+  "requiredNativeMethods": [
+    "testHealthBackupFileRecoveryPhotoFaultErrorBackLegacy",
+    "testHealthBackupFileRecoveryPhotoFaultErrorBackEncrypted"
+  ],
+  "cases": [
+    {
+      "case": "legacy",
+      "command": [
+        "python3",
+        "Design/native/health-write-order/health-recovery-error-state-driver-r1.py",
+        "--source",
+        "durable-source-r188.json",
+        "--build",
+        "health-recovery-error-held-r1-build.json",
+        "--case",
+        "legacy",
+        "--trial",
+        "Source188R1",
+        "--fault",
+        "missing",
+        "--observe-source"
+      ],
+      "canonicalPrefix": "health-error-state-legacy-source188r1"
+    },
+    {
+      "case": "encrypted",
+      "command": [
+        "python3",
+        "Design/native/health-write-order/health-recovery-error-state-driver-r1.py",
+        "--source",
+        "durable-source-r188.json",
+        "--build",
+        "health-recovery-error-held-r1-build.json",
+        "--case",
+        "encrypted",
+        "--trial",
+        "Source188R1",
+        "--fault",
+        "missing",
+        "--observe-source"
+      ],
+      "canonicalPrefix": "health-error-state-encrypted-source188r1"
+    }
+  ],
+  "required": [
+    "After actual missing-photo failure, deliberate choice scroll stays at bounded3s endpoints without repeated app snap; actual viewport/choices recorded.",
+    "Not now preserves domains and deliberate omission; no worker/no receipt, prior error persists until actual retry.",
+    "Back closes actual completed reader/review owner; old owned roots absent while any parent-owned input is identified honestly.",
+    "Files reselects unchanged original with independent fresh ownership/healthy photos, choices and omission initially off, no stale error.",
+    "Actual held/observed control2 recovery with no omission, complete receipt/two fresh photo mappings/current/prior/source/provider before success ack; live cleanup/relaunch.",
+    "Read actual native summary/fullJSON and independently open every original. Publish exact evidence before each next reset."
+  ],
+  "limits": [
+    "Primary simulator/light/standard/missing extracted JPEG after preview only.",
+    "Does not replace held cases, full spoken-body/duplicate/motion/lateworker/all-domain/appearance/original eight groups.",
+    "Native and producer failures retained; existing scripts historical pending docstrings do not establish current runtime."
+  ],
+  "runtimeAccepted": 0,
+  "passed": [],
+  "remaining": [
+    "legacy",
+    "encrypted"
+  ],
+  "checkedAt": 1794074771.967353
+}
