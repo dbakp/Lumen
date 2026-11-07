@@ -24,6 +24,10 @@ final class LumenSmokeTests: XCTestCase {
         // The focused wrapping probe reuses this dedicated simulator's saved
         // synthetic record, with a public Files-import fallback if absent.
         app.launchArguments = name.contains("testFHIRLiteralWrappingSnapshots") || name.contains("testLiteralIdentifier") || name.contains("testProviderCitationRejection") || name.contains("testProviderTransportFallback") ? ["-librarySearchRemoteUITestMode"] : ["-resetForUITests"]
+        if name.contains("testHealthLegacyRootAcquisition") {
+            let mode = name.contains("NoPrior") ? "legacy-root-missing-no-prior" : name.contains("Ordinary") ? "ordinary-root-missing-pending-removal-control" : "legacy-root-missing-with-prior"
+            app.launchArguments = ["-resetForUITests", "-health-write-native-probe", "-health-legacy-root-probe", mode, "-health-backup-ui-fixture", "-health-backup-case", "legacy", "-health-backup-healthy-merge-ui", "-health-backup-empty-ui", "-health-legacy-origin-ui", "data", "-lumen.appearance", "light", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryL"]
+        }
         if name.contains("testDailyCacheClearCorrupt") || name.contains("testDailyCacheClearDirectory") || name.contains("testDailyCacheClearMissing") || name.contains("testDailyCacheClearHealthy") {
             app.launchArguments = ["-resetForUITests", "-health-recovery-ui-fixture", "-health-daily-cache-ui-fixture", "-health-recovery-cancel-ui",
                                    "-lumen.appearance", "light", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryL"]
@@ -7103,6 +7107,16 @@ final class LumenSmokeTests: XCTestCase {
         let healthy = app.staticTexts["Current data opens"].firstMatch; reveal(healthy)
         XCTAssertTrue(healthy.waitForExistence(timeout: 5))
         XCTAssertFalse(app.switches["recoverHealth-water"].exists); snap("health-recovery-relaunch-healthy")
+    }
+    func testHealthLegacyRootAcquisitionNoPrior() throws { try legacyRootAcquisitionObserved() }
+    func testHealthLegacyRootAcquisitionWithPrior() throws { try legacyRootAcquisitionObserved() }
+    func testHealthLegacyRootAcquisitionOrdinary() throws { try legacyRootAcquisitionObserved() }
+    private func legacyRootAcquisitionObserved() throws {
+        let status = app.staticTexts["healthWriteProbeStatus"].firstMatch
+        let terminal = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label BEGINSWITH %@ OR label BEGINSWITH %@", "Legacy root probe observed:", "Legacy root probe failed:"), object: status)
+        XCTAssertEqual(XCTWaiter.wait(for: [terminal], timeout: 300), .completed)
+        XCTAssertTrue(status.label.hasPrefix("Legacy root probe observed:"), status.label)
+        snap("legacy-root-acquisition-observed")
     }
     func testHealthLocalSemanticRecovery() throws { try healthLocalDataRecovery("semantic-fixture") }
     func testHealthLocalMealsRecovery() throws { try healthLocalDataRecovery("meals") }

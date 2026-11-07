@@ -43,6 +43,9 @@ import SwiftUI
         if args.contains("-health-photo-binding-checks") {
             status = await BackupPhotoBindingUIFixture.runChecks(); return
         }
+        if let index = args.firstIndex(of: "-health-legacy-root-probe"), args.indices.contains(index + 1) {
+            status = await HealthLegacyRootAcquisitionNativeProbe.run(args[index + 1]); return
+        }
         if let index = args.firstIndex(of: "-health-local-repair"), args.indices.contains(index + 1) {
             status = await HealthLocalDataNativeProbe.run(args[index + 1]); return
         }

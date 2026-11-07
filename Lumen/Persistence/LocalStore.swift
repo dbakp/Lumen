@@ -62,7 +62,13 @@ public enum LocalStore {
                                                 canCommit: () -> Bool, didCommit: () -> Void) async throws {
         try await withTaskCancellationHandler {
             try control.checkCancellation()
+            #if DEBUG && targetEnvironment(simulator)
+            HealthLegacyRootAcquisitionNativeProbe.observe("before-root-acquisition")
+            #endif
             let root = try checkedDirectory(), captured = revision, owner = try HealthWriteDeviceOwner.current()
+            #if DEBUG && targetEnvironment(simulator)
+            HealthLegacyRootAcquisitionNativeProbe.observe("after-root-acquisition")
+            #endif
             let transaction = try await Task.detached(priority: .userInitiated) {
                 try HealthRecoverySelection.prepare(payload, into: root, owner: owner, control: control,
                                                     legacy: { try strictRecoveryLegacyValue($0, control: control) })

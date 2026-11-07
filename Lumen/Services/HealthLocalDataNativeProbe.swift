@@ -1,6 +1,8 @@
 #if DEBUG && targetEnvironment(simulator)
 import Foundation
 import UIKit
+import CryptoKit
+import Darwin
 
 /// Dedicated synthetic native integration. The host must read the actual
 /// rejected files before this probe is allowed to recover any of them.
@@ -300,6 +302,146 @@ import UIKit
         do { try encoder.encode(report).write(to: FileManager.default.temporaryDirectory.appendingPathComponent("Lumen-local-data-repair-report.json"), options: .atomic) }
         catch { return "Saved-data checks failed: report write" }
         return status
+    }
+}
+/// Observation-only wrapper probe. This does not authorize a UI recovery and
+/// never treats an observed unsafe baseline as product acceptance.
+@MainActor enum HealthLegacyRootAcquisitionNativeProbe {
+    enum Mode: String { case noPrior = "legacy-root-missing-no-prior", withPrior = "legacy-root-missing-with-prior", ordinary = "ordinary-root-missing-pending-removal-control" }
+    enum Failure: Error { case invalid(String), timeout }
+    private static var observedRoot: URL?
+    private static var notes: [[String: Any]] = []
+    static func observe(_ phase: String) {
+        guard let root = observedRoot else { return }
+        do { notes.append(["phase": phase, "root": try tree(root), "previous": try tree(root.appendingPathExtension("previous"))]) }
+        catch { notes.append(["phase": phase, "observationError": String(describing: error)]) }
+    }
+    private static func facts(_ url: URL) throws -> [String: Any] {
+        var st = stat()
+        if lstat(url.path, &st) != 0 {
+            if errno == ENOENT { return ["exists": false] }
+            throw POSIXError(POSIXErrorCode(rawValue: errno) ?? .EIO)
+        }
+        return ["exists": true, "device": Int64(st.st_dev), "inode": UInt64(st.st_ino), "mode": UInt32(st.st_mode), "size": st.st_size,
+                "mtimeSeconds": st.st_mtimespec.tv_sec, "mtimeNanos": st.st_mtimespec.tv_nsec]
+    }
+    private static func tree(_ root: URL) throws -> [String: Any] {
+        let rootFacts = try facts(root)
+        guard rootFacts["exists"] as? Bool == true else { return ["root": rootFacts, "entries": [:]] }
+        var entries: [String: Any] = [:], total = 0
+        func visit(_ directory: URL, prefix: String) throws {
+            for child in try FileManager.default.contentsOfDirectory(at: directory, includingPropertiesForKeys: nil).sorted(by: { $0.lastPathComponent < $1.lastPathComponent }) {
+                let name = prefix + child.lastPathComponent
+                var row = try facts(child)
+                let mode = (row["mode"] as! UInt32) & UInt32(S_IFMT)
+                guard mode == UInt32(S_IFREG) || mode == UInt32(S_IFDIR) else { throw Failure.invalid("nonregular synthetic tree") }
+                if mode == UInt32(S_IFREG) {
+                    guard (row["size"] as! Int64) <= 262144 else { throw Failure.invalid("file bound") }
+                    let data = try Data(contentsOf: child); total += data.count
+                    guard total <= 2097152 else { throw Failure.invalid("tree bound") }
+                    row["base64"] = data.base64EncodedString(); row["bytes"] = data.count
+                    row["sha256"] = SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined()
+                }
+                entries[name] = row
+                if mode == UInt32(S_IFDIR) { try visit(child, prefix: name + "/") }
+            }
+        }
+        try visit(root, prefix: "")
+        return ["root": rootFacts, "entries": entries]
+    }
+    private static func fixedValues() throws -> [String: Any] {
+        guard let bundle = Bundle.main.bundleIdentifier else { throw Failure.invalid("bundle") }
+        var result: [String: Any] = [:]
+        for key in ["lumen.health.meals.v1", "lumen.health.workouts.v1"] {
+            guard let persisted = UserDefaults.standard.persistentDomain(forName: bundle)?[key] as? Data,
+                  let effective = UserDefaults.standard.object(forKey: key) as? Data, persisted == effective,
+                  persisted == Data("{synthetic persisted legacy origin damaged".utf8) else { throw Failure.invalid("actual fixed Data") }
+            result[key] = ["type": "data", "base64": persisted.base64EncodedString(), "bytes": persisted.count,
+                           "sha256": SHA256.hash(data: persisted).map { String(format: "%02x", $0) }.joined()]
+        }
+        return result
+    }
+    static func run(_ requested: String) async -> String {
+        let fm = FileManager.default
+        guard HealthWriteNativeProbe.requested, let mode = Mode(rawValue: requested),
+              ProcessInfo.processInfo.arguments.contains("-health-backup-empty-ui"),
+              ProcessInfo.processInfo.arguments.contains("-health-legacy-origin-ui") else { return "Legacy root probe failed: flags" }
+        let reportURL = fm.temporaryDirectory.appendingPathComponent("Lumen-legacy-root-probe-report.json")
+        let ackURL = fm.temporaryDirectory.appendingPathComponent("Lumen-legacy-root-probe-ack.json")
+        let runID = UUID().uuidString
+        var report: [String: Any] = ["runID": runID, "mode": mode.rawValue, "scope": "Actual LocalStore API boundary only. Constant canCommit; no UI authority, HealthStore permission or external-delivery acceptance."]
+        func emit(_ phase: String) throws {
+            report["phase"] = phase; report["notes"] = notes
+            let data = try JSONSerialization.data(withJSONObject: report, options: [.prettyPrinted, .sortedKeys])
+            try data.write(to: reportURL, options: .atomic)
+        }
+        func waitAck(_ phase: String) async throws {
+            for _ in 0..<1200 {
+                if let data = try? Data(contentsOf: ackURL), let ack = try? JSONSerialization.jsonObject(with: data) as? [String: String],
+                   ack["runID"] == runID, ack["phase"] == phase { return }
+                try await Task.sleep(for: .milliseconds(100))
+            }
+            throw Failure.timeout
+        }
+        do {
+            let shared = HealthStore.shared
+            for _ in 0..<1200 where !shared.conversationReady || shared.isSyncing { try await Task.sleep(for: .milliseconds(25)) }
+            guard shared.conversationReady, !shared.isSyncing else { throw Failure.invalid("startup") }
+            let root = try LocalStore.checkedDirectory(), previous = root.appendingPathExtension("previous")
+            let moved = root.deletingLastPathComponent().appendingPathComponent("LumenData.legacy-root-probe-" + runID)
+            let movedPrevious = root.deletingLastPathComponent().appendingPathComponent("LumenData.legacy-prior-probe-" + runID)
+            guard (try facts(previous))["exists"] as? Bool == true else { throw Failure.invalid("prior fixture absent") }
+            let owner = try HealthWriteDeviceOwner.current()
+            var journal = HealthWriteJournal(owner: owner)
+            if mode == .ordinary { try journal.requestDeletion(domain: .water, localID: "synthetic-legacy-root-removal") }
+            let journalData = try journal.encoded()
+            for directory in [root, previous] {
+                try journalData.write(to: directory.appendingPathComponent(HealthWriteFiles.name), options: .atomic)
+                if mode == .ordinary { try Data("{synthetic regular workout damage".utf8).write(to: directory.appendingPathComponent("workouts.json"), options: .atomic) }
+            }
+            let control = BackupOperationControl(), lease = HealthRecoveryOriginReviewLease()
+            defer { lease.close(); observedRoot = nil }
+            let snapshot = BackupSnapshot(profile: .default, goals: HealthGoals(), habits: [], sleep: [], meals: [], workouts: [], water: [], conversations: [], symptoms: [], checkIns: [], documents: [], importedDays: [], imports: [], personalContext: .init(), photos: [:])
+            var payload = try HealthRecoverySelection.backup(snapshot, photos: [:], domains: [.workouts], control: control, validPhoto: { _ in false })
+            if mode != .ordinary {
+                try lease.begin(control)
+                try await Task.detached {
+                    let captured = try LocalStore.captureLegacyRecoveryReview([.workouts], control: control)
+                    try lease.finish(captured, control: control)
+                }.value
+                guard lease.state == .ready, lease.metadata?.legacyDomains == [.workouts] else { throw Failure.invalid("ready origin") }
+                payload = try HealthRecoverySelection.bindingLegacyOrigins(lease.acquire([.workouts], control: control), to: payload)
+            }
+            report["paths"] = ["root": root.path, "previous": previous.path, "moved": moved.path, "movedPrevious": movedPrevious.path]
+            report["initialRoot"] = try tree(root); report["initialPrevious"] = try tree(previous)
+            report["initialFixed"] = try fixedValues(); report["journalBeforeBase64"] = journalData.base64EncodedString()
+            report["traceBefore"] = HealthWriteNativeProbe.verificationTrace
+            report["externalBefore"] = HealthWriteNativeProbe.verificationExternal
+            report["leaseReady"] = lease.state == .ready
+            try emit("prepared"); try await waitAck("prepared")
+            try fm.moveItem(at: root, to: moved)
+            if mode == .noPrior { try fm.moveItem(at: previous, to: movedPrevious) }
+            // No actor yield between relocation and actual wrapper entry. The
+            // notes surround its existing production acquisition unchanged.
+            observedRoot = root; notes = []
+            var didCommit = false, rejected = false, actualError: String?
+            do { try await LocalStore.recoverHealthChecked(payload, control: control, canCommit: { true }, didCommit: { didCommit = true }) }
+            catch { rejected = true; actualError = String(describing: error) }
+            observedRoot = nil
+            report["didCommit"] = didCommit; report["rejected"] = rejected; report["error"] = actualError ?? NSNull()
+            report["finalRoot"] = try tree(root); report["finalPrevious"] = try tree(previous)
+            report["movedRoot"] = try tree(moved); report["movedPrevious"] = try tree(movedPrevious)
+            report["finalFixed"] = try fixedValues()
+            report["traceAfter"] = HealthWriteNativeProbe.verificationTrace
+            report["externalAfter"] = HealthWriteNativeProbe.verificationExternal
+            report["siblingNamesAfter"] = try fm.contentsOfDirectory(atPath: root.deletingLastPathComponent().path).sorted()
+            try emit("observed"); try await waitAck("observed")
+            try emit("host-audited")
+            return "Legacy root probe observed: " + mode.rawValue
+        } catch {
+            report["probeError"] = String(describing: error); try? emit("failed")
+            return "Legacy root probe failed: " + String(describing: error)
+        }
     }
 }
 #endif

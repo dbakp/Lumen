@@ -1,0 +1,257 @@
+{
+  "schemaVersion": 1,
+  "part": 53,
+  "critic": "Continuing independent App Designer Pro critic /root/daily_critic_recovery2",
+  "source": "durable-source-r205.json",
+  "createdAtUTC": "2026-11-07T23:56:21.728234+00:00",
+  "scope": "Source/concrete three-case synthetic LocalStore API baseline plan audit BEFORE runtime. No UI/design score, runtime recovery result, negative safety closure or product acceptance.",
+  "verdict": {
+    "readyForRuntime": false,
+    "requiredFindings": [
+      "P53-C1",
+      "P53-C2",
+      "P53-C3",
+      "P53-D1"
+    ],
+    "runtimeExecuted": false,
+    "overallAcceptance": false,
+    "score": null,
+    "summary": "Useful real-wrapper probe design, but launch routing prevents execution and host acknowledgement/failed-evidence gates need repair before a successor runs. Preserve Source205 unchanged as judged; obtain and retain actual baseline before any production acquisition repair."
+  },
+  "verification": {
+    "independentlyVerifiedCurrentFrozenTextInputs": 261,
+    "independentlyVerifiedCurrentFixtures": 9,
+    "fullArchiveBytesExact": true,
+    "actualChangedInputsFrom204": [
+      "Lumen/Persistence/LocalStore.swift",
+      "Lumen/Services/HealthLocalDataNativeProbe.swift",
+      "Lumen/Services/HealthWriteNativeProbe.swift",
+      "LumenUITests/LumenSmokeTests.swift",
+      "Design/native/health-write-order/health-legacy-root-acquisition-driver-r1.py"
+    ],
+    "driverASTParsedOnly": true,
+    "fiveChangedSourcesRead": true,
+    "planReadFully": true,
+    "buildReceiptRead": "Source205 buildExit0, native compile only; receipt sourceInputs261/fixtures9 is truthful. No current binary reads, native actions or producer execution by critic.",
+    "appBuildDeclaredSHA256": "09a1ca90c78cdf9f2aaba505e7565b87c0a1dc270ac6424b77f11c1eb1a42f9e",
+    "testBuildDeclaredSHA256": "d95d79dea942288bb50b6e804db13f3306b3da49baa44bdd9aab39c3ab99e4e1",
+    "sourceDiff": "LocalStore production acquisition line remains byte-identical204; only six DEBUG/simulator observation directive/call lines added around checkedDirectory acquisition. Other three existing changes/newdriver inspected from full frozen204→205 source comparison.",
+    "noActions": "No simulator/phone query or mutation, binary query, build, Git operation, source/test/driver/evidence edit, cleanup, fixture generation or download. Only this report written."
+  },
+  "findings": [
+    {
+      "id": "P53-C1",
+      "severity": "blocking",
+      "title": "Backup fixture early return prevents every new probe dispatch",
+      "evidence": [
+        {
+          "file": "Lumen/LumenApp.swift",
+          "line": 75
+        },
+        {
+          "file": "LumenUITests/LumenSmokeTests.swift",
+          "line": 27
+        },
+        {
+          "file": "Lumen/Services/HealthWriteNativeProbe.swift",
+          "line": 46
+        }
+      ],
+      "fact": "All3wrappers launch -health-backup-ui-fixture and -health-write-native-probe. LumenReadyView.task enters HealthRecoveryUIFixture.backupRequested branch and returns before HealthWriteNativeProbe.requested dispatch. New run branch is therefore unreachable under its own launch setup. Native status can only wait/timeout, not exercise root acquisition.",
+      "requiredRepair": "In separately frozen successor route only the explicitly requested validated root probe to healthWriteProbe.run before this fixture early return, and return afterward. Keep ordinary fixture suppression/production startup behavior unchanged; do not broadly bypass Sync/Watch/Health lifecycle protection. Retain205 compile/source as unexecuted, not a failed product baseline.",
+      "status": "OPEN; parent independently identified and agreed no205runtime"
+    },
+    {
+      "id": "P53-C2",
+      "severity": "blocking",
+      "title": "Complete observed-boundary validation must precede nonce acknowledgement",
+      "evidence": [
+        {
+          "file": "Design/native/health-write-order/health-legacy-root-acquisition-driver-r1.py",
+          "line": 68
+        },
+        {
+          "file": "Design/native/health-write-order/health-legacy-root-acquisition-driver-r1.py",
+          "line": 80
+        },
+        {
+          "file": "Design/native/health-write-order/health-legacy-root-acquisition-driver-r1.py",
+          "line": 87
+        }
+      ],
+      "fact": "Prepared/observed live-tree versus native-report equality, installed hash and plist Data equality occur before ack. Moved-root equality, initial/finalfixed, trace/external, notes, rejected/didCommit and ordinary pending deletion checks run only after observed ack and native terminal. Stage/retired/discovery absence is checked only at prepared, never at observed. Mutation expectation accepts any existing finalroot without identifying the actual acquisition transition. Ordinary private proof merely finds matching failed bytes somewhere under .health-recovery and omits complete context/receipt/allowed-tree validation. This does not satisfy the declared strict host gate before release.",
+      "requiredRepair": [
+        "Factor complete prepared/observed mode verification into preack path. Require known exact paths/runID/mode, bounded nofollow trees, actual fixed keys/Data, installed source-bound binary, rawmovedtree+metadata identity, initial/finalfixed and no new adapter trace/external work before observedack.",
+        "Bind pre-/post-acquisition notes to actual absentroot and mode-specific result: no-prior baseline empty createdroot/previousabsent with exact movedprior; with-prior baseline originalprevious identity/rawtree restored to root and previousabsent. Safe mode requires rootENOENT and prior/movedtrees unchanged. Preserve unexpected transitions as failed evidence rather than treating arbitrary mutation as the declared baseline.",
+        "For legacy rejection require rejectedtrue/didCommitfalse, no installedselecteddata/receipt/newprivate/stage/retired/discovery residue beyond precisely recorded acquisition mutation; validate the observed sibling inventory, not only prepared prefix absence. No safetyAcceptance for expected mutation.",
+        "For ordinary control require actual restored-prior identity before prepare, committed emptyworkouts, exact same-owner typed pending deletion (full event references/payload/ack state) with lifecycle rotation; exact healthy/context file coverage and correctly named/domain-bound private failedworkout+intent/manifest, receipt and complete allowed finaltree. Keep no external adapter work gate. Source/currentbytes may use clearly declared semantic comparison only where warranted, never silent broad exclusions."
+      ],
+      "status": "OPEN; parent agreed complete mode/pending/private/healthy checks and actual acquisition transitions before ack"
+    },
+    {
+      "id": "P53-C3",
+      "severity": "required",
+      "title": "Persist original failure reports and terminal attachments independently of assertion success",
+      "evidence": [
+        {
+          "file": "Design/native/health-write-order/health-legacy-root-acquisition-driver-r1.py",
+          "line": 67
+        },
+        {
+          "file": "Design/native/health-write-order/health-legacy-root-acquisition-driver-r1.py",
+          "line": 79
+        },
+        {
+          "file": "Design/native/health-write-order/health-legacy-root-acquisition-driver-r1.py",
+          "line": 85
+        },
+        {
+          "file": "Design/native/health-write-order/health-legacy-root-acquisition-driver-r1.py",
+          "line": 106
+        }
+      ],
+      "fact": "phasefailed raises before writing a canonical report. Any preassert/live-tree/installed/plist mismatch also occurs before report persistence. Summary extraction is after nativeExit0/seen assertions. Finally retains gziplog/outcome only; no success/failure original attachment export exists in this driver. Thus unexpected baseline/harness failure can leave crucial bytes only in live temporary report/raw xcresult, not independently retained canonical evidence.",
+      "requiredRepair": "Copy exact original report bytes/hash and phase/runID metadata before evaluating them, including failed/partial reports. Terminal native success OR failure must independently attempt summary plus original PNG/JSON/manifest export; preserve acquisition errors and continue salvage after each artifact error, retain compact terminal outcome/log even when another retention step fails. Assert acceptance only after complete required retention and preack checks; keep all actual failed baseline records before any product repair or reset.",
+      "status": "OPEN; parent agreed explicit failure/success export and preassert report retention"
+    },
+    {
+      "id": "P53-D1",
+      "severity": "required provenance correction in successor",
+      "title": "Manifest inherited metadata understates actual Source205 inputs/changes",
+      "fact": "Full manifest/archive contain261text+9fixtures =270 exact inputs, with five actual changes listed correctly in changedFrom204. Top-level inputs is inherited260, changedInputs only listsUITest and checkedAt predates current freeze. Actualbuild receipt correctly says261+9. Plan remains original Source204 proposed/unimplemented plan, not a205execution outcome.",
+      "requiredRepair": "Preserve judged205manifest/plan; successor manifest must use actual count/change list/freeze timestamp and explicitly bind original plan plus new concrete repaired source/runtime boundary. Do not silently rewrite205 or claim Source204/205 runtime from compile.",
+      "status": "OPEN provenance clarification, not product defect"
+    }
+  ],
+  "sourceDesignAssessment": [
+    "Synthetic flags require resetForUITests+health-write-native-probe and recognized root mode plus empty/legacyfixture. Actual fixture prepares standard fixed malformed Data in meals/workouts and missing current leaves; ordinary mode deliberately writes failed regularworkouts into current/prior. No personal data or physical device action proposed.",
+    "Legacy cases use actual LocalStore.captureLegacyRecoveryReview offmain, HealthRecoveryOriginReviewLease.begin/finish→ready metadata forworkouts, acquire once and HealthRecoverySelection.bindingLegacyOrigins before relocation. This is a real bound payload, not fabricated availability or a bare stale token. Raw payload remains local; defer closes lease. No UI confirmation/review owner or HealthStore permission authority claimed.",
+    "Probe calls actual LocalStore.recoverHealthChecked with sharedcontrol and canCommittrue; DEBUGnotes surround unchanged checkedDirectory/revision/owner acquisition. ConstantcanCommit intentionally narrows to wrapper API and cannot prove UI/newertarget authority. No production repair selected.",
+    "Currentroot and optional previous move to unique UUID sibling paths. Same-parent moves are individually atomic relocation operations; there is no await between these moves and wrapper entry. The pair is not an atomic multi-path transaction and no process/filesystem externalrace exclusion follows from no MainActor yield.",
+    "Ordinary control is substantively necessary: real typed pending water deletion survives restore-before-intent read, with no new delivery. Backend prepare reads originalintent then rotates lifecycle. Replacing every checkedDirectory call with raw root would risk this control; narrow conditional repair only after actual baseline observation.",
+    "Driver REPO=P.parents[2] is correct for canonical .../Lumen/Design/native/health-write-order (parents0native,1Design,2Lumen). testbin.parents[3]/Lumen.app/Lumen is also consistent with declared Debug product hierarchy. No path-calculation repair required.",
+    "Driver prelaunch frozeninput/hash/build checks and local app/test hash checks are meaningfully before Popen; installed hash/live nofollow bounded tree/plist checks before each phase ack are useful but insufficient until C2. No producer/host execution was performed during this source audit.",
+    "Metadata-only observation hooks add read overhead only in explicit probe scope; observe swallows failures into observationError. Repaired host must reject and retain such incomplete notes before ack rather than infer a missing post-acquisition record."
+  ],
+  "baselineAndAcceptanceBoundary": {
+    "baselineMustPrecedeProductionRepair": true,
+    "expectedMutation": "Declared mutation expectation can PASS acquisition observation while safetyAcceptance remainsfalse. Root creation/restoration on legacy rejectedpayload is a counterexample to bounded no-mutation/no-create target safety, not successful recovery acceptance.",
+    "unexpectedOutcomes": "Retain/report failures and actual transition bytes without forcing a desired defect. Native compile alone proves neither route reachability nor observed defect.",
+    "ordinaryControl": "A future actual successful ordinary control protects interrupted-open/pending-removal ordering, not all external delivery, alltiming or general recovery.",
+    "preserve": "Source204 two positive routes and failed203query remain immutable; current205must remain unexecuted until a separately frozen corrected harness is reviewed. All43/broader negative/reset/appearance/Release/retainedcopy/VO/motion/fullparent gates remain open."
+  },
+  "bindings": [
+    {
+      "file": "Lumen/Persistence/LocalStore.swift",
+      "bytes": 23364,
+      "sha256": "4da5d67b4d1b959a19f0549eb6286a9c28fc1724cc1df1dc8c5e9e3513aecd47"
+    },
+    {
+      "file": "Lumen/Services/HealthLocalDataNativeProbe.swift",
+      "bytes": 36690,
+      "sha256": "bd06ec5de7ed17fe9ef13ccab3e31ff897746f90a1e8d2b52405f1e797ae3756"
+    },
+    {
+      "file": "Lumen/Services/HealthWriteNativeProbe.swift",
+      "bytes": 19305,
+      "sha256": "36684c77c34ed16d0167408a7c091a8fedbbfb2b8427044b18ca95c67002d0ab"
+    },
+    {
+      "file": "LumenUITests/LumenSmokeTests.swift",
+      "bytes": 699269,
+      "sha256": "60193cc0b3522c564ee63a9fc875ef9fe9902cac359d6df4421fdfa4925fe02a"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-root-acquisition-driver-r1.py",
+      "bytes": 9423,
+      "sha256": "37f67f958c0e69bcfc59475a2845b559f37062f494fda8ba93ee3acfd6d356c8"
+    },
+    {
+      "file": "Lumen/LumenApp.swift",
+      "bytes": 8255,
+      "sha256": "81a2e65b979cc43bf0ce6313bbaaa07878393677f645f2e76846d853d1e53c93"
+    },
+    {
+      "file": "Lumen/Views/HealthRecoveryView.swift",
+      "bytes": 57677,
+      "sha256": "6c3495af1cc190fe473f74391b5f71ac31b611ba6c45cfce817833f53bec3679"
+    },
+    {
+      "file": "Lumen/Views/HealthRecoveryCancelUIFixture.swift",
+      "bytes": 35785,
+      "sha256": "8a4e3c28d47d928b206095621297279a46aaed0ccbf4f65cf55b3c0cdacaf1ee"
+    },
+    {
+      "file": "Lumen/Models/BackupArchive.swift",
+      "bytes": 19111,
+      "sha256": "69e10af40cd932df7689734a0c8f177473a9c03af2279d18bcf77d674681a2e6"
+    },
+    {
+      "file": "Lumen/Models/HealthRecoverySelection.swift",
+      "bytes": 13858,
+      "sha256": "593c9da108af9400dce44aad95407bf707d714e0c7cb6ecbaca20eb96000032b"
+    },
+    {
+      "file": "Lumen/Models/BackupStorageRevision.swift",
+      "bytes": 1061,
+      "sha256": "1c4748f91bf74ea8e6df8a9b69405485220509c03edf584fc5064f5a89fc2783"
+    },
+    {
+      "file": "Lumen/Models/HealthWriteJournal.swift",
+      "bytes": 9382,
+      "sha256": "7e09abfb7b95831172870a8a60019814c6910828487731d996a10033d489cf0b"
+    },
+    {
+      "file": "Design/native/health-write-order/durable-source-r205.json",
+      "bytes": 43872,
+      "sha256": "20713f1dec3afa7e3f028f1141269c6d760f7601c1d3e8b5088d78eb3e4748dd"
+    },
+    {
+      "file": "Design/native/health-write-order/durable-source-r205.json.gz",
+      "bytes": 977468,
+      "sha256": "4d2c29a3822a2fa77f75258e8c8685857c98d11c7cb97744762852d9b670a565"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-root-acquisition-negative-r1-plan.json",
+      "bytes": 4279,
+      "sha256": "a885a3067c42681e8d70d4b082b273f9b7f60894a96507e067ef887a0bbd5d1a"
+    },
+    {
+      "file": "Design/native/health-write-order/health-root-acquisition-r1-build.json",
+      "bytes": 709,
+      "sha256": "1c84304e81d935140330f74b2d1a8d7ff735b31ed852a52619d73d22cf35bd7c"
+    },
+    {
+      "file": "Design/native/health-write-order/source205-root-acquisition-native-build-r1-outcome.json",
+      "bytes": 900,
+      "sha256": "e29890da983cc1f6942dca54c105a2028020ba07a63ee20274e3e092bcf9f2ea"
+    },
+    {
+      "file": "Design/native/health-write-order/source205-root-acquisition-native-build-r1.log.gz",
+      "bytes": 6108,
+      "sha256": "4e42f36f2133e463ebf32f0d4cdaca3cac8a48c6fd5033332b37a90afd628fb6"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-origin-product-integration-r1-contract.json",
+      "bytes": 11644,
+      "sha256": "c03a720b71d0339b70b102fe3abdff014f57076d218423dbe47aa9680c27f06b"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-origin-product-integration-r2-addendum.json",
+      "bytes": 1599,
+      "sha256": "cf629cab8d3fae1c9abad3394067696d81cfa36e80062dded62d0fc72c10ddad"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-failed-origin-source204-round2-part52-native-string.json",
+      "bytes": 28275,
+      "sha256": "8b4d43f256f35f6b6877cc1ae00cc8bed507f0980c3b5c53ff93419f1e2b629e"
+    }
+  ],
+  "storage": {
+    "criticDeletedFiles": false,
+    "criticRecoveredBytes": 0,
+    "freeBytesAtFinish": 35713179648,
+    "retention": "No cleanup or live fixture inventory claim. Current canonical inputs/skill/evidence retained. Parent reports currentString exact41paths ec8b775cc9bbf1113bb960dfe2e287b1994296c4 before205; no criticremoteverification."
+  },
+  "next": "Freeze/publish205source+compile+this unexecuted review, repair routing/host/retention/provenance in successor and review exactdiff before baseline runtime; retain actual baseline before considering a conditional production repair."
+}
