@@ -5272,11 +5272,23 @@ final class LumenSmokeTests: XCTestCase {
         func waitForPreference(_ enabled: Bool, control: XCUIElement) throws {
             let deadline = Date().addingTimeInterval(5)
             while Date() < deadline {
-                if UIAccessibility.isReduceMotionEnabled == enabled,
-                   control.value as? String == (enabled ? "1" : "0") { return }
+                let switchValue = control.value as? String ?? "unavailable"
+                let systemValue = UIAccessibility.isReduceMotionEnabled
+                if systemValue == enabled, switchValue == (enabled ? "1" : "0") { return }
                 RunLoop.current.run(until: Date().addingTimeInterval(0.1))
             }
+            samples.append(["phase": "preference-timeout", "at": Date().timeIntervalSince1970,
+                            "requested": enabled, "switch": control.value as? String ?? "unavailable",
+                            "uikit": UIAccessibility.isReduceMotionEnabled])
+            capture("preference-timeout")
             throw problem("Actual Settings switch/public UIKit preference did not match requested state")
+        }
+        func tapObservedThumb(_ control: XCUIElement) throws {
+            // Source189 actual AX tree separates the broad labelled row from
+            // its nested63-point switch. Hit that observed switch itself.
+            let thumb = control.switches.firstMatch
+            guard thumb.exists && thumb.isHittable else { throw problem("Observed nested Reduce Motion switch unavailable") }
+            thumb.tap()
         }
         func capture(_ phase: String) {
             let image = XCTAttachment(screenshot: settings.screenshot())
@@ -5296,7 +5308,7 @@ final class LumenSmokeTests: XCTestCase {
             guard let original else { return }
             let control = try openMotion()
             guard let current = control.value as? String, ["0", "1"].contains(current) else { throw problem("Restoration switch value unavailable") }
-            if current != (original ? "1" : "0") { control.tap() }
+            if current != (original ? "1" : "0") { try tapObservedThumb(control) }
             try waitForPreference(original, control: control)
             samples.append(["phase": "restored", "at": Date().timeIntervalSince1970,
                             "switch": control.value as? String ?? "unavailable",
@@ -5321,7 +5333,11 @@ final class LumenSmokeTests: XCTestCase {
             samples.append(["phase": "original", "at": Date().timeIntervalSince1970,
                             "switch": value, "uikit": UIAccessibility.isReduceMotionEnabled])
             capture("original"); restorationNeeded = true
-            if value == "0" { control.tap() }
+            if value == "0" { try tapObservedThumb(control) }
+            samples.append(["phase": "enable-requested", "at": Date().timeIntervalSince1970,
+                            "switch": control.value as? String ?? "unavailable",
+                            "uikit": UIAccessibility.isReduceMotionEnabled])
+            capture("enable-requested")
             try waitForPreference(true, control: control)
             samples.append(["phase": "enabled", "at": Date().timeIntervalSince1970,
                             "switch": control.value as? String ?? "unavailable",

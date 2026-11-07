@@ -1,0 +1,195 @@
+{
+  "status": "Source-only preflight complete for frozen190; terminal capability failure separately acknowledged. No runtime/design/motion acceptance",
+  "checkedAt": "2026-11-07T19:05:47.366244+00:00",
+  "critic": "Same continuing independent App Designer Pro critic; existing direction and supplied skill/references preserved",
+  "source": "durable-source-r190.json",
+  "publishedSourceCommit": "528b6542ac4c6e692e89af1c176b7461d8c6d816",
+  "scope": "Review plan, frozen native wrappers, capability/recovery host drivers, restoration/API/assertion/provenance logic only. Parent later supplied actual terminal190 failure; its one native JSON fully read, no originals inspected for this preflight.",
+  "sourceProvenance": {
+    "inputs": 253,
+    "fixtureInputs": 9,
+    "allArchiveEntriesDecodedAndExactManifestBytesSHA": true,
+    "all262ArchiveEntriesExactLocalGitObjects": true,
+    "all7SupportFilesExactLocalGitObjects": true,
+    "all4PlanBindingsExact": true,
+    "onlyChangedFrom189": [
+      "LumenUITests/LumenSmokeTests.swift"
+    ],
+    "other252TextAnd9BinaryExact189": true,
+    "current253TextInputsMatched190AtCheck": true,
+    "currentSourceNotAssumedForFutureSuccessor": true,
+    "appProductionExecutableUnchanged188189": true,
+    "recordedBuildExit": 0,
+    "liveBinaryQueriedByCritic": false,
+    "separateRemoteProofClaim": false,
+    "parentRemoteCheckpointAttributed": true
+  },
+  "provenance": [
+    {
+      "file": "Design/native/health-write-order/durable-source-r190.json",
+      "bytes": 42523,
+      "sha256": "d573f5f28b7c599bfdec9c387142a3b55a6ec898a383d5169b4cc924c6812b9e"
+    },
+    {
+      "file": "Design/native/health-write-order/durable-source-r190.json.gz",
+      "bytes": 900978,
+      "sha256": "58af480530e1e2387dbba23fda87fa685d0092a79661c4457497d6ffadbeb8bc"
+    },
+    {
+      "file": "Design/native/health-write-order/health-recovery-reduce-motion-r1-plan.json",
+      "bytes": 3248,
+      "sha256": "847b71ac2f2882ee4aafd82337a6276e3b7adb038c9b1975119ed6ba9109bdee"
+    },
+    {
+      "file": "Design/native/health-write-order/health-recovery-motion-enabled-r1-build.json",
+      "bytes": 651,
+      "sha256": "28cbd0d409b307997a366381d6ec13be056062418c952af2554f3ff27354ccf8"
+    },
+    {
+      "file": "Design/native/health-write-order/source190-app-binary-continuity-r1.json",
+      "bytes": 416,
+      "sha256": "004c726e62eca0809bc771bb2dffa19e7b5ea61b37bf5b5e3e2914d0610e7efd"
+    },
+    {
+      "file": "Design/native/health-write-order/health-reduce-motion-capability-r1-driver.py",
+      "bytes": 5420,
+      "sha256": "70043cb87111bdaeb1a0db452434765360681ee5653902b0431dd64a9175dd1a"
+    },
+    {
+      "file": "Design/native/health-write-order/health-recovery-reduce-motion-r1-driver.py",
+      "bytes": 49469,
+      "sha256": "76811990b214d0f3830ece361816e478692cc2e5b45cb1dc3979fd3290562ec6"
+    }
+  ],
+  "build": {
+    "testBinary": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+    "testBinarySHA256": "9c4fc9bb79ef30d494f84bbe59e4deffb1fd88a6210f454dd7b2c46931782cdc",
+    "testBinaryBytes": 5755712,
+    "source": "durable-source-r190.json",
+    "buildExit": 0,
+    "sha256": "706e7c8a183bf4fd1b1cc9bdafff9d999fed74629b0710ea372a5e82b8ebbce1",
+    "binaryBytes": 45079984,
+    "sourceInputs": 253,
+    "fixtureInputs": 9,
+    "buildLog": "source190-motion-enabled-build-r1.log.gz",
+    "status": "Source190 compile PASS; motion-enabled native case not yet run",
+    "checkedAt": 1794078035.728574
+  },
+  "continuity": {
+    "status": "Actual Source190 production executable byte-identical188/189; onlyUITest source changed",
+    "source": "durable-source-r190.json",
+    "priorSource": "durable-source-r189.json",
+    "appSHA256": "706e7c8a183bf4fd1b1cc9bdafff9d999fed74629b0710ea372a5e82b8ebbce1",
+    "appBytes": 45079984,
+    "testSHA256": "9c4fc9bb79ef30d494f84bbe59e4deffb1fd88a6210f454dd7b2c46931782cdc",
+    "checkedAt": 1794078139.170049
+  },
+  "nativeDiffFrom189": "--- frozen189\n+++ frozen190\n@@ -20,7 +20,7 @@\n         app = XCUIApplication()\n         // Settings discovery reads only the dedicated simulator. Do not reset\n         // Lumen's last audited synthetic state or launch the product here.\n-        if name.contains(\"testReduceMotionSettingsDiscovery\") { return }\n+        if name.contains(\"testReduceMotionSettingsDiscovery\") || name.contains(\"testReduceMotionSettingsCapability\") { return }\n         // The focused wrapping probe reuses this dedicated simulator's saved\n         // synthetic record, with a public Files-import fallback if absent.\n         app.launchArguments = name.contains(\"testFHIRLiteralWrappingSnapshots\") || name.contains(\"testLiteralIdentifier\") || name.contains(\"testProviderCitationRejection\") || name.contains(\"testProviderTransportFallback\") ? [\"-librarySearchRemoteUITestMode\"] : [\"-resetForUITests\"]\n@@ -5209,6 +5209,141 @@\n         #endif\n     }\n \n+    @MainActor\n+    func testReduceMotionSettingsCapability() throws {\n+        try withObservedReduceMotion(returnToProduct: false) { _ in }\n+        var observedExpectedFailure = false\n+        do {\n+            try withObservedReduceMotion(returnToProduct: false) { _ in\n+                throw NSError(domain: \"LumenExpectedMotionBodyFailure\", code: 42)\n+            }\n+        } catch {\n+            observedExpectedFailure = error.localizedDescription.contains(\"LumenExpectedMotionBodyFailure\")\n+        }\n+        XCTAssertTrue(observedExpectedFailure, \"The deliberate throwing-body trial must fail after restoring the original preference\")\n+    }\n+\n+    @MainActor\n+    func testHealthBackupFileRecoveryPhotoFaultErrorBackEncryptedReduceMotion() throws {\n+        try withObservedReduceMotion(returnToProduct: true) { sample in\n+            try withoutActuallyEscaping(sample) { synchronousSample in\n+                try healthBackupPhotoFaultErrorBack(\"encrypted\", motionSample: synchronousSample)\n+            }\n+        }\n+    }\n+\n+    @MainActor\n+    private func withObservedReduceMotion(returnToProduct: Bool,\n+        body: (_ sample: (String) throws -> Void) throws -> Void) throws {\n+        #if targetEnvironment(simulator)\n+        executionTimeAllowance = 720\n+        let settings = XCUIApplication(bundleIdentifier: \"com.apple.Preferences\")\n+        var samples: [[String: Any]] = []\n+        var original: Bool?\n+        var restorationNeeded = false\n+        var failure: String?\n+        var restorationError: String?\n+        let prefix = returnToProduct ? \"reduce-motion-enabled-recovery\" : \"reduce-motion-capability\"\n+        func problem(_ message: String) -> NSError {\n+            NSError(domain: \"LumenReduceMotion\", code: 1,\n+                    userInfo: [NSLocalizedDescriptionKey: message])\n+        }\n+        func openMotion() throws -> XCUIElement {\n+            settings.activate()\n+            guard settings.wait(for: .runningForeground, timeout: 10) else { throw problem(\"Settings did not become foreground\") }\n+            let control = settings.switches.matching(identifier: \"REDUCE_MOTION\").firstMatch\n+            if !control.exists {\n+                if settings.navigationBars[\"Accessibility\"].exists {\n+                    let motion = settings.buttons[\"MOTION_TITLE\"].firstMatch\n+                    guard motion.exists && motion.isHittable else { throw problem(\"Observed Motion row unavailable\") }\n+                    motion.tap()\n+                } else {\n+                    let accessibility = settings.buttons[\"com.apple.settings.accessibility\"].firstMatch\n+                    guard accessibility.exists && accessibility.isHittable else { throw problem(\"Observed Accessibility row unavailable\") }\n+                    accessibility.tap()\n+                    let motion = settings.buttons[\"MOTION_TITLE\"].firstMatch\n+                    guard motion.waitForExistence(timeout: 5) && motion.isHittable else { throw problem(\"Observed Motion row unavailable\") }\n+                    motion.tap()\n+                }\n+            }\n+            guard control.waitForExistence(timeout: 5), control.isHittable else { throw problem(\"Observed Reduce Motion switch unavailable\") }\n+            return control\n+        }\n+        func waitForPreference(_ enabled: Bool, control: XCUIElement) throws {\n+            let deadline = Date().addingTimeInterval(5)\n+            while Date() < deadline {\n+                if UIAccessibility.isReduceMotionEnabled == enabled,\n+                   control.value as? String == (enabled ? \"1\" : \"0\") { return }\n+                RunLoop.current.run(until: Date().addingTimeInterval(0.1))\n+            }\n+            throw problem(\"Actual Settings switch/public UIKit preference did not match requested state\")\n+        }\n+        func capture(_ phase: String) {\n+            let image = XCTAttachment(screenshot: settings.screenshot())\n+            image.name = prefix + \"-\" + phase; image.lifetime = .keepAlways; add(image)\n+        }\n+        func report(_ phase: String) throws {\n+            let value: [String: Any] = [\"scope\": \"Observed Settings enable/restore and public UIKit preference samples; no continuous motion behavior acceptance\",\n+                \"phase\": phase, \"original\": (original as Any?) ?? NSNull(),\n+                \"restored\": original.map { UIAccessibility.isReduceMotionEnabled == $0 } ?? false,\n+                \"finalUIKitReduceMotion\": UIAccessibility.isReduceMotionEnabled,\n+                \"samples\": samples, \"failure\": (failure as Any?) ?? NSNull(),\n+                \"restorationError\": (restorationError as Any?) ?? NSNull()]\n+            let attachment = XCTAttachment(data: try JSONSerialization.data(withJSONObject: value, options: [.prettyPrinted, .sortedKeys]), uniformTypeIdentifier: \"public.json\")\n+            attachment.name = prefix + \"-readback-\" + phase; attachment.lifetime = .keepAlways; add(attachment)\n+        }\n+        func restore() throws {\n+            guard let original else { return }\n+            let control = try openMotion()\n+            guard let current = control.value as? String, [\"0\", \"1\"].contains(current) else { throw problem(\"Restoration switch value unavailable\") }\n+            if current != (original ? \"1\" : \"0\") { control.tap() }\n+            try waitForPreference(original, control: control)\n+            samples.append([\"phase\": \"restored\", \"at\": Date().timeIntervalSince1970,\n+                            \"switch\": control.value as? String ?? \"unavailable\",\n+                            \"uikit\": UIAccessibility.isReduceMotionEnabled])\n+            capture(\"restored\"); restorationNeeded = false\n+        }\n+        // XCTest teardown also runs when an ordinary recovery assertion aborts\n+        // the test before its Swift body can return or throw.\n+        addTeardownBlock { @MainActor in\n+            guard restorationNeeded else { return }\n+            do { try restore() }\n+            catch { restorationError = String(describing: error) }\n+            try report(\"teardown-fallback\")\n+            if restorationNeeded { throw problem(\"Reduce Motion original-state restoration remains unverified\") }\n+        }\n+        do {\n+            settings.launch()\n+            let control = try openMotion()\n+            guard let value = control.value as? String, [\"0\", \"1\"].contains(value) else { throw problem(\"Initial switch value unavailable\") }\n+            original = value == \"1\"\n+            guard UIAccessibility.isReduceMotionEnabled == original else { throw problem(\"Initial actual switch/UIKit preference disagree\") }\n+            samples.append([\"phase\": \"original\", \"at\": Date().timeIntervalSince1970,\n+                            \"switch\": value, \"uikit\": UIAccessibility.isReduceMotionEnabled])\n+            capture(\"original\"); restorationNeeded = true\n+            if value == \"0\" { control.tap() }\n+            try waitForPreference(true, control: control)\n+            samples.append([\"phase\": \"enabled\", \"at\": Date().timeIntervalSince1970,\n+                            \"switch\": control.value as? String ?? \"unavailable\",\n+                            \"uikit\": UIAccessibility.isReduceMotionEnabled])\n+            capture(\"enabled\")\n+            if returnToProduct { app.activate() }\n+            try body { phase in\n+                let enabled = UIAccessibility.isReduceMotionEnabled\n+                samples.append([\"phase\": phase, \"at\": Date().timeIntervalSince1970, \"uikit\": enabled])\n+                guard enabled else { throw problem(\"Reduce Motion off at declared recovery sample: \" + phase) }\n+            }\n+        } catch { failure = String(describing: error) }\n+        do { try restore() } catch { restorationError = String(describing: error) }\n+        try report(\"terminal\")\n+        if let failure { throw problem(failure) }\n+        if let restorationError { throw problem(restorationError) }\n+        guard original != nil, !restorationNeeded else { throw problem(\"Original preference restoration unverified\") }\n+        #else\n+        XCTFail(\"Reduce Motion verification is authorized for the dedicated simulator only\")\n+        #endif\n+    }\n+\n     // Pending follow-on draft, outside frozen Source182. Future setup must add\n     // -health-read-ui -health-read-scope selected-record ONLY for these tests.\n     // Existing actual reader/closed-owner observations avoid new app instrumentation.\n@@ -5449,7 +5584,8 @@\n         try healthBackupPhotoFaultErrorBack(\"encrypted\", voiceOver: true)\n     }\n     @MainActor\n-    private func healthBackupPhotoFaultErrorBack(_ kind: String, voiceOver: Bool = false) throws {\n+    private func healthBackupPhotoFaultErrorBack(_ kind: String, voiceOver: Bool = false,\n+        motionSample: ((String) throws -> Void)? = nil) throws {\n         executionTimeAllowance = 600\n         let base = \"Lumen-backup-health-matrix-two-\" + kind\n         let prefix = \"health-error-state-\" + kind\n@@ -5463,6 +5599,7 @@\n             XCTAssertTrue(filename.waitForExistence(timeout: 10))\n             XCTAssertEqual(filename.label, base + (kind == \"encrypted\" ? \".lumenbackup\" : \".json\"))\n         }\n+        try motionSample?(\"before-original-selection\")\n         openBackupSettings(); try selectOriginal()\n         snap(prefix + \"-source\"); Thread.sleep(forTimeInterval: 3)\n         let reviewMeals = app.buttons[\"reviewFile-meals\"].firstMatch\n@@ -5569,6 +5706,7 @@\n         }\n         reveal(confirm); XCTAssertTrue(confirm.isEnabled); confirm.tap()\n         XCTAssertTrue(alert.waitForExistence(timeout: 5))\n+        try motionSample?(\"before-genuine-error\")\n         if voiceOver { voiceOverReadback = try confirmWithVoiceOver() }\n         else { alert.buttons[\"Recover\"].tap() }\n         // The app must expose the genuine failure before any test scrolling.\n@@ -5577,6 +5715,7 @@\n         XCTAssertLessThanOrEqual(failure.frame.maxY, app.frame.maxY - 20)\n         XCTAssertTrue(failure.label.contains(\"Recovery couldn't finish\"))\n         XCTAssertTrue(failure.label.contains(\"Your current files haven't been replaced.\"))\n+        try motionSample?(\"genuine-error-before-test-scroll\")\n         XCTAssertFalse(success.exists); snap(prefix + \"-failed\"); Thread.sleep(forTimeInterval: 3)\n         let choice = app.switches[\"recoverFile-meals\"].firstMatch\n         reveal(choice, towardsTop: true); XCTAssertEqual(choice.value as? String, \"1\")\n@@ -5593,7 +5732,7 @@\n         XCTAssertTrue(choice.exists && choice.isHittable)\n         XCTAssertEqual(choice.frame.minY, firstFrame.minY, accuracy: 1)\n         XCTAssertEqual(choice.value as? String, \"1\")\n-        snap(prefix + \"-scroll-stays\")\n+        try motionSample?(\"deliberate-scroll-endpoint\"); snap(prefix + \"-scroll-stays\")\n         let omission = app.switches[\"Recover without meal photos\"].firstMatch\n         nativeSwitch(\"Recover without meal photos\", enabled: true)\n         reveal(confirm); confirm.tap(); XCTAssertTrue(alert.waitForExistence(timeout: 5))\n@@ -5603,14 +5742,14 @@\n             reveal(selected, towardsTop: domain == \"meals\"); XCTAssertEqual(selected.value as? String, \"1\")\n         }\n         reveal(omission, towardsTop: true); XCTAssertEqual(omission.value as? String, \"1\")\n-        snap(prefix + \"-omission-not-now\"); Thread.sleep(forTimeInterval: 3)\n+        try motionSample?(\"after-not-now\"); snap(prefix + \"-omission-not-now\"); Thread.sleep(forTimeInterval: 3)\n         reveal(failure); XCTAssertTrue(failure.exists); snap(prefix + \"-before-back\")\n         app.navigationBars[\"Review recovery\"].buttons.element(boundBy: 0).tap()\n         XCTAssertTrue(app.navigationBars[\"Backup & restore\"].waitForExistence(timeout: 3))\n         let choose = app.buttons[\"chooseBackup\"].firstMatch\n         reveal(choose); XCTAssertTrue(choose.isEnabled)\n         XCTAssertFalse(failure.exists); XCTAssertFalse(success.exists)\n-        snap(prefix + \"-back-parent\"); Thread.sleep(forTimeInterval: 3)\n+        try motionSample?(\"after-back\"); snap(prefix + \"-back-parent\"); Thread.sleep(forTimeInterval: 3)\n         try selectOriginal()\n         snap(prefix + \"-reselected-source\"); Thread.sleep(forTimeInterval: 3)\n         for domain in domains {\n@@ -5620,7 +5759,7 @@\n         reveal(omission, towardsTop: true); XCTAssertEqual(omission.value as? String, \"0\")\n         reveal(confirm); XCTAssertFalse(confirm.isEnabled)\n         XCTAssertFalse(failure.exists); XCTAssertFalse(success.exists)\n-        snap(prefix + \"-fresh-off\")\n+        try motionSample?(\"fresh-source-defaults\"); snap(prefix + \"-fresh-off\")\n         for domain in domains { nativeSwitch(\"recoverFile-\" + domain, enabled: true, towardsTop: domain == \"meals\") }\n         reveal(omission, towardsTop: true); XCTAssertEqual(omission.value as? String, \"0\")\n         reveal(confirm); XCTAssertTrue(confirm.isEnabled); confirm.tap()\n@@ -5633,7 +5772,7 @@\n             snap(prefix + \"-\" + phase)\n         }\n         reveal(success, towardsTop: true); XCTAssertTrue(success.waitForExistence(timeout: 30))\n-        XCTAssertFalse(failure.exists); snap(prefix + \"-success\")\n+        try motionSample?(\"recovered-before-success-ack\"); XCTAssertFalse(failure.exists); snap(prefix + \"-success\")\n         let observed = XCTNSPredicateExpectation(predicate: NSPredicate(format: \"value == %@\", \"success-observed\"), object: success)\n         XCTAssertEqual(XCTWaiter.wait(for: [observed], timeout: 35), .completed)\n         app.navigationBars[\"Review recovery\"].buttons.element(boundBy: 0).tap()\n@@ -5647,7 +5786,7 @@\n         let attachment = XCTAttachment(data: try JSONSerialization.data(withJSONObject: readback, options: [.prettyPrinted, .sortedKeys]), uniformTypeIdentifier: \"public.json\")\n         attachment.name = \"error-state-readback\"; attachment.lifetime = .keepAlways; add(attachment)\n         app.terminate(); app.launchArguments = []; app.launch(); openBackupSettings()\n-        XCTAssertFalse(app.staticTexts[\"Saved health data couldn't be opened.\"].exists); snap(prefix + \"-relaunch\")\n+        try motionSample?(\"relaunch\"); XCTAssertFalse(app.staticTexts[\"Saved health data couldn't be opened.\"].exists); snap(prefix + \"-relaunch\")\n     }\n \n     func testHealthBackupFileRecoveryPhotoFaultMissingLegacy() throws { try healthBackupPhotoFault(\"legacy\", fault: \"missing\") }\n",
+  "hostDiffFromReviewedOrdinaryDriver": "--- reviewed45522Bordinary\n+++ Source190motion49469B\n@@ -523,6 +523,46 @@\n     assert new['owner']==old['owner'] and new['lifecycle']!=old['lifecycle'] and new['events']==[]\n     return {'fullReceiptAuditedBeforeAck':True,'healthyCurrentAndPrivatePriorExact':True,'installedPhotoDigests':photo_digests}\n \n+# Optional bounded, actual simulator video; separate from core data-audit acceptance.\n+video = {'scope': 'Time-based screen capture only; requires actual review, not preference-on motion acceptance'}\n+video_process = None\n+video_stream = None\n+video_path = raw / (stem + '-motion.mp4')\n+video_log = raw / (stem + '-motion-video.log')\n+def start_video():\n+    global video_process, video_stream\n+    try:\n+        assert not video_path.exists() and not video_log.exists()\n+        video_stream = video_log.open('xb')\n+        video['requestedAt'] = time.time()\n+        video_process = subprocess.Popen(['xcrun','simctl','io',device,'recordVideo','--codec=h264',str(video_path)], stdout=video_stream, stderr=subprocess.STDOUT)\n+        video['pid'] = video_process.pid\n+        until = time.monotonic() + 10\n+        while time.monotonic() < until and video_process.poll() is None:\n+            if 'Recording started' in video_log.read_text():\n+                video['readyObservedAt'] = time.time()\n+                video['readyObserved'] = True\n+                return\n+            time.sleep(0.1)\n+        video['readyObserved'] = False\n+        video['failure'] = 'Recording-start readback not observed within10seconds'\n+    except Exception:\n+        video['failure'] = traceback.format_exc()\n+def stop_video():\n+    global video_stream\n+    if video_process is not None:\n+        try:\n+            if video_process.poll() is None: video_process.send_signal(signal.SIGINT)\n+            video['exitCode'] = video_process.wait(timeout=30)\n+        except subprocess.TimeoutExpired:\n+            video_process.kill();video['exitCode'] = video_process.wait();video['failure'] = 'Recorder did not finalize within30seconds'\n+    if video_stream is not None: video_stream.close()\n+    video['finishedAt'] = time.time()\n+    if video_path.exists():\n+        video.update(raw=str(video_path), bytes=video_path.stat().st_size, sha256=digest(video_path.read_bytes()))\n+    video['timingLimit'] = 'First-frame wall time lies between requestedAt and readyObservedAt; native sample wall timestamps are anchors with this uncertainty. Capture alone is not motion review.'\n+    (base/(prefix+'-video-capture.json')).write_text(json.dumps(video,indent=2)+'\\n')\n+\n # Pending producer body; assembled into a standalone driver only after source freeze.\n reader_held = None\n reader_release_requested = None\n@@ -534,7 +574,7 @@\n     '-destination','platform=iOS Simulator,id='+device,'-derivedDataPath','/tmp/LumenBatch37Simulator',\n     '-clonedSourcePackagesDirPath','/tmp/LumenBatch37Packages','-disableAutomaticPackageResolution',\n     '-parallel-testing-enabled','NO','-collect-test-diagnostics','never',\n-    '-only-testing:LumenUITests/LumenSmokeTests/testHealthBackupFileRecoveryPhotoFaultErrorBack'+a.case.title(),\n+    '-only-testing:LumenUITests/LumenSmokeTests/testHealthBackupFileRecoveryPhotoFaultErrorBack'+a.case.title()+'ReduceMotion',\n     '-resultBundlePath',str(result),'test-without-building']\n with (raw/(stem+'.log')).open('xb') as stream:\n     process = subprocess.Popen(command,cwd=repo,stdout=stream,stderr=subprocess.STDOUT)\n@@ -542,6 +582,7 @@\n     awake = subprocess.Popen(['caffeinate','-d','-i','-w',str(process.pid)])\n     deadline = time.monotonic()+800\n     try:\n+        start_video()\n         while process.poll() is None:\n             assert time.monotonic()<deadline,'Finite state producer timed out; retain actual outcome'\n             group=container('group.com.dbakp.lumen');root=group/'LumenData';baseline=group/'Lumen-health-backup-baseline.json'\n@@ -656,6 +697,7 @@\n             try:code=process.wait(timeout=15)\n             except subprocess.TimeoutExpired:process.kill();code=process.wait()\n     finally:\n+        stop_video()\n         observations={'source':a.source,'build':a.build,'checkpoint':checkpoint,'before':before,'protectedBefore':protected_before,'previousBefore':previous_before,\n             'preservationBeforeCommit':preservation_before,'sourceObservations':source_observations,'readerHeld':reader_held,'readerReleaseRequested':reader_release_requested,'readerCompleted':reader_completed,'protocol':protocol,\n             'heldPreparation':held,'releasedPreparation':released,'success':success,'finalCleanup':final_cleanup,'hostFailure':host_failure,\n@@ -720,3 +762,21 @@\n assert source_observations\n (base/(prefix+'-host-audit.json')).write_text(json.dumps({'status':'PASS actual genuine error/scroll/Back/fresh original reselect/two-photo recovery/relaunch','source':a.source,'build':a.build,'case':a.case,'phone':a.phone,'appearance':a.appearance,'device':device,'inputManifest':a.input_manifest,'inputProvenance':a.inputs,'before':before,'after':after,'protectedBefore':protected_before,'previousBefore':previous_before,'preservationBeforeCommit':preservation_before,'sourceObservations':source_observations,'heldPreparation':held,'releasedPreparation':released,'successBeforeRelaunch':success,'finalCleanupBeforeRelaunch':final_cleanup,'protocol':protocol,'producerExitCode':code,'receipt':receipt,'retainedDamagedPaths':copies,'faultObservation':fault_observation,'failedBoundary':failed_boundary,'readerHeld':reader_held,'readerReleaseRequested':reader_release_requested,'readerCompleted':reader_completed,'scrollBoundary':scroll_boundary,'backBoundary':back_boundary,'freshSelection':fresh_selection,'omissionNotNowBoundary':omission_not_now_boundary,'photoMode':a.mode,'installedPhotoDigests':expected_photo_digests,'providerIdentityExact':True,'conflictingHealthyGoalsChecked':True,'verifierSHA256':digest(Path(__file__).read_bytes()),'scope':'main/normal actual genuine failure, bounded3s deliberate scroll, omission Not-now, completed reader closure on Back, fresh original selection/choices off, real two-photo recovery without omission and relaunch. Full state/VoiceOver/Reduce Motion/broader gates remain.'},indent=2)+'\\n')\n print('PASS:',a.case,'actual genuine error/scroll/Back/reselect/photo recovery audit')\n+\n+# Motion preference/restoration acceptance remains separate from the unchanged full core data audit.\n+readbacks=json.loads((base/(prefix+'-readbacks.json')).read_text())\n+assert len(readbacks)==2\n+reports=[json.loads((base/r['file']).read_text()) for r in readbacks]\n+motion=[r for r in reports if 'finalUIKitReduceMotion' in r]\n+ordinary=[r for r in reports if r.get('scope')=='genuine-recovery-error-scroll-back-reselect']\n+assert len(motion)==len(ordinary)==1\n+report=motion[0]\n+assert report['phase']=='terminal' and report['restored'] and report['failure'] is report['restorationError'] is None\n+assert report['original']==report['finalUIKitReduceMotion']\n+samples=report['samples']\n+required=['original','enabled','before-original-selection','before-genuine-error','genuine-error-before-test-scroll','deliberate-scroll-endpoint','after-not-now','after-back','fresh-source-defaults','recovered-before-success-ack','relaunch','restored']\n+assert [r['phase'] for r in samples]==required\n+assert all(r['uikit'] is True for r in samples[1:-1])\n+assert samples[0]['uikit']==samples[-1]['uikit']==report['original']\n+(base/(prefix+'-motion-preference-outcome.json')).write_text(json.dumps({'status':'PASS actual preference-on samples at9recovery boundaries and observed original restoration; full visual motion behavior unaccepted until video review','source':a.source,'build':a.build,'nativeReadback':next(r['file'] for r in readbacks if json.loads((base/r['file']).read_text())==report),'samples':samples,'videoCapture':video,'checkedAt':time.time()},indent=2)+'\\n')\n+print('PASS actual motion preference-on recovery samples/original restoration; time-based behavior review remains required')\n",
+  "nativeAssessment": [
+    "Capability setup returns before app reset/launch. Two separate withObservedReduceMotion calls intend normal-body and deliberate NSError-body exits; a deliberate body error is accepted by capability test only when its expected domain is observed after wrapper restoration. This path was NOT reached in actual190failure.",
+    "Encrypted wrapper is within existing RecoveryPhotoFaultErrorBack setup matching selected-record read fixture flags. Default motionSample remains nil for existing methods. Only nine optional synchronous UIKit observations are inserted into the existing actual recovery helper; no recovery action or order changed. withoutActuallyEscaping confines sample closure to the synchronous helper call.",
+    "Wrapper reads original switch0/1 and UIKit agreement before declaring original sample; it enables only if off, waits for both observed switch and UIKit true, and records enabled. If original is already on, no off-to-on transition is demonstrated, but enabled preference sample remains meaningful.",
+    "Explicit restore runs after both normal and caught Swift throw paths and checks actual switch plus UIKit against original before recording restored and clearing restorationNeeded. Terminal report carries body failure and restorationError separately; errors rethrow afterward. Success cannot be inferred from restored boolean alone, because it only tests UIKit and original; require no restorationError and actual restored switch sample too.",
+    "Registered @MainActor XCTest teardown retains restore/report and checks restorationNeeded, including failure if restored agreement remains unverified. Local XCTestCase header documents main-thread execution, once/LIFO/serial after method return and before tearDown. CompilePASS supports syntax/actor compatibility. No claim registered fallback runs after process kill, host timeout, all assertion-abort modes, or that it has actually restored any aborted trial.",
+    "Preference poll uses UIKit condition first and Swift comma short-circuit before querying switch. If UIKit remains false during enable, no intermediate AX switch value is obtained. Timeout throws generic mismatch without storing post-tap AX/UIKit endpoints. This is a concrete diagnostic gap for failed190trial.",
+    "Observed189 REDUCE_MOTION outer Switch spans x36/y146.3/w330/h28 and contains actual inner Switch x305/y146.3/w63/h28. Source190 returns outer identifier firstMatch and calls its tap. Broad row center is away from actual thumb. This makes target ambiguity plausible but does not prove where tap landed or establish cause of mismatch."
+  ],
+  "driverAssessment": [
+    "Both drivers use test-without-building on declared dedicated simulator; capability validates frozen inputs/build executables before and after and retains outcome/log before terminal assertions. No execution by critic. Capability expects exactly2JSON: one no-body-failure and one expected deliberate-body-failure; both must be terminal/restored/no-restorationError and original/enabled/restored exact phases with enabledtrue/switch1 and restored original switch.",
+    "Recovery driver is exact reviewed ordinary core except native test suffix, video start/stop and separate trailing motion gates. Existing reader/source/provider/genuinefailure/scroll/Notnow/Back/freshhealthyphotos/control2/fullreceipt-beforeack/privatebytes/cleanup/relaunch audits are not substituted by motion preference samples.",
+    "Separate motion gates require exactly2nativeJSON with one ordinary state and one preference report; exact12phase sequence means original+enabled+nine recovery boundaries+restored. All enabled/intermediateUIKit samples must be true; terminal must be restored with no body/restoration error and original final agreement. Native restore itself requires switch agreement; driver recovery original/restored switch assertions are less explicit than capability but failure-free terminal is source-bound to the native checks.",
+    "The ordinary host audit may be written PASS before trailing preference assertions. That record describes core data route only; overall motion outcome additionally requires trailing preference-outcome success and actual video review. A core audit alone is insufficient if later preference gates fail.",
+    "Video request uses actual simctl recordVideo --codec=h264, initial readiness wait bounded10s, finite native producer800s, stop SIGINT and30s finalization fallback kill. Captured bytes/SHA/timestamps/log references are separate from data-audit acceptance. No video or motion runtime inspected here.",
+    "Recording started is a recorder log acknowledgement. requestedAt/readyObservedAt are host command/ack wall bounds, not independent proof of first presented frame wall time. The source metadata sentence asserting first-frame time lies between those endpoints is stronger than this source alone establishes; use approximate alignment until retained video frame timestamps and start semantics are actually reviewed."
+  ],
+  "actual190FailureBoundary": {
+    "parentReportedNative": {
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "exitCode": 65,
+      "driverExitCode": 1
+    },
+    "nativeJSONProvenance": {
+      "file": "Design/native/health-write-order/health-reduce-motion-capability-r1-D95368E0-601E-4943-8A5B-2156B0FE503A.json",
+      "bytes": 765,
+      "sha256": "5b63cc2a23f4c31179abd7e4a4e3a289461fd08df57ee0b29da555c160245f0a"
+    },
+    "nativeJSONFullyRead": true,
+    "nativeReadback": {
+      "failure": "Error Domain=LumenReduceMotion Code=1 \"Actual Settings switch/public UIKit preference did not match requested state\" UserInfo={NSLocalizedDescription=Actual Settings switch/public UIKit preference did not match requested state}",
+      "finalUIKitReduceMotion": false,
+      "original": false,
+      "phase": "terminal",
+      "restorationError": null,
+      "restored": true,
+      "samples": [
+        {
+          "at": 1794078181.202286,
+          "phase": "original",
+          "switch": "0",
+          "uikit": false
+        },
+        {
+          "at": 1794078187.9909391,
+          "phase": "restored",
+          "switch": "0",
+          "uikit": false
+        }
+      ],
+      "scope": "Observed Settings enable/restore and public UIKit preference samples; no continuous motion behavior acceptance"
+    },
+    "originalsInspectedByThisPreflight": 0,
+    "parentReportedOriginals": 2,
+    "parentReportedNativeJSONCount": 1,
+    "enabledShotOrBodyReached": false,
+    "parentReportedTapAtSeconds": 18.14,
+    "parentReportedRestorationNoTapBecauseSwitch0": true,
+    "attribution": "Native0/1/0, tap timing and two screenshots attributed to parent; only the actual retained terminal JSON independently read by critic. This later failed evidence is not asserted present in earlier source checkpoint528b6542. No screenshot observation credit.",
+    "interpretation": "Actual readback contains only original0/false and restored0/false with restorationErrornull; explicit observed original agreement is retained. Enable mismatch cause unproved, no capability/normalbody/deliberatethrow/recovery behavior acceptance."
+  },
+  "findings": [
+    {
+      "id": "P25-C1",
+      "severity": "required-before-capability-retry",
+      "scope": "test target and failed-preference diagnostics",
+      "evidence": "Frozen190 selects broad outer REDUCE_MOTION firstMatch;189 actual tree exposes distinct inner switch. waitForPreference condition short-circuits switch query while UIKit false and failure JSON lacks post-tap endpoint. Actual190 enable failed before body.",
+      "recommendation": "A test-only successor may derive and uniquely target actual inner switch from observed Settings hierarchy, record actual target frame/value and UIKit before/after tap and on timeout unconditionally, preserve190failed originals/JSON/log/outcome, then reestablish actual enable and original restoration. Preserve original-state agnosticism, no host preference override or production repair.",
+      "causeEstablished": false
+    },
+    {
+      "id": "P25-C2",
+      "severity": "provenance-wording",
+      "scope": "video alignment metadata",
+      "evidence": "start_video only polls Recording started text, not actual first encoded/presented frame timestamp.",
+      "recommendation": "Describe requestedAt/readyObservedAt as recorder request/ack uncertainty and approximate native-wall alignment until actual original video timestamps/frame cadence are examined. Do not treat capture or preferenceON as motion behavior acceptance."
+    }
+  ],
+  "declinedAsks": [
+    "No production change or recovery action change inferred from Settings test failure.",
+    "No extra redesign, new rubric score or broad hypothetical gate introduced.",
+    "No claim abort teardown was exercised by a caught Swift error or by the first190 enable failure."
+  ],
+  "openGates": [
+    "Source190 actual capability FAILED; planned normal and deliberate-body enabled-state capability must be reacquired in a separately frozen test-only successor.",
+    "Recovery preference-on wrapper is source-reviewed only; no recovery runtime credit.",
+    "Nine endpoint preference samples would not prove continuous preference, animation duration, no animation, or temporal motion behavior. Retained actual video and transitions require review.",
+    "Full spoken preservation/audio/announcementhistory/duplicates, full lateworker/allinterleaving, all10rawprior, full appearance/DynamicType/parent/product acceptance remain open;186failure and all earlier evidence preserved.",
+    "No overall design score or full accessibility acceptance."
+  ],
+  "localXCTestAPISource": {
+    "file": "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Library/Frameworks/XCTest.framework/Headers/XCTestCase.h",
+    "bytes": 16994,
+    "sha256": "3495ba29de18055dec5feec3b96339ed8454551ae404584d543988988ad5b25e",
+    "readLines": "167–192",
+    "scope": "Documented teardown scheduling only, no external SDK guess or runtime guarantee"
+  },
+  "storage": {
+    "availableBytesAtFinish": 38405799936,
+    "bytesRecoveredByCritic": 0,
+    "deletedFiles": 0,
+    "buildsOrDownloads": 0
+  },
+  "writeBoundary": "Only this new report written. No source/test/build/driver/evidence/prior reports mutated; no simulator or physical phone actions."
+}
