@@ -1,5 +1,5 @@
 {
-  "status": "188compilePASS; runtime0/4; finaldriverf82 matches reviewedr4",
+  "status": "Source188 main/light legacyCancelR1 native/host/root PASS; held runtime1/4; encryptedCancel next",
   "parent": "health-recovery-error-visibility-state-r1-contract.json",
   "productionPatch": "health-recovery-busy-cancel-r2.patch.draft",
   "productionAudit": "health-recovery-busy-cancel-r2-draft-audit.json",
@@ -67,16 +67,17 @@
   "build": "health-recovery-error-held-r1-build.json",
   "driver": "health-recovery-error-held-driver-r1.py",
   "integration": "source188-held-integration-r1.json",
-  "runtimeAccepted": 0,
+  "runtimeAccepted": 1,
   "executionOrder": [
     "legacyCancelR1",
     "encryptedCancelR1",
     "legacyBackR1",
     "encryptedBackR1"
   ],
-  "passed": [],
+  "passed": [
+    "legacyCancel"
+  ],
   "remaining": [
-    "legacyCancel",
     "encryptedCancel",
     "legacyBack",
     "encryptedBack"
