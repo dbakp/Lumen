@@ -5097,7 +5097,7 @@ final class LumenSmokeTests: XCTestCase {
             if kind == "readable" {
                 try chooseReadableFixture(base); waitForReadableReview()
                 XCTAssertFalse(app.buttons["reviewReadableHealthRecovery"].exists)
-                for key in ["water", "meals", "workouts"] {
+                for key in ["meals", "workouts", "water"] {
                     let choice = app.switches["recoverReadable-" + key].firstMatch
                     reveal(choice); XCTAssertEqual(choice.value as? String, "1")
                 }
