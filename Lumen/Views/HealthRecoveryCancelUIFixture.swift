@@ -4,6 +4,7 @@ import SwiftUI
 @MainActor final class HealthRecoveryCancelUIState: ObservableObject {
     static let shared = HealthRecoveryCancelUIState()
     @Published var phase = "preparing"
+    @Published var successPhase = "idle"
 }
 
 /// A dedicated synthetic test barrier inside actual transaction preparation.
@@ -13,11 +14,14 @@ enum HealthRecoveryCancelUIFixture {
     private static let bridge = Bridge()
     private static let checkpointName = "Lumen-health-cancel-checkpoint.json"
     private static let releaseName = "Lumen-health-cancel-release.json"
+    private static let successName = "Lumen-health-success-checkpoint.json"
+    private static let successAckName = "Lumen-health-success-ack.json"
+    @MainActor private static var verificationRoot: URL?
     enum Failure: Error { case invalidFixture, timeout }
 
     @MainActor static func reset(in root: URL) throws {
         guard requested else { return }
-        for name in [checkpointName, releaseName] {
+        for name in [checkpointName, releaseName, successName, successAckName] {
             let file = root.deletingLastPathComponent().appendingPathComponent(name)
             do {
                 let facts = try FileManager.default.attributesOfItem(atPath: file.path)
@@ -25,7 +29,37 @@ enum HealthRecoveryCancelUIFixture {
                 try FileManager.default.removeItem(at: file)
             } catch let error as CocoaError where error.code == .fileReadNoSuchFile || error.code == .fileNoSuchFile { }
         }
-        bridge.reset(); HealthRecoveryCancelUIState.shared.phase = "preparing"
+        bridge.reset(); verificationRoot = root
+        HealthRecoveryCancelUIState.shared.phase = "preparing"
+        HealthRecoveryCancelUIState.shared.successPhase = "idle"
+    }
+
+    /// Test-only observation handshake. The transaction has already finished;
+    /// this never delays commit or turns an observation failure into a user error.
+    @MainActor static func observeSuccess() async {
+        guard requested, ProcessInfo.processInfo.arguments.contains("-health-success-observation-ui"),
+              let root = verificationRoot else { return }
+        let state = HealthRecoveryCancelUIState.shared
+        guard state.successPhase == "idle" else { return }
+        let nonce = UUID()
+        let group = root.deletingLastPathComponent()
+        do {
+            try JSONEncoder().encode(Release(nonce: nonce, acknowledgementOnly: nil))
+                .write(to: group.appendingPathComponent(successName), options: .atomic)
+            state.successPhase = "awaiting-observation"
+            let deadline = Date().addingTimeInterval(30)
+            while !Task.isCancelled, Date() < deadline {
+                if let bytes = try? HealthLocalFiles.readRegularData(group.appendingPathComponent(successAckName), limit: 1024),
+                   let ack = try? JSONDecoder().decode(Release.self, from: bytes), ack.nonce == nonce,
+                   ack.acknowledgementOnly == true {
+                    state.successPhase = "success-observed"
+                    return
+                }
+                try await Task.sleep(for: .milliseconds(25))
+            }
+            if !Task.isCancelled { state.successPhase = "observation-timeout" }
+        } catch is CancellationError { }
+        catch { state.successPhase = "observation-error" }
     }
 
     @MainActor static func makeControl() -> BackupOperationControl {

@@ -102,7 +102,7 @@ final class LumenSmokeTests: XCTestCase {
             if name.contains("AllCommit") { app.launchArguments.append("-health-backup-multi-ui") }
             if name.contains("RecoveryEmpty") || name.contains("RecoveryPhotoMatrix") || name.contains("RecoveryPhotoFault") { app.launchArguments += ["-health-backup-healthy-merge-ui", "-health-backup-empty-ui", "-health-recovery-cancel-ui"] }
             if name.contains("RecoveryPhotoFault") {
-                app.launchArguments += ["-lumen.appearance", name.contains("Dark") || name.contains("Largest") ? "dark" : "light",
+                app.launchArguments += ["-health-success-observation-ui", "-lumen.appearance", name.contains("Dark") || name.contains("Largest") ? "dark" : "light",
                                         "-UIPreferredContentSizeCategoryName", name.contains("Largest") ? "UICTContentSizeCategoryAccessibilityXXXL" : "UICTContentSizeCategoryL"]
             }
         }
@@ -5234,6 +5234,7 @@ final class LumenSmokeTests: XCTestCase {
             Thread.sleep(forTimeInterval: 3)
             if name.contains("Largest") {
                 let consequences = app.staticTexts["Replaced files stay in a private copy on this iPhone. For meal recovery, this includes any old photos."].firstMatch
+                reveal(consequences, towardsTop: true)
                 captureIdentifierText(consequences, through: confirm, prefix: prefix + "-failure-content-" + String(attempt))
             }
             if attempt == 1 {
@@ -5266,6 +5267,9 @@ final class LumenSmokeTests: XCTestCase {
         reveal(success, towardsTop: true); XCTAssertTrue(success.waitForExistence(timeout: 30))
         XCTAssertFalse(failure.exists, "Success must not retain a stale failure")
         snap(prefix + "-success")
+        let observedSuccess = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", "success-observed"), object: success)
+        XCTAssertEqual(XCTWaiter.wait(for: [observedSuccess], timeout: 35), .completed,
+                       "The host must audit the actual open review before Back closes its source")
         app.navigationBars["Review recovery"].buttons.element(boundBy: 0).tap()
         XCTAssertTrue(app.navigationBars["Backup & restore"].waitForExistence(timeout: 5))
         snap(prefix + "-parent"); Thread.sleep(forTimeInterval: 4)

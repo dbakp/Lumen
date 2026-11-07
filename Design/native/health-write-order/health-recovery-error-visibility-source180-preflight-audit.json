@@ -1,0 +1,194 @@
+{
+  "status": "Read-only preflight complete; production hardening sound at source level; narrow success-provider observation claim aligned by driver repair",
+  "reviewer": "/root/daily_critic_recovery2",
+  "checkedUTC": "2026-11-07T13:18:37.153680+00:00",
+  "source": "durable-source-r180.json",
+  "baseline": "durable-source-r179.json",
+  "scope": "Exact three-file production/DEBUG/native-test diff plus declared success-ack integration. No new scored native round, build result, runtime or design acceptance.",
+  "identity": {
+    "priorGitCommit": "8a2076de5ccc6a87b3559505d7bef2202213894b",
+    "priorChangedFilesMatched179Manifest": true,
+    "currentSourceFilesVerified": 253,
+    "fixtureInputsVerified": 9,
+    "allCurrentHashLengthExact": true,
+    "unchangedSourceInputs": 250,
+    "fixtureInputsUnchanged": true,
+    "declaredChangedNativeInputsExact": true,
+    "diffBytes": 11659,
+    "diffSHA256": "f8aa2a2e8a8b82df4b3ac5acf932a9d805df20661376125838e230ce8ca9ff9a",
+    "changedFiles": [
+      {
+        "path": "Lumen/Views/BackupFileRecoveryView.swift",
+        "before": {
+          "bytes": 18225,
+          "sha256": "ac34add47fbf9ffdec46bf7235046e793b29b5558842d5be9191757511166681"
+        },
+        "after": {
+          "bytes": 19173,
+          "sha256": "b2cd41bfb3dd94e22c84be189bd608e4e39adbf79b2050ad43a40fb14961b359"
+        }
+      },
+      {
+        "path": "Lumen/Views/HealthRecoveryCancelUIFixture.swift",
+        "before": {
+          "bytes": 28614,
+          "sha256": "8e6f16f5fff744a37f2524a117fe3c872fcc6381761881899225773ecb31b9a0"
+        },
+        "after": {
+          "bytes": 30565,
+          "sha256": "ccc156c22df8c20a66be7df3e7e6746393e1985065523dce6f7a5111e08ed2e4"
+        }
+      },
+      {
+        "path": "LumenUITests/LumenSmokeTests.swift",
+        "before": {
+          "bytes": 652548,
+          "sha256": "36cfaaa6af34e42d0409169c82444555ebf4ae10fdbbbc43cbb81350384ce6bc"
+        },
+        "after": {
+          "bytes": 652964,
+          "sha256": "5a20a61207f3bc8b1fdc63b589b58dda532ec96b146d288cc3a7d5da374aadae"
+        }
+      }
+    ]
+  },
+  "provenance": [
+    {
+      "path": "Design/native/health-write-order/durable-source-r179.json",
+      "bytes": 42175,
+      "sha256": "1ed17a4da25e3a560dd6a35db790e2c2fff09bdbfc953165836f70bacf5e5de8"
+    },
+    {
+      "path": "Design/native/health-write-order/durable-source-r180.json",
+      "bytes": 42395,
+      "sha256": "5f68deb5ebf72a37442a1b1ec1d37f49c23507833f6c2d1bb1a7ff81cb8fe1d9"
+    },
+    {
+      "path": "Design/native/health-write-order/health-recovery-error-visibility-r3-execution-plan.json",
+      "bytes": 3068,
+      "sha256": "ae82c2314cf55ac780faceafb0e2011e3c83bc8e2b6802e91eba1369cf34a277",
+      "initialReviewedBytes": 3068,
+      "initialReviewedSHA256": "ae82c2314cf55ac780faceafb0e2011e3c83bc8e2b6802e91eba1369cf34a277",
+      "followup": "Root changed only harness/plan after initial finding; targeted success-branch repair and plan driverSHA256 binding re-inspected before terminal freeze."
+    },
+    {
+      "path": "Design/native/health-write-order/health-recovery-error-visibility-driver-r3.py",
+      "bytes": 33708,
+      "sha256": "c3b9f89ef6250849cd00608fdd201531e98166ae779c798a93b9970212f04a3a",
+      "initialReviewedBytes": 33708,
+      "initialReviewedSHA256": "c3b9f89ef6250849cd00608fdd201531e98166ae779c798a93b9970212f04a3a",
+      "followup": "Root changed only harness/plan after initial finding; targeted success-branch repair and plan driverSHA256 binding re-inspected before terminal freeze."
+    },
+    {
+      "path": "Design/native/health-write-order/health-recovery-error-visibility-focus-r1-source-audit.json",
+      "bytes": 11422,
+      "sha256": "9d91ab254b9fcf07c6c92e1dd314bb64905ca2f48957d52e8c07f5d4b990f7ea"
+    },
+    {
+      "path": "Lumen/Views/BackupFileRecoveryView.swift",
+      "bytes": 19173,
+      "sha256": "b2cd41bfb3dd94e22c84be189bd608e4e39adbf79b2050ad43a40fb14961b359"
+    },
+    {
+      "path": "Lumen/Views/HealthRecoveryCancelUIFixture.swift",
+      "bytes": 30565,
+      "sha256": "ccc156c22df8c20a66be7df3e7e6746393e1985065523dce6f7a5111e08ed2e4"
+    },
+    {
+      "path": "LumenUITests/LumenSmokeTests.swift",
+      "bytes": 652964,
+      "sha256": "5a20a61207f3bc8b1fdc63b589b58dda532ec96b146d288cc3a7d5da374aadae"
+    }
+  ],
+  "productionAssessment": [
+    {
+      "finding": "UUID event identity landed",
+      "evidence": "RecoveryIssue contains a fresh UUID and message atomically; onChange observes issue?.id. Each genuine catch creates a fresh value even with identical visible wording. Optional UUID focus binds equals the current issue.id.",
+      "judgment": "Addresses equal-message/coalescing representation and distinct repeated focus requests at source level. No claim that SwiftUI speech delivery is proven."
+    },
+    {
+      "finding": "Owned lifetime guard landed",
+      "evidence": "Stored errorReveal task cancels its predecessor. Both post-yield guards require noncancellation, active review and matching failure UUID before scroll/focus. onDisappear deactivates review, cancels/clears task and focus; retry cancels/clears them before clearing issue. MainActor keeps each immediate guard/effect segment ordered.",
+      "judgment": "Closes the previously identified explicit task ownership/identity gap. Old equal-text tasks cannot pass a new UUID guard or revive after their cancellation when the view reappears."
+    },
+    {
+      "finding": "One reveal and native content preserved",
+      "evidence": "Constant scroll target remains valid because the task separately guards current failure ID. onAppear only activates review; it does not launch another reveal for an old issue. No animation, timer, line limit, layout or literal copy change in production.",
+      "judgment": "Appropriate minimal hardening. A completed task handle can remain until retry/disappearance/new issue without accumulating a new unbounded task collection; no extra cleanup change requested."
+    },
+    {
+      "finding": "Transaction/cancellation unchanged",
+      "evidence": "Acquire, payload preparation, operation identity/cancellation guards and recovery transaction calls unchanged. CancellationError remains silent. Only genuine errors construct a RecoveryIssue.",
+      "judgment": "No transaction change or manufactured cancellation error observed in the exact diff."
+    }
+  ],
+  "debugAndTestAssessment": [
+    {
+      "finding": "Observation barrier is after commit and test only",
+      "evidence": "Success label adds accessibility value and view-lifetime task under DEBUG && simulator. Helper also requires both dedicated verification flags and reset root. It writes a fresh nonce only after recovered success exists; no wait is inserted into transaction commit.",
+      "judgment": "Correct separation of observation from recovery behavior; Release has no handshake code from these guarded additions."
+    },
+    {
+      "finding": "Nonce acknowledgement fails closed for test result",
+      "evidence": "Reset removes known regular checkpoint/ack files; fresh UUID prevents stale acknowledgement reuse. App reads bounded regular ack data and requires matching nonce plus acknowledgementOnly true. Poll25ms/deadline30s; native requires success-observed within35s after actual success screenshot. Timeout/error never becomes a production issue.",
+      "judgment": "Appropriate replacement for a delay-only observation race. XCTest assertions are nonfatal, so Back may still run after a failed wait, but the native case remains failed; no full-case pass may be recorded from such a timeout."
+    },
+    {
+      "finding": "Success row lifecycle remains an evidence requirement",
+      "evidence": "The view-managed success task can be cancelled if the success row disappears. successPhase is not reset to idle on cancellation in this single-attempt helper.",
+      "judgment": "No false acceptance follows; the current native sequence holds that row while waiting. A cancelled/restarted observation can fail or time out and must remain failed evidence. Do not generalize this helper into multi-success/reopen acceptance without reset/per-event review."
+    },
+    {
+      "finding": "Native test edits preserve initial error-view boundary",
+      "evidence": "Largest-only upward consequence reveal is after the actual failure snapshot; fresh success wait is before Back. No first-error scrolling or preservation assertion removal in this exact diff.",
+      "judgment": "Source supports the declared capture ordering; actual runtime frames and full case are still required."
+    }
+  ],
+  "integrationFinding": {
+    "id": "P180-H1",
+    "severity": "Narrow verification/claim alignment; no production defect",
+    "status": "Resolved in source before runtime; no runtime credit",
+    "distinction": "The selected source copy and original seeded provider are separate paths. Earlier failure/preparation checks include provider verification, and later full-case assertions can reject drift. Those facts do not establish a fresh provider identity check at the success-ack boundary.",
+    "recommendation": "No further source repair requested for this item. Actual success/provider audit and acknowledgement still require runtime evidence.",
+    "limit": "This is a read-only inspection of the acknowledgement integration only, not a complete fresh driver audit or an observed provider mutation.",
+    "originalEvidence": "In driver-r3 success branch, after success checkpoint freshness/nonce check, verify_original_identity validates the private selected-backup copy. verify_installed validates complete installed records/photos. Receipt is snapshotted. No explicit verify_provider call occurs in that success branch before matching acknowledgement is written.",
+    "implementedDisposition": "Root added verify_provider() immediately after verify_original_identity() in success branch before the nonce acknowledgement, and providerIdentityAuditedWhileReviewOpen=true. Critic directly re-read exact branch and verified updated plan driverSHA256 c3b9f89ef6250849cd00608fdd201531e98166ae779c798a93b9970212f04a3a. Original finding retained as history; no product or frozen app/test mutation."
+  },
+  "planAssessment": {
+    "matrix": "Four primary/defaultlight missing/damaged legacy/encrypted cases plus five encrypted/missing supplements: main dark/largest and compact normal/dark/largest. Not all24combinations.",
+    "retainedGates": [
+      "Actual first and repeated failure before test reveal",
+      "Full message/consequences/retry at largest through real overlap",
+      "All safety/omission/control3/success/cleanup/relaunch on Source180",
+      "State/Back/cancel/no repeated snapping",
+      "Direct VoiceOver spoken focus/order/duplicate checks",
+      "Direct Reduce Motion observation",
+      "Same continuing critic Round2 after complete immutable evidence",
+      "All original broader contracts and physical-iPhone prohibition"
+    ],
+    "judgment": "Plan preserves appropriate scope and does not transfer179 runtime acceptance. Build/runtime results are outside this audit."
+  },
+  "remainingVerification": [
+    "Actual layout insertion/reveal timing is not guaranteed by Task.yield; retain first-frame checks.",
+    "UUID focus request does not establish spoken delivery, no duplicate announcement or all assistive-technology schedules.",
+    "Explicitly force/review repeat and disappearance suspension windows where feasible; sampled stills do not cover every in-flight window.",
+    "Any later change must be frozen/built and rendered/rechecked; prior normal score is not inherited."
+  ],
+  "verdict": {
+    "productionBlockingSourceDefectsFound": 0,
+    "productionHardeningMatchesAdvice": true,
+    "nativeTestBlockingSourceDefectsFound": 0,
+    "successBoundaryClaimAlignmentItems": 0,
+    "score": null,
+    "runtimeAccepted": false,
+    "designAccepted": false,
+    "broaderProductAccepted": false,
+    "resolvedSourceOnlyHarnessItems": 1
+  },
+  "writes": "Only this new preflight audit; no app/test/driver/existing record mutation, builds, tests, images or physical-device actions.",
+  "storage": {
+    "availableBytesAtFinish": 40609820672,
+    "manualRecoveredBytes": 0
+  },
+  "completedUTC": "2026-11-07T13:19:03.508664+00:00"
+}
