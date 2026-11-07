@@ -1,0 +1,41 @@
+{
+  "status": "FAILED native post-error navigation; initial and repeated actual visible error/preservation observed, full case unaccepted",
+  "source": "durable-source-r178.json",
+  "nativeExitCode": 65,
+  "driverExitCode": 1,
+  "nativeSummary": "health-photo-fault-missing-legacy-visibilityr1-summary.json",
+  "nativePassed": 0,
+  "nativeFailed": 1,
+  "nativeSkipped": 0,
+  "rootScreens": 16,
+  "nativeJSONRead": 0,
+  "failure": [
+    {
+      "failureText": "failed - Element could not be brought into the visible content area",
+      "targetName": "LumenUITests",
+      "testIdentifier": 1,
+      "testIdentifierString": "LumenSmokeTests/testHealthBackupFileRecoveryPhotoFaultMissingLegacy()",
+      "testIdentifierURL": "test://com.apple.xcode/Lumen/LumenUITests/LumenSmokeTests/testHealthBackupFileRecoveryPhotoFaultMissingLegacy",
+      "testName": "testHealthBackupFileRecoveryPhotoFaultMissingLegacy()"
+    }
+  ],
+  "observedFailureBoundaries": [
+    {
+      "observedAfterNativeAttachment": "health-photo-fault-missing-legacy-failed",
+      "currentAndPriorBytesAndMetadataExact": true,
+      "noReceiptStageOrCheckpoint": true,
+      "sourceWorkspacesExactExceptDeclaredPhotoFault": true,
+      "checkedAt": 1794054802.4571168
+    },
+    {
+      "observedAfterNativeAttachment": "health-photo-fault-missing-legacy-failed-repeat",
+      "currentAndPriorBytesAndMetadataExact": true,
+      "noReceiptStageOrCheckpoint": true,
+      "sourceWorkspacesExactExceptDeclaredPhotoFault": true,
+      "checkedAt": 1794054813.464289
+    }
+  ],
+  "cause": "After actual first+repeat error rows pass first-frame checks, native helper searches for earlier meals switch with default downward direction. Lazy Form removes earlier row, so search remains at bottom; explicit upward search is needed at this post-error boundary. This is inferred from exact test code/logs and retained unreachable viewport.",
+  "next": "Publish exact failure evidence; same continuing critic native round1 on frozen178; then correct only test navigation/new freeze/build and rerun full4 cases.",
+  "checkedAt": 1794055073.9432268
+}
