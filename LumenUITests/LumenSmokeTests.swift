@@ -109,6 +109,9 @@ final class LumenSmokeTests: XCTestCase {
                 app.launchArguments += ["-health-success-observation-ui", "-lumen.appearance", name.contains("Dark") || name.contains("Largest") ? "dark" : "light",
                                         "-UIPreferredContentSizeCategoryName", name.contains("Largest") ? "UICTContentSizeCategoryAccessibilityXXXL" : "UICTContentSizeCategoryL"]
             }
+            if name.contains("OriginData") || name.contains("OriginString") {
+                app.launchArguments += ["-health-legacy-origin-ui", name.contains("OriginData") ? "data" : "string"]
+            }
             if name.contains("RecoveryPhotoFaultErrorBack") {
                 app.launchArguments += ["-health-read-ui", "-health-read-scope", "selected-record"]
             }
@@ -5592,6 +5595,10 @@ final class LumenSmokeTests: XCTestCase {
     }
 
     @MainActor
+    func testHealthBackupFileRecoveryPhotoFaultErrorBackLegacyOriginData() throws { try healthBackupPhotoFaultErrorBack("legacy") }
+    @MainActor
+    func testHealthBackupFileRecoveryPhotoFaultErrorBackEncryptedOriginString() throws { try healthBackupPhotoFaultErrorBack("encrypted") }
+    @MainActor
     func testHealthBackupFileRecoveryPhotoFaultErrorBackLegacy() throws { try healthBackupPhotoFaultErrorBack("legacy") }
     @MainActor
     func testHealthBackupFileRecoveryPhotoFaultErrorBackEncrypted() throws { try healthBackupPhotoFaultErrorBack("encrypted") }
@@ -5618,6 +5625,11 @@ final class LumenSmokeTests: XCTestCase {
         try motionSample?("before-original-selection")
         openBackupSettings(); try selectOriginal()
         snap(prefix + "-source"); Thread.sleep(forTimeInterval: 3)
+        if name.contains("Origin") {
+            let older = app.staticTexts["Older saved data couldn't be opened."].firstMatch
+            reveal(older); XCTAssertTrue(older.waitForExistence(timeout: 10))
+            captureIdentifierText(older, prefix: prefix + "-older-data-row")
+        }
         let reviewMeals = app.buttons["reviewFile-meals"].firstMatch
         reveal(reviewMeals); reviewMeals.tap()
         let readerState = app.descendants(matching: .any).matching(identifier: "fileRecordsLoading").firstMatch
@@ -5722,6 +5734,10 @@ final class LumenSmokeTests: XCTestCase {
         }
         reveal(confirm); XCTAssertTrue(confirm.isEnabled); confirm.tap()
         XCTAssertTrue(alert.waitForExistence(timeout: 5))
+        if name.contains("Origin") {
+            XCTAssertTrue(alert.staticTexts["Selected data will be replaced by records from this file. The older saved data will stay in a private recovery copy on this iPhone."].exists)
+            snap(prefix + "-older-data-confirmation")
+        }
         try motionSample?("before-genuine-error")
         if voiceOver { voiceOverReadback = try confirmWithVoiceOver() }
         else { alert.buttons["Recover"].tap() }
@@ -5730,7 +5746,7 @@ final class LumenSmokeTests: XCTestCase {
         XCTAssertGreaterThanOrEqual(failure.frame.minY, app.navigationBars["Review recovery"].frame.maxY)
         XCTAssertLessThanOrEqual(failure.frame.maxY, app.frame.maxY - 20)
         XCTAssertTrue(failure.label.contains("Recovery couldn't finish"))
-        XCTAssertTrue(failure.label.contains("Your current files haven't been replaced."))
+        XCTAssertTrue(failure.label.contains(name.contains("Origin") ? "Lumen hasn't replaced your saved data." : "Your current files haven't been replaced."))
         try motionSample?("genuine-error-before-test-scroll")
         XCTAssertFalse(success.exists); snap(prefix + "-failed"); Thread.sleep(forTimeInterval: 3)
         let choice = app.switches["recoverFile-meals"].firstMatch

@@ -1,5 +1,78 @@
 #if DEBUG && targetEnvironment(simulator)
 import SwiftUI
+import Darwin
+
+/// Synthetic standard app-domain values only, guarded by dedicated test flags.
+/// This records fixed-key provenance and metadata-only review ownership events.
+enum HealthLegacyOriginUIFixture {
+    static var kind: String? {
+        let args = ProcessInfo.processInfo.arguments
+        guard args.contains("-resetForUITests"), args.contains("-health-backup-ui-fixture"),
+              args.contains("-health-backup-empty-ui"), let index = args.firstIndex(of: "-health-legacy-origin-ui"),
+              args.indices.contains(index + 1), ["data", "string"].contains(args[index + 1]) else { return nil }
+        return args[index + 1]
+    }
+    static let data = Data("{synthetic persisted legacy origin damaged".utf8)
+    static let string = "Synthetic persisted old value e\u{301} 🫖"
+    private static let bridge = Bridge()
+    static func prepare(in root: URL) throws {
+        guard let kind else { return }
+        bridge.reset(root.deletingLastPathComponent())
+        for domain in [HealthLocalFiles.Domain.meals, .workouts] {
+            try FileManager.default.removeItem(at: root.appendingPathComponent(domain.rawValue + ".json"))
+            UserDefaults.standard.set(kind == "data" ? data as Any : string as Any, forKey: domain.legacyKey!)
+        }
+        guard UserDefaults.standard.synchronize() else { throw BackupError.invalid }
+        _ = try provenance(in: root)
+    }
+    static func provenance(in root: URL) throws -> [String: Any] {
+        guard let kind, let bundle = Bundle.main.bundleIdentifier else { throw BackupError.invalid }
+        var values: [String: Any] = [:]
+        for domain in [HealthLocalFiles.Domain.meals, .workouts] {
+            var facts = stat()
+            guard lstat(root.appendingPathComponent(domain.rawValue + ".json").path, &facts) == -1, errno == ENOENT else { throw BackupError.invalid }
+            let key = domain.legacyKey!
+            let persisted = UserDefaults.standard.persistentDomain(forName: bundle)?[key]
+            let effective = UserDefaults.standard.object(forKey: key)
+            let bytes: Data
+            if kind == "data" {
+                guard let raw = persisted as? Data, let active = effective as? Data, raw == data, active == raw else { throw BackupError.invalid }
+                bytes = raw
+            } else {
+                guard let raw = persisted as? NSString, let active = effective as? NSString else { throw BackupError.invalid }
+                func units(_ value: NSString) -> [UInt16] { (0..<value.length).map { value.character(at: $0) } }
+                let original = units(raw)
+                guard original == units(string as NSString), original == units(active) else { throw BackupError.invalid }
+                var encoded = Data()
+                for unit in original { encoded.append(UInt8(truncatingIfNeeded: unit)); encoded.append(UInt8(unit >> 8)) }
+                bytes = encoded
+            }
+            values[domain.rawValue] = ["key": key, "type": kind == "data" ? "data" : "stringUTF16LE", "payload": bytes.base64EncodedString()]
+        }
+        return ["bundle": bundle, "kind": kind, "values": values,
+                "scope": "Fixed synthetic persisted/effective values, not original plist bytes or all preferences"]
+    }
+    static func note(_ event: String, id: UUID, domains: Set<HealthLocalFiles.Domain> = []) {
+        guard kind != nil else { return }
+        bridge.note(event, id: id, domains: domains)
+    }
+    private final class Bridge: @unchecked Sendable {
+        private let lock = NSLock()
+        private var root: URL?
+        private var rows: [[String: Any]] = []
+        func reset(_ root: URL) { lock.lock(); defer { lock.unlock() }; self.root = root; rows = [] }
+        func note(_ event: String, id: UUID, domains: Set<HealthLocalFiles.Domain>) {
+            lock.lock(); defer { lock.unlock() }
+            guard let root else { return }
+            rows.append(["event": event, "sessionID": id.uuidString, "domains": domains.map(\.rawValue).sorted()])
+            // Observation failure is detected by the independent host; it never
+            // changes a product outcome or substitutes replacement authority.
+            if let bytes = try? JSONSerialization.data(withJSONObject: ["events": rows], options: [.sortedKeys]) {
+                try? bytes.write(to: root.appendingPathComponent("Lumen-legacy-origin-review-events.json"), options: .atomic)
+            }
+        }
+    }
+}
 
 @MainActor final class HealthRecoveryCancelUIState: ObservableObject {
     static let shared = HealthRecoveryCancelUIState()
@@ -150,14 +223,18 @@ enum HealthRecoveryCancelUIFixture {
                     }
                     continue
                 }
+                if HealthLegacyOriginUIFixture.kind != nil, ["meals.json", "workouts.json"].contains(name) {
+                    _ = try HealthLegacyOriginUIFixture.provenance(in: root)
+                    continue
+                }
                 originals[name] = try HealthLocalFiles.readRegularData(root.appendingPathComponent(name), limit: 256 * 1024)
             }
             if ProcessInfo.processInfo.arguments.contains("-health-backup-empty-ui") {
                 guard let waterData = originals["water.json"],
                       let water = try? BackupArchive.decoder().decode([HydrationLog].self, from: waterData),
                       water.count == 1, water[0].id == "synthetic-review-water", water[0].ml == 137,
-                      originals["meals.json"] == Data("{\"syntheticUnavailablemeals\":".utf8),
-                      originals["workouts.json"] == Data("{\"syntheticUnavailableworkouts\":".utf8),
+                      (HealthLegacyOriginUIFixture.kind != nil || originals["meals.json"] == Data("{\"syntheticUnavailablemeals\":".utf8)),
+                      (HealthLegacyOriginUIFixture.kind != nil || originals["workouts.json"] == Data("{\"syntheticUnavailableworkouts\":".utf8)),
                       let goalData = originals["goals.json"],
                       let goals = try? BackupArchive.decoder().decode(HealthGoals.self, from: goalData),
                       goals.stepGoal == 6543, goals.weightKg == 88.5, goals.heightCm == 181, goals.age == 42 else { throw Failure.invalidFixture }

@@ -354,6 +354,7 @@ enum HealthRecoveryUIFixture {
                 try Data("{".utf8).write(to: root.appendingPathComponent(domain.rawValue + ".json"), options: .atomic)
             }
         }
+        try HealthLegacyOriginUIFixture.prepare(in: root)
         // Leave .previous unarchived: the real product discovery path must
         // expose it without an unrelated write or fixture-only retirement.
         try HealthRecoveryCancelUIFixture.reset(in: root)
@@ -368,10 +369,15 @@ enum HealthRecoveryUIFixture {
             _ = SleepStore.shared
             var originals: [String: String] = [:]
             for name in HealthLocalFiles.Domain.allCases.map({ $0.rawValue + ".json" }) + [HealthWriteFiles.name, "profile.json"] {
+                if HealthLegacyOriginUIFixture.kind != nil, ["meals.json", "workouts.json"].contains(name) { continue }
                 originals[name] = try HealthLocalFiles.readRegularData(root.appendingPathComponent(name), limit: 256 * 1024).base64EncodedString()
             }
-            let checkpoint: [String: Any] = ["case": arguments[index + 1], "originals": originals,
+            var checkpoint: [String: Any] = ["case": arguments[index + 1], "originals": originals,
                 "scope": "Dedicated small fixture before real normal-Settings Files selection; no HealthKit/background delivery claim"]
+            if HealthLegacyOriginUIFixture.kind != nil {
+                checkpoint["missing"] = ["meals.json", "workouts.json"]
+                checkpoint["legacyOrigins"] = try HealthLegacyOriginUIFixture.provenance(in: root)
+            }
             let bytes = try JSONSerialization.data(withJSONObject: checkpoint, options: [.prettyPrinted, .sortedKeys])
             try bytes.write(to: root.deletingLastPathComponent().appendingPathComponent("Lumen-health-backup-baseline.json"), options: .atomic)
         }

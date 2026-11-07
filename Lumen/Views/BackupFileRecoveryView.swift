@@ -81,10 +81,17 @@ final class BackupRecoveryReviewSession: Sendable {
         defer { withExtendedLifetime(input) {} }
         let snapshot = try LocalStore.captureLegacyRecoveryReview(domains, control: control)
         try origins.finish(snapshot, control: control)
+        #if DEBUG && targetEnvironment(simulator)
+        HealthLegacyOriginUIFixture.note("ready", id: id, domains: snapshot.metadata.legacyDomains)
+        #endif
     }
     func acquireOrigins(_ domains: Set<HealthLocalFiles.Domain>, control: BackupOperationControl) throws
         -> [HealthLocalFiles.Domain: HealthLegacyRecoveryOrigin] {
-        try origins.acquire(domains, control: control)
+        let result = try origins.acquire(domains, control: control)
+        #if DEBUG && targetEnvironment(simulator)
+        HealthLegacyOriginUIFixture.note("acquire", id: id, domains: domains)
+        #endif
+        return result
     }
     let summary: Summary
     private let lease: BackupReviewLease<BackupService.RecoveryInput>
@@ -98,11 +105,15 @@ final class BackupRecoveryReviewSession: Sendable {
         lease = BackupReviewLease(input)
         #if DEBUG && targetEnvironment(simulator)
         verificationSource = input.verificationSource
+        HealthLegacyOriginUIFixture.note("open", id: id)
         #endif
     }
     func acquire(control: BackupOperationControl) throws -> BackupService.RecoveryInput { try lease.acquire(control: control) }
     func close() {
         origins.close()
+        #if DEBUG && targetEnvironment(simulator)
+        HealthLegacyOriginUIFixture.note("closed", id: id)
+        #endif
         lease.close()
         #if DEBUG && targetEnvironment(simulator)
         HealthReadUIFixture.didEndReview(file: verificationSource)
