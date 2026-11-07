@@ -1,0 +1,31 @@
+{
+  "status": "Prepared native read-only discovery; no preference toggle/capability/behavior acceptance",
+  "source": "durable-source-r189.json",
+  "build": "health-recovery-motion-discovery-r1-build.json",
+  "driver": "health-reduce-motion-discovery-r1-driver.py",
+  "bindings": {
+    "durable-source-r189.json": {
+      "bytes": 42394,
+      "sha256": "727ac1284e12b029fa78ff4144d06ee81f057ef8b3587c61d086c5442a0c0420"
+    },
+    "health-recovery-motion-discovery-r1-build.json": {
+      "bytes": 655,
+      "sha256": "b2e24e2128dc2da020f1773bad20ee6fba55d3a4ccbe1da06ca21395357cdeff"
+    },
+    "health-reduce-motion-discovery-r1-driver.py": {
+      "bytes": 4710,
+      "sha256": "026e4c787af599609e6efe9ee2e0119895a4369e5d5abca8cac0fb545097d831"
+    }
+  },
+  "device": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+  "test": "testReduceMotionSettingsDiscovery",
+  "prerequisiteGithubCommit": "2d997dba699a3a21adced384b53b35494c096520",
+  "command": [
+    "python3",
+    "Design/native/health-write-order/health-reduce-motion-discovery-r1-driver.py"
+  ],
+  "scope": "Actual Settings launch/observed Accessibility and Motion label acquisition, original trees/screenshots and public UIKit preference before/after. Does not toggle preference or launch/reset Lumen. motionSwitchFound must be read separately from discovery native pass.",
+  "controlToolObservation": "Native CUA unavailable: no apps, Mac locked. Avoid repeated unlock requests; headless native discovery can proceed.",
+  "next": "Use observed actual Settings controls for explicit original/enable/restore capability with public preference readbacks, then real recovery/time-based motion evidence.",
+  "checkedAt": 1794077582.189357
+}

@@ -1,5 +1,6 @@
 import XCTest
 import CryptoKit
+import UIKit
 
 // MARK: - Lumen smoke test: fresh onboarding → every tab → logging → coach.
 // Screenshots are attached to the result bundle for visual review.
@@ -17,6 +18,9 @@ final class LumenSmokeTests: XCTestCase {
     override func setUpWithError() throws {
         continueAfterFailure = false
         app = XCUIApplication()
+        // Settings discovery reads only the dedicated simulator. Do not reset
+        // Lumen's last audited synthetic state or launch the product here.
+        if name.contains("testReduceMotionSettingsDiscovery") { return }
         // The focused wrapping probe reuses this dedicated simulator's saved
         // synthetic record, with a public Files-import fallback if absent.
         app.launchArguments = name.contains("testFHIRLiteralWrappingSnapshots") || name.contains("testLiteralIdentifier") || name.contains("testProviderCitationRejection") || name.contains("testProviderTransportFallback") ? ["-librarySearchRemoteUITestMode"] : ["-resetForUITests"]
@@ -5158,6 +5162,53 @@ final class LumenSmokeTests: XCTestCase {
         app.terminate(); app.launchArguments = []; app.launch(); openBackupSettings()
         XCTAssertFalse(app.staticTexts["Saved health data couldn't be opened."].exists); snap(prefix + "-relaunch")
     }
+    @MainActor
+    func testReduceMotionSettingsDiscovery() throws {
+        executionTimeAllowance = 180
+        #if targetEnvironment(simulator)
+        let settings = XCUIApplication(bundleIdentifier: "com.apple.Preferences")
+        let before = UIAccessibility.isReduceMotionEnabled
+        var pages: [[String: Any]] = []
+        func capture(_ name: String) {
+            pages.append(["page": name, "at": Date().timeIntervalSince1970,
+                          "tree": settings.debugDescription])
+            let image = XCTAttachment(screenshot: settings.screenshot())
+            image.name = "reduce-motion-discovery-" + name
+            image.lifetime = .keepAlways; add(image)
+        }
+        func openObserved(_ label: String) -> Bool {
+            let row = settings.staticTexts[label].firstMatch
+            for _ in 0..<6 {
+                if row.exists && row.isHittable { row.tap(); return true }
+                settings.swipeUp()
+            }
+            return false
+        }
+        settings.launch()
+        XCTAssertTrue(settings.wait(for: .runningForeground, timeout: 10))
+        capture("initial")
+        var motion = settings.switches["Reduce Motion"].firstMatch
+        if !motion.exists, openObserved("Accessibility") { capture("accessibility") }
+        if !motion.exists, openObserved("Motion") { capture("motion") }
+        motion = settings.switches["Reduce Motion"].firstMatch
+        let found = motion.exists
+        if found { capture("switch-observed") } else { capture("navigation-endpoint") }
+        let report: [String: Any] = [
+            "scope": "Read-only simulator Settings discovery; no preference toggle or motion behavior acceptance",
+            "beforeUIKitReduceMotion": before,
+            "afterUIKitReduceMotion": UIAccessibility.isReduceMotionEnabled,
+            "motionSwitchFound": found,
+            "motionSwitchValue": found ? (motion.value as? String ?? "unavailable") : "not-found",
+            "pages": pages
+        ]
+        let data = XCTAttachment(data: try JSONSerialization.data(withJSONObject: report, options: [.prettyPrinted, .sortedKeys]), uniformTypeIdentifier: "public.json")
+        data.name = "reduce-motion-settings-discovery-readback"; data.lifetime = .keepAlways; add(data)
+        XCTAssertEqual(before, UIAccessibility.isReduceMotionEnabled)
+        #else
+        XCTFail("Settings discovery is authorized for the dedicated simulator only")
+        #endif
+    }
+
     // Pending follow-on draft, outside frozen Source182. Future setup must add
     // -health-read-ui -health-read-scope selected-record ONLY for these tests.
     // Existing actual reader/closed-owner observations avoid new app instrumentation.
