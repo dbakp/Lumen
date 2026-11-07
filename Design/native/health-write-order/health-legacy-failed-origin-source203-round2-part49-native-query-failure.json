@@ -1,0 +1,163 @@
+{
+  "schemaVersion": 1,
+  "part": 49,
+  "checkedAt": "2026-11-07T23:00:49.506601+00:00",
+  "status": "Actual Source203 legacyData native trial FAILED on test query before Recover; bounded older-row/record-screen contribution only. No recovery/design acceptance.",
+  "actualOutcome": {
+    "producerSession": 10056,
+    "producerPID": 79483,
+    "nativeExitCode": 65,
+    "driverExitCode": 1,
+    "nativePassed": 0,
+    "nativeFailed": 1,
+    "nativeSkipped": 0,
+    "summaryResult": "Failed",
+    "nativeHelperJSONCount": 0,
+    "rootNativeJSONCountCorrection": "No helper JSON reached; summary/host JSON are provenance, not successful native readback. readbacks manifest is empty.",
+    "failureText": "XCTAssertTrue failed: throwing \"NSInternalInconsistencyException: Invalid query - string identifier 'Selected data will be replaced by records from this file. The older saved data will stay in a private recovery copy on this iPhone.' exceeds maximum length of 128 characters. You can work around this limitation by constructing a query with a custom NSPredicate that specifies the property (label, title, value, placeholderValue, or identifier) to match against.\""
+  },
+  "sourceAndAcquisition": {
+    "currentAndFullArchiveTextInputsExact": 260,
+    "currentAndFullArchiveFixtureInputsExact": 9,
+    "allFiveCanonicalPNGBytesHashesDimensionsMetadataSourceTestBindingsExact": true,
+    "originalDetailIndividuallyOpened": 5,
+    "pixelsEach": [
+      1206,
+      2622
+    ],
+    "test": "LumenSmokeTests/testHealthBackupFileRecoveryPhotoFaultErrorBackLegacyOriginData()",
+    "device": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481 main iPhone18Pro/iOS27 light/standard",
+    "actualPreflight": "Canonical identity preflight records269frozeninputs/source203/build203 app2490aee.../test142548... before launch. Installed identity record and installed-before-fault row match frozen203app45471344B; actual host extracted-photo fault was performed, while no user Recover action reached.",
+    "logBinding": "Gzip decompressed42564B SHA55c1a2dc5a89f132e38d1b816a966ed832f620291ba926b1232b2e3613a8d59e. Exact error/source5738 diagnostic read; no full line-by-line log review claimed."
+  },
+  "finding": {
+    "id": "P49-Q1",
+    "kind": "Actual XCTest harness query failure; no product defect shown",
+    "file": "LumenUITests/LumenSmokeTests.swift",
+    "line": 5738,
+    "cause": "alert.staticTexts[fullmessage] uses string-identifier query shorthand with the complete131-character confirmation message. Actual NSInternalInconsistencyException says identifier exceeds128characters and recommends a custom property NSPredicate. This line precedes confirmation screenshot and alert Recover action.",
+    "requiredRepair": "On separately frozen test-only successor, retain exact full-message check via alert.staticTexts.matching(NSPredicate(format: \"label == %@\", fullmessage)).firstMatch.exists. Keep same full text and screenshot/action ordering, source/app/driver unchanged. Do not shorten/truncate message, accept a prefix or infer visual full-body fit from AX equality. Preserve failed203trial before fresh execution.",
+    "assessment": "Proposed204predicate is a minimal source-informed remedy directly matching actual diagnostic. Runtime effectiveness remains unverified until fresh trial. Preexecution source review missed this XCTest limitation; earlier no-runtime caveats/frozen reports remain unchanged."
+  },
+  "boundedPreservationAndReader": {
+    "retainedDriverPayloadRowInstancesDecodedLengthHashChecked": 40,
+    "fixedValueObservations": "Three durable PASS samples: initial-before-file-selection with empty fresh trace, actual-reader-held twice with open/ready trace. Their raw Data bytes/hash checked and match42B fixed synthetic payload for meals/workouts; boundary file equals driver observations. No error/Back/fresh/preack/relaunch samples reached.",
+    "reader": "Actual held/released message protocol: appPID80208 FD4 inode45200999,4992B selected backup, nonceC9FCBEE0-9466-406E-9838-D4E08DAF473C. Driver retained held/observed release request. Parent bounded postfailure audit records same reader released/descriptorCloseSucceeded; no actual Back/owner close proof. Driver readerCompleted/failure boundary fields remain null because genuine error not reached.",
+    "postfailureHostAudit": "Canonical parent actual live audit reports10current/10prior exact, selected meals/workouts still absent, two exact typed Data keys, no stage/receipt and no origin acquisition. Critic read/bound retained audit and decoded expected driver current/prior maps; no fresh simulator/live filesystem query claimed.",
+    "originOwner": "Postfailure trace has one UUID BB802066-D7AD-4A5F-9F8A-3FA984FA3E93 with open then ready(meals/workouts), no acquire/closed. Source places acquire on actual Recover, and query failed before it. No raw origin payload acquired or recovery prepared/installed by this trial.",
+    "unreached": "preservationBeforeCommit/control2/released preparation/success/finalCleanup/freshSelection/Back/omissionNotNow/genuinefailed boundary null; v2copy observations empty. No successful private-copy/receipt/install/cleanup/relaunch credit."
+  },
+  "images": [
+    {
+      "index": 0,
+      "file": "health-error-state-legacy-source203r1-8E5EAE14-A4F7-4BBA-9DED-4E961CE513F0.png",
+      "bytes": 113271,
+      "sha256": "6496bc2ce5989eb985bee56c5c466f1a399dd15a3b2932ec3f1ac9b298e836bc",
+      "observation": "Loaded Meal history list: whole Lunch/Snack rows, dates and0kcal under title. No child detail/photo screen or recovery/error view."
+    },
+    {
+      "index": 1,
+      "file": "health-error-state-legacy-source203r1-42F36E76-F027-404D-8CF6-7B82A1609D24.png",
+      "bytes": 98358,
+      "sha256": "e37447368b46d04b58488efcd9f5a28a4eb4c436ce576bc07493c4139bfb0063",
+      "observation": "Observed selected-record read: whole progress glyph and Opening records text. Actual read phase/FD comes from retained protocol, not visible wording."
+    },
+    {
+      "index": 2,
+      "file": "health-error-state-legacy-source203r1-7D2930FF-4D47-482C-ACE9-F0C4147DC7B1.png",
+      "bytes": 98353,
+      "sha256": "58cc1a506deb9aedc46227de80ff01e5e51b00ed3120c15511741c30b5704b38",
+      "observation": "Held selected-record read: individually opened, whole progress/text, spinner phase differs. No user cancellation or Back inferred."
+    },
+    {
+      "index": 3,
+      "file": "health-error-state-legacy-source203r1-47D11AE2-3F66-45A2-87E9-705DEA4A82E1.png",
+      "bytes": 221868,
+      "sha256": "b60f69c581f6b0faf7e7af682c21ee009bed7ccfd27714265b652692ae6088cc",
+      "observation": "Older-data-row capture: complete six-word Older saved data couldn\u2019t be opened supplemental meal row readable in native light/standard Form; legacy filename/format/5KB/created metadata and water1 current-opens section visible. Lower Recover meal control clipped at home/lower edge; no whole-form/control-row acceptance."
+    },
+    {
+      "index": 4,
+      "file": "health-error-state-legacy-source203r1-A0054242-97CD-4500-8C08-0092AD11475C.png",
+      "bytes": 221868,
+      "sha256": "b60f69c581f6b0faf7e7af682c21ee009bed7ccfd27714265b652692ae6088cc",
+      "observation": "Initial source capture: same selected-file metadata/water/meal2/older-data row visible; individually opened. Lower recovery control clipped. No confirmation/error/consequence/busy/success content visible."
+    }
+  ],
+  "visualJudgment": "Actual main/light/standard older-data supplemental row is complete and readable in its observed scroll position, and native loading/list screens are visible. No concrete product copy/layout repair inferred from these five images. This narrow contribution does not accept confirmation, long-body gray native alert, preservation/error/busy/omission/success state, wholeform or changed global notice.",
+  "nextBoundary": "Exact-backupfailed203 source/evidence/this report, then separately freeze/review test-only predicate change and acquire fresh full legacyData route before encryptedString. Keep app/driver203 identities bound; no current native product acceptance or checkpoint stop.",
+  "supportBindings": [
+    {
+      "file": "health-error-state-legacy-source203r1-summary.json",
+      "bytes": 1890,
+      "sha256": "fc2dcf4e30c51367460cb368679acbacc5921d9e0465553388c06ae2eefc0fb5"
+    },
+    {
+      "file": "health-error-state-legacy-source203r1-driver-observations.json",
+      "bytes": 48750,
+      "sha256": "6ad7a542a98bac1bae480fe7aa14c86d2570d8f13fe01ca796c4d03cbe81d1aa"
+    },
+    {
+      "file": "health-error-state-legacy-source203r1-identity-preflight.json",
+      "bytes": 687,
+      "sha256": "a218ad5a8000888ccbe4e716315c2a6adcd727eb9fe86d04af00218463cbac54"
+    },
+    {
+      "file": "health-error-state-legacy-source203r1-legacy-boundaries.json",
+      "bytes": 3163,
+      "sha256": "50f15505d92f7f945444029a3b54ca663a776d36643ec69774cf03513a2781ca"
+    },
+    {
+      "file": "health-error-state-legacy-source203r1-images.json",
+      "bytes": 5499,
+      "sha256": "e4218753e07ff03d82156ce12ca7bf3f174c812d0f0393a49591618d49278025"
+    },
+    {
+      "file": "health-error-state-legacy-source203r1-readbacks.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "file": "HealthErrorStateLegacySource203R1.log.gz",
+      "bytes": 6227,
+      "sha256": "9a70da2785d9c92a65759dc68e1179c2d81d9df87ce6f5da2cbf0a7726e50cdd"
+    },
+    {
+      "file": "source203-origin-legacy-r1-failure-outcome.json",
+      "bytes": 1205,
+      "sha256": "8bd2591436850aa858990326f7333593436393aebc5a861b62c320a560c8fc51"
+    },
+    {
+      "file": "source203-origin-legacy-r1-failure-live-audit.json",
+      "bytes": 2458,
+      "sha256": "4c834796469b308c089fd4420fcc0610cd8ac29cae39fe9c8a2336d6d32cea63"
+    },
+    {
+      "file": "durable-source-r203.json",
+      "bytes": 43546,
+      "sha256": "73eececfcfa5f3d3c579c58a88e894c5b536b84816f05857ea5df8f1688238ca"
+    },
+    {
+      "file": "durable-source-r203.json.gz",
+      "bytes": 971859,
+      "sha256": "0c41a74c32b6fa176626f3e0589d39ea84982c3e4ce7dadf0293297ce774ca47"
+    },
+    {
+      "file": "health-origin-driver-repair-r1-build.json",
+      "bytes": 768,
+      "sha256": "20a1ab5498dfb017365bc1cf5086ed9741dae038a45df9eaf4fe710d3123f1bf"
+    },
+    {
+      "file": "health-legacy-failed-origin-source203-round2-part48-driver-repair.json",
+      "bytes": 9846,
+      "sha256": "7bfba392e67db204301e4bd8af90dcbe5d90bfd8fbb4fef44a2899f386de33b3"
+    }
+  ],
+  "limits": "No new native/driver/fixture/reset/build/Git/cleanup/source/test actions. No confirmation screenshot, genuine recovery error, Not now/Back/fresh source, actual Recover/control2, private v2/receipt/photo success, cleanup/relaunch/nativehelperJSON, completecopy/layout/appearance/VoiceOver/motion/overall design score/fullparent/product acceptance. All original broader gates and preserved prior failures remain active.",
+  "storage": {
+    "freeBytesAtFinish": 39983570944,
+    "criticRecoveredBytes": 0,
+    "cleanupPerformed": false
+  },
+  "writeBoundary": "Only this new report written; frozen203source, canonical failed evidence and all earlier reports remain unchanged."
+}
