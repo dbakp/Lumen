@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "part": 36,
+  "kind": "Narrow factual storage erratum; frozen original unchanged",
+  "checkedAt": "2026-11-07T20:45:23.744579+00:00",
+  "originalReport": {
+    "file": "health-early-rejection-source194-round2-part36-legacy-state.json",
+    "bytes": 18680,
+    "sha256": "d70abbb455ccd4edae24afc7cec298c87a3a1640a0930476c262c285c3fd72ee"
+  },
+  "correctedField": "storage.retention",
+  "withdrawnText": "Canonical evidence/current inputs/build reusable state and Source194 pure fixtures/suites retained; no deletion by critic.",
+  "correction": "The claim that Source194 pure fixtures/suites were still retained at Part36 was unsupported and is withdrawn. Parent cleanup records show the five-case and six-branch synthetic fixture roots, five exact UUID suite domains and completed Release cache were removed after exact39-core-path GitHub proof23c94770abc762caa3ee77c6e51876a7aab75ca3, before native case1. Current pure build cache, simulator build/package cache, canonical inputs/evidence and current native-case1 raw/simulator data were retained at that boundary. The critic performed no cleanup.",
+  "evidence": {
+    "cleanup": {
+      "file": "source194-core-release-fixture-cleanup-r1.json",
+      "bytes": 2063,
+      "sha256": "17e85965b0e3842903cf3cd1b1fb96e41954af606a3d80ad426d328880b13ecd"
+    },
+    "defaultsCleanup": {
+      "file": "source194-unavailable-origins-baseline-r1-defaults-cleanup.json",
+      "bytes": 1336,
+      "sha256": "06d3c6f696310a9d48c796f8601d6900115acc277379bfaf38ce353470c782db"
+    },
+    "observations": "Cleanup ledger records all three known roots absent, actual five/six final trees exact before deletion, and five exact UUID plists empty or absent; defaults report records five persistent domains with no remaining keys and synchronization true. Read-only review of these retained records only; no new filesystem/simulator/defaults query.",
+    "publication": "Parent reports cleanup records published10a7e206 with eight exact paths; critic does not independently claim remote readback.",
+    "allocatedBytesRemoved": 692662272,
+    "measuredFreeSpaceIncreaseBytes": 693907456,
+    "measurementLimit": "Parent-observed free-space delta may include concurrent filesystem activity; allocated blocks recorded separately. These are prior parent cleanup measurements, not bytes recovered by this erratum."
+  },
+  "unchangedScope": "All other Part36 native/source/17-original/full456BJSON/147-embedded-payload observations and limitations remain unchanged. No native/core/source/design score or acceptance expansion. Original report is preserved byte-for-byte.",
+  "criticActions": {
+    "onlyNewErratumWritten": true,
+    "cleanupPerformed": false,
+    "newQueryOrProducerExecuted": false,
+    "criticRecoveredBytes": 0
+  }
+}

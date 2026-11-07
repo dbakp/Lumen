@@ -1,0 +1,79 @@
+{
+  "status": "Part35 source-only requirements critique; concrete firstorigin contract still to be selected, no implementation/native/recovery acceptance",
+  "checkedAt": "2026-11-07T20:34:46.412392+00:00",
+  "source": "durable-source-r194.json",
+  "draft": {
+    "file": "health-unavailable-origins-origin-model-r1-draft.json",
+    "bytes": 4546,
+    "sha256": "3d937253188a6951c1a937e8a83c97b1e8804727181b6bda40c576d4d6f3b1e5"
+  },
+  "sourceBindings": {
+    "Lumen/Models/HealthLocalFiles.swift": {
+      "bytes": 8225,
+      "sha256": "47658a43536f5817d334741e964ac1f25575044163dbb84e884c870e79b673ae"
+    },
+    "Lumen/Persistence/LocalStore.swift": {
+      "bytes": 21334,
+      "sha256": "c25ad56f26fa5bcde8f05dc4f19bd7f18e7120df4cbecabe0cf268950858b39d"
+    },
+    "Lumen/Models/HealthRecoverySelection.swift": {
+      "bytes": 12880,
+      "sha256": "f41cd227862406d49345981a1fcf001f39f482ad2c72f6a6c7b46ae5da275920"
+    },
+    "Lumen/Models/HealthRecoveryCopies.swift": {
+      "bytes": 38735,
+      "sha256": "8a420f4ddc9319157ea53a453775a0bfb25997320a5e35e2facb7aa785e2790b"
+    },
+    "Lumen/Models/BackupFileTransaction.swift": {
+      "bytes": 20204,
+      "sha256": "6584614fd196a21fe6ba418b8ae1a33a578964f73f7851dc7287f69d86360ae9"
+    },
+    "Lumen/Models/ConversationFiles.swift": {
+      "bytes": 8328,
+      "sha256": "c9e9f765e721fbe9d4ed91aaf20bc1bcccb794fb33bd7706f921aae25721ebb8"
+    }
+  },
+  "assessment": "Draft direction coherent. CurrentLoaded boundary exists only after successfulread; Payload binds replacement/source but no failedtargetorigin token. Stagepreservation requires existingcurrentpath, version1privatecatalog infers includeddomains from payloadfiles, and filesystemsourceSnapshot does not cover UserDefaults. A concretefirstcontract must change these interfaces deliberately, not relax194guard based on staleavailability flags.",
+  "recommendedFirstDelivery": "Only trulymissingcurrent with failedlegacy Data or String at fixedmeals/workouts/goals key. Data exactbytes; String exactvalue with explicitStringtag/losslessencoding. Selectedlinks stay194earlyreject and explicitopen. Other nonData propertylisttypes stayunsupported until their losslessrepresentation is declared/tested; do not label String-only support as allnonData complete. Existingregular/directory recovery unchanged.",
+  "requiredNextContract": [
+    {
+      "id": "O1",
+      "requirement": "Authoritative origin state and selection boundary",
+      "detail": "Define readable/empty/absent/unavailable-with-token states. When review observes failure under app write serialization, capture missingcurrent/rootidentity/closed domain-key/typedrawvalue-digest; carrytoken through selectedpayload/confirmation. No stalefailedflag, try?nil or default[] authority. Validlegacy/absent/empty never permit replacement; preserve legacyplainJSONDecoder versus currentISO8601 semantics."
+    },
+    {
+      "id": "O2",
+      "requirement": "Lossless bounded private provenance",
+      "detail": "Declare versionedprovenance/identity/size-depth-count limits. ExactfailedData and explicitStringtag/value, never String(describing:) identity/privateFoundationclass. Newlyencodedvalue is not originaldefaultsfilebytes. Reject unsupported/overlimit without truncation; workoffmainthread but fetchingUserDefaultsobject can allocate. Preserve only fixedlegacykey, not wholedefaults domain."
+    },
+    {
+      "id": "O3",
+      "requirement": "Review-to-finalcommit validation in existing locks",
+      "detail": "Carrytoken into checkedtransaction; verify afterprepare and immediatelybefore install under existingapp commitserialization plus unchangedfileSource/provider/photo/intent/revision checks. Reject changedstillmalformedvalue/type/key, removal, healthy/newcurrent or rootreplacement. All cooperatingappwriters shareboundary; externalprocess changes can race afterlastcheck, so no atomiccrossstoreCAS/allrace no-sideeffect claim."
+    },
+    {
+      "id": "O4",
+      "requirement": "Single authoritative install/keylifetime",
+      "detail": "Prefer leavelegacykey untouched after success: currentvalidfile precedence gives one filesystemcommit without seconddefaultswrite. Document fallback/reset/deletion so oldhistory cannot silentlyresurrect; no incidentallegacyclear/oldintentreplay. If keymutation required, specify partialfailure/crash reconciliation; two stores are not jointlyatomic."
+    },
+    {
+      "id": "O5",
+      "requirement": "Stage and preview semantics remain honest",
+      "detail": "Stage capturedoriginprovenance before replacement and retain privately throughinstall with existingprior/private/conversation/intent. Never fabricate domain.json[] or label failedorigin notincluded because rawfileabsent. Specify backward-compatible manifest/catalog and readable/unavailable preview/export semantics. Raworigin staysprivate; changedcopy must describe actualsaveddata without key/hash/schema jargon."
+    },
+    {
+      "id": "O6",
+      "requirement": "Actual meaningful verification and native route",
+      "detail": "Predeclare actualData/String success, absent/empty/validlegacy/othernonData controls, changedorigin at review/prep/commit, cancellation/failure plus allsource/photo/receipt/prior/intent guards. Retain UUIDsuite/key/typedraw/liveaudit/exactbackup beforecleanup. ActualLocalStore.standard nativeproductroute required, not injectedclosure alone; ordinarychoice/confirmation/cancel/back/freshselection/relaunch and changedcopyappearance/DT/samecritic gates remain."
+    }
+  ],
+  "scopeProtection": "194activelegacy nativeproducer remainsuntouched; complete declared194cases and percaseexactpublication before futureproduct/testfreeze. Allsource/provider/photo/receipt/healthyprior/private/conversation/intent/privacy contracts stay in force. Linkmetadata-only recovery and otherpropertylisttypes remain namedfollow-ons, not discardedfullgoal scope.",
+  "findings": "O1–O6 are concrete requirements to resolve in nextcontract, not proven defects in unimplementedcode. No currentproductrepair requested during194verification.",
+  "limits": "No implementationchosen/applied, build/test/native/query/simulator/Git/cleanup action. No newdesignscore or originrecovery/productacceptance. Fullspeech/audio/duplicatehistory/motion/lateworker/allrawprior/eightgroups/fullparent gates remainopen.",
+  "storage": {
+    "availableBytesAtFinish": 37064687616,
+    "bytesRecovered": 0,
+    "deletedFiles": 0
+  },
+  "writeBoundary": "Only thisnewreport written; frozen194source/tests/nativefixtures and priorreports unchanged."
+}
