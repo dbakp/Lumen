@@ -1,0 +1,141 @@
+{
+  "cases" : {
+    "two" : {
+      "expectedMeals" : [
+        {
+          "date" : "2026-11-02T12:00:00Z",
+          "id" : "synthetic-matrix-meal-a",
+          "items" : [
+
+          ],
+          "note" : "Synthetic first meal.",
+          "photoID" : "synthetic-matrix-photo-a",
+          "source" : "manual",
+          "type" : "lunch"
+        },
+        {
+          "date" : "2026-11-02T13:00:00Z",
+          "id" : "synthetic-matrix-meal-b",
+          "items" : [
+
+          ],
+          "note" : "Synthetic second meal.",
+          "photoID" : "synthetic-matrix-photo-b",
+          "source" : "manual",
+          "type" : "snack"
+        }
+      ],
+      "expectedReadableMeals" : [
+        {
+          "date" : "2026-11-02T12:00:00Z",
+          "id" : "synthetic-matrix-meal-a",
+          "items" : [
+
+          ],
+          "note" : "Synthetic first meal.",
+          "source" : "manual",
+          "type" : "lunch"
+        },
+        {
+          "date" : "2026-11-02T13:00:00Z",
+          "id" : "synthetic-matrix-meal-b",
+          "items" : [
+
+          ],
+          "note" : "Synthetic second meal.",
+          "source" : "manual",
+          "type" : "snack"
+        }
+      ],
+      "files" : {
+        "Lumen-backup-health-matrix-two-encrypted.lumenbackup" : {
+          "bytes" : 20480,
+          "sha256" : "aa593148df9a32ad1184e9e203ce604f823987ccde4178509bb792a5b4a47cbb"
+        },
+        "Lumen-backup-health-matrix-two-legacy.json" : {
+          "bytes" : 4992,
+          "sha256" : "80d236abd21b33a3d012d3287a0606e699d53ddc18a9e4263a635cb899629078"
+        },
+        "Lumen-readable-health-matrix-two.json" : {
+          "bytes" : 1147,
+          "sha256" : "469c04224c7d0f1008675ccc9f395caf16e1e363a76d1eb18b9cbeb403af8e32"
+        }
+      },
+      "photos" : {
+        "synthetic-matrix-photo-a" : {
+          "bytes" : 910,
+          "sha256" : "12ad2783f7ecd9fb2252dff7c79781d92d2a52f637c33d7f46a60fdb1ef6f4e3"
+        },
+        "synthetic-matrix-photo-b" : {
+          "bytes" : 913,
+          "sha256" : "4aeb340f233dfbfe59066886f6326e2c393dfd27596eb914a7895aff23a8e720"
+        }
+      }
+    },
+    "zero" : {
+      "expectedMeals" : [
+        {
+          "date" : "2026-11-02T12:00:00Z",
+          "id" : "synthetic-matrix-meal-a",
+          "items" : [
+
+          ],
+          "note" : "Synthetic first meal.",
+          "source" : "manual",
+          "type" : "lunch"
+        },
+        {
+          "date" : "2026-11-02T13:00:00Z",
+          "id" : "synthetic-matrix-meal-b",
+          "items" : [
+
+          ],
+          "note" : "Synthetic second meal.",
+          "source" : "manual",
+          "type" : "snack"
+        }
+      ],
+      "expectedReadableMeals" : [
+        {
+          "date" : "2026-11-02T12:00:00Z",
+          "id" : "synthetic-matrix-meal-a",
+          "items" : [
+
+          ],
+          "note" : "Synthetic first meal.",
+          "source" : "manual",
+          "type" : "lunch"
+        },
+        {
+          "date" : "2026-11-02T13:00:00Z",
+          "id" : "synthetic-matrix-meal-b",
+          "items" : [
+
+          ],
+          "note" : "Synthetic second meal.",
+          "source" : "manual",
+          "type" : "snack"
+        }
+      ],
+      "files" : {
+        "Lumen-backup-health-matrix-zero-encrypted.lumenbackup" : {
+          "bytes" : 19456,
+          "sha256" : "5829d753fa3696eec88879214fb1110c486f52a287f25d002b3ff7a56eff3c34"
+        },
+        "Lumen-backup-health-matrix-zero-legacy.json" : {
+          "bytes" : 1500,
+          "sha256" : "399885bfa6e676b75604e19ed04466ff143dd3dee17872be2253eb49c9d94826"
+        },
+        "Lumen-readable-health-matrix-zero.json" : {
+          "bytes" : 1073,
+          "sha256" : "4cfec0ce4cdf3911c8ebb3161aab72749548c63fb9578f8e81a2d5f43e882338"
+        }
+      },
+      "photos" : {
+
+      }
+    }
+  },
+  "scope" : "Six tiny real-writer inputs: two nonempty meals naturally without photos, or two distinct synthetic JPEGs; readable omits two references. Round-trip only; native execution follows.",
+  "totalInputBytes" : 48648
+}

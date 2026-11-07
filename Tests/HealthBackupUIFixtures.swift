@@ -48,6 +48,77 @@ enum HealthBackupUIFixtures {
         print("Two small synthetic meal-photo backups checked through real readers; JPEG bytes exact.")
     }
 
+    static func writePhotoMatrix(to folder: URL, first: URL, second: URL) throws {
+        let fm = FileManager.default
+        guard !fm.fileExists(atPath: folder.path) else { throw BackupError.invalid }
+        let urls = [first, second]
+        let data = try urls.map { try HealthLocalFiles.readRegularData($0, limit: 4096) }
+        guard data[0] != data[1] else { throw BackupError.invalid }
+        for bytes in data {
+            guard let image = CGImageSourceCreateWithData(bytes as CFData, nil),
+                  CGImageSourceGetType(image) as String? == "public.jpeg",
+                  CGImageSourceGetCount(image) == 1,
+                  let properties = CGImageSourceCopyPropertiesAtIndex(image, 0, nil) as? [CFString: Any],
+                  properties[kCGImagePropertyPixelWidth] as? Int == 72,
+                  properties[kCGImagePropertyPixelHeight] as? Int == 48 else { throw BackupError.invalid }
+        }
+        try fm.createDirectory(at: folder, withIntermediateDirectories: false, attributes: [.posixPermissions: 0o700])
+        let date = Date(timeIntervalSince1970: 1_793_620_800)
+        var cases: [String: Any] = [:]
+        for mode in ["zero", "two"] {
+            let ids = ["synthetic-matrix-photo-a", "synthetic-matrix-photo-b"]
+            let meals = [Meal(id: "synthetic-matrix-meal-a", date: date, type: .lunch, items: [], photoID: mode == "two" ? ids[0] : nil, note: "Synthetic first meal.", source: .manual),
+                         Meal(id: "synthetic-matrix-meal-b", date: date.addingTimeInterval(3600), type: .snack, items: [], photoID: mode == "two" ? ids[1] : nil, note: "Synthetic second meal.", source: .manual)]
+            let snapshot = BackupSnapshot(profile: .default, goals: .init(), habits: [], sleep: [], meals: meals,
+                workouts: [], water: [HydrationLog(id: "synthetic-matrix-water", date: date, ml: 246)],
+                conversations: [], symptoms: [], checkIns: [], documents: [], importedDays: [], imports: [], personalContext: .init(), photos: [:])
+            let photoURLs: [String: URL] = mode == "two" ? Dictionary(uniqueKeysWithValues: zip(ids, urls)) : [:]
+            let photoBytes: [String: Data] = mode == "two" ? Dictionary(uniqueKeysWithValues: zip(ids, data)) : [:]
+            let encrypted = folder.appendingPathComponent("Lumen-backup-health-matrix-" + mode + "-encrypted.lumenbackup")
+            try BackupPackage.write(snapshot, photos: photoURLs, password: password, to: encrypted, now: date)
+            var legacy = snapshot; legacy.photos = photoBytes
+            let plain = folder.appendingPathComponent("Lumen-backup-health-matrix-" + mode + "-legacy.json")
+            try BackupArchive.make(legacy, now: date).write(to: plain, options: .atomic)
+            let readable = folder.appendingPathComponent("Lumen-readable-health-matrix-" + mode + ".json")
+            try ReadableExport.write(snapshot, to: readable, now: date)
+            let opened = try BackupPackage.read(encrypted, password: password, temporaryRoot: folder)
+            defer { opened.removeTemporaryFiles() }
+            let (_, decoded) = try BackupArchive.read(Data(contentsOf: plain))
+            let converted = try ReadableExport.read(Data(contentsOf: readable))
+            let (readableSnapshot, _) = try converted.selected([.meals])
+            let encoder = BackupArchive.encoder()
+            guard try encoder.encode(opened.snapshot.meals) == encoder.encode(meals),
+                  try encoder.encode(decoded.meals) == encoder.encode(meals),
+                  decoded.photos == photoBytes, Set(opened.photos.keys) == Set(photoBytes.keys),
+                  converted.missingPhotos == (mode == "two" ? 2 : 0) else { throw BackupError.invalid }
+            for (id, bytes) in photoBytes {
+                guard let path = opened.photos[id], try Data(contentsOf: path) == bytes else { throw BackupError.invalid }
+            }
+            var expectedReadable = meals
+            for index in expectedReadable.indices { expectedReadable[index].photoID = nil }
+            guard try encoder.encode(readableSnapshot.meals) == encoder.encode(expectedReadable) else { throw BackupError.invalid }
+            var files: [String: Any] = [:]
+            for file in [plain, encrypted, readable] {
+                let bytes = try Data(contentsOf: file)
+                guard bytes.count < 128 * 1024 else { throw BackupError.tooLarge }
+                files[file.lastPathComponent] = ["bytes": bytes.count, "sha256": BackupArchive.digest(bytes)]
+            }
+            cases[mode] = ["files": files,
+                "expectedMeals": try JSONSerialization.jsonObject(with: encoder.encode(meals)),
+                "expectedReadableMeals": try JSONSerialization.jsonObject(with: encoder.encode(expectedReadable)),
+                "photos": photoBytes.mapValues { ["bytes": $0.count, "sha256": BackupArchive.digest($0)] as [String: Any] }]
+        }
+        let total = try fm.contentsOfDirectory(at: folder, includingPropertiesForKeys: nil).reduce(0) { count, file in
+            count + (try Data(contentsOf: file).count)
+        }
+        guard total < 256 * 1024 else { throw BackupError.tooLarge }
+        let manifest: [String: Any] = ["cases": cases, "totalInputBytes": total,
+            "scope": "Six tiny real-writer inputs: two nonempty meals naturally without photos, or two distinct synthetic JPEGs; readable omits two references. Round-trip only; native execution follows."]
+        try JSONSerialization.data(withJSONObject: manifest, options: [.prettyPrinted, .sortedKeys])
+            .write(to: folder.appendingPathComponent("health-backup-photo-matrix-manifest.json"), options: .atomic)
+        print("Six photo-matrix inputs round-tripped through actual writers/readers.")
+    }
+
     static func writeMultipleDomains(to folder: URL, photo: URL) throws {
         let fm = FileManager.default
         guard !fm.fileExists(atPath: folder.path) else { throw BackupError.invalid }
