@@ -6,7 +6,7 @@ Repository: https://github.com/dbakp/Lumen · branch `main`.
 
 ## Current checkpoint · Source177 · 7 November 2026
 
-The current app's production and DEBUG product code is unchanged from Source174. Source176 added four native extracted-photo fault tests. Its first missing-photo run failed at a test error-label wait before scrolling; all 13 original screenshots and failure evidence are retained. Source177 corrects that test navigation and strengthens the independent host identity/export checks. Its simulator build passed; all four runtime fault cases remain unaccepted. Source175's six-case photo matrix is complete. Its complete logic suite passed **2,350 checks**: 2,177 individual checks, 137 daily-cache checks and 36 query checks. All 133 text and four binary pure inputs rehash unchanged at Source177; the 2,350 checks were executed at Source175, not rerun for native-test-only changes. Six real-writer inputs totaling **48,648 bytes** round-trip through the actual backup/readable readers.
+The current app's production and DEBUG product code is unchanged from Source174. Source176 added four native extracted-photo fault tests. Its first missing-photo run failed at a test error-label wait before scrolling; all 13 original screenshots and failure evidence are retained. Source177 corrects that test navigation and strengthens the independent host identity/export checks. Its simulator build passed; 1/4 native and independent host fault cases are now verified. Source175's six-case photo matrix is complete. Its complete logic suite passed **2,350 checks**: 2,177 individual checks, 137 daily-cache checks and 36 query checks. All 133 text and four binary pure inputs rehash unchanged at Source177; the 2,350 checks were executed at Source175, not rerun for native-test-only changes. Six real-writer inputs totaling **48,648 bytes** round-trip through the actual backup/readable readers.
 
 Verified earlier recovery work:
 
@@ -14,6 +14,8 @@ Verified earlier recovery work:
 - Three-format ordinary healthy merge/repeat and explicit profile/preferences replacement/repeat: native/host PASS; 21 screenshots and three result files reviewed for each set.
 - Three-format selected empty meals/workouts: native/host PASS; 45 screenshots and three result files reviewed. Existing 137 mL water and conflicting targets (6,543 steps, 88.5 kg, 181 cm, age 42) remain exact. Original Source173 test-guard failure remains recorded.
 - Source175 nonempty-meal photo matrix: **6/6** native/host cases passed (zero-legacy, zero-encrypted, zero-readable, two-legacy, two-encrypted, two-readable); all 100 original screenshots and 6 full native result files reviewed. Complete meals/photo mappings or absence, healthy water/targets/current/prior records, receipts/provider identity/live cleanup/relaunch pass.
+
+- Source177 extracted-photo fault cases: **1/4** native/host passed (missing-legacy); all 21 original screenshots and 1 full native result files reviewed. Initial failure preserves current/prior bytes and metadata; explicit omission retry removes both photo references, records two omissions and preserves original provider/source identity and live cleanup/relaunch. Scope: extracted-resource faults after preview, primary/defaultlight only.
 
 These are **primary dedicated simulator, default light appearance** results. They do not close full appearance, VoiceOver, interruption, device, Release or broader product gates.
 
