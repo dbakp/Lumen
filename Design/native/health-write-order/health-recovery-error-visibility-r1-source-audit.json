@@ -1,0 +1,42 @@
+{
+  "status": "Source177 read-only error-delivery audit before later UI implementation; no runtime/appearance/VoiceOver acceptance",
+  "source": "durable-source-r177.json",
+  "inputs": {
+    "Lumen/Views/BackupFileRecoveryView.swift": {
+      "bytes": 17045,
+      "sha256": "16edb7d5236d4f2a9f20b8260cf8c04261c665cf8603472911ca879205613663"
+    },
+    "Lumen/Models/BackupRecoverySource.swift": {
+      "bytes": 4777,
+      "sha256": "7bd67fbee0a145eb9a78a5132dcc62183411eb7b84e913273247a54e8ea5cebf"
+    },
+    "Lumen/Models/BackupPackage.swift": {
+      "bytes": 26080,
+      "sha256": "790727e51e8fc90c5b58cd7b882e281f9e3825c51ace68e92048bebe7c595bc7"
+    },
+    "Lumen/Persistence/LocalStore.swift": {
+      "bytes": 21334,
+      "sha256": "c25ad56f26fa5bcde8f05dc4f19bd7f18e7120df4cbecabe0cf268950858b39d"
+    },
+    "Lumen/Models/HealthStore.swift": {
+      "bytes": 48184,
+      "sha256": "dd5ee7970f11fdcdc50443c6315197d9afddc7b619b0d245d9a379b66e618a90"
+    },
+    "Lumen/Models/BackupFileTransaction.swift": {
+      "bytes": 20204,
+      "sha256": "6584614fd196a21fe6ba418b8ae1a33a578964f73f7851dc7287f69d86360ae9"
+    }
+  },
+  "acquisition": {
+    "callChain": "BackupRecoveryReviewSession.acquire -> BackupReviewLease.acquire -> BackupOperationControl.checkCancellation",
+    "actualThrowTypes": "Only CancellationError: control/task cancellation or closed lease guard. No I/O or arbitrary decoding at acquisition.",
+    "decision": "Keep dismissal/cancellation silent. No genuine non-cancellation acquisition failure path exists in this current implementation; do not manufacture an error on closed review. Reaudit if acquisition gains other failure sources."
+  },
+  "commitOutcome": {
+    "callChain": "BackupFileRecoveryView.recover -> payload validation -> HealthStore.recoverUnavailableHealth -> LocalStore.recoverHealthChecked -> BackupFileTransaction.commit",
+    "boundary": "Payload/prepare/guards can throw before installation. After successful stage-to-current move, committed=true; retirement and erasure are nonthrowing/best effort. LocalStore didCommit is nonthrowing; there is no subsequent throwing cancellation check after installation.",
+    "limit": "This code audit is not a new fault/rollback/capacity/interruption test. Original full contracts remain, including genuine I/O and failed rollback windows."
+  },
+  "presentationNext": "After all four Source177 fault cases: persistent primary heading/body beside Recover, reveal once and accessibly focus when inserted; same selection/explicit omission/confirmation and real saved outcome semantics. Follow frozen continuing critic baseline and verify native first error viewport without test scrolling.",
+  "checkedAt": 1794053617.7642329
+}
