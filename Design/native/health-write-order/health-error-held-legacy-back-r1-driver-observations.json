@@ -1,0 +1,2100 @@
+{
+  "source": "durable-source-r188.json",
+  "build": "health-recovery-error-held-r1-build.json",
+  "case": "legacy",
+  "action": "back",
+  "producerPID": 66546,
+  "producerExitCode": 0,
+  "hostFailure": null,
+  "before": {
+    "goals.json": {
+      "bytes": 178,
+      "sha256": "142f89cee16338829e91bfe76c5c34ea249afb4bb338d987ee708ada70b4656c",
+      "base64": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6NDIsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxODEsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ=="
+    },
+    "health-write-intent.json": {
+      "bytes": 123,
+      "sha256": "7d68ba33f7c6336f30c6930576586f4de85f70c62c1e40fcf9cba1b79f4fd223",
+      "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI3RUJBNDJGQS05NUU5LTQ2RTUtQjdDQi1BMDFFQjg0NDk0QTkiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+    },
+    "meals.json": {
+      "bytes": 29,
+      "sha256": "29630893bbf2b28a8af82b4be6db321e0b8d89c362bf8c47bb697fee439f2e6d",
+      "base64": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZW1lYWxzIjo="
+    },
+    "profile.json": {
+      "bytes": 184,
+      "sha256": "ea8bbf7298a5eceecd1c0d64998ebcd9f56f9933a8200f174153268f1d69cac0",
+      "base64": "eyJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwic2xlZXBOZWVkIjoyOTQwMCwibmFtZSI6IlN5bnRoZXRpYyBiYWNrdXAgYmFzZWxpbmUiLCJpc1N1YnNjcmliZWQiOmZhbHNlLCJzbGVlcE5lZWRDb25maWRlbmNlIjowLjMsIm9uYm9hcmRpbmdEb25lIjp0cnVlLCJ3YWtlR29hbCI6eyJob3VyIjo3LCJtaW51dGUiOjB9fQ=="
+    },
+    "today.json": {
+      "bytes": 123,
+      "sha256": "317a0e832157fe13dc5f54818e7477cf5a0d1e0fa815d822843ec4ff749ee0e8",
+      "base64": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDZUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9"
+    },
+    "water.json": {
+      "bytes": 72,
+      "sha256": "1dc7d921432b620cf0fcd72262f29a4ffe06902fcd4d7e3cb546d370e3908291",
+      "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwibWwiOjEzN31d"
+    },
+    "workouts.json": {
+      "bytes": 32,
+      "sha256": "b8e333df638e682f0e77ffa5df87dfb79f5960039fdcf298fbed9939e6e4e34b",
+      "base64": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZXdvcmtvdXRzIjo="
+    }
+  },
+  "protectedBefore": {
+    "chat.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "conversations.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "workouts.json": {
+      "bytes": 32,
+      "sha256": "b8e333df638e682f0e77ffa5df87dfb79f5960039fdcf298fbed9939e6e4e34b",
+      "base64": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZXdvcmtvdXRzIjo="
+    },
+    "goals.json": {
+      "bytes": 178,
+      "sha256": "142f89cee16338829e91bfe76c5c34ea249afb4bb338d987ee708ada70b4656c",
+      "base64": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6NDIsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxODEsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ=="
+    },
+    "sleep.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "today.json": {
+      "bytes": 123,
+      "sha256": "317a0e832157fe13dc5f54818e7477cf5a0d1e0fa815d822843ec4ff749ee0e8",
+      "base64": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDZUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9"
+    },
+    "meals.json": {
+      "bytes": 29,
+      "sha256": "29630893bbf2b28a8af82b4be6db321e0b8d89c362bf8c47bb697fee439f2e6d",
+      "base64": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZW1lYWxzIjo="
+    },
+    "water.json": {
+      "bytes": 72,
+      "sha256": "1dc7d921432b620cf0fcd72262f29a4ffe06902fcd4d7e3cb546d370e3908291",
+      "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwibWwiOjEzN31d"
+    },
+    "conversation-selection.json": {
+      "bytes": 2,
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "base64": "e30="
+    },
+    "habits.json": {
+      "bytes": 3170,
+      "sha256": "b39cf33e5de80e7c9118ded2d812db731cfceedd19c18c8bbafb9623fdebe852",
+      "base64": "W3sib2Zmc2V0IjoxODAwLCJkZXRhaWwiOiIxMCBtaW4gb2YgZGF5bGlnaHQgd2l0aGluIDMwIG1pbiBvZiB3YWtpbmcgYW5jaG9ycyB5b3VyIGNsb2NrLiIsInRpdGxlIjoiR2V0IGJyaWdodCBsaWdodCIsImlkIjoibGlnaHQiLCJpc0VuYWJsZWQiOnRydWUsImFuY2hvciI6Indha2VQbHVzIiwiaWNvbiI6InN1bi5tYXguZmlsbCIsImRvbmVUb2RheSI6ZmFsc2V9LHsib2Zmc2V0IjozNjAwMCwiZGV0YWlsIjoiTm8gY2FmZmVpbmUgd2l0aGluIDEwaCBvZiBiZWQg4oCUIGhhbGYtbGlmZSBpcyB+NmguIiwidGl0bGUiOiJDYWZmZWluZSBjdXRvZmYiLCJpZCI6ImNhZmZlaW5lIiwiaXNFbmFibGVkIjp0cnVlLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJpY29uIjoiY3VwLmFuZC5zYXVjZXIuZmlsbCIsImRvbmVUb2RheSI6ZmFsc2V9LHsib2Zmc2V0IjoyMTYwMCwiZGV0YWlsIjoiMjArIG1pbi4gRmluaXNoIGludGVuc2Ugd29ya291dHMgM2grIGJlZm9yZSBiZWQuIiwidGl0bGUiOiJNb3ZlIHlvdXIgYm9keSIsImlkIjoiZXhlcmNpc2UiLCJpc0VuYWJsZWQiOnRydWUsImFuY2hvciI6Indha2VQbHVzIiwiaWNvbiI6ImZpZ3VyZS5ydW4iLCJkb25lVG9kYXkiOmZhbHNlfSx7Im9mZnNldCI6MjUyMDAsImRldGFpbCI6IklmIG5hcHBpbmc6IDIw4oCTMzAgbWluLCBiZWZvcmUgeW91ciBkaXAgZW5kcy4gTm8gbGF0ZSBuYXBzLiIsInRpdGxlIjoiU21hcnQgbmFwIHdpbmRvdyIsImlkIjoibmFwIiwiaXNFbmFibGVkIjp0cnVlLCJhbmNob3IiOiJ3YWtlUGx1cyIsImljb24iOiJtb29uLnp6ei5maWxsIiwiZG9uZVRvZGF5IjpmYWxzZX0seyJvZmZzZXQiOjE0NDAwLCJkZXRhaWwiOiJBbGNvaG9sIGZyYWdtZW50cyBzbGVlcCBldmVuIHdoZW4gaXQgc3BlZWRzIG9uc2V0LiIsInRpdGxlIjoiU2tpcCBuaWdodGNhcCIsImlkIjoiYWxjb2hvbCIsImlzRW5hYmxlZCI6dHJ1ZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaWNvbiI6IndpbmVnbGFzcyIsImRvbmVUb2RheSI6ZmFsc2V9LHsib2Zmc2V0IjoxMDgwMCwiZGV0YWlsIjoiRmluaXNoIGxhcmdlIG1lYWxzIDNoIGJlZm9yZSBiZWQ7IGxpZ2h0IHNuYWNrIE9LLiIsInRpdGxlIjoiTGFzdCBiaWcgbWVhbCIsImlkIjoibWVhbCIsImlzRW5hYmxlZCI6dHJ1ZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaWNvbiI6ImZvcmsua25pZmUiLCJkb25lVG9kYXkiOmZhbHNlfSx7Im9mZnNldCI6NzIwMCwiZGV0YWlsIjoiTG93ZXIgYnJpZ2h0bmVzcyArIE5pZ2h0IFNoaWZ0IDJoIGJlZm9yZSBiZWQuIiwidGl0bGUiOiJEaW0gc2NyZWVucyIsImlkIjoic2NyZWVucyIsImlzRW5hYmxlZCI6dHJ1ZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaWNvbiI6ImlwaG9uZS5nZW4yIiwiZG9uZVRvZGF5IjpmYWxzZX0seyJvZmZzZXQiOjU0MDAsImRldGFpbCI6Ik92ZXJoZWFkIG9mZiwgbGFtcHMgbG93IOKAlCBsaWdodCBkZWxheXMgbWVsYXRvbmluLiIsInRpdGxlIjoiRGltIHRoZSBsaWdodHMiLCJpZCI6ImxpZ2h0cyIsImlzRW5hYmxlZCI6dHJ1ZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaWNvbiI6ImxpZ2h0YnVsYi5maWxsIiwiZG9uZVRvZGF5IjpmYWxzZX0seyJvZmZzZXQiOjI3MDAsImRldGFpbCI6IjIw4oCTMzAgbWluIHJpdHVhbDogc2hvd2VyLCBzdHJldGNoLCByZWFkLCBicmVhdGhlLiIsInRpdGxlIjoiV2luZCBkb3duIiwiaWQiOiJ3aW5kZG93biIsImlzRW5hYmxlZCI6dHJ1ZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaWNvbiI6IndpbmQiLCJkb25lVG9kYXkiOmZhbHNlfSx7Im9mZnNldCI6MCwiZGV0YWlsIjoiSGl0IHlvdXIgbWVsYXRvbmluIHdpbmRvdyDigJQgdGhlIGVhc2llc3QgZmFsbGluZy1hc2xlZXAuIiwidGl0bGUiOiJJbiBiZWQgb24gdGltZSIsImlkIjoiYmVkdGltZSIsImlzRW5hYmxlZCI6dHJ1ZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaWNvbiI6ImJlZC5kb3VibGUuZmlsbCIsImRvbmVUb2RheSI6ZmFsc2V9LHsib2Zmc2V0IjoxODAwLCJkZXRhaWwiOiI2NeKAkzY4wrBGIFwvIDE44oCTMjDCsEMsIGJsYWNrb3V0IGRhcmssIHF1aWV0LiIsInRpdGxlIjoiQ29vbCAmIGRhcmsgcm9vbSIsImlkIjoiY29vbCIsImlzRW5hYmxlZCI6dHJ1ZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaWNvbiI6InRoZXJtb21ldGVyLnNub3dmbGFrZSIsImRvbmVUb2RheSI6ZmFsc2V9LHsib2Zmc2V0IjowLCJkZXRhaWwiOiJTYW1lIHdha2UgwrEzMCBtaW4g4oCUIGV2ZW4gd2Vla2VuZHMuICMxIHJoeXRobSBsZXZlci4iLCJ0aXRsZSI6IkNvbnNpc3RlbnQgd2FrZSIsImlkIjoiY29uc2lzdGVudCIsImlzRW5hYmxlZCI6dHJ1ZSwiYW5jaG9yIjoid2FrZVBsdXMiLCJpY29uIjoiYWxhcm0uZmlsbCIsImRvbmVUb2RheSI6ZmFsc2V9LHsib2Zmc2V0IjozMDAsImRldGFpbCI6IldhdGVyICsgbGlnaHQgYmVmb3JlIGNvZmZlZSBib29zdHMgYWxlcnRuZXNzLiIsInRpdGxlIjoiTW9ybmluZyBoeWRyYXRpb24iLCJpZCI6Imh5ZHJhdGlvbiIsImlzRW5hYmxlZCI6dHJ1ZSwiYW5jaG9yIjoid2FrZVBsdXMiLCJpY29uIjoiZHJvcC5maWxsIiwiZG9uZVRvZGF5IjpmYWxzZX0seyJvZmZzZXQiOjE4MDAwLCJkZXRhaWwiOiIyLW1pbiB3b3JyeSBsaXN0IGFmdGVyIGRpbm5lciBjbGVhcnMgbmlnaHQgcnVtaW5hdGlvbi4iLCJ0aXRsZSI6IkJyYWluIGR1bXAiLCJpZCI6InN0cmVzcyIsImlzRW5hYmxlZCI6dHJ1ZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaWNvbiI6InBlbmNpbC5hbmQubGlzdC5jbGlwYm9hcmQiLCJkb25lVG9kYXkiOmZhbHNlfSx7Im9mZnNldCI6MTQ0MDAsImRldGFpbCI6IlN0aW11bGFudCDigJQgYXZvaWQgd2l0aGluIDRoIG9mIGJlZC4iLCJ0aXRsZSI6Ik5vIGxhdGUgbmljb3RpbmUiLCJpZCI6Im5pY290aW5lIiwiaXNFbmFibGVkIjpmYWxzZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaWNvbiI6InNtb2tlLmZpbGwiLCJkb25lVG9kYXkiOmZhbHNlfSx7Im9mZnNldCI6MTQ0MDAsImRldGFpbCI6IkEgZHVzayB3YWxrIHNoYXJwZW5zIERMTU8gdGltaW5nLiIsInRpdGxlIjoiRXZlbmluZyBsaWdodCB3YWxrIiwiaWQiOiJzdW5zZXQiLCJpc0VuYWJsZWQiOmZhbHNlLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJpY29uIjoic3Vuc2V0LmZpbGwiLCJkb25lVG9kYXkiOmZhbHNlfV0="
+    },
+    "profile.json": {
+      "bytes": 184,
+      "sha256": "ea8bbf7298a5eceecd1c0d64998ebcd9f56f9933a8200f174153268f1d69cac0",
+      "base64": "eyJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwic2xlZXBOZWVkIjoyOTQwMCwibmFtZSI6IlN5bnRoZXRpYyBiYWNrdXAgYmFzZWxpbmUiLCJpc1N1YnNjcmliZWQiOmZhbHNlLCJzbGVlcE5lZWRDb25maWRlbmNlIjowLjMsIm9uYm9hcmRpbmdEb25lIjp0cnVlLCJ3YWtlR29hbCI6eyJob3VyIjo3LCJtaW51dGUiOjB9fQ=="
+    },
+    "health-write-intent.json": {
+      "bytes": 123,
+      "sha256": "7d68ba33f7c6336f30c6930576586f4de85f70c62c1e40fcf9cba1b79f4fd223",
+      "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI3RUJBNDJGQS05NUU5LTQ2RTUtQjdDQi1BMDFFQjg0NDk0QTkiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+    }
+  },
+  "previousBefore": {
+    "chat.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "conversations.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "workouts.json": {
+      "bytes": 185,
+      "sha256": "a7e3f55c6c5e75d0b270c1a918742b4424a86bc359c972a3073532184db17f9c",
+      "base64": "W3siYWN0aXZlQ2Fsb3JpZXMiOjM1LCJkdXJhdGlvbiI6OTAwLCJlbmVyZ3lLbm93biI6dHJ1ZSwiaWQiOiJzeW50aGV0aWMtbXVsdGktemVybyIsImtpbmQiOiJzdHJlbmd0aCIsInNvdXJjZSI6Im1hbnVhbCIsInN0YXJ0IjoiMjAyNi0xMS0wMlQxMjowMDowMFoiLCJ0aXRsZSI6IkN1cnJlbnQgZWRpdGVkIHdvcmtvdXQifV0="
+    },
+    "goals.json": {
+      "bytes": 178,
+      "sha256": "142f89cee16338829e91bfe76c5c34ea249afb4bb338d987ee708ada70b4656c",
+      "base64": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6NDIsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxODEsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ=="
+    },
+    "today.json": {
+      "bytes": 123,
+      "sha256": "317a0e832157fe13dc5f54818e7477cf5a0d1e0fa815d822843ec4ff749ee0e8",
+      "base64": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDZUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9"
+    },
+    "meals.json": {
+      "bytes": 144,
+      "sha256": "9eec205ab83ed2466da007aaa29e3f18f8b4b5741f451c529ef7527ead443a68",
+      "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtY3VycmVudC1tZWFsIiwiaXRlbXMiOltdLCJub3RlIjoiS2VlcCB0aGlzIGN1cnJlbnQgbWVhbC4iLCJzb3VyY2UiOiJtYW51YWwiLCJ0eXBlIjoiYnJlYWtmYXN0In1d"
+    },
+    "water.json": {
+      "bytes": 72,
+      "sha256": "1dc7d921432b620cf0fcd72262f29a4ffe06902fcd4d7e3cb546d370e3908291",
+      "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwibWwiOjEzN31d"
+    },
+    "conversation-selection.json": {
+      "bytes": 2,
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "base64": "e30="
+    },
+    "profile.json": {
+      "bytes": 184,
+      "sha256": "233fff496e5b49e10ec22a5f4b94d52c307168dc8c8fac93b4e0c420291b6a2d",
+      "base64": "eyJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwiaXNTdWJzY3JpYmVkIjpmYWxzZSwibmFtZSI6IlN5bnRoZXRpYyBiYWNrdXAgYmFzZWxpbmUiLCJvbmJvYXJkaW5nRG9uZSI6dHJ1ZSwic2xlZXBOZWVkIjoyOTQwMCwic2xlZXBOZWVkQ29uZmlkZW5jZSI6MC4zLCJ3YWtlR29hbCI6eyJob3VyIjo3LCJtaW51dGUiOjB9fQ=="
+    },
+    "health-write-intent.json": {
+      "bytes": 123,
+      "sha256": "7d68ba33f7c6336f30c6930576586f4de85f70c62c1e40fcf9cba1b79f4fd223",
+      "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI3RUJBNDJGQS05NUU5LTQ2RTUtQjdDQi1BMDFFQjg0NDk0QTkiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+    }
+  },
+  "faultObservation": {
+    "originalSelectedBackupPath": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/84ED8534-145C-412A-9EB6-43157C789364/tmp/LumenBackupWork-v1-67013-0B5B0A1A-95DD-4EDC-A705-D53DDF4AD622/selected-backup",
+    "originalSelectedBackupIdentity": {
+      "st_ino": 45019946,
+      "st_dev": 16777233,
+      "st_mode": 33152,
+      "st_nlink": 1,
+      "st_size": 4992,
+      "st_mtime_ns": 1794074304243882381
+    },
+    "kind": "missing",
+    "target": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/84ED8534-145C-412A-9EB6-43157C789364/tmp/LumenBackupWork-v1-67013-7BD1E65F-5E3A-445D-BBAC-49A98B044B9B/photo-0.jpg",
+    "targetRelativePath": "photo-0.jpg",
+    "beforeTarget": {
+      "st_ino": 45019949,
+      "st_dev": 16777233,
+      "st_mode": 33152,
+      "st_nlink": 1,
+      "st_size": 910,
+      "st_mtime_ns": 1794074304340453329
+    },
+    "originalPhoto": {
+      "bytes": 910,
+      "sha256": "12ad2783f7ecd9fb2252dff7c79781d92d2a52f637c33d7f46a60fdb1ef6f4e3"
+    },
+    "ownedBefore": {
+      "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/84ED8534-145C-412A-9EB6-43157C789364/tmp/LumenBackupWork-v1-67013-7BD1E65F-5E3A-445D-BBAC-49A98B044B9B": {
+        "owner": {
+          "pid": 67013,
+          "id": "7BD1E65F-5E3A-445D-BBAC-49A98B044B9B",
+          "version": 1
+        },
+        "files": {
+          ".lumen-workspace-owner.json": {
+            "bytes": 69,
+            "sha256": "6098de9b9808008a09ea14b367fbde17a2d3528ae41e8c2ee3468fd14cef0dbe",
+            "base64": "eyJwaWQiOjY3MDEzLCJpZCI6IjdCRDFFNjVGLTVFM0EtNDQ1RC1CQkFDLTQ5QTk4QjA0NEI5QiIsInZlcnNpb24iOjF9"
+          },
+          "photo-0.jpg": {
+            "bytes": 910,
+            "sha256": "12ad2783f7ecd9fb2252dff7c79781d92d2a52f637c33d7f46a60fdb1ef6f4e3",
+            "base64": "/9j/4AAQSkZJRgABAQAA2ADYAAD/4QCMRXhpZgAATU0AKgAAAAgABQESAAMAAAABAAEAAAEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAABAAIAAIdpAAQAAAABAAAAWgAAAAAAAADYAAAAAQAAANgAAAABAAOgAQADAAAAAQABAACgAgAEAAAAAQAAAEigAwAEAAAAAQAAADAAAAAA/+0AOFBob3Rvc2hvcCAzLjAAOEJJTQQEAAAAAAAAOEJJTQQlAAAAAAAQ1B2M2Y8AsgTpgAmY7PhCfv/AABEIADAASAMBIgACEQEDEQH/xAAfAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgv/xAC1EAACAQMDAgQDBQUEBAAAAX0BAgMABBEFEiExQQYTUWEHInEUMoGRoQgjQrHBFVLR8CQzYnKCCQoWFxgZGiUmJygpKjQ1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4eLj5OXm5+jp6vHy8/T19vf4+fr/xAAfAQADAQEBAQEBAQEBAAAAAAAAAQIDBAUGBwgJCgv/xAC1EQACAQIEBAMEBwUEBAABAncAAQIDEQQFITEGEkFRB2FxEyIygQgUQpGhscEJIzNS8BVictEKFiQ04SXxFxgZGiYnKCkqNTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2dri4+Tl5ufo6ery8/T19vf4+fr/2wBDAAEBAQEBAQIBAQIDAgICAwQDAwMDBAYEBAQEBAYHBgYGBgYGBwcHBwcHBwcICAgICAgJCQkJCQsLCwsLCwsLCwv/2wBDAQICAgMDAwUDAwULCAYICwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwv/3QAEAAX/2gAMAwEAAhEDEQA/APUKKKK/pw/xzCiiigAooooAKKKKACiiigD/0PUKKKK/pw/xzCiiigAooooAKKKKACiiigD/0fUKKKK/pw/xzCiiigAooooAKKKKACiiigD/2Q=="
+          },
+          "photo-1.jpg": {
+            "bytes": 913,
+            "sha256": "4aeb340f233dfbfe59066886f6326e2c393dfd27596eb914a7895aff23a8e720",
+            "base64": "/9j/4AAQSkZJRgABAQAA2ADYAAD/4QCMRXhpZgAATU0AKgAAAAgABQESAAMAAAABAAEAAAEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAABAAIAAIdpAAQAAAABAAAAWgAAAAAAAADYAAAAAQAAANgAAAABAAOgAQADAAAAAQABAACgAgAEAAAAAQAAAEigAwAEAAAAAQAAADAAAAAA/+0AOFBob3Rvc2hvcCAzLjAAOEJJTQQEAAAAAAAAOEJJTQQlAAAAAAAQ1B2M2Y8AsgTpgAmY7PhCfv/AABEIADAASAMBIgACEQEDEQH/xAAfAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgv/xAC1EAACAQMDAgQDBQUEBAAAAX0BAgMABBEFEiExQQYTUWEHInEUMoGRoQgjQrHBFVLR8CQzYnKCCQoWFxgZGiUmJygpKjQ1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4eLj5OXm5+jp6vHy8/T19vf4+fr/xAAfAQADAQEBAQEBAQEBAAAAAAAAAQIDBAUGBwgJCgv/xAC1EQACAQIEBAMEBwUEBAABAncAAQIDEQQFITEGEkFRB2FxEyIygQgUQpGhscEJIzNS8BVictEKFiQ04SXxFxgZGiYnKCkqNTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2dri4+Tl5ufo6ery8/T19vf4+fr/2wBDAAEBAQEBAQIBAQIDAgICAwQDAwMDBAYEBAQEBAYHBgYGBgYGBwcHBwcHBwcICAgICAgJCQkJCQsLCwsLCwsLCwv/2wBDAQICAgMDAwUDAwULCAYICwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwv/3QAEAAX/2gAMAwEAAhEDEQA/AP0gooor/Oc/0ECiiigAooooAKKKKACiiigD/9D9IKKKK/znP9BAooooAKKKKACiiigAooooA//R/SCiiiv85z/QQKKKKACiiigAooooAKKKKAP/2Q=="
+          }
+        },
+        "directories": [
+          "."
+        ]
+      },
+      "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/84ED8534-145C-412A-9EB6-43157C789364/tmp/LumenBackupWork-v1-67013-0B5B0A1A-95DD-4EDC-A705-D53DDF4AD622": {
+        "owner": {
+          "pid": 67013,
+          "id": "0B5B0A1A-95DD-4EDC-A705-D53DDF4AD622",
+          "version": 1
+        },
+        "files": {
+          ".lumen-workspace-owner.json": {
+            "bytes": 69,
+            "sha256": "1fe80101f03973b92345ce72911a5570ce0ffe877466d072b09af3dd262e8ac3",
+            "base64": "eyJwaWQiOjY3MDEzLCJpZCI6IjBCNUIwQTFBLTk1REQtNEVEQy1BNzA1LUQ1M0RERjRBRDYyMiIsInZlcnNpb24iOjF9"
+          },
+          "selected-backup": {
+            "bytes": 4992,
+            "sha256": "80d236abd21b33a3d012d3287a0606e699d53ddc18a9e4263a635cb899629078",
+            "base64": "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTAyVDEyOjAwOjAwWiIsImZvcm1hdCI6Ikx1bWVuQmFja3VwIiwicGF5bG9hZCI6ImV5SmphR1ZqYTBsdWN5STZXMTBzSW1OdmJuWmxjbk5oZEdsdmJuTWlPbHRkTENKa2IyTjFiV1Z1ZEhNaU9sdGRMQ0puYjJGc2N5STZleUpoWTNScGRtVkRZV3hIYjJGc0lqbzJNREFzSW1GamRHbDJhWFI1VEdWMlpXd2lPaUp0YjJSbGNtRjBaU0lzSW1GblpTSTZNekFzSW1WNFpYSmphWE5sUjI5aGJFMXBiaUk2TXpBc0ltZHZZV3dpT2lKdFlXbHVkR0ZwYmlJc0ltaGxhV2RvZEVOdElqb3hOemdzSW5ObGVDSTZJblZ1YzNCbFkybG1hV1ZrSWl3aWMzUmhibVJIYjJGc0lqb3hNaXdpYzNSbGNFZHZZV3dpT2pFd01EQXdMQ0ozWldsbmFIUkxaeUk2TnpWOUxDSm9ZV0pwZEhNaU9sdGRMQ0pwYlhCdmNuUmxaRVJoZVhNaU9sdGRMQ0pwYlhCdmNuUnpJanBiWFN3aWJXVmhiSE1pT2x0N0ltUmhkR1VpT2lJeU1ESTJMVEV4TFRBeVZERXlPakF3T2pBd1dpSXNJbWxrSWpvaWMzbHVkR2hsZEdsakxXMWhkSEpwZUMxdFpXRnNMV0VpTENKcGRHVnRjeUk2VzEwc0ltNXZkR1VpT2lKVGVXNTBhR1YwYVdNZ1ptbHljM1FnYldWaGJDNGlMQ0p3YUc5MGIwbEVJam9pYzNsdWRHaGxkR2xqTFcxaGRISnBlQzF3YUc5MGJ5MWhJaXdpYzI5MWNtTmxJam9pYldGdWRXRnNJaXdpZEhsd1pTSTZJbXgxYm1Ob0luMHNleUprWVhSbElqb2lNakF5TmkweE1TMHdNbFF4TXpvd01Eb3dNRm9pTENKcFpDSTZJbk41Ym5Sb1pYUnBZeTF0WVhSeWFYZ3RiV1ZoYkMxaUlpd2lhWFJsYlhNaU9sdGRMQ0p1YjNSbElqb2lVM2x1ZEdobGRHbGpJSE5sWTI5dVpDQnRaV0ZzTGlJc0luQm9iM1J2U1VRaU9pSnplVzUwYUdWMGFXTXRiV0YwY21sNExYQm9iM1J2TFdJaUxDSnpiM1Z5WTJVaU9pSnRZVzUxWVd3aUxDSjBlWEJsSWpvaWMyNWhZMnNpZlYwc0luQmxjbk52Ym1Gc1EyOXVkR1Y0ZENJNmV5SmhiR3hsY21kcFpYTWlPaUlpTENKbWIyTjFjeUk2SWlJc0ltWnZiMlJRY21WbVpYSmxibU5sY3lJNklpSXNJbWx1WTJ4MVpHVkpia0Z6YzJsemRHRnVkQ0k2Wm1Gc2MyVXNJbXhwYldsMFlYUnBiMjV6SWpvaUlpd2libTkwWlhNaU9pSWlMQ0p6WTJobFpIVnNaU0k2SWlKOUxDSndhRzkwYjNNaU9uc2ljM2x1ZEdobGRHbGpMVzFoZEhKcGVDMXdhRzkwYnkxaElqb2lYQzg1YWx3dk5FRkJVVk5yV2twU1owRkNRVkZCUVRKQlJGbEJRVVJjTHpSUlEwMVNXR2h3V21kQlFWUlZNRUZMWjBGQlFVRm5RVUpSUlZOQlFVMUJRVUZCUWtGQlJVRkJRVVZoUVVGVlFVRkJRVUpCUVVGQlUyZEZZa0ZCVlVGQlFVRkNRVUZCUVZWblJXOUJRVTFCUVVGQlFrRkJTVUZCU1dSd1FVRlJRVUZCUVVKQlFVRkJWMmRCUVVGQlFVRkJRVVJaUVVGQlFVRlJRVUZCVG1kQlFVRkJRa0ZCVDJkQlVVRkVRVUZCUVVGUlFVSkJRVU5uUVdkQlJVRkJRVUZCVVVGQlFVVnBaMEYzUVVWQlFVRkJRVkZCUVVGRVFVRkJRVUZCWEM4ck1FRlBSa0p2WWpOU2RtTXlhSFpqUTBGNlRHcEJRVTlGU2twVVVWRkZRVUZCUVVGQlFVRlBSVXBLVkZGUmJFRkJRVUZCUVVGUk1VSXlUVEpaT0VGeloxUndaMEZ0V1RkUWFFTm1kbHd2UVVGQ1JVbEJSRUZCVTBGTlFrbG5RVU5GVVVWRVJWRklYQzk0UVVGbVFVRkJRa0pSUlVKQlVVVkNRVkZCUVVGQlFVRkJRVUZCUVZGSlJFSkJWVWRDZDJkS1EyZDJYQzk0UVVNeFJVRkJRMEZSVFVSQloxRkVRbEZWUlVKQlFVRkJXREJDUVdkTlFVSkNSVVpGYVVWNFVWRlpWRlZYUlVoSmJrVlZUVzlIVW05UloycFJja2hDUmxaTVVqaERVWHBaYmt0RFExRnZWMFo0WjFwSGFWVnRTbmxuY0V0cVVURk9hbU0wVDFSd1JGSkZWa2RTTUdoS1UyeE9WVlpXV2xoWFJteGhXVEpTYkZwdFpHOWhWM0I2WkVoV01tUXphRFZsYjA5RmFGbGhTR2xKYlV0cmNFOVZiRnBoV0cxS2JXRnZjVTlyY0dGaGJuRkxiWEZ6Y2s4d2RHSmhNM1ZNYlRaM2MxQkZlR05pU0hsTmJrc3dkRkJWTVdSaVdESk9ibUUwWlV4cU5VOVliVFVyYW5BMmRraDVPRnd2VkRFNWRtWTBLMlp5WEM5NFFVRm1RVkZCUkVGUlJVSkJVVVZDUVZGRlFrRkJRVUZCUVVGQlFWRkpSRUpCVlVkQ2QyZEtRMmQyWEM5NFFVTXhSVkZCUTBGUlNVVkNRVTFGUW5kVlJVSkJRVUpCYm1OQlFWRkpSRVZSVVVaSlZFVkhSV3RHVWtJeVJuaEZlVWw1WjFGblZWRndSMmh6WTBWS1NYcE9VemhDVm1samRFVkxSbWxSTURSVFdIaEdlR2RhUjJsWmJrdERhM0ZPVkZrelQwUnJObEV3VWtaU2EyUkpVMVZ3VkZaR1ZsZFdNV2hhVjIxT2ExcFhXbTVoUjJ4eFl6TlNNV1J1WkRSbFdIRkRaelJUUm1odlpVbHBXWEZUYXpWVFZteHdaVmx0V25GcGJ6WlRiSEJ4Wlc5eFlYRjVjemRUTVhSeVpUUjFZbkpEZHpoVVJuaHpaa2w1WTNKVE1EbFVWakYwWmxreVpISnBOQ3RVYkRWMVptODJaWEo1T0Z3dlZERTVkbVkwSzJaeVhDOHlkMEpFUVVGRlFrRlJSVUpCVVVsQ1FWRkpSRUZuU1VOQmQxRkVRWGROUkVKQldVVkNRVkZGUWtGWlNFSm5XVWRDWjFsSFFuZGpTRUozWTBoQ2QyTkpRMEZuU1VOQlowcERVV3RLUTFGelRFTjNjMHhEZDNOTVEzZDJYQzh5ZDBKRVFWRkpRMEZuVFVSQmQxVkVRWGRWVEVOQldVbERkM05NUTNkelRFTjNjMHhEZDNOTVEzZHpURU4zYzB4RGQzTk1RM2R6VEVOM2MweERkM05NUTNkelRFTjNjMHhEZDNOTVEzZHpURU4zYzB4RGQzTk1RM2QyWEM4elVVRkZRVUZZWEM4eVowRk5RWGRGUVVGb1JVUkZVVUZjTDBGUVZVdExTMHRjTDNCM1hDOTRla05wYVdsblFXOXZiMjlCUzB0TFMwRkRhV2xwWjBSY0x6QlFWVXRMUzB0Y0wzQjNYQzk0ZWtOcGFXbG5RVzl2YjI5QlMwdExTMEZEYVdscFowUmNMekJtVlV0TFMwdGNMM0IzWEM5NGVrTnBhV2xuUVc5dmIyOUJTMHRMUzBGRGFXbHBaMFJjTHpKUlBUMGlMQ0p6ZVc1MGFHVjBhV010YldGMGNtbDRMWEJvYjNSdkxXSWlPaUpjTHpscVhDODBRVUZSVTJ0YVNsSm5RVUpCVVVGQk1rRkVXVUZCUkZ3dk5GRkRUVkpZYUhCYVowRkJWRlV3UVV0blFVRkJRV2RCUWxGRlUwRkJUVUZCUVVGQ1FVRkZRVUZCUldGQlFWVkJRVUZCUWtGQlFVRlRaMFZpUVVGVlFVRkJRVUpCUVVGQlZXZEZiMEZCVFVGQlFVRkNRVUZKUVVGSlpIQkJRVkZCUVVGQlFrRkJRVUZYWjBGQlFVRkJRVUZCUkZsQlFVRkJRVkZCUVVGT1owRkJRVUZDUVVGUFowRlJRVVJCUVVGQlFWRkJRa0ZCUTJkQlowRkZRVUZCUVVGUlFVRkJSV2xuUVhkQlJVRkJRVUZCVVVGQlFVUkJRVUZCUVVGY0x5c3dRVTlHUW05aU0xSjJZekpvZG1ORFFYcE1ha0ZCVDBWS1NsUlJVVVZCUVVGQlFVRkJRVTlGU2twVVVWRnNRVUZCUVVGQlFWRXhRakpOTWxrNFFYTm5WSEJuUVcxWk4xQm9RMloyWEM5QlFVSkZTVUZFUVVGVFFVMUNTV2RCUTBWUlJVUkZVVWhjTDNoQlFXWkJRVUZDUWxGRlFrRlJSVUpCVVVGQlFVRkJRVUZCUVVGQlVVbEVRa0ZWUjBKM1owcERaM1pjTDNoQlF6RkZRVUZEUVZGTlJFRm5VVVJDVVZWRlFrRkJRVUZZTUVKQlowMUJRa0pGUmtWcFJYaFJVVmxVVlZkRlNFbHVSVlZOYjBkU2IxRm5hbEZ5U0VKR1ZreFNPRU5SZWxsdVMwTkRVVzlYUm5obldrZHBWVzFLZVdkd1MycFJNVTVxWXpSUFZIQkVVa1ZXUjFJd2FFcFRiRTVWVmxaYVdGZEdiR0ZaTWxKc1dtMWtiMkZYY0hwa1NGWXlaRE5vTldWdlQwVm9XV0ZJYVVsdFMydHdUMVZzV21GWWJVcHRZVzl4VDJ0d1lXRnVjVXR0Y1hOeVR6QjBZbUV6ZFV4dE5uZHpVRVY0WTJKSWVVMXVTekIwVUZVeFpHSllNazV1WVRSbFRHbzFUMWh0TlN0cWNEWjJTSGs0WEM5VU1UbDJaalFyWm5KY0wzaEJRV1pCVVVGRVFWRkZRa0ZSUlVKQlVVVkNRVUZCUVVGQlFVRkJVVWxFUWtGVlIwSjNaMHBEWjNaY0wzaEJRekZGVVVGRFFWRkpSVUpCVFVWQ2QxVkZRa0ZCUWtGdVkwRkJVVWxFUlZGUlJrbFVSVWRGYTBaU1FqSkdlRVY1U1hsblVXZFZVWEJIYUhOalJVcEplazVUT0VKV2FXTjBSVXRHYVZFd05GTlllRVo0WjFwSGFWbHVTME5yY1U1VVdUTlBSR3MyVVRCU1JsSnJaRWxUVlhCVVZrWldWMVl4YUZwWGJVNXJXbGRhYm1GSGJIRmpNMUl4Wkc1a05HVlljVU5uTkZOR2FHOWxTV2xaY1ZOck5WTldiSEJsV1cxYWNXbHZObE5zY0hGbGIzRmhjWGx6TjFNeGRISmxOSFZpY2tOM09GUkdlSE5tU1hsamNsTXdPVlJXTVhSbVdUSmtjbWswSzFSc05YVm1ielpsY25rNFhDOVVNVGwyWmpRclpuSmNMekozUWtSQlFVVkNRVkZGUWtGUlNVSkJVVWxFUVdkSlEwRjNVVVJCZDAxRVFrRlpSVUpCVVVWQ1FWbElRbWRaUjBKbldVZENkMk5JUW5kalNFSjNZMGxEUVdkSlEwRm5Ta05SYTBwRFVYTk1RM2R6VEVOM2MweERkM1pjTHpKM1FrUkJVVWxEUVdkTlJFRjNWVVJCZDFWTVEwRlpTVU4zYzB4RGQzTk1RM2R6VEVOM2MweERkM05NUTNkelRFTjNjMHhEZDNOTVEzZHpURU4zYzB4RGQzTk1RM2R6VEVOM2MweERkM05NUTNkelRFTjNjMHhEZDNaY0x6TlJRVVZCUVZoY0x6Sm5RVTFCZDBWQlFXaEZSRVZSUVZ3dlFWQXdaMjl2YjNKY0wwOWpYQzh3UlVOcGFXbG5RVzl2YjI5QlMwdExTMEZEYVdscFowUmNMemxFT1VsTFMwdExYQzk2YmxBNVFrRnZiMjl2UVV0TFMwdEJRMmxwYVdkQmIyOXZiMEZjTDF3dlVsd3ZVME5wYVdsMk9EVjZYQzlSVVV0TFMwdEJRMmxwYVdkQmIyOXZiMEZMUzB0TFFWQmNMekpSUFQwaWZTd2ljSEp2Wm1sc1pTSTZleUpqYUhKdmJtOTBlWEJsSWpvaWFXNTBaWEp0WldScFlYUmxJaXdpYVhOVGRXSnpZM0pwWW1Wa0lqcG1ZV3h6WlN3aWJtRnRaU0k2SWlJc0ltOXVZbTloY21ScGJtZEViMjVsSWpwbVlXeHpaU3dpYzJ4bFpYQk9aV1ZrSWpveU9UUXdNQ3dpYzJ4bFpYQk9aV1ZrUTI5dVptbGtaVzVqWlNJNk1DNHpMQ0ozWVd0bFIyOWhiQ0k2ZXlKb2IzVnlJam8zTENKdGFXNTFkR1VpT2pCOWZTd2ljMnhsWlhBaU9sdGRMQ0p6ZVcxd2RHOXRjeUk2VzEwc0luZGhkR1Z5SWpwYmV5SmtZWFJsSWpvaU1qQXlOaTB4TVMwd01sUXhNam93TURvd01Gb2lMQ0pwWkNJNkluTjViblJvWlhScFl5MXRZWFJ5YVhndGQyRjBaWElpTENKdGJDSTZNalEyZlYwc0luZHZjbXR2ZFhSeklqcGJYWDA9Iiwic2hhMjU2IjoiY2U1MjgyZDE0NmE3MWZlNTQ3ZGNkMTQ2Y2MxNGI3ZTllNzI3ZDIyZjAzZWJmNWI2NmM3ODgyODlmMTY3NjdiNCIsInZlcnNpb24iOjF9"
+          }
+        },
+        "directories": [
+          "."
+        ]
+      }
+    },
+    "ownedAfter": {
+      "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/84ED8534-145C-412A-9EB6-43157C789364/tmp/LumenBackupWork-v1-67013-7BD1E65F-5E3A-445D-BBAC-49A98B044B9B": {
+        "owner": {
+          "pid": 67013,
+          "id": "7BD1E65F-5E3A-445D-BBAC-49A98B044B9B",
+          "version": 1
+        },
+        "files": {
+          ".lumen-workspace-owner.json": {
+            "bytes": 69,
+            "sha256": "6098de9b9808008a09ea14b367fbde17a2d3528ae41e8c2ee3468fd14cef0dbe",
+            "base64": "eyJwaWQiOjY3MDEzLCJpZCI6IjdCRDFFNjVGLTVFM0EtNDQ1RC1CQkFDLTQ5QTk4QjA0NEI5QiIsInZlcnNpb24iOjF9"
+          },
+          "photo-1.jpg": {
+            "bytes": 913,
+            "sha256": "4aeb340f233dfbfe59066886f6326e2c393dfd27596eb914a7895aff23a8e720",
+            "base64": "/9j/4AAQSkZJRgABAQAA2ADYAAD/4QCMRXhpZgAATU0AKgAAAAgABQESAAMAAAABAAEAAAEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAABAAIAAIdpAAQAAAABAAAAWgAAAAAAAADYAAAAAQAAANgAAAABAAOgAQADAAAAAQABAACgAgAEAAAAAQAAAEigAwAEAAAAAQAAADAAAAAA/+0AOFBob3Rvc2hvcCAzLjAAOEJJTQQEAAAAAAAAOEJJTQQlAAAAAAAQ1B2M2Y8AsgTpgAmY7PhCfv/AABEIADAASAMBIgACEQEDEQH/xAAfAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgv/xAC1EAACAQMDAgQDBQUEBAAAAX0BAgMABBEFEiExQQYTUWEHInEUMoGRoQgjQrHBFVLR8CQzYnKCCQoWFxgZGiUmJygpKjQ1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4eLj5OXm5+jp6vHy8/T19vf4+fr/xAAfAQADAQEBAQEBAQEBAAAAAAAAAQIDBAUGBwgJCgv/xAC1EQACAQIEBAMEBwUEBAABAncAAQIDEQQFITEGEkFRB2FxEyIygQgUQpGhscEJIzNS8BVictEKFiQ04SXxFxgZGiYnKCkqNTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2dri4+Tl5ufo6ery8/T19vf4+fr/2wBDAAEBAQEBAQIBAQIDAgICAwQDAwMDBAYEBAQEBAYHBgYGBgYGBwcHBwcHBwcICAgICAgJCQkJCQsLCwsLCwsLCwv/2wBDAQICAgMDAwUDAwULCAYICwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwv/3QAEAAX/2gAMAwEAAhEDEQA/AP0gooor/Oc/0ECiiigAooooAKKKKACiiigD/9D9IKKKK/znP9BAooooAKKKKACiiigAooooA//R/SCiiiv85z/QQKKKKACiiigAooooAKKKKAP/2Q=="
+          }
+        },
+        "directories": [
+          "."
+        ]
+      },
+      "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/84ED8534-145C-412A-9EB6-43157C789364/tmp/LumenBackupWork-v1-67013-0B5B0A1A-95DD-4EDC-A705-D53DDF4AD622": {
+        "owner": {
+          "pid": 67013,
+          "id": "0B5B0A1A-95DD-4EDC-A705-D53DDF4AD622",
+          "version": 1
+        },
+        "files": {
+          ".lumen-workspace-owner.json": {
+            "bytes": 69,
+            "sha256": "1fe80101f03973b92345ce72911a5570ce0ffe877466d072b09af3dd262e8ac3",
+            "base64": "eyJwaWQiOjY3MDEzLCJpZCI6IjBCNUIwQTFBLTk1REQtNEVEQy1BNzA1LUQ1M0RERjRBRDYyMiIsInZlcnNpb24iOjF9"
+          },
+          "selected-backup": {
+            "bytes": 4992,
+            "sha256": "80d236abd21b33a3d012d3287a0606e699d53ddc18a9e4263a635cb899629078",
+            "base64": "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTAyVDEyOjAwOjAwWiIsImZvcm1hdCI6Ikx1bWVuQmFja3VwIiwicGF5bG9hZCI6ImV5SmphR1ZqYTBsdWN5STZXMTBzSW1OdmJuWmxjbk5oZEdsdmJuTWlPbHRkTENKa2IyTjFiV1Z1ZEhNaU9sdGRMQ0puYjJGc2N5STZleUpoWTNScGRtVkRZV3hIYjJGc0lqbzJNREFzSW1GamRHbDJhWFI1VEdWMlpXd2lPaUp0YjJSbGNtRjBaU0lzSW1GblpTSTZNekFzSW1WNFpYSmphWE5sUjI5aGJFMXBiaUk2TXpBc0ltZHZZV3dpT2lKdFlXbHVkR0ZwYmlJc0ltaGxhV2RvZEVOdElqb3hOemdzSW5ObGVDSTZJblZ1YzNCbFkybG1hV1ZrSWl3aWMzUmhibVJIYjJGc0lqb3hNaXdpYzNSbGNFZHZZV3dpT2pFd01EQXdMQ0ozWldsbmFIUkxaeUk2TnpWOUxDSm9ZV0pwZEhNaU9sdGRMQ0pwYlhCdmNuUmxaRVJoZVhNaU9sdGRMQ0pwYlhCdmNuUnpJanBiWFN3aWJXVmhiSE1pT2x0N0ltUmhkR1VpT2lJeU1ESTJMVEV4TFRBeVZERXlPakF3T2pBd1dpSXNJbWxrSWpvaWMzbHVkR2hsZEdsakxXMWhkSEpwZUMxdFpXRnNMV0VpTENKcGRHVnRjeUk2VzEwc0ltNXZkR1VpT2lKVGVXNTBhR1YwYVdNZ1ptbHljM1FnYldWaGJDNGlMQ0p3YUc5MGIwbEVJam9pYzNsdWRHaGxkR2xqTFcxaGRISnBlQzF3YUc5MGJ5MWhJaXdpYzI5MWNtTmxJam9pYldGdWRXRnNJaXdpZEhsd1pTSTZJbXgxYm1Ob0luMHNleUprWVhSbElqb2lNakF5TmkweE1TMHdNbFF4TXpvd01Eb3dNRm9pTENKcFpDSTZJbk41Ym5Sb1pYUnBZeTF0WVhSeWFYZ3RiV1ZoYkMxaUlpd2lhWFJsYlhNaU9sdGRMQ0p1YjNSbElqb2lVM2x1ZEdobGRHbGpJSE5sWTI5dVpDQnRaV0ZzTGlJc0luQm9iM1J2U1VRaU9pSnplVzUwYUdWMGFXTXRiV0YwY21sNExYQm9iM1J2TFdJaUxDSnpiM1Z5WTJVaU9pSnRZVzUxWVd3aUxDSjBlWEJsSWpvaWMyNWhZMnNpZlYwc0luQmxjbk52Ym1Gc1EyOXVkR1Y0ZENJNmV5SmhiR3hsY21kcFpYTWlPaUlpTENKbWIyTjFjeUk2SWlJc0ltWnZiMlJRY21WbVpYSmxibU5sY3lJNklpSXNJbWx1WTJ4MVpHVkpia0Z6YzJsemRHRnVkQ0k2Wm1Gc2MyVXNJbXhwYldsMFlYUnBiMjV6SWpvaUlpd2libTkwWlhNaU9pSWlMQ0p6WTJobFpIVnNaU0k2SWlKOUxDSndhRzkwYjNNaU9uc2ljM2x1ZEdobGRHbGpMVzFoZEhKcGVDMXdhRzkwYnkxaElqb2lYQzg1YWx3dk5FRkJVVk5yV2twU1owRkNRVkZCUVRKQlJGbEJRVVJjTHpSUlEwMVNXR2h3V21kQlFWUlZNRUZMWjBGQlFVRm5RVUpSUlZOQlFVMUJRVUZCUWtGQlJVRkJRVVZoUVVGVlFVRkJRVUpCUVVGQlUyZEZZa0ZCVlVGQlFVRkNRVUZCUVZWblJXOUJRVTFCUVVGQlFrRkJTVUZCU1dSd1FVRlJRVUZCUVVKQlFVRkJWMmRCUVVGQlFVRkJRVVJaUVVGQlFVRlJRVUZCVG1kQlFVRkJRa0ZCVDJkQlVVRkVRVUZCUVVGUlFVSkJRVU5uUVdkQlJVRkJRVUZCVVVGQlFVVnBaMEYzUVVWQlFVRkJRVkZCUVVGRVFVRkJRVUZCWEM4ck1FRlBSa0p2WWpOU2RtTXlhSFpqUTBGNlRHcEJRVTlGU2twVVVWRkZRVUZCUVVGQlFVRlBSVXBLVkZGUmJFRkJRVUZCUVVGUk1VSXlUVEpaT0VGeloxUndaMEZ0V1RkUWFFTm1kbHd2UVVGQ1JVbEJSRUZCVTBGTlFrbG5RVU5GVVVWRVJWRklYQzk0UVVGbVFVRkJRa0pSUlVKQlVVVkNRVkZCUVVGQlFVRkJRVUZCUVZGSlJFSkJWVWRDZDJkS1EyZDJYQzk0UVVNeFJVRkJRMEZSVFVSQloxRkVRbEZWUlVKQlFVRkJXREJDUVdkTlFVSkNSVVpGYVVWNFVWRlpWRlZYUlVoSmJrVlZUVzlIVW05UloycFJja2hDUmxaTVVqaERVWHBaYmt0RFExRnZWMFo0WjFwSGFWVnRTbmxuY0V0cVVURk9hbU0wVDFSd1JGSkZWa2RTTUdoS1UyeE9WVlpXV2xoWFJteGhXVEpTYkZwdFpHOWhWM0I2WkVoV01tUXphRFZsYjA5RmFGbGhTR2xKYlV0cmNFOVZiRnBoV0cxS2JXRnZjVTlyY0dGaGJuRkxiWEZ6Y2s4d2RHSmhNM1ZNYlRaM2MxQkZlR05pU0hsTmJrc3dkRkJWTVdSaVdESk9ibUUwWlV4cU5VOVliVFVyYW5BMmRraDVPRnd2VkRFNWRtWTBLMlp5WEM5NFFVRm1RVkZCUkVGUlJVSkJVVVZDUVZGRlFrRkJRVUZCUVVGQlFWRkpSRUpCVlVkQ2QyZEtRMmQyWEM5NFFVTXhSVkZCUTBGUlNVVkNRVTFGUW5kVlJVSkJRVUpCYm1OQlFWRkpSRVZSVVVaSlZFVkhSV3RHVWtJeVJuaEZlVWw1WjFGblZWRndSMmh6WTBWS1NYcE9VemhDVm1samRFVkxSbWxSTURSVFdIaEdlR2RhUjJsWmJrdERhM0ZPVkZrelQwUnJObEV3VWtaU2EyUkpVMVZ3VkZaR1ZsZFdNV2hhVjIxT2ExcFhXbTVoUjJ4eFl6TlNNV1J1WkRSbFdIRkRaelJUUm1odlpVbHBXWEZUYXpWVFZteHdaVmx0V25GcGJ6WlRiSEJ4Wlc5eFlYRjVjemRUTVhSeVpUUjFZbkpEZHpoVVJuaHpaa2w1WTNKVE1EbFVWakYwWmxreVpISnBOQ3RVYkRWMVptODJaWEo1T0Z3dlZERTVkbVkwSzJaeVhDOHlkMEpFUVVGRlFrRlJSVUpCVVVsQ1FWRkpSRUZuU1VOQmQxRkVRWGROUkVKQldVVkNRVkZGUWtGWlNFSm5XVWRDWjFsSFFuZGpTRUozWTBoQ2QyTkpRMEZuU1VOQlowcERVV3RLUTFGelRFTjNjMHhEZDNOTVEzZDJYQzh5ZDBKRVFWRkpRMEZuVFVSQmQxVkVRWGRWVEVOQldVbERkM05NUTNkelRFTjNjMHhEZDNOTVEzZHpURU4zYzB4RGQzTk1RM2R6VEVOM2MweERkM05NUTNkelRFTjNjMHhEZDNOTVEzZHpURU4zYzB4RGQzTk1RM2QyWEM4elVVRkZRVUZZWEM4eVowRk5RWGRGUVVGb1JVUkZVVUZjTDBGUVZVdExTMHRjTDNCM1hDOTRla05wYVdsblFXOXZiMjlCUzB0TFMwRkRhV2xwWjBSY0x6QlFWVXRMUzB0Y0wzQjNYQzk0ZWtOcGFXbG5RVzl2YjI5QlMwdExTMEZEYVdscFowUmNMekJtVlV0TFMwdGNMM0IzWEM5NGVrTnBhV2xuUVc5dmIyOUJTMHRMUzBGRGFXbHBaMFJjTHpKUlBUMGlMQ0p6ZVc1MGFHVjBhV010YldGMGNtbDRMWEJvYjNSdkxXSWlPaUpjTHpscVhDODBRVUZSVTJ0YVNsSm5RVUpCVVVGQk1rRkVXVUZCUkZ3dk5GRkRUVkpZYUhCYVowRkJWRlV3UVV0blFVRkJRV2RCUWxGRlUwRkJUVUZCUVVGQ1FVRkZRVUZCUldGQlFWVkJRVUZCUWtGQlFVRlRaMFZpUVVGVlFVRkJRVUpCUVVGQlZXZEZiMEZCVFVGQlFVRkNRVUZKUVVGSlpIQkJRVkZCUVVGQlFrRkJRVUZYWjBGQlFVRkJRVUZCUkZsQlFVRkJRVkZCUVVGT1owRkJRVUZDUVVGUFowRlJRVVJCUVVGQlFWRkJRa0ZCUTJkQlowRkZRVUZCUVVGUlFVRkJSV2xuUVhkQlJVRkJRVUZCVVVGQlFVUkJRVUZCUVVGY0x5c3dRVTlHUW05aU0xSjJZekpvZG1ORFFYcE1ha0ZCVDBWS1NsUlJVVVZCUVVGQlFVRkJRVTlGU2twVVVWRnNRVUZCUVVGQlFWRXhRakpOTWxrNFFYTm5WSEJuUVcxWk4xQm9RMloyWEM5QlFVSkZTVUZFUVVGVFFVMUNTV2RCUTBWUlJVUkZVVWhjTDNoQlFXWkJRVUZDUWxGRlFrRlJSVUpCVVVGQlFVRkJRVUZCUVVGQlVVbEVRa0ZWUjBKM1owcERaM1pjTDNoQlF6RkZRVUZEUVZGTlJFRm5VVVJDVVZWRlFrRkJRVUZZTUVKQlowMUJRa0pGUmtWcFJYaFJVVmxVVlZkRlNFbHVSVlZOYjBkU2IxRm5hbEZ5U0VKR1ZreFNPRU5SZWxsdVMwTkRVVzlYUm5obldrZHBWVzFLZVdkd1MycFJNVTVxWXpSUFZIQkVVa1ZXUjFJd2FFcFRiRTVWVmxaYVdGZEdiR0ZaTWxKc1dtMWtiMkZYY0hwa1NGWXlaRE5vTldWdlQwVm9XV0ZJYVVsdFMydHdUMVZzV21GWWJVcHRZVzl4VDJ0d1lXRnVjVXR0Y1hOeVR6QjBZbUV6ZFV4dE5uZHpVRVY0WTJKSWVVMXVTekIwVUZVeFpHSllNazV1WVRSbFRHbzFUMWh0TlN0cWNEWjJTSGs0WEM5VU1UbDJaalFyWm5KY0wzaEJRV1pCVVVGRVFWRkZRa0ZSUlVKQlVVVkNRVUZCUVVGQlFVRkJVVWxFUWtGVlIwSjNaMHBEWjNaY0wzaEJRekZGVVVGRFFWRkpSVUpCVFVWQ2QxVkZRa0ZCUWtGdVkwRkJVVWxFUlZGUlJrbFVSVWRGYTBaU1FqSkdlRVY1U1hsblVXZFZVWEJIYUhOalJVcEplazVUT0VKV2FXTjBSVXRHYVZFd05GTlllRVo0WjFwSGFWbHVTME5yY1U1VVdUTlBSR3MyVVRCU1JsSnJaRWxUVlhCVVZrWldWMVl4YUZwWGJVNXJXbGRhYm1GSGJIRmpNMUl4Wkc1a05HVlljVU5uTkZOR2FHOWxTV2xaY1ZOck5WTldiSEJsV1cxYWNXbHZObE5zY0hGbGIzRmhjWGx6TjFNeGRISmxOSFZpY2tOM09GUkdlSE5tU1hsamNsTXdPVlJXTVhSbVdUSmtjbWswSzFSc05YVm1ielpsY25rNFhDOVVNVGwyWmpRclpuSmNMekozUWtSQlFVVkNRVkZGUWtGUlNVSkJVVWxFUVdkSlEwRjNVVVJCZDAxRVFrRlpSVUpCVVVWQ1FWbElRbWRaUjBKbldVZENkMk5JUW5kalNFSjNZMGxEUVdkSlEwRm5Ta05SYTBwRFVYTk1RM2R6VEVOM2MweERkM1pjTHpKM1FrUkJVVWxEUVdkTlJFRjNWVVJCZDFWTVEwRlpTVU4zYzB4RGQzTk1RM2R6VEVOM2MweERkM05NUTNkelRFTjNjMHhEZDNOTVEzZHpURU4zYzB4RGQzTk1RM2R6VEVOM2MweERkM05NUTNkelRFTjNjMHhEZDNaY0x6TlJRVVZCUVZoY0x6Sm5RVTFCZDBWQlFXaEZSRVZSUVZ3dlFWQXdaMjl2YjNKY0wwOWpYQzh3UlVOcGFXbG5RVzl2YjI5QlMwdExTMEZEYVdscFowUmNMemxFT1VsTFMwdExYQzk2YmxBNVFrRnZiMjl2UVV0TFMwdEJRMmxwYVdkQmIyOXZiMEZjTDF3dlVsd3ZVME5wYVdsMk9EVjZYQzlSVVV0TFMwdEJRMmxwYVdkQmIyOXZiMEZMUzB0TFFWQmNMekpSUFQwaWZTd2ljSEp2Wm1sc1pTSTZleUpqYUhKdmJtOTBlWEJsSWpvaWFXNTBaWEp0WldScFlYUmxJaXdpYVhOVGRXSnpZM0pwWW1Wa0lqcG1ZV3h6WlN3aWJtRnRaU0k2SWlJc0ltOXVZbTloY21ScGJtZEViMjVsSWpwbVlXeHpaU3dpYzJ4bFpYQk9aV1ZrSWpveU9UUXdNQ3dpYzJ4bFpYQk9aV1ZrUTI5dVptbGtaVzVqWlNJNk1DNHpMQ0ozWVd0bFIyOWhiQ0k2ZXlKb2IzVnlJam8zTENKdGFXNTFkR1VpT2pCOWZTd2ljMnhsWlhBaU9sdGRMQ0p6ZVcxd2RHOXRjeUk2VzEwc0luZGhkR1Z5SWpwYmV5SmtZWFJsSWpvaU1qQXlOaTB4TVMwd01sUXhNam93TURvd01Gb2lMQ0pwWkNJNkluTjViblJvWlhScFl5MXRZWFJ5YVhndGQyRjBaWElpTENKdGJDSTZNalEyZlYwc0luZHZjbXR2ZFhSeklqcGJYWDA9Iiwic2hhMjU2IjoiY2U1MjgyZDE0NmE3MWZlNTQ3ZGNkMTQ2Y2MxNGI3ZTllNzI3ZDIyZjAzZWJmNWI2NmM3ODgyODlmMTY3NjdiNCIsInZlcnNpb24iOjF9"
+          }
+        },
+        "directories": [
+          "."
+        ]
+      }
+    },
+    "currentMetadataBefore": {
+      "chat.json": {
+        "st_ino": 45019680,
+        "st_dev": 16777233,
+        "st_mode": 33188,
+        "st_nlink": 1,
+        "st_size": 2,
+        "st_mtime_ns": 1794074263251850835
+      },
+      "conversations.json": {
+        "st_ino": 45019672,
+        "st_dev": 16777233,
+        "st_mode": 33188,
+        "st_nlink": 1,
+        "st_size": 2,
+        "st_mtime_ns": 1794074263249544162
+      },
+      "workouts.json": {
+        "st_ino": 45019694,
+        "st_dev": 16777233,
+        "st_mode": 33188,
+        "st_nlink": 1,
+        "st_size": 32,
+        "st_mtime_ns": 1794074263264337330
+      },
+      "goals.json": {
+        "st_ino": 45019677,
+        "st_dev": 16777233,
+        "st_mode": 33188,
+        "st_nlink": 1,
+        "st_size": 178,
+        "st_mtime_ns": 1794074263251076374
+      },
+      "sleep.json": {
+        "st_ino": 45019696,
+        "st_dev": 16777233,
+        "st_mode": 33188,
+        "st_nlink": 1,
+        "st_size": 2,
+        "st_mtime_ns": 1794074263285404558
+      },
+      "today.json": {
+        "st_ino": 45019673,
+        "st_dev": 16777233,
+        "st_mode": 33188,
+        "st_nlink": 1,
+        "st_size": 123,
+        "st_mtime_ns": 1794074263249914746
+      },
+      "meals.json": {
+        "st_ino": 45019693,
+        "st_dev": 16777233,
+        "st_mode": 33188,
+        "st_nlink": 1,
+        "st_size": 29,
+        "st_mtime_ns": 1794074263263844953
+      },
+      "water.json": {
+        "st_ino": 45019681,
+        "st_dev": 16777233,
+        "st_mode": 33188,
+        "st_nlink": 1,
+        "st_size": 72,
+        "st_mtime_ns": 1794074263252119794
+      },
+      "conversation-selection.json": {
+        "st_ino": 45019676,
+        "st_dev": 16777233,
+        "st_mode": 33188,
+        "st_nlink": 1,
+        "st_size": 2,
+        "st_mtime_ns": 1794074263250818124
+      },
+      "habits.json": {
+        "st_ino": 45019697,
+        "st_dev": 16777233,
+        "st_mode": 33188,
+        "st_nlink": 1,
+        "st_size": 3170,
+        "st_mtime_ns": 1794074263287309105
+      },
+      "profile.json": {
+        "st_ino": 45019695,
+        "st_dev": 16777233,
+        "st_mode": 33188,
+        "st_nlink": 1,
+        "st_size": 184,
+        "st_mtime_ns": 1794074263284601847
+      },
+      "health-write-intent.json": {
+        "st_ino": 45019675,
+        "st_dev": 16777233,
+        "st_mode": 33188,
+        "st_nlink": 1,
+        "st_size": 123,
+        "st_mtime_ns": 1794074263250478248
+      }
+    },
+    "priorMetadataBefore": {
+      "chat.json": {
+        "st_ino": 45019683,
+        "st_dev": 16777233,
+        "st_mode": 33188,
+        "st_nlink": 1,
+        "st_size": 2,
+        "st_mtime_ns": 1794074263251850835
+      },
+      "conversations.json": {
+        "st_ino": 45019684,
+        "st_dev": 16777233,
+        "st_mode": 33188,
+        "st_nlink": 1,
+        "st_size": 2,
+        "st_mtime_ns": 1794074263249544162
+      },
+      "workouts.json": {
+        "st_ino": 45019685,
+        "st_dev": 16777233,
+        "st_mode": 33188,
+        "st_nlink": 1,
+        "st_size": 185,
+        "st_mtime_ns": 1794074263250203705
+      },
+      "goals.json": {
+        "st_ino": 45019686,
+        "st_dev": 16777233,
+        "st_mode": 33188,
+        "st_nlink": 1,
+        "st_size": 178,
+        "st_mtime_ns": 1794074263251076374
+      },
+      "today.json": {
+        "st_ino": 45019687,
+        "st_dev": 16777233,
+        "st_mode": 33188,
+        "st_nlink": 1,
+        "st_size": 123,
+        "st_mtime_ns": 1794074263249914746
+      },
+      "meals.json": {
+        "st_ino": 45019688,
+        "st_dev": 16777233,
+        "st_mode": 33188,
+        "st_nlink": 1,
+        "st_size": 144,
+        "st_mtime_ns": 1794074263251620959
+      },
+      "water.json": {
+        "st_ino": 45019689,
+        "st_dev": 16777233,
+        "st_mode": 33188,
+        "st_nlink": 1,
+        "st_size": 72,
+        "st_mtime_ns": 1794074263252119794
+      },
+      "conversation-selection.json": {
+        "st_ino": 45019690,
+        "st_dev": 16777233,
+        "st_mode": 33188,
+        "st_nlink": 1,
+        "st_size": 2,
+        "st_mtime_ns": 1794074263250818124
+      },
+      "profile.json": {
+        "st_ino": 45019691,
+        "st_dev": 16777233,
+        "st_mode": 33188,
+        "st_nlink": 1,
+        "st_size": 184,
+        "st_mtime_ns": 1794074263251384625
+      },
+      "health-write-intent.json": {
+        "st_ino": 45019692,
+        "st_dev": 16777233,
+        "st_mode": 33188,
+        "st_nlink": 1,
+        "st_size": 123,
+        "st_mtime_ns": 1794074263250478248
+      }
+    },
+    "observedAfterNativeAttachment": "health-error-held-legacy-source",
+    "checkedAt": 1794074311.690766
+  },
+  "readerHeld": {
+    "protocol": {
+      "attempts": [
+        {
+          "bytesRead": 4992,
+          "descriptor": 4,
+          "file": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/84ED8534-145C-412A-9EB6-43157C789364/tmp/LumenBackupWork-v1-67013-0B5B0A1A-95DD-4EDC-A705-D53DDF4AD622/selected-backup",
+          "inode": 45019946,
+          "nonce": "F1D7AE8B-1EB9-4886-85FF-39D3C20B8A0E",
+          "ordinal": 1,
+          "phase": "held",
+          "pid": 67013,
+          "readBoundary": "selected-source",
+          "scope": "selected-record",
+          "size": 4992,
+          "uiCancelled": false,
+          "workerControlMatchesUI": true
+        }
+      ],
+      "root": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Shared/AppGroup/E300DD24-B5D1-4A6A-BF1B-E66173E3428B/LumenData"
+    },
+    "record": {
+      "bytesRead": 4992,
+      "descriptor": 4,
+      "file": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/84ED8534-145C-412A-9EB6-43157C789364/tmp/LumenBackupWork-v1-67013-0B5B0A1A-95DD-4EDC-A705-D53DDF4AD622/selected-backup",
+      "inode": 45019946,
+      "nonce": "F1D7AE8B-1EB9-4886-85FF-39D3C20B8A0E",
+      "ordinal": 1,
+      "phase": "held",
+      "pid": 67013,
+      "readBoundary": "selected-source",
+      "scope": "selected-record",
+      "size": 4992,
+      "uiCancelled": false,
+      "workerControlMatchesUI": true
+    },
+    "lsof": "p67013\nf4\ni45019946\nn/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/84ED8534-145C-412A-9EB6-43157C789364/tmp/LumenBackupWork-v1-67013-0B5B0A1A-95DD-4EDC-A705-D53DDF4AD622/selected-backup\n",
+    "actualDescriptorAndSourceBound": true,
+    "checkedAt": 1794074320.265631
+  },
+  "readerReleaseRequested": {
+    "protocol": {
+      "attempts": [
+        {
+          "bytesRead": 4992,
+          "descriptor": 4,
+          "file": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/84ED8534-145C-412A-9EB6-43157C789364/tmp/LumenBackupWork-v1-67013-0B5B0A1A-95DD-4EDC-A705-D53DDF4AD622/selected-backup",
+          "inode": 45019946,
+          "nonce": "F1D7AE8B-1EB9-4886-85FF-39D3C20B8A0E",
+          "ordinal": 1,
+          "phase": "held",
+          "pid": 67013,
+          "readBoundary": "selected-source",
+          "scope": "selected-record",
+          "size": 4992,
+          "uiCancelled": false,
+          "workerControlMatchesUI": true
+        }
+      ],
+      "root": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Shared/AppGroup/E300DD24-B5D1-4A6A-BF1B-E66173E3428B/LumenData"
+    },
+    "record": {
+      "bytesRead": 4992,
+      "descriptor": 4,
+      "file": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/84ED8534-145C-412A-9EB6-43157C789364/tmp/LumenBackupWork-v1-67013-0B5B0A1A-95DD-4EDC-A705-D53DDF4AD622/selected-backup",
+      "inode": 45019946,
+      "nonce": "F1D7AE8B-1EB9-4886-85FF-39D3C20B8A0E",
+      "ordinal": 1,
+      "phase": "held",
+      "pid": 67013,
+      "readBoundary": "selected-source",
+      "scope": "selected-record",
+      "size": 4992,
+      "uiCancelled": false,
+      "workerControlMatchesUI": true
+    },
+    "lsof": "p67013\nf4\ni45019946\nn/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/84ED8534-145C-412A-9EB6-43157C789364/tmp/LumenBackupWork-v1-67013-0B5B0A1A-95DD-4EDC-A705-D53DDF4AD622/selected-backup\n",
+    "actualDescriptorAndSourceBound": true,
+    "checkedAt": 1794074321.443788
+  },
+  "readerCompleted": {
+    "protocol": {
+      "attempts": [
+        {
+          "bytesRead": 4992,
+          "descriptor": 4,
+          "descriptorCloseSucceeded": true,
+          "file": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/84ED8534-145C-412A-9EB6-43157C789364/tmp/LumenBackupWork-v1-67013-0B5B0A1A-95DD-4EDC-A705-D53DDF4AD622/selected-backup",
+          "inode": 45019946,
+          "nonce": "F1D7AE8B-1EB9-4886-85FF-39D3C20B8A0E",
+          "ordinal": 1,
+          "phase": "released",
+          "pid": 67013,
+          "readBoundary": "selected-source",
+          "scope": "selected-record",
+          "size": 4992,
+          "uiCancelled": false,
+          "workerControlMatchesUI": true
+        }
+      ],
+      "root": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Shared/AppGroup/E300DD24-B5D1-4A6A-BF1B-E66173E3428B/LumenData"
+    },
+    "record": {
+      "bytesRead": 4992,
+      "descriptor": 4,
+      "descriptorCloseSucceeded": true,
+      "file": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/84ED8534-145C-412A-9EB6-43157C789364/tmp/LumenBackupWork-v1-67013-0B5B0A1A-95DD-4EDC-A705-D53DDF4AD622/selected-backup",
+      "inode": 45019946,
+      "nonce": "F1D7AE8B-1EB9-4886-85FF-39D3C20B8A0E",
+      "ordinal": 1,
+      "phase": "released",
+      "pid": 67013,
+      "readBoundary": "selected-source",
+      "scope": "selected-record",
+      "size": 4992,
+      "uiCancelled": false,
+      "workerControlMatchesUI": true
+    },
+    "sameActualReaderCompletedAndClosed": true,
+    "reviewOwnerStillOpen": true,
+    "checkedAt": 1794074370.031627
+  },
+  "failedBoundary": {
+    "observedAfterNativeAttachment": "health-error-held-legacy-failed",
+    "currentAndPriorBytesAndMetadataExact": true,
+    "noReceiptStageOrCheckpoint": true,
+    "sourceWorkspacesExactExceptDeclaredPhotoFault": true,
+    "checkedAt": 1794074370.508851
+  },
+  "cancelHeld": {
+    "record": {
+      "nonce": "2D2528E0-CFC3-427F-AE17-EFA842D8D7F1",
+      "ordinal": 2,
+      "originals": {
+        "goals.json": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6NDIsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxODEsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ==",
+        "health-write-intent.json": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI3RUJBNDJGQS05NUU5LTQ2RTUtQjdDQi1BMDFFQjg0NDk0QTkiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9",
+        "meals.json": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZW1lYWxzIjo=",
+        "today.json": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDZUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9",
+        "water.json": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwibWwiOjEzN31d",
+        "workouts.json": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZXdvcmtvdXRzIjo="
+      },
+      "phase": "held",
+      "stage": "LumenData.restore-7F6C90F4-DA0A-4A2F-9A17-C9F94610FD81",
+      "uiCancelled": false,
+      "workerControlMatchesUI": true
+    },
+    "stage": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Shared/AppGroup/E300DD24-B5D1-4A6A-BF1B-E66173E3428B/LumenData.restore-7F6C90F4-DA0A-4A2F-9A17-C9F94610FD81",
+    "source": {
+      "source": {
+        "directory": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/84ED8534-145C-412A-9EB6-43157C789364/tmp/LumenBackupWork-v1-67013-0B5B0A1A-95DD-4EDC-A705-D53DDF4AD622",
+        "owner": {
+          "pid": 67013,
+          "id": "0B5B0A1A-95DD-4EDC-A705-D53DDF4AD622",
+          "version": 1
+        },
+        "file": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/84ED8534-145C-412A-9EB6-43157C789364/tmp/LumenBackupWork-v1-67013-0B5B0A1A-95DD-4EDC-A705-D53DDF4AD622/selected-backup",
+        "bytes": 4992,
+        "sha256": "80d236abd21b33a3d012d3287a0606e699d53ddc18a9e4263a635cb899629078",
+        "identity": {
+          "st_ino": 45019946,
+          "st_dev": 16777233,
+          "st_mode": 33152,
+          "st_nlink": 1,
+          "st_size": 4992,
+          "st_mtime_ns": 1794074304243882381
+        }
+      },
+      "ownedWorkspaces": {
+        "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/84ED8534-145C-412A-9EB6-43157C789364/tmp/LumenBackupWork-v1-67013-7BD1E65F-5E3A-445D-BBAC-49A98B044B9B": {
+          "owner": {
+            "pid": 67013,
+            "id": "7BD1E65F-5E3A-445D-BBAC-49A98B044B9B",
+            "version": 1
+          },
+          "files": {
+            ".lumen-workspace-owner.json": {
+              "bytes": 69,
+              "sha256": "6098de9b9808008a09ea14b367fbde17a2d3528ae41e8c2ee3468fd14cef0dbe",
+              "base64": "eyJwaWQiOjY3MDEzLCJpZCI6IjdCRDFFNjVGLTVFM0EtNDQ1RC1CQkFDLTQ5QTk4QjA0NEI5QiIsInZlcnNpb24iOjF9"
+            },
+            "photo-1.jpg": {
+              "bytes": 913,
+              "sha256": "4aeb340f233dfbfe59066886f6326e2c393dfd27596eb914a7895aff23a8e720",
+              "base64": "/9j/4AAQSkZJRgABAQAA2ADYAAD/4QCMRXhpZgAATU0AKgAAAAgABQESAAMAAAABAAEAAAEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAABAAIAAIdpAAQAAAABAAAAWgAAAAAAAADYAAAAAQAAANgAAAABAAOgAQADAAAAAQABAACgAgAEAAAAAQAAAEigAwAEAAAAAQAAADAAAAAA/+0AOFBob3Rvc2hvcCAzLjAAOEJJTQQEAAAAAAAAOEJJTQQlAAAAAAAQ1B2M2Y8AsgTpgAmY7PhCfv/AABEIADAASAMBIgACEQEDEQH/xAAfAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgv/xAC1EAACAQMDAgQDBQUEBAAAAX0BAgMABBEFEiExQQYTUWEHInEUMoGRoQgjQrHBFVLR8CQzYnKCCQoWFxgZGiUmJygpKjQ1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4eLj5OXm5+jp6vHy8/T19vf4+fr/xAAfAQADAQEBAQEBAQEBAAAAAAAAAQIDBAUGBwgJCgv/xAC1EQACAQIEBAMEBwUEBAABAncAAQIDEQQFITEGEkFRB2FxEyIygQgUQpGhscEJIzNS8BVictEKFiQ04SXxFxgZGiYnKCkqNTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2dri4+Tl5ufo6ery8/T19vf4+fr/2wBDAAEBAQEBAQIBAQIDAgICAwQDAwMDBAYEBAQEBAYHBgYGBgYGBwcHBwcHBwcICAgICAgJCQkJCQsLCwsLCwsLCwv/2wBDAQICAgMDAwUDAwULCAYICwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwv/3QAEAAX/2gAMAwEAAhEDEQA/AP0gooor/Oc/0ECiiigAooooAKKKKACiiigD/9D9IKKKK/znP9BAooooAKKKKACiiigAooooA//R/SCiiiv85z/QQKKKKACiiigAooooAKKKKAP/2Q=="
+            }
+          },
+          "directories": [
+            "."
+          ]
+        },
+        "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/84ED8534-145C-412A-9EB6-43157C789364/tmp/LumenBackupWork-v1-67013-0B5B0A1A-95DD-4EDC-A705-D53DDF4AD622": {
+          "owner": {
+            "pid": 67013,
+            "id": "0B5B0A1A-95DD-4EDC-A705-D53DDF4AD622",
+            "version": 1
+          },
+          "files": {
+            ".lumen-workspace-owner.json": {
+              "bytes": 69,
+              "sha256": "1fe80101f03973b92345ce72911a5570ce0ffe877466d072b09af3dd262e8ac3",
+              "base64": "eyJwaWQiOjY3MDEzLCJpZCI6IjBCNUIwQTFBLTk1REQtNEVEQy1BNzA1LUQ1M0RERjRBRDYyMiIsInZlcnNpb24iOjF9"
+            },
+            "selected-backup": {
+              "bytes": 4992,
+              "sha256": "80d236abd21b33a3d012d3287a0606e699d53ddc18a9e4263a635cb899629078",
+              "base64": "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTAyVDEyOjAwOjAwWiIsImZvcm1hdCI6Ikx1bWVuQmFja3VwIiwicGF5bG9hZCI6ImV5SmphR1ZqYTBsdWN5STZXMTBzSW1OdmJuWmxjbk5oZEdsdmJuTWlPbHRkTENKa2IyTjFiV1Z1ZEhNaU9sdGRMQ0puYjJGc2N5STZleUpoWTNScGRtVkRZV3hIYjJGc0lqbzJNREFzSW1GamRHbDJhWFI1VEdWMlpXd2lPaUp0YjJSbGNtRjBaU0lzSW1GblpTSTZNekFzSW1WNFpYSmphWE5sUjI5aGJFMXBiaUk2TXpBc0ltZHZZV3dpT2lKdFlXbHVkR0ZwYmlJc0ltaGxhV2RvZEVOdElqb3hOemdzSW5ObGVDSTZJblZ1YzNCbFkybG1hV1ZrSWl3aWMzUmhibVJIYjJGc0lqb3hNaXdpYzNSbGNFZHZZV3dpT2pFd01EQXdMQ0ozWldsbmFIUkxaeUk2TnpWOUxDSm9ZV0pwZEhNaU9sdGRMQ0pwYlhCdmNuUmxaRVJoZVhNaU9sdGRMQ0pwYlhCdmNuUnpJanBiWFN3aWJXVmhiSE1pT2x0N0ltUmhkR1VpT2lJeU1ESTJMVEV4TFRBeVZERXlPakF3T2pBd1dpSXNJbWxrSWpvaWMzbHVkR2hsZEdsakxXMWhkSEpwZUMxdFpXRnNMV0VpTENKcGRHVnRjeUk2VzEwc0ltNXZkR1VpT2lKVGVXNTBhR1YwYVdNZ1ptbHljM1FnYldWaGJDNGlMQ0p3YUc5MGIwbEVJam9pYzNsdWRHaGxkR2xqTFcxaGRISnBlQzF3YUc5MGJ5MWhJaXdpYzI5MWNtTmxJam9pYldGdWRXRnNJaXdpZEhsd1pTSTZJbXgxYm1Ob0luMHNleUprWVhSbElqb2lNakF5TmkweE1TMHdNbFF4TXpvd01Eb3dNRm9pTENKcFpDSTZJbk41Ym5Sb1pYUnBZeTF0WVhSeWFYZ3RiV1ZoYkMxaUlpd2lhWFJsYlhNaU9sdGRMQ0p1YjNSbElqb2lVM2x1ZEdobGRHbGpJSE5sWTI5dVpDQnRaV0ZzTGlJc0luQm9iM1J2U1VRaU9pSnplVzUwYUdWMGFXTXRiV0YwY21sNExYQm9iM1J2TFdJaUxDSnpiM1Z5WTJVaU9pSnRZVzUxWVd3aUxDSjBlWEJsSWpvaWMyNWhZMnNpZlYwc0luQmxjbk52Ym1Gc1EyOXVkR1Y0ZENJNmV5SmhiR3hsY21kcFpYTWlPaUlpTENKbWIyTjFjeUk2SWlJc0ltWnZiMlJRY21WbVpYSmxibU5sY3lJNklpSXNJbWx1WTJ4MVpHVkpia0Z6YzJsemRHRnVkQ0k2Wm1Gc2MyVXNJbXhwYldsMFlYUnBiMjV6SWpvaUlpd2libTkwWlhNaU9pSWlMQ0p6WTJobFpIVnNaU0k2SWlKOUxDSndhRzkwYjNNaU9uc2ljM2x1ZEdobGRHbGpMVzFoZEhKcGVDMXdhRzkwYnkxaElqb2lYQzg1YWx3dk5FRkJVVk5yV2twU1owRkNRVkZCUVRKQlJGbEJRVVJjTHpSUlEwMVNXR2h3V21kQlFWUlZNRUZMWjBGQlFVRm5RVUpSUlZOQlFVMUJRVUZCUWtGQlJVRkJRVVZoUVVGVlFVRkJRVUpCUVVGQlUyZEZZa0ZCVlVGQlFVRkNRVUZCUVZWblJXOUJRVTFCUVVGQlFrRkJTVUZCU1dSd1FVRlJRVUZCUVVKQlFVRkJWMmRCUVVGQlFVRkJRVVJaUVVGQlFVRlJRVUZCVG1kQlFVRkJRa0ZCVDJkQlVVRkVRVUZCUVVGUlFVSkJRVU5uUVdkQlJVRkJRVUZCVVVGQlFVVnBaMEYzUVVWQlFVRkJRVkZCUVVGRVFVRkJRVUZCWEM4ck1FRlBSa0p2WWpOU2RtTXlhSFpqUTBGNlRHcEJRVTlGU2twVVVWRkZRVUZCUVVGQlFVRlBSVXBLVkZGUmJFRkJRVUZCUVVGUk1VSXlUVEpaT0VGeloxUndaMEZ0V1RkUWFFTm1kbHd2UVVGQ1JVbEJSRUZCVTBGTlFrbG5RVU5GVVVWRVJWRklYQzk0UVVGbVFVRkJRa0pSUlVKQlVVVkNRVkZCUVVGQlFVRkJRVUZCUVZGSlJFSkJWVWRDZDJkS1EyZDJYQzk0UVVNeFJVRkJRMEZSVFVSQloxRkVRbEZWUlVKQlFVRkJXREJDUVdkTlFVSkNSVVpGYVVWNFVWRlpWRlZYUlVoSmJrVlZUVzlIVW05UloycFJja2hDUmxaTVVqaERVWHBaYmt0RFExRnZWMFo0WjFwSGFWVnRTbmxuY0V0cVVURk9hbU0wVDFSd1JGSkZWa2RTTUdoS1UyeE9WVlpXV2xoWFJteGhXVEpTYkZwdFpHOWhWM0I2WkVoV01tUXphRFZsYjA5RmFGbGhTR2xKYlV0cmNFOVZiRnBoV0cxS2JXRnZjVTlyY0dGaGJuRkxiWEZ6Y2s4d2RHSmhNM1ZNYlRaM2MxQkZlR05pU0hsTmJrc3dkRkJWTVdSaVdESk9ibUUwWlV4cU5VOVliVFVyYW5BMmRraDVPRnd2VkRFNWRtWTBLMlp5WEM5NFFVRm1RVkZCUkVGUlJVSkJVVVZDUVZGRlFrRkJRVUZCUVVGQlFWRkpSRUpCVlVkQ2QyZEtRMmQyWEM5NFFVTXhSVkZCUTBGUlNVVkNRVTFGUW5kVlJVSkJRVUpCYm1OQlFWRkpSRVZSVVVaSlZFVkhSV3RHVWtJeVJuaEZlVWw1WjFGblZWRndSMmh6WTBWS1NYcE9VemhDVm1samRFVkxSbWxSTURSVFdIaEdlR2RhUjJsWmJrdERhM0ZPVkZrelQwUnJObEV3VWtaU2EyUkpVMVZ3VkZaR1ZsZFdNV2hhVjIxT2ExcFhXbTVoUjJ4eFl6TlNNV1J1WkRSbFdIRkRaelJUUm1odlpVbHBXWEZUYXpWVFZteHdaVmx0V25GcGJ6WlRiSEJ4Wlc5eFlYRjVjemRUTVhSeVpUUjFZbkpEZHpoVVJuaHpaa2w1WTNKVE1EbFVWakYwWmxreVpISnBOQ3RVYkRWMVptODJaWEo1T0Z3dlZERTVkbVkwSzJaeVhDOHlkMEpFUVVGRlFrRlJSVUpCVVVsQ1FWRkpSRUZuU1VOQmQxRkVRWGROUkVKQldVVkNRVkZGUWtGWlNFSm5XVWRDWjFsSFFuZGpTRUozWTBoQ2QyTkpRMEZuU1VOQlowcERVV3RLUTFGelRFTjNjMHhEZDNOTVEzZDJYQzh5ZDBKRVFWRkpRMEZuVFVSQmQxVkVRWGRWVEVOQldVbERkM05NUTNkelRFTjNjMHhEZDNOTVEzZHpURU4zYzB4RGQzTk1RM2R6VEVOM2MweERkM05NUTNkelRFTjNjMHhEZDNOTVEzZHpURU4zYzB4RGQzTk1RM2QyWEM4elVVRkZRVUZZWEM4eVowRk5RWGRGUVVGb1JVUkZVVUZjTDBGUVZVdExTMHRjTDNCM1hDOTRla05wYVdsblFXOXZiMjlCUzB0TFMwRkRhV2xwWjBSY0x6QlFWVXRMUzB0Y0wzQjNYQzk0ZWtOcGFXbG5RVzl2YjI5QlMwdExTMEZEYVdscFowUmNMekJtVlV0TFMwdGNMM0IzWEM5NGVrTnBhV2xuUVc5dmIyOUJTMHRMUzBGRGFXbHBaMFJjTHpKUlBUMGlMQ0p6ZVc1MGFHVjBhV010YldGMGNtbDRMWEJvYjNSdkxXSWlPaUpjTHpscVhDODBRVUZSVTJ0YVNsSm5RVUpCVVVGQk1rRkVXVUZCUkZ3dk5GRkRUVkpZYUhCYVowRkJWRlV3UVV0blFVRkJRV2RCUWxGRlUwRkJUVUZCUVVGQ1FVRkZRVUZCUldGQlFWVkJRVUZCUWtGQlFVRlRaMFZpUVVGVlFVRkJRVUpCUVVGQlZXZEZiMEZCVFVGQlFVRkNRVUZKUVVGSlpIQkJRVkZCUVVGQlFrRkJRVUZYWjBGQlFVRkJRVUZCUkZsQlFVRkJRVkZCUVVGT1owRkJRVUZDUVVGUFowRlJRVVJCUVVGQlFWRkJRa0ZCUTJkQlowRkZRVUZCUVVGUlFVRkJSV2xuUVhkQlJVRkJRVUZCVVVGQlFVUkJRVUZCUVVGY0x5c3dRVTlHUW05aU0xSjJZekpvZG1ORFFYcE1ha0ZCVDBWS1NsUlJVVVZCUVVGQlFVRkJRVTlGU2twVVVWRnNRVUZCUVVGQlFWRXhRakpOTWxrNFFYTm5WSEJuUVcxWk4xQm9RMloyWEM5QlFVSkZTVUZFUVVGVFFVMUNTV2RCUTBWUlJVUkZVVWhjTDNoQlFXWkJRVUZDUWxGRlFrRlJSVUpCVVVGQlFVRkJRVUZCUVVGQlVVbEVRa0ZWUjBKM1owcERaM1pjTDNoQlF6RkZRVUZEUVZGTlJFRm5VVVJDVVZWRlFrRkJRVUZZTUVKQlowMUJRa0pGUmtWcFJYaFJVVmxVVlZkRlNFbHVSVlZOYjBkU2IxRm5hbEZ5U0VKR1ZreFNPRU5SZWxsdVMwTkRVVzlYUm5obldrZHBWVzFLZVdkd1MycFJNVTVxWXpSUFZIQkVVa1ZXUjFJd2FFcFRiRTVWVmxaYVdGZEdiR0ZaTWxKc1dtMWtiMkZYY0hwa1NGWXlaRE5vTldWdlQwVm9XV0ZJYVVsdFMydHdUMVZzV21GWWJVcHRZVzl4VDJ0d1lXRnVjVXR0Y1hOeVR6QjBZbUV6ZFV4dE5uZHpVRVY0WTJKSWVVMXVTekIwVUZVeFpHSllNazV1WVRSbFRHbzFUMWh0TlN0cWNEWjJTSGs0WEM5VU1UbDJaalFyWm5KY0wzaEJRV1pCVVVGRVFWRkZRa0ZSUlVKQlVVVkNRVUZCUVVGQlFVRkJVVWxFUWtGVlIwSjNaMHBEWjNaY0wzaEJRekZGVVVGRFFWRkpSVUpCVFVWQ2QxVkZRa0ZCUWtGdVkwRkJVVWxFUlZGUlJrbFVSVWRGYTBaU1FqSkdlRVY1U1hsblVXZFZVWEJIYUhOalJVcEplazVUT0VKV2FXTjBSVXRHYVZFd05GTlllRVo0WjFwSGFWbHVTME5yY1U1VVdUTlBSR3MyVVRCU1JsSnJaRWxUVlhCVVZrWldWMVl4YUZwWGJVNXJXbGRhYm1GSGJIRmpNMUl4Wkc1a05HVlljVU5uTkZOR2FHOWxTV2xaY1ZOck5WTldiSEJsV1cxYWNXbHZObE5zY0hGbGIzRmhjWGx6TjFNeGRISmxOSFZpY2tOM09GUkdlSE5tU1hsamNsTXdPVlJXTVhSbVdUSmtjbWswSzFSc05YVm1ielpsY25rNFhDOVVNVGwyWmpRclpuSmNMekozUWtSQlFVVkNRVkZGUWtGUlNVSkJVVWxFUVdkSlEwRjNVVVJCZDAxRVFrRlpSVUpCVVVWQ1FWbElRbWRaUjBKbldVZENkMk5JUW5kalNFSjNZMGxEUVdkSlEwRm5Ta05SYTBwRFVYTk1RM2R6VEVOM2MweERkM1pjTHpKM1FrUkJVVWxEUVdkTlJFRjNWVVJCZDFWTVEwRlpTVU4zYzB4RGQzTk1RM2R6VEVOM2MweERkM05NUTNkelRFTjNjMHhEZDNOTVEzZHpURU4zYzB4RGQzTk1RM2R6VEVOM2MweERkM05NUTNkelRFTjNjMHhEZDNaY0x6TlJRVVZCUVZoY0x6Sm5RVTFCZDBWQlFXaEZSRVZSUVZ3dlFWQXdaMjl2YjNKY0wwOWpYQzh3UlVOcGFXbG5RVzl2YjI5QlMwdExTMEZEYVdscFowUmNMemxFT1VsTFMwdExYQzk2YmxBNVFrRnZiMjl2UVV0TFMwdEJRMmxwYVdkQmIyOXZiMEZjTDF3dlVsd3ZVME5wYVdsMk9EVjZYQzlSVVV0TFMwdEJRMmxwYVdkQmIyOXZiMEZMUzB0TFFWQmNMekpSUFQwaWZTd2ljSEp2Wm1sc1pTSTZleUpqYUhKdmJtOTBlWEJsSWpvaWFXNTBaWEp0WldScFlYUmxJaXdpYVhOVGRXSnpZM0pwWW1Wa0lqcG1ZV3h6WlN3aWJtRnRaU0k2SWlJc0ltOXVZbTloY21ScGJtZEViMjVsSWpwbVlXeHpaU3dpYzJ4bFpYQk9aV1ZrSWpveU9UUXdNQ3dpYzJ4bFpYQk9aV1ZrUTI5dVptbGtaVzVqWlNJNk1DNHpMQ0ozWVd0bFIyOWhiQ0k2ZXlKb2IzVnlJam8zTENKdGFXNTFkR1VpT2pCOWZTd2ljMnhsWlhBaU9sdGRMQ0p6ZVcxd2RHOXRjeUk2VzEwc0luZGhkR1Z5SWpwYmV5SmtZWFJsSWpvaU1qQXlOaTB4TVMwd01sUXhNam93TURvd01Gb2lMQ0pwWkNJNkluTjViblJvWlhScFl5MXRZWFJ5YVhndGQyRjBaWElpTENKdGJDSTZNalEyZlYwc0luZHZjbXR2ZFhSeklqcGJYWDA9Iiwic2hhMjU2IjoiY2U1MjgyZDE0NmE3MWZlNTQ3ZGNkMTQ2Y2MxNGI3ZTllNzI3ZDIyZjAzZWJmNWI2NmM3ODgyODlmMTY3NjdiNCIsInZlcnNpb24iOjF9"
+            }
+          },
+          "directories": [
+            "."
+          ]
+        }
+      }
+    },
+    "preservation": {
+      "files": {
+        ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/device-intent.json": {
+          "bytes": 123,
+          "sha256": "7d68ba33f7c6336f30c6930576586f4de85f70c62c1e40fcf9cba1b79f4fd223",
+          "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI3RUJBNDJGQS05NUU5LTQ2RTUtQjdDQi1BMDFFQjg0NDk0QTkiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+        },
+        ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/manifest.json": {
+          "bytes": 108,
+          "sha256": "6681fc0b1795c3dec309aa6ae3140b3892dc3cb630553d7bd8f2ea2e7fb02f14",
+          "base64": "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTA3VDE3OjU5OjU1WiIsImRvbWFpbnMiOlsibWVhbHMiLCJ3b3Jrb3V0cyJdLCJpbnRlbnQiOnRydWUsInBob3RvcyI6ZmFsc2UsInZlcnNpb24iOjF9"
+        },
+        ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/meals.json": {
+          "bytes": 144,
+          "sha256": "9eec205ab83ed2466da007aaa29e3f18f8b4b5741f451c529ef7527ead443a68",
+          "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtY3VycmVudC1tZWFsIiwiaXRlbXMiOltdLCJub3RlIjoiS2VlcCB0aGlzIGN1cnJlbnQgbWVhbC4iLCJzb3VyY2UiOiJtYW51YWwiLCJ0eXBlIjoiYnJlYWtmYXN0In1d"
+        },
+        ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/workouts.json": {
+          "bytes": 185,
+          "sha256": "a7e3f55c6c5e75d0b270c1a918742b4424a86bc359c972a3073532184db17f9c",
+          "base64": "W3siYWN0aXZlQ2Fsb3JpZXMiOjM1LCJkdXJhdGlvbiI6OTAwLCJlbmVyZ3lLbm93biI6dHJ1ZSwiaWQiOiJzeW50aGV0aWMtbXVsdGktemVybyIsImtpbmQiOiJzdHJlbmd0aCIsInNvdXJjZSI6Im1hbnVhbCIsInN0YXJ0IjoiMjAyNi0xMS0wMlQxMjowMDowMFoiLCJ0aXRsZSI6IkN1cnJlbnQgZWRpdGVkIHdvcmtvdXQifV0="
+        }
+      },
+      "manifest": {
+        "createdAt": "2026-11-07T17:59:55Z",
+        "domains": [
+          "meals",
+          "workouts"
+        ],
+        "intent": true,
+        "photos": false,
+        "version": 1
+      },
+      "priorSelectedDomainsAndIntentExact": true
+    },
+    "priorCoverage": {
+      "chat.json": {
+        "disposition": "byteExactCurrent",
+        "baselineSHA256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "baselineBytes": 2,
+        "currentBytes": 2,
+        "exactPrivateRecords": {},
+        "currentSHA256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "exactPrivatePaths": []
+      },
+      "conversations.json": {
+        "disposition": "byteExactCurrent",
+        "baselineSHA256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "baselineBytes": 2,
+        "currentBytes": 2,
+        "exactPrivateRecords": {},
+        "currentSHA256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "exactPrivatePaths": []
+      },
+      "workouts.json": {
+        "disposition": "byteExactPrivate",
+        "baselineSHA256": "a7e3f55c6c5e75d0b270c1a918742b4424a86bc359c972a3073532184db17f9c",
+        "baselineBytes": 185,
+        "currentBytes": 32,
+        "exactPrivateRecords": {
+          ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/workouts.json": {
+            "bytes": 185,
+            "sha256": "a7e3f55c6c5e75d0b270c1a918742b4424a86bc359c972a3073532184db17f9c"
+          }
+        },
+        "currentSHA256": "b8e333df638e682f0e77ffa5df87dfb79f5960039fdcf298fbed9939e6e4e34b",
+        "exactPrivatePaths": [
+          ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/workouts.json"
+        ]
+      },
+      "goals.json": {
+        "disposition": "byteExactCurrent",
+        "baselineSHA256": "142f89cee16338829e91bfe76c5c34ea249afb4bb338d987ee708ada70b4656c",
+        "baselineBytes": 178,
+        "currentBytes": 178,
+        "exactPrivateRecords": {},
+        "currentSHA256": "142f89cee16338829e91bfe76c5c34ea249afb4bb338d987ee708ada70b4656c",
+        "exactPrivatePaths": []
+      },
+      "today.json": {
+        "disposition": "byteExactCurrent",
+        "baselineSHA256": "317a0e832157fe13dc5f54818e7477cf5a0d1e0fa815d822843ec4ff749ee0e8",
+        "baselineBytes": 123,
+        "currentBytes": 123,
+        "exactPrivateRecords": {},
+        "currentSHA256": "317a0e832157fe13dc5f54818e7477cf5a0d1e0fa815d822843ec4ff749ee0e8",
+        "exactPrivatePaths": []
+      },
+      "meals.json": {
+        "disposition": "byteExactPrivate",
+        "baselineSHA256": "9eec205ab83ed2466da007aaa29e3f18f8b4b5741f451c529ef7527ead443a68",
+        "baselineBytes": 144,
+        "currentBytes": 29,
+        "exactPrivateRecords": {
+          ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/meals.json": {
+            "bytes": 144,
+            "sha256": "9eec205ab83ed2466da007aaa29e3f18f8b4b5741f451c529ef7527ead443a68"
+          }
+        },
+        "currentSHA256": "29630893bbf2b28a8af82b4be6db321e0b8d89c362bf8c47bb697fee439f2e6d",
+        "exactPrivatePaths": [
+          ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/meals.json"
+        ]
+      },
+      "water.json": {
+        "disposition": "byteExactCurrent",
+        "baselineSHA256": "1dc7d921432b620cf0fcd72262f29a4ffe06902fcd4d7e3cb546d370e3908291",
+        "baselineBytes": 72,
+        "currentBytes": 72,
+        "exactPrivateRecords": {},
+        "currentSHA256": "1dc7d921432b620cf0fcd72262f29a4ffe06902fcd4d7e3cb546d370e3908291",
+        "exactPrivatePaths": []
+      },
+      "conversation-selection.json": {
+        "disposition": "byteExactCurrent",
+        "baselineSHA256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "baselineBytes": 2,
+        "currentBytes": 2,
+        "exactPrivateRecords": {},
+        "currentSHA256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "exactPrivatePaths": []
+      },
+      "profile.json": {
+        "disposition": "semanticCurrentWithRawDifference",
+        "baselineSHA256": "233fff496e5b49e10ec22a5f4b94d52c307168dc8c8fac93b4e0c420291b6a2d",
+        "baselineBytes": 184,
+        "currentBytes": 184,
+        "exactPrivateRecords": {},
+        "currentSHA256": "ea8bbf7298a5eceecd1c0d64998ebcd9f56f9933a8200f174153268f1d69cac0",
+        "exactPrivatePaths": []
+      },
+      "health-write-intent.json": {
+        "disposition": "byteExactCurrent",
+        "baselineSHA256": "7d68ba33f7c6336f30c6930576586f4de85f70c62c1e40fcf9cba1b79f4fd223",
+        "baselineBytes": 123,
+        "currentBytes": 123,
+        "exactPrivateRecords": {
+          ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/device-intent.json": {
+            "bytes": 123,
+            "sha256": "7d68ba33f7c6336f30c6930576586f4de85f70c62c1e40fcf9cba1b79f4fd223"
+          }
+        },
+        "currentSHA256": "7d68ba33f7c6336f30c6930576586f4de85f70c62c1e40fcf9cba1b79f4fd223",
+        "exactPrivatePaths": [
+          ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/device-intent.json"
+        ]
+      }
+    },
+    "originalPreviousAbsent": true,
+    "hostReleaseAllowed": false,
+    "observedAfterNativeAttachment": "health-error-held-legacy-held-2",
+    "nativeObserved2Attachment": {
+      "tag": "health-error-held-legacy-observed-2",
+      "hostCheckpointWhenAttachmentDetected": {
+        "nonce": "2D2528E0-CFC3-427F-AE17-EFA842D8D7F1",
+        "ordinal": 2,
+        "originals": {
+          "goals.json": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6NDIsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxODEsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ==",
+          "health-write-intent.json": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI3RUJBNDJGQS05NUU5LTQ2RTUtQjdDQi1BMDFFQjg0NDk0QTkiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9",
+          "meals.json": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZW1lYWxzIjo=",
+          "today.json": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDZUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9",
+          "water.json": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwibWwiOjEzN31d",
+          "workouts.json": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZXdvcmtvdXRzIjo="
+        },
+        "phase": "held",
+        "stage": "LumenData.restore-7F6C90F4-DA0A-4A2F-9A17-C9F94610FD81",
+        "uiCancelled": false,
+        "workerControlMatchesUI": true
+      },
+      "boundary": "Native AX wait/capture observed2 after ack-only; checkpoint kernel phase is held or later cancelled, not a fabricated UI observed phase"
+    }
+  },
+  "cancelled": {
+    "record": {
+      "nonce": "2D2528E0-CFC3-427F-AE17-EFA842D8D7F1",
+      "ordinal": 2,
+      "originals": {
+        "goals.json": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6NDIsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxODEsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ==",
+        "health-write-intent.json": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI3RUJBNDJGQS05NUU5LTQ2RTUtQjdDQi1BMDFFQjg0NDk0QTkiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9",
+        "meals.json": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZW1lYWxzIjo=",
+        "today.json": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDZUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9",
+        "water.json": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwibWwiOjEzN31d",
+        "workouts.json": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZXdvcmtvdXRzIjo="
+      },
+      "phase": "cancelled",
+      "stage": "LumenData.restore-7F6C90F4-DA0A-4A2F-9A17-C9F94610FD81",
+      "uiCancelled": true,
+      "workerControlMatchesUI": true
+    },
+    "cancelledStageAbsent": true,
+    "noReceipt": true,
+    "hostNeverReleasedControl2": true,
+    "preservation": {
+      "files": {
+        ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/device-intent.json": {
+          "bytes": 123,
+          "sha256": "7d68ba33f7c6336f30c6930576586f4de85f70c62c1e40fcf9cba1b79f4fd223",
+          "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI3RUJBNDJGQS05NUU5LTQ2RTUtQjdDQi1BMDFFQjg0NDk0QTkiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+        },
+        ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/manifest.json": {
+          "bytes": 108,
+          "sha256": "6681fc0b1795c3dec309aa6ae3140b3892dc3cb630553d7bd8f2ea2e7fb02f14",
+          "base64": "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTA3VDE3OjU5OjU1WiIsImRvbWFpbnMiOlsibWVhbHMiLCJ3b3Jrb3V0cyJdLCJpbnRlbnQiOnRydWUsInBob3RvcyI6ZmFsc2UsInZlcnNpb24iOjF9"
+        },
+        ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/meals.json": {
+          "bytes": 144,
+          "sha256": "9eec205ab83ed2466da007aaa29e3f18f8b4b5741f451c529ef7527ead443a68",
+          "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtY3VycmVudC1tZWFsIiwiaXRlbXMiOltdLCJub3RlIjoiS2VlcCB0aGlzIGN1cnJlbnQgbWVhbC4iLCJzb3VyY2UiOiJtYW51YWwiLCJ0eXBlIjoiYnJlYWtmYXN0In1d"
+        },
+        ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/workouts.json": {
+          "bytes": 185,
+          "sha256": "a7e3f55c6c5e75d0b270c1a918742b4424a86bc359c972a3073532184db17f9c",
+          "base64": "W3siYWN0aXZlQ2Fsb3JpZXMiOjM1LCJkdXJhdGlvbiI6OTAwLCJlbmVyZ3lLbm93biI6dHJ1ZSwiaWQiOiJzeW50aGV0aWMtbXVsdGktemVybyIsImtpbmQiOiJzdHJlbmd0aCIsInNvdXJjZSI6Im1hbnVhbCIsInN0YXJ0IjoiMjAyNi0xMS0wMlQxMjowMDowMFoiLCJ0aXRsZSI6IkN1cnJlbnQgZWRpdGVkIHdvcmtvdXQifV0="
+        }
+      },
+      "manifest": {
+        "createdAt": "2026-11-07T17:59:55Z",
+        "domains": [
+          "meals",
+          "workouts"
+        ],
+        "intent": true,
+        "photos": false,
+        "version": 1
+      },
+      "priorSelectedDomainsAndIntentExact": true
+    },
+    "privateMetadata": {
+      ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/device-intent.json": {
+        "st_ino": 45019692,
+        "st_dev": 16777233,
+        "st_mode": 33188,
+        "st_nlink": 1,
+        "st_size": 123,
+        "st_mtime_ns": 1794074263250478248
+      },
+      ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/manifest.json": {
+        "st_ino": 45020243,
+        "st_dev": 16777233,
+        "st_mode": 33188,
+        "st_nlink": 1,
+        "st_size": 108,
+        "st_mtime_ns": 1794074395605748355
+      },
+      ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/meals.json": {
+        "st_ino": 45019688,
+        "st_dev": 16777233,
+        "st_mode": 33188,
+        "st_nlink": 1,
+        "st_size": 144,
+        "st_mtime_ns": 1794074263251620959
+      },
+      ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/workouts.json": {
+        "st_ino": 45019685,
+        "st_dev": 16777233,
+        "st_mode": 33188,
+        "st_nlink": 1,
+        "st_size": 185,
+        "st_mtime_ns": 1794074263250203705
+      }
+    },
+    "observedAfterNativeAttachment": "health-error-held-legacy-back-parent"
+  },
+  "backBoundary": {
+    "actualReviewOwnerClosed": true,
+    "completedReaderDescriptorClosed": true,
+    "protocol": {
+      "attempts": [
+        {
+          "bytesRead": 4992,
+          "descriptor": 4,
+          "descriptorCloseSucceeded": true,
+          "file": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/84ED8534-145C-412A-9EB6-43157C789364/tmp/LumenBackupWork-v1-67013-0B5B0A1A-95DD-4EDC-A705-D53DDF4AD622/selected-backup",
+          "inode": 45019946,
+          "nonce": "F1D7AE8B-1EB9-4886-85FF-39D3C20B8A0E",
+          "ordinal": 1,
+          "phase": "released",
+          "pid": 67013,
+          "readBoundary": "selected-source",
+          "reviewOwnerClosed": true,
+          "scope": "selected-record",
+          "size": 4992,
+          "uiCancelled": false,
+          "workerControlMatchesUI": true
+        }
+      ],
+      "root": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Shared/AppGroup/E300DD24-B5D1-4A6A-BF1B-E66173E3428B/LumenData"
+    },
+    "existingOldWorkspaces": {},
+    "absentOldWorkspaces": [
+      "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/84ED8534-145C-412A-9EB6-43157C789364/tmp/LumenBackupWork-v1-67013-0B5B0A1A-95DD-4EDC-A705-D53DDF4AD622",
+      "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/84ED8534-145C-412A-9EB6-43157C789364/tmp/LumenBackupWork-v1-67013-7BD1E65F-5E3A-445D-BBAC-49A98B044B9B"
+    ],
+    "hostDeletedWorkspace": false
+  },
+  "freshSelection": {
+    "source": {
+      "directory": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/84ED8534-145C-412A-9EB6-43157C789364/tmp/LumenBackupWork-v1-67013-465C14DE-6A0F-4939-91DB-0A19368BC04C",
+      "owner": {
+        "pid": 67013,
+        "version": 1,
+        "id": "465C14DE-6A0F-4939-91DB-0A19368BC04C"
+      },
+      "file": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/84ED8534-145C-412A-9EB6-43157C789364/tmp/LumenBackupWork-v1-67013-465C14DE-6A0F-4939-91DB-0A19368BC04C/selected-backup",
+      "bytes": 4992,
+      "sha256": "80d236abd21b33a3d012d3287a0606e699d53ddc18a9e4263a635cb899629078",
+      "identity": {
+        "st_ino": 45020501,
+        "st_dev": 16777233,
+        "st_mode": 33152,
+        "st_nlink": 1,
+        "st_size": 4992,
+        "st_mtime_ns": 1794074434815327963
+      }
+    },
+    "ownedWorkspaces": {
+      "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/84ED8534-145C-412A-9EB6-43157C789364/tmp/LumenBackupWork-v1-67013-E5932BEF-A1C7-4F4C-8389-6095F4F60351": {
+        "owner": {
+          "version": 1,
+          "id": "E5932BEF-A1C7-4F4C-8389-6095F4F60351",
+          "pid": 67013
+        },
+        "files": {
+          ".lumen-workspace-owner.json": {
+            "bytes": 69,
+            "sha256": "68798d85e03befecfd82e7d6efc37e915b533914734c99582034edfd79926de8",
+            "base64": "eyJ2ZXJzaW9uIjoxLCJpZCI6IkU1OTMyQkVGLUExQzctNEY0Qy04Mzg5LTYwOTVGNEY2MDM1MSIsInBpZCI6NjcwMTN9"
+          },
+          "photo-0.jpg": {
+            "bytes": 910,
+            "sha256": "12ad2783f7ecd9fb2252dff7c79781d92d2a52f637c33d7f46a60fdb1ef6f4e3",
+            "base64": "/9j/4AAQSkZJRgABAQAA2ADYAAD/4QCMRXhpZgAATU0AKgAAAAgABQESAAMAAAABAAEAAAEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAABAAIAAIdpAAQAAAABAAAAWgAAAAAAAADYAAAAAQAAANgAAAABAAOgAQADAAAAAQABAACgAgAEAAAAAQAAAEigAwAEAAAAAQAAADAAAAAA/+0AOFBob3Rvc2hvcCAzLjAAOEJJTQQEAAAAAAAAOEJJTQQlAAAAAAAQ1B2M2Y8AsgTpgAmY7PhCfv/AABEIADAASAMBIgACEQEDEQH/xAAfAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgv/xAC1EAACAQMDAgQDBQUEBAAAAX0BAgMABBEFEiExQQYTUWEHInEUMoGRoQgjQrHBFVLR8CQzYnKCCQoWFxgZGiUmJygpKjQ1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4eLj5OXm5+jp6vHy8/T19vf4+fr/xAAfAQADAQEBAQEBAQEBAAAAAAAAAQIDBAUGBwgJCgv/xAC1EQACAQIEBAMEBwUEBAABAncAAQIDEQQFITEGEkFRB2FxEyIygQgUQpGhscEJIzNS8BVictEKFiQ04SXxFxgZGiYnKCkqNTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2dri4+Tl5ufo6ery8/T19vf4+fr/2wBDAAEBAQEBAQIBAQIDAgICAwQDAwMDBAYEBAQEBAYHBgYGBgYGBwcHBwcHBwcICAgICAgJCQkJCQsLCwsLCwsLCwv/2wBDAQICAgMDAwUDAwULCAYICwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwv/3QAEAAX/2gAMAwEAAhEDEQA/APUKKKK/pw/xzCiiigAooooAKKKKACiiigD/0PUKKKK/pw/xzCiiigAooooAKKKKACiiigD/0fUKKKK/pw/xzCiiigAooooAKKKKACiiigD/2Q=="
+          },
+          "photo-1.jpg": {
+            "bytes": 913,
+            "sha256": "4aeb340f233dfbfe59066886f6326e2c393dfd27596eb914a7895aff23a8e720",
+            "base64": "/9j/4AAQSkZJRgABAQAA2ADYAAD/4QCMRXhpZgAATU0AKgAAAAgABQESAAMAAAABAAEAAAEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAABAAIAAIdpAAQAAAABAAAAWgAAAAAAAADYAAAAAQAAANgAAAABAAOgAQADAAAAAQABAACgAgAEAAAAAQAAAEigAwAEAAAAAQAAADAAAAAA/+0AOFBob3Rvc2hvcCAzLjAAOEJJTQQEAAAAAAAAOEJJTQQlAAAAAAAQ1B2M2Y8AsgTpgAmY7PhCfv/AABEIADAASAMBIgACEQEDEQH/xAAfAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgv/xAC1EAACAQMDAgQDBQUEBAAAAX0BAgMABBEFEiExQQYTUWEHInEUMoGRoQgjQrHBFVLR8CQzYnKCCQoWFxgZGiUmJygpKjQ1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4eLj5OXm5+jp6vHy8/T19vf4+fr/xAAfAQADAQEBAQEBAQEBAAAAAAAAAQIDBAUGBwgJCgv/xAC1EQACAQIEBAMEBwUEBAABAncAAQIDEQQFITEGEkFRB2FxEyIygQgUQpGhscEJIzNS8BVictEKFiQ04SXxFxgZGiYnKCkqNTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2dri4+Tl5ufo6ery8/T19vf4+fr/2wBDAAEBAQEBAQIBAQIDAgICAwQDAwMDBAYEBAQEBAYHBgYGBgYGBwcHBwcHBwcICAgICAgJCQkJCQsLCwsLCwsLCwv/2wBDAQICAgMDAwUDAwULCAYICwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwv/3QAEAAX/2gAMAwEAAhEDEQA/AP0gooor/Oc/0ECiiigAooooAKKKKACiiigD/9D9IKKKK/znP9BAooooAKKKKACiiigAooooA//R/SCiiiv85z/QQKKKKACiiigAooooAKKKKAP/2Q=="
+          }
+        },
+        "directories": [
+          "."
+        ]
+      },
+      "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/84ED8534-145C-412A-9EB6-43157C789364/tmp/LumenBackupWork-v1-67013-465C14DE-6A0F-4939-91DB-0A19368BC04C": {
+        "owner": {
+          "pid": 67013,
+          "version": 1,
+          "id": "465C14DE-6A0F-4939-91DB-0A19368BC04C"
+        },
+        "files": {
+          ".lumen-workspace-owner.json": {
+            "bytes": 69,
+            "sha256": "f36a9454af9cce5ec9bb24b57f4d233dca184ac4065c74cc1e4de1331dae42ca",
+            "base64": "eyJwaWQiOjY3MDEzLCJ2ZXJzaW9uIjoxLCJpZCI6IjQ2NUMxNERFLTZBMEYtNDkzOS05MURCLTBBMTkzNjhCQzA0QyJ9"
+          },
+          "selected-backup": {
+            "bytes": 4992,
+            "sha256": "80d236abd21b33a3d012d3287a0606e699d53ddc18a9e4263a635cb899629078",
+            "base64": "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTAyVDEyOjAwOjAwWiIsImZvcm1hdCI6Ikx1bWVuQmFja3VwIiwicGF5bG9hZCI6ImV5SmphR1ZqYTBsdWN5STZXMTBzSW1OdmJuWmxjbk5oZEdsdmJuTWlPbHRkTENKa2IyTjFiV1Z1ZEhNaU9sdGRMQ0puYjJGc2N5STZleUpoWTNScGRtVkRZV3hIYjJGc0lqbzJNREFzSW1GamRHbDJhWFI1VEdWMlpXd2lPaUp0YjJSbGNtRjBaU0lzSW1GblpTSTZNekFzSW1WNFpYSmphWE5sUjI5aGJFMXBiaUk2TXpBc0ltZHZZV3dpT2lKdFlXbHVkR0ZwYmlJc0ltaGxhV2RvZEVOdElqb3hOemdzSW5ObGVDSTZJblZ1YzNCbFkybG1hV1ZrSWl3aWMzUmhibVJIYjJGc0lqb3hNaXdpYzNSbGNFZHZZV3dpT2pFd01EQXdMQ0ozWldsbmFIUkxaeUk2TnpWOUxDSm9ZV0pwZEhNaU9sdGRMQ0pwYlhCdmNuUmxaRVJoZVhNaU9sdGRMQ0pwYlhCdmNuUnpJanBiWFN3aWJXVmhiSE1pT2x0N0ltUmhkR1VpT2lJeU1ESTJMVEV4TFRBeVZERXlPakF3T2pBd1dpSXNJbWxrSWpvaWMzbHVkR2hsZEdsakxXMWhkSEpwZUMxdFpXRnNMV0VpTENKcGRHVnRjeUk2VzEwc0ltNXZkR1VpT2lKVGVXNTBhR1YwYVdNZ1ptbHljM1FnYldWaGJDNGlMQ0p3YUc5MGIwbEVJam9pYzNsdWRHaGxkR2xqTFcxaGRISnBlQzF3YUc5MGJ5MWhJaXdpYzI5MWNtTmxJam9pYldGdWRXRnNJaXdpZEhsd1pTSTZJbXgxYm1Ob0luMHNleUprWVhSbElqb2lNakF5TmkweE1TMHdNbFF4TXpvd01Eb3dNRm9pTENKcFpDSTZJbk41Ym5Sb1pYUnBZeTF0WVhSeWFYZ3RiV1ZoYkMxaUlpd2lhWFJsYlhNaU9sdGRMQ0p1YjNSbElqb2lVM2x1ZEdobGRHbGpJSE5sWTI5dVpDQnRaV0ZzTGlJc0luQm9iM1J2U1VRaU9pSnplVzUwYUdWMGFXTXRiV0YwY21sNExYQm9iM1J2TFdJaUxDSnpiM1Z5WTJVaU9pSnRZVzUxWVd3aUxDSjBlWEJsSWpvaWMyNWhZMnNpZlYwc0luQmxjbk52Ym1Gc1EyOXVkR1Y0ZENJNmV5SmhiR3hsY21kcFpYTWlPaUlpTENKbWIyTjFjeUk2SWlJc0ltWnZiMlJRY21WbVpYSmxibU5sY3lJNklpSXNJbWx1WTJ4MVpHVkpia0Z6YzJsemRHRnVkQ0k2Wm1Gc2MyVXNJbXhwYldsMFlYUnBiMjV6SWpvaUlpd2libTkwWlhNaU9pSWlMQ0p6WTJobFpIVnNaU0k2SWlKOUxDSndhRzkwYjNNaU9uc2ljM2x1ZEdobGRHbGpMVzFoZEhKcGVDMXdhRzkwYnkxaElqb2lYQzg1YWx3dk5FRkJVVk5yV2twU1owRkNRVkZCUVRKQlJGbEJRVVJjTHpSUlEwMVNXR2h3V21kQlFWUlZNRUZMWjBGQlFVRm5RVUpSUlZOQlFVMUJRVUZCUWtGQlJVRkJRVVZoUVVGVlFVRkJRVUpCUVVGQlUyZEZZa0ZCVlVGQlFVRkNRVUZCUVZWblJXOUJRVTFCUVVGQlFrRkJTVUZCU1dSd1FVRlJRVUZCUVVKQlFVRkJWMmRCUVVGQlFVRkJRVVJaUVVGQlFVRlJRVUZCVG1kQlFVRkJRa0ZCVDJkQlVVRkVRVUZCUVVGUlFVSkJRVU5uUVdkQlJVRkJRVUZCVVVGQlFVVnBaMEYzUVVWQlFVRkJRVkZCUVVGRVFVRkJRVUZCWEM4ck1FRlBSa0p2WWpOU2RtTXlhSFpqUTBGNlRHcEJRVTlGU2twVVVWRkZRVUZCUVVGQlFVRlBSVXBLVkZGUmJFRkJRVUZCUVVGUk1VSXlUVEpaT0VGeloxUndaMEZ0V1RkUWFFTm1kbHd2UVVGQ1JVbEJSRUZCVTBGTlFrbG5RVU5GVVVWRVJWRklYQzk0UVVGbVFVRkJRa0pSUlVKQlVVVkNRVkZCUVVGQlFVRkJRVUZCUVZGSlJFSkJWVWRDZDJkS1EyZDJYQzk0UVVNeFJVRkJRMEZSVFVSQloxRkVRbEZWUlVKQlFVRkJXREJDUVdkTlFVSkNSVVpGYVVWNFVWRlpWRlZYUlVoSmJrVlZUVzlIVW05UloycFJja2hDUmxaTVVqaERVWHBaYmt0RFExRnZWMFo0WjFwSGFWVnRTbmxuY0V0cVVURk9hbU0wVDFSd1JGSkZWa2RTTUdoS1UyeE9WVlpXV2xoWFJteGhXVEpTYkZwdFpHOWhWM0I2WkVoV01tUXphRFZsYjA5RmFGbGhTR2xKYlV0cmNFOVZiRnBoV0cxS2JXRnZjVTlyY0dGaGJuRkxiWEZ6Y2s4d2RHSmhNM1ZNYlRaM2MxQkZlR05pU0hsTmJrc3dkRkJWTVdSaVdESk9ibUUwWlV4cU5VOVliVFVyYW5BMmRraDVPRnd2VkRFNWRtWTBLMlp5WEM5NFFVRm1RVkZCUkVGUlJVSkJVVVZDUVZGRlFrRkJRVUZCUVVGQlFWRkpSRUpCVlVkQ2QyZEtRMmQyWEM5NFFVTXhSVkZCUTBGUlNVVkNRVTFGUW5kVlJVSkJRVUpCYm1OQlFWRkpSRVZSVVVaSlZFVkhSV3RHVWtJeVJuaEZlVWw1WjFGblZWRndSMmh6WTBWS1NYcE9VemhDVm1samRFVkxSbWxSTURSVFdIaEdlR2RhUjJsWmJrdERhM0ZPVkZrelQwUnJObEV3VWtaU2EyUkpVMVZ3VkZaR1ZsZFdNV2hhVjIxT2ExcFhXbTVoUjJ4eFl6TlNNV1J1WkRSbFdIRkRaelJUUm1odlpVbHBXWEZUYXpWVFZteHdaVmx0V25GcGJ6WlRiSEJ4Wlc5eFlYRjVjemRUTVhSeVpUUjFZbkpEZHpoVVJuaHpaa2w1WTNKVE1EbFVWakYwWmxreVpISnBOQ3RVYkRWMVptODJaWEo1T0Z3dlZERTVkbVkwSzJaeVhDOHlkMEpFUVVGRlFrRlJSVUpCVVVsQ1FWRkpSRUZuU1VOQmQxRkVRWGROUkVKQldVVkNRVkZGUWtGWlNFSm5XVWRDWjFsSFFuZGpTRUozWTBoQ2QyTkpRMEZuU1VOQlowcERVV3RLUTFGelRFTjNjMHhEZDNOTVEzZDJYQzh5ZDBKRVFWRkpRMEZuVFVSQmQxVkVRWGRWVEVOQldVbERkM05NUTNkelRFTjNjMHhEZDNOTVEzZHpURU4zYzB4RGQzTk1RM2R6VEVOM2MweERkM05NUTNkelRFTjNjMHhEZDNOTVEzZHpURU4zYzB4RGQzTk1RM2QyWEM4elVVRkZRVUZZWEM4eVowRk5RWGRGUVVGb1JVUkZVVUZjTDBGUVZVdExTMHRjTDNCM1hDOTRla05wYVdsblFXOXZiMjlCUzB0TFMwRkRhV2xwWjBSY0x6QlFWVXRMUzB0Y0wzQjNYQzk0ZWtOcGFXbG5RVzl2YjI5QlMwdExTMEZEYVdscFowUmNMekJtVlV0TFMwdGNMM0IzWEM5NGVrTnBhV2xuUVc5dmIyOUJTMHRMUzBGRGFXbHBaMFJjTHpKUlBUMGlMQ0p6ZVc1MGFHVjBhV010YldGMGNtbDRMWEJvYjNSdkxXSWlPaUpjTHpscVhDODBRVUZSVTJ0YVNsSm5RVUpCVVVGQk1rRkVXVUZCUkZ3dk5GRkRUVkpZYUhCYVowRkJWRlV3UVV0blFVRkJRV2RCUWxGRlUwRkJUVUZCUVVGQ1FVRkZRVUZCUldGQlFWVkJRVUZCUWtGQlFVRlRaMFZpUVVGVlFVRkJRVUpCUVVGQlZXZEZiMEZCVFVGQlFVRkNRVUZKUVVGSlpIQkJRVkZCUVVGQlFrRkJRVUZYWjBGQlFVRkJRVUZCUkZsQlFVRkJRVkZCUVVGT1owRkJRVUZDUVVGUFowRlJRVVJCUVVGQlFWRkJRa0ZCUTJkQlowRkZRVUZCUVVGUlFVRkJSV2xuUVhkQlJVRkJRVUZCVVVGQlFVUkJRVUZCUVVGY0x5c3dRVTlHUW05aU0xSjJZekpvZG1ORFFYcE1ha0ZCVDBWS1NsUlJVVVZCUVVGQlFVRkJRVTlGU2twVVVWRnNRVUZCUVVGQlFWRXhRakpOTWxrNFFYTm5WSEJuUVcxWk4xQm9RMloyWEM5QlFVSkZTVUZFUVVGVFFVMUNTV2RCUTBWUlJVUkZVVWhjTDNoQlFXWkJRVUZDUWxGRlFrRlJSVUpCVVVGQlFVRkJRVUZCUVVGQlVVbEVRa0ZWUjBKM1owcERaM1pjTDNoQlF6RkZRVUZEUVZGTlJFRm5VVVJDVVZWRlFrRkJRVUZZTUVKQlowMUJRa0pGUmtWcFJYaFJVVmxVVlZkRlNFbHVSVlZOYjBkU2IxRm5hbEZ5U0VKR1ZreFNPRU5SZWxsdVMwTkRVVzlYUm5obldrZHBWVzFLZVdkd1MycFJNVTVxWXpSUFZIQkVVa1ZXUjFJd2FFcFRiRTVWVmxaYVdGZEdiR0ZaTWxKc1dtMWtiMkZYY0hwa1NGWXlaRE5vTldWdlQwVm9XV0ZJYVVsdFMydHdUMVZzV21GWWJVcHRZVzl4VDJ0d1lXRnVjVXR0Y1hOeVR6QjBZbUV6ZFV4dE5uZHpVRVY0WTJKSWVVMXVTekIwVUZVeFpHSllNazV1WVRSbFRHbzFUMWh0TlN0cWNEWjJTSGs0WEM5VU1UbDJaalFyWm5KY0wzaEJRV1pCVVVGRVFWRkZRa0ZSUlVKQlVVVkNRVUZCUVVGQlFVRkJVVWxFUWtGVlIwSjNaMHBEWjNaY0wzaEJRekZGVVVGRFFWRkpSVUpCVFVWQ2QxVkZRa0ZCUWtGdVkwRkJVVWxFUlZGUlJrbFVSVWRGYTBaU1FqSkdlRVY1U1hsblVXZFZVWEJIYUhOalJVcEplazVUT0VKV2FXTjBSVXRHYVZFd05GTlllRVo0WjFwSGFWbHVTME5yY1U1VVdUTlBSR3MyVVRCU1JsSnJaRWxUVlhCVVZrWldWMVl4YUZwWGJVNXJXbGRhYm1GSGJIRmpNMUl4Wkc1a05HVlljVU5uTkZOR2FHOWxTV2xaY1ZOck5WTldiSEJsV1cxYWNXbHZObE5zY0hGbGIzRmhjWGx6TjFNeGRISmxOSFZpY2tOM09GUkdlSE5tU1hsamNsTXdPVlJXTVhSbVdUSmtjbWswSzFSc05YVm1ielpsY25rNFhDOVVNVGwyWmpRclpuSmNMekozUWtSQlFVVkNRVkZGUWtGUlNVSkJVVWxFUVdkSlEwRjNVVVJCZDAxRVFrRlpSVUpCVVVWQ1FWbElRbWRaUjBKbldVZENkMk5JUW5kalNFSjNZMGxEUVdkSlEwRm5Ta05SYTBwRFVYTk1RM2R6VEVOM2MweERkM1pjTHpKM1FrUkJVVWxEUVdkTlJFRjNWVVJCZDFWTVEwRlpTVU4zYzB4RGQzTk1RM2R6VEVOM2MweERkM05NUTNkelRFTjNjMHhEZDNOTVEzZHpURU4zYzB4RGQzTk1RM2R6VEVOM2MweERkM05NUTNkelRFTjNjMHhEZDNaY0x6TlJRVVZCUVZoY0x6Sm5RVTFCZDBWQlFXaEZSRVZSUVZ3dlFWQXdaMjl2YjNKY0wwOWpYQzh3UlVOcGFXbG5RVzl2YjI5QlMwdExTMEZEYVdscFowUmNMemxFT1VsTFMwdExYQzk2YmxBNVFrRnZiMjl2UVV0TFMwdEJRMmxwYVdkQmIyOXZiMEZjTDF3dlVsd3ZVME5wYVdsMk9EVjZYQzlSVVV0TFMwdEJRMmxwYVdkQmIyOXZiMEZMUzB0TFFWQmNMekpSUFQwaWZTd2ljSEp2Wm1sc1pTSTZleUpqYUhKdmJtOTBlWEJsSWpvaWFXNTBaWEp0WldScFlYUmxJaXdpYVhOVGRXSnpZM0pwWW1Wa0lqcG1ZV3h6WlN3aWJtRnRaU0k2SWlJc0ltOXVZbTloY21ScGJtZEViMjVsSWpwbVlXeHpaU3dpYzJ4bFpYQk9aV1ZrSWpveU9UUXdNQ3dpYzJ4bFpYQk9aV1ZrUTI5dVptbGtaVzVqWlNJNk1DNHpMQ0ozWVd0bFIyOWhiQ0k2ZXlKb2IzVnlJam8zTENKdGFXNTFkR1VpT2pCOWZTd2ljMnhsWlhBaU9sdGRMQ0p6ZVcxd2RHOXRjeUk2VzEwc0luZGhkR1Z5SWpwYmV5SmtZWFJsSWpvaU1qQXlOaTB4TVMwd01sUXhNam93TURvd01Gb2lMQ0pwWkNJNkluTjViblJvWlhScFl5MXRZWFJ5YVhndGQyRjBaWElpTENKdGJDSTZNalEyZlYwc0luZHZjbXR2ZFhSeklqcGJYWDA9Iiwic2hhMjU2IjoiY2U1MjgyZDE0NmE3MWZlNTQ3ZGNkMTQ2Y2MxNGI3ZTllNzI3ZDIyZjAzZWJmNWI2NmM3ODgyODlmMTY3NjdiNCIsInZlcnNpb24iOjF9"
+          }
+        },
+        "directories": [
+          "."
+        ]
+      }
+    },
+    "photos": {
+      "synthetic-matrix-photo-a": {
+        "file": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/84ED8534-145C-412A-9EB6-43157C789364/tmp/LumenBackupWork-v1-67013-E5932BEF-A1C7-4F4C-8389-6095F4F60351/photo-0.jpg",
+        "bytes": 910,
+        "sha256": "12ad2783f7ecd9fb2252dff7c79781d92d2a52f637c33d7f46a60fdb1ef6f4e3"
+      },
+      "synthetic-matrix-photo-b": {
+        "file": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/84ED8534-145C-412A-9EB6-43157C789364/tmp/LumenBackupWork-v1-67013-E5932BEF-A1C7-4F4C-8389-6095F4F60351/photo-1.jpg",
+        "bytes": 913,
+        "sha256": "4aeb340f233dfbfe59066886f6326e2c393dfd27596eb914a7895aff23a8e720"
+      }
+    },
+    "allOldWorkspacesAbsent": true,
+    "independentFreshOwnership": true,
+    "healthyOriginalPhotosRestoredByNewSelection": true,
+    "checkedAt": 1794074442.266031
+  },
+  "heldRetry": {
+    "record": {
+      "nonce": "E66E133A-A9CD-4DBA-B669-76FFC93F71D4",
+      "ordinal": 3,
+      "originals": {
+        "goals.json": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6NDIsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxODEsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ==",
+        "health-write-intent.json": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI3RUJBNDJGQS05NUU5LTQ2RTUtQjdDQi1BMDFFQjg0NDk0QTkiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9",
+        "meals.json": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZW1lYWxzIjo=",
+        "today.json": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDZUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9",
+        "water.json": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwibWwiOjEzN31d",
+        "workouts.json": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZXdvcmtvdXRzIjo="
+      },
+      "phase": "held",
+      "stage": "LumenData.restore-AAF9568C-33A1-475E-8D73-C3F17BF74093",
+      "uiCancelled": false,
+      "workerControlMatchesUI": true
+    },
+    "stage": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Shared/AppGroup/E300DD24-B5D1-4A6A-BF1B-E66173E3428B/LumenData.restore-AAF9568C-33A1-475E-8D73-C3F17BF74093",
+    "originalSource": {
+      "directory": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/84ED8534-145C-412A-9EB6-43157C789364/tmp/LumenBackupWork-v1-67013-465C14DE-6A0F-4939-91DB-0A19368BC04C",
+      "owner": {
+        "pid": 67013,
+        "version": 1,
+        "id": "465C14DE-6A0F-4939-91DB-0A19368BC04C"
+      },
+      "file": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/84ED8534-145C-412A-9EB6-43157C789364/tmp/LumenBackupWork-v1-67013-465C14DE-6A0F-4939-91DB-0A19368BC04C/selected-backup",
+      "bytes": 4992,
+      "sha256": "80d236abd21b33a3d012d3287a0606e699d53ddc18a9e4263a635cb899629078",
+      "identity": {
+        "st_ino": 45020501,
+        "st_dev": 16777233,
+        "st_mode": 33152,
+        "st_nlink": 1,
+        "st_size": 4992,
+        "st_mtime_ns": 1794074434815327963
+      }
+    },
+    "ownedWorkspaces": {
+      "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/84ED8534-145C-412A-9EB6-43157C789364/tmp/LumenBackupWork-v1-67013-E5932BEF-A1C7-4F4C-8389-6095F4F60351": {
+        "owner": {
+          "version": 1,
+          "id": "E5932BEF-A1C7-4F4C-8389-6095F4F60351",
+          "pid": 67013
+        },
+        "files": {
+          ".lumen-workspace-owner.json": {
+            "bytes": 69,
+            "sha256": "68798d85e03befecfd82e7d6efc37e915b533914734c99582034edfd79926de8",
+            "base64": "eyJ2ZXJzaW9uIjoxLCJpZCI6IkU1OTMyQkVGLUExQzctNEY0Qy04Mzg5LTYwOTVGNEY2MDM1MSIsInBpZCI6NjcwMTN9"
+          },
+          "photo-0.jpg": {
+            "bytes": 910,
+            "sha256": "12ad2783f7ecd9fb2252dff7c79781d92d2a52f637c33d7f46a60fdb1ef6f4e3",
+            "base64": "/9j/4AAQSkZJRgABAQAA2ADYAAD/4QCMRXhpZgAATU0AKgAAAAgABQESAAMAAAABAAEAAAEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAABAAIAAIdpAAQAAAABAAAAWgAAAAAAAADYAAAAAQAAANgAAAABAAOgAQADAAAAAQABAACgAgAEAAAAAQAAAEigAwAEAAAAAQAAADAAAAAA/+0AOFBob3Rvc2hvcCAzLjAAOEJJTQQEAAAAAAAAOEJJTQQlAAAAAAAQ1B2M2Y8AsgTpgAmY7PhCfv/AABEIADAASAMBIgACEQEDEQH/xAAfAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgv/xAC1EAACAQMDAgQDBQUEBAAAAX0BAgMABBEFEiExQQYTUWEHInEUMoGRoQgjQrHBFVLR8CQzYnKCCQoWFxgZGiUmJygpKjQ1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4eLj5OXm5+jp6vHy8/T19vf4+fr/xAAfAQADAQEBAQEBAQEBAAAAAAAAAQIDBAUGBwgJCgv/xAC1EQACAQIEBAMEBwUEBAABAncAAQIDEQQFITEGEkFRB2FxEyIygQgUQpGhscEJIzNS8BVictEKFiQ04SXxFxgZGiYnKCkqNTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2dri4+Tl5ufo6ery8/T19vf4+fr/2wBDAAEBAQEBAQIBAQIDAgICAwQDAwMDBAYEBAQEBAYHBgYGBgYGBwcHBwcHBwcICAgICAgJCQkJCQsLCwsLCwsLCwv/2wBDAQICAgMDAwUDAwULCAYICwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwv/3QAEAAX/2gAMAwEAAhEDEQA/APUKKKK/pw/xzCiiigAooooAKKKKACiiigD/0PUKKKK/pw/xzCiiigAooooAKKKKACiiigD/0fUKKKK/pw/xzCiiigAooooAKKKKACiiigD/2Q=="
+          },
+          "photo-1.jpg": {
+            "bytes": 913,
+            "sha256": "4aeb340f233dfbfe59066886f6326e2c393dfd27596eb914a7895aff23a8e720",
+            "base64": "/9j/4AAQSkZJRgABAQAA2ADYAAD/4QCMRXhpZgAATU0AKgAAAAgABQESAAMAAAABAAEAAAEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAABAAIAAIdpAAQAAAABAAAAWgAAAAAAAADYAAAAAQAAANgAAAABAAOgAQADAAAAAQABAACgAgAEAAAAAQAAAEigAwAEAAAAAQAAADAAAAAA/+0AOFBob3Rvc2hvcCAzLjAAOEJJTQQEAAAAAAAAOEJJTQQlAAAAAAAQ1B2M2Y8AsgTpgAmY7PhCfv/AABEIADAASAMBIgACEQEDEQH/xAAfAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgv/xAC1EAACAQMDAgQDBQUEBAAAAX0BAgMABBEFEiExQQYTUWEHInEUMoGRoQgjQrHBFVLR8CQzYnKCCQoWFxgZGiUmJygpKjQ1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4eLj5OXm5+jp6vHy8/T19vf4+fr/xAAfAQADAQEBAQEBAQEBAAAAAAAAAQIDBAUGBwgJCgv/xAC1EQACAQIEBAMEBwUEBAABAncAAQIDEQQFITEGEkFRB2FxEyIygQgUQpGhscEJIzNS8BVictEKFiQ04SXxFxgZGiYnKCkqNTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2dri4+Tl5ufo6ery8/T19vf4+fr/2wBDAAEBAQEBAQIBAQIDAgICAwQDAwMDBAYEBAQEBAYHBgYGBgYGBwcHBwcHBwcICAgICAgJCQkJCQsLCwsLCwsLCwv/2wBDAQICAgMDAwUDAwULCAYICwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwv/3QAEAAX/2gAMAwEAAhEDEQA/AP0gooor/Oc/0ECiiigAooooAKKKKACiiigD/9D9IKKKK/znP9BAooooAKKKKACiiigAooooA//R/SCiiiv85z/QQKKKKACiiigAooooAKKKKAP/2Q=="
+          }
+        },
+        "directories": [
+          "."
+        ]
+      },
+      "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/84ED8534-145C-412A-9EB6-43157C789364/tmp/LumenBackupWork-v1-67013-465C14DE-6A0F-4939-91DB-0A19368BC04C": {
+        "owner": {
+          "pid": 67013,
+          "version": 1,
+          "id": "465C14DE-6A0F-4939-91DB-0A19368BC04C"
+        },
+        "files": {
+          ".lumen-workspace-owner.json": {
+            "bytes": 69,
+            "sha256": "f36a9454af9cce5ec9bb24b57f4d233dca184ac4065c74cc1e4de1331dae42ca",
+            "base64": "eyJwaWQiOjY3MDEzLCJ2ZXJzaW9uIjoxLCJpZCI6IjQ2NUMxNERFLTZBMEYtNDkzOS05MURCLTBBMTkzNjhCQzA0QyJ9"
+          },
+          "selected-backup": {
+            "bytes": 4992,
+            "sha256": "80d236abd21b33a3d012d3287a0606e699d53ddc18a9e4263a635cb899629078",
+            "base64": "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTAyVDEyOjAwOjAwWiIsImZvcm1hdCI6Ikx1bWVuQmFja3VwIiwicGF5bG9hZCI6ImV5SmphR1ZqYTBsdWN5STZXMTBzSW1OdmJuWmxjbk5oZEdsdmJuTWlPbHRkTENKa2IyTjFiV1Z1ZEhNaU9sdGRMQ0puYjJGc2N5STZleUpoWTNScGRtVkRZV3hIYjJGc0lqbzJNREFzSW1GamRHbDJhWFI1VEdWMlpXd2lPaUp0YjJSbGNtRjBaU0lzSW1GblpTSTZNekFzSW1WNFpYSmphWE5sUjI5aGJFMXBiaUk2TXpBc0ltZHZZV3dpT2lKdFlXbHVkR0ZwYmlJc0ltaGxhV2RvZEVOdElqb3hOemdzSW5ObGVDSTZJblZ1YzNCbFkybG1hV1ZrSWl3aWMzUmhibVJIYjJGc0lqb3hNaXdpYzNSbGNFZHZZV3dpT2pFd01EQXdMQ0ozWldsbmFIUkxaeUk2TnpWOUxDSm9ZV0pwZEhNaU9sdGRMQ0pwYlhCdmNuUmxaRVJoZVhNaU9sdGRMQ0pwYlhCdmNuUnpJanBiWFN3aWJXVmhiSE1pT2x0N0ltUmhkR1VpT2lJeU1ESTJMVEV4TFRBeVZERXlPakF3T2pBd1dpSXNJbWxrSWpvaWMzbHVkR2hsZEdsakxXMWhkSEpwZUMxdFpXRnNMV0VpTENKcGRHVnRjeUk2VzEwc0ltNXZkR1VpT2lKVGVXNTBhR1YwYVdNZ1ptbHljM1FnYldWaGJDNGlMQ0p3YUc5MGIwbEVJam9pYzNsdWRHaGxkR2xqTFcxaGRISnBlQzF3YUc5MGJ5MWhJaXdpYzI5MWNtTmxJam9pYldGdWRXRnNJaXdpZEhsd1pTSTZJbXgxYm1Ob0luMHNleUprWVhSbElqb2lNakF5TmkweE1TMHdNbFF4TXpvd01Eb3dNRm9pTENKcFpDSTZJbk41Ym5Sb1pYUnBZeTF0WVhSeWFYZ3RiV1ZoYkMxaUlpd2lhWFJsYlhNaU9sdGRMQ0p1YjNSbElqb2lVM2x1ZEdobGRHbGpJSE5sWTI5dVpDQnRaV0ZzTGlJc0luQm9iM1J2U1VRaU9pSnplVzUwYUdWMGFXTXRiV0YwY21sNExYQm9iM1J2TFdJaUxDSnpiM1Z5WTJVaU9pSnRZVzUxWVd3aUxDSjBlWEJsSWpvaWMyNWhZMnNpZlYwc0luQmxjbk52Ym1Gc1EyOXVkR1Y0ZENJNmV5SmhiR3hsY21kcFpYTWlPaUlpTENKbWIyTjFjeUk2SWlJc0ltWnZiMlJRY21WbVpYSmxibU5sY3lJNklpSXNJbWx1WTJ4MVpHVkpia0Z6YzJsemRHRnVkQ0k2Wm1Gc2MyVXNJbXhwYldsMFlYUnBiMjV6SWpvaUlpd2libTkwWlhNaU9pSWlMQ0p6WTJobFpIVnNaU0k2SWlKOUxDSndhRzkwYjNNaU9uc2ljM2x1ZEdobGRHbGpMVzFoZEhKcGVDMXdhRzkwYnkxaElqb2lYQzg1YWx3dk5FRkJVVk5yV2twU1owRkNRVkZCUVRKQlJGbEJRVVJjTHpSUlEwMVNXR2h3V21kQlFWUlZNRUZMWjBGQlFVRm5RVUpSUlZOQlFVMUJRVUZCUWtGQlJVRkJRVVZoUVVGVlFVRkJRVUpCUVVGQlUyZEZZa0ZCVlVGQlFVRkNRVUZCUVZWblJXOUJRVTFCUVVGQlFrRkJTVUZCU1dSd1FVRlJRVUZCUVVKQlFVRkJWMmRCUVVGQlFVRkJRVVJaUVVGQlFVRlJRVUZCVG1kQlFVRkJRa0ZCVDJkQlVVRkVRVUZCUVVGUlFVSkJRVU5uUVdkQlJVRkJRVUZCVVVGQlFVVnBaMEYzUVVWQlFVRkJRVkZCUVVGRVFVRkJRVUZCWEM4ck1FRlBSa0p2WWpOU2RtTXlhSFpqUTBGNlRHcEJRVTlGU2twVVVWRkZRVUZCUVVGQlFVRlBSVXBLVkZGUmJFRkJRVUZCUVVGUk1VSXlUVEpaT0VGeloxUndaMEZ0V1RkUWFFTm1kbHd2UVVGQ1JVbEJSRUZCVTBGTlFrbG5RVU5GVVVWRVJWRklYQzk0UVVGbVFVRkJRa0pSUlVKQlVVVkNRVkZCUVVGQlFVRkJRVUZCUVZGSlJFSkJWVWRDZDJkS1EyZDJYQzk0UVVNeFJVRkJRMEZSVFVSQloxRkVRbEZWUlVKQlFVRkJXREJDUVdkTlFVSkNSVVpGYVVWNFVWRlpWRlZYUlVoSmJrVlZUVzlIVW05UloycFJja2hDUmxaTVVqaERVWHBaYmt0RFExRnZWMFo0WjFwSGFWVnRTbmxuY0V0cVVURk9hbU0wVDFSd1JGSkZWa2RTTUdoS1UyeE9WVlpXV2xoWFJteGhXVEpTYkZwdFpHOWhWM0I2WkVoV01tUXphRFZsYjA5RmFGbGhTR2xKYlV0cmNFOVZiRnBoV0cxS2JXRnZjVTlyY0dGaGJuRkxiWEZ6Y2s4d2RHSmhNM1ZNYlRaM2MxQkZlR05pU0hsTmJrc3dkRkJWTVdSaVdESk9ibUUwWlV4cU5VOVliVFVyYW5BMmRraDVPRnd2VkRFNWRtWTBLMlp5WEM5NFFVRm1RVkZCUkVGUlJVSkJVVVZDUVZGRlFrRkJRVUZCUVVGQlFWRkpSRUpCVlVkQ2QyZEtRMmQyWEM5NFFVTXhSVkZCUTBGUlNVVkNRVTFGUW5kVlJVSkJRVUpCYm1OQlFWRkpSRVZSVVVaSlZFVkhSV3RHVWtJeVJuaEZlVWw1WjFGblZWRndSMmh6WTBWS1NYcE9VemhDVm1samRFVkxSbWxSTURSVFdIaEdlR2RhUjJsWmJrdERhM0ZPVkZrelQwUnJObEV3VWtaU2EyUkpVMVZ3VkZaR1ZsZFdNV2hhVjIxT2ExcFhXbTVoUjJ4eFl6TlNNV1J1WkRSbFdIRkRaelJUUm1odlpVbHBXWEZUYXpWVFZteHdaVmx0V25GcGJ6WlRiSEJ4Wlc5eFlYRjVjemRUTVhSeVpUUjFZbkpEZHpoVVJuaHpaa2w1WTNKVE1EbFVWakYwWmxreVpISnBOQ3RVYkRWMVptODJaWEo1T0Z3dlZERTVkbVkwSzJaeVhDOHlkMEpFUVVGRlFrRlJSVUpCVVVsQ1FWRkpSRUZuU1VOQmQxRkVRWGROUkVKQldVVkNRVkZGUWtGWlNFSm5XVWRDWjFsSFFuZGpTRUozWTBoQ2QyTkpRMEZuU1VOQlowcERVV3RLUTFGelRFTjNjMHhEZDNOTVEzZDJYQzh5ZDBKRVFWRkpRMEZuVFVSQmQxVkVRWGRWVEVOQldVbERkM05NUTNkelRFTjNjMHhEZDNOTVEzZHpURU4zYzB4RGQzTk1RM2R6VEVOM2MweERkM05NUTNkelRFTjNjMHhEZDNOTVEzZHpURU4zYzB4RGQzTk1RM2QyWEM4elVVRkZRVUZZWEM4eVowRk5RWGRGUVVGb1JVUkZVVUZjTDBGUVZVdExTMHRjTDNCM1hDOTRla05wYVdsblFXOXZiMjlCUzB0TFMwRkRhV2xwWjBSY0x6QlFWVXRMUzB0Y0wzQjNYQzk0ZWtOcGFXbG5RVzl2YjI5QlMwdExTMEZEYVdscFowUmNMekJtVlV0TFMwdGNMM0IzWEM5NGVrTnBhV2xuUVc5dmIyOUJTMHRMUzBGRGFXbHBaMFJjTHpKUlBUMGlMQ0p6ZVc1MGFHVjBhV010YldGMGNtbDRMWEJvYjNSdkxXSWlPaUpjTHpscVhDODBRVUZSVTJ0YVNsSm5RVUpCVVVGQk1rRkVXVUZCUkZ3dk5GRkRUVkpZYUhCYVowRkJWRlV3UVV0blFVRkJRV2RCUWxGRlUwRkJUVUZCUVVGQ1FVRkZRVUZCUldGQlFWVkJRVUZCUWtGQlFVRlRaMFZpUVVGVlFVRkJRVUpCUVVGQlZXZEZiMEZCVFVGQlFVRkNRVUZKUVVGSlpIQkJRVkZCUVVGQlFrRkJRVUZYWjBGQlFVRkJRVUZCUkZsQlFVRkJRVkZCUVVGT1owRkJRVUZDUVVGUFowRlJRVVJCUVVGQlFWRkJRa0ZCUTJkQlowRkZRVUZCUVVGUlFVRkJSV2xuUVhkQlJVRkJRVUZCVVVGQlFVUkJRVUZCUVVGY0x5c3dRVTlHUW05aU0xSjJZekpvZG1ORFFYcE1ha0ZCVDBWS1NsUlJVVVZCUVVGQlFVRkJRVTlGU2twVVVWRnNRVUZCUVVGQlFWRXhRakpOTWxrNFFYTm5WSEJuUVcxWk4xQm9RMloyWEM5QlFVSkZTVUZFUVVGVFFVMUNTV2RCUTBWUlJVUkZVVWhjTDNoQlFXWkJRVUZDUWxGRlFrRlJSVUpCVVVGQlFVRkJRVUZCUVVGQlVVbEVRa0ZWUjBKM1owcERaM1pjTDNoQlF6RkZRVUZEUVZGTlJFRm5VVVJDVVZWRlFrRkJRVUZZTUVKQlowMUJRa0pGUmtWcFJYaFJVVmxVVlZkRlNFbHVSVlZOYjBkU2IxRm5hbEZ5U0VKR1ZreFNPRU5SZWxsdVMwTkRVVzlYUm5obldrZHBWVzFLZVdkd1MycFJNVTVxWXpSUFZIQkVVa1ZXUjFJd2FFcFRiRTVWVmxaYVdGZEdiR0ZaTWxKc1dtMWtiMkZYY0hwa1NGWXlaRE5vTldWdlQwVm9XV0ZJYVVsdFMydHdUMVZzV21GWWJVcHRZVzl4VDJ0d1lXRnVjVXR0Y1hOeVR6QjBZbUV6ZFV4dE5uZHpVRVY0WTJKSWVVMXVTekIwVUZVeFpHSllNazV1WVRSbFRHbzFUMWh0TlN0cWNEWjJTSGs0WEM5VU1UbDJaalFyWm5KY0wzaEJRV1pCVVVGRVFWRkZRa0ZSUlVKQlVVVkNRVUZCUVVGQlFVRkJVVWxFUWtGVlIwSjNaMHBEWjNaY0wzaEJRekZGVVVGRFFWRkpSVUpCVFVWQ2QxVkZRa0ZCUWtGdVkwRkJVVWxFUlZGUlJrbFVSVWRGYTBaU1FqSkdlRVY1U1hsblVXZFZVWEJIYUhOalJVcEplazVUT0VKV2FXTjBSVXRHYVZFd05GTlllRVo0WjFwSGFWbHVTME5yY1U1VVdUTlBSR3MyVVRCU1JsSnJaRWxUVlhCVVZrWldWMVl4YUZwWGJVNXJXbGRhYm1GSGJIRmpNMUl4Wkc1a05HVlljVU5uTkZOR2FHOWxTV2xaY1ZOck5WTldiSEJsV1cxYWNXbHZObE5zY0hGbGIzRmhjWGx6TjFNeGRISmxOSFZpY2tOM09GUkdlSE5tU1hsamNsTXdPVlJXTVhSbVdUSmtjbWswSzFSc05YVm1ielpsY25rNFhDOVVNVGwyWmpRclpuSmNMekozUWtSQlFVVkNRVkZGUWtGUlNVSkJVVWxFUVdkSlEwRjNVVVJCZDAxRVFrRlpSVUpCVVVWQ1FWbElRbWRaUjBKbldVZENkMk5JUW5kalNFSjNZMGxEUVdkSlEwRm5Ta05SYTBwRFVYTk1RM2R6VEVOM2MweERkM1pjTHpKM1FrUkJVVWxEUVdkTlJFRjNWVVJCZDFWTVEwRlpTVU4zYzB4RGQzTk1RM2R6VEVOM2MweERkM05NUTNkelRFTjNjMHhEZDNOTVEzZHpURU4zYzB4RGQzTk1RM2R6VEVOM2MweERkM05NUTNkelRFTjNjMHhEZDNaY0x6TlJRVVZCUVZoY0x6Sm5RVTFCZDBWQlFXaEZSRVZSUVZ3dlFWQXdaMjl2YjNKY0wwOWpYQzh3UlVOcGFXbG5RVzl2YjI5QlMwdExTMEZEYVdscFowUmNMemxFT1VsTFMwdExYQzk2YmxBNVFrRnZiMjl2UVV0TFMwdEJRMmxwYVdkQmIyOXZiMEZjTDF3dlVsd3ZVME5wYVdsMk9EVjZYQzlSVVV0TFMwdEJRMmxwYVdkQmIyOXZiMEZMUzB0TFFWQmNMekpSUFQwaWZTd2ljSEp2Wm1sc1pTSTZleUpqYUhKdmJtOTBlWEJsSWpvaWFXNTBaWEp0WldScFlYUmxJaXdpYVhOVGRXSnpZM0pwWW1Wa0lqcG1ZV3h6WlN3aWJtRnRaU0k2SWlJc0ltOXVZbTloY21ScGJtZEViMjVsSWpwbVlXeHpaU3dpYzJ4bFpYQk9aV1ZrSWpveU9UUXdNQ3dpYzJ4bFpYQk9aV1ZrUTI5dVptbGtaVzVqWlNJNk1DNHpMQ0ozWVd0bFIyOWhiQ0k2ZXlKb2IzVnlJam8zTENKdGFXNTFkR1VpT2pCOWZTd2ljMnhsWlhBaU9sdGRMQ0p6ZVcxd2RHOXRjeUk2VzEwc0luZGhkR1Z5SWpwYmV5SmtZWFJsSWpvaU1qQXlOaTB4TVMwd01sUXhNam93TURvd01Gb2lMQ0pwWkNJNkluTjViblJvWlhScFl5MXRZWFJ5YVhndGQyRjBaWElpTENKdGJDSTZNalEyZlYwc0luZHZjbXR2ZFhSeklqcGJYWDA9Iiwic2hhMjU2IjoiY2U1MjgyZDE0NmE3MWZlNTQ3ZGNkMTQ2Y2MxNGI3ZTllNzI3ZDIyZjAzZWJmNWI2NmM3ODgyODlmMTY3NjdiNCIsInZlcnNpb24iOjF9"
+          }
+        },
+        "directories": [
+          "."
+        ]
+      }
+    },
+    "privateMetadata": {
+      ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/device-intent.json": {
+        "st_ino": 45019692,
+        "st_dev": 16777233,
+        "st_mode": 33188,
+        "st_nlink": 1,
+        "st_size": 123,
+        "st_mtime_ns": 1794074263250478248
+      },
+      ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/manifest.json": {
+        "st_ino": 45020243,
+        "st_dev": 16777233,
+        "st_mode": 33188,
+        "st_nlink": 1,
+        "st_size": 108,
+        "st_mtime_ns": 1794074395605748355
+      },
+      ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/meals.json": {
+        "st_ino": 45019688,
+        "st_dev": 16777233,
+        "st_mode": 33188,
+        "st_nlink": 1,
+        "st_size": 144,
+        "st_mtime_ns": 1794074263251620959
+      },
+      ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/workouts.json": {
+        "st_ino": 45019685,
+        "st_dev": 16777233,
+        "st_mode": 33188,
+        "st_nlink": 1,
+        "st_size": 185,
+        "st_mtime_ns": 1794074263250203705
+      }
+    }
+  },
+  "releasedRetry": {
+    "observedRecord": {
+      "nonce": "E66E133A-A9CD-4DBA-B669-76FFC93F71D4",
+      "ordinal": 3,
+      "originals": {
+        "goals.json": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6NDIsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxODEsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ==",
+        "health-write-intent.json": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI3RUJBNDJGQS05NUU5LTQ2RTUtQjdDQi1BMDFFQjg0NDk0QTkiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9",
+        "meals.json": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZW1lYWxzIjo=",
+        "today.json": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDZUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9",
+        "water.json": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwibWwiOjEzN31d",
+        "workouts.json": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZXdvcmtvdXRzIjo="
+      },
+      "phase": "held",
+      "stage": "LumenData.restore-AAF9568C-33A1-475E-8D73-C3F17BF74093",
+      "uiCancelled": false,
+      "workerControlMatchesUI": true
+    },
+    "afterNativeObservedAttachment": true,
+    "sameActualControl": true,
+    "privateMetadata": {
+      ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/device-intent.json": {
+        "st_ino": 45019692,
+        "st_dev": 16777233,
+        "st_mode": 33188,
+        "st_nlink": 1,
+        "st_size": 123,
+        "st_mtime_ns": 1794074263250478248
+      },
+      ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/manifest.json": {
+        "st_ino": 45020243,
+        "st_dev": 16777233,
+        "st_mode": 33188,
+        "st_nlink": 1,
+        "st_size": 108,
+        "st_mtime_ns": 1794074395605748355
+      },
+      ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/meals.json": {
+        "st_ino": 45019688,
+        "st_dev": 16777233,
+        "st_mode": 33188,
+        "st_nlink": 1,
+        "st_size": 144,
+        "st_mtime_ns": 1794074263251620959
+      },
+      ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/workouts.json": {
+        "st_ino": 45019685,
+        "st_dev": 16777233,
+        "st_mode": 33188,
+        "st_nlink": 1,
+        "st_size": 185,
+        "st_mtime_ns": 1794074263250203705
+      }
+    }
+  },
+  "success": {
+    "treeAfterCommit": {
+      "chat.json": {
+        "bytes": 2,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "base64": "W10="
+      },
+      "conversations.json": {
+        "bytes": 2,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "base64": "W10="
+      },
+      "workouts.json": {
+        "bytes": 2,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "base64": "W10="
+      },
+      "goals.json": {
+        "bytes": 178,
+        "sha256": "142f89cee16338829e91bfe76c5c34ea249afb4bb338d987ee708ada70b4656c",
+        "base64": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6NDIsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxODEsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ=="
+      },
+      "sleep.json": {
+        "bytes": 2,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "base64": "W10="
+      },
+      "today.json": {
+        "bytes": 123,
+        "sha256": "317a0e832157fe13dc5f54818e7477cf5a0d1e0fa815d822843ec4ff749ee0e8",
+        "base64": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDZUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9"
+      },
+      "meals.json": {
+        "bytes": 376,
+        "sha256": "c7dd1bc6c916287b44567c711240dfc210d6e16363f4e7c86fff9c375a6f57da",
+        "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtbWF0cml4LW1lYWwtYSIsIml0ZW1zIjpbXSwibm90ZSI6IlN5bnRoZXRpYyBmaXJzdCBtZWFsLiIsInBob3RvSUQiOiIwMzMyMEMwNy1ERTczLTQ0OTMtOTkxOS1EMzVCQkRDMzkwMjkiLCJzb3VyY2UiOiJtYW51YWwiLCJ0eXBlIjoibHVuY2gifSx7ImRhdGUiOiIyMDI2LTExLTAyVDEzOjAwOjAwWiIsImlkIjoic3ludGhldGljLW1hdHJpeC1tZWFsLWIiLCJpdGVtcyI6W10sIm5vdGUiOiJTeW50aGV0aWMgc2Vjb25kIG1lYWwuIiwicGhvdG9JRCI6IkZBNUFFQ0E4LUFDOEYtNDc0MC1BRTAzLTdENzE5NzVBNEUwNCIsInNvdXJjZSI6Im1hbnVhbCIsInR5cGUiOiJzbmFjayJ9XQ=="
+      },
+      "water.json": {
+        "bytes": 72,
+        "sha256": "1dc7d921432b620cf0fcd72262f29a4ffe06902fcd4d7e3cb546d370e3908291",
+        "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwibWwiOjEzN31d"
+      },
+      "conversation-selection.json": {
+        "bytes": 2,
+        "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "base64": "e30="
+      },
+      "habits.json": {
+        "bytes": 3170,
+        "sha256": "b39cf33e5de80e7c9118ded2d812db731cfceedd19c18c8bbafb9623fdebe852",
+        "base64": "W3sib2Zmc2V0IjoxODAwLCJkZXRhaWwiOiIxMCBtaW4gb2YgZGF5bGlnaHQgd2l0aGluIDMwIG1pbiBvZiB3YWtpbmcgYW5jaG9ycyB5b3VyIGNsb2NrLiIsInRpdGxlIjoiR2V0IGJyaWdodCBsaWdodCIsImlkIjoibGlnaHQiLCJpc0VuYWJsZWQiOnRydWUsImFuY2hvciI6Indha2VQbHVzIiwiaWNvbiI6InN1bi5tYXguZmlsbCIsImRvbmVUb2RheSI6ZmFsc2V9LHsib2Zmc2V0IjozNjAwMCwiZGV0YWlsIjoiTm8gY2FmZmVpbmUgd2l0aGluIDEwaCBvZiBiZWQg4oCUIGhhbGYtbGlmZSBpcyB+NmguIiwidGl0bGUiOiJDYWZmZWluZSBjdXRvZmYiLCJpZCI6ImNhZmZlaW5lIiwiaXNFbmFibGVkIjp0cnVlLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJpY29uIjoiY3VwLmFuZC5zYXVjZXIuZmlsbCIsImRvbmVUb2RheSI6ZmFsc2V9LHsib2Zmc2V0IjoyMTYwMCwiZGV0YWlsIjoiMjArIG1pbi4gRmluaXNoIGludGVuc2Ugd29ya291dHMgM2grIGJlZm9yZSBiZWQuIiwidGl0bGUiOiJNb3ZlIHlvdXIgYm9keSIsImlkIjoiZXhlcmNpc2UiLCJpc0VuYWJsZWQiOnRydWUsImFuY2hvciI6Indha2VQbHVzIiwiaWNvbiI6ImZpZ3VyZS5ydW4iLCJkb25lVG9kYXkiOmZhbHNlfSx7Im9mZnNldCI6MjUyMDAsImRldGFpbCI6IklmIG5hcHBpbmc6IDIw4oCTMzAgbWluLCBiZWZvcmUgeW91ciBkaXAgZW5kcy4gTm8gbGF0ZSBuYXBzLiIsInRpdGxlIjoiU21hcnQgbmFwIHdpbmRvdyIsImlkIjoibmFwIiwiaXNFbmFibGVkIjp0cnVlLCJhbmNob3IiOiJ3YWtlUGx1cyIsImljb24iOiJtb29uLnp6ei5maWxsIiwiZG9uZVRvZGF5IjpmYWxzZX0seyJvZmZzZXQiOjE0NDAwLCJkZXRhaWwiOiJBbGNvaG9sIGZyYWdtZW50cyBzbGVlcCBldmVuIHdoZW4gaXQgc3BlZWRzIG9uc2V0LiIsInRpdGxlIjoiU2tpcCBuaWdodGNhcCIsImlkIjoiYWxjb2hvbCIsImlzRW5hYmxlZCI6dHJ1ZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaWNvbiI6IndpbmVnbGFzcyIsImRvbmVUb2RheSI6ZmFsc2V9LHsib2Zmc2V0IjoxMDgwMCwiZGV0YWlsIjoiRmluaXNoIGxhcmdlIG1lYWxzIDNoIGJlZm9yZSBiZWQ7IGxpZ2h0IHNuYWNrIE9LLiIsInRpdGxlIjoiTGFzdCBiaWcgbWVhbCIsImlkIjoibWVhbCIsImlzRW5hYmxlZCI6dHJ1ZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaWNvbiI6ImZvcmsua25pZmUiLCJkb25lVG9kYXkiOmZhbHNlfSx7Im9mZnNldCI6NzIwMCwiZGV0YWlsIjoiTG93ZXIgYnJpZ2h0bmVzcyArIE5pZ2h0IFNoaWZ0IDJoIGJlZm9yZSBiZWQuIiwidGl0bGUiOiJEaW0gc2NyZWVucyIsImlkIjoic2NyZWVucyIsImlzRW5hYmxlZCI6dHJ1ZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaWNvbiI6ImlwaG9uZS5nZW4yIiwiZG9uZVRvZGF5IjpmYWxzZX0seyJvZmZzZXQiOjU0MDAsImRldGFpbCI6Ik92ZXJoZWFkIG9mZiwgbGFtcHMgbG93IOKAlCBsaWdodCBkZWxheXMgbWVsYXRvbmluLiIsInRpdGxlIjoiRGltIHRoZSBsaWdodHMiLCJpZCI6ImxpZ2h0cyIsImlzRW5hYmxlZCI6dHJ1ZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaWNvbiI6ImxpZ2h0YnVsYi5maWxsIiwiZG9uZVRvZGF5IjpmYWxzZX0seyJvZmZzZXQiOjI3MDAsImRldGFpbCI6IjIw4oCTMzAgbWluIHJpdHVhbDogc2hvd2VyLCBzdHJldGNoLCByZWFkLCBicmVhdGhlLiIsInRpdGxlIjoiV2luZCBkb3duIiwiaWQiOiJ3aW5kZG93biIsImlzRW5hYmxlZCI6dHJ1ZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaWNvbiI6IndpbmQiLCJkb25lVG9kYXkiOmZhbHNlfSx7Im9mZnNldCI6MCwiZGV0YWlsIjoiSGl0IHlvdXIgbWVsYXRvbmluIHdpbmRvdyDigJQgdGhlIGVhc2llc3QgZmFsbGluZy1hc2xlZXAuIiwidGl0bGUiOiJJbiBiZWQgb24gdGltZSIsImlkIjoiYmVkdGltZSIsImlzRW5hYmxlZCI6dHJ1ZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaWNvbiI6ImJlZC5kb3VibGUuZmlsbCIsImRvbmVUb2RheSI6ZmFsc2V9LHsib2Zmc2V0IjoxODAwLCJkZXRhaWwiOiI2NeKAkzY4wrBGIFwvIDE44oCTMjDCsEMsIGJsYWNrb3V0IGRhcmssIHF1aWV0LiIsInRpdGxlIjoiQ29vbCAmIGRhcmsgcm9vbSIsImlkIjoiY29vbCIsImlzRW5hYmxlZCI6dHJ1ZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaWNvbiI6InRoZXJtb21ldGVyLnNub3dmbGFrZSIsImRvbmVUb2RheSI6ZmFsc2V9LHsib2Zmc2V0IjowLCJkZXRhaWwiOiJTYW1lIHdha2UgwrEzMCBtaW4g4oCUIGV2ZW4gd2Vla2VuZHMuICMxIHJoeXRobSBsZXZlci4iLCJ0aXRsZSI6IkNvbnNpc3RlbnQgd2FrZSIsImlkIjoiY29uc2lzdGVudCIsImlzRW5hYmxlZCI6dHJ1ZSwiYW5jaG9yIjoid2FrZVBsdXMiLCJpY29uIjoiYWxhcm0uZmlsbCIsImRvbmVUb2RheSI6ZmFsc2V9LHsib2Zmc2V0IjozMDAsImRldGFpbCI6IldhdGVyICsgbGlnaHQgYmVmb3JlIGNvZmZlZSBib29zdHMgYWxlcnRuZXNzLiIsInRpdGxlIjoiTW9ybmluZyBoeWRyYXRpb24iLCJpZCI6Imh5ZHJhdGlvbiIsImlzRW5hYmxlZCI6dHJ1ZSwiYW5jaG9yIjoid2FrZVBsdXMiLCJpY29uIjoiZHJvcC5maWxsIiwiZG9uZVRvZGF5IjpmYWxzZX0seyJvZmZzZXQiOjE4MDAwLCJkZXRhaWwiOiIyLW1pbiB3b3JyeSBsaXN0IGFmdGVyIGRpbm5lciBjbGVhcnMgbmlnaHQgcnVtaW5hdGlvbi4iLCJ0aXRsZSI6IkJyYWluIGR1bXAiLCJpZCI6InN0cmVzcyIsImlzRW5hYmxlZCI6dHJ1ZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaWNvbiI6InBlbmNpbC5hbmQubGlzdC5jbGlwYm9hcmQiLCJkb25lVG9kYXkiOmZhbHNlfSx7Im9mZnNldCI6MTQ0MDAsImRldGFpbCI6IlN0aW11bGFudCDigJQgYXZvaWQgd2l0aGluIDRoIG9mIGJlZC4iLCJ0aXRsZSI6Ik5vIGxhdGUgbmljb3RpbmUiLCJpZCI6Im5pY290aW5lIiwiaXNFbmFibGVkIjpmYWxzZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaWNvbiI6InNtb2tlLmZpbGwiLCJkb25lVG9kYXkiOmZhbHNlfSx7Im9mZnNldCI6MTQ0MDAsImRldGFpbCI6IkEgZHVzayB3YWxrIHNoYXJwZW5zIERMTU8gdGltaW5nLiIsInRpdGxlIjoiRXZlbmluZyBsaWdodCB3YWxrIiwiaWQiOiJzdW5zZXQiLCJpc0VuYWJsZWQiOmZhbHNlLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJpY29uIjoic3Vuc2V0LmZpbGwiLCJkb25lVG9kYXkiOmZhbHNlfV0="
+      },
+      "profile.json": {
+        "bytes": 184,
+        "sha256": "ea8bbf7298a5eceecd1c0d64998ebcd9f56f9933a8200f174153268f1d69cac0",
+        "base64": "eyJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwic2xlZXBOZWVkIjoyOTQwMCwibmFtZSI6IlN5bnRoZXRpYyBiYWNrdXAgYmFzZWxpbmUiLCJpc1N1YnNjcmliZWQiOmZhbHNlLCJzbGVlcE5lZWRDb25maWRlbmNlIjowLjMsIm9uYm9hcmRpbmdEb25lIjp0cnVlLCJ3YWtlR29hbCI6eyJob3VyIjo3LCJtaW51dGUiOjB9fQ=="
+      },
+      "health-write-intent.json": {
+        "bytes": 123,
+        "sha256": "acda37eedf0d5471b4abb4762fec3c5b38d69752020f876d24e8972d3deac3ae",
+        "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiJDNjIwNEUyQS1GNEZGLTRBQTItOTRFRC1DMzMwMDNBQ0QxODIiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+      },
+      ".health-recovery-history/0B45A8C1-92A3-4800-8D87-6146808E5F6D.json": {
+        "bytes": 1068,
+        "sha256": "eabd741b978a52a301ce635141f2dc00935ffe36067b34cf0f6c1fd9a89338e7",
+        "base64": "eyJkb21haW5zIjpbIm1lYWxzIiwid29ya291dHMiXSwiZmlsZVNvdXJjZSI6eyJieXRlQ291bnQiOjQ5OTIsImZpbGVOYW1lIjoiTHVtZW4tYmFja3VwLWhlYWx0aC1tYXRyaXgtdHdvLWxlZ2FjeS5qc29uIiwiZm9ybWF0IjoibGVnYWN5SlNPTkJhY2t1cCIsInNoYTI1NiI6IjgwZDIzNmFiZDIxYjMzYTNkMDEyZDMyODdhMDYwNmU2OTlkNTNkZGMxOGE5ZTQyNjNhNjM1Y2I4OTk2MjkwNzgifSwib21pdHRlZFBob3RvQ291bnQiOjAsInBob3RvRGlnZXN0cyI6eyJwaG90b3NcLzAzMzIwQzA3LURFNzMtNDQ5My05OTE5LUQzNUJCREMzOTAyOS5qcGciOiIxMmFkMjc4M2Y3ZWNkOWZiMjI1MmRmZjdjNzk3ODFkOTJkMmE1MmY2MzdjMzNkN2Y0NmE2MGZkYjFlZjZmNGUzIiwicGhvdG9zXC9GQTVBRUNBOC1BQzhGLTQ3NDAtQUUwMy03RDcxOTc1QTRFMDQuanBnIjoiNGFlYjM0MGYyMzNkZmJmZTU5MDY2ODg2ZjYzMjZlMmMzOTNkZmQyNzU5NmViOTE0YTc4OTVhZmYyM2E4ZTcyMCJ9LCJyZWNvcmREaWdlc3RzIjp7Im1lYWxzLmpzb24iOiJjN2RkMWJjNmM5MTYyODdiNDQ1NjdjNzExMjQwZGZjMjEwZDZlMTYzNjNmNGU3Yzg2ZmZmOWMzNzVhNmY1N2RhIiwid29ya291dHMuanNvbiI6IjRmNTNjZGExOGMyYmFhMGMwMzU0YmI1ZjlhM2VjYmU1ZWQxMmFiNGQ4ZTExYmE4NzNjMmYxMTE2MTIwMmI5NDUifSwicmVjb3ZlcmVkQXQiOiIyMDI2LTExLTA3VDE4OjAxOjQ3WiIsInJldmlld2VkUGhvdG9zIjp7InN5bnRoZXRpYy1tYXRyaXgtcGhvdG8tYSI6eyJieXRlQ291bnQiOjkxMCwic2hhMjU2IjoiMTJhZDI3ODNmN2VjZDlmYjIyNTJkZmY3Yzc5NzgxZDkyZDJhNTJmNjM3YzMzZDdmNDZhNjBmZGIxZWY2ZjRlMyJ9LCJzeW50aGV0aWMtbWF0cml4LXBob3RvLWIiOnsiYnl0ZUNvdW50Ijo5MTMsInNoYTI1NiI6IjRhZWIzNDBmMjMzZGZiZmU1OTA2Njg4NmY2MzI2ZTJjMzkzZGZkMjc1OTZlYjkxNGE3ODk1YWZmMjNhOGU3MjAifX0sInNvdXJjZSI6InNlbGVjdGVkLWZpbGU6ODBkMjM2YWJkMjFiMzNhM2QwMTJkMzI4N2EwNjA2ZTY5OWQ1M2RkYzE4YTllNDI2M2E2MzVjYjg5OTYyOTA3OCJ9"
+      },
+      ".health-recovery/7265842D-D01F-478D-9C88-F269606BCFB2/workouts.json": {
+        "bytes": 32,
+        "sha256": "b8e333df638e682f0e77ffa5df87dfb79f5960039fdcf298fbed9939e6e4e34b",
+        "base64": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZXdvcmtvdXRzIjo="
+      },
+      ".health-recovery/7265842D-D01F-478D-9C88-F269606BCFB2/device-intent.json": {
+        "bytes": 123,
+        "sha256": "7d68ba33f7c6336f30c6930576586f4de85f70c62c1e40fcf9cba1b79f4fd223",
+        "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI3RUJBNDJGQS05NUU5LTQ2RTUtQjdDQi1BMDFFQjg0NDk0QTkiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+      },
+      ".health-recovery/7265842D-D01F-478D-9C88-F269606BCFB2/meals.json": {
+        "bytes": 29,
+        "sha256": "29630893bbf2b28a8af82b4be6db321e0b8d89c362bf8c47bb697fee439f2e6d",
+        "base64": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZW1lYWxzIjo="
+      },
+      ".health-recovery/7265842D-D01F-478D-9C88-F269606BCFB2/manifest.json": {
+        "bytes": 108,
+        "sha256": "3a8cab00f7757d5dcf54d2d33aa44a4ccaabbe1174b80df041a6dc2a8fe8683a",
+        "base64": "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTA3VDE4OjAxOjUyWiIsImRvbWFpbnMiOlsibWVhbHMiLCJ3b3Jrb3V0cyJdLCJpbnRlbnQiOnRydWUsInBob3RvcyI6ZmFsc2UsInZlcnNpb24iOjF9"
+      },
+      ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/workouts.json": {
+        "bytes": 185,
+        "sha256": "a7e3f55c6c5e75d0b270c1a918742b4424a86bc359c972a3073532184db17f9c",
+        "base64": "W3siYWN0aXZlQ2Fsb3JpZXMiOjM1LCJkdXJhdGlvbiI6OTAwLCJlbmVyZ3lLbm93biI6dHJ1ZSwiaWQiOiJzeW50aGV0aWMtbXVsdGktemVybyIsImtpbmQiOiJzdHJlbmd0aCIsInNvdXJjZSI6Im1hbnVhbCIsInN0YXJ0IjoiMjAyNi0xMS0wMlQxMjowMDowMFoiLCJ0aXRsZSI6IkN1cnJlbnQgZWRpdGVkIHdvcmtvdXQifV0="
+      },
+      ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/device-intent.json": {
+        "bytes": 123,
+        "sha256": "7d68ba33f7c6336f30c6930576586f4de85f70c62c1e40fcf9cba1b79f4fd223",
+        "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI3RUJBNDJGQS05NUU5LTQ2RTUtQjdDQi1BMDFFQjg0NDk0QTkiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+      },
+      ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/meals.json": {
+        "bytes": 144,
+        "sha256": "9eec205ab83ed2466da007aaa29e3f18f8b4b5741f451c529ef7527ead443a68",
+        "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtY3VycmVudC1tZWFsIiwiaXRlbXMiOltdLCJub3RlIjoiS2VlcCB0aGlzIGN1cnJlbnQgbWVhbC4iLCJzb3VyY2UiOiJtYW51YWwiLCJ0eXBlIjoiYnJlYWtmYXN0In1d"
+      },
+      ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/manifest.json": {
+        "bytes": 108,
+        "sha256": "6681fc0b1795c3dec309aa6ae3140b3892dc3cb630553d7bd8f2ea2e7fb02f14",
+        "base64": "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTA3VDE3OjU5OjU1WiIsImRvbWFpbnMiOlsibWVhbHMiLCJ3b3Jrb3V0cyJdLCJpbnRlbnQiOnRydWUsInBob3RvcyI6ZmFsc2UsInZlcnNpb24iOjF9"
+      },
+      "photos/03320C07-DE73-4493-9919-D35BBDC39029.jpg": {
+        "bytes": 910,
+        "sha256": "12ad2783f7ecd9fb2252dff7c79781d92d2a52f637c33d7f46a60fdb1ef6f4e3",
+        "base64": "/9j/4AAQSkZJRgABAQAA2ADYAAD/4QCMRXhpZgAATU0AKgAAAAgABQESAAMAAAABAAEAAAEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAABAAIAAIdpAAQAAAABAAAAWgAAAAAAAADYAAAAAQAAANgAAAABAAOgAQADAAAAAQABAACgAgAEAAAAAQAAAEigAwAEAAAAAQAAADAAAAAA/+0AOFBob3Rvc2hvcCAzLjAAOEJJTQQEAAAAAAAAOEJJTQQlAAAAAAAQ1B2M2Y8AsgTpgAmY7PhCfv/AABEIADAASAMBIgACEQEDEQH/xAAfAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgv/xAC1EAACAQMDAgQDBQUEBAAAAX0BAgMABBEFEiExQQYTUWEHInEUMoGRoQgjQrHBFVLR8CQzYnKCCQoWFxgZGiUmJygpKjQ1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4eLj5OXm5+jp6vHy8/T19vf4+fr/xAAfAQADAQEBAQEBAQEBAAAAAAAAAQIDBAUGBwgJCgv/xAC1EQACAQIEBAMEBwUEBAABAncAAQIDEQQFITEGEkFRB2FxEyIygQgUQpGhscEJIzNS8BVictEKFiQ04SXxFxgZGiYnKCkqNTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2dri4+Tl5ufo6ery8/T19vf4+fr/2wBDAAEBAQEBAQIBAQIDAgICAwQDAwMDBAYEBAQEBAYHBgYGBgYGBwcHBwcHBwcICAgICAgJCQkJCQsLCwsLCwsLCwv/2wBDAQICAgMDAwUDAwULCAYICwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwv/3QAEAAX/2gAMAwEAAhEDEQA/APUKKKK/pw/xzCiiigAooooAKKKKACiiigD/0PUKKKK/pw/xzCiiigAooooAKKKKACiiigD/0fUKKKK/pw/xzCiiigAooooAKKKKACiiigD/2Q=="
+      },
+      "photos/FA5AECA8-AC8F-4740-AE03-7D71975A4E04.jpg": {
+        "bytes": 913,
+        "sha256": "4aeb340f233dfbfe59066886f6326e2c393dfd27596eb914a7895aff23a8e720",
+        "base64": "/9j/4AAQSkZJRgABAQAA2ADYAAD/4QCMRXhpZgAATU0AKgAAAAgABQESAAMAAAABAAEAAAEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAABAAIAAIdpAAQAAAABAAAAWgAAAAAAAADYAAAAAQAAANgAAAABAAOgAQADAAAAAQABAACgAgAEAAAAAQAAAEigAwAEAAAAAQAAADAAAAAA/+0AOFBob3Rvc2hvcCAzLjAAOEJJTQQEAAAAAAAAOEJJTQQlAAAAAAAQ1B2M2Y8AsgTpgAmY7PhCfv/AABEIADAASAMBIgACEQEDEQH/xAAfAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgv/xAC1EAACAQMDAgQDBQUEBAAAAX0BAgMABBEFEiExQQYTUWEHInEUMoGRoQgjQrHBFVLR8CQzYnKCCQoWFxgZGiUmJygpKjQ1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4eLj5OXm5+jp6vHy8/T19vf4+fr/xAAfAQADAQEBAQEBAQEBAAAAAAAAAQIDBAUGBwgJCgv/xAC1EQACAQIEBAMEBwUEBAABAncAAQIDEQQFITEGEkFRB2FxEyIygQgUQpGhscEJIzNS8BVictEKFiQ04SXxFxgZGiYnKCkqNTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2dri4+Tl5ufo6ery8/T19vf4+fr/2wBDAAEBAQEBAQIBAQIDAgICAwQDAwMDBAYEBAQEBAYHBgYGBgYGBwcHBwcHBwcICAgICAgJCQkJCQsLCwsLCwsLCwv/2wBDAQICAgMDAwUDAwULCAYICwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwv/3QAEAAX/2gAMAwEAAhEDEQA/AP0gooor/Oc/0ECiiigAooooAKKKKACiiigD/9D9IKKKK/znP9BAooooAKKKKACiiigAooooA//R/SCiiiv85z/QQKKKKACiiigAooooAKKKKAP/2Q=="
+      }
+    },
+    "receipt": {
+      "domains": [
+        "meals",
+        "workouts"
+      ],
+      "fileSource": {
+        "byteCount": 4992,
+        "fileName": "Lumen-backup-health-matrix-two-legacy.json",
+        "format": "legacyJSONBackup",
+        "sha256": "80d236abd21b33a3d012d3287a0606e699d53ddc18a9e4263a635cb899629078"
+      },
+      "omittedPhotoCount": 0,
+      "photoDigests": {
+        "photos/03320C07-DE73-4493-9919-D35BBDC39029.jpg": "12ad2783f7ecd9fb2252dff7c79781d92d2a52f637c33d7f46a60fdb1ef6f4e3",
+        "photos/FA5AECA8-AC8F-4740-AE03-7D71975A4E04.jpg": "4aeb340f233dfbfe59066886f6326e2c393dfd27596eb914a7895aff23a8e720"
+      },
+      "recordDigests": {
+        "meals.json": "c7dd1bc6c916287b44567c711240dfc210d6e16363f4e7c86fff9c375a6f57da",
+        "workouts.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "recoveredAt": "2026-11-07T18:01:47Z",
+      "reviewedPhotos": {
+        "synthetic-matrix-photo-a": {
+          "byteCount": 910,
+          "sha256": "12ad2783f7ecd9fb2252dff7c79781d92d2a52f637c33d7f46a60fdb1ef6f4e3"
+        },
+        "synthetic-matrix-photo-b": {
+          "byteCount": 913,
+          "sha256": "4aeb340f233dfbfe59066886f6326e2c393dfd27596eb914a7895aff23a8e720"
+        }
+      },
+      "source": "selected-file:80d236abd21b33a3d012d3287a0606e699d53ddc18a9e4263a635cb899629078"
+    },
+    "receiptAuditBeforeAck": {
+      "fullReceiptAuditedBeforeAck": true,
+      "healthyCurrentAndPrivatePriorExact": true,
+      "installedPhotoDigests": {
+        "photos/03320C07-DE73-4493-9919-D35BBDC39029.jpg": "12ad2783f7ecd9fb2252dff7c79781d92d2a52f637c33d7f46a60fdb1ef6f4e3",
+        "photos/FA5AECA8-AC8F-4740-AE03-7D71975A4E04.jpg": "4aeb340f233dfbfe59066886f6326e2c393dfd27596eb914a7895aff23a8e720"
+      }
+    },
+    "privateCopiesBeforeAck": {
+      "privateMetadata": {
+        ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/device-intent.json": {
+          "st_ino": 45019692,
+          "st_dev": 16777233,
+          "st_mode": 33188,
+          "st_nlink": 1,
+          "st_size": 123,
+          "st_mtime_ns": 1794074263250478248
+        },
+        ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/manifest.json": {
+          "st_ino": 45020243,
+          "st_dev": 16777233,
+          "st_mode": 33188,
+          "st_nlink": 1,
+          "st_size": 108,
+          "st_mtime_ns": 1794074395605748355
+        },
+        ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/meals.json": {
+          "st_ino": 45019688,
+          "st_dev": 16777233,
+          "st_mode": 33188,
+          "st_nlink": 1,
+          "st_size": 144,
+          "st_mtime_ns": 1794074263251620959
+        },
+        ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/workouts.json": {
+          "st_ino": 45019685,
+          "st_dev": 16777233,
+          "st_mode": 33188,
+          "st_nlink": 1,
+          "st_size": 185,
+          "st_mtime_ns": 1794074263250203705
+        },
+        ".health-recovery/7265842D-D01F-478D-9C88-F269606BCFB2/device-intent.json": {
+          "st_ino": 45019675,
+          "st_dev": 16777233,
+          "st_mode": 33188,
+          "st_nlink": 1,
+          "st_size": 123,
+          "st_mtime_ns": 1794074263250478248
+        },
+        ".health-recovery/7265842D-D01F-478D-9C88-F269606BCFB2/manifest.json": {
+          "st_ino": 45020883,
+          "st_dev": 16777233,
+          "st_mode": 33188,
+          "st_nlink": 1,
+          "st_size": 108,
+          "st_mtime_ns": 1794074512995908724
+        },
+        ".health-recovery/7265842D-D01F-478D-9C88-F269606BCFB2/meals.json": {
+          "st_ino": 45019693,
+          "st_dev": 16777233,
+          "st_mode": 33188,
+          "st_nlink": 1,
+          "st_size": 29,
+          "st_mtime_ns": 1794074263263844953
+        },
+        ".health-recovery/7265842D-D01F-478D-9C88-F269606BCFB2/workouts.json": {
+          "st_ino": 45019694,
+          "st_dev": 16777233,
+          "st_mode": 33188,
+          "st_nlink": 1,
+          "st_size": 32,
+          "st_mtime_ns": 1794074263264337330
+        }
+      },
+      "privatePriorFiles": {
+        ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/device-intent.json": {
+          "bytes": 123,
+          "sha256": "7d68ba33f7c6336f30c6930576586f4de85f70c62c1e40fcf9cba1b79f4fd223",
+          "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI3RUJBNDJGQS05NUU5LTQ2RTUtQjdDQi1BMDFFQjg0NDk0QTkiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+        },
+        ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/manifest.json": {
+          "bytes": 108,
+          "sha256": "6681fc0b1795c3dec309aa6ae3140b3892dc3cb630553d7bd8f2ea2e7fb02f14",
+          "base64": "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTA3VDE3OjU5OjU1WiIsImRvbWFpbnMiOlsibWVhbHMiLCJ3b3Jrb3V0cyJdLCJpbnRlbnQiOnRydWUsInBob3RvcyI6ZmFsc2UsInZlcnNpb24iOjF9"
+        },
+        ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/meals.json": {
+          "bytes": 144,
+          "sha256": "9eec205ab83ed2466da007aaa29e3f18f8b4b5741f451c529ef7527ead443a68",
+          "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtY3VycmVudC1tZWFsIiwiaXRlbXMiOltdLCJub3RlIjoiS2VlcCB0aGlzIGN1cnJlbnQgbWVhbC4iLCJzb3VyY2UiOiJtYW51YWwiLCJ0eXBlIjoiYnJlYWtmYXN0In1d"
+        },
+        ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/workouts.json": {
+          "bytes": 185,
+          "sha256": "a7e3f55c6c5e75d0b270c1a918742b4424a86bc359c972a3073532184db17f9c",
+          "base64": "W3siYWN0aXZlQ2Fsb3JpZXMiOjM1LCJkdXJhdGlvbiI6OTAwLCJlbmVyZ3lLbm93biI6dHJ1ZSwiaWQiOiJzeW50aGV0aWMtbXVsdGktemVybyIsImtpbmQiOiJzdHJlbmd0aCIsInNvdXJjZSI6Im1hbnVhbCIsInN0YXJ0IjoiMjAyNi0xMS0wMlQxMjowMDowMFoiLCJ0aXRsZSI6IkN1cnJlbnQgZWRpdGVkIHdvcmtvdXQifV0="
+        }
+      },
+      "privateDamagedCurrentFiles": {
+        ".health-recovery/7265842D-D01F-478D-9C88-F269606BCFB2/device-intent.json": {
+          "bytes": 123,
+          "sha256": "7d68ba33f7c6336f30c6930576586f4de85f70c62c1e40fcf9cba1b79f4fd223",
+          "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI3RUJBNDJGQS05NUU5LTQ2RTUtQjdDQi1BMDFFQjg0NDk0QTkiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+        },
+        ".health-recovery/7265842D-D01F-478D-9C88-F269606BCFB2/manifest.json": {
+          "bytes": 108,
+          "sha256": "3a8cab00f7757d5dcf54d2d33aa44a4ccaabbe1174b80df041a6dc2a8fe8683a",
+          "base64": "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTA3VDE4OjAxOjUyWiIsImRvbWFpbnMiOlsibWVhbHMiLCJ3b3Jrb3V0cyJdLCJpbnRlbnQiOnRydWUsInBob3RvcyI6ZmFsc2UsInZlcnNpb24iOjF9"
+        },
+        ".health-recovery/7265842D-D01F-478D-9C88-F269606BCFB2/meals.json": {
+          "bytes": 29,
+          "sha256": "29630893bbf2b28a8af82b4be6db321e0b8d89c362bf8c47bb697fee439f2e6d",
+          "base64": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZW1lYWxzIjo="
+        },
+        ".health-recovery/7265842D-D01F-478D-9C88-F269606BCFB2/workouts.json": {
+          "bytes": 32,
+          "sha256": "b8e333df638e682f0e77ffa5df87dfb79f5960039fdcf298fbed9939e6e4e34b",
+          "base64": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZXdvcmtvdXRzIjo="
+        }
+      },
+      "priorCoverage": {
+        "chat.json": {
+          "disposition": "byteExactCurrent",
+          "baselineSHA256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "baselineBytes": 2,
+          "currentBytes": 2,
+          "exactPrivateRecords": {},
+          "currentSHA256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "exactPrivatePaths": []
+        },
+        "conversations.json": {
+          "disposition": "byteExactCurrent",
+          "baselineSHA256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "baselineBytes": 2,
+          "currentBytes": 2,
+          "exactPrivateRecords": {},
+          "currentSHA256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "exactPrivatePaths": []
+        },
+        "workouts.json": {
+          "disposition": "byteExactPrivate",
+          "baselineSHA256": "a7e3f55c6c5e75d0b270c1a918742b4424a86bc359c972a3073532184db17f9c",
+          "baselineBytes": 185,
+          "currentBytes": 32,
+          "exactPrivateRecords": {
+            ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/workouts.json": {
+              "bytes": 185,
+              "sha256": "a7e3f55c6c5e75d0b270c1a918742b4424a86bc359c972a3073532184db17f9c"
+            }
+          },
+          "currentSHA256": "b8e333df638e682f0e77ffa5df87dfb79f5960039fdcf298fbed9939e6e4e34b",
+          "exactPrivatePaths": [
+            ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/workouts.json"
+          ]
+        },
+        "goals.json": {
+          "disposition": "byteExactCurrent",
+          "baselineSHA256": "142f89cee16338829e91bfe76c5c34ea249afb4bb338d987ee708ada70b4656c",
+          "baselineBytes": 178,
+          "currentBytes": 178,
+          "exactPrivateRecords": {},
+          "currentSHA256": "142f89cee16338829e91bfe76c5c34ea249afb4bb338d987ee708ada70b4656c",
+          "exactPrivatePaths": []
+        },
+        "today.json": {
+          "disposition": "byteExactCurrent",
+          "baselineSHA256": "317a0e832157fe13dc5f54818e7477cf5a0d1e0fa815d822843ec4ff749ee0e8",
+          "baselineBytes": 123,
+          "currentBytes": 123,
+          "exactPrivateRecords": {},
+          "currentSHA256": "317a0e832157fe13dc5f54818e7477cf5a0d1e0fa815d822843ec4ff749ee0e8",
+          "exactPrivatePaths": []
+        },
+        "meals.json": {
+          "disposition": "byteExactPrivate",
+          "baselineSHA256": "9eec205ab83ed2466da007aaa29e3f18f8b4b5741f451c529ef7527ead443a68",
+          "baselineBytes": 144,
+          "currentBytes": 29,
+          "exactPrivateRecords": {
+            ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/meals.json": {
+              "bytes": 144,
+              "sha256": "9eec205ab83ed2466da007aaa29e3f18f8b4b5741f451c529ef7527ead443a68"
+            }
+          },
+          "currentSHA256": "29630893bbf2b28a8af82b4be6db321e0b8d89c362bf8c47bb697fee439f2e6d",
+          "exactPrivatePaths": [
+            ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/meals.json"
+          ]
+        },
+        "water.json": {
+          "disposition": "byteExactCurrent",
+          "baselineSHA256": "1dc7d921432b620cf0fcd72262f29a4ffe06902fcd4d7e3cb546d370e3908291",
+          "baselineBytes": 72,
+          "currentBytes": 72,
+          "exactPrivateRecords": {},
+          "currentSHA256": "1dc7d921432b620cf0fcd72262f29a4ffe06902fcd4d7e3cb546d370e3908291",
+          "exactPrivatePaths": []
+        },
+        "conversation-selection.json": {
+          "disposition": "byteExactCurrent",
+          "baselineSHA256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "baselineBytes": 2,
+          "currentBytes": 2,
+          "exactPrivateRecords": {},
+          "currentSHA256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "exactPrivatePaths": []
+        },
+        "profile.json": {
+          "disposition": "semanticCurrentWithRawDifference",
+          "baselineSHA256": "233fff496e5b49e10ec22a5f4b94d52c307168dc8c8fac93b4e0c420291b6a2d",
+          "baselineBytes": 184,
+          "currentBytes": 184,
+          "exactPrivateRecords": {},
+          "currentSHA256": "ea8bbf7298a5eceecd1c0d64998ebcd9f56f9933a8200f174153268f1d69cac0",
+          "exactPrivatePaths": []
+        },
+        "health-write-intent.json": {
+          "disposition": "byteExactCurrent",
+          "baselineSHA256": "7d68ba33f7c6336f30c6930576586f4de85f70c62c1e40fcf9cba1b79f4fd223",
+          "baselineBytes": 123,
+          "currentBytes": 123,
+          "exactPrivateRecords": {
+            ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/device-intent.json": {
+              "bytes": 123,
+              "sha256": "7d68ba33f7c6336f30c6930576586f4de85f70c62c1e40fcf9cba1b79f4fd223"
+            }
+          },
+          "currentSHA256": "7d68ba33f7c6336f30c6930576586f4de85f70c62c1e40fcf9cba1b79f4fd223",
+          "exactPrivatePaths": [
+            ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/device-intent.json"
+          ]
+        }
+      },
+      "allPrivateFilesAccounted": true
+    },
+    "exactTreeBeforeAck": {
+      "exactAllowedFileSet": [
+        ".health-recovery-history/0B45A8C1-92A3-4800-8D87-6146808E5F6D.json",
+        ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/device-intent.json",
+        ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/manifest.json",
+        ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/meals.json",
+        ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/workouts.json",
+        ".health-recovery/7265842D-D01F-478D-9C88-F269606BCFB2/device-intent.json",
+        ".health-recovery/7265842D-D01F-478D-9C88-F269606BCFB2/manifest.json",
+        ".health-recovery/7265842D-D01F-478D-9C88-F269606BCFB2/meals.json",
+        ".health-recovery/7265842D-D01F-478D-9C88-F269606BCFB2/workouts.json",
+        "chat.json",
+        "conversation-selection.json",
+        "conversations.json",
+        "goals.json",
+        "habits.json",
+        "health-write-intent.json",
+        "meals.json",
+        "photos/03320C07-DE73-4493-9919-D35BBDC39029.jpg",
+        "photos/FA5AECA8-AC8F-4740-AE03-7D71975A4E04.jpg",
+        "profile.json",
+        "sleep.json",
+        "today.json",
+        "water.json",
+        "workouts.json"
+      ],
+      "actualDirectories": [
+        ".health-recovery",
+        ".health-recovery-history",
+        ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7",
+        ".health-recovery/7265842D-D01F-478D-9C88-F269606BCFB2",
+        "photos"
+      ],
+      "orphanPendingDirectoriesAbsent": true
+    },
+    "sourceAndProviderIdentityAuditedBeforeAck": true,
+    "observationNonce": "8A05CF49-75F2-4225-A1FA-C0938609DF28"
+  },
+  "finalCleanup": {
+    "ownedRootsAbsent": true,
+    "stageAbsent": true,
+    "liveNoOpenPaths": "p67013\nfcwd\nn/\nftxt\nn/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Bundle/Application/98AABF3C-C637-41EC-A4B0-A94E10E0A96D/Lumen.app/Lumen\nftxt\nn/private/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/com.dbakp.lumen/567358F6-1412-47FB-AEAC-22415B7D8835-66546-000026E5681F0C68/E74A8787-1ADC-4D55-A8E2-6DC147CD1051-67013.profraw\nftxt\nn/usr/lib/system/libsystem_kernel.dylib\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/usr/lib/dyld_sim\nftxt\nn/usr/lib/system/libsystem_platform.dylib\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/usr/lib/libobjc-trampolines.dylib\nftxt\nn/usr/lib/dyld\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/usr/lib/libMainThreadChecker.dylib\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/usr/lib/libRPAC.dylib\nftxt\nn/usr/lib/system/libsystem_pthread.dylib\nftxt\nn/private/var/db/timezone/tz/2026d.1.0/icutz/icutz44l.dat\nftxt\nn/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Bundle/Application/98AABF3C-C637-41EC-A4B0-A94E10E0A96D/Lumen.app/Assets.car\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/PrivateFrameworks/CoreUI.framework/DesignLibrary-iOS.bundle/iOSRepositories/LightStandard.car\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/PrivateFrameworks/AutomationMode.framework/AutomationMode\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/LinguisticData/en/US/hyphenation.dat\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/Developer/Library/PrivateFrameworks/XCTestSupport.framework/XCTestSupport\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/Developer/Library/PrivateFrameworks/XCTAutomationSupport.framework/XCTAutomationSupport\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/usr/share/icu/icudt78l.dat\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/PrivateFrameworks/DTXConnectionServices.framework/DTXConnectionServices\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/StoreKitFramework.axbundle/StoreKitFramework\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/PrivateFrameworks/AccessibilityAudit.framework/AccessibilityAudit\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/IntentsUI.axbundle/IntentsUI\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/RealityKit.axbundle/RealityKit\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/GeoServices.axbundle/GeoServices\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/CameraEditKitFramework.axbundle/CameraEditKitFramework\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/FrontBoard.axbundle/FrontBoard\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/VisionKitCore.axbundle/VisionKitCore\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/MapKitFramework.axbundle/MapKitFramework\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/LinkPresentation.axbundle/LinkPresentation\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/AuthenticationServices.axbundle/AuthenticationServices\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/PrivateFrameworks/UIUnderstanding.framework/UIUnderstanding\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/ARKit.axbundle/ARKit\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/QuickLook.axbundle/QuickLook\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/FeedbackCore.axbundle/FeedbackCore\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/PrintKitUI.axbundle/PrintKitUI\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/AssistantServices.axbundle/AssistantServices\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/iTunesStoreFramework.axbundle/iTunesStoreFramework\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/MobileSafariFramework.axbundle/MobileSafariFramework\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/SpriteKit.axbundle/SpriteKit\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebKit.axbundle/WebKit\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/BaseBoardUI.axbundle/BaseBoardUI\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/PrivateFrameworks/SFSymbols.framework/CoreGlyphs.bundle/Assets.car\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/SafariServices.axbundle/SafariServices\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/TemplateKit.axbundle/TemplateKit\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/TelephonyUIFramework.axbundle/TelephonyUIFramework\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/MapKitSwiftUI.axbundle/MapKitSwiftUI\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/MediaPlayerFramework.axbundle/MediaPlayerFramework\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebKitLegacy.axbundle/WebKitLegacy\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/ProxCardKit.axbundle/ProxCardKit\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/SafariSharedUI.axbundle/SafariSharedUI\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/PhotoLibraryServices.axbundle/PhotoLibraryServices\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebCore.axbundle/WebCore\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/PhotosFramework.axbundle/PhotosFramework\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/SearchFoundation.axbundle/SearchFoundation\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/RealityFoundation.axbundle/RealityFoundation\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/HelpKit.axbundle/HelpKit\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/Fonts/Core/SFUI.ttf\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/DocumentManager.axbundle/DocumentManager\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/SceneKit.axbundle/SceneKit\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/SpringBoardFoundation.axbundle/SpringBoardFoundation\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/SiriUICore.axbundle/SiriUICore\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebUI.axbundle/WebUI\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/CoverSheetKit.axbundle/CoverSheetKit\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/SocialLayer.axbundle/SocialLayer\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/SharedWithYouFramework.axbundle/SharedWithYouFramework\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/PhotoLibraryFramework.axbundle/PhotoLibraryFramework\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/SocialFramework.axbundle/SocialFramework\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/AnnotationKit.axbundle/AnnotationKit\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/Frameworks/FileProvider.framework/OverrideBundles/FileProviderOverride.bundle/FileProviderOverride\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/Frameworks/FileProvider.framework/OverrideBundles/iCloudDriveFileProviderOverride.bundle/iCloudDriveFileProviderOverride\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/PrivateFrameworks/SFSymbols.framework/CoreGlyphsPrivate.bundle/Assets.car\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/usr/lib/libAppleEXR.dylib\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/PrivateFrameworks/UIKitCore.framework/Artwork.bundle/Assets.car\nftxt\nn/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/var/db/lsd/com.apple.LaunchServices-33554481-v2.csstore\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/CoreServices/RawCamera.bundle/RawCamera\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/usr/share/langid/langid.inv\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/Caches/com.apple.dyld/dyld_sim_shared_cache_arm64\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/Caches/com.apple.dyld/dyld_sim_shared_cache_arm64.01\nf0\nn/dev/null\nf1\nn/dev/ttys001\nf2\nn/dev/ttys001\nf3\nn->0x9495038c7ea74b37\nf5\nn/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/var/run/memory_warning_simulation\nf9\nn/System/Volumes/Preboot/Cryptexes/OS\n",
+    "hostDeletedWorkspace": false,
+    "treeAtParentBeforeRelaunch": {
+      "chat.json": {
+        "bytes": 2,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "base64": "W10="
+      },
+      "conversations.json": {
+        "bytes": 2,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "base64": "W10="
+      },
+      "workouts.json": {
+        "bytes": 2,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "base64": "W10="
+      },
+      "goals.json": {
+        "bytes": 178,
+        "sha256": "142f89cee16338829e91bfe76c5c34ea249afb4bb338d987ee708ada70b4656c",
+        "base64": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6NDIsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxODEsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ=="
+      },
+      "sleep.json": {
+        "bytes": 2,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "base64": "W10="
+      },
+      "today.json": {
+        "bytes": 123,
+        "sha256": "317a0e832157fe13dc5f54818e7477cf5a0d1e0fa815d822843ec4ff749ee0e8",
+        "base64": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDZUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9"
+      },
+      "meals.json": {
+        "bytes": 376,
+        "sha256": "c7dd1bc6c916287b44567c711240dfc210d6e16363f4e7c86fff9c375a6f57da",
+        "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtbWF0cml4LW1lYWwtYSIsIml0ZW1zIjpbXSwibm90ZSI6IlN5bnRoZXRpYyBmaXJzdCBtZWFsLiIsInBob3RvSUQiOiIwMzMyMEMwNy1ERTczLTQ0OTMtOTkxOS1EMzVCQkRDMzkwMjkiLCJzb3VyY2UiOiJtYW51YWwiLCJ0eXBlIjoibHVuY2gifSx7ImRhdGUiOiIyMDI2LTExLTAyVDEzOjAwOjAwWiIsImlkIjoic3ludGhldGljLW1hdHJpeC1tZWFsLWIiLCJpdGVtcyI6W10sIm5vdGUiOiJTeW50aGV0aWMgc2Vjb25kIG1lYWwuIiwicGhvdG9JRCI6IkZBNUFFQ0E4LUFDOEYtNDc0MC1BRTAzLTdENzE5NzVBNEUwNCIsInNvdXJjZSI6Im1hbnVhbCIsInR5cGUiOiJzbmFjayJ9XQ=="
+      },
+      "water.json": {
+        "bytes": 72,
+        "sha256": "1dc7d921432b620cf0fcd72262f29a4ffe06902fcd4d7e3cb546d370e3908291",
+        "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwibWwiOjEzN31d"
+      },
+      "conversation-selection.json": {
+        "bytes": 2,
+        "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "base64": "e30="
+      },
+      "habits.json": {
+        "bytes": 3170,
+        "sha256": "b39cf33e5de80e7c9118ded2d812db731cfceedd19c18c8bbafb9623fdebe852",
+        "base64": "W3sib2Zmc2V0IjoxODAwLCJkZXRhaWwiOiIxMCBtaW4gb2YgZGF5bGlnaHQgd2l0aGluIDMwIG1pbiBvZiB3YWtpbmcgYW5jaG9ycyB5b3VyIGNsb2NrLiIsInRpdGxlIjoiR2V0IGJyaWdodCBsaWdodCIsImlkIjoibGlnaHQiLCJpc0VuYWJsZWQiOnRydWUsImFuY2hvciI6Indha2VQbHVzIiwiaWNvbiI6InN1bi5tYXguZmlsbCIsImRvbmVUb2RheSI6ZmFsc2V9LHsib2Zmc2V0IjozNjAwMCwiZGV0YWlsIjoiTm8gY2FmZmVpbmUgd2l0aGluIDEwaCBvZiBiZWQg4oCUIGhhbGYtbGlmZSBpcyB+NmguIiwidGl0bGUiOiJDYWZmZWluZSBjdXRvZmYiLCJpZCI6ImNhZmZlaW5lIiwiaXNFbmFibGVkIjp0cnVlLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJpY29uIjoiY3VwLmFuZC5zYXVjZXIuZmlsbCIsImRvbmVUb2RheSI6ZmFsc2V9LHsib2Zmc2V0IjoyMTYwMCwiZGV0YWlsIjoiMjArIG1pbi4gRmluaXNoIGludGVuc2Ugd29ya291dHMgM2grIGJlZm9yZSBiZWQuIiwidGl0bGUiOiJNb3ZlIHlvdXIgYm9keSIsImlkIjoiZXhlcmNpc2UiLCJpc0VuYWJsZWQiOnRydWUsImFuY2hvciI6Indha2VQbHVzIiwiaWNvbiI6ImZpZ3VyZS5ydW4iLCJkb25lVG9kYXkiOmZhbHNlfSx7Im9mZnNldCI6MjUyMDAsImRldGFpbCI6IklmIG5hcHBpbmc6IDIw4oCTMzAgbWluLCBiZWZvcmUgeW91ciBkaXAgZW5kcy4gTm8gbGF0ZSBuYXBzLiIsInRpdGxlIjoiU21hcnQgbmFwIHdpbmRvdyIsImlkIjoibmFwIiwiaXNFbmFibGVkIjp0cnVlLCJhbmNob3IiOiJ3YWtlUGx1cyIsImljb24iOiJtb29uLnp6ei5maWxsIiwiZG9uZVRvZGF5IjpmYWxzZX0seyJvZmZzZXQiOjE0NDAwLCJkZXRhaWwiOiJBbGNvaG9sIGZyYWdtZW50cyBzbGVlcCBldmVuIHdoZW4gaXQgc3BlZWRzIG9uc2V0LiIsInRpdGxlIjoiU2tpcCBuaWdodGNhcCIsImlkIjoiYWxjb2hvbCIsImlzRW5hYmxlZCI6dHJ1ZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaWNvbiI6IndpbmVnbGFzcyIsImRvbmVUb2RheSI6ZmFsc2V9LHsib2Zmc2V0IjoxMDgwMCwiZGV0YWlsIjoiRmluaXNoIGxhcmdlIG1lYWxzIDNoIGJlZm9yZSBiZWQ7IGxpZ2h0IHNuYWNrIE9LLiIsInRpdGxlIjoiTGFzdCBiaWcgbWVhbCIsImlkIjoibWVhbCIsImlzRW5hYmxlZCI6dHJ1ZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaWNvbiI6ImZvcmsua25pZmUiLCJkb25lVG9kYXkiOmZhbHNlfSx7Im9mZnNldCI6NzIwMCwiZGV0YWlsIjoiTG93ZXIgYnJpZ2h0bmVzcyArIE5pZ2h0IFNoaWZ0IDJoIGJlZm9yZSBiZWQuIiwidGl0bGUiOiJEaW0gc2NyZWVucyIsImlkIjoic2NyZWVucyIsImlzRW5hYmxlZCI6dHJ1ZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaWNvbiI6ImlwaG9uZS5nZW4yIiwiZG9uZVRvZGF5IjpmYWxzZX0seyJvZmZzZXQiOjU0MDAsImRldGFpbCI6Ik92ZXJoZWFkIG9mZiwgbGFtcHMgbG93IOKAlCBsaWdodCBkZWxheXMgbWVsYXRvbmluLiIsInRpdGxlIjoiRGltIHRoZSBsaWdodHMiLCJpZCI6ImxpZ2h0cyIsImlzRW5hYmxlZCI6dHJ1ZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaWNvbiI6ImxpZ2h0YnVsYi5maWxsIiwiZG9uZVRvZGF5IjpmYWxzZX0seyJvZmZzZXQiOjI3MDAsImRldGFpbCI6IjIw4oCTMzAgbWluIHJpdHVhbDogc2hvd2VyLCBzdHJldGNoLCByZWFkLCBicmVhdGhlLiIsInRpdGxlIjoiV2luZCBkb3duIiwiaWQiOiJ3aW5kZG93biIsImlzRW5hYmxlZCI6dHJ1ZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaWNvbiI6IndpbmQiLCJkb25lVG9kYXkiOmZhbHNlfSx7Im9mZnNldCI6MCwiZGV0YWlsIjoiSGl0IHlvdXIgbWVsYXRvbmluIHdpbmRvdyDigJQgdGhlIGVhc2llc3QgZmFsbGluZy1hc2xlZXAuIiwidGl0bGUiOiJJbiBiZWQgb24gdGltZSIsImlkIjoiYmVkdGltZSIsImlzRW5hYmxlZCI6dHJ1ZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaWNvbiI6ImJlZC5kb3VibGUuZmlsbCIsImRvbmVUb2RheSI6ZmFsc2V9LHsib2Zmc2V0IjoxODAwLCJkZXRhaWwiOiI2NeKAkzY4wrBGIFwvIDE44oCTMjDCsEMsIGJsYWNrb3V0IGRhcmssIHF1aWV0LiIsInRpdGxlIjoiQ29vbCAmIGRhcmsgcm9vbSIsImlkIjoiY29vbCIsImlzRW5hYmxlZCI6dHJ1ZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaWNvbiI6InRoZXJtb21ldGVyLnNub3dmbGFrZSIsImRvbmVUb2RheSI6ZmFsc2V9LHsib2Zmc2V0IjowLCJkZXRhaWwiOiJTYW1lIHdha2UgwrEzMCBtaW4g4oCUIGV2ZW4gd2Vla2VuZHMuICMxIHJoeXRobSBsZXZlci4iLCJ0aXRsZSI6IkNvbnNpc3RlbnQgd2FrZSIsImlkIjoiY29uc2lzdGVudCIsImlzRW5hYmxlZCI6dHJ1ZSwiYW5jaG9yIjoid2FrZVBsdXMiLCJpY29uIjoiYWxhcm0uZmlsbCIsImRvbmVUb2RheSI6ZmFsc2V9LHsib2Zmc2V0IjozMDAsImRldGFpbCI6IldhdGVyICsgbGlnaHQgYmVmb3JlIGNvZmZlZSBib29zdHMgYWxlcnRuZXNzLiIsInRpdGxlIjoiTW9ybmluZyBoeWRyYXRpb24iLCJpZCI6Imh5ZHJhdGlvbiIsImlzRW5hYmxlZCI6dHJ1ZSwiYW5jaG9yIjoid2FrZVBsdXMiLCJpY29uIjoiZHJvcC5maWxsIiwiZG9uZVRvZGF5IjpmYWxzZX0seyJvZmZzZXQiOjE4MDAwLCJkZXRhaWwiOiIyLW1pbiB3b3JyeSBsaXN0IGFmdGVyIGRpbm5lciBjbGVhcnMgbmlnaHQgcnVtaW5hdGlvbi4iLCJ0aXRsZSI6IkJyYWluIGR1bXAiLCJpZCI6InN0cmVzcyIsImlzRW5hYmxlZCI6dHJ1ZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaWNvbiI6InBlbmNpbC5hbmQubGlzdC5jbGlwYm9hcmQiLCJkb25lVG9kYXkiOmZhbHNlfSx7Im9mZnNldCI6MTQ0MDAsImRldGFpbCI6IlN0aW11bGFudCDigJQgYXZvaWQgd2l0aGluIDRoIG9mIGJlZC4iLCJ0aXRsZSI6Ik5vIGxhdGUgbmljb3RpbmUiLCJpZCI6Im5pY290aW5lIiwiaXNFbmFibGVkIjpmYWxzZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaWNvbiI6InNtb2tlLmZpbGwiLCJkb25lVG9kYXkiOmZhbHNlfSx7Im9mZnNldCI6MTQ0MDAsImRldGFpbCI6IkEgZHVzayB3YWxrIHNoYXJwZW5zIERMTU8gdGltaW5nLiIsInRpdGxlIjoiRXZlbmluZyBsaWdodCB3YWxrIiwiaWQiOiJzdW5zZXQiLCJpc0VuYWJsZWQiOmZhbHNlLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJpY29uIjoic3Vuc2V0LmZpbGwiLCJkb25lVG9kYXkiOmZhbHNlfV0="
+      },
+      "profile.json": {
+        "bytes": 184,
+        "sha256": "ea8bbf7298a5eceecd1c0d64998ebcd9f56f9933a8200f174153268f1d69cac0",
+        "base64": "eyJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwic2xlZXBOZWVkIjoyOTQwMCwibmFtZSI6IlN5bnRoZXRpYyBiYWNrdXAgYmFzZWxpbmUiLCJpc1N1YnNjcmliZWQiOmZhbHNlLCJzbGVlcE5lZWRDb25maWRlbmNlIjowLjMsIm9uYm9hcmRpbmdEb25lIjp0cnVlLCJ3YWtlR29hbCI6eyJob3VyIjo3LCJtaW51dGUiOjB9fQ=="
+      },
+      "health-write-intent.json": {
+        "bytes": 123,
+        "sha256": "acda37eedf0d5471b4abb4762fec3c5b38d69752020f876d24e8972d3deac3ae",
+        "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiJDNjIwNEUyQS1GNEZGLTRBQTItOTRFRC1DMzMwMDNBQ0QxODIiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+      },
+      ".health-recovery-history/0B45A8C1-92A3-4800-8D87-6146808E5F6D.json": {
+        "bytes": 1068,
+        "sha256": "eabd741b978a52a301ce635141f2dc00935ffe36067b34cf0f6c1fd9a89338e7",
+        "base64": "eyJkb21haW5zIjpbIm1lYWxzIiwid29ya291dHMiXSwiZmlsZVNvdXJjZSI6eyJieXRlQ291bnQiOjQ5OTIsImZpbGVOYW1lIjoiTHVtZW4tYmFja3VwLWhlYWx0aC1tYXRyaXgtdHdvLWxlZ2FjeS5qc29uIiwiZm9ybWF0IjoibGVnYWN5SlNPTkJhY2t1cCIsInNoYTI1NiI6IjgwZDIzNmFiZDIxYjMzYTNkMDEyZDMyODdhMDYwNmU2OTlkNTNkZGMxOGE5ZTQyNjNhNjM1Y2I4OTk2MjkwNzgifSwib21pdHRlZFBob3RvQ291bnQiOjAsInBob3RvRGlnZXN0cyI6eyJwaG90b3NcLzAzMzIwQzA3LURFNzMtNDQ5My05OTE5LUQzNUJCREMzOTAyOS5qcGciOiIxMmFkMjc4M2Y3ZWNkOWZiMjI1MmRmZjdjNzk3ODFkOTJkMmE1MmY2MzdjMzNkN2Y0NmE2MGZkYjFlZjZmNGUzIiwicGhvdG9zXC9GQTVBRUNBOC1BQzhGLTQ3NDAtQUUwMy03RDcxOTc1QTRFMDQuanBnIjoiNGFlYjM0MGYyMzNkZmJmZTU5MDY2ODg2ZjYzMjZlMmMzOTNkZmQyNzU5NmViOTE0YTc4OTVhZmYyM2E4ZTcyMCJ9LCJyZWNvcmREaWdlc3RzIjp7Im1lYWxzLmpzb24iOiJjN2RkMWJjNmM5MTYyODdiNDQ1NjdjNzExMjQwZGZjMjEwZDZlMTYzNjNmNGU3Yzg2ZmZmOWMzNzVhNmY1N2RhIiwid29ya291dHMuanNvbiI6IjRmNTNjZGExOGMyYmFhMGMwMzU0YmI1ZjlhM2VjYmU1ZWQxMmFiNGQ4ZTExYmE4NzNjMmYxMTE2MTIwMmI5NDUifSwicmVjb3ZlcmVkQXQiOiIyMDI2LTExLTA3VDE4OjAxOjQ3WiIsInJldmlld2VkUGhvdG9zIjp7InN5bnRoZXRpYy1tYXRyaXgtcGhvdG8tYSI6eyJieXRlQ291bnQiOjkxMCwic2hhMjU2IjoiMTJhZDI3ODNmN2VjZDlmYjIyNTJkZmY3Yzc5NzgxZDkyZDJhNTJmNjM3YzMzZDdmNDZhNjBmZGIxZWY2ZjRlMyJ9LCJzeW50aGV0aWMtbWF0cml4LXBob3RvLWIiOnsiYnl0ZUNvdW50Ijo5MTMsInNoYTI1NiI6IjRhZWIzNDBmMjMzZGZiZmU1OTA2Njg4NmY2MzI2ZTJjMzkzZGZkMjc1OTZlYjkxNGE3ODk1YWZmMjNhOGU3MjAifX0sInNvdXJjZSI6InNlbGVjdGVkLWZpbGU6ODBkMjM2YWJkMjFiMzNhM2QwMTJkMzI4N2EwNjA2ZTY5OWQ1M2RkYzE4YTllNDI2M2E2MzVjYjg5OTYyOTA3OCJ9"
+      },
+      ".health-recovery/7265842D-D01F-478D-9C88-F269606BCFB2/workouts.json": {
+        "bytes": 32,
+        "sha256": "b8e333df638e682f0e77ffa5df87dfb79f5960039fdcf298fbed9939e6e4e34b",
+        "base64": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZXdvcmtvdXRzIjo="
+      },
+      ".health-recovery/7265842D-D01F-478D-9C88-F269606BCFB2/device-intent.json": {
+        "bytes": 123,
+        "sha256": "7d68ba33f7c6336f30c6930576586f4de85f70c62c1e40fcf9cba1b79f4fd223",
+        "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI3RUJBNDJGQS05NUU5LTQ2RTUtQjdDQi1BMDFFQjg0NDk0QTkiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+      },
+      ".health-recovery/7265842D-D01F-478D-9C88-F269606BCFB2/meals.json": {
+        "bytes": 29,
+        "sha256": "29630893bbf2b28a8af82b4be6db321e0b8d89c362bf8c47bb697fee439f2e6d",
+        "base64": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZW1lYWxzIjo="
+      },
+      ".health-recovery/7265842D-D01F-478D-9C88-F269606BCFB2/manifest.json": {
+        "bytes": 108,
+        "sha256": "3a8cab00f7757d5dcf54d2d33aa44a4ccaabbe1174b80df041a6dc2a8fe8683a",
+        "base64": "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTA3VDE4OjAxOjUyWiIsImRvbWFpbnMiOlsibWVhbHMiLCJ3b3Jrb3V0cyJdLCJpbnRlbnQiOnRydWUsInBob3RvcyI6ZmFsc2UsInZlcnNpb24iOjF9"
+      },
+      ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/workouts.json": {
+        "bytes": 185,
+        "sha256": "a7e3f55c6c5e75d0b270c1a918742b4424a86bc359c972a3073532184db17f9c",
+        "base64": "W3siYWN0aXZlQ2Fsb3JpZXMiOjM1LCJkdXJhdGlvbiI6OTAwLCJlbmVyZ3lLbm93biI6dHJ1ZSwiaWQiOiJzeW50aGV0aWMtbXVsdGktemVybyIsImtpbmQiOiJzdHJlbmd0aCIsInNvdXJjZSI6Im1hbnVhbCIsInN0YXJ0IjoiMjAyNi0xMS0wMlQxMjowMDowMFoiLCJ0aXRsZSI6IkN1cnJlbnQgZWRpdGVkIHdvcmtvdXQifV0="
+      },
+      ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/device-intent.json": {
+        "bytes": 123,
+        "sha256": "7d68ba33f7c6336f30c6930576586f4de85f70c62c1e40fcf9cba1b79f4fd223",
+        "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI3RUJBNDJGQS05NUU5LTQ2RTUtQjdDQi1BMDFFQjg0NDk0QTkiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+      },
+      ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/meals.json": {
+        "bytes": 144,
+        "sha256": "9eec205ab83ed2466da007aaa29e3f18f8b4b5741f451c529ef7527ead443a68",
+        "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtY3VycmVudC1tZWFsIiwiaXRlbXMiOltdLCJub3RlIjoiS2VlcCB0aGlzIGN1cnJlbnQgbWVhbC4iLCJzb3VyY2UiOiJtYW51YWwiLCJ0eXBlIjoiYnJlYWtmYXN0In1d"
+      },
+      ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/manifest.json": {
+        "bytes": 108,
+        "sha256": "6681fc0b1795c3dec309aa6ae3140b3892dc3cb630553d7bd8f2ea2e7fb02f14",
+        "base64": "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTA3VDE3OjU5OjU1WiIsImRvbWFpbnMiOlsibWVhbHMiLCJ3b3Jrb3V0cyJdLCJpbnRlbnQiOnRydWUsInBob3RvcyI6ZmFsc2UsInZlcnNpb24iOjF9"
+      },
+      "photos/03320C07-DE73-4493-9919-D35BBDC39029.jpg": {
+        "bytes": 910,
+        "sha256": "12ad2783f7ecd9fb2252dff7c79781d92d2a52f637c33d7f46a60fdb1ef6f4e3",
+        "base64": "/9j/4AAQSkZJRgABAQAA2ADYAAD/4QCMRXhpZgAATU0AKgAAAAgABQESAAMAAAABAAEAAAEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAABAAIAAIdpAAQAAAABAAAAWgAAAAAAAADYAAAAAQAAANgAAAABAAOgAQADAAAAAQABAACgAgAEAAAAAQAAAEigAwAEAAAAAQAAADAAAAAA/+0AOFBob3Rvc2hvcCAzLjAAOEJJTQQEAAAAAAAAOEJJTQQlAAAAAAAQ1B2M2Y8AsgTpgAmY7PhCfv/AABEIADAASAMBIgACEQEDEQH/xAAfAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgv/xAC1EAACAQMDAgQDBQUEBAAAAX0BAgMABBEFEiExQQYTUWEHInEUMoGRoQgjQrHBFVLR8CQzYnKCCQoWFxgZGiUmJygpKjQ1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4eLj5OXm5+jp6vHy8/T19vf4+fr/xAAfAQADAQEBAQEBAQEBAAAAAAAAAQIDBAUGBwgJCgv/xAC1EQACAQIEBAMEBwUEBAABAncAAQIDEQQFITEGEkFRB2FxEyIygQgUQpGhscEJIzNS8BVictEKFiQ04SXxFxgZGiYnKCkqNTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2dri4+Tl5ufo6ery8/T19vf4+fr/2wBDAAEBAQEBAQIBAQIDAgICAwQDAwMDBAYEBAQEBAYHBgYGBgYGBwcHBwcHBwcICAgICAgJCQkJCQsLCwsLCwsLCwv/2wBDAQICAgMDAwUDAwULCAYICwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwv/3QAEAAX/2gAMAwEAAhEDEQA/APUKKKK/pw/xzCiiigAooooAKKKKACiiigD/0PUKKKK/pw/xzCiiigAooooAKKKKACiiigD/0fUKKKK/pw/xzCiiigAooooAKKKKACiiigD/2Q=="
+      },
+      "photos/FA5AECA8-AC8F-4740-AE03-7D71975A4E04.jpg": {
+        "bytes": 913,
+        "sha256": "4aeb340f233dfbfe59066886f6326e2c393dfd27596eb914a7895aff23a8e720",
+        "base64": "/9j/4AAQSkZJRgABAQAA2ADYAAD/4QCMRXhpZgAATU0AKgAAAAgABQESAAMAAAABAAEAAAEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAABAAIAAIdpAAQAAAABAAAAWgAAAAAAAADYAAAAAQAAANgAAAABAAOgAQADAAAAAQABAACgAgAEAAAAAQAAAEigAwAEAAAAAQAAADAAAAAA/+0AOFBob3Rvc2hvcCAzLjAAOEJJTQQEAAAAAAAAOEJJTQQlAAAAAAAQ1B2M2Y8AsgTpgAmY7PhCfv/AABEIADAASAMBIgACEQEDEQH/xAAfAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgv/xAC1EAACAQMDAgQDBQUEBAAAAX0BAgMABBEFEiExQQYTUWEHInEUMoGRoQgjQrHBFVLR8CQzYnKCCQoWFxgZGiUmJygpKjQ1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4eLj5OXm5+jp6vHy8/T19vf4+fr/xAAfAQADAQEBAQEBAQEBAAAAAAAAAQIDBAUGBwgJCgv/xAC1EQACAQIEBAMEBwUEBAABAncAAQIDEQQFITEGEkFRB2FxEyIygQgUQpGhscEJIzNS8BVictEKFiQ04SXxFxgZGiYnKCkqNTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2dri4+Tl5ufo6ery8/T19vf4+fr/2wBDAAEBAQEBAQIBAQIDAgICAwQDAwMDBAYEBAQEBAYHBgYGBgYGBwcHBwcHBwcICAgICAgJCQkJCQsLCwsLCwsLCwv/2wBDAQICAgMDAwUDAwULCAYICwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwv/3QAEAAX/2gAMAwEAAhEDEQA/AP0gooor/Oc/0ECiiigAooooAKKKKACiiigD/9D9IKKKK/znP9BAooooAKKKKACiiigAooooA//R/SCiiiv85z/QQKKKKACiiigAooooAKKKKAP/2Q=="
+      }
+    }
+  },
+  "protocol": {
+    "attempts": [
+      {
+        "nonce": "2D2528E0-CFC3-427F-AE17-EFA842D8D7F1",
+        "ordinal": 2,
+        "originals": {
+          "goals.json": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6NDIsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxODEsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ==",
+          "health-write-intent.json": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI3RUJBNDJGQS05NUU5LTQ2RTUtQjdDQi1BMDFFQjg0NDk0QTkiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9",
+          "meals.json": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZW1lYWxzIjo=",
+          "today.json": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDZUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9",
+          "water.json": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwibWwiOjEzN31d",
+          "workouts.json": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZXdvcmtvdXRzIjo="
+        },
+        "phase": "cancelled",
+        "stage": "LumenData.restore-7F6C90F4-DA0A-4A2F-9A17-C9F94610FD81",
+        "uiCancelled": true,
+        "workerControlMatchesUI": true
+      },
+      {
+        "nonce": "E66E133A-A9CD-4DBA-B669-76FFC93F71D4",
+        "ordinal": 3,
+        "originals": {
+          "goals.json": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6NDIsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxODEsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ==",
+          "health-write-intent.json": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI3RUJBNDJGQS05NUU5LTQ2RTUtQjdDQi1BMDFFQjg0NDk0QTkiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9",
+          "meals.json": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZW1lYWxzIjo=",
+          "today.json": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDZUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9",
+          "water.json": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwibWwiOjEzN31d",
+          "workouts.json": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZXdvcmtvdXRzIjo="
+        },
+        "phase": "released",
+        "stage": "LumenData.restore-AAF9568C-33A1-475E-8D73-C3F17BF74093",
+        "uiCancelled": false,
+        "workerControlMatchesUI": true
+      }
+    ]
+  },
+  "preservationBefore": {
+    "files": {
+      ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/device-intent.json": {
+        "bytes": 123,
+        "sha256": "7d68ba33f7c6336f30c6930576586f4de85f70c62c1e40fcf9cba1b79f4fd223",
+        "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI3RUJBNDJGQS05NUU5LTQ2RTUtQjdDQi1BMDFFQjg0NDk0QTkiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+      },
+      ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/manifest.json": {
+        "bytes": 108,
+        "sha256": "6681fc0b1795c3dec309aa6ae3140b3892dc3cb630553d7bd8f2ea2e7fb02f14",
+        "base64": "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTA3VDE3OjU5OjU1WiIsImRvbWFpbnMiOlsibWVhbHMiLCJ3b3Jrb3V0cyJdLCJpbnRlbnQiOnRydWUsInBob3RvcyI6ZmFsc2UsInZlcnNpb24iOjF9"
+      },
+      ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/meals.json": {
+        "bytes": 144,
+        "sha256": "9eec205ab83ed2466da007aaa29e3f18f8b4b5741f451c529ef7527ead443a68",
+        "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtY3VycmVudC1tZWFsIiwiaXRlbXMiOltdLCJub3RlIjoiS2VlcCB0aGlzIGN1cnJlbnQgbWVhbC4iLCJzb3VyY2UiOiJtYW51YWwiLCJ0eXBlIjoiYnJlYWtmYXN0In1d"
+      },
+      ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/workouts.json": {
+        "bytes": 185,
+        "sha256": "a7e3f55c6c5e75d0b270c1a918742b4424a86bc359c972a3073532184db17f9c",
+        "base64": "W3siYWN0aXZlQ2Fsb3JpZXMiOjM1LCJkdXJhdGlvbiI6OTAwLCJlbmVyZ3lLbm93biI6dHJ1ZSwiaWQiOiJzeW50aGV0aWMtbXVsdGktemVybyIsImtpbmQiOiJzdHJlbmd0aCIsInNvdXJjZSI6Im1hbnVhbCIsInN0YXJ0IjoiMjAyNi0xMS0wMlQxMjowMDowMFoiLCJ0aXRsZSI6IkN1cnJlbnQgZWRpdGVkIHdvcmtvdXQifV0="
+      }
+    },
+    "manifest": {
+      "createdAt": "2026-11-07T17:59:55Z",
+      "domains": [
+        "meals",
+        "workouts"
+      ],
+      "intent": true,
+      "photos": false,
+      "version": 1
+    },
+    "priorSelectedDomainsAndIntentExact": true
+  },
+  "preservationMetadata": {
+    ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/device-intent.json": {
+      "st_ino": 45019692,
+      "st_dev": 16777233,
+      "st_mode": 33188,
+      "st_nlink": 1,
+      "st_size": 123,
+      "st_mtime_ns": 1794074263250478248
+    },
+    ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/manifest.json": {
+      "st_ino": 45020243,
+      "st_dev": 16777233,
+      "st_mode": 33188,
+      "st_nlink": 1,
+      "st_size": 108,
+      "st_mtime_ns": 1794074395605748355
+    },
+    ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/meals.json": {
+      "st_ino": 45019688,
+      "st_dev": 16777233,
+      "st_mode": 33188,
+      "st_nlink": 1,
+      "st_size": 144,
+      "st_mtime_ns": 1794074263251620959
+    },
+    ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/workouts.json": {
+      "st_ino": 45019685,
+      "st_dev": 16777233,
+      "st_mode": 33188,
+      "st_nlink": 1,
+      "st_size": 185,
+      "st_mtime_ns": 1794074263250203705
+    }
+  },
+  "cancellationReadiness": [
+    {
+      "at": 1794074412.1728158,
+      "phase": "cancelled",
+      "uiCancelled": true,
+      "stageAbsent": true,
+      "ownerClosed": true,
+      "ready": true
+    }
+  ],
+  "retiredCleanup": {
+    "ready": true,
+    "observations": [
+      {
+        "at": 1794074522.7740328,
+        "listedRetiredRoots": [],
+        "retiredRoots": [],
+        "goneAfterListing": [],
+        "listedPathModes": {},
+        "ready": true,
+        "phase": "readiness",
+        "previousIsSymlink": false,
+        "previousExists": false,
+        "privateMetadata": {
+          ".health-recovery/7265842D-D01F-478D-9C88-F269606BCFB2/workouts.json": {
+            "st_ino": 45019694,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 32,
+            "st_mtime_ns": 1794074263264337330
+          },
+          ".health-recovery/7265842D-D01F-478D-9C88-F269606BCFB2/device-intent.json": {
+            "st_ino": 45019675,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 123,
+            "st_mtime_ns": 1794074263250478248
+          },
+          ".health-recovery/7265842D-D01F-478D-9C88-F269606BCFB2/meals.json": {
+            "st_ino": 45019693,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 29,
+            "st_mtime_ns": 1794074263263844953
+          },
+          ".health-recovery/7265842D-D01F-478D-9C88-F269606BCFB2/manifest.json": {
+            "st_ino": 45020883,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 108,
+            "st_mtime_ns": 1794074512995908724
+          },
+          ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/workouts.json": {
+            "st_ino": 45019685,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 185,
+            "st_mtime_ns": 1794074263250203705
+          },
+          ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/device-intent.json": {
+            "st_ino": 45019692,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 123,
+            "st_mtime_ns": 1794074263250478248
+          },
+          ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/meals.json": {
+            "st_ino": 45019688,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 144,
+            "st_mtime_ns": 1794074263251620959
+          },
+          ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/manifest.json": {
+            "st_ino": 45020243,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 108,
+            "st_mtime_ns": 1794074395605748355
+          }
+        }
+      }
+    ],
+    "hostDeletedRoots": false,
+    "terminalState": "ready",
+    "guardSeconds": 3,
+    "scope": "Finite3s postcommit cleanup observation, not UI cancellation latency; legitimate carry hardlinks may add then remove one link before ready",
+    "completedAt": 1794074522.775298
+  },
+  "priorCoverage": {
+    "chat.json": {
+      "disposition": "byteExactCurrent",
+      "baselineSHA256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "baselineBytes": 2,
+      "currentBytes": 2,
+      "exactPrivateRecords": {},
+      "currentSHA256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "exactPrivatePaths": []
+    },
+    "conversations.json": {
+      "disposition": "byteExactCurrent",
+      "baselineSHA256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "baselineBytes": 2,
+      "currentBytes": 2,
+      "exactPrivateRecords": {},
+      "currentSHA256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "exactPrivatePaths": []
+    },
+    "workouts.json": {
+      "disposition": "byteExactPrivate",
+      "baselineSHA256": "a7e3f55c6c5e75d0b270c1a918742b4424a86bc359c972a3073532184db17f9c",
+      "baselineBytes": 185,
+      "currentBytes": 32,
+      "exactPrivateRecords": {
+        ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/workouts.json": {
+          "bytes": 185,
+          "sha256": "a7e3f55c6c5e75d0b270c1a918742b4424a86bc359c972a3073532184db17f9c"
+        }
+      },
+      "currentSHA256": "b8e333df638e682f0e77ffa5df87dfb79f5960039fdcf298fbed9939e6e4e34b",
+      "exactPrivatePaths": [
+        ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/workouts.json"
+      ]
+    },
+    "goals.json": {
+      "disposition": "byteExactCurrent",
+      "baselineSHA256": "142f89cee16338829e91bfe76c5c34ea249afb4bb338d987ee708ada70b4656c",
+      "baselineBytes": 178,
+      "currentBytes": 178,
+      "exactPrivateRecords": {},
+      "currentSHA256": "142f89cee16338829e91bfe76c5c34ea249afb4bb338d987ee708ada70b4656c",
+      "exactPrivatePaths": []
+    },
+    "today.json": {
+      "disposition": "byteExactCurrent",
+      "baselineSHA256": "317a0e832157fe13dc5f54818e7477cf5a0d1e0fa815d822843ec4ff749ee0e8",
+      "baselineBytes": 123,
+      "currentBytes": 123,
+      "exactPrivateRecords": {},
+      "currentSHA256": "317a0e832157fe13dc5f54818e7477cf5a0d1e0fa815d822843ec4ff749ee0e8",
+      "exactPrivatePaths": []
+    },
+    "meals.json": {
+      "disposition": "byteExactPrivate",
+      "baselineSHA256": "9eec205ab83ed2466da007aaa29e3f18f8b4b5741f451c529ef7527ead443a68",
+      "baselineBytes": 144,
+      "currentBytes": 29,
+      "exactPrivateRecords": {
+        ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/meals.json": {
+          "bytes": 144,
+          "sha256": "9eec205ab83ed2466da007aaa29e3f18f8b4b5741f451c529ef7527ead443a68"
+        }
+      },
+      "currentSHA256": "29630893bbf2b28a8af82b4be6db321e0b8d89c362bf8c47bb697fee439f2e6d",
+      "exactPrivatePaths": [
+        ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/meals.json"
+      ]
+    },
+    "water.json": {
+      "disposition": "byteExactCurrent",
+      "baselineSHA256": "1dc7d921432b620cf0fcd72262f29a4ffe06902fcd4d7e3cb546d370e3908291",
+      "baselineBytes": 72,
+      "currentBytes": 72,
+      "exactPrivateRecords": {},
+      "currentSHA256": "1dc7d921432b620cf0fcd72262f29a4ffe06902fcd4d7e3cb546d370e3908291",
+      "exactPrivatePaths": []
+    },
+    "conversation-selection.json": {
+      "disposition": "byteExactCurrent",
+      "baselineSHA256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "baselineBytes": 2,
+      "currentBytes": 2,
+      "exactPrivateRecords": {},
+      "currentSHA256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "exactPrivatePaths": []
+    },
+    "profile.json": {
+      "disposition": "semanticCurrentWithRawDifference",
+      "baselineSHA256": "233fff496e5b49e10ec22a5f4b94d52c307168dc8c8fac93b4e0c420291b6a2d",
+      "baselineBytes": 184,
+      "currentBytes": 184,
+      "exactPrivateRecords": {},
+      "currentSHA256": "ea8bbf7298a5eceecd1c0d64998ebcd9f56f9933a8200f174153268f1d69cac0",
+      "exactPrivatePaths": []
+    },
+    "health-write-intent.json": {
+      "disposition": "byteExactCurrent",
+      "baselineSHA256": "7d68ba33f7c6336f30c6930576586f4de85f70c62c1e40fcf9cba1b79f4fd223",
+      "baselineBytes": 123,
+      "currentBytes": 123,
+      "exactPrivateRecords": {
+        ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/device-intent.json": {
+          "bytes": 123,
+          "sha256": "7d68ba33f7c6336f30c6930576586f4de85f70c62c1e40fcf9cba1b79f4fd223"
+        }
+      },
+      "currentSHA256": "7d68ba33f7c6336f30c6930576586f4de85f70c62c1e40fcf9cba1b79f4fd223",
+      "exactPrivatePaths": [
+        ".health-recovery/5666E496-1DAF-48A4-8947-A627CB0650D7/device-intent.json"
+      ]
+    }
+  }
+}
