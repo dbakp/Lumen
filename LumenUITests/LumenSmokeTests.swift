@@ -5244,7 +5244,10 @@ final class LumenSmokeTests: XCTestCase {
                 // than requiring both ends of the whole section to exist.
                 for (row, element) in [consequences, pendingHealth, failure, confirm].enumerated() {
                     reveal(element, towardsTop: row == 0)
-                    captureIdentifierText(element, prefix: prefix + "-failure-content-" + String(attempt) + "-row" + String(row))
+                    let captureBottom: CGFloat = row == 3 ? 20 : 40
+                    if row == 3 { print("Recovery retry capture input", element.frame, "app", app.frame, "bottomInset", captureBottom) }
+                    captureIdentifierText(element, prefix: prefix + "-failure-content-" + String(attempt) + "-row" + String(row), bottomInset: captureBottom)
+                    if row == 3 { print("Recovery retry capture completed", element.frame, "app", app.frame, "bottomInset", captureBottom) }
                 }
             }
             if attempt == 1 {
