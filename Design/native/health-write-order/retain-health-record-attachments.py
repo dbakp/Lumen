@@ -10,10 +10,11 @@ p.add_argument('--prefix', required=True)
 p.add_argument('--source', required=True)
 p.add_argument('--png-dir', required=True)
 p.add_argument('--json-dir', required=True)
+p.add_argument('--raw-root', default='/tmp/LumenBatch43Checks')
 p.add_argument('--include-failed-trial', action='store_true')
 a = p.parse_args()
 base = Path(__file__).resolve().parent
-raw = Path('/tmp/LumenBatch43Checks')
+raw = Path(a.raw_root)
 summary = json.loads((raw / (a.stem + '-summary.json')).read_text())
 assert (summary['result'] == 'Passed' and summary['failedTests'] == 0) or a.include_failed_trial
 (base / (a.prefix + '-summary.json')).write_bytes((raw / (a.stem + '-summary.json')).read_bytes())

@@ -5212,7 +5212,7 @@ final class LumenSmokeTests: XCTestCase {
         snap(prefix + "-not-now"); Thread.sleep(forTimeInterval: 3)
         reveal(confirm); confirm.tap(); XCTAssertTrue(alert.waitForExistence(timeout: 5)); alert.buttons["Recover"].tap()
         let failure = app.staticTexts["Recovery couldn't finish. Your current files haven't been replaced. Check the file and try again."].firstMatch
-        XCTAssertTrue(failure.waitForExistence(timeout: 30)); reveal(failure, towardsTop: true)
+        reveal(failure, towardsTop: true); XCTAssertTrue(failure.waitForExistence(timeout: 30))
         XCTAssertFalse(app.descendants(matching: .any).matching(identifier: "fileHealthRecovered").firstMatch.exists)
         snap(prefix + "-failed"); Thread.sleep(forTimeInterval: 3)
         for domain in domains {

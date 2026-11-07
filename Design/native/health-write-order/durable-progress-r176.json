@@ -1,7 +1,7 @@
 {
-  "status": "176 compile PASS; all pure inputs exact; four extracted-photo fault native cases pending",
+  "status": "176 missingLegacyR1 FAILED native0pass1fail/noJSON; all13 originals reviewed; no fault acceptance",
   "source": "durable-source-r176.json",
-  "latestOutcome": "source176-pure-input-continuity-r1.json",
+  "latestOutcome": "health-photo-fault-missing-legacy-r1-failure-outcome.json",
   "nextRequired": [
     {
       "area": "Actual three-route backup recovery, provenance and workspace ownership",
@@ -590,7 +590,7 @@
       "descriptorClosed": true
     }
   ],
-  "next": "Finish current176 build; publish exact implementation/build evidence, then run missing-legacyR1 followed by missing-encrypted/damaged-legacy/damaged-encrypted sequentially with full root/native/host review and GitHub proof before each reset.",
+  "next": "Source177 native test navigation correction and R2 host audit; original176 failure retained, all full gates open.",
   "latestFinalPhotoRead": [
     {
       "mode": "in-place",
@@ -3268,6 +3268,9 @@
     "driverSHA256": "5dbdfa681511e507a3662b22c01fe9aff9d069660d97927f4319dda63e1a9bdb",
     "passed": [],
     "nativeRuntime": "not run",
-    "build": "health-photo-resource-fault-r1-build.json"
+    "build": "health-photo-resource-fault-r1-build.json",
+    "failedTrials": [
+      "health-photo-fault-missing-legacy-r1-failure-outcome.json"
+    ]
   }
 }
