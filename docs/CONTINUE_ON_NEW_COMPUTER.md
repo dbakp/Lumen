@@ -32,6 +32,8 @@ Verified earlier recovery work:
 
 - Source181 compact-largest trial remains **unaccepted**: native0pass/1fail/exit65 before Backup & restore opened. No backup selection or recovery occurred. Native video/hierarchy and four individually inspected video diagnostic frames are retained separately from zero XCTest screenshot/JSON attachments. Preserve [failure outcome](../Design/native/health-write-order/health-photo-fault-missing-encrypted-visibilitycompactlargestr3-failure-outcome.json); next freeze/build a narrow test-navigation repair, with eight accepted cases retaining actual sources.
 
+- Source182 compact-largest remains **unaccepted**: first genuine failure preserved exact data/source metadata, then the capture helper repeated a fully visible Recover row while reserving40points at the bottom. Root inspected4diagnostic originals of67retained; no all-original review. The host stopped redundant capture (native0pass/1fail/exit75, Testing was canceled). Preserve [failure](../Design/native/health-write-order/health-photo-fault-missing-encrypted-visibilitycompactlargestr4-failure-outcome.json). Next freeze/build183 with Largest row3 capture inset20; all production source remains unchanged.
+
 Earlier Source169–177 results are **primary dedicated simulator, default light appearance**. Source179 credits only the exact declared cases above. They do not close full appearance, VoiceOver, interruption, device, Release or broader product gates.
 
 The six-case meal-photo matrix and four extracted-photo fault cases are verified. Continue directly with the predeclared recovery-error visibility repair and the continuing design critic; safety acceptance does not establish error discoverability. Consult these exact current records before acting:
