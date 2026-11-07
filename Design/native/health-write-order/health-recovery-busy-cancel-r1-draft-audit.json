@@ -1,0 +1,133 @@
+{
+  "status": "Source-only proposal audit; narrow repair justified, two refinements required before freeze. No implementation/runtime/design acceptance",
+  "reviewer": "same continuing independent App Designer Pro native critic",
+  "scope": "Proposed one-time reveal of actual busy Cancel after layout. Motivation is actual Source184main/normal legacy/encrypted busy3/4clipping; transaction/cancellation mechanics not diagnosed as broken by those stills.",
+  "provenance": [
+    {
+      "path": "Design/native/health-write-order/health-recovery-busy-cancel-r1-plan.json",
+      "bytes": 2342,
+      "sha256": "914f74f558ac5164874f226a826b6f2c4ea023efc45a822e79ce1600290bae5b"
+    },
+    {
+      "path": "Design/native/health-write-order/health-recovery-busy-cancel-r1.patch.draft",
+      "bytes": 2085,
+      "sha256": "0931ad0e3a90d81f641dbeae6aa92d8f265a32d7faea64474937c5d25ea0b8fa"
+    },
+    {
+      "path": "Lumen/Views/BackupFileRecoveryView.swift",
+      "bytes": 19173,
+      "sha256": "b2cd41bfb3dd94e22c84be189bd608e4e39adbf79b2050ad43a40fb14961b359"
+    },
+    {
+      "path": "Lumen/Models/BackupFileTransaction.swift",
+      "bytes": 20204,
+      "sha256": "6584614fd196a21fe6ba418b8ae1a33a578964f73f7851dc7287f69d86360ae9"
+    },
+    {
+      "path": "Lumen/Models/BackupArchive.swift",
+      "bytes": 19001,
+      "sha256": "4a90bd91c4df31bc8751574f24d2d9c3f11e1c6b4339e876bacb25fc790dc291"
+    },
+    {
+      "path": "Lumen/Models/ConversationFiles.swift",
+      "bytes": 6532,
+      "sha256": "cfe85382cad51f9023b577470b15e7eb73ccc9eb88383216a5271a4e9cddbe44"
+    },
+    {
+      "path": "Lumen/Models/HealthRecoveryCopies.swift",
+      "bytes": 38735,
+      "sha256": "8a420f4ddc9319157ea53a453775a0bfb25997320a5e35e2facb7aa785e2790b"
+    },
+    {
+      "path": "Lumen/Models/HealthRecoverySelection.swift",
+      "bytes": 12880,
+      "sha256": "f41cd227862406d49345981a1fcf001f39f482ad2c72f6a6c7b46ae5da275920"
+    },
+    {
+      "path": "Lumen/Models/HealthStore.swift",
+      "bytes": 48184,
+      "sha256": "dd5ee7970f11fdcdc50443c6315197d9afddc7b619b0d245d9a379b66e618a90"
+    }
+  ],
+  "priorEvidence": [
+    "health-recovery-error-state-source184-round2-part12-legacy.json",
+    "health-recovery-error-state-source184-round2-part13-encrypted.json"
+  ],
+  "readBoundary": "Current canonical production view/model files read. Active186UItest/build/runtime untouched. Prior images were actually opened in their original contributions; no additional image-open credit in this audit.",
+  "assessment": "A Cancel row with a stable scroll ID and one owned nonanimated reveal per actual operation is a minimal native response to the observed bottom clipping. Keep existing error copy/layout/focus behavior. Current active/busy/same-control guards and disappearance cancellation appropriately prevent a completed/old review from revealing the new row. Do not broaden this into repeated snapping or focus stealing.",
+  "requiredRefinements": [
+    {
+      "id": "BUSY-DRAFT-1",
+      "kind": "source timing gap; inferred, not observed runtime defect",
+      "location": "Cancel action and busyReveal task guard",
+      "finding": "The proposed Cancel action cancels operation/work but leaves busyReveal pending until busy becomes false. Task cancellation can await detached-worker unwind, so busy can remain true while a pending reveal resumes after the user cancelled. The guard checks task/active/busy/control identity but not actual control cancellation.",
+      "required": "In the Cancel action, cancel and clear busyReveal before cancelling operation/work. Before scrolling, check activeOperation cancellation and return silently on cancellation, in addition to existing task/active/busy/same-control guards. Preserve silent cancellation and do not convert a cancellation check into a user error.",
+      "verification": "In held control2 Cancel case retain actual full Cancel before native tap without test scrolling, then sample no stale reveal/error during unwind; independently prove actual control cancelled, UI/worker match, stage removed and no receipt. Ordinary sampled checks do not prove every yield window."
+    },
+    {
+      "id": "BUSY-DRAFT-2",
+      "kind": "host-contract precision",
+      "location": "plan.hostRequirements exact live canonical/prior bytes and metadata",
+      "finding": "Preparation can legitimately retire the original .previous folder before the held barrier. BackupFileTransaction.prepare calls BackupFiles.recover, which preserves prior contents privately then removes .previous, before creating/pausing preparation stage. Requiring the original prior path/metadata unchanged after held2 would incorrectly fail expected existing behavior.",
+      "required": "Specify canonical current payload bytes/metadata preservation separately from allowed private-preservation additions, and explicitly bind prior contents/intent to exact private copies/manifests once .previous retires. Record actual original-prior presence/absence at each boundary; require no loss or substitution, rather than impossible old-path identity. Preserve every prior private copy through Cancel/Back, retry, final receipt and relaunch.",
+      "verification": "At first genuine failed boundary preserve pre-preparation original current/prior metadata as before. At held2/cancelled boundary inventory any legitimate private copies, compare preserved raw prior contents to baseline, and prove unrelated healthy/current source/provider exact. Never bypass failed receipt/stage or missing-copy assertions by ignoring arbitrary extra files."
+    }
+  ],
+  "lifecycleAnalysis": [
+    "recover() runs on MainActor, sets busy then creates and assigns actual operation synchronously before returning to a normal render. onChange sees the inserted busy rows under ordinary operation. Closed acquire can set busy back false without creating a genuine operation; no forced reveal/error should be manufactured for that cancellation-only path.",
+    "Capturing activeOperation and checking identity after Task.yield prevents a stale reveal targeting a later control. Cancellation on busyfalse/disappearance plus guard busy/reviewActive blocks late completion/error scroll races. The short task need not repeatedly poll or retain source payloads.",
+    "onChange(of:busy) is a Boolean event, so it is not a universal proof of every theoretical coalesced operation transition. Current private UI route disables concurrent recovery while busy; no demonstrated need for a broader state redesign. Keep per-operation identity guards and test actual repeated attempts.",
+    "One Task.yield is a scheduling opportunity, not a formal layout-completion barrier. Do not claim it guarantees a valid Form scroll target from source alone. Fresh originals must show full Cancel after actual row insertion; if a layout race is reproduced, prefer target-row/operation-bound lifecycle rather than arbitrary sleep or repeated scrolling.",
+    "scrollTo has no explicit animation wrapper and does not assign AccessibilityFocusState. It can still affect viewport/accessibility behavior; direct VoiceOver and Reduce Motion remain fresh gates after production modification. Do not inherit genuine-error speech acceptance from pre-change186.",
+    "The existing genuine-error task must remain cancelled/reset on retry and guarded by failure UUID/current review. A failure that ends busy should cancel the busy reveal and allow the owned genuine-error reveal/focus to remain authoritative."
+  ],
+  "fourCaseRequirements": [
+    {
+      "cases": [
+        "legacy Cancel",
+        "encrypted Cancel"
+      ],
+      "route": "Genuine missing-photo failure before test scroll and independent preservation \u2192 explicit omission \u2192 actual held control2 \u2192 full Cancel visible without test scroll \u2192 real UI Cancel, host never releases that control \u2192 silent same review/retained meal/workout/omission choices \u2192 same-file actual control3 retry and acknowledgement-bound success.",
+      "receipt": "Omission remains deliberate/on for same-file missing-photo retry: receipt must state2omissions, no installed photos or stale references, exact selected-file/provider identity and both meal/workout digests. Distinguish from Back fresh-selection0omission case."
+    },
+    {
+      "cases": [
+        "legacy Back",
+        "encrypted Back"
+      ],
+      "route": "Same genuine failure and held2 \u2192 actual native Back \u2192 same control cancellation/owner closure/no stale error or completion; no host release of cancelled control2 \u2192 original selected again through Files with old roots absent/new owner and healthy extracted photos \u2192 choices/omission initiallyoff and disabled Recover \u2192 explicit fresh choices/no omission \u2192 actual control3 held/observed/released healthy-photo success.",
+      "receipt": "Zero omissions, two new distinct photo IDs with both original exact JPEG mappings, full source/provider/domain/record/photo/intent checks before success nonce acknowledgement. Retain live source cleanup and relaunch."
+    },
+    {
+      "allCases": "Use the real completed selected reader/control1/FD and first-failure boundaries. Persist each actual control nonce/ordinal/stage/UIworker identity and allowed phase transition. After cancelled2 require actual cancelled/uiCancelled record, stage absent, no receipt, canonical data preserved and private priors accounted; never count host release as cancellation. Full success receipt/data/source/provider audit before acknowledgement; cleanup after actual parent and final relaunch. Publish exact evidence before synthetic reset/duplicate cleanup."
+    }
+  ],
+  "validation": {
+    "patchCheck": "git apply -p0 --check passed; check-only, not applied. Draft paths are repository-relative without a/ prefix.",
+    "SwiftCompiled": false,
+    "patchApplied": false,
+    "runtimeExecutedByCritic": false,
+    "imagesOpenedThisAudit": 0,
+    "sourceMutations": 0
+  },
+  "declinedAsks": [
+    "No visual redesign, error-copy change, custom overlay or extra decoration.",
+    "No repeated automatic scroll/focus requests or shared capture-helper weakening.",
+    "No fabricated cancellation error, new broad score or acceptance from this proposal."
+  ],
+  "limits": [
+    "Four proposed cases remain unimplemented/unexecuted in this audit.",
+    "No proof of all reveal-yield/disappearance interleavings, late old-worker/new-review windows, every appearance/readable route, direct VoiceOver or ReduceMotion.",
+    "No physical iPhone actions or source/build/simulator mutation. All prior reports immutable."
+  ],
+  "score": null,
+  "overallDesignAccepted": false,
+  "writes": [
+    "health-recovery-busy-cancel-r1-draft-audit.json"
+  ],
+  "storage": {
+    "recoveredBytes": 0,
+    "freeBytesAtReport": 40224735232
+  },
+  "completedUTC": "2026-11-07T16:42:16.730179+00:00"
+}

@@ -5311,10 +5311,19 @@ final class LumenSmokeTests: XCTestCase {
                 guard failure.waitForExistence(timeout: 30) else { throw NSError(domain: "LumenVoiceOver", code: 3) }
                 current = try service.currentSpeech().utterance
                 record("genuine-error-current", current)
-                guard current.contains("Recovery couldn't finish"), current.contains("Your current files haven't been replaced.") else {
-                    throw NSError(domain: "LumenVoiceOver", code: 4, userInfo: [NSLocalizedDescriptionKey: "Automatic VoiceOver focus did not contain the genuine error and preservation message"])
-                }
                 snap(prefix + "-voiceover-error-focus")
+                // Record later service output before attributing a short string to
+                // the app. Full spoken-body acceptance remains a separate result.
+                var errorSpeech = [current]
+                for delay in [2.0, 4.0] {
+                    Thread.sleep(forTimeInterval: delay)
+                    let later = try service.currentSpeech().utterance
+                    errorSpeech.append(later)
+                    record("genuine-error-later-current", later)
+                }
+                guard errorSpeech.allSatisfy({ $0.hasPrefix("Recovery couldn't finish") }) else {
+                    throw NSError(domain: "LumenVoiceOver", code: 4, userInfo: [NSLocalizedDescriptionKey: "VoiceOver focus did not remain on the genuine error during the declared samples"])
+                }
                 let next = try service.moveForward().utterance
                 record("error-forward", next)
                 guard next.contains("Recover selected data"), next.contains("Button") else { throw NSError(domain: "LumenVoiceOver", code: 5) }
@@ -5327,9 +5336,20 @@ final class LumenSmokeTests: XCTestCase {
                 guard service.isEnabled == original else { throw NSError(domain: "LumenVoiceOver", code: 7) }
                 return ["observations": speech, "originallyEnabled": original,
                         "restored": true, "enabledAfterRestoration": service.isEnabled,
-                        "scope": "Actual genuine-error automatic focus and adjacent retry order only; queried speech is not automatic announcement history or duplicate-count evidence"]
+                        "errorAccessibilityLabel": failure.label,
+                        "completePreservationMessageReturned": errorSpeech.contains { $0.contains("Your current files haven't been replaced.") },
+                        "sampledErrorSpeechLengths": errorSpeech.map(\.count),
+                        "scope": "Actual genuine-error heading-prefix automatic focus, six-second sampled stability and adjacent retry order only. Full spoken preservation body is accepted only if completePreservationMessageReturned is true. Queried speech is not automatic announcement history, acoustic audio or duplicate-count evidence."]
             } catch {
-                let diagnostic: [String: Any] = ["observations": speech, "failure": String(describing: error), "originallyEnabled": original]
+                var restorationError: String?
+                do {
+                    if service.isEnabled != original {
+                        if original { try service.enable() } else { try service.disable() }
+                    }
+                } catch { restorationError = String(describing: error) }
+                let diagnostic: [String: Any] = ["observations": speech, "failure": String(describing: error), "originallyEnabled": original,
+                                               "enabledAfterRestoration": service.isEnabled, "restored": service.isEnabled == original,
+                                               "restorationError": (restorationError as Any?) ?? NSNull()]
                 let attachment = XCTAttachment(data: try JSONSerialization.data(withJSONObject: diagnostic, options: [.prettyPrinted, .sortedKeys]), uniformTypeIdentifier: "public.json")
                 attachment.name = "health-voiceover-genuine-error-failure"; attachment.lifetime = .keepAlways; add(attachment)
                 throw error
