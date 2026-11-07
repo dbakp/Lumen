@@ -5161,6 +5161,76 @@ final class LumenSmokeTests: XCTestCase {
     // Pending follow-on draft, outside frozen Source182. Future setup must add
     // -health-read-ui -health-read-scope selected-record ONLY for these tests.
     // Existing actual reader/closed-owner observations avoid new app instrumentation.
+    @MainActor
+    func testHealthBackupFileRecoveryPhotoFaultVoiceOverCapability() throws {
+        executionTimeAllowance = 180
+        #if targetEnvironment(simulator)
+        guard #available(iOS 27.0, *) else {
+            XCTFail("The simulator VoiceOver capability probe requires iOS27")
+            return
+        }
+        XCTAssertEqual(app.state, .runningForeground)
+        let service = XCUIDevice.shared.voiceOverService
+        let originallyEnabled = service.isEnabled
+        var observations: [[String: Any]] = []
+        var failure: String?
+        var restored = false
+        // Restore the selected simulator's previous state even if an observation throws.
+        defer {
+            if service.isEnabled != originallyEnabled {
+                if originallyEnabled { try? service.enable() } else { try? service.disable() }
+            }
+        }
+        do {
+            if !originallyEnabled { try service.enable() }
+            guard service.isEnabled else {
+                throw NSError(domain: "LumenVoiceOverProbe", code: 1,
+                              userInfo: [NSLocalizedDescriptionKey: "VoiceOver did not enable"])
+            }
+            let first = try service.currentSpeech()
+            observations.append(["action": "current", "utterance": first.utterance,
+                                 "at": Date().timeIntervalSince1970])
+            for ordinal in 1...4 {
+                let output = try service.moveForward()
+                observations.append(["action": "forward", "ordinal": ordinal,
+                                     "utterance": output.utterance, "at": Date().timeIntervalSince1970])
+            }
+            let previous = try service.moveBackward()
+            observations.append(["action": "backward", "utterance": previous.utterance,
+                                 "at": Date().timeIntervalSince1970])
+            snap("health-voiceover-capability-enabled")
+        } catch {
+            failure = String(describing: error)
+        }
+        do {
+            if service.isEnabled != originallyEnabled {
+                if originallyEnabled { try service.enable() } else { try service.disable() }
+            }
+            restored = service.isEnabled == originallyEnabled
+        } catch {
+            failure = [failure, "Restoration failed: \(error)"].compactMap { $0 }.joined(separator: "; ")
+        }
+        let utterances = observations.compactMap { $0["utterance"] as? String }
+        let report: [String: Any] = [
+            "scope": "Simulator VoiceOver service capability only; no recovery-error accessibility acceptance",
+            "originallyEnabled": originallyEnabled, "restored": restored,
+            "enabledAfterRestoration": service.isEnabled, "observations": observations,
+            "failure": (failure as Any?) ?? NSNull()
+        ]
+        let attachment = XCTAttachment(data: try JSONSerialization.data(withJSONObject: report, options: [.prettyPrinted, .sortedKeys]), uniformTypeIdentifier: "public.json")
+        attachment.name = "health-voiceover-capability-readback"
+        attachment.lifetime = .keepAlways
+        add(attachment)
+        XCTAssertNil(failure)
+        XCTAssertTrue(restored, "Restore the simulator's original VoiceOver setting")
+        XCTAssertEqual(observations.count, 6)
+        XCTAssertTrue(utterances.allSatisfy { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty })
+        XCTAssertGreaterThanOrEqual(Set(utterances).count, 2, "Actual speech must change as VoiceOver focus moves")
+        #else
+        XCTFail("This probe is authorized for the dedicated simulator only")
+        #endif
+    }
+
     func testHealthBackupFileRecoveryPhotoFaultErrorBackLegacy() throws { try healthBackupPhotoFaultErrorBack("legacy") }
     func testHealthBackupFileRecoveryPhotoFaultErrorBackEncrypted() throws { try healthBackupPhotoFaultErrorBack("encrypted") }
     private func healthBackupPhotoFaultErrorBack(_ kind: String) throws {

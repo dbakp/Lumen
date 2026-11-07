@@ -1,0 +1,22 @@
+{
+  "status": "Predeclared simulator-only capability probe; no runtime claim",
+  "source": "durable-source-r185.json",
+  "prerequisiteGithubCommit": "1b8dc485f6660781c55d46b5a5cc572573bb06ff",
+  "device": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+  "test": "LumenUITests/LumenSmokeTests/testHealthBackupFileRecoveryPhotoFaultVoiceOverCapability",
+  "purpose": "Determine whether installed iOS27 simulator public XCUIDevice VoiceOver service returns actual speech and moves focus before designing genuine-error VoiceOver checks.",
+  "success": [
+    "Actual native1pass0fail0skip and complete retained JSON",
+    "VoiceOver enabled; current speech, four forward movements and one backward movement yield six nonempty utterances with at least two distinct values",
+    "Record original simulator enabled state; explicitly restore it, including on caught service errors; defer fallback",
+    "Inspect every actual screenshot and full JSON; preserve failures and source/build provenance"
+  ],
+  "limits": [
+    "Capability only, not recovery error focus/order/duplicate announcements/audio acceptance",
+    "No physical iPhone or Mac VoiceOver actions",
+    "No invented speech from accessibility labels; public service output only",
+    "Finite native180seconds; if timed out inspect simulator restoration before further work"
+  ],
+  "sdkPrimarySource": "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Library/Frameworks/XCUIAutomation.framework/Headers/XCUIVoiceOverService.h",
+  "checkedAt": 1794069005.309679
+}
