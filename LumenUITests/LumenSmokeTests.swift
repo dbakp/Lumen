@@ -5231,9 +5231,16 @@ final class LumenSmokeTests: XCTestCase {
         #endif
     }
 
+    @MainActor
     func testHealthBackupFileRecoveryPhotoFaultErrorBackLegacy() throws { try healthBackupPhotoFaultErrorBack("legacy") }
+    @MainActor
     func testHealthBackupFileRecoveryPhotoFaultErrorBackEncrypted() throws { try healthBackupPhotoFaultErrorBack("encrypted") }
-    private func healthBackupPhotoFaultErrorBack(_ kind: String) throws {
+    @MainActor
+    func testHealthBackupFileRecoveryPhotoFaultErrorBackEncryptedVoiceOver() throws {
+        try healthBackupPhotoFaultErrorBack("encrypted", voiceOver: true)
+    }
+    @MainActor
+    private func healthBackupPhotoFaultErrorBack(_ kind: String, voiceOver: Bool = false) throws {
         executionTimeAllowance = 600
         let base = "Lumen-backup-health-matrix-two-" + kind
         let prefix = "health-error-state-" + kind
@@ -5274,8 +5281,67 @@ final class LumenSmokeTests: XCTestCase {
         let alert = app.alerts["Replace selected data?"]
         let failure = app.descendants(matching: .any).matching(identifier: "fileHealthRecoveryError").firstMatch
         let success = app.descendants(matching: .any).matching(identifier: "fileHealthRecovered").firstMatch
+        var voiceOverReadback: [String: Any] = [:]
+        func confirmWithVoiceOver() throws -> [String: Any] {
+            #if targetEnvironment(simulator)
+            guard #available(iOS 27.0, *) else { throw NSError(domain: "LumenVoiceOver", code: 1) }
+            let service = XCUIDevice.shared.voiceOverService
+            let original = service.isEnabled
+            var speech: [[String: Any]] = []
+            defer {
+                if service.isEnabled != original {
+                    if original { try? service.enable() } else { try? service.disable() }
+                }
+            }
+            func record(_ action: String, _ utterance: String) {
+                speech.append(["action": action, "utterance": utterance, "at": Date().timeIntervalSince1970])
+            }
+            do {
+                if !original { try service.enable() }
+                var current = try service.currentSpeech().utterance
+                record("confirmation-current", current)
+                for _ in 0..<20 {
+                    if current == "Recover Button" { break }
+                    current = try service.moveForward().utterance
+                    record("confirmation-forward", current)
+                }
+                guard current == "Recover Button" else { throw NSError(domain: "LumenVoiceOver", code: 2, userInfo: [NSLocalizedDescriptionKey: "Recover was not reached with VoiceOver focus"]) }
+                // A real double tap activates the element selected by VoiceOver.
+                alert.buttons["Recover"].doubleTap()
+                guard failure.waitForExistence(timeout: 30) else { throw NSError(domain: "LumenVoiceOver", code: 3) }
+                current = try service.currentSpeech().utterance
+                record("genuine-error-current", current)
+                guard current.contains("Recovery couldn't finish"), current.contains("Your current files haven't been replaced.") else {
+                    throw NSError(domain: "LumenVoiceOver", code: 4, userInfo: [NSLocalizedDescriptionKey: "Automatic VoiceOver focus did not contain the genuine error and preservation message"])
+                }
+                snap(prefix + "-voiceover-error-focus")
+                let next = try service.moveForward().utterance
+                record("error-forward", next)
+                guard next.contains("Recover selected data"), next.contains("Button") else { throw NSError(domain: "LumenVoiceOver", code: 5) }
+                let back = try service.moveBackward().utterance
+                record("error-backward", back)
+                guard back.contains("Recovery couldn't finish") else { throw NSError(domain: "LumenVoiceOver", code: 6) }
+                if service.isEnabled != original {
+                    if original { try service.enable() } else { try service.disable() }
+                }
+                guard service.isEnabled == original else { throw NSError(domain: "LumenVoiceOver", code: 7) }
+                return ["observations": speech, "originallyEnabled": original,
+                        "restored": true, "enabledAfterRestoration": service.isEnabled,
+                        "scope": "Actual genuine-error automatic focus and adjacent retry order only; queried speech is not automatic announcement history or duplicate-count evidence"]
+            } catch {
+                let diagnostic: [String: Any] = ["observations": speech, "failure": String(describing: error), "originallyEnabled": original]
+                let attachment = XCTAttachment(data: try JSONSerialization.data(withJSONObject: diagnostic, options: [.prettyPrinted, .sortedKeys]), uniformTypeIdentifier: "public.json")
+                attachment.name = "health-voiceover-genuine-error-failure"; attachment.lifetime = .keepAlways; add(attachment)
+                throw error
+            }
+            #else
+            throw NSError(domain: "LumenVoiceOver", code: 8)
+            #endif
+        }
         reveal(confirm); XCTAssertTrue(confirm.isEnabled); confirm.tap()
-        XCTAssertTrue(alert.waitForExistence(timeout: 5)); alert.buttons["Recover"].tap()
+        XCTAssertTrue(alert.waitForExistence(timeout: 5))
+        if voiceOver { voiceOverReadback = try confirmWithVoiceOver() }
+        else { alert.buttons["Recover"].tap() }
         // The app must expose the genuine failure before any test scrolling.
         XCTAssertTrue(failure.waitForExistence(timeout: 30)); XCTAssertTrue(failure.isHittable)
         XCTAssertGreaterThanOrEqual(failure.frame.minY, app.navigationBars["Review recovery"].frame.maxY)
@@ -5348,7 +5414,7 @@ final class LumenSmokeTests: XCTestCase {
             "scrollFrame": String(describing: firstFrame), "boundedScrollObservationSeconds": 3,
             "initialChoicesOff": true, "failedBeforeTestScroll": true, "omissionNotNowRetained": true,
             "backAtGenuineFailure": true, "freshChoicesAndOmissionOff": true,
-            "retryWithoutOmission": true, "successObserved": true]
+            "retryWithoutOmission": true, "successObserved": true, "voiceOver": voiceOverReadback]
         let attachment = XCTAttachment(data: try JSONSerialization.data(withJSONObject: readback, options: [.prettyPrinted, .sortedKeys]), uniformTypeIdentifier: "public.json")
         attachment.name = "error-state-readback"; attachment.lifetime = .keepAlways; add(attachment)
         app.terminate(); app.launchArguments = []; app.launch(); openBackupSettings()
