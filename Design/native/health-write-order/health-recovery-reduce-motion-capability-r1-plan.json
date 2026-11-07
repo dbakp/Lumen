@@ -1,0 +1,48 @@
+{
+  "status": "Prepared source-only capability/behavior plan; no Settings acquisition or ReduceMotion execution yet",
+  "parent": "health-recovery-error-visibility-state-r1-contract.json",
+  "currentSource": "durable-source-r188.json",
+  "prerequisite": "Finish and exactly publish current188 genuine-error VoiceOver producer before Settings interaction, frozen source/test changes or new build.",
+  "observedLocalSDK": {
+    "version": "iPhoneSimulator27.0",
+    "systemPreferenceAPI": "UIAccessibility.isReduceMotionEnabled",
+    "declaration": "UIAccessibilityIsReduceMotionEnabled(void)",
+    "meaning": "Header states whether the system preference for reduce motion is enabled",
+    "declarationLine": 566,
+    "swiftNameLine": 2978,
+    "sources": {
+      "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIAccessibility.h": {
+        "bytes": 42550,
+        "sha256": "3195e4606414a2a834d9f62933c2ec0c2d3afa6a5b3c535f35b0da6c4c57c39b"
+      },
+      "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIKit.apinotes": {
+        "bytes": 162098,
+        "sha256": "9b980a2c9b7cc589f13a7db5a4070ad9d56c5c9a0f5b48ce7bd6f5b781d18467"
+      }
+    },
+    "XCUIAutomationHeaders": "Read-only header search found VoiceOver service but no ReduceMotion setting service; use observed Settings UI rather than inventing a service."
+  },
+  "existingProductSource": {
+    "file": "Lumen/LumenApp.swift",
+    "behavior": "accessibilityReduceMotion environment controls root transaction animation=nil; source observation only, not runtime motion evidence"
+  },
+  "firstCapability": [
+    "After current producer terminal/published, inspect actual dedicated simulator Settings UI; derive controls from observed state.",
+    "Record original Reduce Motion switch, enable through actual Settings UI, observe actual public UIKit system-preference bool, and restore the original on every exit.",
+    "Retain original Settings screens, full native readback with before/enabled/restored values and failure/restoration errors. Do not assume originaloff.",
+    "Use a narrowly scoped native capability test if required; freeze new test source/build and compare actual app binary with188. Prefer no product change unless actual evidence requires one."
+  ],
+  "thenBehavior": [
+    "Run actual encrypted genuine-error workflow with observed Reduce Motion enabled, retaining actual before/after system preference readbacks and original restoration.",
+    "Preserve genuine firstfailure/current/prior/source/reader, deliberate-scroll/Notnow/Back/freshhealthyphotos and full preack receipt/livecleanup/relaunch guarantees.",
+    "Retain time-based evidence around error reveal/retry/Back where tools permit; inspect it rather than calling preference-on or screenshots a motion test.",
+    "Keep full spoken-body/audio/duplicates, deterministic ownership/yield timing, both-phone appearances and every broader contract open until independently verified."
+  ],
+  "constraints": [
+    "Dedicated primary simulator only; no physical iPhone actions, no shared runtime reset, no personal data.",
+    "No source/test/cache mutation during a native producer; one native/build at a time.",
+    "Reuse existing build/package roots, tiny existing writer inputs and measured after-backup cleanup; no large fixture generation.",
+    "Same continuing critic; no overall score or product acceptance from capability evidence."
+  ],
+  "checkedAt": 1794076665.567669
+}
