@@ -60,7 +60,14 @@ enum HealthLegacyOriginUIFixture {
         private let lock = NSLock()
         private var root: URL?
         private var rows: [[String: Any]] = []
-        func reset(_ root: URL) { lock.lock(); defer { lock.unlock() }; self.root = root; rows = [] }
+        func reset(_ root: URL) {
+            lock.lock(); defer { lock.unlock() }; self.root = root; rows = []
+            // Start each dedicated trial with an explicit empty trace. The host
+            // independently requires this exact file to be fresh for its run.
+            if let bytes = try? JSONSerialization.data(withJSONObject: ["events": rows], options: [.sortedKeys]) {
+                try? bytes.write(to: root.appendingPathComponent("Lumen-legacy-origin-review-events.json"), options: .atomic)
+            }
+        }
         func note(_ event: String, id: UUID, domains: Set<HealthLocalFiles.Domain>) {
             lock.lock(); defer { lock.unlock() }
             guard let root else { return }

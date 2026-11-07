@@ -53,43 +53,82 @@ def container(kind):
     return Path(subprocess.check_output(['xcrun', 'simctl', 'get_app_container', device,
                                         'com.dbakp.lumen', kind], text=True).strip())
 
+prelaunch_observation = None
+installed_observations = []
+legacy_observations = []
+copy_observations = []
+
+
+def verify_frozen_build():
+    rows={**source['files'],**source.get('fixtureInputs',{})}
+    for name,row in rows.items():
+        path=repo/name;facts=path.lstat()
+        assert stat.S_ISREG(facts.st_mode) and not path.is_symlink()
+        data=path.read_bytes();assert len(data)==row['bytes'] and digest(data)==row['sha256'],name
+    assert build['source']==a.source and build['buildExit']==0
+    test=Path(build['testBinary']);app=test.parents[3]/'Lumen.app/Lumen'
+    binaries={}
+    for label,path,hash_key,size_key in [('app',app,'sha256','binaryBytes'),('uiTest',test,'testBinarySHA256','testBinaryBytes')]:
+        facts=path.lstat();assert stat.S_ISREG(facts.st_mode) and not path.is_symlink()
+        data=path.read_bytes();assert len(data)==build[size_key] and digest(data)==build[hash_key]
+        binaries[label]={'path':str(path),'bytes':len(data),'sha256':digest(data)}
+    return {'source':a.source,'build':a.build,'exactFrozenInputs':len(rows),'localBinaries':binaries,'checkedAt':time.time()}
+
+
 def identity():
-    for name, row in {**source['files'],**source.get('fixtureInputs',{})}.items():
-        assert digest((repo / name).read_bytes()) == row['sha256'], name
-    assert build['source'] == a.source
-    assert digest((container('app') / 'Lumen').read_bytes()) == build['sha256']
-    test_binary = Path(build['testBinary'])
-    assert test_binary.is_file() and digest(test_binary.read_bytes()) == build['testBinarySHA256']
-
-def legacy_defaults(expected):
-    assert expected['bundle']=='com.dbakp.lumen' and expected['kind']==a.origin
-    path=container('data')/'Library/Preferences/com.dbakp.lumen.plist'
-    facts=path.lstat();assert stat.S_ISREG(facts.st_mode) and not path.is_symlink() and facts.st_size<256*1024
-    # Only known fixed synthetic keys are retained in reports, never all preferences.
-    values=plistlib.loads(path.read_bytes());checked={}
-    assert set(expected['values'])=={'meals','workouts'}
-    for domain,row in expected['values'].items():
-        assert row['key']=='lumen.health.'+domain+'.v1'
-        value=values[row['key']]
-        wanted=b'{synthetic persisted legacy origin damaged' if a.origin=='data' else 'Synthetic persisted old value e\u0301 🫖'.encode('utf-16-le')
-        raw=value if isinstance(value,bytes) else value.encode('utf-16-le')
-        assert (isinstance(value,bytes) if a.origin=='data' else isinstance(value,str))
-        assert row['type']==('data' if a.origin=='data' else 'stringUTF16LE')
-        assert raw==wanted==base64.b64decode(row['payload'],validate=True)
-        checked[domain]={'key':row['key'],'type':row['type'],'bytes':len(raw),'sha256':digest(raw),'base64':row['payload']}
-    return checked
+    verify_frozen_build()
+    path=container('app')/'Lumen';facts=path.lstat()
+    assert stat.S_ISREG(facts.st_mode) and not path.is_symlink()
+    data=path.read_bytes();assert len(data)==build['binaryBytes'] and digest(data)==build['sha256']
+    row={'path':str(path),'bytes':len(data),'sha256':digest(data),'checkedAt':time.time()}
+    if not installed_observations:installed_observations.append(row)
+    return row
 
 
-def origin_events():
+def legacy_defaults(expected, boundary):
+    assert len(legacy_observations)<64
+    observation={'boundary':boundary,'observedAt':time.time(),'status':'checking','values':{}}
+    legacy_observations.append(observation)
+    def persist():
+        (base/(prefix+'-legacy-boundaries.json')).write_text(json.dumps({'observations':legacy_observations},indent=2)+'\n')
+    try:
+        assert expected['bundle']=='com.dbakp.lumen' and expected['kind']==a.origin
+        path=container('data')/'Library/Preferences/com.dbakp.lumen.plist'
+        facts=path.lstat();assert stat.S_ISREG(facts.st_mode) and not path.is_symlink() and facts.st_size<256*1024
+        # Retain only fixed known synthetic keys, never the entire plist/domain.
+        values=plistlib.loads(path.read_bytes());checked=observation['values']
+        assert set(expected['values'])=={'meals','workouts'}
+        for domain,row in expected['values'].items():
+            assert row['key']=='lumen.health.'+domain+'.v1'
+            value=values.get(row['key']);actual={'key':row['key'],'actualType':type(value).__name__}
+            checked[domain]=actual
+            assert isinstance(value,(bytes,str)), 'Unsupported fixed synthetic value type'
+            raw=value if isinstance(value,bytes) else value.encode('utf-16-le')
+            actual.update({'type':'data' if isinstance(value,bytes) else 'stringUTF16LE','bytes':len(raw),
+                           'sha256':digest(raw),'base64':base64.b64encode(raw).decode()})
+            wanted=b'{synthetic persisted legacy origin damaged' if a.origin=='data' else 'Synthetic persisted old value e\u0301 🫖'.encode('utf-16-le')
+            assert actual['type']==row['type']==('data' if a.origin=='data' else 'stringUTF16LE')
+            assert raw==wanted==base64.b64decode(row['payload'],validate=True)
+        observation['originOwnerEvents']=origin_events(allow_empty=boundary=='initial-before-file-selection')
+        observation['status']='PASS'
+        return checked
+    except Exception as error:
+        observation['status']='FAILED';observation['error']=str(error)
+        raise
+    finally:persist()
+
+
+def origin_events(allow_empty=False):
     path=container('group.com.dbakp.lumen')/'Lumen-legacy-origin-review-events.json'
     assert not path.is_symlink() and stat.S_ISREG(path.lstat().st_mode) and path.stat().st_size<64*1024
+    assert path.stat().st_mtime>=started
     rows=json.loads(path.read_bytes())['events']
-    assert rows and all(re.fullmatch(r'[A-Fa-f0-9-]{36}',r['sessionID']) and r['event'] in ['open','ready','acquire','closed'] for r in rows)
+    assert (rows or allow_empty) and all(re.fullmatch(r'[A-Fa-f0-9-]{36}',r['sessionID']) and r['event'] in ['open','ready','acquire','closed'] for r in rows)
     return rows
 
 
-def legacy_copies(root):
-    expected=checkpoint['legacyOrigins'];legacy_defaults(expected)
+def legacy_copies(root, boundary):
+    expected=checkpoint['legacyOrigins'];legacy_defaults(expected,boundary)
     copies=[]
     for path in (root/'.health-recovery').glob('*/manifest.json'):
         assert not path.is_symlink() and stat.S_ISREG(path.lstat().st_mode)
@@ -97,7 +136,19 @@ def legacy_copies(root):
         if manifest['version']!=2:continue
         assert manifest['domains']==['meals','workouts']
         assert set(manifest['legacyOrigins'])=={'meals','workouts'}
+        assert manifest['photos'] is False and manifest['intent'] is True
         directory=path.parent;envelopes={}
+        entries={'manifest.json','legacy-origin-meals.json','legacy-origin-workouts.json','device-intent.json'}
+        assert {f.name for f in directory.iterdir()}==entries
+        entry_types={}
+        for name in sorted(entries):
+            child=directory/name;facts=child.lstat()
+            assert stat.S_ISREG(facts.st_mode) and not child.is_symlink()
+            entry_types[name]='regular'
+        intent=(directory/'device-intent.json').read_bytes()
+        assert intent==base64.b64decode(before['health-write-intent.json']['base64'],validate=True)
+        intent_proof={'bytes':len(intent),'sha256':digest(intent),'base64':base64.b64encode(intent).decode()}
+
         for domain,row in expected['values'].items():
             descriptor=manifest['legacyOrigins'][domain]
             assert descriptor['file']=='legacy-origin-'+domain+'.json'
@@ -109,8 +160,10 @@ def legacy_copies(root):
             assert value['sha256']==digest(base64.b64decode(value['payload'],validate=True))
             assert not (directory/(domain+'.json')).exists()
             envelopes[domain]={'file':str(envelope_file),'bytes':len(data),'sha256':digest(data),'envelope':value}
-        copies.append({'manifest':manifest,'envelopes':envelopes})
+        copies.append({'manifest':manifest,'envelopes':envelopes,'entryTypes':entry_types,'deviceIntent':intent_proof})
     assert len(copies)==1
+    copy_observations.append({'boundary':boundary,'observedAt':time.time(),'copies':copies})
+    (base/(prefix+'-v2-copy-boundaries.json')).write_text(json.dumps({'observations':copy_observations},indent=2)+'\n')
     return copies
 
 
@@ -128,7 +181,7 @@ def originals(group, checkpoint):
     for name in checkpoint['missing']:
         try:(root/name).lstat();raise AssertionError('Missing target unexpectedly exists: '+name)
         except FileNotFoundError:pass
-    legacy_defaults(checkpoint['legacyOrigins'])
+    legacy_defaults(checkpoint['legacyOrigins'],'initial-before-file-selection')
     assert not list((root / '.health-recovery-history').glob('*.json'))
     return rows
 
@@ -311,6 +364,7 @@ def inject_photo_fault(root):
                for name, row in workspace['files'].items()
                if row['sha256'] == expected_photo['sha256'] and row['bytes'] == expected_photo['bytes']]
     assert len(targets) == 1, targets
+    installed_identity_before_fault=identity()
     target, folder = targets[0]
     facts = target.lstat()
     assert stat.S_ISREG(facts.st_mode) and facts.st_nlink == 1 and not target.is_symlink()
@@ -351,7 +405,7 @@ def inject_photo_fault(root):
         expected_workspaces[folder]['files'][relative] = snapshot(Path(folder), current=False)[relative]
     assert after == expected_workspaces
     verify_provider()
-    fault_observation = {'originalSelectedBackupPath':str(original_file),'originalSelectedBackupIdentity':original_identity,'kind': a.fault, 'target': str(target), 'targetRelativePath': relative,
+    fault_observation = {'installedIdentityBeforeFault':installed_identity_before_fault,'originalSelectedBackupPath':str(original_file),'originalSelectedBackupIdentity':original_identity,'kind': a.fault, 'target': str(target), 'targetRelativePath': relative,
         'beforeTarget': {key: getattr(facts, key) for key in ['st_ino','st_dev','st_mode','st_nlink','st_size','st_mtime_ns']},
         'originalPhoto': expected_photo, 'ownedBefore': workspaces, 'ownedAfter': after,
         'currentMetadataBefore': before_metadata, 'priorMetadataBefore': prior_metadata,
@@ -369,7 +423,7 @@ def verify_original_identity():
 
 
 def verify_failed_boundary(root, tag):
-    legacy_defaults(checkpoint['legacyOrigins'])
+    legacy_defaults(checkpoint['legacyOrigins'],'failure-'+tag)
     assert fault_observation is not None
     assert snapshot(root, current=False) == protected_before
     assert snapshot(root.with_suffix('.previous'), current=False) == previous_before
@@ -412,8 +466,8 @@ Uses the existing r3 verifier's globals/helpers. Future183+ setup/read-control
 and a complete finite producer are required before this can verify any case.
 """
 
-def assert_protected_state(root):
-    legacy_defaults(checkpoint['legacyOrigins'])
+def assert_protected_state(root, boundary):
+    legacy_defaults(checkpoint['legacyOrigins'],boundary)
     assert snapshot(root, current=False) == protected_before
     assert snapshot(root.with_suffix('.previous'), current=False) == previous_before
     assert metadata_tree(root) == fault_observation['currentMetadataBefore']
@@ -456,7 +510,7 @@ def audit_actual_reader(group):
     assert any(x == 'i' + str(facts.st_ino) for x in fields)
     assert any(x.startswith('n') and Path(x[1:]).resolve() == path.resolve() for x in fields)
     verify_original_identity()
-    assert_protected_state(group / 'LumenData')
+    assert_protected_state(group / 'LumenData','actual-reader-held')
     assert owned_workspaces(record['pid']) == fault_observation['ownedAfter']
     return {'protocol': value, 'record': record.copy(), 'lsof': scan,
             'actualDescriptorAndSourceBound': True, 'checkedAt': time.time()}
@@ -482,7 +536,7 @@ def audit_back_after_failure(group, held_reader):
     assert record['descriptorCloseSucceeded'] is True
     assert record['reviewOwnerClosed'] is True
     root = group / 'LumenData'
-    assert_protected_state(root)
+    assert_protected_state(root,'back-owner-closed')
     assert not (group / 'Lumen-health-cancel-checkpoint.json').exists()
     old = fault_observation['ownedAfter']
     existing = owned_workspaces(record['pid'])
@@ -509,7 +563,7 @@ def audit_completed_reader(group, held_reader):
 
 def audit_fresh_reselected_source(group, back_observation):
     assert back_observation['actualReviewOwnerClosed']
-    assert_protected_state(group / 'LumenData')
+    assert_protected_state(group / 'LumenData','fresh-reselected-owner')
     old = source_observations[0]
     pid = old['owner']['pid']
     assert Path(subprocess.check_output(['ps','-p',str(pid),'-o','comm='],text=True).strip()) == container('app') / 'Lumen'
@@ -578,14 +632,14 @@ def audit_success_receipt_before_ack(root, receipt):
     assert receipt['photoDigests']==photo_digests
     assert receipt['reviewedPhotos']=={key:{'byteCount':v['bytes'],'sha256':v['sha256']} for key,v in matrix['photos'].items()}
     current=snapshot(root,current=False)
-    legacy_copies(root)
+    v2_copy=legacy_copies(root,'success-before-ack')
     for name,row in protected_before.items():
         if name not in {'meals.json','workouts.json','health-write-intent.json'}:assert current[name]==row,name
     for name,row in preservation_before['files'].items():assert current[name]==row,name
     old=json.loads(base64.b64decode(before['health-write-intent.json']['base64']))
     new=json.loads((root/'health-write-intent.json').read_bytes())
     assert new['owner']==old['owner'] and new['lifecycle']!=old['lifecycle'] and new['events']==[]
-    return {'fullReceiptAuditedBeforeAck':True,'healthyCurrentAndPrivatePriorExact':True,'installedPhotoDigests':photo_digests}
+    return {'fullReceiptAuditedBeforeAck':True,'healthyCurrentAndPrivatePriorExact':True,'installedPhotoDigests':photo_digests,'legacyV2Copies':v2_copy,'fixedValueObservations':list(legacy_observations)}
 
 # Pending producer body; assembled into a standalone driver only after source freeze.
 reader_held = None
@@ -600,6 +654,14 @@ command = ['xcodebuild','-project','Lumen.xcodeproj','-scheme','Lumen','-configu
     '-parallel-testing-enabled','NO','-collect-test-diagnostics','never',
     '-only-testing:LumenUITests/LumenSmokeTests/testHealthBackupFileRecoveryPhotoFaultErrorBack'+a.case.title()+('OriginData' if a.origin=='data' else 'OriginString'),
     '-resultBundlePath',str(result),'test-without-building']
+for suffix in ['-legacy-boundaries.json','-v2-copy-boundaries.json','-identity-preflight.json','-preflight-failure.json']:
+    assert not (base/(prefix+suffix)).exists(), 'Do not restart an existing trial'
+try:
+    prelaunch_observation=verify_frozen_build()
+    (base/(prefix+'-identity-preflight.json')).write_text(json.dumps(prelaunch_observation,indent=2)+'\n')
+except Exception:
+    (base/(prefix+'-preflight-failure.json')).write_text(json.dumps({'status':'FAILED before native launch','error':traceback.format_exc()},indent=2)+'\n')
+    raise
 with (raw/(stem+'.log')).open('xb') as stream:
     process = subprocess.Popen(command,cwd=repo,stdout=stream,stderr=subprocess.STDOUT)
     print('Running',stem,'PID',process.pid,flush=True)
@@ -621,6 +683,7 @@ with (raw/(stem+'.log')).open('xb') as stream:
                 assert json.loads(profile)==json.loads(base64.b64decode(fixture))
                 value['fixtureProfileBeforeStoreStartup']=fixture;value['originals']['profile.json']=base64.b64encode(profile).decode()
                 value['observedBoundary']='Actual Settings opens Files before initial selection'
+                identity()
                 checkpoint=value
                 before=originals(group,value);protected_before=snapshot(root,current=False)
                 goals=json.loads((root/'goals.json').read_bytes());assert [goals[k] for k in ['stepGoal','weightKg','heightCm','age']]==[6543,88.5,181,42]
@@ -721,7 +784,7 @@ with (raw/(stem+'.log')).open('xb') as stream:
             try:code=process.wait(timeout=15)
             except subprocess.TimeoutExpired:process.kill();code=process.wait()
     finally:
-        observations={'source':a.source,'build':a.build,'checkpoint':checkpoint,'before':before,'protectedBefore':protected_before,'previousBefore':previous_before,
+        observations={'prelaunchIdentity':prelaunch_observation,'installedIdentity':installed_observations,'fixedValueObservations':legacy_observations,'v2CopyObservations':copy_observations,'source':a.source,'build':a.build,'checkpoint':checkpoint,'before':before,'protectedBefore':protected_before,'previousBefore':previous_before,
             'preservationBeforeCommit':preservation_before,'sourceObservations':source_observations,'readerHeld':reader_held,'readerReleaseRequested':reader_release_requested,'readerCompleted':reader_completed,'protocol':protocol,
             'heldPreparation':held,'releasedPreparation':released,'success':success,'finalCleanup':final_cleanup,'hostFailure':host_failure,
             'faultObservation':fault_observation,'failedBoundary':failed_boundary,'scrollBoundary':scroll_boundary,'omissionNotNowBoundary':omission_not_now_boundary,
@@ -761,7 +824,7 @@ photo=None
 old_intent=json.loads(base64.b64decode(before['health-write-intent.json']['base64']))
 new_intent=json.loads((root/'health-write-intent.json').read_bytes())
 assert new_intent['owner']==old_intent['owner'] and new_intent['lifecycle']!=old_intent['lifecycle'] and new_intent['events']==[]
-copies=legacy_copies(root)
+copies=legacy_copies(root,'after-relaunch')
 receipts=list((root/'.health-recovery-history').glob('*.json'));assert len(receipts)==1
 receipt=json.loads(receipts[0].read_bytes());seed=json.loads((base/a.inputs).read_text())
 expected=next(r for r in seed['files'] if Path(r['input']).name==expected_name)
@@ -786,7 +849,7 @@ for owner in opened:
     assert [r['event'] for r in own[:3]]==['open','ready','acquire']
     assert own[3:] and all(r['event']=='closed' for r in own[3:])
     assert own[1]['domains']==own[2]['domains']==['meals','workouts']
-legacy_values=legacy_defaults(checkpoint['legacyOrigins'])
+legacy_values=legacy_defaults(checkpoint['legacyOrigins'],'final-after-relaunch')
 assert source_observations
-(base/(prefix+'-host-audit.json')).write_text(json.dumps({'status':'PASS actual genuine error/scroll/Back/fresh original reselect/two-photo recovery/relaunch','source':a.source,'build':a.build,'case':a.case,'origin':a.origin,'fixedLegacyValues':legacy_values,'originReviewEvents':events,'phone':a.phone,'appearance':a.appearance,'device':device,'inputManifest':a.input_manifest,'inputProvenance':a.inputs,'before':before,'after':after,'protectedBefore':protected_before,'previousBefore':previous_before,'preservationBeforeCommit':preservation_before,'sourceObservations':source_observations,'heldPreparation':held,'releasedPreparation':released,'successBeforeRelaunch':success,'finalCleanupBeforeRelaunch':final_cleanup,'protocol':protocol,'producerExitCode':code,'receipt':receipt,'retainedDamagedPaths':copies,'faultObservation':fault_observation,'failedBoundary':failed_boundary,'readerHeld':reader_held,'readerReleaseRequested':reader_release_requested,'readerCompleted':reader_completed,'scrollBoundary':scroll_boundary,'backBoundary':back_boundary,'freshSelection':fresh_selection,'omissionNotNowBoundary':omission_not_now_boundary,'photoMode':a.mode,'installedPhotoDigests':expected_photo_digests,'providerIdentityExact':True,'conflictingHealthyGoalsChecked':True,'verifierSHA256':digest(Path(__file__).read_bytes()),'scope':'main/normal actual genuine failure, bounded3s deliberate scroll, omission Not-now, completed reader closure on Back, fresh original selection/choices off, real two-photo recovery without omission and relaunch. Full state/VoiceOver/Reduce Motion/broader gates remain.'},indent=2)+'\n')
+(base/(prefix+'-host-audit.json')).write_text(json.dumps({'status':'PASS actual genuine error/scroll/Back/fresh original reselect/two-photo recovery/relaunch','source':a.source,'build':a.build,'case':a.case,'origin':a.origin,'fixedLegacyValues':legacy_values,'fixedValueObservations':legacy_observations,'v2CopyObservations':copy_observations,'prelaunchIdentity':prelaunch_observation,'installedIdentity':installed_observations,'originReviewEvents':events,'phone':a.phone,'appearance':a.appearance,'device':device,'inputManifest':a.input_manifest,'inputProvenance':a.inputs,'before':before,'after':after,'protectedBefore':protected_before,'previousBefore':previous_before,'preservationBeforeCommit':preservation_before,'sourceObservations':source_observations,'heldPreparation':held,'releasedPreparation':released,'successBeforeRelaunch':success,'finalCleanupBeforeRelaunch':final_cleanup,'protocol':protocol,'producerExitCode':code,'receipt':receipt,'retainedDamagedPaths':copies,'faultObservation':fault_observation,'failedBoundary':failed_boundary,'readerHeld':reader_held,'readerReleaseRequested':reader_release_requested,'readerCompleted':reader_completed,'scrollBoundary':scroll_boundary,'backBoundary':back_boundary,'freshSelection':fresh_selection,'omissionNotNowBoundary':omission_not_now_boundary,'photoMode':a.mode,'installedPhotoDigests':expected_photo_digests,'providerIdentityExact':True,'conflictingHealthyGoalsChecked':True,'verifierSHA256':digest(Path(__file__).read_bytes()),'scope':'main/normal actual genuine failure, bounded3s deliberate scroll, omission Not-now, completed reader closure on Back, fresh original selection/choices off, real two-photo recovery without omission and relaunch. Full state/VoiceOver/Reduce Motion/broader gates remain.'},indent=2)+'\n')
 print('PASS:',a.case,'actual genuine error/scroll/Back/reselect/photo recovery audit')
