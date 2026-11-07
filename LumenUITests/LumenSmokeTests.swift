@@ -101,6 +101,10 @@ final class LumenSmokeTests: XCTestCase {
             if name.contains("Cancel") || healthFileRecoveryLeavesReview || name.contains("RecoveryCommit") || name.contains("AllCommit") { app.launchArguments += ["-health-recovery-cancel-ui"] }
             if name.contains("AllCommit") { app.launchArguments.append("-health-backup-multi-ui") }
         }
+        if name.contains("testHealthBackupHealthyMerge") {
+            let kind = name.contains("Encrypted") ? "encrypted" : name.contains("Readable") ? "readable" : "legacy"
+            app.launchArguments = ["-resetForUITests", "-health-backup-ui-fixture", "-health-backup-case", kind, "-health-backup-healthy-merge-ui"]
+        }
         app.launch()
     }
 
@@ -5081,6 +5085,58 @@ final class LumenSmokeTests: XCTestCase {
         attachment.name = "selected-record-readback"; attachment.lifetime = .keepAlways; add(attachment)
     }
     func testHealthBackupFileRecoveryAllCommitLegacy() throws { try healthBackupMultipleDomains("legacy") }
+    func testHealthBackupHealthyMergeLegacy() throws { try healthBackupHealthyMerge("legacy") }
+    func testHealthBackupHealthyMergeEncrypted() throws { try healthBackupHealthyMerge("encrypted") }
+    func testHealthBackupHealthyMergeReadable() throws { try healthBackupHealthyMerge("readable") }
+    private func healthBackupHealthyMerge(_ kind: String) throws {
+        executionTimeAllowance = 420
+        let base = kind == "readable" ? "Lumen-readable-health-multi" : "Lumen-backup-health-multi-" + kind
+        let prefix = "health-merge-" + kind
+        if kind == "readable" { openReadableRecovery() } else { openBackupSettings() }
+        for attempt in ["first", "repeat"] {
+            if kind == "readable" {
+                try chooseReadableFixture(base); waitForReadableReview()
+                XCTAssertFalse(app.buttons["reviewReadableHealthRecovery"].exists)
+                for key in ["water", "meals", "workouts"] {
+                    let choice = app.switches["recoverReadable-" + key].firstMatch
+                    reveal(choice); XCTAssertEqual(choice.value as? String, "1")
+                }
+                for key in ["profile", "goals", "habits", "personal-context"] {
+                    let choice = app.switches["recoverReadable-" + key].firstMatch
+                    reveal(choice); XCTAssertEqual(choice.value as? String, "0")
+                }
+                snap(prefix + "-" + attempt + "-preview"); Thread.sleep(forTimeInterval: 4)
+                let add = app.buttons["recoverReadableData"].firstMatch; reveal(add); add.tap()
+                let alert = app.alerts["Add selected data?"]; XCTAssertTrue(alert.waitForExistence(timeout: 5))
+                snap(prefix + "-" + attempt + "-confirm"); alert.buttons["Keep reviewing"].tap()
+                add.tap(); XCTAssertTrue(alert.waitForExistence(timeout: 5)); alert.buttons["Add data"].tap()
+                let status = app.staticTexts["readableStatus"].firstMatch
+                XCTAssertTrue(status.waitForExistence(timeout: 60)); reveal(status); XCTAssertTrue(status.label.contains("Selected data is saved"))
+            } else {
+                try chooseBackupFixture(base)
+                if kind == "encrypted" { unlockBackup(value: "Synthetic backup passphrase 42") }
+                _ = backupPreview(); XCTAssertFalse(app.buttons["reviewBackupHealthRecovery"].exists)
+                let preferences = app.switches["Restore profile & preferences"].firstMatch
+                reveal(preferences); XCTAssertEqual(preferences.value as? String, "0")
+                snap(prefix + "-" + attempt + "-preview"); Thread.sleep(forTimeInterval: 4)
+                let restore = app.buttons["restoreBackup"].firstMatch; reveal(restore); restore.tap()
+                let alert = app.alerts["Restore missing records?"]; XCTAssertTrue(alert.waitForExistence(timeout: 5))
+                snap(prefix + "-" + attempt + "-confirm"); alert.buttons["Cancel"].tap()
+                restore.tap(); XCTAssertTrue(alert.waitForExistence(timeout: 5)); alert.buttons["Restore records"].tap()
+                XCTAssertTrue(app.staticTexts["backupRestored"].waitForExistence(timeout: 60))
+            }
+            snap(prefix + "-" + attempt + "-complete"); Thread.sleep(forTimeInterval: 5)
+            if kind == "readable" && attempt == "first" {
+                tap("finishReadableRecovery")
+                let recover = app.buttons["readableRecovery"].firstMatch; reveal(recover); recover.tap()
+            }
+        }
+        let readback: [String: Any] = ["scope": "ordinary-healthy-merge-repeat", "format": kind, "attempts": 2, "preferencesOff": true, "confirmationCancelledBeforeCommit": true]
+        let attachment = XCTAttachment(data: try JSONSerialization.data(withJSONObject: readback, options: [.prettyPrinted, .sortedKeys]), uniformTypeIdentifier: "public.json")
+        attachment.name = "healthy-merge-readback"; attachment.lifetime = .keepAlways; add(attachment)
+        app.terminate(); app.launchArguments = []; app.launch(); openBackupSettings()
+        XCTAssertFalse(app.staticTexts["Saved health data couldn't be opened."].exists); snap(prefix + "-relaunch")
+    }
     func testHealthBackupFileRecoveryAllCommitEncrypted() throws { try healthBackupMultipleDomains("encrypted") }
     func testHealthBackupFileRecoveryAllCommitReadable() throws { try healthBackupMultipleDomains("readable") }
     private func healthBackupMultipleDomains(_ kind: String) throws {

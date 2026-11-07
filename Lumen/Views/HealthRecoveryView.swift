@@ -224,6 +224,13 @@ enum HealthRecoveryUIFixture {
         var files = try ConversationFiles.encoded([], activeID: nil)
         files["water.json"] = try encoder.encode([HydrationLog(id: "synthetic-review-water", date: Date(timeIntervalSince1970: 1_793_620_800), ml: 137)])
         files["meals.json"] = Data("[]".utf8); files["workouts.json"] = Data("[]".utf8)
+        if ProcessInfo.processInfo.arguments.contains("-health-backup-healthy-merge-ui") {
+            let date = Date(timeIntervalSince1970: 1_793_620_800)
+            files["meals.json"] = try encoder.encode([Meal(id: "synthetic-current-meal", date: date, type: .breakfast, items: [], note: "Keep this current meal.", source: .manual)])
+            var workout = Workout(id: "synthetic-multi-zero", kind: .strength, title: "Current edited workout", start: date, duration: 900, activeCalories: 35, source: .manual)
+            workout.energyKnown = true
+            files["workouts.json"] = try encoder.encode([workout])
+        }
         files["goals.json"] = try encoder.encode(HealthGoals()); files["today.json"] = try encoder.encode(DayMetrics.empty)
         files[HealthWriteFiles.name] = try HealthWriteJournal(owner: HealthWriteDeviceOwner.current()).encoded()
         if ProcessInfo.processInfo.arguments.contains("-health-daily-cache-ui-fixture") {
@@ -294,7 +301,9 @@ enum HealthRecoveryUIFixture {
         }
         let previous = root.appendingPathExtension("previous")
         try FileManager.default.copyItem(at: root, to: previous)
-        try Data("{\"syntheticUnavailableWater\":".utf8).write(to: root.appendingPathComponent("water.json"), options: .atomic)
+        if !ProcessInfo.processInfo.arguments.contains("-health-backup-healthy-merge-ui") {
+            try Data("{\"syntheticUnavailableWater\":".utf8).write(to: root.appendingPathComponent("water.json"), options: .atomic)
+        }
         if ProcessInfo.processInfo.arguments.contains("-health-backup-multi-ui") {
             for domain in ["meals", "workouts", "goals"] {
                 try Data(("{\"syntheticUnavailable" + domain + "\":").utf8).write(to: root.appendingPathComponent(domain + ".json"), options: .atomic)
