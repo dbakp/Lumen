@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "part": 37,
+  "checkedAt": "2026-11-07T20:58:48.999296+00:00",
+  "status": "Concrete first-delivery direction coherent; two source-informed contract clarifications required before implementation. Source-only advice, no product/native/design acceptance.",
+  "source": "durable-source-r194.json",
+  "contract": {
+    "file": "health-legacy-failed-origin-r1-contract.json",
+    "bytes": 9779,
+    "sha256": "b8998dbb7e2aeb533e2d23aa37d4bef9ce47ad68f8c88dccef0983c3714d7d2e"
+  },
+  "predecessorRequirements": {
+    "file": "health-unavailable-origins-source194-round2-part35-origin-requirements.json",
+    "bytes": 6559,
+    "sha256": "bf55523ba1d4b92d9f7cc1a2ae4bb9d390979f64ba8af51f01b517e667df0a9b"
+  },
+  "sourceVerification": {
+    "nineDeclaredBindingsExactCurrentManifestAndFullArchive": true,
+    "bindings": {
+      "Lumen/Models/HealthLocalFiles.swift": {
+        "bytes": 8225,
+        "sha256": "47658a43536f5817d334741e964ac1f25575044163dbb84e884c870e79b673ae"
+      },
+      "Lumen/Persistence/LocalStore.swift": {
+        "bytes": 21334,
+        "sha256": "c25ad56f26fa5bcde8f05dc4f19bd7f18e7120df4cbecabe0cf268950858b39d"
+      },
+      "Lumen/Models/HealthRecoverySelection.swift": {
+        "bytes": 12880,
+        "sha256": "f41cd227862406d49345981a1fcf001f39f482ad2c72f6a6c7b46ae5da275920"
+      },
+      "Lumen/Models/HealthRecoveryCopies.swift": {
+        "bytes": 38735,
+        "sha256": "8a420f4ddc9319157ea53a453775a0bfb25997320a5e35e2facb7aa785e2790b"
+      },
+      "Lumen/Models/BackupFileTransaction.swift": {
+        "bytes": 20204,
+        "sha256": "6584614fd196a21fe6ba418b8ae1a33a578964f73f7851dc7287f69d86360ae9"
+      },
+      "Lumen/Models/ConversationFiles.swift": {
+        "bytes": 8328,
+        "sha256": "c9e9f765e721fbe9d4ed91aaf20bc1bcccb794fb33bd7706f921aae25721ebb8"
+      },
+      "Lumen/Models/HealthStore.swift": {
+        "bytes": 48184,
+        "sha256": "dd5ee7970f11fdcdc50443c6315197d9afddc7b619b0d245d9a379b66e618a90"
+      },
+      "Lumen/Views/BackupFileRecoveryView.swift": {
+        "bytes": 20009,
+        "sha256": "4ae286c55126ffeca327cd8c67f09b570f647b941b776ff1914892ea6198f90d"
+      },
+      "Lumen/Views/HealthRecoveryView.swift": {
+        "bytes": 57257,
+        "sha256": "6c80f25f88717fa91b31851a5181829c23bc33fd04d6897d83a3c29179550b69"
+      }
+    },
+    "additionalLockSource": {
+      "file": "Lumen/Models/BackupStorageRevision.swift",
+      "bytes": 848,
+      "sha256": "f620d8c6288492ab20f9c6e9f5851541860c05071bc114ff0963581d96d97d6f"
+    },
+    "readScope": "Full judged contract and Part35 report; targeted source sections for legacy reader, payload/prepare, LocalStore write/commit/reset, transaction commit, HealthStore availability, private manifest/catalog/dedupe and native recovery work. No claim of exhaustive full-source read or new execution."
+  },
+  "assessment": {
+    "delivery": "Closed meals/workouts/goals failed legacy Data or String beneath an existing real current root is a coherent first increment. Links/special files/other defaults property-list types remain explicitly open. Healthy/empty/absent legacy values are not replacement permission. Current regular/directory routes retain existing behavior.",
+    "authorityAndOrdering": "Separate immutable observation at review entry, selected tokens carried into payload, no silent recapture on retry, pre-previous protection validation, post-prepare and final preinstallation revalidation address O1/O3. Root identity/path absence/raw typed value must all match; old availability flags alone cannot authorize bypass of194guard. Preserve source/provider/photo/revision/owner/intent checks and external-defaults race limit.",
+    "rawStringIdentity": "Original UTF16 code units plus explicit type tag and fixed domain/key avoid Swift canonical-equivalence identity. Roundtrip must reproduce exact observed units. Data bytes and String UTF16LE are captured value provenance, never claimed original preferences plist bytes. FourMiB per-domain/three-domain aggregate and fetch-allocation caveat are honest.",
+    "keyLifetimeAndReset": "Leaving legacy key unchanged avoids a second defaults mutation on recovery install. Healthy current file precedence and future missing-current behavior remain explicit. Current eraseAllChecked removes app persistent domain and app-group defaults after checked reset; actual known-key removal and no resurrection still require the declared reset verification, including any failure boundary. No reset/runtime credit from source.",
+    "privateV2": "Manifest2 origin descriptors plus explicit lossless envelopes, unavailable/nil-count catalog state and disabled record/photo export fit O2/O5. Existing manifest1 readers/dedupe infer domain.json filenames, so origin-aware changes must cover all catalog/verification/matching/carry paths rather than only initial preview. Exact envelopes carried unchanged and no fabricated empty domain payload are appropriate.",
+    "nativeCopy": "Older saved data/private recovery copy wording accurately names this origin without implementation detail. In mixed file/legacy selections, retain accurate file and photo preservation consequences rather than replace all consequences with a legacy-only sentence. Conditional confirmation/error/success/catalog/general notice must describe actual state and timing; do not imply a private copy exists on a cancelled/uncommitted attempt. Existing screenshots grant no new-copy acceptance."
+  },
+  "requiredClarifications": [
+    {
+      "id": "P37-C1",
+      "priority": "Required before implementation",
+      "subject": "Cancellation and failure classification",
+      "sourceEvidence": "HealthLocalFiles.decode checks shared control before/after JSONFieldAudit and typed decode; JSONFieldAudit/control can throw CancellationError. HealthRecoveryCopies catalog already explicitly rethrows CancellationError before treating ordinary validation failure as unavailable.",
+      "gap": "Contract says Data must fail legacy validation to confer eligibility, but does not explicitly exclude cancellation/operational failures from that predicate. A catch-all failure classifier could turn cancelled validation into authority.",
+      "requirement": "Propagate CancellationError and cancellation/control checks at capture, revalidation, private-envelope work and final validation; only actual legacy representation/schema/record-validation rejection may establish failed Data. Root/defaults acquisition or operational validation errors abort capture/revalidation, never become a failed-origin token or success. Use same validator/plain decoder semantics with explicit error classification; recheck control before publishing token/authorizing install. Include cancelled valid Data and cancelled malformed Data controls proving no observation/preservation/install permission."
+    },
+    {
+      "id": "P37-C2",
+      "priority": "Required ordering precision before implementation",
+      "subject": "Explicit lock graph and nonrecursive LocalStore boundary",
+      "sourceEvidence": "BackupStorageRevision uses NSLock; LocalStore commitRestore enters writes.commit, then BackupFileTransaction.commit takes its own lock and HealthRecoveryCopies.serialized uses recursive private lock. revision/current or performWrite reacquires the nonrecursive writes lock.",
+      "gap": "Contract names both serializations and common ordering but does not specify how review capture joins them or prohibit final validator callbacks from reentering LocalStore writes/revision.",
+      "requirement": "Declare capture ordering LocalStore writes serialization then HealthRecoveryCopies directory serialization; commit retains writes \u2192 transaction instance lock \u2192 HealthRecoveryCopies lock. Use a validation primitive with already-captured fixed root/keys and no reentry into LocalStore revision/performWrite/commit APIs inside commit locks. Do not acquire writes while holding private/transaction locks. Preparation can serialize its bounded validation as needed but must release capture locks before detached work/await; keep final checks in the existing synchronous commit boundary. This is an implementation requirement, not proof of a current deadlock."
+    }
+  ],
+  "implementationNotes": [
+    {
+      "subject": "Encoded size and strict envelope shape",
+      "detail": "Raw4MiB expands to base64 length5,592,408 before JSON header. Declare finite envelope/manifest byte ceilings large enough for exact-limit payload, bound both encoded and decoded inputs before allocation, and validate UTF16LE even length/domain/key/type/digest. Apply existing JSON field/depth/duplicate policy, no extra/unexpected provenance files or duplicate/mixed authority for one domain. These refine already declared limits/manifest association and exact-limit tests; no new origin category is requested."
+    },
+    {
+      "subject": "All version1-only paths",
+      "detail": "HealthRecoveryCopies preview currently accepts version1, absent domain.json means notIncluded; matchingManifest, hasCoveringCopy paths and generated discovery manifest matching are also version1-sensitive. Update compatible readers, carry, collision/dedupe and export authorization coherently. Corrupt or missing v2 descriptor/envelope cannot justify reuse, downgrade to version1, or reveal another readable fallback. Test mixed versions, missing/mismatched descriptors, same raw data with distinct type/code units and repeated carry."
+    },
+    {
+      "subject": "Review observation acquisition",
+      "detail": "Acquire only genuinely eligible failed-origin observations and distinguish ineligible unavailable domains without aborting review of otherwise eligible domains. Off-main bounded work plus active-review/cancellation ownership must prevent late capture from repopulating a departed review. Selected origin set must match the selected missing-current domains exactly; no token may authorize a different domain/key or ordinary link/special target. Keep failed/ineligible domains unavailable and other healthy domains intact."
+    }
+  ],
+  "verificationJudgment": "Declared pure success/staleness/bounds/reset/native LocalStore.standard routes are appropriately meaningful and retain UUID/live/exact-backup discipline. Add explicit C1 controls and inspect actual C2 implementation before freeze. Source-only contract does not supply any successful origin recovery, new screenshots, suite execution, native route or safety acceptance. Preserve all existing source/provider/photo/receipt/prior/private/conversation/intent/privacy guards; historical all10raw-prior and temporal/fullspeech limitations remain.",
+  "boundaries": {
+    "nativeProducer": "Parent reports frozen194 encrypted ordinary session44210/PID12859 running; critic did not query, mutate or interfere. Later actual evidence belongs to separate Part38.",
+    "priorPublication": "Parent reports legacy194 packet and36storageerratum exact38paths daedbbb2; no critic remote readback claim.",
+    "overallScore": null,
+    "productAcceptance": false,
+    "fullParentAcceptance": false,
+    "motionVoiceOverAppearanceAcceptance": false,
+    "sourceOrTestEdits": false,
+    "nativeSimulatorBuildGitCleanupActions": false,
+    "onlyNewReportWritten": true,
+    "criticRecoveredBytes": 0
+  }
+}
