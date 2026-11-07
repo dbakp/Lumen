@@ -37,6 +37,7 @@
 <div class="viz-row"><span>Earlier recovery state checks · 2 / 2 verified</span><span>34 state screens inspected · original build retained</span></div>
 <div class="viz-row"><span>Held Cancel / Back · 4 / 4 verified</span><span>70 original screens inspected</span></div>
 <div class="viz-row"><span>Current ordinary state · 2 / 2 verified</span><span>34 original screens inspected</span></div>
+<div class="viz-row"><span>Current VoiceOver focus / retry order · passed</span><span>18 original screens inspected · full spoken message open</span></div>
 </div>
 <details><summary>Earlier daily-readings design review · 6 / 6 cases</summary><div class="section"><h3>Revised daily-readings wording</h3>
 <div class="viz-row"><span>✓ 6 / 6 native cases passed</span><span>✓ 991 / 991 screenshots inspected</span></div>
@@ -62,7 +63,7 @@
 <button class="btn" type="button" data-area="quality" aria-pressed="false" aria-controls="lumen-plan-detail">Answer quality</button>
 <button class="btn" type="button" data-area="release" aria-pressed="false" aria-controls="lumen-plan-detail">Release gates</button>
 </div>
-<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Recovery state · in progress</h3><div data-verified>Both Cancel and Back routes passed on the updated app. Earlier error and state checks retain their original app versions.</div><div data-next>Whole Cancel visible; actual cancellation and omission-on retry verified for both backup formats. Next: encrypted held Back check. Earlier error-focus and retry-order checks passed; full spoken preservation remains open.</div><div class="text-small" data-gate>Five cases ran on Source180, three on Source181 and one on Source183. Earlier failed trials remain recorded. State, accessibility and broader gates remain open.</div></div>
+<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Recovery state · in progress</h3><div data-verified>Both Cancel and Back routes passed on the updated app. Earlier error and state checks retain their original app versions.</div><div data-next>All four held routes and both ordinary state checks passed. Current error focus and retry order passed; full spoken preservation remains open. Next: Reduce Motion.</div><div class="text-small" data-gate>Five cases ran on Source180, three on Source181 and one on Source183. Earlier failed trials remain recorded. State, accessibility and broader gates remain open.</div></div>
 </div>
 <div class="section"><h3>Verified safety checks</h3>
 <table class="table table-sm" aria-label="Earlier checks retain their original scope; broader checks remain open"><thead><tr><th>Situation</th><th>Observed result</th></tr></thead><tbody>
@@ -79,9 +80,9 @@
 <script>
 (()=>{
 const root=document.getElementById('lumen-plan-progress');
-const snapshot='nov7-source188-ordinary-two';
+const snapshot='nov7-source188-voiceover';
 const areas={
-current:{title:'Recovery state · in progress',verified:'Both Cancel and Back routes passed on the updated app. Earlier error and state checks retain their original app versions.',next:'Whole Cancel visible; actual cancellation and omission-on retry verified for both backup formats. Next: encrypted held Back check. Earlier error-focus and retry-order checks passed; full spoken preservation remains open.',gate:'Five cases ran on Source180, three on Source181 and one on Source183. Earlier failed trials remain recorded. State, accessibility and broader gates remain open.'},
+current:{title:'Recovery state · in progress',verified:'Both Cancel and Back routes passed on the updated app. Earlier error and state checks retain their original app versions.',next:'All four held routes and both ordinary state checks passed. Current error focus and retry order passed; full spoken preservation remains open. Next: Reduce Motion.',gate:'Five cases ran on Source180, three on Source181 and one on Source183. Earlier failed trials remain recorded. State, accessibility and broader gates remain open.'},
 quality:{title:'Answer quality · open',verified:'Library search, source identity, consent controls and literal-reference safeguards are delivered.',next:'Next: evidence-support policy and independent evaluation; personal-context and conversation-history privacy review.',gate:'Clinical accuracy, language coverage and live-provider evaluation remain required.'},
 release:{title:'Release readiness · open',verified:'Earlier signed build installed once; current release validation remains open.',next:'Next: background Health, Watch reconnect, widget, interruption and accessibility checks.',gate:'Representative histories, performance, privacy and distribution review remain required. No iPhone installation, launch or checks without a renewed request.'}
 };
