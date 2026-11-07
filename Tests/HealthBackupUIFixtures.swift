@@ -48,6 +48,65 @@ enum HealthBackupUIFixtures {
         print("Two small synthetic meal-photo backups checked through real readers; JPEG bytes exact.")
     }
 
+    static func writeMultipleDomains(to folder: URL, photo: URL) throws {
+        let fm = FileManager.default
+        guard !fm.fileExists(atPath: folder.path) else { throw BackupError.invalid }
+        let photoBytes = try HealthLocalFiles.readRegularData(photo, limit: 256 * 1024)
+        guard CGImageSourceCreateWithData(photoBytes as CFData, nil) != nil else { throw BackupError.invalid }
+        try fm.createDirectory(at: folder, withIntermediateDirectories: false, attributes: [.posixPermissions: 0o700])
+        let date = Date(timeIntervalSince1970: 1_793_620_800), photoID = "synthetic-multi-shared-photo"
+        let food = FoodItem(id: "synthetic-multi-food", name: "Synthetic tofu", grams: 125, calories: 190, proteinG: 20.25, carbsG: 3.5, fatG: 0, fiberG: 1.5, confidence: 0.84)
+        var unknown = Workout(id: "synthetic-multi-unknown", kind: .walk, title: "Recovered walk", start: date, duration: 1200, activeCalories: 0, source: .manual)
+        unknown.energyKnown = false; unknown.note = "Energy wasn't supplied."
+        var zero = Workout(id: "synthetic-multi-zero", kind: .strength, title: "Recovered zero", start: date.addingTimeInterval(3600), duration: 1800, activeCalories: 0, distanceM: 0, avgHR: 94.5, source: .healthKit)
+        zero.energyKnown = true; zero.energyIsEstimate = false
+        var goals = HealthGoals(); goals.stepGoal = 321; goals.weightKg = nil; goals.heightCm = nil; goals.age = nil
+        let snapshot = BackupSnapshot(profile: .default, goals: goals, habits: [], sleep: [],
+            meals: [Meal(id: "synthetic-multi-meal-a", date: date, type: .lunch, items: [food], photoID: photoID, note: "First shared photo.", source: .manual),
+                    Meal(id: "synthetic-multi-meal-b", date: date.addingTimeInterval(3600), type: .snack, items: [], photoID: photoID, source: .manual)],
+            workouts: [unknown, zero], water: [HydrationLog(id: "synthetic-multi-water", date: date, ml: 246)],
+            conversations: [], symptoms: [], checkIns: [], documents: [], importedDays: [], imports: [], personalContext: .init(), photos: [:])
+        let encrypted = folder.appendingPathComponent("Lumen-backup-health-multi-encrypted.lumenbackup")
+        try BackupPackage.write(snapshot, photos: [photoID: photo], password: password, to: encrypted, now: date)
+        var legacy = snapshot; legacy.photos = [photoID: photoBytes]
+        let plain = folder.appendingPathComponent("Lumen-backup-health-multi-legacy.json")
+        try BackupArchive.make(legacy, now: date).write(to: plain, options: .atomic)
+        let readable = folder.appendingPathComponent("Lumen-readable-health-multi.json")
+        try ReadableExport.write(snapshot, to: readable, now: date)
+        let opened = try BackupPackage.read(encrypted, password: password, temporaryRoot: folder)
+        defer { opened.removeTemporaryFiles() }
+        let (_, decoded) = try BackupArchive.read(Data(contentsOf: plain))
+        let converted = try ReadableExport.read(Data(contentsOf: readable))
+        let (readableSnapshot, _) = try converted.selected([.water, .meals, .workouts, .goals])
+        let encoder = BackupArchive.encoder()
+        var expected: [String: Any] = [:]
+        for (domain, bytes) in [("water", try encoder.encode(snapshot.water)), ("meals", try encoder.encode(snapshot.meals)),
+                                ("workouts", try encoder.encode(snapshot.workouts)), ("goals", try encoder.encode(snapshot.goals))] {
+            expected[domain] = try JSONSerialization.jsonObject(with: bytes)
+        }
+        guard try encoder.encode(opened.snapshot.water) == encoder.encode(snapshot.water),
+              try encoder.encode(opened.snapshot.meals) == encoder.encode(snapshot.meals),
+              try encoder.encode(opened.snapshot.workouts) == encoder.encode(snapshot.workouts),
+              try encoder.encode(opened.snapshot.goals) == encoder.encode(snapshot.goals),
+              try encoder.encode(decoded.meals) == encoder.encode(snapshot.meals),
+              let extracted = opened.photos[photoID], try Data(contentsOf: extracted) == photoBytes,
+              decoded.photos == [photoID: photoBytes], converted.missingPhotos == 2,
+              readableSnapshot.meals.allSatisfy({ $0.photoID == nil }),
+              try encoder.encode(readableSnapshot.workouts) == encoder.encode(snapshot.workouts),
+              try encoder.encode(readableSnapshot.goals) == encoder.encode(snapshot.goals) else { throw BackupError.invalid }
+        var rows: [String: Any] = [:]
+        for file in [plain, encrypted, readable] {
+            let bytes = try Data(contentsOf: file); guard bytes.count < 256 * 1024 else { throw BackupError.tooLarge }
+            rows[file.lastPathComponent] = ["bytes": bytes.count, "sha256": BackupArchive.digest(bytes)]
+        }
+        let manifest: [String: Any] = ["files": rows, "expectedRecords": expected, "photoID": photoID,
+            "photoBytes": photoBytes.count, "photoSHA256": BackupArchive.digest(photoBytes),
+            "scope": "Four selected unavailable domains; two meals share one photo, unknown/zero energy and optional target values. Readable export omits both meal photo references; not healthy merge or full photo matrix."]
+        try JSONSerialization.data(withJSONObject: manifest, options: [.prettyPrinted, .sortedKeys])
+            .write(to: folder.appendingPathComponent("health-backup-multi-manifest.json"), options: .atomic)
+        print("Four-domain recovery inputs checked through all three real readers; shared photo exact, readable omissions explicit.")
+    }
+
     static func write(to folder: URL) throws {
         let fm = FileManager.default
         guard !fm.fileExists(atPath: folder.path) else { throw BackupError.invalid }

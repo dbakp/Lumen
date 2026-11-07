@@ -98,7 +98,8 @@ final class LumenSmokeTests: XCTestCase {
         if name.contains("testHealthBackupFileRecovery") {
             let kind = name.contains("Encrypted") ? "encrypted" : name.contains("Readable") ? "readable" : "legacy"
             app.launchArguments = ["-resetForUITests", "-health-backup-ui-fixture", "-health-backup-case", kind]
-            if name.contains("Cancel") || healthFileRecoveryLeavesReview || name.contains("RecoveryCommit") { app.launchArguments += ["-health-recovery-cancel-ui"] }
+            if name.contains("Cancel") || healthFileRecoveryLeavesReview || name.contains("RecoveryCommit") || name.contains("AllCommit") { app.launchArguments += ["-health-recovery-cancel-ui"] }
+            if name.contains("AllCommit") { app.launchArguments.append("-health-backup-multi-ui") }
         }
         app.launch()
     }
@@ -5078,6 +5079,80 @@ final class LumenSmokeTests: XCTestCase {
         }
         let attachment = XCTAttachment(data: try JSONSerialization.data(withJSONObject: ["scope": "selected-record", "format": kind, "fileName": expectedName, "backToClosedSeconds": elapsed, "retryAmount": observedAmount, "ownerUnwind": ownerUnwind, "timingScope": ownerUnwind ? "Deliberate host-held cancellation unwind plus fresh selection; not cancellation latency" : "Back to closed reader"], options: [.prettyPrinted, .sortedKeys]), uniformTypeIdentifier: "public.json")
         attachment.name = "selected-record-readback"; attachment.lifetime = .keepAlways; add(attachment)
+    }
+    func testHealthBackupFileRecoveryAllCommitLegacy() throws { try healthBackupMultipleDomains("legacy") }
+    func testHealthBackupFileRecoveryAllCommitEncrypted() throws { try healthBackupMultipleDomains("encrypted") }
+    func testHealthBackupFileRecoveryAllCommitReadable() throws { try healthBackupMultipleDomains("readable") }
+    private func healthBackupMultipleDomains(_ kind: String) throws {
+        executionTimeAllowance = 300
+        let base = kind == "readable" ? "Lumen-readable-health-multi" : "Lumen-backup-health-multi-" + kind
+        let prefix = "health-multi-" + kind
+        if kind == "readable" { openReadableRecovery(); try chooseReadableFixture(base); waitForReadableReview() }
+        else {
+            openBackupSettings(); try chooseBackupFixture(base)
+            if kind == "encrypted" { unlockBackup(value: "Synthetic backup passphrase 42") }
+            XCTAssertTrue(app.descendants(matching: .any).matching(identifier: "backupPreviewKind").firstMatch.waitForExistence(timeout: 30))
+        }
+        let link = app.buttons[kind == "readable" ? "reviewReadableHealthRecovery" : "reviewBackupHealthRecovery"].firstMatch
+        reveal(link); XCTAssertTrue(link.waitForExistence(timeout: 10)); link.tap()
+        let filename = app.staticTexts["recoveryFileName"].firstMatch
+        XCTAssertTrue(filename.waitForExistence(timeout: 10)); XCTAssertEqual(filename.label, base + (kind == "encrypted" ? ".lumenbackup" : ".json"))
+        snap(prefix + "-source"); Thread.sleep(forTimeInterval: 3)
+        let domains = ["water", "meals", "workouts", "goals"]
+        let confirm = app.buttons["confirmFileRecovery"].firstMatch
+        for domain in domains {
+            let choice = app.switches["recoverFile-" + domain].firstMatch
+            reveal(choice); XCTAssertTrue(choice.exists); XCTAssertEqual(choice.value as? String, "0")
+            snap(prefix + "-off-" + domain)
+        }
+        reveal(confirm); XCTAssertFalse(confirm.isEnabled)
+        for (domain, expected) in [("water", "246 mL"), ("meals", "Lunch"), ("workouts", "Recovered walk"), ("goals", "321 steps")] {
+            let review = app.buttons["reviewFile-" + domain].firstMatch
+            reveal(review, towardsTop: true); review.tap()
+            let record = app.buttons["recoveryRecord-0"].firstMatch
+            XCTAssertTrue(record.waitForExistence(timeout: 10)); record.tap()
+            let field = app.descendants(matching: .any).matching(identifier: "recoveryField-0").firstMatch
+            XCTAssertTrue(field.waitForExistence(timeout: 5)); XCTAssertTrue(field.label.contains(expected), field.label)
+            snap(prefix + "-record-" + domain)
+            if domain == "meals" && kind != "readable" {
+                let photo = app.buttons["recoveryChild-1"].firstMatch
+                reveal(photo); XCTAssertTrue(photo.exists); photo.tap()
+                XCTAssertTrue(app.images["recoveryMealPhoto"].waitForExistence(timeout: 10))
+                snap(prefix + "-shared-photo"); app.navigationBars.buttons.element(boundBy: 0).tap()
+            }
+            app.navigationBars.buttons.element(boundBy: 0).tap(); app.navigationBars.buttons.element(boundBy: 0).tap()
+        }
+        for domain in domains { nativeSwitch("recoverFile-" + domain, enabled: true, towardsTop: true) }
+        if kind == "readable" {
+            reveal(confirm); XCTAssertFalse(confirm.isEnabled)
+            nativeSwitch("Recover without meal photos", enabled: true, towardsTop: true)
+        }
+        reveal(confirm); XCTAssertTrue(confirm.isEnabled); snap(prefix + "-selected"); confirm.tap()
+        let alert = app.alerts["Replace selected data?"]
+        XCTAssertTrue(alert.waitForExistence(timeout: 5)); snap(prefix + "-confirmation"); alert.buttons["Not now"].tap()
+        for domain in domains {
+            let choice = app.switches["recoverFile-" + domain].firstMatch
+            reveal(choice, towardsTop: true); XCTAssertEqual(choice.value as? String, "1")
+        }
+        snap(prefix + "-not-now"); Thread.sleep(forTimeInterval: 3)
+        reveal(confirm); confirm.tap(); XCTAssertTrue(alert.waitForExistence(timeout: 5)); alert.buttons["Recover"].tap()
+        let busy = app.descendants(matching: .any).matching(identifier: "fileHealthRecoveryBusy").firstMatch
+        XCTAssertTrue(busy.waitForExistence(timeout: 10))
+        for value in ["held-1", "observed-1"] {
+            let held = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", value), object: busy)
+            XCTAssertEqual(XCTWaiter.wait(for: [held], timeout: 15), .completed); snap(prefix + "-" + value)
+        }
+        let success = app.descendants(matching: .any).matching(identifier: "fileHealthRecovered").firstMatch
+        reveal(success, towardsTop: true); XCTAssertTrue(success.waitForExistence(timeout: 30)); snap(prefix + "-success")
+        app.navigationBars["Review recovery"].buttons.element(boundBy: 0).tap()
+        XCTAssertTrue(app.navigationBars[kind == "readable" ? "Recover export" : "Backup & restore"].waitForExistence(timeout: 5)); snap(prefix + "-parent")
+        Thread.sleep(forTimeInterval: 4)
+        let readback: [String: Any] = ["scope": "selected-file-four-domain-recovery", "format": kind, "domains": domains,
+            "initialChoicesOff": true, "notNowPreservedSelection": true, "successObserved": true, "sharedPhotoReviewed": kind != "readable", "explicitPhotoOmission": kind == "readable"]
+        let attachment = XCTAttachment(data: try JSONSerialization.data(withJSONObject: readback, options: [.prettyPrinted, .sortedKeys]), uniformTypeIdentifier: "public.json")
+        attachment.name = "four-domain-recovery-readback"; attachment.lifetime = .keepAlways; add(attachment)
+        app.terminate(); app.launchArguments = []; app.launch(); openBackupSettings()
+        XCTAssertFalse(app.staticTexts["Saved health data couldn't be opened."].exists); snap(prefix + "-relaunch")
     }
     private func healthBackupFileRecovery(_ kind: String) throws {
         let leaving = healthFileRecoveryLeavesReview

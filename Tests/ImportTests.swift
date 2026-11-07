@@ -143,6 +143,9 @@ import Darwin
         if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--health-backup-ui-fixtures" {
             try HealthBackupUIFixtures.write(to: URL(fileURLWithPath: CommandLine.arguments[2])); return
         }
+        if CommandLine.arguments.count == 4, CommandLine.arguments[1] == "--health-backup-multi-ui-fixtures" {
+            try HealthBackupUIFixtures.writeMultipleDomains(to: URL(fileURLWithPath: CommandLine.arguments[2]), photo: URL(fileURLWithPath: CommandLine.arguments[3])); return
+        }
         if CommandLine.arguments.count == 4, CommandLine.arguments[1] == "--health-backup-photo-ui-fixtures" {
             try HealthBackupUIFixtures.writePhotos(to: URL(fileURLWithPath: CommandLine.arguments[2]), photo: URL(fileURLWithPath: CommandLine.arguments[3])); return
         }
