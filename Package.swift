@@ -176,6 +176,7 @@ let package = Package(
             "Tests/HealthWriteOrderChecks.swift",
             "Tests/HealthWriteRecoveryChecks.swift",
             "Tests/HealthLocalFileChecks.swift",
+            "Tests/HealthUnavailableOriginChecks.swift",
             "Tests/HealthLocalValueChecks.swift",
             "Tests/HealthLocalArchiveChecks.swift",
             "Tests/HealthRecoveryCopyChecks.swift",

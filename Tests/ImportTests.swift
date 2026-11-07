@@ -3,6 +3,9 @@ import Darwin
 
 @main struct ImportTests {
     static func main() async throws {
+        if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--health-unavailable-origins-baseline" {
+            try HealthUnavailableOriginChecks.baseline(output: URL(fileURLWithPath: CommandLine.arguments[2])); return
+        }
         if (3...4).contains(CommandLine.arguments.count), CommandLine.arguments[1] == "--encrypted-read-cancellation" {
             let input = CommandLine.arguments.count == 4 ? URL(fileURLWithPath: CommandLine.arguments[2]) : nil
             let output = URL(fileURLWithPath: CommandLine.arguments.last!)
