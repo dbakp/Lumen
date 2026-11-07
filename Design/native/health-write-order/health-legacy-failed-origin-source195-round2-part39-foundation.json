@@ -1,0 +1,158 @@
+{
+  "schemaVersion": 1,
+  "part": 39,
+  "checkedAt": "2026-11-07T21:16:43.568152+00:00",
+  "status": "Foundation primitive source and actual57 focused observations supported; no substantive implementation defect found within this deliberately unintegrated step",
+  "scope": "Immutable failed-legacy observation/value-provenance primitive only. No LocalStore.standard capture, transaction authorization, private manifest2 integration, native origin recovery, successful installation or full-suite acceptance.",
+  "judgedEvidence": [
+    {
+      "file": "durable-source-r195.json",
+      "bytes": 42961,
+      "sha256": "066d0daff1a3bdcced88da9826fe11de2fe2d733e0bf8b115cd4d0f1a0d895e5"
+    },
+    {
+      "file": "durable-source-r195.json.gz",
+      "bytes": 911971,
+      "sha256": "f32f0838d01d60a4ff31ba7987c3774dbef315158421b66a6ce5811b34c12579"
+    },
+    {
+      "file": "source195-legacy-origin-r1.json",
+      "bytes": 9592,
+      "sha256": "3643884f96200dc34df5cd49fb6058e77d51229aa118959bea489e6170de2895"
+    },
+    {
+      "file": "source195-legacy-origin-r1-outcome.json",
+      "bytes": 1415,
+      "sha256": "d0b8f9c6cf4fb376f0fa9facf437e88c25a0951c97c944d1383508a4940a4747"
+    },
+    {
+      "file": "source195-legacy-origin-r1.log.gz",
+      "bytes": 883,
+      "sha256": "639c4f0c1a060c7427769e7517d04a1da294f1f3f3a5c6f37c48662817ba35cc"
+    },
+    {
+      "file": "audit-legacy-origin-foundation-r1.py",
+      "bytes": 4235,
+      "sha256": "c5248f2a07b084945eae9a00c056847ade1cfb9861e946a76a664381fc0f3d44"
+    },
+    {
+      "file": "source195-legacy-origin-r1-live-audit.json",
+      "bytes": 6626,
+      "sha256": "d07c78c3b0620c60d22e29c1b0944613c9b1110449927b093e7dcb57a39d46ac"
+    },
+    {
+      "file": "health-legacy-origin-r1-build.json",
+      "bytes": 698,
+      "sha256": "5438b514f48e9a5d284181be57e31058129963b6594d997f2e05d743df8a4fcb"
+    },
+    {
+      "file": "source195-legacy-origin-native-build-r1-outcome.json",
+      "bytes": 894,
+      "sha256": "86c9781f3e9162b43ceaa914b3561029f062e0fc1f949dd860dd8e97d9785fc6"
+    },
+    {
+      "file": "local-domain-pure-source-r82.json",
+      "bytes": 23191,
+      "sha256": "06aa55344eef073e8bb7914208a81875d60ba876768307611fdc68f6cee2ed66"
+    },
+    {
+      "file": "health-legacy-failed-origin-r1-contract.json",
+      "bytes": 9779,
+      "sha256": "b8998dbb7e2aeb533e2d23aa37d4bef9ce47ad68f8c88dccef0983c3714d7d2e"
+    },
+    {
+      "file": "health-legacy-failed-origin-r2-addendum.json",
+      "bytes": 2655,
+      "sha256": "d55877941ebc8ef4990b1d152971146a455f7418e32c47254b962b3c0d9c31c2"
+    }
+  ],
+  "sourceVerification": {
+    "currentFullArchiveTextExact": 256,
+    "currentFullArchiveBinaryFixturesExact": 9,
+    "onlyChangedInputsFrom194": [
+      "Lumen/Models/HealthLegacyRecoveryOrigin.swift",
+      "Lumen/Models/HealthLocalFiles.swift",
+      "Package.swift",
+      "Tests/HealthLegacyRecoveryOriginChecks.swift",
+      "Tests/ImportTests.swift"
+    ],
+    "actualChangedSetMatches": true,
+    "fullNewPrimitiveAndFocusedTestSourceRead": true,
+    "additionalTargetedSourceRead": [
+      "HealthLocalFiles.validateLegacyData and shared decode",
+      "JSONFieldAudit.check/parser",
+      "retained live auditor source"
+    ],
+    "pureManifest": {
+      "currentInputsExact": 136,
+      "fixturesExact": 4,
+      "compiledSwiftSources": 133,
+      "nativeBoundTextInputs": 135,
+      "rootPackageResolved": "Additional136th text input retained separately; manifest explicitly recorded after focused execution, not contemporaneous root-pin evidence. No expanded historical claim.",
+      "actualRetainedBinaryRehashed": {
+        "bytes": 16518400,
+        "sha256": "adede008ab8e61847aeee55ec94bd6545ae39b9faad388304929365c0cc88868"
+      }
+    },
+    "compileOnly": {
+      "actualOutcomeExit": 0,
+      "session": 95936,
+      "producerPID": 30995,
+      "appRetainedBinaryRehashed": {
+        "bytes": 45124144,
+        "sha256": "36655756972df47b188a415e6067124bf6ad291d4ee51b2f3c4af40ba3d3fa6c"
+      },
+      "testRetainedBinaryRehashed": {
+        "bytes": 5759248,
+        "sha256": "595ea28e1e623c3a3e28faf53bbdf7ae7c63efa7cd5abdb43bf21055a0c3427a"
+      },
+      "nativeRuntimeAccepted": false,
+      "boundary": "Build became terminal during this read-only review; actual new receipt read and existing binary bytes independently matched. No build or simulator command by critic."
+    }
+  },
+  "implementationAssessment": {
+    "C1": "Value.isFailed explicitly rethrows CancellationError, accepts only DecodingError, HealthLocalFiles.Failure.invalid and known field-audit format/ambiguity rejection, while unknown/acquisition/operational errors propagate. Shared cancellation checks occur before/through capture, UTF16 loops, decode and before token/final verify return. Actual cancelled-valid/cancelled-malformed and operational-defaults-error checks match selected classification requirement. Not a catch-all unavailable-to-authority conversion.",
+    "C2": "Primitive never enters LocalStore and never creates/writes files or changes defaults. Caller-owned serialization is explicit in source comment; fixed-key closure injection is sufficient for foundation tests, not actual lock-order integration proof. Future capture/commit must implement contract writes\u2192copies / writes\u2192transaction\u2192copies without reentry into nonrecursive writes lock. C2 contract remains closed wording; runtime lock correctness not established here.",
+    "eligibility": "Closed domain legacyKey mapping only. Existing real root required by lstat; any present selected leaf (including dangling link/FIFO) returns ineligible without opening it. Missing root propagates, symlink/non-directory root invalid. Raw failed Data uses same shared field audit/record validation and plain JSONDecoder as legacy loading, preserving date strategy. Valid/empty/absent/other property-list types confer no token. Root/current/defaults reobserved by verify, immutable selected value required.",
+    "identity": "Root binds standardized path+device/inode. Value equality includes domain, explicit type and exact Data bytes; String capture uses NSString UTF16 code units and requires a lossless Swift UTF16 roundtrip before storing LE bytes. Thus canonically equivalent distinct strings are unequal. No String(describing:), implementation class, normalized String equality or digest-only authority. Exact fixed-key/domain binding retained.",
+    "encoding": "4,194,304 raw cap checked before copies/encoding for Data and UTF16 unit collection. Encoded envelope bounded5,600,000 before parsing; JSONFieldAudit rejects duplicate/ambiguous fields; exact six-field shape, schema/domain/key/tag, canonical base64 up to5,592,408, decoded raw limit, digest and UTF16 even-length/roundtrip validated. Envelope decode also requires still-failed representation, so healthy data cannot become retained failed-value authority. Newly encoded JSON is captured-value provenance, never original preferences plist bytes.",
+    "safeRootLimits": "lstat rejects final-component root links and current leaf links/specials without opening payloads. This is not ancestor-symlink exclusion, external-process cross-store CAS or general race immunity. Caller serialization plus later final checks remain necessary. No broader safe-root guarantee inferred.",
+    "aggregate": "aggregateLimit=12,582,912 is declared but not enforced across a selected collection because this primitive handles one origin at a time. Acceptable only within this stated foundation scope; enforce at selected-payload/staging integration before multi-origin acceptance.",
+    "resourceLimits": "Raw size is bounded, not peak memory: NSString bridging, UTF16 units/Data, base64, JSON serialization/parsing can coexist. Foundation defaults retrieval can allocate. No preallocation/continuous cancellation-latency guarantee from these limits."
+  },
+  "actualFocusedResults": {
+    "session": 31121,
+    "exitCode": 0,
+    "checks": 57,
+    "allCheckRowsPassed": true,
+    "reportBytes": 9592,
+    "reportSHA256": "3643884f96200dc34df5cd49fb6058e77d51229aa118959bea489e6170de2895",
+    "covered": "Each meals/workouts/goals actual isolated UserDefaults malformed Data and String capture, exact envelope roundtrip, unchanged verify, changed still-malformed/removed key/tag/canonical-equivalent String/root/new current rejection and healthy/absent controls. Additional number/bool/array/dictionary/date, unsupported-domain, cancellation/operational, changing-during-capture, rootlink/missingroot/current dangling/FIFO, exact4MiB/plus-one Data/String, extra field/wrong key/corrupt digest and cancelled decode/verify controls.",
+    "log": "Retained gzip byte-bound to3359B SHA0fba1ab4227da41bb79c80757f1a018a3e0e79340df283d82c81741e059c539a; final actual57PASS line read. No producer rerun.",
+    "remainingTestBoundaries": "No mid-loop cancellation timing, malformed-surrogate NSString, every envelope negative branch or nonempty dated legacy-array differential claim from these57. No aggregate-selected collection enforcement test yet. These stay within declared future contract verification before integrated recovery acceptance; not evidence of a current source defect."
+  },
+  "independentLiveReadOnlyValidation": {
+    "performed": true,
+    "root": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/Lumen-legacy-origin-67332CDD-DDC0-42E6-ADCB-50E442EA8B38",
+    "exactSmallEnvelopeFiles": 6,
+    "exactRootDeviceInodeIdentities": 3,
+    "exactSyntheticPersistentPlistDataKeys": 3,
+    "method": "Direct lstat of retained recorded domain roots; bounded O_NOFOLLOW|O_NONBLOCK regular-file opens, fd/path inode/device/size/mtime consistency checks; envelope bytes exactly match report base64. Decoded inner type/domain/key/digest and raw malformed Data/exact decomposed String UTF16 verified. Three known UUID plist files each contain only exact recorded Data key/value. No audit module rerun or producer executed.",
+    "scope": "Current persisted preferences end in Data; six envelopes retain both prior observed Data/String values. Does not independently reread historical String defaults or Foundation in-process suites. Parent canonical live audit is separately bound and consistent.",
+    "fixtureRetention": "Tiny UUID roots/suites observed retained during this review; retain through exact parent backup. No cleanup or suite mutation by critic. FourMiB limit fixtures were in memory and are not falsely claimed live-retained files."
+  },
+  "findings": [],
+  "requiredRepairAsks": [],
+  "nextIntegrationRequirements": [
+    "Implement selected observation authority through review, selected payload, preparation and final serialized commit with exact root/current/defaults validation and all existing source/provider/photo/owner/revision/intent checks. C1 cancellation semantics must remain intact.",
+    "Enforce selected aggregate/raw/encoded/tree limits and version2 envelope association/catalog/carry/dedupe/export/reset contracts; no synthetic domain.json/empty readable fallback.",
+    "Acquire actual LocalStore.standard native Data/String routes with honest changed copy, fresh source ownership, receipt/private/photo/preservation/cleanup/relaunch verification and continuing appearance/critic requirements. Do not use this foundation as successful-origin recovery credit."
+  ],
+  "limits": "No source/test/input edits, build/native/simulator/Git/cleanup actions, screenshot review, native recovery, design score, new appearance, full2350 rerun, current Release or full-parent acceptance. Actual194 ordinary pair/core/Release remain historical194 scopes; Part38/36storageerratum and all earlier failures/accessibility/motion/allrawprior/lateworker/broader gates remain unchanged. Parent reports194case2 exact36paths ad5f7134 before195 changes; no critic remote-readback claim.",
+  "storage": {
+    "freeBytesAtFinish": 37622345728,
+    "criticRecoveredBytes": 0,
+    "cleanupPerformed": false
+  },
+  "writeBoundary": "Only this new report written; judged source/evidence, retained fixtures/suites and all prior reports unchanged."
+}

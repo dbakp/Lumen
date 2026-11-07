@@ -126,6 +126,18 @@ enum HealthLocalFiles {
         }
     }
 
+    /// Historical defaults used Foundation's default date representation.
+    /// Recovery eligibility must use the same reader, not the current ISO format.
+    static func validateLegacyData(_ data: Data, domain: Domain, control: BackupOperationControl) throws {
+        let decoder = JSONDecoder()
+        switch domain {
+        case .meals: _ = try decode([Meal].self, domain: domain, data: data, decoder: decoder, control: control)
+        case .workouts: _ = try decode([Workout].self, domain: domain, data: data, decoder: decoder, control: control)
+        case .goals: _ = try decode(HealthGoals.self, domain: domain, data: data, decoder: decoder, control: control)
+        case .water, .today: throw Failure.invalid
+        }
+    }
+
     private static func decode<Value: Decodable>(_ type: Value.Type, domain: Domain, data: Data, decoder: JSONDecoder,
                                                  control: BackupOperationControl? = nil) throws -> Value {
         try control?.checkCancellation()
