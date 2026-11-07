@@ -1,0 +1,177 @@
+"""Pending follow-on host helpers, not integrated or executed.
+Uses the existing r3 verifier's globals/helpers. Future183+ setup/read-control
+and a complete finite producer are required before this can verify any case.
+"""
+
+def assert_protected_state(root):
+    assert snapshot(root, current=False) == protected_before
+    assert snapshot(root.with_suffix('.previous'), current=False) == previous_before
+    assert metadata_tree(root) == fault_observation['currentMetadataBefore']
+    assert metadata_tree(root.with_suffix('.previous')) == fault_observation['priorMetadataBefore']
+    assert not list(root.parent.glob('LumenData.restore-*'))
+    assert not list((root / '.health-recovery-history').glob('*.json'))
+    verify_provider()
+    identity()
+
+
+def read_protocol(group):
+    path = group / 'Lumen-health-read-checkpoint.json'
+    assert not path.is_symlink() and stat.S_ISREG(path.lstat().st_mode)
+    assert path.stat().st_mtime >= started and path.stat().st_size < 64 * 1024
+    value = json.loads(path.read_bytes())
+    assert value['root'] == str(group / 'LumenData')
+    assert len(value['attempts']) == 1
+    return value, value['attempts'][0]
+
+
+def audit_actual_reader(group):
+    value, record = read_protocol(group)
+    old = source_observations[0]
+    assert record['ordinal'] == 1 and record['scope'] == 'selected-record'
+    assert record['readBoundary'] == 'selected-source'
+    assert record['phase'] == 'held' and not record['uiCancelled']
+    assert record['workerControlMatchesUI'] and record.get('descriptorCloseSucceeded') is None
+    assert record.get('reviewOwnerClosed') is not True
+    assert record['pid'] == old['owner']['pid']
+    path = Path(fault_observation['originalSelectedBackupPath'])
+    assert Path(record['file']) == path
+    facts = path.lstat()
+    assert stat.S_ISREG(facts.st_mode) and not path.is_symlink()
+    assert facts.st_ino == record['inode'] and facts.st_size == record['size']
+    assert 1 <= record['bytesRead'] <= min(65536, facts.st_size)
+    assert Path(subprocess.check_output(['ps','-p',str(record['pid']),'-o','comm='],text=True).strip()) == container('app') / 'Lumen'
+    scan = subprocess.check_output(['lsof','-nP','-a','-p',str(record['pid']),'-d',str(record['descriptor']),'-Ffni'],text=True)
+    fields = scan.splitlines()
+    assert any(x.startswith('f') and x[1:].rstrip('ruw') == str(record['descriptor']) for x in fields)
+    assert any(x == 'i' + str(facts.st_ino) for x in fields)
+    assert any(x.startswith('n') and Path(x[1:]).resolve() == path.resolve() for x in fields)
+    verify_original_identity()
+    assert_protected_state(group / 'LumenData')
+    assert owned_workspaces(record['pid']) == fault_observation['ownedAfter']
+    return {'protocol': value, 'record': record.copy(), 'lsof': scan,
+            'actualDescriptorAndSourceBound': True, 'checkedAt': time.time()}
+
+
+def send_read_message(group, record, acknowledge):
+    assert re.fullmatch(r'[A-Fa-f0-9-]{36}', record['nonce'])
+    target = group / 'Lumen-health-read-release.json'
+    temp = target.with_name(target.name + '.' + record['nonce'] + '.state.tmp')
+    assert not temp.exists()
+    if target.exists():
+        assert not target.is_symlink() and stat.S_ISREG(target.lstat().st_mode)
+    message = {'nonce': record['nonce']}
+    if acknowledge: message['acknowledgementOnly'] = True
+    temp.write_text(json.dumps(message)); temp.replace(target)
+
+
+def audit_back_after_failure(group, held_reader):
+    protocol, record = read_protocol(group)
+    assert record['nonce'] == held_reader['record']['nonce']
+    assert record['file'] == held_reader['record']['file']
+    assert record['phase'] == 'released' and not record['uiCancelled']
+    assert record['descriptorCloseSucceeded'] is True
+    assert record['reviewOwnerClosed'] is True
+    root = group / 'LumenData'
+    assert_protected_state(root)
+    assert not (group / 'Lumen-health-cancel-checkpoint.json').exists()
+    old = fault_observation['ownedAfter']
+    existing = owned_workspaces(record['pid'])
+    assert set(existing) <= set(old)
+    for folder, workspace in existing.items(): assert workspace == old[folder]
+    # Parent preview may still own files. Observe this honestly; do not equate
+    # review-owner closure with all parent-owned roots already being deleted.
+    return {'protocol': protocol, 'actualReviewOwnerClosed': True,
+            'completedReaderDescriptorClosed': True, 'existingOldWorkspaces': existing,
+            'absentOldWorkspaces': sorted(set(old) - set(existing)),
+            'currentPriorBytesAndMetadataExact': True, 'noReceiptStageOrRecoveryWorker': True,
+            'hostDeletedWorkspace': False, 'checkedAt': time.time()}
+
+
+def audit_completed_reader(group, held_reader):
+    protocol, record=read_protocol(group)
+    assert record['nonce']==held_reader['record']['nonce'] and record['ordinal']==1
+    assert record['file']==held_reader['record']['file'] and record['workerControlMatchesUI']
+    assert record['phase']=='released' and not record['uiCancelled']
+    assert record['descriptorCloseSucceeded'] is True and record.get('reviewOwnerClosed') is not True
+    return {'protocol':protocol,'record':record.copy(),'sameActualReaderCompletedAndClosed':True,
+        'reviewOwnerStillOpen':True,'checkedAt':time.time()}
+
+
+def audit_fresh_reselected_source(group, back_observation):
+    assert back_observation['actualReviewOwnerClosed']
+    assert_protected_state(group / 'LumenData')
+    old = source_observations[0]
+    pid = old['owner']['pid']
+    assert Path(subprocess.check_output(['ps','-p',str(pid),'-o','comm='],text=True).strip()) == container('app') / 'Lumen'
+    owned = owned_workspaces(pid)
+    assert len(owned) == (2 if a.case == 'legacy' else 1)
+    assert not set(owned) & set(fault_observation['ownedAfter'])
+    assert all(not Path(folder).exists() for folder in fault_observation['ownedAfter'])
+    candidates = []
+    for folder, workspace in owned.items():
+        path = Path(folder) / 'selected-backup'
+        if not path.exists(): continue
+        facts = path.lstat()
+        assert stat.S_ISREG(facts.st_mode) and not path.is_symlink() and facts.st_nlink == 1
+        data = path.read_bytes()
+        assert len(data) == old['bytes'] and digest(data) == old['sha256']
+        assert workspace['owner']['id'] != old['owner']['id']
+        assert str(path) != fault_observation['originalSelectedBackupPath']
+        seed=json.loads((base/a.inputs).read_text())
+        provider=Path(next(row['seeded'] for row in seed['files'] if Path(row['input']).name==expected_name))
+        provider_facts=provider.lstat()
+        assert (facts.st_ino,facts.st_dev)!=(provider_facts.st_ino,provider_facts.st_dev)
+        candidates.append({'directory': folder, 'owner': workspace['owner'], 'file': str(path),
+                           'bytes': len(data), 'sha256': digest(data),
+                           'identity': {key: getattr(facts, key) for key in ['st_ino','st_dev','st_mode','st_nlink','st_size','st_mtime_ns']}})
+    assert len(candidates) == 1
+    photos = {}
+    for photo_id, expected in matrix['photos'].items():
+        matches = [(folder, name) for folder, workspace in owned.items()
+                   for name, row in workspace['files'].items()
+                   if row['sha256'] == expected['sha256'] and row['bytes'] == expected['bytes']]
+        assert len(matches) == 1
+        folder, name = matches[0]
+        photos[photo_id] = {'file': str(Path(folder) / name), **expected}
+    verify_provider()
+    return {'source': candidates[0], 'ownedWorkspaces': owned, 'photos': photos,
+            'allOldWorkspacesAbsent': True, 'independentFreshOwnership': True,
+            'healthyOriginalPhotosRestoredByNewSelection': True, 'checkedAt': time.time()}
+
+
+def verify_fresh_original_identity(fresh):
+    source = fresh['source']; path = Path(source['file']); facts = path.lstat()
+    assert not path.is_symlink() and stat.S_ISREG(facts.st_mode)
+    assert {key: getattr(facts, key) for key in source['identity']} == source['identity']
+    assert len(path.read_bytes()) == source['bytes'] and digest(path.read_bytes()) == source['sha256']
+    assert owned_workspaces(source['owner']['pid']) == fresh['ownedWorkspaces']
+    verify_provider()
+    return {'freshSelectedBackupBytesAndIdentityExact': True, 'providerIdentityExact': True}
+
+
+def assert_same_recovery_control(record, phase):
+    assert record == {**held['record'], 'phase': phase, 'uiCancelled': False}
+    assert record['ordinal']==2 and record['workerControlMatchesUI']
+    assert re.fullmatch(r'[A-Fa-f0-9-]{36}',record['nonce'])
+
+
+def audit_success_receipt_before_ack(root, receipt):
+    seed=json.loads((base/a.inputs).read_text())
+    original=next(row for row in seed['files'] if Path(row['input']).name==expected_name)
+    assert receipt['fileSource']=={'fileName':expected_name,'format':{'legacy':'legacyJSONBackup','encrypted':'encryptedBackup'}[a.case],
+        'byteCount':original['bytes'],'sha256':original['sha256']}
+    assert receipt['source']=='selected-file:'+original['sha256']
+    assert receipt['domains']==['meals','workouts'] and receipt['omittedPhotoCount']==0
+    assert set(receipt['recordDigests'])=={'meals.json','workouts.json'}
+    for name in ['meals.json','workouts.json']:assert receipt['recordDigests'][name]==digest((root/name).read_bytes())
+    photo_digests=verify_installed(root)
+    assert receipt['photoDigests']==photo_digests
+    assert receipt['reviewedPhotos']=={key:{'byteCount':v['bytes'],'sha256':v['sha256']} for key,v in matrix['photos'].items()}
+    current=snapshot(root,current=False)
+    for name,row in protected_before.items():
+        if name not in {'meals.json','workouts.json','health-write-intent.json'}:assert current[name]==row,name
+    for name,row in preservation_before['files'].items():assert current[name]==row,name
+    old=json.loads(base64.b64decode(before['health-write-intent.json']['base64']))
+    new=json.loads((root/'health-write-intent.json').read_bytes())
+    assert new['owner']==old['owner'] and new['lifecycle']!=old['lifecycle'] and new['events']==[]
+    return {'fullReceiptAuditedBeforeAck':True,'healthyCurrentAndPrivatePriorExact':True,'installedPhotoDigests':photo_digests}

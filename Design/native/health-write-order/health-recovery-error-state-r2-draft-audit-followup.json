@@ -1,0 +1,93 @@
+{
+  "status": "Focused source followup complete; original three required findings addressed in revised drafts. No additional substantive source blocker found in this narrow review.",
+  "checkedAtUnix": 1794064388.0053482,
+  "priorAudit": {
+    "path": "Design/native/health-write-order/health-recovery-error-state-r2-draft-audit.json",
+    "sha256": "7826c9b7a5b485c871e8cb27b02cbb5c27e3aed326204a3113bdb70bb4e72a73",
+    "unchanged": true
+  },
+  "revisedDrafts": [
+    {
+      "path": "/tmp/lumen-error-state-native-r1.swift",
+      "bytes": 9065,
+      "sha256": "e1e7b12a62153118a0b5780716967795ca6a85c93ca24a12b268a479d71347a3"
+    },
+    {
+      "path": "/tmp/lumen-error-state-host-helpers-r1.py",
+      "bytes": 10211,
+      "sha256": "93a752d0b192e9088f13321a299b4ad10e5413287d019ce79f9f48ce2c44321e"
+    },
+    {
+      "path": "/tmp/lumen-error-state-driver-r1-draft.py",
+      "bytes": 45522,
+      "sha256": "2c0dbb9dcc62a448218df5d212f052573c19cb3f51352fce6a1e4e4d6cf652bf"
+    }
+  ],
+  "reviewScope": "Full revised native draft, full revised host-helper functions, assembled driver integration/loop/terminal checks and exact helper inclusion. Focused consistency review against original immutable audit and existing reader/recovery protocols; no new runtime evidence.",
+  "findings": [
+    {
+      "id": "STATE-DRAFT-1",
+      "disposition": "addressed in source",
+      "evidence": "readerReleaseRequested records a message request only. At the actual failed tag, audit_completed_reader requires held-reader nonce/file, ordinal1, matching UI worker, released/noncancelled phase, descriptorCloseSucceeded true and reviewOwnerClosed not true. Persisted readerCompleted is mandatory at terminal success. Actual reviewOwnerClosed true remains a later Back observation."
+    },
+    {
+      "id": "STATE-DRAFT-2",
+      "disposition": "addressed in source",
+      "evidence": "assert_same_recovery_control requires exact held record equality with only allowed phase/uiCancelled values. This includes nonce, ordinal, stage, worker and originals; ordinal2 and workerControlMatchesUI are explicit. observed-2 requires held; success requires released. Sole-attempt, regular bounded checkpoint checks and actual observed/released records are persisted."
+    },
+    {
+      "id": "STATE-DRAFT-3",
+      "disposition": "addressed in source",
+      "evidence": "audit_success_receipt_before_ack checks full fileSource/source/domains/zero omissions/recordDigests/photoDigests/reviewedPhotos and both exact installed JPEG mappings. It also verifies unaffected protected current records, private prior originals and retired intent lifecycle before a fresh success nonce acknowledgement is written. Terminal persistence checks remain."
+    }
+  ],
+  "additionalChanges": [
+    {
+      "disposition": "appropriate",
+      "subject": "fresh ownership",
+      "evidence": "Fresh source requires new owner UUID and distinct path, all old workspace roots absent, exact source/provider identity and healthy extracted JPEGs. It permits reuse of a deleted old inode and instead rejects identity with the still-live provider inode/device pair."
+    },
+    {
+      "disposition": "appropriate narrow simplification",
+      "subject": "completed record list",
+      "evidence": "Native waits for recoveryRecord-0 to exist after held/observed reader release, captures record-read, then returns directly to review. It does not enter a detail page or claim a Lunch detail assertion. This avoids a possible list .task re-registration on returning from a child. Actual runtime scheduling remains unobserved."
+    }
+  ],
+  "remainingIntegrationGates": [
+    "Future183+ only: apply new tests and selected-record setup flags exclusively to RecoveryPhotoFaultErrorBack after base arguments are assigned; neither exists in current182.",
+    "Place final driver/helpers canonically before execution because driver resolves inputs and repo relative to __file__. /tmp draft is not runnable in place. Freeze final hashes, source/build, test binary and production continuity before cases.",
+    "Actual native plus independent host checks must prove list read, genuine failure before test scrolling, sampled three-second scroll stability, Not now no-worker preservation, Back owner closure, fresh initially-off choices and exact source, control2 recovery without omission, complete pre-ack success audit, cleanup and relaunch.",
+    "Attachment-tag polling plus finite sleeps can still miss observation windows under adverse scheduling. Preserve terminal failed evidence if this happens; do not infer a runtime defect or accept an incomplete boundary. The explicit success acknowledgement remains necessary."
+  ],
+  "sourceIntegrity": {
+    "manifest": "durable-source-r182.json",
+    "textInputsVerified": 253,
+    "binaryFixtureInputsVerified": 9,
+    "mismatches": [],
+    "method": "Current canonical hashes matched frozen182; read-only."
+  },
+  "checks": {
+    "driverASTSyntax": "PASS",
+    "helpersASTSyntax": "PASS",
+    "exactHelperEmbeddedInStandalone": true,
+    "SwiftApplied": false,
+    "SwiftCompiled": false,
+    "driverExecuted": false,
+    "nativeTestsRunByCritic": false,
+    "imagesOpened": 0,
+    "nativeJSONReviewed": 0
+  },
+  "limits": [
+    "No new score, design acceptance, runtime pass or accepted matrix case.",
+    "No completed detail-page read claim; record-list completion only, pending actual runtime.",
+    "Direct VoiceOver speech/focus/duplicates, Reduce Motion, held cancellation/Back, old-worker/new-review and deterministic reveal-yield/disappearance windows remain open under parent contract.",
+    "All prior reports/evidence and active182 app/test inputs remain immutable. No simulator/build or physical iPhone actions."
+  ],
+  "writes": [
+    "health-recovery-error-state-r2-draft-audit-followup.json"
+  ],
+  "storage": {
+    "recoveredBytes": 0,
+    "freeBytesAtReport": 39911739392
+  }
+}

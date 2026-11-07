@@ -1,0 +1,165 @@
+{
+  "status": "SOURCE-ONLY DRAFT AUDIT; tighten verification before future source freeze; no execution or design acceptance",
+  "scope": "Predeclared main/normal legacy and encrypted missing-photo genuine-error scroll/Not now/Back/fresh original reselect/two-photo success route. Future183 or later only. Current182 remains frozen.",
+  "checkedAtUnix": 1794064216.257239,
+  "provenance": [
+    {
+      "path": "/tmp/lumen-error-state-native-r1.swift",
+      "bytes": 9196,
+      "sha256": "c0a1d2e5f11fa250a6ec10a42c24c540d49196419d67331ba9d8fa7d50a657ea"
+    },
+    {
+      "path": "/tmp/lumen-error-state-host-helpers-r1.py",
+      "bytes": 7528,
+      "sha256": "385a40b92a4cc6a3bcaf876ca2e3aa6097eab85c9b09e9c359adf3cd4539a65b"
+    },
+    {
+      "path": "/tmp/lumen-error-state-driver-r1-draft.py",
+      "bytes": 42376,
+      "sha256": "d883b578a60e8c040abfc7f49f074f94fc3ed8171a6a9b48eb6643871089de27"
+    },
+    {
+      "path": "Design/native/health-write-order/health-recovery-error-state-r2-execution-plan.json",
+      "bytes": 4530,
+      "sha256": "df825ff42fca85602011a736fc06dda3d6d4cc39d1cdf383967d63922106e1a9"
+    },
+    {
+      "path": "Design/native/health-write-order/health-recovery-error-visibility-state-r1-contract.json",
+      "bytes": 1993,
+      "sha256": "aa5755186721ba27556bc00bdc058aed5f69791ddfab2393ac7887425fd53879"
+    },
+    {
+      "path": "Design/native/health-write-order/durable-source-r182.json",
+      "bytes": 42333,
+      "sha256": "2748f165cf9b2eff842484937f39a44d721750fce10afcd2128ddd2b5410866c"
+    },
+    {
+      "path": "Lumen/Views/HealthRecoveryCancelUIFixture.swift",
+      "bytes": 30565,
+      "sha256": "ccc156c22df8c20a66be7df3e7e6746393e1985065523dce6f7a5111e08ed2e4"
+    },
+    {
+      "path": "Lumen/Views/BackupFileRecoveryView.swift",
+      "bytes": 19173,
+      "sha256": "b2cd41bfb3dd94e22c84be189bd608e4e39adbf79b2050ad43a40fb14961b359"
+    },
+    {
+      "path": "Lumen/Views/BackupView.swift",
+      "bytes": 24087,
+      "sha256": "e8129fceb24d013416dbc6029319c43c855f3967f4320394510e0ccdaf09cad8"
+    },
+    {
+      "path": "Lumen/Models/HealthRecoveryRecordReview.swift",
+      "bytes": 15437,
+      "sha256": "6a8694f2c109d283a489f9ee046309f5f1bb0dc2f9083d405216f90a6ae6b76c"
+    },
+    {
+      "path": "Lumen/Views/HealthRecoveryView.swift",
+      "bytes": 57257,
+      "sha256": "6c80f25f88717fa91b31851a5181829c23bc33fd04d6897d83a3c29179550b69"
+    },
+    {
+      "path": "LumenUITests/LumenSmokeTests.swift",
+      "bytes": 653779,
+      "sha256": "3987041b20bedfcb166a067e18e8a04dc2b388700f2289f19bbdf54296505be3"
+    },
+    {
+      "path": "Design/native/health-write-order/health-file-photo-matrix-r1-input-manifest.json",
+      "bytes": 4051,
+      "sha256": "6ac77d94a9c4ea377cb70d95eacf83b373453c2d3b4d2a3ec6720ba92d018195"
+    }
+  ],
+  "sourceIntegrity": {
+    "manifest": "durable-source-r182.json",
+    "textInputsVerified": 253,
+    "binaryFixtureInputsVerified": 9,
+    "mismatches": [],
+    "method": "SHA256 of current canonical files compared to manifest. Read-only; no source edits or build."
+  },
+  "readScope": {
+    "draftNative": "all126 lines",
+    "draftHelpers": "all135 lines",
+    "assembledStandalone": "all substantive code across675 lines; exact helper text included",
+    "canonicalSources": "reader/control protocol and registration/close paths, record field mapping, backup parent lifetime/setup paths",
+    "pythonCheck": "AST syntax parse passed; driver was not executed; Swift draft not applied, compiled or executed",
+    "actualImageOpens": 0,
+    "nativeJSONReviewed": 0,
+    "runtimeCredit": false
+  },
+  "assessment": "The proposed route is justified and uses existing instrumentation without a production repair. One actual completed selected-record read can bind the original review owner; Back can observe its closure separately from parent-held workspace lifetime. Fresh Files selection and normal recovery without omission test a useful distinct state transition. Three host-proof refinements below should precede freeze.",
+  "requiredBeforeFreeze": [
+    {
+      "id": "STATE-DRAFT-1",
+      "kind": "verification gap, not observed runtime defect",
+      "locations": [
+        "driver524-531",
+        "driver531-533",
+        "helpers55-65",
+        "helpers67-87"
+      ],
+      "finding": "reader_released is recorded when the host sends release, without observing the released protocol or descriptor close at that boundary. Back later does check actual released/noncancelled/closed plus reviewOwnerClosed, which is sound but temporally later.",
+      "required": "Name the early record releaseRequested, or observe and persist same nonce/file/ordinal released with descriptorCloseSucceeded true once the actual meal record has loaded or at the first genuine-failure attachment. Keep reviewOwnerClosed distinct and require it only after review Back. Do not infer owner closure merely from record-detail navigation."
+    },
+    {
+      "id": "STATE-DRAFT-2",
+      "kind": "verification hardening",
+      "locations": [
+        "driver573-585"
+      ],
+      "finding": "observed-2 and success branches inspect the current first protocol record, but do not explicitly compare its nonce, ordinal and stage with held[record], while released claims sameActualControl. The native tag and sole-attempt structure provide partial alignment; explicit binding makes this proof durable.",
+      "required": "At observed-2 and success, require one attempt, ordinal2, nonce and stage equal held record, workerControlMatchesUI true and uiCancelled false; validate correct held/released phase before messages or success acknowledgement. Persist the observed record rather than only Boolean proof claims."
+    },
+    {
+      "id": "STATE-DRAFT-3",
+      "kind": "success observation boundary gap",
+      "locations": [
+        "driver579-592",
+        "driver657-666"
+      ],
+      "finding": "Before success acknowledgement the host verifies installed records/photos, zero omissions and reviewed/photo digests, plus fresh source/provider identity. Receipt fileSource/source/domains/recordDigests are checked only after native Back, cleanup and relaunch.",
+      "required": "Move or repeat complete receipt identity/domain/recordDigest assertions into the success-before-ack branch and persist those checked fields. Keep terminal checks too if they establish relaunch persistence. This preserves the intended source/provider/installed-record/full-receipt audit while the actual review remains open."
+    }
+  ],
+  "integrationRequirements": [
+    "Apply selected-record launch flags only for RecoveryPhotoFaultErrorBack tests inside the recovery setup path, after existing arguments are assigned. Existing RecoveryPhotoFault setup already supplies actual cancel/success observer fixtures and normal/light configuration. Current182 intentionally lacks these new tests/flags.",
+    "Canonical placement is required before running the standalone driver: its base is __file__.parent and repo=base.parents[2], so the /tmp draft is not runnable in place. Freeze the final canonical driver/setup/tests with new source/build receipts; audit final diff and executable continuity.",
+    "First failure should remain before test scrolling. Control1 is made before payload validation and may fail before preparation; only actual preparation control2 should create the sole cancel checkpoint. Not now must leave no preparation checkpoint/stage/receipt. Preserve this assertion rather than manufacturing ordinal1 preparation.",
+    "Retain finite deadlines and raw failure evidence if host misses any attachment boundary. Three-second sleeps provide observation opportunities, not host acknowledgements or a proof of all schedules. Source179 already demonstrated why success needs an explicit acknowledgement."
+  ],
+  "advice": [
+    {
+      "priority": "nonblocking robustness",
+      "location": "helpers105",
+      "finding": "Requiring a fresh selected file inode/device tuple to differ from the deleted old file can falsely reject legitimate inode reuse.",
+      "recommendation": "Use fresh UUID workspace owner and distinct new path, old workspace absence, regular nonlinked file and exact content/metadata binding as primary independence proof. Record inode continuity facts honestly; do not treat a reused inode after deletion alone as stale ownership."
+    },
+    {
+      "priority": "retain scope",
+      "finding": "The deliberate-scroll check samples the meal choice frame/value over three seconds with intervening native queries.",
+      "recommendation": "Credit only that bounded ordinary-scroll observation, not continuous observation, all choices remaining simultaneously visible, reveal-yield interleavings, VoiceOver or Reduce Motion."
+    }
+  ],
+  "validatedSourceAlignment": [
+    "Native attachment prefixes and suffixes match host captured tags: source, record-held-1/record-observed-1, failed, scroll-stays, omission-not-now, back-parent, reselected-source, held-2/observed-2, success and parent.",
+    "Existing selected-record reader checkpoint uses held/released phases, acknowledgementOnly messages and separate descriptorCloseSucceeded/reviewOwnerClosed facts. Host lsof/file/inode/PID binding follows those actual fields. Existing first meal field0 is Meal and the declared first fixture is lunch.",
+    "BackupRecoveryReviewSession.close marks didEndReview for its verification source. Parent clearPreview closes the recovery owner when reviewingRecovery becomes false. Child record navigation is not itself review closure.",
+    "Back audit permits surviving unchanged parent-owned workspaces and explicitly disclaims host deletion. Fresh selection requires all old roots absent and independently owned healthy original photos. This correctly distinguishes owner closure from immediate total workspace deletion.",
+    "Preparation/success checks bind exact current/prior records, healthy water/conflicting goals, fresh distinct photo IDs and both JPEG digests. Receipt and relaunch scope remain two selected domains, not a full product check."
+  ],
+  "declinedAsks": [
+    "No production layout/copy/focus change recommended by this draft audit.",
+    "No new DEBUG instrumentation appears necessary for this narrow completed-reader ownership route.",
+    "No need to rerun unrelated historical cases solely for this source-only report."
+  ],
+  "limits": [
+    "No draft applied, Swift compile, simulator action, build or native/host execution. Python AST parse is syntax-only.",
+    "No screenshot/design score, new accepted case, direct spoken VoiceOver, Reduce Motion or physical device evidence.",
+    "Held Cancel/Back, old-worker/new-review lifetime and deterministic reveal-yield/disappearance windows remain separate full-parent requirements.",
+    "Existing appearance matrix and prior critic reports remain immutable; no overall Round2 or product acceptance."
+  ],
+  "storage": {
+    "deletedBytes": 0,
+    "recoveredBytes": 0,
+    "freeBytesAtReport": 40156098560
+  }
+}
