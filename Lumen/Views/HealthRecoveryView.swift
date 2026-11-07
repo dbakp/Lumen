@@ -295,8 +295,11 @@ enum HealthRecoveryUIFixture {
         let previous = root.appendingPathExtension("previous")
         try FileManager.default.copyItem(at: root, to: previous)
         try Data("{\"syntheticUnavailableWater\":".utf8).write(to: root.appendingPathComponent("water.json"), options: .atomic)
-        if ProcessInfo.processInfo.arguments.contains("-health-daily-cache-ui-fixture") {
+        if ProcessInfo.processInfo.arguments.contains("-health-daily-cache-ui-fixture") && !ProcessInfo.processInfo.arguments.contains("-health-daily-cache-healthy-ui") {
             try Data("{\"syntheticUnavailableToday\":".utf8).write(to: root.appendingPathComponent("today.json"), options: .atomic)
+            if ProcessInfo.processInfo.arguments.contains("-health-daily-cache-missing-ui") {
+                try FileManager.default.removeItem(at: root.appendingPathComponent("today.json"))
+            }
             if ProcessInfo.processInfo.arguments.contains("-health-daily-cache-directory-ui") {
                 let directory = root.appendingPathComponent("today.json")
                 try FileManager.default.removeItem(at: directory)

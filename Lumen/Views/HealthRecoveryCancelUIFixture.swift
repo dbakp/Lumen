@@ -103,6 +103,10 @@ enum HealthRecoveryCancelUIFixture {
                   stage.lastPathComponent.hasPrefix(root.lastPathComponent + ".restore-") else { throw Failure.invalidFixture }
             var originals: [String: Data] = [:]
             for name in HealthLocalFiles.Domain.allCases.map({ $0.rawValue + ".json" }) + [HealthWriteFiles.name] {
+                if name == "today.json", ProcessInfo.processInfo.arguments.contains("-health-daily-cache-missing-ui") {
+                    guard !FileManager.default.fileExists(atPath: root.appendingPathComponent(name).path) else { throw Failure.invalidFixture }
+                    continue
+                }
                 if name == "today.json", ProcessInfo.processInfo.arguments.contains("-health-daily-cache-directory-ui") {
                     let directory = root.appendingPathComponent(name)
                     let facts = try FileManager.default.attributesOfItem(atPath: directory.path)

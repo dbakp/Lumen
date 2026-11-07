@@ -1,0 +1,573 @@
+{
+  "status": "PASS native missing clear and independent tree/private-copy/receipt audit",
+  "source": "durable-source-r166.json",
+  "build": "health-daily-cache-states-r1-build.json",
+  "driverSHA256": "4e3acce285febbb893ca59f7d912c5066bddf60bf9a1e683e6e3d11e8f7eb235",
+  "scope": "Main/light/standard synthetic missing/healthy-cache clear only; no Health sample or physical-phone actions.",
+  "nativePID": 54505,
+  "before": {
+    ".health-recovery": {
+      "kind": "directory",
+      "mode": 16832,
+      "device": 16777233,
+      "inode": 44633984,
+      "bytes": 96,
+      "modifiedNS": 1794040913459042328
+    },
+    "chat.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633929,
+      "bytes": 2,
+      "modifiedNS": 1794040911682065099,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "conversations.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633928,
+      "bytes": 2,
+      "modifiedNS": 1794040911681818515,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "workouts.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633933,
+      "bytes": 2,
+      "modifiedNS": 1794040911683054937,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "goals.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633925,
+      "bytes": 177,
+      "modifiedNS": 1794040911680991220,
+      "sha256": "7ceaf16447d3539f90429200008aa6055612e0755964d4bccb5130278cbbc1d2",
+      "base64": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjEwMDAwLCJ3ZWlnaHRLZyI6NzV9"
+    },
+    "sleep.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633948,
+      "bytes": 2,
+      "modifiedNS": 1794040912745774585,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "meals.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633932,
+      "bytes": 2,
+      "modifiedNS": 1794040911682842019,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "water.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633944,
+      "bytes": 29,
+      "modifiedNS": 1794040911685058778,
+      "sha256": "0d3f4ef174c527390388c9fccb88964f5cc0b3bac224a4370cd215d61623e845",
+      "base64": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZVdhdGVyIjo="
+    },
+    "conversation-selection.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633926,
+      "bytes": 2,
+      "modifiedNS": 1794040911681310679,
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "base64": "e30="
+    },
+    "habits.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633950,
+      "bytes": 3170,
+      "modifiedNS": 1794040912747868302,
+      "sha256": "4e2dbe2cbbbd9620b0c191194c85792bdd95e3fbc24ea94fcff7a604f942a14a",
+      "base64": "W3siaWQiOiJsaWdodCIsIm9mZnNldCI6MTgwMCwiaWNvbiI6InN1bi5tYXguZmlsbCIsInRpdGxlIjoiR2V0IGJyaWdodCBsaWdodCIsImRldGFpbCI6IjEwIG1pbiBvZiBkYXlsaWdodCB3aXRoaW4gMzAgbWluIG9mIHdha2luZyBhbmNob3JzIHlvdXIgY2xvY2suIiwiYW5jaG9yIjoid2FrZVBsdXMiLCJpc0VuYWJsZWQiOnRydWUsImRvbmVUb2RheSI6ZmFsc2V9LHsiaWQiOiJjYWZmZWluZSIsIm9mZnNldCI6MzYwMDAsImljb24iOiJjdXAuYW5kLnNhdWNlci5maWxsIiwidGl0bGUiOiJDYWZmZWluZSBjdXRvZmYiLCJkZXRhaWwiOiJObyBjYWZmZWluZSB3aXRoaW4gMTBoIG9mIGJlZCDigJQgaGFsZi1saWZlIGlzIH42aC4iLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJpc0VuYWJsZWQiOnRydWUsImRvbmVUb2RheSI6ZmFsc2V9LHsiaWQiOiJleGVyY2lzZSIsIm9mZnNldCI6MjE2MDAsImljb24iOiJmaWd1cmUucnVuIiwidGl0bGUiOiJNb3ZlIHlvdXIgYm9keSIsImRldGFpbCI6IjIwKyBtaW4uIEZpbmlzaCBpbnRlbnNlIHdvcmtvdXRzIDNoKyBiZWZvcmUgYmVkLiIsImFuY2hvciI6Indha2VQbHVzIiwiaXNFbmFibGVkIjp0cnVlLCJkb25lVG9kYXkiOmZhbHNlfSx7ImlkIjoibmFwIiwib2Zmc2V0IjoyNTIwMCwiaWNvbiI6Im1vb24uenp6LmZpbGwiLCJ0aXRsZSI6IlNtYXJ0IG5hcCB3aW5kb3ciLCJkZXRhaWwiOiJJZiBuYXBwaW5nOiAyMOKAkzMwIG1pbiwgYmVmb3JlIHlvdXIgZGlwIGVuZHMuIE5vIGxhdGUgbmFwcy4iLCJhbmNob3IiOiJ3YWtlUGx1cyIsImlzRW5hYmxlZCI6dHJ1ZSwiZG9uZVRvZGF5IjpmYWxzZX0seyJpZCI6ImFsY29ob2wiLCJvZmZzZXQiOjE0NDAwLCJpY29uIjoid2luZWdsYXNzIiwidGl0bGUiOiJTa2lwIG5pZ2h0Y2FwIiwiZGV0YWlsIjoiQWxjb2hvbCBmcmFnbWVudHMgc2xlZXAgZXZlbiB3aGVuIGl0IHNwZWVkcyBvbnNldC4iLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJpc0VuYWJsZWQiOnRydWUsImRvbmVUb2RheSI6ZmFsc2V9LHsiaWQiOiJtZWFsIiwib2Zmc2V0IjoxMDgwMCwiaWNvbiI6ImZvcmsua25pZmUiLCJ0aXRsZSI6Ikxhc3QgYmlnIG1lYWwiLCJkZXRhaWwiOiJGaW5pc2ggbGFyZ2UgbWVhbHMgM2ggYmVmb3JlIGJlZDsgbGlnaHQgc25hY2sgT0suIiwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaXNFbmFibGVkIjp0cnVlLCJkb25lVG9kYXkiOmZhbHNlfSx7ImlkIjoic2NyZWVucyIsIm9mZnNldCI6NzIwMCwiaWNvbiI6ImlwaG9uZS5nZW4yIiwidGl0bGUiOiJEaW0gc2NyZWVucyIsImRldGFpbCI6Ikxvd2VyIGJyaWdodG5lc3MgKyBOaWdodCBTaGlmdCAyaCBiZWZvcmUgYmVkLiIsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsImlzRW5hYmxlZCI6dHJ1ZSwiZG9uZVRvZGF5IjpmYWxzZX0seyJpZCI6ImxpZ2h0cyIsIm9mZnNldCI6NTQwMCwiaWNvbiI6ImxpZ2h0YnVsYi5maWxsIiwidGl0bGUiOiJEaW0gdGhlIGxpZ2h0cyIsImRldGFpbCI6Ik92ZXJoZWFkIG9mZiwgbGFtcHMgbG93IOKAlCBsaWdodCBkZWxheXMgbWVsYXRvbmluLiIsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsImlzRW5hYmxlZCI6dHJ1ZSwiZG9uZVRvZGF5IjpmYWxzZX0seyJpZCI6IndpbmRkb3duIiwib2Zmc2V0IjoyNzAwLCJpY29uIjoid2luZCIsInRpdGxlIjoiV2luZCBkb3duIiwiZGV0YWlsIjoiMjDigJMzMCBtaW4gcml0dWFsOiBzaG93ZXIsIHN0cmV0Y2gsIHJlYWQsIGJyZWF0aGUuIiwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaXNFbmFibGVkIjp0cnVlLCJkb25lVG9kYXkiOmZhbHNlfSx7ImlkIjoiYmVkdGltZSIsIm9mZnNldCI6MCwiaWNvbiI6ImJlZC5kb3VibGUuZmlsbCIsInRpdGxlIjoiSW4gYmVkIG9uIHRpbWUiLCJkZXRhaWwiOiJIaXQgeW91ciBtZWxhdG9uaW4gd2luZG93IOKAlCB0aGUgZWFzaWVzdCBmYWxsaW5nLWFzbGVlcC4iLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJpc0VuYWJsZWQiOnRydWUsImRvbmVUb2RheSI6ZmFsc2V9LHsiaWQiOiJjb29sIiwib2Zmc2V0IjoxODAwLCJpY29uIjoidGhlcm1vbWV0ZXIuc25vd2ZsYWtlIiwidGl0bGUiOiJDb29sICYgZGFyayByb29tIiwiZGV0YWlsIjoiNjXigJM2OMKwRiBcLyAxOOKAkzIwwrBDLCBibGFja291dCBkYXJrLCBxdWlldC4iLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJpc0VuYWJsZWQiOnRydWUsImRvbmVUb2RheSI6ZmFsc2V9LHsiaWQiOiJjb25zaXN0ZW50Iiwib2Zmc2V0IjowLCJpY29uIjoiYWxhcm0uZmlsbCIsInRpdGxlIjoiQ29uc2lzdGVudCB3YWtlIiwiZGV0YWlsIjoiU2FtZSB3YWtlIMKxMzAgbWluIOKAlCBldmVuIHdlZWtlbmRzLiAjMSByaHl0aG0gbGV2ZXIuIiwiYW5jaG9yIjoid2FrZVBsdXMiLCJpc0VuYWJsZWQiOnRydWUsImRvbmVUb2RheSI6ZmFsc2V9LHsiZG9uZVRvZGF5IjpmYWxzZSwib2Zmc2V0IjozMDAsImRldGFpbCI6IldhdGVyICsgbGlnaHQgYmVmb3JlIGNvZmZlZSBib29zdHMgYWxlcnRuZXNzLiIsInRpdGxlIjoiTW9ybmluZyBoeWRyYXRpb24iLCJpc0VuYWJsZWQiOnRydWUsImlkIjoiaHlkcmF0aW9uIiwiaWNvbiI6ImRyb3AuZmlsbCIsImFuY2hvciI6Indha2VQbHVzIn0seyJkb25lVG9kYXkiOmZhbHNlLCJvZmZzZXQiOjE4MDAwLCJkZXRhaWwiOiIyLW1pbiB3b3JyeSBsaXN0IGFmdGVyIGRpbm5lciBjbGVhcnMgbmlnaHQgcnVtaW5hdGlvbi4iLCJ0aXRsZSI6IkJyYWluIGR1bXAiLCJpc0VuYWJsZWQiOnRydWUsImlkIjoic3RyZXNzIiwiaWNvbiI6InBlbmNpbC5hbmQubGlzdC5jbGlwYm9hcmQiLCJhbmNob3IiOiJiZWR0aW1lTWludXMifSx7ImRvbmVUb2RheSI6ZmFsc2UsIm9mZnNldCI6MTQ0MDAsImRldGFpbCI6IlN0aW11bGFudCDigJQgYXZvaWQgd2l0aGluIDRoIG9mIGJlZC4iLCJ0aXRsZSI6Ik5vIGxhdGUgbmljb3RpbmUiLCJpc0VuYWJsZWQiOmZhbHNlLCJpZCI6Im5pY290aW5lIiwiaWNvbiI6InNtb2tlLmZpbGwiLCJhbmNob3IiOiJiZWR0aW1lTWludXMifSx7ImRvbmVUb2RheSI6ZmFsc2UsIm9mZnNldCI6MTQ0MDAsImRldGFpbCI6IkEgZHVzayB3YWxrIHNoYXJwZW5zIERMTU8gdGltaW5nLiIsInRpdGxlIjoiRXZlbmluZyBsaWdodCB3YWxrIiwiaXNFbmFibGVkIjpmYWxzZSwiaWQiOiJzdW5zZXQiLCJpY29uIjoic3Vuc2V0LmZpbGwiLCJhbmNob3IiOiJiZWR0aW1lTWludXMifV0="
+    },
+    "profile.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633947,
+      "bytes": 160,
+      "modifiedNS": 1794040912745059082,
+      "sha256": "bdad50c213b254462c5a9b22e65ca130afc6a1ff0980e138454bf70ee6848154",
+      "base64": "eyJuYW1lIjoiIiwic2xlZXBOZWVkIjoyOTQwMCwid2FrZUdvYWwiOnsibWludXRlIjowLCJob3VyIjo3fSwib25ib2FyZGluZ0RvbmUiOmZhbHNlLCJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwiaXNTdWJzY3JpYmVkIjpmYWxzZSwic2xlZXBOZWVkQ29uZmlkZW5jZSI6MC4zfQ=="
+    },
+    "health-write-intent.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633931,
+      "bytes": 828,
+      "modifiedNS": 1794040911682543018,
+      "sha256": "f6149b0139a1a9f02bfda19c5e7cecfd793500c2d5238c4c1a0664a2f8519fee",
+      "base64": "eyJldmVudHMiOlt7ImFja25vd2xlZGdlZCI6W10sImFjdGlvbiI6InNhdmUiLCJjb21wb25lbnRzIjpbeyJkYXRlIjo4MTUzMTM2MDAsIm1ldHJpYyI6IndhdGVyIiwidmFsdWUiOjEzN31dLCJkb21haW4iOiJ3YXRlciIsImdlbmVyYXRpb24iOiJEODY1REMwRC1BNUE1LTQ0NkItQUExNS1CN0U1MEUxMzlCQTUiLCJpZCI6Ijc1MEVFNTJFLTM3OTYtNEY5Ri04QUZBLTQ3NjRGQkQ0Q0FCNCIsImlkZW50aXR5Ijoic3luYyIsImxpZmVjeWNsZSI6IkEzNkMwOTk2LTUzNzYtNDU1Ri1CODkxLTg4N0U5MDRDRjgyQyIsImxvY2FsSUQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwicmVxdWVzdGVkQXQiOjgxNTczMzcxMS42ODA2NTd9LHsiYWNrbm93bGVkZ2VkIjpbXSwiYWN0aW9uIjoiZGVsZXRlIiwiY29tcG9uZW50cyI6W3siZGF0ZSI6LTk3ODMwNzIwMCwibWV0cmljIjoid2F0ZXIiLCJ2YWx1ZSI6MH1dLCJkb21haW4iOiJ3YXRlciIsImdlbmVyYXRpb24iOiJBMkI2OTI5Qy1CMzkyLTQzNTktODk5NC05QjE4OEE1QkQ0MjkiLCJpZCI6IjNGRUI5NjBCLUU5MDMtNDdDOC1CQkU1LUEyMDE5NDdDOEEyQyIsImlkZW50aXR5IjoibGVnYWN5RGVsZXRpb24iLCJsaWZlY3ljbGUiOiJBMzZDMDk5Ni01Mzc2LTQ1NUYtQjg5MS04ODdFOTA0Q0Y4MkMiLCJsb2NhbElEIjoic3ludGhldGljLXJlbW92ZWQtd2F0ZXIiLCJyZXF1ZXN0ZWRBdCI6ODE1NzMzNzExLjY4MDY2M31dLCJsaWZlY3ljbGUiOiJBMzZDMDk5Ni01Mzc2LTQ1NUYtQjg5MS04ODdFOTA0Q0Y4MkMiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+    },
+    ".health-recovery/discovered-79effaee055c18f2cc93d6a74620c616386625dd0f52d6ed7e381499428438d9": {
+      "kind": "directory",
+      "mode": 16832,
+      "device": 16777233,
+      "inode": 44633985,
+      "bytes": 160,
+      "modifiedNS": 1794040913458868911
+    },
+    ".health-recovery/discovered-79effaee055c18f2cc93d6a74620c616386625dd0f52d6ed7e381499428438d9/device-intent.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633943,
+      "bytes": 828,
+      "modifiedNS": 1794040911682543018,
+      "sha256": "f6149b0139a1a9f02bfda19c5e7cecfd793500c2d5238c4c1a0664a2f8519fee",
+      "base64": "eyJldmVudHMiOlt7ImFja25vd2xlZGdlZCI6W10sImFjdGlvbiI6InNhdmUiLCJjb21wb25lbnRzIjpbeyJkYXRlIjo4MTUzMTM2MDAsIm1ldHJpYyI6IndhdGVyIiwidmFsdWUiOjEzN31dLCJkb21haW4iOiJ3YXRlciIsImdlbmVyYXRpb24iOiJEODY1REMwRC1BNUE1LTQ0NkItQUExNS1CN0U1MEUxMzlCQTUiLCJpZCI6Ijc1MEVFNTJFLTM3OTYtNEY5Ri04QUZBLTQ3NjRGQkQ0Q0FCNCIsImlkZW50aXR5Ijoic3luYyIsImxpZmVjeWNsZSI6IkEzNkMwOTk2LTUzNzYtNDU1Ri1CODkxLTg4N0U5MDRDRjgyQyIsImxvY2FsSUQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwicmVxdWVzdGVkQXQiOjgxNTczMzcxMS42ODA2NTd9LHsiYWNrbm93bGVkZ2VkIjpbXSwiYWN0aW9uIjoiZGVsZXRlIiwiY29tcG9uZW50cyI6W3siZGF0ZSI6LTk3ODMwNzIwMCwibWV0cmljIjoid2F0ZXIiLCJ2YWx1ZSI6MH1dLCJkb21haW4iOiJ3YXRlciIsImdlbmVyYXRpb24iOiJBMkI2OTI5Qy1CMzkyLTQzNTktODk5NC05QjE4OEE1QkQ0MjkiLCJpZCI6IjNGRUI5NjBCLUU5MDMtNDdDOC1CQkU1LUEyMDE5NDdDOEEyQyIsImlkZW50aXR5IjoibGVnYWN5RGVsZXRpb24iLCJsaWZlY3ljbGUiOiJBMzZDMDk5Ni01Mzc2LTQ1NUYtQjg5MS04ODdFOTA0Q0Y4MkMiLCJsb2NhbElEIjoic3ludGhldGljLXJlbW92ZWQtd2F0ZXIiLCJyZXF1ZXN0ZWRBdCI6ODE1NzMzNzExLjY4MDY2M31dLCJsaWZlY3ljbGUiOiJBMzZDMDk5Ni01Mzc2LTQ1NUYtQjg5MS04ODdFOTA0Q0Y4MkMiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+    },
+    ".health-recovery/discovered-79effaee055c18f2cc93d6a74620c616386625dd0f52d6ed7e381499428438d9/water.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633941,
+      "bytes": 72,
+      "modifiedNS": 1794040911681585389,
+      "sha256": "1dc7d921432b620cf0fcd72262f29a4ffe06902fcd4d7e3cb546d370e3908291",
+      "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwibWwiOjEzN31d"
+    },
+    ".health-recovery/discovered-79effaee055c18f2cc93d6a74620c616386625dd0f52d6ed7e381499428438d9/manifest.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633983,
+      "bytes": 97,
+      "modifiedNS": 1794040913450716627,
+      "sha256": "03b82a83ba82a05a77629d866037c5507d9b6070b7eebad6b902fc356cdd65e6",
+      "base64": "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTA3VDA4OjQxOjUzWiIsImRvbWFpbnMiOlsid2F0ZXIiXSwiaW50ZW50Ijp0cnVlLCJwaG90b3MiOmZhbHNlLCJ2ZXJzaW9uIjoxfQ=="
+    }
+  },
+  "previousBefore": {
+    "chat.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633935,
+      "bytes": 2,
+      "modifiedNS": 1794040911682065099,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "conversations.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633936,
+      "bytes": 2,
+      "modifiedNS": 1794040911681818515,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "workouts.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633937,
+      "bytes": 2,
+      "modifiedNS": 1794040911683054937,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "goals.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633938,
+      "bytes": 177,
+      "modifiedNS": 1794040911680991220,
+      "sha256": "7ceaf16447d3539f90429200008aa6055612e0755964d4bccb5130278cbbc1d2",
+      "base64": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjEwMDAwLCJ3ZWlnaHRLZyI6NzV9"
+    },
+    "today.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633939,
+      "bytes": 123,
+      "modifiedNS": 1794040911682293392,
+      "sha256": "317a0e832157fe13dc5f54818e7477cf5a0d1e0fa815d822843ec4ff749ee0e8",
+      "base64": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDZUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9"
+    },
+    "meals.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633940,
+      "bytes": 2,
+      "modifiedNS": 1794040911682842019,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "water.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633941,
+      "bytes": 72,
+      "modifiedNS": 1794040911681585389,
+      "sha256": "1dc7d921432b620cf0fcd72262f29a4ffe06902fcd4d7e3cb546d370e3908291",
+      "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwibWwiOjEzN31d"
+    },
+    "conversation-selection.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633942,
+      "bytes": 2,
+      "modifiedNS": 1794040911681310679,
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "base64": "e30="
+    },
+    "health-write-intent.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633943,
+      "bytes": 828,
+      "modifiedNS": 1794040911682543018,
+      "sha256": "f6149b0139a1a9f02bfda19c5e7cecfd793500c2d5238c4c1a0664a2f8519fee",
+      "base64": "eyJldmVudHMiOlt7ImFja25vd2xlZGdlZCI6W10sImFjdGlvbiI6InNhdmUiLCJjb21wb25lbnRzIjpbeyJkYXRlIjo4MTUzMTM2MDAsIm1ldHJpYyI6IndhdGVyIiwidmFsdWUiOjEzN31dLCJkb21haW4iOiJ3YXRlciIsImdlbmVyYXRpb24iOiJEODY1REMwRC1BNUE1LTQ0NkItQUExNS1CN0U1MEUxMzlCQTUiLCJpZCI6Ijc1MEVFNTJFLTM3OTYtNEY5Ri04QUZBLTQ3NjRGQkQ0Q0FCNCIsImlkZW50aXR5Ijoic3luYyIsImxpZmVjeWNsZSI6IkEzNkMwOTk2LTUzNzYtNDU1Ri1CODkxLTg4N0U5MDRDRjgyQyIsImxvY2FsSUQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwicmVxdWVzdGVkQXQiOjgxNTczMzcxMS42ODA2NTd9LHsiYWNrbm93bGVkZ2VkIjpbXSwiYWN0aW9uIjoiZGVsZXRlIiwiY29tcG9uZW50cyI6W3siZGF0ZSI6LTk3ODMwNzIwMCwibWV0cmljIjoid2F0ZXIiLCJ2YWx1ZSI6MH1dLCJkb21haW4iOiJ3YXRlciIsImdlbmVyYXRpb24iOiJBMkI2OTI5Qy1CMzkyLTQzNTktODk5NC05QjE4OEE1QkQ0MjkiLCJpZCI6IjNGRUI5NjBCLUU5MDMtNDdDOC1CQkU1LUEyMDE5NDdDOEEyQyIsImlkZW50aXR5IjoibGVnYWN5RGVsZXRpb24iLCJsaWZlY3ljbGUiOiJBMzZDMDk5Ni01Mzc2LTQ1NUYtQjg5MS04ODdFOTA0Q0Y4MkMiLCJsb2NhbElEIjoic3ludGhldGljLXJlbW92ZWQtd2F0ZXIiLCJyZXF1ZXN0ZWRBdCI6ODE1NzMzNzExLjY4MDY2M31dLCJsaWZlY3ljbGUiOiJBMzZDMDk5Ni01Mzc2LTQ1NUYtQjg5MS04ODdFOTA0Q0Y4MkMiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+    }
+  },
+  "initialCapturedBeforeClearReview": true,
+  "notNowPreservedExactTree": true,
+  "held": {
+    "nonce": "498151EA-7196-4B47-84D0-7D72183FA3BE",
+    "ordinal": 1,
+    "originals": {
+      "goals.json": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjEwMDAwLCJ3ZWlnaHRLZyI6NzV9",
+      "health-write-intent.json": "eyJldmVudHMiOlt7ImFja25vd2xlZGdlZCI6W10sImFjdGlvbiI6InNhdmUiLCJjb21wb25lbnRzIjpbeyJkYXRlIjo4MTUzMTM2MDAsIm1ldHJpYyI6IndhdGVyIiwidmFsdWUiOjEzN31dLCJkb21haW4iOiJ3YXRlciIsImdlbmVyYXRpb24iOiJEODY1REMwRC1BNUE1LTQ0NkItQUExNS1CN0U1MEUxMzlCQTUiLCJpZCI6Ijc1MEVFNTJFLTM3OTYtNEY5Ri04QUZBLTQ3NjRGQkQ0Q0FCNCIsImlkZW50aXR5Ijoic3luYyIsImxpZmVjeWNsZSI6IkEzNkMwOTk2LTUzNzYtNDU1Ri1CODkxLTg4N0U5MDRDRjgyQyIsImxvY2FsSUQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwicmVxdWVzdGVkQXQiOjgxNTczMzcxMS42ODA2NTd9LHsiYWNrbm93bGVkZ2VkIjpbXSwiYWN0aW9uIjoiZGVsZXRlIiwiY29tcG9uZW50cyI6W3siZGF0ZSI6LTk3ODMwNzIwMCwibWV0cmljIjoid2F0ZXIiLCJ2YWx1ZSI6MH1dLCJkb21haW4iOiJ3YXRlciIsImdlbmVyYXRpb24iOiJBMkI2OTI5Qy1CMzkyLTQzNTktODk5NC05QjE4OEE1QkQ0MjkiLCJpZCI6IjNGRUI5NjBCLUU5MDMtNDdDOC1CQkU1LUEyMDE5NDdDOEEyQyIsImlkZW50aXR5IjoibGVnYWN5RGVsZXRpb24iLCJsaWZlY3ljbGUiOiJBMzZDMDk5Ni01Mzc2LTQ1NUYtQjg5MS04ODdFOTA0Q0Y4MkMiLCJsb2NhbElEIjoic3ludGhldGljLXJlbW92ZWQtd2F0ZXIiLCJyZXF1ZXN0ZWRBdCI6ODE1NzMzNzExLjY4MDY2M31dLCJsaWZlY3ljbGUiOiJBMzZDMDk5Ni01Mzc2LTQ1NUYtQjg5MS04ODdFOTA0Q0Y4MkMiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9",
+      "meals.json": "W10=",
+      "water.json": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZVdhdGVyIjo=",
+      "workouts.json": "W10="
+    },
+    "phase": "held",
+    "stage": "LumenData.restore-724C49C6-C85F-4735-8198-3844106CA7B3",
+    "uiCancelled": false,
+    "workerControlMatchesUI": true
+  },
+  "heldTreeExactBeforeRelease": true,
+  "releasedAfterActualHeldCapture": true,
+  "nativeExitCode": 0,
+  "after": {
+    ".health-recovery": {
+      "kind": "directory",
+      "mode": 16832,
+      "device": 16777233,
+      "inode": 44634152,
+      "bytes": 96,
+      "modifiedNS": 1794040938766434808
+    },
+    ".health-cache-history": {
+      "kind": "directory",
+      "mode": 16877,
+      "device": 16777233,
+      "inode": 44634161,
+      "bytes": 96,
+      "modifiedNS": 1794040938766953560
+    },
+    "chat.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633929,
+      "bytes": 2,
+      "modifiedNS": 1794040911682065099,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "conversations.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633928,
+      "bytes": 2,
+      "modifiedNS": 1794040911681818515,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "workouts.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633933,
+      "bytes": 2,
+      "modifiedNS": 1794040911683054937,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "goals.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633925,
+      "bytes": 177,
+      "modifiedNS": 1794040911680991220,
+      "sha256": "7ceaf16447d3539f90429200008aa6055612e0755964d4bccb5130278cbbc1d2",
+      "base64": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjEwMDAwLCJ3ZWlnaHRLZyI6NzV9"
+    },
+    "sleep.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633948,
+      "bytes": 2,
+      "modifiedNS": 1794040912745774585,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "today.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44634163,
+      "bytes": 190,
+      "modifiedNS": 1794040938767162311,
+      "sha256": "e448bbf4bf8d6d1bb6fbf187ea31f1fffac559ebe5933d4b1ad8b008bb01049f",
+      "base64": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDZUMjM6MDA6MDBaIiwiZXhjbHVkZXNMdW1lbk51dHJpdGlvbiI6dHJ1ZSwiZXhlcmNpc2VNaW4iOjAsInJlYWRpbmdzIjp7fSwicmVjb3JkZWRUb3RhbEtleXMiOltdLCJyZXN0aW5nQ2Fsb3JpZXMiOjAsInN0YW5kSG91cnMiOjAsInN0ZXBzIjowLCJ3YXRlck1MIjowfQ=="
+    },
+    "meals.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633932,
+      "bytes": 2,
+      "modifiedNS": 1794040911682842019,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "water.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633944,
+      "bytes": 29,
+      "modifiedNS": 1794040911685058778,
+      "sha256": "0d3f4ef174c527390388c9fccb88964f5cc0b3bac224a4370cd215d61623e845",
+      "base64": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZVdhdGVyIjo="
+    },
+    "conversation-selection.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633926,
+      "bytes": 2,
+      "modifiedNS": 1794040911681310679,
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "base64": "e30="
+    },
+    "habits.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633950,
+      "bytes": 3170,
+      "modifiedNS": 1794040912747868302,
+      "sha256": "4e2dbe2cbbbd9620b0c191194c85792bdd95e3fbc24ea94fcff7a604f942a14a",
+      "base64": "W3siaWQiOiJsaWdodCIsIm9mZnNldCI6MTgwMCwiaWNvbiI6InN1bi5tYXguZmlsbCIsInRpdGxlIjoiR2V0IGJyaWdodCBsaWdodCIsImRldGFpbCI6IjEwIG1pbiBvZiBkYXlsaWdodCB3aXRoaW4gMzAgbWluIG9mIHdha2luZyBhbmNob3JzIHlvdXIgY2xvY2suIiwiYW5jaG9yIjoid2FrZVBsdXMiLCJpc0VuYWJsZWQiOnRydWUsImRvbmVUb2RheSI6ZmFsc2V9LHsiaWQiOiJjYWZmZWluZSIsIm9mZnNldCI6MzYwMDAsImljb24iOiJjdXAuYW5kLnNhdWNlci5maWxsIiwidGl0bGUiOiJDYWZmZWluZSBjdXRvZmYiLCJkZXRhaWwiOiJObyBjYWZmZWluZSB3aXRoaW4gMTBoIG9mIGJlZCDigJQgaGFsZi1saWZlIGlzIH42aC4iLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJpc0VuYWJsZWQiOnRydWUsImRvbmVUb2RheSI6ZmFsc2V9LHsiaWQiOiJleGVyY2lzZSIsIm9mZnNldCI6MjE2MDAsImljb24iOiJmaWd1cmUucnVuIiwidGl0bGUiOiJNb3ZlIHlvdXIgYm9keSIsImRldGFpbCI6IjIwKyBtaW4uIEZpbmlzaCBpbnRlbnNlIHdvcmtvdXRzIDNoKyBiZWZvcmUgYmVkLiIsImFuY2hvciI6Indha2VQbHVzIiwiaXNFbmFibGVkIjp0cnVlLCJkb25lVG9kYXkiOmZhbHNlfSx7ImlkIjoibmFwIiwib2Zmc2V0IjoyNTIwMCwiaWNvbiI6Im1vb24uenp6LmZpbGwiLCJ0aXRsZSI6IlNtYXJ0IG5hcCB3aW5kb3ciLCJkZXRhaWwiOiJJZiBuYXBwaW5nOiAyMOKAkzMwIG1pbiwgYmVmb3JlIHlvdXIgZGlwIGVuZHMuIE5vIGxhdGUgbmFwcy4iLCJhbmNob3IiOiJ3YWtlUGx1cyIsImlzRW5hYmxlZCI6dHJ1ZSwiZG9uZVRvZGF5IjpmYWxzZX0seyJpZCI6ImFsY29ob2wiLCJvZmZzZXQiOjE0NDAwLCJpY29uIjoid2luZWdsYXNzIiwidGl0bGUiOiJTa2lwIG5pZ2h0Y2FwIiwiZGV0YWlsIjoiQWxjb2hvbCBmcmFnbWVudHMgc2xlZXAgZXZlbiB3aGVuIGl0IHNwZWVkcyBvbnNldC4iLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJpc0VuYWJsZWQiOnRydWUsImRvbmVUb2RheSI6ZmFsc2V9LHsiaWQiOiJtZWFsIiwib2Zmc2V0IjoxMDgwMCwiaWNvbiI6ImZvcmsua25pZmUiLCJ0aXRsZSI6Ikxhc3QgYmlnIG1lYWwiLCJkZXRhaWwiOiJGaW5pc2ggbGFyZ2UgbWVhbHMgM2ggYmVmb3JlIGJlZDsgbGlnaHQgc25hY2sgT0suIiwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaXNFbmFibGVkIjp0cnVlLCJkb25lVG9kYXkiOmZhbHNlfSx7ImlkIjoic2NyZWVucyIsIm9mZnNldCI6NzIwMCwiaWNvbiI6ImlwaG9uZS5nZW4yIiwidGl0bGUiOiJEaW0gc2NyZWVucyIsImRldGFpbCI6Ikxvd2VyIGJyaWdodG5lc3MgKyBOaWdodCBTaGlmdCAyaCBiZWZvcmUgYmVkLiIsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsImlzRW5hYmxlZCI6dHJ1ZSwiZG9uZVRvZGF5IjpmYWxzZX0seyJpZCI6ImxpZ2h0cyIsIm9mZnNldCI6NTQwMCwiaWNvbiI6ImxpZ2h0YnVsYi5maWxsIiwidGl0bGUiOiJEaW0gdGhlIGxpZ2h0cyIsImRldGFpbCI6Ik92ZXJoZWFkIG9mZiwgbGFtcHMgbG93IOKAlCBsaWdodCBkZWxheXMgbWVsYXRvbmluLiIsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsImlzRW5hYmxlZCI6dHJ1ZSwiZG9uZVRvZGF5IjpmYWxzZX0seyJpZCI6IndpbmRkb3duIiwib2Zmc2V0IjoyNzAwLCJpY29uIjoid2luZCIsInRpdGxlIjoiV2luZCBkb3duIiwiZGV0YWlsIjoiMjDigJMzMCBtaW4gcml0dWFsOiBzaG93ZXIsIHN0cmV0Y2gsIHJlYWQsIGJyZWF0aGUuIiwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiaXNFbmFibGVkIjp0cnVlLCJkb25lVG9kYXkiOmZhbHNlfSx7ImlkIjoiYmVkdGltZSIsIm9mZnNldCI6MCwiaWNvbiI6ImJlZC5kb3VibGUuZmlsbCIsInRpdGxlIjoiSW4gYmVkIG9uIHRpbWUiLCJkZXRhaWwiOiJIaXQgeW91ciBtZWxhdG9uaW4gd2luZG93IOKAlCB0aGUgZWFzaWVzdCBmYWxsaW5nLWFzbGVlcC4iLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJpc0VuYWJsZWQiOnRydWUsImRvbmVUb2RheSI6ZmFsc2V9LHsiaWQiOiJjb29sIiwib2Zmc2V0IjoxODAwLCJpY29uIjoidGhlcm1vbWV0ZXIuc25vd2ZsYWtlIiwidGl0bGUiOiJDb29sICYgZGFyayByb29tIiwiZGV0YWlsIjoiNjXigJM2OMKwRiBcLyAxOOKAkzIwwrBDLCBibGFja291dCBkYXJrLCBxdWlldC4iLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJpc0VuYWJsZWQiOnRydWUsImRvbmVUb2RheSI6ZmFsc2V9LHsiaWQiOiJjb25zaXN0ZW50Iiwib2Zmc2V0IjowLCJpY29uIjoiYWxhcm0uZmlsbCIsInRpdGxlIjoiQ29uc2lzdGVudCB3YWtlIiwiZGV0YWlsIjoiU2FtZSB3YWtlIMKxMzAgbWluIOKAlCBldmVuIHdlZWtlbmRzLiAjMSByaHl0aG0gbGV2ZXIuIiwiYW5jaG9yIjoid2FrZVBsdXMiLCJpc0VuYWJsZWQiOnRydWUsImRvbmVUb2RheSI6ZmFsc2V9LHsiZG9uZVRvZGF5IjpmYWxzZSwib2Zmc2V0IjozMDAsImRldGFpbCI6IldhdGVyICsgbGlnaHQgYmVmb3JlIGNvZmZlZSBib29zdHMgYWxlcnRuZXNzLiIsInRpdGxlIjoiTW9ybmluZyBoeWRyYXRpb24iLCJpc0VuYWJsZWQiOnRydWUsImlkIjoiaHlkcmF0aW9uIiwiaWNvbiI6ImRyb3AuZmlsbCIsImFuY2hvciI6Indha2VQbHVzIn0seyJkb25lVG9kYXkiOmZhbHNlLCJvZmZzZXQiOjE4MDAwLCJkZXRhaWwiOiIyLW1pbiB3b3JyeSBsaXN0IGFmdGVyIGRpbm5lciBjbGVhcnMgbmlnaHQgcnVtaW5hdGlvbi4iLCJ0aXRsZSI6IkJyYWluIGR1bXAiLCJpc0VuYWJsZWQiOnRydWUsImlkIjoic3RyZXNzIiwiaWNvbiI6InBlbmNpbC5hbmQubGlzdC5jbGlwYm9hcmQiLCJhbmNob3IiOiJiZWR0aW1lTWludXMifSx7ImRvbmVUb2RheSI6ZmFsc2UsIm9mZnNldCI6MTQ0MDAsImRldGFpbCI6IlN0aW11bGFudCDigJQgYXZvaWQgd2l0aGluIDRoIG9mIGJlZC4iLCJ0aXRsZSI6Ik5vIGxhdGUgbmljb3RpbmUiLCJpc0VuYWJsZWQiOmZhbHNlLCJpZCI6Im5pY290aW5lIiwiaWNvbiI6InNtb2tlLmZpbGwiLCJhbmNob3IiOiJiZWR0aW1lTWludXMifSx7ImRvbmVUb2RheSI6ZmFsc2UsIm9mZnNldCI6MTQ0MDAsImRldGFpbCI6IkEgZHVzayB3YWxrIHNoYXJwZW5zIERMTU8gdGltaW5nLiIsInRpdGxlIjoiRXZlbmluZyBsaWdodCB3YWxrIiwiaXNFbmFibGVkIjpmYWxzZSwiaWQiOiJzdW5zZXQiLCJpY29uIjoic3Vuc2V0LmZpbGwiLCJhbmNob3IiOiJiZWR0aW1lTWludXMifV0="
+    },
+    "profile.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633947,
+      "bytes": 160,
+      "modifiedNS": 1794040912745059082,
+      "sha256": "bdad50c213b254462c5a9b22e65ca130afc6a1ff0980e138454bf70ee6848154",
+      "base64": "eyJuYW1lIjoiIiwic2xlZXBOZWVkIjoyOTQwMCwid2FrZUdvYWwiOnsibWludXRlIjowLCJob3VyIjo3fSwib25ib2FyZGluZ0RvbmUiOmZhbHNlLCJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwiaXNTdWJzY3JpYmVkIjpmYWxzZSwic2xlZXBOZWVkQ29uZmlkZW5jZSI6MC4zfQ=="
+    },
+    "health-write-intent.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633931,
+      "bytes": 828,
+      "modifiedNS": 1794040911682543018,
+      "sha256": "f6149b0139a1a9f02bfda19c5e7cecfd793500c2d5238c4c1a0664a2f8519fee",
+      "base64": "eyJldmVudHMiOlt7ImFja25vd2xlZGdlZCI6W10sImFjdGlvbiI6InNhdmUiLCJjb21wb25lbnRzIjpbeyJkYXRlIjo4MTUzMTM2MDAsIm1ldHJpYyI6IndhdGVyIiwidmFsdWUiOjEzN31dLCJkb21haW4iOiJ3YXRlciIsImdlbmVyYXRpb24iOiJEODY1REMwRC1BNUE1LTQ0NkItQUExNS1CN0U1MEUxMzlCQTUiLCJpZCI6Ijc1MEVFNTJFLTM3OTYtNEY5Ri04QUZBLTQ3NjRGQkQ0Q0FCNCIsImlkZW50aXR5Ijoic3luYyIsImxpZmVjeWNsZSI6IkEzNkMwOTk2LTUzNzYtNDU1Ri1CODkxLTg4N0U5MDRDRjgyQyIsImxvY2FsSUQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwicmVxdWVzdGVkQXQiOjgxNTczMzcxMS42ODA2NTd9LHsiYWNrbm93bGVkZ2VkIjpbXSwiYWN0aW9uIjoiZGVsZXRlIiwiY29tcG9uZW50cyI6W3siZGF0ZSI6LTk3ODMwNzIwMCwibWV0cmljIjoid2F0ZXIiLCJ2YWx1ZSI6MH1dLCJkb21haW4iOiJ3YXRlciIsImdlbmVyYXRpb24iOiJBMkI2OTI5Qy1CMzkyLTQzNTktODk5NC05QjE4OEE1QkQ0MjkiLCJpZCI6IjNGRUI5NjBCLUU5MDMtNDdDOC1CQkU1LUEyMDE5NDdDOEEyQyIsImlkZW50aXR5IjoibGVnYWN5RGVsZXRpb24iLCJsaWZlY3ljbGUiOiJBMzZDMDk5Ni01Mzc2LTQ1NUYtQjg5MS04ODdFOTA0Q0Y4MkMiLCJsb2NhbElEIjoic3ludGhldGljLXJlbW92ZWQtd2F0ZXIiLCJyZXF1ZXN0ZWRBdCI6ODE1NzMzNzExLjY4MDY2M31dLCJsaWZlY3ljbGUiOiJBMzZDMDk5Ni01Mzc2LTQ1NUYtQjg5MS04ODdFOTA0Q0Y4MkMiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+    },
+    ".health-recovery/discovered-79effaee055c18f2cc93d6a74620c616386625dd0f52d6ed7e381499428438d9": {
+      "kind": "directory",
+      "mode": 16832,
+      "device": 16777233,
+      "inode": 44634153,
+      "bytes": 160,
+      "modifiedNS": 1794040938754546758
+    },
+    ".health-recovery/discovered-79effaee055c18f2cc93d6a74620c616386625dd0f52d6ed7e381499428438d9/device-intent.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633943,
+      "bytes": 828,
+      "modifiedNS": 1794040911682543018,
+      "sha256": "f6149b0139a1a9f02bfda19c5e7cecfd793500c2d5238c4c1a0664a2f8519fee",
+      "base64": "eyJldmVudHMiOlt7ImFja25vd2xlZGdlZCI6W10sImFjdGlvbiI6InNhdmUiLCJjb21wb25lbnRzIjpbeyJkYXRlIjo4MTUzMTM2MDAsIm1ldHJpYyI6IndhdGVyIiwidmFsdWUiOjEzN31dLCJkb21haW4iOiJ3YXRlciIsImdlbmVyYXRpb24iOiJEODY1REMwRC1BNUE1LTQ0NkItQUExNS1CN0U1MEUxMzlCQTUiLCJpZCI6Ijc1MEVFNTJFLTM3OTYtNEY5Ri04QUZBLTQ3NjRGQkQ0Q0FCNCIsImlkZW50aXR5Ijoic3luYyIsImxpZmVjeWNsZSI6IkEzNkMwOTk2LTUzNzYtNDU1Ri1CODkxLTg4N0U5MDRDRjgyQyIsImxvY2FsSUQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwicmVxdWVzdGVkQXQiOjgxNTczMzcxMS42ODA2NTd9LHsiYWNrbm93bGVkZ2VkIjpbXSwiYWN0aW9uIjoiZGVsZXRlIiwiY29tcG9uZW50cyI6W3siZGF0ZSI6LTk3ODMwNzIwMCwibWV0cmljIjoid2F0ZXIiLCJ2YWx1ZSI6MH1dLCJkb21haW4iOiJ3YXRlciIsImdlbmVyYXRpb24iOiJBMkI2OTI5Qy1CMzkyLTQzNTktODk5NC05QjE4OEE1QkQ0MjkiLCJpZCI6IjNGRUI5NjBCLUU5MDMtNDdDOC1CQkU1LUEyMDE5NDdDOEEyQyIsImlkZW50aXR5IjoibGVnYWN5RGVsZXRpb24iLCJsaWZlY3ljbGUiOiJBMzZDMDk5Ni01Mzc2LTQ1NUYtQjg5MS04ODdFOTA0Q0Y4MkMiLCJsb2NhbElEIjoic3ludGhldGljLXJlbW92ZWQtd2F0ZXIiLCJyZXF1ZXN0ZWRBdCI6ODE1NzMzNzExLjY4MDY2M31dLCJsaWZlY3ljbGUiOiJBMzZDMDk5Ni01Mzc2LTQ1NUYtQjg5MS04ODdFOTA0Q0Y4MkMiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+    },
+    ".health-recovery/discovered-79effaee055c18f2cc93d6a74620c616386625dd0f52d6ed7e381499428438d9/water.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633941,
+      "bytes": 72,
+      "modifiedNS": 1794040911681585389,
+      "sha256": "1dc7d921432b620cf0fcd72262f29a4ffe06902fcd4d7e3cb546d370e3908291",
+      "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwibWwiOjEzN31d"
+    },
+    ".health-recovery/discovered-79effaee055c18f2cc93d6a74620c616386625dd0f52d6ed7e381499428438d9/manifest.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633983,
+      "bytes": 97,
+      "modifiedNS": 1794040913450716627,
+      "sha256": "03b82a83ba82a05a77629d866037c5507d9b6070b7eebad6b902fc356cdd65e6",
+      "base64": "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTA3VDA4OjQxOjUzWiIsImRvbWFpbnMiOlsid2F0ZXIiXSwiaW50ZW50Ijp0cnVlLCJwaG90b3MiOmZhbHNlLCJ2ZXJzaW9uIjoxfQ=="
+    },
+    ".health-cache-history/0FB1B94B-1819-4778-99D9-3CDA58C4F9AB.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44634162,
+      "bytes": 221,
+      "modifiedNS": 1794040938766799434,
+      "sha256": "9653b7674aa4ff0f440aef4eac684d724a139d42885f06cb3168dc8550dd35bc",
+      "base64": "eyJhY3Rpb24iOiJjbGVhciIsIm93bmVyIjoiNTNEOTM1MzYtOUUyQS00MzlFLUE2RjItN0Y1NTM2QjUzNEUyIiwicHJpb3IiOnsiZW50cmllcyI6e30sInN0YXRlIjoibWlzc2luZyJ9LCJyYXdEaWdlc3QiOiJlNDQ4YmJmNGJmOGQ2ZDFiYjZmYmYxODdlYTMxZjFmZmZhYzU1OWViZTU5MzNkNGIxYWQ4YjAwOGJiMDEwNDlmIiwicmVwbGFjZWRBdCI6IjIwMjYtMTEtMDdUMDg6NDI6MTVaIn0="
+    }
+  },
+  "previousAfter": {
+    "chat.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633935,
+      "bytes": 2,
+      "modifiedNS": 1794040911682065099,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "conversations.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633936,
+      "bytes": 2,
+      "modifiedNS": 1794040911681818515,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "workouts.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633937,
+      "bytes": 2,
+      "modifiedNS": 1794040911683054937,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "goals.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633938,
+      "bytes": 177,
+      "modifiedNS": 1794040911680991220,
+      "sha256": "7ceaf16447d3539f90429200008aa6055612e0755964d4bccb5130278cbbc1d2",
+      "base64": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6MzAsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxNzgsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjEwMDAwLCJ3ZWlnaHRLZyI6NzV9"
+    },
+    "today.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633939,
+      "bytes": 123,
+      "modifiedNS": 1794040911682293392,
+      "sha256": "317a0e832157fe13dc5f54818e7477cf5a0d1e0fa815d822843ec4ff749ee0e8",
+      "base64": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDZUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9"
+    },
+    "meals.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633940,
+      "bytes": 2,
+      "modifiedNS": 1794040911682842019,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "water.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633941,
+      "bytes": 72,
+      "modifiedNS": 1794040911681585389,
+      "sha256": "1dc7d921432b620cf0fcd72262f29a4ffe06902fcd4d7e3cb546d370e3908291",
+      "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwibWwiOjEzN31d"
+    },
+    "conversation-selection.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633942,
+      "bytes": 2,
+      "modifiedNS": 1794040911681310679,
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "base64": "e30="
+    },
+    "health-write-intent.json": {
+      "kind": "file",
+      "mode": 33188,
+      "device": 16777233,
+      "inode": 44633943,
+      "bytes": 828,
+      "modifiedNS": 1794040911682543018,
+      "sha256": "f6149b0139a1a9f02bfda19c5e7cecfd793500c2d5238c4c1a0664a2f8519fee",
+      "base64": "eyJldmVudHMiOlt7ImFja25vd2xlZGdlZCI6W10sImFjdGlvbiI6InNhdmUiLCJjb21wb25lbnRzIjpbeyJkYXRlIjo4MTUzMTM2MDAsIm1ldHJpYyI6IndhdGVyIiwidmFsdWUiOjEzN31dLCJkb21haW4iOiJ3YXRlciIsImdlbmVyYXRpb24iOiJEODY1REMwRC1BNUE1LTQ0NkItQUExNS1CN0U1MEUxMzlCQTUiLCJpZCI6Ijc1MEVFNTJFLTM3OTYtNEY5Ri04QUZBLTQ3NjRGQkQ0Q0FCNCIsImlkZW50aXR5Ijoic3luYyIsImxpZmVjeWNsZSI6IkEzNkMwOTk2LTUzNzYtNDU1Ri1CODkxLTg4N0U5MDRDRjgyQyIsImxvY2FsSUQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwicmVxdWVzdGVkQXQiOjgxNTczMzcxMS42ODA2NTd9LHsiYWNrbm93bGVkZ2VkIjpbXSwiYWN0aW9uIjoiZGVsZXRlIiwiY29tcG9uZW50cyI6W3siZGF0ZSI6LTk3ODMwNzIwMCwibWV0cmljIjoid2F0ZXIiLCJ2YWx1ZSI6MH1dLCJkb21haW4iOiJ3YXRlciIsImdlbmVyYXRpb24iOiJBMkI2OTI5Qy1CMzkyLTQzNTktODk5NC05QjE4OEE1QkQ0MjkiLCJpZCI6IjNGRUI5NjBCLUU5MDMtNDdDOC1CQkU1LUEyMDE5NDdDOEEyQyIsImlkZW50aXR5IjoibGVnYWN5RGVsZXRpb24iLCJsaWZlY3ljbGUiOiJBMzZDMDk5Ni01Mzc2LTQ1NUYtQjg5MS04ODdFOTA0Q0Y4MkMiLCJsb2NhbElEIjoic3ludGhldGljLXJlbW92ZWQtd2F0ZXIiLCJyZXF1ZXN0ZWRBdCI6ODE1NzMzNzExLjY4MDY2M31dLCJsaWZlY3ljbGUiOiJBMzZDMDk5Ni01Mzc2LTQ1NUYtQjg5MS04ODdFOTA0Q0Y4MkMiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+    }
+  },
+  "receipt": {
+    "action": "clear",
+    "owner": "53D93536-9E2A-439E-A6F2-7F5536B534E2",
+    "prior": {
+      "entries": {},
+      "state": "missing"
+    },
+    "rawDigest": "e448bbf4bf8d6d1bb6fbf187ea31f1fffac559ebe5933d4b1ad8b008bb01049f",
+    "replacedAt": "2026-11-07T08:42:15Z"
+  },
+  "privateRawCopy": null,
+  "stageAbsentAfterCommit": true,
+  "nativeLog": {
+    "archive": "HealthDailyCacheMissingClearR1.log.gz",
+    "bytes": 16466,
+    "sha256": "ae875e0aa3b3712564f0035d2b1133767617ff54ddbf12379350fc1a4338b3a9"
+  }
+}

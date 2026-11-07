@@ -20,10 +20,12 @@ final class LumenSmokeTests: XCTestCase {
         // The focused wrapping probe reuses this dedicated simulator's saved
         // synthetic record, with a public Files-import fallback if absent.
         app.launchArguments = name.contains("testFHIRLiteralWrappingSnapshots") || name.contains("testLiteralIdentifier") || name.contains("testProviderCitationRejection") || name.contains("testProviderTransportFallback") ? ["-librarySearchRemoteUITestMode"] : ["-resetForUITests"]
-        if name.contains("testDailyCacheClearCorrupt") || name.contains("testDailyCacheClearDirectory") {
+        if name.contains("testDailyCacheClearCorrupt") || name.contains("testDailyCacheClearDirectory") || name.contains("testDailyCacheClearMissing") || name.contains("testDailyCacheClearHealthy") {
             app.launchArguments = ["-resetForUITests", "-health-recovery-ui-fixture", "-health-daily-cache-ui-fixture", "-health-recovery-cancel-ui",
                                    "-lumen.appearance", "light", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryL"]
             if name.contains("testDailyCacheClearDirectory") { app.launchArguments.append("-health-daily-cache-directory-ui") }
+            if name.contains("testDailyCacheClearMissing") { app.launchArguments.append("-health-daily-cache-missing-ui") }
+            if name.contains("testDailyCacheClearHealthy") { app.launchArguments.append("-health-daily-cache-healthy-ui") }
         }
         if name.contains("testDailyCacheRebuildHealthKit") {
             app.launchArguments = ["-resetForUITests", "-health-recovery-ui-fixture", "-health-daily-cache-ui-fixture",
@@ -5179,18 +5181,22 @@ final class LumenSmokeTests: XCTestCase {
         snap("health-file-" + kind + "-relaunch")
     }
     func testHealthRecoveryScreen() throws { try healthRecoveryScreen() }
-    func testDailyCacheClearCorrupt() throws { try dailyCacheClear(directory: false) }
-    func testDailyCacheClearDirectory() throws { try dailyCacheClear(directory: true) }
-    private func dailyCacheClear(directory: Bool) throws {
+    func testDailyCacheClearCorrupt() throws { try dailyCacheClear(kind: "corrupt") }
+    func testDailyCacheClearDirectory() throws { try dailyCacheClear(kind: "directory") }
+    func testDailyCacheClearMissing() throws { try dailyCacheClear(kind: "missing") }
+    func testDailyCacheClearHealthy() throws { try dailyCacheClear(kind: "healthy") }
+    private func dailyCacheClear(kind: String) throws {
         executionTimeAllowance = 180
-        func capture(_ step: String) { snap((directory ? "daily-cache-directory" : "daily-cache") + step) }
+        let observedFixture = kind != "corrupt"
+        let prefix = observedFixture ? "daily-cache-" + kind : "daily-cache"
+        func capture(_ step: String) { snap(prefix + step) }
         let manage = app.buttons["manageDailyCache"].firstMatch
         reveal(manage); XCTAssertTrue(manage.waitForExistence(timeout: 10)); XCTAssertTrue(manage.isEnabled); manage.tap()
         let state = app.staticTexts["dailyCacheFileState"].firstMatch
-        XCTAssertTrue(state.waitForExistence(timeout: 10)); XCTAssertEqual(state.label, "Saved snapshot couldn't be opened")
+        XCTAssertTrue(state.waitForExistence(timeout: 10)); XCTAssertEqual(state.label, kind == "missing" ? "No saved snapshot" : kind == "healthy" ? "Saved snapshot opens" : "Saved snapshot couldn't be opened")
         let initialLabel = state.label
-        if directory { snap("daily-cache-directory-initial") } else { snap("daily-cache-corrupt-initial") }
-        if directory { Thread.sleep(forTimeInterval: 3) } // Host captures the real pre-action tree.
+        snap(observedFixture ? prefix + "-initial" : "daily-cache-corrupt-initial")
+        if observedFixture { Thread.sleep(forTimeInterval: 3) } // Host captures the real pre-action tree.
         let review = app.buttons["reviewClearDailyCache"].firstMatch; reveal(review); XCTAssertTrue(review.isEnabled); review.tap()
         let consequence = app.staticTexts["dailyCacheConsequence"].firstMatch
         XCTAssertTrue(consequence.waitForExistence(timeout: 10))
@@ -5204,7 +5210,7 @@ final class LumenSmokeTests: XCTestCase {
         alert.buttons["Not now"].tap()
         XCTAssertTrue(confirm.waitForExistence(timeout: 5)); XCTAssertFalse(app.staticTexts["dailyCacheSaved"].exists)
         capture("-clear-not-now")
-        if directory { Thread.sleep(forTimeInterval: 3) } // Host checks dismissal before confirmation.
+        if observedFixture { Thread.sleep(forTimeInterval: 3) } // Host checks dismissal before confirmation.
         confirm.tap(); XCTAssertTrue(alert.waitForExistence(timeout: 5)); alert.buttons["Clear readings"].tap()
         let progress = app.descendants(matching: .any).matching(identifier: "dailyCacheProgress").firstMatch
         XCTAssertTrue(progress.waitForExistence(timeout: 5))
@@ -5222,7 +5228,7 @@ final class LumenSmokeTests: XCTestCase {
         let lateBusy = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == true"), object: progress)
         lateBusy.isInverted = true
         XCTAssertEqual(XCTWaiter.wait(for: [lateBusy], timeout: 4), .completed)
-        let readback: [String: Any] = ["scope": directory ? "native-directory-cache-explicit-clear" : "native-corrupt-cache-explicit-clear", "initialState": initialLabel,
+        let readback: [String: Any] = ["scope": "native-" + kind + "-cache-explicit-clear", "initialState": initialLabel,
             "consequence": consequenceLabel, "notNowReturnedToReview": true, "heldValue": heldValue,
             "savedLabel": savedLabel, "finalRecoveryParentVisible": app.buttons["manageDailyCache"].exists,
             "idleAfterParentSeconds": Date().timeIntervalSince(idleStart)]
