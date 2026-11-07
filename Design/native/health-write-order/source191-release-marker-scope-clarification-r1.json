@@ -1,0 +1,27 @@
+{
+  "status": "Scope clarification before terminal audit; frozen plan unchanged",
+  "plan": "health-current-release-source191-r1-plan.json",
+  "planSHA256": "30588be5c77f0a1ba6816340a91b7b22f13d181e193356fd1d746ca9fcb60b53",
+  "checkedNegativeMarkers": 161,
+  "actuallyPresentPositiveControls": 146,
+  "negativeMarkersWithoutMatchedDebugPositive": [
+    "--health-write-order",
+    "--lab-source-ui-fixtures",
+    "--local-commit",
+    "--provider-transport-check",
+    "--retrieval-index-timing",
+    "--retrieval-selection-replay",
+    "-health-read-ui",
+    "-library-submission-baseline",
+    "-provider-authorization-baseline",
+    "COHERENCECANARY",
+    "Lumen-library-baseline-report.json",
+    "Lumen-submission-baseline-report.json",
+    "PRIVATE-LAB-CONTEXT-CANARY",
+    "Provider authorization baseline reproduced",
+    "Submission baseline reproduced"
+  ],
+  "count": 15,
+  "interpretation": "Plan unmatchedNegativeControls records the one newly proposed positive that failed preflight, not all negative-only markers. All15 negative-only raw-string absence checks are limited indicators, not matched-positive code-exclusion proof.146 other positives are present in actual current Debug executable. No source exclusion or product acceptance inferred solely from any absent raw string.",
+  "checkedAt": "2026-11-07T19:43:27.806186+00:00"
+}
