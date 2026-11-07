@@ -250,6 +250,7 @@ struct BackupFileRecoveryView: View {
                         if domain == .meals && (input.missingPhotos > 0 || !input.photoIDs.isEmpty) {
                             if input.missingPhotos > 0 { Text("\(input.missingPhotos) meal photos aren't included.").foregroundStyle(.secondary) }
                             Toggle("Recover without meal photos", isOn: $omitPhotos)
+                                .disabled(!targetEligible(.meals))
                             Text("Photos kept for recovery receive a final image check.").font(.footnote).foregroundStyle(.secondary)
                         }
                     } else {

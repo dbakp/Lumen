@@ -444,13 +444,13 @@ Actual OS-denied opens on older, encrypted and readable imports preserve the ori
 
 Keep the existing native Review recovery Form, navigation, typography and controls. The voice stays calm and literal. Use metadata-only view state; captured raw values belong to the open review session. These strings require actual native main/compact, light/dark and largest-text review before design acceptance.
 
-- Eligible older-data row: “Older saved data couldn't be opened.” (7 words).
+- Eligible older-data row: “Older saved data couldn't be opened.” (6 words).
 - Ineligible row: “This saved data can't be replaced here.” (7 words).
 - Pending capture: “Checking saved data…” (3 words), delayed 300ms, only while current.
-- Failed capture: “Saved data couldn't be checked. Check again to retry.” / “Check again” (10 / 2 words). Only retry capture before a ready snapshot has been exposed.
-- Older-data consequence: “Older saved data will stay in a private recovery copy on this iPhone. For meal recovery, this includes any old photos.” (23 words). Mixed uses “Replaced data” (21 words). Ordinary files retain their existing consequence.
-- Older-data confirmation: “Selected data will be replaced by records from this file. The older saved data will stay in a private recovery copy on this iPhone.” (27 words). Mixed uses “The replaced data” (25 words). Ordinary file confirmation stays unchanged.
-- Older-data failure: “Lumen hasn't replaced your saved data. Check the file and try again.” (13 words). Changed observation: “Your saved data changed. Go back and review it again.” (10 words).
+- Failed capture: “Saved data couldn't be checked. Check again to retry.” / “Check again” (9 / 2 words). Only retry capture before a ready snapshot has been exposed.
+- Older-data consequence: “Older saved data will stay in a private recovery copy on this iPhone. For meal recovery, this includes any old photos.” (21 words). Mixed uses “Replaced data” (20 words). Ordinary files retain their existing consequence.
+- Older-data confirmation: “Selected data will be replaced by records from this file. The older saved data will stay in a private recovery copy on this iPhone.” (24 words). Mixed uses “The replaced data” (23 words). Ordinary file confirmation stays unchanged.
+- Older-data failure: “Lumen hasn't replaced your saved data. Check the file and try again.” (12 words). Changed observation: “Your saved data changed. Go back and review it again.” (10 words).
 - General unavailable notice keeps the existing domain names and paused-changes statement, ending “Lumen hasn't replaced the saved data.” (6 words).
 - Success keeps “Selected data recovered” and the committed domain metadata so consequence wording stays accurate. No new visual decoration or motion.
 
