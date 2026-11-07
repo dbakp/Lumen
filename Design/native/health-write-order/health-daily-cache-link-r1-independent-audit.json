@@ -1,0 +1,25 @@
+{
+  "status": "PASS independent terminal link-rejection preservation audit; original host checkpoint-file expectation FAILED retained",
+  "source": "durable-source-r167.json",
+  "checkedAt": 1794041378.185994,
+  "originalHostAuditSHA256": "b3b61054e4af2d5231f539b6bd81e1267416431a28be4a7769873be0366f0a85",
+  "auditorSHA256": "73b2533debea6e40980b76d2905a523ae8ed9e867a9127a46a38c60162df09cd",
+  "nativePassedTests": 1,
+  "nativeFailedTests": 0,
+  "nativeSkippedTests": 0,
+  "sourceInputs": 253,
+  "fixtureInputs": 6,
+  "rootTreeExact": true,
+  "previousTreeExact": true,
+  "linkAndTargetBytesIdentityModesMetadataExact": true,
+  "twoRetriesPreserved": true,
+  "transactionCheckpointAbsent": true,
+  "releaseAbsent": true,
+  "noStage": true,
+  "noFollowSourceGuards": {
+    "HealthDailyCache.swift": "15f72f7912047c130843d3c30f780bb741edd52406041f648a918d4579fea6fc",
+    "HealthLocalFiles.swift": "47658a43536f5817d334741e964ac1f25575044163dbb84e884c870e79b673ae",
+    "fixtureResetSHA256": "e2ed739f7c03340f314e122d2cd7e9a95de62bf787232aeb207be8ceee736162"
+  },
+  "scope": "Main/light/standard synthetic link rejection only. Source guards plus exact runtime preservation; not syscall tracing, no broad never-opened claim. Original native producer host failure stays failed."
+}

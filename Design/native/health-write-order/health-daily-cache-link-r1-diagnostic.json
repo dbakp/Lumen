@@ -1,0 +1,8 @@
+{
+  "status": "Original native producer host checkpoint expectation FAILED; independent-r1 exception-format expectation FAILED; retained unchanged",
+  "checkedAt": 1794041377.458334,
+  "nativeProducerFailure": "Terminal native1pass; after exact after-tree checks producer read a checkpoint file that does not exist when no transaction begins. Traceback pointed to driver line70 read_bytes.",
+  "independentR1Failure": "Assumed repr(FileNotFoundError) contains filename; actual stored repr is FileNotFoundError(2, No such file or directory), without filename. No product/runtime mutation.",
+  "originalAuditorSHA256": "f5a613389fee78961db1e7c53973f3d3efc37c4c81719c14e26f1773a795da4a",
+  "correction": "R2 requires actual stored exception repr; independently reobserves full tree/target, no checkpoint/release/stage and source no-follow guards. No native rerun."
+}

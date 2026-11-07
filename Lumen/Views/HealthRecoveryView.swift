@@ -300,6 +300,13 @@ enum HealthRecoveryUIFixture {
             if ProcessInfo.processInfo.arguments.contains("-health-daily-cache-missing-ui") {
                 try FileManager.default.removeItem(at: root.appendingPathComponent("today.json"))
             }
+            if ProcessInfo.processInfo.arguments.contains("-health-daily-cache-link-ui") {
+                let target = root.deletingLastPathComponent().appendingPathComponent("Lumen-ui-daily-cache-link-target.bin")
+                try Data("Synthetic external snapshot target; must remain unchanged.\n".utf8).write(to: target, options: .atomic)
+                try FileManager.default.setAttributes([.posixPermissions: 0o600], ofItemAtPath: target.path)
+                try FileManager.default.removeItem(at: root.appendingPathComponent("today.json"))
+                try FileManager.default.createSymbolicLink(atPath: root.appendingPathComponent("today.json").path, withDestinationPath: target.path)
+            }
             if ProcessInfo.processInfo.arguments.contains("-health-daily-cache-directory-ui") {
                 let directory = root.appendingPathComponent("today.json")
                 try FileManager.default.removeItem(at: directory)

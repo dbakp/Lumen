@@ -27,6 +27,10 @@ final class LumenSmokeTests: XCTestCase {
             if name.contains("testDailyCacheClearMissing") { app.launchArguments.append("-health-daily-cache-missing-ui") }
             if name.contains("testDailyCacheClearHealthy") { app.launchArguments.append("-health-daily-cache-healthy-ui") }
         }
+        if name.contains("testDailyCacheRejectsLink") {
+            app.launchArguments = ["-resetForUITests", "-health-recovery-ui-fixture", "-health-daily-cache-ui-fixture", "-health-daily-cache-link-ui", "-health-recovery-cancel-ui",
+                                   "-lumen.appearance", "light", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryL"]
+        }
         if name.contains("testDailyCacheRebuildHealthKit") {
             app.launchArguments = ["-resetForUITests", "-health-recovery-ui-fixture", "-health-daily-cache-ui-fixture",
                                    "-health-daily-cache-rebuild-ui", "-health-recovery-cancel-ui", "-lumen.appearance", name.contains("LargestDetails") || name.contains("DarkDetails") ? "dark" : "light",
@@ -5181,6 +5185,34 @@ final class LumenSmokeTests: XCTestCase {
         snap("health-file-" + kind + "-relaunch")
     }
     func testHealthRecoveryScreen() throws { try healthRecoveryScreen() }
+    func testDailyCacheRejectsLink() throws {
+        executionTimeAllowance = 120
+        let manage = app.buttons["manageDailyCache"].firstMatch
+        reveal(manage); XCTAssertTrue(manage.waitForExistence(timeout: 10)); manage.tap()
+        let issue = app.staticTexts["dailyCacheIssue"].firstMatch
+        let expected = "Saved readings couldn't be checked safely. Nothing was replaced. Check saved readings to retry."
+        func checkRejected() {
+            XCTAssertTrue(issue.waitForExistence(timeout: 10)); XCTAssertEqual(issue.label, expected)
+            let clear = app.buttons["reviewClearDailyCache"].firstMatch
+            reveal(clear); XCTAssertTrue(clear.exists); XCTAssertFalse(clear.isEnabled)
+            XCTAssertFalse(app.staticTexts["dailyCacheFileState"].exists)
+            XCTAssertFalse(app.descendants(matching: .any).matching(identifier: "dailyCacheSaved").firstMatch.exists)
+        }
+        checkRejected(); snap("daily-cache-link-initial"); Thread.sleep(forTimeInterval: 3)
+        for index in 1...2 {
+            let retry = app.buttons["inspectDailyCache"].firstMatch
+            reveal(retry); XCTAssertTrue(retry.isEnabled); retry.tap()
+            checkRejected(); snap("daily-cache-link-retry-" + String(index)); Thread.sleep(forTimeInterval: 3)
+        }
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        XCTAssertTrue(manage.waitForExistence(timeout: 10)); snap("daily-cache-link-parent")
+        Thread.sleep(forTimeInterval: 4)
+        XCTAssertFalse(app.descendants(matching: .any).matching(identifier: "dailyCacheSaved").firstMatch.exists)
+        let readback: [String: Any] = ["scope": "native-link-cache-rejection", "issue": expected, "retries": 2,
+                                     "clearDisabled": true, "noSavedState": true, "finalRecoveryParentVisible": manage.exists]
+        let attachment = XCTAttachment(data: try JSONSerialization.data(withJSONObject: readback, options: [.prettyPrinted, .sortedKeys]), uniformTypeIdentifier: "public.json")
+        attachment.name = "daily-cache-link-readback"; attachment.lifetime = .keepAlways; add(attachment)
+    }
     func testDailyCacheClearCorrupt() throws { try dailyCacheClear(kind: "corrupt") }
     func testDailyCacheClearDirectory() throws { try dailyCacheClear(kind: "directory") }
     func testDailyCacheClearMissing() throws { try dailyCacheClear(kind: "missing") }
