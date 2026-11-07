@@ -1,0 +1,631 @@
+{
+  "status": "Independent Part33 source/pure review: implemented bounded early rejection and actualfocused/corechecks supported; no currentnative/Release/origin-recovery acceptance",
+  "checkedAt": "2026-11-07T20:17:01.266164+00:00",
+  "source": "durable-source-r194.json",
+  "critic": "Same continuing independent critic; no newdesignscore or overallacceptance",
+  "scope": "Exact production/testdiff versus193, originalcontract+r2addendum, fivepreservationbaselines/twocontrols, sixbranches, actualfull194logicoutcome, retainedlivefixtures/defaults and prior193cleanup evidence. No build/testproducer execution or nativequery bycritic.",
+  "provenance": [
+    {
+      "file": "Design/native/health-write-order/durable-source-r194.json",
+      "bytes": 42602,
+      "sha256": "baf1af526716dacf33955c8f4c7715fb35f5753a973bb8834c8adb8c3181ca89"
+    },
+    {
+      "file": "Design/native/health-write-order/durable-source-r194.json.gz",
+      "bytes": 907095,
+      "sha256": "baac6af95649006dad168f9b3f9c3adb0af04ee1973d97b95c89cc77ce578592"
+    },
+    {
+      "file": "Design/native/health-write-order/health-unavailable-origins-early-rejection-r1-contract.json",
+      "bytes": 3321,
+      "sha256": "b6378dc23637bcd22ae45a3665a52265c8a1aafbff42e4bf744bd76774231e36"
+    },
+    {
+      "file": "Design/native/health-write-order/health-unavailable-origins-early-rejection-r2-addendum.json",
+      "bytes": 2537,
+      "sha256": "ca73bb44a162aaabdef831d7090c8a3128de56332dde8b5cd91e158ac766cac2"
+    },
+    {
+      "file": "Design/native/health-write-order/source194-unavailable-origins-baseline-r1.json",
+      "bytes": 146495,
+      "sha256": "4e16849cf94bf1e1910d43190aebc4522a8ad21eff8dde1c515207a7fae60a1a"
+    },
+    {
+      "file": "Design/native/health-write-order/source194-unavailable-origins-baseline-r1-outcome.json",
+      "bytes": 934,
+      "sha256": "61a8b0c4945554b83ed785fe60b3e14d70522e3a4b946f6ff29fd14a5f28bd16"
+    },
+    {
+      "file": "Design/native/health-write-order/source194-unavailable-origins-baseline-r1.log.gz",
+      "bytes": 1148,
+      "sha256": "f0007252511b7ab87e761b7447bc2d345abe6a13a02fccd47d772a453b52212b"
+    },
+    {
+      "file": "Design/native/health-write-order/source194-unavailable-origins-baseline-r1-live-audit.json",
+      "bytes": 2755,
+      "sha256": "919480f193355432232e792edb4a2e926431011d67ad66aa3c77b4bbb33a4d81"
+    },
+    {
+      "file": "Design/native/health-write-order/source194-preflight-branches-r1.json",
+      "bytes": 47242,
+      "sha256": "2cbb3d94ad393b1b5acaea73ffc592ffd418b2c042bf4a6a76f1933ef32c6832"
+    },
+    {
+      "file": "Design/native/health-write-order/source194-preflight-branches-r1-outcome.json",
+      "bytes": 795,
+      "sha256": "2b8d7bdac2a94ec8b8bc59fb1bb76c5f7b4e325e4396a2e43889e117a0a39c16"
+    },
+    {
+      "file": "Design/native/health-write-order/source194-preflight-branches-r1.log.gz",
+      "bytes": 206,
+      "sha256": "ae4d260a4e493a4ce316c6cda2699f1a4f93f8eaa1029f7cc6d23815a5d8337c"
+    },
+    {
+      "file": "Design/native/health-write-order/source194-full-logic-r1-outcome.json",
+      "bytes": 1496,
+      "sha256": "fe725a7a5f76703826a57ef38c0ed1550d032725fa396b547b5c3644bb2a482e"
+    },
+    {
+      "file": "Design/native/health-write-order/source194-full-logic-r1.log.gz",
+      "bytes": 40210,
+      "sha256": "b1278f41a7df3114b9f35cd1aef1db8b625d4eeae79cf049384329ce23c98ed9"
+    },
+    {
+      "file": "Design/native/health-write-order/source193-unavailable-origins-baseline-r1-cleanup.json",
+      "bytes": 2100,
+      "sha256": "82a62fcbe8101bf20a9c9fe824cb59768f5828f128f2d8e02e402365d7d78ec1"
+    },
+    {
+      "file": "Design/native/health-write-order/source193-unavailable-origins-baseline-r1-defaults-cleanup.json",
+      "bytes": 1336,
+      "sha256": "e98272d596e3131b32901d173a0aa7289eb1c8258137b2057800b87cad2fe8f8"
+    },
+    {
+      "file": "Lumen/Models/ConversationFiles.swift",
+      "bytes": 8328,
+      "sha256": "c9e9f765e721fbe9d4ed91aaf20bc1bcccb794fb33bd7706f921aae25721ebb8"
+    },
+    {
+      "file": "Tests/ImportTests.swift",
+      "bytes": 43474,
+      "sha256": "ae1371f9648221a49f4ed05f2fba98ab891d2eee6879f7f08ef592b25f068cb4"
+    },
+    {
+      "file": "Tests/HealthUnavailableOriginChecks.swift",
+      "bytes": 17525,
+      "sha256": "cb96bb3f8fa712e5a3895a29c61f7efd81fb8505cbcc8a78c3f52e645a171a59"
+    },
+    {
+      "file": "Design/native/health-write-order/health-early-rejection-r1-build.json",
+      "bytes": 696,
+      "sha256": "63e0a69709e0e69c69a1aa59c4c8ded6c751c50be522717f8a05502d387c0754"
+    },
+    {
+      "file": "Design/native/health-write-order/source194-unavailable-origins-baseline-r1-defaults-audit.json",
+      "bytes": 2856,
+      "sha256": "c2ee1a43de9c6267c0bf62430e1ddf6595406226178e9a5c639a524ade939734"
+    },
+    {
+      "file": "Design/native/health-write-order/source194-preflight-branches-r1-live-audit.json",
+      "bytes": 2709,
+      "sha256": "b799385055dffe7798dd8c112d5674d9b91a8f36da0c27956fabe0ad01511e60"
+    },
+    {
+      "file": "Design/native/health-write-order/health-recovery-preflight-branches-live-audit.py",
+      "bytes": 3737,
+      "sha256": "ca2c24e30add31d2f9e4c51b8a0c2c89c8713c79841c72a6aa4172d798dd7b4a"
+    }
+  ],
+  "sourceIntegrity": {
+    "textInputs": 254,
+    "binaryFixtureInputs": 9,
+    "all263CurrentManifestFullArchiveBytesSHAExact": true,
+    "onlyChangedFrom193": [
+      "Lumen/Models/ConversationFiles.swift",
+      "Tests/ImportTests.swift",
+      "Tests/HealthUnavailableOriginChecks.swift"
+    ],
+    "other251TextAnd9BinaryExact193": true,
+    "nativeUITestUnchanged193": true,
+    "noNewSourceIdentityOrRuntimeAcceptanceInferred": true
+  },
+  "implementationAssessment": [
+    "preflightHealthRecovery is called before protectPreviousCopy and genericprepare. Sharedcontrol atentry, per sortedtypedDomain and immediatelybefore oldhandoff. Emptydomainset returns fromguard aftercancellation; existinggenericvalidation retained.",
+    "Actual POSIX lstat checks rootkind withoutfollowing rootleaf. RootENOENT delegates old interrupted-open behavior; otherrooterrno capturedimmediately and propagates POSIXNSError. Existingrootnon-directory/link currentDataInvalid. No fileExists/cachedresource check classifiesdanglinglink asabsence.",
+    "Forpresentroot eachselectedleaf lstat ENOENT yields HealthLocalFiles.Failure.changed, regular/directory proceeds, allothers including selectedsymlink/FIFO currentDataInvalid; othererrno propagates. No selectedcontentread/hash or new testreaderbarrier/lock added.",
+    "Remaining conversationprevious protection, checkedgeneric staging/preserveReplacedDomains/sourceSnapshot/source/photo/originalintent/owner/revision/commit/cancellation paths unchanged. Guardpass confers no newvalidity/permission; laterguardscan reject and mayhaveoldsideeffects.",
+    "R2addendum matches implemented decisiontable and resolves P32-C1 without rewriting originalcontract. No general parentancestorlink or TOCTOU/race immunity claimed. Root/selectedmetadata can change afterobservation; currentallracesafety remainsfutureguardcontract, notguardproof.",
+    "Focused testmode requiringNoMutation adds before==after criterion while retaining actualerrors/typedlegacy/currentunavailable and snapshot evidence. New6branch mode records own retainedfixtures and actualerrors; defaultfullsuite entry remains distinct from13focusedobservations."
+  ],
+  "fivePostrepairCases": [
+    {
+      "case": "missing-current-malformed-legacy",
+      "suiteName": "com.dbakp.lumen.synthetic.origin.9885DBCC-1BDE-4367-846B-8E667F4BA605",
+      "legacyKey": "lumen.health.meals.v1",
+      "readerError": "LumenLogicChecks.ReadableExport.Failure.format",
+      "preparationError": "LumenLogicChecks.HealthLocalFiles.Failure.changed",
+      "legacyBefore": {
+        "base64": "e3N5bnRoZXRpYyBtYWxmb3JtZWQgbGVnYWN5",
+        "kind": "Data",
+        "sha256": "cedc3abf467ed67ad22fe9ebc8c5ff1605ef7ba4ea1b1893316014b9660f1ffc",
+        "storageType": "Data"
+      },
+      "legacyAfterRead": {
+        "base64": "e3N5bnRoZXRpYyBtYWxmb3JtZWQgbGVnYWN5",
+        "kind": "Data",
+        "sha256": "cedc3abf467ed67ad22fe9ebc8c5ff1605ef7ba4ea1b1893316014b9660f1ffc",
+        "storageType": "Data"
+      },
+      "legacyAfter": {
+        "base64": "e3N5bnRoZXRpYyBtYWxmb3JtZWQgbGVnYWN5",
+        "kind": "Data",
+        "sha256": "cedc3abf467ed67ad22fe9ebc8c5ff1605ef7ba4ea1b1893316014b9660f1ffc",
+        "storageType": "Data"
+      },
+      "defaultsSynchronizedBeforeRead": true,
+      "defaultsSynchronizedAfterPreparation": true,
+      "changedPaths": [],
+      "noStageRemains": true,
+      "currentMealsStillUnavailable": true,
+      "areaPath": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/Lumen-unavailable-origins-8015725B-36E5-49B2-8CB9-4368095C8B0B/missing-current-malformed-legacy",
+      "all3RetainedTreesEqual": true,
+      "criticRepeatedLiveTreeExact": true,
+      "retainedEntries": 20,
+      "priorStillPresent": true,
+      "newPrivateCopies": 0,
+      "criticDirectUUIDBoundPlist": {
+        "exists": true,
+        "sha256": "aed107fe678d230d6eebce97e3862037e3a9a58a5e81df483a0f8408d5af9983",
+        "typedValueAndKeyExact": true
+      }
+    },
+    {
+      "case": "missing-current-nondata-legacy",
+      "suiteName": "com.dbakp.lumen.synthetic.origin.EC6647BB-8A59-4CB7-8B6A-8D9CDDA9A46A",
+      "legacyKey": "lumen.health.meals.v1",
+      "readerError": "LumenLogicChecks.HealthLocalFiles.Failure.invalid",
+      "preparationError": "LumenLogicChecks.HealthLocalFiles.Failure.changed",
+      "legacyBefore": {
+        "description": "synthetic nonData legacy",
+        "kind": "NSIndirectTaggedPointerString",
+        "storageType": "String"
+      },
+      "legacyAfterRead": {
+        "description": "synthetic nonData legacy",
+        "kind": "NSIndirectTaggedPointerString",
+        "storageType": "String"
+      },
+      "legacyAfter": {
+        "description": "synthetic nonData legacy",
+        "kind": "NSIndirectTaggedPointerString",
+        "storageType": "String"
+      },
+      "defaultsSynchronizedBeforeRead": true,
+      "defaultsSynchronizedAfterPreparation": true,
+      "changedPaths": [],
+      "noStageRemains": true,
+      "currentMealsStillUnavailable": true,
+      "areaPath": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/Lumen-unavailable-origins-8015725B-36E5-49B2-8CB9-4368095C8B0B/missing-current-nondata-legacy",
+      "all3RetainedTreesEqual": true,
+      "criticRepeatedLiveTreeExact": true,
+      "retainedEntries": 20,
+      "priorStillPresent": true,
+      "newPrivateCopies": 0,
+      "criticDirectUUIDBoundPlist": {
+        "exists": true,
+        "sha256": "4ca4e20688e88307a7c5db59d1e0408651007695f3f6e70218ded8617a152701",
+        "typedValueAndKeyExact": true
+      }
+    },
+    {
+      "case": "relative-selected-domain-link",
+      "suiteName": "com.dbakp.lumen.synthetic.origin.C8551790-BCA8-41C3-8196-25129E308B78",
+      "legacyKey": "lumen.health.meals.v1",
+      "readerError": "LumenLogicChecks.HealthLocalFiles.Failure.invalid",
+      "preparationError": "LumenLogicChecks.BackupError.currentDataInvalid",
+      "legacyBefore": {
+        "kind": "absent",
+        "storageType": "absent"
+      },
+      "legacyAfterRead": {
+        "kind": "absent",
+        "storageType": "absent"
+      },
+      "legacyAfter": {
+        "kind": "absent",
+        "storageType": "absent"
+      },
+      "defaultsSynchronizedBeforeRead": true,
+      "defaultsSynchronizedAfterPreparation": true,
+      "changedPaths": [],
+      "noStageRemains": true,
+      "currentMealsStillUnavailable": true,
+      "areaPath": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/Lumen-unavailable-origins-8015725B-36E5-49B2-8CB9-4368095C8B0B/relative-selected-domain-link",
+      "all3RetainedTreesEqual": true,
+      "criticRepeatedLiveTreeExact": true,
+      "retainedEntries": 22,
+      "priorStillPresent": true,
+      "newPrivateCopies": 0,
+      "criticDirectUUIDBoundPlist": {
+        "exists": false,
+        "sha256": null,
+        "typedValueAndKeyExact": true
+      }
+    },
+    {
+      "case": "absolute-selected-domain-link",
+      "suiteName": "com.dbakp.lumen.synthetic.origin.D542956A-5C6A-474F-A985-4193C4992613",
+      "legacyKey": "lumen.health.meals.v1",
+      "readerError": "LumenLogicChecks.HealthLocalFiles.Failure.invalid",
+      "preparationError": "LumenLogicChecks.BackupError.currentDataInvalid",
+      "legacyBefore": {
+        "kind": "absent",
+        "storageType": "absent"
+      },
+      "legacyAfterRead": {
+        "kind": "absent",
+        "storageType": "absent"
+      },
+      "legacyAfter": {
+        "kind": "absent",
+        "storageType": "absent"
+      },
+      "defaultsSynchronizedBeforeRead": true,
+      "defaultsSynchronizedAfterPreparation": true,
+      "changedPaths": [],
+      "noStageRemains": true,
+      "currentMealsStillUnavailable": true,
+      "areaPath": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/Lumen-unavailable-origins-8015725B-36E5-49B2-8CB9-4368095C8B0B/absolute-selected-domain-link",
+      "all3RetainedTreesEqual": true,
+      "criticRepeatedLiveTreeExact": true,
+      "retainedEntries": 22,
+      "priorStillPresent": true,
+      "newPrivateCopies": 0,
+      "criticDirectUUIDBoundPlist": {
+        "exists": false,
+        "sha256": null,
+        "typedValueAndKeyExact": true
+      }
+    },
+    {
+      "case": "dangling-selected-domain-link",
+      "suiteName": "com.dbakp.lumen.synthetic.origin.D39568C7-321F-461E-A06C-31F8A8A12ED2",
+      "legacyKey": "lumen.health.meals.v1",
+      "readerError": "LumenLogicChecks.HealthLocalFiles.Failure.invalid",
+      "preparationError": "LumenLogicChecks.BackupError.currentDataInvalid",
+      "legacyBefore": {
+        "kind": "absent",
+        "storageType": "absent"
+      },
+      "legacyAfterRead": {
+        "kind": "absent",
+        "storageType": "absent"
+      },
+      "legacyAfter": {
+        "kind": "absent",
+        "storageType": "absent"
+      },
+      "defaultsSynchronizedBeforeRead": true,
+      "defaultsSynchronizedAfterPreparation": true,
+      "changedPaths": [],
+      "noStageRemains": true,
+      "currentMealsStillUnavailable": true,
+      "areaPath": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/Lumen-unavailable-origins-8015725B-36E5-49B2-8CB9-4368095C8B0B/dangling-selected-domain-link",
+      "all3RetainedTreesEqual": true,
+      "criticRepeatedLiveTreeExact": true,
+      "retainedEntries": 21,
+      "priorStillPresent": true,
+      "newPrivateCopies": 0,
+      "criticDirectUUIDBoundPlist": {
+        "exists": false,
+        "sha256": null,
+        "typedValueAndKeyExact": true
+      }
+    }
+  ],
+  "controls": {
+    "emptyCurrentDoesNotReadLegacy": true,
+    "trulyAbsentNotUnavailable": true
+  },
+  "focusedVerification": {
+    "earlyRejectionNoMutationRequired": true,
+    "all5BeforeAfterReadAfterPreparationWholeRecordedTreesExact": true,
+    "all5ChangedPathsEmpty": true,
+    "priorRetainedNoNewPrivateStageReceipt": true,
+    "regularSnapshotRowInstancesDecodedChecked": 246,
+    "allRawBase64StatSizesSHAsExact": true,
+    "legacyBeforeAfterReadAfterprepareExact": true,
+    "criticLiveTreesRepeated": 5,
+    "criticLiveTreeEntries": 105,
+    "criticLiveRegularFiles": 82,
+    "currentHealthyUnselectedSelectedLinksOwnedTargetsExact": true,
+    "source194FoundationDefaultsAuditor": "Actual retained Foundation5suite audit nowPASS afternativebuildterminal; auditor/report hashes and allsuiteUUID/key/semantictypedrawvalue facts verified. Critic directknownUUIDplist values also independentlychecked; privateFoundationclassdifferences not treated as storage-type differences.",
+    "fixturesAndSuitesRemainRetained": true
+  },
+  "sixBranches": [
+    {
+      "case": "missing-root-with-prior",
+      "areaPath": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/Lumen-recovery-preflight-5FC8A55E-8074-477E-B557-183076F4D03D/missing-root-with-prior",
+      "error": null,
+      "prepared": true,
+      "observedCancellation": false,
+      "passed": true,
+      "noStageRemains": true,
+      "scope": "Existing interrupted-open behavior, outside early-no-mutation guarantee; no commit.",
+      "criticLiveTreeExact": true,
+      "beforeEntries": 7,
+      "afterEntries": 7,
+      "changedPaths": [
+        ".",
+        "./LumenData",
+        "./LumenData.previous",
+        "./LumenData.previous/chat.json",
+        "./LumenData.previous/conversation-selection.json",
+        "./LumenData.previous/conversations.json",
+        "./LumenData.previous/meals.json",
+        "./LumenData.previous/water.json",
+        "./LumenData/chat.json",
+        "./LumenData/conversation-selection.json",
+        "./LumenData/conversations.json",
+        "./LumenData/meals.json",
+        "./LumenData/water.json"
+      ],
+      "specificLimit": "Actualprepare/discard, prior movedtocurrent exactrowpayload/identity; no commit and outside no-mutation guarantee."
+    },
+    {
+      "case": "missing-root-without-prior",
+      "areaPath": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/Lumen-recovery-preflight-5FC8A55E-8074-477E-B557-183076F4D03D/missing-root-without-prior",
+      "error": "LumenLogicChecks.HealthLocalFiles.Failure.changed",
+      "prepared": false,
+      "observedCancellation": false,
+      "passed": true,
+      "noStageRemains": true,
+      "scope": "Existing interrupted-open behavior, outside early-no-mutation guarantee; no commit.",
+      "criticLiveTreeExact": true,
+      "beforeEntries": 1,
+      "afterEntries": 1,
+      "changedPaths": [
+        "."
+      ],
+      "specificLimit": "Root/previous absent and no stage retained, but enclosing area directory modifiedNanoseconds changes. Existing attemptedprepare creates/discards stage; outside no-mutation guarantee."
+    },
+    {
+      "case": "root-link",
+      "areaPath": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/Lumen-recovery-preflight-5FC8A55E-8074-477E-B557-183076F4D03D/root-link",
+      "error": "LumenLogicChecks.BackupError.currentDataInvalid",
+      "prepared": false,
+      "observedCancellation": false,
+      "passed": true,
+      "noStageRemains": true,
+      "scope": "Present-root early rejection/cancellation; exact whole case tree comparison; no commit.",
+      "criticLiveTreeExact": true,
+      "beforeEntries": 14,
+      "afterEntries": 14,
+      "changedPaths": []
+    },
+    {
+      "case": "root-regular-file",
+      "areaPath": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/Lumen-recovery-preflight-5FC8A55E-8074-477E-B557-183076F4D03D/root-regular-file",
+      "error": "LumenLogicChecks.BackupError.currentDataInvalid",
+      "prepared": false,
+      "observedCancellation": false,
+      "passed": true,
+      "noStageRemains": true,
+      "scope": "Present-root early rejection/cancellation; exact whole case tree comparison; no commit.",
+      "criticLiveTreeExact": true,
+      "beforeEntries": 8,
+      "afterEntries": 8,
+      "changedPaths": []
+    },
+    {
+      "case": "already-cancelled",
+      "areaPath": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/Lumen-recovery-preflight-5FC8A55E-8074-477E-B557-183076F4D03D/already-cancelled",
+      "error": "Swift.CancellationError()",
+      "prepared": false,
+      "observedCancellation": true,
+      "passed": true,
+      "noStageRemains": true,
+      "scope": "Present-root early rejection/cancellation; exact whole case tree comparison; no commit.",
+      "criticLiveTreeExact": true,
+      "beforeEntries": 13,
+      "afterEntries": 13,
+      "changedPaths": []
+    },
+    {
+      "case": "selected-fifo",
+      "areaPath": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/Lumen-recovery-preflight-5FC8A55E-8074-477E-B557-183076F4D03D/selected-fifo",
+      "error": "LumenLogicChecks.BackupError.currentDataInvalid",
+      "prepared": false,
+      "observedCancellation": false,
+      "passed": true,
+      "noStageRemains": true,
+      "scope": "Present-root early rejection/cancellation; exact whole case tree comparison; no commit.",
+      "criticLiveTreeExact": true,
+      "beforeEntries": 13,
+      "afterEntries": 13,
+      "changedPaths": []
+    }
+  ],
+  "branchVerification": {
+    "branchReportBytes": 47242,
+    "branchReportSHA256": "2cbb3d94ad393b1b5acaea73ffc592ffd418b2c042bf4a6a76f1933ef32c6832",
+    "retainedRegularPayloadRowInstancesChecked": 80,
+    "all6ActualFinalTreesIndependentlyLiveExact": true,
+    "fourPresentRootRejectCancelTreesExact": true,
+    "missingRootWithPriorOriginalRestoreSemanticsRetained": true,
+    "missingRootWithoutPriorRootAbsentNoStage": true,
+    "noFIFOOpenByCritic": "Adapted reviewed read-onlysnapshot allows FIFO metadata only; regularfiles use O_NOFOLLOW/nonblockingFD, symlinks readlinkonly; no FIFO or targetthroughlink contentread.",
+    "noStageRemains": true,
+    "noCommitPerformed": true
+  },
+  "actualPureOutcomes": {
+    "source194-unavailable-origins-baseline-r1": {
+      "status": "PASS focused early rejection preservation; origin recovery remains unimplemented",
+      "source": "durable-source-r194.json",
+      "exitCode": 0,
+      "processPID": 83455,
+      "command": [
+        "swift",
+        "run",
+        "--scratch-path",
+        "/tmp/LumenLogicBuild",
+        "--jobs",
+        "2",
+        "--skip-update",
+        "LumenLogicChecks",
+        "--health-unavailable-origins-preflight",
+        "/tmp/LumenBatch44Checks/Source194UnavailableOriginBaselineR1.json"
+      ],
+      "log": "source194-unavailable-origins-baseline-r1.log.gz",
+      "logBytes": 3838,
+      "logSHA256": "e53ac2c6e74e1c5bb8ed188e2e956edae5636bd296521bb9adea14d245dc0b79",
+      "successfulRecoveryAccepted": false,
+      "full2350SuiteRerun": false,
+      "checkedAt": 1794082271.2918148,
+      "availableBytes": 37216944128,
+      "report": "source194-unavailable-origins-baseline-r1.json",
+      "reportBytes": 146495,
+      "reportSHA256": "4e16849cf94bf1e1910d43190aebc4522a8ad21eff8dde1c515207a7fae60a1a"
+    },
+    "source194-preflight-branches-r1": {
+      "status": "PASS six actual preflight branches",
+      "source": "durable-source-r194.json",
+      "exitCode": 0,
+      "command": [
+        "/tmp/LumenLogicBuild/debug/LumenLogicChecks",
+        "--health-recovery-preflight-branches",
+        "/tmp/LumenBatch44Checks/Source194PreflightBranchesR1.json"
+      ],
+      "binarySHA256": "0183f80ae20e89c0969e14bbce0c6dd0f9b394cbb1061061cace0ac304b152da",
+      "log": "source194-preflight-branches-r1.log.gz",
+      "logBytes": 240,
+      "logSHA256": "40263444579ac288f681d2d3439ec5e1190996febff226677e0b27645f50b83c",
+      "checkedAt": 1794082291.427556,
+      "successfulRecoveryAccepted": false,
+      "fullLogicSuiteRerun": false,
+      "report": "source194-preflight-branches-r1.json",
+      "reportBytes": 47242,
+      "reportSHA256": "2cbb3d94ad393b1b5acaea73ffc592ffd418b2c042bf4a6a76f1933ef32c6832"
+    },
+    "source194-full-logic-r1": {
+      "status": "PASS actual full current194 logic execution",
+      "source": "durable-source-r194.json",
+      "exitCode": 0,
+      "processPID": 84221,
+      "binarySHA256": "0183f80ae20e89c0969e14bbce0c6dd0f9b394cbb1061061cace0ac304b152da",
+      "log": "source194-full-logic-r1.log.gz",
+      "logBytes": 171673,
+      "logSHA256": "cf495d3ce4c9497114472e8bc344145388c20601caa949fb0a1a4be26ddd35d1",
+      "passLines": 2177,
+      "terminalLines": [
+        "PASS: a real concurrent local writer enters the storage barrier",
+        "PASS: restore cannot commit while a concurrent local writer holds the barrier",
+        "PASS: the waiting restore observes the completed write and rejects its stale revision",
+        "PASS: existing version-one JSON backups remain readable after the streamed format is introduced",
+        "All import, model, totals, history, plan, conversation, evidence, document and reminder checks passed."
+      ],
+      "startedAt": 1794082319.728436,
+      "finishedAt": 1794082352.378806,
+      "availableBytesBefore": 37218533376,
+      "availableBytesAfter": 37213569024,
+      "scope": "Actual default complete logic executable, separately focused5earlyreject/2controls/6branches already executed. No currentnative/Release/fullproduct acceptance.",
+      "dailyCacheChecks": 137,
+      "todayQueryChecks": 36,
+      "fullPassed": 2350,
+      "countingScope": "2177explicitPASS lines plus137dailycache/36todayquery checks reported by actualsuite; same counting convention as actual175. Separate5earlyreject/2controls/6branch observations not added to2350."
+    }
+  },
+  "fullLogicEvidence": {
+    "actualDefaultExecutableExitCode": 0,
+    "recordedPID": 84221,
+    "currentPureExecutable": {
+      "file": "/tmp/LumenLogicBuild/debug/LumenLogicChecks",
+      "bytes": 16349424,
+      "sha256": "0183f80ae20e89c0969e14bbce0c6dd0f9b394cbb1061061cace0ac304b152da"
+    },
+    "currentExecutableSHAExactOutcome": true,
+    "fullLogExpandedBytes": 171673,
+    "fullLogExpandedSHA256": "cf495d3ce4c9497114472e8bc344145388c20601caa949fb0a1a4be26ddd35d1",
+    "all3FocusedAndFullLogBindingsVerified": true,
+    "explicitPASSLineCountIndependentlyCounted": 2177,
+    "actualDailyCacheAggregateLine": "Health daily cache: 137 checks passed",
+    "actualTodayQueryAggregateLine": "Health today queries: 36 checks passed",
+    "fullPassedSame175Convention": 2350,
+    "focused13NotAdded": true,
+    "terminalAllChecksPassedLinePresent": true,
+    "fullLogReadScope": "Complete bytes/hash and parsedPASS/aggregate/terminalrows verified; no line-by-line semantic review of every171673B assertionlog claimed."
+  },
+  "source193CleanupFollowup": {
+    "parentExactGithubCheckpoint": "88b25ceffbcf72f3003be5ad2f3b58a7fd57cc83",
+    "parentReportedExactPaths": 22,
+    "independentRemoteProofClaim": false,
+    "cleanupReportsBoundAbove": true,
+    "criticActualOldRootAbsent": true,
+    "criticOnly5RecordedUUIDPlistsEmptyOrAbsent": true,
+    "FoundationCleanupReadbackRows": "Five suites synchronizedtrue/remainingpersistentkeys[] in retainedcleanup record.",
+    "allocatedBytesRemovedParentMeasurement": 212992,
+    "measuredFreeIncreaseParentMeasurement": 184320,
+    "criticBytesRecovered": 0,
+    "scope": "Closes historical193conditionalcleanup boundary through separatepublished-beforecleanup records and currentreadonlyabsence checks;192earlycleanup limit remains unchanged."
+  },
+  "findings": [],
+  "requiredConcreteRepair": null,
+  "acceptedScope": "Sourcecontract implementation and actualpure evidence for alreadyunsupportedpresent-root earlyrejections. No native/UI/Release/fullproduct or successfullegacy/linkoriginrecovery acceptance.",
+  "pendingBoundaries": [
+    "CurrentSource194nativecompile terminal0 metadata and executable identities read beforefreeze; no currentnativeexecutions. SeparateSource194unsignedRelease RUNNING perparent update, not polled/claimedterminal oraccepted here.",
+    "Actual194Foundation5suiteaudit nowbound/read and agrees with directUUIDdiskchecks. No fixture/suite cleanup performed; only retainedendpoint facts supported.",
+    "No194fixture/suitecleanup or exactGitHubbackupproof claimed. Keepbaseline/branchroots/suites throughparentexactbackup before scopedcleanup/readbacks.",
+    "Legacy/linkreplacement support remainsunimplemented; guard intentionallycontinuesrejecting unsupportedorigins. Need explicitoriginmodel/review-to-serializedcommit identity/privateprovenance contract forrealrecovery.",
+    "No allfailedprepare no-mutation claim: rootmissingcases outsideguarantee, missingwithoutprior area mtimechanged explicitly; postmetadata races mayretainexistingsideeffects.",
+    "No newappearance/DynamicType/VO/fullspokenbody/audio/announcementduplicates/motion/lateworker/allrawprior/fullparent/eightgroups/designscoreacceptance. Existingfailedtrials preserved."
+  ],
+  "next": "Publish exact194source/pure/liveprovenance and obtain currentaffectednative/Release evidence under existingcontract. Keepfixtures/suites untilbackup. Continue explicitactualoriginrecovery work afterthisbounded safetycheckpoint; no prematurefullgoalcompletion.",
+  "storage": {
+    "availableBytesAtFinish": 36706516992,
+    "bytesRecoveredByCritic": 0,
+    "deletedFiles": 0,
+    "buildsOrDownloads": 0,
+    "all194RootsSuitesAndCachesKept": true
+  },
+  "writeBoundary": "Only thisnewreport written; source/tests/Git/build/evidence/previousreports/simulator unchanged; no producerrestart orcleanup.",
+  "nativeCompilationOnly": {
+    "build": {
+      "source": "durable-source-r194.json",
+      "buildExit": 0,
+      "sha256": "5c764f93a94d14984602752c6b751d872aff2b8c8408baa034b51ece1b63e2d6",
+      "binaryBytes": 45085328,
+      "testBinary": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+      "testBinarySHA256": "595ea28e1e623c3a3e28faf53bbdf7ae7c63efa7cd5abdb43bf21055a0c3427a",
+      "testBinaryBytes": 5759248,
+      "sourceInputs": 254,
+      "fixtureInputs": 9,
+      "buildLog": "source194-early-rejection-native-build-r1.log.gz",
+      "status": "Source194nativecompilePASS; earlyrejectionfocusedpure/full2350 passed; actualnative runtime pending",
+      "checkedAt": 1794082447.150337
+    },
+    "actualRecordedAppAndTestBinaryFilesSHAAndBytesMatched": true,
+    "appExecutable": {
+      "file": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+      "bytes": 45085328,
+      "sha256": "5c764f93a94d14984602752c6b751d872aff2b8c8408baa034b51ece1b63e2d6"
+    },
+    "testExecutable": {
+      "file": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+      "bytes": 5759248,
+      "sha256": "595ea28e1e623c3a3e28faf53bbdf7ae7c63efa7cd5abdb43bf21055a0c3427a"
+    },
+    "scope": "Newterminalbuild metadata arrived before reportfreeze; compile0 only. No install/launch/device/simulator query/native runtime acceptance."
+  },
+  "source194BranchHostAudit": {
+    "report": {
+      "file": "Design/native/health-write-order/source194-preflight-branches-r1-live-audit.json",
+      "bytes": 2709,
+      "sha256": "b799385055dffe7798dd8c112d5674d9b91a8f36da0c27956fabe0ad01511e60"
+    },
+    "actualHostRows": 6,
+    "auditorSourceReadAndHashVerified": true,
+    "allFactsConsistentWithCriticIndependentLiveRepeat": true,
+    "FIFORead": false,
+    "cleanupPerformed": false
+  }
+}

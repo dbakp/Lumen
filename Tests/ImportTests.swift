@@ -3,6 +3,12 @@ import Darwin
 
 @main struct ImportTests {
     static func main() async throws {
+        if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--health-recovery-preflight-branches" {
+            try HealthUnavailableOriginChecks.preflightBranches(output: URL(fileURLWithPath: CommandLine.arguments[2])); return
+        }
+        if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--health-unavailable-origins-preflight" {
+            try HealthUnavailableOriginChecks.baseline(output: URL(fileURLWithPath: CommandLine.arguments[2]), requiringNoMutation: true); return
+        }
         if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--health-unavailable-origins-baseline" {
             try HealthUnavailableOriginChecks.baseline(output: URL(fileURLWithPath: CommandLine.arguments[2])); return
         }

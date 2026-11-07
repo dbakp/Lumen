@@ -1,4 +1,5 @@
 import Foundation
+import Darwin
 
 /// Read and stage the existing archive/mirror formats without treating a
 /// deliberately empty archive or an unreadable file as missing history.
@@ -27,12 +28,43 @@ enum ConversationFiles {
     static func prepareHealthRecovery(_ files: [String: Data], photoFiles: [String: URL],
                                       domains: Set<HealthLocalFiles.Domain>, photoDigests: [String: String],
                                       into directory: URL, control: BackupOperationControl) throws -> BackupFileTransaction {
+        try preflightHealthRecovery(domains, in: directory, control: control)
+        try control.checkCancellation()
         // Targeted recovery must keep the same conversation-copy protection as
         // other linked changes before generic preparation retires .previous.
         try protectPreviousCopy(in: directory)
         return try BackupFileTransaction.prepare(files, photoFiles: photoFiles, into: directory, control: control,
                                                   preserveByLink: true, recoveringHealthDomains: domains,
                                                   expectedPhotoDigests: photoDigests)
+    }
+
+    /// Reject already-unsupported targets before preparation can retire a prior
+    /// copy. This is only metadata preflight; staged and commit checks still own
+    /// validation and changes occurring after these observations.
+    private static func preflightHealthRecovery(_ domains: Set<HealthLocalFiles.Domain>,
+                                                in directory: URL, control: BackupOperationControl) throws {
+        try control.checkCancellation()
+        guard !domains.isEmpty else { return }
+        var root = stat()
+        guard lstat(directory.path, &root) == 0 else {
+            let code = errno
+            // Keep existing interrupted-open recovery when the root is missing.
+            // That path is outside the present-root early-rejection guarantee.
+            if code == ENOENT { return }
+            throw NSError(domain: NSPOSIXErrorDomain, code: Int(code))
+        }
+        guard root.st_mode & mode_t(S_IFMT) == mode_t(S_IFDIR) else { throw BackupError.currentDataInvalid }
+        for domain in domains.sorted(by: { $0.rawValue < $1.rawValue }) {
+            try control.checkCancellation()
+            var target = stat()
+            guard lstat(directory.appendingPathComponent(domain.rawValue + ".json").path, &target) == 0 else {
+                let code = errno
+                if code == ENOENT { throw HealthLocalFiles.Failure.changed }
+                throw NSError(domain: NSPOSIXErrorDomain, code: Int(code))
+            }
+            let kind = target.st_mode & mode_t(S_IFMT)
+            guard kind == mode_t(S_IFREG) || kind == mode_t(S_IFDIR) else { throw BackupError.currentDataInvalid }
+        }
     }
 
     static func prepareReplacement(_ files: [String: Data], into directory: URL) throws -> BackupFileTransaction {
