@@ -70,6 +70,22 @@ final class BackupRecoveryReviewSession: Sendable {
         let counts: [HealthLocalFiles.Domain: Int]
         func count(_ domain: HealthLocalFiles.Domain) -> Int { counts[domain] ?? 0 }
     }
+    let id = UUID()
+    private let origins = HealthRecoveryOriginReviewLease()
+    var originMetadata: HealthLegacyRecoveryOrigin.ReviewMetadata? { origins.metadata }
+    func beginOriginCapture(control: BackupOperationControl) throws { try origins.begin(control) }
+    func suspendOriginCapture(control: BackupOperationControl) { origins.suspend(control) }
+    /// Detached caller returns Void; completed tasks cannot retain raw snapshot results.
+    func captureOrigins(domains: Set<HealthLocalFiles.Domain>, control: BackupOperationControl) throws {
+        let input = try acquire(control: control)
+        defer { withExtendedLifetime(input) {} }
+        let snapshot = try LocalStore.captureLegacyRecoveryReview(domains, control: control)
+        try origins.finish(snapshot, control: control)
+    }
+    func acquireOrigins(_ domains: Set<HealthLocalFiles.Domain>, control: BackupOperationControl) throws
+        -> [HealthLocalFiles.Domain: HealthLegacyRecoveryOrigin] {
+        try origins.acquire(domains, control: control)
+    }
     let summary: Summary
     private let lease: BackupReviewLease<BackupService.RecoveryInput>
     #if DEBUG && targetEnvironment(simulator)
@@ -86,6 +102,7 @@ final class BackupRecoveryReviewSession: Sendable {
     }
     func acquire(control: BackupOperationControl) throws -> BackupService.RecoveryInput { try lease.acquire(control: control) }
     func close() {
+        origins.close()
         lease.close()
         #if DEBUG && targetEnvironment(simulator)
         HealthReadUIFixture.didEndReview(file: verificationSource)
@@ -115,7 +132,21 @@ struct BackupFileRecoveryView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var selected: Set<HealthLocalFiles.Domain> = []
     @State private var omitPhotos = false
+    private struct ConfirmationSelection {
+        let sessionID: UUID
+        let domains: Set<HealthLocalFiles.Domain>
+        let legacyDomains: Set<HealthLocalFiles.Domain>
+        let omitPhotos: Bool
+    }
     @State private var confirmation = false
+    @State private var confirmationSelection: ConfirmationSelection?
+    @State private var originMetadata: HealthLegacyRecoveryOrigin.ReviewMetadata?
+    @State private var captureIssue = false
+    @State private var captureVisible = false
+    @State private var captureControl: BackupOperationControl?
+    @State private var captureWork: Task<Void, Never>?
+    @State private var captureReveal: Task<Void, Never>?
+    @State private var committedLegacyDomains: Set<HealthLocalFiles.Domain> = []
     @State private var busy = false
     @State private var recovered = false
     private struct RecoveryIssue {
@@ -136,8 +167,30 @@ struct BackupFileRecoveryView: View {
 
     private var canRecover: Bool {
         !busy && !recovered && !health.isSyncing && !selected.isEmpty
-        && selected.allSatisfy { input.present.contains($0) && !health.localHealthAvailable($0) }
+        && selected.allSatisfy { input.present.contains($0) && !health.localHealthAvailable($0) && targetEligible($0) }
         && (!selected.contains(.meals) || input.missingPhotos == 0 || omitPhotos)
+    }
+    private func targetEligible(_ domain: HealthLocalFiles.Domain) -> Bool {
+        guard let originMetadata else { return false }
+        return originMetadata.fileDomains.contains(domain) || originMetadata.legacyDomains.contains(domain)
+    }
+    private var selectedLegacyDomains: Set<HealthLocalFiles.Domain> {
+        selected.intersection(originMetadata?.legacyDomains ?? [])
+    }
+    private var preservation: String {
+        let legacy = recovered ? committedLegacyDomains : selectedLegacyDomains
+        guard !legacy.isEmpty else { return "Replaced files stay in a private copy on this iPhone. For meal recovery, this includes any old photos." }
+        let allLegacy = recovered ? committedLegacyDomains.count == committedDomains.count : legacy == selected
+        return allLegacy
+            ? "Older saved data will stay in a private recovery copy on this iPhone. For meal recovery, this includes any old photos."
+            : "Replaced data will stay in a private recovery copy on this iPhone. For meal recovery, this includes any old photos."
+    }
+    @State private var committedDomains: Set<HealthLocalFiles.Domain> = []
+    private func confirmationMessage(_ selection: ConfirmationSelection) -> String {
+        guard !selection.legacyDomains.isEmpty else { return "Selected data will be replaced by records from this file. Damaged originals will stay on this iPhone." }
+        return selection.legacyDomains == selection.domains
+            ? "Selected data will be replaced by records from this file. The older saved data will stay in a private recovery copy on this iPhone."
+            : "Selected data will be replaced by records from this file. The replaced data will stay in a private recovery copy on this iPhone."
     }
     private var format: String {
         switch input.identity.format {
@@ -165,6 +218,16 @@ struct BackupFileRecoveryView: View {
                         #endif
                 }
             }
+            if captureVisible {
+                Section { ProgressView("Checking saved data…").accessibilityIdentifier("fileRecoveryCaptureProgress") }
+            }
+            if captureIssue {
+                Section {
+                    Text("Saved data couldn't be checked. Check again to retry.")
+                    Button("Check again") { captureIssue = false; startOriginCapture() }
+                        .accessibilityIdentifier("retryFileRecoveryCapture")
+                }
+            }
             ForEach(HealthLocalFiles.Domain.allCases, id: \.self) { domain in
                 Section {
                     if input.present.contains(domain) {
@@ -172,11 +235,17 @@ struct BackupFileRecoveryView: View {
                         NavigationLink("Review records") { BackupFileRecordsView(session: session, domain: domain) }
                             .accessibilityIdentifier("reviewFile-" + domain.rawValue)
                         if health.localHealthAvailable(domain) { Text("Current data opens").foregroundStyle(.secondary) }
-                        else {
+                        else if originMetadata?.ineligibleDomains.contains(domain) == true {
+                            Text("This saved data can't be replaced here.").foregroundStyle(.secondary)
+                        } else {
+                            if originMetadata?.legacyDomains.contains(domain) == true {
+                                Text("Older saved data couldn't be opened.").foregroundStyle(.secondary)
+                            }
                             Toggle("Recover \(recoveryLabel(domain).lowercased())", isOn: Binding(
                                 get: { selected.contains(domain) },
                                 set: { if $0 { selected.insert(domain) } else { selected.remove(domain) } }
                             )).accessibilityIdentifier("recoverFile-" + domain.rawValue)
+                                .disabled(!targetEligible(domain))
                         }
                         if domain == .meals && (input.missingPhotos > 0 || !input.photoIDs.isEmpty) {
                             if input.missingPhotos > 0 { Text("\(input.missingPhotos) meal photos aren't included.").foregroundStyle(.secondary) }
@@ -194,7 +263,7 @@ struct BackupFileRecoveryView: View {
                 } header: { Text(recoveryLabel(domain)) }.disabled(busy || recovered)
             }
             Section {
-                Text("Replaced files stay in a private copy on this iPhone. For meal recovery, this includes any old photos.")
+                Text(preservation)
                 Text("Recovered entries won't be added to Apple Health. Earlier pending Health saves won't restart; pending removals can finish.")
                 if let issue {
                     VStack(alignment: .leading, spacing: 8) {
@@ -217,7 +286,11 @@ struct BackupFileRecoveryView: View {
                     .id("fileHealthRecoveryCancel")
                 } else if recovered { Button("Done") { dismiss() } }
                 else {
-                    Button("Recover selected data") { confirmation = true }.disabled(!canRecover)
+                    Button("Recover selected data") {
+                        confirmationSelection = ConfirmationSelection(sessionID: session.id, domains: selected,
+                            legacyDomains: selectedLegacyDomains, omitPhotos: omitPhotos)
+                        confirmation = true
+                    }.disabled(!canRecover)
                         .accessibilityIdentifier("confirmFileRecovery")
                 }
             }
@@ -257,21 +330,60 @@ struct BackupFileRecoveryView: View {
             }
         }
         #endif
-        .alert("Replace selected data?", isPresented: $confirmation) {
-            Button("Recover") { recover() }
+        .alert("Replace selected data?", isPresented: $confirmation, presenting: confirmationSelection) { selection in
+            Button("Recover") { recover(selection) }
             Button("Not now", role: .cancel) { }
-        } message: { Text("Selected data will be replaced by records from this file. Damaged originals will stay on this iPhone.") }
-        .onAppear { reviewActive = true }
+        } message: { selection in Text(confirmationMessage(selection)) }
+        .onAppear { reviewActive = true; startOriginCapture() }
         .onDisappear {
             reviewActive = false
+            if let captureControl { session.suspendOriginCapture(control: captureControl) }
+            captureWork?.cancel(); captureReveal?.cancel()
+            captureControl = nil; captureWork = nil; captureReveal = nil; captureVisible = false
             busyReveal?.cancel(); busyReveal = nil
             errorReveal?.cancel(); errorReveal = nil; recoveryErrorFocused = nil
             operation?.cancel(); work?.cancel()
         }
     }
 
-    private func recover() {
-        guard canRecover else { return }
+    private func startOriginCapture() {
+        guard reviewActive, captureControl == nil, !captureIssue else { return }
+        if let ready = session.originMetadata { originMetadata = ready; return }
+        let control = BackupOperationControl(), session = session
+        do { try session.beginOriginCapture(control: control) } catch { return }
+        captureControl = control
+        let domains = input.present.filter { !health.localHealthAvailable($0) }
+        captureReveal = Task { @MainActor in
+            do { try await Task.sleep(for: .milliseconds(300)) } catch { return }
+            guard !Task.isCancelled, reviewActive, captureControl === control else { return }
+            captureVisible = true
+        }
+        captureWork = Task { @MainActor in
+            defer {
+                if captureControl === control {
+                    captureControl = nil; captureWork = nil
+                    captureReveal?.cancel(); captureReveal = nil; captureVisible = false
+                }
+            }
+            do {
+                try await withTaskCancellationHandler {
+                    try await Task.detached { try session.captureOrigins(domains: domains, control: control) }.value
+                } onCancel: { control.cancel() }
+                try Task.checkCancellation(); try control.checkCancellation()
+                guard reviewActive, captureControl === control else { return }
+                originMetadata = session.originMetadata
+            } catch is CancellationError { session.suspendOriginCapture(control: control) }
+            catch {
+                session.suspendOriginCapture(control: control)
+                guard reviewActive, captureControl === control, !Task.isCancelled else { return }
+                captureIssue = true
+            }
+        }
+    }
+
+    private func recover(_ selection: ConfirmationSelection) {
+        guard canRecover, selection.sessionID == session.id, selection.domains == selected,
+              selection.omitPhotos == omitPhotos, selection.legacyDomains == selectedLegacyDomains else { return }
         errorReveal?.cancel(); errorReveal = nil
         busy = true; issue = nil; recoveryErrorFocused = nil
         #if DEBUG && targetEnvironment(simulator)
@@ -280,24 +392,35 @@ struct BackupFileRecoveryView: View {
         let control = BackupOperationControl()
         #endif
         let input: BackupService.RecoveryInput
-        do { input = try session.acquire(control: control) }
+        let origins: [HealthLocalFiles.Domain: HealthLegacyRecoveryOrigin]
+        do {
+            origins = try session.acquireOrigins(selection.legacyDomains, control: control)
+            input = try session.acquire(control: control)
+        }
         catch { busy = false; return }
-        let domains = selected, omit = omitPhotos
+        let domains = selection.domains, omit = selection.omitPhotos
         operation = control
         work = Task { @MainActor in
             defer { withExtendedLifetime(input) {}; busy = false; operation = nil; work = nil }
             do {
                 let payload = try await Task.detached {
-                    try input.payload(domains: domains, omitPhotos: omit, control: control)
+                    let payload = try input.payload(domains: domains, omitPhotos: omit, control: control)
+                    return try HealthRecoverySelection.bindingLegacyOrigins(origins, to: payload)
                 }.value
                 try Task.checkCancellation(); try control.checkCancellation()
                 try await health.recoverUnavailableHealth(payload, control: control)
+                committedLegacyDomains = selection.legacyDomains; committedDomains = domains
                 recovered = true; selected = []
             } catch is CancellationError { }
             catch {
                 guard !Task.isCancelled, operation === control else { return }
                 do { try control.checkCancellation() } catch { return }
-                issue = RecoveryIssue(message: "Your current files haven't been replaced. Check the file and try again.")
+                let changed: Bool
+                if case HealthLocalFiles.Failure.changed = error { changed = true } else { changed = false }
+                issue = RecoveryIssue(message: selection.legacyDomains.isEmpty
+                    ? "Your current files haven't been replaced. Check the file and try again."
+                    : changed ? "Your saved data changed. Go back and review it again."
+                    : "Lumen hasn't replaced your saved data. Check the file and try again.")
             }
         }
     }

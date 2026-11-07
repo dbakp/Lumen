@@ -1,0 +1,155 @@
+{
+  "schemaVersion": 1,
+  "part": 45,
+  "checkedAt": "2026-11-07T22:37:55.134467+00:00",
+  "status": "Initial UI/session integration source reviewed; one recovery-control readiness repair required. Source200 unaccepted for UI/native behavior; no visual/copy/design score.",
+  "scope": "Source-only actual selected-backup-file owner/capture/confirmation/copy wiring against contract43/r2. No actual Data/String native fixture/driver/runtime, no new screenshots, layout/appearance/accessibility/product/full-parent acceptance. Retained-copy target-legacy UI remains open.",
+  "sourceVerification": {
+    "currentAndFullArchiveTextInputsExact": 259,
+    "currentAndFullArchiveFixtureInputsExact": 9,
+    "declaredFiveChangedInputs": [
+      "Design/DIRECTION.md",
+      "Lumen/Models/HealthStore.swift",
+      "Lumen/Views/BackupFileRecoveryView.swift",
+      "Lumen/Views/BackupView.swift",
+      "LumenUITests/LumenSmokeTests.swift"
+    ],
+    "changedBindings": {
+      "Design/DIRECTION.md": {
+        "bytes": 88444,
+        "sha256": "4ca3f4d3814b99f8f8796b031a9df9ef1796a1389e4ef868ec33600f2ee4dfb7"
+      },
+      "Lumen/Models/HealthStore.swift": {
+        "bytes": 48180,
+        "sha256": "b10404710cb5aa91b27fef833db09bfe837bdcfecfe0c720321dc9284aaa8c80"
+      },
+      "Lumen/Views/BackupFileRecoveryView.swift": {
+        "bytes": 27773,
+        "sha256": "1ca8e444257673d34bc623ab0edbdd80ed3bc5fd33293251ee29556871dae791"
+      },
+      "Lumen/Views/BackupView.swift": {
+        "bytes": 24110,
+        "sha256": "b67fe06d45f285f5412ca18082b6d89de86d0e34892b838b11803d0c26c26f4a"
+      },
+      "LumenUITests/LumenSmokeTests.swift": {
+        "bytes": 696536,
+        "sha256": "f71fed85ae095198019cae20c68cb45673114e9f73d75b62845de046d86605fb"
+      }
+    },
+    "readScope": "Four production/native-test diffs versus199, full relevant session/view capture/recover/disappearance sections, BackupView destination/clearPreview/onChange cleanup, shared cancellation checks and new DIRECTION Source200 content section. DIRECTION newly enters frozen manifest; not in199archive, so no fictitious199DIRECTION diff claim. All current manifest/archive bytes matched.",
+    "pureBoundary": "Source200 five changes do not represent a new pure execution. Actual23/57/22/117/full2350 execution remains Source199 evidence; infrastructure/backend pure inputs unchanged by declared200changes. No200rerun credit."
+  },
+  "findings": [
+    {
+      "id": "P45-C1",
+      "priority": "Required UI control-state repair before native acceptance",
+      "file": "Lumen/Views/BackupFileRecoveryView.swift",
+      "subject": "Photo-omission toggle bypasses capture readiness/read-only state",
+      "sourceEvidence": "Recover replacement toggles use disabled(!targetEligible(domain)); Recover action requires target eligibility. Recover without meal photos sits outside that branch, with only parent section busy/recovered disabling. Thus it remains actionable while origin capture is pending or failed and when meals is known ineligible.",
+      "impact": "Contradicts contract43 recovery-toggle readiness and known-ineligible read-only semantics. No data-install bypass found because canRecover and origin acquisition still guard eligibility; this is a concrete UI-state contract mismatch.",
+      "requiredRepair": "Disable photo omission when meals target is not eligible/ready, e.g. disabled(!targetEligible(.meals)), preserving busy/recovered disabling and enabled Review records navigation. Keep off/fresh defaults and Not now preservation. Validate actual pending/failed/ineligible/ready/child navigation states on successor frozen source; do not infer repair from Source200compile.",
+      "parentResponse": "Parent agrees, plans separately frozen201 after exact200backup. No implemented-fix credit here."
+    },
+    {
+      "id": "P45-D1",
+      "priority": "Documentation-only correction",
+      "file": "Design/DIRECTION.md",
+      "subject": "Several word-count annotations are inaccurate though strings remain under budgets",
+      "actualWhitespaceCounts": {
+        "eligibleOlderDataRow": 6,
+        "ineligibleRow": 7,
+        "captureProgress": 3,
+        "captureFailure": 9,
+        "checkAgain": 2,
+        "legacyConsequence": 21,
+        "mixedConsequence": 20,
+        "legacyConfirmation": 24,
+        "mixedConfirmation": 23,
+        "genericLegacyFailure": 12,
+        "changedOriginFailure": 10,
+        "generalNoticeFinalSentence": 6
+      },
+      "detail": "Correct annotations in successor with unchanged actual wording/budgets. Mixed consequence is20, not19: Older saved data3words becomes Replaced data2words. This is not a request for new copy/design or proof of native fit."
+    }
+  ],
+  "assessment": {
+    "ownerAndClose": "BackupRecoveryReviewSession now owns origin lease and unique UUID. close closes origins then selected source; parent existing reviewingRecovery=false path invokes actual session close and clears it. Child navigation keeps parent review presented, while destination.id(session.id) gives fresh view state for new selected file. Source fits declared owner lifetime, but actual native Back/child/fresh closure awaits evidence.",
+    "capture": "Session capture acquires actual selected input strongly through local target capture/finish and returns Void. View stores metadata sets/control/phase/Task<Void> only, not raw origin snapshots. Detached capture runs LocalStore read\u2192copies path; active control identity and reviewActive guard completion. On disappearance, pending suspension/control cancellation plus work/reveal cancellation cannot reset ready snapshot; late old callbacks compare identity. Ready metadata loaded from same session on reappearance, no ready recapture.",
+    "captureUI": "300ms reveal Task checks current control/review/task state; completion clears current control/reveal/progress, old task defer cannot clear a newer control. Known ineligible rows use neutral copy; failed no-ready capture can Check again. No concrete stale-result overwrite found in source. Pending error/progress actual readability and temporal behavior remain unverified.",
+    "confirmation": "ConfirmationSelection contains sessionID/domains/legacyDomains/omission metadata only. Native alert actual Recover calls recover(selection), verifies same session/current selections/omission and readiness, acquires selected legacy subset once then selected input, binds only worker-local payload before prepare. Not now leaves metadata/owner/choices with no raw acquisition. No cached raw alert payload found.",
+    "workerCancellation": "Existing operation/work cancellation on disappearance and Cancel preserved. Shared control/source/provider/photo/revision/owner/intent/final-origin checks stay in recoverUnavailableHealth/backend. Worker acquired raw copies can outlive owner close while active, as contract permits; Void state task and cleanup defer prevent completed payload result in cached view state. No all-lateworker/no-retention-duration claim.",
+    "copyAndSuccess": "Conditional ordinary/legacy/mixed preservation and confirmation use selected legacy metadata; committed domains/legacy domains retained separately after success while choices clear. Changed-origin Failure.changed maps to go-back/review copy for legacy selection; generic legacy failure uses actor-specific saved-data statement; ordinary file branch string retained. Existing one-shot error focus/reveal and busy Cancel guards remain. Actual copy cause coverage/layout/gray alert/VO remain unaccepted.",
+    "globalNotice": "HealthStore file-only final sentence becomes actor-specific saved data; exactly two native expectations changed correspondingly. No new semantics around availability, loading or Health writes inferred. This affects global notice and needs declared native verification, not inherited screenshots.",
+    "ordinaryRegression": "New capture gating runs even for existing file targets, so final frozen ordinary routes require actual regression. Source supports fileDomains preserving existing unavailable/current-prepare guards; no healthy-overwrite path found. Omission readiness issue above remains source200open."
+  },
+  "actualCompileOnly": {
+    "session": 41998,
+    "producerPID": 69833,
+    "actualTerminalExitCode": 0,
+    "outcome": {
+      "file": "source200-origin-screen-native-build-r1-outcome.json",
+      "bytes": 895,
+      "sha256": "a0392408203fc3bc02d55cc08a7731698d233822d184486ac240859af795ca8d"
+    },
+    "retainedAppIndependentlyRehashed": {
+      "bytes": 45451984,
+      "sha256": "53301fd522df61416bb864d85cd5399967472d7cf3b28155a24a9ba4860177ed"
+    },
+    "retainedUITestIndependentlyRehashed": {
+      "bytes": 5759248,
+      "sha256": "0e3ce6f0182e57b6fcd1f95f8b0b49a95d7119e3b87b0bae0d5005219f1dc49a"
+    },
+    "scope": "Compile became terminal during review and canonical outcome/build receipt read before report freeze. No simulator or build command by critic. Test executable differs only two expected notice strings; no native UI execution claimed.",
+    "receiptWordingLimit": "Build receipt mentions23review checks/fullsuite status, but actual pure23/full2350 belong199 unchanged inputs and were not rerun200. Retain original receipt and distinguish boundary, no200pure/native-runtime credit."
+  },
+  "openVerification": [
+    "Separately freeze readiness/documentation repair; new origin-aware DEBUG standard-defaults fixtures and host driver independently reviewed before execution. Actual bundle persisted/effective raw key/value, absence/registered fallback and per-domain eligible/ineligible controls required.",
+    "Actual pending/failed/ready capture, child read/pop, Back/close/late finish, fresh selected-source owner/off choices/omission, native confirmation metadata and same-session action acquisition.",
+    "Actual Data/String genuine photo failure, Not now, stale-origin changes at declared boundaries, held Cancel/Back ownership, preack complete receipt/private-v2/raw/prior/source/provider/intent/two-photo mapping, cleanup/relaunch/reset.",
+    "Changed supplemental/global/error/confirmation/preservation/capture states on main/compact light/dark/largest with at least two relevant critic contributions and ordinary routes on final build. No whole-form/alertbody/fullspeech/motion/continuous-timing credit before actual evidence."
+  ],
+  "supportBindings": [
+    {
+      "file": "durable-source-r200.json",
+      "bytes": 43342,
+      "sha256": "9161d1714178b81666debd27fd26c70dc8b8e2ed19484958993f8b0e1a2419b0"
+    },
+    {
+      "file": "durable-source-r200.json.gz",
+      "bytes": 956511,
+      "sha256": "516855e6fd0c673bad41dd2c67423ed34a388b24a984d1072d9bf4277e9e3a80"
+    },
+    {
+      "file": "health-origin-screen-r1-build.json",
+      "bytes": 701,
+      "sha256": "d90b6c8651683a337a3ef60f8b4f498ec102f2cfd936f69c91e722a55cdc5966"
+    },
+    {
+      "file": "source200-origin-screen-native-build-r1-outcome.json",
+      "bytes": 895,
+      "sha256": "a0392408203fc3bc02d55cc08a7731698d233822d184486ac240859af795ca8d"
+    },
+    {
+      "file": "health-legacy-origin-product-integration-r1-contract.json",
+      "bytes": 11644,
+      "sha256": "c03a720b71d0339b70b102fe3abdff014f57076d218423dbe47aa9680c27f06b"
+    },
+    {
+      "file": "health-legacy-origin-product-integration-r2-addendum.json",
+      "bytes": 1599,
+      "sha256": "cf629cab8d3fae1c9abad3394067696d81cfa36e80062dded62d0fc72c10ddad"
+    },
+    {
+      "file": "health-legacy-failed-origin-source199-round2-part44-infrastructure.json",
+      "bytes": 14197,
+      "sha256": "d87940965448d52a2ae2e65b6d967d0ecc322cc9719781982baefdb5a202f2fd"
+    }
+  ],
+  "broaderLimits": "No source/test/native/build/simulator/Git/cleanup action; only review/report. No new pure rerun, native runtime/screenshots, unsignedRelease, layout/copy/accessibility/design score/product/fullparent acceptance. P40 backend closure remains scoped; rawprior/oldphotos/motion/fullspoken/lateworker and all broader original gates remain active. No inventory or cleanup claims about oldhostfixtures.",
+  "storage": {
+    "freeBytesAtFinish": 37424902144,
+    "criticRecoveredBytes": 0,
+    "cleanupPerformed": false
+  },
+  "writeBoundary": "Only this new report written. Frozen200inputs/judgedrecords and all previous reports remain unchanged."
+}

@@ -111,7 +111,7 @@ public final class HealthStore: ObservableObject {
     private func updateLocalHealthIssue() {
         let names = unavailableLocalHealth.map(\.label).sorted().joined(separator: ", ")
         let subject = names.prefix(1).uppercased() + names.dropFirst()
-        localHealthStorageIssue = names.isEmpty ? nil : "\(subject) couldn't be opened. Changes to this data are paused. The affected files haven't been replaced."
+        localHealthStorageIssue = names.isEmpty ? nil : "\(subject) couldn't be opened. Changes to this data are paused. Lumen hasn't replaced the saved data."
     }
 
     func localHealthAvailable(_ domain: HealthLocalFiles.Domain) -> Bool {

@@ -134,7 +134,7 @@ struct BackupView: View {
         .scrollContentBackground(.hidden).background(Theme.bg)
         .navigationTitle("Backup & restore").navigationBarTitleDisplayMode(.inline)
         .navigationDestination(isPresented: $reviewingRecovery) {
-            if let recoverySession { BackupFileRecoveryView(session: recoverySession) }
+            if let recoverySession { BackupFileRecoveryView(session: recoverySession).id(recoverySession.id) }
         }
         #if DEBUG && targetEnvironment(simulator)
         .overlay(alignment: .bottom) { HealthImportReadUIProbe() }

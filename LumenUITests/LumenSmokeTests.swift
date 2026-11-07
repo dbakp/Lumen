@@ -6511,7 +6511,7 @@ final class LumenSmokeTests: XCTestCase {
         let savedLabel = saved.label; snap("daily-cache-health-saved")
         if fullDetails {
             let explanation = app.staticTexts["Local logs, imported days and sleep history aren't deleted."].firstMatch
-            let unresolved = app.staticTexts["Water history couldn't be opened. Changes to this data are paused. The affected files haven't been replaced."].firstMatch
+            let unresolved = app.staticTexts["Water history couldn't be opened. Changes to this data are paused. Lumen hasn't replaced the saved data."].firstMatch
             let check = app.buttons["Check saved readings"].firstMatch
             for (key, item, prefix) in [("savedState", saved, "daily-saved-state"),
                                         ("savedExplanation", explanation, "daily-saved-explanation"),
@@ -7051,7 +7051,7 @@ final class LumenSmokeTests: XCTestCase {
             start.press(forDuration: 0.05, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.2)
             snap(prefix + "-lower")
         }
-        capturePreferenceDisclosure("Water history couldn't be opened. Changes to this data are paused. The affected files haven't been replaced.", prefix: "health-recovery-unavailable")
+        capturePreferenceDisclosure("Water history couldn't be opened. Changes to this data are paused. Lumen hasn't replaced the saved data.", prefix: "health-recovery-unavailable")
         let first = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'healthRecoveryCopy-'")).firstMatch
         reveal(first); XCTAssertTrue(first.waitForExistence(timeout: 10)); let identity = first.identifier
         snap("health-recovery-copy-list")
