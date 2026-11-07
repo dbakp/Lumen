@@ -100,6 +100,7 @@ final class LumenSmokeTests: XCTestCase {
             app.launchArguments = ["-resetForUITests", "-health-backup-ui-fixture", "-health-backup-case", kind]
             if name.contains("Cancel") || healthFileRecoveryLeavesReview || name.contains("RecoveryCommit") || name.contains("AllCommit") { app.launchArguments += ["-health-recovery-cancel-ui"] }
             if name.contains("AllCommit") { app.launchArguments.append("-health-backup-multi-ui") }
+            if name.contains("RecoveryEmpty") { app.launchArguments += ["-health-backup-healthy-merge-ui", "-health-backup-empty-ui", "-health-recovery-cancel-ui"] }
         }
         if name.contains("testHealthBackupHealthyMerge") {
             let kind = name.contains("Encrypted") ? "encrypted" : name.contains("Readable") ? "readable" : "legacy"
@@ -5086,6 +5087,66 @@ final class LumenSmokeTests: XCTestCase {
         attachment.name = "selected-record-readback"; attachment.lifetime = .keepAlways; add(attachment)
     }
     func testHealthBackupFileRecoveryAllCommitLegacy() throws { try healthBackupMultipleDomains("legacy") }
+    func testHealthBackupFileRecoveryEmptyLegacy() throws { try healthBackupEmptyDomains("legacy") }
+    func testHealthBackupFileRecoveryEmptyEncrypted() throws { try healthBackupEmptyDomains("encrypted") }
+    func testHealthBackupFileRecoveryEmptyReadable() throws { try healthBackupEmptyDomains("readable") }
+    private func healthBackupEmptyDomains(_ kind: String) throws {
+        executionTimeAllowance = 420
+        let base = kind == "readable" ? "Lumen-readable-health-small" : "Lumen-backup-health-" + kind + "-small"
+        let prefix = "health-empty-" + kind
+        if kind == "readable" { openReadableRecovery(); try chooseReadableFixture(base); waitForReadableReview() }
+        else {
+            openBackupSettings(); try chooseBackupFixture(base)
+            if kind == "encrypted" { unlockBackup(value: "Synthetic backup passphrase 42") }
+            XCTAssertTrue(app.descendants(matching: .any).matching(identifier: "backupPreviewKind").firstMatch.waitForExistence(timeout: 30))
+        }
+        let link = app.buttons[kind == "readable" ? "reviewReadableHealthRecovery" : "reviewBackupHealthRecovery"].firstMatch
+        reveal(link); link.tap()
+        let filename = app.staticTexts["recoveryFileName"].firstMatch
+        XCTAssertTrue(filename.waitForExistence(timeout: 10)); XCTAssertEqual(filename.label, base + (kind == "encrypted" ? ".lumenbackup" : ".json"))
+        snap(prefix + "-source"); Thread.sleep(forTimeInterval: 3)
+        for domain in ["water", "goals"] {
+            let review = app.buttons["reviewFile-" + domain].firstMatch
+            reveal(review); XCTAssertTrue(review.exists)
+            XCTAssertFalse(app.switches["recoverFile-" + domain].exists); snap(prefix + "-healthy-" + domain)
+        }
+        let domains = ["meals", "workouts"]
+        for domain in domains {
+            let choice = app.switches["recoverFile-" + domain].firstMatch
+            reveal(choice, towardsTop: domain == "meals"); XCTAssertEqual(choice.value as? String, "0"); snap(prefix + "-off-" + domain)
+            let review = app.buttons["reviewFile-" + domain].firstMatch; reveal(review); review.tap()
+            XCTAssertTrue(app.staticTexts["No records in this file."].waitForExistence(timeout: 10))
+            XCTAssertFalse(app.buttons["recoveryRecord-0"].exists); snap(prefix + "-empty-" + domain)
+            app.navigationBars.buttons.element(boundBy: 0).tap()
+        }
+        let confirm = app.buttons["confirmFileRecovery"].firstMatch; reveal(confirm); XCTAssertFalse(confirm.isEnabled)
+        for domain in domains { nativeSwitch("recoverFile-" + domain, enabled: true, towardsTop: domain == "meals") }
+        reveal(confirm); XCTAssertTrue(confirm.isEnabled); snap(prefix + "-selected"); confirm.tap()
+        let alert = app.alerts["Replace selected data?"]; XCTAssertTrue(alert.waitForExistence(timeout: 5))
+        snap(prefix + "-confirmation"); alert.buttons["Not now"].tap()
+        for domain in domains {
+            let choice = app.switches["recoverFile-" + domain].firstMatch
+            reveal(choice, towardsTop: domain == "meals"); XCTAssertEqual(choice.value as? String, "1")
+        }
+        snap(prefix + "-not-now"); Thread.sleep(forTimeInterval: 3)
+        reveal(confirm); confirm.tap(); XCTAssertTrue(alert.waitForExistence(timeout: 5)); alert.buttons["Recover"].tap()
+        let busy = app.descendants(matching: .any).matching(identifier: "fileHealthRecoveryBusy").firstMatch
+        XCTAssertTrue(busy.waitForExistence(timeout: 10))
+        for value in ["held-1", "observed-1"] {
+            let held = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", value), object: busy)
+            XCTAssertEqual(XCTWaiter.wait(for: [held], timeout: 15), .completed); snap(prefix + "-" + value)
+        }
+        let success = app.descendants(matching: .any).matching(identifier: "fileHealthRecovered").firstMatch
+        reveal(success, towardsTop: true); XCTAssertTrue(success.waitForExistence(timeout: 30)); snap(prefix + "-success")
+        app.navigationBars["Review recovery"].buttons.element(boundBy: 0).tap()
+        XCTAssertTrue(app.navigationBars[kind == "readable" ? "Recover export" : "Backup & restore"].waitForExistence(timeout: 5))
+        snap(prefix + "-parent"); Thread.sleep(forTimeInterval: 4)
+        let readback: [String: Any] = ["scope": "selected-file-empty-meals-workouts", "format": kind, "domains": domains, "initialChoicesOff": true, "emptyListsReviewed": 2, "healthyWaterGoalsChoicesAbsent": true, "successObserved": true]
+        let attachment = XCTAttachment(data: try JSONSerialization.data(withJSONObject: readback, options: [.prettyPrinted, .sortedKeys]), uniformTypeIdentifier: "public.json")
+        attachment.name = "empty-recovery-readback"; attachment.lifetime = .keepAlways; add(attachment)
+        app.terminate(); app.launchArguments = []; app.launch(); openBackupSettings()
+        XCTAssertFalse(app.staticTexts["Saved health data couldn't be opened."].exists); snap(prefix + "-relaunch")
+    }
     func testHealthBackupHealthyMergeLegacy() throws { try healthBackupHealthyMerge("legacy") }
     func testHealthBackupHealthyMergeEncrypted() throws { try healthBackupHealthyMerge("encrypted") }
     func testHealthBackupHealthyMergeReadable() throws { try healthBackupHealthyMerge("readable") }
