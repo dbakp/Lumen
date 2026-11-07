@@ -1,0 +1,52 @@
+{
+  "status": "FAILED host success-boundary observation timing; native canceled; full case unaccepted",
+  "source": "durable-source-r179.json",
+  "nativeExitCode": 75,
+  "driverExitCode": 1,
+  "nativeSummary": "health-photo-fault-damaged-legacy-visibilityr2-summary.json",
+  "nativePassed": 0,
+  "nativeFailed": 1,
+  "nativeSkipped": 0,
+  "rootScreens": 20,
+  "nativeJSONRead": 0,
+  "failure": [
+    {
+      "failureText": "Testing was canceled",
+      "targetName": "LumenUITests",
+      "testIdentifier": 1,
+      "testIdentifierString": "LumenSmokeTests/testHealthBackupFileRecoveryPhotoFaultDamagedLegacy()",
+      "testIdentifierURL": "test://com.apple.xcode/Lumen/LumenUITests/LumenSmokeTests/testHealthBackupFileRecoveryPhotoFaultDamagedLegacy",
+      "testName": "testHealthBackupFileRecoveryPhotoFaultDamagedLegacy()"
+    }
+  ],
+  "observedFailureBoundaries": [
+    {
+      "observedAfterNativeAttachment": "health-photo-fault-damaged-legacy-failed",
+      "currentAndPriorBytesAndMetadataExact": true,
+      "noReceiptStageOrCheckpoint": true,
+      "sourceWorkspacesExactExceptDeclaredPhotoFault": true,
+      "checkedAt": 1794056603.4317398
+    },
+    {
+      "observedAfterNativeAttachment": "health-photo-fault-damaged-legacy-failed-repeat",
+      "currentAndPriorBytesAndMetadataExact": true,
+      "noReceiptStageOrCheckpoint": true,
+      "sourceWorkspacesExactExceptDeclaredPhotoFault": true,
+      "checkedAt": 1794056613.696332
+    },
+    {
+      "observedAfterNativeAttachment": "health-photo-fault-damaged-legacy-omission-not-now",
+      "currentAndPriorBytesAndMetadataExact": true,
+      "noReceiptStageOrCheckpoint": true,
+      "sourceWorkspacesExactExceptDeclaredPhotoFault": true,
+      "checkedAt": 1794056649.0767722
+    }
+  ],
+  "heldAndReleasedObserved": true,
+  "success": null,
+  "finalCleanup": null,
+  "hostFailure": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-recovery-error-visibility-driver-r2.py\", line 426, in <module>\n    verify_original_identity()\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-recovery-error-visibility-driver-r2.py\", line 302, in verify_original_identity\n    facts=file.lstat()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py\", line 1360, in lstat\n    return self._accessor.lstat(self)\nFileNotFoundError: [Errno 2] No such file or directory: '/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/17831108-3BDE-4D7D-B206-C0B3D54D6004/tmp/LumenBackupWork-v1-99750-90D2E892-2240-4865-AD0B-BC94FCED0142/selected-backup'\n",
+  "cause": "Native success attachment at251.38s is followed immediately by Back at251.46s. Host receives log attachment after owner cleanup and selected-backup lstat fails. Actual success screenshot retained, but no successful independent success/cleanup/relaunch audit.",
+  "next": "Add explicit nonce-scoped post-success host observation acknowledgement before native Back; preserve identity assertions. Also harden error reveal lifetime per independent source audit. Freeze/build new source and rerun all9 declared cases; retain179two accepted historical cases.",
+  "checkedAt": 1794057244.269504
+}

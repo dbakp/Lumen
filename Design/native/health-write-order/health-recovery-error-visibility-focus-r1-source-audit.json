@@ -1,0 +1,152 @@
+{
+  "status": "Read-only source advice; not a scored native round, observed runtime defect or acceptance",
+  "reviewer": "/root/daily_critic_recovery2",
+  "checkedUTC": "2026-11-07T13:07:40.735454+00:00",
+  "source": "durable-source-r179.json",
+  "productionBoundary": "All186 Lumen source inputs match Source178 exactly. All253 Source179 files and9fixtures independently match frozen hash/length. Executable equality is supplied by root; not independently remeasured by this audit.",
+  "provenance": [
+    {
+      "path": "Lumen/Views/BackupFileRecoveryView.swift",
+      "bytes": 18225,
+      "sha256": "ac34add47fbf9ffdec46bf7235046e793b29b5558842d5be9191757511166681"
+    },
+    {
+      "path": "Design/native/health-write-order/health-recovery-error-visibility-state-r1-contract.json",
+      "bytes": 1993,
+      "sha256": "aa5755186721ba27556bc00bdc058aed5f69791ddfab2393ac7887425fd53879"
+    },
+    {
+      "path": "Design/native/health-write-order/health-recovery-error-visibility-r1-contract.json",
+      "bytes": 3301,
+      "sha256": "00daa40b64949d849ad026024323649af06bf5b7be81acb4bd01ca3215ee8700"
+    },
+    {
+      "path": "Design/native/health-write-order/health-recovery-error-visibility-r1-critic-round1.json",
+      "bytes": 35553,
+      "sha256": "1449e7283f10c310a929b560c8b6e6c5274f30efc82f410d7331d800eb7a6cd7"
+    },
+    {
+      "path": "Design/native/health-write-order/durable-source-r179.json",
+      "bytes": 42175,
+      "sha256": "1ed17a4da25e3a560dd6a35db790e2c2fff09bdbfc953165836f70bacf5e5de8"
+    },
+    {
+      "path": "Design/native/health-write-order/durable-source-r178.json",
+      "bytes": 42278,
+      "sha256": "a0e2c34bed11d10d2577d7714cec1e653df12b7e125bd87d9afee68ceb386a7d"
+    }
+  ],
+  "question": "Do repeated equal-message state and the short unstructured reveal/focus task warrant hardening under the predeclared repeat/focus/Back contract?",
+  "recommendation": {
+    "decision": "Yes: proportionate robustness for the existing contract, before focused state/accessibility verification in a future frozen source. No visual redesign or copy change is indicated.",
+    "urgencyBoundary": "Do not mutate current179 app/tests while its safety run is active. Preserve completed evidence and exact source boundaries; schedule any patch after the active frozen batch reaches its declared checkpoint.",
+    "confidence": "High confidence in the source-level missing identity/lifetime guards; conditional inference about scheduler coalescing or offscreen effects. No reproduction or failure-rate claim."
+  },
+  "sourceFacts": [
+    {
+      "lines": [
+        121,
+        122
+      ],
+      "fact": "Failure presentation is String? and accessibility focus is Bool; neither carries a distinct failure event identity."
+    },
+    {
+      "lines": [
+        185,
+        194
+      ],
+      "fact": "One combined primary heading/body binds Bool focus and a constant scroll target. Exact native presentation and copy are already appropriate for observed primary/default-light frames."
+    },
+    {
+      "lines": [
+        206,
+        217
+      ],
+      "fact": "onChange observes the optional message value. It launches an unstructured MainActor Task, yields twice and compares only issue == message before scroll/focus. No stored handle, Task cancellation check, event identity or visible-review guard is present."
+    },
+    {
+      "lines": [
+        234,
+        238
+      ],
+      "fact": "onDisappear cancels operation/work only. Recover clears issue to nil and focus to false before work; the genuine-error catch later reinstalls the same literal body."
+    },
+    {
+      "lines": [
+        250,
+        263
+      ],
+      "fact": "Existing worker path checks operation identity and cancellation before creating an error, and CancellationError is silent. Reveal-task concerns are distinct from this worker/error guard."
+    }
+  ],
+  "concerns": [
+    {
+      "id": "FOCUS-S1",
+      "type": "Conditional source risk, not observed runtime defect",
+      "mechanism": "If nil then identical message writes occur without an intervening observed Form update, a value-change observer can see the same final String? as before and has no representation of a new failure event. Similarly false then true focus writes do not encode which error needs focus. Existing detached work/awaits normally provide opportunities to update, but the source does not guarantee an intervening rendered state.",
+      "additionalIdentityRisk": "An older reveal task suspended at a yield can pass issue == message after a newer failure installs equal text. Text equality cannot prove the task still belongs to the current failure.",
+      "evidenceLimit": "Current first/repeated captures show successful visible errors in their sampled runs. They do not demonstrate a lost focus request, prove all update schedules, or establish spoken VoiceOver behavior."
+    },
+    {
+      "id": "FOCUS-S2",
+      "type": "Source lifetime gap; visible consequence remains unobserved",
+      "mechanism": "The reveal/focus Task is neither the recovery work task nor explicitly view-lifetime managed. Disappearance does not cancel it, and an unchanged issue string can still satisfy its guards after either yield. This permits a stale scroll/focus request to be attempted after the review disappears.",
+      "evidenceLimit": "SwiftUI may ignore an offscreen target; this audit does not claim focus theft, leaked files, data replacement, a crash or a user-visible offscreen effect. The gap is the absence of an explicit lifetime guarantee required by the Back contract."
+    }
+  ],
+  "minimalRepairRequirements": [
+    "Represent each genuine failure atomically as one optional value containing a fresh UUID and the unchanged message. Observe failure.id, not message equality; keep visible copy unchanged. Do not keep UUID and message as separately updated pieces of state.",
+    "Use optional UUID AccessibilityFocusState with the combined error element bound equals that failure.id. A new genuine failure then has a distinct focus target even when text repeats. Keep the public accessibility identifier stable for tests. A constant scroll anchor is sufficient if the short task guards the failure ID; a UUID scroll target is also valid if rendered and used consistently.",
+    "Own the short reveal task: store its handle, cancel its predecessor before a new request, and cancel/clear it on actual retry and review disappearance. Clear the focus request on retry/disappearance. Cancellation is silent and never writes an error.",
+    "After each suspension, immediately before scrolling or setting focus, require the task not cancelled, the same current failure ID, and the review still active. Keep these checks and UI effects MainActor-isolated. Invalidate the active review lifetime on disappearance so a deferred callback cannot schedule a replacement task offscreen; do not rely on task cancellation alone if new tasks could still be scheduled.",
+    "Reveal once per genuine failure after insertion using the existing nonanimated native scroll, then request coherent focus once. Ordinary scrolling, re-rendering or returning to an unchanged already-present failure must not repeatedly snap/announce. Keep selections, omission, Recover/Not now confirmation and all transaction behavior intact.",
+    "The existing yields are scheduling opportunities, not proof that layout is ready. Keep actual first-frame capture checks on both phones and all declared appearances. If layout timing fails there, solve the demonstrated insertion/reveal boundary rather than adding arbitrary sleeps.",
+    "UUID focus is a distinct request, not a guarantee of spoken delivery. Preserve direct VoiceOver/Reduce Motion observation gates; avoid adding a second announcement that duplicates the coherent focus readout."
+  ],
+  "alternatives": [
+    {
+      "choice": "Keep String/Bool and add another Task.yield or delay",
+      "assessment": "Not preferred. Extra scheduling time does not supply event identity or disappearance cancellation and introduces a timing assumption."
+    },
+    {
+      "choice": "Only cancel the reveal task onDisappear",
+      "assessment": "Useful partial repair, but equal-message stale-task identity and repeated focus-event representation remain."
+    },
+    {
+      "choice": "Use a view-managed task keyed by failure UUID",
+      "assessment": "Reasonable alternative to a stored handle if disappearance cancellation and one-time consumption are explicit. Automatic restart on reappearance must not refocus an unchanged old error. Either lifetime approach is adequate; do not implement both without a reason."
+    },
+    {
+      "choice": "Leave current implementation unchanged because sampled repeats passed",
+      "assessment": "The passes validate sampled normal-frame visibility, but do not close the predeclared event/lifetime contract. A small explicit identity/lifetime patch is defensible before the targeted checks; no evidence justifies calling current runtime broken."
+    }
+  ],
+  "verificationAfterAnyPatch": [
+    "Freeze a new app/test source after the active179 batch; compare the production diff to only presentation event identity/lifetime ownership. Exact copy/native layout/transaction inputs remain as declared.",
+    "Use deterministic test instrumentation where feasible to force a genuinely repeated identical failure before an intervening presentation update, and to suspend old reveal work at each yield. Verify only the current failure identity may issue scroll/focus. This targets the scheduler window rather than hoping repeated sleeps cover it.",
+    "Exercise retry/new failure, Back at each suspension point, fresh review, and ordinary scroll back to choices. No late old-review focus/scroll, stale error, duplicate request, repeated snapping or accidental worker launch; Not now keeps choices.",
+    "Retain real first/repeated failure originals before any test error scroll, on primary/compact normal/dark/largest. Revalidate full safety cases on the new production source according to the existing contract; do not transfer179 runtime acceptance automatically.",
+    "Directly observe VoiceOver spoken heading/body once per real failure and next action order, plus Reduce Motion. Distinguish requested focus identity from actual speech. If tools cannot demonstrate speech/motion, keep those gates open.",
+    "Cancel/closed review remains silent, with no replacement/success or fabricated error. Preserve all current/prior/source/provider/receipt/cleanup and broader interruption requirements."
+  ],
+  "nonFindings": [
+    "No new pixel/copy defect or inherited score.",
+    "No observed lost repeat-focus or offscreen-focus defect.",
+    "No assertion that task cancellation alone waits for completion; post-suspension guards remain necessary.",
+    "No transaction/data/Health/ownership redesign requested.",
+    "No physical-phone actions, build, tests, screenshot opens or source edits performed in this audit."
+  ],
+  "acceptance": {
+    "scoredRound": false,
+    "runtimeDefectReproduced": false,
+    "designAccepted": false,
+    "accessibilityAccepted": false,
+    "broaderProductAccepted": false
+  },
+  "storage": {
+    "availableBytesAtFinish": 40728354816,
+    "reviewerDeletedBytes": 0,
+    "manualRecoveredBytes": 0
+  },
+  "writes": "Only health-recovery-error-visibility-focus-r1-source-audit.json; no app/test/evidence/prior report edits."
+}
