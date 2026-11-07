@@ -60,7 +60,7 @@
 <button class="btn" type="button" data-area="quality" aria-pressed="false" aria-controls="lumen-plan-detail">Answer quality</button>
 <button class="btn" type="button" data-area="release" aria-pressed="false" aria-controls="lumen-plan-detail">Release gates</button>
 </div>
-<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Recovery state checks · in progress</h3><div data-verified>All 9 declared recovery-error cases passed with exact data and original-file checks. Both first state cases passed scrolling, Back, fresh selection and recovery of both photos.</div><div data-next>Next: simulator VoiceOver capability, held Cancel/Back and remaining state checks.</div><div class="text-small" data-gate>Five cases ran on Source180, three on Source181 and one on Source183. Earlier failed trials remain recorded. State, accessibility and broader gates remain open.</div></div>
+<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Accessibility checks · in progress</h3><div data-verified>All 9 declared recovery-error cases passed with exact data and original-file checks. Both first state cases passed scrolling, Back, fresh selection and recovery of both photos.</div><div data-next>VoiceOver capability passed. Next: genuine-error speech and focus, held Cancel/Back and remaining state checks.</div><div class="text-small" data-gate>Five cases ran on Source180, three on Source181 and one on Source183. Earlier failed trials remain recorded. State, accessibility and broader gates remain open.</div></div>
 </div>
 <div class="section"><h3>Verified safety checks</h3>
 <table class="table table-sm" aria-label="Earlier checks retain their original scope; broader checks remain open"><thead><tr><th>Situation</th><th>Observed result</th></tr></thead><tbody>
@@ -68,18 +68,18 @@
 <tr><td>Explicit zero readings</td><td>Five zeros saved distinctly from 13 missing values</td></tr>
 <tr><td>Stale or replaced snapshot</td><td>Save rejected; newer contents and file identity preserved</td></tr>
 <tr><td>Local food and water</td><td>External totals counted once; exact synthetic-record cleanup</td></tr>
-<tr><td>Logic suite</td><td>2,350 passed at Source175 · logic unchanged at Source184</td></tr>
+<tr><td>Logic suite</td><td>2,350 passed at Source175 · logic unchanged at Source185</td></tr>
 </tbody></table>
 <div class="text-small">Earlier six-file long-wait preservation failure and Banana zero-fat omission remain failed expectations. Final dismissal preserved the immediate newer state.</div></div>
 <hr>
-<div class="viz-row"><span>About 38 GiB available</span><span>3.86 GB recovered in the latest cleanups</span></div>
+<div class="viz-row"><span>About 38 GiB available</span><span>3.92 GB recovered in the latest cleanups</span></div>
 <div class="text-small">Redundant exports and completed test bundles removed after exact GitHub verification · canonical evidence and needed caches retained · no further iPhone actions authorized</div>
 <script>
 (()=>{
 const root=document.getElementById('lumen-plan-progress');
-const snapshot='nov7-source184-state-two-verified';
+const snapshot='nov7-source185-voiceover-capability';
 const areas={
-current:{title:'Recovery state checks · in progress',verified:'All 9 declared recovery-error cases passed with exact data and original-file checks. Both first state cases passed scrolling, Back, fresh selection and recovery of both photos.',next:'Next: simulator VoiceOver capability, held Cancel/Back and remaining state checks.',gate:'Five cases ran on Source180, three on Source181 and one on Source183. Earlier failed trials remain recorded. State, accessibility and broader gates remain open.'},
+current:{title:'Accessibility checks · in progress',verified:'All 9 declared recovery-error cases passed with exact data and original-file checks. Both first state cases passed scrolling, Back, fresh selection and recovery of both photos.',next:'VoiceOver capability passed. Next: genuine-error speech and focus, held Cancel/Back and remaining state checks.',gate:'Five cases ran on Source180, three on Source181 and one on Source183. Earlier failed trials remain recorded. State, accessibility and broader gates remain open.'},
 quality:{title:'Answer quality · open',verified:'Library search, source identity, consent controls and literal-reference safeguards are delivered.',next:'Next: evidence-support policy and independent evaluation; personal-context and conversation-history privacy review.',gate:'Clinical accuracy, language coverage and live-provider evaluation remain required.'},
 release:{title:'Release readiness · open',verified:'Earlier signed build installed once; current release validation remains open.',next:'Next: background Health, Watch reconnect, widget, interruption and accessibility checks.',gate:'Representative histories, performance, privacy and distribution review remain required. No iPhone installation, launch or checks without a renewed request.'}
 };
