@@ -17,7 +17,9 @@ Verified earlier recovery work:
 
 - Source177 extracted-photo fault cases: **4/4** native/host passed (missing-legacy, missing-encrypted, damaged-legacy, damaged-encrypted); all 84 original screenshots and 4 full native result files reviewed. Initial failure preserves current/prior bytes and metadata; explicit omission retry removes both photo references, records two omissions and preserves original provider/source identity and live cleanup/relaunch. Scope: extracted-resource faults after preview, primary/defaultlight only.
 
-These are **primary dedicated simulator, default light appearance** results. They do not close full appearance, VoiceOver, interruption, device, Release or broader product gates.
+- Source179 revised-error checks: **1/9** declared cases native/host passed (missing-legacy); all 22 original screenshots and 1 full native result files root-reviewed. First/repeated actual failure viewports precede test scrolling; both preserve current/prior metadata and source identity, followed by deliberate omission/control3, success/cleanup/relaunch. Continuing critic round2/direct VoiceOver/Reduce Motion and all broader requirements remain.
+
+Earlier Source169–177 results are **primary dedicated simulator, default light appearance**. Source179 credits only the exact declared cases above. They do not close full appearance, VoiceOver, interruption, device, Release or broader product gates.
 
 The six-case meal-photo matrix and four extracted-photo fault cases are verified. Continue directly with the predeclared recovery-error visibility repair and the continuing design critic; safety acceptance does not establish error discoverability. Consult these exact current records before acting:
 
