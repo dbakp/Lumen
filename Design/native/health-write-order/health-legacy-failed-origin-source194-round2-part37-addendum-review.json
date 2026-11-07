@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "part": 37,
+  "kind": "Source-only contract addendum closure",
+  "checkedAt": "2026-11-07T21:00:26.427416+00:00",
+  "status": "P37-C1 and P37-C2 closed at contract-wording level; implementation and execution pending",
+  "bindings": [
+    {
+      "file": "health-legacy-failed-origin-r1-contract.json",
+      "bytes": 9779,
+      "sha256": "b8998dbb7e2aeb533e2d23aa37d4bef9ce47ad68f8c88dccef0983c3714d7d2e"
+    },
+    {
+      "file": "health-legacy-failed-origin-source194-round2-part37-contract.json",
+      "bytes": 11297,
+      "sha256": "889b84f5ea2a26b36b156bbbc5346c1d68cd1a6cba1b78f22c09e8f1bdd3c569"
+    },
+    {
+      "file": "health-legacy-failed-origin-r2-addendum.json",
+      "bytes": 2655,
+      "sha256": "d55877941ebc8ef4990b1d152971146a455f7418e32c47254b962b3c0d9c31c2"
+    }
+  ],
+  "assessment": {
+    "P37-C1": "Explicitly restricts authority to representation/schema/record rejection, propagates cancellation/acquisition/operational errors, rechecks shared control and requires cancelled valid/malformed controls. Meets C1; no catch-all eligibility is authorized.",
+    "P37-C2": "Explicit capture writes\u2192copies and commit writes\u2192transaction\u2192copies graph; prohibits nonrecursive LocalStore revision/current/write/commit reentry, requires direct fixed-key/root helpers, and releases capture locks before asynchronous work. Meets C2. Immutable captured raw content must still be the content validated off-thread; selected observation is revalidated at the already declared preparation/final synchronous boundaries.",
+    "otherNotes": "Finite envelope/base64/manifest bounds, strict type/UTF16/shape/association, all v1-sensitive paths, ineligible/late review state, mixed-copy timing and actual eraseAllChecked reset/partial-failure requirements address the corresponding implementation notes. Existing lower tree limits remain honest rejection boundaries rather than a bypass. Exact-limit tests must expose effective compatibility."
+  },
+  "remainingConcreteContractIssue": null,
+  "publication": "Parent reports r2 addendum exact GitHub readback at4c6d153d; critic read current retained addendum and binds its exact bytes, no independent remote-readback claim.",
+  "limits": "Closure concerns selected contract wording only. No implementation applied/read as successor, no build/test/native/simulator query or action, no successful-origin recovery/design score/product/full-parent acceptance. Frozen194 encrypted producer remains untouched. Prior contract and critic report remain immutable; all original broader gates remain open.",
+  "writeBoundary": "Only this new addendum review written; no source/test/evidence/prior report/Git/cleanup action."
+}
