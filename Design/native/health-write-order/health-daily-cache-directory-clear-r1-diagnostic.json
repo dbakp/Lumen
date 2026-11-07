@@ -1,0 +1,13 @@
+{
+  "status": "R1 failed host observation and secondary retention bug retained; R2 host-only correction, no app/test/build change",
+  "source": "durable-source-r165.json",
+  "priorDriver": "health-daily-cache-directory-clear-driver-r1.py",
+  "nextDriver": "health-daily-cache-directory-clear-driver-r2.py",
+  "corrections": [
+    "Permit and protect existing discovered private copies; reject only unexpected pre-existing cache commit history.",
+    "Supply exact raw summary path required by retained attachment helper.",
+    "Keep original loop exception separately from later retention errors."
+  ],
+  "boundaries": "R1actual native canceled after first original; no clear/save pass. Original loop exception overwritten and not recoverable; post-failure live tree supports overly strict host private-copy assumption. R2not yet executed.",
+  "checkedAt": 1794040181.314838
+}

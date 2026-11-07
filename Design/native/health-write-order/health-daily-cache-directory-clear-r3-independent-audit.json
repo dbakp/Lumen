@@ -1,0 +1,73 @@
+{
+  "status": "PASS independent post-terminal nativeR3 directory-clear audit; original R3 host expectation remains failed",
+  "checkedAt": 1794040532.0188859,
+  "source": "durable-source-r165.json",
+  "nativeTrial": "health-daily-cache-directory-clear-r3",
+  "originalHostAuditSHA256": "624df86185f855302879b61852edd298c4d67b7cc903da102bd5d6c1b1975f2e",
+  "independentAuditorSHA256": "2123163834717316680a6ce475b216823f38e27eb3099fa9328fb64eec05e8f6",
+  "sourceInputs": 253,
+  "fixtureInputs": 6,
+  "nativePassedTests": 1,
+  "nativeFailedTests": 0,
+  "nativeSkippedTests": 0,
+  "exactCurrentTreeReobserved": true,
+  "exactPreviousTreeReobserved": true,
+  "preActionAndNotNowAndHeldAudits": true,
+  "explicitUnknownSnapshot": true,
+  "rawDirectoryEntriesPreserved": 4,
+  "sentinelFileInodesAndBytesAndModesExact": true,
+  "privateDirectoriesMode": "0700",
+  "originalDirectoryModesAndAllRawMetadataExactInReceipt": true,
+  "receipt": {
+    "action": "clear",
+    "owner": "53D93536-9E2A-439E-A6F2-7F5536B534E2",
+    "prior": {
+      "entries": {
+        "": {
+          "device": 16777233,
+          "inode": 44630055,
+          "mode": 16872,
+          "modifiedNanos": 846458496,
+          "modifiedSeconds": 1794040341,
+          "size": 128
+        },
+        "/nested": {
+          "device": 16777233,
+          "inode": 44630056,
+          "mode": 16872,
+          "modifiedNanos": 846223757,
+          "modifiedSeconds": 1794040341,
+          "size": 96
+        },
+        "/nested/raw-a.bin": {
+          "device": 16777233,
+          "digest": "721ecf67adc4ec4d345adbd7860f342ce39ffefe0fed7b821afefd8a605ab31c",
+          "inode": 44630057,
+          "mode": 33184,
+          "modifiedNanos": 846281753,
+          "modifiedSeconds": 1794040341,
+          "size": 4
+        },
+        "/raw-b.txt": {
+          "device": 16777233,
+          "digest": "a875069f5d8a3016991088856932c0185a635cccfbb3533f16dc994d06163c82",
+          "inode": 44630058,
+          "mode": 33152,
+          "modifiedNanos": 846520039,
+          "modifiedSeconds": 1794040341,
+          "size": 38
+        }
+      },
+      "state": "unavailable"
+    },
+    "rawDigest": "e448bbf4bf8d6d1bb6fbf187ea31f1fffac559ebe5933d4b1ad8b008bb01049f",
+    "replacedAt": "2026-11-07T08:32:44Z"
+  },
+  "historyContainerMode": "0o40755",
+  "ownerOnlyDataRootMode": "0o40700",
+  "otherCurrentRegularFilesPreserved": 15,
+  "previousRegularFilesPreserved": 9,
+  "privateDirectoryCopy": ".health-recovery/35716CC8-093E-4180-A67C-E807D74F3032/today.json",
+  "stageAbsent": true,
+  "scope": "Main/light/standard explicit directory clear only. NativeR1canceled/R2modeexpectation/R3containerexpectation remain failed; no new native rerun or broader acceptance."
+}

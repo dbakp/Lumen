@@ -297,6 +297,18 @@ enum HealthRecoveryUIFixture {
         try Data("{\"syntheticUnavailableWater\":".utf8).write(to: root.appendingPathComponent("water.json"), options: .atomic)
         if ProcessInfo.processInfo.arguments.contains("-health-daily-cache-ui-fixture") {
             try Data("{\"syntheticUnavailableToday\":".utf8).write(to: root.appendingPathComponent("today.json"), options: .atomic)
+            if ProcessInfo.processInfo.arguments.contains("-health-daily-cache-directory-ui") {
+                let directory = root.appendingPathComponent("today.json")
+                try FileManager.default.removeItem(at: directory)
+                try FileManager.default.createDirectory(at: directory.appendingPathComponent("nested"), withIntermediateDirectories: true)
+                try Data([0, 17, 255, 42]).write(to: directory.appendingPathComponent("nested/raw-a.bin"))
+                try Data("Synthetic damaged directory snapshot.\n".utf8).write(to: directory.appendingPathComponent("raw-b.txt"))
+                for path in [directory, directory.appendingPathComponent("nested")] {
+                    try FileManager.default.setAttributes([.posixPermissions: 0o750], ofItemAtPath: path.path)
+                }
+                try FileManager.default.setAttributes([.posixPermissions: 0o640], ofItemAtPath: directory.appendingPathComponent("nested/raw-a.bin").path)
+                try FileManager.default.setAttributes([.posixPermissions: 0o600], ofItemAtPath: directory.appendingPathComponent("raw-b.txt").path)
+            }
         }
         if recordsRequested {
             for domain in HealthLocalFiles.Domain.allCases where domain != .water {

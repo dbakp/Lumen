@@ -1,0 +1,36 @@
+{
+  "status": "R2native PASS; original host directory-mode preservation expectation FAILED and retained",
+  "checkedAt": 1794040326.4533272,
+  "source": "durable-source-r165.json",
+  "nativeExitCode": 0,
+  "observedPostTerminalCopies": [
+    [
+      {
+        "path": ".health-recovery/A86B4DCC-C00B-4D91-82B6-EA2D17E0970A/today.json",
+        "mode": 16832,
+        "sha256": null
+      },
+      {
+        "path": ".health-recovery/A86B4DCC-C00B-4D91-82B6-EA2D17E0970A/today.json/raw-b.txt",
+        "mode": 33152,
+        "sha256": "a875069f5d8a3016991088856932c0185a635cccfbb3533f16dc994d06163c82"
+      },
+      {
+        "path": ".health-recovery/A86B4DCC-C00B-4D91-82B6-EA2D17E0970A/today.json/nested",
+        "mode": 16832,
+        "sha256": null
+      },
+      {
+        "path": ".health-recovery/A86B4DCC-C00B-4D91-82B6-EA2D17E0970A/today.json/nested/raw-a.bin",
+        "mode": 33184,
+        "sha256": "721ecf67adc4ec4d345adbd7860f342ce39ffefe0fed7b821afefd8a605ab31c"
+      }
+    ]
+  ],
+  "sourceCause": {
+    "file": "Lumen/Models/BackupFileTransaction.swift",
+    "line": 90,
+    "behavior": "Every staged directory is deliberately created with0700. Regular files are preserved by hardlink; raw boundary receipt retains original directory mode/inode."
+  },
+  "decision": "Do not change production private directories to broaden access. New contract/driver must require0700 private directories, exact original regular-file modes/bytes and exact original750modes in receipt. Old R2mode-equality expectation remains failed; no retroactive R2acceptance."
+}

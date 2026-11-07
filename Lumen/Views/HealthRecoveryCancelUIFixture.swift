@@ -103,6 +103,15 @@ enum HealthRecoveryCancelUIFixture {
                   stage.lastPathComponent.hasPrefix(root.lastPathComponent + ".restore-") else { throw Failure.invalidFixture }
             var originals: [String: Data] = [:]
             for name in HealthLocalFiles.Domain.allCases.map({ $0.rawValue + ".json" }) + [HealthWriteFiles.name] {
+                if name == "today.json", ProcessInfo.processInfo.arguments.contains("-health-daily-cache-directory-ui") {
+                    let directory = root.appendingPathComponent(name)
+                    let facts = try FileManager.default.attributesOfItem(atPath: directory.path)
+                    guard facts[.type] as? FileAttributeType == .typeDirectory else { throw Failure.invalidFixture }
+                    for child in ["nested/raw-a.bin", "raw-b.txt"] {
+                        originals[name + "/" + child] = try HealthLocalFiles.readRegularData(directory.appendingPathComponent(child), limit: 256 * 1024)
+                    }
+                    continue
+                }
                 originals[name] = try HealthLocalFiles.readRegularData(root.appendingPathComponent(name), limit: 256 * 1024)
             }
             guard originals["water.json"] == Data("{\"syntheticUnavailableWater\":".utf8) else { throw Failure.invalidFixture }

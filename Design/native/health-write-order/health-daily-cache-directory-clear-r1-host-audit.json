@@ -1,0 +1,18 @@
+{
+  "status": "FAILED; retained actual native and host evidence",
+  "source": "durable-source-r165.json",
+  "build": "health-daily-cache-directory-clear-r1-build.json",
+  "driverSHA256": "0ef24ef263deea710b44ad78ef1644c69c2e487ad0e60fc591ada24fe333b338",
+  "scope": "Main/light/standard synthetic directory-cache clear only; no Health sample or physical-phone actions.",
+  "nativePID": 47855,
+  "observationError": "CalledProcessError(1, ['python3', '/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/retain-health-record-attachments.py', '--stem', 'HealthDailyCacheDirectoryClearR1', '--prefix', 'health-daily-cache-directory-clear-r1', '--source', 'durable-source-r165.json', '--png-dir', '/tmp/LumenBatch43Checks/HealthDailyCacheDirectoryClearR1PNG', '--json-dir', '/tmp/LumenBatch43Checks/HealthDailyCacheDirectoryClearR1JSON', '--include-failed-trial'])",
+  "nativeExitCode": 75,
+  "nativeLog": {
+    "archive": "HealthDailyCacheDirectoryClearR1.log.gz",
+    "bytes": 73041,
+    "sha256": "ea075a2ca2974a051698b704a7fca7e7968c51655e15f6ef6df48971f2f842e3"
+  },
+  "retentionFailure": "CalledProcessError(1, ['python3', '/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/retain-health-record-attachments.py', '--stem', 'HealthDailyCacheDirectoryClearR1', '--prefix', 'health-daily-cache-directory-clear-r1', '--source', 'durable-source-r165.json', '--png-dir', '/tmp/LumenBatch43Checks/HealthDailyCacheDirectoryClearR1PNG', '--json-dir', '/tmp/LumenBatch43Checks/HealthDailyCacheDirectoryClearR1JSON', '--include-failed-trial'])",
+  "initialFailureBoundary": "Host stopped native test immediately after initial attachment; original loop exception was overwritten by the secondary retention error and is not claimed recovered.",
+  "postFailureDiagnostic": "Dedicated synthetic live tree contains normal pre-existing .health-recovery/discovered-* copy. R1 host incorrectly forbids all .health-recovery entries, although it must preserve existing copies. This is consistent with the early failed host assertion; no product mutation or native pass inferred."
+}
