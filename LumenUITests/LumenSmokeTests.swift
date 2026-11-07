@@ -101,6 +101,10 @@ final class LumenSmokeTests: XCTestCase {
             if name.contains("Cancel") || healthFileRecoveryLeavesReview || name.contains("RecoveryCommit") || name.contains("AllCommit") { app.launchArguments += ["-health-recovery-cancel-ui"] }
             if name.contains("AllCommit") { app.launchArguments.append("-health-backup-multi-ui") }
             if name.contains("RecoveryEmpty") || name.contains("RecoveryPhotoMatrix") || name.contains("RecoveryPhotoFault") { app.launchArguments += ["-health-backup-healthy-merge-ui", "-health-backup-empty-ui", "-health-recovery-cancel-ui"] }
+            if name.contains("RecoveryPhotoFault") {
+                app.launchArguments += ["-lumen.appearance", name.contains("Dark") || name.contains("Largest") ? "dark" : "light",
+                                        "-UIPreferredContentSizeCategoryName", name.contains("Largest") ? "UICTContentSizeCategoryAccessibilityXXXL" : "UICTContentSizeCategoryL"]
+            }
         }
         if name.contains("testHealthBackupHealthyMerge") {
             let kind = name.contains("Encrypted") ? "encrypted" : name.contains("Readable") ? "readable" : "legacy"
@@ -5151,6 +5155,8 @@ final class LumenSmokeTests: XCTestCase {
     func testHealthBackupFileRecoveryPhotoFaultMissingEncrypted() throws { try healthBackupPhotoFault("encrypted", fault: "missing") }
     func testHealthBackupFileRecoveryPhotoFaultDamagedLegacy() throws { try healthBackupPhotoFault("legacy", fault: "damaged") }
     func testHealthBackupFileRecoveryPhotoFaultDamagedEncrypted() throws { try healthBackupPhotoFault("encrypted", fault: "damaged") }
+    func testHealthBackupFileRecoveryPhotoFaultMissingEncryptedDark() throws { try healthBackupPhotoFault("encrypted", fault: "missing") }
+    func testHealthBackupFileRecoveryPhotoFaultMissingEncryptedLargest() throws { try healthBackupPhotoFault("encrypted", fault: "missing") }
     private func healthBackupPhotoFault(_ kind: String, fault: String) throws {
         executionTimeAllowance = 600
         let base = "Lumen-backup-health-matrix-two-" + kind
@@ -5219,12 +5225,17 @@ final class LumenSmokeTests: XCTestCase {
             XCTAssertTrue(failure.isHittable)
             let usableTop = app.navigationBars["Review recovery"].frame.maxY
             XCTAssertGreaterThanOrEqual(failure.frame.minY, usableTop)
-            XCTAssertLessThanOrEqual(failure.frame.maxY, app.frame.maxY - 20)
+            if !name.contains("Largest") { XCTAssertLessThanOrEqual(failure.frame.maxY, app.frame.maxY - 20) }
+            else { XCTAssertLessThan(failure.frame.minY, app.frame.maxY - 160) }
             XCTAssertTrue(failure.label.contains("Recovery couldn't finish"))
             XCTAssertTrue(failure.label.contains("Your current files haven't been replaced."))
             XCTAssertFalse(app.descendants(matching: .any).matching(identifier: "fileHealthRecovered").firstMatch.exists)
             snap(prefix + (attempt == 1 ? "-failed" : "-failed-repeat"))
             Thread.sleep(forTimeInterval: 3)
+            if name.contains("Largest") {
+                let consequences = app.staticTexts["Replaced files stay in a private copy on this iPhone. For meal recovery, this includes any old photos."].firstMatch
+                captureIdentifierText(consequences, through: confirm, prefix: prefix + "-failure-content-" + String(attempt))
+            }
             if attempt == 1 {
                 reveal(confirm); confirm.tap()
                 XCTAssertTrue(alert.waitForExistence(timeout: 5))
@@ -5233,7 +5244,7 @@ final class LumenSmokeTests: XCTestCase {
         }
         for domain in domains {
             let choice = app.switches["recoverFile-" + domain].firstMatch
-            reveal(choice); XCTAssertEqual(choice.value as? String, "1")
+            reveal(choice, towardsTop: domain == "meals"); XCTAssertEqual(choice.value as? String, "1")
         }
         let omission = app.switches["Recover without meal photos"].firstMatch
         reveal(omission, towardsTop: true); XCTAssertEqual(omission.value as? String, "0")
@@ -5246,12 +5257,15 @@ final class LumenSmokeTests: XCTestCase {
         reveal(confirm); confirm.tap(); XCTAssertTrue(alert.waitForExistence(timeout: 5)); alert.buttons["Recover"].tap()
         let busy = app.descendants(matching: .any).matching(identifier: "fileHealthRecoveryBusy").firstMatch
         XCTAssertTrue(busy.waitForExistence(timeout: 10))
+        XCTAssertFalse(failure.exists, "A fresh recovery attempt clears the prior failure")
         for value in ["held-3", "observed-3"] {
             let held = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", value), object: busy)
             XCTAssertEqual(XCTWaiter.wait(for: [held], timeout: 15), .completed); snap(prefix + "-" + value)
         }
         let success = app.descendants(matching: .any).matching(identifier: "fileHealthRecovered").firstMatch
-        reveal(success, towardsTop: true); XCTAssertTrue(success.waitForExistence(timeout: 30)); snap(prefix + "-success")
+        reveal(success, towardsTop: true); XCTAssertTrue(success.waitForExistence(timeout: 30))
+        XCTAssertFalse(failure.exists, "Success must not retain a stale failure")
+        snap(prefix + "-success")
         app.navigationBars["Review recovery"].buttons.element(boundBy: 0).tap()
         XCTAssertTrue(app.navigationBars["Backup & restore"].waitForExistence(timeout: 5))
         snap(prefix + "-parent"); Thread.sleep(forTimeInterval: 4)
