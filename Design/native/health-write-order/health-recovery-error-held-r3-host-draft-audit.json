@@ -1,0 +1,85 @@
+{
+  "status": "Focused r3host followup complete; prior two findings addressed. Two small cleanup-observer refinements required before freeze/runtime.",
+  "reviewer": "same continuing independent App Designer Pro native critic",
+  "scope": "Full r2\u2192r3driver diff, cleanup/metadata boundary, per-attachment retention and plan changes; unchanged route/helpers rely on previous complete source review. Source-only; no driver execution or simulated faults.",
+  "provenance": [
+    {
+      "file": "health-recovery-error-held-r3-driver.py.draft",
+      "bytes": 59172,
+      "sha256": "6f336f1c779b49a6a927677514a1d97122140e23bae0fc70314a7125827da713"
+    },
+    {
+      "file": "health-recovery-error-held-r3-plan.json",
+      "bytes": 5583,
+      "sha256": "c6b27ee4c454ca84989a728dbb43f0edbefab762b1b84ec77b2b295d425474ad"
+    },
+    {
+      "file": "health-recovery-error-held-r2-host-draft-audit.json",
+      "bytes": 8786,
+      "sha256": "2a1599430109b7d357e3925c8a24b7ab3f1d4f8055d29e765b65bef73a6be4b3"
+    }
+  ],
+  "priorReportsImmutable": true,
+  "priorFindings": [
+    {
+      "id": "HELD-HOST-R2-1",
+      "disposition": "addressed in source approach",
+      "evidence": "Precommit metadata remains exact. Postcommit observer records actual retired roots/previous/private metadata and permits only baseline/baseline+1prior-file link counts while requiring other identity/mode/size/mtime facts exact. Full metadata equality is deferred until retired/previous roots are absent. Success byte/private audit and exact tree follow before acknowledgement; later metadata comparison uses that clean boundary."
+    },
+    {
+      "id": "HELD-HOST-R2-2",
+      "disposition": "addressed in source approach",
+      "evidence": "Original export manifest bytes/hash retained first. Each safe attachment copied independently with per-entry failure metadata, partial index updated incrementally/finally; exportSucceeded/complete false on errors. Required errors remain terminal-unaccepted and other export types are attempted."
+    }
+  ],
+  "requiredRefinements": [
+    {
+      "id": "HELD-HOST-R3-1",
+      "kind": "retired-directory disappearance race",
+      "location": "observe_retired_cleanup retired glob and path.is_dir checks",
+      "finding": "The observer is specifically watching asynchronously deleted retired roots. A path returned by glob may legitimately disappear before path.is_dir runs; the current assertion then fails a normal successful cleanup instead of observing it as gone.",
+      "required": "Inspect each listed path with lstat or equivalent and treat FileNotFound as already removed. Continue rejecting a still-present symlink or non-directory. Retain the actual sampled listed/existing/gone facts and derive readiness from a fresh absence check; never delete roots or weaken byte/stable identity checks.",
+      "boundary": "Possible false host failure inferred from asynchronous deletion source; no runtime race observed or induced."
+    },
+    {
+      "id": "HELD-HOST-R3-2",
+      "kind": "cleanup diagnostics lost on timeout/assertion",
+      "location": "local observations in observe_retired_cleanup and assignment retired_cleanup=observe_retired_cleanup(root)",
+      "finding": "Cleanup samples are local and reach durable observation only through the successful return value. If timeout, metadata assertion or another observer exception occurs, assignment never completes and finally retains retiredCleanup null, losing sampled roots/nlinks needed to explain the failure.",
+      "required": "Initialize a shared durable observer result before sampling, or pass its mutable observations into the helper; append each sample before potentially failing checks where feasible and record terminal failure/deadline status on exception. Ensure outer finally retains partial samples whether cleanup succeeds, times out or raises. Preserve failed acceptance status.",
+      "boundary": "Source-only failure-retention issue; no timeout was executed."
+    }
+  ],
+  "consistentRemainingBehavior": [
+    "Five-second actual cancelled2readiness, ack-only/no hostrelease2, exact control3matcher and branch receipts remain unchanged.",
+    "Prior coverage modes and full retained baseline snapshots remain honest about selected raw private preservation and profile semantic/current raw difference. No all10rawprior filesystem claim.",
+    "Preflight/install identity checks before source fault injection, exact success inventory/private receipts/source/provider before acknowledgement and independent export-error acceptance gates remain.",
+    "The observer3second limit is a postcommit acquisition guard rather than UI cancellation or tap-to-cleanup latency."
+  ],
+  "validation": {
+    "pythonASTSyntax": "PASS ast.parse only",
+    "planHashLengthBindings": "3of3 exact",
+    "r3DriverBytes": 59172,
+    "moduleExecuted": false,
+    "sourceApplied": false,
+    "builds": 0,
+    "simulatorActions": 0,
+    "newImageOpens": 0,
+    "runtimeAcceptance": false
+  },
+  "remainingGates": [
+    "Make the two observer refinements and freeze paired production/native/host/build identities before actual cases.",
+    "Full original/nativeJSON/root/critic evidence/publication requirements unchanged.",
+    "Allrawprior filesystem retention, deterministic lateworker/yield, fullspokenbody/audio/duplicates/ReduceMotion, other appearances/readable/full parent/eightgroups remain open."
+  ],
+  "score": null,
+  "overallDesignAccepted": false,
+  "writes": [
+    "health-recovery-error-held-r3-host-draft-audit.json"
+  ],
+  "storage": {
+    "recoveredBytes": 0,
+    "freeBytesAtReport": 40211808256
+  },
+  "completedUTC": "2026-11-07T17:18:28.816499+00:00"
+}

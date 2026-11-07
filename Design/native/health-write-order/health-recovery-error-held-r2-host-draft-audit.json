@@ -1,0 +1,119 @@
+{
+  "status": "Focused source followup complete; original four findings addressed structurally. Two follow-on refinements remain before freeze/runtime.",
+  "reviewer": "same continuing independent App Designer Pro native critic",
+  "scope": "Complete r1\u2192r2host diff plus new readiness, metadata/inventory, preflight and terminal retention paths; unchanged helper behavior reviewed in prior audit. No module execution or source application.",
+  "provenance": [
+    {
+      "path": "Design/native/health-write-order/health-recovery-error-held-r2-driver.py.draft",
+      "bytes": 55207,
+      "sha256": "3882b3dfd34346cfa73731d0abee3ceee412caa44dd680252a281c35c3c6b502"
+    },
+    {
+      "path": "Design/native/health-write-order/health-recovery-error-held-r2-plan.json",
+      "bytes": 4907,
+      "sha256": "c1e40bd6cf0781daf76204e4f50fbbb12d0fcf44338ff9dfdf3714cc0750f8b5"
+    },
+    {
+      "path": "Design/native/health-write-order/health-recovery-error-held-r1-host-draft-audit.json",
+      "bytes": 10454,
+      "sha256": "48d6407db16a24125b0e534617a7a75c08b56b5fc628b0eca9954b7816736ffc"
+    },
+    {
+      "path": "Design/native/health-write-order/health-recovery-error-held-r2-native.swift.draft",
+      "bytes": 11358,
+      "sha256": "d3528a2b6d17f9665596b12c42d1fcfdf2550bd4ce767f50f4c6e04cb7a29f1a"
+    },
+    {
+      "path": "Lumen/Models/BackupFileTransaction.swift",
+      "bytes": 20204,
+      "sha256": "6584614fd196a21fe6ba418b8ae1a33a578964f73f7851dc7287f69d86360ae9"
+    },
+    {
+      "path": "Lumen/Models/HealthRecoveryCopies.swift",
+      "bytes": 38735,
+      "sha256": "8a420f4ddc9319157ea53a453775a0bfb25997320a5e35e2facb7aa785e2790b"
+    },
+    {
+      "path": "Design/native/health-write-order/retain-health-record-attachments.py",
+      "bytes": 1820,
+      "sha256": "96b000b313926af8bf831b68dec53377d831fd33217df44b61bb6da71d392b38"
+    }
+  ],
+  "priorAuditUnchanged": true,
+  "originalFindings": [
+    {
+      "id": "HELD-HOST-1",
+      "disposition": "addressed for finite readiness observation",
+      "evidence": "Same-control immutable fields checked, exact ack-only release2file remains unchanged, five-second readiness samples require actual cancelled/uiCancelled/stagegone and Back ownerclosed. No release2 is permitted. Deadline/phase/stage/owner facts retained.",
+      "remainingLimit": "Finite polling cannot recreate a missed old-owner parent window after native starts a new Files selection; such acquisition must remain failed, not rebound to new-owner facts. This is ordinary timing evidence, not deterministic late-worker isolation."
+    },
+    {
+      "id": "HELD-HOST-2",
+      "disposition": "facts now retained; refine cross-commit comparison below",
+      "evidence": "Durable preservationMetadata baseline, cancellation/retry/release facts and success privateMetadata now retained with per-file prior SHA/bytes/current values/private paths. The missing provenance gap is closed."
+    },
+    {
+      "id": "HELD-HOST-3",
+      "disposition": "addressed",
+      "evidence": "exact_success_tree requires exact allowed whole-root file set from original canonical paths, exact prior/damaged-current private files, sole receipt and installed photo digests. All actual directories must belong to explicit baseline/expected-parent/optionalphotos allowlist; pending/foreign directories rejected. Called before acknowledgement and again after relaunch."
+    },
+    {
+      "id": "HELD-HOST-4",
+      "disposition": "top-level export order addressed; partial per-attachment salvage refinement below",
+      "evidence": "Minimal terminal outcome and canonical gziplog retained before summary. Summary and PNG/JSON export/retention failures are separately recorded without blocking the other export; final verification errors mark unaccepted failure. One attachment-level error still prevents a partial manifest and skips later entries of that type."
+    }
+  ],
+  "requiredRefinements": [
+    {
+      "id": "HELD-HOST-R2-1",
+      "kind": "legitimate hardlink lifecycle can fail new metadata assertions",
+      "location": "audit_all_private_copies private metadata equality around595-600; terminal entire private-audit equality around907",
+      "finding": "metadata_tree includes st_nlink. New success audit requires held2prior private facts exactly equal after commit, then terminal compares full privateMetadata for prior and damaged-current files again after relaunch. Production carryPrivateCopies uses hardlinks into stage, and BackupFileTransaction.commit retires the old root then deletes it asynchronously. A private file can legitimately have an extra old-root link during one observation and lose it during cleanup, without byte/identity corruption. This creates possible false host failures across commit/cleanup.",
+      "sourceEvidence": [
+        "HealthRecoveryCopies.carryPrivateCopies494-516 calls linkTree; linkTree603-611 uses FileManager.linkItem for regular files.",
+        "BackupFileTransaction.commit187 carries private copies before installation;224-230 renames old root and schedules asynchronous retired-root removal."
+      ],
+      "required": "Keep raw bytes/SHA and stable file identity/mode/size/mtime checks exact as appropriate. Retain st_nlink at each boundary, but explicitly allow and explain the expected link-count transition across carried/retired roots, or establish a bounded retired-root cleanup-ready boundary before asserting stable full metadata. Do not compare an unqualified entire before/after privateMetadata dictionary across asynchronous cleanup. Preserve stricter exact metadata checks within pre-commit held/cancel/retry windows.",
+      "limits": "This is a source-grounded possible acquisition failure; no runtime link-count failure was observed or induced. Do not weaken ownership, byte integrity or unexplained link/path checks."
+    },
+    {
+      "id": "HELD-HOST-R2-2",
+      "kind": "one attachment error aborts remaining salvage and partial provenance",
+      "location": "per-type manifest retention around875-886",
+      "finding": "The retention try covers the whole attachment loop, and canonical entries manifest is written only after all entries finish. If an entry is missing/invalid or writing one fails, already copied successes have no newly written partial manifest and later feasible entries of that type are skipped. Summary and other export type remain independent, but this does not retain all feasible exact screenshot/JSON provenance under partial export failure.",
+      "required": "Retain original exported manifest bytes/proof first where available; handle each attachment independently, record failed entry metadata/error, continue safe later entries, and persist the partial successes/failures manifest in a finally or equivalent path. Any missing required evidence must still prevent acceptance. Never synthesize bytes or silently drop export errors.",
+      "limits": "No export failure was injected; source-only failure-path analysis."
+    }
+  ],
+  "additionalNotes": [
+    "Preflight source/fixture/build artifacts before launch and installed identity before first fault injection now address the earlier source-provenance note.",
+    "Dead old Back helper/shadowed assert_protected_state removed. Native observed2attachment explicitly retained with honest held-or-later-cancelled kernel snapshot; no fabricated UI observed kernel phase.",
+    "Action-specific receipts, original-first-source versus Back fresh source, same actual control3 equality, complete receipt/provider checks before nonceack, private coverage modes and whole parent/lateworker/VoiceOver/motion limits remain intact.",
+    "Directory allowlist intentionally permits optional empty canonical photos directory; actual directories are retained. Do not describe this as proving every optional allowed directory exists."
+  ],
+  "validation": {
+    "pythonASTSyntax": "PASS ast.parse only; module not executed",
+    "planDraftHashLengthBindings": "3of3 exact",
+    "r2HostBytes": 55207,
+    "sourceEdits": 0,
+    "builds": 0,
+    "simulatorActions": 0,
+    "newImagesOpened": 0,
+    "runtimeAcceptance": false
+  },
+  "remainingGates": [
+    "Address two follow-on items, then freeze final paired production/native/host inputs and build before four actual cases.",
+    "Full original/nativeJSON/root/critic review and publication before reset/duplicate cleanup.",
+    "No fullspokenbody/audio/duplicates/ReduceMotion, deterministic lateworker/yield or broad appearance/readable/product acceptance from draft."
+  ],
+  "score": null,
+  "overallDesignAccepted": false,
+  "writes": [
+    "health-recovery-error-held-r2-host-draft-audit.json"
+  ],
+  "storage": {
+    "recoveredBytes": 0,
+    "freeBytesAtReport": 40187252736
+  },
+  "completedUTC": "2026-11-07T17:12:19.094429+00:00"
+}

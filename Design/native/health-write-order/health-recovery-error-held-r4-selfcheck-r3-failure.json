@@ -1,0 +1,59 @@
+{
+  "status": "FAILED isolated selfcheck fake-export harness only",
+  "exitCode": 1,
+  "failure": "Expected independent JSON exporter success assertion failed; fake exporter context omitted result and DEVNULL, causing both export calls to be marked failed before fake run. Retention continued successfully.",
+  "harnessArchive": "check-health-held-host-r4-selfcheck-r3-failed.py.gz",
+  "harnessSHA256": "c0f496242c4c36affbd27df453fd896bf3922b0cdc0b692235ec0e2ba5a6963f",
+  "harnessBytes": 8433,
+  "fixtureDirectory": "/tmp/LumenHeldHostDraftSelfChecksR3",
+  "retainedPNGIndex": {
+    "source": "synthetic-only",
+    "type": "PNG",
+    "originalExportManifest": {
+      "file": "synthetic-host-selfcheck-png-export-manifest.json",
+      "bytes": 147,
+      "sha256": "1d10d858b96ff97c37762983e3f753d2d0ad84d2a3ff57d3ebb2e69cdedad285"
+    },
+    "retained": [
+      {
+        "file": "synthetic-host-selfcheck-later.bin",
+        "bytes": 29,
+        "sha256": "fed8e80b07b30c2ab260ae44e95e91e0a179fadf9ff5a146015c0b24ef49e383"
+      }
+    ],
+    "failedEntries": [
+      {
+        "operation": "retainAttachmentPNG",
+        "group": 0,
+        "entry": 0,
+        "metadata": {
+          "exportedFileName": "missing.bin"
+        },
+        "error": "AssertionError()"
+      }
+    ],
+    "exportSucceeded": false,
+    "complete": false
+  },
+  "retainedJSONIndex": {
+    "source": "synthetic-only",
+    "type": "JSON",
+    "originalExportManifest": {
+      "file": "synthetic-host-selfcheck-json-export-manifest.json",
+      "bytes": 114,
+      "sha256": "08d220b1c4534b4d3fe8891d467bf11ddbcf0c8be6c55a1bab75eff64a9a8de7"
+    },
+    "retained": [
+      {
+        "file": "synthetic-host-selfcheck-readback.json",
+        "bytes": 2,
+        "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+      }
+    ],
+    "failedEntries": [],
+    "exportSucceeded": false,
+    "complete": false
+  },
+  "scope": "No native/module/app execution. First four host checks reached their assertions; complete five-check acceptance absent. This is fake exporter environment setup, not host implementation failure.",
+  "checkedAt": 1794072318.9085052
+}

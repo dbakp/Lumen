@@ -1,0 +1,37 @@
+{
+  "status": "PASS five focused synthetic host observer/retention checks",
+  "draft": "health-recovery-error-held-r4-driver.py.draft",
+  "draftSHA256": "f82b719fa8ebb9a71260710fa6b3f3bc445f66bdb5c56f084199e9e3056b99d8",
+  "checks": [
+    {
+      "check": "Actual hardlink2-to1 lifecycle accepted after synthetic retired-root removal",
+      "result": "PASS",
+      "observedLinkCounts": [
+        2,
+        1
+      ]
+    },
+    {
+      "check": "Vanished-after-glob directory is safely already gone",
+      "result": "PASS"
+    },
+    {
+      "check": "Expected finite timeout rejects and retains partial observer samples",
+      "result": "PASS",
+      "retainedSamples": 29
+    },
+    {
+      "check": "Exact tree accepts declared files, rejects extra file and empty orphan directory",
+      "result": "PASS"
+    },
+    {
+      "check": "Partial export and missing first attachment preserve original manifest, later payload and independent JSON; final acceptance rejects",
+      "result": "PASS",
+      "recordedErrors": 2
+    }
+  ],
+  "fixtureDirectory": "/tmp/LumenHeldHostDraftSelfChecksR4",
+  "fixtureLogicalBytes": 2715,
+  "scope": "AST-extracted host helper/retention code only, tiny synthetic files and fake exporter. No native producer/module execution, app build, simulator action, screenshot, cancellation or product acceptance.",
+  "checkedAt": 1794072322.252695
+}
