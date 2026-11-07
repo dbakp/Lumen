@@ -11,7 +11,7 @@
 #lumen-plan-progress .detail{display:grid;gap:calc(var(--font-size-base)*.5)}
 @media(max-width:540px){#lumen-plan-progress .road{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
-<div class="heading"><div class="text-small text-muted">LUMEN · 7 NOVEMBER 2026</div><h2>Data confidence and corrections</h2><span>Batch 43 in progress · verified checkpoint on GitHub</span></div>
+<div class="heading"><div class="text-small text-muted">LUMEN · 7 NOVEMBER 2026</div><h2>Data confidence and corrections</h2><span>Photo-failure checks in progress · verified checkpoint on GitHub</span></div>
 <ol class="road" aria-label="Product roadmap; stages differ in scope and effort">
 <li><div class="mark done"></div><span>✓ Foundation</span><span class="text-small">Logs, records, conversations, plans and backups</span></li>
 <li><div class="mark active"></div><span>◉ Reliable daily use</span><span class="text-small">Data confidence, recovery and Health saves</span></li>
@@ -31,6 +31,7 @@
 <div class="viz-row"><span>✓ Opt-in profile and target replacements · 3 / 3 verified</span><span>21 further original screens inspected</span></div>
 <div class="viz-row"><span>Empty-list recovery · 3 / 3 verified</span><span>Older JSON ✓ · encrypted ✓ · readable ✓</span></div>
 <div class="viz-row"><span>Meal photo cases · 6 / 6 verified</span><span>No photos · 3 / 3 verified · two photos · 3 / 3 verified</span></div>
+<div class="viz-row"><span>Missing or damaged photos · 0 / 4 verified</span><span>Test build passed · app checks next</span></div>
 </div>
 <details><summary>Earlier daily-readings design review · 6 / 6 cases</summary><div class="section"><h3>Revised daily-readings wording</h3>
 <div class="viz-row"><span>✓ 6 / 6 native cases passed</span><span>✓ 991 / 991 screenshots inspected</span></div>
@@ -64,16 +65,16 @@
 <tr><td>Explicit zero readings</td><td>Five zeros saved distinctly from 13 missing values</td></tr>
 <tr><td>Stale or replaced snapshot</td><td>Save rejected; newer contents and file identity preserved</td></tr>
 <tr><td>Local food and water</td><td>External totals counted once; exact synthetic-record cleanup</td></tr>
-<tr><td>Logic suite</td><td>2,350 passed on the current Source175 logic build</td></tr>
+<tr><td>Logic suite</td><td>2,350 passed at Source175 · logic unchanged at Source176</td></tr>
 </tbody></table>
 <div class="text-small">Earlier six-file long-wait preservation failure and Banana zero-fat omission remain failed expectations. Final dismissal preserved the immediate newer state.</div></div>
 <hr>
-<div class="viz-row"><span>About 39 GiB available</span><span>1.54 GB recovered in the latest cleanups</span></div>
+<div class="viz-row"><span>About 38 GiB available</span><span>1.56 GB recovered in the latest cleanups</span></div>
 <div class="text-small">Redundant exports and completed test bundles removed after exact GitHub verification · canonical evidence and needed caches retained · no further iPhone actions authorized</div>
 <script>
 (()=>{
 const root=document.getElementById('lumen-plan-progress');
-const snapshot='nov7-source175-photo-matrix-6';
+const snapshot='nov7-source176-photo-fault-0';
 const areas={
 current:{title:'Recovery and import safety · verified',verified:'Three-format recovery, repeat imports and explicit settings replacement passed. All three empty-list cases and all six meal-photo cases passed, preserving healthy water records and differing targets.',next:'Next: missing or damaged photo recovery, safe failure and explicit omission retry.',gate:'Primary simulator, default light appearance. The original test-guard failure remains recorded; full recovery, accessibility and product gates remain open.'},
 quality:{title:'Answer quality · open',verified:'Library search, source identity, consent controls and literal-reference safeguards are delivered.',next:'Next: evidence-support policy and independent evaluation; personal-context and conversation-history privacy review.',gate:'Clinical accuracy, language coverage and live-provider evaluation remain required.'},
