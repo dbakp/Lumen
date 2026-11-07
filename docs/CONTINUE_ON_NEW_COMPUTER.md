@@ -13,7 +13,7 @@ Verified earlier recovery work:
 - Three-format selected recovery of water, meals, workouts and targets: native/host PASS; 53 original screenshots and three native result files reviewed.
 - Three-format ordinary healthy merge/repeat and explicit profile/preferences replacement/repeat: native/host PASS; 21 screenshots and three result files reviewed for each set.
 - Three-format selected empty meals/workouts: native/host PASS; 45 screenshots and three result files reviewed. Existing 137 mL water and conflicting targets (6,543 steps, 88.5 kg, 181 cm, age 42) remain exact. Original Source173 test-guard failure remains recorded.
-- Source175 nonempty-meal photo matrix: **2/6** native/host cases passed (zero-legacy, zero-encrypted); all 32 original screenshots and 2 full native result files reviewed. Complete meals/photo mappings or absence, healthy water/targets/current/prior records, receipts/provider identity/live cleanup/relaunch pass.
+- Source175 nonempty-meal photo matrix: **3/6** native/host cases passed (zero-legacy, zero-encrypted, zero-readable); all 48 original screenshots and 3 full native result files reviewed. Complete meals/photo mappings or absence, healthy water/targets/current/prior records, receipts/provider identity/live cleanup/relaunch pass.
 
 These are **primary dedicated simulator, default light appearance** results. They do not close full appearance, VoiceOver, interruption, device, Release or broader product gates.
 
@@ -27,7 +27,7 @@ The active continuation is the remaining meal-photo matrix cases. Consult these 
 
 1. Finish any active producer identified by the live record; otherwise run the next unaccepted predeclared case. Read the independent host audit, actual native summary and full native JSON; individually open every original screenshot before recording review.
 2. Commit/publish that evidence and byte-compare every checkpoint path against `origin/main` before resetting synthetic data for another case.
-3. Run readable/no-photo, then the three two-distinct-photo cases, one at a time. Use the existing build and driver:
+3. All three no-photo cases are verified. Run the three two-distinct-photo cases one at a time (older JSON, encrypted backup, readable export). Use the existing build and driver:
 
    ```sh
    python3 Design/native/health-write-order/health-file-photo-matrix-driver-r1.py \
