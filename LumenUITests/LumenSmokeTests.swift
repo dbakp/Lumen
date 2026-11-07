@@ -1427,6 +1427,10 @@ final class LumenSmokeTests: XCTestCase {
             reveal(button)
             settleLabFrame(button, pixelTolerance: 1, timeout: 20)
             snap("original-denied-settings-entry")
+        } else if name.contains("RecoveryPhotoFault") && name.contains("Largest") {
+            reveal(button)
+            settleLabFrame(button, pixelTolerance: 1, timeout: 20)
+            snap("photo-fault-largest-settings-entry")
         } else {
             for _ in 0..<28 {
                 if button.exists && button.isHittable { break }
