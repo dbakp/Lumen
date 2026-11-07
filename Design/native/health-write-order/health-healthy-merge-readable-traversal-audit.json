@@ -1,0 +1,13 @@
+{
+  "status": "Static native-test navigation review; no readable runtime failure claimed",
+  "source": "durable-source-r170.json",
+  "finding": "Readable record sections render in Domain.allCases order: meals, workouts, water. The new test currently asks water, meals, workouts; lazy earlier rows may be absent and generic reveal defaults to searching downward.",
+  "nextChange": "Traverse meals, workouts, water before optional preference controls; test-only repair before actual readable execution, after current encrypted170run terminates.",
+  "evidence": [
+    "Lumen/Algorithms/ReadableExport.swift Domain.allCases declaration",
+    "Lumen/Views/ReadableExportView.swift ForEach present record domains",
+    "LumenUITests/LumenSmokeTests.swift reveal default towardsTop false and healthBackupHealthyMerge record loop"
+  ],
+  "bounds": "Production/UI presentation unchanged; legacy/ encrypted do not execute this branch; preserve actual170results and all broader gates.",
+  "checkedAt": 1794045086.3380811
+}
