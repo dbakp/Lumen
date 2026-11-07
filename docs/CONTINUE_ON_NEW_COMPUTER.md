@@ -13,11 +13,11 @@ Verified earlier recovery work:
 - Three-format selected recovery of water, meals, workouts and targets: native/host PASS; 53 original screenshots and three native result files reviewed.
 - Three-format ordinary healthy merge/repeat and explicit profile/preferences replacement/repeat: native/host PASS; 21 screenshots and three result files reviewed for each set.
 - Three-format selected empty meals/workouts: native/host PASS; 45 screenshots and three result files reviewed. Existing 137 mL water and conflicting targets (6,543 steps, 88.5 kg, 181 cm, age 42) remain exact. Original Source173 test-guard failure remains recorded.
-- Source175 nonempty-meal photo matrix: **5/6** native/host cases passed (zero-legacy, zero-encrypted, zero-readable, two-legacy, two-encrypted); all 84 original screenshots and 5 full native result files reviewed. Complete meals/photo mappings or absence, healthy water/targets/current/prior records, receipts/provider identity/live cleanup/relaunch pass.
+- Source175 nonempty-meal photo matrix: **6/6** native/host cases passed (zero-legacy, zero-encrypted, zero-readable, two-legacy, two-encrypted, two-readable); all 100 original screenshots and 6 full native result files reviewed. Complete meals/photo mappings or absence, healthy water/targets/current/prior records, receipts/provider identity/live cleanup/relaunch pass.
 
 These are **primary dedicated simulator, default light appearance** results. They do not close full appearance, VoiceOver, interruption, device, Release or broader product gates.
 
-The active continuation is the remaining meal-photo matrix cases. Consult these exact current records before acting:
+The six-case meal-photo matrix is verified. The active continuation is the predeclared extracted-photo missing/damaged fault and explicit-omission retry work. Consult these exact current records before acting:
 
 - [Live producer](../Design/native/health-write-order/health-photo-matrix-r1-live.json): read its current session/PID/case before acting. Poll the existing handle; if unavailable, inspect the named process, raw log and canonical terminal outcomes. Never restart a completed or still-running worker.
 - [Current progress](../Design/native/health-write-order/durable-progress-r175.json): `status`, `currentCheckpoint`, `photoMatrixCases`, `next`, `activeProducers` and `storage` govern current work. Other inherited milestones are historical; preserve their original source/run boundaries.
@@ -27,16 +27,7 @@ The active continuation is the remaining meal-photo matrix cases. Consult these 
 
 1. Finish any active producer identified by the live record; otherwise run the next unaccepted predeclared case. Read the independent host audit, actual native summary and full native JSON; individually open every original screenshot before recording review.
 2. Commit/publish that evidence and byte-compare every checkpoint path against `origin/main` before resetting synthetic data for another case.
-3. All three no-photo cases are verified. Run the remaining two-distinct-photo cases one at a time, using the current passed-case list to avoid restarting completed runs. Use the existing build and driver:
-
-   ```sh
-   python3 Design/native/health-write-order/health-file-photo-matrix-driver-r1.py \
-     --source durable-source-r175.json \
-     --build health-file-photo-matrix-r1-build.json \
-     --case legacy --mode two --trial R1
-   ```
-
-   Allowed cases: `legacy`, `encrypted`, `readable`; modes: `zero`, `two`. Do not reuse a trial whose raw result bundle already exists. For the two-photo backup cases, inspect both actual decoded pictures and independently verify two fresh mappings to the distinct original JPEG bytes. Readable export must require explicit omission of both photos. Preserve all other current/prior records, original provider identity, receipts and live cleanup/relaunch checks.
+3. The six-case matrix is complete. Follow [the predeclared extracted-photo fault contract](../Design/native/health-write-order/health-photo-resource-fault-r1-contract.json): legacy/encrypted × missing/damaged first extracted JPEG after preview; actual initial failure must preserve current/prior bytes and identity, then explicit omission retry must install complete meal records without photos. Keep the original provider and selected backup exact. Reuse Source175 tiny inputs; freeze Source176 only after all six Source175 cases are backed up. The retry control ordinal is 2, not 1. This scope does not close initially malformed archives or broader fault/appearance requirements.
 4. Continue the remaining full recovery/discovery/legacy/symlink/photo/fault/capacity/interruption/appearance/availability requirements, then the broader AI evidence-support, privacy/provider/accessibility/performance/distribution work. Preserve every original full contract, all eight durable groups, `nextRequired` and `remainingScope`; do not replace an outstanding gate with a narrower convenient test.
 
 ## Product intent and required context

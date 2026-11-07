@@ -1,0 +1,702 @@
+{
+  "source": "durable-source-r175.json",
+  "build": "health-file-photo-matrix-r1-build.json",
+  "checkpoint": {
+    "case": "readable",
+    "originals": {
+      "goals.json": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6NDIsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxODEsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ==",
+      "health-write-intent.json": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiIzNDhFQjZERS01OTBDLTQ5OTAtOUFCMS0xMTBFRThFMDNEODciLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9",
+      "meals.json": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZW1lYWxzIjo=",
+      "profile.json": "eyJzbGVlcE5lZWQiOjI5NDAwLCJzbGVlcE5lZWRDb25maWRlbmNlIjowLjMsImlzU3Vic2NyaWJlZCI6ZmFsc2UsIm9uYm9hcmRpbmdEb25lIjp0cnVlLCJ3YWtlR29hbCI6eyJtaW51dGUiOjAsImhvdXIiOjd9LCJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwibmFtZSI6IlN5bnRoZXRpYyBiYWNrdXAgYmFzZWxpbmUifQ==",
+      "today.json": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDZUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9",
+      "water.json": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwibWwiOjEzN31d",
+      "workouts.json": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZXdvcmtvdXRzIjo="
+    },
+    "scope": "Dedicated small fixture before real normal-Settings Files selection; no HealthKit/background delivery claim",
+    "fixtureProfileBeforeStoreStartup": "eyJzbGVlcE5lZWQiOjI5NDAwLCJzbGVlcE5lZWRDb25maWRlbmNlIjowLjMsImlzU3Vic2NyaWJlZCI6ZmFsc2UsIm9uYm9hcmRpbmdEb25lIjp0cnVlLCJ3YWtlR29hbCI6eyJtaW51dGUiOjAsImhvdXIiOjd9LCJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwibmFtZSI6IlN5bnRoZXRpYyBiYWNrdXAgYmFzZWxpbmUifQ==",
+    "observedBoundary": "Actual normal Settings opens Files before selection"
+  },
+  "before": {
+    "goals.json": {
+      "bytes": 178,
+      "sha256": "142f89cee16338829e91bfe76c5c34ea249afb4bb338d987ee708ada70b4656c",
+      "base64": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6NDIsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxODEsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ=="
+    },
+    "health-write-intent.json": {
+      "bytes": 123,
+      "sha256": "6fbbee1d2833b3f710e13781ea63dea8465d48d4bf99b6f5e70b4ea76c06c670",
+      "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiIzNDhFQjZERS01OTBDLTQ5OTAtOUFCMS0xMTBFRThFMDNEODciLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+    },
+    "meals.json": {
+      "bytes": 29,
+      "sha256": "29630893bbf2b28a8af82b4be6db321e0b8d89c362bf8c47bb697fee439f2e6d",
+      "base64": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZW1lYWxzIjo="
+    },
+    "profile.json": {
+      "bytes": 184,
+      "sha256": "c33a8874d794f8c63b8fb378aa9198617720f333a93c6f64a21d5da1e6ad13ce",
+      "base64": "eyJzbGVlcE5lZWQiOjI5NDAwLCJzbGVlcE5lZWRDb25maWRlbmNlIjowLjMsImlzU3Vic2NyaWJlZCI6ZmFsc2UsIm9uYm9hcmRpbmdEb25lIjp0cnVlLCJ3YWtlR29hbCI6eyJtaW51dGUiOjAsImhvdXIiOjd9LCJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwibmFtZSI6IlN5bnRoZXRpYyBiYWNrdXAgYmFzZWxpbmUifQ=="
+    },
+    "today.json": {
+      "bytes": 123,
+      "sha256": "317a0e832157fe13dc5f54818e7477cf5a0d1e0fa815d822843ec4ff749ee0e8",
+      "base64": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDZUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9"
+    },
+    "water.json": {
+      "bytes": 72,
+      "sha256": "1dc7d921432b620cf0fcd72262f29a4ffe06902fcd4d7e3cb546d370e3908291",
+      "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwibWwiOjEzN31d"
+    },
+    "workouts.json": {
+      "bytes": 32,
+      "sha256": "b8e333df638e682f0e77ffa5df87dfb79f5960039fdcf298fbed9939e6e4e34b",
+      "base64": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZXdvcmtvdXRzIjo="
+    }
+  },
+  "protectedBefore": {
+    "chat.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "conversations.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "workouts.json": {
+      "bytes": 32,
+      "sha256": "b8e333df638e682f0e77ffa5df87dfb79f5960039fdcf298fbed9939e6e4e34b",
+      "base64": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZXdvcmtvdXRzIjo="
+    },
+    "goals.json": {
+      "bytes": 178,
+      "sha256": "142f89cee16338829e91bfe76c5c34ea249afb4bb338d987ee708ada70b4656c",
+      "base64": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6NDIsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxODEsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ=="
+    },
+    "sleep.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "today.json": {
+      "bytes": 123,
+      "sha256": "317a0e832157fe13dc5f54818e7477cf5a0d1e0fa815d822843ec4ff749ee0e8",
+      "base64": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDZUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9"
+    },
+    "meals.json": {
+      "bytes": 29,
+      "sha256": "29630893bbf2b28a8af82b4be6db321e0b8d89c362bf8c47bb697fee439f2e6d",
+      "base64": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZW1lYWxzIjo="
+    },
+    "water.json": {
+      "bytes": 72,
+      "sha256": "1dc7d921432b620cf0fcd72262f29a4ffe06902fcd4d7e3cb546d370e3908291",
+      "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwibWwiOjEzN31d"
+    },
+    "conversation-selection.json": {
+      "bytes": 2,
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "base64": "e30="
+    },
+    "habits.json": {
+      "bytes": 3170,
+      "sha256": "83a4805099522e058cd52116fe579d71d6715218d67ef1cca5cc185b5fff367e",
+      "base64": "W3siaWNvbiI6InN1bi5tYXguZmlsbCIsImlkIjoibGlnaHQiLCJkb25lVG9kYXkiOmZhbHNlLCJpc0VuYWJsZWQiOnRydWUsImRldGFpbCI6IjEwIG1pbiBvZiBkYXlsaWdodCB3aXRoaW4gMzAgbWluIG9mIHdha2luZyBhbmNob3JzIHlvdXIgY2xvY2suIiwidGl0bGUiOiJHZXQgYnJpZ2h0IGxpZ2h0IiwiYW5jaG9yIjoid2FrZVBsdXMiLCJvZmZzZXQiOjE4MDB9LHsiaWNvbiI6ImN1cC5hbmQuc2F1Y2VyLmZpbGwiLCJpZCI6ImNhZmZlaW5lIiwiZG9uZVRvZGF5IjpmYWxzZSwiaXNFbmFibGVkIjp0cnVlLCJkZXRhaWwiOiJObyBjYWZmZWluZSB3aXRoaW4gMTBoIG9mIGJlZCDigJQgaGFsZi1saWZlIGlzIH42aC4iLCJ0aXRsZSI6IkNhZmZlaW5lIGN1dG9mZiIsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsIm9mZnNldCI6MzYwMDB9LHsiaWNvbiI6ImZpZ3VyZS5ydW4iLCJpZCI6ImV4ZXJjaXNlIiwiZG9uZVRvZGF5IjpmYWxzZSwiaXNFbmFibGVkIjp0cnVlLCJkZXRhaWwiOiIyMCsgbWluLiBGaW5pc2ggaW50ZW5zZSB3b3Jrb3V0cyAzaCsgYmVmb3JlIGJlZC4iLCJ0aXRsZSI6Ik1vdmUgeW91ciBib2R5IiwiYW5jaG9yIjoid2FrZVBsdXMiLCJvZmZzZXQiOjIxNjAwfSx7Imljb24iOiJtb29uLnp6ei5maWxsIiwiaWQiOiJuYXAiLCJkb25lVG9kYXkiOmZhbHNlLCJpc0VuYWJsZWQiOnRydWUsImRldGFpbCI6IklmIG5hcHBpbmc6IDIw4oCTMzAgbWluLCBiZWZvcmUgeW91ciBkaXAgZW5kcy4gTm8gbGF0ZSBuYXBzLiIsInRpdGxlIjoiU21hcnQgbmFwIHdpbmRvdyIsImFuY2hvciI6Indha2VQbHVzIiwib2Zmc2V0IjoyNTIwMH0seyJpY29uIjoid2luZWdsYXNzIiwiaWQiOiJhbGNvaG9sIiwiZG9uZVRvZGF5IjpmYWxzZSwiaXNFbmFibGVkIjp0cnVlLCJkZXRhaWwiOiJBbGNvaG9sIGZyYWdtZW50cyBzbGVlcCBldmVuIHdoZW4gaXQgc3BlZWRzIG9uc2V0LiIsInRpdGxlIjoiU2tpcCBuaWdodGNhcCIsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsIm9mZnNldCI6MTQ0MDB9LHsiaWNvbiI6ImZvcmsua25pZmUiLCJpZCI6Im1lYWwiLCJkb25lVG9kYXkiOmZhbHNlLCJpc0VuYWJsZWQiOnRydWUsImRldGFpbCI6IkZpbmlzaCBsYXJnZSBtZWFscyAzaCBiZWZvcmUgYmVkOyBsaWdodCBzbmFjayBPSy4iLCJ0aXRsZSI6Ikxhc3QgYmlnIG1lYWwiLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJvZmZzZXQiOjEwODAwfSx7Imljb24iOiJpcGhvbmUuZ2VuMiIsImlkIjoic2NyZWVucyIsImRvbmVUb2RheSI6ZmFsc2UsImlzRW5hYmxlZCI6dHJ1ZSwiZGV0YWlsIjoiTG93ZXIgYnJpZ2h0bmVzcyArIE5pZ2h0IFNoaWZ0IDJoIGJlZm9yZSBiZWQuIiwidGl0bGUiOiJEaW0gc2NyZWVucyIsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsIm9mZnNldCI6NzIwMH0seyJpY29uIjoibGlnaHRidWxiLmZpbGwiLCJpZCI6ImxpZ2h0cyIsImRvbmVUb2RheSI6ZmFsc2UsImlzRW5hYmxlZCI6dHJ1ZSwiZGV0YWlsIjoiT3ZlcmhlYWQgb2ZmLCBsYW1wcyBsb3cg4oCUIGxpZ2h0IGRlbGF5cyBtZWxhdG9uaW4uIiwidGl0bGUiOiJEaW0gdGhlIGxpZ2h0cyIsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsIm9mZnNldCI6NTQwMH0seyJpY29uIjoid2luZCIsImlkIjoid2luZGRvd24iLCJkb25lVG9kYXkiOmZhbHNlLCJpc0VuYWJsZWQiOnRydWUsImRldGFpbCI6IjIw4oCTMzAgbWluIHJpdHVhbDogc2hvd2VyLCBzdHJldGNoLCByZWFkLCBicmVhdGhlLiIsInRpdGxlIjoiV2luZCBkb3duIiwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwib2Zmc2V0IjoyNzAwfSx7Imljb24iOiJiZWQuZG91YmxlLmZpbGwiLCJpZCI6ImJlZHRpbWUiLCJkb25lVG9kYXkiOmZhbHNlLCJpc0VuYWJsZWQiOnRydWUsImRldGFpbCI6IkhpdCB5b3VyIG1lbGF0b25pbiB3aW5kb3cg4oCUIHRoZSBlYXNpZXN0IGZhbGxpbmctYXNsZWVwLiIsInRpdGxlIjoiSW4gYmVkIG9uIHRpbWUiLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJvZmZzZXQiOjB9LHsiaWNvbiI6InRoZXJtb21ldGVyLnNub3dmbGFrZSIsImlkIjoiY29vbCIsImRvbmVUb2RheSI6ZmFsc2UsImlzRW5hYmxlZCI6dHJ1ZSwiZGV0YWlsIjoiNjXigJM2OMKwRiBcLyAxOOKAkzIwwrBDLCBibGFja291dCBkYXJrLCBxdWlldC4iLCJ0aXRsZSI6IkNvb2wgJiBkYXJrIHJvb20iLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJvZmZzZXQiOjE4MDB9LHsiaWNvbiI6ImFsYXJtLmZpbGwiLCJpZCI6ImNvbnNpc3RlbnQiLCJkb25lVG9kYXkiOmZhbHNlLCJpc0VuYWJsZWQiOnRydWUsImRldGFpbCI6IlNhbWUgd2FrZSDCsTMwIG1pbiDigJQgZXZlbiB3ZWVrZW5kcy4gIzEgcmh5dGhtIGxldmVyLiIsInRpdGxlIjoiQ29uc2lzdGVudCB3YWtlIiwiYW5jaG9yIjoid2FrZVBsdXMiLCJvZmZzZXQiOjB9LHsiaWNvbiI6ImRyb3AuZmlsbCIsImlkIjoiaHlkcmF0aW9uIiwiZG9uZVRvZGF5IjpmYWxzZSwiaXNFbmFibGVkIjp0cnVlLCJkZXRhaWwiOiJXYXRlciArIGxpZ2h0IGJlZm9yZSBjb2ZmZWUgYm9vc3RzIGFsZXJ0bmVzcy4iLCJ0aXRsZSI6Ik1vcm5pbmcgaHlkcmF0aW9uIiwiYW5jaG9yIjoid2FrZVBsdXMiLCJvZmZzZXQiOjMwMH0seyJpY29uIjoicGVuY2lsLmFuZC5saXN0LmNsaXBib2FyZCIsImlkIjoic3RyZXNzIiwiZG9uZVRvZGF5IjpmYWxzZSwiaXNFbmFibGVkIjp0cnVlLCJkZXRhaWwiOiIyLW1pbiB3b3JyeSBsaXN0IGFmdGVyIGRpbm5lciBjbGVhcnMgbmlnaHQgcnVtaW5hdGlvbi4iLCJ0aXRsZSI6IkJyYWluIGR1bXAiLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJvZmZzZXQiOjE4MDAwfSx7Imljb24iOiJzbW9rZS5maWxsIiwiaWQiOiJuaWNvdGluZSIsImRvbmVUb2RheSI6ZmFsc2UsImlzRW5hYmxlZCI6ZmFsc2UsImRldGFpbCI6IlN0aW11bGFudCDigJQgYXZvaWQgd2l0aGluIDRoIG9mIGJlZC4iLCJ0aXRsZSI6Ik5vIGxhdGUgbmljb3RpbmUiLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJvZmZzZXQiOjE0NDAwfSx7Imljb24iOiJzdW5zZXQuZmlsbCIsImlkIjoic3Vuc2V0IiwiZG9uZVRvZGF5IjpmYWxzZSwiaXNFbmFibGVkIjpmYWxzZSwiZGV0YWlsIjoiQSBkdXNrIHdhbGsgc2hhcnBlbnMgRExNTyB0aW1pbmcuIiwidGl0bGUiOiJFdmVuaW5nIGxpZ2h0IHdhbGsiLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJvZmZzZXQiOjE0NDAwfV0="
+    },
+    "profile.json": {
+      "bytes": 184,
+      "sha256": "c33a8874d794f8c63b8fb378aa9198617720f333a93c6f64a21d5da1e6ad13ce",
+      "base64": "eyJzbGVlcE5lZWQiOjI5NDAwLCJzbGVlcE5lZWRDb25maWRlbmNlIjowLjMsImlzU3Vic2NyaWJlZCI6ZmFsc2UsIm9uYm9hcmRpbmdEb25lIjp0cnVlLCJ3YWtlR29hbCI6eyJtaW51dGUiOjAsImhvdXIiOjd9LCJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwibmFtZSI6IlN5bnRoZXRpYyBiYWNrdXAgYmFzZWxpbmUifQ=="
+    },
+    "health-write-intent.json": {
+      "bytes": 123,
+      "sha256": "6fbbee1d2833b3f710e13781ea63dea8465d48d4bf99b6f5e70b4ea76c06c670",
+      "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiIzNDhFQjZERS01OTBDLTQ5OTAtOUFCMS0xMTBFRThFMDNEODciLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+    }
+  },
+  "previousBefore": {
+    "chat.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "conversations.json": {
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "base64": "W10="
+    },
+    "workouts.json": {
+      "bytes": 185,
+      "sha256": "a7e3f55c6c5e75d0b270c1a918742b4424a86bc359c972a3073532184db17f9c",
+      "base64": "W3siYWN0aXZlQ2Fsb3JpZXMiOjM1LCJkdXJhdGlvbiI6OTAwLCJlbmVyZ3lLbm93biI6dHJ1ZSwiaWQiOiJzeW50aGV0aWMtbXVsdGktemVybyIsImtpbmQiOiJzdHJlbmd0aCIsInNvdXJjZSI6Im1hbnVhbCIsInN0YXJ0IjoiMjAyNi0xMS0wMlQxMjowMDowMFoiLCJ0aXRsZSI6IkN1cnJlbnQgZWRpdGVkIHdvcmtvdXQifV0="
+    },
+    "goals.json": {
+      "bytes": 178,
+      "sha256": "142f89cee16338829e91bfe76c5c34ea249afb4bb338d987ee708ada70b4656c",
+      "base64": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6NDIsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxODEsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ=="
+    },
+    "today.json": {
+      "bytes": 123,
+      "sha256": "317a0e832157fe13dc5f54818e7477cf5a0d1e0fa815d822843ec4ff749ee0e8",
+      "base64": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDZUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9"
+    },
+    "meals.json": {
+      "bytes": 144,
+      "sha256": "9eec205ab83ed2466da007aaa29e3f18f8b4b5741f451c529ef7527ead443a68",
+      "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtY3VycmVudC1tZWFsIiwiaXRlbXMiOltdLCJub3RlIjoiS2VlcCB0aGlzIGN1cnJlbnQgbWVhbC4iLCJzb3VyY2UiOiJtYW51YWwiLCJ0eXBlIjoiYnJlYWtmYXN0In1d"
+    },
+    "water.json": {
+      "bytes": 72,
+      "sha256": "1dc7d921432b620cf0fcd72262f29a4ffe06902fcd4d7e3cb546d370e3908291",
+      "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwibWwiOjEzN31d"
+    },
+    "conversation-selection.json": {
+      "bytes": 2,
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "base64": "e30="
+    },
+    "profile.json": {
+      "bytes": 184,
+      "sha256": "233fff496e5b49e10ec22a5f4b94d52c307168dc8c8fac93b4e0c420291b6a2d",
+      "base64": "eyJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwiaXNTdWJzY3JpYmVkIjpmYWxzZSwibmFtZSI6IlN5bnRoZXRpYyBiYWNrdXAgYmFzZWxpbmUiLCJvbmJvYXJkaW5nRG9uZSI6dHJ1ZSwic2xlZXBOZWVkIjoyOTQwMCwic2xlZXBOZWVkQ29uZmlkZW5jZSI6MC4zLCJ3YWtlR29hbCI6eyJob3VyIjo3LCJtaW51dGUiOjB9fQ=="
+    },
+    "health-write-intent.json": {
+      "bytes": 123,
+      "sha256": "6fbbee1d2833b3f710e13781ea63dea8465d48d4bf99b6f5e70b4ea76c06c670",
+      "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiIzNDhFQjZERS01OTBDLTQ5OTAtOUFCMS0xMTBFRThFMDNEODciLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+    }
+  },
+  "preservationBeforeCommit": {
+    "files": {
+      ".health-recovery/C01B1226-D546-40BA-AD39-FFB3256A6164/device-intent.json": {
+        "bytes": 123,
+        "sha256": "6fbbee1d2833b3f710e13781ea63dea8465d48d4bf99b6f5e70b4ea76c06c670",
+        "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiIzNDhFQjZERS01OTBDLTQ5OTAtOUFCMS0xMTBFRThFMDNEODciLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+      },
+      ".health-recovery/C01B1226-D546-40BA-AD39-FFB3256A6164/manifest.json": {
+        "bytes": 108,
+        "sha256": "86878c238760bf6a5fcdd0f1118985322d74ddb27268bfcd79527a434ff277bb",
+        "base64": "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTA3VDExOjQxOjA4WiIsImRvbWFpbnMiOlsibWVhbHMiLCJ3b3Jrb3V0cyJdLCJpbnRlbnQiOnRydWUsInBob3RvcyI6ZmFsc2UsInZlcnNpb24iOjF9"
+      },
+      ".health-recovery/C01B1226-D546-40BA-AD39-FFB3256A6164/meals.json": {
+        "bytes": 144,
+        "sha256": "9eec205ab83ed2466da007aaa29e3f18f8b4b5741f451c529ef7527ead443a68",
+        "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtY3VycmVudC1tZWFsIiwiaXRlbXMiOltdLCJub3RlIjoiS2VlcCB0aGlzIGN1cnJlbnQgbWVhbC4iLCJzb3VyY2UiOiJtYW51YWwiLCJ0eXBlIjoiYnJlYWtmYXN0In1d"
+      },
+      ".health-recovery/C01B1226-D546-40BA-AD39-FFB3256A6164/workouts.json": {
+        "bytes": 185,
+        "sha256": "a7e3f55c6c5e75d0b270c1a918742b4424a86bc359c972a3073532184db17f9c",
+        "base64": "W3siYWN0aXZlQ2Fsb3JpZXMiOjM1LCJkdXJhdGlvbiI6OTAwLCJlbmVyZ3lLbm93biI6dHJ1ZSwiaWQiOiJzeW50aGV0aWMtbXVsdGktemVybyIsImtpbmQiOiJzdHJlbmd0aCIsInNvdXJjZSI6Im1hbnVhbCIsInN0YXJ0IjoiMjAyNi0xMS0wMlQxMjowMDowMFoiLCJ0aXRsZSI6IkN1cnJlbnQgZWRpdGVkIHdvcmtvdXQifV0="
+      }
+    },
+    "manifest": {
+      "createdAt": "2026-11-07T11:41:08Z",
+      "domains": [
+        "meals",
+        "workouts"
+      ],
+      "intent": true,
+      "photos": false,
+      "version": 1
+    },
+    "priorSelectedDomainsAndIntentExact": true
+  },
+  "sourceObservations": [
+    {
+      "directory": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/64E7CF4F-19AE-4A7D-8823-00D2C4683E39/tmp/LumenBackupWork-v1-2322-8B719EE2-7C4C-4763-9B8C-EAAECAF70FE6",
+      "owner": {
+        "version": 1,
+        "pid": 2322,
+        "id": "8B719EE2-7C4C-4763-9B8C-EAAECAF70FE6"
+      },
+      "originalFileName": "Lumen-readable-health-matrix-two.json",
+      "bytes": 1147,
+      "sha256": "469c04224c7d0f1008675ccc9f395caf16e1e363a76d1eb18b9cbeb403af8e32",
+      "observedAfterNativeAttachment": "health-matrix-two-readable-source",
+      "observedAtUnixTime": 1794051534.976948
+    }
+  ],
+  "protocol": {
+    "attempts": [
+      {
+        "nonce": "DEE9C57F-D162-408C-83CF-C547F27B6763",
+        "ordinal": 1,
+        "originals": {
+          "goals.json": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6NDIsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxODEsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ==",
+          "health-write-intent.json": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiIzNDhFQjZERS01OTBDLTQ5OTAtOUFCMS0xMTBFRThFMDNEODciLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9",
+          "meals.json": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZW1lYWxzIjo=",
+          "today.json": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDZUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9",
+          "water.json": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwibWwiOjEzN31d",
+          "workouts.json": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZXdvcmtvdXRzIjo="
+        },
+        "phase": "released",
+        "stage": "LumenData.restore-69E07A70-B2A6-4C39-9FA6-7FA6B8B35D7F",
+        "uiCancelled": false,
+        "workerControlMatchesUI": true
+      }
+    ]
+  },
+  "heldPreparation": {
+    "record": {
+      "nonce": "DEE9C57F-D162-408C-83CF-C547F27B6763",
+      "ordinal": 1,
+      "originals": {
+        "goals.json": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6NDIsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxODEsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ==",
+        "health-write-intent.json": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiIzNDhFQjZERS01OTBDLTQ5OTAtOUFCMS0xMTBFRThFMDNEODciLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9",
+        "meals.json": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZW1lYWxzIjo=",
+        "today.json": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDZUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9",
+        "water.json": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwibWwiOjEzN31d",
+        "workouts.json": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZXdvcmtvdXRzIjo="
+      },
+      "phase": "held",
+      "stage": "LumenData.restore-69E07A70-B2A6-4C39-9FA6-7FA6B8B35D7F",
+      "uiCancelled": false,
+      "workerControlMatchesUI": true
+    },
+    "originalSource": {
+      "directory": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/64E7CF4F-19AE-4A7D-8823-00D2C4683E39/tmp/LumenBackupWork-v1-2322-8B719EE2-7C4C-4763-9B8C-EAAECAF70FE6",
+      "owner": {
+        "version": 1,
+        "pid": 2322,
+        "id": "8B719EE2-7C4C-4763-9B8C-EAAECAF70FE6"
+      },
+      "originalFileName": "Lumen-readable-health-matrix-two.json",
+      "bytes": 1147,
+      "sha256": "469c04224c7d0f1008675ccc9f395caf16e1e363a76d1eb18b9cbeb403af8e32",
+      "observedAfterNativeAttachment": "health-matrix-two-readable-source",
+      "observedAtUnixTime": 1794051534.976948
+    },
+    "ownedWorkspaces": {
+      "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Data/Application/64E7CF4F-19AE-4A7D-8823-00D2C4683E39/tmp/LumenBackupWork-v1-2322-8B719EE2-7C4C-4763-9B8C-EAAECAF70FE6": {
+        "owner": {
+          "version": 1,
+          "pid": 2322,
+          "id": "8B719EE2-7C4C-4763-9B8C-EAAECAF70FE6"
+        },
+        "files": {
+          ".lumen-workspace-owner.json": {
+            "bytes": 68,
+            "sha256": "73da091a61d17fe5789514df18600cdcee25a7268618846a15370d3549e82454",
+            "base64": "eyJ2ZXJzaW9uIjoxLCJwaWQiOjIzMjIsImlkIjoiOEI3MTlFRTItN0M0Qy00NzYzLTlCOEMtRUFBRUNBRjcwRkU2In0="
+          },
+          "selected-backup": {
+            "bytes": 1147,
+            "sha256": "469c04224c7d0f1008675ccc9f395caf16e1e363a76d1eb18b9cbeb403af8e32",
+            "base64": "eyJhcHAiOiJMdW1lbiIsInJlYWRhYmxlVmVyc2lvbiI6MSwiZXhwb3J0ZWRBdCI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwicHJvZmlsZSI6eyJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwiaXNTdWJzY3JpYmVkIjpmYWxzZSwibmFtZSI6IiIsIm9uYm9hcmRpbmdEb25lIjpmYWxzZSwic2xlZXBOZWVkIjoyOTQwMCwic2xlZXBOZWVkQ29uZmlkZW5jZSI6MC4zLCJ3YWtlR29hbCI6eyJob3VyIjo3LCJtaW51dGUiOjB9fSwiZ29hbHMiOnsiYWN0aXZlQ2FsR29hbCI6NjAwLCJhY3Rpdml0eUxldmVsIjoibW9kZXJhdGUiLCJhZ2UiOjMwLCJleGVyY2lzZUdvYWxNaW4iOjMwLCJnb2FsIjoibWFpbnRhaW4iLCJoZWlnaHRDbSI6MTc4LCJzZXgiOiJ1bnNwZWNpZmllZCIsInN0YW5kR29hbCI6MTIsInN0ZXBHb2FsIjoxMDAwMCwid2VpZ2h0S2ciOjc1fSwicGVyc29uYWwtY29udGV4dCI6eyJhbGxlcmdpZXMiOiIiLCJmb2N1cyI6IiIsImZvb2RQcmVmZXJlbmNlcyI6IiIsImluY2x1ZGVJbkFzc2lzdGFudCI6ZmFsc2UsImxpbWl0YXRpb25zIjoiIiwibm90ZXMiOiIiLCJzY2hlZHVsZSI6IiJ9LCJoYWJpdHMiOltdLCJzbGVlcCI6W10sIm1lYWxzIjpbeyJkYXRlIjoiMjAyNi0xMS0wMlQxMjowMDowMFoiLCJpZCI6InN5bnRoZXRpYy1tYXRyaXgtbWVhbC1hIiwiaXRlbXMiOltdLCJub3RlIjoiU3ludGhldGljIGZpcnN0IG1lYWwuIiwicGhvdG9JRCI6InN5bnRoZXRpYy1tYXRyaXgtcGhvdG8tYSIsInNvdXJjZSI6Im1hbnVhbCIsInR5cGUiOiJsdW5jaCJ9LHsiZGF0ZSI6IjIwMjYtMTEtMDJUMTM6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtbWF0cml4LW1lYWwtYiIsIml0ZW1zIjpbXSwibm90ZSI6IlN5bnRoZXRpYyBzZWNvbmQgbWVhbC4iLCJwaG90b0lEIjoic3ludGhldGljLW1hdHJpeC1waG90by1iIiwic291cmNlIjoibWFudWFsIiwidHlwZSI6InNuYWNrIn1dLCJ3b3Jrb3V0cyI6W10sIndhdGVyIjpbeyJkYXRlIjoiMjAyNi0xMS0wMlQxMjowMDowMFoiLCJpZCI6InN5bnRoZXRpYy1tYXRyaXgtd2F0ZXIiLCJtbCI6MjQ2fV0sImNvbnZlcnNhdGlvbnMiOltdLCJzeW1wdG9tcyI6W10sImNoZWNrLWlucyI6W10sImRvY3VtZW50cyI6W10sImltcG9ydGVkLWRheXMiOltdLCJpbXBvcnQtcmVjZWlwdHMiOltdfQ=="
+          }
+        },
+        "directories": [
+          "."
+        ]
+      }
+    },
+    "stage": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Shared/AppGroup/E300DD24-B5D1-4A6A-BF1B-E66173E3428B/LumenData.restore-69E07A70-B2A6-4C39-9FA6-7FA6B8B35D7F",
+    "stageInitiallyEmpty": true,
+    "protectedBefore": {
+      "chat.json": {
+        "bytes": 2,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "base64": "W10="
+      },
+      "conversations.json": {
+        "bytes": 2,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "base64": "W10="
+      },
+      "workouts.json": {
+        "bytes": 32,
+        "sha256": "b8e333df638e682f0e77ffa5df87dfb79f5960039fdcf298fbed9939e6e4e34b",
+        "base64": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZXdvcmtvdXRzIjo="
+      },
+      "goals.json": {
+        "bytes": 178,
+        "sha256": "142f89cee16338829e91bfe76c5c34ea249afb4bb338d987ee708ada70b4656c",
+        "base64": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6NDIsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxODEsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ=="
+      },
+      "sleep.json": {
+        "bytes": 2,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "base64": "W10="
+      },
+      "today.json": {
+        "bytes": 123,
+        "sha256": "317a0e832157fe13dc5f54818e7477cf5a0d1e0fa815d822843ec4ff749ee0e8",
+        "base64": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDZUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9"
+      },
+      "meals.json": {
+        "bytes": 29,
+        "sha256": "29630893bbf2b28a8af82b4be6db321e0b8d89c362bf8c47bb697fee439f2e6d",
+        "base64": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZW1lYWxzIjo="
+      },
+      "water.json": {
+        "bytes": 72,
+        "sha256": "1dc7d921432b620cf0fcd72262f29a4ffe06902fcd4d7e3cb546d370e3908291",
+        "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwibWwiOjEzN31d"
+      },
+      "conversation-selection.json": {
+        "bytes": 2,
+        "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "base64": "e30="
+      },
+      "habits.json": {
+        "bytes": 3170,
+        "sha256": "83a4805099522e058cd52116fe579d71d6715218d67ef1cca5cc185b5fff367e",
+        "base64": "W3siaWNvbiI6InN1bi5tYXguZmlsbCIsImlkIjoibGlnaHQiLCJkb25lVG9kYXkiOmZhbHNlLCJpc0VuYWJsZWQiOnRydWUsImRldGFpbCI6IjEwIG1pbiBvZiBkYXlsaWdodCB3aXRoaW4gMzAgbWluIG9mIHdha2luZyBhbmNob3JzIHlvdXIgY2xvY2suIiwidGl0bGUiOiJHZXQgYnJpZ2h0IGxpZ2h0IiwiYW5jaG9yIjoid2FrZVBsdXMiLCJvZmZzZXQiOjE4MDB9LHsiaWNvbiI6ImN1cC5hbmQuc2F1Y2VyLmZpbGwiLCJpZCI6ImNhZmZlaW5lIiwiZG9uZVRvZGF5IjpmYWxzZSwiaXNFbmFibGVkIjp0cnVlLCJkZXRhaWwiOiJObyBjYWZmZWluZSB3aXRoaW4gMTBoIG9mIGJlZCDigJQgaGFsZi1saWZlIGlzIH42aC4iLCJ0aXRsZSI6IkNhZmZlaW5lIGN1dG9mZiIsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsIm9mZnNldCI6MzYwMDB9LHsiaWNvbiI6ImZpZ3VyZS5ydW4iLCJpZCI6ImV4ZXJjaXNlIiwiZG9uZVRvZGF5IjpmYWxzZSwiaXNFbmFibGVkIjp0cnVlLCJkZXRhaWwiOiIyMCsgbWluLiBGaW5pc2ggaW50ZW5zZSB3b3Jrb3V0cyAzaCsgYmVmb3JlIGJlZC4iLCJ0aXRsZSI6Ik1vdmUgeW91ciBib2R5IiwiYW5jaG9yIjoid2FrZVBsdXMiLCJvZmZzZXQiOjIxNjAwfSx7Imljb24iOiJtb29uLnp6ei5maWxsIiwiaWQiOiJuYXAiLCJkb25lVG9kYXkiOmZhbHNlLCJpc0VuYWJsZWQiOnRydWUsImRldGFpbCI6IklmIG5hcHBpbmc6IDIw4oCTMzAgbWluLCBiZWZvcmUgeW91ciBkaXAgZW5kcy4gTm8gbGF0ZSBuYXBzLiIsInRpdGxlIjoiU21hcnQgbmFwIHdpbmRvdyIsImFuY2hvciI6Indha2VQbHVzIiwib2Zmc2V0IjoyNTIwMH0seyJpY29uIjoid2luZWdsYXNzIiwiaWQiOiJhbGNvaG9sIiwiZG9uZVRvZGF5IjpmYWxzZSwiaXNFbmFibGVkIjp0cnVlLCJkZXRhaWwiOiJBbGNvaG9sIGZyYWdtZW50cyBzbGVlcCBldmVuIHdoZW4gaXQgc3BlZWRzIG9uc2V0LiIsInRpdGxlIjoiU2tpcCBuaWdodGNhcCIsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsIm9mZnNldCI6MTQ0MDB9LHsiaWNvbiI6ImZvcmsua25pZmUiLCJpZCI6Im1lYWwiLCJkb25lVG9kYXkiOmZhbHNlLCJpc0VuYWJsZWQiOnRydWUsImRldGFpbCI6IkZpbmlzaCBsYXJnZSBtZWFscyAzaCBiZWZvcmUgYmVkOyBsaWdodCBzbmFjayBPSy4iLCJ0aXRsZSI6Ikxhc3QgYmlnIG1lYWwiLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJvZmZzZXQiOjEwODAwfSx7Imljb24iOiJpcGhvbmUuZ2VuMiIsImlkIjoic2NyZWVucyIsImRvbmVUb2RheSI6ZmFsc2UsImlzRW5hYmxlZCI6dHJ1ZSwiZGV0YWlsIjoiTG93ZXIgYnJpZ2h0bmVzcyArIE5pZ2h0IFNoaWZ0IDJoIGJlZm9yZSBiZWQuIiwidGl0bGUiOiJEaW0gc2NyZWVucyIsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsIm9mZnNldCI6NzIwMH0seyJpY29uIjoibGlnaHRidWxiLmZpbGwiLCJpZCI6ImxpZ2h0cyIsImRvbmVUb2RheSI6ZmFsc2UsImlzRW5hYmxlZCI6dHJ1ZSwiZGV0YWlsIjoiT3ZlcmhlYWQgb2ZmLCBsYW1wcyBsb3cg4oCUIGxpZ2h0IGRlbGF5cyBtZWxhdG9uaW4uIiwidGl0bGUiOiJEaW0gdGhlIGxpZ2h0cyIsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsIm9mZnNldCI6NTQwMH0seyJpY29uIjoid2luZCIsImlkIjoid2luZGRvd24iLCJkb25lVG9kYXkiOmZhbHNlLCJpc0VuYWJsZWQiOnRydWUsImRldGFpbCI6IjIw4oCTMzAgbWluIHJpdHVhbDogc2hvd2VyLCBzdHJldGNoLCByZWFkLCBicmVhdGhlLiIsInRpdGxlIjoiV2luZCBkb3duIiwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwib2Zmc2V0IjoyNzAwfSx7Imljb24iOiJiZWQuZG91YmxlLmZpbGwiLCJpZCI6ImJlZHRpbWUiLCJkb25lVG9kYXkiOmZhbHNlLCJpc0VuYWJsZWQiOnRydWUsImRldGFpbCI6IkhpdCB5b3VyIG1lbGF0b25pbiB3aW5kb3cg4oCUIHRoZSBlYXNpZXN0IGZhbGxpbmctYXNsZWVwLiIsInRpdGxlIjoiSW4gYmVkIG9uIHRpbWUiLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJvZmZzZXQiOjB9LHsiaWNvbiI6InRoZXJtb21ldGVyLnNub3dmbGFrZSIsImlkIjoiY29vbCIsImRvbmVUb2RheSI6ZmFsc2UsImlzRW5hYmxlZCI6dHJ1ZSwiZGV0YWlsIjoiNjXigJM2OMKwRiBcLyAxOOKAkzIwwrBDLCBibGFja291dCBkYXJrLCBxdWlldC4iLCJ0aXRsZSI6IkNvb2wgJiBkYXJrIHJvb20iLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJvZmZzZXQiOjE4MDB9LHsiaWNvbiI6ImFsYXJtLmZpbGwiLCJpZCI6ImNvbnNpc3RlbnQiLCJkb25lVG9kYXkiOmZhbHNlLCJpc0VuYWJsZWQiOnRydWUsImRldGFpbCI6IlNhbWUgd2FrZSDCsTMwIG1pbiDigJQgZXZlbiB3ZWVrZW5kcy4gIzEgcmh5dGhtIGxldmVyLiIsInRpdGxlIjoiQ29uc2lzdGVudCB3YWtlIiwiYW5jaG9yIjoid2FrZVBsdXMiLCJvZmZzZXQiOjB9LHsiaWNvbiI6ImRyb3AuZmlsbCIsImlkIjoiaHlkcmF0aW9uIiwiZG9uZVRvZGF5IjpmYWxzZSwiaXNFbmFibGVkIjp0cnVlLCJkZXRhaWwiOiJXYXRlciArIGxpZ2h0IGJlZm9yZSBjb2ZmZWUgYm9vc3RzIGFsZXJ0bmVzcy4iLCJ0aXRsZSI6Ik1vcm5pbmcgaHlkcmF0aW9uIiwiYW5jaG9yIjoid2FrZVBsdXMiLCJvZmZzZXQiOjMwMH0seyJpY29uIjoicGVuY2lsLmFuZC5saXN0LmNsaXBib2FyZCIsImlkIjoic3RyZXNzIiwiZG9uZVRvZGF5IjpmYWxzZSwiaXNFbmFibGVkIjp0cnVlLCJkZXRhaWwiOiIyLW1pbiB3b3JyeSBsaXN0IGFmdGVyIGRpbm5lciBjbGVhcnMgbmlnaHQgcnVtaW5hdGlvbi4iLCJ0aXRsZSI6IkJyYWluIGR1bXAiLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJvZmZzZXQiOjE4MDAwfSx7Imljb24iOiJzbW9rZS5maWxsIiwiaWQiOiJuaWNvdGluZSIsImRvbmVUb2RheSI6ZmFsc2UsImlzRW5hYmxlZCI6ZmFsc2UsImRldGFpbCI6IlN0aW11bGFudCDigJQgYXZvaWQgd2l0aGluIDRoIG9mIGJlZC4iLCJ0aXRsZSI6Ik5vIGxhdGUgbmljb3RpbmUiLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJvZmZzZXQiOjE0NDAwfSx7Imljb24iOiJzdW5zZXQuZmlsbCIsImlkIjoic3Vuc2V0IiwiZG9uZVRvZGF5IjpmYWxzZSwiaXNFbmFibGVkIjpmYWxzZSwiZGV0YWlsIjoiQSBkdXNrIHdhbGsgc2hhcnBlbnMgRExNTyB0aW1pbmcuIiwidGl0bGUiOiJFdmVuaW5nIGxpZ2h0IHdhbGsiLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJvZmZzZXQiOjE0NDAwfV0="
+      },
+      "profile.json": {
+        "bytes": 184,
+        "sha256": "c33a8874d794f8c63b8fb378aa9198617720f333a93c6f64a21d5da1e6ad13ce",
+        "base64": "eyJzbGVlcE5lZWQiOjI5NDAwLCJzbGVlcE5lZWRDb25maWRlbmNlIjowLjMsImlzU3Vic2NyaWJlZCI6ZmFsc2UsIm9uYm9hcmRpbmdEb25lIjp0cnVlLCJ3YWtlR29hbCI6eyJtaW51dGUiOjAsImhvdXIiOjd9LCJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwibmFtZSI6IlN5bnRoZXRpYyBiYWNrdXAgYmFzZWxpbmUifQ=="
+      },
+      "health-write-intent.json": {
+        "bytes": 123,
+        "sha256": "6fbbee1d2833b3f710e13781ea63dea8465d48d4bf99b6f5e70b4ea76c06c670",
+        "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiIzNDhFQjZERS01OTBDLTQ5OTAtOUFCMS0xMTBFRThFMDNEODciLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+      }
+    },
+    "priorSnapshot": {
+      "chat.json": {
+        "bytes": 2,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "base64": "W10="
+      },
+      "conversations.json": {
+        "bytes": 2,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "base64": "W10="
+      },
+      "workouts.json": {
+        "bytes": 185,
+        "sha256": "a7e3f55c6c5e75d0b270c1a918742b4424a86bc359c972a3073532184db17f9c",
+        "base64": "W3siYWN0aXZlQ2Fsb3JpZXMiOjM1LCJkdXJhdGlvbiI6OTAwLCJlbmVyZ3lLbm93biI6dHJ1ZSwiaWQiOiJzeW50aGV0aWMtbXVsdGktemVybyIsImtpbmQiOiJzdHJlbmd0aCIsInNvdXJjZSI6Im1hbnVhbCIsInN0YXJ0IjoiMjAyNi0xMS0wMlQxMjowMDowMFoiLCJ0aXRsZSI6IkN1cnJlbnQgZWRpdGVkIHdvcmtvdXQifV0="
+      },
+      "goals.json": {
+        "bytes": 178,
+        "sha256": "142f89cee16338829e91bfe76c5c34ea249afb4bb338d987ee708ada70b4656c",
+        "base64": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6NDIsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxODEsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ=="
+      },
+      "today.json": {
+        "bytes": 123,
+        "sha256": "317a0e832157fe13dc5f54818e7477cf5a0d1e0fa815d822843ec4ff749ee0e8",
+        "base64": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDZUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9"
+      },
+      "meals.json": {
+        "bytes": 144,
+        "sha256": "9eec205ab83ed2466da007aaa29e3f18f8b4b5741f451c529ef7527ead443a68",
+        "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtY3VycmVudC1tZWFsIiwiaXRlbXMiOltdLCJub3RlIjoiS2VlcCB0aGlzIGN1cnJlbnQgbWVhbC4iLCJzb3VyY2UiOiJtYW51YWwiLCJ0eXBlIjoiYnJlYWtmYXN0In1d"
+      },
+      "water.json": {
+        "bytes": 72,
+        "sha256": "1dc7d921432b620cf0fcd72262f29a4ffe06902fcd4d7e3cb546d370e3908291",
+        "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwibWwiOjEzN31d"
+      },
+      "conversation-selection.json": {
+        "bytes": 2,
+        "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "base64": "e30="
+      },
+      "profile.json": {
+        "bytes": 184,
+        "sha256": "233fff496e5b49e10ec22a5f4b94d52c307168dc8c8fac93b4e0c420291b6a2d",
+        "base64": "eyJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwiaXNTdWJzY3JpYmVkIjpmYWxzZSwibmFtZSI6IlN5bnRoZXRpYyBiYWNrdXAgYmFzZWxpbmUiLCJvbmJvYXJkaW5nRG9uZSI6dHJ1ZSwic2xlZXBOZWVkIjoyOTQwMCwic2xlZXBOZWVkQ29uZmlkZW5jZSI6MC4zLCJ3YWtlR29hbCI6eyJob3VyIjo3LCJtaW51dGUiOjB9fQ=="
+      },
+      "health-write-intent.json": {
+        "bytes": 123,
+        "sha256": "6fbbee1d2833b3f710e13781ea63dea8465d48d4bf99b6f5e70b4ea76c06c670",
+        "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiIzNDhFQjZERS01OTBDLTQ5OTAtOUFCMS0xMTBFRThFMDNEODciLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+      }
+    },
+    "preservation": {
+      "files": {
+        ".health-recovery/C01B1226-D546-40BA-AD39-FFB3256A6164/device-intent.json": {
+          "bytes": 123,
+          "sha256": "6fbbee1d2833b3f710e13781ea63dea8465d48d4bf99b6f5e70b4ea76c06c670",
+          "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiIzNDhFQjZERS01OTBDLTQ5OTAtOUFCMS0xMTBFRThFMDNEODciLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+        },
+        ".health-recovery/C01B1226-D546-40BA-AD39-FFB3256A6164/manifest.json": {
+          "bytes": 108,
+          "sha256": "86878c238760bf6a5fcdd0f1118985322d74ddb27268bfcd79527a434ff277bb",
+          "base64": "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTA3VDExOjQxOjA4WiIsImRvbWFpbnMiOlsibWVhbHMiLCJ3b3Jrb3V0cyJdLCJpbnRlbnQiOnRydWUsInBob3RvcyI6ZmFsc2UsInZlcnNpb24iOjF9"
+        },
+        ".health-recovery/C01B1226-D546-40BA-AD39-FFB3256A6164/meals.json": {
+          "bytes": 144,
+          "sha256": "9eec205ab83ed2466da007aaa29e3f18f8b4b5741f451c529ef7527ead443a68",
+          "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtY3VycmVudC1tZWFsIiwiaXRlbXMiOltdLCJub3RlIjoiS2VlcCB0aGlzIGN1cnJlbnQgbWVhbC4iLCJzb3VyY2UiOiJtYW51YWwiLCJ0eXBlIjoiYnJlYWtmYXN0In1d"
+        },
+        ".health-recovery/C01B1226-D546-40BA-AD39-FFB3256A6164/workouts.json": {
+          "bytes": 185,
+          "sha256": "a7e3f55c6c5e75d0b270c1a918742b4424a86bc359c972a3073532184db17f9c",
+          "base64": "W3siYWN0aXZlQ2Fsb3JpZXMiOjM1LCJkdXJhdGlvbiI6OTAwLCJlbmVyZ3lLbm93biI6dHJ1ZSwiaWQiOiJzeW50aGV0aWMtbXVsdGktemVybyIsImtpbmQiOiJzdHJlbmd0aCIsInNvdXJjZSI6Im1hbnVhbCIsInN0YXJ0IjoiMjAyNi0xMS0wMlQxMjowMDowMFoiLCJ0aXRsZSI6IkN1cnJlbnQgZWRpdGVkIHdvcmtvdXQifV0="
+        }
+      },
+      "manifest": {
+        "createdAt": "2026-11-07T11:41:08Z",
+        "domains": [
+          "meals",
+          "workouts"
+        ],
+        "intent": true,
+        "photos": false,
+        "version": 1
+      },
+      "priorSelectedDomainsAndIntentExact": true
+    },
+    "observedAfterNativeAttachment": "health-matrix-two-readable-held-1"
+  },
+  "releasedPreparation": {
+    "afterNativeObservedAttachment": true,
+    "sameActualControl": true,
+    "allProtectedBytesExact": true,
+    "allOriginalWorkspacesExact": true
+  },
+  "success": {
+    "treeAfterCommit": {
+      "chat.json": {
+        "bytes": 2,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "base64": "W10="
+      },
+      "conversations.json": {
+        "bytes": 2,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "base64": "W10="
+      },
+      "workouts.json": {
+        "bytes": 2,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "base64": "W10="
+      },
+      "goals.json": {
+        "bytes": 178,
+        "sha256": "142f89cee16338829e91bfe76c5c34ea249afb4bb338d987ee708ada70b4656c",
+        "base64": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6NDIsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxODEsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ=="
+      },
+      "sleep.json": {
+        "bytes": 2,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "base64": "W10="
+      },
+      "today.json": {
+        "bytes": 123,
+        "sha256": "317a0e832157fe13dc5f54818e7477cf5a0d1e0fa815d822843ec4ff749ee0e8",
+        "base64": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDZUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9"
+      },
+      "meals.json": {
+        "bytes": 278,
+        "sha256": "06b19fec51451d8b32215449e69b77e8ec04c484d69ea8721167dd021f3805a8",
+        "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtbWF0cml4LW1lYWwtYSIsIml0ZW1zIjpbXSwibm90ZSI6IlN5bnRoZXRpYyBmaXJzdCBtZWFsLiIsInNvdXJjZSI6Im1hbnVhbCIsInR5cGUiOiJsdW5jaCJ9LHsiZGF0ZSI6IjIwMjYtMTEtMDJUMTM6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtbWF0cml4LW1lYWwtYiIsIml0ZW1zIjpbXSwibm90ZSI6IlN5bnRoZXRpYyBzZWNvbmQgbWVhbC4iLCJzb3VyY2UiOiJtYW51YWwiLCJ0eXBlIjoic25hY2sifV0="
+      },
+      "water.json": {
+        "bytes": 72,
+        "sha256": "1dc7d921432b620cf0fcd72262f29a4ffe06902fcd4d7e3cb546d370e3908291",
+        "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwibWwiOjEzN31d"
+      },
+      "conversation-selection.json": {
+        "bytes": 2,
+        "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "base64": "e30="
+      },
+      "habits.json": {
+        "bytes": 3170,
+        "sha256": "83a4805099522e058cd52116fe579d71d6715218d67ef1cca5cc185b5fff367e",
+        "base64": "W3siaWNvbiI6InN1bi5tYXguZmlsbCIsImlkIjoibGlnaHQiLCJkb25lVG9kYXkiOmZhbHNlLCJpc0VuYWJsZWQiOnRydWUsImRldGFpbCI6IjEwIG1pbiBvZiBkYXlsaWdodCB3aXRoaW4gMzAgbWluIG9mIHdha2luZyBhbmNob3JzIHlvdXIgY2xvY2suIiwidGl0bGUiOiJHZXQgYnJpZ2h0IGxpZ2h0IiwiYW5jaG9yIjoid2FrZVBsdXMiLCJvZmZzZXQiOjE4MDB9LHsiaWNvbiI6ImN1cC5hbmQuc2F1Y2VyLmZpbGwiLCJpZCI6ImNhZmZlaW5lIiwiZG9uZVRvZGF5IjpmYWxzZSwiaXNFbmFibGVkIjp0cnVlLCJkZXRhaWwiOiJObyBjYWZmZWluZSB3aXRoaW4gMTBoIG9mIGJlZCDigJQgaGFsZi1saWZlIGlzIH42aC4iLCJ0aXRsZSI6IkNhZmZlaW5lIGN1dG9mZiIsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsIm9mZnNldCI6MzYwMDB9LHsiaWNvbiI6ImZpZ3VyZS5ydW4iLCJpZCI6ImV4ZXJjaXNlIiwiZG9uZVRvZGF5IjpmYWxzZSwiaXNFbmFibGVkIjp0cnVlLCJkZXRhaWwiOiIyMCsgbWluLiBGaW5pc2ggaW50ZW5zZSB3b3Jrb3V0cyAzaCsgYmVmb3JlIGJlZC4iLCJ0aXRsZSI6Ik1vdmUgeW91ciBib2R5IiwiYW5jaG9yIjoid2FrZVBsdXMiLCJvZmZzZXQiOjIxNjAwfSx7Imljb24iOiJtb29uLnp6ei5maWxsIiwiaWQiOiJuYXAiLCJkb25lVG9kYXkiOmZhbHNlLCJpc0VuYWJsZWQiOnRydWUsImRldGFpbCI6IklmIG5hcHBpbmc6IDIw4oCTMzAgbWluLCBiZWZvcmUgeW91ciBkaXAgZW5kcy4gTm8gbGF0ZSBuYXBzLiIsInRpdGxlIjoiU21hcnQgbmFwIHdpbmRvdyIsImFuY2hvciI6Indha2VQbHVzIiwib2Zmc2V0IjoyNTIwMH0seyJpY29uIjoid2luZWdsYXNzIiwiaWQiOiJhbGNvaG9sIiwiZG9uZVRvZGF5IjpmYWxzZSwiaXNFbmFibGVkIjp0cnVlLCJkZXRhaWwiOiJBbGNvaG9sIGZyYWdtZW50cyBzbGVlcCBldmVuIHdoZW4gaXQgc3BlZWRzIG9uc2V0LiIsInRpdGxlIjoiU2tpcCBuaWdodGNhcCIsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsIm9mZnNldCI6MTQ0MDB9LHsiaWNvbiI6ImZvcmsua25pZmUiLCJpZCI6Im1lYWwiLCJkb25lVG9kYXkiOmZhbHNlLCJpc0VuYWJsZWQiOnRydWUsImRldGFpbCI6IkZpbmlzaCBsYXJnZSBtZWFscyAzaCBiZWZvcmUgYmVkOyBsaWdodCBzbmFjayBPSy4iLCJ0aXRsZSI6Ikxhc3QgYmlnIG1lYWwiLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJvZmZzZXQiOjEwODAwfSx7Imljb24iOiJpcGhvbmUuZ2VuMiIsImlkIjoic2NyZWVucyIsImRvbmVUb2RheSI6ZmFsc2UsImlzRW5hYmxlZCI6dHJ1ZSwiZGV0YWlsIjoiTG93ZXIgYnJpZ2h0bmVzcyArIE5pZ2h0IFNoaWZ0IDJoIGJlZm9yZSBiZWQuIiwidGl0bGUiOiJEaW0gc2NyZWVucyIsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsIm9mZnNldCI6NzIwMH0seyJpY29uIjoibGlnaHRidWxiLmZpbGwiLCJpZCI6ImxpZ2h0cyIsImRvbmVUb2RheSI6ZmFsc2UsImlzRW5hYmxlZCI6dHJ1ZSwiZGV0YWlsIjoiT3ZlcmhlYWQgb2ZmLCBsYW1wcyBsb3cg4oCUIGxpZ2h0IGRlbGF5cyBtZWxhdG9uaW4uIiwidGl0bGUiOiJEaW0gdGhlIGxpZ2h0cyIsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsIm9mZnNldCI6NTQwMH0seyJpY29uIjoid2luZCIsImlkIjoid2luZGRvd24iLCJkb25lVG9kYXkiOmZhbHNlLCJpc0VuYWJsZWQiOnRydWUsImRldGFpbCI6IjIw4oCTMzAgbWluIHJpdHVhbDogc2hvd2VyLCBzdHJldGNoLCByZWFkLCBicmVhdGhlLiIsInRpdGxlIjoiV2luZCBkb3duIiwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwib2Zmc2V0IjoyNzAwfSx7Imljb24iOiJiZWQuZG91YmxlLmZpbGwiLCJpZCI6ImJlZHRpbWUiLCJkb25lVG9kYXkiOmZhbHNlLCJpc0VuYWJsZWQiOnRydWUsImRldGFpbCI6IkhpdCB5b3VyIG1lbGF0b25pbiB3aW5kb3cg4oCUIHRoZSBlYXNpZXN0IGZhbGxpbmctYXNsZWVwLiIsInRpdGxlIjoiSW4gYmVkIG9uIHRpbWUiLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJvZmZzZXQiOjB9LHsiaWNvbiI6InRoZXJtb21ldGVyLnNub3dmbGFrZSIsImlkIjoiY29vbCIsImRvbmVUb2RheSI6ZmFsc2UsImlzRW5hYmxlZCI6dHJ1ZSwiZGV0YWlsIjoiNjXigJM2OMKwRiBcLyAxOOKAkzIwwrBDLCBibGFja291dCBkYXJrLCBxdWlldC4iLCJ0aXRsZSI6IkNvb2wgJiBkYXJrIHJvb20iLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJvZmZzZXQiOjE4MDB9LHsiaWNvbiI6ImFsYXJtLmZpbGwiLCJpZCI6ImNvbnNpc3RlbnQiLCJkb25lVG9kYXkiOmZhbHNlLCJpc0VuYWJsZWQiOnRydWUsImRldGFpbCI6IlNhbWUgd2FrZSDCsTMwIG1pbiDigJQgZXZlbiB3ZWVrZW5kcy4gIzEgcmh5dGhtIGxldmVyLiIsInRpdGxlIjoiQ29uc2lzdGVudCB3YWtlIiwiYW5jaG9yIjoid2FrZVBsdXMiLCJvZmZzZXQiOjB9LHsiaWNvbiI6ImRyb3AuZmlsbCIsImlkIjoiaHlkcmF0aW9uIiwiZG9uZVRvZGF5IjpmYWxzZSwiaXNFbmFibGVkIjp0cnVlLCJkZXRhaWwiOiJXYXRlciArIGxpZ2h0IGJlZm9yZSBjb2ZmZWUgYm9vc3RzIGFsZXJ0bmVzcy4iLCJ0aXRsZSI6Ik1vcm5pbmcgaHlkcmF0aW9uIiwiYW5jaG9yIjoid2FrZVBsdXMiLCJvZmZzZXQiOjMwMH0seyJpY29uIjoicGVuY2lsLmFuZC5saXN0LmNsaXBib2FyZCIsImlkIjoic3RyZXNzIiwiZG9uZVRvZGF5IjpmYWxzZSwiaXNFbmFibGVkIjp0cnVlLCJkZXRhaWwiOiIyLW1pbiB3b3JyeSBsaXN0IGFmdGVyIGRpbm5lciBjbGVhcnMgbmlnaHQgcnVtaW5hdGlvbi4iLCJ0aXRsZSI6IkJyYWluIGR1bXAiLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJvZmZzZXQiOjE4MDAwfSx7Imljb24iOiJzbW9rZS5maWxsIiwiaWQiOiJuaWNvdGluZSIsImRvbmVUb2RheSI6ZmFsc2UsImlzRW5hYmxlZCI6ZmFsc2UsImRldGFpbCI6IlN0aW11bGFudCDigJQgYXZvaWQgd2l0aGluIDRoIG9mIGJlZC4iLCJ0aXRsZSI6Ik5vIGxhdGUgbmljb3RpbmUiLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJvZmZzZXQiOjE0NDAwfSx7Imljb24iOiJzdW5zZXQuZmlsbCIsImlkIjoic3Vuc2V0IiwiZG9uZVRvZGF5IjpmYWxzZSwiaXNFbmFibGVkIjpmYWxzZSwiZGV0YWlsIjoiQSBkdXNrIHdhbGsgc2hhcnBlbnMgRExNTyB0aW1pbmcuIiwidGl0bGUiOiJFdmVuaW5nIGxpZ2h0IHdhbGsiLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJvZmZzZXQiOjE0NDAwfV0="
+      },
+      "profile.json": {
+        "bytes": 184,
+        "sha256": "c33a8874d794f8c63b8fb378aa9198617720f333a93c6f64a21d5da1e6ad13ce",
+        "base64": "eyJzbGVlcE5lZWQiOjI5NDAwLCJzbGVlcE5lZWRDb25maWRlbmNlIjowLjMsImlzU3Vic2NyaWJlZCI6ZmFsc2UsIm9uYm9hcmRpbmdEb25lIjp0cnVlLCJ3YWtlR29hbCI6eyJtaW51dGUiOjAsImhvdXIiOjd9LCJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwibmFtZSI6IlN5bnRoZXRpYyBiYWNrdXAgYmFzZWxpbmUifQ=="
+      },
+      "health-write-intent.json": {
+        "bytes": 123,
+        "sha256": "cf29d6d23b871f7d2f104ad65a4b6fa3b39b2813c61ef72fe49676bd62092608",
+        "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiJDNTQzMDUwNS0zNzlGLTQ3RjMtODREQy1DMDBEN0QxRDFCMzciLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+      },
+      ".health-recovery-history/092F306C-40DC-4663-8973-984F40D0A04B.json": {
+        "bytes": 585,
+        "sha256": "b1a4ae9dde9f0d8c4f7d06933b6ce027a57599a433010a85df1d01b068a777f8",
+        "base64": "eyJkb21haW5zIjpbIm1lYWxzIiwid29ya291dHMiXSwiZmlsZVNvdXJjZSI6eyJieXRlQ291bnQiOjExNDcsImZpbGVOYW1lIjoiTHVtZW4tcmVhZGFibGUtaGVhbHRoLW1hdHJpeC10d28uanNvbiIsImZvcm1hdCI6InJlYWRhYmxlRXhwb3J0Iiwic2hhMjU2IjoiNDY5YzA0MjI0YzdkMGYxMDA4Njc1Y2NjOWYzOTVjYWYxNmUxZTM2M2E3NmQxZWIxOGI5Y2JlYjQwM2FmOGUzMiJ9LCJvbWl0dGVkUGhvdG9Db3VudCI6MiwicGhvdG9EaWdlc3RzIjp7fSwicmVjb3JkRGlnZXN0cyI6eyJtZWFscy5qc29uIjoiMDZiMTlmZWM1MTQ1MWQ4YjMyMjE1NDQ5ZTY5Yjc3ZThlYzA0YzQ4NGQ2OWVhODcyMTE2N2RkMDIxZjM4MDVhOCIsIndvcmtvdXRzLmpzb24iOiI0ZjUzY2RhMThjMmJhYTBjMDM1NGJiNWY5YTNlY2JlNWVkMTJhYjRkOGUxMWJhODczYzJmMTExNjEyMDJiOTQ1In0sInJlY292ZXJlZEF0IjoiMjAyNi0xMS0wN1QxMTo0MTowOFoiLCJyZXZpZXdlZFBob3RvcyI6e30sInNvdXJjZSI6InNlbGVjdGVkLWZpbGU6NDY5YzA0MjI0YzdkMGYxMDA4Njc1Y2NjOWYzOTVjYWYxNmUxZTM2M2E3NmQxZWIxOGI5Y2JlYjQwM2FmOGUzMiJ9"
+      },
+      ".health-recovery/C01B1226-D546-40BA-AD39-FFB3256A6164/workouts.json": {
+        "bytes": 185,
+        "sha256": "a7e3f55c6c5e75d0b270c1a918742b4424a86bc359c972a3073532184db17f9c",
+        "base64": "W3siYWN0aXZlQ2Fsb3JpZXMiOjM1LCJkdXJhdGlvbiI6OTAwLCJlbmVyZ3lLbm93biI6dHJ1ZSwiaWQiOiJzeW50aGV0aWMtbXVsdGktemVybyIsImtpbmQiOiJzdHJlbmd0aCIsInNvdXJjZSI6Im1hbnVhbCIsInN0YXJ0IjoiMjAyNi0xMS0wMlQxMjowMDowMFoiLCJ0aXRsZSI6IkN1cnJlbnQgZWRpdGVkIHdvcmtvdXQifV0="
+      },
+      ".health-recovery/C01B1226-D546-40BA-AD39-FFB3256A6164/device-intent.json": {
+        "bytes": 123,
+        "sha256": "6fbbee1d2833b3f710e13781ea63dea8465d48d4bf99b6f5e70b4ea76c06c670",
+        "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiIzNDhFQjZERS01OTBDLTQ5OTAtOUFCMS0xMTBFRThFMDNEODciLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+      },
+      ".health-recovery/C01B1226-D546-40BA-AD39-FFB3256A6164/meals.json": {
+        "bytes": 144,
+        "sha256": "9eec205ab83ed2466da007aaa29e3f18f8b4b5741f451c529ef7527ead443a68",
+        "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtY3VycmVudC1tZWFsIiwiaXRlbXMiOltdLCJub3RlIjoiS2VlcCB0aGlzIGN1cnJlbnQgbWVhbC4iLCJzb3VyY2UiOiJtYW51YWwiLCJ0eXBlIjoiYnJlYWtmYXN0In1d"
+      },
+      ".health-recovery/C01B1226-D546-40BA-AD39-FFB3256A6164/manifest.json": {
+        "bytes": 108,
+        "sha256": "86878c238760bf6a5fcdd0f1118985322d74ddb27268bfcd79527a434ff277bb",
+        "base64": "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTA3VDExOjQxOjA4WiIsImRvbWFpbnMiOlsibWVhbHMiLCJ3b3Jrb3V0cyJdLCJpbnRlbnQiOnRydWUsInBob3RvcyI6ZmFsc2UsInZlcnNpb24iOjF9"
+      },
+      ".health-recovery/AEE3D05A-B0E2-497C-AAED-432AFD9D066B/workouts.json": {
+        "bytes": 32,
+        "sha256": "b8e333df638e682f0e77ffa5df87dfb79f5960039fdcf298fbed9939e6e4e34b",
+        "base64": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZXdvcmtvdXRzIjo="
+      },
+      ".health-recovery/AEE3D05A-B0E2-497C-AAED-432AFD9D066B/device-intent.json": {
+        "bytes": 123,
+        "sha256": "6fbbee1d2833b3f710e13781ea63dea8465d48d4bf99b6f5e70b4ea76c06c670",
+        "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiIzNDhFQjZERS01OTBDLTQ5OTAtOUFCMS0xMTBFRThFMDNEODciLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+      },
+      ".health-recovery/AEE3D05A-B0E2-497C-AAED-432AFD9D066B/meals.json": {
+        "bytes": 29,
+        "sha256": "29630893bbf2b28a8af82b4be6db321e0b8d89c362bf8c47bb697fee439f2e6d",
+        "base64": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZW1lYWxzIjo="
+      },
+      ".health-recovery/AEE3D05A-B0E2-497C-AAED-432AFD9D066B/manifest.json": {
+        "bytes": 108,
+        "sha256": "f54e9746ae878a7079f5a8e2183d3e66688f33bb7c99ebb8797595db314ed1f1",
+        "base64": "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTA3VDExOjQxOjEyWiIsImRvbWFpbnMiOlsibWVhbHMiLCJ3b3Jrb3V0cyJdLCJpbnRlbnQiOnRydWUsInBob3RvcyI6ZmFsc2UsInZlcnNpb24iOjF9"
+      }
+    },
+    "receipt": {
+      "domains": [
+        "meals",
+        "workouts"
+      ],
+      "fileSource": {
+        "byteCount": 1147,
+        "fileName": "Lumen-readable-health-matrix-two.json",
+        "format": "readableExport",
+        "sha256": "469c04224c7d0f1008675ccc9f395caf16e1e363a76d1eb18b9cbeb403af8e32"
+      },
+      "omittedPhotoCount": 2,
+      "photoDigests": {},
+      "recordDigests": {
+        "meals.json": "06b19fec51451d8b32215449e69b77e8ec04c484d69ea8721167dd021f3805a8",
+        "workouts.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "recoveredAt": "2026-11-07T11:41:08Z",
+      "reviewedPhotos": {},
+      "source": "selected-file:469c04224c7d0f1008675ccc9f395caf16e1e363a76d1eb18b9cbeb403af8e32"
+    },
+    "observedAfterNativeAttachment": "health-matrix-two-readable-success"
+  },
+  "finalCleanup": {
+    "ownedRootsAbsent": true,
+    "stageAbsent": true,
+    "liveNoOpenPaths": "p2322\nfcwd\nn/\nftxt\nn/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Bundle/Application/76045B8B-2915-463D-8843-59D0A0D7CF07/Lumen.app/Lumen\nftxt\nn/private/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/com.dbakp.lumen/5EB12947-5927-4434-8E84-9064C86BDBA7-1584-0000266608FF3BF2/BEB67858-7DF2-4496-9D70-57FC33EFDE9D-2322.profraw\nftxt\nn/usr/lib/system/libsystem_kernel.dylib\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/usr/lib/dyld_sim\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/usr/lib/libMainThreadChecker.dylib\nftxt\nn/usr/lib/system/libsystem_platform.dylib\nftxt\nn/usr/lib/system/libsystem_pthread.dylib\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/PrivateFrameworks/CoreUI.framework/DesignLibrary-iOS.bundle/iOSRepositories/LightStandard.car\nftxt\nn/usr/lib/dyld\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/usr/lib/libobjc-trampolines.dylib\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/usr/lib/libRPAC.dylib\nftxt\nn/private/var/db/timezone/tz/2026d.1.0/icutz/icutz44l.dat\nftxt\nn/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Bundle/Application/76045B8B-2915-463D-8843-59D0A0D7CF07/Lumen.app/Assets.car\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/PrivateFrameworks/AutomationMode.framework/AutomationMode\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/Developer/Library/PrivateFrameworks/XCTestSupport.framework/XCTestSupport\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/LinguisticData/en/US/hyphenation.dat\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/Developer/Library/PrivateFrameworks/XCTAutomationSupport.framework/XCTAutomationSupport\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/PrivateFrameworks/DTXConnectionServices.framework/DTXConnectionServices\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/StoreKitFramework.axbundle/StoreKitFramework\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/usr/share/icu/icudt78l.dat\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/PrivateFrameworks/AccessibilityAudit.framework/AccessibilityAudit\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/IntentsUI.axbundle/IntentsUI\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/RealityKit.axbundle/RealityKit\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/GeoServices.axbundle/GeoServices\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/CameraEditKitFramework.axbundle/CameraEditKitFramework\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/AuthenticationServices.axbundle/AuthenticationServices\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/PrivateFrameworks/UIUnderstanding.framework/UIUnderstanding\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/LinkPresentation.axbundle/LinkPresentation\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/VisionKitCore.axbundle/VisionKitCore\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/MapKitFramework.axbundle/MapKitFramework\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/FrontBoard.axbundle/FrontBoard\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/QuickLook.axbundle/QuickLook\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/ARKit.axbundle/ARKit\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/PrintKitUI.axbundle/PrintKitUI\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/FeedbackCore.axbundle/FeedbackCore\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/AssistantServices.axbundle/AssistantServices\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/MobileSafariFramework.axbundle/MobileSafariFramework\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/SpriteKit.axbundle/SpriteKit\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/iTunesStoreFramework.axbundle/iTunesStoreFramework\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/TemplateKit.axbundle/TemplateKit\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebKit.axbundle/WebKit\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/BaseBoardUI.axbundle/BaseBoardUI\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/SafariServices.axbundle/SafariServices\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/ProxCardKit.axbundle/ProxCardKit\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/PrivateFrameworks/SFSymbols.framework/CoreGlyphs.bundle/Assets.car\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/Fonts/Core/SFUI.ttf\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/MapKitSwiftUI.axbundle/MapKitSwiftUI\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/TelephonyUIFramework.axbundle/TelephonyUIFramework\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/SafariSharedUI.axbundle/SafariSharedUI\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/MediaPlayerFramework.axbundle/MediaPlayerFramework\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebKitLegacy.axbundle/WebKitLegacy\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/PhotoLibraryServices.axbundle/PhotoLibraryServices\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/PhotosFramework.axbundle/PhotosFramework\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/SearchFoundation.axbundle/SearchFoundation\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/RealityFoundation.axbundle/RealityFoundation\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/HelpKit.axbundle/HelpKit\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/DocumentManager.axbundle/DocumentManager\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebCore.axbundle/WebCore\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/SpringBoardFoundation.axbundle/SpringBoardFoundation\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/SceneKit.axbundle/SceneKit\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/SiriUICore.axbundle/SiriUICore\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebUI.axbundle/WebUI\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/CoverSheetKit.axbundle/CoverSheetKit\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/SocialLayer.axbundle/SocialLayer\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/SharedWithYouFramework.axbundle/SharedWithYouFramework\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/PhotoLibraryFramework.axbundle/PhotoLibraryFramework\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/SocialFramework.axbundle/SocialFramework\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/AnnotationKit.axbundle/AnnotationKit\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/Frameworks/FileProvider.framework/OverrideBundles/FileProviderOverride.bundle/FileProviderOverride\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/Frameworks/FileProvider.framework/OverrideBundles/iCloudDriveFileProviderOverride.bundle/iCloudDriveFileProviderOverride\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/PrivateFrameworks/SFSymbols.framework/CoreGlyphsPrivate.bundle/Assets.car\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/PrivateFrameworks/UIKitCore.framework/Artwork.bundle/Assets.car\nftxt\nn/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/var/db/lsd/com.apple.LaunchServices-33554481-v2.csstore\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/usr/share/langid/langid.inv\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/Caches/com.apple.dyld/dyld_sim_shared_cache_arm64\nftxt\nn/private/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.XJm8r8/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/System/Library/Caches/com.apple.dyld/dyld_sim_shared_cache_arm64.01\nf0\nn/dev/null\nf1\nn/dev/ttys001\nf2\nn/dev/ttys001\nf3\nn->0x9495038c7ea74b37\nf5\nn/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/var/run/memory_warning_simulation\nf9\nn/System/Volumes/Preboot/Cryptexes/OS\n",
+    "hostDeletedWorkspace": false,
+    "treeAtParentBeforeRelaunch": {
+      "chat.json": {
+        "bytes": 2,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "base64": "W10="
+      },
+      "conversations.json": {
+        "bytes": 2,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "base64": "W10="
+      },
+      "workouts.json": {
+        "bytes": 2,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "base64": "W10="
+      },
+      "goals.json": {
+        "bytes": 178,
+        "sha256": "142f89cee16338829e91bfe76c5c34ea249afb4bb338d987ee708ada70b4656c",
+        "base64": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6NDIsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxODEsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ=="
+      },
+      "sleep.json": {
+        "bytes": 2,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "base64": "W10="
+      },
+      "today.json": {
+        "bytes": 123,
+        "sha256": "317a0e832157fe13dc5f54818e7477cf5a0d1e0fa815d822843ec4ff749ee0e8",
+        "base64": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDZUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9"
+      },
+      "meals.json": {
+        "bytes": 278,
+        "sha256": "06b19fec51451d8b32215449e69b77e8ec04c484d69ea8721167dd021f3805a8",
+        "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtbWF0cml4LW1lYWwtYSIsIml0ZW1zIjpbXSwibm90ZSI6IlN5bnRoZXRpYyBmaXJzdCBtZWFsLiIsInNvdXJjZSI6Im1hbnVhbCIsInR5cGUiOiJsdW5jaCJ9LHsiZGF0ZSI6IjIwMjYtMTEtMDJUMTM6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtbWF0cml4LW1lYWwtYiIsIml0ZW1zIjpbXSwibm90ZSI6IlN5bnRoZXRpYyBzZWNvbmQgbWVhbC4iLCJzb3VyY2UiOiJtYW51YWwiLCJ0eXBlIjoic25hY2sifV0="
+      },
+      "water.json": {
+        "bytes": 72,
+        "sha256": "1dc7d921432b620cf0fcd72262f29a4ffe06902fcd4d7e3cb546d370e3908291",
+        "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwibWwiOjEzN31d"
+      },
+      "conversation-selection.json": {
+        "bytes": 2,
+        "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "base64": "e30="
+      },
+      "habits.json": {
+        "bytes": 3170,
+        "sha256": "83a4805099522e058cd52116fe579d71d6715218d67ef1cca5cc185b5fff367e",
+        "base64": "W3siaWNvbiI6InN1bi5tYXguZmlsbCIsImlkIjoibGlnaHQiLCJkb25lVG9kYXkiOmZhbHNlLCJpc0VuYWJsZWQiOnRydWUsImRldGFpbCI6IjEwIG1pbiBvZiBkYXlsaWdodCB3aXRoaW4gMzAgbWluIG9mIHdha2luZyBhbmNob3JzIHlvdXIgY2xvY2suIiwidGl0bGUiOiJHZXQgYnJpZ2h0IGxpZ2h0IiwiYW5jaG9yIjoid2FrZVBsdXMiLCJvZmZzZXQiOjE4MDB9LHsiaWNvbiI6ImN1cC5hbmQuc2F1Y2VyLmZpbGwiLCJpZCI6ImNhZmZlaW5lIiwiZG9uZVRvZGF5IjpmYWxzZSwiaXNFbmFibGVkIjp0cnVlLCJkZXRhaWwiOiJObyBjYWZmZWluZSB3aXRoaW4gMTBoIG9mIGJlZCDigJQgaGFsZi1saWZlIGlzIH42aC4iLCJ0aXRsZSI6IkNhZmZlaW5lIGN1dG9mZiIsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsIm9mZnNldCI6MzYwMDB9LHsiaWNvbiI6ImZpZ3VyZS5ydW4iLCJpZCI6ImV4ZXJjaXNlIiwiZG9uZVRvZGF5IjpmYWxzZSwiaXNFbmFibGVkIjp0cnVlLCJkZXRhaWwiOiIyMCsgbWluLiBGaW5pc2ggaW50ZW5zZSB3b3Jrb3V0cyAzaCsgYmVmb3JlIGJlZC4iLCJ0aXRsZSI6Ik1vdmUgeW91ciBib2R5IiwiYW5jaG9yIjoid2FrZVBsdXMiLCJvZmZzZXQiOjIxNjAwfSx7Imljb24iOiJtb29uLnp6ei5maWxsIiwiaWQiOiJuYXAiLCJkb25lVG9kYXkiOmZhbHNlLCJpc0VuYWJsZWQiOnRydWUsImRldGFpbCI6IklmIG5hcHBpbmc6IDIw4oCTMzAgbWluLCBiZWZvcmUgeW91ciBkaXAgZW5kcy4gTm8gbGF0ZSBuYXBzLiIsInRpdGxlIjoiU21hcnQgbmFwIHdpbmRvdyIsImFuY2hvciI6Indha2VQbHVzIiwib2Zmc2V0IjoyNTIwMH0seyJpY29uIjoid2luZWdsYXNzIiwiaWQiOiJhbGNvaG9sIiwiZG9uZVRvZGF5IjpmYWxzZSwiaXNFbmFibGVkIjp0cnVlLCJkZXRhaWwiOiJBbGNvaG9sIGZyYWdtZW50cyBzbGVlcCBldmVuIHdoZW4gaXQgc3BlZWRzIG9uc2V0LiIsInRpdGxlIjoiU2tpcCBuaWdodGNhcCIsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsIm9mZnNldCI6MTQ0MDB9LHsiaWNvbiI6ImZvcmsua25pZmUiLCJpZCI6Im1lYWwiLCJkb25lVG9kYXkiOmZhbHNlLCJpc0VuYWJsZWQiOnRydWUsImRldGFpbCI6IkZpbmlzaCBsYXJnZSBtZWFscyAzaCBiZWZvcmUgYmVkOyBsaWdodCBzbmFjayBPSy4iLCJ0aXRsZSI6Ikxhc3QgYmlnIG1lYWwiLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJvZmZzZXQiOjEwODAwfSx7Imljb24iOiJpcGhvbmUuZ2VuMiIsImlkIjoic2NyZWVucyIsImRvbmVUb2RheSI6ZmFsc2UsImlzRW5hYmxlZCI6dHJ1ZSwiZGV0YWlsIjoiTG93ZXIgYnJpZ2h0bmVzcyArIE5pZ2h0IFNoaWZ0IDJoIGJlZm9yZSBiZWQuIiwidGl0bGUiOiJEaW0gc2NyZWVucyIsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsIm9mZnNldCI6NzIwMH0seyJpY29uIjoibGlnaHRidWxiLmZpbGwiLCJpZCI6ImxpZ2h0cyIsImRvbmVUb2RheSI6ZmFsc2UsImlzRW5hYmxlZCI6dHJ1ZSwiZGV0YWlsIjoiT3ZlcmhlYWQgb2ZmLCBsYW1wcyBsb3cg4oCUIGxpZ2h0IGRlbGF5cyBtZWxhdG9uaW4uIiwidGl0bGUiOiJEaW0gdGhlIGxpZ2h0cyIsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsIm9mZnNldCI6NTQwMH0seyJpY29uIjoid2luZCIsImlkIjoid2luZGRvd24iLCJkb25lVG9kYXkiOmZhbHNlLCJpc0VuYWJsZWQiOnRydWUsImRldGFpbCI6IjIw4oCTMzAgbWluIHJpdHVhbDogc2hvd2VyLCBzdHJldGNoLCByZWFkLCBicmVhdGhlLiIsInRpdGxlIjoiV2luZCBkb3duIiwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwib2Zmc2V0IjoyNzAwfSx7Imljb24iOiJiZWQuZG91YmxlLmZpbGwiLCJpZCI6ImJlZHRpbWUiLCJkb25lVG9kYXkiOmZhbHNlLCJpc0VuYWJsZWQiOnRydWUsImRldGFpbCI6IkhpdCB5b3VyIG1lbGF0b25pbiB3aW5kb3cg4oCUIHRoZSBlYXNpZXN0IGZhbGxpbmctYXNsZWVwLiIsInRpdGxlIjoiSW4gYmVkIG9uIHRpbWUiLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJvZmZzZXQiOjB9LHsiaWNvbiI6InRoZXJtb21ldGVyLnNub3dmbGFrZSIsImlkIjoiY29vbCIsImRvbmVUb2RheSI6ZmFsc2UsImlzRW5hYmxlZCI6dHJ1ZSwiZGV0YWlsIjoiNjXigJM2OMKwRiBcLyAxOOKAkzIwwrBDLCBibGFja291dCBkYXJrLCBxdWlldC4iLCJ0aXRsZSI6IkNvb2wgJiBkYXJrIHJvb20iLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJvZmZzZXQiOjE4MDB9LHsiaWNvbiI6ImFsYXJtLmZpbGwiLCJpZCI6ImNvbnNpc3RlbnQiLCJkb25lVG9kYXkiOmZhbHNlLCJpc0VuYWJsZWQiOnRydWUsImRldGFpbCI6IlNhbWUgd2FrZSDCsTMwIG1pbiDigJQgZXZlbiB3ZWVrZW5kcy4gIzEgcmh5dGhtIGxldmVyLiIsInRpdGxlIjoiQ29uc2lzdGVudCB3YWtlIiwiYW5jaG9yIjoid2FrZVBsdXMiLCJvZmZzZXQiOjB9LHsiaWNvbiI6ImRyb3AuZmlsbCIsImlkIjoiaHlkcmF0aW9uIiwiZG9uZVRvZGF5IjpmYWxzZSwiaXNFbmFibGVkIjp0cnVlLCJkZXRhaWwiOiJXYXRlciArIGxpZ2h0IGJlZm9yZSBjb2ZmZWUgYm9vc3RzIGFsZXJ0bmVzcy4iLCJ0aXRsZSI6Ik1vcm5pbmcgaHlkcmF0aW9uIiwiYW5jaG9yIjoid2FrZVBsdXMiLCJvZmZzZXQiOjMwMH0seyJpY29uIjoicGVuY2lsLmFuZC5saXN0LmNsaXBib2FyZCIsImlkIjoic3RyZXNzIiwiZG9uZVRvZGF5IjpmYWxzZSwiaXNFbmFibGVkIjp0cnVlLCJkZXRhaWwiOiIyLW1pbiB3b3JyeSBsaXN0IGFmdGVyIGRpbm5lciBjbGVhcnMgbmlnaHQgcnVtaW5hdGlvbi4iLCJ0aXRsZSI6IkJyYWluIGR1bXAiLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJvZmZzZXQiOjE4MDAwfSx7Imljb24iOiJzbW9rZS5maWxsIiwiaWQiOiJuaWNvdGluZSIsImRvbmVUb2RheSI6ZmFsc2UsImlzRW5hYmxlZCI6ZmFsc2UsImRldGFpbCI6IlN0aW11bGFudCDigJQgYXZvaWQgd2l0aGluIDRoIG9mIGJlZC4iLCJ0aXRsZSI6Ik5vIGxhdGUgbmljb3RpbmUiLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJvZmZzZXQiOjE0NDAwfSx7Imljb24iOiJzdW5zZXQuZmlsbCIsImlkIjoic3Vuc2V0IiwiZG9uZVRvZGF5IjpmYWxzZSwiaXNFbmFibGVkIjpmYWxzZSwiZGV0YWlsIjoiQSBkdXNrIHdhbGsgc2hhcnBlbnMgRExNTyB0aW1pbmcuIiwidGl0bGUiOiJFdmVuaW5nIGxpZ2h0IHdhbGsiLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJvZmZzZXQiOjE0NDAwfV0="
+      },
+      "profile.json": {
+        "bytes": 184,
+        "sha256": "c33a8874d794f8c63b8fb378aa9198617720f333a93c6f64a21d5da1e6ad13ce",
+        "base64": "eyJzbGVlcE5lZWQiOjI5NDAwLCJzbGVlcE5lZWRDb25maWRlbmNlIjowLjMsImlzU3Vic2NyaWJlZCI6ZmFsc2UsIm9uYm9hcmRpbmdEb25lIjp0cnVlLCJ3YWtlR29hbCI6eyJtaW51dGUiOjAsImhvdXIiOjd9LCJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwibmFtZSI6IlN5bnRoZXRpYyBiYWNrdXAgYmFzZWxpbmUifQ=="
+      },
+      "health-write-intent.json": {
+        "bytes": 123,
+        "sha256": "cf29d6d23b871f7d2f104ad65a4b6fa3b39b2813c61ef72fe49676bd62092608",
+        "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiJDNTQzMDUwNS0zNzlGLTQ3RjMtODREQy1DMDBEN0QxRDFCMzciLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+      },
+      ".health-recovery-history/092F306C-40DC-4663-8973-984F40D0A04B.json": {
+        "bytes": 585,
+        "sha256": "b1a4ae9dde9f0d8c4f7d06933b6ce027a57599a433010a85df1d01b068a777f8",
+        "base64": "eyJkb21haW5zIjpbIm1lYWxzIiwid29ya291dHMiXSwiZmlsZVNvdXJjZSI6eyJieXRlQ291bnQiOjExNDcsImZpbGVOYW1lIjoiTHVtZW4tcmVhZGFibGUtaGVhbHRoLW1hdHJpeC10d28uanNvbiIsImZvcm1hdCI6InJlYWRhYmxlRXhwb3J0Iiwic2hhMjU2IjoiNDY5YzA0MjI0YzdkMGYxMDA4Njc1Y2NjOWYzOTVjYWYxNmUxZTM2M2E3NmQxZWIxOGI5Y2JlYjQwM2FmOGUzMiJ9LCJvbWl0dGVkUGhvdG9Db3VudCI6MiwicGhvdG9EaWdlc3RzIjp7fSwicmVjb3JkRGlnZXN0cyI6eyJtZWFscy5qc29uIjoiMDZiMTlmZWM1MTQ1MWQ4YjMyMjE1NDQ5ZTY5Yjc3ZThlYzA0YzQ4NGQ2OWVhODcyMTE2N2RkMDIxZjM4MDVhOCIsIndvcmtvdXRzLmpzb24iOiI0ZjUzY2RhMThjMmJhYTBjMDM1NGJiNWY5YTNlY2JlNWVkMTJhYjRkOGUxMWJhODczYzJmMTExNjEyMDJiOTQ1In0sInJlY292ZXJlZEF0IjoiMjAyNi0xMS0wN1QxMTo0MTowOFoiLCJyZXZpZXdlZFBob3RvcyI6e30sInNvdXJjZSI6InNlbGVjdGVkLWZpbGU6NDY5YzA0MjI0YzdkMGYxMDA4Njc1Y2NjOWYzOTVjYWYxNmUxZTM2M2E3NmQxZWIxOGI5Y2JlYjQwM2FmOGUzMiJ9"
+      },
+      ".health-recovery/C01B1226-D546-40BA-AD39-FFB3256A6164/workouts.json": {
+        "bytes": 185,
+        "sha256": "a7e3f55c6c5e75d0b270c1a918742b4424a86bc359c972a3073532184db17f9c",
+        "base64": "W3siYWN0aXZlQ2Fsb3JpZXMiOjM1LCJkdXJhdGlvbiI6OTAwLCJlbmVyZ3lLbm93biI6dHJ1ZSwiaWQiOiJzeW50aGV0aWMtbXVsdGktemVybyIsImtpbmQiOiJzdHJlbmd0aCIsInNvdXJjZSI6Im1hbnVhbCIsInN0YXJ0IjoiMjAyNi0xMS0wMlQxMjowMDowMFoiLCJ0aXRsZSI6IkN1cnJlbnQgZWRpdGVkIHdvcmtvdXQifV0="
+      },
+      ".health-recovery/C01B1226-D546-40BA-AD39-FFB3256A6164/device-intent.json": {
+        "bytes": 123,
+        "sha256": "6fbbee1d2833b3f710e13781ea63dea8465d48d4bf99b6f5e70b4ea76c06c670",
+        "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiIzNDhFQjZERS01OTBDLTQ5OTAtOUFCMS0xMTBFRThFMDNEODciLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+      },
+      ".health-recovery/C01B1226-D546-40BA-AD39-FFB3256A6164/meals.json": {
+        "bytes": 144,
+        "sha256": "9eec205ab83ed2466da007aaa29e3f18f8b4b5741f451c529ef7527ead443a68",
+        "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtY3VycmVudC1tZWFsIiwiaXRlbXMiOltdLCJub3RlIjoiS2VlcCB0aGlzIGN1cnJlbnQgbWVhbC4iLCJzb3VyY2UiOiJtYW51YWwiLCJ0eXBlIjoiYnJlYWtmYXN0In1d"
+      },
+      ".health-recovery/C01B1226-D546-40BA-AD39-FFB3256A6164/manifest.json": {
+        "bytes": 108,
+        "sha256": "86878c238760bf6a5fcdd0f1118985322d74ddb27268bfcd79527a434ff277bb",
+        "base64": "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTA3VDExOjQxOjA4WiIsImRvbWFpbnMiOlsibWVhbHMiLCJ3b3Jrb3V0cyJdLCJpbnRlbnQiOnRydWUsInBob3RvcyI6ZmFsc2UsInZlcnNpb24iOjF9"
+      },
+      ".health-recovery/AEE3D05A-B0E2-497C-AAED-432AFD9D066B/workouts.json": {
+        "bytes": 32,
+        "sha256": "b8e333df638e682f0e77ffa5df87dfb79f5960039fdcf298fbed9939e6e4e34b",
+        "base64": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZXdvcmtvdXRzIjo="
+      },
+      ".health-recovery/AEE3D05A-B0E2-497C-AAED-432AFD9D066B/device-intent.json": {
+        "bytes": 123,
+        "sha256": "6fbbee1d2833b3f710e13781ea63dea8465d48d4bf99b6f5e70b4ea76c06c670",
+        "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiIzNDhFQjZERS01OTBDLTQ5OTAtOUFCMS0xMTBFRThFMDNEODciLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9"
+      },
+      ".health-recovery/AEE3D05A-B0E2-497C-AAED-432AFD9D066B/meals.json": {
+        "bytes": 29,
+        "sha256": "29630893bbf2b28a8af82b4be6db321e0b8d89c362bf8c47bb697fee439f2e6d",
+        "base64": "eyJzeW50aGV0aWNVbmF2YWlsYWJsZW1lYWxzIjo="
+      },
+      ".health-recovery/AEE3D05A-B0E2-497C-AAED-432AFD9D066B/manifest.json": {
+        "bytes": 108,
+        "sha256": "f54e9746ae878a7079f5a8e2183d3e66688f33bb7c99ebb8797595db314ed1f1",
+        "base64": "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTA3VDExOjQxOjEyWiIsImRvbWFpbnMiOlsibWVhbHMiLCJ3b3Jrb3V0cyJdLCJpbnRlbnQiOnRydWUsInBob3RvcyI6ZmFsc2UsInZlcnNpb24iOjF9"
+      }
+    },
+    "observedAfterNativeAttachment": "health-matrix-two-readable-parent",
+    "timingScope": "3s host observation guard after parent screenshot, not tap-to-delete latency"
+  },
+  "hostFailure": null,
+  "producerPID": 1584,
+  "producerExitCode": 0
+}
