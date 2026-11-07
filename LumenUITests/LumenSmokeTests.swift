@@ -5158,7 +5158,7 @@ final class LumenSmokeTests: XCTestCase {
     func testHealthBackupFileRecoveryPhotoFaultMissingEncryptedDark() throws { try healthBackupPhotoFault("encrypted", fault: "missing") }
     func testHealthBackupFileRecoveryPhotoFaultMissingEncryptedLargest() throws { try healthBackupPhotoFault("encrypted", fault: "missing") }
     private func healthBackupPhotoFault(_ kind: String, fault: String) throws {
-        executionTimeAllowance = 600
+        executionTimeAllowance = name.contains("Largest") ? 900 : 600
         let base = "Lumen-backup-health-matrix-two-" + kind
         let prefix = "health-photo-fault-" + fault + "-" + kind
         do {
@@ -5234,8 +5234,14 @@ final class LumenSmokeTests: XCTestCase {
             Thread.sleep(forTimeInterval: 3)
             if name.contains("Largest") {
                 let consequences = app.staticTexts["Replaced files stay in a private copy on this iPhone. For meal recovery, this includes any old photos."].firstMatch
-                reveal(consequences, towardsTop: true)
-                captureIdentifierText(consequences, through: confirm, prefix: prefix + "-failure-content-" + String(attempt))
+                let pendingHealth = app.staticTexts["Recovered entries won't be added to Apple Health. Earlier pending Health saves won't restart; pending removals can finish."].firstMatch
+                // Native Form virtualizes distant rows at accessibility sizes.
+                // Cover each actual row before revealing the next one, rather
+                // than requiring both ends of the whole section to exist.
+                for (row, element) in [consequences, pendingHealth, failure, confirm].enumerated() {
+                    reveal(element, towardsTop: row == 0)
+                    captureIdentifierText(element, prefix: prefix + "-failure-content-" + String(attempt) + "-row" + String(row))
+                }
             }
             if attempt == 1 {
                 reveal(confirm); confirm.tap()
