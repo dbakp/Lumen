@@ -1,0 +1,75 @@
+{
+  "status": "Source-only follow-on audit; no new implementation, baseline execution or recovery acceptance",
+  "source": "durable-source-r191.json",
+  "observedBindings": {
+    "Lumen/Models/HealthLocalFiles.swift": {
+      "bytes": 8225,
+      "sha256": "47658a43536f5817d334741e964ac1f25575044163dbb84e884c870e79b673ae"
+    },
+    "Lumen/Persistence/LocalStore.swift": {
+      "bytes": 21334,
+      "sha256": "c25ad56f26fa5bcde8f05dc4f19bd7f18e7120df4cbecabe0cf268950858b39d"
+    },
+    "Lumen/Models/HealthRecoveryCopies.swift": {
+      "bytes": 38735,
+      "sha256": "8a420f4ddc9319157ea53a453775a0bfb25997320a5e35e2facb7aa785e2790b"
+    },
+    "Lumen/Models/ConversationFiles.swift": {
+      "bytes": 6532,
+      "sha256": "cfe85382cad51f9023b577470b15e7eb73ccc9eb88383216a5271a4e9cddbe44"
+    },
+    "Lumen/Models/BackupFileTransaction.swift": {
+      "bytes": 20204,
+      "sha256": "6584614fd196a21fe6ba418b8ae1a33a578964f73f7851dc7287f69d86360ae9"
+    },
+    "Lumen/Models/HealthRecoverySelection.swift": {
+      "bytes": 12880,
+      "sha256": "f41cd227862406d49345981a1fcf001f39f482ad2c72f6a6c7b46ae5da275920"
+    }
+  },
+  "parentRequirements": [
+    "durable-progress-r191.json nextRequired unavailable legacy and symlink targets",
+    "health-discovery-r1-contract.json boundary",
+    "health-backup-recovery-r1-contract.json notClosedByThisContract"
+  ],
+  "observations": [
+    {
+      "file": "Lumen/Models/HealthLocalFiles.swift",
+      "lines": "97\u2013115,140\u2013151",
+      "fact": "A missing current domain invokes supplied legacy loader; boundary stores optional legacy data hash. Current symlink/nonregular path rejects; descriptor reader uses O_NOFOLLOW/O_NONBLOCK and validates regular descriptor/path identity. Failed legacy decoding has no successful Loaded boundary."
+    },
+    {
+      "file": "Lumen/Persistence/LocalStore.swift",
+      "lines": "260\u2013284",
+      "fact": "Legacy loader reads UserDefaults object/Data; non-Data throws invalid. Checked domain load/boundary/verify pass this closure to HealthLocalFiles."
+    },
+    {
+      "file": "Lumen/Models/HealthRecoveryCopies.swift",
+      "lines": "371\u2013389",
+      "fact": "preserveReplacedDomains requires an existing stage domain path, rejects readable contents, then moves failed path into private retention. Missing current/failed legacy source has no stage file, so this API alone cannot represent its origin."
+    },
+    {
+      "file": "Lumen/Models/BackupFileTransaction.swift",
+      "lines": "43\u2013104",
+      "fact": "Targeted recovery stages an existing-source snapshot, clones existing tree with explicit symbolic-link rejection and safe relative path checks, then calls preserveReplacedDomains. It does not safely replace a selected symlink domain by quarantining link metadata alone."
+    },
+    {
+      "file": "Lumen/Models/ConversationFiles.swift",
+      "lines": "27\u201335",
+      "fact": "Targeted recovery shares conversation previous-copy protection and generic transaction preparation. Any follow-on repair must preserve those conversation/swap/previous-copy invariants."
+    }
+  ],
+  "nextBeforeImplementation": [
+    "Finish current191preference-on recovery and retain exact terminal/native/host/video provenance; never mutate its frozen inputs.",
+    "Predeclare tiny failing baselines for absent current plus malformed/non-Data legacy origins; preserve actual defaults and prove no current/prior/private/intent changes on current rejection.",
+    "Predeclare safe symlink recovery semantics without traversing or deleting referenced target: relative/absolute/dangling link metadata, raw provenance and changed-link target rejection. Existing no-follow rejection remains until explicit safe replacement is designed/verified.",
+    "Bind captured legacy value/type/identity into review and final serialized commit checks; do not resurrect intentionally erased/missing history or silently install it.",
+    "Continue current release/appearance/ownership/timing/eight groups and all full parent contracts; this source audit does not close them."
+  ],
+  "limits": [
+    "Relevant source ranges inspected; this is no full-product/core/native execution audit.",
+    "No legacy/symlink baseline, proof of current runtime failure, implementation selection or user data mutation in this audit.",
+    "Recovery source/origin design is pending; no inference that links may be followed or old intent replayed."
+  ],
+  "checkedAt": 1794079073.4288
+}

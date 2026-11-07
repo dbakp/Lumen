@@ -1,0 +1,45 @@
+{
+  "status": "Prepared bounded temporal review; no decoded video frames yet reviewed or motion behavior acceptance",
+  "source": "durable-source-r191.json",
+  "nativePrefix": "health-error-state-encrypted-reducemotionsource191r1",
+  "recordingSHA256": "5ef8a9a98a85393dc22b20768dedb6cbf189e27927aa0eba04bbe7729cb0c470",
+  "recordingBytes": 103462585,
+  "recordingDurationSeconds": 337.71666666666664,
+  "windowsFile": "health-recovery-reduce-motion-source191-video-windows-r1.json",
+  "windows": [
+    {
+      "name": "error-reveal",
+      "startSeconds": 137,
+      "endSeconds": 148
+    },
+    {
+      "name": "deliberate-scroll",
+      "startSeconds": 151,
+      "endSeconds": 162
+    },
+    {
+      "name": "back",
+      "startSeconds": 190,
+      "endSeconds": 202
+    },
+    {
+      "name": "retry",
+      "startSeconds": 270,
+      "endSeconds": 307
+    }
+  ],
+  "selection": "Broad windows chosen before decoded frame review using native error/scroll/Back/retry wall samples and recorder request/ack approximate anchors; no exact presentation wall-time inference.",
+  "requirements": [
+    "Keep actual decoded sample cadence/nonfinite samples, source hash and original pixel size; no artificial30/60fps assumption.",
+    "Retain passthrough intervals and independently compare decoded clip/source frames at corresponding actual times before using clips as canonical temporal evidence.",
+    "Inspect actual native frames across each transition, including genuinely failed error before test scrolling and ordinary scroll stability, Back and fresh no-omission retry. Record any gaps/unreadable frames/missing transitions honestly.",
+    "Retain selected useful fullsize original-derived frames/provenance and compact clips on GitHub before deleting full recording/redundant frame exports if no longer needed.",
+    "Same continuing critic and root review, bounded main/light/standard scope; no fullparent/product/accessibility/continuouspreference/audio/duplicate/lateworker acceptance."
+  ],
+  "limits": [
+    "Actual recording has3686compressed samples,3684finitePTS and2invalidPTS markers. FinitePTS includesduplicates/variablecadence; globalmaxgap12.4316667s does not establish its cause.",
+    "First metadata utility actualrun failed134 on NaNJSON; corrected utility explicitly records invalid values and passed0. Neither alters original video/native outcome.",
+    "Encoded video can miss a display update; no claim of every actual in-flight frame/interleaving or exact native tap-to-layout latency."
+  ],
+  "checkedAt": 1794079496.552382
+}
