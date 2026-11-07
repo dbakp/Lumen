@@ -104,6 +104,7 @@ final class LumenSmokeTests: XCTestCase {
         if name.contains("testHealthBackupHealthyMerge") {
             let kind = name.contains("Encrypted") ? "encrypted" : name.contains("Readable") ? "readable" : "legacy"
             app.launchArguments = ["-resetForUITests", "-health-backup-ui-fixture", "-health-backup-case", kind, "-health-backup-healthy-merge-ui"]
+            if name.contains("Preferences") { app.launchArguments.append("-health-backup-preferences-ui") }
         }
         app.launch()
     }
@@ -5088,7 +5089,10 @@ final class LumenSmokeTests: XCTestCase {
     func testHealthBackupHealthyMergeLegacy() throws { try healthBackupHealthyMerge("legacy") }
     func testHealthBackupHealthyMergeEncrypted() throws { try healthBackupHealthyMerge("encrypted") }
     func testHealthBackupHealthyMergeReadable() throws { try healthBackupHealthyMerge("readable") }
-    private func healthBackupHealthyMerge(_ kind: String) throws {
+    func testHealthBackupHealthyMergePreferencesLegacy() throws { try healthBackupHealthyMerge("legacy", preferences: true) }
+    func testHealthBackupHealthyMergePreferencesEncrypted() throws { try healthBackupHealthyMerge("encrypted", preferences: true) }
+    func testHealthBackupHealthyMergePreferencesReadable() throws { try healthBackupHealthyMerge("readable", preferences: true) }
+    private func healthBackupHealthyMerge(_ kind: String, preferences: Bool = false) throws {
         executionTimeAllowance = 420
         let base = kind == "readable" ? "Lumen-readable-health-multi" : "Lumen-backup-health-multi-" + kind
         let prefix = "health-merge-" + kind
@@ -5104,6 +5108,7 @@ final class LumenSmokeTests: XCTestCase {
                 for key in ["profile", "goals", "habits", "personal-context"] {
                     let choice = app.switches["recoverReadable-" + key].firstMatch
                     reveal(choice); XCTAssertEqual(choice.value as? String, "0")
+                    if preferences { nativeSwitch("recoverReadable-" + key, enabled: true) }
                 }
                 snap(prefix + "-" + attempt + "-preview"); Thread.sleep(forTimeInterval: 4)
                 let add = app.buttons["recoverReadableData"].firstMatch; reveal(add); add.tap()
@@ -5116,8 +5121,9 @@ final class LumenSmokeTests: XCTestCase {
                 try chooseBackupFixture(base)
                 if kind == "encrypted" { unlockBackup(value: "Synthetic backup passphrase 42") }
                 _ = backupPreview(); XCTAssertFalse(app.buttons["reviewBackupHealthRecovery"].exists)
-                let preferences = app.switches["Restore profile & preferences"].firstMatch
-                reveal(preferences); XCTAssertEqual(preferences.value as? String, "0")
+                let choice = app.switches["Restore profile & preferences"].firstMatch
+                reveal(choice); XCTAssertEqual(choice.value as? String, "0")
+                if preferences { nativeSwitch("Restore profile & preferences", enabled: true) }
                 snap(prefix + "-" + attempt + "-preview"); Thread.sleep(forTimeInterval: 4)
                 let restore = app.buttons["restoreBackup"].firstMatch; reveal(restore); restore.tap()
                 let alert = app.alerts["Restore missing records?"]; XCTAssertTrue(alert.waitForExistence(timeout: 5))
@@ -5131,7 +5137,7 @@ final class LumenSmokeTests: XCTestCase {
                 let recover = app.buttons["readableRecovery"].firstMatch; reveal(recover); recover.tap()
             }
         }
-        let readback: [String: Any] = ["scope": "ordinary-healthy-merge-repeat", "format": kind, "attempts": 2, "preferencesOff": true, "confirmationCancelledBeforeCommit": true]
+        let readback: [String: Any] = ["scope": preferences ? "ordinary-healthy-preferences-repeat" : "ordinary-healthy-merge-repeat", "format": kind, "attempts": 2, "preferencesOff": !preferences, "confirmationCancelledBeforeCommit": true]
         let attachment = XCTAttachment(data: try JSONSerialization.data(withJSONObject: readback, options: [.prettyPrinted, .sortedKeys]), uniformTypeIdentifier: "public.json")
         attachment.name = "healthy-merge-readback"; attachment.lifetime = .keepAlways; add(attachment)
         app.terminate(); app.launchArguments = []; app.launch(); openBackupSettings()

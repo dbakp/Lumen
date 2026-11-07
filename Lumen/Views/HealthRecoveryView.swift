@@ -243,6 +243,12 @@ enum HealthRecoveryUIFixture {
         if backupRequested {
             var profile = UserProfile.default
             profile.name = "Synthetic backup baseline"; profile.onboardingDone = true
+            if ProcessInfo.processInfo.arguments.contains("-health-backup-preferences-ui") {
+                profile.isSubscribed = true; profile.appLock = false; profile.units = .imperial; profile.birthYear = 1985
+                var context = PersonalHealthContext(); context.notes = "Synthetic current notes to replace explicitly."; context.includeInAssistant = true
+                files["personal-context.json"] = try encoder.encode(context)
+                files["habits.json"] = try encoder.encode(Array(SleepHabit.defaults().prefix(1)))
+            }
             files["profile.json"] = try encoder.encode(profile)
         }
         if recordsRequested {
