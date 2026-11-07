@@ -20,7 +20,7 @@ final class LumenSmokeTests: XCTestCase {
         app = XCUIApplication()
         // Settings discovery reads only the dedicated simulator. Do not reset
         // Lumen's last audited synthetic state or launch the product here.
-        if name.contains("testReduceMotionSettingsDiscovery") { return }
+        if name.contains("testReduceMotionSettingsDiscovery") || name.contains("testReduceMotionSettingsCapability") { return }
         // The focused wrapping probe reuses this dedicated simulator's saved
         // synthetic record, with a public Files-import fallback if absent.
         app.launchArguments = name.contains("testFHIRLiteralWrappingSnapshots") || name.contains("testLiteralIdentifier") || name.contains("testProviderCitationRejection") || name.contains("testProviderTransportFallback") ? ["-librarySearchRemoteUITestMode"] : ["-resetForUITests"]
@@ -5209,6 +5209,141 @@ final class LumenSmokeTests: XCTestCase {
         #endif
     }
 
+    @MainActor
+    func testReduceMotionSettingsCapability() throws {
+        try withObservedReduceMotion(returnToProduct: false) { _ in }
+        var observedExpectedFailure = false
+        do {
+            try withObservedReduceMotion(returnToProduct: false) { _ in
+                throw NSError(domain: "LumenExpectedMotionBodyFailure", code: 42)
+            }
+        } catch {
+            observedExpectedFailure = error.localizedDescription.contains("LumenExpectedMotionBodyFailure")
+        }
+        XCTAssertTrue(observedExpectedFailure, "The deliberate throwing-body trial must fail after restoring the original preference")
+    }
+
+    @MainActor
+    func testHealthBackupFileRecoveryPhotoFaultErrorBackEncryptedReduceMotion() throws {
+        try withObservedReduceMotion(returnToProduct: true) { sample in
+            try withoutActuallyEscaping(sample) { synchronousSample in
+                try healthBackupPhotoFaultErrorBack("encrypted", motionSample: synchronousSample)
+            }
+        }
+    }
+
+    @MainActor
+    private func withObservedReduceMotion(returnToProduct: Bool,
+        body: (_ sample: (String) throws -> Void) throws -> Void) throws {
+        #if targetEnvironment(simulator)
+        executionTimeAllowance = 720
+        let settings = XCUIApplication(bundleIdentifier: "com.apple.Preferences")
+        var samples: [[String: Any]] = []
+        var original: Bool?
+        var restorationNeeded = false
+        var failure: String?
+        var restorationError: String?
+        let prefix = returnToProduct ? "reduce-motion-enabled-recovery" : "reduce-motion-capability"
+        func problem(_ message: String) -> NSError {
+            NSError(domain: "LumenReduceMotion", code: 1,
+                    userInfo: [NSLocalizedDescriptionKey: message])
+        }
+        func openMotion() throws -> XCUIElement {
+            settings.activate()
+            guard settings.wait(for: .runningForeground, timeout: 10) else { throw problem("Settings did not become foreground") }
+            let control = settings.switches.matching(identifier: "REDUCE_MOTION").firstMatch
+            if !control.exists {
+                if settings.navigationBars["Accessibility"].exists {
+                    let motion = settings.buttons["MOTION_TITLE"].firstMatch
+                    guard motion.exists && motion.isHittable else { throw problem("Observed Motion row unavailable") }
+                    motion.tap()
+                } else {
+                    let accessibility = settings.buttons["com.apple.settings.accessibility"].firstMatch
+                    guard accessibility.exists && accessibility.isHittable else { throw problem("Observed Accessibility row unavailable") }
+                    accessibility.tap()
+                    let motion = settings.buttons["MOTION_TITLE"].firstMatch
+                    guard motion.waitForExistence(timeout: 5) && motion.isHittable else { throw problem("Observed Motion row unavailable") }
+                    motion.tap()
+                }
+            }
+            guard control.waitForExistence(timeout: 5), control.isHittable else { throw problem("Observed Reduce Motion switch unavailable") }
+            return control
+        }
+        func waitForPreference(_ enabled: Bool, control: XCUIElement) throws {
+            let deadline = Date().addingTimeInterval(5)
+            while Date() < deadline {
+                if UIAccessibility.isReduceMotionEnabled == enabled,
+                   control.value as? String == (enabled ? "1" : "0") { return }
+                RunLoop.current.run(until: Date().addingTimeInterval(0.1))
+            }
+            throw problem("Actual Settings switch/public UIKit preference did not match requested state")
+        }
+        func capture(_ phase: String) {
+            let image = XCTAttachment(screenshot: settings.screenshot())
+            image.name = prefix + "-" + phase; image.lifetime = .keepAlways; add(image)
+        }
+        func report(_ phase: String) throws {
+            let value: [String: Any] = ["scope": "Observed Settings enable/restore and public UIKit preference samples; no continuous motion behavior acceptance",
+                "phase": phase, "original": (original as Any?) ?? NSNull(),
+                "restored": original.map { UIAccessibility.isReduceMotionEnabled == $0 } ?? false,
+                "finalUIKitReduceMotion": UIAccessibility.isReduceMotionEnabled,
+                "samples": samples, "failure": (failure as Any?) ?? NSNull(),
+                "restorationError": (restorationError as Any?) ?? NSNull()]
+            let attachment = XCTAttachment(data: try JSONSerialization.data(withJSONObject: value, options: [.prettyPrinted, .sortedKeys]), uniformTypeIdentifier: "public.json")
+            attachment.name = prefix + "-readback-" + phase; attachment.lifetime = .keepAlways; add(attachment)
+        }
+        func restore() throws {
+            guard let original else { return }
+            let control = try openMotion()
+            guard let current = control.value as? String, ["0", "1"].contains(current) else { throw problem("Restoration switch value unavailable") }
+            if current != (original ? "1" : "0") { control.tap() }
+            try waitForPreference(original, control: control)
+            samples.append(["phase": "restored", "at": Date().timeIntervalSince1970,
+                            "switch": control.value as? String ?? "unavailable",
+                            "uikit": UIAccessibility.isReduceMotionEnabled])
+            capture("restored"); restorationNeeded = false
+        }
+        // XCTest teardown also runs when an ordinary recovery assertion aborts
+        // the test before its Swift body can return or throw.
+        addTeardownBlock { @MainActor in
+            guard restorationNeeded else { return }
+            do { try restore() }
+            catch { restorationError = String(describing: error) }
+            try report("teardown-fallback")
+            if restorationNeeded { throw problem("Reduce Motion original-state restoration remains unverified") }
+        }
+        do {
+            settings.launch()
+            let control = try openMotion()
+            guard let value = control.value as? String, ["0", "1"].contains(value) else { throw problem("Initial switch value unavailable") }
+            original = value == "1"
+            guard UIAccessibility.isReduceMotionEnabled == original else { throw problem("Initial actual switch/UIKit preference disagree") }
+            samples.append(["phase": "original", "at": Date().timeIntervalSince1970,
+                            "switch": value, "uikit": UIAccessibility.isReduceMotionEnabled])
+            capture("original"); restorationNeeded = true
+            if value == "0" { control.tap() }
+            try waitForPreference(true, control: control)
+            samples.append(["phase": "enabled", "at": Date().timeIntervalSince1970,
+                            "switch": control.value as? String ?? "unavailable",
+                            "uikit": UIAccessibility.isReduceMotionEnabled])
+            capture("enabled")
+            if returnToProduct { app.activate() }
+            try body { phase in
+                let enabled = UIAccessibility.isReduceMotionEnabled
+                samples.append(["phase": phase, "at": Date().timeIntervalSince1970, "uikit": enabled])
+                guard enabled else { throw problem("Reduce Motion off at declared recovery sample: " + phase) }
+            }
+        } catch { failure = String(describing: error) }
+        do { try restore() } catch { restorationError = String(describing: error) }
+        try report("terminal")
+        if let failure { throw problem(failure) }
+        if let restorationError { throw problem(restorationError) }
+        guard original != nil, !restorationNeeded else { throw problem("Original preference restoration unverified") }
+        #else
+        XCTFail("Reduce Motion verification is authorized for the dedicated simulator only")
+        #endif
+    }
+
     // Pending follow-on draft, outside frozen Source182. Future setup must add
     // -health-read-ui -health-read-scope selected-record ONLY for these tests.
     // Existing actual reader/closed-owner observations avoid new app instrumentation.
@@ -5449,7 +5584,8 @@ final class LumenSmokeTests: XCTestCase {
         try healthBackupPhotoFaultErrorBack("encrypted", voiceOver: true)
     }
     @MainActor
-    private func healthBackupPhotoFaultErrorBack(_ kind: String, voiceOver: Bool = false) throws {
+    private func healthBackupPhotoFaultErrorBack(_ kind: String, voiceOver: Bool = false,
+        motionSample: ((String) throws -> Void)? = nil) throws {
         executionTimeAllowance = 600
         let base = "Lumen-backup-health-matrix-two-" + kind
         let prefix = "health-error-state-" + kind
@@ -5463,6 +5599,7 @@ final class LumenSmokeTests: XCTestCase {
             XCTAssertTrue(filename.waitForExistence(timeout: 10))
             XCTAssertEqual(filename.label, base + (kind == "encrypted" ? ".lumenbackup" : ".json"))
         }
+        try motionSample?("before-original-selection")
         openBackupSettings(); try selectOriginal()
         snap(prefix + "-source"); Thread.sleep(forTimeInterval: 3)
         let reviewMeals = app.buttons["reviewFile-meals"].firstMatch
@@ -5569,6 +5706,7 @@ final class LumenSmokeTests: XCTestCase {
         }
         reveal(confirm); XCTAssertTrue(confirm.isEnabled); confirm.tap()
         XCTAssertTrue(alert.waitForExistence(timeout: 5))
+        try motionSample?("before-genuine-error")
         if voiceOver { voiceOverReadback = try confirmWithVoiceOver() }
         else { alert.buttons["Recover"].tap() }
         // The app must expose the genuine failure before any test scrolling.
@@ -5577,6 +5715,7 @@ final class LumenSmokeTests: XCTestCase {
         XCTAssertLessThanOrEqual(failure.frame.maxY, app.frame.maxY - 20)
         XCTAssertTrue(failure.label.contains("Recovery couldn't finish"))
         XCTAssertTrue(failure.label.contains("Your current files haven't been replaced."))
+        try motionSample?("genuine-error-before-test-scroll")
         XCTAssertFalse(success.exists); snap(prefix + "-failed"); Thread.sleep(forTimeInterval: 3)
         let choice = app.switches["recoverFile-meals"].firstMatch
         reveal(choice, towardsTop: true); XCTAssertEqual(choice.value as? String, "1")
@@ -5593,7 +5732,7 @@ final class LumenSmokeTests: XCTestCase {
         XCTAssertTrue(choice.exists && choice.isHittable)
         XCTAssertEqual(choice.frame.minY, firstFrame.minY, accuracy: 1)
         XCTAssertEqual(choice.value as? String, "1")
-        snap(prefix + "-scroll-stays")
+        try motionSample?("deliberate-scroll-endpoint"); snap(prefix + "-scroll-stays")
         let omission = app.switches["Recover without meal photos"].firstMatch
         nativeSwitch("Recover without meal photos", enabled: true)
         reveal(confirm); confirm.tap(); XCTAssertTrue(alert.waitForExistence(timeout: 5))
@@ -5603,14 +5742,14 @@ final class LumenSmokeTests: XCTestCase {
             reveal(selected, towardsTop: domain == "meals"); XCTAssertEqual(selected.value as? String, "1")
         }
         reveal(omission, towardsTop: true); XCTAssertEqual(omission.value as? String, "1")
-        snap(prefix + "-omission-not-now"); Thread.sleep(forTimeInterval: 3)
+        try motionSample?("after-not-now"); snap(prefix + "-omission-not-now"); Thread.sleep(forTimeInterval: 3)
         reveal(failure); XCTAssertTrue(failure.exists); snap(prefix + "-before-back")
         app.navigationBars["Review recovery"].buttons.element(boundBy: 0).tap()
         XCTAssertTrue(app.navigationBars["Backup & restore"].waitForExistence(timeout: 3))
         let choose = app.buttons["chooseBackup"].firstMatch
         reveal(choose); XCTAssertTrue(choose.isEnabled)
         XCTAssertFalse(failure.exists); XCTAssertFalse(success.exists)
-        snap(prefix + "-back-parent"); Thread.sleep(forTimeInterval: 3)
+        try motionSample?("after-back"); snap(prefix + "-back-parent"); Thread.sleep(forTimeInterval: 3)
         try selectOriginal()
         snap(prefix + "-reselected-source"); Thread.sleep(forTimeInterval: 3)
         for domain in domains {
@@ -5620,7 +5759,7 @@ final class LumenSmokeTests: XCTestCase {
         reveal(omission, towardsTop: true); XCTAssertEqual(omission.value as? String, "0")
         reveal(confirm); XCTAssertFalse(confirm.isEnabled)
         XCTAssertFalse(failure.exists); XCTAssertFalse(success.exists)
-        snap(prefix + "-fresh-off")
+        try motionSample?("fresh-source-defaults"); snap(prefix + "-fresh-off")
         for domain in domains { nativeSwitch("recoverFile-" + domain, enabled: true, towardsTop: domain == "meals") }
         reveal(omission, towardsTop: true); XCTAssertEqual(omission.value as? String, "0")
         reveal(confirm); XCTAssertTrue(confirm.isEnabled); confirm.tap()
@@ -5633,7 +5772,7 @@ final class LumenSmokeTests: XCTestCase {
             snap(prefix + "-" + phase)
         }
         reveal(success, towardsTop: true); XCTAssertTrue(success.waitForExistence(timeout: 30))
-        XCTAssertFalse(failure.exists); snap(prefix + "-success")
+        try motionSample?("recovered-before-success-ack"); XCTAssertFalse(failure.exists); snap(prefix + "-success")
         let observed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", "success-observed"), object: success)
         XCTAssertEqual(XCTWaiter.wait(for: [observed], timeout: 35), .completed)
         app.navigationBars["Review recovery"].buttons.element(boundBy: 0).tap()
@@ -5647,7 +5786,7 @@ final class LumenSmokeTests: XCTestCase {
         let attachment = XCTAttachment(data: try JSONSerialization.data(withJSONObject: readback, options: [.prettyPrinted, .sortedKeys]), uniformTypeIdentifier: "public.json")
         attachment.name = "error-state-readback"; attachment.lifetime = .keepAlways; add(attachment)
         app.terminate(); app.launchArguments = []; app.launch(); openBackupSettings()
-        XCTAssertFalse(app.staticTexts["Saved health data couldn't be opened."].exists); snap(prefix + "-relaunch")
+        try motionSample?("relaunch"); XCTAssertFalse(app.staticTexts["Saved health data couldn't be opened."].exists); snap(prefix + "-relaunch")
     }
 
     func testHealthBackupFileRecoveryPhotoFaultMissingLegacy() throws { try healthBackupPhotoFault("legacy", fault: "missing") }

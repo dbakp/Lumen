@@ -1,0 +1,62 @@
+{
+  "status": "Prepared actual enable/restore capability and encrypted preference-on recovery; runtime0/2",
+  "source": "durable-source-r190.json",
+  "build": "health-recovery-motion-enabled-r1-build.json",
+  "bindings": {
+    "durable-source-r190.json": {
+      "bytes": 42523,
+      "sha256": "d573f5f28b7c599bfdec9c387142a3b55a6ec898a383d5169b4cc924c6812b9e"
+    },
+    "health-recovery-motion-enabled-r1-build.json": {
+      "bytes": 651,
+      "sha256": "28cbd0d409b307997a366381d6ec13be056062418c952af2554f3ff27354ccf8"
+    },
+    "health-reduce-motion-capability-r1-driver.py": {
+      "bytes": 5420,
+      "sha256": "70043cb87111bdaeb1a0db452434765360681ee5653902b0431dd64a9175dd1a"
+    },
+    "health-recovery-reduce-motion-r1-driver.py": {
+      "bytes": 49469,
+      "sha256": "76811990b214d0f3830ece361816e478692cc2e5b45cb1dc3979fd3290562ec6"
+    }
+  },
+  "prerequisiteGithubCommit": "e1f0c0ed0f39e46f26c1b21f71b2fac4cae8a12d",
+  "capability": {
+    "test": "testReduceMotionSettingsCapability",
+    "driver": "health-reduce-motion-capability-r1-driver.py",
+    "command": [
+      "python3",
+      "Design/native/health-write-order/health-reduce-motion-capability-r1-driver.py"
+    ],
+    "required": "Normal and deliberate Swift throwing-body exits: actual original switch/UIKit agreement, enabled1/true, explicit restore/original value and screenshots/full2JSON. Teardown fallback added but abort execution untested."
+  },
+  "recovery": {
+    "test": "testHealthBackupFileRecoveryPhotoFaultErrorBackEncryptedReduceMotion",
+    "driver": "health-recovery-reduce-motion-r1-driver.py",
+    "trial": "ReduceMotionSource190R1",
+    "command": [
+      "python3",
+      "Design/native/health-write-order/health-recovery-reduce-motion-r1-driver.py",
+      "--source",
+      "durable-source-r190.json",
+      "--build",
+      "health-recovery-motion-enabled-r1-build.json",
+      "--case",
+      "encrypted",
+      "--trial",
+      "ReduceMotionSource190R1",
+      "--fault",
+      "missing",
+      "--observe-source"
+    ],
+    "required": "After capability exactpublication, actual UIKit true at9declared recovery samples; full unchanged genuine-error/scroll/Notnow/Back/freshhealthyphotos/control2/preackreceipt/privatebytes/cleanup/relaunch host audit, original preference restoration, full2JSON/alloriginals. Native abort teardown fallback actual outcome separately.",
+    "video": "simctl actual h264 capture request/first-frame-ready wall bounds and native wall samples; retain sourcehash/timestamps and curated original transition intervals for actual time-based review. No installed ffmpeg; use existing AVFoundation tooling. Capture alone/preferenceON/stills do not close motion behavior."
+  },
+  "limits": [
+    "Primary/light/standard only; no physical iPhone action.",
+    "Original preference never assumed off; restore on explicit success/failure and registered XCTest teardown fallback. A fallback attempt without observed agreement is not accepted.",
+    "Swift body throw capability does not prove XCTest assertion abort/timeout/host interruption restoration.",
+    "No fullspeech/audio/duplicatehistory/lateworker/allinterleaving/fullappearance/parent/eightgroup/product acceptance."
+  ],
+  "checkedAt": 1794078139.171104
+}

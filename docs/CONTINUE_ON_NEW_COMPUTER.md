@@ -4,7 +4,7 @@ Continue developing Lumen into a world-class, primarily iOS, AI health assistant
 
 Repository: https://github.com/dbakp/Lumen · branch `main`.
 
-## Current checkpoint · Source189 · 7 November 2026
+## Current checkpoint · Source190 · 7 November 2026
 
 The nine declared recovery-error configurations passed native, independent host and root review: **five actual Source180 cases, three Source181 and compact-largest Source183**. Root individually inspected **227 original screenshots and nine complete native JSON results**. Production app executable is byte-identical across these test revisions. Every case retains its actual source/build; no historical rerun is claimed. Continuing critic contributions preserve their observed limits and do not establish overall design or product acceptance.
 
@@ -20,10 +20,12 @@ Source188 applies the reviewed one-time busy Cancel reveal, guarded by actual op
 
 Source189 adds read-only simulator Settings discovery, with before/after public Reduce Motion preference readings and actual Settings trees/screenshots. Build-for-testing passed; actual production executable remains byte-identical188. Only UI tests changed. Read-only discovery passed native1/0/0; root4originalSettingsPNG/full4pageJSON read. Actual Settings → Accessibility → Motion exposes REDUCE_MOTION off; public UIKit bool false before/after. No preference enable/restore or motion behavior acceptance yet. Continue from the [discovery plan](../Design/native/health-write-order/health-reduce-motion-discovery-r1-plan.json) before designing the enable/restore check.
 
+Source190 adds only native test wrappers for observed Reduce Motion enable/restore, normal/deliberate throwing-body capability and encrypted recovery with nine actual UIKit samples. Build-for-testing passed; actual app executable is exact188/189. [Execution plan](../Design/native/health-write-order/health-recovery-reduce-motion-r1-plan.json): capability first, exact publication, then preference-on recovery and time-based transition review. Runtime0/2; no motion acceptance.
+
 Current authority:
 
-- [Progress](../Design/native/health-write-order/durable-progress-r189.json): status, current checkpoint, `errorVisibility`, `errorState`, active producers, storage and next actions. Preserve all eight original durable groups, `nextRequired` and `remainingScope`; inherited older milestones retain their original boundaries.
-- [Latest producer](../Design/native/health-write-order/health-reduce-motion-discovery-r1-live.json): inspect its current source/session/PID before acting. Poll that handle; if unavailable inspect the named process, raw log and terminal receipt. Never restart an existing or completed producer.
+- [Progress](../Design/native/health-write-order/durable-progress-r190.json): status, current checkpoint, `errorVisibility`, `errorState`, active producers, storage and next actions. Preserve all eight original durable groups, `nextRequired` and `remainingScope`; inherited older milestones retain their original boundaries.
+- [Latest producer](../Design/native/health-write-order/health-reduce-motion-capability-r1-live.json): inspect its current source/session/PID before acting. Poll that handle; if unavailable inspect the named process, raw log and terminal receipt. Never restart an existing or completed producer.
 - [Frozen188source](../Design/native/health-write-order/durable-source-r188.json), [current build](../Design/native/health-write-order/health-recovery-error-held-r1-build.json), [integration binding](../Design/native/health-write-order/source188-held-integration-r1.json), [independent integration check](../Design/native/health-write-order/source188-held-integration-r1-critic.json), [four-case execution plan](../Design/native/health-write-order/health-recovery-error-held-r1-execution-plan.json).
 - [Frozen184source](../Design/native/health-write-order/durable-source-r184.json), [build](../Design/native/health-write-order/health-recovery-error-state-r2-build.json), [app continuity](../Design/native/health-write-order/source184-app-binary-continuity-r1.json), [final driver binding](../Design/native/health-write-order/source184-state-driver-binding-r1.json).
 - [First state execution plan](../Design/native/health-write-order/health-recovery-error-state-r2-execution-plan.json), [full parent state/accessibility contract](../Design/native/health-write-order/health-recovery-error-visibility-state-r1-contract.json), [original error-visibility contract](../Design/native/health-write-order/health-recovery-error-visibility-r1-contract.json), [nine-case actual-source plan](../Design/native/health-write-order/health-recovery-error-visibility-r6-execution-plan.json).
