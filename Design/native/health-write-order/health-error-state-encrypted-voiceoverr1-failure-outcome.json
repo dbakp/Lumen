@@ -1,0 +1,48 @@
+{
+  "status": "FAILED native0pass1fail0skip/exit65; full error speech assertion unaccepted",
+  "source": "durable-source-r186.json",
+  "build": "health-voiceover-genuine-error-r1-build.json",
+  "driverExit": 1,
+  "producerExit": 65,
+  "nativeFailure": "LumenVoiceOver Code4: automatic current speech lacks complete preservation sentence",
+  "actualUtterances": [
+    {
+      "action": "confirmation-current",
+      "at": 1794069558.500248,
+      "utterance": "Lumen Replace selected data?"
+    },
+    {
+      "action": "confirmation-forward",
+      "at": 1794069559.043751,
+      "utterance": "Selected data will be replaced by records from this file. Damage"
+    },
+    {
+      "action": "confirmation-forward",
+      "at": 1794069559.552839,
+      "utterance": "Not now Button"
+    },
+    {
+      "action": "confirmation-forward",
+      "at": 1794069560.0707269,
+      "utterance": "Recover Button"
+    },
+    {
+      "action": "genuine-error-current",
+      "at": 1794069562.6381469,
+      "utterance": "Recovery couldn't finish , Your current files haven't been repla"
+    }
+  ],
+  "lengths": [
+    28,
+    64,
+    14,
+    14,
+    64
+  ],
+  "observation": "Both long alert message and error return truncated strings; error begins correct heading/preservation prefix. Single sample does not establish whether API limit, incomplete speech timing or app behavior. No audio recording supplied.",
+  "rootOriginalsOpened": 4,
+  "nativeFailureJSONRead": 1,
+  "sourceChangeRequired": "Keep failure; predeclare later speech samples and exact focus/order probe, without crediting full spoken body unless actually returned.",
+  "scope": "No completed state route, fresh retry, success/receipt/cleanup or complete spoken preservation credit. Original off state recorded; defer restoration executed by test source, no explicit postfailure restoration readback in this failedJSON.",
+  "checkedAt": 1794069648.454458
+}

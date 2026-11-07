@@ -1,0 +1,43 @@
+--- Lumen/Views/BackupFileRecoveryView.swift
++++ Lumen/Views/BackupFileRecoveryView.swift
+@@ -125,6 +125,7 @@
+     @State private var issue: RecoveryIssue?
+     @AccessibilityFocusState private var recoveryErrorFocused: UUID?
+     @State private var errorReveal: Task<Void, Never>?
++    @State private var busyReveal: Task<Void, Never>?
+     @State private var reviewActive = false
+     @State private var operation: BackupOperationControl?
+     @State private var work: Task<Void, Never>?
+@@ -208,12 +209,23 @@
+                 }
+                 if busy {
+                     recoveryProgress
+-                    Button("Cancel") { operation?.cancel(); work?.cancel() }.accessibilityIdentifier("cancelFileRecovery")
++                    Button("Cancel") { operation?.cancel(); work?.cancel() }
++                        .accessibilityIdentifier("cancelFileRecovery")
++                        .id("fileHealthRecoveryCancel")
+                 } else if recovered { Button("Done") { dismiss() } }
+                 else {
+                     Button("Recover selected data") { confirmation = true }.disabled(!canRecover)
+                         .accessibilityIdentifier("confirmFileRecovery")
+                 }
++            }
++        }
++        .onChange(of: busy) { _, active in
++            busyReveal?.cancel(); busyReveal = nil
++            guard active, reviewActive, let activeOperation = operation else { return }
++            busyReveal = Task { @MainActor in
++                await Task.yield()
++                guard !Task.isCancelled, reviewActive, busy, operation === activeOperation else { return }
++                scroll.scrollTo("fileHealthRecoveryCancel", anchor: .bottom)
+             }
+         }
+         .onChange(of: issue?.id) { _, failureID in
+@@ -248,6 +260,7 @@
+         .onAppear { reviewActive = true }
+         .onDisappear {
+             reviewActive = false
++            busyReveal?.cancel(); busyReveal = nil
+             errorReveal?.cancel(); errorReveal = nil; recoveryErrorFocused = nil
+             operation?.cancel(); work?.cancel()
+         }
