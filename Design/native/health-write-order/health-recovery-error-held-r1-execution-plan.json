@@ -1,5 +1,5 @@
 {
-  "status": "Source188 main/light legacyCancelR1 native/host/root PASS; held runtime1/4; encryptedCancel next",
+  "status": "Source188 two actual Cancel routes native/host/root PASS; held runtime2/4; legacyBack next",
   "parent": "health-recovery-error-visibility-state-r1-contract.json",
   "productionPatch": "health-recovery-busy-cancel-r2.patch.draft",
   "productionAudit": "health-recovery-busy-cancel-r2-draft-audit.json",
@@ -67,7 +67,7 @@
   "build": "health-recovery-error-held-r1-build.json",
   "driver": "health-recovery-error-held-driver-r1.py",
   "integration": "source188-held-integration-r1.json",
-  "runtimeAccepted": 1,
+  "runtimeAccepted": 2,
   "executionOrder": [
     "legacyCancelR1",
     "encryptedCancelR1",
@@ -75,10 +75,10 @@
     "encryptedBackR1"
   ],
   "passed": [
-    "legacyCancel"
+    "legacyCancel",
+    "encryptedCancel"
   ],
   "remaining": [
-    "encryptedCancel",
     "legacyBack",
     "encryptedBack"
   ]
