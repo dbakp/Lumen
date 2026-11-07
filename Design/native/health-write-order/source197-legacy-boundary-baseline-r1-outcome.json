@@ -1,0 +1,76 @@
+{
+  "status": "BASELINE_REPRODUCED actual3unownedstage leaks/2incomplete-copy installs, no recoveryacceptance",
+  "source": "durable-source-r197.json",
+  "productionInputs": "Exact196, test-only197",
+  "session": 62165,
+  "exitCode": 0,
+  "report": "source197-legacy-boundary-baseline-r1.json",
+  "reportBytes": 24164,
+  "reportSHA256": "43e14a5df97f8865b1ff6b9de8bccece25aada6ea6f6932892a3f166989385f4",
+  "checks": 19,
+  "cases": [
+    {
+      "fault": "post-stage-change",
+      "readerReadsDiagnostic": 5,
+      "populatedStageFaultActivated": true,
+      "prepared": false,
+      "committed": false,
+      "errorKind": "LumenLogicChecks.HealthLocalFiles.Failure",
+      "catalogHasIncompleteCopy": false,
+      "unownedStageCount": 1
+    },
+    {
+      "fault": "post-stage-cancel",
+      "readerReadsDiagnostic": 5,
+      "populatedStageFaultActivated": true,
+      "prepared": false,
+      "committed": false,
+      "errorKind": "CancellationError",
+      "catalogHasIncompleteCopy": false,
+      "unownedStageCount": 1
+    },
+    {
+      "fault": "post-stage-operational",
+      "readerReadsDiagnostic": 5,
+      "populatedStageFaultActivated": true,
+      "prepared": false,
+      "committed": false,
+      "errorKind": "NSError",
+      "catalogHasIncompleteCopy": false,
+      "unownedStageCount": 1
+    },
+    {
+      "fault": "extra-origin",
+      "readerReadsDiagnostic": 6,
+      "populatedStageFaultActivated": false,
+      "prepared": true,
+      "committed": true,
+      "errorKind": null,
+      "catalogHasIncompleteCopy": true,
+      "unownedStageCount": 0
+    },
+    {
+      "fault": "dual-domain",
+      "readerReadsDiagnostic": 6,
+      "populatedStageFaultActivated": false,
+      "prepared": true,
+      "committed": true,
+      "errorKind": null,
+      "catalogHasIncompleteCopy": true,
+      "unownedStageCount": 0
+    }
+  ],
+  "retainedRoot": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/Lumen-legacy-boundaries-FDAF7489-4ECF-49F7-9A88-CE9D6702513A",
+  "suites": [
+    "com.dbakp.lumen.synthetic.legacy-boundary.9F940CAE-B60B-4216-AF7E-167BF87F6BDC",
+    "com.dbakp.lumen.synthetic.legacy-boundary.FFCDA75F-0241-4434-BC1C-55B7D80203BE",
+    "com.dbakp.lumen.synthetic.legacy-boundary.40D8D3C6-9384-44B7-97F9-0B1074AF2F9C",
+    "com.dbakp.lumen.synthetic.legacy-boundary.C44A534E-A4E0-461A-A462-E17B545460D6",
+    "com.dbakp.lumen.synthetic.legacy-boundary.E146C1B5-E690-4A05-AD39-91B365CC637D"
+  ],
+  "log": "source197-legacy-boundary-baseline-r1.log.gz",
+  "logRawBytes": 9985,
+  "logRawSHA256": "9eb742595fc3bf146ce96ef4f35dbc83057045d9c10e9171d53ba88fd509b0d0",
+  "fixturesRetainedIncluding3LeakedStages": true,
+  "checkedAt": 1794087781.7150562
+}

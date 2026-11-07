@@ -180,6 +180,7 @@ let package = Package(
             "Tests/HealthUnavailableOriginChecks.swift",
             "Tests/HealthLegacyRecoveryOriginChecks.swift",
             "Tests/HealthLegacyRecoveryTransactionChecks.swift",
+            "Tests/HealthLegacyRecoveryBoundaryChecks.swift",
             "Tests/HealthLocalValueChecks.swift",
             "Tests/HealthLocalArchiveChecks.swift",
             "Tests/HealthRecoveryCopyChecks.swift",

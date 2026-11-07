@@ -1,6 +1,7 @@
 import Foundation
 import CryptoKit
 import ImageIO
+import Darwin
 
 /// Actual checked backend transactions with isolated defaults. Product review
 /// ownership, LocalStore locking and native standard-defaults routes are later.
@@ -49,14 +50,33 @@ enum HealthLegacyRecoveryTransactionChecks {
         }
         func files(_ root: URL) throws -> [String: String] {
             var result: [String: String] = [:]
+            let base = root.resolvingSymlinksInPath().path
             guard let iterator = fm.enumerator(at: root, includingPropertiesForKeys: nil) else { throw HealthLocalFiles.Failure.invalid }
             for case let file as URL in iterator {
                 let attributes = try fm.attributesOfItem(atPath: file.path)
                 if attributes[.type] as? FileAttributeType == .typeRegular {
-                    result[String(file.path.dropFirst(root.path.count + 1))] = try Data(contentsOf: file).base64EncodedString()
+                    let path = file.resolvingSymlinksInPath().path
+                    guard path.hasPrefix(base + "/") else { throw HealthLocalFiles.Failure.invalid }
+                    result[String(path.dropFirst(base.count + 1))] = try Data(contentsOf: file).base64EncodedString()
                 }
             }
             return result
+        }
+        func metadata(_ root: URL) throws -> [String: [String: String]] {
+            var rows: [String: [String: String]] = [:]
+            let base = root.resolvingSymlinksInPath().path
+            let entries = [root] + (fm.enumerator(at: root, includingPropertiesForKeys: nil)?.allObjects as? [URL] ?? [])
+            for file in entries {
+                let path = file.resolvingSymlinksInPath().path
+                guard path == base || path.hasPrefix(base + "/") else { throw HealthLocalFiles.Failure.invalid }
+                var facts = stat()
+                guard lstat(file.path, &facts) == 0 else { throw HealthLocalFiles.Failure.unavailable }
+                let key = path == base ? "." : String(path.dropFirst(base.count + 1))
+                rows[key] = ["inode": String(facts.st_ino), "device": String(facts.st_dev), "mode": String(facts.st_mode),
+                             "size": String(facts.st_size), "mtimeSeconds": String(facts.st_mtimespec.tv_sec),
+                             "mtimeNanoseconds": String(facts.st_mtimespec.tv_nsec)]
+            }
+            return rows
         }
         func seed(_ root: URL, owner: UUID, missing: Set<HealthLocalFiles.Domain>) throws {
             try fm.createDirectory(at: root, withIntermediateDirectories: false)
@@ -90,6 +110,8 @@ enum HealthLegacyRecoveryTransactionChecks {
             guard let origin = try Origin.capture(domain, in: root, legacy: legacy) else { throw HealthLocalFiles.Failure.invalid }
             let bound = try payload([domain], origins: [domain: origin])
             let before = try files(root)
+            let priorBefore = try files(previous), priorBeforeMetadata = try metadata(previous), beforeMetadata = try metadata(root)
+            let legacyBefore = currentValues(defaults, keys: [key])
             let transaction = try HealthRecoverySelection.prepare(bound, into: root, owner: owner, legacy: legacy)
             try transaction.commit()
             try check(label + " legacy key unchanged after actual installation", Origin.capture(domain, in: root, legacy: legacy) == nil)
@@ -142,6 +164,8 @@ enum HealthLegacyRecoveryTransactionChecks {
             try fm.removeItem(at: extra)
             cases[caseIndex] = ["label": label, "root": root.path, "suite": suiteName, "key": key,
                           "originEnvelope": exactEnvelope.base64EncodedString(), "before": before, "after": try files(root),
+                          "priorBefore": priorBefore, "priorBeforeMetadata": priorBeforeMetadata,
+                          "beforeMetadata": beforeMetadata, "afterMetadata": try metadata(root), "legacyBefore": legacyBefore,
                           "currentDefaults": currentValues(defaults, keys: [key]),
                           "synchronized": defaults.synchronize()]
           }
@@ -161,6 +185,8 @@ enum HealthLegacyRecoveryTransactionChecks {
             guard let mealOrigin = try Origin.capture(.meals, in: root, legacy: legacy),
                   let goalOrigin = try Origin.capture(.goals, in: root, legacy: legacy) else { throw HealthLocalFiles.Failure.invalid }
             let before = try files(root), prior = try files(root.appendingPathExtension("previous"))
+            let priorMetadata = try metadata(root.appendingPathExtension("previous")), beforeMetadata = try metadata(root)
+            let legacyBefore = currentValues(defaults, keys: keys)
             let unbound = try payload([.meals, .workouts, .goals], origins: [:])
             try check("mixed absent targets require explicit origin observations", rejected { _ = try HealthRecoverySelection.prepare(unbound, into: root, owner: owner, legacy: legacy) })
             try check("mixed unsupported preparation preserves current/prior bytes", files(root) == before && files(root.appendingPathExtension("previous")) == prior)
@@ -176,6 +202,8 @@ enum HealthLegacyRecoveryTransactionChecks {
             try check("mixed healthy water and defaults unchanged", Data(contentsOf: root.appendingPathComponent("water.json")) == water && defaults.object(forKey: keys[0]) as? Data == malformed && defaults.object(forKey: keys[1]) as? String == "synthetic failed mixed goals")
             cases[index] = ["label": "mixed-three-domains", "root": root.path, "suite": suite, "keys": keys,
                             "before": before, "after": try files(root), "currentDefaults": currentValues(defaults, keys: keys),
+                            "priorBefore": prior, "priorBeforeMetadata": priorMetadata, "beforeMetadata": beforeMetadata,
+                            "afterMetadata": try metadata(root), "legacyBefore": legacyBefore,
                             "synchronized": defaults.synchronize()]
         }
         // Deterministic review/prepare/final-boundary rejections use actual keys.

@@ -3,6 +3,12 @@ import Darwin
 
 @main struct ImportTests {
     static func main() async throws {
+        if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--health-legacy-boundary-baseline" {
+            try HealthLegacyRecoveryBoundaryChecks.run(output: URL(fileURLWithPath: CommandLine.arguments[2]), expectingDefects: true); return
+        }
+        if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--health-legacy-boundaries" {
+            try HealthLegacyRecoveryBoundaryChecks.run(output: URL(fileURLWithPath: CommandLine.arguments[2]), expectingDefects: false); return
+        }
         if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--health-legacy-transaction" {
             try HealthLegacyRecoveryTransactionChecks.run(output: URL(fileURLWithPath: CommandLine.arguments[2])); return
         }
