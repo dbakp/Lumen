@@ -1,0 +1,136 @@
+// Pending native fragment only. Requires matching host, setup flags, production repair and new frozen build.
+    @MainActor
+    func testHealthBackupFileRecoveryPhotoFaultErrorBackLegacyHeldCancel() throws { try healthBackupPhotoFaultErrorHeld("legacy", action: "cancel") }
+    @MainActor
+    func testHealthBackupFileRecoveryPhotoFaultErrorBackLegacyHeldBack() throws { try healthBackupPhotoFaultErrorHeld("legacy", action: "back") }
+    @MainActor
+    func testHealthBackupFileRecoveryPhotoFaultErrorBackEncryptedHeldCancel() throws { try healthBackupPhotoFaultErrorHeld("encrypted", action: "cancel") }
+    @MainActor
+    func testHealthBackupFileRecoveryPhotoFaultErrorBackEncryptedHeldBack() throws { try healthBackupPhotoFaultErrorHeld("encrypted", action: "back") }
+    @MainActor
+    private func healthBackupPhotoFaultErrorHeld(_ kind: String, action: String) throws {
+        executionTimeAllowance = 600
+        let base = "Lumen-backup-health-matrix-two-" + kind
+        let prefix = "health-error-held-" + kind
+        func selectOriginal() throws {
+            try chooseBackupFixture(base)
+            if kind == "encrypted" { unlockBackup(value: "Synthetic backup passphrase 42") }
+            XCTAssertTrue(app.descendants(matching: .any).matching(identifier: "backupPreviewKind").firstMatch.waitForExistence(timeout: 30))
+            let link = app.buttons["reviewBackupHealthRecovery"].firstMatch
+            reveal(link); link.tap()
+            let filename = app.staticTexts["recoveryFileName"].firstMatch
+            XCTAssertTrue(filename.waitForExistence(timeout: 10))
+            XCTAssertEqual(filename.label, base + (kind == "encrypted" ? ".lumenbackup" : ".json"))
+        }
+        openBackupSettings(); try selectOriginal()
+        snap(prefix + "-source"); Thread.sleep(forTimeInterval: 3)
+        let reviewMeals = app.buttons["reviewFile-meals"].firstMatch
+        reveal(reviewMeals); reviewMeals.tap()
+        let readerState = app.descendants(matching: .any).matching(identifier: "fileRecordsLoading").firstMatch
+        XCTAssertTrue(readerState.waitForExistence(timeout: 10))
+        for phase in ["held-1", "observed-1"] {
+            let observed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", phase), object: readerState)
+            XCTAssertEqual(XCTWaiter.wait(for: [observed], timeout: 15), .completed)
+            snap(prefix + "-record-" + phase)
+        }
+        let firstRecord = app.buttons["recoveryRecord-0"].firstMatch
+        XCTAssertTrue(firstRecord.waitForExistence(timeout: 10))
+        snap(prefix + "-record-read")
+        // The loaded native record list establishes the completed actual read.
+        // Return directly to review without revisiting a list .task via a child.
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        let domains = ["meals", "workouts"]
+        for domain in domains {
+            let choice = app.switches["recoverFile-" + domain].firstMatch
+            reveal(choice, towardsTop: domain == "meals"); XCTAssertEqual(choice.value as? String, "0")
+            nativeSwitch("recoverFile-" + domain, enabled: true)
+        }
+        let confirm = app.buttons["confirmFileRecovery"].firstMatch
+        let alert = app.alerts["Replace selected data?"]
+        let failure = app.descendants(matching: .any).matching(identifier: "fileHealthRecoveryError").firstMatch
+        let success = app.descendants(matching: .any).matching(identifier: "fileHealthRecovered").firstMatch
+        reveal(confirm); XCTAssertTrue(confirm.isEnabled); confirm.tap()
+        XCTAssertTrue(alert.waitForExistence(timeout: 5))
+        alert.buttons["Recover"].tap()
+        // The app must expose the genuine failure before any test scrolling.
+        XCTAssertTrue(failure.waitForExistence(timeout: 30)); XCTAssertTrue(failure.isHittable)
+        XCTAssertGreaterThanOrEqual(failure.frame.minY, app.navigationBars["Review recovery"].frame.maxY)
+        XCTAssertLessThanOrEqual(failure.frame.maxY, app.frame.maxY - 20)
+        XCTAssertTrue(failure.label.contains("Recovery couldn't finish"))
+        XCTAssertTrue(failure.label.contains("Your current files haven't been replaced."))
+        XCTAssertFalse(success.exists); snap(prefix + "-failed"); Thread.sleep(forTimeInterval: 3)
+        XCTAssertTrue(action == "cancel" || action == "back")
+        nativeSwitch("Recover without meal photos", enabled: true, towardsTop: true)
+        reveal(confirm); confirm.tap(); XCTAssertTrue(alert.waitForExistence(timeout: 5))
+        alert.buttons["Recover"].tap()
+        let busy = app.descendants(matching: .any).matching(identifier: "fileHealthRecoveryBusy").firstMatch
+        XCTAssertTrue(busy.waitForExistence(timeout: 10)); XCTAssertFalse(failure.exists)
+        let cancel = app.buttons["cancelFileRecovery"].firstMatch
+        // No test reveal/scroll is permitted before the actual busy Cancel frame.
+        snap(prefix + "-busy-before-visibility-check")
+        XCTAssertTrue(cancel.waitForExistence(timeout: 5)); settleLabFrame(cancel)
+        let cancelFrame = cancel.frame
+        XCTAssertTrue(cancel.isHittable)
+        XCTAssertGreaterThanOrEqual(cancelFrame.minY, app.navigationBars["Review recovery"].frame.maxY)
+        XCTAssertLessThanOrEqual(cancelFrame.maxY, app.frame.maxY - 20)
+        XCTAssertGreaterThan(cancelFrame.height, 0)
+        for phase in ["held-2", "observed-2"] {
+            let state = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", phase), object: busy)
+            XCTAssertEqual(XCTWaiter.wait(for: [state], timeout: 15), .completed)
+            snap(prefix + "-" + phase)
+        }
+        if action == "cancel" {
+            cancel.tap()
+            XCTAssertTrue(confirm.waitForExistence(timeout: 10)); XCTAssertTrue(confirm.isEnabled)
+            XCTAssertFalse(busy.exists); XCTAssertFalse(failure.exists); XCTAssertFalse(success.exists)
+            snap(prefix + "-cancelled"); Thread.sleep(forTimeInterval: 3)
+            XCTAssertFalse(failure.exists); XCTAssertFalse(success.exists)
+            for domain in domains {
+                let selected = app.switches["recoverFile-" + domain].firstMatch
+                reveal(selected, towardsTop: domain == "meals"); XCTAssertEqual(selected.value as? String, "1")
+            }
+            let omission = app.switches["Recover without meal photos"].firstMatch
+            reveal(omission, towardsTop: true); XCTAssertEqual(omission.value as? String, "1")
+            snap(prefix + "-cancelled-choices")
+        } else {
+            app.navigationBars["Review recovery"].buttons.element(boundBy: 0).tap()
+            XCTAssertTrue(app.navigationBars["Backup & restore"].waitForExistence(timeout: 3))
+            XCTAssertFalse(failure.exists); XCTAssertFalse(success.exists)
+            snap(prefix + "-back-parent"); Thread.sleep(forTimeInterval: 3)
+            try selectOriginal()
+            snap(prefix + "-reselected-source"); Thread.sleep(forTimeInterval: 3)
+            for domain in domains {
+                let fresh = app.switches["recoverFile-" + domain].firstMatch
+                reveal(fresh, towardsTop: domain == "meals"); XCTAssertEqual(fresh.value as? String, "0")
+            }
+            let omission = app.switches["Recover without meal photos"].firstMatch
+            reveal(omission, towardsTop: true); XCTAssertEqual(omission.value as? String, "0")
+            reveal(confirm); XCTAssertFalse(confirm.isEnabled)
+            XCTAssertFalse(failure.exists); XCTAssertFalse(success.exists)
+            snap(prefix + "-fresh-off")
+            for domain in domains { nativeSwitch("recoverFile-" + domain, enabled: true, towardsTop: domain == "meals") }
+        }
+        reveal(confirm); XCTAssertTrue(confirm.isEnabled); confirm.tap()
+        XCTAssertTrue(alert.waitForExistence(timeout: 5)); alert.buttons["Recover"].tap()
+        XCTAssertTrue(busy.waitForExistence(timeout: 10)); XCTAssertFalse(failure.exists)
+        for phase in ["held-3", "observed-3"] {
+            let state = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", phase), object: busy)
+            XCTAssertEqual(XCTWaiter.wait(for: [state], timeout: 15), .completed)
+            snap(prefix + "-" + phase)
+        }
+        reveal(success, towardsTop: true); XCTAssertTrue(success.waitForExistence(timeout: 30))
+        XCTAssertFalse(failure.exists); snap(prefix + "-success")
+        let observed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", "success-observed"), object: success)
+        XCTAssertEqual(XCTWaiter.wait(for: [observed], timeout: 35), .completed)
+        app.navigationBars["Review recovery"].buttons.element(boundBy: 0).tap()
+        XCTAssertTrue(app.navigationBars["Backup & restore"].waitForExistence(timeout: 5))
+        snap(prefix + "-parent"); Thread.sleep(forTimeInterval: 4)
+        let readback: [String: Any] = ["scope": "genuine-error-held-cancel-back-retry", "format": kind, "action": action,
+            "cancelFrame": String(describing: cancelFrame), "cancelVisibleBeforeTestScroll": true,
+            "cancelledControlOrdinal": 2, "retryControlOrdinal": 3,
+            "retryOmission": action == "cancel", "silenceObservationSeconds": 3, "successObserved": true]
+        let attachment = XCTAttachment(data: try JSONSerialization.data(withJSONObject: readback, options: [.prettyPrinted, .sortedKeys]), uniformTypeIdentifier: "public.json")
+        attachment.name = "error-held-readback"; attachment.lifetime = .keepAlways; add(attachment)
+        app.terminate(); app.launchArguments = []; app.launch(); openBackupSettings()
+        XCTAssertFalse(app.staticTexts["Saved health data couldn't be opened."].exists); snap(prefix + "-relaunch")
+    }
