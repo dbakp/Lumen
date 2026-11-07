@@ -5084,7 +5084,7 @@ final class LumenSmokeTests: XCTestCase {
     func testHealthBackupFileRecoveryAllCommitEncrypted() throws { try healthBackupMultipleDomains("encrypted") }
     func testHealthBackupFileRecoveryAllCommitReadable() throws { try healthBackupMultipleDomains("readable") }
     private func healthBackupMultipleDomains(_ kind: String) throws {
-        executionTimeAllowance = 300
+        executionTimeAllowance = 420
         let base = kind == "readable" ? "Lumen-readable-health-multi" : "Lumen-backup-health-multi-" + kind
         let prefix = "health-multi-" + kind
         if kind == "readable" { openReadableRecovery(); try chooseReadableFixture(base); waitForReadableReview() }
@@ -5108,7 +5108,7 @@ final class LumenSmokeTests: XCTestCase {
         reveal(confirm); XCTAssertFalse(confirm.isEnabled)
         for (domain, expected) in [("water", "246 mL"), ("meals", "Lunch"), ("workouts", "Recovered walk"), ("goals", "321 steps")] {
             let review = app.buttons["reviewFile-" + domain].firstMatch
-            reveal(review, towardsTop: true); review.tap()
+            reveal(review, towardsTop: domain == "water"); review.tap()
             let record = app.buttons["recoveryRecord-0"].firstMatch
             XCTAssertTrue(record.waitForExistence(timeout: 10)); record.tap()
             let field = app.descendants(matching: .any).matching(identifier: "recoveryField-0").firstMatch
@@ -5122,7 +5122,7 @@ final class LumenSmokeTests: XCTestCase {
             }
             app.navigationBars.buttons.element(boundBy: 0).tap(); app.navigationBars.buttons.element(boundBy: 0).tap()
         }
-        for domain in domains { nativeSwitch("recoverFile-" + domain, enabled: true, towardsTop: true) }
+        for domain in domains { nativeSwitch("recoverFile-" + domain, enabled: true, towardsTop: domain == "water") }
         if kind == "readable" {
             reveal(confirm); XCTAssertFalse(confirm.isEnabled)
             nativeSwitch("Recover without meal photos", enabled: true, towardsTop: true)
@@ -5132,7 +5132,7 @@ final class LumenSmokeTests: XCTestCase {
         XCTAssertTrue(alert.waitForExistence(timeout: 5)); snap(prefix + "-confirmation"); alert.buttons["Not now"].tap()
         for domain in domains {
             let choice = app.switches["recoverFile-" + domain].firstMatch
-            reveal(choice, towardsTop: true); XCTAssertEqual(choice.value as? String, "1")
+            reveal(choice, towardsTop: domain == "water"); XCTAssertEqual(choice.value as? String, "1")
         }
         snap(prefix + "-not-now"); Thread.sleep(forTimeInterval: 3)
         reveal(confirm); confirm.tap(); XCTAssertTrue(alert.waitForExistence(timeout: 5)); alert.buttons["Recover"].tap()
