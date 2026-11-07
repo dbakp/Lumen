@@ -119,6 +119,7 @@ struct BackupFileRecoveryView: View {
     @State private var busy = false
     @State private var recovered = false
     @State private var issue: String?
+    @AccessibilityFocusState private var recoveryErrorFocused: Bool
     @State private var operation: BackupOperationControl?
     @State private var work: Task<Void, Never>?
     #if DEBUG && targetEnvironment(simulator)
@@ -139,6 +140,7 @@ struct BackupFileRecoveryView: View {
         }
     }
     var body: some View {
+        ScrollViewReader { scroll in
         Form {
             Section {
                 Text(input.identity.fileName).textSelection(.enabled).accessibilityIdentifier("recoveryFileName")
@@ -149,7 +151,6 @@ struct BackupFileRecoveryView: View {
             if recovered {
                 Section { Label("Selected data recovered", systemImage: "checkmark.circle").accessibilityIdentifier("fileHealthRecovered") }
             }
-            if let issue { Section { Text(issue).foregroundStyle(.secondary) } }
             ForEach(HealthLocalFiles.Domain.allCases, id: \.self) { domain in
                 Section {
                     if input.present.contains(domain) {
@@ -181,6 +182,17 @@ struct BackupFileRecoveryView: View {
             Section {
                 Text("Replaced files stay in a private copy on this iPhone. For meal recovery, this includes any old photos.")
                 Text("Recovered entries won't be added to Apple Health. Earlier pending Health saves won't restart; pending removals can finish.")
+                if let issue {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Recovery couldn't finish").font(.headline)
+                        Text(issue)
+                    }
+                    .foregroundStyle(.primary)
+                    .accessibilityElement(children: .combine)
+                    .accessibilityIdentifier("fileHealthRecoveryError")
+                    .accessibilityFocused($recoveryErrorFocused)
+                    .id("fileHealthRecoveryError")
+                }
                 if busy {
                     recoveryProgress
                     Button("Cancel") { operation?.cancel(); work?.cancel() }.accessibilityIdentifier("cancelFileRecovery")
@@ -190,6 +202,20 @@ struct BackupFileRecoveryView: View {
                         .accessibilityIdentifier("confirmFileRecovery")
                 }
             }
+        }
+        .onChange(of: issue) { _, message in
+            guard let message else { return }
+            Task { @MainActor in
+                // Insert the native Form row before revealing it. Do this only
+                // for a new failure, so subsequent reading never snaps back.
+                await Task.yield()
+                guard issue == message else { return }
+                scroll.scrollTo("fileHealthRecoveryError", anchor: .top)
+                await Task.yield()
+                guard issue == message else { return }
+                recoveryErrorFocused = true
+            }
+        }
         }
         .navigationTitle("Review recovery").navigationBarTitleDisplayMode(.inline)
         #if DEBUG && targetEnvironment(simulator)
@@ -210,7 +236,7 @@ struct BackupFileRecoveryView: View {
 
     private func recover() {
         guard canRecover else { return }
-        busy = true; issue = nil
+        busy = true; issue = nil; recoveryErrorFocused = false
         #if DEBUG && targetEnvironment(simulator)
         let control = HealthRecoveryCancelUIFixture.makeControl()
         #else
@@ -234,7 +260,7 @@ struct BackupFileRecoveryView: View {
             catch {
                 guard !Task.isCancelled, operation === control else { return }
                 do { try control.checkCancellation() } catch { return }
-                issue = "Recovery couldn't finish. Your current files haven't been replaced. Check the file and try again."
+                issue = "Your current files haven't been replaced. Check the file and try again."
             }
         }
     }

@@ -5211,10 +5211,26 @@ final class LumenSmokeTests: XCTestCase {
         }
         snap(prefix + "-not-now"); Thread.sleep(forTimeInterval: 3)
         reveal(confirm); confirm.tap(); XCTAssertTrue(alert.waitForExistence(timeout: 5)); alert.buttons["Recover"].tap()
-        let failure = app.staticTexts["Recovery couldn't finish. Your current files haven't been replaced. Check the file and try again."].firstMatch
-        reveal(failure, towardsTop: true); XCTAssertTrue(failure.waitForExistence(timeout: 30))
-        XCTAssertFalse(app.descendants(matching: .any).matching(identifier: "fileHealthRecovered").firstMatch.exists)
-        snap(prefix + "-failed"); Thread.sleep(forTimeInterval: 3)
+        let failure = app.descendants(matching: .any).matching(identifier: "fileHealthRecoveryError").firstMatch
+        for attempt in 1...2 {
+            // No reveal, swipe or search action before the first error frame:
+            // the app itself must bring the genuine failure into view.
+            XCTAssertTrue(failure.waitForExistence(timeout: 30))
+            XCTAssertTrue(failure.isHittable)
+            let usableTop = app.navigationBars["Review recovery"].frame.maxY
+            XCTAssertGreaterThanOrEqual(failure.frame.minY, usableTop)
+            XCTAssertLessThanOrEqual(failure.frame.maxY, app.frame.maxY - 20)
+            XCTAssertTrue(failure.label.contains("Recovery couldn't finish"))
+            XCTAssertTrue(failure.label.contains("Your current files haven't been replaced."))
+            XCTAssertFalse(app.descendants(matching: .any).matching(identifier: "fileHealthRecovered").firstMatch.exists)
+            snap(prefix + (attempt == 1 ? "-failed" : "-failed-repeat"))
+            Thread.sleep(forTimeInterval: 3)
+            if attempt == 1 {
+                reveal(confirm); confirm.tap()
+                XCTAssertTrue(alert.waitForExistence(timeout: 5))
+                alert.buttons["Recover"].tap()
+            }
+        }
         for domain in domains {
             let choice = app.switches["recoverFile-" + domain].firstMatch
             reveal(choice); XCTAssertEqual(choice.value as? String, "1")
@@ -5230,7 +5246,7 @@ final class LumenSmokeTests: XCTestCase {
         reveal(confirm); confirm.tap(); XCTAssertTrue(alert.waitForExistence(timeout: 5)); alert.buttons["Recover"].tap()
         let busy = app.descendants(matching: .any).matching(identifier: "fileHealthRecoveryBusy").firstMatch
         XCTAssertTrue(busy.waitForExistence(timeout: 10))
-        for value in ["held-2", "observed-2"] {
+        for value in ["held-3", "observed-3"] {
             let held = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", value), object: busy)
             XCTAssertEqual(XCTWaiter.wait(for: [held], timeout: 15), .completed); snap(prefix + "-" + value)
         }
@@ -5239,7 +5255,7 @@ final class LumenSmokeTests: XCTestCase {
         app.navigationBars["Review recovery"].buttons.element(boundBy: 0).tap()
         XCTAssertTrue(app.navigationBars["Backup & restore"].waitForExistence(timeout: 5))
         snap(prefix + "-parent"); Thread.sleep(forTimeInterval: 4)
-        let readback: [String: Any] = ["scope": "selected-file-extracted-photo-fault-omission", "format": kind, "domains": domains, "initialChoicesOff": true, "fault": fault, "mealsReviewed": 2, "photosReviewed": 1, "unavailablePhotoReviewed": true, "failedWithoutOmission": true, "explicitPhotoOmission": true, "healthyWaterGoalsChoicesAbsent": true, "successObserved": true]
+        let readback: [String: Any] = ["scope": "selected-file-extracted-photo-fault-omission", "format": kind, "domains": domains, "initialChoicesOff": true, "fault": fault, "mealsReviewed": 2, "photosReviewed": 1, "unavailablePhotoReviewed": true, "failedWithoutOmission": true, "repeatedFailureWithoutTestScroll": true, "explicitPhotoOmission": true, "healthyWaterGoalsChoicesAbsent": true, "successObserved": true]
         let attachment = XCTAttachment(data: try JSONSerialization.data(withJSONObject: readback, options: [.prettyPrinted, .sortedKeys]), uniformTypeIdentifier: "public.json")
         attachment.name = "photo-fault-readback"; attachment.lifetime = .keepAlways; add(attachment)
         app.terminate(); app.launchArguments = []; app.launch(); openBackupSettings()
