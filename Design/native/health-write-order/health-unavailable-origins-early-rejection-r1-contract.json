@@ -1,0 +1,27 @@
+{
+  "status": "Proposed narrow safety repair, predeclared before product changes; not implemented/accepted",
+  "baselineSource": "durable-source-r193.json",
+  "baselineReport": "source193-unavailable-origins-baseline-r1.json",
+  "problem": "For an already-missing selected domain or selected symlink, recovery preparation rejects only after retiring.previous; three symlink cases also create current private copies. A failed unsupported-origin request should be rejected before this incidental mutation.",
+  "proposedChange": [
+    "In ConversationFiles.prepareHealthRecovery, before protectPreviousCopy and BackupFileTransaction.prepare, check cancellation then actual root directory kind and each selected current path kind without following a selected link.",
+    "A missing selected path rejects changed; a selected symlink or other unsupported special path rejects currentDataInvalid. Existing regular files and directories proceed through unchanged checked transaction and damaged-path preservation.",
+    "No whole-file read/hash or extra test reader barrier is added by this metadata preflight. Keep staged validation/sourceSnapshot/commit/cancellation checks; preflight does not replace them."
+  ],
+  "verification": [
+    "Retain193baseline before changes; allfive actualbefore/afterdifferences and suite/currenttarget facts already independently bound.",
+    "Add an explicit focused postrepair mode requiring allfive reader/preparation rejections and whole case before/after tree exact, no prior retirement/newprivate/stage/receipt and persistedlegacyvalue unchanged. Retain fixtures/suites through independentliveaudit/exactbackup before cleanup.",
+    "Preserve trulyabsent and deliberatelyempty controls; their reads cannot resurrect legacy or authorize unavailable recovery.",
+    "Run meaningful affected pure recovery/transaction/conversation regressions, then full logic suite appropriate to productioncore change, simulator build/current affected native paths and current unsigned Release audit before broader acceptance. Largefixtures only where tests require, reuseexistingcaches.",
+    "Same continuing critic reviews exact proposed/implemented diff and actual outcomes; no new UI score from source-only repair."
+  ],
+  "boundaries": [
+    "This is only early rejection of unsupported origins already present at call entry. It does not implement legacy or symlink recovery, nor prove every changed-path race/interleaving has no sideeffects.",
+    "Missingroot/interrupted-open semantics must remain explicit; validate rootkind safely without following rootlinks and do not invent silentempty data.",
+    "Healthy regular selected targets still use existing later validation; no general no-mutation-on-all-failures claim.",
+    "Full legacy value/type immutable review/serializedcommit/privateprovenance and safe selectedlink metadata-only replacement remain required follow-on work.",
+    "Do not clear legacy defaults, follow/delete linktargets, replay intent, alter archive decoding, bypassconversation/source/photo/owner/revision guards, or narrow originalcontracts/eightgroups."
+  ],
+  "nextAfter": "Continue actual recovery support with an explicit origin model and review-to-commit identity contract; this safetyfix is a checkpoint, not productcompletion.",
+  "checkedAt": 1794081752.40214
+}

@@ -1,0 +1,187 @@
+{
+  "status": "Part32 source-only contract critique: narrow early rejection justified; missing-root policy requires explicit repair before implementation",
+  "checkedAt": "2026-11-07T20:04:39.787952+00:00",
+  "source": "durable-source-r193.json",
+  "critic": "Same continuing independent critic; no runtime, UI score or product acceptance",
+  "contract": {
+    "file": "Design/native/health-write-order/health-unavailable-origins-early-rejection-r1-contract.json",
+    "bytes": 3321,
+    "sha256": "b6378dc23637bcd22ae45a3665a52265c8a1aafbff42e4bf744bd76774231e36"
+  },
+  "scope": "Proposed metadata preflight and existing source call ordering only. No patch applied, test/build/native producer executed, fixture/suite deleted or source/Git changed.",
+  "provenance": [
+    {
+      "file": "Design/native/health-write-order/durable-source-r193.json",
+      "bytes": 42389,
+      "sha256": "0e558783ae2ffa2a4cb4104a2fd4b84e9baa46e11ac7807e73161d6511ce4fb3"
+    },
+    {
+      "file": "Design/native/health-write-order/durable-source-r193.json.gz",
+      "bytes": 905380,
+      "sha256": "b83f1189b1468bf3ffe82280d6b6f1f4d7ab2718720d5525ac9b7b5c8b02dfa8"
+    },
+    {
+      "file": "Design/native/health-write-order/source193-unavailable-origins-baseline-r1.json",
+      "bytes": 135363,
+      "sha256": "9e1d33321116c3b6a6c27861f9cbb46ea9db4b6ae59b6bc01a74a00c9677c920"
+    },
+    {
+      "file": "Design/native/health-write-order/source193-unavailable-origins-baseline-r1-live-audit.json",
+      "bytes": 2753,
+      "sha256": "66f60cee38bbaa5871726ef68dc0e2a47c54e65cd180f14a48e7b82624ccc5f2"
+    },
+    {
+      "file": "Design/native/health-write-order/source193-unavailable-origins-baseline-r1-defaults-audit.json",
+      "bytes": 2856,
+      "sha256": "4aa14541319a5f4b952de4f34c541a4e34fe6123ea696226710ce844a8bdf012"
+    },
+    {
+      "file": "Design/native/health-write-order/health-unavailable-origins-source193-round2-part31-retained-baseline.json",
+      "bytes": 29818,
+      "sha256": "091e0aac2569013e186c500fdf6fa299ac14324261845f12249ca460bf279108"
+    },
+    {
+      "file": "Lumen/Models/ConversationFiles.swift",
+      "bytes": 6532,
+      "sha256": "cfe85382cad51f9023b577470b15e7eb73ccc9eb88383216a5271a4e9cddbe44"
+    },
+    {
+      "file": "Lumen/Models/BackupArchive.swift",
+      "bytes": 19001,
+      "sha256": "4a90bd91c4df31bc8751574f24d2d9c3f11e1c6b4339e876bacb25fc790dc291"
+    },
+    {
+      "file": "Lumen/Models/BackupFileTransaction.swift",
+      "bytes": 20204,
+      "sha256": "6584614fd196a21fe6ba418b8ae1a33a578964f73f7851dc7287f69d86360ae9"
+    },
+    {
+      "file": "Lumen/Models/HealthRecoveryCopies.swift",
+      "bytes": 38735,
+      "sha256": "8a420f4ddc9319157ea53a453775a0bfb25997320a5e35e2facb7aa785e2790b"
+    },
+    {
+      "file": "Lumen/Models/HealthRecoverySelection.swift",
+      "bytes": 12880,
+      "sha256": "f41cd227862406d49345981a1fcf001f39f482ad2c72f6a6c7b46ae5da275920"
+    },
+    {
+      "file": "Lumen/Models/HealthLocalFiles.swift",
+      "bytes": 8225,
+      "sha256": "47658a43536f5817d334741e964ac1f25575044163dbb84e884c870e79b673ae"
+    },
+    {
+      "file": "Lumen/Models/BackupPackage.swift",
+      "bytes": 26080,
+      "sha256": "790727e51e8fc90c5b58cd7b882e281f9e3825c51ace68e92048bebe7c595bc7"
+    }
+  ],
+  "integrity": {
+    "all254TextAnd9BinaryCurrentManifestFullArchiveExact": true,
+    "productionInputsStillFrozen193AtReview": true,
+    "priorPart31SHAUnchanged": "091e0aac2569013e186c500fdf6fa299ac14324261845f12249ca460bf279108",
+    "baseline135363BytesSHA": "9e1d33321116c3b6a6c27861f9cbb46ea9db4b6ae59b6bc01a74a00c9677c920",
+    "newRuntimeOrLiveFixtureQuery": false
+  },
+  "sourceFacts": [
+    {
+      "source": "ConversationFiles.prepareHealthRecovery",
+      "fact": "Calls protectPreviousCopy before generic BackupFileTransaction.prepare. Preflight must precede both to prevent actual prior retirement/private discovery for alreadyunsupported existing-root origins."
+    },
+    {
+      "source": "ConversationFiles.protectPreviousCopy/load; BackupFiles.openDirectory/recover",
+      "fact": "protectPreviousCopy may load conversations when.previous exists; load opens directory and can move surviving.previous into missing current root. Generic recover can preservePrevious into private current tree then remove.previous before later snapshot/preparation rejection. Missingroot is therefore not equivalent to missing selected path in a knownpresentroot."
+    },
+    {
+      "source": "BackupFileTransaction.prepare/snapshot; HealthRecoveryCopies.preserveReplacedDomains",
+      "fact": "Existing root snapshot, clone, selectedraw damaged-path preservation and later commit guards perform actual validation. A metadata preflight does not establish validreplacement/source identity or changedpath race safety. Regular files and directories must continue through these unchanged guards."
+    },
+    {
+      "source": "HealthRecoverySelection.prepare",
+      "fact": "Creates newintent/receipt data in memory, verifies fileSourcelease before delegate, checks originalintent afterward and retains verified source boundary. Adding currenttarget metadata check in delegate need not change this ownership/source/receipt behavior; must not bypass it."
+    },
+    {
+      "source": "BackupOperationControl.checkCancellation",
+      "fact": "Throws CancellationError when sharedcontrol cancelled or Task.isCancelled. Reuse same instance; no new cancellation domain or test barrier needed."
+    }
+  ],
+  "findings": [
+    {
+      "id": "P32-C1",
+      "severity": "required-contract-clarification-before-implementation",
+      "topic": "Missingroot/interrupted-open policy",
+      "evidence": "R1boundaries says missingroot/interrupted-open must remain explicit, but proposed rootdirectorykind guard does not choose behavior. Existing openDirectory restores surviving.previous when current root truly missing.",
+      "risk": "Unconditional mustexist guard would reject instead of preserving existing interrupted-open behavior, extending scope beyond fiveknownpresent-root baselines. Calling mutatingopen before earlypreflight would also defeat blanket entry-no-mutation wording.",
+      "recommendation": "Declare a precise branch: root lstat ENOENT delegates unchanged existing open/protect/generic path, explicitly outside early-no-mutation guarantee. Existing root must be realdirectory and notrootlink; existingnon-directory/rootlink rejects currentDataInvalid. Other metadata errors propagate or retain existingerror semantics, never treated as absence. Do not create/restore/migrate root inside new preflight. If a differentmissingroot policy is deliberately selected, document its behavior change and verify interrupted-open expectations before product edit."
+    }
+  ],
+  "recommendedDecisionTable": [
+    {
+      "root": "actuallypresentrealdirectory",
+      "selected": "lstat ENOENT",
+      "decision": "HealthLocalFiles.Failure.changed before protectPreviousCopy",
+      "scope": "No incidentalmutation by this entryguard forselectedpathalreadyabsent."
+    },
+    {
+      "root": "actuallypresentrealdirectory",
+      "selected": "symlink includingdangling, FIFO/socket/unsupported special",
+      "decision": "BackupError.currentDataInvalid before protectPreviousCopy",
+      "scope": "No-followmetadata only; never open/read selectedspecial or linktarget."
+    },
+    {
+      "root": "actuallypresentrealdirectory",
+      "selected": "regularfile or directory",
+      "decision": "Continue unchangedprotectPreviousCopy/genericprepare/preservation/commitguards",
+      "scope": "Not validrecovery permission and no general failure-no-mutation guarantee."
+    },
+    {
+      "root": "lstat ENOENT",
+      "selected": "notinspectedbynewguard",
+      "decision": "Recommended unchanged existingopen/recovery semantics",
+      "scope": "Mayrestore.previous/mutate as existingpath; explicitlyexcludedfrom narrowexisting-root earlyguardguarantee."
+    },
+    {
+      "root": "existingrootlink/danglingrootlink or existingnondirectory",
+      "selected": "nottraversed",
+      "decision": "currentDataInvalid",
+      "scope": "Rootkind must becheckednofollow; selectedchecks mustnot accidentallytraverse rootlink."
+    },
+    {
+      "root": "metadataerror notactualENOENT",
+      "selected": "any",
+      "decision": "Propagate actualerror/explicitcurrentDataInvalidpolicy; noabsentfallback",
+      "scope": "ENOTDIR, permission andotherfailures mustnot manufactureempty/missinghistory."
+    }
+  ],
+  "implementationAdvice": [
+    "Use actual no-follow lstat-style metadata, not fileExists or cached URL resourcevalues forselectedpath. Danglinglink lstat succeeds as symlink and must be currentDataInvalid, not changed. Root check follows same distinction; guarding only selectedleaf does not independently forbid intermediateancestorlinks, so do not claim that extra property.",
+    "Check sharedcontrol at entry/before rootmetadata, before each selecteddomain metadata and once immediately before handing off protectPreviousCopy. Use typedDomain rawfilename only. Do not swallow CancellationError or metadata failures into missing. Cancellation still races with laterwork; keep existing later checks and limitedclaims.",
+    "Do not add boundedread/hash/descriptorreader/testbarrier or markregularfilehealthy. Damageddirectory origins deliberatelyproceed unchanged; nestedinvalidcontents remain laterguardresponsibility. Emptydomains/replacementmapvalidation should keepexistinggenericcontract, notcreate another recoveryroute.",
+    "Keep all existing payloadvalidation, photosource/digests, reviewlease, sourceSnapshot, originalintent/owner/lifecycle, transactionretainsource/commit/cancellation and conversationprevious-copy protections. Preflight rejects only; successfulpass confers no new sourceidentity guarantee.",
+    "No lock/barrier or extra productstate is required for this bounded guard. Root orselectedpath can change aftermetadata; laterguards remain authoritative and arbitraryrace failures may stillhaveexistingprepare sideeffects. Do not advertise zero-sideeffects on all preparationfailures."
+  ],
+  "verificationAdviceWithinContract": [
+    "Fresh separatelyfrozen postrepair mode should retain fiveactual reader+prepareerrors, before/afterRead/afterpreparewholecase tree/typedlegacy equality, no priorretirement/newprivate/stage/receipt or installedreplacement. Keep actualsuiteUUID/key and ownedfixtures through independentliveaudit/exactbackup before explicitcleanup.",
+    "Add meaningful focused coverage for chosenmissingroot withsurviving.previous semantics, actuallymissingrootwithoutprevious, rootlink/non-directory rejection and alreadycancelledsharedcontrol; each should bind actualbefore/after/error. This directlytests theguardbranch ratherthan expands originrecovery scope.",
+    "Keep absent+emptycontrols, damagedregular/directoryexistingrecovery regressions and conversation/privateprior/source/photo/intent affectedchecks. Fullappropriatecorelogic, currentaffectednativepaths and unsignedRelease remain subsequentimplementationverification, not thissource-onlyapproval.",
+    "No specialfilecontentreader should be introduced. Any selectedspecialpathfixture must stayowned/tiny and metadataonly, with boundedtestexecution and exactrecordedresult; nonewlargefixtures."
+  ],
+  "baselineBoundary": "Actual193fiveproductionrejections/2controls/liveidentity checks alreadyretained inPart31. Thisreportdoesnotrepeatfixturequeryorclosetheirpendingcleanup. Source192earlycleanup and193launcherpreflightfailure preserved.",
+  "readyForImplementation": "Conditional on explicitP32-C1missingroot policy and narrowguaranteewording; otherwiseplacement and scope sound. No actualimplementationoracceptance.",
+  "requiredProductRedesign": null,
+  "newDesignScore": null,
+  "successfulOriginRecoveryImplemented": false,
+  "limits": [
+    "No product/source/test edits, build/native/pure execution or physicalphone/simulator query.",
+    "Metadata-only check is notimmutableorigin model, finalserializedcommit identity or safe legacy/linkreplacement implementation.",
+    "No generalrace/allfailedpreparationsideeffectfree or healthyvalidtarget/recovery acceptance.",
+    "Fullparent/eightgroups/lateworker/allrawprior/fullspokenbody/audio/duplicatehistory/appearance andmotiongate remainopen."
+  ],
+  "storage": {
+    "availableBytesAtFinish": 37202120704,
+    "bytesRecovered": 0,
+    "deletedFiles": 0,
+    "retainedFixturesAndSuitesUntouched": true
+  },
+  "writeBoundary": "Only thisnewreport written; frozen193andexistingreports/evidence/Git/build/simulator untouched."
+}

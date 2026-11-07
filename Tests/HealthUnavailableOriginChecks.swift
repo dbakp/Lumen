@@ -9,7 +9,8 @@ enum HealthUnavailableOriginChecks {
         let fm = FileManager.default
         let outer = fm.temporaryDirectory.appendingPathComponent("Lumen-unavailable-origins-" + UUID().uuidString)
         try fm.createDirectory(at: outer, withIntermediateDirectories: false)
-        defer { try? fm.removeItem(at: outer) }
+        // Parent retains this owned root through independent live audit and exact backup.
+        print("Retained synthetic baseline root: " + outer.path)
         func digest(_ bytes: Data) -> String { SHA256.hash(data: bytes).map { String(format: "%02x", $0) }.joined() }
         func snapshot(_ root: URL) throws -> [String: [String: String]] {
             var result: [String: [String: String]] = [:]
@@ -62,7 +63,8 @@ enum HealthUnavailableOriginChecks {
             try Data("synthetic unrelated retained bytes".utf8).write(to: privateRoot.appendingPathComponent("sentinel.bin"))
             let suiteName = "com.dbakp.lumen.synthetic.origin." + UUID().uuidString
             guard let defaults = UserDefaults(suiteName: suiteName) else { throw HealthLocalFiles.Failure.invalid }
-            defer { defaults.removePersistentDomain(forName: suiteName) }
+            // The parent removes only these recorded synthetic domains after backup.
+            print("Retained synthetic defaults suite: " + suiteName)
             let key = HealthLocalFiles.Domain.meals.legacyKey!
             if name == "missing-current-malformed-legacy" { defaults.set(Data("{synthetic malformed legacy".utf8), forKey: key) }
             if name == "missing-current-nondata-legacy" { defaults.set("synthetic nonData legacy", forKey: key) }
@@ -72,25 +74,28 @@ enum HealthUnavailableOriginChecks {
                 let destination = name.hasPrefix("relative") ? "../synthetic-reference.json" : name.hasPrefix("absolute") ? target.path : "../synthetic-missing-reference.json"
                 try fm.createSymbolicLink(atPath: mealFile.path, withDestinationPath: destination)
             }
+            let defaultsSynchronizedBeforeRead = defaults.synchronize()
             func legacy() throws -> Data? {
                 guard let value = defaults.object(forKey: key) else { return nil }
                 guard let data = value as? Data else { throw HealthLocalFiles.Failure.invalid }
                 return data
             }
             func legacyFacts() -> [String: String] {
-                guard let value = defaults.object(forKey: key) else { return ["kind": "absent"] }
-                if let data = value as? Data { return ["kind": "Data", "base64": data.base64EncodedString(), "sha256": digest(data)] }
-                return ["kind": String(reflecting: type(of: value)), "description": String(describing: value)]
+                guard let value = defaults.object(forKey: key) else { return ["kind": "absent", "storageType": "absent"] }
+                if let data = value as? Data { return ["kind": "Data", "storageType": "Data", "base64": data.base64EncodedString(), "sha256": digest(data)] }
+                return ["kind": String(reflecting: type(of: value)), "storageType": value is String ? "String" : "other", "description": String(describing: value)]
             }
             let before = try snapshot(area), oldLegacy = legacyFacts()
             var readError: String?, preparationError: String?, unexpectedlyPrepared = false
             do { _ = try HealthLocalFiles.read([Meal].self, domain: .meals, from: root, legacy: legacy) }
             catch { readError = String(reflecting: error) }
+            let legacyAfterRead = legacyFacts()
             let afterRead = try snapshot(area)
             do {
                 let transaction = try ConversationFiles.prepareHealthRecovery(["meals.json": replacement], photoFiles: [:], domains: [.meals], photoDigests: [:], into: root, control: .init())
                 unexpectedlyPrepared = true; transaction.discard()
             } catch { preparationError = String(reflecting: error) }
+            let defaultsSynchronizedAfterPreparation = defaults.synchronize()
             let after = try snapshot(area)
             let changed = Set(before.keys).union(after.keys).filter { before[$0] != after[$0] }.sorted()
             let children = try fm.contentsOfDirectory(at: area, includingPropertiesForKeys: nil).map(\.lastPathComponent)
@@ -98,8 +103,8 @@ enum HealthUnavailableOriginChecks {
             let currentMealsStillUnavailable = (try? HealthLocalFiles.read([Meal].self, domain: .meals, from: root, legacy: legacy)) == nil
             let retainedWater = try HealthLocalFiles.readRegularData(root.appendingPathComponent("water.json"), limit: 1024) == water
             let targetBefore = before["./synthetic-reference.json"], targetAfter = after["./synthetic-reference.json"]
-            let reproduced = readError != nil && preparationError != nil && !unexpectedlyPrepared && currentMealsStillUnavailable && oldLegacy == legacyFacts() && retainedWater && targetBefore == targetAfter && stages.isEmpty
-            observations.append(["case": name, "readerError": readError.map { $0 as Any } ?? NSNull(), "preparationError": preparationError.map { $0 as Any } ?? NSNull(), "unexpectedlyPrepared": unexpectedlyPrepared, "capabilityGapReproduced": reproduced, "readerTreeExact": before == afterRead, "legacyBefore": oldLegacy, "legacyAfter": legacyFacts(), "before": before, "afterRead": afterRead, "afterPreparation": after, "changedPaths": changed, "noStageRemains": stages.isEmpty, "externalTargetExact": targetBefore == targetAfter, "healthyWaterExact": retainedWater, "scope": "Isolated suite and production reader/prepare calls; LocalStore.standard and native UI unexecuted. Changes from preparation, including prior retirement/private discovery, explicitly retained."])
+            let reproduced = readError != nil && preparationError != nil && !unexpectedlyPrepared && currentMealsStillUnavailable && oldLegacy == legacyAfterRead && oldLegacy == legacyFacts() && retainedWater && targetBefore == targetAfter && stages.isEmpty
+            observations.append(["case": name, "areaPath": area.path, "suiteName": suiteName, "legacyKey": key, "defaultsSynchronizedBeforeRead": defaultsSynchronizedBeforeRead, "defaultsSynchronizedAfterPreparation": defaultsSynchronizedAfterPreparation, "legacyAfterRead": legacyAfterRead, "currentMealsStillUnavailable": currentMealsStillUnavailable, "readerError": readError.map { $0 as Any } ?? NSNull(), "preparationError": preparationError.map { $0 as Any } ?? NSNull(), "unexpectedlyPrepared": unexpectedlyPrepared, "capabilityGapReproduced": reproduced, "readerTreeExact": before == afterRead, "legacyBefore": oldLegacy, "legacyAfter": legacyFacts(), "before": before, "afterRead": afterRead, "afterPreparation": after, "changedPaths": changed, "noStageRemains": stages.isEmpty, "externalTargetExact": targetBefore == targetAfter, "healthyWaterExact": retainedWater, "scope": "Isolated suite and production reader/prepare calls; LocalStore.standard and native UI unexecuted. Changes from preparation, including prior retirement/private discovery, explicitly retained."])
         }
         let controlRoot = outer.appendingPathComponent("controls"); try fm.createDirectory(at: controlRoot, withIntermediateDirectories: false)
         let absent = try HealthLocalFiles.read([Meal].self, domain: .meals, from: controlRoot)
@@ -108,7 +113,7 @@ enum HealthUnavailableOriginChecks {
         let empty = try HealthLocalFiles.read([Meal].self, domain: .meals, from: controlRoot, legacy: { legacyCalls += 1; return Data("{broken".utf8) })
         let controls = absent.value == nil && absent.boundary == .missing(legacy: nil) && empty.value?.isEmpty == true && legacyCalls == 0
         let allReproduced = observations.allSatisfy { $0["capabilityGapReproduced"] as? Bool == true } && controls
-        let report: [String: Any] = ["status": allReproduced ? "BASELINE_REPRODUCED capability gaps; recovery feature remains unimplemented" : "BASELINE_MISMATCH inspect actual outcomes", "successfulRecoveryAccepted": false, "observations": observations, "controls": ["trulyAbsentNotUnavailable": absent.value == nil && absent.boundary == .missing(legacy: nil), "emptyCurrentDoesNotReadLegacy": empty.value?.isEmpty == true && legacyCalls == 0], "temporaryRoot": outer.path, "scope": "Five tiny pure Foundation capability-gap baselines, not native/full-product acceptance. Temporary files and isolated defaults removed by scoped defer."]
+        let report: [String: Any] = ["status": allReproduced ? "BASELINE_REPRODUCED capability gaps; recovery feature remains unimplemented" : "BASELINE_MISMATCH inspect actual outcomes", "successfulRecoveryAccepted": false, "observations": observations, "controls": ["trulyAbsentNotUnavailable": absent.value == nil && absent.boundary == .missing(legacy: nil), "emptyCurrentDoesNotReadLegacy": empty.value?.isEmpty == true && legacyCalls == 0], "temporaryRoot": outer.path, "fixturesRetained": true, "isolatedSuitesRetained": true, "cleanupAuthority": "Parent independent live audit and exact GitHub readback required before scoped UUIDroot/suite cleanup", "scope": "Five tiny pure Foundation capability-gap baselines, not native/full-product acceptance. Temporary files and isolated defaults retained for independent live audit and exact backup before parent scoped cleanup."]
         try JSONSerialization.data(withJSONObject: report, options: [.prettyPrinted, .sortedKeys]).write(to: output)
         guard allReproduced else { throw HealthLocalFiles.Failure.invalid }
         print("Five unavailable-origin capability gaps reproduced; two no-resurrection controls passed. No recovery acceptance.")
