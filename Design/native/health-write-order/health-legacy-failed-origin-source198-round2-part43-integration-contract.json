@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "part": 43,
+  "checkedAt": "2026-11-07T22:16:05.959391+00:00",
+  "status": "Concrete integration direction coherent; two narrow confirmation/copy clarifications required before implementation. Source-only contract critique, no implementation/native/design acceptance.",
+  "contract": {
+    "file": "health-legacy-origin-product-integration-r1-contract.json",
+    "bytes": 11644,
+    "sha256": "c03a720b71d0339b70b102fe3abdff014f57076d218423dbe47aa9680c27f06b"
+  },
+  "backendClosure": {
+    "file": "health-legacy-failed-origin-source198-round2-part42-repair.json",
+    "bytes": 14648,
+    "sha256": "c54a12212adf4d485e8a5dffbeda03662093f70b542228bed4a6fa9f5985e02a"
+  },
+  "sourceVerification": {
+    "nineDeclaredBindingsExactCurrent198ManifestAndFullArchive": true,
+    "bindings": {
+      "Lumen/Persistence/LocalStore.swift": {
+        "bytes": 21334,
+        "sha256": "c25ad56f26fa5bcde8f05dc4f19bd7f18e7120df4cbecabe0cf268950858b39d"
+      },
+      "Lumen/Models/BackupStorageRevision.swift": {
+        "bytes": 848,
+        "sha256": "f620d8c6288492ab20f9c6e9f5851541860c05071bc114ff0963581d96d97d6f"
+      },
+      "Lumen/Models/HealthLegacyRecoveryOrigin.swift": {
+        "bytes": 8940,
+        "sha256": "e35b696093c034f46395a8fd601ac3cf3746faf31b046bb06b8f3c784a1856b4"
+      },
+      "Lumen/Models/HealthStore.swift": {
+        "bytes": 48184,
+        "sha256": "dd5ee7970f11fdcdc50443c6315197d9afddc7b619b0d245d9a379b66e618a90"
+      },
+      "Lumen/Models/HealthRecoverySelection.swift": {
+        "bytes": 13858,
+        "sha256": "593c9da108af9400dce44aad95407bf707d714e0c7cb6ecbaca20eb96000032b"
+      },
+      "Lumen/Models/BackupRecoverySource.swift": {
+        "bytes": 4777,
+        "sha256": "7bd67fbee0a145eb9a78a5132dcc62183411eb7b84e913273247a54e8ea5cebf"
+      },
+      "Lumen/Views/BackupFileRecoveryView.swift": {
+        "bytes": 20009,
+        "sha256": "4ae286c55126ffeca327cd8c67f09b570f647b941b776ff1914892ea6198f90d"
+      },
+      "Lumen/Views/BackupView.swift": {
+        "bytes": 24087,
+        "sha256": "e8129fceb24d013416dbc6029319c43c855f3967f4320394510e0ccdaf09cad8"
+      },
+      "Lumen/Views/HealthRecoveryView.swift": {
+        "bytes": 57257,
+        "sha256": "6c80f25f88717fa91b31851a5181829c23bc33fd04d6897d83a3c29179550b69"
+      }
+    },
+    "readScope": "Full judged contract. Targeted current source for BackupRecoveryReviewSession/source lease, native selected-file alert/recover/disappearance, BackupView destination/actual-close lifecycle, LocalStore storageRoot/checkedDirectory/write/commit, BackupStorageRevision nonrecursive locks and HealthStore unavailable/recovery handling. No exhaustive full unchanged-source read or runtime observation."
+  },
+  "assessment": {
+    "authority": "Requiring actual app persistent fixed-key Data/String to equal effective standard-defaults type/raw value closes registered/argument fallback ambiguity without changing normal legacy loading. Absent persisted key cannot authorize replacement even if effective fallback exists. Domain/key/root/current-leaf snapshot remains explicit; no HealthStore stale-failure flag becomes authority. Only candidate unavailable domains represented by selected file should be exposed as replacement choices.",
+    "perDomain": "Shared snapshot supports eligible subset while known unsupported type/size/UTF16 domains remain read-only; cancellation/root/acquisition/operational/changed errors propagate. Implementation must distinguish domain value-ineligibility from root/operational errors instead of catching common Failure.invalid around the entire capture. Common root identity recheck and immutable tokens retain existing guards.",
+    "locking": "No-generation writes.read plus copies serialization off MainActor fits existing NSLock revision barrier. Release locks before await/detached continuation. Commit reader directly projects fixed defaults and filesystem state without calling checkedDirectory, revision, performWrite or commit. Existing checkedDirectory creates/opens/restores root and schedules stage cleanup; capture correctly avoids it via storageRoot. Final commit graph writes\u2192transaction\u2192copies remains explicit.",
+    "ownership": "Existing BackupView reviewingRecovery=false calls clearPreview\u2192recoverySession.close. Child navigation keeps reviewingRecovery true, so actual-close ownership belongs there rather than view onDisappear. Origin ready snapshot surviving child pushes/retries, pending capture suspension, control identity/late-result checks, unique session destination ID and Void task result are appropriate. Cached views retain metadata/closable owner only. Closing drops lease-owned raw snapshot and prevents new acquisition; active worker copies remain governed by shared cancellation/final checks, not memory zeroization/all-timing claims.",
+    "scope": "Selected backup-file route first is coherent. Retained-copy target-legacy UI has different navigation lifetime and remains an explicit follow-on, not accepted by backend capability alone. Links/other property-list types/overlimits and full original goal remain open.",
+    "copy": "Conditional older/mixed preservation and actor-specific failure wording improve accuracy for defaults-origin data. Keep post-success committed-origin metadata separate from cleared choices so disclosure does not revert. Existing Apple Health/no-replay consequences and ordinary regular branch remain accurate. Future tense before install and native error/busy guards preserved; no new screenshot/copy acceptance from drafts."
+  },
+  "requiredClarifications": [
+    {
+      "id": "P43-C1",
+      "kind": "Confirmation/acquisition ordering precision",
+      "sourceEvidence": "Current native alert Recover action calls recover(); payload is created inside its worker after alert action. Contract says bind origin subset before confirmation is acted on while also requiring metadata-only view state.",
+      "requirement": "Freeze only selected domain/omission metadata used by displayed confirmation. On actual alert Recover action acquire selected origins once from the same ready/open immutable review owner, bind worker-local payload before preparation, then retain existing cancellation/source/provider/photo/owner/revision/intent guards. No raw dictionary/token/payload in @State, cached destination or alert closure. Not now leaves ready owner and choices intact without persistent raw acquisition. If owner closed/acquisition cancelled, do not start recovery.",
+      "why": "Clarifies selected data/confirmation identity without introducing a second cached raw owner or silently recapturing. Parent agrees to separate addendum; judged contract unchanged."
+    },
+    {
+      "id": "P43-C2",
+      "kind": "Known ineligible versus transient capture copy",
+      "sourceEvidence": "Draft ineligibleRow says current data could not be checked and directs retry, but same category includes deterministic unsupported type/link/overlimit. Shared snapshot has already classified these as ineligible; retry alone does not add support.",
+      "requirement": "Use truthful neutral read-only wording for known ineligible targets, for example This saved data can\u2019t be replaced here. Keep Check again for failed/aborted capture with no ready snapshot exposed. Eligible subset remains usable and other domains stay unavailable/read-only. Do not expose keys/types/hashes/schema or invent an unavailable alternative route.",
+      "why": "Avoids a misleading retry loop and conflating known product limits with transient acquisition failure. Final actual wording/layout remains subject to native originals/critic review."
+    }
+  ],
+  "implementationNotes": [
+    {
+      "subject": "Pure projection and error taxonomy",
+      "detail": "Preserve exact Data tag/bytes and UTF16 String units; do not use normalized String equality or Foundation implementation class. Compare absent persisted/effective mismatches explicitly; operational errors do not become ineligibility/permission. Fixed raw/aggregate/encoded limits still apply; persistentDomain may temporarily allocate whole domain, so do not log/retain it or claim preallocation bounds."
+    },
+    {
+      "subject": "Lease identities and navigation",
+      "detail": "Capture finish/fail/suspend/close must compare capture-control identity and session identity. Ready state never recaptures on child push/pop or ordinary retry. Only pending/no-ready capture can retry. Acquired worker source/origin must correspond to same session, and close prevents new acquisitions. Tests should observe actual Back owner closure and late completion refusal, not infer it solely from onDisappear."
+    },
+    {
+      "subject": "Native verification",
+      "detail": "Declared actual LocalStore.standard persisted/effective raw bindings, source-reader/Back/fresh owner/off choices, stale-origin boundaries, actual reset key removal/no resurrection and origin-aware host receipt/private/photo/cleanup protocol are appropriate. Independently audit new driver before execution. Existing ordinary driver assumes domain files; adapt honestly rather than manufacture files to satisfy it. Actual changed capture/error/confirmation/general notice copy needs main/compact light/dark/largest and at least two relevant critic contributions. No inherited198/194 native origin success."
+    }
+  ],
+  "verificationJudgment": "Contract declares meaningful pure lock/lease/projection controls and native Data/String routes, while keeping full spoken VoiceOver/motion/all-timing and broader requirements open. P40 backend repairs remain scoped closed; integration lifetime, actual lock graph, standard-defaults authority, UI copy and origin-aware driver still require separately frozen implementation/evidence. No additional substantive contract blocker beyond C1/C2 found.",
+  "supportBindings": [
+    {
+      "file": "durable-source-r198.json",
+      "bytes": 43324,
+      "sha256": "e9c70d6331aad836bb2f6cf9e57e32b271e075fc7915c710e08bc5c4749fb5fe"
+    },
+    {
+      "file": "health-legacy-failed-origin-r1-contract.json",
+      "bytes": 9779,
+      "sha256": "b8998dbb7e2aeb533e2d23aa37d4bef9ce47ad68f8c88dccef0983c3714d7d2e"
+    },
+    {
+      "file": "health-legacy-failed-origin-r2-addendum.json",
+      "bytes": 2655,
+      "sha256": "d55877941ebc8ef4990b1d152971146a455f7418e32c47254b962b3c0d9c31c2"
+    }
+  ],
+  "publication": "Parent reports19829paths exact3d7969a3 before this proposed integration; critic independently verifies local nine source bindings/archive, not remote GitHub readback.",
+  "limits": "No source/test/native/simulator/build/Git/cleanup actions, no implementation/native/runtime/design score/product/full-parent acceptance. No old195/196/197fixture inventory queried; parent scoped cleanup is separate. No source/provider/photo/prior/conversation/intent/privacy guarantee relaxed. All original follow-ons/broader gates remain active.",
+  "storage": {
+    "criticRecoveredBytes": 0,
+    "cleanupPerformed": false
+  },
+  "writeBoundary": "Only this new report written; judged contract, frozen198source/evidence/currentfixtures and prior reports unchanged."
+}
