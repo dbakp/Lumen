@@ -1,0 +1,80 @@
+<div id="lumen-plan-progress">
+<style>
+#lumen-plan-progress{display:grid;gap:calc(var(--font-size-base)*1.25);color:var(--foreground)}
+#lumen-plan-progress .heading{display:grid;gap:calc(var(--font-size-base)*.5);padding-right:90px}
+#lumen-plan-progress .section{display:grid;gap:calc(var(--font-size-base)*.5)}
+#lumen-plan-progress .road{list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:calc(var(--font-size-base));padding:0;margin:0}
+#lumen-plan-progress .road li{display:grid;gap:calc(var(--font-size-base)*.5);min-width:0;align-content:start}
+#lumen-plan-progress .mark{height:6px;background:var(--muted)}
+#lumen-plan-progress .done{background:var(--viz-series-1)}
+#lumen-plan-progress .active{background:repeating-linear-gradient(90deg,var(--viz-series-1) 0 9px,var(--muted) 9px 14px)}
+#lumen-plan-progress .detail{display:grid;gap:calc(var(--font-size-base)*.5)}
+@media(max-width:540px){#lumen-plan-progress .road{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+<div class="heading"><div class="text-small text-muted">LUMEN · 7 NOVEMBER 2026</div><h2>Data confidence and corrections</h2><span>Batch 43 in progress · verified checkpoint on GitHub</span></div>
+<ol class="road" aria-label="Product roadmap; stages differ in scope and effort">
+<li><div class="mark done"></div><span>✓ Foundation</span><span class="text-small">Logs, records, conversations, plans and backups</span></li>
+<li><div class="mark active"></div><span>◉ Reliable daily use</span><span class="text-small">Data confidence, recovery and Health saves</span></li>
+<li><div class="mark"></div><span>○ Answer quality</span><span class="text-small">Evidence support and personal context</span></li>
+<li><div class="mark"></div><span>○ Release readiness</span><span class="text-small">Accessibility, companions and distribution</span></li>
+</ol>
+<div class="section"><h3>Revised daily-readings wording</h3>
+<div class="viz-row"><span>✓ 6 / 6 native cases passed</span><span>✓ 991 / 991 screenshots inspected</span></div>
+<div class="progress" role="progressbar" aria-label="Root screenshot review, separate from product completion" aria-valuenow="991" aria-valuemin="0" aria-valuemax="991"><div class="progress-bar" style="width:100%"></div></div>
+<div class="viz-row"><span class="tabular-nums">Independent review: 991 / 991 screenshots</span><span>6 / 6 cases complete</span></div>
+<div class="progress" role="progressbar" aria-label="Independent screenshot review" aria-valuenow="991" aria-valuemin="0" aria-valuemax="991"><div class="progress-bar" style="width:100%"></div></div>
+<table class="table table-sm" aria-label="Source163 appearance review matrix">
+<thead><tr><th>Phone · appearance</th><th>Native checks</th><th>Independent review</th></tr></thead>
+<tbody>
+<tr><td>Main · light</td><td>✓ Passed</td><td>✓ 158 / 158</td></tr>
+<tr><td>Main · dark</td><td>✓ Passed</td><td>✓ 158 / 158</td></tr>
+<tr><td>Main · largest text</td><td>✓ Passed</td><td>✓ 173 / 173</td></tr>
+<tr><td>Compact · light</td><td>✓ Passed</td><td>✓ 160 / 160</td></tr>
+<tr><td>Compact · dark</td><td>✓ Passed</td><td>✓ 160 / 160</td></tr>
+<tr><td>Compact · largest text</td><td>✓ Passed</td><td>✓ 182 / 182</td></tr>
+</tbody></table>
+<div>✓ Scoped design accepted · 43 / 55 · required wording fix closed</div>
+<div class="text-small">Source163 snapshot · both reviewers read all 6 result files · 42 supporting files and 6 dimension supplements · broader product work remains open</div>
+</div>
+<div class="section">
+<div class="viz-controls" role="group" aria-label="Plan details">
+<button class="btn" type="button" data-area="current" aria-pressed="true" aria-controls="lumen-plan-detail">Current work</button>
+<button class="btn" type="button" data-area="quality" aria-pressed="false" aria-controls="lumen-plan-detail">Answer quality</button>
+<button class="btn" type="button" data-area="release" aria-pressed="false" aria-controls="lumen-plan-detail">Release gates</button>
+</div>
+<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Daily readings · design accepted</h3><div data-verified>All six native cases and both visual reviews are complete. The revised wording passed the second review at 43 / 55.</div><div data-next>Next: verify that clearing a damaged directory preserves its original contents and produces unknown readings.</div><div class="text-small" data-gate>Earlier reporting defects, dim native confirmation text and two tiny row-frame margins remain recorded. Broader recovery and product checks remain open.</div></div>
+</div>
+<div class="section"><h3>Verified safety checks</h3>
+<table class="table table-sm" aria-label="Earlier checks retain their original scope; broader checks remain open"><thead><tr><th>Situation</th><th>Observed result</th></tr></thead><tbody>
+<tr><td>Measured and missing Health readings</td><td>11 returned / 7 missing; exact save and test-record cleanup</td></tr>
+<tr><td>Explicit zero readings</td><td>Five zeros saved distinctly from 13 missing values</td></tr>
+<tr><td>Stale or replaced snapshot</td><td>Save rejected; newer contents and file identity preserved</td></tr>
+<tr><td>Local food and water</td><td>External totals counted once; exact synthetic-record cleanup</td></tr>
+<tr><td>Logic suite</td><td>2,350 passed at Source162; Source163 changes one sentence</td></tr>
+</tbody></table>
+<div class="text-small">Earlier six-file long-wait preservation failure and Banana zero-fat omission remain failed expectations. Final dismissal preserved the immediate newer state.</div></div>
+<hr>
+<div class="viz-row"><span>About 41 GiB available</span><span>167 MB recovered this checkpoint</span></div>
+<div class="text-small">333 duplicate exports removed after exact GitHub verification · canonical evidence and needed caches retained · no further iPhone actions authorized</div>
+<script>
+(()=>{
+const root=document.getElementById('lumen-plan-progress');
+const snapshot='nov7-source163-root991-critic991-accepted43';
+const areas={
+current:{title:'Daily readings · design accepted',verified:'All six native cases and both visual reviews are complete. The revised wording passed the second review at 43 / 55.',next:'Next: verify that clearing a damaged directory preserves its original contents and produces unknown readings.',gate:'Earlier reporting defects, dim native confirmation text and two tiny row-frame margins remain recorded. Broader recovery and product checks remain open.'},
+quality:{title:'Answer quality · open',verified:'Library search, source identity, consent controls and literal-reference safeguards are delivered.',next:'Next: evidence-support policy and independent evaluation; personal-context and conversation-history privacy review.',gate:'Clinical accuracy, language coverage and live-provider evaluation remain required.'},
+release:{title:'Release readiness · open',verified:'Current signed Release installed once; normal opening remains unverified.',next:'Next: background Health, Watch reconnect, widget, interruption and accessibility checks.',gate:'Representative histories, performance, privacy and distribution review remain required. No iPhone installation, launch or checks without a renewed request.'}
+};
+const buttons=Array.from(root.querySelectorAll('[data-area]'));
+function select(key,remember){
+if(!Object.prototype.hasOwnProperty.call(areas,key))key='current';
+buttons.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.area===key)));
+['title','verified','next','gate'].forEach(f=>root.querySelector('[data-'+f+']').textContent=areas[key][f]);
+if(remember&&window.openai?.setWidgetState)window.openai.setWidgetState({modelContent:{snapshot,selectedArea:key},privateContent:null}).catch(()=>{});
+}
+buttons.forEach(b=>b.addEventListener('click',()=>select(b.dataset.area,true)));
+const saved=window.openai?.widgetState?.modelContent;select(saved?.snapshot===snapshot?saved.selectedArea:'current',false);
+window.addEventListener('openai:set_globals',event=>{const saved=event.detail?.globals?.widgetState?.modelContent;if(saved)select(saved.snapshot===snapshot?saved.selectedArea:'current',false);});
+})();
+</script>
+</div>
