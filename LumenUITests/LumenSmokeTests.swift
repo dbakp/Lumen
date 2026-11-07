@@ -105,6 +105,9 @@ final class LumenSmokeTests: XCTestCase {
                 app.launchArguments += ["-health-success-observation-ui", "-lumen.appearance", name.contains("Dark") || name.contains("Largest") ? "dark" : "light",
                                         "-UIPreferredContentSizeCategoryName", name.contains("Largest") ? "UICTContentSizeCategoryAccessibilityXXXL" : "UICTContentSizeCategoryL"]
             }
+            if name.contains("RecoveryPhotoFaultErrorBack") {
+                app.launchArguments += ["-health-read-ui", "-health-read-scope", "selected-record"]
+            }
         }
         if name.contains("testHealthBackupHealthyMerge") {
             let kind = name.contains("Encrypted") ? "encrypted" : name.contains("Readable") ? "readable" : "legacy"
@@ -5155,6 +5158,133 @@ final class LumenSmokeTests: XCTestCase {
         app.terminate(); app.launchArguments = []; app.launch(); openBackupSettings()
         XCTAssertFalse(app.staticTexts["Saved health data couldn't be opened."].exists); snap(prefix + "-relaunch")
     }
+    // Pending follow-on draft, outside frozen Source182. Future setup must add
+    // -health-read-ui -health-read-scope selected-record ONLY for these tests.
+    // Existing actual reader/closed-owner observations avoid new app instrumentation.
+    func testHealthBackupFileRecoveryPhotoFaultErrorBackLegacy() throws { try healthBackupPhotoFaultErrorBack("legacy") }
+    func testHealthBackupFileRecoveryPhotoFaultErrorBackEncrypted() throws { try healthBackupPhotoFaultErrorBack("encrypted") }
+    private func healthBackupPhotoFaultErrorBack(_ kind: String) throws {
+        executionTimeAllowance = 600
+        let base = "Lumen-backup-health-matrix-two-" + kind
+        let prefix = "health-error-state-" + kind
+        func selectOriginal() throws {
+            try chooseBackupFixture(base)
+            if kind == "encrypted" { unlockBackup(value: "Synthetic backup passphrase 42") }
+            XCTAssertTrue(app.descendants(matching: .any).matching(identifier: "backupPreviewKind").firstMatch.waitForExistence(timeout: 30))
+            let link = app.buttons["reviewBackupHealthRecovery"].firstMatch
+            reveal(link); link.tap()
+            let filename = app.staticTexts["recoveryFileName"].firstMatch
+            XCTAssertTrue(filename.waitForExistence(timeout: 10))
+            XCTAssertEqual(filename.label, base + (kind == "encrypted" ? ".lumenbackup" : ".json"))
+        }
+        openBackupSettings(); try selectOriginal()
+        snap(prefix + "-source"); Thread.sleep(forTimeInterval: 3)
+        let reviewMeals = app.buttons["reviewFile-meals"].firstMatch
+        reveal(reviewMeals); reviewMeals.tap()
+        let readerState = app.descendants(matching: .any).matching(identifier: "fileRecordsLoading").firstMatch
+        XCTAssertTrue(readerState.waitForExistence(timeout: 10))
+        for phase in ["held-1", "observed-1"] {
+            let observed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", phase), object: readerState)
+            XCTAssertEqual(XCTWaiter.wait(for: [observed], timeout: 15), .completed)
+            snap(prefix + "-record-" + phase)
+        }
+        let firstRecord = app.buttons["recoveryRecord-0"].firstMatch
+        XCTAssertTrue(firstRecord.waitForExistence(timeout: 10))
+        snap(prefix + "-record-read")
+        // The loaded native record list establishes the completed actual read.
+        // Return directly to review without revisiting a list .task via a child.
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        let domains = ["meals", "workouts"]
+        for domain in domains {
+            let choice = app.switches["recoverFile-" + domain].firstMatch
+            reveal(choice, towardsTop: domain == "meals"); XCTAssertEqual(choice.value as? String, "0")
+            nativeSwitch("recoverFile-" + domain, enabled: true)
+        }
+        let confirm = app.buttons["confirmFileRecovery"].firstMatch
+        let alert = app.alerts["Replace selected data?"]
+        let failure = app.descendants(matching: .any).matching(identifier: "fileHealthRecoveryError").firstMatch
+        let success = app.descendants(matching: .any).matching(identifier: "fileHealthRecovered").firstMatch
+        reveal(confirm); XCTAssertTrue(confirm.isEnabled); confirm.tap()
+        XCTAssertTrue(alert.waitForExistence(timeout: 5)); alert.buttons["Recover"].tap()
+        // The app must expose the genuine failure before any test scrolling.
+        XCTAssertTrue(failure.waitForExistence(timeout: 30)); XCTAssertTrue(failure.isHittable)
+        XCTAssertGreaterThanOrEqual(failure.frame.minY, app.navigationBars["Review recovery"].frame.maxY)
+        XCTAssertLessThanOrEqual(failure.frame.maxY, app.frame.maxY - 20)
+        XCTAssertTrue(failure.label.contains("Recovery couldn't finish"))
+        XCTAssertTrue(failure.label.contains("Your current files haven't been replaced."))
+        XCTAssertFalse(success.exists); snap(prefix + "-failed"); Thread.sleep(forTimeInterval: 3)
+        let choice = app.switches["recoverFile-meals"].firstMatch
+        reveal(choice, towardsTop: true); XCTAssertEqual(choice.value as? String, "1")
+        settleLabFrame(choice)
+        let firstFrame = choice.frame
+        XCTAssertTrue(choice.isHittable)
+        XCTAssertGreaterThan(firstFrame.midY, app.navigationBars["Review recovery"].frame.maxY)
+        XCTAssertLessThan(firstFrame.midY, app.frame.maxY - 40)
+        snap(prefix + "-deliberate-scroll")
+        Thread.sleep(forTimeInterval: 1)
+        XCTAssertTrue(choice.exists && choice.isHittable)
+        XCTAssertEqual(choice.frame.minY, firstFrame.minY, accuracy: 1)
+        Thread.sleep(forTimeInterval: 2)
+        XCTAssertTrue(choice.exists && choice.isHittable)
+        XCTAssertEqual(choice.frame.minY, firstFrame.minY, accuracy: 1)
+        XCTAssertEqual(choice.value as? String, "1")
+        snap(prefix + "-scroll-stays")
+        let omission = app.switches["Recover without meal photos"].firstMatch
+        nativeSwitch("Recover without meal photos", enabled: true)
+        reveal(confirm); confirm.tap(); XCTAssertTrue(alert.waitForExistence(timeout: 5))
+        alert.buttons["Not now"].tap()
+        for domain in domains {
+            let selected = app.switches["recoverFile-" + domain].firstMatch
+            reveal(selected, towardsTop: domain == "meals"); XCTAssertEqual(selected.value as? String, "1")
+        }
+        reveal(omission, towardsTop: true); XCTAssertEqual(omission.value as? String, "1")
+        snap(prefix + "-omission-not-now"); Thread.sleep(forTimeInterval: 3)
+        reveal(failure); XCTAssertTrue(failure.exists); snap(prefix + "-before-back")
+        app.navigationBars["Review recovery"].buttons.element(boundBy: 0).tap()
+        XCTAssertTrue(app.navigationBars["Backup & restore"].waitForExistence(timeout: 3))
+        let choose = app.buttons["chooseBackup"].firstMatch
+        reveal(choose); XCTAssertTrue(choose.isEnabled)
+        XCTAssertFalse(failure.exists); XCTAssertFalse(success.exists)
+        snap(prefix + "-back-parent"); Thread.sleep(forTimeInterval: 3)
+        try selectOriginal()
+        snap(prefix + "-reselected-source"); Thread.sleep(forTimeInterval: 3)
+        for domain in domains {
+            let fresh = app.switches["recoverFile-" + domain].firstMatch
+            reveal(fresh, towardsTop: domain == "meals"); XCTAssertEqual(fresh.value as? String, "0")
+        }
+        reveal(omission, towardsTop: true); XCTAssertEqual(omission.value as? String, "0")
+        reveal(confirm); XCTAssertFalse(confirm.isEnabled)
+        XCTAssertFalse(failure.exists); XCTAssertFalse(success.exists)
+        snap(prefix + "-fresh-off")
+        for domain in domains { nativeSwitch("recoverFile-" + domain, enabled: true, towardsTop: domain == "meals") }
+        reveal(omission, towardsTop: true); XCTAssertEqual(omission.value as? String, "0")
+        reveal(confirm); XCTAssertTrue(confirm.isEnabled); confirm.tap()
+        XCTAssertTrue(alert.waitForExistence(timeout: 5)); alert.buttons["Recover"].tap()
+        let busy = app.descendants(matching: .any).matching(identifier: "fileHealthRecoveryBusy").firstMatch
+        XCTAssertTrue(busy.waitForExistence(timeout: 10)); XCTAssertFalse(failure.exists)
+        for phase in ["held-2", "observed-2"] {
+            let held = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", phase), object: busy)
+            XCTAssertEqual(XCTWaiter.wait(for: [held], timeout: 15), .completed)
+            snap(prefix + "-" + phase)
+        }
+        reveal(success, towardsTop: true); XCTAssertTrue(success.waitForExistence(timeout: 30))
+        XCTAssertFalse(failure.exists); snap(prefix + "-success")
+        let observed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", "success-observed"), object: success)
+        XCTAssertEqual(XCTWaiter.wait(for: [observed], timeout: 35), .completed)
+        app.navigationBars["Review recovery"].buttons.element(boundBy: 0).tap()
+        XCTAssertTrue(app.navigationBars["Backup & restore"].waitForExistence(timeout: 5))
+        snap(prefix + "-parent"); Thread.sleep(forTimeInterval: 4)
+        let readback: [String: Any] = ["scope": "genuine-recovery-error-scroll-back-reselect", "format": kind,
+            "scrollFrame": String(describing: firstFrame), "boundedScrollObservationSeconds": 3,
+            "initialChoicesOff": true, "failedBeforeTestScroll": true, "omissionNotNowRetained": true,
+            "backAtGenuineFailure": true, "freshChoicesAndOmissionOff": true,
+            "retryWithoutOmission": true, "successObserved": true]
+        let attachment = XCTAttachment(data: try JSONSerialization.data(withJSONObject: readback, options: [.prettyPrinted, .sortedKeys]), uniformTypeIdentifier: "public.json")
+        attachment.name = "error-state-readback"; attachment.lifetime = .keepAlways; add(attachment)
+        app.terminate(); app.launchArguments = []; app.launch(); openBackupSettings()
+        XCTAssertFalse(app.staticTexts["Saved health data couldn't be opened."].exists); snap(prefix + "-relaunch")
+    }
+
     func testHealthBackupFileRecoveryPhotoFaultMissingLegacy() throws { try healthBackupPhotoFault("legacy", fault: "missing") }
     func testHealthBackupFileRecoveryPhotoFaultMissingEncrypted() throws { try healthBackupPhotoFault("encrypted", fault: "missing") }
     func testHealthBackupFileRecoveryPhotoFaultDamagedLegacy() throws { try healthBackupPhotoFault("legacy", fault: "damaged") }
