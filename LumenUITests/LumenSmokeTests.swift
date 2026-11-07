@@ -5735,7 +5735,8 @@ final class LumenSmokeTests: XCTestCase {
         reveal(confirm); XCTAssertTrue(confirm.isEnabled); confirm.tap()
         XCTAssertTrue(alert.waitForExistence(timeout: 5))
         if name.contains("Origin") {
-            XCTAssertTrue(alert.staticTexts["Selected data will be replaced by records from this file. The older saved data will stay in a private recovery copy on this iPhone."].exists)
+            XCTAssertTrue(alert.staticTexts.matching(NSPredicate(format: "label == %@",
+                "Selected data will be replaced by records from this file. The older saved data will stay in a private recovery copy on this iPhone.")).firstMatch.exists)
             snap(prefix + "-older-data-confirmation")
         }
         try motionSample?("before-genuine-error")

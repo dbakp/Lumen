@@ -11,7 +11,7 @@
 #lumen-plan-progress .detail{display:grid;gap:calc(var(--font-size-base)*.5)}
 @media(max-width:540px){#lumen-plan-progress .road{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
-<div class="heading"><div class="text-small text-muted">LUMEN · 7 NOVEMBER 2026</div><h2>Data confidence and corrections</h2><span>Recovery errors made visible · full verification in progress</span></div>
+<div class="heading"><div class="text-small text-muted">LUMEN · 8 NOVEMBER 2026</div><h2>Data confidence and corrections</h2><span>Recovery errors made visible · full verification in progress</span></div>
 <ol class="road" aria-label="Product roadmap; stages differ in scope and effort">
 <li><div class="mark done"></div><span>✓ Foundation</span><span class="text-small">Logs, records, conversations, plans and backups</span></li>
 <li><div class="mark active"></div><span>◉ Reliable daily use</span><span class="text-small">Data confidence, recovery and Health saves</span></li>
@@ -66,7 +66,7 @@
 <button class="btn" type="button" data-area="quality" aria-pressed="false" aria-controls="lumen-plan-detail">Answer quality</button>
 <button class="btn" type="button" data-area="release" aria-pressed="false" aria-controls="lumen-plan-detail">Release gates</button>
 </div>
-<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Recovery coverage · in progress</h3><div data-verified>Recovery screen and ownership are connected; build and source review passed. First native older-data trial stopped at an XCTest message-lookup limit before recovery; five original screens and unchanged data are retained.</div><div data-next>Next: fix the test lookup and rerun the Data route, then the String route. Current native recovery, appearance, motion and complete spoken preservation remain open.</div><div class="text-small" data-gate>Earlier appearance cases retain their actual app versions. Failed trials remain recorded. Accessibility, timing and broader product gates remain open.</div></div>
+<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Recovery coverage · in progress</h3><div data-verified>The native test lookup is repaired and compiled; the app and reviewed driver remain unchanged. The failed trial and its five original screens are backed up. Fresh recovery verification is next.</div><div data-next>Next: run the Data route, then the String route after full review and backup. Current native recovery, appearance, motion and complete spoken preservation remain open.</div><div class="text-small" data-gate>Earlier appearance cases retain their actual app versions. Failed trials remain recorded. Accessibility, timing and broader product gates remain open.</div></div>
 </div>
 <div class="section"><h3>Verified safety checks</h3>
 <table class="table table-sm" aria-label="Earlier checks retain their original scope; broader checks remain open"><thead><tr><th>Situation</th><th>Observed result</th></tr></thead><tbody>
@@ -74,20 +74,20 @@
 <tr><td>Explicit zero readings</td><td>Five zeros saved distinctly from 13 missing values</td></tr>
 <tr><td>Stale or replaced snapshot</td><td>Save rejected; newer contents and file identity preserved</td></tr>
 <tr><td>Local food and water</td><td>External totals counted once; exact synthetic-record cleanup</td></tr>
-<tr><td>Logic suite</td><td>2,350 passed on Source199 · logic inputs unchanged through Source203</td></tr>
+<tr><td>Logic suite</td><td>2,350 passed on Source199 · logic inputs unchanged through Source204</td></tr>
 </tbody></table>
 <div class="text-small">Earlier six-file long-wait preservation failure and Banana zero-fat omission remain failed expectations. Final dismissal preserved the immediate newer state.</div></div>
 <hr>
-<div class="viz-row"><span>About 35 GiB available</span><span>6.51 GB recovered in the latest cleanups · latest removal 1.93 MB</span></div>
+<div class="viz-row"><span>About 37 GiB available</span><span>6.56 GB recovered in the latest cleanups · latest removal 51.24 MB</span></div>
 <div class="text-small">Redundant exports and completed test bundles removed after exact GitHub verification · canonical evidence and needed caches retained · no further iPhone actions authorized</div>
 <script>
 (()=>{
 const root=document.getElementById('lumen-plan-progress');
-const snapshot='nov7-source203-native-query-failure';
+const snapshot='nov8-source204-native-retry';
 const areas={
-current:{title:'Recovery coverage · in progress',verified:'Recovery screen and ownership are connected; build and source review passed. First native older-data trial stopped at an XCTest message-lookup limit before recovery; five original screens and unchanged data are retained.',next:'Next: fix the test lookup and rerun the Data route, then the String route. Current native recovery, appearance, motion and complete spoken preservation remain open.',gate:'Earlier appearance cases retain their actual app versions. Failed trials remain recorded. Accessibility, timing and broader product gates remain open.'},
+current:{title:'Recovery coverage · in progress',verified:'The native test lookup is repaired and compiled; the app and reviewed driver remain unchanged. The failed trial and its five original screens are backed up. Fresh recovery verification is next.',next:'Next: run the Data route, then the String route after full review and backup. Current native recovery, appearance, motion and complete spoken preservation remain open.',gate:'Earlier appearance cases retain their actual app versions. Failed trials remain recorded. Accessibility, timing and broader product gates remain open.'},
 quality:{title:'Answer quality · open',verified:'Library search, source identity, consent controls and literal-reference safeguards are delivered.',next:'Next: evidence-support policy and independent evaluation; personal-context and conversation-history privacy review.',gate:'Clinical accuracy, language coverage and live-provider evaluation remain required.'},
-release:{title:'Release readiness · open',verified:'Source194 unsigned release build and bounded audit passed. Current Source203 recovery review compiles; its release and runtime acceptance remain open.',next:'Next: background Health, Watch reconnect, widget, interruption and accessibility checks.',gate:'Representative histories, performance, privacy and distribution review remain required. No iPhone installation, launch or checks without a renewed request.'}
+release:{title:'Release readiness · open',verified:'Source194 unsigned release build and bounded audit passed. Current Source204 recovery review compiles; its release and runtime acceptance remain open.',next:'Next: background Health, Watch reconnect, widget, interruption and accessibility checks.',gate:'Representative histories, performance, privacy and distribution review remain required. No iPhone installation, launch or checks without a renewed request.'}
 };
 const buttons=Array.from(root.querySelectorAll('[data-area]'));
 function select(key,remember){
