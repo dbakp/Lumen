@@ -1,0 +1,275 @@
+{
+  "schemaVersion": 1,
+  "part": 42,
+  "checkedAt": "2026-11-07T21:56:42.333872+00:00",
+  "status": "P40-C1 and P40-C2 closed for the specified backend stage-ownership and immediate retained-copy shape boundaries by source repair plus paired actual evidence. Broader integration acceptance remains open.",
+  "scope": "Source198 production backend repairs with isolated typed defaults, fixed-boundary and backend pure checks, actual full logic execution and simulator compile only. No native origin runtime, review-capture/LocalStore.standard integration, current Release, UI/design score/product/full-parent acceptance.",
+  "sourceVerification": {
+    "currentAndFullArchiveTextInputsExact": 258,
+    "currentAndFullArchiveBinaryFixtureInputsExact": 9,
+    "onlyThreeChangesFrom197": [
+      "Lumen/Models/BackupFileTransaction.swift",
+      "Lumen/Models/HealthRecoveryCopies.swift",
+      "Tests/HealthLegacyRecoveryBoundaryChecks.swift"
+    ],
+    "readScope": "Full three-file diff versus immutable197 plus stage ownership, entry generation/type, final validator call order and helper sections; same first five tests paired against preserved197 baseline, fixed-mode sixth test read. Boundary auditor r2 full changes read; unchanged transaction auditor r4 previously fully read.",
+    "pureInputs": "Current138text/4fixtures match after-execution pure manifest r85;135Swift,137text+4fixtures native-bound; extra root pin remains separately attributed/after-execution caveat. No retroactive contemporaneous root-pin freeze claim."
+  },
+  "closure": [
+    {
+      "id": "P40-C1",
+      "state": "CLOSED scoped backend preparation boundary",
+      "source": "Final throwing origin.verify checks now occur before prepared=true. The transaction object is initialized while local defer still owns stage cleanup; only afterward does nonthrowing ownership transfer occur immediately before return.",
+      "pairedActual": "197 actual post-stage changed value, cancellation and operational read each rejected before ownership returned but leaked a populated stage. Same actual-stage activation in198 rejects all three with current bytes exact, no transaction return and zero unowned stages. Cancellation remains actual CancellationError. Reader count is diagnostic, not trigger.",
+      "limit": "This closes the observed transfer/cleanup defect; not a blanket no-side-effect guarantee for all prior retirement/preparation failures."
+    },
+    {
+      "id": "P40-C2",
+      "state": "CLOSED scoped final immediate child-set/type and exact legacy provenance boundary",
+      "source": "LegacyRetention carries derived expected child names/types: manifest/envelopes regular; explicitly selected failed ordinary domains retain their actual regular/directory kind; photos and device intent retain their actual permitted kind. Final helper requires real retained directory, exact immediate entry set and exact kinds, then exact envelope(s)/manifest bytes inside commit locks before origin/defaults validation and installation.",
+      "pairedActual": "197 extra-origin and dual domain.json stage mutations actually committed and installed incomplete copies. Paired198 mutations now reject/no installation with unchanged current bytes and no stage after discard. New198 intent file-to-directory mutation also rejects.",
+      "limit": "No historical197 kind-mutation counterexample was executed or inferred. Checks concern the selected retained copy immediate shape and exact legacy provenance, not every descendant/stage payload or old-photo byte/metadata/race guarantee. No healthy decode of intentionally unavailable ordinary file/directory is required."
+    }
+  ],
+  "actualFixedBoundaries": {
+    "session": 84089,
+    "exitCode": 0,
+    "checks": 22,
+    "allPassed": true,
+    "cases": [
+      {
+        "fault": "post-stage-change",
+        "actualPopulatedStageFaultActivated": true,
+        "preparedReturned": false,
+        "committed": false,
+        "errorKind": "LumenLogicChecks.HealthLocalFiles.Failure",
+        "unownedStageCount": 0,
+        "currentBytesExact": true,
+        "catalogIncomplete": false
+      },
+      {
+        "fault": "post-stage-cancel",
+        "actualPopulatedStageFaultActivated": true,
+        "preparedReturned": false,
+        "committed": false,
+        "errorKind": "CancellationError",
+        "unownedStageCount": 0,
+        "currentBytesExact": true,
+        "catalogIncomplete": false
+      },
+      {
+        "fault": "post-stage-operational",
+        "actualPopulatedStageFaultActivated": true,
+        "preparedReturned": false,
+        "committed": false,
+        "errorKind": "NSError",
+        "unownedStageCount": 0,
+        "currentBytesExact": true,
+        "catalogIncomplete": false
+      },
+      {
+        "fault": "extra-origin",
+        "actualPopulatedStageFaultActivated": false,
+        "preparedReturned": true,
+        "committed": false,
+        "errorKind": "LumenLogicChecks.HealthLocalFiles.Failure",
+        "unownedStageCount": 0,
+        "currentBytesExact": true,
+        "catalogIncomplete": false
+      },
+      {
+        "fault": "dual-domain",
+        "actualPopulatedStageFaultActivated": false,
+        "preparedReturned": true,
+        "committed": false,
+        "errorKind": "LumenLogicChecks.HealthLocalFiles.Failure",
+        "unownedStageCount": 0,
+        "currentBytesExact": true,
+        "catalogIncomplete": false
+      },
+      {
+        "fault": "intent-kind",
+        "actualPopulatedStageFaultActivated": false,
+        "preparedReturned": true,
+        "committed": false,
+        "errorKind": "LumenLogicChecks.HealthLocalFiles.Failure",
+        "unownedStageCount": 0,
+        "currentBytesExact": true,
+        "catalogIncomplete": false
+      }
+    ],
+    "actualInstalls": 0,
+    "allStagesAbsent": true,
+    "successfulRecoveryAccepted": false,
+    "testPairIntegrity": "First five fault definitions/activation/observations unchanged from197; only extra fixed-mode intent-kind case and truthful status wording added. Original19719baseline and unsafe synthetic results preserved."
+  },
+  "backendRegression": {
+    "exitCode": 0,
+    "actual117ChecksPassed": true,
+    "cases": 13,
+    "report": {
+      "file": "source198-legacy-transaction-r1.json",
+      "bytes": 146848,
+      "sha256": "07ff187e9e40d0028e707b6689b6f997e69a7c008ff07067fe07ef5147f937e0"
+    },
+    "scope": "Six actual Data/String successes, mixed2legacy+failedregular, six stale/stage/cancel/operational rejections still pass; corrected canonical/prior acquisition unchanged from197. This supports compatibility of repair with intended isolated backend success, not actual product UI or standard-defaults authority."
+  },
+  "independentReadOnlyAudit": {
+    "fixed": {
+      "actualLiveRegularFilesExact": 42,
+      "actualUnownedStages": 0,
+      "actualKnownUUIDPlistDataKeysExact": 6,
+      "method": "Direct bounded nofollow/nonblocking reads with fd/path inode/device/size/mtime consistency. Full actual file sets exactly match after maps, before==after for every case; no sibling restore stages for each recorded root. Exact only-known meals Data plist values."
+    },
+    "backend": {
+      "embeddedBeforeAfterPriorRowsDecoded": 309,
+      "actualLiveRegularFilesExact": 163,
+      "actualTypedPersistentKeysExact": 14,
+      "actualV2EnvelopesExact": 8,
+      "retainedPriorBeforeMapsVerified": 7,
+      "method": "Direct actual file-set/byte checks against canonical maps, strict base64 decoding, envelope raw hashes/types and exact manifest descriptors, known UUID plist Data/StringUTF16LE exact values. Selected receipt-domain prior raw records matched actual private files with direct live inode/device/mode/size/mtime equal retained priorBeforeMetadata; previous intent raw payload found exact private. legacyBefore equals currentDefaults in7successes."
+    },
+    "auditAttribution": "Canonical r2/r4 outcomes separately read and consistent with independent checks; no auditor module or native producer executed by critic. Current plist read is not an in-process Foundation suite reread.",
+    "limits": "Snapshot identities/metadata are sampled, not continuous private-chain/all10rawprior/linkcount/ctime/allrace proof. All fixture roots/suites and historical197 leaked synthetic stages are retained through exact parent backup; no deletion by critic."
+  },
+  "fullLogicAndCompile": {
+    "fullLogic": {
+      "session": 94280,
+      "producerPID": 50458,
+      "exitCode": 0,
+      "countConvention": "2350=2177PASS lines+137daily-cache+36query observations;22boundary/117backend not added.",
+      "actualRetainedBinaryRehashedSHA256": "45440c37ceaab86acae129a4867ea8d192e2ac677c93702ab47a070574fe8831",
+      "logBytes": 171673,
+      "logSHA256": "cf495d3ce4c9497114472e8bc344145388c20601caa949fb0a1a4be26ddd35d1",
+      "sourceAndOutput": "Executed runner pins198 source/current binary, verifies inputs before/after and uses correct198raw/canonical output names. No196output alias repeated. Deterministic log equality with prior suites alone does not prove execution; current source/binary/process/start/finish/terminal outcome jointly bind new198run."
+    },
+    "simulatorCompile": {
+      "session": 78534,
+      "producerPID": 50456,
+      "exitCode": 0,
+      "appActuallyRehashed": {
+        "bytes": 45259088,
+        "sha256": "b4810dc97ecadefea64d46611acc9df2bb20a18505c816a6b91554695a6fd652"
+      },
+      "UITestActuallyRehashed": {
+        "bytes": 5759248,
+        "sha256": "595ea28e1e623c3a3e28faf53bbdf7ae7c63efa7cd5abdb43bf21055a0c3427a"
+      },
+      "nativeRuntimeAccepted": false,
+      "limit": "Build receipt status was recorded before later full-suite outcome; retained unchanged. Later terminal full outcome supplies full-suite credit independently. Compile creates no native product route or screenshot credit."
+    }
+  },
+  "findings": [],
+  "requiredAdditionalRepairAsks": [],
+  "nextBoundary": "Exact-publish198 repair source/results/critic evidence before cleanup or successor edits. Continue separately with still-pending LocalStore serialized review capture, payload ownership/UI/native actual standard-defaults origins and remaining contract/gates. C1 cancellation/operational classification and C2 lock graph remain required through integration.",
+  "supportBindings": [
+    {
+      "file": "durable-source-r198.json",
+      "bytes": 43324,
+      "sha256": "e9c70d6331aad836bb2f6cf9e57e32b271e075fc7915c710e08bc5c4749fb5fe"
+    },
+    {
+      "file": "durable-source-r198.json.gz",
+      "bytes": 920906,
+      "sha256": "17fe406f1d7d608eaa17e1bde7458f3dfd17f8785a80af97049e58fe8337d822"
+    },
+    {
+      "file": "source197-legacy-boundary-baseline-r1.json",
+      "bytes": 24164,
+      "sha256": "43e14a5df97f8865b1ff6b9de8bccece25aada6ea6f6932892a3f166989385f4"
+    },
+    {
+      "file": "health-legacy-failed-origin-source197-round2-part41-baseline.json",
+      "bytes": 12691,
+      "sha256": "7f6cd245a272b019df5ea7e1f01e5b0078c9d2185f54011777e131da9bf30d51"
+    },
+    {
+      "file": "source198-legacy-boundaries-r1.json",
+      "bytes": 16712,
+      "sha256": "8525a73c0ab6b6ee82f86b7a91c033f311c1cefb242931302c9e58ae43d5ef2a"
+    },
+    {
+      "file": "source198-legacy-boundaries-r1.log.gz",
+      "bytes": 1654,
+      "sha256": "ba1aea927d3dc58ddfbf83e663db01c2e7011563074ad83bdc75d8743e9b5523"
+    },
+    {
+      "file": "source198-legacy-boundaries-r1-outcome.json",
+      "bytes": 2923,
+      "sha256": "a333c5da82b578679df13af741daa11d52421fcf00fe846c9c251eda14521fda"
+    },
+    {
+      "file": "audit-legacy-boundary-r2.py",
+      "bytes": 4892,
+      "sha256": "56ab0e100177ddb0018be8aed670072432acc61e6cfabc96788f9dd00eacd8e3"
+    },
+    {
+      "file": "source198-legacy-boundaries-r1-live-audit.json",
+      "bytes": 12871,
+      "sha256": "44ee3b68b6c021170c7fa4579fed1a46baf9a75ec8099a63add60b4e170bfadd"
+    },
+    {
+      "file": "source198-legacy-transaction-r1.json",
+      "bytes": 146848,
+      "sha256": "07ff187e9e40d0028e707b6689b6f997e69a7c008ff07067fe07ef5147f937e0"
+    },
+    {
+      "file": "source198-legacy-transaction-r1.log.gz",
+      "bytes": 201,
+      "sha256": "1843ccefc814ec74a99960e8664cd63beb5c0f3333ab2e7440a3831ac79c23e0"
+    },
+    {
+      "file": "source198-legacy-transaction-r1-outcome.json",
+      "bytes": 956,
+      "sha256": "0d9a09e198e2d81e7aa6ac692bf68b4bca584c31690a9d4a4d3ff28c0e7ac603"
+    },
+    {
+      "file": "audit-legacy-transaction-r4.py",
+      "bytes": 6626,
+      "sha256": "52f4e69e230017b51ddfe84fc1e153d38b36c7143a840fe7f9876f12a70a2be2"
+    },
+    {
+      "file": "source198-legacy-transaction-r1-live-audit.json",
+      "bytes": 51209,
+      "sha256": "cf9bf7c87b19f21ae63838812e4faae5bc86c50e2b5473f827262fbc809e2b26"
+    },
+    {
+      "file": "source198-full-logic-r1-executed-runner.py",
+      "bytes": 2051,
+      "sha256": "58ce2ecaf27575d9490f814bc558fea69508742068695c147207f8d40ce63f2c"
+    },
+    {
+      "file": "source198-full-logic-r1-outcome.json",
+      "bytes": 1228,
+      "sha256": "370cdf72cbfa5ef49ea8707ea6f9ad54178571b3ea8332b7012b0d6f0fdff047"
+    },
+    {
+      "file": "source198-full-logic-r1.log.gz",
+      "bytes": 40210,
+      "sha256": "b1278f41a7df3114b9f35cd1aef1db8b625d4eeae79cf049384329ce23c98ed9"
+    },
+    {
+      "file": "health-legacy-repair-r1-build.json",
+      "bytes": 709,
+      "sha256": "8f0e3dc63294d8fc7d4967597b0b8d003941b3f52e607de0b365fbd66439fac5"
+    },
+    {
+      "file": "source198-legacy-repair-native-build-r1-outcome.json",
+      "bytes": 895,
+      "sha256": "6e21106b938bf6ff39adb99764ea23aaa69698655f8ba84903ea3c7b8985c806"
+    },
+    {
+      "file": "local-domain-pure-source-r85.json",
+      "bytes": 23520,
+      "sha256": "e6b89ede5ff086a7c755be49a8463c13867ed158d1cf2b3ca7076c6a8712ef51"
+    }
+  ],
+  "publication": "Parent reports19726paths exact37673c66 before198 edits. Critic binds local canonical bytes/archive only and does not independently claim remote GitHub readback.",
+  "limits": "No source/test/native/simulator/build/Git/cleanup actions. No all-stage descendant integrity/old photos/fullrawprior/continuousmetadata/external-race guarantee, current unsignedRelease, motion/fullspokenVoiceOver/new appearances/design score/fullparent/product acceptance. Existing general source/provider/photo/prior/conversation/intent/privacy contracts and all broader gates remain active.",
+  "storage": {
+    "freeBytesAtFinish": 37764521984,
+    "criticRecoveredBytes": 0,
+    "cleanupPerformed": false
+  },
+  "writeBoundary": "Only this new report written. Frozen198source, original197baseline, all judged evidence/fixtures/suites and prior critic reports unchanged."
+}

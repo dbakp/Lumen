@@ -29,6 +29,7 @@ enum HealthRecoveryCopies {
     struct LegacyRetention: Sendable {
         fileprivate let directory: String
         fileprivate let files: [String: Data]
+        fileprivate let entryTypes: [String: String]
     }
     private static func legacyName(_ domain: HealthLocalFiles.Domain) -> String { "legacy-origin-" + domain.rawValue + ".json" }
 
@@ -36,6 +37,13 @@ enum HealthRecoveryCopies {
         try control.checkCancellation()
         let directory = stage.appendingPathComponent(name).appendingPathComponent(retained.directory)
         try realDirectory(directory)
+        let entries = try children(directory)
+        guard Set(entries.map(\.lastPathComponent)) == Set(retained.entryTypes.keys) else { throw HealthLocalFiles.Failure.changed }
+        for entry in entries {
+            try control.checkCancellation()
+            guard let type = try attributes(entry)?[.type] as? FileAttributeType,
+                  type.rawValue == retained.entryTypes[entry.lastPathComponent] else { throw HealthLocalFiles.Failure.changed }
+        }
         for (path, expected) in retained.files {
             let actual = try boundedData(directory.appendingPathComponent(path), limit: HealthLegacyRecoveryOrigin.envelopeLimit, control: control)
             guard actual == expected else { throw HealthLocalFiles.Failure.changed }
@@ -466,6 +474,7 @@ enum HealthRecoveryCopies {
         let retained = base.appendingPathComponent(UUID().uuidString)
         try FileManager.default.createDirectory(at: retained, withIntermediateDirectories: false, attributes: [.posixPermissions: 0o700])
         var descriptors: [String: LegacyDescriptor] = [:], exactFiles: [String: Data] = [:]
+        var entryTypes = ["manifest.json": FileAttributeType.typeRegular.rawValue]
         for domain in domains {
             try control.checkCancellation()
             let name = domain.rawValue + ".json"
@@ -473,17 +482,31 @@ enum HealthRecoveryCopies {
                 let name = legacyName(domain), bytes = try origin.value.encoded(control: control)
                 try bytes.write(to: retained.appendingPathComponent(name), options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
                 descriptors[domain.rawValue] = LegacyDescriptor(file: name, sha256: digest(bytes)); exactFiles[name] = bytes
+                entryTypes[name] = FileAttributeType.typeRegular.rawValue
             } else {
+                guard let type = try attributes(stage.appendingPathComponent(name))?[.type] as? FileAttributeType,
+                      type == .typeRegular || type == .typeDirectory else { throw HealthLocalFiles.Failure.invalid }
+                entryTypes[name] = type.rawValue
                 try FileManager.default.moveItem(at: stage.appendingPathComponent(name), to: retained.appendingPathComponent(name))
             }
         }
         let photos = stage.appendingPathComponent("photos")
         let hasPhotoPath = try attributes(photos) != nil
         let hasPhotos = domains.contains(.meals) && hasPhotoPath
-        if hasPhotos { try FileManager.default.moveItem(at: photos, to: retained.appendingPathComponent("photos")) }
+        if hasPhotos {
+            guard let type = try attributes(photos)?[.type] as? FileAttributeType,
+                  type == .typeRegular || type == .typeDirectory else { throw HealthLocalFiles.Failure.invalid }
+            entryTypes["photos"] = type.rawValue
+            try FileManager.default.moveItem(at: photos, to: retained.appendingPathComponent("photos"))
+        }
         let intent = stage.appendingPathComponent(HealthWriteFiles.name)
         let hasIntent = try attributes(intent) != nil
-        if hasIntent { try linkTree(from: intent, to: retained.appendingPathComponent(intentProvenanceName)) }
+        if hasIntent {
+            guard let type = try attributes(intent)?[.type] as? FileAttributeType,
+                  type == .typeRegular || type == .typeDirectory else { throw HealthLocalFiles.Failure.invalid }
+            entryTypes[intentProvenanceName] = type.rawValue
+            try linkTree(from: intent, to: retained.appendingPathComponent(intentProvenanceName))
+        }
         let manifest = Manifest(version: descriptors.isEmpty ? 1 : 2, createdAt: Date(), domains: domains.map(\.rawValue).sorted(), photos: hasPhotos, intent: hasIntent,
                                 legacyOrigins: descriptors.isEmpty ? nil : descriptors)
         let encoder = JSONEncoder(); encoder.dateEncodingStrategy = .iso8601; encoder.outputFormatting = [.sortedKeys]
@@ -497,8 +520,9 @@ enum HealthRecoveryCopies {
             try FileManager.default.removeItem(at: retained)
         }
         guard !descriptors.isEmpty else { return nil }
+        guard Set(try children(retained).map(\.lastPathComponent)) == Set(entryTypes.keys) else { throw HealthLocalFiles.Failure.changed }
         exactFiles["manifest.json"] = manifestBytes
-        return LegacyRetention(directory: retained.lastPathComponent, files: exactFiles)
+        return LegacyRetention(directory: retained.lastPathComponent, files: exactFiles, entryTypes: entryTypes)
     }
 
     static func completedErasure(in root: URL) throws -> Bool {

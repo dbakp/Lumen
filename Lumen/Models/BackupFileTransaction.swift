@@ -160,10 +160,13 @@ final class BackupFileTransaction: @unchecked Sendable {
             completed += 1; control.update(.restoring, completed: completed, total: total, bytes: copied)
         }
         try control.checkCancellation()
-        prepared = true
         for origin in legacyOrigins.values { try origin.verify(in: directory, legacy: legacy, control: control) }
-        return BackupFileTransaction(directory: directory, stage: stage, preserveHealthCopies: preserveExisting, sourceSnapshot: sourceSnapshot, stagedPhotos: stagedPhotos, cachePreviousSnapshot: cachePreviousSnapshot,
-                                     legacyOrigins: legacyOrigins, legacy: legacy, legacyRetention: legacyRetention)
+        let transaction = BackupFileTransaction(directory: directory, stage: stage, preserveHealthCopies: preserveExisting, sourceSnapshot: sourceSnapshot, stagedPhotos: stagedPhotos, cachePreviousSnapshot: cachePreviousSnapshot,
+                                                legacyOrigins: legacyOrigins, legacy: legacy, legacyRetention: legacyRetention)
+        // Until every throwing check succeeds, this function still owns stage
+        // cleanup. Only the initialized transaction can take that ownership.
+        prepared = true
+        return transaction
     }
 
     func commit() throws { try commit(control: nil) }

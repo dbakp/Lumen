@@ -1,0 +1,76 @@
+{
+  "status": "PASS actual22fixedboundary checks, six rejected operations/0unownedstages/unchanged current",
+  "source": "durable-source-r198.json",
+  "session": 84089,
+  "exitCode": 0,
+  "report": "source198-legacy-boundaries-r1.json",
+  "reportBytes": 16712,
+  "reportSHA256": "8525a73c0ab6b6ee82f86b7a91c033f311c1cefb242931302c9e58ae43d5ef2a",
+  "checks": 22,
+  "actualUnownedStages": 0,
+  "actualInstalls": 0,
+  "cases": [
+    {
+      "fault": "post-stage-change",
+      "populatedStageFaultActivated": true,
+      "prepared": false,
+      "committed": false,
+      "errorKind": "LumenLogicChecks.HealthLocalFiles.Failure",
+      "catalogHasIncompleteCopy": false
+    },
+    {
+      "fault": "post-stage-cancel",
+      "populatedStageFaultActivated": true,
+      "prepared": false,
+      "committed": false,
+      "errorKind": "CancellationError",
+      "catalogHasIncompleteCopy": false
+    },
+    {
+      "fault": "post-stage-operational",
+      "populatedStageFaultActivated": true,
+      "prepared": false,
+      "committed": false,
+      "errorKind": "NSError",
+      "catalogHasIncompleteCopy": false
+    },
+    {
+      "fault": "extra-origin",
+      "populatedStageFaultActivated": false,
+      "prepared": true,
+      "committed": false,
+      "errorKind": "LumenLogicChecks.HealthLocalFiles.Failure",
+      "catalogHasIncompleteCopy": false
+    },
+    {
+      "fault": "dual-domain",
+      "populatedStageFaultActivated": false,
+      "prepared": true,
+      "committed": false,
+      "errorKind": "LumenLogicChecks.HealthLocalFiles.Failure",
+      "catalogHasIncompleteCopy": false
+    },
+    {
+      "fault": "intent-kind",
+      "populatedStageFaultActivated": false,
+      "prepared": true,
+      "committed": false,
+      "errorKind": "LumenLogicChecks.HealthLocalFiles.Failure",
+      "catalogHasIncompleteCopy": false
+    }
+  ],
+  "retainedRoot": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/Lumen-legacy-boundaries-F8743B52-AB31-40FD-B016-C567E7531448",
+  "suites": [
+    "com.dbakp.lumen.synthetic.legacy-boundary.696BDD64-30FC-4B99-ADDE-921A1E45D87D",
+    "com.dbakp.lumen.synthetic.legacy-boundary.619CCF0B-7E74-4150-A5AE-BAFEACDE3F9C",
+    "com.dbakp.lumen.synthetic.legacy-boundary.D6AC9BD7-E54D-4B97-9524-0C7E3E0B715A",
+    "com.dbakp.lumen.synthetic.legacy-boundary.9094CDC1-86CB-4B1D-8413-49C6D39E937C",
+    "com.dbakp.lumen.synthetic.legacy-boundary.51699E48-9F54-4852-8656-18DDF1901548",
+    "com.dbakp.lumen.synthetic.legacy-boundary.0A7FF506-1F15-4468-BFA0-59C703FFDA8C"
+  ],
+  "log": "source198-legacy-boundaries-r1.log.gz",
+  "logRawBytes": 6559,
+  "logRawSHA256": "48b334ff20dc265c53e11cf77ddc8bb34f2e10f0e57b3dc837739508fa3f2884",
+  "scope": "Paired actual197baseline first5cases versus fixed198rejections, plusnewintent-kind control withno historicalbaseline credit. Direct isolatedbackend only, no UI/LocalStore/native/fullparent acceptance.",
+  "checkedAt": 1794088376.814841
+}

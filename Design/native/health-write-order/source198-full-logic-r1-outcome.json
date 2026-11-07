@@ -1,0 +1,23 @@
+{
+  "status": "PASS actual full current198 logic execution",
+  "source": "durable-source-r198.json",
+  "exitCode": 0,
+  "processPID": 50458,
+  "binarySHA256": "45440c37ceaab86acae129a4867ea8d192e2ac677c93702ab47a070574fe8831",
+  "log": "source198-full-logic-r1.log.gz",
+  "logBytes": 171673,
+  "logSHA256": "cf495d3ce4c9497114472e8bc344145388c20601caa949fb0a1a4be26ddd35d1",
+  "passLines": 2177,
+  "terminalLines": [
+    "PASS: a real concurrent local writer enters the storage barrier",
+    "PASS: restore cannot commit while a concurrent local writer holds the barrier",
+    "PASS: the waiting restore observes the completed write and rejects its stale revision",
+    "PASS: existing version-one JSON backups remain readable after the streamed format is introduced",
+    "All import, model, totals, history, plan, conversation, evidence, document and reminder checks passed."
+  ],
+  "startedAt": 1794088431.611638,
+  "finishedAt": 1794088465.332394,
+  "availableBytesBefore": 37748035584,
+  "availableBytesAfter": 37736144896,
+  "scope": "Actual default complete logic executable, separately actual22fixedboundaries/117backendchecks executed; no native product integration. No currentnative/Release/fullproduct acceptance."
+}

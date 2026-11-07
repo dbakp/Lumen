@@ -10,7 +10,7 @@ enum HealthLegacyRecoveryBoundaryChecks {
         let bad = Data("{synthetic stage-boundary legacy".utf8)
         var checks: [[String: Any]] = [], cases: [[String: Any]] = [], completed = false
         defer {
-            let report: [String: Any] = ["status": completed ? (expectingDefects ? "BASELINE_REPRODUCED three stage leaks/two incomplete-copy installs; no recovery acceptance" : "PASS five stage cleanup/retained-shape rejection boundaries") : "FAILED boundary expectation; partial evidence retained",
+            let report: [String: Any] = ["status": completed ? (expectingDefects ? "BASELINE_REPRODUCED three stage leaks/two incomplete-copy installs; no recovery acceptance" : "PASS stage cleanup/retained-shape and type rejection boundaries") : "FAILED boundary expectation; partial evidence retained",
                                          "expectingDefects": expectingDefects, "checks": checks, "cases": cases,
                                          "retainedRoot": area.path, "successfulRecoveryAccepted": false,
                                          "scope": "Actual isolated defaults/direct production backend boundary observations. Baseline may intentionally retain unsafe synthetic stages/installs. No UI/LocalStore.standard/native or fullparent acceptance; retain fixtures/suites through independent audit/exact backup."]
@@ -35,7 +35,8 @@ enum HealthLegacyRecoveryBoundaryChecks {
             }
             return values
         }
-        for fault in ["post-stage-change", "post-stage-cancel", "post-stage-operational", "extra-origin", "dual-domain"] {
+        let faults = ["post-stage-change", "post-stage-cancel", "post-stage-operational", "extra-origin", "dual-domain"] + (expectingDefects ? [] : ["intent-kind"])
+        for fault in faults {
             let root = area.appendingPathComponent(fault), owner = UUID(), control = BackupOperationControl()
             try fm.createDirectory(at: root, withIntermediateDirectories: false)
             for (name, bytes) in try ConversationFiles.encoded([], activeID: nil) { try bytes.write(to: root.appendingPathComponent(name)) }
@@ -91,8 +92,14 @@ enum HealthLegacyRecoveryBoundaryChecks {
                 guard let stage = try reader.stages().first else { throw HealthLocalFiles.Failure.invalid }
                 let copies = try fm.contentsOfDirectory(at: stage.appendingPathComponent(HealthRecoveryCopies.name), includingPropertiesForKeys: nil)
                 guard copies.count == 1 else { throw HealthLocalFiles.Failure.invalid }
-                let path = fault == "extra-origin" ? "legacy-origin-unexpected.json" : "meals.json"
-                try Data("[]".utf8).write(to: copies[0].appendingPathComponent(path))
+                if fault == "intent-kind" {
+                    let path = copies[0].appendingPathComponent(HealthRecoveryCopies.intentProvenanceName)
+                    try fm.removeItem(at: path)
+                    try fm.createDirectory(at: path, withIntermediateDirectories: false)
+                } else {
+                    let path = fault == "extra-origin" ? "legacy-origin-unexpected.json" : "meals.json"
+                    try Data("[]".utf8).write(to: copies[0].appendingPathComponent(path))
+                }
                 do { try transaction.commit(control: control); committed = true }
                 catch { errorKind = error is CancellationError ? "CancellationError" : String(reflecting: type(of: error)); failureText = String(reflecting: error) }
                 transaction.discard()
