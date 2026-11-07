@@ -66,7 +66,7 @@
 <button class="btn" type="button" data-area="quality" aria-pressed="false" aria-controls="lumen-plan-detail">Answer quality</button>
 <button class="btn" type="button" data-area="release" aria-pressed="false" aria-controls="lumen-plan-detail">Release gates</button>
 </div>
-<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Recovery coverage · in progress</h3><div data-verified>Current backend: 22 boundary checks, 117 recovery checks, 2,350 logic checks and simulator build passed. Independent review closed both reproduced defects. Earlier native flows retain their recorded app versions.</div><div data-next>Next: connect older-data review and recovery to the screens, then verify real simulator flows. Link recovery, motion and complete spoken preservation remain open.</div><div class="text-small" data-gate>Earlier appearance cases retain their actual app versions. Failed trials remain recorded. Accessibility, timing and broader product gates remain open.</div></div>
+<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Recovery coverage · in progress</h3><div data-verified>Current review foundation: 23 new checks passed, alongside 57 legacy-value, 22 boundary, 117 recovery and 2,350 logic checks. Simulator build and independent infrastructure review passed.</div><div data-next>Next: connect the captured data to the recovery screen and confirmation, then verify real simulator flows. Link recovery, motion and complete spoken preservation remain open.</div><div class="text-small" data-gate>Earlier appearance cases retain their actual app versions. Failed trials remain recorded. Accessibility, timing and broader product gates remain open.</div></div>
 </div>
 <div class="section"><h3>Verified safety checks</h3>
 <table class="table table-sm" aria-label="Earlier checks retain their original scope; broader checks remain open"><thead><tr><th>Situation</th><th>Observed result</th></tr></thead><tbody>
@@ -74,7 +74,7 @@
 <tr><td>Explicit zero readings</td><td>Five zeros saved distinctly from 13 missing values</td></tr>
 <tr><td>Stale or replaced snapshot</td><td>Save rejected; newer contents and file identity preserved</td></tr>
 <tr><td>Local food and water</td><td>External totals counted once; exact synthetic-record cleanup</td></tr>
-<tr><td>Logic suite</td><td>2,350 passed on Source196 · 117 focused backend checks</td></tr>
+<tr><td>Logic suite</td><td>2,350 passed on Source199 · focused checks counted separately</td></tr>
 </tbody></table>
 <div class="text-small">Earlier six-file long-wait preservation failure and Banana zero-fat omission remain failed expectations. Final dismissal preserved the immediate newer state.</div></div>
 <hr>
@@ -83,11 +83,11 @@
 <script>
 (()=>{
 const root=document.getElementById('lumen-plan-progress');
-const snapshot='nov7-source198-backend-repair';
+const snapshot='nov7-source199-review-infrastructure';
 const areas={
-current:{title:'Recovery coverage · in progress',verified:'Current backend: 22 boundary checks, 117 recovery checks, 2,350 logic checks and simulator build passed. Independent review closed both reproduced defects. Earlier native flows retain their recorded app versions.',next:'Next: connect older-data review and recovery to the screens, then verify real simulator flows. Link recovery, motion and complete spoken preservation remain open.',gate:'Earlier appearance cases retain their actual app versions. Failed trials remain recorded. Accessibility, timing and broader product gates remain open.'},
+current:{title:'Recovery coverage · in progress',verified:'Current review foundation: 23 new checks passed, alongside 57 legacy-value, 22 boundary, 117 recovery and 2,350 logic checks. Simulator build and independent infrastructure review passed.',next:'Next: connect the captured data to the recovery screen and confirmation, then verify real simulator flows. Link recovery, motion and complete spoken preservation remain open.',gate:'Earlier appearance cases retain their actual app versions. Failed trials remain recorded. Accessibility, timing and broader product gates remain open.'},
 quality:{title:'Answer quality · open',verified:'Library search, source identity, consent controls and literal-reference safeguards are delivered.',next:'Next: evidence-support policy and independent evaluation; personal-context and conversation-history privacy review.',gate:'Clinical accuracy, language coverage and live-provider evaluation remain required.'},
-release:{title:'Release readiness · open',verified:'Source194 unsigned release build and bounded audit passed. Current Source196 backend compiles; its release and runtime checks remain open.',next:'Next: background Health, Watch reconnect, widget, interruption and accessibility checks.',gate:'Representative histories, performance, privacy and distribution review remain required. No iPhone installation, launch or checks without a renewed request.'}
+release:{title:'Release readiness · open',verified:'Source194 unsigned release build and bounded audit passed. Current Source199 review foundation compiles; its release and runtime checks remain open.',next:'Next: background Health, Watch reconnect, widget, interruption and accessibility checks.',gate:'Representative histories, performance, privacy and distribution review remain required. No iPhone installation, launch or checks without a renewed request.'}
 };
 const buttons=Array.from(root.querySelectorAll('[data-area]'));
 function select(key,remember){

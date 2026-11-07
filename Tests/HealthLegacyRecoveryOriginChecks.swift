@@ -140,3 +140,97 @@ enum HealthLegacyRecoveryOriginChecks {
         print("PASS: \(checks.count) failed-legacy observation/provenance checks; integration remains pending")
     }
 }
+
+
+/// Review authority/lifetime checks, separate from transaction and native UI.
+enum HealthOriginReviewChecks {
+    static func run(output: URL) throws {
+        typealias Origin = HealthLegacyRecoveryOrigin
+        let control = BackupOperationControl(), bad = Data("{damaged".utf8)
+        var results: [[String: Any]] = []
+        func check(_ name: String, _ body: () throws -> Bool) rethrows {
+            results.append(["name": name, "passed": try body()])
+        }
+        func changed(_ body: () throws -> Void) -> Bool {
+            do { try body(); return false } catch HealthLocalFiles.Failure.changed { return true } catch { return false }
+        }
+        func cancelled(_ body: () throws -> Void) -> Bool {
+            do { try body(); return false } catch is CancellationError { return true } catch { return false }
+        }
+        func project(_ persisted: Any?, _ effective: Any?) throws -> Any? {
+            try Origin.checkedPersistentValue(persisted, effective: effective, domain: .meals, control: control)
+        }
+        try check("identical persisted Data") { try project(bad, bad) as? Data == bad }
+        try check("identical persisted String preserves codeunits") { try project("e\u{301}", "e\u{301}") as? String == "e\u{301}" }
+        try check("absent persisted key ignores registered malformed fallback") { try project(nil, bad) == nil }
+        check("removed effective rejects") { changed { _ = try project(bad, nil) } }
+        check("changed raw Data rejects") { changed { _ = try project(bad, Data("{other".utf8)) } }
+        check("changed tag rejects") { changed { _ = try project(bad, "{damaged") } }
+        check("canonical String equality does not grant raw equality") { changed { _ = try project("e\u{301}", "é") } }
+        check("oversized effective is a changed observation") { changed { _ = try project(bad, Data(repeating: 0, count: Origin.rawLimit + 1)) } }
+        try check("unsupported persisted remains unsupported") { try project(42, 42) as? Int == 42 }
+        let fm = FileManager.default
+        let root = fm.temporaryDirectory.appendingPathComponent("Lumen-origin-review-" + UUID().uuidString)
+        try fm.createDirectory(at: root, withIntermediateDirectories: false)
+        // Small synthetic root is retained for readback/backup before cleanup.
+        try Data("damaged current".utf8).write(to: root.appendingPathComponent("water.json"))
+        try fm.createDirectory(at: root.appendingPathComponent("today.json"), withIntermediateDirectories: false)
+        try fm.createSymbolicLink(atPath: root.appendingPathComponent("workouts.json").path, withDestinationPath: "absent")
+        let snapshot = try Origin.captureReview([.meals, .workouts, .goals, .water, .today], in: root,
+            legacy: { key in key == HealthLocalFiles.Domain.meals.legacyKey ? bad : 42 }, control: control)
+        check("mixed classification keeps eligible subset") {
+            snapshot.metadata.fileDomains == [.water, .today] && snapshot.metadata.legacyDomains == [.meals]
+                && snapshot.metadata.ineligibleDomains == [.workouts, .goals]
+        }
+        let limited = try Origin.captureReview([.meals, .goals], in: root,
+            legacy: { key in key == HealthLocalFiles.Domain.meals.legacyKey ? bad : Data(repeating: 0, count: Origin.rawLimit + 1) }, control: control)
+        check("per-domain size exclusion does not discard eligible domain") {
+            limited.metadata.legacyDomains == [.meals] && limited.metadata.ineligibleDomains == [.goals]
+        }
+        let healthy = try Origin.captureReview([.meals], in: root, legacy: { _ in Data("[]".utf8) }, control: control)
+        check("valid empty legacy is ineligible") { healthy.metadata.ineligibleDomains == [.meals] }
+        check("acquisition operational error propagates") {
+            do { _ = try Origin.captureReview([.meals], in: root, legacy: { _ in throw NSError(domain: NSPOSIXErrorDomain, code: Int(EACCES)) }, control: control); return false }
+            catch let error as NSError { return error.domain == NSPOSIXErrorDomain && error.code == Int(EACCES) }
+        }
+        let stopped = BackupOperationControl(); stopped.cancel()
+        check("cancelled capture propagates") { cancelled { _ = try Origin.captureReview([.meals], in: root, legacy: { _ in bad }, control: stopped) } }
+        let lease = HealthRecoveryOriginReviewLease(), first = BackupOperationControl(), second = BackupOperationControl()
+        try lease.begin(first); lease.suspend(first); try lease.begin(second)
+        check("late old completion cannot replace newer capture") { cancelled { try lease.finish(snapshot, control: first) } && lease.state == .capturing }
+        lease.suspend(first)
+        check("old suspend does not cancel newer control") { do { try second.checkCancellation(); return lease.state == .capturing } catch { return false } }
+        try lease.finish(snapshot, control: second)
+        try check("ready acquisition exact selected origin") { try lease.acquire([.meals], control: control)[.meals]?.value.bytes == bad }
+        check("ready snapshot cannot recapture") { cancelled { try lease.begin(BackupOperationControl()) } && lease.metadata == snapshot.metadata }
+        lease.suspend(second)
+        check("child disappearance cannot reset ready owner") { lease.state == .ready && lease.metadata == snapshot.metadata }
+        lease.close()
+        check("close clears metadata and denies acquisition") { lease.state == .closed && lease.metadata == nil && cancelled { _ = try lease.acquire([.meals], control: control) } }
+        let pending = HealthRecoveryOriginReviewLease(), pendingControl = BackupOperationControl()
+        try pending.begin(pendingControl); pending.close()
+        check("close cancels pending and denies late finish") { cancelled { try pendingControl.checkCancellation() } && cancelled { try pending.finish(snapshot, control: pendingControl) } }
+        let revision = BackupStorageRevision(), before = revision.current
+        revision.read { _ = snapshot.metadata }
+        check("serialized read leaves generation unchanged") { revision.current == before }
+        let writerStarted = DispatchSemaphore(value: 0), writerFinished = DispatchSemaphore(value: 0)
+        var blocked = false
+        revision.read {
+            DispatchQueue.global().async {
+                writerStarted.signal()
+                revision.write { }
+                writerFinished.signal()
+            }
+            _ = writerStarted.wait(timeout: .now() + 5)
+            blocked = writerFinished.wait(timeout: .now() + 0.1) == .timedOut
+        }
+        let finished = writerFinished.wait(timeout: .now() + 5) == .success
+        check("cooperating writer waits for read then increments once") { blocked && finished && revision.current == before + 1 }
+        let passed = results.allSatisfy { $0["passed"] as? Bool == true }
+        try JSONSerialization.data(withJSONObject: ["status": passed ? "PASS" : "FAIL", "checks": results,
+            "retainedRoot": root.path, "scope": "Pure review projection/classification/lease/read barrier only; no LocalStore standard-defaults, native UI or installation acceptance"],
+            options: [.prettyPrinted, .sortedKeys]).write(to: output)
+        guard passed else { throw HealthLocalFiles.Failure.invalid }
+        print("PASS: \(results.count) origin review checks")
+    }
+}

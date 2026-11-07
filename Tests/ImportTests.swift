@@ -3,6 +3,9 @@ import Darwin
 
 @main struct ImportTests {
     static func main() async throws {
+        if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--health-origin-review" {
+            try HealthOriginReviewChecks.run(output: URL(fileURLWithPath: CommandLine.arguments[2])); return
+        }
         if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--health-legacy-boundary-baseline" {
             try HealthLegacyRecoveryBoundaryChecks.run(output: URL(fileURLWithPath: CommandLine.arguments[2]), expectingDefects: true); return
         }

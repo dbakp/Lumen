@@ -1,0 +1,67 @@
+{
+  "source": "durable-source-r199.json",
+  "runs": [
+    {
+      "label": "foundation",
+      "exitCode": 0,
+      "binarySHA256": "15eb30367c47cdcae80bff16bc5999f0f7646ce20089ec2e2c231c88a3b6ca84",
+      "log": "source199-foundation-r1.log.gz",
+      "logBytes": 82,
+      "logSHA256": "e4d48e919c56bcd9d298b7c2c7b8ed4d3fad9a03d5898153a93ebe0d799e9db3",
+      "passLines": 1,
+      "terminalLines": [
+        "PASS: 57 failed-legacy observation/provenance checks; integration remains pending"
+      ],
+      "startedAt": 1794090557.6011798,
+      "finishedAt": 1794090569.323154
+    },
+    {
+      "label": "boundaries",
+      "exitCode": 0,
+      "binarySHA256": "15eb30367c47cdcae80bff16bc5999f0f7646ce20089ec2e2c231c88a3b6ca84",
+      "log": "source199-boundaries-r1.log.gz",
+      "logBytes": 69,
+      "logSHA256": "111466975626b6deacede02a0fb1cc002c3126fb7887176e39e784a9c7afd6d7",
+      "passLines": 1,
+      "terminalLines": [
+        "PASS: final-prepare cleanup and final retained-copy shape boundaries"
+      ],
+      "startedAt": 1794090569.323284,
+      "finishedAt": 1794090569.4524999
+    },
+    {
+      "label": "backend",
+      "exitCode": 0,
+      "binarySHA256": "15eb30367c47cdcae80bff16bc5999f0f7646ce20089ec2e2c231c88a3b6ca84",
+      "log": "source199-backend-r1.log.gz",
+      "logBytes": 232,
+      "logSHA256": "2a9ef06eb6713db3207fba11b56adb580cbd0d9aca6464173103c06b4b00065a",
+      "passLines": 1,
+      "terminalLines": [
+        "Retained legacy transaction root: /var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/Lumen-legacy-transaction-06DE4BC2-1540-49A2-BA2D-200BCFD8899E",
+        "PASS: 117 failed-legacy backend transaction checks; native product integration pending"
+      ],
+      "startedAt": 1794090569.4525492,
+      "finishedAt": 1794090570.1011899
+    },
+    {
+      "label": "full",
+      "exitCode": 0,
+      "binarySHA256": "15eb30367c47cdcae80bff16bc5999f0f7646ce20089ec2e2c231c88a3b6ca84",
+      "log": "source199-full-r1.log.gz",
+      "logBytes": 171673,
+      "logSHA256": "cf495d3ce4c9497114472e8bc344145388c20601caa949fb0a1a4be26ddd35d1",
+      "passLines": 2177,
+      "terminalLines": [
+        "PASS: a real concurrent local writer enters the storage barrier",
+        "PASS: restore cannot commit while a concurrent local writer holds the barrier",
+        "PASS: the waiting restore observes the completed write and rejects its stale revision",
+        "PASS: existing version-one JSON backups remain readable after the streamed format is introduced",
+        "All import, model, totals, history, plan, conversation, evidence, document and reminder checks passed."
+      ],
+      "startedAt": 1794090570.101254,
+      "finishedAt": 1794090604.6532218
+    }
+  ],
+  "scope": "Actual CLI runs; focus counts separate from full default suite. No native runtime/UI acceptance."
+}

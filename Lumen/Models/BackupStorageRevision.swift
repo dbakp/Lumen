@@ -6,6 +6,11 @@ final class BackupStorageRevision: @unchecked Sendable {
     private let lock = NSLock()
     private var generation: UInt64 = 0
     var current: UInt64 { lock.lock(); defer { lock.unlock() }; return generation }
+    /// Serialize an observation without making it a local mutation.
+    func read<T>(_ operation: () throws -> T) rethrows -> T {
+        lock.lock(); defer { lock.unlock() }
+        return try operation()
+    }
     func write<T>(_ operation: () throws -> T) rethrows -> T {
         lock.lock(); defer { generation &+= 1; lock.unlock() }
         return try operation()

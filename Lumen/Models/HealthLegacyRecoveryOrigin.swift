@@ -10,6 +10,7 @@ struct HealthLegacyRecoveryOrigin: Equatable, Sendable {
     static let envelopeLimit = 5_600_000
     static let aggregateLimit = 3 * rawLimit
     enum ValueType: String, Sendable { case data, stringUTF16LE }
+    enum IneligibleValue: Error { case tooLarge, unrepresentableString }
     struct RootIdentity: Equatable, Sendable {
         let path: String
         let device: UInt64
@@ -29,11 +30,11 @@ struct HealthLegacyRecoveryOrigin: Equatable, Sendable {
             try control.checkCancellation()
             guard domain.legacyKey != nil, let object else { return nil }
             if let data = object as? Data {
-                guard data.count <= rawLimit else { throw HealthLocalFiles.Failure.invalid }
+                guard data.count <= rawLimit else { throw IneligibleValue.tooLarge }
                 return Value(domain: domain, type: .data, bytes: data)
             }
             guard let string = object as? NSString else { return nil }
-            guard string.length <= rawLimit / 2 else { throw HealthLocalFiles.Failure.invalid }
+            guard string.length <= rawLimit / 2 else { throw IneligibleValue.tooLarge }
             var units = [UInt16](); units.reserveCapacity(string.length)
             var bytes = Data(); bytes.reserveCapacity(string.length * 2)
             for index in 0..<string.length {
@@ -42,7 +43,7 @@ struct HealthLegacyRecoveryOrigin: Equatable, Sendable {
                 units.append(unit); bytes.append(UInt8(truncatingIfNeeded: unit)); bytes.append(UInt8(unit >> 8))
             }
             // Refuse a bridge that would repair a malformed surrogate sequence.
-            guard String(decoding: units, as: UTF16.self).utf16.elementsEqual(units) else { throw HealthLocalFiles.Failure.invalid }
+            guard String(decoding: units, as: UTF16.self).utf16.elementsEqual(units) else { throw IneligibleValue.unrepresentableString }
             try control.checkCancellation()
             return Value(domain: domain, type: .stringUTF16LE, bytes: bytes)
         }
@@ -132,6 +133,69 @@ struct HealthLegacyRecoveryOrigin: Equatable, Sendable {
         try control.checkCancellation()
     }
 
+    /// Projects only a fixed persisted key. Registration/argument fallbacks alone
+    /// cannot authorize replacement. The caller must not retain the whole domain.
+    static func checkedPersistentValue(_ persisted: Any?, effective: Any?,
+                                       domain: HealthLocalFiles.Domain,
+                                       control: BackupOperationControl) throws -> Any? {
+        try control.checkCancellation()
+        guard domain.legacyKey != nil, let persisted else { return nil }
+        guard let value = try Value.capture(persisted, domain: domain, control: control) else { return persisted }
+        let observed: Value?
+        do { observed = try Value.capture(effective, domain: domain, control: control) }
+        catch is IneligibleValue { throw HealthLocalFiles.Failure.changed }
+        guard observed == value else { throw HealthLocalFiles.Failure.changed }
+        return persisted
+    }
+
+    struct ReviewMetadata: Equatable, Sendable {
+        let fileDomains: Set<HealthLocalFiles.Domain>
+        let legacyDomains: Set<HealthLocalFiles.Domain>
+        let ineligibleDomains: Set<HealthLocalFiles.Domain>
+    }
+    struct ReviewSnapshot: Sendable {
+        let metadata: ReviewMetadata
+        fileprivate let origins: [HealthLocalFiles.Domain: HealthLegacyRecoveryOrigin]
+        fileprivate init(metadata: ReviewMetadata, origins: [HealthLocalFiles.Domain: HealthLegacyRecoveryOrigin]) {
+            self.metadata = metadata; self.origins = origins
+        }
+    }
+
+    /// Metadata classification only: a supported existing file is still subject
+    /// to the existing unavailable-domain and transaction checks, never healthy
+    /// overwrite permission. No directory opening, migration or defaults writes.
+    static func captureReview(_ domains: Set<HealthLocalFiles.Domain>, in directory: URL,
+                              legacy: (String) throws -> Any?,
+                              control: BackupOperationControl) throws -> ReviewSnapshot {
+        try control.checkCancellation()
+        let root = try rootIdentity(directory)
+        var files = Set<HealthLocalFiles.Domain>(), ineligible = Set<HealthLocalFiles.Domain>()
+        var origins: [HealthLocalFiles.Domain: Self] = [:]
+        for domain in domains.sorted(by: { $0.rawValue < $1.rawValue }) {
+            try control.checkCancellation()
+            var facts = stat()
+            if lstat(directory.appendingPathComponent(domain.rawValue + ".json").path, &facts) == 0 {
+                let kind = facts.st_mode & mode_t(S_IFMT)
+                if kind == mode_t(S_IFREG) || kind == mode_t(S_IFDIR) { files.insert(domain) }
+                else { ineligible.insert(domain) }
+                continue
+            }
+            let code = errno
+            guard code == ENOENT else { throw NSError(domain: NSPOSIXErrorDomain, code: Int(code)) }
+            do {
+                if let origin = try capture(domain, in: directory, legacy: legacy, control: control) {
+                    guard origin.root == root else { throw HealthLocalFiles.Failure.changed }
+                    origins[domain] = origin
+                } else { ineligible.insert(domain) }
+            } catch is IneligibleValue { ineligible.insert(domain) }
+        }
+        guard origins.values.reduce(0, { $0 + $1.value.bytes.count }) <= aggregateLimit,
+              try rootIdentity(directory) == root else { throw HealthLocalFiles.Failure.changed }
+        try control.checkCancellation()
+        return ReviewSnapshot(metadata: .init(fileDomains: files, legacyDomains: Set(origins.keys),
+                                             ineligibleDomains: ineligible), origins: origins)
+    }
+
     private static func rootIdentity(_ directory: URL) throws -> RootIdentity {
         var facts = stat()
         guard lstat(directory.path, &facts) == 0 else { throw NSError(domain: NSPOSIXErrorDomain, code: Int(errno)) }
@@ -145,5 +209,59 @@ struct HealthLegacyRecoveryOrigin: Equatable, Sendable {
         let code = errno
         if code == ENOENT { return true }
         throw NSError(domain: NSPOSIXErrorDomain, code: Int(code))
+    }
+}
+
+/// Raw observations live with the actual review owner, not cached view state.
+/// Cancellation callbacks execute outside this nonrecursive holder lock.
+final class HealthRecoveryOriginReviewLease: @unchecked Sendable {
+    enum Phase: Equatable, Sendable { case initial, capturing, ready, closed }
+    private let lock = NSLock()
+    private var phase: Phase = .initial
+    private var pending: BackupOperationControl?
+    private var snapshot: HealthLegacyRecoveryOrigin.ReviewSnapshot?
+    var state: Phase { lock.lock(); defer { lock.unlock() }; return phase }
+    var metadata: HealthLegacyRecoveryOrigin.ReviewMetadata? {
+        lock.lock(); defer { lock.unlock() }; return snapshot?.metadata
+    }
+    func begin(_ control: BackupOperationControl) throws {
+        try control.checkCancellation()
+        lock.lock(); defer { lock.unlock() }
+        guard phase == .initial else { throw CancellationError() }
+        pending = control; phase = .capturing
+    }
+    func finish(_ value: HealthLegacyRecoveryOrigin.ReviewSnapshot, control: BackupOperationControl) throws {
+        try control.checkCancellation()
+        lock.lock(); defer { lock.unlock() }
+        guard phase == .capturing, pending === control else { throw CancellationError() }
+        snapshot = value; pending = nil; phase = .ready
+    }
+    func suspend(_ control: BackupOperationControl) {
+        lock.lock()
+        let matched = phase == .capturing && pending === control
+        if matched { pending = nil; phase = .initial }
+        lock.unlock()
+        if matched { control.cancel() }
+    }
+    func acquire(_ domains: Set<HealthLocalFiles.Domain>, control: BackupOperationControl) throws
+        -> [HealthLocalFiles.Domain: HealthLegacyRecoveryOrigin] {
+        try control.checkCancellation()
+        lock.lock()
+        guard phase == .ready, let snapshot,
+              domains.isSubset(of: snapshot.metadata.legacyDomains) else {
+            lock.unlock(); throw CancellationError()
+        }
+        let selected = snapshot.origins.filter { domains.contains($0.key) }
+        lock.unlock()
+        try control.checkCancellation()
+        return selected
+    }
+    func close() {
+        lock.lock()
+        let old = snapshot, control = pending
+        snapshot = nil; pending = nil; phase = .closed
+        lock.unlock()
+        control?.cancel()
+        withExtendedLifetime(old) {}
     }
 }

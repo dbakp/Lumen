@@ -33,6 +33,30 @@ public enum LocalStore {
                               control: BackupOperationControl) throws {
         try writes.commit(ifUnchanged: revision) { try transaction.commit(control: control) }
     }
+    /// Called by detached review work. Deliberately bypasses checkedDirectory:
+    /// observing a review must not create/restore a root or clean old stages.
+    static func captureLegacyRecoveryReview(_ domains: Set<HealthLocalFiles.Domain>,
+                                            control: BackupOperationControl) throws
+        -> HealthLegacyRecoveryOrigin.ReviewSnapshot {
+        let root = storageRoot
+        return try writes.read {
+            try HealthRecoveryCopies.serialized {
+                try HealthLegacyRecoveryOrigin.captureReview(domains, in: root,
+                    legacy: { try strictRecoveryLegacyValue($0, control: control) }, control: control)
+            }
+        }
+    }
+    /// No storage/revision/write APIs here: also invoked inside final commit.
+    private static func strictRecoveryLegacyValue(_ key: String, control: BackupOperationControl) throws -> Any? {
+        try control.checkCancellation()
+        guard let domain = [HealthLocalFiles.Domain.meals, .workouts, .goals].first(where: { $0.legacyKey == key }),
+              let bundle = Bundle.main.bundleIdentifier else { throw HealthLocalFiles.Failure.invalid }
+        // Foundation may allocate the entire domain temporarily. Retain only the
+        // fixed requested value; never log or retain unrelated preferences.
+        let persisted = UserDefaults.standard.persistentDomain(forName: bundle)?[key]
+        return try HealthLegacyRecoveryOrigin.checkedPersistentValue(persisted,
+            effective: UserDefaults.standard.object(forKey: key), domain: domain, control: control)
+    }
     @MainActor static func recoverHealthChecked(_ payload: HealthRecoverySelection.Payload,
                                                 control: BackupOperationControl = .init(),
                                                 canCommit: () -> Bool, didCommit: () -> Void) async throws {
@@ -40,7 +64,8 @@ public enum LocalStore {
             try control.checkCancellation()
             let root = try checkedDirectory(), captured = revision, owner = try HealthWriteDeviceOwner.current()
             let transaction = try await Task.detached(priority: .userInitiated) {
-                try HealthRecoverySelection.prepare(payload, into: root, owner: owner, control: control)
+                try HealthRecoverySelection.prepare(payload, into: root, owner: owner, control: control,
+                                                    legacy: { try strictRecoveryLegacyValue($0, control: control) })
             }.value
             try Task.checkCancellation(); try control.checkCancellation()
             guard canCommit() else { throw BackupError.recordsChanged }
