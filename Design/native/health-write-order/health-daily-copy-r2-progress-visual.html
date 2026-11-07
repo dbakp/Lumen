@@ -18,7 +18,17 @@
 <li><div class="mark"></div><span>○ Answer quality</span><span class="text-small">Evidence support and personal context</span></li>
 <li><div class="mark"></div><span>○ Release readiness</span><span class="text-small">Accessibility, companions and distribution</span></li>
 </ol>
-<div class="section"><h3>Revised daily-readings wording</h3>
+<div class="section"><h3>Recovery across backup formats</h3>
+<div class="viz-row"><span>✓ 3 / 3 complete flows verified</span><span>53 original screens inspected</span></div>
+<div class="progress" role="progressbar" aria-label="Three-format recovery checks, separate from product completion" aria-valuenow="3" aria-valuemin="0" aria-valuemax="3"><div class="progress-bar" style="width:100%"></div></div>
+<table class="table table-sm" aria-label="Four-domain recovery through the actual Files picker"><thead><tr><th>Format</th><th>App and file audit</th><th>Meal photos</th></tr></thead><tbody>
+<tr><td>Older JSON backup</td><td>✓ Passed</td><td>Shared image preserved</td></tr>
+<tr><td>Encrypted backup</td><td>✓ Passed</td><td>Shared image preserved</td></tr>
+<tr><td>Readable export</td><td>✓ Passed</td><td>Two omissions explicitly confirmed</td></tr>
+</tbody></table>
+<div class="text-small">Water, meals, workouts and targets · confirmation, original-file preservation, cleanup and relaunch</div>
+</div>
+<details><summary>Earlier daily-readings design review · 6 / 6 cases</summary><div class="section"><h3>Revised daily-readings wording</h3>
 <div class="viz-row"><span>✓ 6 / 6 native cases passed</span><span>✓ 991 / 991 screenshots inspected</span></div>
 <div class="progress" role="progressbar" aria-label="Root screenshot review, separate from product completion" aria-valuenow="991" aria-valuemin="0" aria-valuemax="991"><div class="progress-bar" style="width:100%"></div></div>
 <div class="viz-row"><span class="tabular-nums">Independent review: 991 / 991 screenshots</span><span>6 / 6 cases complete</span></div>
@@ -35,14 +45,14 @@
 </tbody></table>
 <div>✓ Scoped design accepted · 43 / 55 · required wording fix closed</div>
 <div class="text-small">Source163 snapshot · both reviewers read all 6 result files · 42 supporting files and 6 dimension supplements · broader product work remains open</div>
-</div>
+</div></details>
 <div class="section">
 <div class="viz-controls" role="group" aria-label="Plan details">
 <button class="btn" type="button" data-area="current" aria-pressed="true" aria-controls="lumen-plan-detail">Current work</button>
 <button class="btn" type="button" data-area="quality" aria-pressed="false" aria-controls="lumen-plan-detail">Answer quality</button>
 <button class="btn" type="button" data-area="release" aria-pressed="false" aria-controls="lumen-plan-detail">Release gates</button>
 </div>
-<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Snapshot recovery · verified</h3><div data-verified>Directory, missing and healthy clears passed; linked snapshots were rejected on opening and two retries. All 25 final-run screens were inspected.</div><div data-next>Next: broaden recovery checks to meals, workouts, targets, photos and healthy merges across all three backup formats.</div><div class="text-small" data-gate>Original host-check failures remain recorded; corrected checks confirm private copies and exact contents. Broader recovery and product checks remain open.</div></div>
+<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Four-domain recovery · verified</h3><div data-verified>All three formats recovered water, meals, workouts and targets. Originals, shared images or explicit photo omissions, receipts, cleanup and relaunch passed.</div><div data-next>Next: ordinary healthy merges and repeat imports across all three formats, checking that records and photos are not duplicated.</div><div class="text-small" data-gate>Main phone, default light appearance. Original failures remain recorded; full recovery, accessibility and product gates remain open.</div></div>
 </div>
 <div class="section"><h3>Verified safety checks</h3>
 <table class="table table-sm" aria-label="Earlier checks retain their original scope; broader checks remain open"><thead><tr><th>Situation</th><th>Observed result</th></tr></thead><tbody>
@@ -50,18 +60,18 @@
 <tr><td>Explicit zero readings</td><td>Five zeros saved distinctly from 13 missing values</td></tr>
 <tr><td>Stale or replaced snapshot</td><td>Save rejected; newer contents and file identity preserved</td></tr>
 <tr><td>Local food and water</td><td>External totals counted once; exact synthetic-record cleanup</td></tr>
-<tr><td>Logic suite</td><td>2,350 passed at Source162; Source163 changes one sentence</td></tr>
+<tr><td>Logic suite</td><td>2,350 passed at Source168; pure inputs unchanged at Source169</td></tr>
 </tbody></table>
 <div class="text-small">Earlier six-file long-wait preservation failure and Banana zero-fat omission remain failed expectations. Final dismissal preserved the immediate newer state.</div></div>
 <hr>
-<div class="viz-row"><span>About 41 GiB available</span><span>7.5 MB recovered this checkpoint</span></div>
+<div class="viz-row"><span>About 40 GiB available</span><span>15 MB recovered during this recovery batch</span></div>
 <div class="text-small">Redundant exports and completed test bundles removed after exact GitHub verification · canonical evidence and needed caches retained · no further iPhone actions authorized</div>
 <script>
 (()=>{
 const root=document.getElementById('lumen-plan-progress');
-const snapshot='nov7-source167-link-rejected';
+const snapshot='nov7-source169-four-domain-three-formats';
 const areas={
-current:{title:'Snapshot recovery · verified',verified:'Directory, missing and healthy clears passed; linked snapshots were rejected on opening and two retries. All 25 final-run screens were inspected.',next:'Next: broaden recovery checks to meals, workouts, targets, photos and healthy merges across all three backup formats.',gate:'Original host-check failures remain recorded; corrected checks confirm private copies and exact contents. Broader recovery and product checks remain open.'},
+current:{title:'Four-domain recovery · verified',verified:'All three formats recovered water, meals, workouts and targets. Originals, shared images or explicit photo omissions, receipts, cleanup and relaunch passed.',next:'Next: ordinary healthy merges and repeat imports across all three formats, checking that records and photos are not duplicated.',gate:'Main phone, default light appearance. Original failures remain recorded; full recovery, accessibility and product gates remain open.'},
 quality:{title:'Answer quality · open',verified:'Library search, source identity, consent controls and literal-reference safeguards are delivered.',next:'Next: evidence-support policy and independent evaluation; personal-context and conversation-history privacy review.',gate:'Clinical accuracy, language coverage and live-provider evaluation remain required.'},
 release:{title:'Release readiness · open',verified:'Current signed Release installed once; normal opening remains unverified.',next:'Next: background Health, Watch reconnect, widget, interruption and accessibility checks.',gate:'Representative histories, performance, privacy and distribution review remain required. No iPhone installation, launch or checks without a renewed request.'}
 };
