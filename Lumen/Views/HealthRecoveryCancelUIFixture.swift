@@ -118,7 +118,18 @@ enum HealthRecoveryCancelUIFixture {
                 }
                 originals[name] = try HealthLocalFiles.readRegularData(root.appendingPathComponent(name), limit: 256 * 1024)
             }
-            guard originals["water.json"] == Data("{\"syntheticUnavailableWater\":".utf8) else { throw Failure.invalidFixture }
+            if ProcessInfo.processInfo.arguments.contains("-health-backup-empty-ui") {
+                guard let waterData = originals["water.json"],
+                      let water = try? BackupArchive.decoder().decode([HydrationLog].self, from: waterData),
+                      water.count == 1, water[0].id == "synthetic-review-water", water[0].ml == 137,
+                      originals["meals.json"] == Data("{\"syntheticUnavailablemeals\":".utf8),
+                      originals["workouts.json"] == Data("{\"syntheticUnavailableworkouts\":".utf8),
+                      let goalData = originals["goals.json"],
+                      let goals = try? BackupArchive.decoder().decode(HealthGoals.self, from: goalData),
+                      goals.stepGoal == 6543, goals.weightKg == 88.5, goals.heightCm == 181, goals.age == 42 else { throw Failure.invalidFixture }
+            } else {
+                guard originals["water.json"] == Data("{\"syntheticUnavailableWater\":".utf8) else { throw Failure.invalidFixture }
+            }
             let nonce = UUID()
             records.append(.init(ordinal: ordinal, nonce: nonce, stage: stage.lastPathComponent,
                                  workerControlMatchesUI: worker === uiControl, originals: originals,

@@ -233,6 +233,10 @@ enum HealthRecoveryUIFixture {
         }
         files["goals.json"] = try encoder.encode(HealthGoals()); files["today.json"] = try encoder.encode(DayMetrics.empty)
         files[HealthWriteFiles.name] = try HealthWriteJournal(owner: HealthWriteDeviceOwner.current()).encoded()
+        if ProcessInfo.processInfo.arguments.contains("-health-backup-empty-ui") {
+            var goals = HealthGoals(); goals.stepGoal = 6543; goals.weightKg = 88.5; goals.heightCm = 181; goals.age = 42
+            files["goals.json"] = try encoder.encode(goals)
+        }
         if ProcessInfo.processInfo.arguments.contains("-health-daily-cache-ui-fixture") {
             var journal = HealthWriteJournal(owner: try HealthWriteDeviceOwner.current())
             try journal.append(domain: .water, localID: "synthetic-review-water",
