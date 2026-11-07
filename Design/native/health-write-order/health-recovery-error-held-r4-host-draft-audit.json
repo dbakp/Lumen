@@ -1,0 +1,137 @@
+{
+  "status": "Focused r4host source preflight complete; both r3observer findings addressed. No further substantive gap found within requested r3items/planbinding/selfcheck scope. Suitable to proceed to paired integration/new freeze/build/runtime, without runtime or product acceptance.",
+  "reviewer": "same continuing independent App Designer Pro native critic",
+  "scope": "Complete r3\u2192r4observer diff, exact plan bindings, full current selfcheck harness and retained five-check outcome/earlier harness failure provenance. No module or harness execution by critic; no app/test edits.",
+  "provenance": [
+    {
+      "file": "health-recovery-error-held-r4-driver.py.draft",
+      "bytes": 60226,
+      "sha256": "f82b719fa8ebb9a71260710fa6b3f3bc445f66bdb5c56f084199e9e3056b99d8"
+    },
+    {
+      "file": "health-recovery-error-held-r4-plan.json",
+      "bytes": 6130,
+      "sha256": "33c65bd068f258cfb3ce15e93c9a5223c279225faad492ffc299b6b89d03468b"
+    },
+    {
+      "file": "health-recovery-error-held-r3-host-draft-audit.json",
+      "bytes": 5669,
+      "sha256": "c33b09aad065c0805ff8573e5d351e1200f445405c4b73230557b67eda772f39"
+    },
+    {
+      "file": "check-health-held-host-r4.py",
+      "bytes": 8530,
+      "sha256": "ebafeec7f9e39087fab91b62d88a338e02bd97e1e1fe7e7e0ddffbab9bce5855"
+    },
+    {
+      "file": "health-recovery-error-held-r4-selfcheck-r4-outcome.json",
+      "bytes": 1380,
+      "sha256": "0bc521f77f11102b51e68ba26d648c243f1ffa05973d719ffb1da459d71b28fa"
+    },
+    {
+      "file": "health-recovery-error-held-r4-selfcheck-r1-failure.json",
+      "bytes": 868,
+      "sha256": "734d628e231695085e009b658ab191b4bb9f6d06db748fbd3dcbb510a9cc95e9"
+    },
+    {
+      "file": "health-recovery-error-held-r4-selfcheck-r2-failure.json",
+      "bytes": 624,
+      "sha256": "1ae6611ff9639d938303b1ee953d0c078c0604c620ec2ce667851c673dc269f2"
+    },
+    {
+      "file": "health-recovery-error-held-r4-selfcheck-r3-failure.json",
+      "bytes": 2158,
+      "sha256": "f2e136b236a52838a4488314cd6cd19c2650a39fc7156403ca0086b5086ae24b"
+    },
+    {
+      "file": "check-health-held-host-r4-selfcheck-r1-failed.py.gz",
+      "bytes": 2968,
+      "sha256": "9806571a496d8afeba993252fe42cde8388399a55be320ee1b34df978827dc75"
+    },
+    {
+      "file": "check-health-held-host-r4-selfcheck-r2-failed.py.gz",
+      "bytes": 2972,
+      "sha256": "d10fa12f7a43316bcf39d8abdd7fcd06b709248c5a8f6c40e93a9b34d6875223"
+    },
+    {
+      "file": "check-health-held-host-r4-selfcheck-r3-failed.py.gz",
+      "bytes": 2982,
+      "sha256": "3e722179575d6103c8107bc458058ae8bd24c6739cfe7ae42ec22346b8d22310"
+    }
+  ],
+  "priorReportsImmutable": true,
+  "findings": [
+    {
+      "id": "HELD-HOST-R3-1",
+      "disposition": "addressed",
+      "evidence": "Listed retired paths are inspected by lstat. FileNotFound is recorded in goneAfterListing and treated as removed; still-present symlink/non-directory modes fail stat.S_ISDIR without following. Remaining paths are observed for bounded readiness. Normal disappearing directory no longer fails is_dir simply because it was removed after glob."
+    },
+    {
+      "id": "HELD-HOST-R3-2",
+      "disposition": "addressed",
+      "evidence": "Global shared retiredCleanup is initialized at helper entry, sample appended before listing/checks, with listed/existing/gone modes, phase and private facts as available. Success marks ready; caught exceptions mark failed with error/time and rethrow. Outer finally references same shared record even if helper assignment never returns, preserving partial timeout/assertion evidence."
+    }
+  ],
+  "sourceConsistency": [
+    "Three exact hash/length plan bindings match reviewed production r2patch, native r2fragment and current r4host draft.",
+    "Previous control2ack-only/nohostrelease, actual cancellation/stage/owner readiness, exact control3, action-specific receipt/photo/private-prior/source/provider checks and pre-ack clean-root metadata boundary remain unchanged.",
+    "Strict raw/stableidentity facts remain required. Permitted link-count transition is scoped to postcommit old-root lifecycle; clean ready boundary requires original full prior metadata. No host deletion.",
+    "Partial original manifests and independently retained entries/errors remain unaccepted on required export/entry failure; later feasible entries and other export type still proceed."
+  ],
+  "selfcheckReview": {
+    "method": "Read full AST-extraction harness and retained result. Independently AST-parsed host/harness and checked exact draft/result/plan hashes, not rerun. Tiny fixtures/fake exporter are host-helper checks only.",
+    "exactDraftSHA256": "f82b719fa8ebb9a71260710fa6b3f3bc445f66bdb5c56f084199e9e3056b99d8",
+    "retainedPassedChecks": 5,
+    "checks": [
+      {
+        "name": "hardlink lifecycle",
+        "evidence": "Selected actual helper runs on synthetic filesystem hardlink2\u21921 with timer-driven removal; retained result reports[2,1]."
+      },
+      {
+        "name": "vanished after listing",
+        "evidence": "Mocked listed entry raises FileNotFound on lstat; actual helper reaches ready, exercising disappearance branch."
+      },
+      {
+        "name": "bounded timeout partial retention",
+        "evidence": "Persistent synthetic retired root produces expected rejection; shared observer retains29samples in recorded run."
+      },
+      {
+        "name": "exact tree",
+        "evidence": "Selected helper accepts declared fixture and rejects unexpected file/empty orphan private directory."
+      },
+      {
+        "name": "partial retention failure gate",
+        "evidence": "AST-extracted terminal export/retention loop uses fake failed PNG export plus missing first entry, retains later synthetic bytes and independent JSON/original manifest. Two errors retained and actual extracted final gate marks FAILED."
+      }
+    ],
+    "limits": "No whole driver module/preflight/native launch/cancellation/Back transaction, source provider integration, app build, simulator action, screenshot or product result is exercised by these checks. The final-gate test enters its expected error path; not a successful full host run.",
+    "earlierHarnessTrials": "Three retained failures and compressed harness archives hash/length verified. Recorded issues are missing injected sha/base64/result/DEVNULL harness environment, not evidence of native/app failures. Those trials remain failed; only final exact-bound five-check outcome supplies the focused helper result."
+  },
+  "validation": {
+    "hostAndHarnessPythonAST": "PASS parse only",
+    "planBindings": "3of3 exact",
+    "finalSelfcheckOutcome": "fivePASS bound to current draftSHA",
+    "earlierFailedHarnessArchives": "3of3 decompressed SHA/length matched",
+    "criticExecutedModulesOrHarnesses": false,
+    "sourceMutations": 0,
+    "newImageOpens": 0,
+    "runtimeAcceptance": false
+  },
+  "nextBoundary": "Root may integrate reviewed productionpatch/native2/finalhost, freeze new source/build/driver receipts and run the four predeclared main/light cases. All actual original/fullnativeJSON/host/root/continuingcritic/publication requirements remain before acceptance.",
+  "openGates": [
+    "Full all-original raw-prior filesystem retention beyond declared selected/private/current semantic coverage.",
+    "Deterministic late old-worker/new-review/reveal-yield timing, full spoken preservation body/audio/duplicate announcements, ReduceMotion and broad appearance/readable/device/product/eightgroup contracts.",
+    "Actual whole Cancel/progress and postcancel/Back endpoint evidence still need fresh native execution; no credit from draft/helper assertions."
+  ],
+  "requiredFurtherDraftEditsFromThisFocusedReview": [],
+  "score": null,
+  "overallDesignAccepted": false,
+  "writes": [
+    "health-recovery-error-held-r4-host-draft-audit.json"
+  ],
+  "storage": {
+    "recoveredBytes": 0,
+    "freeBytesAtReport": 40224309248
+  },
+  "completedUTC": "2026-11-07T17:27:31.782530+00:00"
+}
