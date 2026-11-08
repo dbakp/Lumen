@@ -1,7 +1,7 @@
 {
-  "status": "Activefullgoal; conditionalorigin-root repair compiled/sourceclosed62, actualfull2350/focused23/57/22/117PASS. Firstsafe/control nativeverification next; bothcounterexamplesnotyet runtimeclosed.",
+  "status": "Activefullgoal; Source210compile/full2350/focused/source62PASS. ThreeAPItests nativePASS/root+critic63/64/65reviewed. ActualUI/currentRelease/fullgatesopen.",
   "source": "durable-source-r210.json",
-  "latestOutcome": "source199-logic-r1-outcome.json",
+  "latestOutcome": "source210-logic-r1-outcome.json",
   "nextRequired": [
     {
       "area": "Actual three-route backup recovery, provenance and workspace ownership",
@@ -3972,10 +3972,35 @@
     "source": "durable-source-r210.json",
     "build": "health-root-acquisition-repair-r1-build.json",
     "critic": "health-legacy-root-acquisition-source210-round2-part62-production-repair.json",
-    "status": "Sourceclosed/compile+logicPASS; nativecurrentUI/Releasepending",
+    "status": "DeclaredthreeAPIcases reviewedPASS; actualUI/currentRelease/all43/fullgatesopen",
     "metadataRule": "requiresExistingLegacyRoot fromprivateboundmap, no rawgetters",
     "ordinaryOrderPreserved": true,
     "hostFailureAcceptanceFlagFixed": true,
-    "runtimeClosed": false
+    "runtimeClosed": false,
+    "noPrior": {
+      "outcome": "source210-no-prior-r1-outcome.json",
+      "critic": 63,
+      "rootReview": "source210-no-prior-r1-root-review.json",
+      "exactGithubMain": "1c5618271506bac99d0b90fac0ece7637dcc61f1"
+    },
+    "withPrior": {
+      "outcome": "source210-with-prior-r2-outcome.json",
+      "critic": 64,
+      "rootReview": "source210-with-prior-r2-root-review.json",
+      "exactGithubMain": "d1d684e58c9e392581e5cefd87eb68d6edcb0bb7"
+    },
+    "ordinary": {
+      "outcome": "source210-ordinary-r3-outcome.json",
+      "liveAudit": "source210-ordinary-r3-live-audit.json",
+      "critic": 65,
+      "nativePassed": 1,
+      "rootReview": "source210-ordinary-r3-root-review.json"
+    },
+    "declaredThreeCaseAPIVerified": true,
+    "freshPureReadOnlyAudits": [
+      "source210-legacy-origin-r1-live-audit.json",
+      "source210-legacy-boundaries-r1-live-audit.json",
+      "source210-legacy-transaction-r1-live-audit.json"
+    ]
   }
 }
