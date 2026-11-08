@@ -120,18 +120,33 @@ with logpath.open('xb') as stream:
                     sample['paths']={}
                     paths=([str(root.with_suffix('.previous'))] if sample['priorExists'] else [])+sample['restore']+sample['retired']
                     for path in paths:
-                        target=Path(path);facts=h.identity(target)
-                        sample['paths'][path]={'metadata':facts};persist()
-                        assert h.stat.S_ISDIR(facts['st_mode']) and not target.is_symlink()
-                        sample['paths'][path].update({'files':h.snapshot(target),'directories':h.directories(target),'fileMetadata':h.metadata(target)})
-                        persist()
+                        target=Path(path)
+                        # Only these source-derived product retirement paths may
+                        # disappear while their asynchronous remover runs.
+                        assert target.parent==root.parent and (target==root.with_suffix('.previous') or target.name.startswith(('LumenData.restore-','LumenData.retired-')))
+                        sample['paths'][path]={'state':'listed-before-read'};persist()
+                        try:
+                            facts=h.identity(target);sample['paths'][path]['metadata']=facts;persist()
+                            assert h.stat.S_ISDIR(facts['st_mode']) and not target.is_symlink()
+                            sample['paths'][path].update({'files':h.snapshot(target),'directories':h.directories(target),'fileMetadata':h.metadata(target),'state':'observed-directory'})
+                        except FileNotFoundError as error:
+                            sample['paths'][path].update({'state':'entry-disappeared-during-retirement-observation','error':str(error)})
+                            # Do not credit a clean sample from a partial read;
+                            # the next bounded sample must observe all absent.
+                        finally:persist()
                     if not sample['priorExists'] and not sample['restore'] and not sample['retired']:break
                     assert time.monotonic()<until,'Retirement readiness not observed before bounded deadline'
                     time.sleep(.1)
                 state['commitObservedTree']=h.snapshot(root);state['commitObservedDirectories']=h.directories(root);persist()
                 assert h.directories(root)==h.allowed_directories(state['directoriesBefore'],state['commitObservedTree'])
-                state['success']=h.committed(root,state['before'],state['held']['priorCopy'],state['checkpoint']['legacyOrigins'])|{'nonce':nonce,'record':record,'at':time.time()}
-                persist();message(group,'Lumen-health-success-ack.json',nonce,True)
+                state['commitFixedObservation']={'status':'checking','values':{}};persist()
+                try:
+                    state['success']=h.committed(root,state['before'],state['held']['priorCopy'],state['checkpoint']['legacyOrigins'],state['commitFixedObservation']['values'])|{'nonce':nonce,'record':record,'at':time.time()}
+                    state['commitFixedObservation']['status']='PASS'
+                except Exception:
+                    state['commitFixedObservation']['status']='FAILED';state['commitFixedObservation']['error']=traceback.format_exc();raise
+                finally:persist()
+                message(group,'Lumen-health-success-ack.json',nonce,True)
             if 'success' in state and 'parent' not in state and captured('parent'):
                 state['parent']=cleanup(root,state['selection'],'parent')
                 assert state['parent']['tree']==state['success']['tree']
@@ -183,7 +198,14 @@ try:
     assert h.directories(root)==state['commitObservedDirectories']
     assert not root.with_suffix('.previous').exists() and not list(root.parent.glob('LumenData.retired-*')) and not list(root.parent.glob('LumenData.restore-*'))
     assert not (root/'meals.json').exists() and h.read(root/'workouts.json')==b'[]'
-    assert h.events(root.parent)==state['originEvents'];h.provider();h.fixed(state['checkpoint']['legacyOrigins'])
+    assert h.events(root.parent)==state['originEvents'];h.provider()
+    state['finalFixedObservation']={'status':'checking','values':{}};persist()
+    try:
+        h.fixed(state['checkpoint']['legacyOrigins'],state['finalFixedObservation']['values'])
+        state['finalFixedObservation']['status']='PASS'
+    except Exception:
+        state['finalFixedObservation']['status']='FAILED';state['finalFixedObservation']['error']=traceback.format_exc();raise
+    finally:persist()
     state['after']=after;state['directoriesAfter']=h.directories(root)
     state['status']='PASS actual one mixed-ineligible native flow; not broad product acceptance';persist()
     (h.BASE/(prefix+'-host-audit.json')).write_text(json.dumps(state,indent=2)+'\n')

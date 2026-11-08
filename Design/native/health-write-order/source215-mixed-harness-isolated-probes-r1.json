@@ -1,0 +1,83 @@
+{
+  "status": "PASS isolated host failure-path probes only",
+  "source": "durable-source-r215.json",
+  "sourceSHA256": "84a43ea1920554a1fa09db12e1ba76beaa2f448a1214ce41b418d4d91289d9fd",
+  "executedProbeSHA256": "0d5502e64e5696f0a752f12c868579265d7af5d977ee3e9651e77d1873337a24",
+  "checks": [
+    "Failed summary/PNGexport do not suppress exact available PNG/JSON peers",
+    "Malformed first case and missing entry do not suppress next available peer",
+    "One PNG index-write failure does not suppress later JSON or final indexes",
+    "Both original manifest bytes retained exactly",
+    "Actual partial bundle inventory retained",
+    "Wrong Data exact bytes/type/hash present before assertion",
+    "Wrong known dictionary diagnostic/value/hash present before assertion",
+    "Unknown empty directory visible and differs from exact allowed directory list",
+    "Missing directory inventory root preserves FileNotFound classification for bounded retirement observer"
+  ],
+  "nativeExecution": false,
+  "simulatorOperations": false,
+  "expectedSyntheticRetentionErrors": [
+    {
+      "step": "summary query",
+      "error": "Exit 65"
+    },
+    {
+      "step": "export PNG",
+      "error": "Exit 65"
+    },
+    {
+      "step": "read PNG case 0",
+      "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/retain-mixed-ineligible-results-r1.py\", line 66, in retain\n    entries=case['attachments'];test=case['testIdentifier'];assert isinstance(entries,list)\nKeyError: 'attachments'\n"
+    },
+    {
+      "step": "retain PNG case 1 entry 0",
+      "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/retain-mixed-ineligible-results-r1.py\", line 72, in retain\n    origin=directory/name;assert origin.is_file() and not origin.is_symlink()\nAssertionError\n"
+    },
+    {
+      "step": "write images index",
+      "error": "Synthetic one-index write failure"
+    },
+    {
+      "step": "read JSON case 0",
+      "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/retain-mixed-ineligible-results-r1.py\", line 66, in retain\n    entries=case['attachments'];test=case['testIdentifier'];assert isinstance(entries,list)\nKeyError: 'attachments'\n"
+    },
+    {
+      "step": "retain JSON case 1 entry 0",
+      "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/retain-mixed-ineligible-results-r1.py\", line 72, in retain\n    origin=directory/name;assert origin.is_file() and not origin.is_symlink()\nAssertionError\n"
+    }
+  ],
+  "actualWrongData": {
+    "key": "lumen.health.workouts.v1",
+    "actualType": "bytes",
+    "type": "data",
+    "bytes": 30,
+    "sha256": "5892b975cc9800bacda309be7787b2e2a28475204968c60f62ee467a6617b6d7",
+    "base64": "U3ludGhldGljIHdyb25nIHdvcmtvdXRzIGJ5dGVz"
+  },
+  "actualWrongDictionary": {
+    "key": "lumen.health.meals.v1",
+    "actualType": "dict",
+    "type": "propertyListDictionary",
+    "value": {
+      "synthetic": "Synthetic changed unsupported saved meals"
+    },
+    "bytes": 57,
+    "sha256": "c4e9a8d095c4b1a4d52a365016e5f5d3d884324e182a96ac409ee49ac8b9bfb7",
+    "base64": "eyJzeW50aGV0aWMiOiJTeW50aGV0aWMgY2hhbmdlZCB1bnN1cHBvcnRlZCBzYXZlZCBtZWFscyJ9"
+  },
+  "retainedPeerHashes": [
+    {
+      "file": "isolated-probe-known-peer.png",
+      "bytes": 33,
+      "sha256": "032d75e48aea0a712ca6c3810929d0f337265f18a00637d91886efd5145199ff"
+    },
+    {
+      "file": "isolated-probe-known-peer.json",
+      "bytes": 43,
+      "sha256": "92a89ba145fea7b0f65e7a582ca307cb7cd5b81e7e2837613989ea6bfd4e55ee"
+    }
+  ],
+  "checkedAt": 1794109266.6562948,
+  "availableBytes": 39881666560,
+  "rawProbeWork": "/tmp/LumenMixedHarnessProbe215R1"
+}

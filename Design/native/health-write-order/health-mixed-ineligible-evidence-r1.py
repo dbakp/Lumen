@@ -29,7 +29,7 @@ def snapshot(root):
     return result
 def directories(root):
     result=[]
-    assert root.is_dir() and not root.is_symlink()
+    assert stat.S_ISDIR(root.lstat().st_mode) and not root.is_symlink()
     for parent,dirs,files in os.walk(root,followlinks=False):
         for name in dirs:
             child=Path(parent)/name
@@ -142,7 +142,7 @@ def preparation(root,before,previous):
     assert current[str(directory/'workouts.json')]==previous['workouts.json']
     assert current[str(directory/'device-intent.json')]==previous['health-write-intent.json']
     return {'manifest':manifest,'files':{k:current[k] for k in sorted(extra)}}
-def committed(root,before,priorcopy,expected):
+def committed(root,before,priorcopy,expected,observed):
     current=snapshot(root);assert (root/'workouts.json').read_bytes()==b'[]' and not (root/'meals.json').exists()
     for key,value in before.items():
         if key!='health-write-intent.json':assert current[key]==value,key
@@ -166,7 +166,7 @@ def committed(root,before,priorcopy,expected):
     assert set(current)==allowed,(set(current)-allowed,allowed-set(current))
     old=json.loads(base64.b64decode(before['health-write-intent.json']['base64']));new=load(root/'health-write-intent.json')
     assert old['owner']==new['owner'] and old['lifecycle']!=new['lifecycle'] and old['events']==new['events']==[]
-    return {'tree':current,'receipt':receipt,'v2':{'directory':str(directory),'manifest':manifest,'envelope':envelope,'outer':row(data)},'fixed':fixed(expected)}
+    return {'tree':current,'receipt':receipt,'v2':{'directory':str(directory),'manifest':manifest,'envelope':envelope,'outer':row(data)},'fixed':fixed(expected,observed)}
 def events(group):
     value=load(group/'Lumen-legacy-origin-review-events.json')['events']
     return value

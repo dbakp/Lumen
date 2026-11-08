@@ -71,6 +71,7 @@ assert len({x['sessionID'] for x in trace})==1 and [x['event'] for x in trace[:3
 assert trace[1]['domains']==trace[2]['domains']==['workouts'] and len(trace)>3 and all(x['event']=='closed' for x in trace[3:])
 assert [x['phase'] for x in r['boundaries']]==['initial-before-file-selection','selected-original','held-before-ack','observed-before-intentional-release','success-before-ack','parent-before-relaunch','fresh-relaunch-review','final-after-relaunch']
 assert all(x['status']=='PASS' and x['fixed']==r['success']['fixed'] for x in r['boundaries'])
+assert all(r[k]['status']=='PASS' and r[k]['values']==r['success']['fixed'] for k in ['commitFixedObservation','finalFixedObservation'])
 h.provider()
 d={'status':'PASS read-only live/source/native mixed-ineligible audit','source':r['source'],'build':r['build'],'sourceInputs':preflight['inputs'],'originals':14,'fullNativeHelperBytes':helpers[0]['bytes'],'liveFiles':len(r['after']),'fixedTypedBoundarySamples':len(r['boundaries']),'checkedAt':time.time(),'scope':'Single main/light/normal workouts-only mixed dictionary case; no all43/VO/motion/appearances/reset/global acceptance.'}
 (h.BASE/output).write_text(json.dumps(d,indent=2)+'\n');print(json.dumps(d))
