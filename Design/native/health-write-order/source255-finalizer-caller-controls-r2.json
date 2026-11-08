@@ -1,0 +1,209 @@
+{
+  "status": "PASS actual main malformed/missing/wrong-shape audit retention paths, coherent failed-native case; isolated files/injected child and exporter only",
+  "cases": [
+    {
+      "case": "missing",
+      "syntheticCheckerPID": 424242,
+      "syntheticCheckerExit": 1,
+      "actualMainRan": true,
+      "actualQueryRetainedBeforeExport": true,
+      "queryPersistenceFailureInjected": false,
+      "auditCoherent": false,
+      "auditError": {
+        "type": "FileNotFoundError",
+        "message": "[Errno 2] No such file or directory: '/private/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen255-finalizer-caller-9w1xill0/base/health-confirmation-notnow-data-source255r1-lifecycle-r2-source255r1-outcome.json'"
+      },
+      "stageErrors": [],
+      "fullUnfilteredAcquisitionAttempted": true,
+      "syntheticOriginalsRetained": 2,
+      "finalFailure": "Actual checker must verify the current source, even for a failed case",
+      "status": "PASS"
+    },
+    {
+      "case": "empty",
+      "syntheticCheckerPID": 424242,
+      "syntheticCheckerExit": 1,
+      "actualMainRan": true,
+      "actualQueryRetainedBeforeExport": true,
+      "queryPersistenceFailureInjected": false,
+      "auditCoherent": false,
+      "auditError": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "stageErrors": [],
+      "fullUnfilteredAcquisitionAttempted": true,
+      "syntheticOriginalsRetained": 2,
+      "finalFailure": "Actual checker must verify the current source, even for a failed case",
+      "status": "PASS"
+    },
+    {
+      "case": "malformed",
+      "syntheticCheckerPID": 424242,
+      "syntheticCheckerExit": 1,
+      "actualMainRan": true,
+      "actualQueryRetainedBeforeExport": true,
+      "queryPersistenceFailureInjected": false,
+      "auditCoherent": false,
+      "auditError": {
+        "type": "JSONDecodeError",
+        "message": "Expecting value: line 1 column 8 (char 7)"
+      },
+      "stageErrors": [],
+      "fullUnfilteredAcquisitionAttempted": true,
+      "syntheticOriginalsRetained": 2,
+      "finalFailure": "Actual checker must verify the current source, even for a failed case",
+      "status": "PASS"
+    },
+    {
+      "case": "list",
+      "syntheticCheckerPID": 424242,
+      "syntheticCheckerExit": 1,
+      "actualMainRan": true,
+      "actualQueryRetainedBeforeExport": true,
+      "queryPersistenceFailureInjected": false,
+      "auditCoherent": false,
+      "auditError": {
+        "type": "AssertionError",
+        "message": "Checker audit must be an object"
+      },
+      "stageErrors": [],
+      "fullUnfilteredAcquisitionAttempted": true,
+      "syntheticOriginalsRetained": 2,
+      "finalFailure": "Actual checker must verify the current source, even for a failed case",
+      "status": "PASS"
+    },
+    {
+      "case": "null",
+      "syntheticCheckerPID": 424242,
+      "syntheticCheckerExit": 1,
+      "actualMainRan": true,
+      "actualQueryRetainedBeforeExport": true,
+      "queryPersistenceFailureInjected": false,
+      "auditCoherent": false,
+      "auditError": {
+        "type": "AssertionError",
+        "message": "Checker audit must be an object"
+      },
+      "stageErrors": [],
+      "fullUnfilteredAcquisitionAttempted": true,
+      "syntheticOriginalsRetained": 2,
+      "finalFailure": "Actual checker must verify the current source, even for a failed case",
+      "status": "PASS"
+    },
+    {
+      "case": "empty-object",
+      "syntheticCheckerPID": 424242,
+      "syntheticCheckerExit": 1,
+      "actualMainRan": true,
+      "actualQueryRetainedBeforeExport": true,
+      "queryPersistenceFailureInjected": false,
+      "auditCoherent": false,
+      "auditError": {
+        "type": "AssertionError",
+        "message": "Actual checker source verification required"
+      },
+      "stageErrors": [],
+      "fullUnfilteredAcquisitionAttempted": true,
+      "syntheticOriginalsRetained": 2,
+      "finalFailure": "Actual checker must verify the current source, even for a failed case",
+      "status": "PASS"
+    },
+    {
+      "case": "wrong-verification-shape",
+      "syntheticCheckerPID": 424242,
+      "syntheticCheckerExit": 1,
+      "actualMainRan": true,
+      "actualQueryRetainedBeforeExport": true,
+      "queryPersistenceFailureInjected": false,
+      "auditCoherent": false,
+      "auditError": {
+        "type": "AssertionError",
+        "message": "Actual checker source verification required"
+      },
+      "stageErrors": [],
+      "fullUnfilteredAcquisitionAttempted": true,
+      "syntheticOriginalsRetained": 2,
+      "finalFailure": "Actual checker must verify the current source, even for a failed case",
+      "status": "PASS"
+    },
+    {
+      "case": "wrong-source",
+      "syntheticCheckerPID": 424242,
+      "syntheticCheckerExit": 1,
+      "actualMainRan": true,
+      "actualQueryRetainedBeforeExport": true,
+      "queryPersistenceFailureInjected": false,
+      "auditCoherent": false,
+      "auditError": {
+        "type": "AssertionError",
+        "message": "Actual checker result must bind this reviewed case and source"
+      },
+      "stageErrors": [],
+      "fullUnfilteredAcquisitionAttempted": true,
+      "syntheticOriginalsRetained": 2,
+      "finalFailure": "Actual checker must verify the current source, even for a failed case",
+      "status": "PASS"
+    },
+    {
+      "case": "coherent-native-rejection",
+      "syntheticCheckerPID": 424242,
+      "syntheticCheckerExit": 1,
+      "actualMainRan": true,
+      "actualQueryRetainedBeforeExport": true,
+      "queryPersistenceFailureInjected": false,
+      "auditCoherent": true,
+      "auditError": null,
+      "stageErrors": [],
+      "fullUnfilteredAcquisitionAttempted": true,
+      "syntheticOriginalsRetained": 2,
+      "finalFailure": null,
+      "status": "PASS"
+    },
+    {
+      "case": "coherent-native-success",
+      "syntheticCheckerPID": 424242,
+      "syntheticCheckerExit": 0,
+      "actualMainRan": true,
+      "actualQueryRetainedBeforeExport": true,
+      "queryPersistenceFailureInjected": false,
+      "auditCoherent": true,
+      "auditError": null,
+      "stageErrors": [],
+      "fullUnfilteredAcquisitionAttempted": true,
+      "syntheticOriginalsRetained": 2,
+      "finalFailure": null,
+      "status": "PASS"
+    },
+    {
+      "case": "query-write-failure",
+      "syntheticCheckerPID": 424242,
+      "syntheticCheckerExit": 1,
+      "actualMainRan": true,
+      "actualQueryRetainedBeforeExport": true,
+      "queryPersistenceFailureInjected": true,
+      "auditCoherent": true,
+      "auditError": null,
+      "stageErrors": [
+        {
+          "stage": "checker-query-persistence",
+          "type": "OSError",
+          "message": "INJECTED query-write failure"
+        }
+      ],
+      "fullUnfilteredAcquisitionAttempted": true,
+      "syntheticOriginalsRetained": 2,
+      "finalFailure": "Collector persistence failed; evidence acquisition attempted",
+      "status": "PASS"
+    }
+  ],
+  "count": 11,
+  "actualSource": {
+    "file": "confirmation-lifecycle-finalization-r3.py",
+    "bytes": 8695,
+    "sha256": "915d668278770c156ab3a120a5ef9da065a3339e2aa10238cc4afb519a6280e2"
+  },
+  "scope": "Actual main and real persistence/archive code execute. Path dependency maps only fixed raw acquisition root to unique temporary fixture root. Child/export process dependencies injected; no real checker, native run, xcresult export, process/device query or production proof. Synthetic temp fixtures removed by TemporaryDirectory.",
+  "realProcessQueries": [],
+  "checkedAt": 1794181415.631933
+}

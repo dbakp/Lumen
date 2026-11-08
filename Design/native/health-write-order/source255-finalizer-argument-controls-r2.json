@@ -1,0 +1,128 @@
+{
+  "status": "PASS actual pure argument builder and actual main ordering; no subprocess calls",
+  "count": 18,
+  "cases": [
+    {
+      "case": "actual retained253 correct arguments, no execution",
+      "accepted": true,
+      "command": [
+        "python3",
+        "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/check-confirmation-lifecycle-r2.py",
+        "health-confirmation-notnow-data-source253r1",
+        "--checker-source",
+        "durable-source-r253.json",
+        "--case-source",
+        "durable-source-r253.json",
+        "--build",
+        "health-target-change-source253-r1-build.json",
+        "--trial",
+        "HistoricalControlOnly"
+      ]
+    },
+    {
+      "case": "reject case source",
+      "accepted": false,
+      "command": null
+    },
+    {
+      "case": "reject host source",
+      "accepted": false,
+      "command": null
+    },
+    {
+      "case": "reject preflight source",
+      "accepted": false,
+      "command": null
+    },
+    {
+      "case": "reject host verification source",
+      "accepted": false,
+      "command": null
+    },
+    {
+      "case": "reject build",
+      "accepted": false,
+      "command": null
+    },
+    {
+      "case": "reject preflight build",
+      "accepted": false,
+      "command": null
+    },
+    {
+      "case": "reject result bundle",
+      "accepted": false,
+      "command": null
+    },
+    {
+      "case": "reject duplicate bundle arg",
+      "accepted": false,
+      "command": null
+    },
+    {
+      "case": "reject plan source",
+      "accepted": false,
+      "command": null
+    },
+    {
+      "case": "reject plan build",
+      "accepted": false,
+      "command": null
+    },
+    {
+      "case": "reject plan prefix",
+      "accepted": false,
+      "command": null
+    },
+    {
+      "case": "reject plan rawStem",
+      "accepted": false,
+      "command": null
+    },
+    {
+      "case": "reject plan nativeTrial",
+      "accepted": false,
+      "command": null
+    },
+    {
+      "case": "reject plan checkerTrial",
+      "accepted": false,
+      "command": null
+    },
+    {
+      "case": "reject outcome source",
+      "accepted": false,
+      "command": null
+    },
+    {
+      "case": "reject outcome build",
+      "accepted": false,
+      "command": null
+    },
+    {
+      "case": "synthetic coherent254 argument fixture only",
+      "accepted": true,
+      "command": [
+        "python3",
+        "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/check-confirmation-lifecycle-r2.py",
+        "health-confirmation-notnow-data-source255r1",
+        "--checker-source",
+        "durable-source-r255.json",
+        "--case-source",
+        "durable-source-r255.json",
+        "--build",
+        "health-target-change-source255-r1-build.json",
+        "--trial",
+        "Source255R1"
+      ]
+    }
+  ],
+  "actualFinalizer": {
+    "file": "confirmation-lifecycle-finalization-r3.py",
+    "bytes": 8695,
+    "sha256": "915d668278770c156ab3a120a5ef9da065a3339e2aa10238cc4afb519a6280e2"
+  },
+  "processQueries": [],
+  "scope": "Retained historical253 used only as data; no old checker or live/sourcebound audit executed. Future254 fixture is synthetic, not runtime proof. Actual full export and checker process still required.",
+  "checkedAt": 1794181415.443864
+}

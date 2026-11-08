@@ -4,6 +4,12 @@ Continue developing Lumen into a world-class, primarily iOS, AI health assistant
 
 Repository: https://github.com/dbakp/Lumen · branch `main`.
 
+## Ready for fresh build and trial · Source255 /170 · 9 November 2026
+
+Frozen255951 inputs (889text+62fixtures), all924 prior254 inputs unchanged. New finalizerR3 records completed actual checker PID/exit/streams before bounded guarded audit interpretation, latches errors and independently attempts full unfiltered originals before failure. Current18 argument,11 actual-main injected caller and20 current runner controls pass. Whole unchanged test SDK0 carried at exact bytes. Root/full24542B170/all47/current951archive verified SOURCE_READY; no current full app/test build/native acceptance yet.
+
+Prior254169/root/full36checkpoint2066union exact GitHubbc26cc4eee4d80aa6a8edf710a95c854e4fad74c before255. Initial254proof mistakenly used old25329path list, actual2056 compared paths limited; correction R2/qualification retained. Pre-freeze syntax preparation failure and earlier R1 control/helper bytes retained, current R2 controls bind current R3. No old raw/sourcebound checker rerun. Same ordered215/199/16/21 markers, app/test/R2driver/checker/gate/Trace/fixture unchanged254. Publish/exact this source checkpoint BEFORE first current255fullapp/test build/currentmarkers/root/exact, fresh Source255R1 cancellation flow/current-source R2checker through R3finalizer/full14 originals/helper/summary/unfilteredexport/root/samecritic/exact, then current optimizedRelease/fullgoal. No checkpointstop/phoneactions; no new storage cleanup credit.
+
 ## Current source checkpoint · Source254 /169 blocked before execution · 9 November 2026
 
 Frozen254 has924 inputs (862text+62fixtures): only guarded DEBUG simulator Check placement and dedicated Notnow test changed; shipping projection unchanged. Current whole test SDK typing passed. Root and independent169 verified924/current/archive,18 argument and20 runner controls,215/199/16/21 arrays unchanged. P168-C1 Form row/individual actual predicates and P168-C2 coherent arguments are source-supported. No254 full build/native/Release executed.
