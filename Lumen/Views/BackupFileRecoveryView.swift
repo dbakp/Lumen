@@ -79,6 +79,7 @@ final class BackupRecoveryReviewSession: Sendable {
         HealthOriginCaptureUIFixture.register(id, control: control,
             state: String(describing: origins.state), metadata: origins.metadata != nil)
         HealthLegacyTargetChangeUIFixture.began(id, control: control)
+        HealthHealthyTargetChangeUIFixture.began(id, control: control)
         #endif
     }
     func suspendOriginCapture(control: BackupOperationControl) {
@@ -114,6 +115,7 @@ final class BackupRecoveryReviewSession: Sendable {
                 noteCapture("finish-accepted", control: control)
                 HealthLegacyOriginUIFixture.note("ready", id: id, domains: snapshot.metadata.legacyDomains)
                 HealthLegacyTargetChangeUIFixture.ready(id, control: control, domains: snapshot.metadata.legacyDomains)
+                HealthHealthyTargetChangeUIFixture.ready(id, control: control, domains: snapshot.metadata.legacyDomains)
             } catch {
                 // This catch is inside the acquired input's lifetime scope.
                 noteCapture("capture-rejected-before-input-defer-" + capturePhase, control: control, error: error)
@@ -154,6 +156,7 @@ final class BackupRecoveryReviewSession: Sendable {
         verificationSource = input.verificationSource
         HealthLegacyOriginUIFixture.note("open", id: id)
         HealthLegacyTargetChangeUIFixture.opened(id)
+        HealthHealthyTargetChangeUIFixture.opened(id)
         #endif
     }
     func acquire(control: BackupOperationControl) throws -> BackupService.RecoveryInput { try lease.acquire(control: control) }
@@ -163,6 +166,7 @@ final class BackupRecoveryReviewSession: Sendable {
         noteCapture("owner-closed", control: nil)
         HealthLegacyOriginUIFixture.note("closed", id: id)
         HealthLegacyTargetChangeUIFixture.closed(id)
+        HealthHealthyTargetChangeUIFixture.closed(id)
         #endif
         lease.close()
         #if DEBUG && targetEnvironment(simulator)
@@ -412,11 +416,14 @@ struct BackupFileRecoveryView: View {
                 }
             }
             if (HealthOriginCaptureUIFixture.mode != nil || HealthLegacyResetUIFixture.requested)
-                && !HealthLegacyTargetChangeUIFixture.requested {
+                && !HealthLegacyTargetChangeUIFixture.requested && !HealthHealthyTargetChangeUIFixture.requested {
                 ToolbarItem(placement: .topBarTrailing) { HealthOriginCaptureUIProbe(location: "review") }
             }
             if HealthLegacyTargetChangeUIFixture.requested {
                 ToolbarItem(placement: .topBarTrailing) { HealthLegacyTargetChangeUIProbe(session: session) }
+            }
+            if HealthHealthyTargetChangeUIFixture.requested {
+                ToolbarItem(placement: .topBarTrailing) { HealthHealthyTargetChangeUIProbe(session: session) }
             }
         }
         #endif
@@ -558,6 +565,7 @@ struct BackupFileRecoveryView: View {
                 }
                 #if DEBUG && targetEnvironment(simulator)
                 HealthLegacyTargetChangeUIFixture.succeeded(session.id)
+                HealthHealthyTargetChangeUIFixture.succeeded(session.id)
                 #endif
             } catch is CancellationError { }
             catch {
@@ -572,6 +580,7 @@ struct BackupFileRecoveryView: View {
                 issue = RecoveryIssue(message: message)
                 #if DEBUG && targetEnvironment(simulator)
                 HealthLegacyTargetChangeUIFixture.rejected(session.id, changed: changed, message: message, error: error, control: control)
+                HealthHealthyTargetChangeUIFixture.rejected(session.id, changed: changed, message: message, error: error, control: control)
                 #endif
             }
         }

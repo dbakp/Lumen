@@ -12,6 +12,7 @@ struct LumenApp: App {
         do {
             try HealthLegacyResetUIFixture.preflightIfRequested()
             try HealthLegacyTargetChangeUIFixture.preflightIfRequested()
+            try HealthHealthyTargetChangeUIFixture.preflightIfRequested()
         }
         catch {
             if !HealthLegacyResetUIFixture.diagnosticOnly { preconditionFailure("Synthetic reset context is not safe") }

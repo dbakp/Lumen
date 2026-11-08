@@ -135,6 +135,13 @@ final class LumenSmokeTests: XCTestCase {
                     "-health-legacy-target-change-ui", "ready", "-health-legacy-target-change-run", run,
                     "-lumen.appearance", "light", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryL"]
             }
+            if name.contains("RecoveryHealthyTargetAfterReady") {
+                let run = UUID().uuidString
+                app.launchArguments += ["-health-backup-healthy-merge-ui", "-health-backup-empty-ui",
+                    "-health-legacy-reset-ui", "-health-legacy-reset-run", run,
+                    "-health-healthy-target-change-ui", "ready", "-health-healthy-target-change-run", run,
+                    "-lumen.appearance", "light", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryL"]
+            }
             if name.contains("RecoverySettingsErase") {
                 app.launchArguments += ["-health-backup-healthy-merge-ui", "-health-backup-empty-ui",
                     "-health-legacy-reset-ui", "-health-legacy-reset-run", UUID().uuidString,
@@ -5907,6 +5914,188 @@ final class LumenSmokeTests: XCTestCase {
             nativeSwitch("recoverFile-workouts", enabled: true, towardsTop: false)
             try whole(confirm, "fresh-selected", nav: "Review recovery")
             try require(confirm.isEnabled, "fresh-selected", "Both fresh choices must enable recovery")
+            snap(prefix + "-fresh-selected"); confirm.tap()
+            try require(alert.waitForExistence(timeout: 5), "fresh-confirmation", "Fresh confirmation missing")
+            snap(prefix + "-fresh-confirmation"); alert.buttons["Recover"].tap()
+            let recovered = app.descendants(matching: .any).matching(identifier: "fileHealthRecovered").firstMatch
+            try require(recovered.waitForExistence(timeout: 30), "fresh-committed", "Recovery completion message did not appear")
+            let reviewBar = app.navigationBars["Review recovery"].firstMatch
+            let successVisible = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+                guard reviewBar.exists, recovered.exists else { return false }
+                return self.recoveryCompletionVisible(exists: recovered.exists, hittable: recovered.isHittable,
+                    label: recovered.label, target: recovered.frame,
+                    application: self.app.frame, navigation: reviewBar.frame)
+            }, object: recovered)
+            try require(XCTWaiter.wait(for: [successVisible], timeout: 10) == .completed,
+                "fresh-committed", "Whole completion message was not automatically visible before test scrolling")
+            try require(!failure.exists, "fresh-committed", "Fresh successful recovery retained stale error")
+            let applicationFrame = app.frame, navigationFrame = reviewBar.frame, labelFrame = recovered.frame
+            let completionMessage = recovered.label, hittable = recovered.isHittable
+            let exists = recovered.exists && reviewBar.exists
+            try require(recoveryCompletionVisible(exists: exists,
+                hittable: hittable, label: completionMessage, target: labelFrame,
+                application: applicationFrame, navigation: navigationFrame),
+                "fresh-committed", "Completion message left the unobscured viewport before readback")
+            let viewport = recoveryCompletionViewport(application: applicationFrame, navigation: navigationFrame)!
+            func rectangle(_ value: CGRect) -> [Double] {
+                [Double(value.origin.x), Double(value.origin.y), Double(value.size.width), Double(value.size.height)]
+            }
+            observations.append(["phase": "fresh-committed", "message": completionMessage,
+                "exists": exists, "hittable": hittable, "frame": String(describing: labelFrame),
+                "geometry": ["application": rectangle(applicationFrame), "navigation": rectangle(navigationFrame),
+                    "label": rectangle(labelFrame), "viewport": rectangle(viewport)],
+                "wholeSuccessBeforeAnyTestScroll": true, "at": Date().timeIntervalSince1970])
+            snap(prefix + "-fresh-committed"); try checkpoint("fresh-committed")
+            try backToSettings("final-closed"); snap(prefix + "-final-closed")
+            try checkpoint("final-closed", location: "settings"); snap(prefix + "-final-followup")
+            report("completed")
+        } catch { report("thrown", failure: String(describing: error)); throw error }
+    }
+
+    @MainActor
+    func testHealthBackupFileRecoveryHealthyTargetAfterReadyOriginData() throws {
+        executionTimeAllowance = 480
+        let prefix = "health-healthy-target-change"
+        var observations: [[String: Any]] = []
+        func report(_ phase: String, failure: String? = nil) {
+            var row: [String: Any] = ["scope": "actual-healthy-current-file-after-ready-before-confirmation",
+                "phase": phase, "launchArguments": app.launchArguments, "observations": observations]
+            if let failure { row["failure"] = failure }
+            if let data = try? JSONSerialization.data(withJSONObject: row, options: [.prettyPrinted, .sortedKeys]) {
+                let item = XCTAttachment(data: data, uniformTypeIdentifier: "public.json")
+                item.name = prefix + (failure == nil ? "-readback" : "-failure-readback")
+                item.lifetime = .keepAlways; add(item)
+            }
+        }
+        func require(_ ok: Bool, _ phase: String, _ message: String) throws {
+            if !ok {
+                report(phase, failure: message); snap(prefix + "-failed-" + phase); XCTFail(message)
+                throw NSError(domain: "LumenHealthyTargetChangeUI", code: 1)
+            }
+        }
+        func whole(_ target: XCUIElement, _ phase: String, nav: String) throws {
+            let bar = app.navigationBars[nav].firstMatch
+            for attempt in 0..<16 {
+                try require(bar.exists, phase, "Expected active navigation lost")
+                let box = CGRect(x: 0, y: bar.frame.maxY + 12, width: app.frame.width,
+                    height: app.frame.maxY - 40 - bar.frame.maxY - 12)
+                if target.exists && target.isHittable && box.contains(target.frame) { return }
+                let delta = target.exists ? min(box.height * 0.4, max(40, abs(target.frame.midY - box.midY))) : box.height * 0.4
+                let direction: CGFloat = target.exists && target.frame.midY < box.midY ? -1 : 1
+                app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: box.midX, dy: box.midY + direction * delta / 2))
+                    .press(forDuration: 0.05, thenDragTo: app.coordinate(withNormalizedOffset: .zero)
+                        .withOffset(CGVector(dx: box.midX, dy: box.midY - direction * delta / 2)))
+                observations.append(["phase": phase, "pan": attempt, "targetPresent": target.exists, "navigationStillPresent": bar.exists])
+            }
+            try require(false, phase, "Requested complete target could not be revealed")
+        }
+        let change = app.buttons["changeHealthyRecoveryTarget"].firstMatch
+        func checkpoint(_ phase: String, location: String? = nil) throws {
+            let probe = phase == "before-selection" ? app.buttons["startHealthyRecoveryCheck"].firstMatch
+                : (location.map { app.descendants(matching: .any).matching(identifier: "healthHealthyTargetStatus-" + $0).firstMatch } ?? change)
+            if phase == "before-selection" {
+                try require(probe.waitForExistence(timeout: 10) && probe.isHittable && probe.isEnabled,
+                    phase, "Actual parent startup control unavailable")
+                let touchFrame = probe.frame, beforeTouchHittable = probe.isHittable, beforeTouchEnabled = probe.isEnabled
+                let beforeTouchAt = Date().timeIntervalSince1970
+                probe.tap()
+                observations.append(["phase": "native-before-selection-tap", "identifier": probe.identifier,
+                    "beforeTouchHittable": beforeTouchHittable, "beforeTouchEnabled": beforeTouchEnabled,
+                    "beforeTouchFrame": String(describing: touchFrame), "at": beforeTouchAt,
+                    "tapReturnedAt": Date().timeIntervalSince1970])
+            }
+            let expected = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", "host-" + phase), object: probe)
+            try require(XCTWaiter.wait(for: [expected], timeout: 45) == .completed, phase, "Actual host audit acknowledgement missing")
+            observations.append(["phase": phase, "probeValue": probe.value as? String ?? "", "at": Date().timeIntervalSince1970])
+        }
+        func backToSettings(_ phase: String) throws {
+            app.navigationBars["Review recovery"].buttons.element(boundBy: 0).tap()
+            try require(app.navigationBars["Backup & restore"].waitForExistence(timeout: 10), phase, "Recovery Back missed parent")
+            app.navigationBars["Backup & restore"].buttons.element(boundBy: 0).tap()
+            try require(app.navigationBars["Settings"].waitForExistence(timeout: 10), phase, "Backup Back missed Settings")
+        }
+        func openOriginal(_ phase: String) throws {
+            try chooseBackupFixture("Lumen-backup-health-matrix-two-legacy")
+            let link = app.buttons["reviewBackupHealthRecovery"].firstMatch
+            try require(link.waitForExistence(timeout: 30), phase, "Original preview missing")
+            try whole(link, phase, nav: "Backup & restore"); link.tap()
+            let filename = app.staticTexts["recoveryFileName"].firstMatch
+            try require(filename.waitForExistence(timeout: 15) && filename.label == "Lumen-backup-health-matrix-two-legacy.json", phase, "Wrong selected original")
+            let meals = app.switches["recoverFile-meals"].firstMatch
+            let workouts = app.switches["recoverFile-workouts"].firstMatch
+            let readyControl = phase == "ready" ? meals : workouts
+            let ready = XCTNSPredicateExpectation(predicate: NSPredicate(format: "enabled == true"), object: readyControl)
+            try require(XCTWaiter.wait(for: [ready], timeout: 30) == .completed, phase, "Actual capture not ready")
+            snap(prefix + "-" + phase + "-original")
+            let omission = app.switches["Recover without meal photos"].firstMatch
+            if phase == "ready" {
+                for (index, control) in [meals, omission, workouts].enumerated() {
+                    try whole(control, phase + "-choice-\(index)", nav: "Review recovery")
+                    try require(control.isEnabled && control.value as? String == "0", phase, "Initial choices must be eligible and off")
+                    observations.append(["phase": phase, "choice": index, "enabled": control.isEnabled, "value": control.value as? String ?? ""])
+                }
+            } else {
+                // Workout enabled proves the completed capture reached view state;
+                // disabled pending controls cannot masquerade as healthy protection.
+                try whole(omission, "fresh-healthy-region", nav: "Review recovery")
+                let mealExists = meals.exists, mealEnabled = meals.exists && meals.isEnabled
+                let omitEnabled = omission.isEnabled, omitValue = omission.value as? String ?? ""
+                observations.append(["phase": "fresh-healthy-target", "mealToggleExists": mealExists,
+                    "mealToggleEnabled": mealEnabled, "omissionExists": omission.exists,
+                    "omissionHittable": omission.isHittable, "omissionEnabled": omitEnabled,
+                    "omissionValue": omitValue, "workoutEnabledAfterCapture": workouts.isEnabled,
+                    "cannotReplaceDisclosureExists": app.staticTexts["This saved data can't be replaced here."].firstMatch.exists])
+                try require(omission.exists && omission.isHittable && workouts.isEnabled,
+                    "fresh-healthy-target", "Actual healthy meal region and finished workout capture are required")
+                try require(!mealEnabled && !omitEnabled && omitValue == "0",
+                    "fresh-healthy-target", "A healthy meal target must not be selectable or offer photo omission")
+                try whole(workouts, "fresh-workout-choice", nav: "Review recovery")
+                try require(workouts.isEnabled && workouts.value as? String == "0", phase, "Only unavailable workouts must be eligible and off")
+                observations.append(["phase": phase, "choice": "workouts", "enabled": workouts.isEnabled,
+                    "value": workouts.value as? String ?? ""])
+            }
+            snap(prefix + "-" + phase + (phase == "ready" ? "-choices" : "-off"))
+        }
+        do {
+            tab("Today"); tap("Settings")
+            let backup = app.buttons["backupSettings"].firstMatch
+            try whole(backup, "backup-settings", nav: "Settings"); backup.tap()
+            try checkpoint("before-selection", location: "parent"); snap(prefix + "-before-selection")
+            try openOriginal("ready")
+            nativeSwitch("recoverFile-meals", enabled: true, towardsTop: true)
+            let confirm = app.buttons["confirmFileRecovery"].firstMatch
+            try whole(confirm, "selected-meal", nav: "Review recovery")
+            try require(confirm.isEnabled, "selected-meal", "Explicit meals choice must enable recovery")
+            snap(prefix + "-selected-meal"); try checkpoint("ready")
+            try require(change.isEnabled && change.isHittable, "mutation", "Scoped native mutation control unavailable")
+            change.tap(); try checkpoint("target-changed"); snap(prefix + "-target-mutated")
+            try whole(confirm, "confirmation", nav: "Review recovery"); confirm.tap()
+            let alert = app.alerts["Replace selected data?"]
+            try require(alert.waitForExistence(timeout: 5), "confirmation", "Actual recovery confirmation missing")
+            snap(prefix + "-confirmation"); alert.buttons["Recover"].tap()
+            let failure = app.descendants(matching: .any).matching(identifier: "fileHealthRecoveryError").firstMatch
+            try require(failure.waitForExistence(timeout: 30), "changed-error", "Actual recovery did not reject stale review")
+            // Observe automatic product reveal before any test scrolling.
+            try require(failure.isHittable && failure.frame.minY >= app.navigationBars["Review recovery"].frame.maxY
+                && failure.frame.maxY <= app.frame.maxY - 20, "changed-error", "Changed-data error not fully revealed")
+            let message = "Your saved data changed. Go back and review it again."
+            try require(failure.label.contains(message), "changed-error", "Wrong product error")
+            try require(!app.descendants(matching: .any).matching(identifier: "fileHealthRecovered").firstMatch.exists,
+                "changed-error", "Stale recovery unexpectedly succeeded")
+            observations.append(["phase": "changed-error", "message": failure.label, "hittable": failure.isHittable,
+                "frame": String(describing: failure.frame)])
+            snap(prefix + "-changed-error"); try checkpoint("rejected")
+            try backToSettings("owners-closed"); snap(prefix + "-owners-closed")
+            try checkpoint("owners-closed", location: "settings"); snap(prefix + "-owners-followup")
+            try whole(backup, "reopen-backup", nav: "Settings"); backup.tap()
+            try openOriginal("fresh")
+            try require(!failure.exists, "fresh", "Fresh review retained stale error")
+            try whole(confirm, "fresh-action", nav: "Review recovery")
+            try require(!confirm.isEnabled && !change.isEnabled, "fresh", "Fresh choices must be off and mutation single-use")
+            try checkpoint("fresh-ready")
+            nativeSwitch("recoverFile-workouts", enabled: true, towardsTop: false)
+            try whole(confirm, "fresh-selected", nav: "Review recovery")
+            try require(confirm.isEnabled, "fresh-selected", "Only unavailable workouts must enable recovery")
             snap(prefix + "-fresh-selected"); confirm.tap()
             try require(alert.waitForExistence(timeout: 5), "fresh-confirmation", "Fresh confirmation missing")
             snap(prefix + "-fresh-confirmation"); alert.buttons["Recover"].tap()

@@ -145,6 +145,9 @@ struct BackupView: View {
             if HealthLegacyTargetChangeUIFixture.requested {
                 ToolbarItem(placement: .topBarTrailing) { HealthLegacyTargetStartUIProbe() }
             }
+            if HealthHealthyTargetChangeUIFixture.requested {
+                ToolbarItem(placement: .topBarTrailing) { HealthHealthyTargetStartUIProbe() }
+            }
             #endif
             if busy {
                 ToolbarItem(placement: .topBarTrailing) {

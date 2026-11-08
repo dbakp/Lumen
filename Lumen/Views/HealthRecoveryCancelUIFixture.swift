@@ -34,6 +34,7 @@ enum HealthLegacyOriginUIFixture {
         guard UserDefaults.standard.synchronize() else { throw BackupError.invalid }
         _ = try provenance(in: root)
         try HealthLegacyTargetChangeUIFixture.prepare(in: root)
+        try HealthHealthyTargetChangeUIFixture.prepare(in: root)
     }
     static func provenance(in root: URL) throws -> [String: Any] {
         guard let kind, let bundle = Bundle.main.bundleIdentifier else { throw BackupError.invalid }
@@ -950,6 +951,8 @@ import Security
     var body: some View {
         if HealthLegacyTargetChangeUIFixture.requested {
             HealthLegacyTargetStatusUIProbe(location: location)
+        } else if HealthHealthyTargetChangeUIFixture.requested {
+            HealthHealthyTargetStatusUIProbe(location: location)
         } else if HealthLegacyResetUIFixture.requested {
             TimelineView(.periodic(from: .now, by: 0.2)) { _ in
                 Button("Reset check") { HealthLegacyResetUIFixture.capture() }
