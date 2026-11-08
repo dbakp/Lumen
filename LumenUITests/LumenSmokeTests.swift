@@ -5629,10 +5629,20 @@ final class LumenSmokeTests: XCTestCase {
             XCTAssertTrue(filename.waitForExistence(timeout: 10))
             XCTAssertEqual(filename.label, "Lumen-backup-health-matrix-two-legacy.json")
         }
-        func whole(_ suffix: String, _ elements: [XCUIElement]) {
+        func whole(_ suffix: String, _ elements: [XCUIElement], towardsTop: Bool = false) {
             let first = elements[0]
+            reveal(first, towardsTop: towardsTop)
             XCTAssertTrue(first.waitForExistence(timeout: 10))
-            reveal(first, towardsTop: ["mixed-off", "workouts-selected", "not-now", "relaunch-review"].contains(suffix))
+            // All group members are ordered in the Form. Materialize the last
+            // row, then return to the first before measuring their real union.
+            if let last = elements.last, elements.count > 1 {
+                reveal(last)
+                reveal(first, towardsTop: true)
+            }
+            for element in elements { XCTAssertTrue(element.waitForExistence(timeout: 5)) }
+            guard elements.allSatisfy({ $0.exists && !$0.frame.isEmpty }) else {
+                XCTFail("Requested native group did not materialize after bounded reveal"); return
+            }
             func viewport() -> CGRect {
                 let top = app.navigationBars.firstMatch.frame.maxY + 12
                 let bar = app.tabBars.firstMatch
@@ -5670,18 +5680,33 @@ final class LumenSmokeTests: XCTestCase {
         let workouts = app.switches["recoverFile-workouts"].firstMatch
         let confirm = app.buttons["confirmFileRecovery"].firstMatch
         func mixed(_ suffix: String, selected: Bool) {
-            whole(suffix, [ineligible, omission, workouts])
+            whole(suffix, [ineligible, omission, workouts], towardsTop: true)
             XCTAssertFalse(app.switches["recoverFile-meals"].exists)
             XCTAssertEqual(omission.value as? String, "0"); XCTAssertFalse(omission.isEnabled)
             XCTAssertEqual(workouts.value as? String, selected ? "1" : "0"); XCTAssertTrue(workouts.isEnabled)
         }
         openBackupSettings(); try selectOriginal()
         snap(prefix + "-source"); Thread.sleep(forTimeInterval: 3)
+        func adjacentHealthyStatus(_ link: XCUIElement) throws -> XCUIElement {
+            reveal(link)
+            XCTAssertTrue(link.exists && !link.frame.isEmpty)
+            // Align the real row before looking up its lazy adjacent status.
+            // Midpoint visibility alone does not materialize the next label.
+            let top = app.navigationBars.firstMatch.frame.maxY + 12
+            for _ in 0..<8 where link.frame.minY > top + 24 {
+                let bar = app.tabBars.firstMatch
+                let bottom = bar.exists && bar.isHittable ? bar.frame.minY - 12 : app.frame.maxY - 40
+                let distance = min(bottom - top - 50, link.frame.minY - top - 12)
+                let start = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: bottom - 20))
+                let end = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: bottom - 20 - distance))
+                start.press(forDuration: 0.05, thenDragTo: end); settleLabFrame(link)
+            }
+            let candidates = app.staticTexts.matching(NSPredicate(format: "label == %@", "Current data opens")).allElementsBoundByIndex
+            return try XCTUnwrap(candidates.filter { !$0.frame.isEmpty && $0.frame.minY >= link.frame.maxY && $0.frame.minY - link.frame.maxY < 80 }.first)
+        }
         for domain in ["water", "goals"] {
             let link = app.buttons["reviewFile-" + domain].firstMatch
-            reveal(link)
-            let candidates = app.staticTexts.matching(NSPredicate(format: "label == %@", "Current data opens")).allElementsBoundByIndex
-            let state = try XCTUnwrap(candidates.filter { $0.frame.minY >= link.frame.maxY && $0.frame.minY - link.frame.maxY < 80 }.first)
+            let state = try adjacentHealthyStatus(link)
             whole("healthy-" + domain, [link, state])
             XCTAssertFalse(app.switches["recoverFile-" + domain].exists)
         }
@@ -5728,13 +5753,12 @@ final class LumenSmokeTests: XCTestCase {
         XCTAssertTrue(app.navigationBars["Backup & restore"].waitForExistence(timeout: 5))
         snap(prefix + "-parent"); Thread.sleep(forTimeInterval: 4)
         app.terminate(); app.launchArguments = []; app.launch(); openBackupSettings(); try selectOriginal()
-        whole("relaunch-review", [ineligible, omission])
+        let workoutLink = app.buttons["reviewFile-workouts"].firstMatch
+        let healthyWorkoutStatus = try adjacentHealthyStatus(workoutLink)
+        whole("relaunch-review", [ineligible, omission, healthyWorkoutStatus], towardsTop: true)
         XCTAssertFalse(app.switches["recoverFile-meals"].exists)
         XCTAssertEqual(omission.value as? String, "0"); XCTAssertFalse(omission.isEnabled)
-        let workoutLink = app.buttons["reviewFile-workouts"].firstMatch
-        reveal(workoutLink); XCTAssertFalse(workouts.exists)
-        let healthy = app.staticTexts.matching(NSPredicate(format: "label == %@", "Current data opens")).allElementsBoundByIndex
-        XCTAssertTrue(healthy.contains { $0.frame.minY >= workoutLink.frame.maxY && $0.frame.minY - workoutLink.frame.maxY < 80 })
+        XCTAssertTrue(healthyWorkoutStatus.exists); XCTAssertFalse(workouts.exists)
         reveal(confirm); XCTAssertFalse(confirm.isEnabled)
         observations.append(["phase": "relaunch-workouts-healthy", "noWorkoutsToggle": !workouts.exists, "recoverDisabled": !confirm.isEnabled,
             "noFixtureRelaunchArguments": app.launchArguments.isEmpty])

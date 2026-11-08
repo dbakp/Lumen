@@ -16,7 +16,8 @@ def persist():
 def boundary(name,root):
     observation={'phase':name,'at':time.time()};state['boundaries'].append(observation);persist()
     try:
-        observation['fixed']=h.fixed(state['checkpoint']['legacyOrigins'])
+        observation['fixed']={}
+        h.fixed(state['checkpoint']['legacyOrigins'],observation['fixed'])
         observation['provider']=h.provider();observation['installed']=h.installed(a.build)
         observation['status']='PASS'
     except Exception:
@@ -43,7 +44,7 @@ def cleanup(root,selection,phase):
     for line in scan.stdout.splitlines():
         if line.startswith('n'):assert not any(line[1:]==path or line[1:].startswith(path+'/') for path in selection['workspaces'])
     assert not list(root.parent.glob('LumenData.restore-*'))
-    return {'phase':phase,'rootsAbsent':True,'noOpenPaths':scan.stdout,'hostDeletedWorkspace':False,'tree':h.snapshot(root),'guardSeconds':3}
+    return {'phase':phase,'rootsAbsent':True,'noOpenPaths':scan.stdout,'hostDeletedWorkspace':False,'tree':h.snapshot(root),'directories':h.directories(root),'guardSeconds':3}
 
 try:
     preflight=h.verify_inputs(a.source,a.build);state['preflight']=preflight;persist()
@@ -80,7 +81,7 @@ with logpath.open('xb') as stream:
                 assert json.loads(h.read(root/'water.json'))[0]['ml']==137
                 goals=h.load(root/'goals.json');assert [goals[k] for k in ['stepGoal','weightKg','heightCm','age']]==[6543,88.5,181,42]
                 assert not list((root/'.health-recovery-history').glob('*.json'))
-                state.update({'checkpoint':checkpoint,'before':before,'metadataBefore':h.metadata(root),'previous':h.snapshot(root.with_suffix('.previous')),'previousMetadata':h.metadata(root.with_suffix('.previous'))})
+                state.update({'checkpoint':checkpoint,'before':before,'metadataBefore':h.metadata(root),'directoriesBefore':h.directories(root),'previous':h.snapshot(root.with_suffix('.previous')),'previousMetadata':h.metadata(root.with_suffix('.previous'))})
                 boundary('initial-before-file-selection',root)
             if 'selection' not in state and captured('source'):
                 state['selection']=h.selected(started);boundary('selected-original',root)
@@ -99,6 +100,7 @@ with logpath.open('xb') as stream:
                 value,record=protocol(group);assert record==state['held']['record']
                 assert h.preparation(root,state['before'],state['previous'])==state['held']['priorCopy']
                 assert list(Path(state['held']['stage']).iterdir())==[];h.source_exact(state['selection'])
+                assert h.metadata(root)==state['metadataBefore']|{k:h.identity(root/k) for k in state['held']['priorCopy']['files']}
                 boundary('observed-before-intentional-release',root)
                 state['released']={'record':record.copy(),'intentionallyHostReleased':True,'at':time.time()};persist()
                 message(group,'Lumen-health-cancel-release.json',record['nonce'],False)
@@ -108,6 +110,26 @@ with logpath.open('xb') as stream:
                 nonce=h.load(noncepath)['nonce'];value,record=protocol(group)
                 assert record==state['held']['record']|{'phase':'released'};h.source_exact(state['selection'])
                 boundary('success-before-ack',root)
+                # Observe actual asynchronous retirement before the success ack.
+                samples=[];until=time.monotonic()+15
+                while True:
+                    sample={'at':time.time(),'priorExists':root.with_suffix('.previous').exists(),
+                        'restore':list(map(str,root.parent.glob('LumenData.restore-*'))),
+                        'retired':list(map(str,root.parent.glob('LumenData.retired-*')))}
+                    samples.append(sample);state['retirementSamples']=samples;persist()
+                    sample['paths']={}
+                    paths=([str(root.with_suffix('.previous'))] if sample['priorExists'] else [])+sample['restore']+sample['retired']
+                    for path in paths:
+                        target=Path(path);facts=h.identity(target)
+                        sample['paths'][path]={'metadata':facts};persist()
+                        assert h.stat.S_ISDIR(facts['st_mode']) and not target.is_symlink()
+                        sample['paths'][path].update({'files':h.snapshot(target),'directories':h.directories(target),'fileMetadata':h.metadata(target)})
+                        persist()
+                    if not sample['priorExists'] and not sample['restore'] and not sample['retired']:break
+                    assert time.monotonic()<until,'Retirement readiness not observed before bounded deadline'
+                    time.sleep(.1)
+                state['commitObservedTree']=h.snapshot(root);state['commitObservedDirectories']=h.directories(root);persist()
+                assert h.directories(root)==h.allowed_directories(state['directoriesBefore'],state['commitObservedTree'])
                 state['success']=h.committed(root,state['before'],state['held']['priorCopy'],state['checkpoint']['legacyOrigins'])|{'nonce':nonce,'record':record,'at':time.time()}
                 persist();message(group,'Lumen-health-success-ack.json',nonce,True)
             if 'success' in state and 'parent' not in state and captured('parent'):
@@ -140,35 +162,35 @@ with logpath.open('xb') as stream:
     finally:
         state['nativeExit']=code;persist()
 
-# Preserve every available actual result before asserting success. Partial
-# results are explicitly retained as partial; no invented native test counts.
-outcome={'source':a.source,'build':a.build,'prefix':prefix,'stem':stem,'nativeExit':code,'hostFailure':host_failure,'summary':None,'retentionErrors':[],'status':'FAILED or incomplete'}
-summaryproc=subprocess.run(['xcrun','xcresulttool','get','test-results','summary','--path',str(result)],capture_output=True,text=True)
-if summaryproc.returncode==0:
-    summary=json.loads(summaryproc.stdout);outcome['summary']=summary
-    (raw/(stem+'-summary.json')).write_text(json.dumps(summary,indent=2)+'\n')
-    (h.BASE/(prefix+'-summary.json')).write_text(json.dumps(summary,indent=2)+'\n')
-else:outcome['retentionErrors'].append({'summaryExit':summaryproc.returncode,'stderr':summaryproc.stderr})
-(h.BASE/(stem+'.log.gz')).write_bytes(gzip.compress(logpath.read_bytes(),mtime=0))
-for ext,pattern in [('PNG','*.png'),('JSON','*.json')]:
-    proc=subprocess.run(['xcrun','xcresulttool','export','attachments','--path',str(result),'--output-path',str(raw/(stem+ext)),'--filter',pattern],capture_output=True,text=True)
-    if proc.returncode:outcome['retentionErrors'].append({'export':ext,'exit':proc.returncode,'stderr':proc.stderr})
-if outcome['summary'] is not None and not outcome['retentionErrors']:
-    proc=subprocess.run(['python3',str(h.BASE/'retain-health-record-attachments.py'),'--stem',stem,'--prefix',prefix,'--source',a.source,'--png-dir',str(raw/(stem+'PNG')),'--json-dir',str(raw/(stem+'JSON')),'--raw-root',str(raw),'--include-failed-trial'],capture_output=True,text=True)
-    if proc.returncode:outcome['retentionErrors'].append({'retainExit':proc.returncode,'stderr':proc.stderr})
+# Every available actual summary/log/PNG/JSON peer is salvaged independently.
+outcome={'source':a.source,'build':a.build,'prefix':prefix,'stem':stem,'nativeExit':code,'hostFailure':host_failure,'status':'FAILED or incomplete','summary':None}
 outpath.write_text(json.dumps(outcome,indent=2)+'\n')
-assert host_failure is None,host_failure
-assert code==0 and outcome['summary'] is not None and not outcome['retentionErrors']
-assert [outcome['summary'][k] for k in ['passedTests','failedTests','skippedTests']]==[1,0,0]
-assert all(k in state for k in ['held','released','success','parent','relaunchSelection','relaunchParent'])
-h.verify_inputs(a.source,a.build);h.installed(a.build)
-after=h.snapshot(root);assert set(after)==set(state['success']['tree'])
-for name,want in state['success']['tree'].items():
-    if name in ['profile.json','habits.json']:assert json.loads(h.base64.b64decode(after[name]['base64']))==json.loads(h.base64.b64decode(want['base64']))
-    else:assert after[name]==want,name
-assert not (root/'meals.json').exists() and h.read(root/'workouts.json')==b'[]'
-assert h.events(group)==state['originEvents'];h.provider();h.fixed(state['checkpoint']['legacyOrigins'])
-state['after']=after;state['status']='PASS actual one mixed-ineligible native flow; not broad product acceptance';persist()
-(h.BASE/(prefix+'-host-audit.json')).write_text(json.dumps(state,indent=2)+'\n')
-outcome['status']='PASS actual native1/0/0 and strict host audit';outcome['finished']=time.time();outpath.write_text(json.dumps(outcome,indent=2)+'\n')
+try:
+    spec=importlib.util.spec_from_file_location('retainer',Path(__file__).with_name('retain-mixed-ineligible-results-r1.py'))
+    retainer=importlib.util.module_from_spec(spec);spec.loader.exec_module(retainer)
+    retained=retainer.retain(h.BASE,raw,stem,prefix,a.source);outcome['retention']=retained
+    summary=retained['summary']
+    assert host_failure is None,host_failure
+    assert code==0 and summary is not None and not retained['errors']
+    assert [summary[k] for k in ['passedTests','failedTests','skippedTests']]==[1,0,0]
+    assert all(k in state for k in ['held','released','success','parent','relaunchSelection','relaunchParent'])
+    h.verify_inputs(a.source,a.build);h.installed(a.build)
+    root=h.container('group.com.dbakp.lumen')/'LumenData'
+    after=h.snapshot(root);assert set(after)==set(state['success']['tree'])
+    for name,want in state['success']['tree'].items():
+        if name in ['profile.json','habits.json']:assert json.loads(h.base64.b64decode(after[name]['base64']))==json.loads(h.base64.b64decode(want['base64']))
+        else:assert after[name]==want,name
+    assert h.directories(root)==state['commitObservedDirectories']
+    assert not root.with_suffix('.previous').exists() and not list(root.parent.glob('LumenData.retired-*')) and not list(root.parent.glob('LumenData.restore-*'))
+    assert not (root/'meals.json').exists() and h.read(root/'workouts.json')==b'[]'
+    assert h.events(root.parent)==state['originEvents'];h.provider();h.fixed(state['checkpoint']['legacyOrigins'])
+    state['after']=after;state['directoriesAfter']=h.directories(root)
+    state['status']='PASS actual one mixed-ineligible native flow; not broad product acceptance';persist()
+    (h.BASE/(prefix+'-host-audit.json')).write_text(json.dumps(state,indent=2)+'\n')
+    outcome['status']='PASS actual native1/0/0 and strict host audit'
+except Exception:
+    outcome['finalizationFailure']=traceback.format_exc()
+    raise
+finally:
+    outcome['finished']=time.time();outpath.write_text(json.dumps(outcome,indent=2)+'\n')
 print(outcome['status'],flush=True)

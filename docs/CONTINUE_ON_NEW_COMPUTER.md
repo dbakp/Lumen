@@ -18,6 +18,8 @@ Source212 freezes the narrow repair: only `reveal(disclosure)` defaults forward;
 
 Source213 implements the concrete mixed-ineligible fixture/test/standalone host/checker and freezes269text+9fixture inputs. Independent74/root found six required preexecution harness repairs (lazy row acquisition, release metadata, independent partial failure retention, retirement readiness, failed-value provenance, full directory inventory). Source213 NEVER compiled or ran a native case; no product/runtime failure is inferred. Full frozen archive/report and exact judged live snapshot remain. Next: preserve this checkpoint, apply narrow214successor, independently source-review before build, then actualmixed/currentnormalregression/currentRelease/settings and evidence publication.
 
+Source214 source-review75/root supports lazy-row, repeated release metadata and exact-directory repairs; three narrow residual harness issues remain (retired-path ENOENT, per-case/index failure retention, committed/final wrong-value sinks).214 also NEVER built or ran native. Freeze215 narrow successor/probes and independent76review before actualbuild; no runtime/product defect inferred.
+
 ## Current authority
 
 - [Progress ledger](../Design/native/health-write-order/durable-progress-r204.json): current fields supersede inherited historical statuses. Preserve all eight groups, `nextRequired` and `remainingScope`.

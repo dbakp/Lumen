@@ -42,8 +42,10 @@ assert phases['acknowledged']['successValue']=='success-observed'
 assert phases['post-success']['elements'][0]['label']=='Older saved data will stay in a private recovery copy on this iPhone. For meal recovery, this includes any old photos.'
 assert phases['relaunch-review']['elements'][0]['label']=="This saved data can't be replaced here."
 assert phases['relaunch-review']['elements'][1]['value']=='0' and phases['relaunch-review']['elements'][1]['enabled'] is False
+assert len(phases['relaunch-review']['elements'])==3 and phases['relaunch-review']['elements'][2]['label']=='Current data opens'
 assert all(phases['relaunch-workouts-healthy'][k] is True for k in ['noWorkoutsToggle','recoverDisabled','noFixtureRelaunchArguments'])
 root=h.container('group.com.dbakp.lumen')/'LumenData';assert h.snapshot(root)==r['after']
+assert h.directories(root)==r['directoriesAfter']==r['commitObservedDirectories']==h.allowed_directories(r['directoriesBefore'],r['after'])
 assert set(r['after'])==set(r['success']['tree'])
 for name,want in r['success']['tree'].items():
     if name in ['profile.json','habits.json']:assert json.loads(h.base64.b64decode(r['after'][name]['base64']))==json.loads(h.base64.b64decode(want['base64']))
@@ -59,6 +61,7 @@ assert h.load(directory/'legacy-origin-workouts.json')==v2['envelope']
 assert h.read(directory/'device-intent.json')==h.base64.b64decode(r['before']['health-write-intent.json']['base64'])
 for name,want in r['held']['priorCopy']['files'].items():assert r['after'][name]==want
 assert not root.with_suffix('.previous').exists() and not list(root.parent.glob('LumenData.restore-*')) and not list(root.parent.glob('LumenData.retired-*'))
+assert r['retirementSamples'] and all(not r['retirementSamples'][-1][k] for k in ['priorExists','restore','retired'])
 assert r['parent']['tree']==r['success']['tree'] and r['relaunchParent']['tree']==r['after']
 for selection in [r['selection'],r['relaunchSelection']]:
     assert not h.owned(selection['source']['owner']['pid'])

@@ -27,24 +27,45 @@ def snapshot(root):
             data=read(Path(parent)/name);total+=len(data);assert total<=2*1024*1024
             result[str((Path(parent)/name).relative_to(root))]=row(data)
     return result
+def directories(root):
+    result=[]
+    assert root.is_dir() and not root.is_symlink()
+    for parent,dirs,files in os.walk(root,followlinks=False):
+        for name in dirs:
+            child=Path(parent)/name
+            assert stat.S_ISDIR(child.lstat().st_mode) and not child.is_symlink()
+            result.append(str(child.relative_to(root)))
+    return sorted(result)
+def allowed_directories(before_dirs, files):
+    result=set(before_dirs)
+    for name in files:
+        parent=Path(name).parent
+        while str(parent)!='.':
+            result.add(str(parent));parent=parent.parent
+    return sorted(result)
 FIELDS=['st_ino','st_dev','st_mode','st_nlink','st_size','st_mtime_ns']
 def identity(path):
     facts=Path(path).lstat();assert not Path(path).is_symlink()
     return {key:getattr(facts,key) for key in FIELDS}
 def metadata(root):
     return {name:identity(root/name) for name in snapshot(root)}
-def fixed(expected):
+def fixed(expected, observed=None):
     # Only these two known synthetic keys are retained. This diagnostic JSON is
     # not original plist bytes or a general unsupported-value codec.
     values=plistlib.loads(read(container('data')/'Library/Preferences/com.dbakp.lumen.plist'))
     assert expected['bundle']=='com.dbakp.lumen' and expected['kind']=='mixed-data'
     assert set(expected['values'])=={'meals','workouts'}
-    observed={}
+    if observed is None: observed={}
     for domain in ['meals','workouts']:
         key='lumen.health.'+domain+'.v1';value=values.get(key)
         observed[domain]={'key':key,'actualType':type(value).__name__}
+        if isinstance(value,bytes): observed[domain].update({'type':'data',**row(value)})
+        elif isinstance(value,str): observed[domain].update({'type':'stringUTF16LE',**row(value.encode('utf-16-le'))})
+        elif isinstance(value,dict) and all(type(k) is str and type(v) is str for k,v in value.items()):
+            diagnostic=json.dumps(value,sort_keys=True,separators=(',',':'),ensure_ascii=False).encode()
+            observed[domain].update({'type':'propertyListDictionary','value':value,**row(diagnostic)})
+        else: observed[domain]['classification']='missing' if value is None else 'unsupported known-key value'
         if domain=='meals':
-            observed[domain]['value']=value
             assert type(value) is dict and value==DICTIONARY
             raw=json.dumps(value,sort_keys=True,separators=(',',':'),ensure_ascii=False).encode()
             kind='propertyListDictionary'
@@ -145,8 +166,6 @@ def committed(root,before,priorcopy,expected):
     assert set(current)==allowed,(set(current)-allowed,allowed-set(current))
     old=json.loads(base64.b64decode(before['health-write-intent.json']['base64']));new=load(root/'health-write-intent.json')
     assert old['owner']==new['owner'] and old['lifecycle']!=new['lifecycle'] and old['events']==new['events']==[]
-    assert not root.with_suffix('.previous').exists()
-    assert not list(root.parent.glob('LumenData.restore-*')) and not list(root.parent.glob('LumenData.retired-*'))
     return {'tree':current,'receipt':receipt,'v2':{'directory':str(directory),'manifest':manifest,'envelope':envelope,'outer':row(data)},'fixed':fixed(expected)}
 def events(group):
     value=load(group/'Lumen-legacy-origin-review-events.json')['events']
