@@ -5883,8 +5883,8 @@ final class LumenSmokeTests: XCTestCase {
             let reviewBar = app.navigationBars["Review recovery"].firstMatch
             let successVisible = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
                 guard reviewBar.exists, recovered.exists, recovered.isHittable else { return false }
-                let box = CGRect(x: 0, y: reviewBar.frame.maxY + 12, width: app.frame.width,
-                    height: app.frame.maxY - 40 - reviewBar.frame.maxY - 12)
+                let box = CGRect(x: 0, y: reviewBar.frame.maxY + 12, width: self.app.frame.width,
+                    height: self.app.frame.maxY - 40 - reviewBar.frame.maxY - 12)
                 return box.contains(recovered.frame) && recovered.label.contains("Selected data recovered")
             }, object: recovered)
             try require(XCTWaiter.wait(for: [successVisible], timeout: 10) == .completed,

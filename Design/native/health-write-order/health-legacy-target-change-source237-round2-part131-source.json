@@ -1,0 +1,236 @@
+{
+  "part": 131,
+  "source": "durable-source-r237.json",
+  "status": "SOURCE READY for fresh full237 app/test build and current controls after root/exact checkpoint. P130-C1 explicit capture corrected and retained whole candidate SDK typecheck supported; no native/runtime acceptance.",
+  "sourceReady": true,
+  "runtimeAcceptance": false,
+  "score": null,
+  "overallDesignAcceptance": false,
+  "productCompletion": false,
+  "sourceVerification": {
+    "currentArchiveInputsExact": 573,
+    "textInputs": 545,
+    "fixtureInputs": 28,
+    "onlyPriorInputChanged": "LumenUITests/LumenSmokeTests.swift",
+    "other562PriorSource236InputsUnchanged": true,
+    "newTextInputs": 9,
+    "newFixtureArchives": 1,
+    "deltaFiles": [
+      "LumenUITests/LumenSmokeTests.swift",
+      "Design/native/health-write-order/source237-test-capture-typecheck-r2.json",
+      "Design/native/health-write-order/source237-test-capture-typecheck-r1.json",
+      "Design/native/health-write-order/source237-app-source-carry-r1.json",
+      "Design/native/health-write-order/source237-test-capture-r1-plan.json",
+      "Design/native/health-write-order/health-current-release-source237-r1-predeclared-plan.json",
+      "Design/native/health-write-order/source237-target-change-native-build-r1-planned.py",
+      "Design/native/health-write-order/source237-debug-release-controls-r1-planned.py",
+      "Design/native/health-write-order/source237-unsigned-release-r1-planned.py",
+      "Design/native/health-write-order/source237-release-settings-auditor-r1.py",
+      "Design/native/health-write-order/source237-test-capture-typecheck-r1-full.json.gz"
+    ],
+    "productionAppGuardsAuthorityTransactionCopyUnchanged": true,
+    "currentTestBytes": 750354,
+    "currentTestSHA256": "7e31f1d261c81c143444aca0206cf0c324596b603c66bbcd0be97a5a46297c8b",
+    "fullAppBuilds": 0,
+    "nativeRuns": 0,
+    "Release237Runs": 0
+  },
+  "P130C1": {
+    "sourceClosure": true,
+    "exactDiff": "Two app.frame references in the escaping successVisible NSPredicate width/height expressions become self.app.frame. Complete file comparison has only those two replacements (+10bytes). Reference to XCTestCase app is now explicitly captured, matching actual236 compiler diagnostics.",
+    "unchangedSemantics": "Identical review bar/exists/hittability/label predicate, rectangle bounds, wait timeout, no-test-scroll rule, readback/screenshot/checkpoint/Back ordering. No weak capture behavior change or product lifecycle/authority change requested. R6/R9 and whole-success gates unchanged.",
+    "remainingRequirement": "New full app/test build/current markers still required. Retained actual candidate typecheck is not a built/installed pair, compiler settings identity guarantee or native result."
+  },
+  "actualTypecheckR2": {
+    "status": "PASS complete candidate UI-test file actual SDK typecheck",
+    "sourceBinding": "Whole retained current750354B test file equals candidate hash/bytes in receipt; temporary candidate path historical after removal.",
+    "originalBytes": 750344,
+    "originalSHA256": "ceff85954a06880069993471fb7164efcbbe48efee06937c4467c4093507e6aa",
+    "candidateBytes": 750354,
+    "candidateSHA256": "7e31f1d261c81c143444aca0206cf0c324596b603c66bbcd0be97a5a46297c8b",
+    "command": [
+      "xcrun",
+      "swiftc",
+      "-typecheck",
+      "-swift-version",
+      "5",
+      "-target",
+      "arm64-apple-ios18.0-simulator",
+      "-sdk",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk",
+      "-F",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Library/Frameworks",
+      "-I",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/lib",
+      "-module-alias",
+      "Testing=_Testing_Unavailable",
+      "-module-cache-path",
+      "/tmp/LumenBatch37Simulator/ModuleCache.noindex",
+      "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen237-test-typecheck-zu_r0ari/LumenSmokeTests.swift"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "scope": "Actual entire candidate test-file -typecheck with Swift5, arm64-ios18 simulator SDK, XCTest framework and Swift overlay import path/module alias. Supports source typing in that command environment; not full Xcode app/test build/link/installation, actual XCTest execution or every build setting/conditional path. No subject compiler executed by critic."
+  },
+  "preparationR1": {
+    "preserved": true,
+    "status": "FAILED complete candidate typecheck",
+    "exit": 1,
+    "fullReportGzip": {
+      "file": "Design/native/health-write-order/source237-test-capture-typecheck-r1-full.json.gz",
+      "bytes": 199754,
+      "sha256": "4e836425e27522bd659ebce1180fff3a6b10acb3a431d2e29a8f7a53295dff84"
+    },
+    "decodedBytes": 3755049,
+    "decodedSHA256": "7d184d2254c0c7c762d56ee81927d3d9907267751da82bb6be2c255d75dd60ae",
+    "stderrBytes": 3676023,
+    "stderrSHA256": "40cbfeef674d5e2c2f5210e71858167735c7deb682aa7a024b322df4bb520bf1",
+    "firstDiagnostic": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen237-test-typecheck-pjrdoeii/LumenSmokeTests.swift:182:9: error: cannot find 'XCTAssertTrue' in scope",
+    "classification": "Isolated command omitted XCTest Swift overlay library -I path and Testing module alias; produced many unresolved XCTest assertion helper diagnostics. R2 corrected command/import context with same candidate hash, then exit0. This is control-preparation failure, not another actual application build/native failure.",
+    "readMethod": "Full retained gzip decompressed, JSON parsed, size/hash/candidate/stderr hashes verified. Bounded diagnostic classification checked (4798 missing-XCTAssert occurrences); no claim to have read every3.68MB stderr line as human narrative, and full stderr is not duplicated here."
+  },
+  "carry": {
+    "app": "All production View/Bool-focus declaration/metadata guard/reveal/cancel/onChange/defer/Back logic exact236, no app input modification or new app binary inferred.",
+    "controls": "Original23522 actual extracted-method interleavings and source236 lifecycle fragment proof carry unchanged, not rerun. Original isolated SwiftUI Bool declaration/modifier typecheck remains its narrow proof; no new22 case count.",
+    "verification": "Same R6/R9 eight phases,16 success originals/full helper, automatic whole readable success BEFORE ANY test scroll, no stale error, current26/v1 selected-prior4/v2 current-origin4/full receipt/two photos/journal/fixed/source/provider/retirement/finalBack/3s owner absence/final live-or-absent process gates. None becomes actual success from source typecheck.",
+    "releasePreparation": "Four native-build/Debug-binder/unsignedRelease/settings scripts are exact236→237 renames. Predeclared arrays unchanged202/186/16/21. Actual current app/test build, marker match and later current237Release/settings/compiler/FileList evidence required. Optimized instrumented unsigned-development scope, no distribution/performance/runtime acceptance."
+  },
+  "findings": [],
+  "priorFailurePreservation": {
+    "source236": "Actual compile65/full59986Blog/Part130/root and129 execution-readiness withdrawal remain immutable. Source237 source readiness is separate, not retroactive whole-build acceptance.",
+    "source235": "Actual wrapper compile65/Part128 and127withdrawal unchanged; original22 controls remain limited.",
+    "source234": "Actual native0/1/0/backend partialcommit/absent UI success/no final Back/full194 evidence unchanged. Fullgoal remains active.",
+    "proofCommit": "6055aa11bb618801cd9115ea04c7ddd5f1fb70ea",
+    "checkpointPaths": 19,
+    "unionPaths": 742,
+    "scope": "Completed prior exact receipt bound; no Git/network query by critic."
+  },
+  "nextRequirements": [
+    "Root full read/bind/exact before fresh237 app/test build.",
+    "Actual complete build/current202-186-16-21 controls/root/exact before native; preserve any new compiler issue rather than borrowing typecheck acceptance.",
+    "Actual whole automatic success/no test scroll, full original/helper/receipt/privacy/preservation/retirement/Back/finalR9/root/critic/exact required before onward work.",
+    "Current237Release, String/healthy/other timings/retained-copy/all43/eightgroups/direct accessibility/appearance/motion/full goal remain open."
+  ],
+  "limits": [
+    "No new native screenshot/layout/copy/rubric score, actual SwiftUI AX focus/speech/motion/appearance/transaction/closure acceptance.",
+    "No new full2350 pure execution claimed from this test-only change; app/test pair is not complete until fresh build.",
+    "No subject execution/build/native/simulator/device/process/defaults query, input/evidence/index mutation, Git, cleanup, physical phone or subagent action by critic."
+  ],
+  "provenance": [
+    {
+      "file": "Design/native/health-write-order/durable-source-r237.json",
+      "bytes": 104036,
+      "sha256": "c63acf54f8152493675ba1a52c2d5d03ec4934f4209a22b6063b5d8557105b25"
+    },
+    {
+      "file": "Design/native/health-write-order/durable-source-r237.json.gz",
+      "bytes": 3700087,
+      "sha256": "3bf776803083358fe0157fb0b19a734b44ca7da42e1b8ffdc280031bd6b1697f"
+    },
+    {
+      "file": "Design/native/health-write-order/durable-source-r236.json",
+      "bytes": 101915,
+      "sha256": "4ce8ccc76d8a1c1cb1aad22310d1c873cb55309819a0ad6bfc867b5336c578d0"
+    },
+    {
+      "file": "Design/native/health-write-order/source236-build-failure-exact-github.json",
+      "bytes": 149124,
+      "sha256": "a126927bbf68c95897c50af6385395616d330ff49b69690c8461e0f1300037c8"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-target-change-source236-round2-part130-build-failure.json",
+      "bytes": 9301,
+      "sha256": "028e95d453ba0cd3c0348d116c580dc3801480cf970717fefe66aa61594206f5"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-target-change-source236-round2-part129-source.json",
+      "bytes": 12769,
+      "sha256": "be3271acc17fa8a5854fbdd3180fb80f3396e4c7be08db229dbf3624cc53ebc7"
+    },
+    {
+      "file": "Design/native/health-write-order/source236-success-lifecycle-carry-r1.json",
+      "bytes": 1070,
+      "sha256": "186c2da043f438ceb1970eed5151c390a0b780141ff24d5318cf125190cf1aca"
+    },
+    {
+      "file": "Design/native/health-write-order/source236-focus-declaration-typecheck-r1.json",
+      "bytes": 3263,
+      "sha256": "62a2d1bae35ea114375fa2995664b4cfb55109c6f22ff221cf078bbbbb7a7df1"
+    },
+    {
+      "file": "Design/native/health-write-order/legacy-target-change-driver-r6.py",
+      "bytes": 15544,
+      "sha256": "79ddde9f9b98c438af36f15286e78110fb114247f1409dc07802cda87abb17f3"
+    },
+    {
+      "file": "Design/native/health-write-order/check-legacy-target-change-r9.py",
+      "bytes": 14360,
+      "sha256": "efa51587cbe5a49eecc04f54c0c88619fa9c8fc358eee9e81e277c77c7ea3caa"
+    },
+    {
+      "file": "LumenUITests/LumenSmokeTests.swift",
+      "bytes": 750354,
+      "sha256": "7e31f1d261c81c143444aca0206cf0c324596b603c66bbcd0be97a5a46297c8b"
+    },
+    {
+      "file": "Design/native/health-write-order/source237-test-capture-typecheck-r2.json",
+      "bytes": 1436,
+      "sha256": "594a021417ecb42d03367f2177e8149dc8a4f600544dece659b2c1198665b691"
+    },
+    {
+      "file": "Design/native/health-write-order/source237-test-capture-typecheck-r1.json",
+      "bytes": 1938,
+      "sha256": "daf9036d1d17699c096950cd9858a931ed8eb1e4be32d13d058fc436fb37a2fa"
+    },
+    {
+      "file": "Design/native/health-write-order/source237-app-source-carry-r1.json",
+      "bytes": 788,
+      "sha256": "326364d0e358748de43fe03071764152f5718f95588a5ac629d22ea476e0db5d"
+    },
+    {
+      "file": "Design/native/health-write-order/source237-test-capture-r1-plan.json",
+      "bytes": 2497,
+      "sha256": "a372c8bc02dad3127e97819158595dbe29d02681b0fc560f2e063b0513b70d3a"
+    },
+    {
+      "file": "Design/native/health-write-order/health-current-release-source237-r1-predeclared-plan.json",
+      "bytes": 18846,
+      "sha256": "414b80880bbae3cc4ae07ed5fac25d3b467d3c4228107c0b1b70a13f6b695d1f"
+    },
+    {
+      "file": "Design/native/health-write-order/source237-target-change-native-build-r1-planned.py",
+      "bytes": 2682,
+      "sha256": "2b6fde17135be01fbcef0a020faadfa6e79902ea4dfd02696e0361ea239f9364"
+    },
+    {
+      "file": "Design/native/health-write-order/source237-debug-release-controls-r1-planned.py",
+      "bytes": 2688,
+      "sha256": "3f6b70ca35069fbfde3fa45a305be506d400453cffabe4cf590b6f442130cc14"
+    },
+    {
+      "file": "Design/native/health-write-order/source237-unsigned-release-r1-planned.py",
+      "bytes": 3333,
+      "sha256": "dd3757249c36b07d952d9e9ef9dc4d49a23121e13dddbbce63eda25fa85eca7a"
+    },
+    {
+      "file": "Design/native/health-write-order/source237-release-settings-auditor-r1.py",
+      "bytes": 6438,
+      "sha256": "f22fc1d6d630182536e88bb8369a9f77b9d2c19caa61f48fa680457168907a57"
+    },
+    {
+      "file": "Design/native/health-write-order/source237-test-capture-typecheck-r1-full.json.gz",
+      "bytes": 199754,
+      "sha256": "4e836425e27522bd659ebce1180fff3a6b10acb3a431d2e29a8f7a53295dff84"
+    }
+  ],
+  "storage": {
+    "availableBytesAtFinish": 32946487296,
+    "deletedFiles": 0,
+    "bytesRecovered": 0,
+    "retention": "No cleanup. Current one Debug/package cache kept for parent reuse, full failed canonical logs/234originals and two historical unbacked videos retained."
+  },
+  "judgedInputsModified": false,
+  "physicalPhoneActions": false,
+  "checkedAt": 1794148992.321467
+}
