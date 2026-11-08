@@ -1,0 +1,104 @@
+{
+  "status": "PASS actual corrected checker preflight+payload API fragment",
+  "count": 14,
+  "cases": [
+    {
+      "case": "genuine-retained-preflight-exact-null-exception",
+      "expectedAccepted": true,
+      "actualAccepted": true,
+      "error": null
+    },
+    {
+      "case": "full-genuine-retained248-state",
+      "expectedAccepted": true,
+      "actualAccepted": true,
+      "error": null
+    },
+    {
+      "case": "app-string-instead-of-metadata",
+      "expectedAccepted": false,
+      "actualAccepted": false,
+      "error": "AssertionError: Retained preflight must bind actual reviewed source/build/app/test inputs"
+    },
+    {
+      "case": "spoofed-app-hash",
+      "expectedAccepted": false,
+      "actualAccepted": false,
+      "error": "AssertionError: Retained preflight must bind actual reviewed source/build/app/test inputs"
+    },
+    {
+      "case": "spoofed-app-size",
+      "expectedAccepted": false,
+      "actualAccepted": false,
+      "error": "AssertionError: Retained preflight must bind actual reviewed source/build/app/test inputs"
+    },
+    {
+      "case": "spoofed-app-base64",
+      "expectedAccepted": false,
+      "actualAccepted": false,
+      "error": "AssertionError: Retained preflight must bind actual reviewed source/build/app/test inputs"
+    },
+    {
+      "case": "missing-preflight",
+      "expectedAccepted": false,
+      "actualAccepted": false,
+      "error": "KeyError: 'preflight'"
+    },
+    {
+      "case": "arbitrary-null-payload",
+      "expectedAccepted": false,
+      "actualAccepted": false,
+      "error": "TypeError: argument should be a bytes-like object or ASCII string, not 'NoneType'"
+    },
+    {
+      "case": "null-at-wrong-path",
+      "expectedAccepted": false,
+      "actualAccepted": false,
+      "error": "TypeError: argument should be a bytes-like object or ASCII string, not 'NoneType'"
+    },
+    {
+      "case": "bad-payload-bytes",
+      "expectedAccepted": false,
+      "actualAccepted": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "bad-payload-hash",
+      "expectedAccepted": false,
+      "actualAccepted": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "bad-payload-base64",
+      "expectedAccepted": false,
+      "actualAccepted": false,
+      "error": "Error: Non-base64 digit found"
+    },
+    {
+      "case": "wrong-independently-supplied-metadata",
+      "expectedAccepted": false,
+      "actualAccepted": false,
+      "error": "AssertionError: Retained preflight must bind actual reviewed source/build/app/test inputs"
+    },
+    {
+      "case": "wrong-independently-supplied-path",
+      "expectedAccepted": false,
+      "actualAccepted": false,
+      "error": "AssertionError: Retained preflight must bind actual reviewed source/build/app/test inputs"
+    }
+  ],
+  "checker": {
+    "file": "check-confirmation-lifecycle-r2.py",
+    "bytes": 15318,
+    "sha256": "eb6bc2a9cb0bf937bd8fd3cb6023aaedf92e593bb9345344b11856f866789f6f"
+  },
+  "fixture": "source251-checker-api-controls-r1-fixtures.json.gz",
+  "decodedBytes": 1416304,
+  "decodedSHA256": "3ef234d1768b2f51d909588208ca22652ec35b8ca05b69cb907f42dd16e4e33e",
+  "priorRealInput": {
+    "file": "health-legacy-confirmation-data-source248r1-host-audit.json",
+    "sha256": "dc55803c0e474aeddbb77041e8955d0ade9a1da954851be69def8c31b575bb32"
+  },
+  "scope": "Actual corrected checker AST preflight equality+all_payloads call on genuine historical248retained facts and explicit negatives, expected metadata isolated from copied state; no fresh currentbinary verification, new native/checker endtoend, defaults/process or oldraw audit acceptance.",
+  "checkedAt": 1794176603.295326
+}

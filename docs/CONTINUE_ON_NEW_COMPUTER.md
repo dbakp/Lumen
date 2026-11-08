@@ -4,6 +4,12 @@ Continue developing Lumen into a world-class, primarily iOS, AI health assistant
 
 Repository: https://github.com/dbakp/Lumen · branch `main`.
 
+## Corrected cancellation host · Source251 /164 NOT_READY · 8 November 2026
+
+Full250/163/root50/source852/7diagnostic/priorunion exact GitHub103a5edb0a9af60c99b5855e992033b6f57b3429 /56checkpoint1887union BEFORE251. Frozen251813text+62fixtures=875, all852priorunchanged/23appends; app/UITest exact250. SeparateR2checker fixes inputs.app/null exception and uniqueoutcome; R2driver withholds armed until exactactive created+wait-started. Actual14APIguard+payload and14caller+outerhandler/twostage startup controls plus2help pass. Source164 supports these two repairs; rootfull18132B/all40bindings/875archive exact.
+
+164 NOT_READY: allthree newly copied execution scripts still bind older sources. Debugproducer loads/reports249, binderasserts249 despiteplan251, Releaseproducer loads/verifies/reports248; no build attempted. Preserve251/164/root/exact before separate252 fixes of all manifest/archive/count/outcome/receipt/binder/currentlabels and actualAST/source-reference/prelaunch controls. Firstcurrentfullpair/215-199-16-21/root/exact then actualNotnowR2host+mandatoryR2checker/full14originals/helper/summary/root/samecritic/exact stillrequired. No250/251fullapp/native/Release acceptance; fullgoalactive andno checkpointstop/phoneactions. Prior33pure/4mac/37guards/SDKR2 carryonlyunchangedsource.
+
 ## Frozen cancellation implementation · Source250 /163 NOT_READY · 8 November 2026
 
 Source250 frozen792text+60fixtures=852, appends36/prior4DEBUG-and-test inputs modified/812prior unchanged. Root852/archive/shared prior native routine/current wholeUITest+gateTrace SDKr2 zero/empty streams, 33isolated predicates-publishers/13actualcaller/4actualwholegate-trace macOS scheduling with namedstubs/37extractedcontext-fixedguards/2help zeroquery pass. Actual Notnow test/14originals predeclared; NO250fullapp/native/Release attempted. C1 outside exactTask.value completion observer and C2 fresh actualCheck/raw lateack/fixedfacts implemented; registrymetadataonly and separatebounded checkfile. First import and missingFoundation harness compile retained, subsequent isolated controls pass.

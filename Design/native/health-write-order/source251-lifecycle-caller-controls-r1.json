@@ -1,0 +1,96 @@
+{
+  "status": "PASS actual caller/actual exception handler isolated controls",
+  "cases": [
+    {
+      "case": "created-only-does-not-arm-UI",
+      "expected": "created-pending",
+      "actualAck": false,
+      "status": "PASS"
+    },
+    {
+      "case": "valid-completed-cancel-before-one-late-ack",
+      "expected": "ack",
+      "actualAck": true,
+      "status": "PASS"
+    },
+    {
+      "case": "missing-completion-is-pending",
+      "expected": "pending",
+      "actualAck": false,
+      "status": "PASS"
+    },
+    {
+      "case": "missing-dismissed-is-pending",
+      "expected": "pending",
+      "actualAck": false,
+      "status": "PASS"
+    },
+    {
+      "case": "malformed-gate",
+      "expected": "error",
+      "actualAck": false,
+      "status": "PASS"
+    },
+    {
+      "case": "malformed-trace",
+      "expected": "error",
+      "actualAck": false,
+      "status": "PASS"
+    },
+    {
+      "case": "malformed-presented",
+      "expected": "error",
+      "actualAck": false,
+      "status": "PASS"
+    },
+    {
+      "case": "malformed-dismissed",
+      "expected": "error",
+      "actualAck": false,
+      "status": "PASS"
+    },
+    {
+      "case": "wrong-closed-reason",
+      "expected": "error",
+      "actualAck": false,
+      "status": "PASS"
+    },
+    {
+      "case": "task-not-cancelled",
+      "expected": "error",
+      "actualAck": false,
+      "status": "PASS"
+    },
+    {
+      "case": "wrong-nonce",
+      "expected": "error",
+      "actualAck": false,
+      "status": "PASS"
+    },
+    {
+      "case": "dismissed-before-touch",
+      "expected": "error",
+      "actualAck": false,
+      "status": "PASS"
+    },
+    {
+      "case": "wrong-retained-choices",
+      "expected": "error",
+      "actualAck": false,
+      "status": "PASS"
+    },
+    {
+      "case": "outside-modal",
+      "expected": "error",
+      "actualAck": false,
+      "status": "PASS"
+    }
+  ],
+  "count": 14,
+  "sourceSHA256": "6109d413290fe0a87dbe59b5a4994935f21b728281a94df97e6ebfbd6316b632",
+  "fixture": "source251-lifecycle-caller-controls-r1-fixtures.json.gz",
+  "decodedBytes": 132545,
+  "decodedSHA256": "0f12f5ca9cf320e767cde5ddc6e522b287ff3d458720cb551c2f8c221dec7d8e",
+  "scope": "Actual caller+raw reader+protocol/publisher/outer handler on isolated files, runner preseeded/protection+fixed/source+installed stubbed. No actual native/UI/app/preferences/process acceptance.",
+  "checkedAt": 1794176574.217194
+}

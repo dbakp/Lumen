@@ -1,0 +1,342 @@
+{
+  "part": 164,
+  "source": "durable-source-r251.json",
+  "status": "NOT_READY: requested checker/API and active-waiter corrections supported; planned execution tools still reference older source boundaries",
+  "verdict": {
+    "sourceReady": false,
+    "requiredCorrectionIDs": [
+      "P164-C1"
+    ],
+    "P163CheckerAndWaiterCorrectionsSupported": true,
+    "nativeAcceptance": false,
+    "globalProductAcceptance": false,
+    "score": null,
+    "stopBeforeBuild": true,
+    "next": "Preserve frozen251/report/root/exact before separately corrected successor. Fullgoal remains active."
+  },
+  "independentFrozenVerification": {
+    "bindings": 875,
+    "text": 813,
+    "fixtures": 62,
+    "allCurrentArchiveBytesHashesExact": true,
+    "all852PriorInputsIdentical": true,
+    "priorModified": [],
+    "appended": 23,
+    "appAndUITest": "All250app/gate/trace/view/fixture/native inputs exact; no currentfullpair/native proof inferred.",
+    "method": "Read full twohostdiffs, actual14API+14caller producers/decodedfixtures/receipts, plan,3plannedrunners, arrays/root. Actualchecker Assert+Expr and actualcallerfunctions/outerhandler AST match archived currentnodes. Plain read/hash/AST/JSON/gzip comparisons only; no judgedimports/execution, process/sim/defaults/Git/build/query/reset/cleanup.",
+    "controlArchives": [
+      {
+        "file": "source251-checker-api-controls-r1-fixtures.json.gz",
+        "decodedBytes": 1416304,
+        "decodedSHA256": "3ef234d1768b2f51d909588208ca22652ec35b8ca05b69cb907f42dd16e4e33e",
+        "qualification": "Exact archive JSON decoded; includes deliberately invalid payload/hash/base64 negatives, not all records claimed valid."
+      },
+      {
+        "file": "source251-lifecycle-caller-controls-r1-fixtures.json.gz",
+        "decodedBytes": 132545,
+        "decodedSHA256": "0f12f5ca9cf320e767cde5ddc6e522b287ff3d458720cb551c2f8c221dec7d8e",
+        "qualification": "Exact archive JSON decoded; includes deliberately invalid payload/hash/base64 negatives, not all records claimed valid."
+      }
+    ]
+  },
+  "supportedCorrections": [
+    {
+      "id": "P163-C1",
+      "status": "Supported source closure",
+      "detail": "New check-confirmation-lifecycle-r2.py changes only unique lifecycle-r2 output suffix and all_payloads(state,h,inputs.app). Earlier exact state.preflight==inputs stays. Callee sole(preflight,app) metadata-only null-base64 exception unchanged; no broad nullskip. Actual14case checkercontrols execute matching Assert/Expr AST on genuine canonical248state/preflight and isolated expectedmetadata, plus12spoof/wrongmetadata/path/null/payload negatives. This is not fresh currentbinary verification or fullactualchecker execution."
+    },
+    {
+      "id": "P163-R1",
+      "status": "Supported source closure",
+      "detail": "New confirmation-lifecycle-driver-r2.py only adds pre-firstrelay guard after strict v.trace: onecreated returns pending, exactlytwo validated created+wait-started activeprefix required to arm. Actualcaller fixture first invokes activeprefix/arms before exposing laterdismissalcompletion. Onlycreated case publishes neitherrelay norack. No appguard/taskauthority change."
+    }
+  ],
+  "requiredFindings": [
+    {
+      "id": "P164-C1",
+      "priority": "Blocking before first current build and later Release",
+      "title": "Planned execution scripts verify/report older source boundaries",
+      "locations": [
+        {
+          "file": "Design/native/health-write-order/source251-target-change-native-build-r1-planned.py",
+          "actual": "Loads durable-source-r249.json, emits outcome.source and receipt.source durable-source-r249.json while output/log/receipt filenames say251.",
+          "effect": "Currentapp/view/gate/trace/fixture/UITest differ249, so verify rejects beforexcodebuild. Bypassing it would misattribute compiledsource/counts/receipt. Inherited250planning defect, not observedbuildfailure."
+        },
+        {
+          "file": "Design/native/health-write-order/source251-debug-release-controls-r1-planned.py",
+          "actual": "Asserts receipt.source==plan.source==durable-source-r249.json, but actual251predeclared plan.source is durable-source-r251.json. Human resolvedplan status still says Actual249Debug199matched.",
+          "effect": "Necessarilyfails correctcurrent251receipt/plan pairing; humanlabel also misattributes ifunfixed."
+        },
+        {
+          "file": "Design/native/health-write-order/source251-unsigned-release-r1-planned.py",
+          "actual": "Loads/verifies durable-source-r248.json/.gz and emits outcome.source durable-source-r248.json while actualplan/outputfiles say251.",
+          "effect": "Stale248currentbytecheckfails beforeReleasebuild; wrongsourceifbypassed. NewlifecycleDEBUGappinputs need coherentcurrentRelease boundary."
+        }
+      ],
+      "minimumCorrection": "Preserve251/report/root/exact then in separately frozen successor correct every executable manifest/archive/input-count/outcome/receipt/binder source reference to actualsuccessorcurrentmanifest. Correct human actualDebug label/currentpreparedstatus. Keep historicalcontrol inputs explicitly historical; do not indiscriminately rewrite history. Add prelaunch consistency assertions across source/plan/manifest/hash/archive/basenames.",
+      "requiredControls": "Actual AST/source-reference preflight controls for all3runners: manifest/archive loads, Debugoutcome/receipt sources, binder sourcecomparison, Releaseoutcomesource. Require expectedcurrentmanifest+plan, old251scripts fail. Isolated fragment/sourcechecks only, no xcodebuild/process invocation just to discover mistakes. Prior14API/14caller controls do not cover these newrunner references."
+    }
+  ],
+  "isolatedControls": [
+    {
+      "name": "Actual corrected checker API fragment",
+      "cases": 14,
+      "accept": 2,
+      "reject": 12,
+      "scope": "Actualstate.preflight==inputs Assert and corrected all_payloads Expr; realpayloadvalidator/purehelper on genuinecanonical248fullstate plus wrongmetadata/path/null/size/hash/base64 negatives. Independentmetadata is copied historicalinputs, not freshlyverifiedcurrentbinary. Currentnodes/hashes/fixturebytebindings verified; no wholecurrentchecker/liveaudit/native proof."
+    },
+    {
+      "name": "Actual observe/confirmation_gate/outerhandler",
+      "cases": 14,
+      "scope": "Created-only pending/noarm; onevalidtwostep active→closedcompletion lateack; missingcompletion/dismissedpending and malformedinput/reason/task/nonce/choices/geometry failures. Actualprotocol/publisher/rawreader on isolatedfiles; runnerpreseeded/protection/fixed/source/installed stubbed. No actualUI/preferences/process/native evidence."
+    },
+    {
+      "name": "Actual R2 entrypointhelp",
+      "cases": 2,
+      "exit": [
+        0,
+        0
+      ],
+      "realProcessQueries": 0,
+      "scope": "ActualdriverR2/checkerR2 imports/argparse beforeproducer underdenial; not plannedrunner/sourceconsistency or finalchecker execution."
+    },
+    {
+      "name": "Unchanged250controls",
+      "carryOnly": {
+        "pureProtocolPublisher": 33,
+        "macOSGateTraceScheduling": 4,
+        "extractedContextFixedGuards": 37,
+        "SDKR2": [
+          "wholeUITest withoutstubs",
+          "wholegate+trace withnamedstubs"
+        ]
+      },
+      "scope": "All852priorinputs byteidentical. No repeatSDK/task/guard or actualiOSNotnow/closedtasklateack/nativefreshread acceptance. Source163taskvalueobserver/probeanalysis retained withinoriginalscope."
+    }
+  ],
+  "authorityAndExecutionScope": {
+    "app": "Host-only251, no app/test/transaction/model/authority change. Outside exacttask.valueobserver/metadataregistry/freshCheckread path same250; shipping#else unchanged. Actualworkercompletion/Notnow/freshread not yetobserved natively.",
+    "nativeContract": "Fivehostboundaries/14originals/fullhelper; actualrealalertmarker, actualNotnowclosed/cancelled/waitexit/afterawaitcompletion before lateoriginalnonce ack; freshactualCheckrequest+ackdigest+timestamps/Data42; current13prior13/provider/intent/source unchanged/noAcquire/Recover/commit; old/freshBack/roots/3sclosure+strictfinalprocess. Allstillruntimegates.",
+    "beforeExecution": "Correctsuccessor runners and controls/root/fullsource review/exact before currentpairbuild/actualDebugmarkers/root/exact; then actualR2driver+mandatoryR2checker/fulloriginalexport/helper/summary/root/critic/exact beforecleanup/reset.",
+    "predeclaredArrays": {
+      "negative": 215,
+      "plannedDebugPositive": 199,
+      "negativeOnly": 16,
+      "production": 21,
+      "elementIdentical250": true,
+      "currentBinaryProof": false
+    },
+    "planningText": "actualDebugPreflight still says Current250fullpair required although251sourceBoundary/status requirescurrent251pair. Correct with executable/human planning labels in successor; no250build was attempted.",
+    "Release": "NewDEBUGappinputs require coherentcurrentRelease/settings/compiler/FileList proof later. Optimized INSTRUMENTED unsigneddevelopment only; no signeddistribution/runtime/performance/phone/globalacceptance."
+  },
+  "historyAndLimits": [
+    "Source250/163NOT_READY/APIbug/R1tools immutable; successfulR2APIcontrols do not retroactivelyaccept250 or proveactualnativecase.",
+    "No250/251fullapp/native/Release execution occurred; no actualcasecounts, taskcompletion, lateack immunity, freshCheck, cleanup or finalprocess acceptance inferred.",
+    "StringNotnow/true90sexpiry/othercancelraces/presentationselection/preparation-finalcommit/retainedcopyowner/all43/eightgroups/fullgoal remainopen. No score/appearance/VOspeech/motion acceptance.",
+    "Onlynewreportwritten. Frozeninputs/docs/otherreports/indices untouched; no oldraw248/249audit rerun or cleanup."
+  ],
+  "provenance": [
+    {
+      "path": "Design/native/health-write-order/check-confirmation-lifecycle-r2.py",
+      "bytes": 15318,
+      "sha256": "eb6bc2a9cb0bf937bd8fd3cb6023aaedf92e593bb9345344b11856f866789f6f"
+    },
+    {
+      "path": "Design/native/health-write-order/confirmation-lifecycle-driver-r2.py",
+      "bytes": 19028,
+      "sha256": "6109d413290fe0a87dbe59b5a4994935f21b728281a94df97e6ebfbd6316b632"
+    },
+    {
+      "path": "Design/native/health-write-order/health-current-release-source251-r1-predeclared-plan.json",
+      "bytes": 20005,
+      "sha256": "f097c7559b06e6e1ca85c253dd7e683c00251332910f82e7756d76884d72384e"
+    },
+    {
+      "path": "Design/native/health-write-order/health-legacy-confirmation-lifecycle-source250-round2-part163-source.json",
+      "bytes": 27169,
+      "sha256": "7170cb11603f4854a9462e9df508da77fd7d2f2a65d825f370abbc89711fea3c"
+    },
+    {
+      "path": "Design/native/health-write-order/source250-checker-metadata-diagnostic-r1-executed.py",
+      "bytes": 3495,
+      "sha256": "1dcf4a8fa422e5e86618b6b39bc861844541f4ad1495cb7bda9648817a8d26f8"
+    },
+    {
+      "path": "Design/native/health-write-order/source250-checker-metadata-diagnostic-r1.json",
+      "bytes": 2572,
+      "sha256": "de3a7ecc4c0efea206bbcf324fbe67588312486e5f197c8014b0039a597d2971"
+    },
+    {
+      "path": "Design/native/health-write-order/source250-root-part163-review-executed.py",
+      "bytes": 2873,
+      "sha256": "98541686f4cedd1ddbbfaaaee5c3f4851140bd7d25c7bae095270a296eaca04c"
+    },
+    {
+      "path": "Design/native/health-write-order/source250-root-part163-review.json",
+      "bytes": 1401,
+      "sha256": "4f30dd856bd3e348cbb9633e995eecf44da847c146bd4f4a93b5e5a6cb6f99e2"
+    },
+    {
+      "path": "Design/native/health-write-order/source250-root-preparation-r1.json",
+      "bytes": 1129,
+      "sha256": "06c14b022b64c953e5d9d0bce5db7d402cc34fe8b4385f952f164a839d659591"
+    },
+    {
+      "path": "Design/native/health-write-order/source250-source-exact-github.json",
+      "bytes": 405237,
+      "sha256": "0e1873cbde97251cfce9ca727faa85985dbe76fd6c58cb6e57f0ac96e1ddbe5c"
+    },
+    {
+      "path": "Design/native/health-write-order/source251-checker-api-controls-r1-executed.py",
+      "bytes": 4281,
+      "sha256": "4347749972fb61baa6537f22c8d3058731a90342a6db23e39f0b2ccff9378ee9"
+    },
+    {
+      "path": "Design/native/health-write-order/source251-checker-api-controls-r1-fixtures.json.gz",
+      "bytes": 255734,
+      "sha256": "428c9075fb801e2cce8c9089626615dd2da159b5c0f48de87aec0a7e32ed0876"
+    },
+    {
+      "path": "Design/native/health-write-order/source251-checker-api-controls-r1.json",
+      "bytes": 3675,
+      "sha256": "47444c9e316234c21b2c00d30f12e2379fcabee5ba82b47aece9e36df7bc19fe"
+    },
+    {
+      "path": "Design/native/health-write-order/source251-confirmation-lifecycle-corrections-r1-plan.json",
+      "bytes": 1749,
+      "sha256": "1a2db741aa46151512b6bb3d1e4ccd939a1f51498e3c8c3e320514843ab50c79"
+    },
+    {
+      "path": "Design/native/health-write-order/source251-debug-release-controls-r1-planned.py",
+      "bytes": 2688,
+      "sha256": "a91fc4591d83380fac0731b4eaca0cc6d11e56f0bdb061a37c032867bbf88700"
+    },
+    {
+      "path": "Design/native/health-write-order/source251-entrypoint-controls-r1-executed.py",
+      "bytes": 1305,
+      "sha256": "59ed838fe5bd1a3c378651a45d9b9ae4898bcb42b206c1217db34b6f97706007"
+    },
+    {
+      "path": "Design/native/health-write-order/source251-entrypoint-controls-r1.json",
+      "bytes": 1408,
+      "sha256": "1a601809877132406eb9fd018ba22b4a5064edc4c5fe2b0d043015d85f33f834"
+    },
+    {
+      "path": "Design/native/health-write-order/source251-lifecycle-caller-controls-r1-executed.py",
+      "bytes": 8831,
+      "sha256": "97cc2a3c8b31f3a31caed8737c4f147511fcb581b819f2b2268568e70c2aa22c"
+    },
+    {
+      "path": "Design/native/health-write-order/source251-lifecycle-caller-controls-r1-fixtures.json.gz",
+      "bytes": 9647,
+      "sha256": "e4fe902a06b19f5a75662c12686c1c8d27bd329a6ad8604e97c2162a4919466f"
+    },
+    {
+      "path": "Design/native/health-write-order/source251-lifecycle-caller-controls-r1.json",
+      "bytes": 2432,
+      "sha256": "a7855febd42ef39ec1d917a6dafd63972f3a0873f599491246eff25e31079900"
+    },
+    {
+      "path": "Design/native/health-write-order/source251-root-preparation-r1-executed.py",
+      "bytes": 3842,
+      "sha256": "d98df5ecbc172301c92b933b2735b88a838c270f4f513137bd943720c7ecd0c3"
+    },
+    {
+      "path": "Design/native/health-write-order/source251-target-change-native-build-r1-planned.py",
+      "bytes": 2682,
+      "sha256": "9efb824b9f138da3341643f68d5fe83a5ba67e14b351e3fa4c0a5ba746600516"
+    },
+    {
+      "path": "Design/native/health-write-order/source251-unsigned-release-r1-planned.py",
+      "bytes": 3333,
+      "sha256": "cd184fb4947d3889b3e3ded8c3991d6be4172d450a0b1cf05ac2ef64b0df07c4"
+    },
+    {
+      "path": "Design/native/health-write-order/durable-source-r251.json",
+      "bytes": 162112,
+      "sha256": "ba5d0d50c2b005b8f46a38a24a51ca0127109be139624f5185fa81953f8db902"
+    },
+    {
+      "path": "Design/native/health-write-order/durable-source-r251.json.gz",
+      "bytes": 4953804,
+      "sha256": "d05ffdbfeb9b616162aad75e02df4e3ab88215c8b0110c1f6efd69b2ee791e71"
+    },
+    {
+      "path": "Design/native/health-write-order/durable-source-r250.json",
+      "bytes": 157509,
+      "sha256": "899883a05d73213e38491fb1ec6cef3e058af6f88c077af2c629786c6c07f043"
+    },
+    {
+      "path": "Design/native/health-write-order/durable-source-r250.json.gz",
+      "bytes": 4569021,
+      "sha256": "68a28fa3180d70cc98e753a63358c01fa1353cf80271aad6f6486f71dc229d7d"
+    },
+    {
+      "path": "Design/native/health-write-order/source251-root-preparation-r1.json",
+      "bytes": 574,
+      "sha256": "e532065c85a0d218aae2d269d0bb0732ff538b577e15790bada15025cda3ee13"
+    },
+    {
+      "path": "Design/native/health-write-order/confirmation-lifecycle-driver-r1.py",
+      "bytes": 18780,
+      "sha256": "7f31ecee2e4199c5ebf23ee1bff96982f77b146d3ca8f9b664e5ce86605b647b"
+    },
+    {
+      "path": "Design/native/health-write-order/check-confirmation-lifecycle-r1.py",
+      "bytes": 15321,
+      "sha256": "4a75cc06b26b509f4ad2f58d73e1704a75dac571e0a41b4b5b06db138cef13ae"
+    },
+    {
+      "path": "Design/native/health-write-order/legacy-target-change-validation-r3.py",
+      "bytes": 8532,
+      "sha256": "5900a9ab9ea0fe288b1890bec9868b6ab20cca008a53ed36ee3023e265167b50"
+    },
+    {
+      "path": "Design/native/health-write-order/confirmation-lifecycle-protocol-r1.py",
+      "bytes": 4998,
+      "sha256": "efb9a5acc54bb5d4d3a8fe1cd905c55cdb403e8e72ac0d7232721953e364375a"
+    },
+    {
+      "path": "Design/native/health-write-order/confirmation-lifecycle-evidence-r1.py",
+      "bytes": 4473,
+      "sha256": "bb937d682f9f0437f0125083240be0cfd5f7646fb54c93d2161a7ad03b2ba341"
+    },
+    {
+      "path": "Design/native/health-write-order/source250-target-change-native-build-r1-planned.py",
+      "bytes": 2682,
+      "sha256": "eab610ff8c84f2f48da7a9661e12fe34c8973ce32b09084b5364ef10e763ece5"
+    },
+    {
+      "path": "Design/native/health-write-order/source250-debug-release-controls-r1-planned.py",
+      "bytes": 2688,
+      "sha256": "cc5192512075403d06cbb56530cfdd157680e89d1b3087e4fd7d3350206c2800"
+    },
+    {
+      "path": "Lumen/Views/HealthConfirmationLifecycleTrace.swift",
+      "bytes": 13090,
+      "sha256": "62d32a8e17acf7bca5233b0da1fbf8b5959c53a491cc4929915e5d73212b8e4a"
+    },
+    {
+      "path": "Lumen/Views/HealthConfirmationTargetChangeGate.swift",
+      "bytes": 7319,
+      "sha256": "010e65b6e051058397d8aa0fbf7fbd2ac56c93d922c0015a12e649f1c64978fd"
+    },
+    {
+      "path": "Lumen/Views/BackupFileRecoveryView.swift",
+      "bytes": 40912,
+      "sha256": "d1be20aed36fe76a6c5e76d413df24c0766e3418bfffa7cf7c042fa9c5ffa99a"
+    },
+    {
+      "path": "Lumen/Views/HealthLegacyTargetChangeUIFixture.swift",
+      "bytes": 31263,
+      "sha256": "bb84e44e1f59cfdfe28aa977f9799858edf72cd1c6c1339479724e8dd8b5c3a2"
+    },
+    {
+      "path": "LumenUITests/LumenSmokeTests.swift",
+      "bytes": 801938,
+      "sha256": "c3868c379777737bed6f13a87df25b9c906f59bf837737aaaa2a006d31cc73f4"
+    }
+  ],
+  "completedAtUTC": "2026-11-08T22:28:23Z",
+  "availableBytesAtFinish": 27814920192
+}
