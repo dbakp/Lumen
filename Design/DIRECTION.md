@@ -459,3 +459,7 @@ Budgets: per-domain supplemental row ≤8 words; capture state ≤12; consequenc
 ### Source226 verification controls · 8 November 2026
 
 The dedicated DEBUG simulator route adds “Change saved data” (3 words) and “Target check” (2 words), both within a 3-word fixture-control budget. These bind a single known synthetic meals mutation and read-only host acknowledgements to the actual review owner. Shipping recovery copy, native structure, visual tokens and backend policy stay as established. Native/rendered verification is pending; these controls are excluded from Release.
+
+### Source230 startup verification control · 8 November 2026
+
+“Start check” is a 2-word DEBUG-only toolbar action, within the 3-word fixture-control budget. In the target-change test route it binds the real Backup & restore parent navigation to contemporaneous known-value facts before the host checks disk readiness. The target-mode parent footer probe is absent; root/settings metadata probes remain scoped. Native toolbar behavior and existing shipping tokens/copy stay as established. Rendered/native proof is pending, and the first case remains light/standard only.

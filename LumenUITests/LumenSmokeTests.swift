@@ -5793,7 +5793,19 @@ final class LumenSmokeTests: XCTestCase {
         }
         let change = app.buttons["changeHealthRecoveryTarget"].firstMatch
         func checkpoint(_ phase: String, location: String? = nil) throws {
-            let probe = location.map { app.descendants(matching: .any).matching(identifier: "healthLegacyTargetStatus-" + $0).firstMatch } ?? change
+            let probe = phase == "before-selection" ? app.buttons["startHealthRecoveryCheck"].firstMatch
+                : (location.map { app.descendants(matching: .any).matching(identifier: "healthLegacyTargetStatus-" + $0).firstMatch } ?? change)
+            if phase == "before-selection" {
+                try require(probe.waitForExistence(timeout: 10) && probe.isHittable && probe.isEnabled,
+                    phase, "Actual parent startup control unavailable")
+                let touchFrame = probe.frame, beforeTouchHittable = probe.isHittable, beforeTouchEnabled = probe.isEnabled
+                let beforeTouchAt = Date().timeIntervalSince1970
+                probe.tap()
+                observations.append(["phase": "native-before-selection-tap", "identifier": probe.identifier,
+                    "beforeTouchHittable": beforeTouchHittable, "beforeTouchEnabled": beforeTouchEnabled,
+                    "beforeTouchFrame": String(describing: touchFrame), "at": beforeTouchAt,
+                    "tapReturnedAt": Date().timeIntervalSince1970])
+            }
             let expected = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", "host-" + phase), object: probe)
             try require(XCTWaiter.wait(for: [expected], timeout: 45) == .completed, phase, "Actual host audit acknowledgement missing")
             observations.append(["phase": phase, "probeValue": probe.value as? String ?? "", "at": Date().timeIntervalSince1970])

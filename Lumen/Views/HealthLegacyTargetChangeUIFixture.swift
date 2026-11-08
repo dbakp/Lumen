@@ -65,6 +65,35 @@ enum HealthLegacyTargetChangeUIFixture {
                         errorType: String(reflecting: type(of: error)), control: String(describing: ObjectIdentifier(control)))
     }
     static func succeeded(_ session: UUID) { guard requested else { return }; bridge.succeeded(session) }
+    static var canStart: Bool { bridge.canStart }
+    @MainActor static func start() {
+        do {
+            guard let context = try context(ProcessInfo.processInfo.arguments),
+                  Bundle.main.bundleIdentifier == "com.dbakp.lumen" else { throw Failure.invalidContext }
+            let root = try bridge.root(for: context)
+            func missing(_ name: String) -> [String: Any] {
+                var facts = stat()
+                let result = lstat(root.appendingPathComponent(name).path, &facts)
+                let failure = result == -1 ? errno : 0
+                return ["missing": result == -1 && failure == ENOENT,
+                        "exists": result == 0, "errno": Int(failure), "mode": Int(facts.st_mode)]
+            }
+            let meals = missing("meals.json"), workouts = missing("workouts.json")
+            let health = UserDefaults.standard.bool(forKey: "lumen.health.connected")
+            let observation: [String: Any] = ["runID": context.runID.uuidString, "pid": Int(getpid()),
+                "at": Date().timeIntervalSince1970, "fixed": fixedFacts(), "healthConnected": health,
+                "mealsLeaf": meals, "workoutsLeaf": workouts]
+            // Persist the actual bounded observation before its value assertions.
+            // This is metadata only: no LocalStore write/revision/defaults API.
+            try bridge.observeBootstrap(context, facts: observation)
+            guard !health, meals["missing"] as? Bool == true, workouts["missing"] as? Bool == true else {
+                throw Failure.invalidObservation
+            }
+            try missingMeals(in: root)
+            try requireOriginalFixedValues()
+            try bridge.finishBootstrap(context)
+        } catch { bridge.failed(error, facts: fixedFacts()) }
+    }
     static var phase: String { bridge.phase }
     static func canChange(_ session: UUID) -> Bool { bridge.canChange(session) }
     static func expectedMeals() -> Data { bridge.didWrite ? newerMeals : HealthLegacyOriginUIFixture.data }
@@ -154,6 +183,8 @@ enum HealthLegacyTargetChangeUIFixture {
         private var consumed = false
         private var written = false
         private var failedFlag = false
+        private var bootstrapNativeChecked = false
+        private var bootstrapObservation: [String: Any]?
         private var rows: [[String: Any]] = []
         private var status = "not-prepared"
         var didWrite: Bool { lock.lock(); defer { lock.unlock() }; return written }
@@ -164,7 +195,7 @@ enum HealthLegacyTargetChangeUIFixture {
             lock.unlock()
             let expected: String?
             switch status {
-            case "prepared": expected = "host-before-selection"
+            case "before-selection": expected = "host-before-selection"
             case "ready": expected = "host-ready"
             case "mutated": expected = "host-target-changed"
             case "rejected": expected = "host-rejected"
@@ -184,9 +215,30 @@ enum HealthLegacyTargetChangeUIFixture {
                   row["sequence"] as? Int == sequence, row["phase"] as? String == expected else { return status }
             return expected
         }
+        var canStart: Bool {
+            lock.lock(); defer { lock.unlock() }
+            return context != nil && preparedPID == getpid() && active == nil && captureID == nil
+                && !bootstrapNativeChecked && bootstrapObservation == nil && !consumed && !failedFlag && status == "prepared"
+        }
+        func observeBootstrap(_ context: Context, facts: [String: Any]) throws {
+            lock.lock(); defer { lock.unlock() }
+            guard self.context == context, preparedPID == getpid(), active == nil, captureID == nil,
+                  !bootstrapNativeChecked, bootstrapObservation == nil, !consumed, !failedFlag,
+                  status == "prepared" else { throw Failure.invalidObservation }
+            bootstrapObservation = facts; status = "bootstrap-checking"
+            try save()
+        }
+        func finishBootstrap(_ context: Context) throws {
+            lock.lock(); defer { lock.unlock() }
+            guard self.context == context, preparedPID == getpid(), active == nil, captureID == nil,
+                  !bootstrapNativeChecked, bootstrapObservation != nil, !consumed, !failedFlag,
+                  status == "bootstrap-checking" else { throw Failure.invalidObservation }
+            bootstrapNativeChecked = true; status = "before-selection"
+            try save()
+        }
         func canChange(_ session: UUID) -> Bool {
             lock.lock(); defer { lock.unlock() }
-            return !consumed && !failedFlag && active == session && readyID != nil && status == "ready"
+            return bootstrapNativeChecked && !consumed && !failedFlag && active == session && readyID != nil && status == "ready"
         }
         func prepare(_ context: Context, root: URL) throws {
             lock.lock(); defer { lock.unlock() }
@@ -200,6 +252,7 @@ enum HealthLegacyTargetChangeUIFixture {
             return rootURL
         }
         func opened(_ session: UUID) { update {
+            guard bootstrapNativeChecked else { throw Failure.invalidObservation }
             active = session; pendingControl = nil; captureID = nil; readyID = nil; status = "opened"
             rows.append(["event": "open", "sessionID": session.uuidString])
         } }
@@ -232,7 +285,7 @@ enum HealthLegacyTargetChangeUIFixture {
         } }
         func authorize(_ context: Context, session: UUID) throws -> UUID {
             lock.lock(); defer { lock.unlock() }
-            guard self.context == context, preparedPID == getpid(), active == session, !failedFlag, !consumed,
+            guard self.context == context, preparedPID == getpid(), bootstrapNativeChecked, active == session, !failedFlag, !consumed,
                   status == "ready", let readyID else { throw Failure.duplicateMutation }
             return readyID
         }
@@ -294,7 +347,8 @@ enum HealthLegacyTargetChangeUIFixture {
                 "pid": Int(getpid()), "status": status, "at": Date().timeIntervalSince1970,
                 "sequence": rows.count, "sessionID": active?.uuidString ?? "", "captureID": captureID?.uuidString ?? "",
                 "singleUseConsumed": consumed, "knownKeyWritten": written, "failed": failedFlag,
-                "healthConnected": UserDefaults.standard.bool(forKey: "lumen.health.connected"), "events": rows]
+                "healthConnected": UserDefaults.standard.bool(forKey: "lumen.health.connected"),
+                "bootstrapNativeChecked": bootstrapNativeChecked, "bootstrapObservation": bootstrapObservation ?? [:], "events": rows]
             let data = try JSONSerialization.data(withJSONObject: value, options: [.sortedKeys, .prettyPrinted])
             if initial { try data.write(to: file, options: .withoutOverwriting) }
             else { try data.write(to: file, options: .atomic) }
@@ -316,10 +370,23 @@ enum HealthLegacyTargetChangeUIFixture {
     }
 }
 
+@MainActor struct HealthLegacyTargetStartUIProbe: View {
+    var body: some View {
+        if HealthLegacyTargetChangeUIFixture.requested {
+            TimelineView(.periodic(from: .now, by: 0.2)) { _ in
+                Button("Start check") { HealthLegacyTargetChangeUIFixture.start() }
+                    .disabled(!HealthLegacyTargetChangeUIFixture.canStart)
+                    .accessibilityIdentifier("startHealthRecoveryCheck")
+                    .accessibilityValue(HealthLegacyTargetChangeUIFixture.phase)
+            }
+        }
+    }
+}
+
 @MainActor struct HealthLegacyTargetStatusUIProbe: View {
     let location: String
     var body: some View {
-        if HealthLegacyTargetChangeUIFixture.requested {
+        if HealthLegacyTargetChangeUIFixture.requested && location != "parent" {
             TimelineView(.periodic(from: .now, by: 0.2)) { _ in
                 Text("Target check").accessibilityIdentifier("healthLegacyTargetStatus-" + location)
                     .accessibilityValue(HealthLegacyTargetChangeUIFixture.phase)

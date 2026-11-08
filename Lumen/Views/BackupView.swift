@@ -141,6 +141,11 @@ struct BackupView: View {
         .overlay(alignment: .bottom) { HealthOriginCaptureUIProbe(location: "parent") }
         #endif
         .toolbar {
+            #if DEBUG && targetEnvironment(simulator)
+            if HealthLegacyTargetChangeUIFixture.requested {
+                ToolbarItem(placement: .topBarTrailing) { HealthLegacyTargetStartUIProbe() }
+            }
+            #endif
             if busy {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(cancellationRequested ? "Cancelling…" : "Cancel", role: .cancel) { cancelOperation() }
