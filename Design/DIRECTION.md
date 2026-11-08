@@ -455,3 +455,7 @@ Keep the existing native Review recovery Form, navigation, typography and contro
 - Success keeps “Selected data recovered” and the committed domain metadata so consequence wording stays accurate. No new visual decoration or motion.
 
 Budgets: per-domain supplemental row ≤8 words; capture state ≤12; consequence ≤25; confirmation ≤30; failure ≤15. Existing metadata, record counts, Apple Health/no-replay consequence and native controls remain. Scrollable Form content may exceed these per-block budgets; inspect every changed block in its native scroll position. Retained-copy target-legacy UI is a separate follow-on.
+
+### Source226 verification controls · 8 November 2026
+
+The dedicated DEBUG simulator route adds “Change saved data” (3 words) and “Target check” (2 words), both within a 3-word fixture-control budget. These bind a single known synthetic meals mutation and read-only host acknowledgements to the actual review owner. Shipping recovery copy, native structure, visual tokens and backend policy stay as established. Native/rendered verification is pending; these controls are excluded from Release.

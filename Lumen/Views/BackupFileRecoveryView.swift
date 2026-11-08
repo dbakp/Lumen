@@ -78,6 +78,7 @@ final class BackupRecoveryReviewSession: Sendable {
         #if DEBUG && targetEnvironment(simulator)
         HealthOriginCaptureUIFixture.register(id, control: control,
             state: String(describing: origins.state), metadata: origins.metadata != nil)
+        HealthLegacyTargetChangeUIFixture.began(id, control: control)
         #endif
     }
     func suspendOriginCapture(control: BackupOperationControl) {
@@ -112,6 +113,7 @@ final class BackupRecoveryReviewSession: Sendable {
                 try origins.finish(snapshot, control: control)
                 noteCapture("finish-accepted", control: control)
                 HealthLegacyOriginUIFixture.note("ready", id: id, domains: snapshot.metadata.legacyDomains)
+                HealthLegacyTargetChangeUIFixture.ready(id, control: control, domains: snapshot.metadata.legacyDomains)
             } catch {
                 // This catch is inside the acquired input's lifetime scope.
                 noteCapture("capture-rejected-before-input-defer-" + capturePhase, control: control, error: error)
@@ -151,6 +153,7 @@ final class BackupRecoveryReviewSession: Sendable {
         #if DEBUG && targetEnvironment(simulator)
         verificationSource = input.verificationSource
         HealthLegacyOriginUIFixture.note("open", id: id)
+        HealthLegacyTargetChangeUIFixture.opened(id)
         #endif
     }
     func acquire(control: BackupOperationControl) throws -> BackupService.RecoveryInput { try lease.acquire(control: control) }
@@ -159,6 +162,7 @@ final class BackupRecoveryReviewSession: Sendable {
         #if DEBUG && targetEnvironment(simulator)
         noteCapture("owner-closed", control: nil)
         HealthLegacyOriginUIFixture.note("closed", id: id)
+        HealthLegacyTargetChangeUIFixture.closed(id)
         #endif
         lease.close()
         #if DEBUG && targetEnvironment(simulator)
@@ -386,8 +390,12 @@ struct BackupFileRecoveryView: View {
                     Text("Read check").accessibilityIdentifier("healthReadControlState").accessibilityValue(readVerification.phase)
                 }
             }
-            if HealthOriginCaptureUIFixture.mode != nil || HealthLegacyResetUIFixture.requested {
+            if (HealthOriginCaptureUIFixture.mode != nil || HealthLegacyResetUIFixture.requested)
+                && !HealthLegacyTargetChangeUIFixture.requested {
                 ToolbarItem(placement: .topBarTrailing) { HealthOriginCaptureUIProbe(location: "review") }
+            }
+            if HealthLegacyTargetChangeUIFixture.requested {
+                ToolbarItem(placement: .topBarTrailing) { HealthLegacyTargetChangeUIProbe(session: session) }
             }
         }
         #endif
@@ -491,16 +499,23 @@ struct BackupFileRecoveryView: View {
                 try await health.recoverUnavailableHealth(payload, control: control)
                 committedLegacyDomains = selection.legacyDomains; committedDomains = domains
                 recovered = true; selected = []
+                #if DEBUG && targetEnvironment(simulator)
+                HealthLegacyTargetChangeUIFixture.succeeded(session.id)
+                #endif
             } catch is CancellationError { }
             catch {
                 guard !Task.isCancelled, operation === control else { return }
                 do { try control.checkCancellation() } catch { return }
                 let changed: Bool
                 if case HealthLocalFiles.Failure.changed = error { changed = true } else { changed = false }
-                issue = RecoveryIssue(message: selection.legacyDomains.isEmpty
+                let message = selection.legacyDomains.isEmpty
                     ? "Your current files haven't been replaced. Check the file and try again."
                     : changed ? "Your saved data changed. Go back and review it again."
-                    : "Lumen hasn't replaced your saved data. Check the file and try again.")
+                    : "Lumen hasn't replaced your saved data. Check the file and try again."
+                issue = RecoveryIssue(message: message)
+                #if DEBUG && targetEnvironment(simulator)
+                HealthLegacyTargetChangeUIFixture.rejected(session.id, changed: changed, message: message, error: error, control: control)
+                #endif
             }
         }
     }

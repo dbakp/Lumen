@@ -71,7 +71,7 @@
 <button class="btn" type="button" data-area="quality" aria-pressed="false" aria-controls="lumen-plan-detail">Answer quality</button>
 <button class="btn" type="button" data-area="release" aria-pressed="false" aria-controls="lumen-plan-detail">Release gates</button>
 </div>
-<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Erasure verification · in progress</h3><div data-verified>The startup safeguard stopped the first erasure test. Saved files and the original backup are unchanged.</div><div data-next>Next: identify which safeguard stopped startup, then verify erasure through Settings and a clean relaunch.</div><div class="text-small" data-gate>Settings erasure is unverified. The two earlier check-and-retry cases remain independently accepted.</div></div>
+<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Recovery protection · in progress</h3><div data-verified>Both legacy formats passed Settings erasure, clean relaunch and follow-up checks, with independent review of all 18 screenshots.</div><div data-next>Next: independent review, compilation and simulator proof that recovery preserves data changed after review.</div><div class="text-small" data-gate>2 of 2 erasure formats verified. New test: 9 storage and 31 launch-context checks passed; simulator proof pending. Broader gates remain open.</div></div>
 </div>
 <div class="section"><h3>Verified safety checks</h3>
 <table class="table table-sm" aria-label="Earlier checks retain their original scope; broader checks remain open"><thead><tr><th>Situation</th><th>Observed result</th></tr></thead><tbody>
@@ -83,14 +83,14 @@
 </tbody></table>
 <div class="text-small">Earlier six-file long-wait preservation failure and Banana zero-fat omission remain failed expectations. Final dismissal preserved the immediate newer state.</div></div>
 <hr>
-<div class="viz-row"><span>About 31 GiB available at last check</span><span>10.10 GB recovered in recorded cleanups · latest cleanup 794.63 MB</span></div>
+<div class="viz-row"><span>About 31 GiB available at last check</span><span>10.12 GB recovered in recorded cleanups · latest cleanup 19.68 MB</span></div>
 <div class="text-small">Redundant exports and completed test bundles removed after exact GitHub verification · canonical evidence and needed caches retained · no further iPhone actions authorized</div>
 <script>
 (()=>{
 const root=document.getElementById('lumen-plan-progress');
-const snapshot='nov8-erasure-pair-reviewed';
+const snapshot='nov8-target-change-source-review';
 const areas={
-current:{title:'Recovery protection · in progress',verified:'Both legacy formats passed Settings erasure, clean relaunch and follow-up checks, with independent review of all 18 screenshots.',next:'Next: ensure recovery cannot overwrite saved data that changed after review.',gate:'2 of 2 declared erasure formats verified. Broader privacy, accessibility and release checks remain open.'},
+current:{title:'Recovery protection · in progress',verified:'Both legacy formats passed Settings erasure, clean relaunch and follow-up checks, with independent review of all 18 screenshots.',next:'Next: independent review, compilation and simulator proof that recovery preserves data changed after review.',gate:'2 of 2 erasure formats verified. New test: 9 storage and 31 launch-context checks passed; simulator proof pending. Broader gates remain open.'},
 quality:{title:'Answer quality · open',verified:'Library search, source identity, consent controls and literal-reference safeguards are delivered.',next:'Next: evidence-support policy and independent evaluation; personal-context and conversation-history privacy review.',gate:'Clinical accuracy, language coverage and live-provider evaluation remain required.'},
 release:{title:'Release readiness · open',verified:'Source223 unsigned release compilation, executable markers and compiler settings passed independent review. Coverage recording is enabled.',next:'Next: background Health, Watch reconnect, widget, interruption and accessibility checks.',gate:'Representative histories, performance, privacy and distribution review remain required. No iPhone installation, launch or checks without a renewed request.'}
 };

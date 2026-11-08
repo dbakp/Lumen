@@ -128,6 +128,13 @@ final class LumenSmokeTests: XCTestCase {
                     "-health-success-observation-ui", "-health-legacy-origin-ui", "data", "-health-legacy-origin-mixed-ui",
                     "-lumen.appearance", "light", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryL"]
             }
+            if name.contains("RecoveryTargetChangedAfterReady") {
+                let run = UUID().uuidString
+                app.launchArguments += ["-health-backup-healthy-merge-ui", "-health-backup-empty-ui",
+                    "-health-legacy-reset-ui", "-health-legacy-reset-run", run,
+                    "-health-legacy-target-change-ui", "ready", "-health-legacy-target-change-run", run,
+                    "-lumen.appearance", "light", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryL"]
+            }
             if name.contains("RecoverySettingsErase") {
                 app.launchArguments += ["-health-backup-healthy-merge-ui", "-health-backup-empty-ui",
                     "-health-legacy-reset-ui", "-health-legacy-reset-run", UUID().uuidString,
@@ -5743,6 +5750,117 @@ final class LumenSmokeTests: XCTestCase {
             Thread.sleep(forTimeInterval: 3)
             try require(welcome.exists && welcome.isHittable, "followup", "First-run state changed during bounded follow-up")
             snap(prefix + "-bounded-followup"); try checkpoint("followup")
+            report("completed")
+        } catch { report("thrown", failure: String(describing: error)); throw error }
+    }
+
+    @MainActor
+    func testHealthBackupFileRecoveryTargetChangedAfterReadyOriginData() throws {
+        executionTimeAllowance = 480
+        let prefix = "health-legacy-target-change"
+        var observations: [[String: Any]] = []
+        func report(_ phase: String, failure: String? = nil) {
+            var row: [String: Any] = ["scope": "actual-legacy-target-change-after-ready-before-confirmation",
+                "phase": phase, "launchArguments": app.launchArguments, "observations": observations]
+            if let failure { row["failure"] = failure }
+            if let data = try? JSONSerialization.data(withJSONObject: row, options: [.prettyPrinted, .sortedKeys]) {
+                let item = XCTAttachment(data: data, uniformTypeIdentifier: "public.json")
+                item.name = prefix + (failure == nil ? "-readback" : "-failure-readback")
+                item.lifetime = .keepAlways; add(item)
+            }
+        }
+        func require(_ ok: Bool, _ phase: String, _ message: String) throws {
+            if !ok {
+                report(phase, failure: message); snap(prefix + "-failed-" + phase); XCTFail(message)
+                throw NSError(domain: "LumenLegacyTargetChangeUI", code: 1)
+            }
+        }
+        func whole(_ target: XCUIElement, _ phase: String, nav: String) throws {
+            let bar = app.navigationBars[nav].firstMatch
+            for attempt in 0..<16 {
+                try require(bar.exists, phase, "Expected active navigation lost")
+                let box = CGRect(x: 0, y: bar.frame.maxY + 12, width: app.frame.width,
+                    height: app.frame.maxY - 40 - bar.frame.maxY - 12)
+                if target.exists && target.isHittable && box.contains(target.frame) { return }
+                let delta = target.exists ? min(box.height * 0.4, max(40, abs(target.frame.midY - box.midY))) : box.height * 0.4
+                let direction: CGFloat = target.exists && target.frame.midY < box.midY ? -1 : 1
+                app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: box.midX, dy: box.midY + direction * delta / 2))
+                    .press(forDuration: 0.05, thenDragTo: app.coordinate(withNormalizedOffset: .zero)
+                        .withOffset(CGVector(dx: box.midX, dy: box.midY - direction * delta / 2)))
+                observations.append(["phase": phase, "pan": attempt, "targetPresent": target.exists, "navigationStillPresent": bar.exists])
+            }
+            try require(false, phase, "Requested complete target could not be revealed")
+        }
+        let change = app.buttons["changeHealthRecoveryTarget"].firstMatch
+        func checkpoint(_ phase: String, location: String? = nil) throws {
+            let probe = location.map { app.descendants(matching: .any).matching(identifier: "healthLegacyTargetStatus-" + $0).firstMatch } ?? change
+            let expected = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", "host-" + phase), object: probe)
+            try require(XCTWaiter.wait(for: [expected], timeout: 45) == .completed, phase, "Actual host audit acknowledgement missing")
+            observations.append(["phase": phase, "probeValue": probe.value as? String ?? "", "at": Date().timeIntervalSince1970])
+        }
+        func backToSettings(_ phase: String) throws {
+            app.navigationBars["Review recovery"].buttons.element(boundBy: 0).tap()
+            try require(app.navigationBars["Backup & restore"].waitForExistence(timeout: 10), phase, "Recovery Back missed parent")
+            app.navigationBars["Backup & restore"].buttons.element(boundBy: 0).tap()
+            try require(app.navigationBars["Settings"].waitForExistence(timeout: 10), phase, "Backup Back missed Settings")
+        }
+        func openOriginal(_ phase: String) throws {
+            try chooseBackupFixture("Lumen-backup-health-matrix-two-legacy")
+            let link = app.buttons["reviewBackupHealthRecovery"].firstMatch
+            try require(link.waitForExistence(timeout: 30), phase, "Original preview missing")
+            try whole(link, phase, nav: "Backup & restore"); link.tap()
+            let filename = app.staticTexts["recoveryFileName"].firstMatch
+            try require(filename.waitForExistence(timeout: 15) && filename.label == "Lumen-backup-health-matrix-two-legacy.json", phase, "Wrong selected original")
+            let meals = app.switches["recoverFile-meals"].firstMatch
+            let ready = XCTNSPredicateExpectation(predicate: NSPredicate(format: "enabled == true"), object: meals)
+            try require(XCTWaiter.wait(for: [ready], timeout: 30) == .completed, phase, "Actual capture not ready")
+            snap(prefix + "-" + phase + "-original")
+            for (index, control) in [meals, app.switches["Recover without meal photos"].firstMatch, app.switches["recoverFile-workouts"].firstMatch].enumerated() {
+                try whole(control, phase + "-choice-\(index)", nav: "Review recovery")
+                try require(control.isEnabled && control.value as? String == "0", phase, "Choices must be eligible and off")
+                observations.append(["phase": phase, "choice": index, "enabled": control.isEnabled, "value": control.value as? String ?? ""])
+            }
+            snap(prefix + "-" + phase + (phase == "ready" ? "-choices" : "-off"))
+        }
+        do {
+            tab("Today"); tap("Settings")
+            let backup = app.buttons["backupSettings"].firstMatch
+            try whole(backup, "backup-settings", nav: "Settings"); backup.tap()
+            try checkpoint("before-selection", location: "parent"); snap(prefix + "-before-selection")
+            try openOriginal("ready")
+            nativeSwitch("recoverFile-meals", enabled: true, towardsTop: true)
+            let confirm = app.buttons["confirmFileRecovery"].firstMatch
+            try whole(confirm, "selected-meal", nav: "Review recovery")
+            try require(confirm.isEnabled, "selected-meal", "Explicit meals choice must enable recovery")
+            snap(prefix + "-selected-meal"); try checkpoint("ready")
+            try require(change.isEnabled && change.isHittable, "mutation", "Scoped native mutation control unavailable")
+            change.tap(); try checkpoint("target-changed"); snap(prefix + "-target-mutated")
+            try whole(confirm, "confirmation", nav: "Review recovery"); confirm.tap()
+            let alert = app.alerts["Replace selected data?"]
+            try require(alert.waitForExistence(timeout: 5), "confirmation", "Actual recovery confirmation missing")
+            snap(prefix + "-confirmation"); alert.buttons["Recover"].tap()
+            let failure = app.descendants(matching: .any).matching(identifier: "fileHealthRecoveryError").firstMatch
+            try require(failure.waitForExistence(timeout: 30), "changed-error", "Actual recovery did not reject stale review")
+            // Observe automatic product reveal before any test scrolling.
+            try require(failure.isHittable && failure.frame.minY >= app.navigationBars["Review recovery"].frame.maxY
+                && failure.frame.maxY <= app.frame.maxY - 20, "changed-error", "Changed-data error not fully revealed")
+            let message = "Your saved data changed. Go back and review it again."
+            try require(failure.label.contains(message), "changed-error", "Wrong product error")
+            try require(!app.descendants(matching: .any).matching(identifier: "fileHealthRecovered").firstMatch.exists,
+                "changed-error", "Stale recovery unexpectedly succeeded")
+            observations.append(["phase": "changed-error", "message": failure.label, "hittable": failure.isHittable,
+                "frame": NSStringFromCGRect(failure.frame)])
+            snap(prefix + "-changed-error"); try checkpoint("rejected")
+            try backToSettings("owners-closed"); snap(prefix + "-owners-closed")
+            try checkpoint("owners-closed", location: "settings"); snap(prefix + "-owners-followup")
+            try whole(backup, "reopen-backup", nav: "Settings"); backup.tap()
+            try openOriginal("fresh")
+            try require(!failure.exists, "fresh", "Fresh review retained stale error")
+            try whole(confirm, "fresh-action", nav: "Review recovery")
+            try require(!confirm.isEnabled && !change.isEnabled, "fresh", "Fresh choices must be off and mutation single-use")
+            try checkpoint("fresh-ready")
+            try backToSettings("final-closed"); snap(prefix + "-final-closed")
+            try checkpoint("final-closed", location: "settings"); snap(prefix + "-final-followup")
             report("completed")
         } catch { report("thrown", failure: String(describing: error)); throw error }
     }

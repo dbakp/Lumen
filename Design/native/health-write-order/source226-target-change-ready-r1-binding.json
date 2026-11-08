@@ -1,0 +1,42 @@
+{
+  "status": "Source226 concrete implementation binding; unbuilt/unexecuted; independent source review required",
+  "parentPlan": "source226-target-change-ready-r1-plan.json",
+  "planCritic": "health-legacy-target-change-source226-round2-part109-plan.json",
+  "firstCase": "Data after actual ready, before confirmation only",
+  "eventSequence": [
+    "open",
+    "capture-began",
+    "capture-ready",
+    "guard-observation",
+    "before-write",
+    "result-observation",
+    "mutated",
+    "actual-recovery-error",
+    "closed",
+    "open",
+    "capture-began",
+    "capture-ready",
+    "closed"
+  ],
+  "authority": "Fixture first acquires/verifies OLD immutable token under LocalStore.performWrite before single known write. This is a separately labelled guard acquisition; real Recover later performs second actual acquisition of old token and must reject. Never count this case as no-acquire or fresh-token proof. New fresh owner ready is metadata completion only.",
+  "persistence": "10s read-only old\u2192new; all samples persisted before assertion; 3 new samples spanning0.2s then strict protected/fullfixed/source check before ack. Native before/after exact known persisted/effective facts required independently.",
+  "owners": "Native closes review then parent before waiting; host polls actual owners up to10s, no host deletion, then first/later3s strict endpoints and no-open-paths before ack. Repeat at final fresh-owner closure.",
+  "screenshots": [
+    "before-selection",
+    "ready-original",
+    "ready-choices",
+    "selected-meal",
+    "target-mutated",
+    "confirmation",
+    "changed-error",
+    "owners-closed",
+    "owners-followup",
+    "fresh-original",
+    "fresh-off",
+    "final-closed",
+    "final-followup"
+  ],
+  "releasePlan": "health-current-release-source226-r1-predeclared-plan.json",
+  "scope": "No native/source-ready/Release/product-completion acceptance yet. String/healthy/unsupported/preparation/finalcommit/fresh-acquisition+commit/retained-copy ownership and full43/eightgroups remain open.",
+  "checkedAt": 1794134886.820371
+}

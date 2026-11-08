@@ -1,0 +1,2926 @@
+{
+  "scope": "Isolated synthetic parser and readonly persistence controls only; no native or source-ready acceptance",
+  "cases": [
+    {
+      "case": "old-new",
+      "expectedAccept": true,
+      "actualAccept": true,
+      "observation": {
+        "budgetSeconds": 10,
+        "intervalSeconds": 0.1,
+        "stableSamples": 3,
+        "stableSpanSeconds": 0.2,
+        "samples": [
+          {
+            "elapsed": 0.0,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 0.0
+          },
+          {
+            "elapsed": 0.1,
+            "plistBytes": 454,
+            "plistSHA256": "376c2e25fdbf6759db497b9c4a953e8453c1703a122195b59e31c0a1198337ac",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 40,
+                "sha256": "a352b024bfe51c5b74e3effef11dc1f6855458a3c473c2a343044588ede593ba",
+                "base64": "e3N5bnRoZXRpYyBuZXdlciBwZXJzaXN0ZWQgbWVhbHMgZGFtYWdlZA=="
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "new",
+            "completedElapsed": 0.1
+          },
+          {
+            "elapsed": 0.2,
+            "plistBytes": 454,
+            "plistSHA256": "376c2e25fdbf6759db497b9c4a953e8453c1703a122195b59e31c0a1198337ac",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 40,
+                "sha256": "a352b024bfe51c5b74e3effef11dc1f6855458a3c473c2a343044588ede593ba",
+                "base64": "e3N5bnRoZXRpYyBuZXdlciBwZXJzaXN0ZWQgbWVhbHMgZGFtYWdlZA=="
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "new",
+            "completedElapsed": 0.2
+          },
+          {
+            "elapsed": 0.30000000000000004,
+            "plistBytes": 454,
+            "plistSHA256": "376c2e25fdbf6759db497b9c4a953e8453c1703a122195b59e31c0a1198337ac",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 40,
+                "sha256": "a352b024bfe51c5b74e3effef11dc1f6855458a3c473c2a343044588ede593ba",
+                "base64": "e3N5bnRoZXRpYyBuZXdlciBwZXJzaXN0ZWQgbWVhbHMgZGFtYWdlZA=="
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "new",
+            "completedElapsed": 0.30000000000000004
+          }
+        ],
+        "status": "PASS bounded exact new-value observations",
+        "acceptedElapsed": 0.30000000000000004
+      },
+      "persistenceCalls": 17
+    },
+    {
+      "case": "never-new",
+      "expectedAccept": false,
+      "actualAccept": false,
+      "observation": {
+        "budgetSeconds": 10,
+        "intervalSeconds": 0.1,
+        "stableSamples": 3,
+        "stableSpanSeconds": 0.2,
+        "samples": [
+          {
+            "elapsed": 0.0,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 0.0
+          },
+          {
+            "elapsed": 0.1,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 0.1
+          },
+          {
+            "elapsed": 0.2,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 0.2
+          },
+          {
+            "elapsed": 0.30000000000000004,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 0.30000000000000004
+          },
+          {
+            "elapsed": 0.4,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 0.4
+          },
+          {
+            "elapsed": 0.5,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 0.5
+          },
+          {
+            "elapsed": 0.6,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 0.6
+          },
+          {
+            "elapsed": 0.7,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 0.7
+          },
+          {
+            "elapsed": 0.7999999999999999,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 0.7999999999999999
+          },
+          {
+            "elapsed": 0.8999999999999999,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 0.8999999999999999
+          },
+          {
+            "elapsed": 0.9999999999999999,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 0.9999999999999999
+          },
+          {
+            "elapsed": 1.0999999999999999,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 1.0999999999999999
+          },
+          {
+            "elapsed": 1.2,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 1.2
+          },
+          {
+            "elapsed": 1.3,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 1.3
+          },
+          {
+            "elapsed": 1.4000000000000001,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 1.4000000000000001
+          },
+          {
+            "elapsed": 1.5000000000000002,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 1.5000000000000002
+          },
+          {
+            "elapsed": 1.6000000000000003,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 1.6000000000000003
+          },
+          {
+            "elapsed": 1.7000000000000004,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 1.7000000000000004
+          },
+          {
+            "elapsed": 1.8000000000000005,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 1.8000000000000005
+          },
+          {
+            "elapsed": 1.9000000000000006,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 1.9000000000000006
+          },
+          {
+            "elapsed": 2.0000000000000004,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 2.0000000000000004
+          },
+          {
+            "elapsed": 2.1000000000000005,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 2.1000000000000005
+          },
+          {
+            "elapsed": 2.2000000000000006,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 2.2000000000000006
+          },
+          {
+            "elapsed": 2.3000000000000007,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 2.3000000000000007
+          },
+          {
+            "elapsed": 2.400000000000001,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 2.400000000000001
+          },
+          {
+            "elapsed": 2.500000000000001,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 2.500000000000001
+          },
+          {
+            "elapsed": 2.600000000000001,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 2.600000000000001
+          },
+          {
+            "elapsed": 2.700000000000001,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 2.700000000000001
+          },
+          {
+            "elapsed": 2.800000000000001,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 2.800000000000001
+          },
+          {
+            "elapsed": 2.9000000000000012,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 2.9000000000000012
+          },
+          {
+            "elapsed": 3.0000000000000013,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 3.0000000000000013
+          },
+          {
+            "elapsed": 3.1000000000000014,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 3.1000000000000014
+          },
+          {
+            "elapsed": 3.2000000000000015,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 3.2000000000000015
+          },
+          {
+            "elapsed": 3.3000000000000016,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 3.3000000000000016
+          },
+          {
+            "elapsed": 3.4000000000000017,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 3.4000000000000017
+          },
+          {
+            "elapsed": 3.5000000000000018,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 3.5000000000000018
+          },
+          {
+            "elapsed": 3.600000000000002,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 3.600000000000002
+          },
+          {
+            "elapsed": 3.700000000000002,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 3.700000000000002
+          },
+          {
+            "elapsed": 3.800000000000002,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 3.800000000000002
+          },
+          {
+            "elapsed": 3.900000000000002,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 3.900000000000002
+          },
+          {
+            "elapsed": 4.000000000000002,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 4.000000000000002
+          },
+          {
+            "elapsed": 4.100000000000001,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 4.100000000000001
+          },
+          {
+            "elapsed": 4.200000000000001,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 4.200000000000001
+          },
+          {
+            "elapsed": 4.300000000000001,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 4.300000000000001
+          },
+          {
+            "elapsed": 4.4,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 4.4
+          },
+          {
+            "elapsed": 4.5,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 4.5
+          },
+          {
+            "elapsed": 4.6,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 4.6
+          },
+          {
+            "elapsed": 4.699999999999999,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 4.699999999999999
+          },
+          {
+            "elapsed": 4.799999999999999,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 4.799999999999999
+          },
+          {
+            "elapsed": 4.899999999999999,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 4.899999999999999
+          },
+          {
+            "elapsed": 4.999999999999998,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 4.999999999999998
+          },
+          {
+            "elapsed": 5.099999999999998,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 5.099999999999998
+          },
+          {
+            "elapsed": 5.1999999999999975,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 5.1999999999999975
+          },
+          {
+            "elapsed": 5.299999999999997,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 5.299999999999997
+          },
+          {
+            "elapsed": 5.399999999999997,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 5.399999999999997
+          },
+          {
+            "elapsed": 5.4999999999999964,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 5.4999999999999964
+          },
+          {
+            "elapsed": 5.599999999999996,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 5.599999999999996
+          },
+          {
+            "elapsed": 5.699999999999996,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 5.699999999999996
+          },
+          {
+            "elapsed": 5.799999999999995,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 5.799999999999995
+          },
+          {
+            "elapsed": 5.899999999999995,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 5.899999999999995
+          },
+          {
+            "elapsed": 5.999999999999995,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 5.999999999999995
+          },
+          {
+            "elapsed": 6.099999999999994,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 6.099999999999994
+          },
+          {
+            "elapsed": 6.199999999999994,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 6.199999999999994
+          },
+          {
+            "elapsed": 6.299999999999994,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 6.299999999999994
+          },
+          {
+            "elapsed": 6.399999999999993,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 6.399999999999993
+          },
+          {
+            "elapsed": 6.499999999999993,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 6.499999999999993
+          },
+          {
+            "elapsed": 6.5999999999999925,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 6.5999999999999925
+          },
+          {
+            "elapsed": 6.699999999999992,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 6.699999999999992
+          },
+          {
+            "elapsed": 6.799999999999992,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 6.799999999999992
+          },
+          {
+            "elapsed": 6.8999999999999915,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 6.8999999999999915
+          },
+          {
+            "elapsed": 6.999999999999991,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 6.999999999999991
+          },
+          {
+            "elapsed": 7.099999999999991,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 7.099999999999991
+          },
+          {
+            "elapsed": 7.19999999999999,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 7.19999999999999
+          },
+          {
+            "elapsed": 7.29999999999999,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 7.29999999999999
+          },
+          {
+            "elapsed": 7.39999999999999,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 7.39999999999999
+          },
+          {
+            "elapsed": 7.499999999999989,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 7.499999999999989
+          },
+          {
+            "elapsed": 7.599999999999989,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 7.599999999999989
+          },
+          {
+            "elapsed": 7.699999999999989,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 7.699999999999989
+          },
+          {
+            "elapsed": 7.799999999999988,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 7.799999999999988
+          },
+          {
+            "elapsed": 7.899999999999988,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 7.899999999999988
+          },
+          {
+            "elapsed": 7.999999999999988,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 7.999999999999988
+          },
+          {
+            "elapsed": 8.099999999999987,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 8.099999999999987
+          },
+          {
+            "elapsed": 8.199999999999987,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 8.199999999999987
+          },
+          {
+            "elapsed": 8.299999999999986,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 8.299999999999986
+          },
+          {
+            "elapsed": 8.399999999999986,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 8.399999999999986
+          },
+          {
+            "elapsed": 8.499999999999986,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 8.499999999999986
+          },
+          {
+            "elapsed": 8.599999999999985,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 8.599999999999985
+          },
+          {
+            "elapsed": 8.699999999999985,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 8.699999999999985
+          },
+          {
+            "elapsed": 8.799999999999985,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 8.799999999999985
+          },
+          {
+            "elapsed": 8.899999999999984,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 8.899999999999984
+          },
+          {
+            "elapsed": 8.999999999999984,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 8.999999999999984
+          },
+          {
+            "elapsed": 9.099999999999984,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 9.099999999999984
+          },
+          {
+            "elapsed": 9.199999999999983,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 9.199999999999983
+          },
+          {
+            "elapsed": 9.299999999999983,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 9.299999999999983
+          },
+          {
+            "elapsed": 9.399999999999983,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 9.399999999999983
+          },
+          {
+            "elapsed": 9.499999999999982,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 9.499999999999982
+          },
+          {
+            "elapsed": 9.599999999999982,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 9.599999999999982
+          },
+          {
+            "elapsed": 9.699999999999982,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 9.699999999999982
+          },
+          {
+            "elapsed": 9.799999999999981,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 9.799999999999981
+          },
+          {
+            "elapsed": 9.89999999999998,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 9.89999999999998
+          },
+          {
+            "elapsed": 9.99999999999998,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 9.99999999999998
+          },
+          {
+            "elapsed": 10.0,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 10.0
+          }
+        ],
+        "terminalError": "Traceback (most recent call last):\n  File \"/tmp/lumen226-controls.py\", line 19, in <module>\n    try:ob.wait(p,H,sink,lambda:snapshots.append(json.dumps(sink)),clock=lambda:time[0],sleep=sleep);passed=True\n  File \"Design/native/health-write-order/legacy-target-change-observation-r1.py\", line 59, in wait\n    assert now-start < 10, 'Finite target-persistence observation deadline'\nAssertionError: Finite target-persistence observation deadline\n"
+      },
+      "persistenceCalls": 408
+    },
+    {
+      "case": "changed",
+      "expectedAccept": false,
+      "actualAccept": false,
+      "observation": {
+        "budgetSeconds": 10,
+        "intervalSeconds": 0.1,
+        "stableSamples": 3,
+        "stableSpanSeconds": 0.2,
+        "samples": [
+          {
+            "elapsed": 0.0,
+            "plistBytes": 410,
+            "plistSHA256": "7a86b155d506378c5a6c29517288c226132af240c028852303204d5efa105c6a",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 7,
+                "sha256": "b23a6a8439c0dde5515893e7c90c1e3233b8616e634470f20dc4928bcf3609bc"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "error": "Traceback (most recent call last):\n  File \"Design/native/health-write-order/legacy-target-change-observation-r1.py\", line 42, in sample\n    assert value in (allowed if key == KEYS[0] else [h.DATA]), key\nAssertionError: lumen.health.meals.v1\n"
+          }
+        ],
+        "terminalError": "Traceback (most recent call last):\n  File \"/tmp/lumen226-controls.py\", line 19, in <module>\n    try:ob.wait(p,H,sink,lambda:snapshots.append(json.dumps(sink)),clock=lambda:time[0],sleep=sleep);passed=True\n  File \"Design/native/health-write-order/legacy-target-change-observation-r1.py\", line 54, in wait\n    kind = sample(path, h, row, persist, [h.DATA, NEW])\n  File \"Design/native/health-write-order/legacy-target-change-observation-r1.py\", line 42, in sample\n    assert value in (allowed if key == KEYS[0] else [h.DATA]), key\nAssertionError: lumen.health.meals.v1\n"
+      },
+      "persistenceCalls": 4
+    },
+    {
+      "case": "unsupported",
+      "expectedAccept": false,
+      "actualAccept": false,
+      "observation": {
+        "budgetSeconds": 10,
+        "intervalSeconds": 0.1,
+        "stableSamples": 3,
+        "stableSpanSeconds": 0.2,
+        "samples": [
+          {
+            "elapsed": 0.0,
+            "plistBytes": 388,
+            "plistSHA256": "3a3a87af8c4651328d54402b0fcc5aabee4384d9c7460fc6f0991e069e652401",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "dict"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "error": "Traceback (most recent call last):\n  File \"Design/native/health-write-order/legacy-target-change-observation-r1.py\", line 41, in sample\n    assert type(value) is bytes and len(value) <= 4096\nAssertionError\n"
+          }
+        ],
+        "terminalError": "Traceback (most recent call last):\n  File \"/tmp/lumen226-controls.py\", line 19, in <module>\n    try:ob.wait(p,H,sink,lambda:snapshots.append(json.dumps(sink)),clock=lambda:time[0],sleep=sleep);passed=True\n  File \"Design/native/health-write-order/legacy-target-change-observation-r1.py\", line 54, in wait\n    kind = sample(path, h, row, persist, [h.DATA, NEW])\n  File \"Design/native/health-write-order/legacy-target-change-observation-r1.py\", line 41, in sample\n    assert type(value) is bytes and len(value) <= 4096\nAssertionError\n"
+      },
+      "persistenceCalls": 4
+    },
+    {
+      "case": "oversize",
+      "expectedAccept": false,
+      "actualAccept": false,
+      "observation": {
+        "budgetSeconds": 10,
+        "intervalSeconds": 0.1,
+        "stableSamples": 3,
+        "stableSpanSeconds": 0.2,
+        "samples": [
+          {
+            "elapsed": 0.0,
+            "plistBytes": 6022,
+            "plistSHA256": "10f59881574150fd0b96922704849f2a7580635f796daf554655598223322449",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 4097,
+                "oversize": true
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "error": "Traceback (most recent call last):\n  File \"Design/native/health-write-order/legacy-target-change-observation-r1.py\", line 41, in sample\n    assert type(value) is bytes and len(value) <= 4096\nAssertionError\n"
+          }
+        ],
+        "terminalError": "Traceback (most recent call last):\n  File \"/tmp/lumen226-controls.py\", line 19, in <module>\n    try:ob.wait(p,H,sink,lambda:snapshots.append(json.dumps(sink)),clock=lambda:time[0],sleep=sleep);passed=True\n  File \"Design/native/health-write-order/legacy-target-change-observation-r1.py\", line 54, in wait\n    kind = sample(path, h, row, persist, [h.DATA, NEW])\n  File \"Design/native/health-write-order/legacy-target-change-observation-r1.py\", line 41, in sample\n    assert type(value) is bytes and len(value) <= 4096\nAssertionError\n"
+      },
+      "persistenceCalls": 4
+    },
+    {
+      "case": "connected",
+      "expectedAccept": false,
+      "actualAccept": false,
+      "observation": {
+        "budgetSeconds": 10,
+        "intervalSeconds": 0.1,
+        "stableSamples": 3,
+        "stableSpanSeconds": 0.2,
+        "samples": [
+          {
+            "elapsed": 0.0,
+            "plistBytes": 453,
+            "plistSHA256": "4f4609aa86a607f93f6a297d9c66e60d4531304430f6b741ba99fcfed2ef6250",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 40,
+                "sha256": "a352b024bfe51c5b74e3effef11dc1f6855458a3c473c2a343044588ede593ba",
+                "base64": "e3N5bnRoZXRpYyBuZXdlciBwZXJzaXN0ZWQgbWVhbHMgZGFtYWdlZA=="
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": true,
+            "error": "Traceback (most recent call last):\n  File \"Design/native/health-write-order/legacy-target-change-observation-r1.py\", line 38, in sample\n    assert sink['healthConnected'] is None or sink['healthConnected'] is False\nAssertionError\n"
+          }
+        ],
+        "terminalError": "Traceback (most recent call last):\n  File \"/tmp/lumen226-controls.py\", line 19, in <module>\n    try:ob.wait(p,H,sink,lambda:snapshots.append(json.dumps(sink)),clock=lambda:time[0],sleep=sleep);passed=True\n  File \"Design/native/health-write-order/legacy-target-change-observation-r1.py\", line 54, in wait\n    kind = sample(path, h, row, persist, [h.DATA, NEW])\n  File \"Design/native/health-write-order/legacy-target-change-observation-r1.py\", line 38, in sample\n    assert sink['healthConnected'] is None or sink['healthConnected'] is False\nAssertionError\n"
+      },
+      "persistenceCalls": 4
+    },
+    {
+      "case": "workout-changed",
+      "expectedAccept": false,
+      "actualAccept": false,
+      "observation": {
+        "budgetSeconds": 10,
+        "intervalSeconds": 0.1,
+        "stableSamples": 3,
+        "stableSpanSeconds": 0.2,
+        "samples": [
+          {
+            "elapsed": 0.0,
+            "plistBytes": 410,
+            "plistSHA256": "da853ab2d80d2b221b87776fcd494dd18f86923e165ade984e69cd3f6157d462",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 40,
+                "sha256": "a352b024bfe51c5b74e3effef11dc1f6855458a3c473c2a343044588ede593ba",
+                "base64": "e3N5bnRoZXRpYyBuZXdlciBwZXJzaXN0ZWQgbWVhbHMgZGFtYWdlZA=="
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 7,
+                "sha256": "d67e2e944994496c8d8ec76eed0cf9f09679448d584b532bebf941852a37f5ed"
+              }
+            },
+            "healthConnected": false,
+            "error": "Traceback (most recent call last):\n  File \"Design/native/health-write-order/legacy-target-change-observation-r1.py\", line 42, in sample\n    assert value in (allowed if key == KEYS[0] else [h.DATA]), key\nAssertionError: lumen.health.workouts.v1\n"
+          }
+        ],
+        "terminalError": "Traceback (most recent call last):\n  File \"/tmp/lumen226-controls.py\", line 19, in <module>\n    try:ob.wait(p,H,sink,lambda:snapshots.append(json.dumps(sink)),clock=lambda:time[0],sleep=sleep);passed=True\n  File \"Design/native/health-write-order/legacy-target-change-observation-r1.py\", line 54, in wait\n    kind = sample(path, h, row, persist, [h.DATA, NEW])\n  File \"Design/native/health-write-order/legacy-target-change-observation-r1.py\", line 42, in sample\n    assert value in (allowed if key == KEYS[0] else [h.DATA]), key\nAssertionError: lumen.health.workouts.v1\n"
+      },
+      "persistenceCalls": 4
+    },
+    {
+      "case": "fleeting-new",
+      "expectedAccept": true,
+      "actualAccept": true,
+      "observation": {
+        "budgetSeconds": 10,
+        "intervalSeconds": 0.1,
+        "stableSamples": 3,
+        "stableSpanSeconds": 0.2,
+        "samples": [
+          {
+            "elapsed": 0.0,
+            "plistBytes": 454,
+            "plistSHA256": "376c2e25fdbf6759db497b9c4a953e8453c1703a122195b59e31c0a1198337ac",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 40,
+                "sha256": "a352b024bfe51c5b74e3effef11dc1f6855458a3c473c2a343044588ede593ba",
+                "base64": "e3N5bnRoZXRpYyBuZXdlciBwZXJzaXN0ZWQgbWVhbHMgZGFtYWdlZA=="
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "new",
+            "completedElapsed": 0.0
+          },
+          {
+            "elapsed": 0.1,
+            "plistBytes": 454,
+            "plistSHA256": "903b0ae4039ca3832e475f33a387bbc8986857852d226ee441f728c4aa82d555",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "old",
+            "completedElapsed": 0.1
+          },
+          {
+            "elapsed": 0.2,
+            "plistBytes": 454,
+            "plistSHA256": "376c2e25fdbf6759db497b9c4a953e8453c1703a122195b59e31c0a1198337ac",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 40,
+                "sha256": "a352b024bfe51c5b74e3effef11dc1f6855458a3c473c2a343044588ede593ba",
+                "base64": "e3N5bnRoZXRpYyBuZXdlciBwZXJzaXN0ZWQgbWVhbHMgZGFtYWdlZA=="
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "new",
+            "completedElapsed": 0.2
+          },
+          {
+            "elapsed": 0.30000000000000004,
+            "plistBytes": 454,
+            "plistSHA256": "376c2e25fdbf6759db497b9c4a953e8453c1703a122195b59e31c0a1198337ac",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 40,
+                "sha256": "a352b024bfe51c5b74e3effef11dc1f6855458a3c473c2a343044588ede593ba",
+                "base64": "e3N5bnRoZXRpYyBuZXdlciBwZXJzaXN0ZWQgbWVhbHMgZGFtYWdlZA=="
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "new",
+            "completedElapsed": 0.30000000000000004
+          },
+          {
+            "elapsed": 0.4,
+            "plistBytes": 454,
+            "plistSHA256": "376c2e25fdbf6759db497b9c4a953e8453c1703a122195b59e31c0a1198337ac",
+            "fixed": {
+              "lumen.health.meals.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 40,
+                "sha256": "a352b024bfe51c5b74e3effef11dc1f6855458a3c473c2a343044588ede593ba",
+                "base64": "e3N5bnRoZXRpYyBuZXdlciBwZXJzaXN0ZWQgbWVhbHMgZGFtYWdlZA=="
+              },
+              "lumen.health.workouts.v1": {
+                "present": true,
+                "type": "bytes",
+                "bytes": 42,
+                "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+                "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+              }
+            },
+            "healthConnected": false,
+            "classification": "new",
+            "completedElapsed": 0.4
+          }
+        ],
+        "status": "PASS bounded exact new-value observations",
+        "acceptedElapsed": 0.4
+      },
+      "persistenceCalls": 21
+    },
+    {
+      "case": "malformed",
+      "expectedAccept": false,
+      "actualAccept": false,
+      "observation": {
+        "budgetSeconds": 10,
+        "intervalSeconds": 0.1,
+        "stableSamples": 3,
+        "stableSpanSeconds": 0.2,
+        "samples": [
+          {
+            "elapsed": 0.0,
+            "error": "Traceback (most recent call last):\n  File \"Design/native/health-write-order/legacy-target-change-observation-r1.py\", line 25, in sample\n    values = plistlib.loads(raw)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/plistlib.py\", line 883, in loads\n    return load(fp, fmt=fmt, dict_type=dict_type)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/plistlib.py\", line 869, in load\n    raise InvalidFileException()\nplistlib.InvalidFileException: Invalid file\n"
+          }
+        ],
+        "terminalError": "Traceback (most recent call last):\n  File \"/tmp/lumen226-controls.py\", line 19, in <module>\n    try:ob.wait(p,H,sink,lambda:snapshots.append(json.dumps(sink)),clock=lambda:time[0],sleep=sleep);passed=True\n  File \"Design/native/health-write-order/legacy-target-change-observation-r1.py\", line 54, in wait\n    kind = sample(path, h, row, persist, [h.DATA, NEW])\n  File \"Design/native/health-write-order/legacy-target-change-observation-r1.py\", line 25, in sample\n    values = plistlib.loads(raw)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/plistlib.py\", line 883, in loads\n    return load(fp, fmt=fmt, dict_type=dict_type)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/plistlib.py\", line 869, in load\n    raise InvalidFileException()\nplistlib.InvalidFileException: Invalid file\n"
+      },
+      "persistenceCalls": 3
+    }
+  ],
+  "swiftContext": {
+    "exit": 0,
+    "stdout": "valid:valid\nunrequested:inactive\nduplicate -resetForUITests:reject\nmissing -resetForUITests:reject\nduplicate -health-backup-ui-fixture:reject\nmissing -health-backup-ui-fixture:reject\nduplicate -health-backup-empty-ui:reject\nmissing -health-backup-empty-ui:reject\nduplicate -health-backup-healthy-merge-ui:reject\nmissing -health-backup-healthy-merge-ui:reject\nduplicate -health-legacy-reset-ui:reject\nmissing -health-legacy-reset-ui:reject\nduplicate -health-legacy-reset-run:reject\nmissing -health-legacy-reset-run:reject\nduplicate -health-legacy-origin-ui:reject\nmissing -health-legacy-origin-ui:reject\nduplicate -health-backup-case:reject\nmissing -health-backup-case:reject\nduplicate -health-legacy-target-change-ui:reject\nmissing -health-legacy-target-change-ui:reject\nduplicate -health-legacy-target-change-run:reject\nmissing -health-legacy-target-change-run:reject\nconflict -health-legacy-reset-observer:reject\nconflict -health-legacy-reset-diagnostic-only:reject\nconflict -health-legacy-origin-mixed-ui:reject\nconflict -health-legacy-capture-ui:reject\ninvalid -health-legacy-target-change-ui:reject\ninvalid -health-legacy-target-change-run:reject\ninvalid -health-legacy-reset-run:reject\ninvalid -health-legacy-origin-ui:reject\ninvalid -health-backup-case:reject\n",
+    "stderr": "",
+    "extractedSourceSHA256": "435f6b0c6beee711bde2d9b4c42d58a1a5544c391027ef641c5bc918957859f9"
+  },
+  "status": "PASS isolated readonly9cases and actual extracted Swift context controls"
+}

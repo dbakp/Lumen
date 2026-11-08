@@ -33,6 +33,7 @@ enum HealthLegacyOriginUIFixture {
         }
         guard UserDefaults.standard.synchronize() else { throw BackupError.invalid }
         _ = try provenance(in: root)
+        try HealthLegacyTargetChangeUIFixture.prepare(in: root)
     }
     static func provenance(in root: URL) throws -> [String: Any] {
         guard let kind, let bundle = Bundle.main.bundleIdentifier else { throw BackupError.invalid }
@@ -54,7 +55,9 @@ enum HealthLegacyOriginUIFixture {
                 bytes = try JSONSerialization.data(withJSONObject: raw, options: [.sortedKeys])
                 type = "propertyListDictionary"
             } else if kind == "data" {
-                guard let raw = persisted as? Data, let active = effective as? Data, raw == data, active == raw else { throw BackupError.invalid }
+                let expected = domain == .meals && HealthLegacyTargetChangeUIFixture.requested
+                    ? HealthLegacyTargetChangeUIFixture.expectedMeals() : data
+                guard let raw = persisted as? Data, let active = effective as? Data, raw == expected, active == raw else { throw BackupError.invalid }
                 bytes = raw
             } else {
                 guard let raw = persisted as? NSString, let active = effective as? NSString else { throw BackupError.invalid }
@@ -263,7 +266,7 @@ enum HealthOriginCaptureUIFixture {
 @MainActor struct HealthOriginCaptureUIProbe: View {
     let location: String
     var body: some View {
-        HealthLegacyResetUIProbe()
+        HealthLegacyResetUIProbe(location: location)
         if HealthOriginCaptureUIFixture.mode != nil {
             TimelineView(.periodic(from: .now, by: 0.2)) { _ in
                 Text("Capture check").accessibilityIdentifier("healthOriginCaptureState-" + location)
@@ -941,8 +944,11 @@ import Security
 }
 
 @MainActor struct HealthLegacyResetUIProbe: View {
+    var location: String = "settings"
     var body: some View {
-        if HealthLegacyResetUIFixture.requested {
+        if HealthLegacyTargetChangeUIFixture.requested {
+            HealthLegacyTargetStatusUIProbe(location: location)
+        } else if HealthLegacyResetUIFixture.requested {
             TimelineView(.periodic(from: .now, by: 0.2)) { _ in
                 Button("Reset check") { HealthLegacyResetUIFixture.capture() }
                     .accessibilityIdentifier("healthLegacyResetCheck")

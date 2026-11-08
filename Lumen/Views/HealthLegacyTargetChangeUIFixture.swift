@@ -1,0 +1,330 @@
+#if DEBUG && targetEnvironment(simulator)
+import SwiftUI
+import CryptoKit
+import Darwin
+
+/// One known preference mutation in the explicitly guarded synthetic fixture.
+/// No host preferences write, replacement authority or forced product error.
+enum HealthLegacyTargetChangeUIFixture {
+    enum Failure: Error { case invalidContext, invalidObservation, duplicateMutation }
+    struct Context: Equatable { let runID: UUID }
+    static let flag = "-health-legacy-target-change-ui"
+    static let runFlag = "-health-legacy-target-change-run"
+    static let verificationProtocol = "Lumen-legacy-target-change-verification-v1"
+    static let newerMeals = Data("{synthetic newer persisted meals damaged".utf8)
+    private static let bridge = Bridge()
+
+    static func context(_ args: [String]) throws -> Context? {
+        guard args.contains(flag) || args.contains(runFlag) else { return nil }
+        func one(_ flag: String) throws -> String {
+            let positions = args.indices.filter { args[$0] == flag }
+            guard positions.count == 1, let index = positions.first, args.indices.contains(index + 1),
+                  !args[index + 1].hasPrefix("-") else { throw Failure.invalidContext }
+            return args[index + 1]
+        }
+        guard try one(flag) == "ready", let run = UUID(uuidString: try one(runFlag)),
+              let reset = UUID(uuidString: try one("-health-legacy-reset-run")), run == reset,
+              try one("-health-legacy-origin-ui") == "data", try one("-health-backup-case") == "legacy"
+        else { throw Failure.invalidContext }
+        for required in ["-resetForUITests", "-health-backup-ui-fixture", "-health-backup-empty-ui",
+                         "-health-backup-healthy-merge-ui", "-health-legacy-reset-ui"] {
+            guard args.filter({ $0 == required }).count == 1 else { throw Failure.invalidContext }
+        }
+        for forbidden in ["-health-legacy-reset-observer", "-health-legacy-reset-diagnostic-only",
+                          "-health-legacy-origin-mixed-ui", "-health-legacy-capture-ui"] {
+            guard !args.contains(forbidden) else { throw Failure.invalidContext }
+        }
+        return Context(runID: run)
+    }
+    static var requested: Bool { (try? context(ProcessInfo.processInfo.arguments)) != nil }
+    static func preflightIfRequested() throws {
+        guard let context = try context(ProcessInfo.processInfo.arguments) else { return }
+        guard let parent = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: AppGroup.id) else { throw Failure.invalidContext }
+        var facts = stat()
+        guard lstat(parent.path, &facts) == 0, facts.st_mode & mode_t(S_IFMT) == mode_t(S_IFDIR) else { throw Failure.invalidContext }
+        let prefix = "Lumen-legacy-target-change-" + context.runID.uuidString.lowercased()
+        guard try FileManager.default.contentsOfDirectory(atPath: parent.path).allSatisfy({ !$0.hasPrefix(prefix) }) else {
+            throw Failure.invalidContext
+        }
+    }
+    static func prepare(in root: URL) throws {
+        guard let context = try context(ProcessInfo.processInfo.arguments) else { return }
+        try bridge.prepare(context, root: root)
+    }
+    static func opened(_ session: UUID) { guard requested else { return }; bridge.opened(session) }
+    static func began(_ session: UUID, control: BackupOperationControl) {
+        guard requested else { return }; bridge.began(session, control: control)
+    }
+    static func ready(_ session: UUID, control: BackupOperationControl, domains: Set<HealthLocalFiles.Domain>) {
+        guard requested else { return }; bridge.ready(session, control: control, domains: domains)
+    }
+    static func closed(_ session: UUID) { guard requested else { return }; bridge.closed(session) }
+    static func rejected(_ session: UUID, changed: Bool, message: String, error: Error, control: BackupOperationControl) {
+        guard requested else { return }
+        bridge.rejected(session, changed: changed, message: message,
+                        errorType: String(reflecting: type(of: error)), control: String(describing: ObjectIdentifier(control)))
+    }
+    static func succeeded(_ session: UUID) { guard requested else { return }; bridge.succeeded(session) }
+    static var phase: String { bridge.phase }
+    static func canChange(_ session: UUID) -> Bool { bridge.canChange(session) }
+    static func expectedMeals() -> Data { bridge.didWrite ? newerMeals : HealthLegacyOriginUIFixture.data }
+
+    @MainActor static func change(_ session: BackupRecoveryReviewSession) {
+        do {
+            guard let context = try context(ProcessInfo.processInfo.arguments),
+                  Bundle.main.bundleIdentifier == "com.dbakp.lumen" else { throw Failure.invalidContext }
+            let root = try bridge.root(for: context)
+            // The complete authority/value/leaf guards and single known write
+            // share this nonrecursive serialization. No revision/read API inside.
+            try LocalStore.performWrite {
+                let captureID = try bridge.authorize(context, session: session.id)
+                try bridge.observedGuard(context, session: session.id, captureID: captureID, facts: fixedFacts())
+                guard session.originMetadata?.legacyDomains.contains(.meals) == true,
+                      !UserDefaults.standard.bool(forKey: "lumen.health.connected") else { throw Failure.invalidObservation }
+                try missingMeals(in: root)
+                try requireOriginalFixedValues()
+                let guardControl = BackupOperationControl()
+                let origins = try session.acquireOrigins([.meals], control: guardControl)
+                guard origins.count == 1, let origin = origins[.meals] else { throw Failure.invalidObservation }
+                // This is a separately labelled fixture guard acquisition of
+                // the actual OLD immutable token, never a recapture/replacement.
+                try origin.verify(in: root, legacy: { key in
+                    guard key == "lumen.health.meals.v1" else { throw Failure.invalidObservation }
+                    let persisted = UserDefaults.standard.persistentDomain(forName: "com.dbakp.lumen")?[key] as? Data
+                    let effective = UserDefaults.standard.object(forKey: key) as? Data
+                    guard persisted == HealthLegacyOriginUIFixture.data, effective == persisted else { throw Failure.invalidObservation }
+                    return persisted
+                }, control: guardControl)
+                try bridge.beforeWrite(context, session: session.id, captureID: captureID, facts: fixedFacts(),
+                                       guardControl: String(describing: ObjectIdentifier(guardControl)))
+                UserDefaults.standard.set(newerMeals, forKey: "lumen.health.meals.v1")
+                bridge.markWritten()
+                try bridge.observedResult(context, session: session.id, captureID: captureID, facts: fixedFacts())
+                try requireFixedMeals(newerMeals)
+                try missingMeals(in: root)
+                try bridge.afterWrite(context, session: session.id, captureID: captureID, facts: fixedFacts())
+            }
+        } catch { bridge.failed(error, facts: fixedFacts()) }
+    }
+
+    private static func missingMeals(in root: URL) throws {
+        var facts = stat()
+        guard lstat(root.path, &facts) == 0, facts.st_mode & mode_t(S_IFMT) == mode_t(S_IFDIR) else { throw Failure.invalidObservation }
+        guard lstat(root.appendingPathComponent("meals.json").path, &facts) == -1, errno == ENOENT else { throw Failure.invalidObservation }
+    }
+    private static func requireOriginalFixedValues() throws { try requireFixedMeals(HealthLegacyOriginUIFixture.data) }
+    private static func requireFixedMeals(_ meals: Data) throws {
+        let values = UserDefaults.standard.persistentDomain(forName: "com.dbakp.lumen") ?? [:]
+        for (key, wanted) in [("lumen.health.meals.v1", meals), ("lumen.health.workouts.v1", HealthLegacyOriginUIFixture.data)] {
+            guard let persisted = values[key] as? Data, let effective = UserDefaults.standard.object(forKey: key) as? Data,
+                  persisted == wanted, effective == persisted else { throw Failure.invalidObservation }
+        }
+    }
+    private static func fixedFacts() -> [String: Any] {
+        let values = UserDefaults.standard.persistentDomain(forName: "com.dbakp.lumen") ?? [:]
+        var result: [String: Any] = [:]
+        for key in ["lumen.health.meals.v1", "lumen.health.workouts.v1"] {
+            var row: [String: Any] = [:]
+            for (name, value) in [("persisted", values[key]), ("effective", UserDefaults.standard.object(forKey: key))] {
+                var fact: [String: Any] = ["present": value != nil, "type": value.map { String(reflecting: type(of: $0)) } ?? "nil"]
+                if let data = value as? Data {
+                    fact["bytes"] = data.count
+                    if data.count <= 4096 {
+                        fact["sha256"] = SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined()
+                        if data == HealthLegacyOriginUIFixture.data || data == newerMeals { fact["payload"] = data.base64EncodedString() }
+                    } else { fact["oversize"] = true }
+                }
+                row[name] = fact
+            }
+            result[key] = row
+        }
+        return result
+    }
+
+    private final class Bridge: @unchecked Sendable {
+        private let lock = NSLock()
+        private var context: Context?
+        private var preparedPID: pid_t?
+        private var rootURL: URL?
+        private var parent: URL?
+        private var active: UUID?
+        private weak var pendingControl: BackupOperationControl?
+        private var captureID: UUID?
+        private var readyID: UUID?
+        private var consumed = false
+        private var written = false
+        private var failedFlag = false
+        private var rows: [[String: Any]] = []
+        private var status = "not-prepared"
+        var didWrite: Bool { lock.lock(); defer { lock.unlock() }; return written }
+        var phase: String {
+            lock.lock()
+            let status = self.status, parent = self.parent, context = self.context, active = self.active, capture = captureID
+            let sequence = rows.count, readyCount = rows.filter { $0["event"] as? String == "capture-ready" }.count
+            lock.unlock()
+            let expected: String?
+            switch status {
+            case "prepared": expected = "host-before-selection"
+            case "ready": expected = "host-ready"
+            case "mutated": expected = "host-target-changed"
+            case "rejected": expected = "host-rejected"
+            case "fresh-ready": expected = "host-fresh-ready"
+            case "closed": expected = readyCount >= 2 ? "host-final-closed" : "host-owners-closed"
+            default: expected = nil
+            }
+            guard let expected, let parent, let context else { return status }
+            let ack = parent.appendingPathComponent("Lumen-legacy-target-change-" + context.runID.uuidString.lowercased() + "-ack.json")
+            var facts = stat()
+            guard lstat(ack.path, &facts) == 0, facts.st_mode & mode_t(S_IFMT) == mode_t(S_IFREG),
+                  facts.st_size > 0, facts.st_size <= 4096,
+                  let data = try? Data(contentsOf: ack), data.count <= 4096,
+                  let row = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+                  row["runID"] as? String == context.runID.uuidString, row["pid"] as? Int == Int(getpid()),
+                  row["sessionID"] as? String == (active?.uuidString ?? ""), row["captureID"] as? String == (capture?.uuidString ?? ""),
+                  row["sequence"] as? Int == sequence, row["phase"] as? String == expected else { return status }
+            return expected
+        }
+        func canChange(_ session: UUID) -> Bool {
+            lock.lock(); defer { lock.unlock() }
+            return !consumed && !failedFlag && active == session && readyID != nil && status == "ready"
+        }
+        func prepare(_ context: Context, root: URL) throws {
+            lock.lock(); defer { lock.unlock() }
+            guard self.context == nil, root.lastPathComponent == "LumenData" else { throw Failure.invalidContext }
+            self.context = context; preparedPID = getpid(); rootURL = root; parent = root.deletingLastPathComponent(); status = "prepared"
+            try save(initial: true)
+        }
+        func root(for context: Context) throws -> URL {
+            lock.lock(); defer { lock.unlock() }
+            guard self.context == context, preparedPID == getpid(), let rootURL, !failedFlag else { throw Failure.invalidContext }
+            return rootURL
+        }
+        func opened(_ session: UUID) { update {
+            active = session; pendingControl = nil; captureID = nil; readyID = nil; status = "opened"
+            rows.append(["event": "open", "sessionID": session.uuidString])
+        } }
+        func began(_ session: UUID, control: BackupOperationControl) { update {
+            guard active == session else { throw Failure.invalidObservation }
+            pendingControl = control; captureID = UUID(); readyID = nil; status = "capturing"
+            rows.append(["event": "capture-began", "sessionID": session.uuidString,
+                         "captureID": captureID!.uuidString, "actualControl": String(describing: ObjectIdentifier(control))])
+        } }
+        func ready(_ session: UUID, control: BackupOperationControl, domains: Set<HealthLocalFiles.Domain>) { update {
+            guard active == session, pendingControl === control, let captureID, domains.contains(.meals) else { throw Failure.invalidObservation }
+            readyID = captureID; pendingControl = nil; status = consumed ? "fresh-ready" : "ready"
+            rows.append(["event": "capture-ready", "sessionID": session.uuidString, "captureID": captureID.uuidString,
+                         "actualControl": String(describing: ObjectIdentifier(control)), "domains": domains.map(\.rawValue).sorted()])
+        } }
+        func closed(_ session: UUID) { update {
+            rows.append(["event": "closed", "sessionID": session.uuidString])
+            if active == session { readyID = nil; pendingControl = nil; status = "closed" }
+        } }
+        func rejected(_ session: UUID, changed: Bool, message: String, errorType: String, control: String) { update {
+            guard active == session, readyID != nil, consumed, written else { throw Failure.invalidObservation }
+            status = "rejected"
+            rows.append(["event": "actual-recovery-error", "sessionID": session.uuidString,
+                         "changedClassification": changed, "publishedMessage": message,
+                         "actualErrorType": errorType, "actualRecoveryControl": control])
+        } }
+        func succeeded(_ session: UUID) { update {
+            status = "unexpected-success"
+            rows.append(["event": "actual-recovery-success", "sessionID": session.uuidString])
+        } }
+        func authorize(_ context: Context, session: UUID) throws -> UUID {
+            lock.lock(); defer { lock.unlock() }
+            guard self.context == context, preparedPID == getpid(), active == session, !failedFlag, !consumed,
+                  status == "ready", let readyID else { throw Failure.duplicateMutation }
+            return readyID
+        }
+        func observedGuard(_ context: Context, session: UUID, captureID: UUID, facts: [String: Any]) throws {
+            lock.lock(); defer { lock.unlock() }
+            guard self.context == context, preparedPID == getpid(), active == session, readyID == captureID,
+                  !consumed, !failedFlag else { throw Failure.invalidObservation }
+            rows.append(["event": "guard-observation", "sessionID": session.uuidString,
+                         "captureID": captureID.uuidString, "fixed": facts])
+            try save()
+        }
+        func beforeWrite(_ context: Context, session: UUID, captureID: UUID, facts: [String: Any], guardControl: String) throws {
+            lock.lock(); defer { lock.unlock() }
+            guard self.context == context, preparedPID == getpid(), active == session, readyID == captureID, !consumed, !failedFlag else { throw Failure.invalidObservation }
+            consumed = true; status = "before-write"
+            rows.append(["event": "before-write", "sessionID": session.uuidString, "captureID": captureID.uuidString,
+                         "oldTokenVerified": true, "guardAcquisitionControl": guardControl, "fixed": facts])
+            try save()
+        }
+        func markWritten() { lock.lock(); written = true; lock.unlock() }
+        func observedResult(_ context: Context, session: UUID, captureID: UUID, facts: [String: Any]) throws {
+            lock.lock(); defer { lock.unlock() }
+            guard self.context == context, preparedPID == getpid(), active == session, readyID == captureID,
+                  consumed, written, !failedFlag else { throw Failure.invalidObservation }
+            rows.append(["event": "result-observation", "sessionID": session.uuidString,
+                         "captureID": captureID.uuidString, "fixed": facts])
+            try save()
+        }
+        func afterWrite(_ context: Context, session: UUID, captureID: UUID, facts: [String: Any]) throws {
+            lock.lock(); defer { lock.unlock() }
+            guard self.context == context, preparedPID == getpid(), active == session, readyID == captureID, consumed, written, !failedFlag else { throw Failure.invalidObservation }
+            status = "mutated"
+            rows.append(["event": "mutated", "sessionID": session.uuidString, "captureID": captureID.uuidString, "fixed": facts])
+            try save()
+        }
+        func failed(_ error: Error, facts: [String: Any]? = nil) {
+            lock.lock(); defer { lock.unlock() }
+            failedFlag = true; status = "verification-failed"
+            var row: [String: Any] = ["event": "failed", "error": String(describing: error)]
+            if let facts { row["fixed"] = facts }
+            rows.append(row)
+            try? save()
+        }
+        private func update(_ operation: () throws -> Void) {
+            lock.lock(); defer { lock.unlock() }
+            guard !failedFlag, preparedPID == getpid() else { return }
+            do { try operation(); try save() }
+            catch { failedFlag = true; status = "verification-failed"; rows.append(["event": "failed", "error": String(describing: error)]); try? save() }
+        }
+        private func save(initial: Bool = false) throws {
+            guard let context, let parent, preparedPID == getpid(), rows.count <= 40 else { throw Failure.invalidObservation }
+            let file = parent.appendingPathComponent("Lumen-legacy-target-change-" + context.runID.uuidString.lowercased() + "-" + String(getpid()) + ".json")
+            if !initial {
+                var facts = stat()
+                guard lstat(file.path, &facts) == 0, facts.st_mode & mode_t(S_IFMT) == mode_t(S_IFREG),
+                      facts.st_size > 0, facts.st_size <= 128 * 1024 else { throw Failure.invalidObservation }
+            }
+            let value: [String: Any] = ["verificationProtocol": verificationProtocol, "runID": context.runID.uuidString,
+                "pid": Int(getpid()), "status": status, "at": Date().timeIntervalSince1970,
+                "sequence": rows.count, "sessionID": active?.uuidString ?? "", "captureID": captureID?.uuidString ?? "",
+                "singleUseConsumed": consumed, "knownKeyWritten": written, "failed": failedFlag,
+                "healthConnected": UserDefaults.standard.bool(forKey: "lumen.health.connected"), "events": rows]
+            let data = try JSONSerialization.data(withJSONObject: value, options: [.sortedKeys, .prettyPrinted])
+            if initial { try data.write(to: file, options: .withoutOverwriting) }
+            else { try data.write(to: file, options: .atomic) }
+        }
+    }
+}
+
+@MainActor struct HealthLegacyTargetChangeUIProbe: View {
+    let session: BackupRecoveryReviewSession
+    var body: some View {
+        if HealthLegacyTargetChangeUIFixture.requested {
+            TimelineView(.periodic(from: .now, by: 0.2)) { _ in
+                Button("Change saved data") { HealthLegacyTargetChangeUIFixture.change(session) }
+                    .disabled(!HealthLegacyTargetChangeUIFixture.canChange(session.id))
+                    .accessibilityIdentifier("changeHealthRecoveryTarget")
+                    .accessibilityValue(HealthLegacyTargetChangeUIFixture.phase)
+            }
+        }
+    }
+}
+
+@MainActor struct HealthLegacyTargetStatusUIProbe: View {
+    let location: String
+    var body: some View {
+        if HealthLegacyTargetChangeUIFixture.requested {
+            TimelineView(.periodic(from: .now, by: 0.2)) { _ in
+                Text("Target check").accessibilityIdentifier("healthLegacyTargetStatus-" + location)
+                    .accessibilityValue(HealthLegacyTargetChangeUIFixture.phase)
+            }
+        }
+    }
+}
+#endif
