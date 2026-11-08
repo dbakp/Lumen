@@ -5754,6 +5754,28 @@ final class LumenSmokeTests: XCTestCase {
         } catch { report("thrown", failure: String(describing: error)); throw error }
     }
 
+    private func recoveryCompletionRectIsValid(_ value: CGRect) -> Bool {
+        !value.isNull && !value.isInfinite && value.origin.x.isFinite && value.origin.y.isFinite
+        && value.size.width.isFinite && value.size.height.isFinite
+        && value.size.width > 0 && value.size.height > 0 && value.maxX.isFinite && value.maxY.isFinite
+    }
+
+    private func recoveryCompletionViewport(application: CGRect, navigation: CGRect) -> CGRect? {
+        guard recoveryCompletionRectIsValid(application), recoveryCompletionRectIsValid(navigation),
+              application.contains(navigation), application.maxY - 40 > navigation.maxY else { return nil }
+        // The navigation bar's actual lower edge is the content boundary.
+        // Keep the conservative existing home-indicator exclusion at the bottom.
+        return CGRect(x: application.minX, y: navigation.maxY, width: application.width,
+            height: application.maxY - 40 - navigation.maxY)
+    }
+
+    private func recoveryCompletionVisible(exists: Bool, hittable: Bool, label: String,
+                                           target: CGRect, application: CGRect, navigation: CGRect) -> Bool {
+        guard exists, hittable, label == "Selected data recovered", recoveryCompletionRectIsValid(target),
+              let viewport = recoveryCompletionViewport(application: application, navigation: navigation) else { return false }
+        return viewport.contains(target)
+    }
+
     @MainActor
     func testHealthBackupFileRecoveryTargetChangedAfterReadyOriginData() throws {
         executionTimeAllowance = 480
@@ -5882,16 +5904,29 @@ final class LumenSmokeTests: XCTestCase {
             try require(recovered.waitForExistence(timeout: 30), "fresh-committed", "Recovery completion message did not appear")
             let reviewBar = app.navigationBars["Review recovery"].firstMatch
             let successVisible = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
-                guard reviewBar.exists, recovered.exists, recovered.isHittable else { return false }
-                let box = CGRect(x: 0, y: reviewBar.frame.maxY + 12, width: self.app.frame.width,
-                    height: self.app.frame.maxY - 40 - reviewBar.frame.maxY - 12)
-                return box.contains(recovered.frame) && recovered.label.contains("Selected data recovered")
+                guard reviewBar.exists, recovered.exists else { return false }
+                return self.recoveryCompletionVisible(exists: recovered.exists, hittable: recovered.isHittable,
+                    label: recovered.label, target: recovered.frame,
+                    application: self.app.frame, navigation: reviewBar.frame)
             }, object: recovered)
             try require(XCTWaiter.wait(for: [successVisible], timeout: 10) == .completed,
                 "fresh-committed", "Whole completion message was not automatically visible before test scrolling")
             try require(!failure.exists, "fresh-committed", "Fresh successful recovery retained stale error")
-            observations.append(["phase": "fresh-committed", "message": recovered.label,
-                "hittable": recovered.isHittable, "frame": String(describing: recovered.frame),
+            let applicationFrame = app.frame, navigationFrame = reviewBar.frame, labelFrame = recovered.frame
+            let completionMessage = recovered.label, hittable = recovered.isHittable
+            let exists = recovered.exists && reviewBar.exists
+            try require(recoveryCompletionVisible(exists: exists,
+                hittable: hittable, label: completionMessage, target: labelFrame,
+                application: applicationFrame, navigation: navigationFrame),
+                "fresh-committed", "Completion message left the unobscured viewport before readback")
+            let viewport = recoveryCompletionViewport(application: applicationFrame, navigation: navigationFrame)!
+            func rectangle(_ value: CGRect) -> [Double] {
+                [Double(value.origin.x), Double(value.origin.y), Double(value.size.width), Double(value.size.height)]
+            }
+            observations.append(["phase": "fresh-committed", "message": completionMessage,
+                "exists": exists, "hittable": hittable, "frame": String(describing: labelFrame),
+                "geometry": ["application": rectangle(applicationFrame), "navigation": rectangle(navigationFrame),
+                    "label": rectangle(labelFrame), "viewport": rectangle(viewport)],
                 "wholeSuccessBeforeAnyTestScroll": true, "at": Date().timeIntervalSince1970])
             snap(prefix + "-fresh-committed"); try checkpoint("fresh-committed")
             try backToSettings("final-closed"); snap(prefix + "-final-closed")

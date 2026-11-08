@@ -1,0 +1,31 @@
+{
+  "status": "FAILED current test typecheck",
+  "source": "LumenUITests/LumenSmokeTests.swift",
+  "sourceBytes": 752816,
+  "sourceSHA256": "ce6d604079e0fb1c01ca97f160560ccc12916d2a1c40064599153530ab50ee0a",
+  "command": [
+    "xcrun",
+    "swiftc",
+    "-typecheck",
+    "-swift-version",
+    "5",
+    "-target",
+    "arm64-apple-ios18.0-simulator",
+    "-sdk",
+    "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk",
+    "-F",
+    "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Library/Frameworks",
+    "-I",
+    "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/lib",
+    "-module-alias",
+    "Testing=_Testing_Unavailable",
+    "-module-cache-path",
+    "/tmp/LumenBatch37Simulator/ModuleCache.noindex",
+    "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen238-test-typecheck-mh03ka32/LumenSmokeTests.swift"
+  ],
+  "exit": 1,
+  "stdout": "",
+  "stderr": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen238-test-typecheck-mh03ka32/LumenSmokeTests.swift:5916:17: error: invalid redeclaration of 'message'\n5879 |             try require(failure.isHittable && failure.frame.minY >= app.navigationBars[\"Review recovery\"].frame.maxY\n5880 |                 && failure.frame.maxY <= app.frame.maxY - 20, \"changed-error\", \"Changed-data error not fully revealed\")\n5881 |             let message = \"Your saved data changed. Go back and review it again.\"\n     |                 `- note: 'message' previously declared here\n5882 |             try require(failure.label.contains(message), \"changed-error\", \"Wrong product error\")\n5883 |             try require(!app.descendants(matching: .any).matching(identifier: \"fileHealthRecovered\").firstMatch.exists,\n     :\n5914 |             try require(!failure.exists, \"fresh-committed\", \"Fresh successful recovery retained stale error\")\n5915 |             let applicationFrame = app.frame, navigationFrame = reviewBar.frame, labelFrame = recovered.frame\n5916 |             let message = recovered.label, hittable = recovered.isHittable\n     |                 `- error: invalid redeclaration of 'message'\n5917 |             let exists = recovered.exists && reviewBar.exists\n5918 |             try require(recoveryCompletionVisible(exists: exists,\n",
+  "scope": "Entire actual current test source typing only; no fullapp/testpair/installation/native/layout/focus/closure/R10 acceptance. Existing one taskmodulecache reused; temporary source removed.",
+  "checkedAt": 1794150305.131488
+}
