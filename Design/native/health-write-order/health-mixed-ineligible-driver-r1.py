@@ -185,6 +185,7 @@ try:
     retainer=importlib.util.module_from_spec(spec);spec.loader.exec_module(retainer)
     retained=retainer.retain(h.BASE,raw,stem,prefix,a.source);outcome['retention']=retained
     summary=retained['summary']
+    outcome['summary']=summary
     assert host_failure is None,host_failure
     assert code==0 and summary is not None and not retained['errors']
     assert [summary[k] for k in ['passedTests','failedTests','skippedTests']]==[1,0,0]

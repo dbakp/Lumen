@@ -5631,12 +5631,24 @@ final class LumenSmokeTests: XCTestCase {
         }
         func whole(_ suffix: String, _ stable: [XCUIElement], towardsTop: Bool = false, healthyLink: XCUIElement? = nil) {
             let first = stable[0]
-            reveal(first, towardsTop: towardsTop)
-            XCTAssertTrue(first.waitForExistence(timeout: 10))
-            if let last = stable.last, stable.count > 1 { reveal(last); reveal(first, towardsTop: true) }
-            for element in stable { XCTAssertTrue(element.waitForExistence(timeout: 5)) }
-            guard stable.allSatisfy({ $0.exists && !$0.frame.isEmpty }) else {
-                XCTFail("Requested native group did not materialize after bounded reveal"); return
+            func frameRow(_ frame: CGRect) -> [String: Double] {
+                ["x": Double(frame.minX), "y": Double(frame.minY), "width": Double(frame.width), "height": Double(frame.height)]
+            }
+            func failedCapture(_ message: String) {
+                // XCTest can abort without running a Swift defer. Emit actual
+                // partial observations BEFORE recording a capture failure.
+                let diagnostics: [[String: Any]] = stable.enumerated().map { index, element in
+                    guard element.exists else { return ["slot": index, "exists": false] }
+                    return ["slot": index, "exists": true, "identifier": element.identifier,
+                        "label": element.label, "frame": frameRow(element.frame)]
+                }
+                if let data = try? JSONSerialization.data(withJSONObject: ["scope": "mixed-ineligible-failed-capture",
+                    "phase": suffix, "reason": message, "observations": observations, "stableTargets": diagnostics], options: [.prettyPrinted, .sortedKeys]) {
+                    let attachment = XCTAttachment(data: data, uniformTypeIdentifier: "public.json")
+                    attachment.name = "mixed-ineligible-failure-readback"; attachment.lifetime = .keepAlways; add(attachment)
+                }
+                snap(prefix + "-failed-capture-" + suffix)
+                XCTFail(message)
             }
             func viewport() -> CGRect {
                 let top = app.navigationBars.firstMatch.frame.maxY + 12
@@ -5648,9 +5660,6 @@ final class LumenSmokeTests: XCTestCase {
                 guard let link = healthyLink else { return stable }
                 let anchor = link.frame
                 guard link.exists, !anchor.isEmpty else { return nil }
-                // Duplicate text's boundByIndex reference may retarget after a
-                // lazy Form scroll. Requery against the stable domain link on
-                // EVERY measurement, and again at the final settled capture.
                 let candidates = app.staticTexts.matching(NSPredicate(format: "label == %@", "Current data opens")).allElementsBoundByIndex.filter {
                     $0.exists && !$0.frame.isEmpty && $0.frame.minY >= anchor.maxY && $0.frame.minY - anchor.maxY < 80
                 }
@@ -5659,41 +5668,54 @@ final class LumenSmokeTests: XCTestCase {
             }
             func move(down: Bool, distance: CGFloat) {
                 let bounds = viewport()
-                let step = min(bounds.height - 50, max(24, distance))
+                // Keep measured corrections small enough to retain the first
+                // row; do not make a full-page last-to-first return gesture.
+                let step = min(bounds.height * 0.4, max(24, distance))
                 let y = down ? bounds.minY + 20 : bounds.maxY - 20
                 let start = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: y))
                 let end = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: y + (down ? step : -step)))
-                start.press(forDuration: 0.05, thenDragTo: end); settleLabFrame(first)
+                start.press(forDuration: 0.05, thenDragTo: end)
+                if first.exists && !first.frame.isEmpty { settleLabFrame(first) }
+                else { Thread.sleep(forTimeInterval: 0.1) }
+            }
+            // An existing partly clipped first row needs a measured correction,
+            // not reveal()'s coarse page search. Search only if truly absent.
+            if !first.exists || first.frame.isEmpty { reveal(first, towardsTop: towardsTop) }
+            guard first.waitForExistence(timeout: 10), !first.frame.isEmpty else {
+                failedCapture("First native target did not materialize"); return
             }
             for _ in 0..<16 {
                 let bounds = viewport()
-                guard let targets = resolved() else {
-                    // Known adjacent status is later than the stable link.
-                    // Bring that actual row into the viewport, then requery.
-                    if let link = healthyLink { reveal(link) }
-                    move(down: false, distance: 72)
+                guard first.exists && !first.frame.isEmpty else {
+                    move(down: true, distance: 72); continue
+                }
+                // Materialize later rows BEFORE asserting their existence or
+                // measuring a union. Source216 failed at that premature assert.
+                guard stable.allSatisfy({ $0.exists && !$0.frame.isEmpty }), let targets = resolved() else {
+                    let distance = first.frame.minY - (bounds.minY + 24)
+                    move(down: false, distance: distance > 0 ? distance : 72)
                     continue
                 }
-                guard targets.allSatisfy({ $0.exists && !$0.frame.isEmpty }) else {
-                    XCTFail("Native group lost a materialized target"); return
-                }
+                guard targets.allSatisfy({ $0.exists && !$0.frame.isEmpty }) else { continue }
                 let frame = targets.reduce(CGRect.null) { $0.union($1.frame) }
                 if frame.minY >= bounds.minY - 2 && frame.maxY <= bounds.maxY && frame.minX >= bounds.minX && frame.maxX <= bounds.maxX { break }
                 let down = frame.minY < bounds.minY
                 move(down: down, distance: down ? bounds.minY - frame.minY + 12 : frame.maxY - bounds.maxY + 12)
             }
+            guard first.exists && !first.frame.isEmpty else { failedCapture("First native target lost after bounded positioning"); return }
             settleLabFrame(first)
-            guard let targets = resolved() else { XCTFail("Domain's adjacent healthy status was not materialized"); return }
-            let bounds = viewport()
-            func frameRow(_ frame: CGRect) -> [String: Double] {
-                ["x": Double(frame.minX), "y": Double(frame.minY), "width": Double(frame.width), "height": Double(frame.height)]
+            guard stable.allSatisfy({ $0.exists && !$0.frame.isEmpty }), let targets = resolved() else {
+                failedCapture("Native group or domain's adjacent status was not materialized"); return
             }
+            let bounds = viewport()
             var rows: [[String: Any]] = []
             for element in targets {
+                guard element.exists else { failedCapture("Native target disappeared before capture"); return }
                 let frame = element.frame
-                XCTAssertTrue(element.exists); XCTAssertGreaterThan(frame.width, 0); XCTAssertGreaterThan(frame.height, 0)
-                XCTAssertGreaterThanOrEqual(frame.minX, bounds.minX); XCTAssertLessThanOrEqual(frame.maxX, bounds.maxX)
-                XCTAssertGreaterThanOrEqual(frame.minY, bounds.minY - 2); XCTAssertLessThanOrEqual(frame.maxY, bounds.maxY)
+                guard frame.width > 0, frame.height > 0, frame.minX >= bounds.minX, frame.maxX <= bounds.maxX,
+                      frame.minY >= bounds.minY - 2, frame.maxY <= bounds.maxY else {
+                    failedCapture("Native group does not fit the full usable viewport"); return
+                }
                 rows.append(["identifier": element.identifier, "label": element.label, "value": element.value as? String ?? "",
                     "enabled": element.isEnabled, "frame": frameRow(frame)])
             }
@@ -5701,9 +5723,10 @@ final class LumenSmokeTests: XCTestCase {
                 "usableLeft": Double(bounds.minX), "usableRight": Double(bounds.maxX)]
             if let link = healthyLink, let status = targets.last {
                 let linkFrame = link.frame, statusFrame = status.frame
-                XCTAssertEqual(status.label, "Current data opens")
-                XCTAssertGreaterThanOrEqual(statusFrame.minY, linkFrame.maxY)
-                XCTAssertLessThan(statusFrame.minY - linkFrame.maxY, 80)
+                guard status.label == "Current data opens", statusFrame.minY >= linkFrame.maxY,
+                      statusFrame.minY - linkFrame.maxY < 80 else {
+                    failedCapture("Healthy status lost its domain association"); return
+                }
                 observation["healthyAssociation"] = ["reviewIdentifier": link.identifier, "reviewFrame": frameRow(linkFrame),
                     "statusFrame": frameRow(statusFrame), "verticalGap": Double(statusFrame.minY - linkFrame.maxY),
                     "requeriedAfterLastScroll": true]
