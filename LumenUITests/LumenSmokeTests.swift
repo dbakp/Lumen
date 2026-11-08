@@ -5778,6 +5778,16 @@ final class LumenSmokeTests: XCTestCase {
 
     @MainActor
     func testHealthBackupFileRecoveryTargetChangedAfterReadyOriginData() throws {
+        try exerciseHealthBackupFileRecoveryTargetChangedAfterReady()
+    }
+
+    @MainActor
+    func testHealthBackupFileRecoveryTargetChangedAfterReadyOriginString() throws {
+        try exerciseHealthBackupFileRecoveryTargetChangedAfterReady()
+    }
+
+    @MainActor
+    private func exerciseHealthBackupFileRecoveryTargetChangedAfterReady() throws {
         executionTimeAllowance = 480
         let prefix = "health-legacy-target-change"
         var observations: [[String: Any]] = []

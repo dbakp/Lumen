@@ -1,0 +1,165 @@
+{
+  "status": "PASS actualextractedcontext/UTF16LE/fixedguards",
+  "fixture": "source239-native-guard-controls-r1-fixtures.json.gz",
+  "decodedBytes": 12322,
+  "decodedSHA256": "6dd644bda1dff2591c966b69e77ecdb4274ba290ebeee295cb162f6aa56d74f2",
+  "actualSourceSHA256": "0428958d9e42d829baf700fa333d18913aea65d3485b548b74d170c76aa3dadc",
+  "contextSHA256": "27ebcc5313cbc998e080afcba40deeebd5584ce49cc9947b2f486409999941ec",
+  "helpersSHA256": "c42b234260ae0396e602d150eee26691f74f8054db104f3f13920fe9606706c9",
+  "compileExit": 0,
+  "runExit": 0,
+  "cases": [
+    {
+      "accepted": true,
+      "case": "context-data",
+      "expected": true
+    },
+    {
+      "accepted": true,
+      "case": "context-string",
+      "expected": true
+    },
+    {
+      "accepted": true,
+      "case": "no-request",
+      "expected": true
+    },
+    {
+      "accepted": false,
+      "case": "unknown-kind",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "duplicate--health-legacy-origin-ui",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "missing--health-legacy-origin-ui",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "duplicate--health-legacy-target-change-ui",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "missing--health-legacy-target-change-ui",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "duplicate--health-legacy-reset-ui",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "missing--health-legacy-reset-ui",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "mismatched-run",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "forbidden--health-legacy-reset-observer",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "forbidden--health-legacy-reset-diagnostic-only",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "forbidden--health-legacy-origin-mixed-ui",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "forbidden--health-legacy-capture-ui",
+      "expected": false
+    },
+    {
+      "accepted": true,
+      "case": "data-false",
+      "expected": true
+    },
+    {
+      "accepted": true,
+      "case": "string-false",
+      "expected": true
+    },
+    {
+      "accepted": false,
+      "case": "string-reject-data-false",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "data-reject-string-false",
+      "expected": false
+    },
+    {
+      "accepted": true,
+      "case": "data-true",
+      "expected": true
+    },
+    {
+      "accepted": true,
+      "case": "string-true",
+      "expected": true
+    },
+    {
+      "accepted": false,
+      "case": "string-reject-data-true",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "data-reject-string-true",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "normalization-equivalent",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "effective-changed",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "missing-persisted",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "missing-effective",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "workout-mutated",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "new-as-original",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "old-as-new",
+      "expected": false
+    }
+  ],
+  "scope": "Actual extracted functions with isolated defaults/arguments stubs; no real preferences, app/runtime/bridge/scheduling/transaction/closure acceptance",
+  "checkedAt": 1794152755.463233
+}

@@ -63,7 +63,9 @@ enum HealthLegacyOriginUIFixture {
                 guard let raw = persisted as? NSString, let active = effective as? NSString else { throw BackupError.invalid }
                 func units(_ value: NSString) -> [UInt16] { (0..<value.length).map { value.character(at: $0) } }
                 let original = units(raw)
-                guard original == units(string as NSString), original == units(active) else { throw BackupError.invalid }
+                let expected = domain == .meals && HealthLegacyTargetChangeUIFixture.requested
+                    ? HealthLegacyTargetChangeUIFixture.expectedMealsString() : string
+                guard original == units(expected as NSString), original == units(active) else { throw BackupError.invalid }
                 var encoded = Data()
                 for unit in original { encoded.append(UInt8(truncatingIfNeeded: unit)); encoded.append(UInt8(unit >> 8)) }
                 bytes = encoded

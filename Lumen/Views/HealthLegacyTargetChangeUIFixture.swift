@@ -7,11 +7,12 @@ import Darwin
 /// No host preferences write, replacement authority or forced product error.
 enum HealthLegacyTargetChangeUIFixture {
     enum Failure: Error { case invalidContext, invalidObservation, duplicateMutation }
-    struct Context: Equatable { let runID: UUID }
+    struct Context: Equatable { let runID: UUID; let kind: String }
     static let flag = "-health-legacy-target-change-ui"
     static let runFlag = "-health-legacy-target-change-run"
     static let verificationProtocol = "Lumen-legacy-target-change-verification-v1"
     static let newerMeals = Data("{synthetic newer persisted meals damaged".utf8)
+    static let newerMealsString = "Synthetic newer saved value e\u{301} 🫖"
     private static let bridge = Bridge()
 
     static func context(_ args: [String]) throws -> Context? {
@@ -24,7 +25,7 @@ enum HealthLegacyTargetChangeUIFixture {
         }
         guard try one(flag) == "ready", let run = UUID(uuidString: try one(runFlag)),
               let reset = UUID(uuidString: try one("-health-legacy-reset-run")), run == reset,
-              try one("-health-legacy-origin-ui") == "data", try one("-health-backup-case") == "legacy"
+              ["data", "string"].contains(try one("-health-legacy-origin-ui")), try one("-health-backup-case") == "legacy"
         else { throw Failure.invalidContext }
         for required in ["-resetForUITests", "-health-backup-ui-fixture", "-health-backup-empty-ui",
                          "-health-backup-healthy-merge-ui", "-health-legacy-reset-ui"] {
@@ -34,7 +35,7 @@ enum HealthLegacyTargetChangeUIFixture {
                           "-health-legacy-origin-mixed-ui", "-health-legacy-capture-ui"] {
             guard !args.contains(forbidden) else { throw Failure.invalidContext }
         }
-        return Context(runID: run)
+        return Context(runID: run, kind: try one("-health-legacy-origin-ui"))
     }
     static var requested: Bool { (try? context(ProcessInfo.processInfo.arguments)) != nil }
     static func preflightIfRequested() throws {
@@ -97,6 +98,7 @@ enum HealthLegacyTargetChangeUIFixture {
     static var phase: String { bridge.phase }
     static func canChange(_ session: UUID) -> Bool { bridge.canChange(session) }
     static func expectedMeals() -> Data { bridge.didWrite ? newerMeals : HealthLegacyOriginUIFixture.data }
+    static func expectedMealsString() -> String { bridge.didWrite ? newerMealsString : HealthLegacyOriginUIFixture.string }
 
     @MainActor static func change(_ session: BackupRecoveryReviewSession) {
         do {
@@ -119,17 +121,15 @@ enum HealthLegacyTargetChangeUIFixture {
                 // the actual OLD immutable token, never a recapture/replacement.
                 try origin.verify(in: root, legacy: { key in
                     guard key == "lumen.health.meals.v1" else { throw Failure.invalidObservation }
-                    let persisted = UserDefaults.standard.persistentDomain(forName: "com.dbakp.lumen")?[key] as? Data
-                    let effective = UserDefaults.standard.object(forKey: key) as? Data
-                    guard persisted == HealthLegacyOriginUIFixture.data, effective == persisted else { throw Failure.invalidObservation }
-                    return persisted
+                    return try checkedFixedValue(key, mealsChanged: false)
                 }, control: guardControl)
                 try bridge.beforeWrite(context, session: session.id, captureID: captureID, facts: fixedFacts(),
                                        guardControl: String(describing: ObjectIdentifier(guardControl)))
-                UserDefaults.standard.set(newerMeals, forKey: "lumen.health.meals.v1")
+                UserDefaults.standard.set(context.kind == "data" ? newerMeals as Any : newerMealsString as Any,
+                                          forKey: "lumen.health.meals.v1")
                 bridge.markWritten()
                 try bridge.observedResult(context, session: session.id, captureID: captureID, facts: fixedFacts())
-                try requireFixedMeals(newerMeals)
+                try requireFixedValues(mealsChanged: true)
                 try missingMeals(in: root)
                 try bridge.afterWrite(context, session: session.id, captureID: captureID, facts: fixedFacts())
             }
@@ -141,12 +141,40 @@ enum HealthLegacyTargetChangeUIFixture {
         guard lstat(root.path, &facts) == 0, facts.st_mode & mode_t(S_IFMT) == mode_t(S_IFDIR) else { throw Failure.invalidObservation }
         guard lstat(root.appendingPathComponent("meals.json").path, &facts) == -1, errno == ENOENT else { throw Failure.invalidObservation }
     }
-    private static func requireOriginalFixedValues() throws { try requireFixedMeals(HealthLegacyOriginUIFixture.data) }
-    private static func requireFixedMeals(_ meals: Data) throws {
-        let values = UserDefaults.standard.persistentDomain(forName: "com.dbakp.lumen") ?? [:]
-        for (key, wanted) in [("lumen.health.meals.v1", meals), ("lumen.health.workouts.v1", HealthLegacyOriginUIFixture.data)] {
-            guard let persisted = values[key] as? Data, let effective = UserDefaults.standard.object(forKey: key) as? Data,
-                  persisted == wanted, effective == persisted else { throw Failure.invalidObservation }
+    /// Explicit little-endian code units: do not normalize or compare Swift graphemes.
+    static func stringBytes(_ string: NSString) -> Data {
+        var bytes = Data()
+        for index in 0..<string.length {
+            let unit = string.character(at: index)
+            bytes.append(UInt8(truncatingIfNeeded: unit)); bytes.append(UInt8(unit >> 8))
+        }
+        return bytes
+    }
+    private static func checkedFixedValue(_ key: String, mealsChanged: Bool) throws -> Any {
+        guard ["lumen.health.meals.v1", "lumen.health.workouts.v1"].contains(key),
+              let context = try context(ProcessInfo.processInfo.arguments) else { throw Failure.invalidContext }
+        let persisted = UserDefaults.standard.persistentDomain(forName: "com.dbakp.lumen")?[key]
+        let effective = UserDefaults.standard.object(forKey: key)
+        let changed = key == "lumen.health.meals.v1" && mealsChanged
+        if context.kind == "data" {
+            let expected = changed ? newerMeals : HealthLegacyOriginUIFixture.data
+            guard let raw = persisted as? Data, let active = effective as? Data,
+                  raw == expected, active == raw else { throw Failure.invalidObservation }
+            return raw
+        }
+        guard context.kind == "string", let raw = persisted as? NSString, let active = effective as? NSString else {
+            throw Failure.invalidObservation
+        }
+        let expected = changed ? newerMealsString : HealthLegacyOriginUIFixture.string
+        guard stringBytes(raw) == stringBytes(expected as NSString), stringBytes(active) == stringBytes(raw) else {
+            throw Failure.invalidObservation
+        }
+        return raw
+    }
+    private static func requireOriginalFixedValues() throws { try requireFixedValues(mealsChanged: false) }
+    private static func requireFixedValues(mealsChanged: Bool) throws {
+        for key in ["lumen.health.meals.v1", "lumen.health.workouts.v1"] {
+            _ = try checkedFixedValue(key, mealsChanged: mealsChanged)
         }
     }
     private static func fixedFacts() -> [String: Any] {
@@ -161,6 +189,16 @@ enum HealthLegacyTargetChangeUIFixture {
                     if data.count <= 4096 {
                         fact["sha256"] = SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined()
                         if data == HealthLegacyOriginUIFixture.data || data == newerMeals { fact["payload"] = data.base64EncodedString() }
+                    } else { fact["oversize"] = true }
+                }
+                if let string = value as? NSString {
+                    fact["utf16Units"] = string.length
+                    if string.length <= 2048 {
+                        let bytes = stringBytes(string)
+                        fact["bytes"] = bytes.count
+                        fact["sha256"] = SHA256.hash(data: bytes).map { String(format: "%02x", $0) }.joined()
+                        if bytes == stringBytes(HealthLegacyOriginUIFixture.string as NSString)
+                            || bytes == stringBytes(newerMealsString as NSString) { fact["payload"] = bytes.base64EncodedString() }
                     } else { fact["oversize"] = true }
                 }
                 row[name] = fact
@@ -354,7 +392,7 @@ enum HealthLegacyTargetChangeUIFixture {
                 guard lstat(file.path, &facts) == 0, facts.st_mode & mode_t(S_IFMT) == mode_t(S_IFREG),
                       facts.st_size > 0, facts.st_size <= 128 * 1024 else { throw Failure.invalidObservation }
             }
-            let value: [String: Any] = ["verificationProtocol": verificationProtocol, "runID": context.runID.uuidString,
+            let value: [String: Any] = ["verificationProtocol": verificationProtocol, "originKind": context.kind, "runID": context.runID.uuidString,
                 "pid": Int(getpid()), "status": status, "at": Date().timeIntervalSince1970,
                 "sequence": rows.count, "sessionID": active?.uuidString ?? "", "captureID": captureID?.uuidString ?? "",
                 "singleUseConsumed": consumed, "knownKeyWritten": written, "failed": failedFlag,

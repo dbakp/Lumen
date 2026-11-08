@@ -4,6 +4,14 @@ Continue developing Lumen into a world-class, primarily iOS, AI health assistant
 
 Repository: https://github.com/dbakp/Lumen · branch `main`.
 
+## Working successor · Source239 text-value recovery · 8 November 2026
+
+Complete238Release135/root/source/native/prior union reached exact GitHub e7f4fd3172171feb3526583890593846f773f81f/20checkpoint/906union BEFORE successor edits. Frozen584text+34fixtures=618; three DEBUGfixture/test inputs changed,591 prior inputs exact. Explicit typed String mutation preserves exact combining-accent/emoji UTF16LE: original70B/newmeal66B/workout70B. Actual old-token guard acquisition precedes the one native write; genuine stale recovery and fresh owner/full commit remain required. Dedicated String host inputs preserve original Data helpers and strict8boundaries/full26/privatev1/v2typedsource/receipt/photos/journal/retirement/measuredsuccess/finalBack3sclosure/finalreadonlyaudit gates.
+
+Actual30 extracted Swift guard controls (7accept/23reject, stubs only),43 isolated host controls (17accept/26reject, temporary plists and source-aligned synthetic full26 only), whole current UITest actualSDK typing0/emptyout+err and both entrypoint--help0 pass. **Independent136/root SOURCE READY/all49provenance exact; no actual239fullbuild/Stringnative/Release acceptance.** [Plan](../Design/native/health-write-order/source239-string-target-change-r1-plan.json). Exact source136/root before current239build/203-187-16-21 controls/exact before Stringnative/alloriginals/fullhelper/finalaudit/root/samecritic/exact. Continue healthy/other timing/retained-copy owner/all43/eightgroups after every checkpoint.
+
+Storage: only exact-backed completed238Release cache/raw238 duplicates removed; **718,200,832B recovered**, aggregate **11,948,994,135B**. CurrentDebug/packages/provider/skill and unbacked191/219videos kept. Raw238paths in original reports are historical; no rerunning raw-bound audits. No physicalphone actions.
+
 ## Current Release checkpoint · Source238 · 8 November 2026
 
 Actual unsigned generic-iOS Release build PID21953 exited0/audit0; fresh selected-settings query PID23953 exited0. Independent135/root support all594 current/archive inputs, actual Release40,825,272B SHA cf261b0054268f69825a569bcc8583795c5ef169c42bf1196be22e140eb39d25, current Debug/test pair,202negative/186matchedDebugpositive/16negative-only/21production controls. All three actual app compiler commands use `-O`, noDEBUG/no-enable-testing, and BOTH coverage flags; `ENABLE_CODE_COVERAGE=YES`. Actual191SwiftFileList=188Lumen+2Shared+1generated asset file. Full399,532B build log, selected settings and complete FileList retained.
