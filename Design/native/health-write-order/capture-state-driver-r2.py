@@ -13,11 +13,11 @@ import time
 import traceback
 
 BASE = Path(__file__).resolve().parent
-spec = importlib.util.spec_from_file_location('capture_evidence', BASE / 'capture-state-evidence-r1.py')
+spec = importlib.util.spec_from_file_location('capture_evidence', BASE / 'capture-state-evidence-r2.py')
 e = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(e)
 h, ns = e.h, e.ns
-f = e.module('capture_finalization', 'capture-state-finalization-r1.py')
+f = e.module('capture_finalization', 'capture-state-finalization-r2.py')
 p = argparse.ArgumentParser()
 p.add_argument('--source', required=True)
 p.add_argument('--build', required=True)
@@ -205,7 +205,7 @@ try:
                     message(group, 'Lumen-legacy-capture-release.json', held)
             if a.case == 'pending-back' and 'held' in state:
                 held = state['held']
-                if 'choicesChecked' not in state and captured('pending-choices'):
+                if 'choicesChecked' not in state and captured('pending-choices-action'):
                     boundary('pending-choices-before-back', group, selection=state['selection'])
                     assert not e.records(current, 1, 'finish-accepted')
                     state['choicesChecked'] = True
@@ -223,14 +223,14 @@ try:
                     terminal = e.records(current, 1, 'capture-returned-error')
                     wrapper = e.records(current, 1, 'ui-wrapper-cleanup')
                     if terminal and wrapper:
-                        rejection = e.unique(current, 1, 'capture-threw-finish')
+                        rejection = e.unique(current, 1, 'capture-caught-after-input-defer-finish')
                         assert rejection['controlCancelled'] and rejection['leaseState'] == 'closed' and not rejection['metadataAvailable']
                         assert terminal[0]['controlCancelled'] and not e.records(current, 1, 'finish-accepted')
                         assert not any(event['event'] in ['ready', 'acquire'] for event in h.events(group))
                         state['oldTerminal'] = {'rejection': rejection, 'afterReturn': terminal, 'uiWrapperCleanup': wrapper}
                         cleanup(state['selection'], group, 'oldWorkerTerminalCleanup')
                         message(group, 'Lumen-legacy-capture-host-ack.json', held, 'old-worker-terminal')
-                if 'freshSelection' not in state and captured('fresh-review'):
+                if 'freshSelection' not in state and captured('fresh-review-action'):
                     ready = e.unique(current, 2, 'finish-accepted')
                     assert ready['leaseState'] == 'ready' and ready['metadataAvailable'] and not ready['controlCancelled']
                     assert ready['sessionID'] != held['sessionID'] and ready['controlID'] != held['controlID']
@@ -245,7 +245,7 @@ try:
                     message(group, 'Lumen-legacy-capture-host-ack.json', e.unique(current, 2, 'registered'), 'final-cleanup-checked')
             if a.case == 'retry-failure' and fault is not None:
                 if 'genuineFailure' not in state and captured('genuine-failure'):
-                    failed = e.unique(current, 1, 'capture-threw-capture')
+                    failed = e.unique(current, 1, 'capture-caught-after-input-defer-capture')
                     assert not failed['controlCancelled'] and not failed['taskCancelled'] and not failed['metadataAvailable']
                     assert failed['leaseState'] == 'capturing' and 'HealthLocalFiles.Failure' in failed['errorType']
                     assert not e.records(current, 1, 'finish-accepted')
@@ -260,7 +260,7 @@ try:
                     state['faultRestored'] = True
                     boundary('root-restored-before-retry', group, selection=state['selection'])
                     message(group, 'Lumen-legacy-capture-host-ack.json', state['held'], 'root-restored')
-                if 'retryReady' not in state and captured('retry-off-choices'):
+                if 'retryReady' not in state and captured('retry-off-choices-action'):
                     ready = e.unique(current, 2, 'finish-accepted')
                     first = state['held']
                     assert ready['sessionID'] == first['sessionID'] and ready['controlID'] != first['controlID']
@@ -290,11 +290,22 @@ except BaseException:
 finally:
     outcome = {'source': a.source, 'build': a.build, 'case': a.case, 'nativeExit': native_code,
         'hostError': host_error, 'retention': None, 'summary': None, 'driverExit': 1,
-        'status': 'INCOMPLETE finalization and retention pending; no acceptance', 'physicalDeviceActions': False}
+        'status': 'INCOMPLETE finalization and retention pending; no acceptance', 'physicalDeviceActions': False,
+        'restoration': {'needed': fault is not None and not state.get('faultRestored', False),
+                        'descriptorFile': prefix + '-fault-descriptor.json' if fault is not None else None}}
     # A durable minimal terminal record exists BEFORE any retainer import/call.
-    f.durable_json(outpath, outcome)
+    write_error = f.record_outcome(outpath, outcome)
+    host_error = host_error or write_error
     try:
-        native_code = f.finish_native(process, state, persist)
+        def safe_finalization_persist():
+            try:
+                persist()
+            except BaseException:
+                outcome.setdefault('finalizationPersistenceErrors', []).append(traceback.format_exc())
+                f.record_outcome(outpath, outcome)
+        native_code = f.finish_native(process, state, safe_finalization_persist)
+        if outcome.get('finalizationPersistenceErrors'):
+            host_error = host_error or outcome['finalizationPersistenceErrors'][0]
     except BaseException:
         state['nativeFinalizationError'] = traceback.format_exc()
         host_error = host_error or state['nativeFinalizationError']
@@ -303,6 +314,15 @@ finally:
             try:
                 if not state.get('faultRestored'):
                     assert process is not None and process.poll() is not None, 'Native producer not terminal; no restore'
+                    state['failureRestorationPreflight'] = {'source': h.verify_inputs(a.source, a.build), 'installed': h.installed(a.build)}
+                    assert state['failureRestorationPreflight']['installed']['path'] == state['appExecutable']
+                    group = h.container('group.com.dbakp.lumen')
+                    actual_protocol = e.capture(group, started, a.case)
+                    e.same_protocol(actual_protocol, state['initialCapture'])
+                    assert actual_protocol['pid'] == state['initialCapture']['pid']
+                    assert e.unique(actual_protocol, 1, 'registered')['controlID'] == state['held']['controlID']
+                    state['failureRestorationPreflight']['capture'] = actual_protocol
+                    persist()
                     f.terminate_known_app(h.DEVICE, state['appExecutable'], state['initialCapture']['pid'], state, persist)
                     fault.restore()
                     state['faultRestoredOnFailure'] = True
@@ -323,23 +343,18 @@ finally:
         host_error = host_error or traceback.format_exc()
         outcome['observationPersistenceError'] = traceback.format_exc()
     outcome.update(nativeExit=native_code, hostError=host_error)
-    f.durable_json(outpath, outcome)
-    retained = None
-    try:
-        retainer = e.module('capture_retainer', 'retain-mixed-ineligible-results-r1.py')
-        retained = retainer.retain(BASE, raw, stem, prefix, a.source)
-        outcome['retention'] = retained
-        outcome['summary'] = retained.get('summary')
-    except BaseException:
-        outcome['retainerException'] = traceback.format_exc()
-        host_error = host_error or outcome['retainerException']
-    finally:
-        outcome.update(hostError=host_error, nativeExit=native_code)
-        f.durable_json(outpath, outcome)
+    outcome['restoration'].update(restored=bool(state.get('faultRestored') or state.get('faultRestoredOnFailure')),
+        error=state.get('faultRestorationOrRetentionError'), appTermination=state.get('failureAppTermination'))
+    write_error = f.record_outcome(outpath, outcome)
+    host_error = host_error or write_error
+    retained, retention_error = f.guarded_retain(
+        lambda: e.module('capture_retainer', 'retain-mixed-ineligible-results-r1.py'),
+        BASE, raw, stem, prefix, a.source, outcome, outpath)
+    host_error = host_error or retention_error
     try:
         assert host_error is None and native_code == 0 and retained is not None and not retained['errors']
         assert [retained['summary'][key] for key in ['passedTests', 'failedTests', 'skippedTests']] == [1, 0, 0]
-        assert len(retained['images']) == 6 and len(retained['readbacks']) == 1
+        assert len(retained['images']) == 8 and len(retained['readbacks']) == 1
         helper = h.load(BASE / retained['readbacks'][0]['file'])
         e.native_helper(helper, a.case, state['finalCapture']['runID'])
         e.completed_state(state)
@@ -350,6 +365,7 @@ finally:
         outcome['failure'] = traceback.format_exc()
         host_error = host_error or outcome['failure']
     outcome.update(hostError=host_error, driverExit=0 if host_error is None else 1, finished=time.time())
-    f.durable_json(outpath, outcome)
+    write_error = f.record_outcome(outpath, outcome)
+    host_error = host_error or write_error
     print(outcome['status'], flush=True)
 raise SystemExit(0 if host_error is None else 1)

@@ -5708,9 +5708,9 @@ final class LumenSmokeTests: XCTestCase {
             for element in [meals, omission, workouts] {
                 try require(element.value as? String == "0" && element.isEnabled == enabled, phase, "Choices must be off with actual expected eligibility")
             }
-            reveal(confirm)
-            try require(confirm.exists && !confirm.isEnabled, phase, "Empty selection must not allow Recover")
-            observations.append(["phase": phase + "-action", "recoverDisabled": !confirm.isEnabled])
+            try whole(phase + "-action", [confirm])
+            try require(!confirm.isEnabled, phase + "-action", "Empty selection must not allow Recover")
+            observations[observations.count - 1]["recoverDisabled"] = !confirm.isEnabled
         }
         func selectOriginal() throws {
             try chooseBackupFixture("Lumen-backup-health-matrix-two-legacy")
@@ -5727,7 +5727,7 @@ final class LumenSmokeTests: XCTestCase {
         openBackupSettings(); try selectOriginal()
         try waitPhase(pendingBack ? "held-after-read-1" : "held-before-read-1")
         try require(progress.waitForExistence(timeout: 10), "progress", "Actual delayed progress missing")
-        try whole(pendingBack ? "pending-progress" : "before-read-progress", [progress], towardsTop: true)
+        try whole(pendingBack ? "pending-progress" : "before-read-progress", [filename, progress], towardsTop: true)
         if pendingBack {
             try choices("pending-choices", enabled: false)
             try waitPhase("host-pending-choices-checked")

@@ -1,0 +1,406 @@
+{
+  "scope": "Isolated host subprocesses and explicitly mocked process queries; no simulator/native app/crash acceptance",
+  "helperSHA256": "3f2f5b18ba219733aa6e8ca467c6f9f50ee996eed398dd62bf09c4c965aecdd5",
+  "cases": [
+    {
+      "case": "natural-failure-attachment",
+      "status": "PASS",
+      "actualChild": true,
+      "exit": 1,
+      "facts": {
+        "naturalWaitSeconds": 0.2,
+        "interruptFallbackSeconds": 0.2,
+        "samples": [
+          {
+            "attempt": 1,
+            "at": 1794117973.398709,
+            "exit": 1
+          }
+        ],
+        "exit": 1,
+        "finishedAt": 1794117973.3992698
+      }
+    },
+    {
+      "case": "interrupt-fallback-attachment",
+      "status": "PASS",
+      "actualChild": true,
+      "exit": 2,
+      "facts": {
+        "naturalWaitSeconds": 0.2,
+        "interruptFallbackSeconds": 0.2,
+        "samples": [
+          {
+            "attempt": 1,
+            "at": 1794117973.542426,
+            "exit": null
+          },
+          {
+            "attempt": 2,
+            "at": 1794117973.651492,
+            "exit": null
+          }
+        ],
+        "interruptSentAt": 1794117973.652181,
+        "exit": 2,
+        "finishedAt": 1794117973.657216
+      }
+    },
+    {
+      "case": "forced-fallback",
+      "status": "PASS",
+      "actualChild": true,
+      "exit": -9,
+      "facts": {
+        "naturalWaitSeconds": 0.2,
+        "interruptFallbackSeconds": 0.2,
+        "samples": [
+          {
+            "attempt": 1,
+            "at": 1794117973.797764,
+            "exit": null
+          },
+          {
+            "attempt": 2,
+            "at": 1794117973.90843,
+            "exit": null
+          }
+        ],
+        "interruptSentAt": 1794117973.9104798,
+        "interruptWaits": 2,
+        "forcedTerminationAt": 1794117974.131177,
+        "exit": -9,
+        "finishedAt": 1794117974.133077
+      }
+    },
+    {
+      "case": "already-absent",
+      "status": "PASS",
+      "mockedProcessQueries": true,
+      "expectedGuard": null,
+      "facts": {
+        "failureAppTermination": {
+          "device": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+          "executable": "/synthetic-only/Lumen.app/Lumen",
+          "knownPID": 123,
+          "samples": [
+            {
+              "at": 1794117974.1345658,
+              "command": [
+                "ps",
+                "-axo",
+                "pid=,comm="
+              ],
+              "exit": 0,
+              "stdoutBytes": 0,
+              "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr": "",
+              "matchingProcesses": []
+            },
+            {
+              "at": 1794117974.1352918,
+              "command": [
+                "ps",
+                "-axo",
+                "pid=,comm="
+              ],
+              "exit": 0,
+              "stdoutBytes": 0,
+              "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr": "",
+              "matchingProcesses": []
+            },
+            {
+              "at": 1794117974.136084,
+              "command": [
+                "ps",
+                "-axo",
+                "pid=,comm="
+              ],
+              "exit": 0,
+              "stdoutBytes": 0,
+              "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr": "",
+              "matchingProcesses": []
+            }
+          ],
+          "knownAppAndInProcessWorkerAbsent": true,
+          "scope": "Two bounded actual process-table observations; no universal relaunch/race/crash claim"
+        }
+      }
+    },
+    {
+      "case": "failed-terminate-but-observed-absent",
+      "status": "PASS",
+      "mockedProcessQueries": true,
+      "expectedGuard": null,
+      "facts": {
+        "failureAppTermination": {
+          "device": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+          "executable": "/synthetic-only/Lumen.app/Lumen",
+          "knownPID": 123,
+          "samples": [
+            {
+              "at": 1794117974.137812,
+              "command": [
+                "ps",
+                "-axo",
+                "pid=,comm="
+              ],
+              "exit": 0,
+              "stdoutBytes": 35,
+              "stdoutSHA256": "4532b1150c4f27066976416b655086862f612090e4d816794d502d7a138509a2",
+              "stderr": "",
+              "matchingProcesses": [
+                [
+                  "123",
+                  "/synthetic-only/Lumen.app/Lumen"
+                ]
+              ]
+            },
+            {
+              "at": 1794117974.138828,
+              "command": [
+                "ps",
+                "-axo",
+                "pid=,comm="
+              ],
+              "exit": 0,
+              "stdoutBytes": 0,
+              "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr": "",
+              "matchingProcesses": []
+            },
+            {
+              "at": 1794117974.140248,
+              "command": [
+                "ps",
+                "-axo",
+                "pid=,comm="
+              ],
+              "exit": 0,
+              "stdoutBytes": 0,
+              "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr": "",
+              "matchingProcesses": []
+            }
+          ],
+          "terminate": {
+            "exit": 1,
+            "stdout": "",
+            "stderr": "synthetic terminate failed",
+            "at": 1794117974.138486
+          },
+          "knownAppAndInProcessWorkerAbsent": true,
+          "scope": "Two bounded actual process-table observations; no universal relaunch/race/crash claim"
+        }
+      }
+    },
+    {
+      "case": "failed-terminate-still-live",
+      "status": "PASS",
+      "mockedProcessQueries": true,
+      "expectedGuard": "App/worker still present: preserve sentinel and moved root",
+      "facts": {
+        "failureAppTermination": {
+          "device": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+          "executable": "/synthetic-only/Lumen.app/Lumen",
+          "knownPID": 123,
+          "samples": [
+            {
+              "at": 1794117974.142015,
+              "command": [
+                "ps",
+                "-axo",
+                "pid=,comm="
+              ],
+              "exit": 0,
+              "stdoutBytes": 35,
+              "stdoutSHA256": "4532b1150c4f27066976416b655086862f612090e4d816794d502d7a138509a2",
+              "stderr": "",
+              "matchingProcesses": [
+                [
+                  "123",
+                  "/synthetic-only/Lumen.app/Lumen"
+                ]
+              ]
+            },
+            {
+              "at": 1794117974.143029,
+              "command": [
+                "ps",
+                "-axo",
+                "pid=,comm="
+              ],
+              "exit": 0,
+              "stdoutBytes": 35,
+              "stdoutSHA256": "4532b1150c4f27066976416b655086862f612090e4d816794d502d7a138509a2",
+              "stderr": "",
+              "matchingProcesses": [
+                [
+                  "123",
+                  "/synthetic-only/Lumen.app/Lumen"
+                ]
+              ]
+            },
+            {
+              "at": 1794117974.1438231,
+              "command": [
+                "ps",
+                "-axo",
+                "pid=,comm="
+              ],
+              "exit": 0,
+              "stdoutBytes": 35,
+              "stdoutSHA256": "4532b1150c4f27066976416b655086862f612090e4d816794d502d7a138509a2",
+              "stderr": "",
+              "matchingProcesses": [
+                [
+                  "123",
+                  "/synthetic-only/Lumen.app/Lumen"
+                ]
+              ]
+            },
+            {
+              "at": 1794117974.144502,
+              "command": [
+                "ps",
+                "-axo",
+                "pid=,comm="
+              ],
+              "exit": 0,
+              "stdoutBytes": 35,
+              "stdoutSHA256": "4532b1150c4f27066976416b655086862f612090e4d816794d502d7a138509a2",
+              "stderr": "",
+              "matchingProcesses": [
+                [
+                  "123",
+                  "/synthetic-only/Lumen.app/Lumen"
+                ]
+              ]
+            }
+          ],
+          "terminate": {
+            "exit": 1,
+            "stdout": "",
+            "stderr": "synthetic terminate failed",
+            "at": 1794117974.14269
+          }
+        }
+      }
+    },
+    {
+      "case": "pid-reuse-refused",
+      "status": "PASS",
+      "mockedProcessQueries": true,
+      "expectedGuard": "PID identity changed; retain fault for guarded recovery",
+      "facts": {
+        "failureAppTermination": {
+          "device": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+          "executable": "/synthetic-only/Lumen.app/Lumen",
+          "knownPID": 123,
+          "samples": [
+            {
+              "at": 1794117974.145901,
+              "command": [
+                "ps",
+                "-axo",
+                "pid=,comm="
+              ],
+              "exit": 0,
+              "stdoutBytes": 22,
+              "stdoutSHA256": "e6711078507384dca1b6055db28143afc642b8444226fd7b3f8a710afb217923",
+              "stderr": ""
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case": "extra-app-process-refused",
+      "status": "PASS",
+      "mockedProcessQueries": true,
+      "expectedGuard": "Unexpected extra app process; no restoration",
+      "facts": {
+        "failureAppTermination": {
+          "device": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+          "executable": "/synthetic-only/Lumen.app/Lumen",
+          "knownPID": 123,
+          "samples": [
+            {
+              "at": 1794117974.1468859,
+              "command": [
+                "ps",
+                "-axo",
+                "pid=,comm="
+              ],
+              "exit": 0,
+              "stdoutBytes": 71,
+              "stdoutSHA256": "612abfa0adc1256b2bc2d1df777ebbe155621dc7c4f2cb0230adf9537b9253a1",
+              "stderr": "",
+              "matchingProcesses": [
+                [
+                  "123",
+                  "/synthetic-only/Lumen.app/Lumen"
+                ],
+                [
+                  "124",
+                  "/synthetic-only/Lumen.app/Lumen"
+                ]
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case": "retainer-import-failure",
+      "status": "PASS",
+      "injectedOrchestrationFailure": true,
+      "queriesAttempted": 3,
+      "durableUnacceptedOutcome": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/LumenCaptureFinalization219R2-8q5n2fey/retainer-import-failure/retained/outcome.json",
+      "availableSyntheticPeersPreserved": true,
+      "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/capture-state-finalization-r2.py\", line 217, in guarded_retain\n    retainer = loader()\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/capture-state-finalization-isolated-probes-r2.py\", line 106, in loader\n    if name == 'retainer-import-failure': raise ImportError('synthetic loader failure')\nImportError: synthetic loader failure\n"
+    },
+    {
+      "case": "retainer-call-failure",
+      "status": "PASS",
+      "injectedOrchestrationFailure": true,
+      "queriesAttempted": 3,
+      "durableUnacceptedOutcome": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/LumenCaptureFinalization219R2-8q5n2fey/retainer-call-failure/retained/outcome.json",
+      "availableSyntheticPeersPreserved": true,
+      "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/capture-state-finalization-r2.py\", line 218, in guarded_retain\n    retained = retainer.retain(base, raw, stem, prefix, source)\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/capture-state-finalization-isolated-probes-r2.py\", line 109, in retain\n    def retain(self, *_): raise RuntimeError('synthetic retain call failure')\nRuntimeError: synthetic retain call failure\n"
+    },
+    {
+      "case": "summary-failure",
+      "status": "PASS",
+      "injectedOrchestrationFailure": true,
+      "queriesAttempted": 3,
+      "durableUnacceptedOutcome": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/LumenCaptureFinalization219R2-8q5n2fey/summary-failure/retained/outcome.json",
+      "availableSyntheticPeersPreserved": true,
+      "error": "[{\"step\": \"summary query\", \"error\": \"Exit 9\"}]"
+    },
+    {
+      "case": "export-failure",
+      "status": "PASS",
+      "injectedOrchestrationFailure": true,
+      "queriesAttempted": 3,
+      "durableUnacceptedOutcome": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/LumenCaptureFinalization219R2-8q5n2fey/export-failure/retained/outcome.json",
+      "availableSyntheticPeersPreserved": true,
+      "error": "[{\"step\": \"export PNG\", \"error\": \"Exit 8\"}, {\"step\": \"export JSON\", \"error\": \"Exit 8\"}]"
+    },
+    {
+      "case": "outcome-write-failure",
+      "status": "PASS",
+      "injectedOrchestrationFailure": true,
+      "queriesAttempted": 3,
+      "durableUnacceptedOutcome": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/LumenCaptureFinalization219R2-8q5n2fey/outcome-write-failure/retained/outcome.json",
+      "availableSyntheticPeersPreserved": true,
+      "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/capture-state-finalization-r2.py\", line 139, in record_outcome\n    durable_json(path, outcome)\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/capture-state-finalization-r2.py\", line 23, in durable_json\n    os.replace(temporary, path)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/mock.py\", line 1093, in __call__\n    return self._mock_call(*args, **kwargs)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/mock.py\", line 1097, in _mock_call\n    return self._execute_mock_call(*args, **kwargs)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/mock.py\", line 1158, in _execute_mock_call\n    result = effect(*args, **kwargs)\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/capture-state-finalization-isolated-probes-r2.py\", line 127, in replace\n    raise OSError('synthetic single replacement failure')\nOSError: synthetic single replacement failure\n"
+    }
+  ],
+  "work": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/LumenCaptureFinalization219R2-8q5n2fey",
+  "status": "PASS 3 actual host children +5 mocked process guards +5 injected retention/persistence branches",
+  "passed": 13,
+  "expectedGuards": 3
+}

@@ -99,21 +99,28 @@ final class BackupRecoveryReviewSession: Sendable {
         do {
             let input = try acquire(control: control)
             defer { withExtendedLifetime(input) {} }
-            capturePhase = "before-read"
-            try HealthOriginCaptureUIFixture.hold("before-read", session: id, control: control,
-                state: { String(describing: self.origins.state) }, metadata: { self.origins.metadata != nil })
-            capturePhase = "capture"
-            let snapshot = try LocalStore.captureLegacyRecoveryReview(domains, control: control)
-            capturePhase = "after-read"
-            try HealthOriginCaptureUIFixture.hold("after-read", session: id, control: control,
-                state: { String(describing: self.origins.state) }, metadata: { self.origins.metadata != nil })
-            capturePhase = "finish"
-            try origins.finish(snapshot, control: control)
-            noteCapture("finish-accepted", control: control)
-            HealthLegacyOriginUIFixture.note("ready", id: id, domains: snapshot.metadata.legacyDomains)
+            do {
+                capturePhase = "before-read"
+                try HealthOriginCaptureUIFixture.hold("before-read", session: id, control: control,
+                    state: { String(describing: self.origins.state) }, metadata: { self.origins.metadata != nil })
+                capturePhase = "capture"
+                let snapshot = try LocalStore.captureLegacyRecoveryReview(domains, control: control)
+                capturePhase = "after-read"
+                try HealthOriginCaptureUIFixture.hold("after-read", session: id, control: control,
+                    state: { String(describing: self.origins.state) }, metadata: { self.origins.metadata != nil })
+                capturePhase = "finish"
+                try origins.finish(snapshot, control: control)
+                noteCapture("finish-accepted", control: control)
+                HealthLegacyOriginUIFixture.note("ready", id: id, domains: snapshot.metadata.legacyDomains)
+            } catch {
+                // This catch is inside the acquired input's lifetime scope.
+                noteCapture("capture-rejected-before-input-defer-" + capturePhase, control: control, error: error)
+                throw error
+            }
         } catch {
-            // Record the original error before the view catch suspends/cancels.
-            noteCapture("capture-threw-" + capturePhase, control: control, error: error)
+            // The do scope and its input lifetime defer have unwound. This still
+            // records the original error before the view suspends/cancels.
+            noteCapture("capture-caught-after-input-defer-" + capturePhase, control: control, error: error)
             throw error
         }
         #else
