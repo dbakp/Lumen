@@ -116,6 +116,11 @@ final class LumenSmokeTests: XCTestCase {
             if name.contains("OriginData") || name.contains("OriginString") {
                 app.launchArguments += ["-health-legacy-origin-ui", name.contains("OriginData") ? "data" : "string"]
             }
+            if name.contains("RecoveryMixedIneligible") {
+                app.launchArguments += ["-health-backup-healthy-merge-ui", "-health-backup-empty-ui", "-health-recovery-cancel-ui",
+                    "-health-success-observation-ui", "-health-legacy-origin-ui", "data", "-health-legacy-origin-mixed-ui",
+                    "-lumen.appearance", "light", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryL"]
+            }
             if name.contains("RecoveryPhotoFaultErrorBack") {
                 app.launchArguments += ["-health-read-ui", "-health-read-scope", "selected-record"]
             }
@@ -5602,6 +5607,142 @@ final class LumenSmokeTests: XCTestCase {
     func testHealthBackupFileRecoveryPhotoFaultErrorBackLegacyOriginData() throws { try healthBackupPhotoFaultErrorBack("legacy") }
     @MainActor
     func testHealthBackupFileRecoveryPhotoFaultErrorBackEncryptedOriginString() throws { try healthBackupPhotoFaultErrorBack("encrypted") }
+    @MainActor
+    func testHealthBackupFileRecoveryMixedIneligibleLegacy() throws {
+        executionTimeAllowance = 600
+        let prefix = "health-mixed-ineligible-legacy"
+        var observations: [[String: Any]] = []
+        // Retain the actual observations even when a later assertion fails.
+        defer {
+            if let data = try? JSONSerialization.data(withJSONObject: ["scope": "mixed-ineligible-workouts-only",
+                "observations": observations], options: [.prettyPrinted, .sortedKeys]) {
+                let attachment = XCTAttachment(data: data, uniformTypeIdentifier: "public.json")
+                attachment.name = "mixed-ineligible-readback"; attachment.lifetime = .keepAlways; add(attachment)
+            }
+        }
+        func selectOriginal() throws {
+            try chooseBackupFixture("Lumen-backup-health-matrix-two-legacy")
+            XCTAssertTrue(app.descendants(matching: .any).matching(identifier: "backupPreviewKind").firstMatch.waitForExistence(timeout: 30))
+            let link = app.buttons["reviewBackupHealthRecovery"].firstMatch
+            reveal(link); link.tap()
+            let filename = app.staticTexts["recoveryFileName"].firstMatch
+            XCTAssertTrue(filename.waitForExistence(timeout: 10))
+            XCTAssertEqual(filename.label, "Lumen-backup-health-matrix-two-legacy.json")
+        }
+        func whole(_ suffix: String, _ elements: [XCUIElement]) {
+            let first = elements[0]
+            XCTAssertTrue(first.waitForExistence(timeout: 10))
+            reveal(first, towardsTop: ["mixed-off", "workouts-selected", "not-now", "relaunch-review"].contains(suffix))
+            func viewport() -> CGRect {
+                let top = app.navigationBars.firstMatch.frame.maxY + 12
+                let bar = app.tabBars.firstMatch
+                let bottom = bar.exists && bar.isHittable ? bar.frame.minY - 12 : app.frame.maxY - 40
+                return CGRect(x: app.frame.minX, y: top, width: app.frame.width, height: bottom - top)
+            }
+            func union() -> CGRect { elements.reduce(CGRect.null) { $0.union($1.frame) } }
+            for _ in 0..<12 {
+                let bounds = viewport(), frame = union()
+                if elements.allSatisfy({ $0.exists && !$0.frame.isEmpty }) && bounds.insetBy(dx: 0, dy: -2).contains(frame) { break }
+                let down = frame.minY < bounds.minY
+                let distance = min(bounds.height - 50, max(24, down ? bounds.minY - frame.minY + 12 : frame.maxY - bounds.maxY + 12))
+                let y = down ? bounds.minY + 20 : bounds.maxY - 20
+                let start = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: y))
+                let end = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: y + (down ? distance : -distance)))
+                start.press(forDuration: 0.05, thenDragTo: end); settleLabFrame(first)
+            }
+            settleLabFrame(first)
+            let bounds = viewport()
+            var rows: [[String: Any]] = []
+            for element in elements {
+                let frame = element.frame
+                XCTAssertTrue(element.exists); XCTAssertGreaterThan(frame.width, 0); XCTAssertGreaterThan(frame.height, 0)
+                XCTAssertGreaterThanOrEqual(frame.minX, bounds.minX); XCTAssertLessThanOrEqual(frame.maxX, bounds.maxX)
+                XCTAssertGreaterThanOrEqual(frame.minY, bounds.minY - 2); XCTAssertLessThanOrEqual(frame.maxY, bounds.maxY)
+                rows.append(["label": element.label, "value": element.value as? String ?? "", "enabled": element.isEnabled,
+                    "frame": ["x": Double(frame.minX), "y": Double(frame.minY), "width": Double(frame.width), "height": Double(frame.height)]])
+            }
+            observations.append(["phase": suffix, "elements": rows, "usableTop": Double(bounds.minY), "usableBottom": Double(bounds.maxY),
+                "usableLeft": Double(bounds.minX), "usableRight": Double(bounds.maxX)])
+            snap(prefix + "-" + suffix)
+        }
+        let ineligible = app.staticTexts["This saved data can't be replaced here."].firstMatch
+        let omission = app.switches["Recover without meal photos"].firstMatch
+        let workouts = app.switches["recoverFile-workouts"].firstMatch
+        let confirm = app.buttons["confirmFileRecovery"].firstMatch
+        func mixed(_ suffix: String, selected: Bool) {
+            whole(suffix, [ineligible, omission, workouts])
+            XCTAssertFalse(app.switches["recoverFile-meals"].exists)
+            XCTAssertEqual(omission.value as? String, "0"); XCTAssertFalse(omission.isEnabled)
+            XCTAssertEqual(workouts.value as? String, selected ? "1" : "0"); XCTAssertTrue(workouts.isEnabled)
+        }
+        openBackupSettings(); try selectOriginal()
+        snap(prefix + "-source"); Thread.sleep(forTimeInterval: 3)
+        for domain in ["water", "goals"] {
+            let link = app.buttons["reviewFile-" + domain].firstMatch
+            reveal(link)
+            let candidates = app.staticTexts.matching(NSPredicate(format: "label == %@", "Current data opens")).allElementsBoundByIndex
+            let state = try XCTUnwrap(candidates.filter { $0.frame.minY >= link.frame.maxY && $0.frame.minY - link.frame.maxY < 80 }.first)
+            whole("healthy-" + domain, [link, state])
+            XCTAssertFalse(app.switches["recoverFile-" + domain].exists)
+        }
+        mixed("mixed-off", selected: false)
+        reveal(confirm); XCTAssertFalse(confirm.isEnabled)
+        nativeSwitch("recoverFile-workouts", enabled: true, towardsTop: true)
+        mixed("workouts-selected", selected: true)
+        reveal(confirm); XCTAssertTrue(confirm.isEnabled); confirm.tap()
+        let alert = app.alerts["Replace selected data?"]
+        XCTAssertTrue(alert.waitForExistence(timeout: 5))
+        let body = alert.staticTexts.matching(NSPredicate(format: "label == %@",
+            "Selected data will be replaced by records from this file. The older saved data will stay in a private recovery copy on this iPhone.")).firstMatch
+        // Native system alert bounds are measured directly; no scrolling its controls.
+        let alertElements = [alert.staticTexts["Replace selected data?"].firstMatch, body, alert.buttons["Not now"], alert.buttons["Recover"]]
+        for element in alertElements {
+            XCTAssertTrue(element.exists); XCTAssertGreaterThan(element.frame.height, 0)
+            XCTAssertTrue(app.frame.contains(element.frame))
+        }
+        observations.append(["phase": "confirmation", "completeBody": body.label, "wholeAlertInScreen": true])
+        snap(prefix + "-confirmation"); alert.buttons["Not now"].tap()
+        mixed("not-now", selected: true)
+        reveal(confirm); XCTAssertTrue(confirm.isEnabled); confirm.tap()
+        XCTAssertTrue(alert.waitForExistence(timeout: 5)); alert.buttons["Recover"].tap()
+        let busy = app.descendants(matching: .any).matching(identifier: "fileHealthRecoveryBusy").firstMatch
+        XCTAssertTrue(busy.waitForExistence(timeout: 10))
+        for phase in ["held-1", "observed-1"] {
+            let expectation = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", phase), object: busy)
+            XCTAssertEqual(XCTWaiter.wait(for: [expectation], timeout: 15), .completed)
+            snap(prefix + "-" + phase)
+        }
+        let success = app.descendants(matching: .any).matching(identifier: "fileHealthRecovered").firstMatch
+        reveal(success, towardsTop: true); XCTAssertTrue(success.waitForExistence(timeout: 30))
+        XCTAssertFalse(app.descendants(matching: .any).matching(identifier: "fileHealthRecoveryError").firstMatch.exists)
+        snap(prefix + "-success")
+        let acknowledged = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", "success-observed"), object: success)
+        XCTAssertEqual(XCTWaiter.wait(for: [acknowledged], timeout: 35), .completed)
+        let successValue = success.value as? String ?? ""
+        XCTAssertEqual(successValue, "success-observed")
+        observations.append(["phase": "acknowledged", "successValue": successValue])
+        let disclosure = app.staticTexts.matching(NSPredicate(format: "label == %@",
+            "Older saved data will stay in a private recovery copy on this iPhone. For meal recovery, this includes any old photos.")).firstMatch
+        whole("post-success", [disclosure])
+        app.navigationBars["Review recovery"].buttons.element(boundBy: 0).tap()
+        XCTAssertTrue(app.navigationBars["Backup & restore"].waitForExistence(timeout: 5))
+        snap(prefix + "-parent"); Thread.sleep(forTimeInterval: 4)
+        app.terminate(); app.launchArguments = []; app.launch(); openBackupSettings(); try selectOriginal()
+        whole("relaunch-review", [ineligible, omission])
+        XCTAssertFalse(app.switches["recoverFile-meals"].exists)
+        XCTAssertEqual(omission.value as? String, "0"); XCTAssertFalse(omission.isEnabled)
+        let workoutLink = app.buttons["reviewFile-workouts"].firstMatch
+        reveal(workoutLink); XCTAssertFalse(workouts.exists)
+        let healthy = app.staticTexts.matching(NSPredicate(format: "label == %@", "Current data opens")).allElementsBoundByIndex
+        XCTAssertTrue(healthy.contains { $0.frame.minY >= workoutLink.frame.maxY && $0.frame.minY - workoutLink.frame.maxY < 80 })
+        reveal(confirm); XCTAssertFalse(confirm.isEnabled)
+        observations.append(["phase": "relaunch-workouts-healthy", "noWorkoutsToggle": !workouts.exists, "recoverDisabled": !confirm.isEnabled,
+            "noFixtureRelaunchArguments": app.launchArguments.isEmpty])
+        app.navigationBars["Review recovery"].buttons.element(boundBy: 0).tap()
+        XCTAssertTrue(app.navigationBars["Backup & restore"].waitForExistence(timeout: 5))
+        snap(prefix + "-relaunch-parent"); Thread.sleep(forTimeInterval: 4)
+    }
+
     @MainActor
     func testHealthBackupFileRecoveryPhotoFaultErrorBackLegacyOriginDataPostSuccess() throws {
         try healthBackupPhotoFaultErrorBack("legacy", postSuccessDisclosure: true)

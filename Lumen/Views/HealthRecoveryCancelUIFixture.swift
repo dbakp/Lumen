@@ -14,13 +14,21 @@ enum HealthLegacyOriginUIFixture {
     }
     static let data = Data("{synthetic persisted legacy origin damaged".utf8)
     static let string = "Synthetic persisted old value e\u{301} 🫖"
+    static var mixedMeals: Bool {
+        kind == "data" && ProcessInfo.processInfo.arguments.contains("-health-legacy-origin-mixed-ui")
+    }
+    static let unsupportedMeals = ["synthetic": "Synthetic unsupported saved meals"]
     private static let bridge = Bridge()
     static func prepare(in root: URL) throws {
         guard let kind else { return }
         bridge.reset(root.deletingLastPathComponent())
         for domain in [HealthLocalFiles.Domain.meals, .workouts] {
             try FileManager.default.removeItem(at: root.appendingPathComponent(domain.rawValue + ".json"))
-            UserDefaults.standard.set(kind == "data" ? data as Any : string as Any, forKey: domain.legacyKey!)
+            if mixedMeals && domain == .meals {
+                UserDefaults.standard.set(unsupportedMeals, forKey: domain.legacyKey!)
+            } else {
+                UserDefaults.standard.set(kind == "data" ? data as Any : string as Any, forKey: domain.legacyKey!)
+            }
         }
         guard UserDefaults.standard.synchronize() else { throw BackupError.invalid }
         _ = try provenance(in: root)
@@ -35,7 +43,16 @@ enum HealthLegacyOriginUIFixture {
             let persisted = UserDefaults.standard.persistentDomain(forName: bundle)?[key]
             let effective = UserDefaults.standard.object(forKey: key)
             let bytes: Data
-            if kind == "data" {
+            var type = kind == "data" ? "data" : "stringUTF16LE"
+            if mixedMeals && domain == .meals {
+                // Unsupported values grant no recovery authority. Prove both
+                // fixed fixture values explicitly; capture does not compare them.
+                guard let raw = persisted as? [String: String],
+                      let active = effective as? [String: String],
+                      raw == unsupportedMeals, active == raw else { throw BackupError.invalid }
+                bytes = try JSONSerialization.data(withJSONObject: raw, options: [.sortedKeys])
+                type = "propertyListDictionary"
+            } else if kind == "data" {
                 guard let raw = persisted as? Data, let active = effective as? Data, raw == data, active == raw else { throw BackupError.invalid }
                 bytes = raw
             } else {
@@ -47,9 +64,9 @@ enum HealthLegacyOriginUIFixture {
                 for unit in original { encoded.append(UInt8(truncatingIfNeeded: unit)); encoded.append(UInt8(unit >> 8)) }
                 bytes = encoded
             }
-            values[domain.rawValue] = ["key": key, "type": kind == "data" ? "data" : "stringUTF16LE", "payload": bytes.base64EncodedString()]
+            values[domain.rawValue] = ["key": key, "type": type, "payload": bytes.base64EncodedString()]
         }
-        return ["bundle": bundle, "kind": kind, "values": values,
+        return ["bundle": bundle, "kind": mixedMeals ? "mixed-data" : kind, "values": values,
                 "scope": "Fixed synthetic persisted/effective values, not original plist bytes or all preferences"]
     }
     static func note(_ event: String, id: UUID, domains: Set<HealthLocalFiles.Domain> = []) {
