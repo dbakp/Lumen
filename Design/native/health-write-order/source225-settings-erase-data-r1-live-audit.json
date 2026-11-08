@@ -1,0 +1,752 @@
+{
+  "status": "PASS actual Settings erase/native/retained/source/live readonly audit",
+  "source": "durable-source-r225.json",
+  "case": "data",
+  "sourceInputs": 439,
+  "originals": 9,
+  "nativeHelperBytes": 3168,
+  "embeddedPayloadsDecoded": 375,
+  "boundaries": 6,
+  "live": {
+    "tree": {
+      "exists": true,
+      "files": {
+        "chat.json": {
+          "bytes": 2,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "base64": "W10="
+        },
+        "check-ins.json": {
+          "bytes": 2,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "base64": "W10="
+        },
+        "conversation-selection.json": {
+          "bytes": 2,
+          "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "base64": "e30="
+        },
+        "conversations.json": {
+          "bytes": 2,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "base64": "W10="
+        },
+        "documents.json": {
+          "bytes": 2,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "base64": "W10="
+        },
+        "habits.json": {
+          "bytes": 3170,
+          "sha256": "3eae84612a1e0e83d917fe191d76933c79c5167ab848622fb08fb75a855ecb71",
+          "base64": "W3sib2Zmc2V0IjoxODAwLCJkZXRhaWwiOiIxMCBtaW4gb2YgZGF5bGlnaHQgd2l0aGluIDMwIG1pbiBvZiB3YWtpbmcgYW5jaG9ycyB5b3VyIGNsb2NrLiIsImFuY2hvciI6Indha2VQbHVzIiwiZG9uZVRvZGF5IjpmYWxzZSwiaWNvbiI6InN1bi5tYXguZmlsbCIsImlkIjoibGlnaHQiLCJpc0VuYWJsZWQiOnRydWUsInRpdGxlIjoiR2V0IGJyaWdodCBsaWdodCJ9LHsib2Zmc2V0IjozNjAwMCwiZGV0YWlsIjoiTm8gY2FmZmVpbmUgd2l0aGluIDEwaCBvZiBiZWQg4oCUIGhhbGYtbGlmZSBpcyB+NmguIiwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiZG9uZVRvZGF5IjpmYWxzZSwiaWNvbiI6ImN1cC5hbmQuc2F1Y2VyLmZpbGwiLCJpZCI6ImNhZmZlaW5lIiwiaXNFbmFibGVkIjp0cnVlLCJ0aXRsZSI6IkNhZmZlaW5lIGN1dG9mZiJ9LHsib2Zmc2V0IjoyMTYwMCwiZGV0YWlsIjoiMjArIG1pbi4gRmluaXNoIGludGVuc2Ugd29ya291dHMgM2grIGJlZm9yZSBiZWQuIiwiYW5jaG9yIjoid2FrZVBsdXMiLCJkb25lVG9kYXkiOmZhbHNlLCJpY29uIjoiZmlndXJlLnJ1biIsImlkIjoiZXhlcmNpc2UiLCJpc0VuYWJsZWQiOnRydWUsInRpdGxlIjoiTW92ZSB5b3VyIGJvZHkifSx7Im9mZnNldCI6MjUyMDAsImRldGFpbCI6IklmIG5hcHBpbmc6IDIw4oCTMzAgbWluLCBiZWZvcmUgeW91ciBkaXAgZW5kcy4gTm8gbGF0ZSBuYXBzLiIsImFuY2hvciI6Indha2VQbHVzIiwiZG9uZVRvZGF5IjpmYWxzZSwiaWNvbiI6Im1vb24uenp6LmZpbGwiLCJpZCI6Im5hcCIsImlzRW5hYmxlZCI6dHJ1ZSwidGl0bGUiOiJTbWFydCBuYXAgd2luZG93In0seyJvZmZzZXQiOjE0NDAwLCJkZXRhaWwiOiJBbGNvaG9sIGZyYWdtZW50cyBzbGVlcCBldmVuIHdoZW4gaXQgc3BlZWRzIG9uc2V0LiIsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsImRvbmVUb2RheSI6ZmFsc2UsImljb24iOiJ3aW5lZ2xhc3MiLCJpZCI6ImFsY29ob2wiLCJpc0VuYWJsZWQiOnRydWUsInRpdGxlIjoiU2tpcCBuaWdodGNhcCJ9LHsib2Zmc2V0IjoxMDgwMCwiZGV0YWlsIjoiRmluaXNoIGxhcmdlIG1lYWxzIDNoIGJlZm9yZSBiZWQ7IGxpZ2h0IHNuYWNrIE9LLiIsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsImRvbmVUb2RheSI6ZmFsc2UsImljb24iOiJmb3JrLmtuaWZlIiwiaWQiOiJtZWFsIiwiaXNFbmFibGVkIjp0cnVlLCJ0aXRsZSI6Ikxhc3QgYmlnIG1lYWwifSx7Im9mZnNldCI6NzIwMCwiZGV0YWlsIjoiTG93ZXIgYnJpZ2h0bmVzcyArIE5pZ2h0IFNoaWZ0IDJoIGJlZm9yZSBiZWQuIiwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiZG9uZVRvZGF5IjpmYWxzZSwiaWNvbiI6ImlwaG9uZS5nZW4yIiwiaWQiOiJzY3JlZW5zIiwiaXNFbmFibGVkIjp0cnVlLCJ0aXRsZSI6IkRpbSBzY3JlZW5zIn0seyJvZmZzZXQiOjU0MDAsImRldGFpbCI6Ik92ZXJoZWFkIG9mZiwgbGFtcHMgbG93IOKAlCBsaWdodCBkZWxheXMgbWVsYXRvbmluLiIsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsImRvbmVUb2RheSI6ZmFsc2UsImljb24iOiJsaWdodGJ1bGIuZmlsbCIsImlkIjoibGlnaHRzIiwiaXNFbmFibGVkIjp0cnVlLCJ0aXRsZSI6IkRpbSB0aGUgbGlnaHRzIn0seyJvZmZzZXQiOjI3MDAsImRldGFpbCI6IjIw4oCTMzAgbWluIHJpdHVhbDogc2hvd2VyLCBzdHJldGNoLCByZWFkLCBicmVhdGhlLiIsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsImRvbmVUb2RheSI6ZmFsc2UsImljb24iOiJ3aW5kIiwiaWQiOiJ3aW5kZG93biIsImlzRW5hYmxlZCI6dHJ1ZSwidGl0bGUiOiJXaW5kIGRvd24ifSx7Im9mZnNldCI6MCwiZGV0YWlsIjoiSGl0IHlvdXIgbWVsYXRvbmluIHdpbmRvdyDigJQgdGhlIGVhc2llc3QgZmFsbGluZy1hc2xlZXAuIiwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiZG9uZVRvZGF5IjpmYWxzZSwiaWNvbiI6ImJlZC5kb3VibGUuZmlsbCIsImlkIjoiYmVkdGltZSIsImlzRW5hYmxlZCI6dHJ1ZSwidGl0bGUiOiJJbiBiZWQgb24gdGltZSJ9LHsiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwib2Zmc2V0IjoxODAwLCJkb25lVG9kYXkiOmZhbHNlLCJkZXRhaWwiOiI2NeKAkzY4wrBGIFwvIDE44oCTMjDCsEMsIGJsYWNrb3V0IGRhcmssIHF1aWV0LiIsInRpdGxlIjoiQ29vbCAmIGRhcmsgcm9vbSIsImljb24iOiJ0aGVybW9tZXRlci5zbm93Zmxha2UiLCJpZCI6ImNvb2wiLCJpc0VuYWJsZWQiOnRydWV9LHsiYW5jaG9yIjoid2FrZVBsdXMiLCJvZmZzZXQiOjAsImRvbmVUb2RheSI6ZmFsc2UsImRldGFpbCI6IlNhbWUgd2FrZSDCsTMwIG1pbiDigJQgZXZlbiB3ZWVrZW5kcy4gIzEgcmh5dGhtIGxldmVyLiIsInRpdGxlIjoiQ29uc2lzdGVudCB3YWtlIiwiaWNvbiI6ImFsYXJtLmZpbGwiLCJpZCI6ImNvbnNpc3RlbnQiLCJpc0VuYWJsZWQiOnRydWV9LHsiYW5jaG9yIjoid2FrZVBsdXMiLCJvZmZzZXQiOjMwMCwiZG9uZVRvZGF5IjpmYWxzZSwiZGV0YWlsIjoiV2F0ZXIgKyBsaWdodCBiZWZvcmUgY29mZmVlIGJvb3N0cyBhbGVydG5lc3MuIiwidGl0bGUiOiJNb3JuaW5nIGh5ZHJhdGlvbiIsImljb24iOiJkcm9wLmZpbGwiLCJpZCI6Imh5ZHJhdGlvbiIsImlzRW5hYmxlZCI6dHJ1ZX0seyJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJvZmZzZXQiOjE4MDAwLCJkb25lVG9kYXkiOmZhbHNlLCJkZXRhaWwiOiIyLW1pbiB3b3JyeSBsaXN0IGFmdGVyIGRpbm5lciBjbGVhcnMgbmlnaHQgcnVtaW5hdGlvbi4iLCJ0aXRsZSI6IkJyYWluIGR1bXAiLCJpY29uIjoicGVuY2lsLmFuZC5saXN0LmNsaXBib2FyZCIsImlkIjoic3RyZXNzIiwiaXNFbmFibGVkIjp0cnVlfSx7ImFuY2hvciI6ImJlZHRpbWVNaW51cyIsIm9mZnNldCI6MTQ0MDAsImRvbmVUb2RheSI6ZmFsc2UsImRldGFpbCI6IlN0aW11bGFudCDigJQgYXZvaWQgd2l0aGluIDRoIG9mIGJlZC4iLCJ0aXRsZSI6Ik5vIGxhdGUgbmljb3RpbmUiLCJpY29uIjoic21va2UuZmlsbCIsImlkIjoibmljb3RpbmUiLCJpc0VuYWJsZWQiOmZhbHNlfSx7ImFuY2hvciI6ImJlZHRpbWVNaW51cyIsIm9mZnNldCI6MTQ0MDAsImRvbmVUb2RheSI6ZmFsc2UsImRldGFpbCI6IkEgZHVzayB3YWxrIHNoYXJwZW5zIERMTU8gdGltaW5nLiIsInRpdGxlIjoiRXZlbmluZyBsaWdodCB3YWxrIiwiaWNvbiI6InN1bnNldC5maWxsIiwiaWQiOiJzdW5zZXQiLCJpc0VuYWJsZWQiOmZhbHNlfV0="
+        },
+        "health-write-intent.json": {
+          "bytes": 501,
+          "sha256": "b85ce8e5f526e6449b66d6ce66efaddf68f95b4688f75e8eb698cb2fe93f2ec7",
+          "base64": "eyJldmVudHMiOlt7ImFja25vd2xlZGdlZCI6W10sImFjdGlvbiI6ImRlbGV0ZSIsImNvbXBvbmVudHMiOlt7ImRhdGUiOi05NzgzMDcyMDAsIm1ldHJpYyI6IndhdGVyIiwidmFsdWUiOjB9XSwiZG9tYWluIjoid2F0ZXIiLCJnZW5lcmF0aW9uIjoiMkE4NjMxRkYtQTkyNy00MjZGLTgwNjYtMkU0NEM5Q0MwNTJFIiwiaWQiOiI2MkM0MDhBOC0yRjc2LTRCMUEtODE3Mi0wNkNFNEM0MzI3NkEiLCJpZGVudGl0eSI6InN5bmMiLCJpc3N1ZSI6InVuYXZhaWxhYmxlIiwibGlmZWN5Y2xlIjoiMDU3OUVFRjgtMEVGQS00MjNCLUIxRUItMDVCNDJGQzczNEFCIiwibG9jYWxJRCI6InN5bnRoZXRpYy1yZXNldC1wZW5kaW5nLXJlbW92YWwiLCJyZXF1ZXN0ZWRBdCI6ODE1ODIzNzIxLjU4NDkxNn1dLCJsaWZlY3ljbGUiOiJEMUZBOEFCNy01NTZELTRCQ0ItQTQyQi0yQzQyNjY4QjY2RTMiLCJvd25lciI6IkY5OUE3RjM5LUFDRDUtNDg4Ri04QzhGLUFEQjVDOTNGNjI4QSIsInZlcnNpb24iOjF9"
+        },
+        "import-receipts.json": {
+          "bytes": 2,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "base64": "W10="
+        },
+        "imported-days.json": {
+          "bytes": 2,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "base64": "W10="
+        },
+        "personal-context.json": {
+          "bytes": 117,
+          "sha256": "759301ff11b600dfe542367c0b22030380e834683ee05546338384d56d27e59f",
+          "base64": "eyJsaW1pdGF0aW9ucyI6IiIsImZvY3VzIjoiIiwiYWxsZXJnaWVzIjoiIiwiZm9vZFByZWZlcmVuY2VzIjoiIiwibm90ZXMiOiIiLCJzY2hlZHVsZSI6IiIsImluY2x1ZGVJbkFzc2lzdGFudCI6ZmFsc2V9"
+        },
+        "profile.json": {
+          "bytes": 160,
+          "sha256": "5dff129e48519657016872c1cfb142f9ec63da1d3c112e729908fbb45e8255c4",
+          "base64": "eyJzbGVlcE5lZWQiOjI5NDAwLCJ3YWtlR29hbCI6eyJtaW51dGUiOjAsImhvdXIiOjd9LCJvbmJvYXJkaW5nRG9uZSI6ZmFsc2UsImNocm9ub3R5cGUiOiJpbnRlcm1lZGlhdGUiLCJpc1N1YnNjcmliZWQiOmZhbHNlLCJzbGVlcE5lZWRDb25maWRlbmNlIjowLjMsIm5hbWUiOiIifQ=="
+        },
+        "reminder-preferences.json": {
+          "bytes": 66,
+          "sha256": "cd8c92d743418f2700e0a8606276c9aec2f8b25197f6cacdc6cce5c6240e0143",
+          "base64": "eyJxdWlldEVuZCI6OCwicXVpZXRTdGFydCI6MjEsInNob3dEZXRhaWxzIjpmYWxzZSwiZW5hYmxlZCI6ZmFsc2V9"
+        },
+        "sleep.json": {
+          "bytes": 2,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "base64": "W10="
+        },
+        "symptoms.json": {
+          "bytes": 2,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "base64": "W10="
+        }
+      },
+      "metadata": {
+        "files": {
+          "chat.json": {
+            "identity": {
+              "st_ino": 46108130,
+              "st_dev": 16777233,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 2,
+              "st_mtime_ns": 1794131034841000381
+            },
+            "bytes": 2,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "check-ins.json": {
+            "identity": {
+              "st_ino": 46107849,
+              "st_dev": 16777233,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 2,
+              "st_mtime_ns": 1794131017692176989
+            },
+            "bytes": 2,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "conversation-selection.json": {
+            "identity": {
+              "st_ino": 46108131,
+              "st_dev": 16777233,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 2,
+              "st_mtime_ns": 1794131034841504010
+            },
+            "bytes": 2,
+            "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+          },
+          "conversations.json": {
+            "identity": {
+              "st_ino": 46108132,
+              "st_dev": 16777233,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 2,
+              "st_mtime_ns": 1794131034841948097
+            },
+            "bytes": 2,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "documents.json": {
+            "identity": {
+              "st_ino": 46107850,
+              "st_dev": 16777233,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 2,
+              "st_mtime_ns": 1794131017692756327
+            },
+            "bytes": 2,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "habits.json": {
+            "identity": {
+              "st_ino": 46108057,
+              "st_dev": 16777233,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 3170,
+              "st_mtime_ns": 1794131034136585542
+            },
+            "bytes": 3170,
+            "sha256": "3eae84612a1e0e83d917fe191d76933c79c5167ab848622fb08fb75a855ecb71"
+          },
+          "health-write-intent.json": {
+            "identity": {
+              "st_ino": 46108115,
+              "st_dev": 16777233,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 501,
+              "st_mtime_ns": 1794131034602967533
+            },
+            "bytes": 501,
+            "sha256": "b85ce8e5f526e6449b66d6ce66efaddf68f95b4688f75e8eb698cb2fe93f2ec7"
+          },
+          "import-receipts.json": {
+            "identity": {
+              "st_ino": 46107852,
+              "st_dev": 16777233,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 2,
+              "st_mtime_ns": 1794131017693632418
+            },
+            "bytes": 2,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "imported-days.json": {
+            "identity": {
+              "st_ino": 46107851,
+              "st_dev": 16777233,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 2,
+              "st_mtime_ns": 1794131017693219789
+            },
+            "bytes": 2,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "personal-context.json": {
+            "identity": {
+              "st_ino": 46107845,
+              "st_dev": 16777233,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 117,
+              "st_mtime_ns": 1794131017689190088
+            },
+            "bytes": 117,
+            "sha256": "759301ff11b600dfe542367c0b22030380e834683ee05546338384d56d27e59f"
+          },
+          "profile.json": {
+            "identity": {
+              "st_ino": 46108055,
+              "st_dev": 16777233,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 160,
+              "st_mtime_ns": 1794131034135387407
+            },
+            "bytes": 160,
+            "sha256": "5dff129e48519657016872c1cfb142f9ec63da1d3c112e729908fbb45e8255c4"
+          },
+          "reminder-preferences.json": {
+            "identity": {
+              "st_ino": 46107847,
+              "st_dev": 16777233,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 66,
+              "st_mtime_ns": 1794131017691286398
+            },
+            "bytes": 66,
+            "sha256": "cd8c92d743418f2700e0a8606276c9aec2f8b25197f6cacdc6cce5c6240e0143"
+          },
+          "sleep.json": {
+            "identity": {
+              "st_ino": 46108056,
+              "st_dev": 16777233,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 2,
+              "st_mtime_ns": 1794131034136031829
+            },
+            "bytes": 2,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "symptoms.json": {
+            "identity": {
+              "st_ino": 46107848,
+              "st_dev": 16777233,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 2,
+              "st_mtime_ns": 1794131017691760735
+            },
+            "bytes": 2,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          }
+        },
+        "directories": []
+      },
+      "entries": [
+        {
+          "path": "chat.json",
+          "identity": {
+            "st_ino": 46108130,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 2,
+            "st_mtime_ns": 1794131034841000381
+          },
+          "kind": "regular"
+        },
+        {
+          "path": "check-ins.json",
+          "identity": {
+            "st_ino": 46107849,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 2,
+            "st_mtime_ns": 1794131017692176989
+          },
+          "kind": "regular"
+        },
+        {
+          "path": "conversation-selection.json",
+          "identity": {
+            "st_ino": 46108131,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 2,
+            "st_mtime_ns": 1794131034841504010
+          },
+          "kind": "regular"
+        },
+        {
+          "path": "conversations.json",
+          "identity": {
+            "st_ino": 46108132,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 2,
+            "st_mtime_ns": 1794131034841948097
+          },
+          "kind": "regular"
+        },
+        {
+          "path": "documents.json",
+          "identity": {
+            "st_ino": 46107850,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 2,
+            "st_mtime_ns": 1794131017692756327
+          },
+          "kind": "regular"
+        },
+        {
+          "path": "habits.json",
+          "identity": {
+            "st_ino": 46108057,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 3170,
+            "st_mtime_ns": 1794131034136585542
+          },
+          "kind": "regular"
+        },
+        {
+          "path": "health-write-intent.json",
+          "identity": {
+            "st_ino": 46108115,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 501,
+            "st_mtime_ns": 1794131034602967533
+          },
+          "kind": "regular"
+        },
+        {
+          "path": "import-receipts.json",
+          "identity": {
+            "st_ino": 46107852,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 2,
+            "st_mtime_ns": 1794131017693632418
+          },
+          "kind": "regular"
+        },
+        {
+          "path": "imported-days.json",
+          "identity": {
+            "st_ino": 46107851,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 2,
+            "st_mtime_ns": 1794131017693219789
+          },
+          "kind": "regular"
+        },
+        {
+          "path": "personal-context.json",
+          "identity": {
+            "st_ino": 46107845,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 117,
+            "st_mtime_ns": 1794131017689190088
+          },
+          "kind": "regular"
+        },
+        {
+          "path": "profile.json",
+          "identity": {
+            "st_ino": 46108055,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 160,
+            "st_mtime_ns": 1794131034135387407
+          },
+          "kind": "regular"
+        },
+        {
+          "path": "reminder-preferences.json",
+          "identity": {
+            "st_ino": 46107847,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 66,
+            "st_mtime_ns": 1794131017691286398
+          },
+          "kind": "regular"
+        },
+        {
+          "path": "sleep.json",
+          "identity": {
+            "st_ino": 46108056,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 2,
+            "st_mtime_ns": 1794131034136031829
+          },
+          "kind": "regular"
+        },
+        {
+          "path": "symptoms.json",
+          "identity": {
+            "st_ino": 46107848,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 2,
+            "st_mtime_ns": 1794131017691760735
+          },
+          "kind": "regular"
+        }
+      ],
+      "rootIdentity": {
+        "st_ino": 46108117,
+        "st_dev": 16777233,
+        "st_mode": 16832,
+        "st_nlink": 16,
+        "st_size": 512,
+        "st_mtime_ns": 1794131034842088974
+      },
+      "status": "observed"
+    },
+    "files": {
+      "chat.json": {
+        "bytes": 2,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "base64": "W10="
+      },
+      "check-ins.json": {
+        "bytes": 2,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "base64": "W10="
+      },
+      "conversation-selection.json": {
+        "bytes": 2,
+        "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "base64": "e30="
+      },
+      "conversations.json": {
+        "bytes": 2,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "base64": "W10="
+      },
+      "documents.json": {
+        "bytes": 2,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "base64": "W10="
+      },
+      "habits.json": {
+        "bytes": 3170,
+        "sha256": "3eae84612a1e0e83d917fe191d76933c79c5167ab848622fb08fb75a855ecb71",
+        "base64": "W3sib2Zmc2V0IjoxODAwLCJkZXRhaWwiOiIxMCBtaW4gb2YgZGF5bGlnaHQgd2l0aGluIDMwIG1pbiBvZiB3YWtpbmcgYW5jaG9ycyB5b3VyIGNsb2NrLiIsImFuY2hvciI6Indha2VQbHVzIiwiZG9uZVRvZGF5IjpmYWxzZSwiaWNvbiI6InN1bi5tYXguZmlsbCIsImlkIjoibGlnaHQiLCJpc0VuYWJsZWQiOnRydWUsInRpdGxlIjoiR2V0IGJyaWdodCBsaWdodCJ9LHsib2Zmc2V0IjozNjAwMCwiZGV0YWlsIjoiTm8gY2FmZmVpbmUgd2l0aGluIDEwaCBvZiBiZWQg4oCUIGhhbGYtbGlmZSBpcyB+NmguIiwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiZG9uZVRvZGF5IjpmYWxzZSwiaWNvbiI6ImN1cC5hbmQuc2F1Y2VyLmZpbGwiLCJpZCI6ImNhZmZlaW5lIiwiaXNFbmFibGVkIjp0cnVlLCJ0aXRsZSI6IkNhZmZlaW5lIGN1dG9mZiJ9LHsib2Zmc2V0IjoyMTYwMCwiZGV0YWlsIjoiMjArIG1pbi4gRmluaXNoIGludGVuc2Ugd29ya291dHMgM2grIGJlZm9yZSBiZWQuIiwiYW5jaG9yIjoid2FrZVBsdXMiLCJkb25lVG9kYXkiOmZhbHNlLCJpY29uIjoiZmlndXJlLnJ1biIsImlkIjoiZXhlcmNpc2UiLCJpc0VuYWJsZWQiOnRydWUsInRpdGxlIjoiTW92ZSB5b3VyIGJvZHkifSx7Im9mZnNldCI6MjUyMDAsImRldGFpbCI6IklmIG5hcHBpbmc6IDIw4oCTMzAgbWluLCBiZWZvcmUgeW91ciBkaXAgZW5kcy4gTm8gbGF0ZSBuYXBzLiIsImFuY2hvciI6Indha2VQbHVzIiwiZG9uZVRvZGF5IjpmYWxzZSwiaWNvbiI6Im1vb24uenp6LmZpbGwiLCJpZCI6Im5hcCIsImlzRW5hYmxlZCI6dHJ1ZSwidGl0bGUiOiJTbWFydCBuYXAgd2luZG93In0seyJvZmZzZXQiOjE0NDAwLCJkZXRhaWwiOiJBbGNvaG9sIGZyYWdtZW50cyBzbGVlcCBldmVuIHdoZW4gaXQgc3BlZWRzIG9uc2V0LiIsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsImRvbmVUb2RheSI6ZmFsc2UsImljb24iOiJ3aW5lZ2xhc3MiLCJpZCI6ImFsY29ob2wiLCJpc0VuYWJsZWQiOnRydWUsInRpdGxlIjoiU2tpcCBuaWdodGNhcCJ9LHsib2Zmc2V0IjoxMDgwMCwiZGV0YWlsIjoiRmluaXNoIGxhcmdlIG1lYWxzIDNoIGJlZm9yZSBiZWQ7IGxpZ2h0IHNuYWNrIE9LLiIsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsImRvbmVUb2RheSI6ZmFsc2UsImljb24iOiJmb3JrLmtuaWZlIiwiaWQiOiJtZWFsIiwiaXNFbmFibGVkIjp0cnVlLCJ0aXRsZSI6Ikxhc3QgYmlnIG1lYWwifSx7Im9mZnNldCI6NzIwMCwiZGV0YWlsIjoiTG93ZXIgYnJpZ2h0bmVzcyArIE5pZ2h0IFNoaWZ0IDJoIGJlZm9yZSBiZWQuIiwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiZG9uZVRvZGF5IjpmYWxzZSwiaWNvbiI6ImlwaG9uZS5nZW4yIiwiaWQiOiJzY3JlZW5zIiwiaXNFbmFibGVkIjp0cnVlLCJ0aXRsZSI6IkRpbSBzY3JlZW5zIn0seyJvZmZzZXQiOjU0MDAsImRldGFpbCI6Ik92ZXJoZWFkIG9mZiwgbGFtcHMgbG93IOKAlCBsaWdodCBkZWxheXMgbWVsYXRvbmluLiIsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsImRvbmVUb2RheSI6ZmFsc2UsImljb24iOiJsaWdodGJ1bGIuZmlsbCIsImlkIjoibGlnaHRzIiwiaXNFbmFibGVkIjp0cnVlLCJ0aXRsZSI6IkRpbSB0aGUgbGlnaHRzIn0seyJvZmZzZXQiOjI3MDAsImRldGFpbCI6IjIw4oCTMzAgbWluIHJpdHVhbDogc2hvd2VyLCBzdHJldGNoLCByZWFkLCBicmVhdGhlLiIsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsImRvbmVUb2RheSI6ZmFsc2UsImljb24iOiJ3aW5kIiwiaWQiOiJ3aW5kZG93biIsImlzRW5hYmxlZCI6dHJ1ZSwidGl0bGUiOiJXaW5kIGRvd24ifSx7Im9mZnNldCI6MCwiZGV0YWlsIjoiSGl0IHlvdXIgbWVsYXRvbmluIHdpbmRvdyDigJQgdGhlIGVhc2llc3QgZmFsbGluZy1hc2xlZXAuIiwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiZG9uZVRvZGF5IjpmYWxzZSwiaWNvbiI6ImJlZC5kb3VibGUuZmlsbCIsImlkIjoiYmVkdGltZSIsImlzRW5hYmxlZCI6dHJ1ZSwidGl0bGUiOiJJbiBiZWQgb24gdGltZSJ9LHsiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwib2Zmc2V0IjoxODAwLCJkb25lVG9kYXkiOmZhbHNlLCJkZXRhaWwiOiI2NeKAkzY4wrBGIFwvIDE44oCTMjDCsEMsIGJsYWNrb3V0IGRhcmssIHF1aWV0LiIsInRpdGxlIjoiQ29vbCAmIGRhcmsgcm9vbSIsImljb24iOiJ0aGVybW9tZXRlci5zbm93Zmxha2UiLCJpZCI6ImNvb2wiLCJpc0VuYWJsZWQiOnRydWV9LHsiYW5jaG9yIjoid2FrZVBsdXMiLCJvZmZzZXQiOjAsImRvbmVUb2RheSI6ZmFsc2UsImRldGFpbCI6IlNhbWUgd2FrZSDCsTMwIG1pbiDigJQgZXZlbiB3ZWVrZW5kcy4gIzEgcmh5dGhtIGxldmVyLiIsInRpdGxlIjoiQ29uc2lzdGVudCB3YWtlIiwiaWNvbiI6ImFsYXJtLmZpbGwiLCJpZCI6ImNvbnNpc3RlbnQiLCJpc0VuYWJsZWQiOnRydWV9LHsiYW5jaG9yIjoid2FrZVBsdXMiLCJvZmZzZXQiOjMwMCwiZG9uZVRvZGF5IjpmYWxzZSwiZGV0YWlsIjoiV2F0ZXIgKyBsaWdodCBiZWZvcmUgY29mZmVlIGJvb3N0cyBhbGVydG5lc3MuIiwidGl0bGUiOiJNb3JuaW5nIGh5ZHJhdGlvbiIsImljb24iOiJkcm9wLmZpbGwiLCJpZCI6Imh5ZHJhdGlvbiIsImlzRW5hYmxlZCI6dHJ1ZX0seyJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJvZmZzZXQiOjE4MDAwLCJkb25lVG9kYXkiOmZhbHNlLCJkZXRhaWwiOiIyLW1pbiB3b3JyeSBsaXN0IGFmdGVyIGRpbm5lciBjbGVhcnMgbmlnaHQgcnVtaW5hdGlvbi4iLCJ0aXRsZSI6IkJyYWluIGR1bXAiLCJpY29uIjoicGVuY2lsLmFuZC5saXN0LmNsaXBib2FyZCIsImlkIjoic3RyZXNzIiwiaXNFbmFibGVkIjp0cnVlfSx7ImFuY2hvciI6ImJlZHRpbWVNaW51cyIsIm9mZnNldCI6MTQ0MDAsImRvbmVUb2RheSI6ZmFsc2UsImRldGFpbCI6IlN0aW11bGFudCDigJQgYXZvaWQgd2l0aGluIDRoIG9mIGJlZC4iLCJ0aXRsZSI6Ik5vIGxhdGUgbmljb3RpbmUiLCJpY29uIjoic21va2UuZmlsbCIsImlkIjoibmljb3RpbmUiLCJpc0VuYWJsZWQiOmZhbHNlfSx7ImFuY2hvciI6ImJlZHRpbWVNaW51cyIsIm9mZnNldCI6MTQ0MDAsImRvbmVUb2RheSI6ZmFsc2UsImRldGFpbCI6IkEgZHVzayB3YWxrIHNoYXJwZW5zIERMTU8gdGltaW5nLiIsInRpdGxlIjoiRXZlbmluZyBsaWdodCB3YWxrIiwiaWNvbiI6InN1bnNldC5maWxsIiwiaWQiOiJzdW5zZXQiLCJpc0VuYWJsZWQiOmZhbHNlfV0="
+      },
+      "health-write-intent.json": {
+        "bytes": 501,
+        "sha256": "b85ce8e5f526e6449b66d6ce66efaddf68f95b4688f75e8eb698cb2fe93f2ec7",
+        "base64": "eyJldmVudHMiOlt7ImFja25vd2xlZGdlZCI6W10sImFjdGlvbiI6ImRlbGV0ZSIsImNvbXBvbmVudHMiOlt7ImRhdGUiOi05NzgzMDcyMDAsIm1ldHJpYyI6IndhdGVyIiwidmFsdWUiOjB9XSwiZG9tYWluIjoid2F0ZXIiLCJnZW5lcmF0aW9uIjoiMkE4NjMxRkYtQTkyNy00MjZGLTgwNjYtMkU0NEM5Q0MwNTJFIiwiaWQiOiI2MkM0MDhBOC0yRjc2LTRCMUEtODE3Mi0wNkNFNEM0MzI3NkEiLCJpZGVudGl0eSI6InN5bmMiLCJpc3N1ZSI6InVuYXZhaWxhYmxlIiwibGlmZWN5Y2xlIjoiMDU3OUVFRjgtMEVGQS00MjNCLUIxRUItMDVCNDJGQzczNEFCIiwibG9jYWxJRCI6InN5bnRoZXRpYy1yZXNldC1wZW5kaW5nLXJlbW92YWwiLCJyZXF1ZXN0ZWRBdCI6ODE1ODIzNzIxLjU4NDkxNn1dLCJsaWZlY3ljbGUiOiJEMUZBOEFCNy01NTZELTRCQ0ItQTQyQi0yQzQyNjY4QjY2RTMiLCJvd25lciI6IkY5OUE3RjM5LUFDRDUtNDg4Ri04QzhGLUFEQjVDOTNGNjI4QSIsInZlcnNpb24iOjF9"
+      },
+      "import-receipts.json": {
+        "bytes": 2,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "base64": "W10="
+      },
+      "imported-days.json": {
+        "bytes": 2,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "base64": "W10="
+      },
+      "personal-context.json": {
+        "bytes": 117,
+        "sha256": "759301ff11b600dfe542367c0b22030380e834683ee05546338384d56d27e59f",
+        "base64": "eyJsaW1pdGF0aW9ucyI6IiIsImZvY3VzIjoiIiwiYWxsZXJnaWVzIjoiIiwiZm9vZFByZWZlcmVuY2VzIjoiIiwibm90ZXMiOiIiLCJzY2hlZHVsZSI6IiIsImluY2x1ZGVJbkFzc2lzdGFudCI6ZmFsc2V9"
+      },
+      "profile.json": {
+        "bytes": 160,
+        "sha256": "5dff129e48519657016872c1cfb142f9ec63da1d3c112e729908fbb45e8255c4",
+        "base64": "eyJzbGVlcE5lZWQiOjI5NDAwLCJ3YWtlR29hbCI6eyJtaW51dGUiOjAsImhvdXIiOjd9LCJvbmJvYXJkaW5nRG9uZSI6ZmFsc2UsImNocm9ub3R5cGUiOiJpbnRlcm1lZGlhdGUiLCJpc1N1YnNjcmliZWQiOmZhbHNlLCJzbGVlcE5lZWRDb25maWRlbmNlIjowLjMsIm5hbWUiOiIifQ=="
+      },
+      "reminder-preferences.json": {
+        "bytes": 66,
+        "sha256": "cd8c92d743418f2700e0a8606276c9aec2f8b25197f6cacdc6cce5c6240e0143",
+        "base64": "eyJxdWlldEVuZCI6OCwicXVpZXRTdGFydCI6MjEsInNob3dEZXRhaWxzIjpmYWxzZSwiZW5hYmxlZCI6ZmFsc2V9"
+      },
+      "sleep.json": {
+        "bytes": 2,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "base64": "W10="
+      },
+      "symptoms.json": {
+        "bytes": 2,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "base64": "W10="
+      }
+    },
+    "metadata": {
+      "files": {
+        "chat.json": {
+          "identity": {
+            "st_ino": 46108130,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 2,
+            "st_mtime_ns": 1794131034841000381
+          },
+          "bytes": 2,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "check-ins.json": {
+          "identity": {
+            "st_ino": 46107849,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 2,
+            "st_mtime_ns": 1794131017692176989
+          },
+          "bytes": 2,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "conversation-selection.json": {
+          "identity": {
+            "st_ino": 46108131,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 2,
+            "st_mtime_ns": 1794131034841504010
+          },
+          "bytes": 2,
+          "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+        },
+        "conversations.json": {
+          "identity": {
+            "st_ino": 46108132,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 2,
+            "st_mtime_ns": 1794131034841948097
+          },
+          "bytes": 2,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "documents.json": {
+          "identity": {
+            "st_ino": 46107850,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 2,
+            "st_mtime_ns": 1794131017692756327
+          },
+          "bytes": 2,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "habits.json": {
+          "identity": {
+            "st_ino": 46108057,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 3170,
+            "st_mtime_ns": 1794131034136585542
+          },
+          "bytes": 3170,
+          "sha256": "3eae84612a1e0e83d917fe191d76933c79c5167ab848622fb08fb75a855ecb71"
+        },
+        "health-write-intent.json": {
+          "identity": {
+            "st_ino": 46108115,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 501,
+            "st_mtime_ns": 1794131034602967533
+          },
+          "bytes": 501,
+          "sha256": "b85ce8e5f526e6449b66d6ce66efaddf68f95b4688f75e8eb698cb2fe93f2ec7"
+        },
+        "import-receipts.json": {
+          "identity": {
+            "st_ino": 46107852,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 2,
+            "st_mtime_ns": 1794131017693632418
+          },
+          "bytes": 2,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "imported-days.json": {
+          "identity": {
+            "st_ino": 46107851,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 2,
+            "st_mtime_ns": 1794131017693219789
+          },
+          "bytes": 2,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "personal-context.json": {
+          "identity": {
+            "st_ino": 46107845,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 117,
+            "st_mtime_ns": 1794131017689190088
+          },
+          "bytes": 117,
+          "sha256": "759301ff11b600dfe542367c0b22030380e834683ee05546338384d56d27e59f"
+        },
+        "profile.json": {
+          "identity": {
+            "st_ino": 46108055,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 160,
+            "st_mtime_ns": 1794131034135387407
+          },
+          "bytes": 160,
+          "sha256": "5dff129e48519657016872c1cfb142f9ec63da1d3c112e729908fbb45e8255c4"
+        },
+        "reminder-preferences.json": {
+          "identity": {
+            "st_ino": 46107847,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 66,
+            "st_mtime_ns": 1794131017691286398
+          },
+          "bytes": 66,
+          "sha256": "cd8c92d743418f2700e0a8606276c9aec2f8b25197f6cacdc6cce5c6240e0143"
+        },
+        "sleep.json": {
+          "identity": {
+            "st_ino": 46108056,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 2,
+            "st_mtime_ns": 1794131034136031829
+          },
+          "bytes": 2,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "symptoms.json": {
+          "identity": {
+            "st_ino": 46107848,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 2,
+            "st_mtime_ns": 1794131017691760735
+          },
+          "bytes": 2,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        }
+      },
+      "directories": []
+    },
+    "priorExists": false,
+    "ownedResiduals": {
+      "LumenData.restore-*": [],
+      "LumenData.retired-*": [],
+      "Lumen-reset-fixture-*": []
+    },
+    "fixed": {
+      "lumen.health.meals.v1": {
+        "key": "lumen.health.meals.v1",
+        "present": false,
+        "actualType": "NoneType"
+      },
+      "lumen.health.workouts.v1": {
+        "key": "lumen.health.workouts.v1",
+        "present": false,
+        "actualType": "NoneType"
+      },
+      "_healthConnected": {
+        "actual": false,
+        "effectiveBool": false
+      }
+    },
+    "journal": {
+      "events": [
+        {
+          "acknowledged": [],
+          "action": "delete",
+          "components": [
+            {
+              "date": -978307200,
+              "metric": "water",
+              "value": 0
+            }
+          ],
+          "domain": "water",
+          "generation": "2A8631FF-A927-426F-8066-2E44C9CC052E",
+          "id": "62C408A8-2F76-4B1A-8172-06CE4C43276A",
+          "identity": "sync",
+          "issue": "unavailable",
+          "lifecycle": "0579EEF8-0EFA-423B-B1EB-05B42FC734AB",
+          "localID": "synthetic-reset-pending-removal",
+          "requestedAt": 815823721.584916
+        }
+      ],
+      "lifecycle": "D1FA8AB7-556D-4BCB-A42B-2C42668B66E3",
+      "owner": "F99A7F39-ACD5-488F-8C8F-ADB5C93F628A",
+      "version": 1
+    },
+    "intent": {
+      "owner": "F99A7F39-ACD5-488F-8C8F-ADB5C93F628A",
+      "lifecycle": "D1FA8AB7-556D-4BCB-A42B-2C42668B66E3",
+      "event": "62C408A8-2F76-4B1A-8172-06CE4C43276A",
+      "generation": "2A8631FF-A927-426F-8066-2E44C9CC052E",
+      "issue": "unavailable",
+      "pendingDeletionRetained": true,
+      "unstartedSaveRemoved": true
+    },
+    "observerIntent": {
+      "owner": "F99A7F39-ACD5-488F-8C8F-ADB5C93F628A",
+      "lifecycle": "D1FA8AB7-556D-4BCB-A42B-2C42668B66E3",
+      "event": "62C408A8-2F76-4B1A-8172-06CE4C43276A",
+      "generation": "2A8631FF-A927-426F-8066-2E44C9CC052E",
+      "issue": "unavailable",
+      "pendingDeletionRetained": true,
+      "unstartedSaveRemoved": true
+    }
+  },
+  "scope": "This separately executed fresh dedicated simulator/light/normal synthetic legacy case only; source223 compiled binary carry. No other case, universal reset interruption, speech, motion, all43 or full goal acceptance.",
+  "checkedAt": 1794131082.489658
+}
