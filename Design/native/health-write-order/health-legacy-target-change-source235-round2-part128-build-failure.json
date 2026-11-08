@@ -1,0 +1,181 @@
+{
+  "part": 128,
+  "source": "durable-source-r235.json",
+  "status": "ACTUAL Source235 BUILD FAILED exit65. Execution readiness127 withdrawn pending separately frozen type-only correction and successful fresh build/current controls. No native testcase executed.",
+  "sourceReady": false,
+  "runtimeAcceptance": false,
+  "score": null,
+  "overallDesignAcceptance": false,
+  "productCompletion": false,
+  "actualBuild": {
+    "processPID": 81904,
+    "exitCode": 65,
+    "command": [
+      "xcodebuild",
+      "-project",
+      "Lumen.xcodeproj",
+      "-scheme",
+      "Lumen",
+      "-configuration",
+      "Debug",
+      "-destination",
+      "id=5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+      "-derivedDataPath",
+      "/tmp/LumenBatch37Simulator",
+      "-clonedSourcePackagesDirPath",
+      "/tmp/LumenBatch37Packages",
+      "-disableAutomaticPackageResolution",
+      "-jobs",
+      "2",
+      "build-for-testing"
+    ],
+    "rawLogBytes": 40322,
+    "rawLogSHA256": "eade799b485f41b93d000e73a9b62f515f5f5be08b65ec5207440a8514fda9c0",
+    "logLines": 125,
+    "completeLogGzipEqualsActualRaw": true,
+    "compilerErrorLines": 1,
+    "actualError": "Lumen/Views/BackupFileRecoveryView.swift:229:67: error: argument passed to call that takes no arguments",
+    "failedDeclaration": "@AccessibilityFocusState private var recoverySuccessFocused = false",
+    "terminal": "TEST BUILD FAILED; three failed build commands refer to compile/module/build stages, not three tests.",
+    "warningsInRetainedLog": 0,
+    "nativeLaunched": false,
+    "nativePID": null,
+    "nativeExit": null,
+    "nativeTestCounts": null,
+    "nativeOriginalPNGs": 0,
+    "nativeHelperJSONs": 0,
+    "newCurrentDebugMarkerAudit": false,
+    "newBuildReceipt": false,
+    "Release235Executed": false
+  },
+  "independentVerification": {
+    "all555CurrentArchiveInputsExact": true,
+    "frozenTextInputs": 528,
+    "frozenFixtureInputs": 27,
+    "judgedInputsUnchanged": true,
+    "full40322ByteLogReadDecodedHashComparedWithGzipAndRaw": true,
+    "all125LinesScannedForErrorsWarningsTerminal": true,
+    "sourceLine229MatchesActualError": true,
+    "receiptAndCurrentControlFilesAbsent": "health-target-change-source235-r1-build.json and source235-current-debug-release-controls-r1.json absent at readonly repo check. Existing/partial cache artifacts are not accepted235binary proof.",
+    "noOwnCompilerOrQueryExecuted": true
+  },
+  "finding": {
+    "id": "P128-C1",
+    "severity": "required compile correction",
+    "cause": "The Bool AccessibilityFocusState property wrapper does not offer an init(wrappedValue:) accepting false. The actual current simulator SwiftUI SDK interface declares public init() where Value == Swift.Bool (and init(for:)); assigning an initializer expression requests the unsupported wrapped-value constructor and produces the observed compiler error.",
+    "localPrimarySource": {
+      "file": "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk/System/Library/Frameworks/SwiftUI.framework/Modules/SwiftUI.swiftmodule/arm64-apple-ios-simulator.swiftinterface",
+      "declarationStartsAtLine": 27386,
+      "initializer": "public init() where Value == Swift.Bool",
+      "method": "Read existing SDK swiftinterface directly, no compiler or tool/binary execution."
+    },
+    "proposedNarrowRepair": "In separately frozen Source236, declare @AccessibilityFocusState private var recoverySuccessFocused: Bool without = false so SwiftUI supplies its Bool no-argument initialization. Do not alter guard/task/target/copy/authority behavior merely to fix this type declaration.",
+    "verification": "Preserve full235failedcompile/128/root/exact checkpoint first; review exact successor diff/current archive, then fresh app/test build and current202/186/16/21 Debug-control acquisition before native. Source correction alone does not close compilation or P126 actual visibility/focus gate."
+  },
+  "priorReviewQualification": {
+    "report": "health-legacy-target-change-source235-round2-part127-source.json",
+    "immutable": true,
+    "executionReadinessWithdrawn": true,
+    "meaningfulRemainingScope": "Guard/reveal/cancel/source lifecycle reasoning and actual22 extracted-method deterministic interleavings retain their declared limited meaning. Isolated Subject replaces SwiftUI wrappers with ordinary properties; it did not instantiate AccessibilityFocusState. Swift grammar parse0 does not typecheck property-wrapper initializer APIs. Real compile exposed a missed API typing requirement.",
+    "notAccepted": "No actual235SwiftUI view, layout/focus, success reveal, transaction path/native closure/retirement/R9 or new current app binary from127/22isolated controls."
+  },
+  "prebuildProof": {
+    "commit": "64b2faaa23936079490394731998987458b872c4",
+    "checkpointPaths": 33,
+    "unionPaths": 713,
+    "scope": "Actual completed exact source555/127/controls/root/prior full failed234 checkpoint before build. Receipt bound, no Git action by critic."
+  },
+  "limits": [
+    "Build-only failure; no native0/1/0 count or screenshot/helper is invented.",
+    "No bootstrap/stale rejection/fresh authority/commit/success visibility/Back/closure runtime credit in Source235.",
+    "Historical234actualnative0/1/0/backend-partial evidence and full194 originals remain unchanged; earlier233import failure and readiness withdrawal preserved.",
+    "No Release/current marker/distribution/performance/physical device/global design or full product acceptance. All43/eightgroups remain active.",
+    "No source/test/evidence/indices mutation, subject execution/build/native/simulator/process/defaults/Git/cleanup/phone/subagent action by critic."
+  ],
+  "provenance": [
+    {
+      "file": "Design/native/health-write-order/durable-source-r235.json",
+      "bytes": 100714,
+      "sha256": "86bfc3b24fe0edc973e416fb31269012ccbfda366706ffe8e5283c032ed1cbf1"
+    },
+    {
+      "file": "Design/native/health-write-order/durable-source-r235.json.gz",
+      "bytes": 3482027,
+      "sha256": "feaa5d632454d8770e02b4379a5a3e190a8b137dfba0f0a8ae33b68e2281aeef"
+    },
+    {
+      "file": "Design/native/health-write-order/source235-target-change-native-build-r1-outcome.json",
+      "bytes": 838,
+      "sha256": "6664d5885b605297086965f462640bbe3de2a7ad29957ce613ba57f7b230c5a6"
+    },
+    {
+      "file": "Design/native/health-write-order/source235-target-change-native-build-r1.log.gz",
+      "bytes": 5093,
+      "sha256": "e82b90fc7186fcdb9080139becc1246f0611fe73cf5cdb9a0da80576349f1317"
+    },
+    {
+      "file": "Design/native/health-write-order/source235-target-change-native-build-r1-planned.py",
+      "bytes": 2682,
+      "sha256": "d55ba1734a3154744c3c079700be1a3aec895ef193edeee893dad0ae782d609f"
+    },
+    {
+      "file": "Design/native/health-write-order/source235-prebuild-exact-github.json",
+      "bytes": 142967,
+      "sha256": "e6a7e4cd13d1e63de4af4284c2021bb476498aeea9577b7c1fcc98a7465ed05e"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-target-change-source235-round2-part127-source.json",
+      "bytes": 18433,
+      "sha256": "6b559118703aabc7d1f50d73014afaa6cffeb6c980fc35c7112fbd1bd63d1689"
+    },
+    {
+      "file": "Design/native/health-write-order/source235-success-visibility-r1-plan.json",
+      "bytes": 3017,
+      "sha256": "7dc1025dfa61f611e17dbec3adf5eb065bb0dbeb6264d00ab5a85389063c624a"
+    },
+    {
+      "file": "Design/native/health-write-order/source235-success-reveal-controls-r1.json",
+      "bytes": 3281,
+      "sha256": "528afd698e93553327cb785f18dc8816597897f2a96539bf3c0b139198ab9420"
+    },
+    {
+      "file": "Design/native/health-write-order/source235-success-reveal-controls-r1-fixtures.json.gz",
+      "bytes": 1903,
+      "sha256": "fdc7d59e19012d159d94a4e0e96f91b84dfd6c6cde2a8e0318e76b28ef1728ac"
+    },
+    {
+      "file": "Design/native/health-write-order/source235-success-reveal-controls-preparation-failure-r1.json",
+      "bytes": 375,
+      "sha256": "2bf12ed3625822c06d21646f003a65860f389717be78d9eefeef745ca1443f6d"
+    },
+    {
+      "file": "Lumen/Views/BackupFileRecoveryView.swift",
+      "bytes": 35744,
+      "sha256": "ebee2bd591f731ddd30f99dcc26321d36b80a32897dc8fffefa1b6ab54a32e77"
+    },
+    {
+      "file": "LumenUITests/LumenSmokeTests.swift",
+      "bytes": 750344,
+      "sha256": "ceff85954a06880069993471fb7164efcbbe48efee06937c4467c4093507e6aa"
+    },
+    {
+      "file": "/tmp/LumenBatch44Checks/Source235TargetChangeNativeBuildR1.log",
+      "bytes": 40322,
+      "sha256": "eade799b485f41b93d000e73a9b62f515f5f5be08b65ec5207440a8514fda9c0"
+    },
+    {
+      "file": "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk/System/Library/Frameworks/SwiftUI.framework/Modules/SwiftUI.swiftmodule/arm64-apple-ios-simulator.swiftinterface",
+      "bytes": 1967094,
+      "sha256": "d85933efa5d7a7a8ccae4c5428ba02e6822bdbe815d4d0e4c2cd5871f736f5d4"
+    }
+  ],
+  "storage": {
+    "availableBytesAtFinish": 33781981184,
+    "deletedFiles": 0,
+    "bytesRecovered": 0,
+    "retention": "No cleanup; keep exact failed log/source and reused current native/package cache until root verifies checkpoint. No obsolete-build cleanup or new verification build by critic."
+  },
+  "judgedInputsModified": false,
+  "physicalPhoneActions": false,
+  "checkedAt": 1794148314.43906
+}
