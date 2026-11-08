@@ -4,6 +4,12 @@ Continue developing Lumen into a world-class, primarily iOS, AI health assistant
 
 Repository: https://github.com/dbakp/Lumen · branch `main`.
 
+## Current full app/test build passed · Source255 · 9 November 2026
+
+After170/root47/current951/source37checkpoint2094union exact GitHub69e70766e8b68c8233a3d10670a499bf3f39154d, actual full simulator build27201 exited0. App46652208B SHA5afa1a85649e107da86172dd46a5cfa465a46245a5fd1ddb92167d165021bc87; test6406256B SHA86606a8328e174d460c53bbd4c2a16be3fb49a85c62382778d6dd19a949298d1. Full61223B log SHA2fdbfe2b986bfdfb4cee93453477d485a16121dbf015ed390cb8ba971e1a5608 retained. Actual changed BackupFileRecoveryView and whole LumenSmokeTests compiled; app/test both differ253. Root951/currentarchive/pair/fullactualrawlog/215negative199Debugpositive16negative-only21production exact. Warnings in this build: 1; no global concurrency acceptance borrowed.
+
+Publish/exact current build checkpoint BEFORE fresh Source255R1 actual R2driver with source/hostsource255/build255 and reviewed R3finalizer --plan source255-check-acquisition-finalization-r1-plan.json. Require actual unique whole enabled/hittable Check tap/fresh native read/Back/newowner/offchoices/finalBack, full originals/helper/summary/current mandatorychecker/root/samecritic/exact. Current build is compile-only, no cancellation/native/Release/fullgoal acceptance. No checkpointstop/phoneactions; keep currentDebug/packages for immediate runtime/Release work. Never rerun single-use255runner-prefix controls after this buildlog exists.
+
 ## Ready for fresh build and trial · Source255 /170 · 9 November 2026
 
 Frozen255951 inputs (889text+62fixtures), all924 prior254 inputs unchanged. New finalizerR3 records completed actual checker PID/exit/streams before bounded guarded audit interpretation, latches errors and independently attempts full unfiltered originals before failure. Current18 argument,11 actual-main injected caller and20 current runner controls pass. Whole unchanged test SDK0 carried at exact bytes. Root/full24542B170/all47/current951archive verified SOURCE_READY; no current full app/test build/native acceptance yet.
