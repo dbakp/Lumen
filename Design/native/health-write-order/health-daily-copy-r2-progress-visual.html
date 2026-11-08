@@ -71,7 +71,7 @@
 <button class="btn" type="button" data-area="quality" aria-pressed="false" aria-controls="lumen-plan-detail">Answer quality</button>
 <button class="btn" type="button" data-area="release" aria-pressed="false" aria-controls="lumen-plan-detail">Release gates</button>
 </div>
-<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Confirmation timing · ready for app build</h3><div data-verified>Mixed recovery is verified on GitHub. Both confirmation test fixes passed their checks and independent review.</div><div data-next>Now: build the updated app, then run the real confirmation check.</div><div class="text-small" data-gate>Current binary, string and mixed recovery passed. Confirmation, recovery ownership and broader product checks remain open.</div></div>
+<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Confirmation timing · simulator check next</h3><div data-verified>The updated app and tests compiled. The required development-code checks matched.</div><div data-next>Now: run the real confirmation check in the dedicated simulator.</div><div class="text-small" data-gate>Current binary, string and mixed recovery passed. Confirmation, recovery ownership and broader product checks remain open.</div></div>
 </div>
 <div class="section"><h3>Verified safety checks</h3>
 <table class="table table-sm" aria-label="Earlier checks retain their original scope; broader checks remain open"><thead><tr><th>Situation</th><th>Observed result</th></tr></thead><tbody>
@@ -88,11 +88,11 @@
 <script>
 (()=>{
 const root=document.getElementById('lumen-plan-progress');
-const snapshot='nov8-confirmation-source-ready';
+const snapshot='nov8-confirmation-built';
 const areas={
-current:{title:'Confirmation timing · ready for app build',verified:'Mixed recovery is verified on GitHub. Both confirmation test fixes passed their checks and independent review.',next:'Now: build the updated app, then run the real confirmation check.',gate:'Current binary, string and mixed recovery passed. Confirmation, recovery ownership and broader product checks remain open.'},
+current:{title:'Confirmation timing · simulator check next',verified:'The updated app and tests compiled. The required development-code checks matched.',next:'Now: run the real confirmation check in the dedicated simulator.',gate:'Current binary, string and mixed recovery passed. Confirmation, recovery ownership and broader product checks remain open.'},
 quality:{title:'Answer quality · open',verified:'Library search, source identity, consent controls and literal-reference safeguards are delivered.',next:'Next: evidence-support policy and independent evaluation; personal-context and conversation-history privacy review.',gate:'Clinical accuracy, language coverage and live-provider evaluation remain required.'},
-release:{title:'Release readiness · open',verified:'The latest unsigned Release build passed both reviews; coverage recording remains enabled.',next:'Next: background Health, Watch reconnect, widget, interruption and accessibility checks.',gate:'Orientation warning, representative histories, performance, privacy and distribution review remain open. No iPhone installation, launch or checks without a renewed request.'}
+release:{title:'Release readiness · open',verified:'The previous Release build passed both reviews; the updated build still needs verification.',next:'Next: background Health, Watch reconnect, widget, interruption and accessibility checks.',gate:'Orientation warning, representative histories, performance, privacy and distribution review remain open. No iPhone installation, launch or checks without a renewed request.'}
 };
 const buttons=Array.from(root.querySelectorAll('[data-area]'));
 function select(key,remember){
