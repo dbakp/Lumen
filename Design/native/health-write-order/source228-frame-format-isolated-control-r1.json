@@ -1,0 +1,14 @@
+{
+  "scope": "Standalone Swift diagnostic formatting only, not app or native proof",
+  "initial": {
+    "source": "import Foundation; let frame = CGRect(x: 1, y: 2, width: 3, height: 4); print(String(describing: frame))",
+    "exit": 1,
+    "diagnostic": "argument passed to call that takes no arguments"
+  },
+  "correctedImports": {
+    "source": "import Foundation; import CoreGraphics; let frame = CGRect(x: 1, y: 2, width: 3, height: 4); print(String(describing: frame))",
+    "exit": 0,
+    "stdout": "(1.0, 2.0, 3.0, 4.0)\n"
+  },
+  "conclusion": "Current host standalone check requires CoreGraphics for CGRect constructor; scoped String(describing:) formatting succeeds. Actual app/test compile still required."
+}

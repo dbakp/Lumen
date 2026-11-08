@@ -4,9 +4,11 @@ Continue developing Lumen into a world-class, primarily iOS, AI health assistant
 
 Repository: https://github.com/dbakp/Lumen · branch `main`.
 
-## Current checkpoint · Source228 ready for fresh build · 8 November 2026
+## Current checkpoint · Source228 actual build failed · 8 November 2026
 
 Part112/root supports frozen444text+18fixtures=462 and31isolatedchecker controls: exact preflight.app metadata exception is bound to freshly verified source/build/app/test, all other malformed/nullpayloads reject. All455priorinputs unchanged; app/test/fixture code remains226. Source-ready only: publish/compare exact checkpoint, compile actual228Debug, require predeclared198negative/182actualDebugpositive/16negativeonly/20production, then actual Data ready-before-confirmation trial and mandatory R3readonlychecker/full originals/helper/summary/root/samecritic/fullbackup. No current build/native/Release yet. Earlier226/110 and227/111 source rejections remain unexecuted; no native failure invented.
+
+Actual228 build-for-testing PID73365 exited65: unavailable `NSStringFromCGRect(failure.frame)` in the new UITest helper at5852. Full57044B log/outcome independently113/root reviewed; no actual marker preflight, native test counts/screens/helper or Release. Exact preexecution22fed85e22a358148469023377647e42ccdb23fd/23checkpoint/478union preceded build. Publish/exact-back this failed build before Source229 single diagnostic-formatting-line fix, separate source review and rebuild; all behavior/assertions unchanged. Partial build cache is not a verified app/test pair.
 
 ## Historical source findings · 8 November 2026
 
