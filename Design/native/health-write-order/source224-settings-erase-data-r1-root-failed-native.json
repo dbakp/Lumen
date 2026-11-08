@@ -1,0 +1,154 @@
+{
+  "status": "Root actual Data trial FAILED; full failed evidence retained; no Settings erasure acceptance",
+  "source": "durable-source-r224.json",
+  "nativeCounts": [
+    0,
+    1,
+    0
+  ],
+  "nativeExit": 65,
+  "driverExit": 1,
+  "strictBoundaries": [
+    [
+      "before-selection",
+      "PASS"
+    ],
+    [
+      "ready",
+      "PASS"
+    ],
+    [
+      "owners-closed",
+      "PASS"
+    ],
+    [
+      "erased",
+      "FAILED"
+    ]
+  ],
+  "preEraseCurrentAndPriorFileCounts": [
+    13,
+    13
+  ],
+  "nativeFixedAtErase": {
+    "meals": {
+      "effectivePresent": false,
+      "key": "lumen.health.meals.v1",
+      "persistedPresent": false
+    },
+    "workouts": {
+      "effectivePresent": false,
+      "key": "lumen.health.workouts.v1",
+      "persistedPresent": false
+    }
+  },
+  "failedDiskMeals": {
+    "lumen.health.meals.v1": {
+      "key": "lumen.health.meals.v1",
+      "present": true,
+      "actualType": "bytes",
+      "type": "data",
+      "actualBytes": 42,
+      "bytes": 42,
+      "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+      "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+    }
+  },
+  "postterminal": "source224-settings-erase-data-r1-failed-live-audit.json",
+  "rootIndividuallyOpenedAllOriginalPNGs": 8,
+  "rootFullNativeFailureHelperBytes": 3232,
+  "rootFullSummaryRead": true,
+  "allAttachmentBytesVerified": 212,
+  "additionalNonvideoPayloadsDecoded": 202,
+  "embeddedHostPayloadsVerified": 214,
+  "fullVideoRetainedBytes": 41683565,
+  "videoReview": "bytes/hash only, not played",
+  "nativeFinalization": {
+    "naturalWaitSeconds": 180,
+    "interruptFallbackSeconds": 30,
+    "samples": [
+      {
+        "attempt": 1,
+        "at": 1794129662.8821309,
+        "exit": null
+      },
+      {
+        "attempt": 2,
+        "at": 1794129679.937454,
+        "exit": 65
+      }
+    ],
+    "exit": 65,
+    "finishedAt": 1794129679.943421
+  },
+  "messagesSent": 3,
+  "scope": "Three pre-erase boundaries pass; Settings confirmation/return to onboarding observed, but first disk legacy key still present vs native absence. Later postterminal strict fresh predicates pass without host repair. Persistence transition timing/mechanism unknown; no clean relaunch or no-resurrection acceptance. String unexecuted; all broader gates open.",
+  "provenance": [
+    {
+      "file": "Design/native/health-write-order/health-legacy-settings-erase-data-source224r1-driver-observations.json",
+      "bytes": 381427,
+      "sha256": "65ad915b95e7d67f62a8330dc2f1829656fc87fa988583e0d3e9d9ecdb301d24"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-settings-erase-data-source224r1-outcome.json",
+      "bytes": 78043,
+      "sha256": "c19e781aaa3b20f91bd0fac2b6466602896e57bc69f46eac3ae0cd8e916ebb1c"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-settings-erase-data-source224r1-summary.json",
+      "bytes": 1432,
+      "sha256": "677c779ff9f385a97cac753a286f33d5df04301fa70a8d22773126c203755500"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-settings-erase-data-source224r1-images.json",
+      "bytes": 8083,
+      "sha256": "eb8a58c73c1851c5d63ae3ee5ebced04d1e27e43562706d2c203299c1d3afcd0"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-settings-erase-data-source224r1-readbacks.json",
+      "bytes": 1021,
+      "sha256": "0c934b7b68e20ec14699f04e7d63af7f8afe3644472380b4d01edb78fd17d2f2"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-settings-erase-data-source224r1-all-originals.json",
+      "bytes": 130985,
+      "sha256": "ebbe691ebe9f7b972b743dfa8a250279682f362033fffd55e126d90437172bc3"
+    },
+    {
+      "file": "Design/native/health-write-order/source224-settings-erase-data-r1-failed-live-audit.json",
+      "bytes": 38879,
+      "sha256": "ec75bac873548c6f058c9589b5badafc0fb6186c0ed64cdb7ab578b7830fc60b"
+    },
+    {
+      "file": "Design/native/health-write-order/durable-source-r224.json",
+      "bytes": 72696,
+      "sha256": "de28acd0748bb30abdf9c68896d24dd1d5b5bd6ca61ebddf539ea21264eae797"
+    },
+    {
+      "file": "Design/native/health-write-order/durable-source-r224.json.gz",
+      "bytes": 1482544,
+      "sha256": "84cb3e20f98c8969275c03df9ae4163b4664e9866dd641efe2369fe1ac171100"
+    },
+    {
+      "file": "Design/native/health-write-order/health-settings-erasure-source224-r1-build-carry.json",
+      "bytes": 882,
+      "sha256": "3bd7b25b610c0aa098364567071c7ad6600faaa6eb72723541ccbad4d365b1e1"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-settings-erase-data-source224r1-all-original-manifest.json.gz",
+      "bytes": 8740,
+      "sha256": "c629b7ba4721afd4629d299b6d11f5bb9146f040900f008ac0069a0b32bbaa3f"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-settings-erase-data-source224r1-all-nonvideo-payloads.json.gz",
+      "bytes": 80610,
+      "sha256": "eaf041c88dbfb94f18227fcaa61441695b036fd8a283bd474b5ca8a302c14b94"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-settings-erase-data-source224r1-failure-recording.mp4",
+      "bytes": 41683565,
+      "sha256": "8d32b15630c5096f5c0f986245da46854d8dcd4e3ddb1ea5eb55108cb372d644"
+    }
+  ],
+  "checkedAt": 1794129874.626237
+}
