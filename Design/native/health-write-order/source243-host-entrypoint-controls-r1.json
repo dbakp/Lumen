@@ -1,0 +1,25 @@
+{
+  "status": "PASS actualR3entrypointhelp0 under subprocessqueryguard",
+  "controls": [
+    {
+      "file": "Design/native/health-write-order/healthy-target-driver-r3.py",
+      "bytes": 15425,
+      "sha256": "57f8add98433837242e2a8c8833ef9d3412ca2f0aee2c5b7be454661ce53e803",
+      "exit": 0,
+      "stdout": "usage: healthy-target-driver-r3.py [-h] --source SOURCE --host-source\n                                   HOST_SOURCE --build BUILD --trial TRIAL\n\noptional arguments:\n  -h, --help            show this help message and exit\n  --source SOURCE\n  --host-source HOST_SOURCE\n  --build BUILD\n  --trial TRIAL\n",
+      "stderr": "",
+      "queryGuardSource": "import runpy,sys,subprocess\ncalls=[]\ndef forbidden(*a,**k):calls.append(a);raise AssertionError(\"No process/device query on help path\")\nfor name in [\"run\",\"check_output\",\"Popen\",\"check_call\",\"call\"]:setattr(subprocess,name,forbidden)\nsys.argv=[sys.argv[1],\"--help\"]\ntry:runpy.run_path(sys.argv[0],run_name=\"__main__\")\nexcept SystemExit as e:\n assert e.code==0 and not calls\n raise\n"
+    },
+    {
+      "file": "Design/native/health-write-order/check-healthy-target-r3.py",
+      "bytes": 15450,
+      "sha256": "151345b2ea3bec3a639a01f6915bc94e21ae8baded6e6faaf1b19426aded1705",
+      "exit": 0,
+      "stdout": "usage: check-healthy-target-r3.py [-h] --checker-source CHECKER_SOURCE\n                                  --case-source CASE_SOURCE --build BUILD\n                                  --trial TRIAL\n                                  prefix\n\npositional arguments:\n  prefix\n\noptional arguments:\n  -h, --help            show this help message and exit\n  --checker-source CHECKER_SOURCE\n  --case-source CASE_SOURCE\n  --build BUILD\n  --trial TRIAL\n",
+      "stderr": "",
+      "queryGuardSource": "import runpy,sys,subprocess\ncalls=[]\ndef forbidden(*a,**k):calls.append(a);raise AssertionError(\"No process/device query on help path\")\nfor name in [\"run\",\"check_output\",\"Popen\",\"check_call\",\"call\"]:setattr(subprocess,name,forbidden)\nsys.argv=[sys.argv[1],\"--help\"]\ntry:runpy.run_path(sys.argv[0],run_name=\"__main__\")\nexcept SystemExit as e:\n assert e.code==0 and not calls\n raise\n"
+    }
+  ],
+  "scope": "Actual imports/argparse only; no devicequeries or native run",
+  "checkedAt": 1794159545.627854
+}
