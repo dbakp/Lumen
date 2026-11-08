@@ -95,6 +95,70 @@ def assess_observed(r,a,evidence):
  assert set(entries)==allowed, sorted(set(entries)^allowed)
  evidence.update(ordinaryPendingDeletionPreserved=True,completeFinalTreeAndReceipt=True,acquisitionTransition='absent→exact restored prior before original intent read; committed selected empty workouts')
 
+def retain_terminal(result,raw,prefix,evidence):
+ errors=[];bindings={'png':[],'json':[],'manifest':[],'other':[]};summary=None
+ if not result.exists():
+  errors.append('Native result bundle missing; no summary/attachment acceptance')
+ else:
+  try:
+   summary_bytes=subprocess.check_output(['xcrun','xcresulttool','get','test-results','summary','--path',str(result)])
+   (P/(prefix+'-summary.json')).write_bytes(summary_bytes);summary=json.loads(summary_bytes)
+  except Exception as ex:errors.append('summary: '+repr(ex))
+  destination=pathlib.Path(str(raw)+'-attachments');destination.mkdir(exist_ok=True)
+  try:subprocess.run(['xcrun','xcresulttool','export','attachments','--path',str(result),'--output-path',str(destination)],stdout=subprocess.DEVNULL,stderr=subprocess.PIPE,check=True)
+  except Exception as ex:errors.append('attachment exporter: '+repr(ex))
+  # A failed exporter may have already written valuable originals. Salvage
+  # every eligible file independently; one broken entry cannot skip its peers.
+  candidates=[]
+  try:
+   for directory,dirs,names in os.walk(destination,followlinks=False):
+    for name in list(dirs):
+     if (pathlib.Path(directory)/name).is_symlink():dirs.remove(name);errors.append('symlink directory skipped: '+name)
+    candidates.extend(pathlib.Path(directory)/n for n in names)
+  except Exception as ex:errors.append('enumerate partial attachments: '+repr(ex))
+  for f in sorted(candidates):
+   try:
+    assert not f.is_symlink() and f.is_file(),str(f)
+    kind='manifest' if f.name=='manifest.json' else f.suffix.lower().removeprefix('.')
+    if kind not in bindings:kind='other'
+    original=f.read_bytes();relative=str(f.relative_to(destination))
+    target=P/(prefix+'-'+sha(relative.encode())[:12]+'-'+f.name)
+    target.write_bytes(original)
+    bindings[kind].append({'file':target.name,'bytes':len(original),'sha256':sha(original),'raw':str(f),'relativeExportPath':relative,'source':evidence['source'],'individuallyOpened':False,'role':'export metadata' if kind=='manifest' else 'original native attachment'})
+    try:write(P/(prefix+'-'+kind+'-attachments.json'),bindings[kind])
+    except Exception as ex:errors.append('incremental binding '+kind+': '+repr(ex))
+   except Exception as ex:errors.append('attachment '+str(f)+': '+repr(ex))
+ for kind,rows in bindings.items():
+  try:write(P/(prefix+'-'+kind+'-attachments.json'),rows)
+  except Exception as ex:errors.append('binding manifest '+kind+': '+repr(ex))
+ # Bind each declared metadata entry to its retained original. Metadata is
+ # exporter evidence, never a native helper result or a substitute screenshot.
+ try:
+  assert len(bindings['manifest'])==1,'exactly one original export manifest required'
+  metadata=json.loads((P/bindings['manifest'][0]['file']).read_bytes());assert isinstance(metadata,list)
+  declared=[]
+  expected='LumenSmokeTests/testHealthLegacyRootAcquisition'+next(test for mode,test in MODES.values() if mode==evidence['mode'])
+  for case in metadata:
+   identifier=case['testIdentifier'].removesuffix('()')
+   assert identifier in {expected,'LumenUITests.'+expected},identifier
+   for attachment in case['attachments']:
+    name=attachment['exportedFileName'];assert name and pathlib.Path(name).name==name and '/' not in name and '\\' not in name
+    assert attachment['deviceId']==SIM
+    declared.append(name)
+  assert len(declared)==len(set(declared)),'duplicate declared export name'
+  retained=[row['relativeExportPath'] for kind,rows in bindings.items() if kind!='manifest' for row in rows]
+  assert sorted(retained)==sorted(declared),'declared versus retained original attachments differ'
+  evidence['retainedMetadataIdentityAndInventoryExact']=True
+ except Exception as ex:errors.append('attachment metadata identity/inventory: '+repr(ex))
+ if summary is None:errors.append('required native summary unavailable')
+ if not bindings['manifest']:errors.append('required original export metadata unavailable')
+ if evidence.get('nativeExitCode')==0 and not bindings['png']:errors.append('required successful native screenshot unavailable')
+ if evidence.get('nativeExitCode')==0:
+  if summary is None or (summary.get('passedTests'),summary.get('failedTests'),summary.get('skippedTests'))!=(1,0,0):errors.append('native terminal summary is not declared1/0/0')
+  if bindings['json']:errors.append('unexpected JSON nativehelper attachment; declared wrappers emit none, review required')
+ evidence['retention']={'errors':errors,'originalPNGCount':len(bindings['png']),'nativeHelperJSONCount':len(bindings['json']),'exportMetadataCount':len(bindings['manifest']),'nativeHelperBoundary':'These API observation wrappers attach screenshots only. Full app protocol reports are host readbacks, not native-helper JSON.','summaryRetained':summary is not None,'partialSalvageAttemptedIndependently':True}
+ return errors
+
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--source',required=True);ap.add_argument('--build',required=True);ap.add_argument('--case',choices=MODES,required=True);ap.add_argument('--trial',required=True);ap.add_argument('--expect',choices=['mutation','safe','control'],required=True);a=ap.parse_args()
  assert a.trial.isalnum();mode,test=MODES[a.case];assert (a.case=='ordinary')==(a.expect=='control')
@@ -150,29 +214,19 @@ def main():
     time.sleep(.15)
    else:raise TimeoutError('bounded native observation')
   evidence['nativeExitCode']=process.wait();assert evidence['nativeExitCode']==0 and seen=={'prepared','observed'},evidence
-  summary=json.loads(cmd('xcrun','xcresulttool','get','test-results','summary','--path',str(result)));write(P/(prefix+'-summary.json'),summary);assert summary['passedTests']==1 and summary['failedTests']==0 and summary['skippedTests']==0
   manifest_verify(m);evidence['status']='PASS declared observation/expectation only';evidence['driverExitCode']=0
  except Exception as ex:
   error=repr(ex);evidence.update(status='FAILED observation or expectation; no acceptance',error=error,driverExitCode=1)
   if process is not None and process.poll() is None:process.terminate();process.wait(timeout=30)
  finally:
   if process is not None:evidence['nativeExitCode']=process.poll()
-  if result.exists():
-   try:
-    summary=json.loads(cmd('xcrun','xcresulttool','get','test-results','summary','--path',str(result)));write(P/(prefix+'-summary.json'),summary)
-   except Exception as ex:evidence['summaryExportError']=repr(ex)
-   for kind in ['png','json']:
-    destination=pathlib.Path(str(raw)+'-attachments');destination.mkdir(exist_ok=True)
-    try:
-     if kind=='png':subprocess.run(['xcrun','xcresulttool','export','attachments','--path',str(result),'--output-path',str(destination)],stdout=subprocess.DEVNULL,stderr=subprocess.PIPE,check=True)
-     bindings=[]
-     for f in sorted(destination.rglob('*')):
-      if f.is_file() and not f.is_symlink() and f.suffix.lower()=='.'+kind and f.name!='manifest.json':
-       target=P/(prefix+'-'+f.name);target.write_bytes(f.read_bytes());bindings.append({'file':target.name,'bytes':target.stat().st_size,'sha256':sha(target.read_bytes()),'raw':str(f),'individuallyOpened':False})
-     write(P/(prefix+'-'+kind+'-attachments.json'),bindings)
-    except Exception as ex:evidence[kind+'AttachmentExportError']=repr(ex)
-  if log.exists():b=log.read_bytes();(P/(prefix+'.log.gz')).write_bytes(gzip.compress(b,mtime=0));evidence.update(logBytes=len(b),logSHA256=sha(b))
-  if any(k.endswith('ExportError') for k in evidence):error=error or 'Native retention incomplete';evidence.update(status='FAILED evidence retention; no acceptance',driverExitCode=1,safetyAcceptance=False)
+  try:retention_errors=retain_terminal(result,raw,prefix,evidence)
+  except Exception as ex:retention_errors=['terminal salvage failure: '+repr(ex)];evidence['retention']={'errors':retention_errors}
+  try:
+   assert log.exists(),'native log missing'
+   b=log.read_bytes();(P/(prefix+'.log.gz')).write_bytes(gzip.compress(b,mtime=0));evidence.update(logBytes=len(b),logSHA256=sha(b))
+  except Exception as ex:retention_errors.append('log retention: '+repr(ex));evidence['logRetentionError']=repr(ex)
+  if retention_errors:error=error or 'Native retention incomplete';evidence.update(status='FAILED evidence retention; no acceptance',driverExitCode=1,safetyAcceptance=False)
   evidence['finishedAt']=time.time();write(P/(prefix+'-outcome.json'),evidence);print(json.dumps(evidence),flush=True)
  return 1 if error else 0
 if __name__=='__main__':raise SystemExit(main())

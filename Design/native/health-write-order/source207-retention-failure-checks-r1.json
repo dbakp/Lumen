@@ -1,0 +1,13 @@
+{
+  "status": "PASS four meaningful isolated failure-retention checks; no native execution or product acceptance",
+  "candidateDriverBytes": 18180,
+  "candidateDriverSHA256": "b7025c71556577ee69de031f0d46b72c8f8386f14bd1dcfeeb90cc8afeb20952",
+  "checks": [
+    "Exporter and summary throw plus bad peer: both partial originalPNG and full metadata independently salvaged; errors retained",
+    "Missing result cannot pass retention",
+    "Successful exporter with empty outputs cannot pass required evidence",
+    "Complete originals/metadata/summary with declared zero nativehelper JSON accepted"
+  ],
+  "fixtureScope": "Only isolated known temporary export fixtures, no simulator/Git/app source actions. Exact retention function AST executed with injected exporter/summary failures; not an end-to-end xcresult export proof.",
+  "checkedAt": 1794096180.4780002
+}
