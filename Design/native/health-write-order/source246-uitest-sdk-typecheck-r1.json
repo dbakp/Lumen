@@ -1,0 +1,33 @@
+{
+  "status": "PASS actualSDK typecheck",
+  "kind": "uitest",
+  "file": "LumenUITests/LumenSmokeTests.swift",
+  "sourceBytes": 779308,
+  "sourceSHA256": "362f6a4fcb125461158df7edaaf365db4c2610bcb2f88619af557fd97c9bb047",
+  "command": [
+    "xcrun",
+    "swiftc",
+    "-typecheck",
+    "-swift-version",
+    "5",
+    "-target",
+    "arm64-apple-ios18.0-simulator",
+    "-sdk",
+    "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk",
+    "-F",
+    "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Library/Frameworks",
+    "-I",
+    "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/lib",
+    "-module-alias",
+    "Testing=_Testing_Unavailable",
+    "-module-cache-path",
+    "/tmp/LumenBatch37Simulator/ModuleCache.noindex",
+    "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen246-uitest-typing-g9lerj07/LumenSmokeTests.swift"
+  ],
+  "exit": 0,
+  "stdout": "",
+  "stderr": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen246-uitest-typing-g9lerj07/LumenSmokeTests.swift:5928:38: warning: expression implicitly coerced from 'String?' to 'Any'\n 5926 |                     \"appFrame\":rect(app.frame),\"alertFrame\":rect(alert.frame),\"bodyFrame\":rect(bodyElement.frame),\n 5927 |                     \"recoverFrame\":rect(recover.frame),\"cancelFrame\":rect(cancel.frame),\"at\":Date().timeIntervalSince1970,\n 5928 |                     \"attachmentName\":attachment.name,\"imageBytes\":image.count,\n      |                                      |          |- note: provide a default value to avoid this warning\n      |                                      |          |- note: force-unwrap the value to avoid this warning\n      |                                      |          `- note: explicitly cast to 'Any' with 'as Any' to silence this warning\n      |                                      `- warning: expression implicitly coerced from 'String?' to 'Any'\n 5929 |                     \"imageSHA256\":SHA256.hash(data:image).map { String(format:\"%02x\",$0) }.joined()]\n 5930 |                 let destination = FileManager.default.temporaryDirectory.appendingPathComponent(\"Lumen-confirmation-ui-\" + nonce.lowercased() + \".json\")\n",
+  "dependencyStubs": null,
+  "scope": "Whole UITest actualSDK typing or whole gate actualSDK typing with dependencies stubbed; no full app/runtime/alert/runner/authority/cancellation acceptance",
+  "checkedAt": 1794167103.2362812
+}

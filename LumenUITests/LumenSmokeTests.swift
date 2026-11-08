@@ -128,12 +128,13 @@ final class LumenSmokeTests: XCTestCase {
                     "-health-success-observation-ui", "-health-legacy-origin-ui", "data", "-health-legacy-origin-mixed-ui",
                     "-lumen.appearance", "light", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryL"]
             }
-            if name.contains("RecoveryTargetChangedAfterReady") {
+            if name.contains("RecoveryTargetChangedAfterReady") || name.contains("RecoveryTargetChangedDuringConfirmation") {
                 let run = UUID().uuidString
                 app.launchArguments += ["-health-backup-healthy-merge-ui", "-health-backup-empty-ui",
                     "-health-legacy-reset-ui", "-health-legacy-reset-run", run,
                     "-health-legacy-target-change-ui", "ready", "-health-legacy-target-change-run", run,
                     "-lumen.appearance", "light", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryL"]
+                if name.contains("DuringConfirmation") { app.launchArguments.append("-health-legacy-confirmation-window-ui") }
             }
             if name.contains("RecoveryHealthyTargetAfterReady") {
                 let run = UUID().uuidString
@@ -5794,12 +5795,18 @@ final class LumenSmokeTests: XCTestCase {
     }
 
     @MainActor
-    private func exerciseHealthBackupFileRecoveryTargetChangedAfterReady() throws {
+    func testHealthBackupFileRecoveryTargetChangedDuringConfirmationOriginData() throws {
+        try exerciseHealthBackupFileRecoveryTargetChangedAfterReady(duringConfirmation: true)
+    }
+
+    @MainActor
+    private func exerciseHealthBackupFileRecoveryTargetChangedAfterReady(duringConfirmation: Bool = false) throws {
         executionTimeAllowance = 480
         let prefix = "health-legacy-target-change"
+        let timingScope = duringConfirmation ? "actual-legacy-target-change-during-confirmation" : "actual-legacy-target-change-after-ready-before-confirmation"
         var observations: [[String: Any]] = []
         func report(_ phase: String, failure: String? = nil) {
-            var row: [String: Any] = ["scope": "actual-legacy-target-change-after-ready-before-confirmation",
+            var row: [String: Any] = ["scope": timingScope,
                 "phase": phase, "launchArguments": app.launchArguments, "observations": observations]
             if let failure { row["failure"] = failure }
             if let data = try? JSONSerialization.data(withJSONObject: row, options: [.prettyPrinted, .sortedKeys]) {
@@ -5884,11 +5891,60 @@ final class LumenSmokeTests: XCTestCase {
             try whole(confirm, "selected-meal", nav: "Review recovery")
             try require(confirm.isEnabled, "selected-meal", "Explicit meals choice must enable recovery")
             snap(prefix + "-selected-meal"); try checkpoint("ready")
-            try require(change.isEnabled && change.isHittable, "mutation", "Scoped native mutation control unavailable")
-            change.tap(); try checkpoint("target-changed"); snap(prefix + "-target-mutated")
+            if !duringConfirmation {
+                try require(change.isEnabled && change.isHittable, "mutation", "Scoped native mutation control unavailable")
+                change.tap(); try checkpoint("target-changed"); snap(prefix + "-target-mutated")
+            }
             try whole(confirm, "confirmation", nav: "Review recovery"); confirm.tap()
             let alert = app.alerts["Replace selected data?"]
             try require(alert.waitForExistence(timeout: 5), "confirmation", "Actual recovery confirmation missing")
+            if duringConfirmation {
+                let recover = alert.buttons["Recover"].firstMatch
+                let armed = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+                    guard let value = recover.value as? String, let bytes = value.data(using: .utf8),
+                          let row = try? JSONSerialization.jsonObject(with: bytes) as? [String: String] else { return false }
+                    return row["phase"] == "armed" && UUID(uuidString: row["nonce"] ?? "") != nil
+                }, object: nil)
+                try require(XCTWaiter.wait(for: [armed], timeout: 10) == .completed, "confirmation-gate", "Actual Recover gate value missing")
+                guard let value = recover.value as? String,
+                      let gate = try JSONSerialization.jsonObject(with: Data(value.utf8)) as? [String: String],
+                      let nonce = gate["nonce"], UUID(uuidString: nonce) != nil else {
+                    try require(false, "confirmation-gate", "Malformed actual alert gate"); return
+                }
+                let body = "Selected data will be replaced by records from this file. The older saved data will stay in a private recovery copy on this iPhone."
+                let cancel = alert.buttons["Not now"].firstMatch
+                let bodyElement = alert.staticTexts[body].firstMatch
+                try require(app.frame.contains(alert.frame) && bodyElement.exists && alert.frame.contains(bodyElement.frame)
+                    && alert.frame.contains(recover.frame) && alert.frame.contains(cancel.frame)
+                    && recover.isHittable && cancel.isHittable,
+                    "confirmation-gate", "Whole real confirmation and both actions required before marker")
+                let shot = app.screenshot(), image = shot.pngRepresentation
+                let attachment = XCTAttachment(screenshot: shot)
+                let attachmentName = prefix + "-confirmation-before-mutation"
+                attachment.name = attachmentName; attachment.lifetime = .keepAlways; add(attachment)
+                func rect(_ r: CGRect) -> [String: Double] { ["x":r.minX,"y":r.minY,"width":r.width,"height":r.height] }
+                let marker: [String: Any] = ["gate":gate,"scope":timingScope,"title":"Replace selected data?","body":body,
+                    "appFrame":rect(app.frame),"alertFrame":rect(alert.frame),"bodyFrame":rect(bodyElement.frame),
+                    "recoverFrame":rect(recover.frame),"cancelFrame":rect(cancel.frame),"at":Date().timeIntervalSince1970,
+                    "attachmentName":attachmentName,"imageBytes":image.count,
+                    "imageSHA256":SHA256.hash(data:image).map { String(format:"%02x",$0) }.joined()]
+                let destination = FileManager.default.temporaryDirectory.appendingPathComponent("Lumen-confirmation-ui-" + nonce.lowercased() + ".json")
+                let markerTemporary = destination.appendingPathExtension("tmp")
+                try JSONSerialization.data(withJSONObject:marker,options:[.sortedKeys]).write(to:markerTemporary,options:.withoutOverwriting)
+                try FileManager.default.moveItem(at:markerTemporary,to:destination)
+                observations.append(["phase":"confirmation-before-mutation","markerFile":destination.path,"marker":marker])
+                let mutated = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+                    guard let value = recover.value as? String, let bytes = value.data(using:.utf8),
+                          let next = try? JSONSerialization.jsonObject(with:bytes) as? [String:String] else { return false }
+                    return next["nonce"] == nonce && next["phase"] == "mutated"
+                }, object:nil)
+                try require(XCTWaiter.wait(for:[mutated],timeout:90) == .completed,"confirmation-mutation","No verified mutation while real alert stayed open")
+                let observedValue = recover.value as? String ?? ""
+                let observed = try JSONSerialization.jsonObject(with: Data(observedValue.utf8)) as? [String:String]
+                try require(observed?["targetPhase"] == "host-target-changed", "target-changed", "Host must verify actual mutated target before Recover")
+                observations.append(["phase":"target-changed","probeValue":observed?["targetPhase"] ?? "", "gateNonce":nonce,"at":Date().timeIntervalSince1970])
+                snap(prefix + "-target-mutated")
+            }
             snap(prefix + "-confirmation"); alert.buttons["Recover"].tap()
             let failure = app.descendants(matching: .any).matching(identifier: "fileHealthRecoveryError").firstMatch
             try require(failure.waitForExistence(timeout: 30), "changed-error", "Actual recovery did not reject stale review")

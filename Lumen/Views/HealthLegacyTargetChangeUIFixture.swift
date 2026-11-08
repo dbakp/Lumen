@@ -23,6 +23,7 @@ enum HealthLegacyTargetChangeUIFixture {
                   !args[index + 1].hasPrefix("-") else { throw Failure.invalidContext }
             return args[index + 1]
         }
+        guard args.filter({ $0 == "-health-legacy-confirmation-window-ui" }).count <= 1 else { throw Failure.invalidContext }
         guard try one(flag) == "ready", let run = UUID(uuidString: try one(runFlag)),
               let reset = UUID(uuidString: try one("-health-legacy-reset-run")), run == reset,
               ["data", "string"].contains(try one("-health-legacy-origin-ui")), try one("-health-backup-case") == "legacy"
@@ -97,6 +98,9 @@ enum HealthLegacyTargetChangeUIFixture {
     }
     static var phase: String { bridge.phase }
     static func canChange(_ session: UUID) -> Bool { bridge.canChange(session) }
+    static func confirmationBinding(_ session: UUID) throws -> [String: String] {
+        try bridge.confirmationBinding(session)
+    }
     static func expectedMeals() -> Data { bridge.didWrite ? newerMeals : HealthLegacyOriginUIFixture.data }
     static func expectedMealsString() -> String { bridge.didWrite ? newerMealsString : HealthLegacyOriginUIFixture.string }
 
@@ -274,6 +278,15 @@ enum HealthLegacyTargetChangeUIFixture {
                   status == "bootstrap-checking" else { throw Failure.invalidObservation }
             bootstrapNativeChecked = true; status = "before-selection"
             try save()
+        }
+        func confirmationBinding(_ session: UUID) throws -> [String: String] {
+            lock.lock(); defer { lock.unlock() }
+            guard let context, preparedPID == getpid(), bootstrapNativeChecked, active == session,
+                  !consumed, !failedFlag, status == "ready", let readyID, readyID == captureID else {
+                throw Failure.invalidObservation
+            }
+            return ["runID": context.runID.uuidString, "pid": String(getpid()),
+                    "sessionID": session.uuidString, "captureID": readyID.uuidString]
         }
         func canChange(_ session: UUID) -> Bool {
             lock.lock(); defer { lock.unlock() }

@@ -205,6 +205,11 @@ struct BackupFileRecoveryView: View {
     }
     @State private var confirmation = false
     @State private var confirmationSelection: ConfirmationSelection?
+    #if DEBUG && targetEnvironment(simulator)
+    @State private var confirmationGate: HealthConfirmationTargetChangeGate?
+    @State private var confirmationGateWork: Task<Void, Never>?
+    @State private var confirmationGateValue = ""
+    #endif
     @State private var originMetadata: HealthLegacyRecoveryOrigin.ReviewMetadata?
     @State private var captureIssue = false
     @State private var captureVisible = false
@@ -432,9 +437,46 @@ struct BackupFileRecoveryView: View {
         }
         #endif
         .alert("Replace selected data?", isPresented: $confirmation, presenting: confirmationSelection) { selection in
+            #if DEBUG && targetEnvironment(simulator)
+            Button("Recover") { closeConfirmationGate(); recover(selection) }
+                .accessibilityValue(confirmationGateValue)
+            Button("Not now", role: .cancel) { closeConfirmationGate() }
+            #else
             Button("Recover") { recover(selection) }
             Button("Not now", role: .cancel) { }
+            #endif
         } message: { selection in Text(confirmationMessage(selection)) }
+        #if DEBUG && targetEnvironment(simulator)
+        .onChange(of: confirmation) { _, presented in
+            closeConfirmationGate()
+            guard presented, HealthConfirmationTargetChangeGate.requested, reviewActive,
+                  let selection = confirmationSelection, selection.sessionID == session.id,
+                  HealthLegacyTargetChangeUIFixture.canChange(session.id) else { return }
+            do {
+                let gate = try HealthConfirmationTargetChangeGate(session: session, appearance: appearanceID,
+                    domains: selection.domains, legacyDomains: selection.legacyDomains, omitPhotos: selection.omitPhotos)
+                confirmationGate = gate; confirmationGateValue = gate.accessibilityValue
+                confirmationGateWork = Task { @MainActor in
+                    do {
+                        try await gate.waitAndChange(session) {
+                            confirmation && reviewActive && appearanceID == gate.appearance
+                                && confirmationGate === gate && confirmationSelection?.sessionID == selection.sessionID
+                                && confirmationSelection?.domains == selection.domains
+                                && confirmationSelection?.legacyDomains == selection.legacyDomains
+                                && confirmationSelection?.omitPhotos == selection.omitPhotos
+                        }
+                        guard confirmationGate === gate else { return }
+                        confirmationGateValue = gate.accessibilityValue
+                    } catch is CancellationError { }
+                    catch {
+                        guard confirmationGate === gate else { return }
+                        confirmationGateValue = "confirmation-verification-failed"
+                        gate.close()
+                    }
+                }
+            } catch { confirmationGateValue = "confirmation-verification-failed" }
+        }
+        #endif
         .onAppear { appearanceID = UUID(); reviewActive = true; startOriginCapture() }
         .onChange(of: eligibleDomains) { _, eligible in
             selected.formIntersection(eligible)
@@ -442,6 +484,9 @@ struct BackupFileRecoveryView: View {
         }
         .onDisappear {
             reviewActive = false
+            #if DEBUG && targetEnvironment(simulator)
+            closeConfirmationGate()
+            #endif
             cancelSuccessReveal()
             if let captureControl { session.suspendOriginCapture(control: captureControl) }
             captureWork?.cancel(); captureReveal?.cancel()
@@ -451,6 +496,13 @@ struct BackupFileRecoveryView: View {
             operation?.cancel(); work?.cancel()
         }
     }
+
+    #if DEBUG && targetEnvironment(simulator)
+    private func closeConfirmationGate() {
+        confirmationGate?.close(); confirmationGateWork?.cancel()
+        confirmationGate = nil; confirmationGateWork = nil; confirmationGateValue = ""
+    }
+    #endif
 
     private func cancelSuccessReveal() {
         successReveal?.cancel(); successReveal = nil
