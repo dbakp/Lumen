@@ -1,0 +1,18 @@
+{
+  "status": "FAILED readonly successor checker; no acceptance",
+  "checkerExit": 1,
+  "checkerSource": "durable-source-r239.json",
+  "caseSource": "durable-source-r239.json",
+  "build": "health-target-change-source239-r1-build.json",
+  "prefix": "health-legacy-target-change-string-source239r1",
+  "trial": "Source239R1",
+  "physicalPhoneActions": false,
+  "started": 1794153566.2864351,
+  "checkerSourceVerification": {
+    "source": "durable-source-r239.json",
+    "exactCurrentArchiveBindings": 618,
+    "manifestSHA256": "848858c0561cd6a3f4f3acb96a367fa5f983132480a368e2cac860c0074b9553"
+  },
+  "failure": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/check-target-string-r1.py\", line 38, in <module>\n    assert out['source']==a.case_source and out['build']==a.build;assert out['driverExit']==out['nativeExit']==0 and out['hostError'] is None\nAssertionError\n",
+  "finished": 1794153566.498333
+}
