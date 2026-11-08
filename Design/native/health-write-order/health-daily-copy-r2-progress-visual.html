@@ -71,7 +71,7 @@
 <button class="btn" type="button" data-area="quality" aria-pressed="false" aria-controls="lumen-plan-detail">Answer quality</button>
 <button class="btn" type="button" data-area="release" aria-pressed="false" aria-controls="lumen-plan-detail">Release gates</button>
 </div>
-<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Confirmation relay · simulator check next</h3><div data-verified>The updated tests compiled, and the development-code checks matched. The relay is ready for a simulator run.</div><div data-next>Now: run the confirmation check with the verified relay.</div><div class="text-small" data-gate>Current binary, string and mixed recovery passed. Confirmation, recovery ownership and broader product checks remain open.</div></div>
+<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Confirmation change · verified</h3><div data-verified>All eight simulator stages passed. Both reviews verified stale rejection, fresh recovery and cleanup across 17 original screens.</div><div data-next>Now: verify the current Release build, then test String storage, cancellation and expiry.</div><div class="text-small" data-gate>This Data confirmation case passed. Other timing windows, recovery ownership and broader product checks remain open.</div></div>
 </div>
 <div class="section"><h3>Verified safety checks</h3>
 <table class="table table-sm" aria-label="Earlier checks retain their original scope; broader checks remain open"><thead><tr><th>Situation</th><th>Observed result</th></tr></thead><tbody>
@@ -83,14 +83,14 @@
 </tbody></table>
 <div class="text-small">Earlier six-file long-wait preservation failure and Banana zero-fat omission remain failed expectations. Final dismissal preserved the immediate newer state.</div></div>
 <hr>
-<div class="viz-row"><span>About 25 GiB available at last check</span><span>14.17 GB recovered in recorded cleanups · latest cleanup 85.80 MB</span></div>
+<div class="viz-row"><span>About 26 GiB available at last check</span><span>14.17 GB recovered in recorded cleanups · latest cleanup 85.80 MB</span></div>
 <div class="text-small">Redundant exports and completed test bundles removed after exact GitHub verification · canonical evidence and needed caches retained · no further iPhone actions authorized</div>
 <script>
 (()=>{
 const root=document.getElementById('lumen-plan-progress');
-const snapshot='nov8-relay-built';
+const snapshot='nov8-confirmation-verified';
 const areas={
-current:{title:'Confirmation relay · simulator check next',verified:'The updated tests compiled, and the development-code checks matched. The relay is ready for a simulator run.',next:'Now: run the confirmation check with the verified relay.',gate:'Current binary, string and mixed recovery passed. Confirmation, recovery ownership and broader product checks remain open.'},
+current:{title:'Confirmation change · verified',verified:'All eight simulator stages passed. Both reviews verified stale rejection, fresh recovery and cleanup across 17 original screens.',next:'Now: verify the current Release build, then test String storage, cancellation and expiry.',gate:'This Data confirmation case passed. Other timing windows, recovery ownership and broader product checks remain open.'},
 quality:{title:'Answer quality · open',verified:'Library search, source identity, consent controls and literal-reference safeguards are delivered.',next:'Next: evidence-support policy and independent evaluation; personal-context and conversation-history privacy review.',gate:'Clinical accuracy, language coverage and live-provider evaluation remain required.'},
 release:{title:'Release readiness · open',verified:'The previous Release build passed both reviews; the updated build still needs verification.',next:'Next: background Health, Watch reconnect, widget, interruption and accessibility checks.',gate:'Orientation warning, representative histories, performance, privacy and distribution review remain open. No iPhone installation, launch or checks without a renewed request.'}
 };

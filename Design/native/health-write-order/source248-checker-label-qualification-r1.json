@@ -1,0 +1,24 @@
+{
+  "status": "Inherited human R2 label is metadata only; actual mandatory checker is R3",
+  "execution": "source248-confirmation-r1-checker-execution.json",
+  "bytes": 1045,
+  "sha256": "fd6e47094a14d33a85914d8797bea5071b3c40a4648f874ead097a993c25566e",
+  "actualCommand": [
+    "python3",
+    "-B",
+    "Design/native/health-write-order/check-confirmation-target-r3.py",
+    "health-legacy-confirmation-data-source248r1",
+    "--checker-source",
+    "durable-source-r248.json",
+    "--case-source",
+    "durable-source-r248.json",
+    "--build",
+    "health-target-change-source248-r1-build.json",
+    "--trial",
+    "PostRunR1"
+  ],
+  "actualCheckerPID": 30262,
+  "actualCheckerExit": 0,
+  "scope": "Executed recipe/docstring/status kept immutable; no R2 invocation occurred. Actual R3 fulloutcome/streams and root replay determine acceptance, no checker rerun or native rerun.",
+  "checkedAt": 1794171583.277451
+}
