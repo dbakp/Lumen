@@ -1,0 +1,369 @@
+{
+  "part": 121,
+  "source": "durable-source-r230.json",
+  "status": "SUPPORTED actual optimized INSTRUMENTED unsigned development Release compilation, bounded executable/bundle audit and selected settings/compiler-file-list verification. No distribution, runtime or performance acceptance.",
+  "staticVerificationAccepted": true,
+  "score": null,
+  "runtimeAcceptance": false,
+  "overallDesignAcceptance": false,
+  "productCompletion": false,
+  "independentVerification": {
+    "source230CurrentArchiveInputsExact": 483,
+    "textInputs": 464,
+    "fixtures": 19,
+    "source231HostOnlyCarry": "All483 actual app/test/source inputs remain exact; Source231 changes only separate host checker tooling. No Source231 app build is claimed.",
+    "actualReleaseBytes": 40761888,
+    "actualReleaseSHA256": "cccbf805bd3f004d31fa1f5c4514a38279ace550038a64a6e8a0ce4ec080570d",
+    "actualDebugBytes": 46104176,
+    "actualDebugSHA256": "5abb90026d0486b51a117ec6176fa6652c3002b8725d979be6df36ed24182c3d",
+    "fullLogBytes": 399532,
+    "fullLogSHA256": "dff285da2ee1bc2bbcac85a4dea558109b5832312998ab11566a7b651f4f1ece",
+    "fullLogLinesDecodedScanned": 2969,
+    "logMethod": "Decoded and bound entire raw log against retained gzip, scanned all lines for compiler/error/warning facts. No new build/auditor/settings query or binary execution.",
+    "rootCanonicalBindingsReverified": 11,
+    "binaryReadAsDataOnly": true
+  },
+  "actualExecution": {
+    "buildPID": 26508,
+    "buildExit": 0,
+    "auditExit": 0,
+    "buildCommand": [
+      "xcodebuild",
+      "-project",
+      "Lumen.xcodeproj",
+      "-scheme",
+      "Lumen",
+      "-configuration",
+      "Release",
+      "-destination",
+      "generic/platform=iOS",
+      "-derivedDataPath",
+      "/tmp/LumenBatch37Release",
+      "-clonedSourcePackagesDirPath",
+      "/tmp/LumenBatch37Packages",
+      "-disableAutomaticPackageResolution",
+      "-jobs",
+      "2",
+      "CODE_SIGNING_ALLOWED=NO",
+      "build"
+    ],
+    "auditor": "health-current-release-source210-r1-auditor.py reused generic code with actual Source230 plan/output; not Source210 execution.",
+    "settingsQueryPID": 28624,
+    "settingsQueryExit": 0,
+    "settingsQueryCount": 1,
+    "physicalDeviceActions": false,
+    "nativeRuns": 0
+  },
+  "markerAudit": {
+    "predeclaredArraysExactlyEqualResolvedAndActualAudit": true,
+    "negativeLiteralsAbsentRelease": 201,
+    "actualDebugPositiveMatched": 185,
+    "negativeOnlyWithoutMatchedDebug": 16,
+    "productionLiteralControlsPresentRelease": 20,
+    "negativeOnlyLimit": "Sixteen literals without actual Debug positive provide bounded absence observations only, not matched-positive code-exclusion proof. Includes historical short Capture check literal. Original Source219 failed UTF8 preflight remains failed, no retroactive retuning.",
+    "coverageLimit": "Finite literal checks do not prove exclusion of every DEBUG path or shipping behavior. Full arrays remain in bound plan/audit, not duplicated here."
+  },
+  "compilerAndSettings": {
+    "appSwiftcCommandCount": 3,
+    "eachActualCommand": [
+      {
+        "sha256": "53275aa23e7671842933717feb026587dd16e8d9d15bb97797b2dcca9a15e257",
+        "optimizationFlags": [
+          "-O"
+        ],
+        "DEBUG": false,
+        "enableTesting": false,
+        "profileGenerate": true,
+        "profileCoverageMapping": true
+      },
+      {
+        "sha256": "5cb61dd85db10b7a8fccd84b40a8885326e07d1f3f0d855e4254e278372fa3c9",
+        "optimizationFlags": [
+          "-O"
+        ],
+        "DEBUG": false,
+        "enableTesting": false,
+        "profileGenerate": true,
+        "profileCoverageMapping": true
+      },
+      {
+        "sha256": "f27e20a982c86feab68c39cac01dcf8390519a42b132ed878420fc3d87ac5c11",
+        "optimizationFlags": [
+          "-O"
+        ],
+        "DEBUG": false,
+        "enableTesting": false,
+        "profileGenerate": true,
+        "profileCoverageMapping": true
+      }
+    ],
+    "allThreeCoverageFlagsVerifiedIndividually": true,
+    "selectedSettings": {
+      "CONFIGURATION": "Release",
+      "PLATFORM_NAME": "iphoneos",
+      "SDKROOT": "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS27.0.sdk",
+      "ARCHS": "arm64",
+      "PRODUCT_BUNDLE_IDENTIFIER": "com.dbakp.lumen",
+      "CODE_SIGNING_ALLOWED": "NO",
+      "SWIFT_VERSION": "5.0",
+      "SWIFT_OPTIMIZATION_LEVEL": null,
+      "SWIFT_ACTIVE_COMPILATION_CONDITIONS": null,
+      "OTHER_SWIFT_FLAGS": null,
+      "GCC_PREPROCESSOR_DEFINITIONS": null,
+      "SWIFT_COMPILATION_MODE": null,
+      "ENABLE_TESTABILITY": "NO",
+      "IPHONEOS_DEPLOYMENT_TARGET": "18.0",
+      "CLANG_ENABLE_CODE_COVERAGE": null,
+      "GCC_GENERATE_TEST_COVERAGE_FILES": null,
+      "ENABLE_CODE_COVERAGE": "YES"
+    },
+    "rawSettings": {
+      "bytes": 38491,
+      "sha256": "6aa3a8f8d25112d768dee542bf9fe3e0ecb3b4c5aaf432a1b1a0772ad4912d70",
+      "targetCount": 1,
+      "target": "Lumen",
+      "newActualAcquisition": "Unique current queryPID28624/command; repeated raw38491B hash matches equal configuration, not reused acquisition."
+    },
+    "selectedFieldsComparedToRaw": true,
+    "missingSettingsNotNegativeEvidence": [
+      "SWIFT_OPTIMIZATION_LEVEL",
+      "SWIFT_ACTIVE_COMPILATION_CONDITIONS",
+      "OTHER_SWIFT_FLAGS",
+      "GCC_PREPROCESSOR_DEFINITIONS",
+      "SWIFT_COMPILATION_MODE",
+      "CLANG_ENABLE_CODE_COVERAGE",
+      "GCC_GENERATE_TEST_COVERAGE_FILES"
+    ],
+    "instrumentation": "ENABLE_CODE_COVERAGE=YES and BOTH -profile-generate/-profile-coverage-mapping on each of three actual app compiler commands. CLANG_ENABLE_CODE_COVERAGE null and omitted Swift flags are not evidence of no coverage/no DEBUG; actual parsed commands provide those bounded checks.",
+    "acceptance": "Optimized instrumented unsigned development verification only; no noninstrumented performance/battery/size or signed-distribution readiness."
+  },
+  "fileList": {
+    "bytes": 16079,
+    "sha256": "e19ea0cbf0502cc518722b9d44fae7a693bec57c1faa58a9479f12d0263a0237",
+    "rawEqualsRetainedGzip": true,
+    "uniquePaths": 191,
+    "frozenSourcePaths": 190,
+    "LumenFrozen": 188,
+    "SharedFrozen": 2,
+    "generatedPaths": 1,
+    "fullExpectedFrozenSetVerified": "Every frozen Lumen/ or Shared/ Swift source in Source230 occurs exactly once; each current byte equals frozen manifest/archive. Only additional path is known DerivedSources/GeneratedAssetSymbols.swift, actual generated bytes/hash bound.",
+    "generated": {
+      "file": "/tmp/LumenBatch37Release/Build/Intermediates.noindex/Lumen.build/Release-iphoneos/Lumen.build/DerivedSources/GeneratedAssetSymbols.swift",
+      "bytes": 2278,
+      "sha256": "4ade8d1b8298c7335cc53e0e9ef1d592cd540a51e05dd27bd60abe29b4916469"
+    },
+    "initialRootPreparationError": "First readonly root inventory expected only Lumen/ and omitted Shared/. Separate preparation note preserves correction; corrected inventory includes both. Actual build and settings query were not rerun."
+  },
+  "binaryBundle": {
+    "inspection": "Direct local Mach-O structure parse as data; 64-bit little endian arm64 CPU0x0100000c,83 load commands, LC_BUILD_VERSION iOS/min18.0/SDK27.0, no LC_CODE_SIGNATURE in main executable. No execution or fresh tool query.",
+    "bundleIdentifier": "com.dbakp.lumen",
+    "minimumOSVersion": "18.0",
+    "architectures": [
+      "arm64"
+    ],
+    "mainCodeSignatureLoadCommand": false,
+    "bundledModelPackagesOrModels": 0,
+    "packagePin": {
+      "identity": "zipfoundation",
+      "version": "0.9.20",
+      "revision": "22787ffb59de99e5dc1fbfe80b19c97a904ad48d"
+    },
+    "workspacePackageResolvedSHA256": "74c2c8e2c0b3e67f502cfb83c1ae27391fff568655e7762d04273f8715daf357",
+    "pinLimit": "Current actual workspace resolved bytes/state match plan/audit ZIPFoundation0.9.20 revision22787ffb59de99e5dc1fbfe80b19c97a904ad48d; no package/network action performed."
+  },
+  "findings": [
+    {
+      "id": "P121-L1",
+      "severity": "release-readiness limitation",
+      "actualWarning": "All interface orientations must be supported unless the app requires full screen.",
+      "count": 1,
+      "errorLineCount": 0,
+      "assessment": "Build/audit still terminal0. Preserve warning; this scoped static development audit does not establish final signed submission/readiness. No source edit or rebuild requested in this review."
+    },
+    {
+      "id": "P121-H1",
+      "severity": "historical wording qualification",
+      "finding": "Resolved plan sourceBoundary retains prebuild No Source230 compile/native/Release yet; its own text says actual receipts supersede it. prerequisiteUIExactGithubMain references historical Source229 failure backup. Actual current build/audit/settings and Source231 R5 exact checkpoint independently bound here; do not read old strings as current state."
+    }
+  ],
+  "precondition": {
+    "actualR5ExactCheckpointCommit": "c3c09f208ef20c90537cce35a8fc5483ac437255",
+    "checkpointPaths": 17,
+    "unionPaths": 551,
+    "scope": "Receipt read/bound as completed prior checkpoint; no Git/network operation by critic."
+  },
+  "limits": [
+    "No new native UI/recovery/appearance/speech/motion/reset/target-change runtime evidence from Release compile. Native230/R5 narrow acceptance stays separate.",
+    "No signed distribution/install/device query/launch, physical phone action, noninstrumented performance, security-completeness or global product acceptance.",
+    "Fresh raw-token authority acquisition/commit, later timings/String/healthy/retained-copy and all43/eightgroups/full goal remain open.",
+    "No original R4/Source229/Source219 failure rewrite; unchanged planned arrays and actual finite controls retained."
+  ],
+  "provenance": [
+    {
+      "file": "Design/native/health-write-order/durable-source-r230.json",
+      "bytes": 87196,
+      "sha256": "50e05adbcf8894f238c5fb77f0f40307f248ab3d2d9a91e801f26d6df4843492"
+    },
+    {
+      "file": "Design/native/health-write-order/durable-source-r230.json.gz",
+      "bytes": 1828287,
+      "sha256": "c52bacff87ecd4c24bfb6625d4f941defec3e26994074825815233aa0d2a6e5f"
+    },
+    {
+      "file": "Design/native/health-write-order/durable-source-r231.json",
+      "bytes": 87493,
+      "sha256": "710a80c1e4c125ddf4c0fec4d988da4788b1407daebe0693b81c22bc39af0be8"
+    },
+    {
+      "file": "Design/native/health-write-order/source231-app-source-carry-r1.json",
+      "bytes": 872,
+      "sha256": "de69e14c50574ecddeb24e48d9ee492db85ee89f8918168903f56e121c258214"
+    },
+    {
+      "file": "Design/native/health-write-order/health-current-release-source230-r1-predeclared-plan.json",
+      "bytes": 19172,
+      "sha256": "f651b6f15a4f463b950d84d57e6d568ec9878be43923bb7b062c56b49113adb6"
+    },
+    {
+      "file": "Design/native/health-write-order/health-current-release-source230-r1-plan.json",
+      "bytes": 19137,
+      "sha256": "48f63d705359c81d9fd99ffd13f0215e8847972bbe41477331657365060a8945"
+    },
+    {
+      "file": "Design/native/health-write-order/health-current-release-source230-r1-outcome.json",
+      "bytes": 1035,
+      "sha256": "33cf78498523c498f7dd4943a32157bd74cf2d0e2a15a07f90b86945c742fef9"
+    },
+    {
+      "file": "Design/native/health-write-order/health-current-release-source230-r1-audit.json",
+      "bytes": 16629,
+      "sha256": "ff39a2decc70702022faa7aceed7a32cbcb655f146c3e5225188372dfcc994fd"
+    },
+    {
+      "file": "Design/native/health-write-order/source230-current-debug-release-controls-r1.json",
+      "bytes": 1127,
+      "sha256": "4e2a276759d39a49087e4d750763eb93a15874a9448324458041e3c9feed98a0"
+    },
+    {
+      "file": "Design/native/health-write-order/source230-root-build-controls-r1.json",
+      "bytes": 804,
+      "sha256": "db56d64cf83923be720c9d4e139ec818704f1c7cd4d60103b89a718473c4b759"
+    },
+    {
+      "file": "Design/native/health-write-order/source230-unsigned-release-r1-planned.py",
+      "bytes": 3333,
+      "sha256": "f42e60f64fe6dd013399b9c7d1fe03581f4cc7bb8bd9ab2b0fe23c9d1e459a4d"
+    },
+    {
+      "file": "Design/native/health-write-order/source230-release-settings-auditor-r1.py",
+      "bytes": 6438,
+      "sha256": "17321e05626e5eb5b85400c9ac8bf68a0948c6038e2a2d421d8606cd6fe9f283"
+    },
+    {
+      "file": "Design/native/health-write-order/health-current-release-source210-r1-auditor.py",
+      "bytes": 4432,
+      "sha256": "817a1a86e99d18e63b0ac25c6ade54293ddf13fa100aacc7e8ee52bae1edd257"
+    },
+    {
+      "file": "Design/native/health-write-order/source230-unsigned-release-r1-build.log.gz",
+      "bytes": 36871,
+      "sha256": "a6f633be4f55bf85db0cb707345ef3a3800fa4c101dfd7e3ecf20023692b33aa"
+    },
+    {
+      "file": "Design/native/health-write-order/source230-unsigned-release-r1-settings-audit.json",
+      "bytes": 3527,
+      "sha256": "8b01f7ad47ea848fd020497f18c2df9a0c826796a8f45563b2df50b680604f56"
+    },
+    {
+      "file": "Design/native/health-write-order/source230-unsigned-release-r1-swift-filelist.txt.gz",
+      "bytes": 1715,
+      "sha256": "4e1cffa7c96702ded743c93301940747960688e441e1dd778e2876372a4f9e6e"
+    },
+    {
+      "file": "Design/native/health-write-order/source230-root-release-audit-r1.py",
+      "bytes": 5300,
+      "sha256": "54d39cc35d6f09b14e4fae7c50153c1507c544966cd75b6b89861e30c18e6836"
+    },
+    {
+      "file": "Design/native/health-write-order/source230-root-release-audit-r1.json",
+      "bytes": 4180,
+      "sha256": "e9938caa4bc88db35c791c15e3e28bd26c923d0519459f3ee310d1b870504682"
+    },
+    {
+      "file": "Design/native/health-write-order/source230-root-release-audit-preparation-note.json",
+      "bytes": 632,
+      "sha256": "31f5e0b9a950145a94adff259ee7c781e2e1a20a94ef76b259082174ea6818ed"
+    },
+    {
+      "file": "Design/native/health-write-order/source231-actual-r5-exact-github.json",
+      "bytes": 107744,
+      "sha256": "24a576bc294f5ba8364d87b5947d3d403940bda73d0c3fbafafb321eb40e50ad"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-target-change-source230-round2-part117-source.json",
+      "bytes": 13207,
+      "sha256": "859d71640a489cb75f52812e07f4a8a430d5313bbd6486c8f6276d4ff3a6d6a3"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-target-change-source231-round2-part120-actual-r5.json",
+      "bytes": 21342,
+      "sha256": "7ca3a7310cd6bff5f233e0da781357801ccfd95ae29b7038bb08462fc8ec9b74"
+    }
+  ],
+  "actualLocalFileBindings": [
+    {
+      "file": "/tmp/LumenBatch37Release/Build/Products/Release-iphoneos/Lumen.app/Lumen",
+      "bytes": 40761888,
+      "sha256": "cccbf805bd3f004d31fa1f5c4514a38279ace550038a64a6e8a0ce4ec080570d"
+    },
+    {
+      "file": "/tmp/LumenBatch37Release/Build/Products/Release-iphoneos/Lumen.app/Info.plist",
+      "bytes": 1907,
+      "sha256": "33468a3870aad739d29caa95bd37b95190c4379c9206c43f09c8b45e3537cb7b"
+    },
+    {
+      "file": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+      "bytes": 46104176,
+      "sha256": "5abb90026d0486b51a117ec6176fa6652c3002b8725d979be6df36ed24182c3d"
+    },
+    {
+      "file": "/tmp/LumenBatch44Checks/Source230UnsignedReleaseR1.log",
+      "bytes": 399532,
+      "sha256": "dff285da2ee1bc2bbcac85a4dea558109b5832312998ab11566a7b651f4f1ece"
+    },
+    {
+      "file": "/tmp/LumenBatch44Checks/Source230UnsignedReleaseR1Settings.json",
+      "bytes": 38491,
+      "sha256": "6aa3a8f8d25112d768dee542bf9fe3e0ecb3b4c5aaf432a1b1a0772ad4912d70"
+    },
+    {
+      "file": "/tmp/LumenBatch44Checks/Source230UnsignedReleaseR1Settings.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "/tmp/LumenBatch37Release/Build/Intermediates.noindex/Lumen.build/Release-iphoneos/Lumen.build/Objects-normal/arm64/Lumen.SwiftFileList",
+      "bytes": 16079,
+      "sha256": "e19ea0cbf0502cc518722b9d44fae7a693bec57c1faa58a9479f12d0263a0237"
+    },
+    {
+      "file": "/tmp/LumenBatch37Release/Build/Intermediates.noindex/Lumen.build/Release-iphoneos/Lumen.build/DerivedSources/GeneratedAssetSymbols.swift",
+      "bytes": 2278,
+      "sha256": "4ade8d1b8298c7335cc53e0e9ef1d592cd540a51e05dd27bd60abe29b4916469"
+    },
+    {
+      "file": "Lumen.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved",
+      "bytes": 397,
+      "sha256": "74c2c8e2c0b3e67f502cfb83c1ae27391fff568655e7762d04273f8715daf357"
+    }
+  ],
+  "storage": {
+    "availableBytesAtFinish": 32515182592,
+    "deletedFiles": 0,
+    "bytesRecovered": 0,
+    "retention": "No cleanup performed; keep current binary/settings/raw log/file list/cache until parent exact checkpoint. Both historical unbacked videos remain retained."
+  },
+  "judgedInputsModified": false,
+  "physicalPhoneActions": false,
+  "checkedAt": 1794142481.680778
+}
