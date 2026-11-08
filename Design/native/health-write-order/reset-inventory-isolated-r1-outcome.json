@@ -1,0 +1,74 @@
+{
+  "status": "PASS7 isolated actual predicate cases only; no native/product reset acceptance",
+  "cases": [
+    {
+      "case": "fresh-control",
+      "status": "PASS isolated actual predicate expectation",
+      "rejected": false,
+      "actualPayloadFilesRetained": 11
+    },
+    {
+      "case": "unexpected-file",
+      "status": "PASS isolated actual predicate expectation",
+      "rejected": true,
+      "actualPayloadFilesRetained": 12
+    },
+    {
+      "case": "old-disk-goals",
+      "status": "PASS isolated actual predicate expectation",
+      "rejected": true,
+      "actualPayloadFilesRetained": 12
+    },
+    {
+      "case": "wrong-goal-model",
+      "status": "PASS isolated actual predicate expectation",
+      "rejected": true,
+      "actualPayloadFilesRetained": 11
+    },
+    {
+      "case": "old-water-record",
+      "status": "PASS isolated actual predicate expectation",
+      "rejected": true,
+      "actualPayloadFilesRetained": 12
+    },
+    {
+      "case": "stale-generation",
+      "status": "PASS isolated actual predicate expectation",
+      "rejected": true,
+      "actualPayloadFilesRetained": 11
+    },
+    {
+      "case": "fixed-key-resurrection",
+      "status": "PASS isolated actual predicate expectation",
+      "rejected": true,
+      "actualPayloadFilesRetained": 11
+    }
+  ],
+  "provenance": [
+    {
+      "file": "Design/native/health-write-order/legacy-settings-erase-evidence-r2.py",
+      "bytes": 12348,
+      "sha256": "a70db065ce59b90f09fae1a2410f2afdb3fd0e10c0f5d5f08d22cb3bd467980d"
+    },
+    {
+      "file": "Design/native/health-write-order/check-reset-inventory-isolated-r1.py",
+      "bytes": 5959,
+      "sha256": "ff591e0b818caf3bf4953fc9a55fdeda3336e1d4eb30f43c5b7cbbabfd8006fc"
+    },
+    {
+      "file": "Design/native/health-write-order/health-capture-state-retry-failure-source220r2-host-audit.json",
+      "bytes": 461434,
+      "sha256": "c150d02c1a1056c23e067c3d0906bdff5e5653c2181ed159a295665efc664481"
+    }
+  ],
+  "fixtureArchive": {
+    "file": "reset-inventory-isolated-r1-fixtures.json.gz",
+    "bytes": 67576,
+    "sha256": "c124e6072fc5bb7b974725fa411f77b8c8a8c4499888599c8d71633bde4271d3",
+    "payloadFiles": 94
+  },
+  "temporaryDirectory": "/tmp/LumenResetInventoryIsolatedR1-xbxzqvzn",
+  "scope": "One synthetic fresh control and six deliberate known violations; actual helper executed on isolated small files. No simulator/defaults/Keychain/Health action.",
+  "physicalDeviceActions": false,
+  "checkedAt": 1794124573.4129212
+}

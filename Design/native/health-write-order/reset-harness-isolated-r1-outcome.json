@@ -1,0 +1,154 @@
+{
+  "status": "PASS isolated actual helper/caller/context guards ONLY; no simulator/native/product reset acceptance",
+  "cases": [
+    {
+      "case": "wrong-data",
+      "status": "PASS isolated declared guard",
+      "actualCallerFragmentSHA256": "4be2f58d9155c11def7d5387f0c8336cbc0110e29245f757ee71d6e4ef64a1b9",
+      "failedBoundaryRetained": true,
+      "acks": 0,
+      "persistCalls": 2
+    },
+    {
+      "case": "wrong-string",
+      "status": "PASS isolated declared guard",
+      "actualCallerFragmentSHA256": "4be2f58d9155c11def7d5387f0c8336cbc0110e29245f757ee71d6e4ef64a1b9",
+      "failedBoundaryRetained": true,
+      "acks": 0,
+      "persistCalls": 2
+    },
+    {
+      "case": "unsupported-type",
+      "status": "PASS isolated declared guard",
+      "actualCallerFragmentSHA256": "4be2f58d9155c11def7d5387f0c8336cbc0110e29245f757ee71d6e4ef64a1b9",
+      "failedBoundaryRetained": true,
+      "acks": 0,
+      "persistCalls": 2
+    },
+    {
+      "case": "file-metadata-guard",
+      "status": "PASS isolated declared guard",
+      "actualCallerFragmentSHA256": "4be2f58d9155c11def7d5387f0c8336cbc0110e29245f757ee71d6e4ef64a1b9",
+      "failedBoundaryRetained": true,
+      "acks": 0,
+      "persistCalls": 2
+    },
+    {
+      "case": "tree-symlink",
+      "status": "PASS isolated declared guard",
+      "entryFactsRetained": true,
+      "targetFollowedOrChanged": false
+    },
+    {
+      "case": "first-outcome-write-failure",
+      "status": "FAILED or incomplete Settings erasure case; no acceptance",
+      "driverExit": 1,
+      "naturalWaitCalls": 1,
+      "signals": [],
+      "retainerCalls": 1,
+      "mockSalvageCalls": 0,
+      "acceptCalls": 0,
+      "outcomePersistenceErrors": 1,
+      "statePersistenceErrors": 0
+    },
+    {
+      "case": "first-state-write-failure",
+      "status": "FAILED or incomplete Settings erasure case; no acceptance",
+      "driverExit": 1,
+      "naturalWaitCalls": 1,
+      "signals": [],
+      "retainerCalls": 1,
+      "mockSalvageCalls": 0,
+      "acceptCalls": 0,
+      "outcomePersistenceErrors": 0,
+      "statePersistenceErrors": 1
+    },
+    {
+      "case": "retainer-import-failure",
+      "status": "FAILED or incomplete Settings erasure case; no acceptance",
+      "driverExit": 1,
+      "naturalWaitCalls": 1,
+      "signals": [],
+      "retainerCalls": 0,
+      "mockSalvageCalls": 1,
+      "acceptCalls": 0,
+      "outcomePersistenceErrors": 0,
+      "statePersistenceErrors": 0
+    },
+    {
+      "case": "clean-terminal-control",
+      "status": "PASS actual native1/0/0 and strict host6boundaries; root/independent review pending",
+      "driverExit": 0,
+      "naturalWaitCalls": 1,
+      "signals": [],
+      "retainerCalls": 1,
+      "mockSalvageCalls": 0,
+      "acceptCalls": 1,
+      "outcomePersistenceErrors": 0,
+      "statePersistenceErrors": 0
+    },
+    {
+      "case": "exact-swift-context",
+      "status": "PASS isolated declared guard",
+      "sourceFunctionBytes": 1542,
+      "sourceFunctionSHA256": "3fc28d77f8dc8eae4e6481db170683ef8136a7faf7b8337ac6f7e32c296e149e",
+      "malformedCases": 14,
+      "validControls": 3,
+      "compileExit": 0,
+      "runExit": 0,
+      "stdout": "PASS context guards: 14 malformed +3 controls",
+      "preflightBeforeGenericResetSourceOrder": true,
+      "actualAppResetExecuted": false
+    }
+  ],
+  "provenance": [
+    {
+      "file": "Design/native/health-write-order/legacy-settings-erase-evidence-r2.py",
+      "bytes": 12348,
+      "sha256": "a70db065ce59b90f09fae1a2410f2afdb3fd0e10c0f5d5f08d22cb3bd467980d"
+    },
+    {
+      "file": "Design/native/health-write-order/legacy-settings-erase-driver-r2.py",
+      "bytes": 12336,
+      "sha256": "ed4e8dfedab67a18085cd5d9769e1bbc321efa77c5723cd1c73a1782c3ac32d0"
+    },
+    {
+      "file": "Design/native/health-write-order/legacy-settings-erase-finalization-r1.py",
+      "bytes": 2940,
+      "sha256": "9dbb81a5c93131e2ef2aa057102e84fbe527784fb3f08df678a436bb2635ea6c"
+    },
+    {
+      "file": "Design/native/health-write-order/capture-state-finalization-r2.py",
+      "bytes": 10780,
+      "sha256": "3f2f5b18ba219733aa6e8ca467c6f9f50ee996eed398dd62bf09c4c965aecdd5"
+    },
+    {
+      "file": "Design/native/health-write-order/check-reset-harness-isolated-r1.py",
+      "bytes": 16033,
+      "sha256": "8172d643496621ad135c5720d180a1063622352184a51207d72440c9eddb669c"
+    },
+    {
+      "file": "Lumen/Views/HealthRecoveryCancelUIFixture.swift",
+      "bytes": 55890,
+      "sha256": "3df0106d6ffd22f7d7b1d06ee7a8374f6374e8e717d140dac328b9096ba1d345"
+    },
+    {
+      "file": "Lumen/LumenApp.swift",
+      "bytes": 8646,
+      "sha256": "de6f332fdcb4dfe72b48a8093d1779d36f56b790279be7bdb1d70298b11273d2"
+    }
+  ],
+  "callerFragmentBytes": 6622,
+  "callerFragmentSHA256": "4be2f58d9155c11def7d5387f0c8336cbc0110e29245f757ee71d6e4ef64a1b9",
+  "fixtureArchive": {
+    "file": "reset-harness-isolated-r1-fixtures.json.gz",
+    "bytes": 12646,
+    "sha256": "69ad1aaf72536b66db90eda7af79885a61e4ee8a6ec13a60dabf1189c58e6e15",
+    "payloadFiles": 37
+  },
+  "temporaryDirectory": "/tmp/LumenResetHarnessIsolatedR1-tls095sd",
+  "compiledContextExecutableBytes": 81288,
+  "scope": "4actual caller wrong-value/metadata failures,1actual nofollow tree guard,4terminal caller mocked-process/exporter controls, actual extracted Swift pure context14malformed+3controls. No simulator/Keychain/Health/native timing/fault erasure execution.",
+  "physicalDeviceActions": false,
+  "checkedAt": 1794124437.2687628
+}

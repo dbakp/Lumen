@@ -765,16 +765,31 @@ import Security
 @MainActor enum HealthLegacyResetUIFixture {
     enum Failure: Error { case unsafeContext, invalidObservation }
     static let verificationProtocol = "Lumen-legacy-settings-erasure-verification-v1"
-    static var runID: UUID? {
-        let args = ProcessInfo.processInfo.arguments
-        guard let i = args.firstIndex(of: "-health-legacy-reset-run"), args.indices.contains(i + 1) else { return nil }
-        return UUID(uuidString: args[i + 1])
+    /// A malformed dedicated request must fail before generic reset can run.
+    static func context(_ args: [String]) throws -> (mode: String, runID: UUID)? {
+        let flags = ["-health-legacy-reset-ui", "-health-legacy-reset-observer", "-health-legacy-reset-run"]
+        guard flags.contains(where: { args.contains($0) }) else { return nil }
+        let initial = args.filter { $0 == flags[0] }.count
+        let observer = args.filter { $0 == flags[1] }.count
+        guard initial + observer == 1, args.filter({ $0 == flags[2] }).count == 1,
+              let index = args.firstIndex(of: flags[2]), args.indices.contains(index + 1),
+              let run = UUID(uuidString: args[index + 1]) else { throw Failure.unsafeContext }
+        if observer == 1 {
+            guard !args.contains("-resetForUITests"),
+                  !args.contains(where: { $0.hasPrefix("-health-") && !flags[1...2].contains($0) }) else { throw Failure.unsafeContext }
+            return ("readonly-clean-relaunch", run)
+        }
+        guard args.contains("-resetForUITests"), args.contains("-health-backup-ui-fixture"),
+              args.contains("-health-backup-empty-ui"), args.contains("-health-backup-healthy-merge-ui"),
+              let origin = args.firstIndex(of: "-health-legacy-origin-ui"), args.indices.contains(origin + 1),
+              ["data", "string"].contains(args[origin + 1]),
+              let backup = args.firstIndex(of: "-health-backup-case"), args.indices.contains(backup + 1),
+              args[backup + 1] == "legacy" else { throw Failure.unsafeContext }
+        return ("initial-fixture", run)
     }
-    static var requested: Bool {
-        let args = ProcessInfo.processInfo.arguments
-        return runID != nil && (args.contains("-health-legacy-reset-ui") || args.contains("-health-legacy-reset-observer"))
-    }
-    static var observingRelaunch: Bool { ProcessInfo.processInfo.arguments.contains("-health-legacy-reset-observer") }
+    static var runID: UUID? { (try? context(ProcessInfo.processInfo.arguments))?.runID }
+    static var requested: Bool { runID != nil }
+    static var observingRelaunch: Bool { (try? context(ProcessInfo.processInfo.arguments))?.mode == "readonly-clean-relaunch" }
     private static var sequence = 0
     private static var failed = false
     private static var parent: URL? { FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: AppGroup.id) }
@@ -782,15 +797,10 @@ import Security
 
     /// Runs BEFORE resetForUITests can destroy any saved state. Never reads secrets.
     static func preflightIfRequested() throws {
-        guard requested else { return }
         let args = ProcessInfo.processInfo.arguments
-        if observingRelaunch {
-            guard !args.contains("-resetForUITests"), !args.contains("-health-backup-ui-fixture"),
-                  !args.contains("-health-legacy-origin-ui"), !args.contains("-health-legacy-reset-ui") else { throw Failure.unsafeContext }
-            return
-        }
-        guard args.contains("-resetForUITests"), HealthLegacyOriginUIFixture.kind != nil,
-              !UserDefaults.standard.bool(forKey: "lumen.health.connected") else { throw Failure.unsafeContext }
+        guard let checked = try context(args) else { return }
+        if checked.mode == "readonly-clean-relaunch" { return }
+        guard !UserDefaults.standard.bool(forKey: "lumen.health.connected") else { throw Failure.unsafeContext }
         let request: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: "com.dbakp.lumen.secrets", kSecReturnAttributes as String: true,
             kSecMatchLimit as String: kSecMatchLimitAll]
@@ -810,6 +820,8 @@ import Security
         var journal = try HealthWriteFiles.read(from: root, owner: HealthWriteDeviceOwner.current())
         try journal.append(domain: .water, localID: "synthetic-reset-unstarted-save",
                            components: [.init(metric: .water, value: 137, date: Date(timeIntervalSince1970: 1_793_620_800))])
+        try journal.append(domain: .water, localID: "synthetic-reset-pending-removal",
+                           components: [.init(metric: .water, value: 257, date: Date(timeIntervalSince1970: 1_793_620_800))])
         try journal.requestDeletion(domain: .water, localID: "synthetic-reset-pending-removal")
         try journal.encoded().write(to: root.appendingPathComponent(HealthWriteFiles.name), options: .atomic)
         let stage = parent.appendingPathComponent("Lumen-reset-fixture-" + UUID().uuidString)
@@ -855,6 +867,7 @@ import Security
                 "meals": HealthStore.shared.meals.count, "workouts": HealthStore.shared.workouts.count,
                 "water": HealthStore.shared.waterLogs.count, "profileName": SleepStore.shared.profile.name,
                 "stepGoal": HealthStore.shared.goals.stepGoal,
+                "goals": try JSONSerialization.jsonObject(with: BackupArchive.encoder().encode(HealthStore.shared.goals)),
                 "healthConnected": UserDefaults.standard.bool(forKey: "lumen.health.connected"),
                 "healthAuthorized": HealthKitService.shared.isAuthorized]
             let data = try JSONSerialization.data(withJSONObject: row, options: [.prettyPrinted, .sortedKeys])
