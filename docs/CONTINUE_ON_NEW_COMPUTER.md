@@ -6,7 +6,7 @@ Repository: https://github.com/dbakp/Lumen · branch `main`.
 
 ## Current checkpoint · Source229 reviewed formatting fix · 8 November 2026
 
-Part114/root supports frozen448text+18fixtures=466 after one diagnostic-string change: `String(describing: failure.frame)` replaces the unavailable helper. All461otherpriorinputs unchanged; no predicate/backend/fixture/checker change. Root syntax-only parse passed. Publish/exactcompare, then actual229Debugbuild and198/182/16/20controlpreflight before declared Data trial. No current229compile/native/Release acceptance yet; keep using one simulator/package cache for the immediate rebuild.
+Part114/root supports frozen448text+18fixtures=466 after one diagnostic-string change: `String(describing: failure.frame)` replaces the unavailable helper. All461otherpriorinputs unchanged; no predicate/backend/fixture/checker change. Root syntax-only parse passed. Publish/exactcompare, then actual229Debugbuild and198/182/16/20controlpreflight before declared Data trial. Actual229build-for-testing PID76353 exited0, app46,032,736B SHAde2e5d8b… and test pair receipt verified; actual182Debugpositive/16negativeonly/20production with198negativepredeclaration passed. Publish/exact-back build receipts before native reset. Native/Release/target-change acceptance still pending; reuse same current simulator/package cache.
 
 ## Historical Source228 build failure
 
