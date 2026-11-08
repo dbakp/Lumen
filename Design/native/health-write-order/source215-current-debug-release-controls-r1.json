@@ -1,0 +1,34 @@
+{
+  "status": "PASS actual current215 Debug positive preflight, immutablepredeclaredarrays unchanged",
+  "source": "durable-source-r215.json",
+  "build": "health-mixed-ineligible-r1-build.json",
+  "predeclared": "health-current-release-source215-r1-predeclared-plan.json",
+  "predeclaredSHA256": "8e4f6405bbcfa98fe9c81f5554c2766589ba2c454c86f4cf7506da64e68a0122",
+  "actualDebugSHA256": "d9a6ea9e9206317d80ff0247fb89be688df04909f1901f3acd6485f6d087a33a",
+  "actualDebugBytes": 45604432,
+  "counts": {
+    "checkedDevelopmentMarkers": 173,
+    "debugPositiveControls": 158,
+    "negativeMarkersWithoutDebugPositive": 15,
+    "verifiedProductionMarkers": 20
+  },
+  "missingPositives": [],
+  "actualNegativeOnly": [
+    "--retrieval-index-timing",
+    "--retrieval-selection-replay",
+    "--provider-transport-check",
+    "--lab-source-ui-fixtures",
+    "COHERENCECANARY",
+    "PRIVATE-LAB-CONTEXT-CANARY",
+    "--health-write-order",
+    "--local-commit",
+    "-library-submission-baseline",
+    "Lumen-submission-baseline-report.json",
+    "Submission baseline reproduced",
+    "Lumen-library-baseline-report.json",
+    "-provider-authorization-baseline",
+    "Provider authorization baseline reproduced",
+    "-health-read-ui"
+  ],
+  "checkedAt": 1794109615.817184
+}
