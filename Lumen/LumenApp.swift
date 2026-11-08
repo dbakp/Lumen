@@ -9,6 +9,8 @@ struct LumenApp: App {
         HealthZIPArchive.clearTemporaryFiles()
         #if DEBUG && targetEnvironment(simulator)
         // Clean slate only for dedicated simulator UI tests, before stores load.
+        do { try HealthLegacyResetUIFixture.preflightIfRequested() }
+        catch { preconditionFailure("Synthetic reset context is not safe") }
         if ProcessInfo.processInfo.arguments.contains("-resetForUITests") && !ProviderAuthorizationNativeProbe.resumesRemovalCheck && !ProviderAuthorizationNativeProbe.resumesAccountResetCheck && !ProviderConnectionUIFixture.resuming && !HealthWriteLifecycleProbe.resuming {
             LocalStore.eraseAll()
             SemanticSearchService.resetForUITests()
@@ -94,6 +96,7 @@ private struct LumenReadyView: View {
             }
             #if DEBUG && targetEnvironment(simulator)
             .overlay(alignment: .bottom) {
+                HealthLegacyResetUIProbe()
                 if PreferenceNativeProbe.requested {
                     VStack(spacing: 4) {
                         Text("Synthetic verification").font(.caption)

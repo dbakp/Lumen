@@ -61,6 +61,7 @@ public struct SettingsView: View {
             .navigationTitle("Settings")
         #if DEBUG && targetEnvironment(simulator)
         .overlay(alignment: .bottom) { HealthImportReadUIProbe() }
+        .overlay(alignment: .bottom) { HealthLegacyResetUIProbe() }
         #endif
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

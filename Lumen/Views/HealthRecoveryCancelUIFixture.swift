@@ -263,6 +263,7 @@ enum HealthOriginCaptureUIFixture {
 @MainActor struct HealthOriginCaptureUIProbe: View {
     let location: String
     var body: some View {
+        HealthLegacyResetUIProbe()
         if HealthOriginCaptureUIFixture.mode != nil {
             TimelineView(.periodic(from: .now, by: 0.2)) { _ in
                 Text("Capture check").accessibilityIdentifier("healthOriginCaptureState-" + location)
@@ -752,6 +753,124 @@ enum HealthReadUIFixture {
             guard let root else { throw Failure.invalidFixture }
             let encoder = JSONEncoder(); encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
             try encoder.encode(Snapshot(root: root.path, attempts: records)).write(to: root.deletingLastPathComponent().appendingPathComponent(checkpoint), options: .atomic)
+        }
+    }
+}
+#endif
+
+#if DEBUG && targetEnvironment(simulator)
+import Security
+
+/// Dedicated synthetic reset observation. Clean relaunch never invokes setup.
+@MainActor enum HealthLegacyResetUIFixture {
+    enum Failure: Error { case unsafeContext, invalidObservation }
+    static let verificationProtocol = "Lumen-legacy-settings-erasure-verification-v1"
+    static var runID: UUID? {
+        let args = ProcessInfo.processInfo.arguments
+        guard let i = args.firstIndex(of: "-health-legacy-reset-run"), args.indices.contains(i + 1) else { return nil }
+        return UUID(uuidString: args[i + 1])
+    }
+    static var requested: Bool {
+        let args = ProcessInfo.processInfo.arguments
+        return runID != nil && (args.contains("-health-legacy-reset-ui") || args.contains("-health-legacy-reset-observer"))
+    }
+    static var observingRelaunch: Bool { ProcessInfo.processInfo.arguments.contains("-health-legacy-reset-observer") }
+    private static var sequence = 0
+    private static var failed = false
+    private static var parent: URL? { FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: AppGroup.id) }
+    private static var stem: String { "Lumen-legacy-reset-" + (runID?.uuidString.lowercased() ?? "invalid") }
+
+    /// Runs BEFORE resetForUITests can destroy any saved state. Never reads secrets.
+    static func preflightIfRequested() throws {
+        guard requested else { return }
+        let args = ProcessInfo.processInfo.arguments
+        if observingRelaunch {
+            guard !args.contains("-resetForUITests"), !args.contains("-health-backup-ui-fixture"),
+                  !args.contains("-health-legacy-origin-ui"), !args.contains("-health-legacy-reset-ui") else { throw Failure.unsafeContext }
+            return
+        }
+        guard args.contains("-resetForUITests"), HealthLegacyOriginUIFixture.kind != nil,
+              !UserDefaults.standard.bool(forKey: "lumen.health.connected") else { throw Failure.unsafeContext }
+        let request: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
+            kSecAttrService as String: "com.dbakp.lumen.secrets", kSecReturnAttributes as String: true,
+            kSecMatchLimit as String: kSecMatchLimitAll]
+        var attributes: CFTypeRef?
+        // No kSecReturnData: a nonempty service fails without exposing its contents.
+        guard SecItemCopyMatching(request as CFDictionary, &attributes) == errSecItemNotFound else { throw Failure.unsafeContext }
+        for key in ["lumen.llm.key", "lumen.llm.oauth.token", "lumen.llm.oauth.refresh", "lumen.llm.oauth.account.v2",
+                    "lumen.llm.connection.v3", "strava.clientID", "strava.clientSecret", "strava.token", "strava.refresh"] {
+            guard UserDefaults.standard.object(forKey: key) == nil else { throw Failure.unsafeContext }
+        }
+    }
+
+    /// Small explicit synthetic intent/private-copy fixture; initial launch only.
+    static func prepare(in root: URL) throws {
+        guard requested, !observingRelaunch else { return }
+        guard HealthLegacyOriginUIFixture.kind != nil, let parent else { throw Failure.unsafeContext }
+        var journal = try HealthWriteFiles.read(from: root, owner: HealthWriteDeviceOwner.current())
+        try journal.append(domain: .water, localID: "synthetic-reset-unstarted-save",
+                           components: [.init(metric: .water, value: 137, date: Date(timeIntervalSince1970: 1_793_620_800))])
+        try journal.requestDeletion(domain: .water, localID: "synthetic-reset-pending-removal")
+        try journal.encoded().write(to: root.appendingPathComponent(HealthWriteFiles.name), options: .atomic)
+        let stage = parent.appendingPathComponent("Lumen-reset-fixture-" + UUID().uuidString)
+        try FileManager.default.copyItem(at: root, to: stage)
+        defer { try? FileManager.default.removeItem(at: stage) }
+        // Production API prepares a valid private copy in an uninstalled stage.
+        try HealthRecoveryCopies.preserveDailyCache(in: stage)
+        let copies = stage.appendingPathComponent(HealthRecoveryCopies.name)
+        for destination in [root, root.appendingPathExtension("previous")] {
+            try FileManager.default.copyItem(at: copies, to: destination.appendingPathComponent(HealthRecoveryCopies.name))
+        }
+        guard !FileManager.default.fileExists(atPath: parent.appendingPathComponent(stem + "-checkpoint.json").path),
+              !FileManager.default.fileExists(atPath: parent.appendingPathComponent(stem + "-ack.json").path) else { throw Failure.unsafeContext }
+    }
+
+    static var phase: String {
+        guard !failed else { return "observation-failed" }
+        guard let parent, let data = try? Data(contentsOf: parent.appendingPathComponent(stem + "-ack.json")), data.count <= 4096,
+              let row = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+              row["runID"] as? String == runID?.uuidString, row["pid"] as? Int == Int(getpid()),
+              row["sequence"] as? Int == sequence, let phase = row["phase"] as? String else { return "waiting-\(sequence)" }
+        return phase
+    }
+    static func capture() {
+        do {
+            guard requested, let parent, let runID, let bundle = Bundle.main.bundleIdentifier else { throw Failure.invalidObservation }
+            let root = parent.appendingPathComponent("LumenData")
+            let persisted = UserDefaults.standard.persistentDomain(forName: bundle) ?? [:]
+            var fixed: [String: Any] = [:]
+            for domain in [HealthLocalFiles.Domain.meals, .workouts] {
+                let key = domain.legacyKey!
+                fixed[domain.rawValue] = ["key": key, "persistedPresent": persisted[key] != nil,
+                                         "effectivePresent": UserDefaults.standard.object(forKey: key) != nil]
+            }
+            let bytes = try HealthLocalFiles.readRegularData(root.appendingPathComponent(HealthWriteFiles.name), limit: 256 * 1024)
+            let journal = try JSONSerialization.jsonObject(with: bytes)
+            sequence += 1
+            let row: [String: Any] = ["verificationProtocol": verificationProtocol, "runID": runID.uuidString,
+                "pid": Int(getpid()), "sequence": sequence, "at": Date().timeIntervalSince1970,
+                "mode": observingRelaunch ? "readonly-clean-relaunch" : "initial-fixture",
+                "launchArguments": ProcessInfo.processInfo.arguments, "fixed": fixed, "journal": journal,
+                "onboardingDone": SleepStore.shared.profile.onboardingDone,
+                "meals": HealthStore.shared.meals.count, "workouts": HealthStore.shared.workouts.count,
+                "water": HealthStore.shared.waterLogs.count, "profileName": SleepStore.shared.profile.name,
+                "stepGoal": HealthStore.shared.goals.stepGoal,
+                "healthConnected": UserDefaults.standard.bool(forKey: "lumen.health.connected"),
+                "healthAuthorized": HealthKitService.shared.isAuthorized]
+            let data = try JSONSerialization.data(withJSONObject: row, options: [.prettyPrinted, .sortedKeys])
+            try data.write(to: parent.appendingPathComponent(stem + "-checkpoint.json"), options: .atomic)
+        } catch { failed = true }
+    }
+}
+
+@MainActor struct HealthLegacyResetUIProbe: View {
+    var body: some View {
+        if HealthLegacyResetUIFixture.requested {
+            TimelineView(.periodic(from: .now, by: 0.2)) { _ in
+                Button("Reset check") { HealthLegacyResetUIFixture.capture() }
+                    .accessibilityIdentifier("healthLegacyResetCheck")
+                    .accessibilityValue(HealthLegacyResetUIFixture.phase)
+            }
         }
     }
 }

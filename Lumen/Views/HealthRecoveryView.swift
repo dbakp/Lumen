@@ -354,6 +354,7 @@ enum HealthRecoveryUIFixture {
                 try Data("{".utf8).write(to: root.appendingPathComponent(domain.rawValue + ".json"), options: .atomic)
             }
         }
+        try HealthLegacyResetUIFixture.prepare(in: root)
         try HealthLegacyOriginUIFixture.prepare(in: root)
         // Leave .previous unarchived: the real product discovery path must
         // expose it without an unrelated write or fixture-only retirement.

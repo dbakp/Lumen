@@ -386,7 +386,7 @@ struct BackupFileRecoveryView: View {
                     Text("Read check").accessibilityIdentifier("healthReadControlState").accessibilityValue(readVerification.phase)
                 }
             }
-            if HealthOriginCaptureUIFixture.mode != nil {
+            if HealthOriginCaptureUIFixture.mode != nil || HealthLegacyResetUIFixture.requested {
                 ToolbarItem(placement: .topBarTrailing) { HealthOriginCaptureUIProbe(location: "review") }
             }
         }

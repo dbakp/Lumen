@@ -121,6 +121,11 @@ final class LumenSmokeTests: XCTestCase {
                     "-health-success-observation-ui", "-health-legacy-origin-ui", "data", "-health-legacy-origin-mixed-ui",
                     "-lumen.appearance", "light", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryL"]
             }
+            if name.contains("RecoverySettingsErase") {
+                app.launchArguments += ["-health-backup-healthy-merge-ui", "-health-backup-empty-ui",
+                    "-health-legacy-reset-ui", "-health-legacy-reset-run", UUID().uuidString,
+                    "-lumen.appearance", "light", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryL"]
+            }
             if name.contains("RecoveryCapture") {
                 app.launchArguments += ["-health-backup-healthy-merge-ui", "-health-backup-empty-ui",
                     "-health-legacy-capture-ui", name.contains("PendingBack") ? "pending-back" : "retry-failure",
@@ -5613,6 +5618,110 @@ final class LumenSmokeTests: XCTestCase {
     func testHealthBackupFileRecoveryPhotoFaultErrorBackLegacyOriginData() throws { try healthBackupPhotoFaultErrorBack("legacy") }
     @MainActor
     func testHealthBackupFileRecoveryPhotoFaultErrorBackEncryptedOriginString() throws { try healthBackupPhotoFaultErrorBack("encrypted") }
+    @MainActor
+    func testHealthBackupFileRecoverySettingsEraseOriginData() throws { try legacySettingsEraseFlow() }
+    @MainActor
+    func testHealthBackupFileRecoverySettingsEraseOriginString() throws { try legacySettingsEraseFlow() }
+
+    @MainActor
+    private func legacySettingsEraseFlow() throws {
+        executionTimeAllowance = 480
+        let prefix = "health-legacy-settings-erase"
+        var observations: [[String: Any]] = []
+        let initialArguments = app.launchArguments
+        func report(_ phase: String, failure: String? = nil) {
+            var row: [String: Any] = ["scope": "actual-settings-legacy-erasure-clean-relaunch", "phase": phase,
+                "initialLaunchArguments": initialArguments, "currentLaunchArguments": app.launchArguments, "observations": observations]
+            if let failure { row["failure"] = failure }
+            if let data = try? JSONSerialization.data(withJSONObject: row, options: [.prettyPrinted, .sortedKeys]) {
+                let item = XCTAttachment(data: data, uniformTypeIdentifier: "public.json")
+                item.name = prefix + (failure == nil ? "-readback" : "-failure-readback"); item.lifetime = .keepAlways; add(item)
+            }
+        }
+        func require(_ ok: Bool, _ phase: String, _ message: String) throws {
+            if !ok {
+                report(phase, failure: message); snap(prefix + "-failed-" + phase); XCTFail(message)
+                throw NSError(domain: "LumenLegacySettingsEraseUI", code: 1)
+            }
+        }
+        func checkpoint(_ phase: String) throws {
+            let buttons = app.buttons.matching(identifier: "healthLegacyResetCheck").allElementsBoundByIndex.filter { $0.isHittable }
+            try require(buttons.count == 1, phase, "Expected one visible reset observation control")
+            let button = buttons[0]; button.tap()
+            let expected = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", "host-" + phase), object: button)
+            try require(XCTWaiter.wait(for: [expected], timeout: 45) == .completed, phase, "Actual host audit acknowledgement missing")
+            observations.append(["phase": phase, "probeValue": button.value as? String ?? "", "at": Date().timeIntervalSince1970])
+        }
+        func whole(_ target: XCUIElement, _ phase: String, nav: String, towardsTop: Bool = false) throws {
+            let bar = app.navigationBars[nav].firstMatch
+            for attempt in 0..<16 {
+                try require(bar.exists, phase, "Expected active navigation lost")
+                let box = CGRect(x: 0, y: bar.frame.maxY + 12, width: app.frame.width, height: app.frame.maxY - 40 - bar.frame.maxY - 12)
+                if target.exists && target.isHittable && box.contains(target.frame) { return }
+                var start = box.midY + box.height * (towardsTop ? -0.2 : 0.2)
+                var end = box.midY + box.height * (towardsTop ? 0.2 : -0.2)
+                if target.exists {
+                    let delta = min(box.height * 0.4, max(40, abs(target.frame.midY - box.midY)))
+                    start = box.midY + (target.frame.midY > box.midY ? delta / 2 : -delta / 2)
+                    end = box.midY - (target.frame.midY > box.midY ? delta / 2 : -delta / 2)
+                }
+                app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: box.midX, dy: start))
+                    .press(forDuration: 0.05, thenDragTo: app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: box.midX, dy: end)))
+                observations.append(["phase": phase, "pan": attempt, "targetPresent": target.exists, "navigationStillPresent": bar.exists])
+            }
+            try require(false, phase, "Requested complete target could not be revealed")
+        }
+        do {
+            tab("Today"); tap("Settings")
+            let backup = app.buttons["backupSettings"].firstMatch
+            try whole(backup, "backup-settings", nav: "Settings"); backup.tap()
+            try checkpoint("before-selection"); snap(prefix + "-before-selection")
+            try chooseBackupFixture("Lumen-backup-health-matrix-two-legacy")
+            let link = app.buttons["reviewBackupHealthRecovery"].firstMatch
+            try require(link.waitForExistence(timeout: 30), "selected", "Original preview missing")
+            try whole(link, "selected", nav: "Backup & restore"); link.tap()
+            let filename = app.staticTexts["recoveryFileName"].firstMatch
+            try require(filename.waitForExistence(timeout: 15) && filename.label == "Lumen-backup-health-matrix-two-legacy.json", "review", "Wrong selected original")
+            let meals = app.switches["recoverFile-meals"].firstMatch
+            let eligible = XCTNSPredicateExpectation(predicate: NSPredicate(format: "enabled == true"), object: meals)
+            try require(XCTWaiter.wait(for: [eligible], timeout: 30) == .completed, "ready", "Real legacy review not ready")
+            snap(prefix + "-ready-original")
+            for (index, control) in [meals, app.switches["Recover without meal photos"].firstMatch, app.switches["recoverFile-workouts"].firstMatch].enumerated() {
+                try whole(control, "ready-choice-\(index)", nav: "Review recovery")
+                try require(control.isEnabled && control.value as? String == "0", "ready-choice-\(index)", "Ready choices must be eligible and off")
+                observations.append(["phase": "ready-choice", "index": index, "enabled": control.isEnabled, "value": control.value as? String ?? ""])
+            }
+            snap(prefix + "-ready-choices")
+            let confirm = app.buttons["confirmFileRecovery"].firstMatch
+            try whole(confirm, "ready-action", nav: "Review recovery"); try require(!confirm.isEnabled, "ready-action", "Empty recovery selection must stay disabled")
+            snap(prefix + "-ready-action"); try checkpoint("ready")
+            app.navigationBars["Review recovery"].buttons.element(boundBy: 0).tap()
+            try require(app.navigationBars["Backup & restore"].waitForExistence(timeout: 10), "parent", "Recovery Back missed parent")
+            app.navigationBars["Backup & restore"].buttons.element(boundBy: 0).tap()
+            try require(app.navigationBars["Settings"].waitForExistence(timeout: 10), "owners-closed", "Backup Back missed Settings")
+            try checkpoint("owners-closed")
+            let erase = app.buttons["eraseAllLumenData"].firstMatch
+            try whole(erase, "erase-control", nav: "Settings"); snap(prefix + "-erase-control"); erase.tap()
+            let destructive = app.buttons["Erase everything"].firstMatch
+            try require(destructive.waitForExistence(timeout: 10) && destructive.isHittable, "confirmation", "Actual erase confirmation missing")
+            snap(prefix + "-erase-confirmation"); destructive.tap()
+            let welcome = app.buttons["Get started"].firstMatch
+            try require(welcome.waitForExistence(timeout: 20), "erased", "Actual Settings erase did not return to onboarding")
+            snap(prefix + "-erased-welcome"); try checkpoint("erased")
+            guard let runIndex = initialArguments.firstIndex(of: "-health-legacy-reset-run"), initialArguments.indices.contains(runIndex + 1) else { throw NSError(domain: "MissingResetRun", code: 1) }
+            app.terminate()
+            app.launchArguments = ["-health-legacy-reset-observer", "-health-legacy-reset-run", initialArguments[runIndex + 1],
+                                   "-lumen.appearance", "light", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryL"]
+            app.launch()
+            try require(welcome.waitForExistence(timeout: 20), "relaunch", "Clean relaunch did not retain first-run state")
+            snap(prefix + "-clean-relaunch"); try checkpoint("relaunch")
+            Thread.sleep(forTimeInterval: 3)
+            try require(welcome.exists && welcome.isHittable, "followup", "First-run state changed during bounded follow-up")
+            snap(prefix + "-bounded-followup"); try checkpoint("followup")
+            report("completed")
+        } catch { report("thrown", failure: String(describing: error)); throw error }
+    }
+
     @MainActor
     func testHealthBackupFileRecoveryCapturePendingBackLegacyOriginData() throws {
         try captureStateFlow(pendingBack: true)
