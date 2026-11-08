@@ -350,6 +350,17 @@ struct BackupFileRecoveryView: View {
                     }
                 } header: { Text(recoveryLabel(domain)) }.disabled(busy || recovered)
             }
+            #if DEBUG && targetEnvironment(simulator)
+            if HealthConfirmationLifecycleTrace.requested {
+                Section {
+                    Button("Check cancellation") {
+                        confirmationLifecycleCheckValue = HealthConfirmationLifecycleTrace.check(
+                            session: session.id, request: UUID())
+                    }.accessibilityIdentifier("checkConfirmationLifecycle")
+                        .accessibilityValue(confirmationLifecycleCheckValue)
+                }
+            }
+            #endif
             Section {
                 Text(preservation)
                 Text("Recovered entries won't be added to Apple Health. Earlier pending Health saves won't restart; pending removals can finish.")
@@ -431,15 +442,6 @@ struct BackupFileRecoveryView: View {
             }
             if HealthLegacyTargetChangeUIFixture.requested {
                 ToolbarItem(placement: .topBarTrailing) { HealthLegacyTargetChangeUIProbe(session: session) }
-            }
-            if HealthConfirmationLifecycleTrace.requested {
-                ToolbarItem(placement: .bottomBar) {
-                    Button("Check cancellation") {
-                        confirmationLifecycleCheckValue = HealthConfirmationLifecycleTrace.check(
-                            session: session.id, request: UUID())
-                    }.accessibilityIdentifier("checkConfirmationLifecycle")
-                        .accessibilityValue(confirmationLifecycleCheckValue)
-                }
             }
             if HealthHealthyTargetChangeUIFixture.requested {
                 ToolbarItem(placement: .topBarTrailing) { HealthHealthyTargetChangeUIProbe(session: session) }

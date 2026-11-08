@@ -6273,8 +6273,48 @@ final class LumenSmokeTests: XCTestCase {
                          "alertDismissed": !alert.exists, "choiceValues": ["1", "0", "0"]]) { _, new in new }
             try marker("dismissed", gate: gate, fields: after)
             let late = try waitRelay("late-ack", previous: gate)
-            let check = app.buttons["checkConfirmationLifecycle"].firstMatch
-            try require(check.waitForExistence(timeout: 5) && check.isEnabled && check.isHittable, "check", "Actual cancellation Check control unavailable")
+            let checkQuery = app.buttons.matching(identifier: "checkConfirmationLifecycle")
+            let check = checkQuery.firstMatch
+            func observeCheck(_ phase: String, waitSucceeded: Bool? = nil) -> Bool {
+                let began = Date().timeIntervalSince1970
+                let count = checkQuery.count, exists = check.exists
+                let enabled = exists && check.isEnabled, hittable = exists && check.isHittable
+                let frame = exists ? check.frame : .zero
+                let navigation = app.navigationBars["Review recovery"].firstMatch
+                let navigationPresent = navigation.exists
+                let navigationFrame = navigationPresent ? navigation.frame : .zero
+                let appFrame = app.frame
+                let viewport = CGRect(x: appFrame.minX, y: navigationFrame.maxY + 12,
+                    width: appFrame.width, height: appFrame.maxY - 40 - navigationFrame.maxY - 12)
+                let finite = [frame.minX, frame.minY, frame.width, frame.height].allSatisfy { $0.isFinite }
+                let wholeFrame = finite && frame.width >= 44 && frame.height >= 44
+                    && appFrame.contains(frame) && viewport.contains(frame)
+                let identifier = exists ? check.identifier : ""
+                let roleIsButton = exists && check.elementType == .button
+                let rawValue: Any? = exists ? check.value : nil
+                let ready = count == 1 && exists && enabled && hittable && wholeFrame
+                    && navigationPresent && identifier == "checkConfirmationLifecycle" && roleIsButton
+                var fact: [String: Any] = ["phase": phase, "sampleStartedAt": began,
+                    "at": Date().timeIntervalSince1970, "queryRole": "buttons", "queryCount": count,
+                    "exists": exists, "enabledObserved": exists, "enabled": enabled,
+                    "hittableObserved": exists, "hittable": hittable, "frameObserved": exists,
+                    "frame": rect(frame), "finiteFrame": finite, "positiveWholeFrame": wholeFrame,
+                    "identifier": identifier, "roleObserved": exists,
+                    "role": exists ? String(describing: check.elementType) : "unobserved",
+                    "roleIsButton": roleIsButton, "valueObserved": exists, "valuePresent": rawValue != nil,
+                    "value": rawValue.map { String(describing: $0) } ?? "",
+                    "valueType": rawValue.map { String(reflecting: type(of: $0)) } ?? "nil",
+                    "navigationStillPresent": navigationPresent, "navigationFrame": rect(navigationFrame),
+                    "appFrame": rect(appFrame), "viewport": rect(viewport), "ready": ready]
+                if let waitSucceeded { fact["waitSucceeded"] = waitSucceeded }
+                observations.append(fact)
+                return ready
+            }
+            let checkWait = check.waitForExistence(timeout: 5)
+            _ = observeCheck("check-acquisition-before-reveal", waitSucceeded: checkWait)
+            try whole(check, "check-reveal", nav: "Review recovery")
+            let checkReady = observeCheck("check-acquisition-before-touch")
+            try require(checkReady, "check", "Actual cancellation Check must be unique, enabled, whole and hittable")
             let checkAt = Date().timeIntervalSince1970, checkFrame = check.frame
             check.tap(); let checkReturnedAt = Date().timeIntervalSince1970
             let checked = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", "checked-1"), object: check)
