@@ -4,7 +4,11 @@ Continue developing Lumen into a world-class, primarily iOS, AI health assistant
 
 Repository: https://github.com/dbakp/Lumen · branch `main`.
 
-## Current checkpoint · Source228 actual build failed · 8 November 2026
+## Current checkpoint · Source229 reviewed formatting fix · 8 November 2026
+
+Part114/root supports frozen448text+18fixtures=466 after one diagnostic-string change: `String(describing: failure.frame)` replaces the unavailable helper. All461otherpriorinputs unchanged; no predicate/backend/fixture/checker change. Root syntax-only parse passed. Publish/exactcompare, then actual229Debugbuild and198/182/16/20controlpreflight before declared Data trial. No current229compile/native/Release acceptance yet; keep using one simulator/package cache for the immediate rebuild.
+
+## Historical Source228 build failure
 
 Part112/root supports frozen444text+18fixtures=462 and31isolatedchecker controls: exact preflight.app metadata exception is bound to freshly verified source/build/app/test, all other malformed/nullpayloads reject. All455priorinputs unchanged; app/test/fixture code remains226. Source-ready only: publish/compare exact checkpoint, compile actual228Debug, require predeclared198negative/182actualDebugpositive/16negativeonly/20production, then actual Data ready-before-confirmation trial and mandatory R3readonlychecker/full originals/helper/summary/root/samecritic/fullbackup. No current build/native/Release yet. Earlier226/110 and227/111 source rejections remain unexecuted; no native failure invented.
 

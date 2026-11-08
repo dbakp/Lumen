@@ -1,0 +1,8 @@
+{
+  "scope": "Exact frozen archive/current and one-line test diff; syntax parse only, not app typecheck/build/native",
+  "exactBindings": 466,
+  "testDiff": "--- \n\n+++ \n\n@@ -5850,5 +5850,5 @@\n\n                 \"changed-error\", \"Stale recovery unexpectedly succeeded\")\n             observations.append([\"phase\": \"changed-error\", \"message\": failure.label, \"hittable\": failure.isHittable,\n-                \"frame\": NSStringFromCGRect(failure.frame)])\n+                \"frame\": String(describing: failure.frame)])\n             snap(prefix + \"-changed-error\"); try checkpoint(\"rejected\")\n             try backToSettings(\"owners-closed\"); snap(prefix + \"-owners-closed\")",
+  "syntaxExit": 0,
+  "stdout": "",
+  "stderr": ""
+}

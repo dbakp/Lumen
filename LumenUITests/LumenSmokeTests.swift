@@ -5849,7 +5849,7 @@ final class LumenSmokeTests: XCTestCase {
             try require(!app.descendants(matching: .any).matching(identifier: "fileHealthRecovered").firstMatch.exists,
                 "changed-error", "Stale recovery unexpectedly succeeded")
             observations.append(["phase": "changed-error", "message": failure.label, "hittable": failure.isHittable,
-                "frame": NSStringFromCGRect(failure.frame)])
+                "frame": String(describing: failure.frame)])
             snap(prefix + "-changed-error"); try checkpoint("rejected")
             try backToSettings("owners-closed"); snap(prefix + "-owners-closed")
             try checkpoint("owners-closed", location: "settings"); snap(prefix + "-owners-followup")
