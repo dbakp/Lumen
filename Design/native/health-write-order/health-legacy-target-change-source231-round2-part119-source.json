@@ -1,0 +1,210 @@
+{
+  "part": 119,
+  "source": "durable-source-r231.json",
+  "status": "SOURCE READY for one separately authorized readonly R5 audit after root review/exact checkpoint. No new app build or native run needed for this host-only change.",
+  "sourceReady": true,
+  "score": null,
+  "runtimeAcceptance": false,
+  "overallDesignAcceptance": false,
+  "productCompletion": false,
+  "scope": "Close P118-C1 at source level using explicit live/absent final-audit semantics over actual Source230 retained case. Do not convert original R4 failure into success.",
+  "sourceVerification": {
+    "currentArchiveInputsExact": 490,
+    "textInputs": 470,
+    "fixtureInputs": 20,
+    "previous483InputsUnchanged": true,
+    "newOnly": [
+      "Design/native/health-write-order/target-postrun-process-r1.py",
+      "Design/native/health-write-order/check-legacy-target-change-r5.py",
+      "Design/native/health-write-order/postrun-process-controls-r1.py",
+      "Design/native/health-write-order/source231-process-controls-r1.json",
+      "Design/native/health-write-order/source231-app-source-carry-r1.json",
+      "Design/native/health-write-order/source231-target-postrun-r1-plan.json",
+      "Design/native/health-write-order/source231-process-controls-r1-fixtures.json.gz"
+    ],
+    "appTestFixtureModelChanges": false,
+    "binaryCarryVerifiedAsData": [
+      {
+        "file": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+        "bytes": 46104176,
+        "sha256": "5abb90026d0486b51a117ec6176fa6652c3002b8725d979be6df36ed24182c3d"
+      },
+      {
+        "file": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+        "bytes": 6097184,
+        "sha256": "572a6e166bc00b53889d441b804575716badd7ac2568c75601fed0f1a2a9b0a8"
+      }
+    ],
+    "appBytes": 46104176,
+    "appSHA256": "5abb90026d0486b51a117ec6176fa6652c3002b8725d979be6df36ed24182c3d",
+    "testBytes": 6097184,
+    "testSHA256": "572a6e166bc00b53889d441b804575716badd7ac2568c75601fed0f1a2a9b0a8",
+    "actualBuildSource": "durable-source-r230.json",
+    "actualNativeSource": "durable-source-r230.json",
+    "checkerSource": "durable-source-r231.json",
+    "freshBuildExecuted": false,
+    "freshNativeExecuted": false,
+    "currentReleaseExecuted": false
+  },
+  "sourceFindings": [],
+  "P118C1": {
+    "sourceClosure": true,
+    "enumeration": "Explicit /bin/ps -axo pid=,comm= with timeout10. Records expected PID/executable, exit, stdout/stderr counts and hashes, bounded stderr, only bound-PID or exact-executable matches. Strict UTF-8 parse, nonempty bounded stdout, nonzero parsed count, malformed/duplicate PID rejection. Query failure cannot classify absence. Command suppresses headers deliberately; parse facts concern actual returned rows.",
+    "identity": "Bound PID with different executable rejects reuse; same expected executable under another PID rejects relaunch; multiple matches reject extra/ambiguous instance. Two sampled classifications must agree; live→absent and absent→live fail. This covers the declared exact app executable, not every possible alternative app path or all process history.",
+    "mandatoryEndpoints": "Both samples collect installed path/hash equal retained expected app; exact final native run/PID/session/capture/protocol bytes; full current13/prior13 raw+metadata/provider/residual comparison; exact newer fixed meals Data40 and old workouts Data42; actual origin trace; owned-empty and all four exact case-root absence. Collection exceptions fail even in absent mode.",
+    "liveBranch": "Both live samples invoke strict old and fresh selection no_owned/lsof checks. No substitution of process absence for these live-app checks.",
+    "absentBranch": "Both successful full enumerations have no bound-PID or exact expected-executable match. Records explicit absent scope; does not claim lsof or global FD absence.",
+    "sampling": "At least0.25 seconds between sample start monotonic values, with mandatory state comparisons in each. No continuous absence/liveness or exact original exit time/cause inferred."
+  },
+  "retainedGateReview": {
+    "preserved": "R5 retains R4 actual-case source/build verification, original preflight equality, 7 phase/ack identity/order, all actual native trace/event validation, selected original/provider ownership and distinct fresh workspaces, before-selection bootstrap/native checkpoint, post-mutation persistence, 3s old/fresh cleanup endpoints, protected bytes/metadata and typed fixed facts, full retained outcome/summary/query/log/index/inventory/13 suffixes/one complete helper/launch arguments and all embedded payload validation. Original images/readbacks remain immutable acquisition records; root/critic opens stay separate.",
+    "checkerSource": "Full current checker Source231 plus frozen archive independently verified; actual retained Source230/build separately verified by h.verify_inputs before final audit. Current container path must equal original appData and installed executable must equal original retained installed path/hash.",
+    "failureLatch": "Unique trial filename refuses overwrite. Durable initial FAILED/incomplete outcome precedes source/case validation. Any protected/query/retained/persistence error enters failure outcome and exit1. Local write_errors plus record_outcome mutated outcomePersistenceErrors/emergency file prevent later PASS. Final PASS persist failure is caught and reclassified FAILED; no blanket disk failure guarantee.",
+    "limits": "Module imports/argument validation precede attempt creation; this source does not promise an outcome artifact for Python startup/import failure before the attempt begins. This does not weaken the declared runtime audit gates or authorize deletion."
+  },
+  "isolatedEvidence": {
+    "count": 19,
+    "archiveDecodedBytes": 71317,
+    "archiveBytes": 4075,
+    "runnerHashArchiveHashAndAll19RowsChecked": true,
+    "controls": [
+      "absent",
+      "live",
+      "reused-pid",
+      "relaunched-new-pid",
+      "extra-app-instance",
+      "query-exit1",
+      "empty-successful-query",
+      "malformed-row",
+      "duplicate-pid",
+      "invalid-utf8",
+      "query-timeout",
+      "protected-check-failed",
+      "live-lsof-failed",
+      "live-to-absent",
+      "absent-to-live",
+      "persistence-failed",
+      "oversized-stderr",
+      "invalid-bound-pid",
+      "invalid-executable"
+    ],
+    "acceptedControls": [
+      "absent",
+      "live"
+    ],
+    "rejectedControls": 17,
+    "mechanism": "Current actual helper is imported by retained runner; process output, clock, sleep, protected comparator, lsof and persistence callback are explicitly injected. Archive preserves all synthetic query outputs/outcomes/call counts. Both accepted controls perform two collect calls; live performs two lsof callbacks, absent none. All rejection controls retain failed helper outcomes/errors.",
+    "notClaimed": "No actual /bin/ps/device query or actual installed/native/final full checker run from these controls. Persistence control fails helper callback; full checker final-outcome path is reviewed source, not separately executed by this runner. I did not rerun controls."
+  },
+  "priorFailurePreservation": {
+    "priorExactCommit": "22b64eb4211f133bab92726446f34ed8e73f1bf4",
+    "priorExactCounts": [
+      54,
+      537
+    ],
+    "originalR4": "Exit1 ps-p1972 query and partial OBSERVING live-audit remain unchanged/unaccepted. Native1/0/0/driver0/seven boundaries remain supported by118 independently; later separate diagnostics never supplied retroactive R4 acceptance.",
+    "newOutput": "Unique -r5-source231r1-outcome.json records checkerSource231/caseSource230 and actual checker result; no native-count inflation."
+  },
+  "nextRequirements": [
+    "Root full source review and exact source/checkpoint proof before actual readonly R5 execution.",
+    "Retain actual R5 result and two complete endpoints, independently review/bind them; no acceptance from sourceReady alone.",
+    "Current unchanged-app Release/settings still needs actual execution/review with instrumented unsigned-development limits.",
+    "Fresh raw authority acquisition/commit, other target-change timings/String/healthy origins/retained-copy and all43/eightgroups remain open."
+  ],
+  "limits": [
+    "No new visual opens or layout/copy/rubric score in this host-only source review. Part118 actual13/full4584 helper remains immutable.",
+    "No app/test/model/fixture policy repair, no production safety acceptance or new full logic execution.",
+    "No simulator/defaults/process queries, source mutation, build, native action, Git action, cleanup, physical phone action or script execution by critic.",
+    "Known old raw duplicates are historical after parent exact backup/cleanup. Canonical files remain bound; both historical unbacked videos remain parent-retained."
+  ],
+  "storage": {
+    "availableBytesAtFinish": 31985192960,
+    "deletedFiles": 0,
+    "bytesRecovered": 0
+  },
+  "provenance": [
+    {
+      "file": "Design/native/health-write-order/durable-source-r231.json",
+      "bytes": 87493,
+      "sha256": "710a80c1e4c125ddf4c0fec4d988da4788b1407daebe0693b81c22bc39af0be8"
+    },
+    {
+      "file": "Design/native/health-write-order/durable-source-r231.json.gz",
+      "bytes": 1840807,
+      "sha256": "8e123223a9ac871ce6edd12f9492b5ea129b788dc5b8c904b167a4e6f289506b"
+    },
+    {
+      "file": "Design/native/health-write-order/durable-source-r230.json",
+      "bytes": 87196,
+      "sha256": "50e05adbcf8894f238c5fb77f0f40307f248ab3d2d9a91e801f26d6df4843492"
+    },
+    {
+      "file": "Design/native/health-write-order/health-target-change-source230-r1-build.json",
+      "bytes": 700,
+      "sha256": "4a788d73ca3cc1992ee4440bd59cff0cd3002f986a5333e517faa1992b260059"
+    },
+    {
+      "file": "Design/native/health-write-order/source230-current-debug-release-controls-r1.json",
+      "bytes": 1127,
+      "sha256": "4e2a276759d39a49087e4d750763eb93a15874a9448324458041e3c9feed98a0"
+    },
+    {
+      "file": "Design/native/health-write-order/source230-native-r4-failure-exact-github.json",
+      "bytes": 104857,
+      "sha256": "2352f2395ceec7c02059e4c9f5f98743e8ad76688ac3e12f4c09371e09af8c99"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-target-change-source230-round2-part118-native-checker-failure.json",
+      "bytes": 32438,
+      "sha256": "3f4e7c4977322861bb092e7db6aabbde4e7997cb4d5cbdb926e9b1b17c5d6ea5"
+    },
+    {
+      "file": "Design/native/health-write-order/check-legacy-target-change-r4.py",
+      "bytes": 8234,
+      "sha256": "f4499e51b58240d7986237037662f12cd110c7865bf3ebdc31e2a2c1dd0e15da"
+    },
+    {
+      "file": "Design/native/health-write-order/capture-state-finalization-r2.py",
+      "bytes": 10780,
+      "sha256": "3f2f5b18ba219733aa6e8ca467c6f9f50ee996eed398dd62bf09c4c965aecdd5"
+    },
+    {
+      "file": "Design/native/health-write-order/target-postrun-process-r1.py",
+      "bytes": 4301,
+      "sha256": "41f34e1d48268ce87d86edac121bf7570392f4e8c01081ada8cf831817b21ea0"
+    },
+    {
+      "file": "Design/native/health-write-order/check-legacy-target-change-r5.py",
+      "bytes": 11573,
+      "sha256": "03216a0efe5e7320d2e7102ff4c961daf4659c54df2711e65c1a4a516cf8e4c0"
+    },
+    {
+      "file": "Design/native/health-write-order/postrun-process-controls-r1.py",
+      "bytes": 4579,
+      "sha256": "9eccb2de20db43cf190c3b1c497e138ebe8bca3a22fa700a984ef62d460aed2c"
+    },
+    {
+      "file": "Design/native/health-write-order/source231-process-controls-r1.json",
+      "bytes": 3013,
+      "sha256": "558e238566439d3bc4d5f4163df8685034071da43b612b77634fcd471ad3d676"
+    },
+    {
+      "file": "Design/native/health-write-order/source231-app-source-carry-r1.json",
+      "bytes": 872,
+      "sha256": "de69e14c50574ecddeb24e48d9ee492db85ee89f8918168903f56e121c258214"
+    },
+    {
+      "file": "Design/native/health-write-order/source231-target-postrun-r1-plan.json",
+      "bytes": 3365,
+      "sha256": "8a7ae7daa51935cb492550bb346d2c4d8f597186e8021072fd91624972420fe8"
+    },
+    {
+      "file": "Design/native/health-write-order/source231-process-controls-r1-fixtures.json.gz",
+      "bytes": 4075,
+      "sha256": "efffe884b3bcd58896880600263b658fefb6255ca17c8b606d93e75b034655ff"
+    }
+  ],
+  "checkedAt": 1794141393.380805,
+  "judgedInputsModified": false,
+  "physicalPhoneActions": false
+}
