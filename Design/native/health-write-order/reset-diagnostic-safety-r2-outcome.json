@@ -1,0 +1,142 @@
+{
+  "status": "PASS9 isolated exact guard/entry fragments with mocked credential/default endpoints; no app/simulator/reset acceptance",
+  "cases": [
+    {
+      "case": "approved-empty",
+      "exit": 0,
+      "diagnosticOutcome": "approved-initial",
+      "queryCalls": 1,
+      "resetCalls": 0,
+      "scenario": "approved-empty",
+      "actualDiagnosticFiles": 1,
+      "secretPayloadExported": false
+    },
+    {
+      "case": "credential-present",
+      "exit": 0,
+      "diagnosticOutcome": "blocked-credentials-present",
+      "queryCalls": 1,
+      "resetCalls": 0,
+      "scenario": "credential-present",
+      "actualDiagnosticFiles": 1,
+      "secretPayloadExported": false
+    },
+    {
+      "case": "credential-unavailable",
+      "exit": 0,
+      "diagnosticOutcome": "blocked-credential-query-status",
+      "queryCalls": 1,
+      "resetCalls": 0,
+      "scenario": "credential-unavailable",
+      "actualDiagnosticFiles": 1,
+      "secretPayloadExported": false
+    },
+    {
+      "case": "health-connected",
+      "exit": 0,
+      "diagnosticOutcome": "blocked-health-connected",
+      "queryCalls": 0,
+      "resetCalls": 0,
+      "scenario": "health-connected",
+      "actualDiagnosticFiles": 1,
+      "secretPayloadExported": false
+    },
+    {
+      "case": "legacy-provider-present",
+      "exit": 0,
+      "diagnosticOutcome": "blocked-legacy-provider-setting",
+      "queryCalls": 1,
+      "resetCalls": 0,
+      "scenario": "legacy-provider-present",
+      "actualDiagnosticFiles": 1,
+      "secretPayloadExported": false
+    },
+    {
+      "case": "malformed-context",
+      "exit": 0,
+      "diagnosticOutcome": "blocked-context",
+      "queryCalls": 0,
+      "resetCalls": 0,
+      "scenario": "malformed-context",
+      "actualDiagnosticFiles": 1,
+      "secretPayloadExported": false
+    },
+    {
+      "case": "observer-diagnostic-conflict",
+      "exit": 0,
+      "diagnosticOutcome": "blocked-context",
+      "queryCalls": 0,
+      "resetCalls": 0,
+      "scenario": "observer-diagnostic-conflict",
+      "actualDiagnosticFiles": 1,
+      "secretPayloadExported": false
+    },
+    {
+      "case": "write-failure",
+      "exit": 0,
+      "diagnosticOutcome": "diagnostic-write-failed",
+      "queryCalls": 1,
+      "resetCalls": 0,
+      "scenario": "write-failure",
+      "actualDiagnosticFiles": 1,
+      "secretPayloadExported": false
+    },
+    {
+      "case": "no-parent",
+      "exit": 0,
+      "diagnosticOutcome": "diagnostic-write-failed",
+      "queryCalls": 1,
+      "resetCalls": 0,
+      "scenario": "no-parent",
+      "actualDiagnosticFiles": 0,
+      "secretPayloadExported": false
+    }
+  ],
+  "actualSourceFragments": {
+    "context": {
+      "bytes": 1640,
+      "sha256": "ca96570b5af8db7dc1703496342b8afa6b6b9b5196297abf258696b3ed7e00fc"
+    },
+    "diagnosticMethods": {
+      "bytes": 4645,
+      "sha256": "520a2e432be933b03a8fac3b7c4ad31fab9dd9790a72962ebe1a195a5ccb278b"
+    },
+    "initializerEntry": {
+      "bytes": 360,
+      "sha256": "447c2beba9b5e6963cab448c1647149f39597ec0cf5563ba607721742910c4f1"
+    }
+  },
+  "provenance": [
+    {
+      "file": "Lumen/LumenApp.swift",
+      "bytes": 9182,
+      "sha256": "2f5a4331f1ec3cae6fdafc45610911b9e3eb1b38a0c519270ee91810bccff724"
+    },
+    {
+      "file": "Lumen/Views/HealthRecoveryCancelUIFixture.swift",
+      "bytes": 59920,
+      "sha256": "71fd26567b82002288d9e19d5a94db3ad81b779b5d3a23ec9f8bfa41fcbeeabe"
+    },
+    {
+      "file": "Lumen/Services/HealthBackgroundSync.swift",
+      "bytes": 14390,
+      "sha256": "f01f272f50b24f9d2264458f746ba797c0bcbc0284c94992944c617d5f27e86f"
+    },
+    {
+      "file": "Design/native/health-write-order/check-reset-diagnostic-safety-r2.py",
+      "bytes": 9038,
+      "sha256": "0673abcd734eae4df6886f2efc439c5576d2d3ad97cb7785a2d3bf707748790f"
+    }
+  ],
+  "fixtureArchive": {
+    "file": "reset-diagnostic-safety-r2-fixtures.json.gz",
+    "bytes": 7311,
+    "sha256": "dfe32bbda3002eedd11b3a01bb8ab1563c7c2e2843c8b1a24af2a124a65568cb",
+    "payloadFiles": 19
+  },
+  "temporaryDirectory": "/tmp/LumenResetDiagnosticSafetyR2-v3wremf5",
+  "compiledExecutableBytes": 144176,
+  "scope": "Actual extracted Swift guard/record/entry code executed with mocked Security/UserDefaults/metadata directory; reset stand-in counter0 in9scenarios, no credential payload serialized. Source order checks for diagnostic body and delegate guard only, not native UI/lifecycle proof.",
+  "physicalDeviceActions": false,
+  "checkedAt": 1794127252.4921448
+}

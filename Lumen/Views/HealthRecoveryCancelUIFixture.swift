@@ -767,11 +767,12 @@ import Security
     static let verificationProtocol = "Lumen-legacy-settings-erasure-verification-v1"
     /// A malformed dedicated request must fail before generic reset can run.
     static func context(_ args: [String]) throws -> (mode: String, runID: UUID)? {
-        let flags = ["-health-legacy-reset-ui", "-health-legacy-reset-observer", "-health-legacy-reset-run"]
+        let flags = ["-health-legacy-reset-ui", "-health-legacy-reset-observer", "-health-legacy-reset-run", "-health-legacy-reset-diagnostic-only"]
         guard flags.contains(where: { args.contains($0) }) else { return nil }
         let initial = args.filter { $0 == flags[0] }.count
         let observer = args.filter { $0 == flags[1] }.count
-        guard initial + observer == 1, args.filter({ $0 == flags[2] }).count == 1,
+        guard args.filter({ $0 == flags[3] }).count <= 1,
+              initial + observer == 1, args.filter({ $0 == flags[2] }).count == 1,
               let index = args.firstIndex(of: flags[2]), args.indices.contains(index + 1),
               let run = UUID(uuidString: args[index + 1]) else { throw Failure.unsafeContext }
         if observer == 1 {
@@ -795,22 +796,72 @@ import Security
     private static var parent: URL? { FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: AppGroup.id) }
     private static var stem: String { "Lumen-legacy-reset-" + (runID?.uuidString.lowercased() ?? "invalid") }
 
-    /// Runs BEFORE resetForUITests can destroy any saved state. Never reads secrets.
+    static let diagnosticProtocol = "Lumen-legacy-reset-preflight-diagnostic-v1"
+    static var diagnosticOnly: Bool { ProcessInfo.processInfo.arguments.contains("-health-legacy-reset-diagnostic-only") }
+    private(set) static var diagnosticOutcome = "not-run"
+    private static let diagnosticPrefix = "Lumen-legacy-reset-preflight-diagnostic-"
+
+    private static func recordPreflight(_ facts: [String: Any]) throws {
+        guard let parent else { diagnosticOutcome = "diagnostic-write-failed"; throw Failure.invalidObservation }
+        let args = ProcessInfo.processInfo.arguments
+        let rawRun: String? = args.firstIndex(of: "-health-legacy-reset-run").flatMap { index in
+            args.indices.contains(index + 1) ? args[index + 1] : nil
+        }
+        let run = rawRun.flatMap(UUID.init(uuidString:))?.uuidString ?? "invalid"
+        var row = facts
+        row["verificationProtocol"] = diagnosticProtocol
+        row["runID"] = run; row["pid"] = Int(getpid()); row["at"] = Date().timeIntervalSince1970
+        row["diagnosticOnly"] = diagnosticOnly
+        let file = parent.appendingPathComponent(diagnosticPrefix + run.lowercased() + "-" + String(getpid()) + ".json")
+        do {
+            let data = try JSONSerialization.data(withJSONObject: row, options: [.prettyPrinted, .sortedKeys])
+            try data.write(to: file, options: .withoutOverwriting)
+            diagnosticOutcome = facts["classification"] as? String ?? "diagnostic-write-failed"
+        } catch { diagnosticOutcome = "diagnostic-write-failed"; throw error }
+    }
+    private static func rejectPreflight(_ classification: String, facts: inout [String: Any]) throws -> Never {
+        facts["classification"] = classification; facts["guardApproved"] = false
+        try recordPreflight(facts)
+        throw Failure.unsafeContext
+    }
+
+    /// Metadata-only classification BEFORE generic reset; never reads secrets.
     static func preflightIfRequested() throws {
         let args = ProcessInfo.processInfo.arguments
-        guard let checked = try context(args) else { return }
-        if checked.mode == "readonly-clean-relaunch" { return }
-        guard !UserDefaults.standard.bool(forKey: "lumen.health.connected") else { throw Failure.unsafeContext }
+        let flags = ["-health-legacy-reset-ui", "-health-legacy-reset-observer", "-health-legacy-reset-run", "-health-legacy-reset-diagnostic-only"]
+        guard flags.contains(where: { args.contains($0) }) else { return }
+        var facts: [String: Any] = ["credentialQueryPerformed": false,
+            "knownFlagPresence": Dictionary(uniqueKeysWithValues: flags.map { ($0, args.contains($0)) })]
+        let checked: (mode: String, runID: UUID)?
+        do { checked = try context(args) }
+        catch { try rejectPreflight("blocked-context", facts: &facts) }
+        guard let checked else { try rejectPreflight("blocked-context", facts: &facts) }
+        facts["contextMode"] = checked.mode; facts["contextValid"] = true
+        if checked.mode == "readonly-clean-relaunch" {
+            facts["classification"] = "approved-observer"; facts["guardApproved"] = true
+            try recordPreflight(facts); return
+        }
+        let connected = UserDefaults.standard.bool(forKey: "lumen.health.connected")
+        facts["localHealthConnected"] = connected
+        if connected { try rejectPreflight("blocked-health-connected", facts: &facts) }
         let request: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: "com.dbakp.lumen.secrets", kSecReturnAttributes as String: true,
             kSecMatchLimit as String: kSecMatchLimitAll]
         var attributes: CFTypeRef?
-        // No kSecReturnData: a nonempty service fails without exposing its contents.
-        guard SecItemCopyMatching(request as CFDictionary, &attributes) == errSecItemNotFound else { throw Failure.unsafeContext }
-        for key in ["lumen.llm.key", "lumen.llm.oauth.token", "lumen.llm.oauth.refresh", "lumen.llm.oauth.account.v2",
-                    "lumen.llm.connection.v3", "strava.clientID", "strava.clientSecret", "strava.token", "strava.refresh"] {
-            guard UserDefaults.standard.object(forKey: key) == nil else { throw Failure.unsafeContext }
-        }
+        let status = SecItemCopyMatching(request as CFDictionary, &attributes)
+        facts["credentialQueryPerformed"] = true
+        facts["credentialQueryOSStatus"] = Int(status)
+        // Counts only. Do not retain attributes, account names or secret data.
+        if let rows = attributes as? [Any] { facts["credentialAttributeMatchCount"] = rows.count }
+        if status == errSecSuccess { try rejectPreflight("blocked-credentials-present", facts: &facts) }
+        if status != errSecItemNotFound { try rejectPreflight("blocked-credential-query-status", facts: &facts) }
+        let keys = ["lumen.llm.key", "lumen.llm.oauth.token", "lumen.llm.oauth.refresh", "lumen.llm.oauth.account.v2",
+                    "lumen.llm.connection.v3", "strava.clientID", "strava.clientSecret", "strava.token", "strava.refresh"]
+        let present = keys.filter { UserDefaults.standard.object(forKey: $0) != nil }
+        facts["knownLegacyProviderKeysPresent"] = present
+        if !present.isEmpty { try rejectPreflight("blocked-legacy-provider-setting", facts: &facts) }
+        facts["classification"] = "approved-initial"; facts["guardApproved"] = true
+        try recordPreflight(facts)
     }
 
     /// Small explicit synthetic intent/private-copy fixture; initial launch only.
@@ -873,6 +924,19 @@ import Security
             let data = try JSONSerialization.data(withJSONObject: row, options: [.prettyPrinted, .sortedKeys])
             try data.write(to: parent.appendingPathComponent(stem + "-checkpoint.json"), options: .atomic)
         } catch { failed = true }
+    }
+}
+
+/// A dedicated diagnostic surface never instantiates the product stores.
+@MainActor struct HealthLegacyResetDiagnosticView: View {
+    var body: some View {
+        VStack(spacing: 16) {
+            Text("Reset safeguard check").font(.headline)
+            Text(HealthLegacyResetUIFixture.diagnosticOutcome)
+                .accessibilityIdentifier("healthLegacyResetDiagnosticStatus")
+                .accessibilityValue(HealthLegacyResetUIFixture.diagnosticOutcome)
+            Text("Diagnostic only. Saved data is not reset.").font(.footnote)
+        }.padding()
     }
 }
 

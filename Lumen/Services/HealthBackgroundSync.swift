@@ -231,7 +231,7 @@ private final class HealthQueryGate: @unchecked Sendable {
 final class LumenAppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         #if DEBUG && targetEnvironment(simulator)
-        if HealthWriteLifecycleProbe.requested { return true }
+        if HealthWriteLifecycleProbe.requested || HealthLegacyResetUIFixture.diagnosticOnly { return true }
         #endif
         HealthBackgroundSync.shared.start()
         return true

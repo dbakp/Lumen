@@ -10,7 +10,11 @@ struct LumenApp: App {
         #if DEBUG && targetEnvironment(simulator)
         // Clean slate only for dedicated simulator UI tests, before stores load.
         do { try HealthLegacyResetUIFixture.preflightIfRequested() }
-        catch { preconditionFailure("Synthetic reset context is not safe") }
+        catch {
+            if !HealthLegacyResetUIFixture.diagnosticOnly { preconditionFailure("Synthetic reset context is not safe") }
+        }
+        // This dedicated diagnostic launch cannot reach generic fixture reset.
+        if HealthLegacyResetUIFixture.diagnosticOnly { return }
         if ProcessInfo.processInfo.arguments.contains("-resetForUITests") && !ProviderAuthorizationNativeProbe.resumesRemovalCheck && !ProviderAuthorizationNativeProbe.resumesAccountResetCheck && !ProviderConnectionUIFixture.resuming && !HealthWriteLifecycleProbe.resuming {
             LocalStore.eraseAll()
             SemanticSearchService.resetForUITests()
@@ -29,8 +33,14 @@ struct LumenApp: App {
     var body: some Scene {
         WindowGroup {
             Group {
+                #if DEBUG && targetEnvironment(simulator)
+                if HealthLegacyResetUIFixture.diagnosticOnly { HealthLegacyResetDiagnosticView() }
+                else if protectedDataAvailable { LumenReadyView() }
+                else { Theme.bg.ignoresSafeArea() }
+                #else
                 if protectedDataAvailable { LumenReadyView() }
                 else { Theme.bg.ignoresSafeArea() }
+                #endif
             }
             .onReceive(NotificationCenter.default.publisher(for: UIApplication.protectedDataDidBecomeAvailableNotification)) { _ in
                 protectedDataAvailable = true

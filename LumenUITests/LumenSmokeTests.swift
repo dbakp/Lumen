@@ -24,6 +24,13 @@ final class LumenSmokeTests: XCTestCase {
         // The focused wrapping probe reuses this dedicated simulator's saved
         // synthetic record, with a public Files-import fallback if absent.
         app.launchArguments = name.contains("testFHIRLiteralWrappingSnapshots") || name.contains("testLiteralIdentifier") || name.contains("testProviderCitationRejection") || name.contains("testProviderTransportFallback") ? ["-librarySearchRemoteUITestMode"] : ["-resetForUITests"]
+        if name.contains("testHealthLegacyResetPreflightDiagnostic") {
+            app.launchArguments = ["-resetForUITests", "-health-backup-ui-fixture", "-health-backup-case", "legacy",
+                "-health-backup-healthy-merge-ui", "-health-backup-empty-ui", "-health-legacy-origin-ui", "data",
+                "-health-legacy-reset-ui", "-health-legacy-reset-run", UUID().uuidString,
+                "-health-legacy-reset-diagnostic-only", "-lumen.appearance", "light",
+                "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryL"]
+        }
         if name.contains("testHealthLegacyRootAcquisition") {
             let mode = name.contains("NoPrior") ? "legacy-root-missing-no-prior" : name.contains("Ordinary") ? "ordinary-root-missing-pending-removal-control" : "legacy-root-missing-with-prior"
             app.launchArguments = ["-resetForUITests", "-health-write-native-probe", "-health-legacy-root-probe", mode, "-health-backup-ui-fixture", "-health-backup-case", "legacy", "-health-backup-healthy-merge-ui", "-health-backup-empty-ui", "-health-legacy-origin-ui", "data", "-lumen.appearance", "light", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryL"]
@@ -5618,6 +5625,24 @@ final class LumenSmokeTests: XCTestCase {
     func testHealthBackupFileRecoveryPhotoFaultErrorBackLegacyOriginData() throws { try healthBackupPhotoFaultErrorBack("legacy") }
     @MainActor
     func testHealthBackupFileRecoveryPhotoFaultErrorBackEncryptedOriginString() throws { try healthBackupPhotoFaultErrorBack("encrypted") }
+    @MainActor
+    func testHealthLegacyResetPreflightDiagnostic() throws {
+        executionTimeAllowance = 90
+        let status = app.staticTexts["healthLegacyResetDiagnosticStatus"].firstMatch
+        let exists = status.waitForExistence(timeout: 20)
+        let value = exists ? status.value as? String ?? "" : "missing"
+        let row: [String: Any] = ["scope": "metadata-only-reset-preflight-diagnostic", "phase": "terminal",
+            "launchArguments": app.launchArguments, "statusExists": exists, "statusValue": value,
+            "statusLabel": exists ? status.label : "", "at": Date().timeIntervalSince1970,
+            "settingsEraseAttempted": false]
+        let data = try JSONSerialization.data(withJSONObject: row, options: [.prettyPrinted, .sortedKeys])
+        let item = XCTAttachment(data: data, uniformTypeIdentifier: "public.json")
+        item.name = "health-reset-preflight-diagnostic-readback"; item.lifetime = .keepAlways; add(item)
+        snap("health-reset-preflight-diagnostic-terminal")
+        XCTAssertTrue(exists)
+        XCTAssertTrue(value.hasPrefix("approved-") || value.hasPrefix("blocked-"), "Guard classification must be recorded; no data reset is attempted")
+    }
+
     @MainActor
     func testHealthBackupFileRecoverySettingsEraseOriginData() throws { try legacySettingsEraseFlow() }
     @MainActor
