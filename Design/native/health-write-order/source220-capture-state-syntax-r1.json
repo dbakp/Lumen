@@ -1,0 +1,87 @@
+{
+  "status": "PASS220grammar only, not typecheck/appbuild/nativeacceptance",
+  "swiftParseRuns": [
+    {
+      "configuration": "DEBUG simulator grammar",
+      "command": [
+        "xcrun",
+        "swiftc",
+        "-frontend",
+        "-parse",
+        "-sdk",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk",
+        "-target",
+        "arm64-apple-ios18.0-simulator",
+        "-D",
+        "DEBUG",
+        "Lumen/Models/BackupPackage.swift",
+        "Lumen/Views/BackupFileRecoveryView.swift",
+        "Lumen/Views/BackupView.swift",
+        "Lumen/Views/HealthRecoveryCancelUIFixture.swift",
+        "LumenUITests/LumenSmokeTests.swift"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "configuration": "device Release grammar",
+      "command": [
+        "xcrun",
+        "swiftc",
+        "-frontend",
+        "-parse",
+        "-sdk",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS27.0.sdk",
+        "-target",
+        "arm64-apple-ios18.0",
+        "Lumen/Models/BackupPackage.swift",
+        "Lumen/Views/BackupFileRecoveryView.swift",
+        "Lumen/Views/BackupView.swift",
+        "Lumen/Views/HealthRecoveryCancelUIFixture.swift",
+        "LumenUITests/LumenSmokeTests.swift"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "pythonSyntaxInputs": [
+    "capture-state-driver-r3.py",
+    "capture-state-evidence-r3.py",
+    "check-capture-state-evidence-r3.py",
+    "cleanup-capture-state-metadata-r3.py",
+    "source220-capture-state-native-build-r1-executed.py",
+    "source220-debug-release-controls-r1-executed.py",
+    "source220-release-settings-auditor-r1.py",
+    "source220-unsigned-release-r1-executed.py"
+  ],
+  "files": [
+    {
+      "file": "Lumen/Models/BackupPackage.swift",
+      "bytes": 26314,
+      "sha256": "73f5c852633478f08161568ee2076a372b652739941a34cc3fda494da1f4a7a3"
+    },
+    {
+      "file": "Lumen/Views/BackupFileRecoveryView.swift",
+      "bytes": 31871,
+      "sha256": "8a8578faa2f075b930980f23d4ad380a265e6220035253c5f512da6b0e4fd840"
+    },
+    {
+      "file": "Lumen/Views/BackupView.swift",
+      "bytes": 24198,
+      "sha256": "7838c8c21904a6615ae5b73f85089af804f20dee6730aa0dc44c49c1a0c41113"
+    },
+    {
+      "file": "Lumen/Views/HealthRecoveryCancelUIFixture.swift",
+      "bytes": 46817,
+      "sha256": "b5d19adc8946bb8bf935ecd9a72638a42ff0514604f8e3cc7f944a827f7dc427"
+    },
+    {
+      "file": "LumenUITests/LumenSmokeTests.swift",
+      "bytes": 727686,
+      "sha256": "ca863ff5a42b9c4e89844d6d3095548a3fe73abe4e36d553c5457d9c1dbaf254"
+    }
+  ],
+  "checkedAt": 1794120096.4145548
+}

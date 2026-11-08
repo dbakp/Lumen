@@ -251,6 +251,7 @@ enum HealthOriginCaptureUIFixture {
         private func save() throws {
             guard let parent else { throw Failure.invalidFixture }
             let data = try JSONSerialization.data(withJSONObject: ["version": 1,
+                "verificationProtocol": "Lumen-capture-verification-v1",
                 "mode": HealthOriginCaptureUIFixture.mode ?? "invalid",
                 "runID": HealthOriginCaptureUIFixture.runID?.uuidString ?? "invalid",
                 "pid": getpid(), "events": rows], options: [.sortedKeys])

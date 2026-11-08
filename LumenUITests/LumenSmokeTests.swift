@@ -5626,6 +5626,7 @@ final class LumenSmokeTests: XCTestCase {
     @MainActor
     private func captureStateFlow(pendingBack: Bool) throws {
         executionTimeAllowance = 600
+        let reviewBar = app.navigationBars["Review recovery"].firstMatch
         let prefix = pendingBack ? "health-capture-pending-back" : "health-capture-failure-retry"
         var observations: [[String: Any]] = []
         let probe = app.descendants(matching: .any).matching(identifier: "healthOriginCaptureState-review").firstMatch
@@ -5665,35 +5666,59 @@ final class LumenSmokeTests: XCTestCase {
         }
         func whole(_ phase: String, _ targets: [XCUIElement], towardsTop: Bool = false) throws {
             let first = targets[0]
+            func visibilityFailure(_ message: String) throws -> Never {
+                let diagnostics: [[String: Any]] = targets.enumerated().map { index, target in
+                    guard target.exists else { return ["slot": index, "exists": false] }
+                    let frame = target.frame
+                    return ["slot": index, "exists": true, "identifier": target.identifier,
+                        "label": target.label, "enabled": target.isEnabled,
+                        "frame": ["x": Double(frame.minX), "y": Double(frame.minY),
+                            "width": Double(frame.width), "height": Double(frame.height)]]
+                }
+                observations.append(["phase": phase + "-failed-targets", "targets": diagnostics,
+                    "reviewNavigationExists": reviewBar.exists, "reviewProbeExists": probe.exists,
+                    "reviewProbeValue": probe.exists ? probe.value as? String ?? "" : "absent"])
+                try fail(phase, message)
+            }
+            func requireReview() throws {
+                if !reviewBar.exists || !probe.exists { try visibilityFailure("Review recovery left during bounded content search") }
+            }
             func bounds() -> CGRect {
-                let top = app.navigationBars.firstMatch.frame.maxY + 12
+                let top = reviewBar.frame.maxY + 12
                 return CGRect(x: app.frame.minX, y: top, width: app.frame.width, height: app.frame.maxY - 40 - top)
             }
-            func move(_ down: Bool, _ distance: CGFloat) {
+            func move(_ down: Bool, _ distance: CGFloat) throws {
+                try requireReview()
                 let box = bounds(), step = min(box.height * 0.4, max(24, distance))
-                let start = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: down ? box.minY + 20 : box.maxY - 20))
+                let start = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: box.midX, dy: down ? box.minY + 20 : box.maxY - 20))
                 start.press(forDuration: 0.05, thenDragTo: start.withOffset(CGVector(dx: 0, dy: down ? step : -step)))
+                try requireReview()
                 if first.exists && !first.frame.isEmpty { settleLabFrame(first) }
             }
-            if !first.exists || first.frame.isEmpty { reveal(first, towardsTop: towardsTop) }
+            // Keep missing-row searches inside this bounded, diagnostic path.
+            // Later choice/action rows need upward content pans, not sheet pulls.
+            try requireReview()
             for _ in 0..<16 {
+                try requireReview()
                 let box = bounds()
-                guard first.exists && !first.frame.isEmpty else { move(true, 72); continue }
+                guard first.exists && !first.frame.isEmpty else { try move(towardsTop, box.height * 0.3); continue }
                 guard targets.allSatisfy({ $0.exists && !$0.frame.isEmpty }) else {
-                    move(false, max(72, first.frame.minY - box.minY - 24)); continue
+                    try move(false, max(72, first.frame.minY - box.minY - 24)); continue
                 }
                 let group = targets.reduce(CGRect.null) { $0.union($1.frame) }
                 if box.contains(group) { break }
                 let down = group.minY < box.minY
-                move(down, down ? box.minY - group.minY + 12 : group.maxY - box.maxY + 12)
+                try move(down, down ? box.minY - group.minY + 12 : group.maxY - box.maxY + 12)
             }
-            try require(targets.allSatisfy({ $0.exists && !$0.frame.isEmpty }), phase, "Native requested group not materialized")
+            if !targets.allSatisfy({ $0.exists && !$0.frame.isEmpty }) {
+                try visibilityFailure("Native requested group not materialized after bounded content search")
+            }
             settleLabFrame(first)
             let box = bounds()
             var rows: [[String: Any]] = []
             for target in targets {
                 let frame = target.frame
-                try require(box.contains(frame), phase, "Native target clipped outside usable viewport")
+                if !box.contains(frame) { try visibilityFailure("Native target clipped outside usable viewport") }
                 rows.append(["identifier": target.identifier, "label": target.label, "value": target.value as? String ?? "",
                     "enabled": target.isEnabled, "frame": ["x": Double(frame.minX), "y": Double(frame.minY),
                     "width": Double(frame.width), "height": Double(frame.height)]])
@@ -5704,7 +5729,7 @@ final class LumenSmokeTests: XCTestCase {
             snap(prefix + "-" + phase)
         }
         func choices(_ phase: String, enabled: Bool) throws {
-            try whole(phase, [meals, omission, workouts], towardsTop: true)
+            try whole(phase, [meals, omission, workouts])
             for element in [meals, omission, workouts] {
                 try require(element.value as? String == "0" && element.isEnabled == enabled, phase, "Choices must be off with actual expected eligibility")
             }
