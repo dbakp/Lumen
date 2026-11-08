@@ -71,7 +71,7 @@
 <button class="btn" type="button" data-area="quality" aria-pressed="false" aria-controls="lumen-plan-detail">Answer quality</button>
 <button class="btn" type="button" data-area="release" aria-pressed="false" aria-controls="lumen-plan-detail">Release gates</button>
 </div>
-<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Recovery protection · in progress</h3><div data-verified>Stale-review rejection verified. Fresh recovery passed its data checks; completion-message visibility remains open.</div><div data-next>Next: build the reviewed correction, then test visibility, closing and cleanup.</div><div class="text-small" data-gate>The reviewed correction passes a check of the full test file. Full build and simulator verification are next; earlier failures stay recorded.</div></div>
+<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Recovery protection · in progress</h3><div data-verified>Stale-review rejection verified. Fresh recovery passed its data checks; completion-message visibility remains open.</div><div data-next>Next: test automatic completion visibility, closing and cleanup in the simulator.</div><div class="text-small" data-gate>The full app and test build passed. Simulator verification is next; earlier failures stay recorded.</div></div>
 </div>
 <div class="section"><h3>Verified safety checks</h3>
 <table class="table table-sm" aria-label="Earlier checks retain their original scope; broader checks remain open"><thead><tr><th>Situation</th><th>Observed result</th></tr></thead><tbody>
@@ -88,9 +88,9 @@
 <script>
 (()=>{
 const root=document.getElementById('lumen-plan-progress');
-const snapshot='nov8-success-test-reviewed';
+const snapshot='nov8-success-build-passed';
 const areas={
-current:{title:'Recovery protection · in progress',verified:'Stale-review rejection verified. Fresh recovery passed its data checks; completion-message visibility remains open.',next:'Next: build the reviewed correction, then test visibility, closing and cleanup.',gate:'The reviewed correction passes a check of the full test file. Full build and simulator verification are next; earlier failures stay recorded.'},
+current:{title:'Recovery protection · in progress',verified:'Stale-review rejection verified. Fresh recovery passed its data checks; completion-message visibility remains open.',next:'Next: test automatic completion visibility, closing and cleanup in the simulator.',gate:'The full app and test build passed. Simulator verification is next; earlier failures stay recorded.'},
 quality:{title:'Answer quality · open',verified:'Library search, source identity, consent controls and literal-reference safeguards are delivered.',next:'Next: evidence-support policy and independent evaluation; personal-context and conversation-history privacy review.',gate:'Clinical accuracy, language coverage and live-provider evaluation remain required.'},
 release:{title:'Release readiness · open',verified:'The previous unsigned Release build passed independent review, with coverage recording enabled. Current-app Release checks remain pending.',next:'Next: background Health, Watch reconnect, widget, interruption and accessibility checks.',gate:'Orientation warning, representative histories, performance, privacy and distribution review remain open. No iPhone installation, launch or checks without a renewed request.'}
 };
