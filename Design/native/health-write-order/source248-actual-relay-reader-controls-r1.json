@@ -1,0 +1,174 @@
+{
+  "status": "PASS actual extracted Swift reader/current predicate on real isolated files",
+  "actualUITestSHA256": "c3886c7335fb823bfd4ac98ac0369ba460b164783beaf131513232600020675a",
+  "readerSHA256": "c18626bd5b5f926d8b64cf8884abe8b1bd4773e8a1d851ade6c61ca1e3d38074",
+  "compileExit": 0,
+  "runExit": 0,
+  "cases": [
+    {
+      "name": "missing",
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "name": "exact armed",
+      "accepted": true,
+      "expected": true
+    },
+    {
+      "name": "armed reject runIDED54372B-AF7D-4972-A183-EDA40AD6C4EB",
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "name": "armed reject noncebad",
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "name": "armed reject appearanceID",
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "name": "armed reject pid0123",
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "name": "armed reject pid0",
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "name": "armed reject pid 123",
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "name": "armed reject domainsworkouts",
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "name": "armed reject legacyDomains",
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "name": "armed reject omitPhotostrue",
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "name": "armed reject phasemutated",
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "name": "armed reject targetPhaseready",
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "name": "armed reject nativeCheckpointSHA256aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "name": "armed reject unexpectedvalue",
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "name": "missing field",
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "name": "exact mutated same gate",
+      "accepted": true,
+      "expected": true
+    },
+    {
+      "name": "mutated reject nonceC7ED94D3-DDC6-45DD-ACC9-EC583731AEC7",
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "name": "mutated reject captureIDED54372B-AF7D-4972-A183-EDA40AD6C4EB",
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "name": "mutated reject nativeCheckpointSHA256aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "name": "mutated reject nativeCheckpointSHA256AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "name": "missing native checkpoint",
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "name": "nonstring value",
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "name": "invalidUTF8",
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "name": "malformedJSON",
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "name": "nonobjectJSON",
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "name": "empty",
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "name": "oversized",
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "name": "symlink",
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "name": "fifo",
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "name": "directory",
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "name": "hardlink",
+      "accepted": false,
+      "expected": false
+    }
+  ],
+  "count": 32,
+  "decodedBytes": 40749,
+  "decodedSHA256": "7ea04563586aaa75d5aa43e98a7d7c8c40a33a05e09be00a875ee41c274decd6",
+  "scope": "Actual extracted reader with real Foundation/CryptoKit/Darwin/JSON/files; no real runner path/NSPredicate alert/hostprotocol/native/cancellation acceptance. Full input/outputs archived; known temporary binary/cache removed after run, no manual storage credit.",
+  "checkedAt": 1794169917.371983
+}

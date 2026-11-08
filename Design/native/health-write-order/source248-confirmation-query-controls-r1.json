@@ -1,0 +1,74 @@
+{
+  "status": "PASS actual source exact-label/relay/real-alert prerequisite guards",
+  "count": 11,
+  "cases": [
+    {
+      "name": "current full body exact query",
+      "accepted": true,
+      "expected": true,
+      "sourceSHA256": "c3886c7335fb823bfd4ac98ac0369ba460b164783beaf131513232600020675a"
+    },
+    {
+      "name": "old247 query correction retained",
+      "accepted": true,
+      "expected": true,
+      "sourceSHA256": "d634d1fd2713ccc9c408f5dcf60a25b241a48385ede01783fb3aaa0dd6c607a1"
+    },
+    {
+      "name": "old246 long identifier rejected",
+      "accepted": false,
+      "expected": false,
+      "sourceSHA256": "8406c0ffa05841dd07e3b1f79affd69c74bcf1b734494c1125fdcc21d2e209c6"
+    },
+    {
+      "name": "reject identifier regression",
+      "accepted": false,
+      "expected": false,
+      "sourceSHA256": "0b1b6137c19d40db1f9bbb1ad1b12148dde47f6b1993415529050881ee0ca8dc"
+    },
+    {
+      "name": "reject contains query",
+      "accepted": false,
+      "expected": false,
+      "sourceSHA256": "5d8e45d5d6302f28aa8af628919d49258b2b550db8d5fb2798575b1a934a55af"
+    },
+    {
+      "name": "reject shortened body",
+      "accepted": false,
+      "expected": false,
+      "sourceSHA256": "9323c5e1495c00cd98ba882219f03634972f7dad3b7a7227a18dc728a75a9ee3"
+    },
+    {
+      "name": "current relay + real alert gating",
+      "accepted": true,
+      "expected": true,
+      "sourceSHA256": "c3886c7335fb823bfd4ac98ac0369ba460b164783beaf131513232600020675a"
+    },
+    {
+      "name": "old247 action-value dependency rejected",
+      "accepted": false,
+      "expected": false,
+      "sourceSHA256": "d634d1fd2713ccc9c408f5dcf60a25b241a48385ede01783fb3aaa0dd6c607a1"
+    },
+    {
+      "name": "reject missing premutation real alert",
+      "accepted": false,
+      "expected": false,
+      "sourceSHA256": "30df0fac4754a4c5240e5b27de841a96d116112f459c1ed0239e512238c4d315"
+    },
+    {
+      "name": "reject missing postmutation real alert",
+      "accepted": false,
+      "expected": false,
+      "sourceSHA256": "945b2beff43da43c0dfe342b1e606b7eb0d1a9b00b3381de0d334a10f76fbd1f"
+    },
+    {
+      "name": "reject unbound changed relay",
+      "accepted": false,
+      "expected": false,
+      "sourceSHA256": "d81996647151659ed06b5cb21014904363b5b9b9a92c384443763fb4595a998a"
+    }
+  ],
+  "scope": "Source text guards only, actual extracted reader tested separately; no real XCTest alert/runner/timing/cancellation acceptance",
+  "checkedAt": 1794170018.077622
+}

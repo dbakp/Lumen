@@ -1,0 +1,70 @@
+{
+  "status": "PASS actual metadata publisher/exclusive atomic generations on isolated real files",
+  "count": 12,
+  "cases": [
+    {
+      "name": "exact two atomic metadata generations",
+      "accepted": true,
+      "expected": true
+    },
+    {
+      "name": "reject unknown phase",
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "name": "reject missing native digest",
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "name": "reject invalid native digest",
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "name": "reject progress before initial relay",
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "name": "reject duplicate armed publication",
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "name": "reject third generation",
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "name": "reject gate change across generations",
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "name": "reject unexpected preexisting relay",
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "name": "reject altered previous relay",
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "name": "reject preexisting relay symlink",
+      "accepted": false,
+      "expected": false
+    },
+    {
+      "name": "retain failed exclusive temporary publication",
+      "accepted": false,
+      "expected": false
+    }
+  ],
+  "decodedBytes": 19389,
+  "decodedSHA256": "ed12335427c1de03b82d34e378b2a3281443ae23fd5d331d501c23e2867222c0",
+  "scope": "Actual publisher and filesystem, synthetic metadata/identity; no real runner path/native/visibility/ACK/cancellation or powerfailure guarantee",
+  "checkedAt": 1794169982.8288488
+}

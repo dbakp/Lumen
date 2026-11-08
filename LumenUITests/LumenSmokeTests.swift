@@ -1,6 +1,7 @@
 import XCTest
 import CryptoKit
 import UIKit
+import Darwin
 
 // MARK: - Lumen smoke test: fresh onboarding → every tab → logging → coach.
 // Screenshots are attached to the result bundle for visual review.
@@ -5803,7 +5804,7 @@ final class LumenSmokeTests: XCTestCase {
     private func exerciseHealthBackupFileRecoveryTargetChangedAfterReady(duringConfirmation: Bool = false) throws {
         executionTimeAllowance = 480
         let prefix = "health-legacy-target-change"
-        let timingScope = duringConfirmation ? "actual-legacy-target-change-during-confirmation" : "actual-legacy-target-change-after-ready-before-confirmation"
+        let timingScope = duringConfirmation ? "actual-legacy-target-change-during-confirmation-runner-relay" : "actual-legacy-target-change-after-ready-before-confirmation"
         var observations: [[String: Any]] = []
         func report(_ phase: String, failure: String? = nil) {
             var row: [String: Any] = ["scope": timingScope,
@@ -5900,30 +5901,88 @@ final class LumenSmokeTests: XCTestCase {
             try require(alert.waitForExistence(timeout: 5), "confirmation", "Actual recovery confirmation missing")
             if duringConfirmation {
                 let recover = alert.buttons["Recover"].firstMatch
+                let arguments = app.launchArguments
+                try require(arguments.filter { $0 == "-health-legacy-reset-run" }.count == 1,
+                    "confirmation-relay", "One actual launch run required")
+                guard let runIndex = arguments.firstIndex(of: "-health-legacy-reset-run"), arguments.indices.contains(runIndex+1),
+                      let run = UUID(uuidString: arguments[runIndex+1]) else {
+                    try require(false, "confirmation-relay", "Missing launch identity"); return
+                }
+                let relayURL = FileManager.default.temporaryDirectory.appendingPathComponent("Lumen-confirmation-relay-" + run.uuidString.lowercased() + ".json")
+                var lastRelayObservation = ""
+                func observeRelay(_ expectedPhase: String, previous: [String:String]? = nil) -> [String:String]? {
+                    var fact: [String:Any] = ["phase":"runner-relay", "expected":expectedPhase,
+                        "file":relayURL.path,"at":Date().timeIntervalSince1970]
+                    var signature = ""
+                    func retain() {
+                        if signature != lastRelayObservation { observations.append(fact); lastRelayObservation = signature }
+                    }
+                    let descriptor = Darwin.open(relayURL.path, O_RDONLY | O_NOFOLLOW | O_NONBLOCK | O_CLOEXEC)
+                    if descriptor == -1 {
+                        fact["status"] = "read-unavailable"; fact["errno"] = Int(errno)
+                        signature = "read-unavailable-" + String(errno); retain(); return nil
+                    }
+                    defer { Darwin.close(descriptor) }
+                    var fs = stat()
+                    guard fstat(descriptor,&fs) == 0, fs.st_mode & mode_t(S_IFMT) == mode_t(S_IFREG),
+                          fs.st_nlink == 1, fs.st_size > 0, fs.st_size <= 4096 else {
+                        fact["status"] = "rejected-file"; signature = "rejected-file"; retain(); return nil
+                    }
+                    var buffer = [UInt8](repeating:0,count:4097)
+                    let count = Darwin.read(descriptor,&buffer,buffer.count)
+                    guard count == Int(fs.st_size) else {
+                        fact["status"] = "incomplete-read"; fact["readCount"] = count
+                        signature = "incomplete-read-" + String(count); retain(); return nil
+                    }
+                    let bytes = Data(buffer.prefix(count))
+                    let digest = SHA256.hash(data:bytes).map { String(format:"%02x",$0) }.joined()
+                    fact["raw"] = ["bytes":bytes.count,"sha256":digest,"base64":bytes.base64EncodedString()]
+                    fact["inode"] = fs.st_ino; signature = expectedPhase + "-" + digest
+                    guard let row = try? JSONSerialization.jsonObject(with:bytes) as? [String:String] else {
+                        fact["status"] = "rejected-json"; retain(); return nil
+                    }
+                    let fields = Set(["runID","pid","sessionID","captureID","nonce","appearanceID","domains","legacyDomains","omitPhotos","phase","targetPhase"])
+                    let expectedFields = expectedPhase == "mutated" ? fields.union(["nativeCheckpointSHA256"]) : fields
+                    let identityValid = ["sessionID","captureID","nonce","appearanceID"].allSatisfy { UUID(uuidString:row[$0] ?? "") != nil }
+                    let sameGate = previous.map { original in
+                        original.filter { !["phase","targetPhase"].contains($0.key) }
+                        == row.filter { !["phase","targetPhase","nativeCheckpointSHA256"].contains($0.key) }
+                    } ?? true
+                    let phaseValid = row["phase"] == expectedPhase && row["targetPhase"] == (expectedPhase == "armed" ? "host-ready" : "host-target-changed")
+                    let nativeSHA = row["nativeCheckpointSHA256"] ?? ""
+                    let nativeValid = expectedPhase != "mutated" || (nativeSHA.count == 64 && nativeSHA.allSatisfy { "0123456789abcdef".contains($0) })
+                    guard Set(row.keys) == expectedFields, row["runID"] == run.uuidString,
+                          let pid = row["pid"], let process = Int(pid), process > 0, String(process) == pid,
+                          identityValid, sameGate, phaseValid, nativeValid,
+                          row["domains"] == "meals", row["legacyDomains"] == "meals", row["omitPhotos"] == "false" else {
+                        fact["status"] = "rejected-binding-or-phase"; fact["observedPhase"] = row["phase"] ?? ""
+                        retain(); return nil
+                    }
+                    fact["status"] = "accepted-metadata-only"; fact["value"] = row; retain(); return row
+                }
+                var gate: [String:String]?
                 let armed = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
-                    guard let value = recover.value as? String, let bytes = value.data(using: .utf8),
-                          let row = try? JSONSerialization.jsonObject(with: bytes) as? [String: String] else { return false }
-                    return row["phase"] == "armed" && UUID(uuidString: row["nonce"] ?? "") != nil
-                }, object: nil)
-                try require(XCTWaiter.wait(for: [armed], timeout: 10) == .completed, "confirmation-gate", "Actual Recover gate value missing")
-                guard let value = recover.value as? String,
-                      let gate = try JSONSerialization.jsonObject(with: Data(value.utf8)) as? [String: String],
-                      let nonce = gate["nonce"], UUID(uuidString: nonce) != nil else {
-                    try require(false, "confirmation-gate", "Malformed actual alert gate"); return
+                    gate = observeRelay("armed"); return gate != nil
+                }, object:nil)
+                try require(XCTWaiter.wait(for:[armed],timeout:10) == .completed,"confirmation-relay","Actual runner relay missing or invalid")
+                guard let gate, let nonce = gate["nonce"] else {
+                    try require(false,"confirmation-relay","Armed relay lost its gate identity"); return
                 }
                 let body = "Selected data will be replaced by records from this file. The older saved data will stay in a private recovery copy on this iPhone."
                 let cancel = alert.buttons["Not now"].firstMatch
                 let bodyElement = alert.staticTexts.matching(NSPredicate(format: "label == %@", body)).firstMatch
-                try require(app.frame.contains(alert.frame) && bodyElement.exists && alert.frame.contains(bodyElement.frame)
-                    && alert.frame.contains(recover.frame) && alert.frame.contains(cancel.frame)
-                    && recover.isHittable && cancel.isHittable,
-                    "confirmation-gate", "Whole real confirmation and both actions required before marker")
+                func wholeAlert() -> Bool {
+                    alert.exists && app.frame.contains(alert.frame) && bodyElement.exists && alert.frame.contains(bodyElement.frame)
+                        && alert.frame.contains(recover.frame) && alert.frame.contains(cancel.frame)
+                        && recover.isHittable && cancel.isHittable
+                }
+                try require(wholeAlert(),"confirmation-gate","Whole real confirmation and both actions required before marker")
                 let shot = app.screenshot(), image = shot.pngRepresentation
-                let attachment = XCTAttachment(screenshot: shot)
+                let attachment = XCTAttachment(screenshot:shot)
                 let attachmentName = prefix + "-confirmation-before-mutation"
                 attachment.name = attachmentName; attachment.lifetime = .keepAlways; add(attachment)
-                func rect(_ r: CGRect) -> [String: Double] { ["x":r.minX,"y":r.minY,"width":r.width,"height":r.height] }
-                let marker: [String: Any] = ["gate":gate,"scope":timingScope,"title":"Replace selected data?","body":body,
+                func rect(_ r: CGRect) -> [String:Double] { ["x":r.minX,"y":r.minY,"width":r.width,"height":r.height] }
+                let marker: [String:Any] = ["gate":gate,"scope":timingScope,"title":"Replace selected data?","body":body,
                     "appFrame":rect(app.frame),"alertFrame":rect(alert.frame),"bodyFrame":rect(bodyElement.frame),
                     "recoverFrame":rect(recover.frame),"cancelFrame":rect(cancel.frame),"at":Date().timeIntervalSince1970,
                     "attachmentName":attachmentName,"imageBytes":image.count,
@@ -5933,16 +5992,14 @@ final class LumenSmokeTests: XCTestCase {
                 try JSONSerialization.data(withJSONObject:marker,options:[.sortedKeys]).write(to:markerTemporary,options:.withoutOverwriting)
                 try FileManager.default.moveItem(at:markerTemporary,to:destination)
                 observations.append(["phase":"confirmation-before-mutation","markerFile":destination.path,"marker":marker])
-                let mutated = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
-                    guard let value = recover.value as? String, let bytes = value.data(using:.utf8),
-                          let next = try? JSONSerialization.jsonObject(with:bytes) as? [String:String] else { return false }
-                    return next["nonce"] == nonce && next["phase"] == "mutated"
-                }, object:nil)
-                try require(XCTWaiter.wait(for:[mutated],timeout:90) == .completed,"confirmation-mutation","No verified mutation while real alert stayed open")
-                let observedValue = recover.value as? String ?? ""
-                let observed = try JSONSerialization.jsonObject(with: Data(observedValue.utf8)) as? [String:String]
-                try require(observed?["targetPhase"] == "host-target-changed", "target-changed", "Host must verify actual mutated target before Recover")
-                observations.append(["phase":"target-changed","probeValue":observed?["targetPhase"] ?? "", "gateNonce":nonce,"at":Date().timeIntervalSince1970])
+                var changed: [String:String]?
+                let mutated = XCTNSPredicateExpectation(predicate:NSPredicate { _, _ in
+                    changed = observeRelay("mutated",previous:gate); return changed != nil
+                },object:nil)
+                try require(XCTWaiter.wait(for:[mutated],timeout:90) == .completed,"confirmation-mutation","No verified target change relay while real alert stayed open")
+                try require(wholeAlert(),"confirmation-after-mutation","Actual confirmation must still be whole before Recover")
+                observations.append(["phase":"target-changed","probeTransport":"runner-file-relay",
+                    "probeValue":changed?["targetPhase"] ?? "","gateNonce":nonce,"at":Date().timeIntervalSince1970])
                 snap(prefix + "-target-mutated")
             }
             snap(prefix + "-confirmation"); alert.buttons["Recover"].tap()
