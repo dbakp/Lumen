@@ -1,0 +1,196 @@
+{
+  "part": 83,
+  "scope": "Contract-only review of proposed real legacy capture-state cases on current217 source. No implementation selected/applied, no source-ready/compile/runtime/design acceptance. Current217 normal regression is a separate active producer.",
+  "verdict": {
+    "mechanism": "Coherent bounded first scope, subject to two concrete contract clarifications before implementation.",
+    "sourceReady": false,
+    "reason": "No hook/native/host/checker exists yet; actual source preexecution review remains required.",
+    "requiredContractClarifications": [
+      "P83-C1",
+      "P83-C2"
+    ],
+    "overallAcceptance": false,
+    "rubricScore": null
+  },
+  "independentBindings": {
+    "contract": {
+      "file": "Design/native/health-write-order/health-legacy-capture-state-r1-contract.json",
+      "bytes": 10735,
+      "sha256": "28f11ffda199421c1290ffcfdafe7ab219aaf06701e73285546908965a9ebb5e"
+    },
+    "fiveDeclaredReferences": "All5 actual bytes/size/SHA match contract and frozen217 fullarchive. Supplemental lock/source/parent/UI availability paths read directly and hash bound.",
+    "currentSource": "217 production references, no mutation/query/build/native/process/defaults/Git/cleanup performed.",
+    "evidenceBoundary": "Source-informed feasibility/inference only; no synthetic roots, barriers, fixtures or screenshots generated/read for these future cases."
+  },
+  "sourceFindings": [
+    {
+      "id": "P83-C1",
+      "required": true,
+      "title": "Record real cancellation and lease phases separately from Task cancellation and later UI cleanup",
+      "sourceEvidence": [
+        "BackupOperationControl.checkCancellation snapshots private cancelled then throws if cancelled OR Task.isCancelled. A CancellationError or checkCancellation result alone does not identify which cause fired.",
+        "HealthRecoveryOriginReviewLease.finish first calls control.checkCancellation, then checks actual capturing/pending identity under holder lock. A cancelled control can reject before any closed-phase guard is evaluated.",
+        "View onDisappear calls session.suspendOriginCapture then captureWork.cancel. Holder suspend can change capturing→initial and cancel matching control; BackupView clearPreview later closes review→closed. Exact ordering must be observed, not merged into one Back flag.",
+        "Operational capture error is followed by view catch calling suspendOriginCapture, which cancels control and returns lease to initial; observing cancellation only afterward would misattribute actual root-invalid error."
+      ],
+      "requiredContract": "Require real lock-protected control cancellation state (or exact matching cancel event plus real bit), actual worker Task.isCancelled, actual origins.state, control/session/run/nonce identity at held, Back-before-release, terminal, failure and retry boundaries. Record original error type/domain/code and execution phase before UI suspend changes cancellation; compare actual metadata availability/ready/acquire events. Record lease state transitions, not a fabricated ready/closed boolean. Use a read-only DEBUG observation accessor/dedicated noninterfering event, not replacement of the existing single cancellationHandler merely to observe it.",
+      "lateReturnAttribution": "Host may release the exact after-read barrier only after actual Back/owner closure and matching control cancellation are observed. Intentional barrier wait may permit cancelled worker to reach the unchanged finish call; cancellation rejection does not prove deeper phaseguard execution. If Task is also cancelled report both, not control-only attribution.",
+      "terminalLifetime": "Distinguish finish rejection, function/worker completion after input lifetime defer, UI wrapper completion and eventual workspace retirement. A terminal catch event still inside captureOrigins does not itself prove worker-owned input released.",
+      "closure": "OPEN contract wording; future concrete hook/source review required."
+    },
+    {
+      "id": "P83-C2",
+      "required": true,
+      "title": "Specify the two-step namespace fault and phase-specific guarded restoration",
+      "sourceEvidence": [
+        "Host fault requires rename(currentroot,movedroot), then exclusive create(sentinel at original root). Each operation may be atomic individually; the pair is not one atomic replacement.",
+        "A failure after rename and before exclusive sentinel creation leaves original root absent; a competing caller could instead create a different original path. Existing exact-sentinel-only restoration wording does not explicitly cover the root-absent intermediate boundary.",
+        "LocalStore.captureLegacyRecoveryReview intentionally uses raw storageRoot and read-only rootIdentity, but unrelated checkedDirectory callers can create/restore during this artificial fault; quietstate is an observed bounded assumption, not global exclusion."
+      ],
+      "requiredContract": "Before each mutation persist nonce/owned exact root+parent identity, complete before current/prior/default/provider facts and intended paths. Record moved-root exact identity/tree after rename, then exact O_EXCL no-follow regular sentinel facts after creation. Define finally restoration for (a) exact owned sentinel present: remove only that sentinel then restore exact moved root into absent original; (b) root absent after owned rename but sentinel never created: restore only exact still-owned moved root; (c) any foreign/replaced/changed original or moved path: do not overwrite/delete, retain failed case and restoration error/needed owner action. Never claim restoration merely because finally ran. Keep exact namespace operation outcome before assertions/releases.",
+      "metadata": "Preserve full file bytes/metadata and directory inventory; distinguish expected namespace/root-parent ctime/mtime effects of rename/create/remove from immutable original file identities, rather than claiming all namespace metadata never changes.",
+      "hostRelease": "Before permitting capture read, independently verify exact moved tree/prior/default/provider and sentinel. Before retry verify exact restored original root inode/files/metadata, moved path absent, no unknown artifacts; no reset/checkedDirectory fallback.",
+      "closure": "OPEN explicit fault-transition/restoration wording; no current product mutation inferred."
+    }
+  ],
+  "supportedMechanisms": {
+    "pendingBack": [
+      "Real captureOrigins acquires an actual RecoveryInput through BackupReviewLease, retains it through defer and performs real LocalStore capture before origins.finish. After-read barrier can hold actual local snapshot without publishing raw data to State or hook JSON.",
+      "Place hook only after LocalStore.captureLegacyRecoveryReview returns, before unchanged origins.finish. LocalStore writes.read and HealthRecoveryCopies.serialized locks have then unwound. Parent/input/worker/review ownership may legitimately retain workspaces until completion; zero-root assertions only at declared final cleanup.",
+      "Actual progress delayed300ms and metadata nil before ready naturally disable target selection/action; UI screenshots/AX should establish requested groups independently, not invent a forced state. Fresh original selection must create distinct source/review ownership after old worker terminal; no universal timing-window claim."
+    ],
+    "operationalRetry": [
+      "Before-read hook after real input acquire and before LocalStore capture runs outside source-lease/store/copies locks. Real captureReview.checkCancellation then rootIdentity.lstat rejects S_IFREG as HealthLocalFiles.Failure.invalid, without checkedDirectory/migration/create/restore.",
+      "View non-cancellation catch suspends origin capture and sets actual captureIssue while active/same control/not Taskcancelled; Check again clears issue and invokes actual startOriginCapture. Deferred control cleanup must have completed before retry; new control same owner runs one-shot real capture to ready.",
+      "HealthStore.localHealthAvailable uses existing in-memory boundary/unavailable set, not a root-opening getter; this supports controlled UI during fault but does not rule out unrelated background callers.",
+      "Retry-ready only means real snapshot accepted/off choices/error absent. No recovery transaction, receipt, preservation-copy, Health-write or success acceptance is part of this proposed test."
+    ]
+  },
+  "lockAndInstrumentationRequirements": [
+    "Never wait under BackupStorageRevision nonrecursive read lock, HealthRecoveryCopies serialized lock, review lease or bridge lock. Acquire/release small metadata lock only for bounded checkpoint records; no lock reentry via LocalStore revision/write in observer.",
+    "Run after-read barrier outside read locks and before real finish; before-read barrier outside locks before LocalStore read. Do not insert a test wait into strict defaults getter or inside captureReview.",
+    "Dedicated flags require DEBUG+simulator+all existing synthetic reset/backup/empty/nonmixedData guards and exact known device/source/run. Barrier scope one matching owner/control/nonce/ordinal, exact single release, actual bounded timeout/terminal failure. No global permit/auto-pass/fake rawgetter or snapshot/eligibility return.",
+    "Hook records actual metadata only: state/domain set/identity/error/task/control facts, never raw ReviewSnapshot/defaults payload/unrelated preferences. Host protected known fixedData/raw source/provider/current/prior proof stays separate and bounded.",
+    "Initial/final observation/checkpoint files must be fresh per run and raw partial observations persisted before assertions. Scope failed helper separately; retain original manifests/peers independently."
+  ],
+  "declaredEvidence": {
+    "pendingBack": {
+      "originalPNGSuffixes": [
+        "pending-progress",
+        "pending-choices",
+        "parent-old-worker-held",
+        "parent-old-worker-terminal",
+        "fresh-review",
+        "fresh-parent"
+      ],
+      "fullNativeJSONHelpers": 1
+    },
+    "failureRetry": {
+      "originalPNGSuffixes": [
+        "before-read-progress",
+        "genuine-failure",
+        "failure-disabled-choices",
+        "retry-ready",
+        "retry-off-choices",
+        "retry-parent"
+      ],
+      "fullNativeJSONHelpers": 1
+    },
+    "totalPlannedSuccessOriginals": 12,
+    "totalPlannedFullNativeHelpers": 2,
+    "captureRule": "Whole actual requested row groups/frame/bounds, not full Form. No screenshot or count credited until produced/opened. Pending controls and progress may be separate six-frame sequences.",
+    "stateProof": "Full source/provider/current10/prior10/fixedData/metadata/directory inventory before/held/Back/terminal/restored/retry/final; no receipt/privatecopy/stage/Health-write expected. Actual final source/workspace cleanup no host deletion.",
+    "parentBoundary": "Actual parent may retain source while worker held; source/input FD/lifetime and origin-review closure must be independently reported. Final absence cannot be imposed before legitimate owners release."
+  },
+  "optionalDecision": "Confirmation/Not now in failureRetry is explicitly optional and unnecessary for this first capture-state scope; if added, predeclare its own evidence rather than borrowing successful recovery coverage.",
+  "limits": [
+    "No implementation/source-ready/runtime/product/score acceptance, no current217 native regression or Release execution credit from this contract review.",
+    "Two synthetic legacyJSON/nonmixedData/mainlightstandard cases only; no encrypted input, mixed dictionary, all Task timing windows, permissions, root replacement races or transaction recovery acceptance.",
+    "No deeper finish phaseguard claim if cancellation throws first. No true global quietstate or cross-process lock guarantee from in-process writes.read.",
+    "All43/eight groups, full speech/audio/duplicates, motion temporal, appearance/DynamicType/native dim-gray contrast, retained-copy target-legacy UI, reset/pendingcapture/fullparent/fullgoal gates remain open."
+  ],
+  "next": "Preserve judged r1/hash; add narrow wording clarifications without rewriting it. After actual217normal/Release reviewed/exactbacked, freeze real guarded hook/native/strict host/checker and predeclared markers, independently review before build/trial. Exact each-case evidence/root/critic remote proof before next reset/cleanup.",
+  "provenance": [
+    {
+      "file": "Design/native/health-write-order/health-legacy-capture-state-r1-contract.json",
+      "bytes": 10735,
+      "sha256": "28f11ffda199421c1290ffcfdafe7ab219aaf06701e73285546908965a9ebb5e"
+    },
+    {
+      "file": "Design/native/health-write-order/durable-source-r217.json",
+      "bytes": 47470,
+      "sha256": "3220960cdbf73234125735cc49b0409bc7db42e76a1707a9aa0b995ddb9ea3a9"
+    },
+    {
+      "file": "Design/native/health-write-order/durable-source-r217.json.gz",
+      "bytes": 1021413,
+      "sha256": "b1a48b1dbc349b0115fbfb08bf943c281cc718f0c7d7cbed358e7d5fbaf58d2b"
+    },
+    {
+      "file": "Lumen/Views/BackupFileRecoveryView.swift",
+      "bytes": 28364,
+      "sha256": "da00f82ca607877c1328d1cc474faa024813eefbb339953e23e1c69f08034f93"
+    },
+    {
+      "file": "Lumen/Models/HealthLegacyRecoveryOrigin.swift",
+      "bytes": 15081,
+      "sha256": "9eddbef986fac589d7bfa3ab81cfad5a9b11caba23e39794795bbebcf8e3ecb9"
+    },
+    {
+      "file": "Lumen/Views/HealthRecoveryCancelUIFixture.swift",
+      "bytes": 36830,
+      "sha256": "97bfde178ebb4efb97ff8d601a29864f30e7f43a472c92bf0dc28551dabe3cb4"
+    },
+    {
+      "file": "Lumen/Persistence/LocalStore.swift",
+      "bytes": 23686,
+      "sha256": "85177baebb876b27d8cb4160fbe52337802284cc0c694a6b13efacdf8e61590d"
+    },
+    {
+      "file": "Lumen/Models/BackupPackage.swift",
+      "bytes": 26080,
+      "sha256": "790727e51e8fc90c5b58cd7b882e281f9e3825c51ace68e92048bebe7c595bc7"
+    },
+    {
+      "file": "Lumen/Models/BackupStorageRevision.swift",
+      "bytes": 1061,
+      "sha256": "1c4748f91bf74ea8e6df8a9b69405485220509c03edf584fc5064f5a89fc2783"
+    },
+    {
+      "file": "Lumen/Models/HealthRecoveryCopies.swift",
+      "bytes": 48433,
+      "sha256": "61e5b1e1da288e9b69765bf355c34b07eea46b178f972b1f33dbba42050c7c63"
+    },
+    {
+      "file": "Lumen/Models/BackupRecoverySource.swift",
+      "bytes": 4777,
+      "sha256": "7bd67fbee0a145eb9a78a5132dcc62183411eb7b84e913273247a54e8ea5cebf"
+    },
+    {
+      "file": "Lumen/Views/BackupView.swift",
+      "bytes": 24110,
+      "sha256": "b67fe06d45f285f5412ca18082b6d89de86d0e34892b838b11803d0c26c26f4a"
+    },
+    {
+      "file": "Lumen/Models/HealthStore.swift",
+      "bytes": 48180,
+      "sha256": "b10404710cb5aa91b27fef833db09bfe837bdcfecfe0c720321dc9284aaa8c80"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-mixed-ineligible-source217-round2-part81-native.json",
+      "bytes": 26306,
+      "sha256": "1233815a6fecc6eaea282110d294d6232d09b5c8c96c0f3d665ac2db4bcfc7b5"
+    },
+    {
+      "file": "Design/native/health-write-order/health-current-release-source217-round2-part82.json",
+      "bytes": 15196,
+      "sha256": "b4e14a9d30b159a66069106e0093a8269a14202725b5b02868f3a3adf2a220b8"
+    }
+  ],
+  "storage": {
+    "criticDeletedFiles": false,
+    "criticRecoveredBytes": 0,
+    "availableBytesAtFreeze": 38774464512
+  },
+  "checkedAt": 1794113855.144789
+}

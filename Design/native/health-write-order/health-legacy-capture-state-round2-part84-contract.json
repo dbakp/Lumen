@@ -1,0 +1,134 @@
+{
+  "part": 84,
+  "scope": "Narrow contract-only closure of P83-C1/C2 against immutable r1 plus separate r2 addendum. No implementation, source-ready, native or product acceptance.",
+  "verdict": {
+    "contractClarificationsClosed": [
+      "P83-C1",
+      "P83-C2"
+    ],
+    "remainingConcreteContractBlockers": [],
+    "readyForConcreteImplementationAndLaterIndependentSourceReview": true,
+    "sourceReady": false,
+    "runtimeAccepted": false,
+    "overallAcceptance": false,
+    "rubricScore": null
+  },
+  "verification": {
+    "baseContractHashMatchesAddendum": true,
+    "baseContract": {
+      "file": "health-legacy-capture-state-r1-contract.json",
+      "bytes": 10735,
+      "sha256": "28f11ffda199421c1290ffcfdafe7ab219aaf06701e73285546908965a9ebb5e"
+    },
+    "priorCritic": {
+      "file": "health-legacy-capture-state-round2-part83-contract.json",
+      "bytes": 15444,
+      "sha256": "a2d8b5864171d9456a8ef84843f75b3e0c47943a0bddd435e699d47542a99e27"
+    },
+    "all15PriorProvenanceBindingsStillExact": true,
+    "all5DeclaredCurrentSourceReferencesMatch217FullArchive": true,
+    "rootReviewConsistent": "Root explicitly accepted two required wording clarifications and retained no implementation/runtime acceptance.",
+    "method": "Fullr1/83 review retained, fullr2addendum/root read now; hash/byte validation only. No app/test/contract/source/evidence writes or native/simulator/device/process/defaults/build/Git/cleanup action."
+  },
+  "closures": [
+    {
+      "id": "P83-C1",
+      "status": "CLOSED at contract wording",
+      "why": [
+        "Observations now explicitly separate actual lock-protected control cancelled bit from Task.isCancelled, actual origins.state/metadata and matching run/session/control/nonce/ordinal. Read-only DEBUGsim accessor required; existing single cancellationHandler untouched.",
+        "Original thrown error type/domain/code and before-read/capture/finish phase recorded before rethrow to view catch/suspend; later UI-induced cancellation remains separate.",
+        "Actual suspend→initial and review.close→closed recorded separately. Pending after-read release only after matching actual close/controlcancel; both cancellation mechanisms reported when present, no deeper finish guard inferred if cancellation throws first.",
+        "In-function rejection before input defer, detached caller after captureOrigins return/throw after defer, UI wrapper completion and eventual legitimate-parent/workspace retirement are distinct observations. No early zero-root claim."
+      ],
+      "implementationBoundary": "Concrete future hooks must expose actual source state without changing checks, guard ordering or authority; this text does not establish those hooks exist or that the desired timing runs."
+    },
+    {
+      "id": "P83-C2",
+      "status": "CLOSED at contract wording",
+      "why": [
+        "Durable intended/completed journal now precedes namespace mutations outside currentroot, with fsync/atomic replacement, exact run/nonce/root/parent/current/prior/default/provider/source facts and actual syscall results. Crash reconciliation uses actual identities, not last phase alone.",
+        "Two separate operations explicit: exclusive no-overwrite root rename, then exclusive no-follow sentinel creation. Sentinel-created/moved-root proof required before real capture release.",
+        "Exact-sentinel restoration branch and root-absent-after-rename-before-sentinel branch explicitly specified, including crash before journal phase completion. Both restore only exact owned unchanged moved root into absent original.",
+        "Foreign/changed parent/root/sentinel/moved path causes retained failure with explicit needed owner action; no overwrite/delete/rename unknown entry, no destructive fallback on EEXIST.",
+        "Failure after sentinel removal retains absent-root/remaining-moved-root state; guarded retry only, no finally-ran success. Retry forbidden until independently verified original root identity/tree restored and movedroot absent.",
+        "Original file byte/inode/device/mode/linkcount/mtime and complete directory inventory exact; expected root/parent namespace ctime/mtime effects recorded without false immutability. Bounded quietstate explicitly limited."
+      ],
+      "implementationBoundary": "Exclusive/no-follow operations, journal durability/reconciliation and phase-specific finally behavior must be verified in real concrete host source before trial. No current fault, restoration or crash experiment performed."
+    }
+  ],
+  "unchangedScope": {
+    "cases": 2,
+    "plannedOriginals": 12,
+    "plannedFullNativeHelpers": 2,
+    "fixture": "Dedicated guarded DEBUGsim legacyJSON/nonmixedData/mainlightstandard; after-read pendingBack and before-read actualroot-invalid Checkagain retry only.",
+    "authority": "No fake snapshot/getter/eligibility/return value, forcedmetadata or production failure bypass. Real capture and unchanged finish/control guards remain authoritative.",
+    "data": "Full current/prior/knownfixedData/provider/source/workspace/metadata/allowed-tree/no-stage/no-receipt preservation requirements remain. No recovery commit or Health-write acceptance from either case.",
+    "broader": "All43/eightgroups/fullgoal, retainedtargetlegacyUI/negative/reset/appearance/VOspeech/motion/contrast/continuous timings remain open."
+  },
+  "next": "Preserve both judged files and this source-only closure. Actual217normal native case/root/critic and currentRelease must reach required exact checkpoint before any source218 edit. Then freeze actual guarded hooks/native/strict host/checker/marker plan for concrete independent preexecution review; do not infer readiness from this wording closure.",
+  "provenance": [
+    {
+      "file": "health-legacy-capture-state-r1-contract.json",
+      "bytes": 10735,
+      "sha256": "28f11ffda199421c1290ffcfdafe7ab219aaf06701e73285546908965a9ebb5e"
+    },
+    {
+      "file": "health-legacy-capture-state-r2-addendum.json",
+      "bytes": 4908,
+      "sha256": "1bad2b2a79b3f6a6700a9d3dbdfa5ebb30be41f679721b4fe5ffcc3c4c42d23e"
+    },
+    {
+      "file": "health-legacy-capture-state-round2-part83-contract.json",
+      "bytes": 15444,
+      "sha256": "a2d8b5864171d9456a8ef84843f75b3e0c47943a0bddd435e699d47542a99e27"
+    },
+    {
+      "file": "health-legacy-capture-state-r1-root-review.json",
+      "bytes": 581,
+      "sha256": "667e584285749ddb6e807e7c5366b82a141a535268b1d74cca476c6f35b46574"
+    },
+    {
+      "file": "durable-source-r217.json",
+      "bytes": 47470,
+      "sha256": "3220960cdbf73234125735cc49b0409bc7db42e76a1707a9aa0b995ddb9ea3a9"
+    },
+    {
+      "file": "durable-source-r217.json.gz",
+      "bytes": 1021413,
+      "sha256": "b1a48b1dbc349b0115fbfb08bf943c281cc718f0c7d7cbed358e7d5fbaf58d2b"
+    }
+  ],
+  "sourceReferenceBindings": [
+    {
+      "file": "Lumen/Views/BackupFileRecoveryView.swift",
+      "bytes": 28364,
+      "sha256": "da00f82ca607877c1328d1cc474faa024813eefbb339953e23e1c69f08034f93"
+    },
+    {
+      "file": "Lumen/Models/HealthLegacyRecoveryOrigin.swift",
+      "bytes": 15081,
+      "sha256": "9eddbef986fac589d7bfa3ab81cfad5a9b11caba23e39794795bbebcf8e3ecb9"
+    },
+    {
+      "file": "Lumen/Views/HealthRecoveryCancelUIFixture.swift",
+      "bytes": 36830,
+      "sha256": "97bfde178ebb4efb97ff8d601a29864f30e7f43a472c92bf0dc28551dabe3cb4"
+    },
+    {
+      "file": "Lumen/Persistence/LocalStore.swift",
+      "bytes": 23686,
+      "sha256": "85177baebb876b27d8cb4160fbe52337802284cc0c694a6b13efacdf8e61590d"
+    },
+    {
+      "file": "Lumen/Models/BackupPackage.swift",
+      "bytes": 26080,
+      "sha256": "790727e51e8fc90c5b58cd7b882e281f9e3825c51ace68e92048bebe7c595bc7"
+    }
+  ],
+  "storage": {
+    "criticDeletedFiles": false,
+    "criticRecoveredBytes": 0,
+    "availableBytesAtFreeze": 39264354304
+  },
+  "checkedAt": 1794113989.830155
+}

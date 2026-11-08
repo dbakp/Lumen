@@ -1,0 +1,33 @@
+{
+  "status": "Contract clarification only; no implementation/source-ready/runtime claim",
+  "base": "health-legacy-capture-state-r1-contract.json",
+  "baseSHA256": "28f11ffda199421c1290ffcfdafe7ab219aaf06701e73285546908965a9ebb5e",
+  "respondsTo": "health-legacy-capture-state-round2-part83-contract.json",
+  "unchanged": "Two narrow cases,12plannedoriginals/2helpers, same protected data/source/provider/owner/cleanup and full broadergoal. Do not rewrite judgedr1.",
+  "P83-C1": {
+    "observations": "At held, actual Back-before-release, failedcapture-before-view-catch, finish rejection, after-return and retry: record actual run/session/control/nonce/ordinal, Task.isCancelled, separate lock-protected actual control cancelled bit, actual origins.state and metadata availability. Read-only DEBUGsim accessor only; do not replace or wrap existing single cancellationHandler.",
+    "operationalError": "Record original thrown error type/domain/code and exact before-read/capture/finish execution phase BEFORE rethrow to view catch/suspend. Later suspend-caused cancellation is separate observation; do not mislabel root-invalid as cancellation.",
+    "ordering": "Observe actual suspend initial vs actual review.close closed separately. Host releases pending-after-read ONLY after actual close and actualmatchingcontrolcancel seen. If both Task/control cancelled, reportboth. Unchanged finish may reject at cancellation beforeclosedphaseguard; neverclaim deeperguard executed.",
+    "lifetime": "Record finish-rejection before input-lifetime defer only as infunction event. Separate detached caller after captureOrigins returns/throws (after defer), actual UIwrapper completion, and eventual workspace retirement after legitimateparent/inputownersrelease. No earlyzero-roots assertion."
+  },
+  "P83-C2": {
+    "journal": "Before mutation durably record run/nonce/exact syntheticroot+parent identities, original complete current/prior byte+metadata inventories, fixedknown defaults/provider/source and intended exclusive nonce sibling/sentinel paths. Persist intended and completed per-step syscalloutcomes outside currentroot, with fsync and atomicjournalreplacement. Crash between steps requires reconciling actual namespace against predeclared exact identities, not trusting lastwritten phase alone.",
+    "states": [
+      "prepared: original exact owned root, destination sibling absent; record before exclusive no-overwrite rename",
+      "root-moved: original absent, exact same root inode/tree under nonce sibling; record before exclusive no-follow regularsentinel create",
+      "sentinel-created: exact known noncebytes/inode/mode at original; independently verify movedtree/prior/default/provider before releasing realcapture",
+      "capture-failed: retain actual operational failure then UIissue; workerterminal observed before restoration",
+      "restoring: verify exactowned movedroot; classify original as exactknownsentinel, absent, or foreign before each namespace action",
+      "restored: original root exact same inode/filebytes+metadata/dirinventory, movedroot absent and no unknownfaultartifacts; only now allow actualCheckagain"
+    ],
+    "finallyBranches": {
+      "exactSentinel": "Remove ONLY still-matching known regularsentinel; record actual operation result, then restore exactowned movedroot to absent original with exclusive/no-overwrite rename. Reverify exactrestoredroot independently.",
+      "absentBeforeSentinel": "If rename succeeded but creation nevercompleted/failed and original is still absent, restore ONLY exactowned unchanged movedroot using exclusive/no-overwrite rename. This branch applies even when failure occurred before root-moved journal completion, after actual namespace reconciliation.",
+      "foreignOrChanged": "If original or movedroot/sentinel/parent differs from exactknownfacts, never overwrite/delete/rename foreign entries. Retain failedcase, actualrestoration error and remainingknownownedroot/journal; neededowneraction explicit. An EEXIST during exclusive restore is failure, not fallback to destructive rename.",
+      "afterSentinelRemoval": "If sentinel removal succeeds but root restore fails, retain new phase/error and exactremainingnamespace; retry only guarded absent-root+exactowned movedroot branch. No finally-ran successclaim."
+    },
+    "metadataBoundary": "Original regularfile bytes/identities/mode/linkcount/mtime and complete directoryinventory exact. Root/parent ctime/mtime changes from namespaceoperations recorded as expected effects, not immutablemetadata claims. Quietstate bounded and observed; no globalcrossprocess or arbitraryTOCTOU proof.",
+    "releaseAndRetry": "Persist actual failed syscall/error facts before any assertion, hostrelease or restoration. No UIretry if restoration incomplete or unknownnamespace. No checkedDirectory/reset/forcedready fallback."
+  },
+  "checkedAt": 1794113927.8834078
+}

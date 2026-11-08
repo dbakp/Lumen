@@ -1,5 +1,5 @@
 {
-  "status": "Actual217mixed native1/0/0/driver0 root+critic81 supported; Release root passed/critic82 pending; normalData next after exact backup",
+  "status": "Actual217mixed root81/exact8c1130eb; currentRelease root82 andsamebuild normalData root85supported; completion exactbackup next",
   "source": "durable-source-r217.json",
   "plan": "source217-mixed-ineligible-r1-plan.json",
   "inputs": 279,
@@ -11,10 +11,10 @@
     "Design/native/health-write-order/source217-mixed-ineligible-r1-plan.json"
   ],
   "physicalDeviceActions": false,
-  "checkedAt": 1794113484.27669,
+  "checkedAt": 1794114412.883908,
   "critic": "health-legacy-mixed-ineligible-source217-round2-part81-native.json",
   "rootReview": "source217-mixed-ineligible-r1-root-review-final.json",
-  "next": "Exact complete mixedcase backup before simulatorreset; samefinalbuild normalData regression; independent82 currentRelease; pendingcapture/Checkagain and fullgoal",
+  "next": "Exact complete217 normal/Release/contracts checkpoint then scopedcompletedoutputcleanup andsource218capturestateimplementation/sourcepreexecutionreview",
   "exactSourceGithubMain": "5cd276e2677d42208a2fcaf0447b53469548c9c4 all23paths exactbeforecompile",
   "nativeBuild": {
     "session": 71817,
@@ -39,7 +39,18 @@
   "currentRelease": {
     "outcome": "health-current-release-source217-r1-outcome.json",
     "root": "source217-current-release-r1-root-review.json",
-    "independent": "pending82",
-    "coverageInstrumentation": true
+    "independent": "health-current-release-source217-round2-part82.json",
+    "coverageInstrumentation": true,
+    "rootFinal": "source217-current-release-r1-root-review-final.json"
+  },
+  "exactMixedGithubMain": "8c1130eb62035b3288a2c54c2a5a08afdafa063f all58checkpoint/346union paths exact before reset",
+  "normalRegression": {
+    "runner": "source217-normal-origin-data-r2-executed.py",
+    "session": 52458,
+    "driverPID": 28695,
+    "nativePID": 28696,
+    "status": "Terminalnative1/0/0/driver0; all20originals/full970B root+critic85supported",
+    "critic": "health-legacy-failed-origin-source217-round2-part85-native-data.json",
+    "root": "source217-normal-origin-data-r2-root-review-final.json"
   }
 }
