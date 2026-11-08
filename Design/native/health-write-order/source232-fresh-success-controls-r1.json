@@ -1,0 +1,191 @@
+{
+  "status": "PASS isolated fresh-success retained-record controls",
+  "count": 29,
+  "accepted": 2,
+  "rejected": 27,
+  "cases": [
+    {
+      "name": "valid complete fresh commit",
+      "expectedAcceptance": true,
+      "actualAcceptance": true,
+      "errorType": null
+    },
+    {
+      "name": "pending deletion unavailable only",
+      "expectedAcceptance": true,
+      "actualAcceptance": true,
+      "errorType": null
+    },
+    {
+      "name": "wrong receipt source",
+      "expectedAcceptance": false,
+      "actualAcceptance": false,
+      "errorType": "AssertionError"
+    },
+    {
+      "name": "missing receipt domain",
+      "expectedAcceptance": false,
+      "actualAcceptance": false,
+      "errorType": "AssertionError"
+    },
+    {
+      "name": "omission",
+      "expectedAcceptance": false,
+      "actualAcceptance": false,
+      "errorType": "AssertionError"
+    },
+    {
+      "name": "boolean omission",
+      "expectedAcceptance": false,
+      "actualAcceptance": false,
+      "errorType": "AssertionError"
+    },
+    {
+      "name": "wrong photo digests",
+      "expectedAcceptance": false,
+      "actualAcceptance": false,
+      "errorType": "AssertionError"
+    },
+    {
+      "name": "wrong record digests",
+      "expectedAcceptance": false,
+      "actualAcceptance": false,
+      "errorType": "AssertionError"
+    },
+    {
+      "name": "wrong reviewed photos",
+      "expectedAcceptance": false,
+      "actualAcceptance": false,
+      "errorType": "AssertionError"
+    },
+    {
+      "name": "foreign file source",
+      "expectedAcceptance": false,
+      "actualAcceptance": false,
+      "errorType": "AssertionError"
+    },
+    {
+      "name": "extra receipt field",
+      "expectedAcceptance": false,
+      "actualAcceptance": false,
+      "errorType": "AssertionError"
+    },
+    {
+      "name": "foreign journal owner",
+      "expectedAcceptance": false,
+      "actualAcceptance": false,
+      "errorType": "AssertionError"
+    },
+    {
+      "name": "unchanged lifecycle",
+      "expectedAcceptance": false,
+      "actualAcceptance": false,
+      "errorType": "AssertionError"
+    },
+    {
+      "name": "missing pending deletion",
+      "expectedAcceptance": false,
+      "actualAcceptance": false,
+      "errorType": "AssertionError"
+    },
+    {
+      "name": "new acknowledgement",
+      "expectedAcceptance": false,
+      "actualAcceptance": false,
+      "errorType": "AssertionError"
+    },
+    {
+      "name": "changed deletion identity",
+      "expectedAcceptance": false,
+      "actualAcceptance": false,
+      "errorType": "AssertionError"
+    },
+    {
+      "name": "changed deletion payload",
+      "expectedAcceptance": false,
+      "actualAcceptance": false,
+      "errorType": "AssertionError"
+    },
+    {
+      "name": "old save requeued",
+      "expectedAcceptance": false,
+      "actualAcceptance": false,
+      "errorType": "AssertionError"
+    },
+    {
+      "name": "save unavailable rewritten",
+      "expectedAcceptance": false,
+      "actualAcceptance": false,
+      "errorType": "AssertionError"
+    },
+    {
+      "name": "deletion permission unexpected",
+      "expectedAcceptance": false,
+      "actualAcceptance": false,
+      "errorType": "AssertionError"
+    },
+    {
+      "name": "wrong private raw token",
+      "expectedAcceptance": false,
+      "actualAcceptance": false,
+      "errorType": "AssertionError"
+    },
+    {
+      "name": "private intent changed",
+      "expectedAcceptance": false,
+      "actualAcceptance": false,
+      "errorType": "AssertionError"
+    },
+    {
+      "name": "wrong legacy domains",
+      "expectedAcceptance": false,
+      "actualAcceptance": false,
+      "errorType": "AssertionError"
+    },
+    {
+      "name": "missing prior original",
+      "expectedAcceptance": false,
+      "actualAcceptance": false,
+      "errorType": "AssertionError"
+    },
+    {
+      "name": "provider identity changed",
+      "expectedAcceptance": false,
+      "actualAcceptance": false,
+      "errorType": "AssertionError"
+    },
+    {
+      "name": "residual stage",
+      "expectedAcceptance": false,
+      "actualAcceptance": false,
+      "errorType": "AssertionError"
+    },
+    {
+      "name": "carried record changed",
+      "expectedAcceptance": false,
+      "actualAcceptance": false,
+      "errorType": "AssertionError"
+    },
+    {
+      "name": "old photo identifier reused",
+      "expectedAcceptance": false,
+      "actualAcceptance": false,
+      "errorType": "ValueError"
+    },
+    {
+      "name": "extra installed file",
+      "expectedAcceptance": false,
+      "actualAcceptance": false,
+      "errorType": "AssertionError"
+    }
+  ],
+  "fixtureArchive": {
+    "file": "source232-fresh-success-controls-r1-fixtures.json.gz",
+    "bytes": 207268,
+    "sha256": "5445cc859bb4c9e4a6561f54dd07ba874fff2bb8c0203d57c50e18d2c5108e15",
+    "decodedBytes": 1123433,
+    "decodedSHA256": "249efd4451ab5fa59690e718f5ad3e1942370f743d2b55ca32f6bcaf4612e074"
+  },
+  "scope": "Pure injected records/real validator only. Not app, process, preferences, LocalStore, Health or native success proof.",
+  "checkedAt": 1794143132.396532
+}

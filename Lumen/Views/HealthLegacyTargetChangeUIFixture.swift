@@ -200,6 +200,7 @@ enum HealthLegacyTargetChangeUIFixture {
             case "mutated": expected = "host-target-changed"
             case "rejected": expected = "host-rejected"
             case "fresh-ready": expected = "host-fresh-ready"
+            case "fresh-recovery-committed": expected = "host-fresh-committed"
             case "closed": expected = readyCount >= 2 ? "host-final-closed" : "host-owners-closed"
             default: expected = nil
             }
@@ -280,8 +281,18 @@ enum HealthLegacyTargetChangeUIFixture {
                          "actualErrorType": errorType, "actualRecoveryControl": control])
         } }
         func succeeded(_ session: UUID) { update {
-            status = "unexpected-success"
-            rows.append(["event": "actual-recovery-success", "sessionID": session.uuidString])
+            guard active == session, bootstrapNativeChecked, consumed, written,
+                  status == "fresh-ready", let readyID, readyID == captureID,
+                  let original = rows.first?["sessionID"] as? String,
+                  original != session.uuidString,
+                  rows.filter({ $0["event"] as? String == "actual-recovery-error" }).count == 1,
+                  let rejection = rows.first(where: { $0["event"] as? String == "actual-recovery-error" }),
+                  rejection["sessionID"] as? String == original,
+                  rejection["changedClassification"] as? Bool == true
+            else { throw Failure.invalidObservation }
+            status = "fresh-recovery-committed"
+            rows.append(["event": "actual-recovery-success", "sessionID": session.uuidString,
+                         "captureID": readyID.uuidString])
         } }
         func authorize(_ context: Context, session: UUID) throws -> UUID {
             lock.lock(); defer { lock.unlock() }

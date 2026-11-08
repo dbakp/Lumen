@@ -1,0 +1,178 @@
+{
+  "status": "PASS final-validator isolated replay",
+  "count": 32,
+  "accepted": 2,
+  "rejected": 30,
+  "cases": [
+    {
+      "name": "valid complete fresh commit",
+      "expectedAcceptance": true,
+      "actualAcceptance": true
+    },
+    {
+      "name": "pending deletion unavailable only",
+      "expectedAcceptance": true,
+      "actualAcceptance": true
+    },
+    {
+      "name": "wrong receipt source",
+      "expectedAcceptance": false,
+      "actualAcceptance": false
+    },
+    {
+      "name": "missing receipt domain",
+      "expectedAcceptance": false,
+      "actualAcceptance": false
+    },
+    {
+      "name": "omission",
+      "expectedAcceptance": false,
+      "actualAcceptance": false
+    },
+    {
+      "name": "boolean omission",
+      "expectedAcceptance": false,
+      "actualAcceptance": false
+    },
+    {
+      "name": "wrong photo digests",
+      "expectedAcceptance": false,
+      "actualAcceptance": false
+    },
+    {
+      "name": "wrong record digests",
+      "expectedAcceptance": false,
+      "actualAcceptance": false
+    },
+    {
+      "name": "wrong reviewed photos",
+      "expectedAcceptance": false,
+      "actualAcceptance": false
+    },
+    {
+      "name": "foreign file source",
+      "expectedAcceptance": false,
+      "actualAcceptance": false
+    },
+    {
+      "name": "extra receipt field",
+      "expectedAcceptance": false,
+      "actualAcceptance": false
+    },
+    {
+      "name": "foreign journal owner",
+      "expectedAcceptance": false,
+      "actualAcceptance": false
+    },
+    {
+      "name": "unchanged lifecycle",
+      "expectedAcceptance": false,
+      "actualAcceptance": false
+    },
+    {
+      "name": "missing pending deletion",
+      "expectedAcceptance": false,
+      "actualAcceptance": false
+    },
+    {
+      "name": "new acknowledgement",
+      "expectedAcceptance": false,
+      "actualAcceptance": false
+    },
+    {
+      "name": "changed deletion identity",
+      "expectedAcceptance": false,
+      "actualAcceptance": false
+    },
+    {
+      "name": "changed deletion payload",
+      "expectedAcceptance": false,
+      "actualAcceptance": false
+    },
+    {
+      "name": "old save requeued",
+      "expectedAcceptance": false,
+      "actualAcceptance": false
+    },
+    {
+      "name": "save unavailable rewritten",
+      "expectedAcceptance": false,
+      "actualAcceptance": false
+    },
+    {
+      "name": "deletion permission unexpected",
+      "expectedAcceptance": false,
+      "actualAcceptance": false
+    },
+    {
+      "name": "wrong private raw token",
+      "expectedAcceptance": false,
+      "actualAcceptance": false
+    },
+    {
+      "name": "private intent changed",
+      "expectedAcceptance": false,
+      "actualAcceptance": false
+    },
+    {
+      "name": "wrong legacy domains",
+      "expectedAcceptance": false,
+      "actualAcceptance": false
+    },
+    {
+      "name": "missing prior original",
+      "expectedAcceptance": false,
+      "actualAcceptance": false
+    },
+    {
+      "name": "provider identity changed",
+      "expectedAcceptance": false,
+      "actualAcceptance": false
+    },
+    {
+      "name": "residual stage",
+      "expectedAcceptance": false,
+      "actualAcceptance": false
+    },
+    {
+      "name": "carried record changed",
+      "expectedAcceptance": false,
+      "actualAcceptance": false
+    },
+    {
+      "name": "old photo identifier reused",
+      "expectedAcceptance": false,
+      "actualAcceptance": false
+    },
+    {
+      "name": "extra installed file",
+      "expectedAcceptance": false,
+      "actualAcceptance": false
+    },
+    {
+      "name": "invalid manifest date",
+      "expectedAcceptance": false,
+      "actualAcceptance": false
+    },
+    {
+      "name": "boolean envelope schema",
+      "expectedAcceptance": false,
+      "actualAcceptance": false
+    },
+    {
+      "name": "changed prior root",
+      "expectedAcceptance": false,
+      "actualAcceptance": false
+    }
+  ],
+  "inputArchive": {
+    "file": "source232-fresh-success-controls-r1-fixtures.json.gz",
+    "bytes": 207268,
+    "sha256": "5445cc859bb4c9e4a6561f54dd07ba874fff2bb8c0203d57c50e18d2c5108e15",
+    "decodedBytes": 1123433,
+    "decodedSHA256": "249efd4451ab5fa59690e718f5ad3e1942370f743d2b55ca32f6bcaf4612e074"
+  },
+  "validatorSHA256": "492d49428faf02dd5f7b9759b877429425c779e66673d2abfef7cd176d04acb0",
+  "scope": "Pure records only, no native/app/process/preferences/Health execution.",
+  "checkedAt": 1794143201.285162
+}
