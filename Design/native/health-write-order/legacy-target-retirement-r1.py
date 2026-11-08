@@ -1,0 +1,147 @@
+"""Bounded read-only retirement observations; no namespace deletion or repair."""
+import errno,os,stat,time
+from pathlib import Path,PurePosixPath
+from uuid import UUID
+FIELDS=['st_ino','st_dev','st_mode','st_nlink','st_size','st_mtime_ns']
+IDENTITY=['st_ino','st_dev','st_mode','st_size','st_mtime_ns']
+def facts(value):return {key:getattr(value,key) for key in FIELDS}
+
+def expected(first,current,validation):
+    files=dict(first['current']['files']);metadata=dict(first['current']['metadata']['files'])
+    prefix=validation['priorPrivateDirectory']+'/'
+    for name,row in current['files'].items():
+        if name.startswith(prefix):files[name]=row;metadata[name]=current['metadata']['files'][name]
+    assert len(files)==17
+    directories=set()
+    for name in files:
+        parent=PurePosixPath(name).parent
+        while str(parent)!='.':directories.add(str(parent));parent=parent.parent
+    return files,metadata,directories
+
+def read_retiring(path,sink,first,current,validation,h,persist):
+    """Directory-FD traversal cannot follow a substituted link outside the root.
+
+    Only ENOENT may represent concurrent async removal. Every still-open file
+    must retain its expected inode/bytes; partial trees are not final acceptance.
+    """
+    path=Path(path);sink['path']=str(path);persist()
+    try:root=os.open(path,os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW)
+    except OSError as error:
+        sink.update(exists=False,errno=error.errno);persist()
+        if error.errno==errno.ENOENT:return
+        raise
+    try:
+        sink.update(exists=True,identity=facts(os.fstat(root)),entries=[],disappeared=[]);persist()
+        wanted=first['current']['rootIdentity']
+        assert all(sink['identity'][key]==wanted[key] for key in ['st_ino','st_dev','st_mode'])
+        files,metadata,directories=expected(first,current,validation);total=0
+        def walk(fd,prefix=''):
+            nonlocal total
+            names=[]
+            with os.scandir(fd) as children:
+                for child in children:
+                    names.append(child.name);assert len(names)<=len(files)+len(directories)
+            names.sort()
+            for name in names:
+                relative=prefix+name
+                assert relative in files or relative in directories,relative
+                try:
+                    child=os.open(name,os.O_RDONLY|os.O_NOFOLLOW|os.O_NONBLOCK,dir_fd=fd)
+                except OSError as error:
+                    sink['disappeared'].append({'path':relative,'errno':error.errno});persist()
+                    if error.errno==errno.ENOENT:continue
+                    raise
+                entry={'path':relative}
+                try:
+                    sink['entries'].append(entry);persist()
+                    before=os.fstat(child);entry['identityBefore']=facts(before);persist()
+                    if relative in directories:
+                        assert stat.S_ISDIR(before.st_mode);entry['kind']='directory';persist()
+                        walk(child,relative+'/')
+                    else:
+                        assert stat.S_ISREG(before.st_mode) and before.st_size<=256*1024
+                        entry['kind']='regular';chunks=[];size=0
+                        while True:
+                            chunk=os.read(child,65536)
+                            if not chunk:break
+                            size+=len(chunk);assert size<=256*1024;chunks.append(chunk)
+                        raw=b''.join(chunks);total+=len(raw);assert total<=2*1024*1024
+                        entry['payload']=h.row(raw);entry['identityAfter']=facts(os.fstat(child));persist()
+                        assert entry['payload']==files[relative]
+                        assert all(entry['identityBefore'][key]==entry['identityAfter'][key]==metadata[relative]['identity'][key] for key in IDENTITY)
+                finally:
+                    os.close(child);entry['descriptorClosed']=True;persist()
+        walk(root)
+    finally:
+        os.close(root);sink['descriptorClosed']=True;persist()
+
+def collect(group,sink,first,current,validation,h,persist):
+    group=Path(group);sink.update(group=str(group),previous={},retired=[],restore=[],resetFixtures=[]);persist()
+    read_retiring(group/'LumenData.previous',sink['previous'],first,current,validation,h,persist)
+    for pattern,key in [('LumenData.retired-*','retired'),('LumenData.restore-*','restore'),('Lumen-reset-fixture-*','resetFixtures')]:
+        paths=sorted(group.glob(pattern));sink[key]=[{'path':str(path)} for path in paths];persist()
+        if key!='retired':assert not paths,pattern
+        else:
+            assert len(paths)<=1
+            for path,entry in zip(paths,sink[key]):
+                suffix=path.name.removeprefix('LumenData.retired-');UUID(suffix)
+                read_retiring(path,entry,first,current,validation,h,persist)
+
+def validate_namespace(namespace,first,current,validation,h):
+    group=Path(namespace['group']);assert group.is_absolute()
+    assert namespace['restore']==namespace['resetFixtures']==[]
+    assert len(namespace['retired'])<=1
+    files,metadata,directories=expected(first,current,validation)
+    roots=[namespace['previous']]+namespace['retired']
+    assert namespace['previous']['path']==str(group/'LumenData.previous')
+    for root in namespace['retired']:
+        path=Path(root['path']);assert path.parent==group and path.name.startswith('LumenData.retired-')
+        UUID(path.name.removeprefix('LumenData.retired-'))
+    for root in roots:
+        if root['exists'] is False:
+            assert root=={'path':root['path'],'exists':False,'errno':2};continue
+        assert root['exists'] is True and root['descriptorClosed'] is True
+        assert all(root['identity'][key]==first['current']['rootIdentity'][key] for key in ['st_ino','st_dev','st_mode'])
+        assert len(root['entries'])<=len(files)+len(directories)
+        names=[row['path'] for row in root['entries']];assert len(names)==len(set(names))
+        for entry in root['entries']:
+            name=entry['path'];assert entry['descriptorClosed'] is True
+            if name in directories:assert entry['kind']=='directory' and stat.S_ISDIR(entry['identityBefore']['st_mode'])
+            else:
+                assert name in files and entry['kind']=='regular' and stat.S_ISREG(entry['identityBefore']['st_mode'])
+                assert entry['payload']==files[name]
+                assert all(entry['identityBefore'][key]==entry['identityAfter'][key]==metadata[name]['identity'][key] for key in IDENTITY)
+        for disappeared in root['disappeared']:assert disappeared['path'] in set(files)|directories and disappeared['errno']==2
+
+def settled(namespace):
+    return namespace['previous']['exists'] is False and namespace['previous']['errno']==2 and namespace['retired']==namespace['restore']==namespace['resetFixtures']==[]
+
+def wait(sink,sample,persist,clock=time.monotonic,sleep=time.sleep):
+    sink.update(status='OBSERVING readonly retirement',budgetSeconds=10,intervalSeconds=.1,stableSamples=3,stableSpanSeconds=.2,samples=[]);persist()
+    start=clock();streak=[]
+    try:
+        while True:
+            row={'elapsed':clock()-start};sink['samples'].append(row);persist()
+            previous=sink['samples'][-2]['completedElapsed'] if len(sink['samples'])>1 else 0
+            assert previous<=row['elapsed']<10
+            sample(row);row['completedElapsed']=clock()-start;persist()
+            assert row['elapsed']<=row['completedElapsed']<10
+            row['settled']=settled(row['success']['namespace']);persist()
+            streak=streak+[row['completedElapsed']] if row['settled'] else []
+            if len(streak)>=3 and streak[-1]-streak[0]>=.2:
+                sink.update(status='PASS sampled readonly retirement',acceptedElapsed=row['completedElapsed']);persist();return row
+            assert len(sink['samples'])<=102
+            sleep(.1)
+    except BaseException as error:
+        sink.update(status='FAILED readonly retirement',errorType=type(error).__name__);persist();raise
+
+def validate_wait(sink,validate_sample):
+    assert [sink[key] for key in ['budgetSeconds','intervalSeconds','stableSamples','stableSpanSeconds']]==[10,.1,3,.2]
+    assert 3<=len(sink['samples'])<=102;previous=0;streak=[]
+    for row in sink['samples']:
+        assert previous<=row['elapsed']<=row['completedElapsed']<10;previous=row['completedElapsed']
+        validate_sample(row)
+        actual=settled(row['success']['namespace']);assert row['settled'] is actual
+        streak=streak+[row['completedElapsed']] if actual else []
+    assert len(streak)>=3 and streak[-1]-streak[0]>=.2
+    assert sink['acceptedElapsed']==sink['samples'][-1]['completedElapsed'] and sink['status']=='PASS sampled readonly retirement'

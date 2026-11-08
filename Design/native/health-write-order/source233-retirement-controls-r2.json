@@ -1,0 +1,212 @@
+{
+  "status": "PASS isolated actual temporary descriptor and injected retirement controls",
+  "everyCheckOwnDescriptorSetPreserved": true,
+  "count": 32,
+  "accepted": 8,
+  "rejected": 24,
+  "checks": [
+    {
+      "name": "actual no-follow descriptor read of all17 retiring files",
+      "accepted": true,
+      "expectedAcceptance": true,
+      "errorType": null
+    },
+    {
+      "name": "root initial persistence closes fd",
+      "accepted": false,
+      "expectedAcceptance": false,
+      "errorType": "OSError"
+    },
+    {
+      "name": "child entry persistence closes both fds",
+      "accepted": false,
+      "expectedAcceptance": false,
+      "errorType": "OSError"
+    },
+    {
+      "name": "pending retired root is not settled success",
+      "accepted": false,
+      "expectedAcceptance": false,
+      "errorType": "AssertionError"
+    },
+    {
+      "name": "wrong retired root inode rejected",
+      "accepted": false,
+      "expectedAcceptance": false,
+      "errorType": "AssertionError"
+    },
+    {
+      "name": "mutated still-present retiring file rejected",
+      "accepted": false,
+      "expectedAcceptance": false,
+      "errorType": "AssertionError"
+    },
+    {
+      "name": "retiring leaf symlink rejected without following",
+      "accepted": false,
+      "expectedAcceptance": false,
+      "errorType": "OSError"
+    },
+    {
+      "name": "unexpected retiring child rejected",
+      "accepted": false,
+      "expectedAcceptance": false,
+      "errorType": "AssertionError"
+    },
+    {
+      "name": "extra retiring root rejected",
+      "accepted": false,
+      "expectedAcceptance": false,
+      "errorType": "AssertionError"
+    },
+    {
+      "name": "unexpected stage retained and rejected",
+      "accepted": false,
+      "expectedAcceptance": false,
+      "errorType": "AssertionError"
+    },
+    {
+      "name": "unexpected reset fixture retained and rejected",
+      "accepted": false,
+      "expectedAcceptance": false,
+      "errorType": "AssertionError"
+    },
+    {
+      "name": "invalid retiring root UUID rejected",
+      "accepted": false,
+      "expectedAcceptance": false,
+      "errorType": "ValueError"
+    },
+    {
+      "name": "retired root symlink rejected without following",
+      "accepted": false,
+      "expectedAcceptance": false,
+      "errorType": "NotADirectoryError"
+    },
+    {
+      "name": "wrong retired device rejected",
+      "accepted": false,
+      "expectedAcceptance": false,
+      "errorType": "AssertionError"
+    },
+    {
+      "name": "known partial retirement remains pending",
+      "accepted": true,
+      "expectedAcceptance": true,
+      "errorType": null
+    },
+    {
+      "name": "actual ENOENT previous and retired namespace settled",
+      "accepted": true,
+      "expectedAcceptance": true,
+      "errorType": null
+    },
+    {
+      "name": "strict success accepts real absent namespace",
+      "accepted": true,
+      "expectedAcceptance": true,
+      "errorType": null
+    },
+    {
+      "name": "permission query error is not absence",
+      "accepted": false,
+      "expectedAcceptance": false,
+      "errorType": "PermissionError"
+    },
+    {
+      "name": "three settled samples accepted",
+      "accepted": true,
+      "expectedAcceptance": true,
+      "errorType": null
+    },
+    {
+      "name": "known retirement then stable absence",
+      "accepted": true,
+      "expectedAcceptance": true,
+      "errorType": null
+    },
+    {
+      "name": "pending retirement deadline fails",
+      "accepted": false,
+      "expectedAcceptance": false,
+      "errorType": "AssertionError"
+    },
+    {
+      "name": "observation failure retained and fails",
+      "accepted": false,
+      "expectedAcceptance": false,
+      "errorType": "PermissionError"
+    },
+    {
+      "name": "persistence failure cannot pass",
+      "accepted": false,
+      "expectedAcceptance": false,
+      "errorType": "OSError"
+    },
+    {
+      "name": "completed sample over budget fails",
+      "accepted": false,
+      "expectedAcceptance": false,
+      "errorType": "AssertionError"
+    },
+    {
+      "name": "retained immediate observations revalidated",
+      "accepted": true,
+      "expectedAcceptance": true,
+      "errorType": null
+    },
+    {
+      "name": "retained transition observations revalidated",
+      "accepted": true,
+      "expectedAcceptance": true,
+      "errorType": null
+    },
+    {
+      "name": "forged settled label",
+      "accepted": false,
+      "expectedAcceptance": false,
+      "errorType": "AssertionError"
+    },
+    {
+      "name": "forged accepted elapsed",
+      "accepted": false,
+      "expectedAcceptance": false,
+      "errorType": "AssertionError"
+    },
+    {
+      "name": "missing stability samples",
+      "accepted": false,
+      "expectedAcceptance": false,
+      "errorType": "AssertionError"
+    },
+    {
+      "name": "changed sample budget",
+      "accepted": false,
+      "expectedAcceptance": false,
+      "errorType": "AssertionError"
+    },
+    {
+      "name": "backward sample times",
+      "accepted": false,
+      "expectedAcceptance": false,
+      "errorType": "AssertionError"
+    },
+    {
+      "name": "retained wrong retired inode",
+      "accepted": false,
+      "expectedAcceptance": false,
+      "errorType": "AssertionError"
+    }
+  ],
+  "sourceBaselineArchiveSHA256": "a48975b727daf94de29caa20f19e495e283c26e8f53aa59a0232806b535a10d7",
+  "observerSHA256": "0f780c78fa87cb44f6e6a72379273ce3f1321f3bd706093ef4914bfb89ccca8e",
+  "fixtureArchive": {
+    "file": "source233-retirement-controls-r2-fixtures.json.gz",
+    "bytes": 310880,
+    "sha256": "5187720a48c1cfa12f69fce8e751b0991d4eb561c7446e178f48fb9ba64edbc9",
+    "decodedBytes": 1747312,
+    "decodedSHA256": "185cabe77d94b3c74eb1e335f3fa6bf3d722b6b0d431d978176ccd3010f1bf27"
+  },
+  "scope": "Own temporary synthetic folder only, removed by TemporaryDirectory. Clock/query/write failures injected; no actual simulator/app/LocalStore/Health operation or actual product retirement timing proof.",
+  "checkedAt": 1794144474.1177769
+}

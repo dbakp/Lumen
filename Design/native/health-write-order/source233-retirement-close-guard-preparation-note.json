@@ -1,0 +1,8 @@
+{
+  "status": "Source inspection found descriptor cleanup gap before freeze/native; fixed in final observer",
+  "priorObserverSHA256": "86f7b71720ba39bc00999def0662b5df799ed05569d91815f1eff3433b8a58a9",
+  "priorSource": "source233-retirement-observer-pre-close-fix.txt",
+  "finding": "Root fd identity/metadata/persist assertions and child entry persistence originally preceded their finally blocks. An early failure could leave a descriptor open until the isolated process ended. No actual simulator/native execution occurred.",
+  "correction": "Wrap all work after each successful root/child open in its finally close, including first persistence/identity guards. Earlier30R1controls remain historical; final observer requires fresh controls with fd-count assertions.",
+  "checkedAt": 1794144425.2272692
+}
