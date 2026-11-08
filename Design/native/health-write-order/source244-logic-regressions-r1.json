@@ -1,0 +1,91 @@
+{
+  "status": "PASS actualcurrentlogic regressions",
+  "binary": "/private/tmp/LumenLogicBuild/out/Products/Debug/LumenLogicChecks",
+  "binaryBytes": 17021696,
+  "binarySHA256": "4630a42e2c2ea5cce9ece0c7b13478f89c9dc71af84cd5987decb44cd345e92f",
+  "sourceSHA256": {
+    "Lumen/Models/HealthLegacyRecoveryOrigin.swift": "7f02e01a4a6ef79acb5c9aa8fd9d6235c2dec1e01d202ebbff1c9e7808c2be77",
+    "Lumen/Views/BackupFileRecoveryView.swift": "23c177d1f4b84b64b0dc5535da13c99d7954e8b071a6cd860232f1d420cc1447",
+    "Tests/HealthLegacyRecoveryOriginChecks.swift": "c4894241d6fdf65182e71c70135cf3f0826544164887b2f843692b53f44e1c75"
+  },
+  "runs": [
+    {
+      "label": "full",
+      "command": [
+        "/private/tmp/LumenLogicBuild/out/Products/Debug/LumenLogicChecks"
+      ],
+      "processPID": 4924,
+      "exit": 0,
+      "log": "source244-logic-full-r1.log.gz",
+      "logBytes": 171673,
+      "logSHA256": "cf495d3ce4c9497114472e8bc344145388c20601caa949fb0a1a4be26ddd35d1",
+      "printedPASSLines": 2177
+    },
+    {
+      "label": "legacy-origin",
+      "command": [
+        "/private/tmp/LumenLogicBuild/out/Products/Debug/LumenLogicChecks",
+        "--health-legacy-origin",
+        "/tmp/LumenBatch44Checks/Source244Logic-legacy-originR1.json"
+      ],
+      "processPID": 5257,
+      "exit": 0,
+      "log": "source244-logic-legacy-origin-r1.log.gz",
+      "logBytes": 82,
+      "logSHA256": "e4d48e919c56bcd9d298b7c2c7b8ed4d3fad9a03d5898153a93ebe0d799e9db3",
+      "printedPASSLines": 1,
+      "report": "source244-logic-legacy-origin-r1.json",
+      "reportBytes": 9592,
+      "reportSHA256": "88245a660b9e48d2b4e68e6c2696588c08ad08910abfe2b70d84e71b160f6a1c",
+      "reportedStatus": "PASS observation/provenance primitive only",
+      "checks": 57,
+      "failedChecks": [],
+      "retainedRoot": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/Lumen-legacy-origin-2790D59D-9A8C-4798-AE90-27B51C1EDB06"
+    },
+    {
+      "label": "legacy-transaction",
+      "command": [
+        "/private/tmp/LumenLogicBuild/out/Products/Debug/LumenLogicChecks",
+        "--health-legacy-transaction",
+        "/tmp/LumenBatch44Checks/Source244Logic-legacy-transactionR1.json"
+      ],
+      "processPID": 5381,
+      "exit": 0,
+      "log": "source244-logic-legacy-transaction-r1.log.gz",
+      "logBytes": 232,
+      "logSHA256": "5e5efd2dd48c734e450b014e8be2e0afe214e50a96b5040ca2548200272477cc",
+      "printedPASSLines": 1,
+      "report": "source244-logic-legacy-transaction-r1.json",
+      "reportBytes": 146898,
+      "reportSHA256": "b18a4bbce4832f40a25501d16fdccb42d2c955c834952a58905e67c6fb04334a",
+      "reportedStatus": "PASS actual backend legacy recovery transactions",
+      "checks": 117,
+      "failedChecks": [],
+      "retainedRoot": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/Lumen-legacy-transaction-8C9803F3-4BE3-4390-9185-C7008609E6F5"
+    },
+    {
+      "label": "legacy-boundaries",
+      "command": [
+        "/private/tmp/LumenLogicBuild/out/Products/Debug/LumenLogicChecks",
+        "--health-legacy-boundaries",
+        "/tmp/LumenBatch44Checks/Source244Logic-legacy-boundariesR1.json"
+      ],
+      "processPID": 5389,
+      "exit": 0,
+      "log": "source244-logic-legacy-boundaries-r1.log.gz",
+      "logBytes": 69,
+      "logSHA256": "111466975626b6deacede02a0fb1cc002c3126fb7887176e39e784a9c7afd6d7",
+      "printedPASSLines": 1,
+      "report": "source244-logic-legacy-boundaries-r1.json",
+      "reportBytes": 16712,
+      "reportSHA256": "f2e6b524b11e345968d795ff8353f98b7064bcd2299130bafcffafd399ec7441",
+      "reportedStatus": "PASS stage cleanup/retained-shape and type rejection boundaries",
+      "checks": 22,
+      "failedChecks": [],
+      "retainedRoot": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/Lumen-legacy-boundaries-551B33D7-55D4-44F9-8410-C4F652F04E7A"
+    }
+  ],
+  "scope": "ActualmacOS productionlogic executable only; no iOSapp/UI/newnative/Release/productcompletion acceptance",
+  "availableBytes": 29440212992,
+  "checkedAt": 1794160952.694595
+}

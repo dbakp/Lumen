@@ -1,0 +1,10 @@
+from pathlib import Path
+import json,gzip,hashlib,subprocess,time,shutil
+b=Path('Design/native/health-write-order');raw=Path('/tmp/LumenBatch44Checks');sha=lambda x:hashlib.sha256(x).hexdigest();files=['Lumen/Models/HealthLegacyRecoveryOrigin.swift','Lumen/Views/BackupFileRecoveryView.swift','Tests/HealthLegacyRecoveryOriginChecks.swift'];before={n:sha(Path(n).read_bytes()) for n in files};assert shutil.disk_usage('.').free>8*1024**3
+log=raw/'Source244OriginReviewR1.log';output=raw/'Source244OriginReviewR1.json';assert not log.exists() and not output.exists();command=['swift','run','--scratch-path','/tmp/LumenLogicBuild','--skip-update','LumenLogicChecks','--health-origin-review',str(output)]
+with log.open('xb') as f:
+ p=subprocess.Popen(command,stdout=f,stderr=subprocess.STDOUT);subprocess.Popen(['caffeinate','-i','-w',str(p.pid)]);print('Actualcurrent logic compile/review PID',p.pid,flush=True);code=p.wait()
+assert before=={n:sha(Path(n).read_bytes()) for n in files};data=log.read_bytes();fn='source244-origin-review-r1.log.gz';(b/fn).write_bytes(gzip.compress(data,mtime=0));out={'status':'PASS currentoriginreviewlogic' if code==0 else 'FAILED currentoriginreviewlogic; no app/runtime acceptance','command':command,'processPID':p.pid,'exit':code,'sourceSHA256':before,'log':fn,'logBytes':len(data),'logSHA256':sha(data),'availableBytes':shutil.disk_usage('.').free,'scope':'ActualmacOSlogic executable using production models/readers; no iOSappbuild/native/UI/transactioncommit or fullsuite acceptance','checkedAt':time.time()}
+if output.exists():
+ data=output.read_bytes();name='source244-origin-review-r1.json';(b/name).write_bytes(data);out.update(report=name,reportBytes=len(data),reportSHA256=sha(data));report=json.loads(data);out.update(checks=len(report['checks']),failedChecks=[r for r in report['checks'] if not r['passed']],retainedRoot=report.get('retainedRoot'))
+p=b/'source244-origin-review-r1-outcome.json';assert not p.exists();p.write_text(json.dumps(out,indent=2)+'\n');print(json.dumps(out),flush=True);raise SystemExit(code)

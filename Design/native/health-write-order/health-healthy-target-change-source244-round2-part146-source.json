@@ -1,0 +1,379 @@
+{
+  "part": 146,
+  "review": "Source244 fresh healthy-current-file eligibility production correction and actual macOS logic evidence",
+  "status": "SOURCE READY for actual current iOS app/test build and declared native validation; no healthy UI runtime acceptance yet",
+  "sourceReady": true,
+  "runtimeUIAccepted": false,
+  "productAcceptance": false,
+  "score": null,
+  "scope": "Read-only full current/archive comparison, complete three prior-input diffs, production reader/classifier/serialization/UI gate analysis, actual retained logic logs/reports/binary/fixture byte checks. No subject execution, app/build/native test, simulator/process/defaults/device/Git query, reset or cleanup by critic.",
+  "sourceBinding": {
+    "manifest": "durable-source-r244.json",
+    "archive": "durable-source-r244.json.gz",
+    "verifiedBindings": 708,
+    "text": 662,
+    "fixtures": 46,
+    "modifiedPriorInputs": [
+      "Lumen/Models/HealthLegacyRecoveryOrigin.swift",
+      "Lumen/Views/BackupFileRecoveryView.swift",
+      "Tests/HealthLegacyRecoveryOriginChecks.swift"
+    ],
+    "unchangedPriorInputs": 682,
+    "newInputs": 23,
+    "declaredChangeSetExact": true,
+    "priorExactCommit": "d018f26d129a8a2acc3b75e8b2d185c40e5b2ddd",
+    "priorCheckpointPaths": 58,
+    "priorUnionPaths": 1248,
+    "historicalFailure": "Actual243R1/Part145 remains failed and immutable; no healthy overwrite or fresh commit occurred there."
+  },
+  "findings": [],
+  "productionReview": {
+    "readabilityClassification": {
+      "source": "Lumen/Models/HealthLegacyRecoveryOrigin.swift:167",
+      "change": "For a current regular leaf, captureReview uses the actual bounded HealthLocalFiles.readRegularData and validateCurrentData for its domain. Successfully read and semantically valid content is added to ineligibleDomains and does not enter fileDomains or legacy origins. This conservatively excludes valid empty files as well as valid nonempty data.",
+      "readerProperties": "The unchanged production reader opens O_NOFOLLOW|O_NONBLOCK|O_CLOEXEC, verifies the descriptor is regular and within the existing100000000-byte cap before reading, uses bounded64KiB chunks with shared cancellation checks and growth limits, and verifies final descriptor/path device/inode/size/mtime stability before returning. Actual domain decoder/field audit and HealthRecordValidation are used; no healthy assumption from metadata kind alone.",
+      "privacyAndMutation": "Current raw Data and decoded values are local to the classification scope; only sets survive in ReviewMetadata. No current-data installation into HealthStore, defaults write, root opening/migration, storage revision bump, raw UI cache or authority payload is added."
+    },
+    "errorPolicy": {
+      "propagated": "CancellationError and HealthLocalFiles.Failure.changed are explicitly rethrown; outer loop/root/end cancellation checks remain. A cancelled or changed read is not converted to an available recovery target.",
+      "failedFiles": "Other read/decode failures keep the existing fileDomains route and no legacy fallback for a present file. Directories keep that route without being opened as regular data. Entry symlinks/other unsupported kinds remain ineligible. This policy does not itself grant replacement authority: unavailable-domain, preparation, final transaction and serialization checks remain unchanged.",
+      "limits": "This does not classify every filesystem/operational race or prove a fresh file cannot change after capture. The final transaction guards remain authoritative. Pre-cancelled healthy-file tests exercise cancellation before work; in-flight changed/cancellation propagation is source-reviewed, not newly injected native runtime proof."
+    },
+    "serializedLifetime": {
+      "path": "LocalStore.captureLegacyRecoveryReview continues writes.read then HealthRecoveryCopies.serialized around the same root-based capture. The new bounded current-file reads happen inside that existing off-main capture boundary. No LocalStore reentry or generation-changing write was introduced.",
+      "ownership": "Existing begin/suspend/finish/close lease/control identity and detached-work cancellation checks remain unchanged. Current healthy classification does not create a new origin object or keep raw current contents in the lease. Old ready origin snapshots are not silently refreshed, so the actual old stale Recover must still reach genuine final identity rejection."
+    },
+    "sharedUIAuthority": {
+      "recoverableSet": "ReviewMetadata.recoverableDomains is fileDomains union legacyDomains minus ineligibleDomains, so even contradictory metadata excludes an ineligible domain.",
+      "oneUISet": "eligibleDomains additionally intersects actual input presence and the existing checked HealthStore unavailable status. targetEligible, canRecover selected subset, replacement switches and meal-omission disabled state all use that one set. The existing healthy HealthStore branch remains conservative; a freshly classified healthy current file cannot regain eligibility merely because memory still says unavailable.",
+      "selectionAndAlerts": "onChange intersects selected with the current eligible set and clears omitPhotos when meals is no longer eligible. canRecover immediately rejects non-subset selections even before state-clamping callbacks settle. Existing actual Recover guards against frozen alert domains/omission/session/legacy metadata still apply, and worker payload acquisition remains on the actual action.",
+      "display": "The unchanged existing neutral ineligible disclosure is used when the current HealthStore boundary has not been installed; the repair does not pretend new contents were loaded into the main health model.",
+      "successAndBusy": "Raw worker input, committed legacy metadata, transaction/copy behavior, operation/control lifetime and reveal/focus code are unchanged. The clamp changes local choice state, not persistent data or an already bound worker payload."
+    }
+  },
+  "closureAssessment": {
+    "finding": "P145-C1",
+    "sourceStatus": "Addressed by the new classification and consistent metadata/UI gating at source and current macOS model/logic scope.",
+    "runtimeStatus": "OPEN until an actual new app completes the unchanged healthy-target native assertion and full recovery/cleanup contract. The historical enabled fresh controls are not retroactively accepted.",
+    "substantiveCorrectionsRequired": []
+  },
+  "actualLogicEvidence": {
+    "review": {
+      "producerPID": 3713,
+      "compileRunExit": 0,
+      "checks": 46,
+      "failedChecks": 0,
+      "reportBytes": 5168,
+      "reportSHA256": "85257ef78b43142a895873e19f712a4d1cfdf28ac3b86a9afa6eff1f8a84e2cb",
+      "logBytes": 12191,
+      "logSHA256": "fdcf04c0bc5301afa7fa217bbdb81bbeeb14b625174b6d9a54264bc42a2bdfa5",
+      "coverage": "23 existing review/lease/serialization checks plus23 added classification checks. All5 current domains, nonempty and empty healthy meals, unchanged file bytes/inode/mtime, pre-cancellation, malformed and semantically invalid meals, mixed healthy meal/unavailable legacy workout, directory, no-follow symlink and ineligible-set precedence are covered.",
+      "limits": "No SwiftUI interaction, actual iOS body typing, native owner flow or new transaction installation is established by these review checks."
+    },
+    "currentBinary": {
+      "path": "/private/tmp/LumenLogicBuild/out/Products/Debug/LumenLogicChecks",
+      "bytes": 17021696,
+      "sha256": "4630a42e2c2ea5cce9ece0c7b13478f89c9dc71af84cd5987decb44cd345e92f",
+      "independentlyReadAsData": true,
+      "changedSourceHashesMatch": true
+    },
+    "defaultLogic": {
+      "producerPID": 4924,
+      "exit": 0,
+      "printedPASSLines": 2177,
+      "finalSuccessLine": "All import, model, totals, history, plan, conversation, evidence, document and reminder checks passed.",
+      "logBytes": 171673,
+      "logSHA256": "cf495d3ce4c9497114472e8bc344145388c20601caa949fb0a1a4be26ddd35d1",
+      "countQualification": "Actual current default execution, not an inherited result. Do not rename this2350 or add overlapping focused checks."
+    },
+    "focusedRuns": [
+      {
+        "name": "legacy-origin",
+        "producerPID": 5257,
+        "exit": 0,
+        "checks": 57,
+        "failedChecks": 0,
+        "scope": "Data/String observation/provenance primitives"
+      },
+      {
+        "name": "legacy-transaction",
+        "producerPID": 5381,
+        "exit": 0,
+        "checks": 117,
+        "failedChecks": 0,
+        "scope": "Backend transaction/private-copy/receipt behavior"
+      },
+      {
+        "name": "legacy-boundaries",
+        "producerPID": 5389,
+        "exit": 0,
+        "checks": 22,
+        "failedChecks": 0,
+        "scope": "Stage cleanup/retained shape/type rejection boundaries"
+      }
+    ],
+    "independentVerification": "Full retained logs decompressed and exact sizes/hashes compared, PASS-line counts recounted, all structured checks parsed and successful; report hashes/changed source hashes and actual retained executable match. These producers were not rerun by critic.",
+    "fixtures": {
+      "roots": 4,
+      "regularFiles": 218,
+      "regularBytes": 24935,
+      "archiveDecodedBytes": 118720,
+      "archiveDecodedSHA256": "ce2c8363efa14f5afbf46a189d6a26168e779a77ec1612bd9f205c51eb766dfc",
+      "independentlyDecodedAndLiveCompared": true,
+      "actualKinds": {
+        "directory": 66,
+        "regular": 218,
+        "symlink": 3
+      },
+      "scope": "Known actual synthetic host roots only; live regular bytes and retained inode/device/mode/nlink/size/mtime match the archive. Symlinks were lstat/readlink checked, not followed. No FIFO is present in this actual archive; the retainer supports metadata-only FIFO handling. No deletion or native fixture proof."
+    },
+    "syntax": {
+      "SwiftFrontendParseExit": 0,
+      "stdout": "",
+      "stderr": "",
+      "scope": "Syntax only for three changed Swift files; Mac production model typing happened through actual logic compilation. No current iOS SwiftUI body/full app pair typing or native execution yet."
+    }
+  },
+  "buildAndHostContinuity": {
+    "actualNewIOSAppTestBuild": false,
+    "actualNativeSource244": false,
+    "actualReleaseSource244": false,
+    "currentDebugPair": "Old compiled242 remains historical/insufficient to exercise changed production code. A new actual244 app/test build is required.",
+    "host": "R3 producer/checker, unchanged242 native negative test and fixture, strict eight phases/full17 originals/fullhelper/whole success geometry/full22 copies/receipt/journal/retirement17/owner and final process endpoints remain unchanged. The host-only root entry correction is carried without further weakening.",
+    "markers": {
+      "negative": 207,
+      "plannedDebugPositive": 191,
+      "negativeOnly": 16,
+      "production": 21,
+      "arraysElementForElementUnchanged": true,
+      "actualNew244BinaryAudit": false
+    },
+    "plannedCommands": "Four build/binder/unsigned-Release/settings scripts are exact242 copies after source-number rename only. All remain unexecuted at this review boundary. Future Release remains optimized instrumented unsigned development verification, not distribution/performance/noninstrumented runtime acceptance."
+  },
+  "requiredNextGates": [
+    "Root full report/provenance check and exact Source244/current logic/fixture backup before the actual new app/test build.",
+    "Actual current244 iOS app/test build and current positive marker/pair/source/archive checks, preserving any compiler/marker failure; no source-only claim of full iOS typing.",
+    "Unchanged actual healthy-target test must retain the old guard acquisition/native healthy write/real stale Recover rejection, old owner Back/closure, fresh completed capture, whole healthy meal/omission unavailable-off and workout ready/off proof. Then only workouts may be selected and committed with strict22 files/private copies/receipt/source/provider/journal/retirement and actual final Back/closure/final R3 audit.",
+    "Open all17 actual new originals/read the full actual helper/summary; back up the complete case before reset or raw cleanup. A genuine additional failure remains unaccepted and must be preserved before repair.",
+    "Run relevant actual normal Data/String and mixed eligibility native regressions as the production capture/UI change requires, current Release/settings checks and remaining all43/eight-group/timing/retained-copy/appearance/speech/motion/full-goal work. Do not infer completion from this source/logic checkpoint."
+  ],
+  "limits": [
+    "No actual Source244 fresh healthy UI exclusion, old/new native authority flow, workout-only runtime commit, final native closure, current iOS executable or Release acceptance yet.",
+    "No broad filesystem race, atomic cross-defaults transaction, continuous cancellation/late-worker/FD/timing, physical device, distribution, performance, appearance, VoiceOver speech or motion claim.",
+    "No new global design score/product completion. Historical243 fresh UI failure,242 root-link failure and prior failures remain immutable."
+  ],
+  "storage": {
+    "availableBytes": 27357831168,
+    "criticDeletedBytes": 0,
+    "criticRecoveredBytes": 0,
+    "parentOnlyCleanup": "Parent reports137674752 bytes credited after exact1248-path proof for old243raw/known dead fresh roots. Canonical108/fullvideo/Debug/packages/provider/skill/unbacked191219 and current logic cache remain. Critic did not perform cleanup or rerun historical raw-bound audits."
+  },
+  "provenance": [
+    {
+      "path": "Lumen/Models/HealthLegacyRecoveryOrigin.swift",
+      "bytes": 16101,
+      "sha256": "7f02e01a4a6ef79acb5c9aa8fd9d6235c2dec1e01d202ebbff1c9e7808c2be77"
+    },
+    {
+      "path": "Lumen/Views/BackupFileRecoveryView.swift",
+      "bytes": 36698,
+      "sha256": "23c177d1f4b84b64b0dc5535da13c99d7954e8b071a6cd860232f1d420cc1447"
+    },
+    {
+      "path": "Tests/HealthLegacyRecoveryOriginChecks.swift",
+      "bytes": 25090,
+      "sha256": "c4894241d6fdf65182e71c70135cf3f0826544164887b2f843692b53f44e1c75"
+    },
+    {
+      "path": "Design/native/health-write-order/source244-healthy-current-eligibility-r1-plan.json",
+      "bytes": 4594,
+      "sha256": "742211ee3ed6b2d7baf31dec9130c2f8d37d756755b97972236325a57161171d"
+    },
+    {
+      "path": "Design/native/health-write-order/health-current-release-source244-r1-predeclared-plan.json",
+      "bytes": 19276,
+      "sha256": "6d1d4870a826f00d4a13c5c6a2b35729eb06c1e054209db55f34f0ba944ee616"
+    },
+    {
+      "path": "Design/native/health-write-order/source244-origin-review-r1.json",
+      "bytes": 5168,
+      "sha256": "85257ef78b43142a895873e19f712a4d1cfdf28ac3b86a9afa6eff1f8a84e2cb"
+    },
+    {
+      "path": "Design/native/health-write-order/source244-origin-review-r1-outcome.json",
+      "bytes": 1373,
+      "sha256": "e6069a5784796464ca33e78e35da216ad9aea9f659b6ed86d1576b9416a33019"
+    },
+    {
+      "path": "Design/native/health-write-order/source244-origin-review-r1-executed.py",
+      "bytes": 2064,
+      "sha256": "6d2a6035668357af8b23c34fc23bf0149f10231e40aeb3f1ddcba65645afd513"
+    },
+    {
+      "path": "Design/native/health-write-order/source244-logic-regressions-r1.json",
+      "bytes": 4019,
+      "sha256": "beef4cd7afd0cdf61b757dfcaee33d85808e2953e1a67c7e9380dcd4b392472b"
+    },
+    {
+      "path": "Design/native/health-write-order/source244-logic-regressions-r1-executed.py",
+      "bytes": 2564,
+      "sha256": "e1f4466ad1a1ffb98601ed07b305c616cb1f8cbf738eb37c2897eabad9076c5f"
+    },
+    {
+      "path": "Design/native/health-write-order/source244-logic-legacy-origin-r1.json",
+      "bytes": 9592,
+      "sha256": "88245a660b9e48d2b4e68e6c2696588c08ad08910abfe2b70d84e71b160f6a1c"
+    },
+    {
+      "path": "Design/native/health-write-order/source244-logic-legacy-transaction-r1.json",
+      "bytes": 146898,
+      "sha256": "b18a4bbce4832f40a25501d16fdccb42d2c955c834952a58905e67c6fb04334a"
+    },
+    {
+      "path": "Design/native/health-write-order/source244-logic-legacy-boundaries-r1.json",
+      "bytes": 16712,
+      "sha256": "f2e6b524b11e345968d795ff8353f98b7064bcd2299130bafcffafd399ec7441"
+    },
+    {
+      "path": "Design/native/health-write-order/source244-syntax-r1.json",
+      "bytes": 893,
+      "sha256": "686a7795ac3e24eaff1874a48c525e21ea77505fbb516713857db5b1ab88c2ff"
+    },
+    {
+      "path": "Design/native/health-write-order/source244-retain-logic-fixtures-r1-executed.py",
+      "bytes": 2284,
+      "sha256": "bbd93a777d3136394ed252c86a7a0021ab43f58d152ef7f2850e1715d83d0258"
+    },
+    {
+      "path": "Design/native/health-write-order/source244-logic-synthetic-roots-r1.json",
+      "bytes": 468,
+      "sha256": "25974b1053616849b19dee0c4b9d9edfa84c2ce80d4814eac469b40271f5befc"
+    },
+    {
+      "path": "Design/native/health-write-order/source244-target-change-native-build-r1-planned.py",
+      "bytes": 2682,
+      "sha256": "74aedf118484f8e3975699e86c59d40edd998c46c3acf5d98d0366b982a9b1de"
+    },
+    {
+      "path": "Design/native/health-write-order/source244-debug-release-controls-r1-planned.py",
+      "bytes": 2688,
+      "sha256": "aae20d2e43d1f9c9017091de5772cfb5cc018f86ea45fdb49a2367a4945d71d0"
+    },
+    {
+      "path": "Design/native/health-write-order/source244-unsigned-release-r1-planned.py",
+      "bytes": 3333,
+      "sha256": "a2cc491403e6d4cfdc799afe853b7bf5d22b789d7ea9f729a91e3b865664932b"
+    },
+    {
+      "path": "Design/native/health-write-order/source244-release-settings-auditor-r1.py",
+      "bytes": 6438,
+      "sha256": "c4fb2dd5b2d1b3707ac71e0dd7dab90feac84b73c9ebd30bed8ebfe7a3608562"
+    },
+    {
+      "path": "Design/native/health-write-order/source244-origin-review-r1.log.gz",
+      "bytes": 2190,
+      "sha256": "8b0922b9c381a6b2ff88ce6f09e37cdbc5a67e175b529973f7db16fe47b86fbd"
+    },
+    {
+      "path": "Design/native/health-write-order/source244-logic-full-r1.log.gz",
+      "bytes": 40210,
+      "sha256": "b1278f41a7df3114b9f35cd1aef1db8b625d4eeae79cf049384329ce23c98ed9"
+    },
+    {
+      "path": "Design/native/health-write-order/source244-logic-legacy-origin-r1.log.gz",
+      "bytes": 98,
+      "sha256": "42bea787527e2d8dfc40fc93b88f1514c247fc23988cb249848b7c0dc22f6bd2"
+    },
+    {
+      "path": "Design/native/health-write-order/source244-logic-legacy-transaction-r1.log.gz",
+      "bytes": 201,
+      "sha256": "b89a75f45992f2b8260ba6199205505100e9c1a18b7b92b2ea0373ad39641312"
+    },
+    {
+      "path": "Design/native/health-write-order/source244-logic-legacy-boundaries-r1.log.gz",
+      "bytes": 85,
+      "sha256": "21dad181b3bc6fa53b3abd9b9ac32be73eecc827e2cd8749e5246580cae446b4"
+    },
+    {
+      "path": "Design/native/health-write-order/source244-logic-synthetic-roots-r1.json.gz",
+      "bytes": 19103,
+      "sha256": "a8861d43927537ef4a329ec02863d961f7d30c2a881a2bf1479be38a2fadfd4b"
+    },
+    {
+      "path": "Design/native/health-write-order/durable-source-r244.json",
+      "bytes": 131194,
+      "sha256": "80d75ef5263dcec8ba8e8301b80e94db7e0923b72ab4d37f854cf37df8386d7c"
+    },
+    {
+      "path": "Design/native/health-write-order/durable-source-r244.json.gz",
+      "bytes": 4183693,
+      "sha256": "c7743d77e6eb56d6b766754838b731978b6f4153ad3de43a04005a989f6b73c5"
+    },
+    {
+      "path": "Design/native/health-write-order/durable-source-r243.json",
+      "bytes": 125515,
+      "sha256": "de25f3d8e172c4881b42b4cbe3eff24eec48c84492041008fc7787a6c38220ad"
+    },
+    {
+      "path": "Design/native/health-write-order/durable-source-r243.json.gz",
+      "bytes": 4086362,
+      "sha256": "510ae2c66559b7afb662df4c0c7a9c7a08d5fcb055af9df8cebcb85deff0edd5"
+    },
+    {
+      "path": "Design/native/health-write-order/source243-native-failure-exact-github.json",
+      "bytes": 261983,
+      "sha256": "9c1b7958ea1ebc353151c04847b6dd6ad8f08ebd1aaf86f5f8b3bbbab74f1914"
+    },
+    {
+      "path": "Design/native/health-write-order/health-healthy-target-change-source243-round2-part145-native-healthy-eligibility-failure.json",
+      "bytes": 33802,
+      "sha256": "504e603cc8ce926123fe10cccc8531489b0bad77892e73c18a0303f2a060de25"
+    },
+    {
+      "path": "Design/native/health-write-order/source244-root-preparation.json",
+      "bytes": 519,
+      "sha256": "2019d1bf3c353cae573ab65c4e6e75519276a4350bd77ff0930b34949608aebe"
+    },
+    {
+      "path": "Design/native/health-write-order/source244-root-source-audit-r1.json",
+      "bytes": 1295,
+      "sha256": "bbbb6beceedb4c07be021424c0bcd69a5ffee08a198d68e4fdf9f6c8b7a61a96"
+    },
+    {
+      "path": "Design/native/health-write-order/source244-root-source-audit-r1-executed.py",
+      "bytes": 4705,
+      "sha256": "aa82d3304493c050929587f10e7781da7ef28ebac7e2c69714d5a4899614f58e"
+    },
+    {
+      "path": "Design/native/health-write-order/healthy-target-driver-r3.py",
+      "bytes": 15425,
+      "sha256": "57f8add98433837242e2a8c8833ef9d3412ca2f0aee2c5b7be454661ce53e803"
+    },
+    {
+      "path": "Design/native/health-write-order/check-healthy-target-r3.py",
+      "bytes": 15450,
+      "sha256": "151345b2ea3bec3a639a01f6915bc94e21ae8baded6e6faaf1b19426aded1705"
+    },
+    {
+      "path": "Design/native/health-write-order/healthy-target-region-r1.py",
+      "bytes": 2651,
+      "sha256": "2f6ea91ff5c50d1ddf6948490fbc87fce8448e0d2557c832c436fe2c97a885bc"
+    },
+    {
+      "path": "Lumen/Models/HealthLocalFiles.swift",
+      "bytes": 8968,
+      "sha256": "03bf4c316e41d05c625cda3586a44f02c3988e4f253f27b436dca44ee10c7aff"
+    },
+    {
+      "path": "Lumen/Models/HealthStore.swift",
+      "bytes": 48180,
+      "sha256": "b10404710cb5aa91b27fef833db09bfe837bdcfecfe0c720321dc9284aaa8c80"
+    },
+    {
+      "path": "Lumen/Persistence/LocalStore.swift",
+      "bytes": 23686,
+      "sha256": "85177baebb876b27d8cb4160fbe52337802284cc0c694a6b13efacdf8e61590d"
+    }
+  ],
+  "checkedAt": 1794161615.164932
+}

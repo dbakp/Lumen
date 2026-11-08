@@ -195,6 +195,75 @@ enum HealthOriginReviewChecks {
         }
         let stopped = BackupOperationControl(); stopped.cancel()
         check("cancelled capture propagates") { cancelled { _ = try Origin.captureReview([.meals], in: root, legacy: { _ in bad }, control: stopped) } }
+
+        let encoder = JSONEncoder(); encoder.dateEncodingStrategy = .iso8601
+        let meal = Meal(id: "healthy-current-review-meal", date: Date(timeIntervalSince1970: 1_700_000_000),
+            type: .lunch, items: [FoodItem(id: "healthy-current-review-food", name: "Synthetic review food",
+                grams: 125, calories: 321, proteinG: 12, carbsG: 34, fatG: 9, fiberG: 5, confidence: 0.93)])
+        let validCurrent: [(HealthLocalFiles.Domain, Data)] = [
+            (.meals, try encoder.encode([meal])), (.workouts, Data("[]".utf8)),
+            (.water, try encoder.encode([HydrationLog(id: "healthy-review-water", ml: 137)])),
+            (.today, try encoder.encode(DayMetrics.empty)), (.goals, try encoder.encode(HealthGoals()))
+        ]
+        for (domain, data) in validCurrent {
+            let directory = root.appendingPathComponent("healthy-current-" + domain.rawValue)
+            try fm.createDirectory(at: directory, withIntermediateDirectories: false)
+            let file = directory.appendingPathComponent(domain.rawValue + ".json")
+            try data.write(to: file)
+            let before = try fm.attributesOfItem(atPath: file.path)
+            var legacyReads = 0
+            let reviewed = try Origin.captureReview([domain], in: directory,
+                legacy: { _ in legacyReads += 1; return bad }, control: control)
+            check(domain.rawValue + " healthy current file cannot grant recovery despite malformed legacy") {
+                reviewed.metadata.ineligibleDomains == [domain] && reviewed.metadata.recoverableDomains.isEmpty
+                    && reviewed.metadata.fileDomains.isEmpty && reviewed.metadata.legacyDomains.isEmpty && legacyReads == 0
+            }
+            try check(domain.rawValue + " checked review preserves current bytes inode and modification date") {
+                let after = try fm.attributesOfItem(atPath: file.path)
+                return try Data(contentsOf: file) == data
+                    && (after[.systemFileNumber] as? NSNumber) == (before[.systemFileNumber] as? NSNumber)
+                    && (after[.modificationDate] as? Date) == (before[.modificationDate] as? Date)
+            }
+            check(domain.rawValue + " cancelled healthy review never grants authority") {
+                cancelled { _ = try Origin.captureReview([domain], in: directory, legacy: { _ in bad }, control: stopped) }
+            }
+        }
+        let currentMeals = root.appendingPathComponent("healthy-current-meals/meals.json")
+        try Data("[]".utf8).write(to: currentMeals)
+        let emptyCurrent = try Origin.captureReview([.meals], in: currentMeals.deletingLastPathComponent(),
+            legacy: { _ in bad }, control: control)
+        check("healthy empty current meals stay ineligible") { emptyCurrent.metadata.recoverableDomains.isEmpty && emptyCurrent.metadata.ineligibleDomains == [.meals] }
+        try bad.write(to: currentMeals)
+        let failedCurrent = try Origin.captureReview([.meals], in: currentMeals.deletingLastPathComponent(),
+            legacy: { _ in bad }, control: control)
+        check("malformed current meals retain failed-file classification without legacy fallback") {
+            failedCurrent.metadata.fileDomains == [.meals] && failedCurrent.metadata.legacyDomains.isEmpty
+                && failedCurrent.metadata.recoverableDomains == [.meals]
+        }
+        try check("failed-file review is read-only") { try Data(contentsOf: currentMeals) == bad }
+        var invalidMeal = meal; invalidMeal.items[0].calories = -1
+        try encoder.encode([invalidMeal]).write(to: currentMeals)
+        let invalidCurrent = try Origin.captureReview([.meals], in: currentMeals.deletingLastPathComponent(),
+            legacy: { _ in bad }, control: control)
+        check("semantically invalid current meals remain a failed-file target") { invalidCurrent.metadata.recoverableDomains == [.meals] }
+        let mixedRoot = root.appendingPathComponent("healthy-current-mixed")
+        try fm.createDirectory(at: mixedRoot, withIntermediateDirectories: false)
+        try encoder.encode([meal]).write(to: mixedRoot.appendingPathComponent("meals.json"))
+        let mixed = try Origin.captureReview([.meals, .workouts], in: mixedRoot, legacy: { _ in bad }, control: control)
+        check("healthy meal does not discard unavailable legacy workout") {
+            mixed.metadata.ineligibleDomains == [.meals] && mixed.metadata.legacyDomains == [.workouts]
+                && mixed.metadata.recoverableDomains == [.workouts] && mixed.metadata.fileDomains.isEmpty
+        }
+        let directoryTarget = mixedRoot.appendingPathComponent("goals.json")
+        try fm.createDirectory(at: directoryTarget, withIntermediateDirectories: false)
+        let directoryReview = try Origin.captureReview([.goals], in: mixedRoot, legacy: { _ in bad }, control: control)
+        check("existing directory retains failed-file route") { directoryReview.metadata.recoverableDomains == [.goals] && directoryReview.metadata.fileDomains == [.goals] }
+        try fm.createSymbolicLink(atPath: mixedRoot.appendingPathComponent("water.json").path,
+            withDestinationPath: mixedRoot.appendingPathComponent("meals.json").path)
+        let linked = try Origin.captureReview([.water], in: mixedRoot, legacy: { _ in bad }, control: control)
+        check("current symlink remains ineligible without following it") { linked.metadata.ineligibleDomains == [.water] && linked.metadata.recoverableDomains.isEmpty }
+        let contradictory = Origin.ReviewMetadata(fileDomains: [.meals], legacyDomains: [.workouts], ineligibleDomains: [.meals])
+        check("ineligible metadata takes precedence over recoverable membership") { contradictory.recoverableDomains == [.workouts] }
         let lease = HealthRecoveryOriginReviewLease(), first = BackupOperationControl(), second = BackupOperationControl()
         try lease.begin(first); lease.suspend(first); try lease.begin(second)
         check("late old completion cannot replace newer capture") { cancelled { try lease.finish(snapshot, control: first) } && lease.state == .capturing }

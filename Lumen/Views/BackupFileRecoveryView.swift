@@ -243,12 +243,16 @@ struct BackupFileRecoveryView: View {
 
     private var canRecover: Bool {
         !busy && !recovered && !health.isSyncing && !selected.isEmpty
-        && selected.allSatisfy { input.present.contains($0) && !health.localHealthAvailable($0) && targetEligible($0) }
+        && selected.isSubset(of: eligibleDomains)
         && (!selected.contains(.meals) || input.missingPhotos == 0 || omitPhotos)
     }
+    private var eligibleDomains: Set<HealthLocalFiles.Domain> {
+        Set((originMetadata?.recoverableDomains ?? []).filter {
+            input.present.contains($0) && !health.localHealthAvailable($0)
+        })
+    }
     private func targetEligible(_ domain: HealthLocalFiles.Domain) -> Bool {
-        guard let originMetadata else { return false }
-        return originMetadata.fileDomains.contains(domain) || originMetadata.legacyDomains.contains(domain)
+        eligibleDomains.contains(domain)
     }
     private var selectedLegacyDomains: Set<HealthLocalFiles.Domain> {
         selected.intersection(originMetadata?.legacyDomains ?? [])
@@ -432,6 +436,10 @@ struct BackupFileRecoveryView: View {
             Button("Not now", role: .cancel) { }
         } message: { selection in Text(confirmationMessage(selection)) }
         .onAppear { appearanceID = UUID(); reviewActive = true; startOriginCapture() }
+        .onChange(of: eligibleDomains) { _, eligible in
+            selected.formIntersection(eligible)
+            if !eligible.contains(.meals) { omitPhotos = false }
+        }
         .onDisappear {
             reviewActive = false
             cancelSuccessReveal()

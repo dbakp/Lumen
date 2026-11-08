@@ -152,6 +152,10 @@ struct HealthLegacyRecoveryOrigin: Equatable, Sendable {
         let fileDomains: Set<HealthLocalFiles.Domain>
         let legacyDomains: Set<HealthLocalFiles.Domain>
         let ineligibleDomains: Set<HealthLocalFiles.Domain>
+
+        var recoverableDomains: Set<HealthLocalFiles.Domain> {
+            fileDomains.union(legacyDomains).subtracting(ineligibleDomains)
+        }
     }
     struct ReviewSnapshot: Sendable {
         let metadata: ReviewMetadata
@@ -161,9 +165,10 @@ struct HealthLegacyRecoveryOrigin: Equatable, Sendable {
         }
     }
 
-    /// Metadata classification only: a supported existing file is still subject
-    /// to the existing unavailable-domain and transaction checks, never healthy
-    /// overwrite permission. No directory opening, migration or defaults writes.
+    /// Check current regular files without installing them into HealthStore.
+    /// Only classification survives; raw current contents stay in this scope.
+    /// Failed files still require the unavailable-domain and transaction checks.
+    /// No directory opening, migration or defaults writes.
     static func captureReview(_ domains: Set<HealthLocalFiles.Domain>, in directory: URL,
                               legacy: (String) throws -> Any?,
                               control: BackupOperationControl) throws -> ReviewSnapshot {
@@ -174,9 +179,23 @@ struct HealthLegacyRecoveryOrigin: Equatable, Sendable {
         for domain in domains.sorted(by: { $0.rawValue < $1.rawValue }) {
             try control.checkCancellation()
             var facts = stat()
-            if lstat(directory.appendingPathComponent(domain.rawValue + ".json").path, &facts) == 0 {
+            let file = directory.appendingPathComponent(domain.rawValue + ".json")
+            if lstat(file.path, &facts) == 0 {
                 let kind = facts.st_mode & mode_t(S_IFMT)
-                if kind == mode_t(S_IFREG) || kind == mode_t(S_IFDIR) { files.insert(domain) }
+                if kind == mode_t(S_IFREG) {
+                    do {
+                        let data = try HealthLocalFiles.readRegularData(file, limit: HealthLocalFiles.limit, control: control)
+                        try HealthLocalFiles.validateCurrentData(data, domain: domain, control: control)
+                        ineligible.insert(domain)
+                    } catch is CancellationError { throw CancellationError() }
+                    catch HealthLocalFiles.Failure.changed { throw HealthLocalFiles.Failure.changed }
+                    catch {
+                        // Preserve the existing failed-file classification. A
+                        // read/decode failure grants no new transaction authority.
+                        files.insert(domain)
+                    }
+                }
+                else if kind == mode_t(S_IFDIR) { files.insert(domain) }
                 else { ineligible.insert(domain) }
                 continue
             }
