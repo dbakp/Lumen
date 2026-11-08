@@ -1,0 +1,22 @@
+{
+  "status": "Primary documentation background; not proof of the failed run's exact persistence mechanism or latency",
+  "checkedDate": "2026-11-08",
+  "sources": [
+    {
+      "url": "https://developer.apple.com/documentation/foundation/userdefaults",
+      "retrievedMarkdown": "https://developer.apple.com/documentation/foundation/userdefaults.md",
+      "summary": "Apple documents that settings update in memory immediately and are written to disk asynchronously.",
+      "retrievedBytes": 22655,
+      "retrievedSHA256": "e7ae77258cfa6e9822af4877325f314feac1b42874ea649b3a3e8cde3cba8e2d"
+    },
+    {
+      "url": "https://developer.apple.com/documentation/foundation/userdefaults/synchronize()",
+      "retrievedMarkdown": "https://developer.apple.com/documentation/foundation/userdefaults/synchronize%28%29.md",
+      "summary": "Apple advises that explicit synchronization is unnecessary and should not be used.",
+      "retrievedBytes": 1794,
+      "retrievedSHA256": "9a3cca47584e76aa62b5eb826382376a0e8cae20c3095fd3de7b30098a94ac59"
+    }
+  ],
+  "inference": "A first raw on-disk snapshot need not match the app's updated in-process view. A bounded read-only observation is appropriate to investigate, while the original failure and unproved exact timing/cause remain unchanged.",
+  "retrievedAt": 1794129959.4161658
+}

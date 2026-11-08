@@ -1,0 +1,92 @@
+{
+  "status": "PASS ten actual helper controls with isolated plist files and fake time",
+  "cases": [
+    {
+      "case": "data-converges",
+      "expectedAccepted": true,
+      "actualAccepted": true,
+      "error": null,
+      "samples": 7,
+      "fakeElapsedSeconds": 0.6
+    },
+    {
+      "case": "string-converges",
+      "expectedAccepted": true,
+      "actualAccepted": true,
+      "error": null,
+      "samples": 7,
+      "fakeElapsedSeconds": 0.6
+    },
+    {
+      "case": "never-clears",
+      "expectedAccepted": false,
+      "actualAccepted": false,
+      "error": "AssertionError: Preference persistence observation deadline",
+      "samples": 102,
+      "fakeElapsedSeconds": 10.0
+    },
+    {
+      "case": "changed-value",
+      "expectedAccepted": false,
+      "actualAccepted": false,
+      "error": "AssertionError: Unexpected persisted fixed-key value",
+      "samples": 1,
+      "fakeElapsedSeconds": 0.0
+    },
+    {
+      "case": "unsupported-type",
+      "expectedAccepted": false,
+      "actualAccepted": false,
+      "error": "AssertionError: Unexpected persisted fixed-key type",
+      "samples": 1,
+      "fakeElapsedSeconds": 0.0
+    },
+    {
+      "case": "health-connected",
+      "expectedAccepted": false,
+      "actualAccepted": false,
+      "error": "AssertionError: ",
+      "samples": 1,
+      "fakeElapsedSeconds": 0.0
+    },
+    {
+      "case": "native-present",
+      "expectedAccepted": false,
+      "actualAccepted": false,
+      "error": "AssertionError: ",
+      "samples": 0,
+      "fakeElapsedSeconds": 0.0
+    },
+    {
+      "case": "persistence-error",
+      "expectedAccepted": false,
+      "actualAccepted": false,
+      "error": "OSError: isolated intentional evidence persistence failure",
+      "samples": 1,
+      "fakeElapsedSeconds": 0.0
+    },
+    {
+      "case": "fleeting-absence",
+      "expectedAccepted": true,
+      "actualAccepted": true,
+      "error": null,
+      "samples": 7,
+      "fakeElapsedSeconds": 0.6
+    },
+    {
+      "case": "malformed-plist",
+      "expectedAccepted": false,
+      "actualAccepted": false,
+      "error": "InvalidFileException: Invalid file",
+      "samples": 1,
+      "fakeElapsedSeconds": 0.0
+    }
+  ],
+  "payloads": 40,
+  "archive": "erasure-persistence-observation-r1-fixtures.json.gz",
+  "rawRoot": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/LumenErasurePersistenceR1-w52nr8ns",
+  "helperSHA256": "bd965193d2dbad1dcb0a6c462055889ebe5413e51e1844df7a9fe73fc3b95518",
+  "runnerSHA256": "2c73606631e32cad1e93754e03f96b9d0a85bb69f69dee69aedb1525e694eeff",
+  "scope": "Actual helper control branches only; no native Settings erase, real latency, preferences synchronization, app compilation or full logic-suite credit.",
+  "checkedAt": 1794130568.280221
+}
