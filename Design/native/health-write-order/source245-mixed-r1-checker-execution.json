@@ -1,0 +1,29 @@
+{
+  "status": "PASS actual mandatoryR2readonlychecker",
+  "command": [
+    "python3",
+    "-B",
+    "Design/native/health-write-order/check-mixed-ineligible-evidence-r2.py",
+    "health-mixed-ineligible-source245r1",
+    "source245-mixed-r1-checker.json",
+    "--host-source",
+    "durable-source-r245.json"
+  ],
+  "checkerExit": 0,
+  "checkerPID": 70478,
+  "streams": {
+    "stdout": {
+      "retained": "source245-mixed-r1-checker-stdout.gz",
+      "bytes": 509,
+      "sha256": "070c3925da06c5e8d76657f247512f591906dd2c47568505d2ae3f5d39ec1543"
+    },
+    "stderr": {
+      "retained": "source245-mixed-r1-checker-stderr.gz",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "started": 1794165872.31603,
+  "finished": 1794165874.269073,
+  "scope": "One readonly currentcase checker; no native rerun/reset/defaults repair/build/phoneactions"
+}
