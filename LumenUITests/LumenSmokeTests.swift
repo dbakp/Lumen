@@ -5913,7 +5913,7 @@ final class LumenSmokeTests: XCTestCase {
                 }
                 let body = "Selected data will be replaced by records from this file. The older saved data will stay in a private recovery copy on this iPhone."
                 let cancel = alert.buttons["Not now"].firstMatch
-                let bodyElement = alert.staticTexts[body].firstMatch
+                let bodyElement = alert.staticTexts.matching(NSPredicate(format: "label == %@", body)).firstMatch
                 try require(app.frame.contains(alert.frame) && bodyElement.exists && alert.frame.contains(bodyElement.frame)
                     && alert.frame.contains(recover.frame) && alert.frame.contains(cancel.frame)
                     && recover.isHittable && cancel.isHittable,

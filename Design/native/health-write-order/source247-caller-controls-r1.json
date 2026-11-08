@@ -1,0 +1,155 @@
+{
+  "status": "PASS actualR2caller+actualexceptionhandler malformed-gate/marker raw retention and zeroack controls",
+  "cases": [
+    {
+      "name": "gate unfinished",
+      "status": "PASS",
+      "acknowledged": false,
+      "realProcessQueries": 0,
+      "mockRunnerQueries": 0,
+      "failureRawRetained": true
+    },
+    {
+      "name": "gate invalidUTF8",
+      "status": "PASS",
+      "acknowledged": false,
+      "realProcessQueries": 0,
+      "mockRunnerQueries": 0,
+      "failureRawRetained": true
+    },
+    {
+      "name": "gate trailing",
+      "status": "PASS",
+      "acknowledged": false,
+      "realProcessQueries": 0,
+      "mockRunnerQueries": 0,
+      "failureRawRetained": true
+    },
+    {
+      "name": "gate array",
+      "status": "PASS",
+      "acknowledged": false,
+      "realProcessQueries": 0,
+      "mockRunnerQueries": 0,
+      "failureRawRetained": true
+    },
+    {
+      "name": "gate null",
+      "status": "PASS",
+      "acknowledged": false,
+      "realProcessQueries": 0,
+      "mockRunnerQueries": 0,
+      "failureRawRetained": true
+    },
+    {
+      "name": "marker unfinished",
+      "status": "PASS",
+      "acknowledged": false,
+      "realProcessQueries": 0,
+      "mockRunnerQueries": 1,
+      "failureRawRetained": true
+    },
+    {
+      "name": "marker invalidUTF8",
+      "status": "PASS",
+      "acknowledged": false,
+      "realProcessQueries": 0,
+      "mockRunnerQueries": 1,
+      "failureRawRetained": true
+    },
+    {
+      "name": "marker trailing",
+      "status": "PASS",
+      "acknowledged": false,
+      "realProcessQueries": 0,
+      "mockRunnerQueries": 1,
+      "failureRawRetained": true
+    },
+    {
+      "name": "marker array",
+      "status": "PASS",
+      "acknowledged": false,
+      "realProcessQueries": 0,
+      "mockRunnerQueries": 1,
+      "failureRawRetained": true
+    },
+    {
+      "name": "marker null",
+      "status": "PASS",
+      "acknowledged": false,
+      "realProcessQueries": 0,
+      "mockRunnerQueries": 1,
+      "failureRawRetained": true
+    },
+    {
+      "name": "gate schema nonce",
+      "status": "PASS",
+      "acknowledged": false,
+      "realProcessQueries": 0,
+      "mockRunnerQueries": 0,
+      "failureRawRetained": true
+    },
+    {
+      "name": "gate schema pid",
+      "status": "PASS",
+      "acknowledged": false,
+      "realProcessQueries": 0,
+      "mockRunnerQueries": 0,
+      "failureRawRetained": true
+    },
+    {
+      "name": "gate schema domains",
+      "status": "PASS",
+      "acknowledged": false,
+      "realProcessQueries": 0,
+      "mockRunnerQueries": 0,
+      "failureRawRetained": true
+    },
+    {
+      "name": "gate schema unexpected",
+      "status": "PASS",
+      "acknowledged": false,
+      "realProcessQueries": 0,
+      "mockRunnerQueries": 0,
+      "failureRawRetained": true
+    },
+    {
+      "name": "marker schema nonce",
+      "status": "PASS",
+      "acknowledged": false,
+      "realProcessQueries": 0,
+      "mockRunnerQueries": 1,
+      "failureRawRetained": true
+    },
+    {
+      "name": "marker schema expired",
+      "status": "PASS",
+      "acknowledged": false,
+      "realProcessQueries": 0,
+      "mockRunnerQueries": 1,
+      "failureRawRetained": true
+    },
+    {
+      "name": "marker schema offscreen",
+      "status": "PASS",
+      "acknowledged": false,
+      "realProcessQueries": 0,
+      "mockRunnerQueries": 1,
+      "failureRawRetained": true
+    },
+    {
+      "name": "exact valid caller publishes one ack after all protected checks",
+      "status": "PASS",
+      "acknowledged": true,
+      "realProcessQueries": 0,
+      "mockRunnerQueries": 1,
+      "failureRawRetained": false
+    }
+  ],
+  "count": 18,
+  "sourceSHA256": "eede35ee066b43eb5d11401d2de6e1c79df6cbd856340b04cf42d31dd16d8d68",
+  "archiveDecodedBytes": 123285,
+  "archiveDecodedSHA256": "4e3976bb4691e23c421e9fb3783c6041f75c5a9b2da4b5335e30562257deffd5",
+  "scope": "Actual extracted caller+exceptionhandler, actual R2predicate/nofollow reads, isolated real files and stubbed safe runner query/preservation dependencies; no actual simulator/runner/alert/native/cancellation acceptance",
+  "checkedAt": 1794167979.6596212
+}

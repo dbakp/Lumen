@@ -1,0 +1,8 @@
+{
+  "status": "FAILED first isolated caller-control preparation, not a native run",
+  "actualFailure": "KeyError: status when reading canonical saved state after actual driver exception handler; handler originally deferred persistence to inherited finalizer, which the isolated caller did not execute.",
+  "resolution": "R2driver now persists host failure immediately in the actual exception handler. Current18actualcaller cases exercise that handler and retain raw malformed bytes/noack before finalization.",
+  "scope": "Preparation failure kept separate from current passed controls; no source246 execution, simulator mutation or runtime credit. Archive records reconstructed pre-immediate-persist driver and current control/raw-helper inputs; not an assertion that initial temporary directory survived.",
+  "archiveDecodedBytes": 30974,
+  "archiveDecodedSHA256": "46bfb4299aa72bdf56878aae61e742e74207a86dc5bba21b343f6732da793aa5"
+}

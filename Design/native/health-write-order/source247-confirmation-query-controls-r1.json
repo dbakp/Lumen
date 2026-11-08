@@ -1,0 +1,50 @@
+{
+  "status": "PASS actual source exact-label matcher rejects frozen246/known regression and weakened predicates",
+  "cases": [
+    {
+      "name": "actual247 full exact-label predicate",
+      "accepted": true,
+      "expected": true,
+      "sourceSHA256": "d634d1fd2713ccc9c408f5dcf60a25b241a48385ede01783fb3aaa0dd6c607a1"
+    },
+    {
+      "name": "actual frozen246 long identifier rejected",
+      "accepted": false,
+      "expected": false,
+      "sourceSHA256": "8406c0ffa05841dd07e3b1f79affd69c74bcf1b734494c1125fdcc21d2e209c6"
+    },
+    {
+      "name": "reject identifier regression",
+      "accepted": false,
+      "expected": false,
+      "sourceSHA256": "8406c0ffa05841dd07e3b1f79affd69c74bcf1b734494c1125fdcc21d2e209c6"
+    },
+    {
+      "name": "reject contains predicate",
+      "accepted": false,
+      "expected": false,
+      "sourceSHA256": "7b57b77759be98c23bf02c84facc32ca9e9e616683b8cc8e3bbfa18357116d64"
+    },
+    {
+      "name": "reject shortened body",
+      "accepted": false,
+      "expected": false,
+      "sourceSHA256": "789d0a51930978d13eb85e0cc4e36188e7de023f318b9eee526d5516433cb662"
+    },
+    {
+      "name": "reject body geometry removal",
+      "accepted": false,
+      "expected": false,
+      "sourceSHA256": "04c47668cca70d37b10329e9f7878bfa9eadad81ab131213e792d605df242687"
+    },
+    {
+      "name": "reject action prerequisite removal",
+      "accepted": false,
+      "expected": false,
+      "sourceSHA256": "efc3debcfc5ffd57547b3921c45e8f89ec546e9dcb97fd5880e07391c7ac2f33"
+    }
+  ],
+  "bodyCharacters": 131,
+  "scope": "Source matcher and known203 failure provenance only, no new XCTest query runtime/whole app or native acceptance",
+  "checkedAt": 1794167949.082536
+}
