@@ -11,7 +11,7 @@
 #lumen-plan-progress .detail{display:grid;gap:calc(var(--font-size-base)*.5)}
 @media(max-width:540px){#lumen-plan-progress .road{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
-<div class="heading"><div class="text-small text-muted">LUMEN · 8 NOVEMBER 2026</div><h2>Data confidence and corrections</h2><span>Recovery errors made visible · full verification in progress</span></div>
+<div class="heading"><div class="text-small text-muted">LUMEN · 9 NOVEMBER 2026</div><h2>Data confidence and corrections</h2><span>Recovery errors made visible · full verification in progress</span></div>
 <ol class="road" aria-label="Product roadmap; stages differ in scope and effort">
 <li><div class="mark done"></div><span>✓ Foundation</span><span class="text-small">Logs, records, conversations, plans and backups</span></li>
 <li><div class="mark active"></div><span>◉ Reliable daily use</span><span class="text-small">Data confidence, recovery and Health saves</span></li>
@@ -71,7 +71,7 @@
 <button class="btn" type="button" data-area="quality" aria-pressed="false" aria-controls="lumen-plan-detail">Answer quality</button>
 <button class="btn" type="button" data-area="release" aria-pressed="false" aria-controls="lumen-plan-detail">Release gates</button>
 </div>
-<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Cancellation · test navigation repair</h3><div data-verified>The build passed. The simulator recorded real cancellation and task completion, then the test stopped while searching for an offscreen choice.</div><div data-next>Now: preserve the failed run, fix the test’s scroll direction, and rerun the delayed-response check.</div><div class="text-small" data-gate>No delayed response was sent. Choice retention, leaving the review and the complete cancellation case remain unverified.</div></div>
+<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Cancellation · fresh verification</h3><div data-verified>The corrected test compiles and passed independent source review. The earlier failed run and all its original evidence are preserved.</div><div data-next>Now: build the corrected test and rerun the real cancellation → delayed-response check.</div><div class="text-small" data-gate>Delayed-response safety, retained choices and completed navigation still await a fresh simulator run.</div></div>
 </div>
 <div class="section"><h3>Verified safety checks</h3>
 <table class="table table-sm" aria-label="Earlier checks retain their original scope; broader checks remain open"><thead><tr><th>Situation</th><th>Observed result</th></tr></thead><tbody>
@@ -83,14 +83,14 @@
 </tbody></table>
 <div class="text-small">Earlier six-file long-wait preservation failure and Banana zero-fat omission remain failed expectations. Final dismissal preserved the immediate newer state.</div></div>
 <hr>
-<div class="viz-row"><span>About 25 GiB available at last check</span><span>14.93 GB recovered in recorded cleanups · latest cleanup 29.20 MB</span></div>
+<div class="viz-row"><span>About 25 GiB available at last check</span><span>15.07 GB recovered in recorded cleanups · latest cleanup 140.93 MB</span></div>
 <div class="text-small">Redundant exports and completed test bundles removed after exact GitHub verification · canonical evidence and needed caches retained · no further iPhone actions authorized</div>
 <script>
 (()=>{
 const root=document.getElementById('lumen-plan-progress');
-const snapshot='nov8-not-now-scroll-failure';
+const snapshot='nov9-not-now-corrected-source';
 const areas={
-current:{title:'Cancellation · test navigation repair',verified:'The build passed. The simulator recorded real cancellation and task completion, then the test stopped while searching for an offscreen choice.',next:'Now: preserve the failed run, fix the test’s scroll direction, and rerun the delayed-response check.',gate:'No delayed response was sent. Choice retention, leaving the review and the complete cancellation case remain unverified.'},
+current:{title:'Cancellation · fresh verification',verified:'The corrected test compiles and passed independent source review. The earlier failed run and all its original evidence are preserved.',next:'Now: build the corrected test and rerun the real cancellation → delayed-response check.',gate:'Delayed-response safety, retained choices and completed navigation still await a fresh simulator run.'},
 quality:{title:'Answer quality · open',verified:'Library search, source identity, consent controls and literal-reference safeguards are delivered.',next:'Next: evidence-support policy and independent evaluation; personal-context and conversation-history privacy review.',gate:'Clinical accuracy, language coverage and live-provider evaluation remain required.'},
 release:{title:'Release readiness · open',verified:'The earlier optimized build passed both static reviews with coverage instrumentation enabled. The cancellation changes still need a current optimized build and audit.',next:'Next: background Health, Watch reconnect, widget, interruption and accessibility checks.',gate:'Orientation warning, representative histories, performance, privacy and distribution review remain open. No iPhone installation, launch or checks without a renewed request.'}
 };

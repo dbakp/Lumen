@@ -6093,19 +6093,24 @@ final class LumenSmokeTests: XCTestCase {
                 throw NSError(domain: "LumenLegacyTargetChangeUI", code: 1)
             }
         }
-        func whole(_ target: XCUIElement, _ phase: String, nav: String) throws {
+        func whole(_ target: XCUIElement, _ phase: String, nav: String, missingAbove: Bool = false) throws {
             let bar = app.navigationBars[nav].firstMatch
             for attempt in 0..<16 {
                 try require(bar.exists, phase, "Expected active navigation lost")
                 let box = CGRect(x: 0, y: bar.frame.maxY + 12, width: app.frame.width,
                     height: app.frame.maxY - 40 - bar.frame.maxY - 12)
-                if target.exists && target.isHittable && box.contains(target.frame) { return }
-                let delta = target.exists ? min(box.height * 0.4, max(40, abs(target.frame.midY - box.midY))) : box.height * 0.4
-                let direction: CGFloat = target.exists && target.frame.midY < box.midY ? -1 : 1
+                let exists = target.exists
+                let frame = exists ? target.frame : .zero
+                if exists && target.isHittable && box.contains(frame) { return }
+                let delta = exists ? min(box.height * 0.4, max(40, abs(frame.midY - box.midY))) : box.height * 0.4
+                let direction: CGFloat = exists ? (frame.midY < box.midY ? -1 : 1) : (missingAbove ? -1 : 1)
                 app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: box.midX, dy: box.midY + direction * delta / 2))
                     .press(forDuration: 0.05, thenDragTo: app.coordinate(withNormalizedOffset: .zero)
                         .withOffset(CGVector(dx: box.midX, dy: box.midY - direction * delta / 2)))
-                observations.append(["phase": phase, "pan": attempt, "targetPresent": target.exists, "navigationStillPresent": bar.exists])
+                observations.append(["phase": phase, "pan": attempt, "targetPresent": target.exists,
+                    "targetPresentBeforePan": exists, "targetFrameBeforePan": String(describing: frame),
+                    "viewport": String(describing: box), "missingAbove": missingAbove,
+                    "direction": Double(direction), "delta": Double(delta), "navigationStillPresent": bar.exists])
             }
             try require(false, phase, "Requested complete target could not be revealed")
         }
@@ -6249,12 +6254,17 @@ final class LumenSmokeTests: XCTestCase {
             try marker("presented", gate: gate, fields: presented)
             let touchAt = Date().timeIntervalSince1970, cancelFrame = cancel.frame
             cancel.tap(); let returned = Date().timeIntervalSince1970
+            observations.append(["phase": "not-now-tap", "touchAt": touchAt, "tapReturnedAt": returned,
+                                 "cancelFrame": rect(cancelFrame)])
             let dismissed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"), object: alert)
-            try require(XCTWaiter.wait(for: [dismissed], timeout: 10) == .completed, "not-now", "Actual Not now did not dismiss confirmation")
+            let dismissalResult = XCTWaiter.wait(for: [dismissed], timeout: 10)
+            observations.append(["phase": "not-now-dismissal", "waitResult": String(describing: dismissalResult),
+                                 "alertDismissed": !alert.exists, "at": Date().timeIntervalSince1970])
+            try require(dismissalResult == .completed, "not-now", "Actual Not now did not dismiss confirmation")
             snap(prefix + "-not-now-dismissed")
             for (index, choice) in [app.switches["recoverFile-meals"].firstMatch,
                     app.switches["Recover without meal photos"].firstMatch, app.switches["recoverFile-workouts"].firstMatch].enumerated() {
-                try whole(choice, "not-now-choice-" + String(index), nav: "Review recovery")
+                try whole(choice, "not-now-choice-" + String(index), nav: "Review recovery", missingAbove: index == 0)
                 try require(choice.isEnabled && choice.value as? String == (index == 0 ? "1" : "0"), "not-now", "Not now must retain the same choices")
                 observations.append(["phase": "not-now-choice", "choice": index, "enabled": choice.isEnabled, "value": choice.value as? String ?? ""])
             }

@@ -4,6 +4,14 @@ Continue developing Lumen into a world-class, primarily iOS, AI health assistant
 
 Repository: https://github.com/dbakp/Lumen · branch `main`.
 
+## Current test repair · Source253 /167 SOURCE_READY · 9 November 2026
+
+Fullfailed252/166/root58/source887/all99/full63MBvideo exact GitHubdcc4de89cb73007e5d0bf22a595c8aabb0992235 /49checkpoint1971union BEFORE253. Frozen253841text+62fixtures=903, appends16/onlypriorUITestmodified/886priorunchanged. DedicatedNotnowmethod explicitmissingAbove onlyfirstpostcancelmeal, boundednav/hittability/wholeframe/requery preserved; actualpanmetadata retained. Immediateactualtap/return/frame and dismissalwait/alertabsence/time facts append BEFOREchoicescroll. Strictdismissedhostpermissionmarker remainsAFTERactual3choiceassertions+originalscreenshot. No retoggle, no app/R2host/checker changes. WholecurrentUITest actualSDK0/emptystreams; new253runner20actualAST/preflightcurrent903/archive/sourceguards zeroqueries;2151991621arraysunchanged. Samecritic167 SOURCE_READY/rootfull19449B/all34bindings/903currentarchive exact; no newnative/253build acceptance.
+
+Exactfull167/root/source903/currentcheckpoint BEFOREcurrent253testbuild/appbytecarry252/current2151991621/root/exact, thenfreshSource253R1 R2driver+mandatoryR2checker/full14originals/helper/summary/fullunfilteredexport/root/samecritic/exact. Earlier252 remainsfailed; no lateack/choice/Back credit. ContinueoptimizedRelease/settings/compiler/FileList, trueexpiry/StringNotnow/laterwindows/retainedowner/all43/eightgroups/fullgoal; no checkpointstop/phoneactions.
+
+After1971exact/freshabsent87462/ownedmapexact removed ONLY7raw252acquisitions+2known dead252fixtureworkspaces,220regular0symlink. Allocated141,783,040B/observedcredited140,926,976B; aggregate15,071,743,575B, afteravailable26,750,418,944B. Canonical99/fullvideo/helper/source/166/root/provider/skill/unbacked191219 kept. Raw252native/build paths HISTORICAL; NEVERrerunoldraw/live-sourcebound252audits. CurrentDebug/packages immediatelyneeded253testbuild kept, no unrelatedcache cleanup.
+
 ## Actual cancellation test failure · Source252 /166 · 8 November 2026
 
 Current252fullpair/root887/2151991621/log/pair exact GitHub b7b5ffced91256884307b962f5922d3f8effc6c5 /18checkpoint1932union BEFOREactualSource252R1 native86761/app87462/run68277CBA-83A8-4D03-8BE0-200C8A44E993. Actual0passed1failed0skipped/native65/driver1; beforeselection+ready2hostboundaries pass. Onearmedrelay/whole131body/screenshotboundpresentedmarker/actualNotnowtap+dismissal supported. Actualnonce-boundtrace created→waitstarted→notnowclosed(controlcanceltrue/unconsumed)→CancellationError/taskcanceltrue waitexit→outsideexactTask.valuecompleted supportednarrowly. No uniquecancellationmechanism/reference/FDrelease inference.

@@ -1,0 +1,319 @@
+{
+  "part": 167,
+  "source": "durable-source-r253.json",
+  "reviewType": "SOURCE ONLY, dedicated native test correction after failed252",
+  "status": "SOURCE_READY_FOR_FRESH_CURRENT_BUILD_AND_TRIAL",
+  "sourceReady": true,
+  "nativeAcceptance": false,
+  "globalProductAcceptance": false,
+  "score": null,
+  "conclusion": "The two required Part166 corrections are supported by the exact dedicated-test diff. No blocking source issue found within this narrow successor. Root full read and exact preexecution backup must precede current253 build/Debug controls and the new native R2 trial. Existing252 trial remains failed; no runtime success is inferred.",
+  "independentVerification": {
+    "currentArchive": {
+      "textInputs": 841,
+      "fixtureInputs": 62,
+      "totalInputs": 903,
+      "allCurrentByteHashesMatchManifest": true,
+      "allArchiveMembersMatchCurrent": true,
+      "archiveMembershipExact": true,
+      "method": "Read/hash all frozen current files and decompress JSON archive; text encoded exactly and binary strict-base64 decoded. Compared every member to current bytes/declared size/SHA256. No judged code imported or executed."
+    },
+    "priorComparison": {
+      "priorInputs": 887,
+      "priorUnchanged": 886,
+      "priorModified": [
+        "LumenUITests/LumenSmokeTests.swift"
+      ],
+      "appended": 16,
+      "onlyDedicatedMethodChanged": true,
+      "outsideMethodPrefixAndSuffixExactTo252Archive": true,
+      "priorUITestHash": "c386 historical252 hash remains in frozen252 manifest/archive and Part166 binding; no claim that this intentionally changed current test equals old252 input.",
+      "currentUITest": {
+        "bytes": 802785,
+        "sha256": "ef7422ec6793fd69f449620c01d05dc4b4a47dadea461c3328a62d78a59574a3"
+      },
+      "productionAppSharedGateTraceFixtureHostCheckerExactTo252": true
+    },
+    "diffRead": "Full unified dedicated-method diff independently read. The entire remainder of the ~803KB UITest file compared exactly with252 archive outside that method. New plans/runner sources, runner controls recipe/outcome and SDK typing receipt read; no broad historical audit reexecution.",
+    "typingReceipt": {
+      "file": "source253-uitest-sdk-typecheck-r1.json",
+      "currentWholeTestHashExact": true,
+      "bytes": 802785,
+      "sha256": "ef7422ec6793fd69f449620c01d05dc4b4a47dadea461c3328a62d78a59574a3",
+      "exit": 0,
+      "stdoutBytes": 0,
+      "stderrBytes": 0,
+      "scope": "Actual prior producer typechecked whole current test against iOS Simulator27 SDK/XCTest overlay for arm64-ios18 simulator without stubs. Review verifies bound receipt/current input, not a rerun, full app/test build or UI navigation."
+    },
+    "runnerControls": {
+      "outcome": "source253-runner-reference-controls-r1.json",
+      "count": 20,
+      "allDeclaredCasesPass": true,
+      "processQueries": [],
+      "actualManifest": "durable-source-r253.json",
+      "boundSourceHashesExact": true,
+      "scope": "Actual retained runner AST/source-reference controls. Native current prefix checks source/plan/archive/all903/current bytes/disk/new-log absence before first log opening; Release prefix stops before unresolved future Debug-bound plan. Emitted source fields and current/stale guards tested. No compiler/current Debug SHA/Release/native proof and no independent rerun. Single-use controls must not be rerun after build log appears."
+    },
+    "futureExecutables": {
+      "threeBodiesExactly252To253Rename": true,
+      "nativeManifestAndArchiveSource253": true,
+      "nativeOutcomeAndReceiptSource253": true,
+      "binderReceiptSourceAndResolvedPlan253": true,
+      "releaseManifestArchiveHeaderOutcome253": true,
+      "nativeLogExclusiveOpenBeforePopen": true,
+      "sourcePlanArchiveCurrentChecksBeforePopen": true,
+      "diskThresholdBytes": 8589934592,
+      "currentDebugPlanUnresolvedUntilActualBuildAndMarkers": true
+    },
+    "markerArrays": {
+      "counts": [
+        215,
+        199,
+        16,
+        21
+      ],
+      "elementOrderIdenticalTo252Predeclaration": true,
+      "actual253DebugPositiveHash": null,
+      "scope": "Predeclared bounded marker controls only. Actual current253 pair/hash and literal matches are still required; no marker pass invented."
+    }
+  },
+  "requiredCorrectionClosure": [
+    {
+      "finding": "P166-C1",
+      "closure": "SOURCE SUPPORTED ONLY",
+      "file": "LumenUITests/LumenSmokeTests.swift",
+      "region": "Dedicated NotNow whole() and first post-dismiss meal reveal",
+      "before": "Missing target always chose forward direction, even when known meal choice was above the bottom viewport. Actual252 failed after16 missing-target pans.",
+      "after": "whole accepts missingAbove=false by default, samples target.exists and actual frame each attempt, retains bounded16 central pans and active navigation/hittability/frame-containment success gates. If the target is present its current frame determines direction; if absent only explicit missingAbove selects backward. Only index0 meal in the post-Not-now choice loop passes true; omission/workout calls and other missing-target defaults remain forward.",
+      "diagnostics": "Each completed pan adds actual direction/delta/viewport/pre-pan existence/frame plus post-pan presence/navigation. No switch toggle was added; nativeSwitch call count and all method launch/setup bindings are unchanged.",
+      "runtimeLimit": "This is a directional source repair, not an observed253 reveal. Scrolling can still fail boundedly under lazy AX, and the fresh trial must actually materialize all choices. Existing whole() uses actual hittability and box.contains(frame); this change does not add a new general finite/positive geometry validator or establish broad viewport correctness."
+    },
+    {
+      "finding": "P166-C2",
+      "closure": "SOURCE SUPPORTED ONLY",
+      "file": "LumenUITests/LumenSmokeTests.swift",
+      "region": "Immediately after Not now tap and wait, before choice scrolling",
+      "after": "Actual touchAt/tapReturnedAt/cancelFrame observation is appended immediately after tap returns. Actual dismissal wait-result/alert absence/time is appended after wait and before require or any choice scrolling. Thus ordinary later require/whole failures include these already-collected facts in partial helper.",
+      "permissionOrder": "All three actual enabled/value assertions and the not-now-choices original screenshot still precede marker(\"dismissed\"). Only afterward does the test wait for the late-ack relay and perform actual Check. No early host late-ack permission is introduced.",
+      "limit": "A failure/abort inside tap or XCTest before the append is not universally covered. The earlier standalone dismissal screenshot remains distinct from the later strict permission marker."
+    }
+  ],
+  "unchangedAuthorityAndProtocol": {
+    "appAndProduction": "BackupFileRecoveryView, gate, trace, fixture and Shared/model code remain exact252; no product policy, mutation authority, capture origin, worker lifetime, preferences, copy or cancellation change.",
+    "host": "R2 lifecycle driver and mandatory R2 checker unchanged. inputs.app payload exception and exact created+wait-started startup gate remain the previously reviewed source mechanisms, not newly executed controls.",
+    "strictWorkflow": "One armed relay and whole real alert/body/actions/original presented marker; actual Not now close/cancel/exact task.value completion and strict old protected/fixed/source checks before valid late ack; actual fresh Check request/late-ack bytes digest and known fixed facts; Back/distinct fresh owner/off choices/final Back. No Recover/commit is authorized in this case.",
+    "expectedEvidence": "14 success originals plus one full helper, five ordered strict host boundaries, current13/prior13 bytes+metadata/source/provider/intent and no new stage/receipt/known-key write. Failure evidence counts must be actual rather than fabricated14.",
+    "noRetoggle": "Postcancel assertions inspect existing values; they do not recreate the expected meal1/omit0/workout0 state."
+  },
+  "practicalRisksAndMandatoryRuntimeChecks": [
+    "Fresh current253 full app/test build and actual215/199/16/21 Debug controls are required even though app production is unchanged; current252 test binary is not a253 build.",
+    "Verify the first missing-above meal pan actually returns toward visible meal without losing Review recovery navigation. Each choice must be whole/hittable/enabled and have actual retained value, with complete native helper and original image evidence.",
+    "Require the actual exact closed nonce/session/capture/task completion prefix and protected old values before late acknowledgement. The diagnostic tap/dismiss rows are not permission to bypass choice assertions or replace actual presented/dismissed screenshots.",
+    "Require fresh native Check touch/request/ordinal/read timestamps and exact late-ack digest/raw known2-key facts, then actual Back, new owner/off choices and final retirement/no-open checks as declared.",
+    "Never turn task.value completion into global reference or descriptor release proof. Actual task/control cancel bits must be attributed as observed; do not claim a deeper guard ran if cancellation throws first.",
+    "Current Release/settings/compiler flags and distribution/performance claims remain separate. Planned predeclared marker arrays do not replace actual current executable/settings audit; instrumented unsigned-development limitations remain."
+  ],
+  "historicalQualification": {
+    "252Native": "Part166 actual0/1/0/native65/driver1/mandatoryR2exit1 remains failed. Its limited real alert, Not now dismissal and exact-task completion contribution remain scoped; no postcancel choice retention/lateack/Check/Back was observed.",
+    "priorProof": "Bound source252-native-exact-github.json records commit dcc4de89cb73007e5d0bf22a595c8aabb0992235 and1971 union paths before successor edits. Review reads this retained proof; no Git/GitHub query.",
+    "rawPaths": "252 native/build raw acquisition paths and known dead workspaces are historical after parent exact-backup cleanup. No old raw252 audits, live inventories, pair-bound current-source assertions or raw248/249 dependencies were rerun.",
+    "cleanup": "Bound parent cleanup ledger reports140926976B credited/aggregate15071743575B. This source review did not judge or execute cleanup and claims no additional recovery."
+  },
+  "newRuntimeAcceptance": null,
+  "requiredCorrections": [],
+  "openGates": [
+    "Actual253 full pair/Debug controls/native14 originals/helper/mandatoryR2 final audit",
+    "Data late-ack no-resurrection and actual fresh Check",
+    "String Not now, true expiry and other preparation/final-commit windows",
+    "Retained-copy owner and all43/eightgroups/full goal",
+    "Appearance, VoiceOver speech, motion, distribution/performance/physical-device acceptance"
+  ],
+  "provenance": {
+    "bindings": [
+      {
+        "file": "Design/native/health-write-order/durable-source-r253.json",
+        "bytes": 167737,
+        "sha256": "54fff2b97624fb4632b736bad1439bbccdae6e3156010ffa5b3ffec5933401ff"
+      },
+      {
+        "file": "Design/native/health-write-order/durable-source-r253.json.gz",
+        "bytes": 5187912,
+        "sha256": "ea3fdfd30a73cc9db2a4f433e2c413dcba4f3970bd14a0336445bfcf43755a72"
+      },
+      {
+        "file": "Design/native/health-write-order/durable-source-r252.json",
+        "bytes": 164516,
+        "sha256": "2084ff2964d164f0114de03130106626896d2dcd81dd5d0c017a041e8038d87b"
+      },
+      {
+        "file": "Design/native/health-write-order/durable-source-r252.json.gz",
+        "bytes": 5062176,
+        "sha256": "4d33bb14d6139a45335e3f799882c359d6e553fcb97f1c901c805e06d7a167cb"
+      },
+      {
+        "file": "Design/native/health-write-order/source253-root-preparation-r1.json",
+        "bytes": 669,
+        "sha256": "7ac72fb23df192689653bffe3f5fee1d8703e26d2c188fd3f139ccd211ca5566"
+      },
+      {
+        "file": "Design/native/health-write-order/source253-root-preparation-r1-executed.py",
+        "bytes": 4241,
+        "sha256": "1d021d200e82824871b85dcbb73b9b0a8052ca51546b544ab5c73a180cc4c870"
+      },
+      {
+        "file": "Design/native/health-write-order/source253-runner-reference-controls-r1.json",
+        "bytes": 3928,
+        "sha256": "565a3df0a7c2cc726635510e9b6a664c2a1f655ab5cb061ff33c06436b61f4c9"
+      },
+      {
+        "file": "Design/native/health-write-order/health-current-release-source253-r1-predeclared-plan.json",
+        "bytes": 20047,
+        "sha256": "f96cfbd794f86e7ed913f44c80b7750c100eb4efd626c1ccb5f99ab65ec2577c"
+      },
+      {
+        "file": "Design/native/health-write-order/health-legacy-confirmation-lifecycle-source252-round2-part166-native-failure.json",
+        "bytes": 31162,
+        "sha256": "1c19e8508248962a7eab2fda01866f2b9f7827d2f9d5fcd31bc2ec8c304d645b"
+      },
+      {
+        "file": "Design/native/health-write-order/source252-native-exact-github.json",
+        "bytes": 423899,
+        "sha256": "311d6853909af417944f603d6db1804556aea5d3284c2c23086c774eb9357514"
+      },
+      {
+        "file": "Design/native/health-write-order/source252-root-native-failure-audit-r1-executed.py",
+        "bytes": 7860,
+        "sha256": "0e7c0f85ec4169b04b32eef9922a6fbf023a03470577c8b56b3eed1a483d6f87"
+      },
+      {
+        "file": "Design/native/health-write-order/source252-root-native-failure-audit-r1.json",
+        "bytes": 1659,
+        "sha256": "a1d75fff665ee2bb864cbb923be476cc2ea35c226bbbcca8f735b22ecd91731d"
+      },
+      {
+        "file": "Design/native/health-write-order/source252-root-native-original-observations-r1.json",
+        "bytes": 3471,
+        "sha256": "509a7cdb62c12e586a6e629b6ab09c44ccd8d1c3cb7a2428c6be361059d2099f"
+      },
+      {
+        "file": "Design/native/health-write-order/source252-root-part166-review.json",
+        "bytes": 1601,
+        "sha256": "c89a96d3c0004eae2759f473b085db2be4e7ee18ec382e17c714e503ab92c79f"
+      },
+      {
+        "file": "Design/native/health-write-order/source253-completed-failed252-cleanup-r1-executed.py",
+        "bytes": 3571,
+        "sha256": "7b85064009a44aa256e3852480f99611527e13baab29322f6ee6704c366b048b"
+      },
+      {
+        "file": "Design/native/health-write-order/source253-completed-failed252-cleanup-r1.json",
+        "bytes": 3561,
+        "sha256": "49f4460aff3e9162f0195788dcd11e3197be04b3a76608e8c19d59520a80c5b7"
+      },
+      {
+        "file": "Design/native/health-write-order/source253-debug-release-controls-r1-planned.py",
+        "bytes": 2688,
+        "sha256": "76cbe2bf0e7b7bba86837116a3e71e1b61dee750d3fc9de47ae4c3a6747a08d1"
+      },
+      {
+        "file": "Design/native/health-write-order/source253-not-now-navigation-corrections-r1-plan.json",
+        "bytes": 2030,
+        "sha256": "559407baebf562f4b5b0621a61549deabe4b791ae6253403af08e2efb0a8dbd4"
+      },
+      {
+        "file": "Design/native/health-write-order/source253-runner-reference-controls-r1-executed.py",
+        "bytes": 5958,
+        "sha256": "569732cb1c02f6a67843286ac5930631598fe9d5dfd159d480943cb6a4b56227"
+      },
+      {
+        "file": "Design/native/health-write-order/source253-target-change-native-build-r1-planned.py",
+        "bytes": 3216,
+        "sha256": "0ec4a7ae1c8745f12bb991df5b06a1d17f1668156426d8b0fa965207e5122999"
+      },
+      {
+        "file": "Design/native/health-write-order/source253-uitest-sdk-typecheck-r1.json",
+        "bytes": 1198,
+        "sha256": "685ae854de7a89d04998825312ac73f596d835cbfb548268e84292527db8be12"
+      },
+      {
+        "file": "Design/native/health-write-order/source253-unsigned-release-r1-planned.py",
+        "bytes": 3403,
+        "sha256": "64dc8c510e2bd5c9b4769873153df5c3655431579cde225c155b69857e2800c5"
+      },
+      {
+        "file": "LumenUITests/LumenSmokeTests.swift",
+        "bytes": 802785,
+        "sha256": "ef7422ec6793fd69f449620c01d05dc4b4a47dadea461c3328a62d78a59574a3"
+      },
+      {
+        "file": "Design/native/health-write-order/confirmation-lifecycle-driver-r2.py",
+        "bytes": 19028,
+        "sha256": "6109d413290fe0a87dbe59b5a4994935f21b728281a94df97e6ebfbd6316b632"
+      },
+      {
+        "file": "Design/native/health-write-order/check-confirmation-lifecycle-r2.py",
+        "bytes": 15318,
+        "sha256": "eb6bc2a9cb0bf937bd8fd3cb6023aaedf92e593bb9345344b11856f866789f6f"
+      },
+      {
+        "file": "Design/native/health-write-order/confirmation-lifecycle-evidence-r1.py",
+        "bytes": 4473,
+        "sha256": "bb937d682f9f0437f0125083240be0cfd5f7646fb54c93d2161a7ad03b2ba341"
+      },
+      {
+        "file": "Design/native/health-write-order/confirmation-lifecycle-protocol-r1.py",
+        "bytes": 4998,
+        "sha256": "efb9a5acc54bb5d4d3a8fe1cd905c55cdb403e8e72ac0d7232721953e364375a"
+      },
+      {
+        "file": "Design/native/health-write-order/confirmation-lifecycle-transport-r1.py",
+        "bytes": 3506,
+        "sha256": "868ed6fd523937a15dfd8b79f105d40cc89f013f8a624ac50c9e9c209bf3834e"
+      },
+      {
+        "file": "Design/native/health-write-order/health-current-release-source252-r1-predeclared-plan.json",
+        "bytes": 20051,
+        "sha256": "5f72ba468057546a889849d96c186773679a661eecde36a70465c1b84d755da4"
+      },
+      {
+        "file": "Design/native/health-write-order/health-target-change-source252-r1-build.json",
+        "bytes": 700,
+        "sha256": "a37b461cd8e93e81528892c955fea66125fadea206266e67c08e9fd207a5122e"
+      },
+      {
+        "file": "Lumen/Views/BackupFileRecoveryView.swift",
+        "bytes": 40912,
+        "sha256": "d1be20aed36fe76a6c5e76d413df24c0766e3418bfffa7cf7c042fa9c5ffa99a"
+      },
+      {
+        "file": "Lumen/Views/HealthConfirmationLifecycleTrace.swift",
+        "bytes": 13090,
+        "sha256": "62d32a8e17acf7bca5233b0da1fbf8b5959c53a491cc4929915e5d73212b8e4a"
+      },
+      {
+        "file": "Lumen/Views/HealthConfirmationTargetChangeGate.swift",
+        "bytes": 7319,
+        "sha256": "010e65b6e051058397d8aa0fbf7fbd2ac56c93d922c0015a12e649f1c64978fd"
+      },
+      {
+        "file": "Lumen/Views/HealthLegacyTargetChangeUIFixture.swift",
+        "bytes": 31263,
+        "sha256": "bb84e44e1f59cfdfe28aa977f9799858edf72cd1c6c1339479724e8dd8b5c3a2"
+      }
+    ],
+    "bindingCount": 34,
+    "individual903InputHashes": "Fully bound durable-source-r253.json + gzip archive retain all903 exact file hashes; duplicating every row here is unnecessary.",
+    "noExecution": "Independent review used file reads, gzip/base64/hash comparison, text diff and AST parsing only. No helper import/exec, compiler, native, simulator/process/defaults/Git query, reset or cleanup. No old raw paths read.",
+    "rootPreparation": "source253-root-preparation-r1.json is corroborating evidence; readiness above rests on independent current/archive/diff/receipt/control-source inspection."
+  },
+  "storage": {
+    "availableBytesAtReview": 27464769536,
+    "deletedBytes": 0,
+    "recoveredBytes": 0,
+    "note": "No substantial build/fixture/download or cleanup by this critic."
+  },
+  "physicalPhoneActions": 0,
+  "judgedInputMutations": 0,
+  "reportWrittenAt": 1794178910.13475,
+  "next": "Root full read/bind/exact checkpoint, then current253 build/markers/root/exact and fresh actual R2 lifecycle trial. Preserve failed252 and all existing reports. Full goal continues beyond checkpoints."
+}
