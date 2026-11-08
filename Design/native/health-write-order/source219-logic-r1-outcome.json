@@ -1,0 +1,124 @@
+{
+  "status": "PASS fresh current219hostcompile/full2350; focused23 separate; no native/UI/Release acceptance",
+  "source": "durable-source-r219.json",
+  "runs": [
+    {
+      "label": "build",
+      "command": [
+        "swift",
+        "build",
+        "--scratch-path",
+        "/tmp/LumenLogicBuild",
+        "--cache-path",
+        "/tmp/LumenLogicBuild/Cache",
+        "--config-path",
+        "/tmp/LumenLogicBuild/Config",
+        "--security-path",
+        "/tmp/LumenLogicBuild/Security",
+        "--manifest-cache",
+        "local",
+        "--force-resolved-versions",
+        "--skip-update",
+        "--jobs",
+        "2",
+        "--product",
+        "LumenLogicChecks"
+      ],
+      "startedAt": 1794118355.1519659,
+      "PID": 84097,
+      "exitCode": 0,
+      "log": "source219-logic-build-r1.log.gz",
+      "logBytes": 11989,
+      "logSHA256": "9be7747baf8dcbc6e4c6e30d73c6ab9205f6eea9eb6e62b854a301dff2f1e118",
+      "passLines": 0,
+      "terminalLines": [
+        "    |             `- warning: will never be executed",
+        "149 |         } catch is CancellationError { print(\"PASS: cancellation during extraction discards its partial XML\") }",
+        "150 |         let after = (try? FileManager.default.contentsOfDirectory(atPath: HealthZIPArchive.temporaryRoot.path)) ?? []",
+        "[156\u2009/\u2009158] LumenLogicChecks-product",
+        "Build complete! (40,03 secs)"
+      ],
+      "finishedAt": 1794118399.5501928
+    },
+    {
+      "label": "review",
+      "command": [
+        "/tmp/LumenLogicBuild/out/Products/Debug/LumenLogicChecks",
+        "--health-origin-review",
+        "Design/native/health-write-order/source219-origin-review-r1.json"
+      ],
+      "startedAt": 1794118400.478581,
+      "PID": 87347,
+      "exitCode": 0,
+      "log": "source219-logic-review-r1.log.gz",
+      "logBytes": 30,
+      "logSHA256": "080ffed9320724ca78a2e8e3daf6235abc756c7e9bf534a0e791f4b50ea3ef16",
+      "passLines": 1,
+      "terminalLines": [
+        "PASS: 23 origin review checks"
+      ],
+      "finishedAt": 1794118401.034351
+    },
+    {
+      "label": "full",
+      "command": [
+        "/tmp/LumenLogicBuild/out/Products/Debug/LumenLogicChecks"
+      ],
+      "startedAt": 1794118401.056128,
+      "PID": 87412,
+      "exitCode": 0,
+      "log": "source219-logic-full-r1.log.gz",
+      "logBytes": 171673,
+      "logSHA256": "cf495d3ce4c9497114472e8bc344145388c20601caa949fb0a1a4be26ddd35d1",
+      "passLines": 2177,
+      "terminalLines": [
+        "PASS: a real concurrent local writer enters the storage barrier",
+        "PASS: restore cannot commit while a concurrent local writer holds the barrier",
+        "PASS: the waiting restore observes the completed write and rejects its stale revision",
+        "PASS: existing version-one JSON backups remain readable after the streamed format is introduced",
+        "All import, model, totals, history, plan, conversation, evidence, document and reminder checks passed."
+      ],
+      "finishedAt": 1794118437.090983
+    }
+  ],
+  "physicalDeviceActions": false,
+  "binaryPathQuery": {
+    "command": [
+      "swift",
+      "build",
+      "--scratch-path",
+      "/tmp/LumenLogicBuild",
+      "--cache-path",
+      "/tmp/LumenLogicBuild/Cache",
+      "--config-path",
+      "/tmp/LumenLogicBuild/Config",
+      "--security-path",
+      "/tmp/LumenLogicBuild/Security",
+      "--manifest-cache",
+      "local",
+      "--force-resolved-versions",
+      "--skip-update",
+      "--jobs",
+      "2",
+      "--show-bin-path"
+    ],
+    "exit": 0,
+    "stdout": "/tmp/LumenLogicBuild/out/Products/Debug\n",
+    "stderr": "warning: '--skip-update' option is deprecated and will be removed in a future release\n"
+  },
+  "binary": {
+    "path": "/tmp/LumenLogicBuild/out/Products/Debug/LumenLogicChecks",
+    "bytes": 16979760,
+    "sha256": "b6a2f459f2ade373fd509b00f86970d46992cba08b1680b1587172afc32b49ca"
+  },
+  "focusReport": "source219-origin-review-r1.json",
+  "fullComponents": {
+    "individualPassLines": 2177,
+    "dailyCacheChecks": 137,
+    "todayQueryChecks": 36,
+    "total": 2350
+  },
+  "focusedReviewChecks": 23,
+  "scope": "Changed BackupPackage text includes a read-only DEBUGsim getter; host branch excludes it. Fresh actual host execution still binds current full input bytes; actual simulator behavior requires separate cases.",
+  "availableBytesAfter": 39273984000
+}

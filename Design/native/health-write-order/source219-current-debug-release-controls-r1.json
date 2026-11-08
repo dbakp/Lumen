@@ -1,0 +1,31 @@
+{
+  "source": "durable-source-r219.json",
+  "status": "FAILED actual Debug controls; no Release preflight acceptance",
+  "debugSHA256": "7603e3159d673e9de2c9aa6c71a41f0965e1f178ab02e2ce8b31631a56671ac8",
+  "debugBytes": 45738944,
+  "predeclaredSHA256": "1db989a2b690139687231d144f6d884778b720cc1d6d825ab968945c6ae00680",
+  "missingDebugPositive": [
+    "Capture check"
+  ],
+  "negativeOnlyObserved": [
+    "--retrieval-index-timing",
+    "--retrieval-selection-replay",
+    "--provider-transport-check",
+    "--lab-source-ui-fixtures",
+    "COHERENCECANARY",
+    "PRIVATE-LAB-CONTEXT-CANARY",
+    "--health-write-order",
+    "--local-commit",
+    "-library-submission-baseline",
+    "Lumen-submission-baseline-report.json",
+    "Submission baseline reproduced",
+    "Lumen-library-baseline-report.json",
+    "-provider-authorization-baseline",
+    "Provider authorization baseline reproduced",
+    "-health-read-ui",
+    "Capture check"
+  ],
+  "missingProductionControls": [],
+  "failure": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/source219-debug-release-controls-r1-executed.py\", line 27, in <module>\n    assert not row['missingDebugPositive'] and not row['missingProductionControls']\nAssertionError\n",
+  "checkedAt": 1794118503.953383
+}
