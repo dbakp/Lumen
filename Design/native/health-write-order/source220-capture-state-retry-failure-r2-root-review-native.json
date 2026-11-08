@@ -1,0 +1,438 @@
+{
+  "status": "Root actual native evidence supported; independent review pending",
+  "source": "durable-source-r220.json",
+  "build": "health-capture-state-source220-r1-build.json",
+  "nativeCounts": [
+    1,
+    0,
+    0
+  ],
+  "nativeExit": 0,
+  "driverExit": 0,
+  "sourceCurrentArchiveInputsExact": 331,
+  "embeddedPayloadInstancesDecoded": 239,
+  "originalsOpened": 8,
+  "nativeHelperBytesFullyRead": 7196,
+  "nativeSummaryFullyRead": true,
+  "readonlyRootRepeat": "/tmp/lumen220-r2-root-readonly.json",
+  "runID": "3D1EED52-90D7-4967-AC2C-2240927E1371",
+  "PID": 35847,
+  "actualOperationalFailure": {
+    "at": 1794121885.0238,
+    "controlAlive": true,
+    "controlCancelled": false,
+    "controlID": "8010D151-6EDD-4CF6-8E75-85DDC7140DB7",
+    "errorCode": 0,
+    "errorDomain": "Lumen.HealthLocalFiles.Failure",
+    "errorType": "Lumen.HealthLocalFiles.Failure",
+    "event": "capture-caught-after-input-defer-capture",
+    "leaseState": "capturing",
+    "metadataAvailable": false,
+    "nonce": "F4D6332C-F5D9-437D-B57A-E6EEF3A1530E",
+    "ordinal": 1,
+    "pid": 35847,
+    "runID": "3D1EED52-90D7-4967-AC2C-2240927E1371",
+    "sessionID": "48BD1F54-F52F-4C3D-88C5-6920F8E41EE5",
+    "taskCancelled": false
+  },
+  "actualRetryReady": {
+    "at": 1794121941.4851499,
+    "controlAlive": true,
+    "controlCancelled": false,
+    "controlID": "CB8EE381-F1A5-47E2-867C-421EE066C966",
+    "event": "finish-accepted",
+    "leaseState": "ready",
+    "metadataAvailable": true,
+    "nonce": "E7654E3E-9E00-4C91-8EE5-EE2ECA92A979",
+    "ordinal": 2,
+    "pid": 35847,
+    "runID": "3D1EED52-90D7-4967-AC2C-2240927E1371",
+    "sessionID": "48BD1F54-F52F-4C3D-88C5-6920F8E41EE5",
+    "taskCancelled": false
+  },
+  "allSevenProtectedFileBoundariesExact": true,
+  "boundaryPhases": [
+    "initial-before-selection",
+    "held-before-action",
+    "sentinel-before-real-read-release",
+    "real-operational-failure-before-restore",
+    "root-restored-before-retry",
+    "actual-check-again-ready",
+    "finalCleanup"
+  ],
+  "faultScope": "Original protected current files lived in moved root at the two sentinel phases; live LumenData was intentionally a regular sentinel. Root/parent namespace metadata not immutable. Fault restored before actual Check again.",
+  "journalPhases": [
+    "prepared",
+    "rename-intended",
+    "root-moved",
+    "sentinel-create-intended",
+    "sentinel-created",
+    "capture-failed",
+    "sentinel-remove-intended",
+    "sentinel-removed",
+    "restore-rename-intended",
+    "restored"
+  ],
+  "journalRawGzipExact": {
+    "file": "Design/native/health-write-order/health-capture-state-retry-failure-source220r2-fault-journal.jsonl.gz",
+    "bytes": 8114,
+    "sha256": "9544de460850d7c692b523e7486a5471210f5c389aa55a09647afbc3da273c66"
+  },
+  "eventOrder": [
+    {
+      "at": 1794121868.9677382,
+      "controlCancelled": false,
+      "controlID": "8010D151-6EDD-4CF6-8E75-85DDC7140DB7",
+      "event": "registered",
+      "leaseState": "capturing",
+      "metadataAvailable": false,
+      "ordinal": 1,
+      "taskCancelled": false
+    },
+    {
+      "at": 1794121869.15429,
+      "controlCancelled": false,
+      "controlID": "8010D151-6EDD-4CF6-8E75-85DDC7140DB7",
+      "event": "held-before-read",
+      "leaseState": "capturing",
+      "metadataAvailable": false,
+      "ordinal": 1,
+      "taskCancelled": false
+    },
+    {
+      "at": 1794121884.996155,
+      "controlCancelled": false,
+      "controlID": "8010D151-6EDD-4CF6-8E75-85DDC7140DB7",
+      "event": "host-released-before-read",
+      "leaseState": "capturing",
+      "metadataAvailable": false,
+      "ordinal": 1,
+      "taskCancelled": false
+    },
+    {
+      "at": 1794121884.997335,
+      "controlCancelled": false,
+      "controlID": "8010D151-6EDD-4CF6-8E75-85DDC7140DB7",
+      "event": "capture-rejected-before-input-defer-capture",
+      "leaseState": "capturing",
+      "metadataAvailable": false,
+      "ordinal": 1,
+      "taskCancelled": false
+    },
+    {
+      "at": 1794121885.0238,
+      "controlCancelled": false,
+      "controlID": "8010D151-6EDD-4CF6-8E75-85DDC7140DB7",
+      "event": "capture-caught-after-input-defer-capture",
+      "leaseState": "capturing",
+      "metadataAvailable": false,
+      "ordinal": 1,
+      "taskCancelled": false
+    },
+    {
+      "at": 1794121885.0242271,
+      "controlCancelled": false,
+      "controlID": "8010D151-6EDD-4CF6-8E75-85DDC7140DB7",
+      "event": "capture-returned-error",
+      "leaseState": "capturing",
+      "metadataAvailable": false,
+      "ordinal": 1,
+      "taskCancelled": false
+    },
+    {
+      "at": 1794121885.024678,
+      "controlCancelled": true,
+      "controlID": "8010D151-6EDD-4CF6-8E75-85DDC7140DB7",
+      "event": "suspended",
+      "leaseState": "initial",
+      "metadataAvailable": false,
+      "ordinal": 1,
+      "taskCancelled": false
+    },
+    {
+      "at": 1794121885.025352,
+      "controlCancelled": true,
+      "controlID": "8010D151-6EDD-4CF6-8E75-85DDC7140DB7",
+      "event": "ui-wrapper-cleanup",
+      "leaseState": "initial",
+      "metadataAvailable": false,
+      "ordinal": 1,
+      "taskCancelled": false
+    },
+    {
+      "at": 1794121941.437923,
+      "controlCancelled": false,
+      "controlID": "CB8EE381-F1A5-47E2-867C-421EE066C966",
+      "event": "registered",
+      "leaseState": "capturing",
+      "metadataAvailable": false,
+      "ordinal": 2,
+      "taskCancelled": false
+    },
+    {
+      "at": 1794121941.4851499,
+      "controlCancelled": false,
+      "controlID": "CB8EE381-F1A5-47E2-867C-421EE066C966",
+      "event": "finish-accepted",
+      "leaseState": "ready",
+      "metadataAvailable": true,
+      "ordinal": 2,
+      "taskCancelled": false
+    },
+    {
+      "at": 1794121941.4871259,
+      "controlCancelled": false,
+      "controlID": "CB8EE381-F1A5-47E2-867C-421EE066C966",
+      "event": "capture-returned",
+      "leaseState": "ready",
+      "metadataAvailable": true,
+      "ordinal": 2,
+      "taskCancelled": false
+    },
+    {
+      "at": 1794121941.4878302,
+      "controlCancelled": false,
+      "controlID": "CB8EE381-F1A5-47E2-867C-421EE066C966",
+      "event": "ui-wrapper-cleanup",
+      "leaseState": "ready",
+      "metadataAvailable": true,
+      "ordinal": 2,
+      "taskCancelled": false
+    },
+    {
+      "at": 1794121994.929834,
+      "controlID": "CB8EE381-F1A5-47E2-867C-421EE066C966",
+      "event": "owner-closed",
+      "leaseState": "closed",
+      "metadataAvailable": false,
+      "ordinal": 2,
+      "taskCancelled": false
+    }
+  ],
+  "originEvents": [
+    {
+      "domains": [],
+      "event": "open",
+      "sessionID": "48BD1F54-F52F-4C3D-88C5-6920F8E41EE5"
+    },
+    {
+      "domains": [
+        "meals",
+        "workouts"
+      ],
+      "event": "ready",
+      "sessionID": "48BD1F54-F52F-4C3D-88C5-6920F8E41EE5"
+    },
+    {
+      "domains": [],
+      "event": "closed",
+      "sessionID": "48BD1F54-F52F-4C3D-88C5-6920F8E41EE5"
+    }
+  ],
+  "finalCleanup": {
+    "rootsAbsent": true,
+    "hostDeletedWorkspace": false,
+    "guardSeconds": 3,
+    "scope": "Bounded observation after native attachment, not tap-to-delete latency"
+  },
+  "noOpenOwnedPaths": true,
+  "visual": [
+    {
+      "file": "health-capture-state-retry-failure-source220r2-27ED2140-4DF2-44BF-AD96-0638442BF827.png",
+      "observation": "Parent Backup & restore title and actions visible; debug Capture check overlaps footer copy. Navigation evidence only."
+    },
+    {
+      "file": "health-capture-state-retry-failure-source220r2-5FB0577A-65B4-4557-9678-7F9EF111CB95.png",
+      "observation": "Complete private-copy/Apple Health consequences and disabled Recover action; choices in separate viewport."
+    },
+    {
+      "file": "health-capture-state-retry-failure-source220r2-867BE0F6-BC79-483B-BEE5-9660357F6BE7.png",
+      "observation": "Three off eligible switches with complete meal/omission/workout labels; no whole-form claim."
+    },
+    {
+      "file": "health-capture-state-retry-failure-source220r2-49C6201B-80F7-4BB7-A9F9-7773B24CEAB1.png",
+      "observation": "Complete original filename and metadata; progress/error/Check again absent after successful retry. Meal toggle partly clipped in this viewport; separate choices original is authority."
+    },
+    {
+      "file": "health-capture-state-retry-failure-source220r2-B95D4B22-68B3-4A62-9A6E-A3721E0A292F.png",
+      "observation": "Complete consequences and disabled Recover while failed; separate choices capture."
+    },
+    {
+      "file": "health-capture-state-retry-failure-source220r2-4F3CECA2-E9FB-4BB7-99B9-CFB7CA82607B.png",
+      "observation": "Three off disabled choices and complete labels while failed."
+    },
+    {
+      "file": "health-capture-state-retry-failure-source220r2-2DF52C41-FCAD-4037-BBF0-E4423F314AF8.png",
+      "observation": "Full two-line operational failure and enabled Check again row; filename visible."
+    },
+    {
+      "file": "health-capture-state-retry-failure-source220r2-51A4B63E-0BBA-45C7-BF11-CFBA1CA2C3A8.png",
+      "observation": "Complete original filename and actual held-before-read progress; meal section only partial."
+    }
+  ],
+  "provenance": [
+    {
+      "file": "Design/native/health-write-order/HealthCaptureStateRetryFailureSource220R2.log.gz",
+      "bytes": 8510,
+      "sha256": "8cbe1ac8247c7c03a2d47757eb11dc1fe53164633ff12fb470e6c4dfda661965"
+    },
+    {
+      "file": "Design/native/health-write-order/durable-source-r220.json",
+      "bytes": 56670,
+      "sha256": "2c68739d83664048564f2ebc40286845a831def198561cc1cf5e29a172742514"
+    },
+    {
+      "file": "Design/native/health-write-order/durable-source-r220.json.gz",
+      "bytes": 1096092,
+      "sha256": "7e908bd722ef773cb3f2885eff67a50bf22425191cb95cc5deb48708c749e2f0"
+    },
+    {
+      "file": "Design/native/health-write-order/health-capture-state-retry-failure-source220r2-27ED2140-4DF2-44BF-AD96-0638442BF827.png",
+      "bytes": 351915,
+      "sha256": "40f376584b6c189dfa8af91f15636be29b4b55a0d8ec72426e587fd7b3942e6a"
+    },
+    {
+      "file": "Design/native/health-write-order/health-capture-state-retry-failure-source220r2-2DF52C41-FCAD-4037-BBF0-E4423F314AF8.png",
+      "bytes": 219152,
+      "sha256": "175761a91848552b280f5601f64ee8ab742c702dfe0f420e13ab4d786c0e90e3"
+    },
+    {
+      "file": "Design/native/health-write-order/health-capture-state-retry-failure-source220r2-49C6201B-80F7-4BB7-A9F9-7773B24CEAB1.png",
+      "bytes": 223206,
+      "sha256": "916c8802848c46483a26534ecc4500488553567eadc417e72a851fd057baca96"
+    },
+    {
+      "file": "Design/native/health-write-order/health-capture-state-retry-failure-source220r2-4F3CECA2-E9FB-4BB7-99B9-CFB7CA82607B.png",
+      "bytes": 299855,
+      "sha256": "74f0a3a077e713d58d1b8f53568131576eb4ef86b51ed0cc81a87aedc069fc4a"
+    },
+    {
+      "file": "Design/native/health-write-order/health-capture-state-retry-failure-source220r2-51A4B63E-0BBA-45C7-BF11-CFBA1CA2C3A8.png",
+      "bytes": 215017,
+      "sha256": "ee0a60508163d719e4eb06806e1332291e2bf7b0d296339624e7cc182b9e54a6"
+    },
+    {
+      "file": "Design/native/health-write-order/health-capture-state-retry-failure-source220r2-5FB0577A-65B4-4557-9678-7F9EF111CB95.png",
+      "bytes": 380410,
+      "sha256": "c908635a465299472c0937d968dc6e1a60c7786e12759e654d69a965e056cca1"
+    },
+    {
+      "file": "Design/native/health-write-order/health-capture-state-retry-failure-source220r2-867BE0F6-BC79-483B-BEE5-9660357F6BE7.png",
+      "bytes": 352730,
+      "sha256": "499eb589d7f4a4020d98ddbdeb5659b6c22240c3a89e1bd34960f5e81b45de83"
+    },
+    {
+      "file": "Design/native/health-write-order/health-capture-state-retry-failure-source220r2-8A2CDECE-B0A3-4DE8-BDA2-C928F11D8B6F.json",
+      "bytes": 7196,
+      "sha256": "755a3f9dc6c7d69264033795f51ab8ea81d174677bfd0019d7f263107ac46216"
+    },
+    {
+      "file": "Design/native/health-write-order/health-capture-state-retry-failure-source220r2-B95D4B22-68B3-4A62-9A6E-A3721E0A292F.png",
+      "bytes": 374005,
+      "sha256": "341fdda1be2669d609389ba5ddcda82732a5d3bf35e3aa2a964abfd7370d2322"
+    },
+    {
+      "file": "Design/native/health-write-order/health-capture-state-retry-failure-source220r2-driver-observations.json",
+      "bytes": 461434,
+      "sha256": "c150d02c1a1056c23e067c3d0906bdff5e5653c2181ed159a295665efc664481"
+    },
+    {
+      "file": "Design/native/health-write-order/health-capture-state-retry-failure-source220r2-export-json-stderr.gz",
+      "bytes": 20,
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "file": "Design/native/health-write-order/health-capture-state-retry-failure-source220r2-export-json-stdout.gz",
+      "bytes": 300,
+      "sha256": "9810db2b9ed83b7bca486cb9d8557f0a94e466dd8467c449a902ebf90a1c6a9c"
+    },
+    {
+      "file": "Design/native/health-write-order/health-capture-state-retry-failure-source220r2-export-png-stderr.gz",
+      "bytes": 20,
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "file": "Design/native/health-write-order/health-capture-state-retry-failure-source220r2-export-png-stdout.gz",
+      "bytes": 725,
+      "sha256": "5e15200d2e8d4cb8231198b4db928f132ffaf114a512510ef8a3d3c99b7dc3e8"
+    },
+    {
+      "file": "Design/native/health-write-order/health-capture-state-retry-failure-source220r2-fault-descriptor.json",
+      "bytes": 36674,
+      "sha256": "6db44a8d0225058d7953b962bedf4c4fcfe8174c5c6451c59eb2c16f8595782b"
+    },
+    {
+      "file": "Design/native/health-write-order/health-capture-state-retry-failure-source220r2-fault-journal.jsonl.gz",
+      "bytes": 8114,
+      "sha256": "9544de460850d7c692b523e7486a5471210f5c389aa55a09647afbc3da273c66"
+    },
+    {
+      "file": "Design/native/health-write-order/health-capture-state-retry-failure-source220r2-host-audit.json",
+      "bytes": 461434,
+      "sha256": "c150d02c1a1056c23e067c3d0906bdff5e5653c2181ed159a295665efc664481"
+    },
+    {
+      "file": "Design/native/health-write-order/health-capture-state-retry-failure-source220r2-images.json",
+      "bytes": 7772,
+      "sha256": "9019a8d45818114d6f750576d02c213880fa7683ccedc733f4241496cda6d27e"
+    },
+    {
+      "file": "Design/native/health-write-order/health-capture-state-retry-failure-source220r2-json-original-manifest.json.gz",
+      "bytes": 433,
+      "sha256": "69289908a2465c8e68f53c68158f81689389fc285f416edbfd233ba5ac7aedd3"
+    },
+    {
+      "file": "Design/native/health-write-order/health-capture-state-retry-failure-source220r2-outcome.json",
+      "bytes": 34409,
+      "sha256": "aff64b41e57f2c7fdf3a2b6263f320ab8a9254c89ef06acd206d18296bf26674"
+    },
+    {
+      "file": "Design/native/health-write-order/health-capture-state-retry-failure-source220r2-png-original-manifest.json.gz",
+      "bytes": 918,
+      "sha256": "77585523221997308d68084e7e689713ea7f6e135f5aa3ecc4e7451b08d7e42e"
+    },
+    {
+      "file": "Design/native/health-write-order/health-capture-state-retry-failure-source220r2-readbacks.json",
+      "bytes": 965,
+      "sha256": "61585ca0919dbe19fe1c83cf8904a411b69119e6146fd3f4254b97ec20ada7e5"
+    },
+    {
+      "file": "Design/native/health-write-order/health-capture-state-retry-failure-source220r2-retention-state.json",
+      "bytes": 31053,
+      "sha256": "f514d55beb3d6d3dda249afbd4f2abd3ec70f32683bedbd659fd25b8204ea4c1"
+    },
+    {
+      "file": "Design/native/health-write-order/health-capture-state-retry-failure-source220r2-summary-query-stderr.gz",
+      "bytes": 20,
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "file": "Design/native/health-write-order/health-capture-state-retry-failure-source220r2-summary-query-stdout.gz",
+      "bytes": 469,
+      "sha256": "9f3bfe7dd89fc62088c6c7a20677f14c72eefb9378ddc1c793c5405553c421e5"
+    },
+    {
+      "file": "Design/native/health-write-order/health-capture-state-retry-failure-source220r2-summary.json",
+      "bytes": 968,
+      "sha256": "1c326aa0a5197354cdaaa365ce1bb36a12cf35a02f2bdf8d2034c86b54030b61"
+    },
+    {
+      "file": "Design/native/health-write-order/health-capture-state-source220-r1-build.json",
+      "bytes": 705,
+      "sha256": "9e33a61e92b48381fcbc56afb4d232cc72472298b6a818d3964f59c902879cfc"
+    },
+    {
+      "file": "Design/native/health-write-order/source220-capture-state-retry-failure-r2-live-audit.json",
+      "bytes": 869,
+      "sha256": "f18a4e3e9df88bcf76e839b871291a7935e10f5cf7cbc7128eeaf9f782db9356"
+    }
+  ],
+  "limits": [
+    "Bounded main/light/normal Data genuine-failure/retry case only.",
+    "No Recover/acquire/private-copy/Health write triggered. Same review owner, fresh control; final Back closes owner.",
+    "Bounded cleanup observation is not tap-to-delete latency or universal timing proof.",
+    "No whole-form, VoiceOver speech, Reduce Motion, all43/eightgroups or global acceptance."
+  ],
+  "physicalDeviceActions": 0,
+  "checkedAt": 1794122677.05826
+}
