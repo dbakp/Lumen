@@ -1,10 +1,10 @@
 {
   "source": "durable-source-r210.json",
-  "status": "Compile+hostlogic terminal0; full2350/focus23/57/22/117 PASS, sourceclosed62. No produceractive; exactcheckpoint beforefirstsafeNative.",
+  "status": "No-prior210R1 scopedPASS root/critic63 reviewed; exactbackup next beforewith-prior210R2safe",
   "plan": "source210-root-acquisition-r1-plan.json",
   "baselineExactGithubMain": "af1ae2d59ea72879d9209e6b0c71e5b7db692e0d",
-  "next": "Exact210checkpoint then firstsafeSource210R1; no checkpointstop",
-  "checkedAt": 1794099905.8873138,
+  "next": "Exactcasebackup/readback thenwith-prior210R2safe; continuefullgoal",
+  "checkedAt": 1794100511.171044,
   "completedBuild": {
     "session": 46998,
     "PID": 62770,
@@ -16,5 +16,19 @@
     "PID": 62772,
     "outcome": "source210-logic-r1-outcome.json",
     "exitCode": 0
+  },
+  "exactCheckpoint": "316a7bd7edbaeaebb960998fdac5baad7bad3921 all33paths exactbeforelaunch",
+  "noPriorNative": {
+    "case": "no-prior",
+    "trial": "Source210R1",
+    "expectation": "safe (scopedAPI, notglobalproduct)",
+    "session": 92652,
+    "PID": 66692,
+    "log": "/tmp/LumenBatch44Checks/RootAcquisitionNoPriorSource210R1.log",
+    "result": "/tmp/LumenBatch44Checks/RootAcquisitionNoPriorSource210R1.xcresult",
+    "nativeExitCode": 0,
+    "driverExitCode": 0,
+    "nativePassed": 1,
+    "scopedSafeRejection": true
   }
 }
