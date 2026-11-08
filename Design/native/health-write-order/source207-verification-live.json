@@ -1,7 +1,21 @@
 {
   "source": "durable-source-r207.json",
-  "status": "No producer active; sourceclosed55, actual206 app-test compile continuity confirmed; exactcheckpoint then first actual no-prior baseline",
+  "status": "FAILED hostprepared rawplist keylookup; xcode -15/driver1; noack/rootmove/recover. No producer active; appPID36966 retainedprepared until scopedtermination afterexactbackup.",
   "plan": "source207-root-acquisition-r1-plan.json",
-  "next": "Run no-prior Source207R1 expectmutation after exactcheckpoint, native observation success is not product safety; continuefullgoal",
-  "checkedAt": 1794096374.7736378
+  "next": "Exactfailurebackup then208driver-only H1\u2013H4repair/review/continuity beforefreshretry; no productbaseline yet",
+  "checkedAt": 1794096853.416916,
+  "exactCheckpoint": "eb2488bf4faf5e085d78af2b2e9af9ff6b1caddf all15paths exactbeforelaunch",
+  "failedNative": {
+    "case": "no-prior",
+    "trial": "Source207R1",
+    "expectation": "mutation, not safety acceptance",
+    "session": 82330,
+    "PID": 35779,
+    "log": "/tmp/LumenBatch44Checks/RootAcquisitionNoPriorSource207R1.log",
+    "result": "/tmp/LumenBatch44Checks/RootAcquisitionNoPriorSource207R1.xcresult",
+    "nativeExitCode": -15,
+    "driverExitCode": 1,
+    "counts": null,
+    "critic": "health-legacy-root-acquisition-source207-round2-part56-preferences-failure.json"
+  }
 }

@@ -1,0 +1,218 @@
+{
+  "schemaVersion": 1,
+  "part": 56,
+  "critic": "Continuing independent App Designer Pro critic /root/daily_critic_recovery2",
+  "source": "durable-source-r207.json",
+  "case": "no-prior Source207R1",
+  "createdAtUTC": "2026-11-08T00:12:59.280681+00:00",
+  "scope": "Actual failed API-probe acquisition/harness evidence before prepared acknowledgement; no root-relocation/recovery baseline or UI/visual contribution.",
+  "verdict": {
+    "classification": "FAILED host raw-plist fixed-key read before preparedack/rootmove/recovery",
+    "productBaselineResult": null,
+    "productSafetyAcceptance": false,
+    "overallAcceptance": false,
+    "score": null,
+    "judgment": "Source207 reached real ready-origin prepared state. Host KeyError prevented acknowledgement and intended wrapper call. Later exact Data values do not explain the earlier missing-key read. Retain this failure; a driver-only prepared availability observation/failure-finalization repair is justified before retry, with no production repair yet."
+  },
+  "actualExecution": {
+    "session": 82330,
+    "xcodePID": 35779,
+    "driverExitCode": 1,
+    "nativeProcessExitCode": -15,
+    "nativeCounts": null,
+    "countsReason": "Driver terminated xcode after host error; native result has noInfo.plist/summary. Do not label0pass1fail.",
+    "error": "KeyError('lumen.health.meals.v1')",
+    "driverStartedAt": 1794096386.646828,
+    "driverFinishedAt": 1794096448.911139,
+    "appProcessBoundary": "Parent reports appPID36966 remainedprepared after xcodekill; retained later prepared report proves only sampled endpoint, no critic process query.",
+    "preparedAckSent": false,
+    "rootMovesObserved": false,
+    "recoverHealthCheckedInvoked": false,
+    "actualOriginalPNGCount": 0,
+    "nativeHelperJSONCount": 0,
+    "exportMetadataCount": 0,
+    "imagesOpenedByCritic": 0,
+    "nativeSummaryAvailable": false
+  },
+  "independentRetainedVerification": {
+    "sourceArchiveCurrentInputsExact": 270,
+    "originalPreparedReportBytes": 16398,
+    "originalPreparedReportSHA256": "93c286794f916f53c4c9a89ff834a95af2794d88a2c25f1e31178a307c269a07",
+    "fullPreparedReportRead": true,
+    "postfailureAppReportExactOriginalBytes": true,
+    "normalizedLatestReportSameJSON": true,
+    "preparedEmbeddedPayloadRowsDecodedBytesHashExact": 22,
+    "initialCurrentRegularFiles": 10,
+    "initialPriorRegularFiles": 10,
+    "leaseReady": true,
+    "notes": [],
+    "runID": "E128D10C-7ECD-4DDA-B410-9020243F6352",
+    "traceBefore": [],
+    "externalBefore": {},
+    "journal": "Both originaltree intent raw bytes match journalBeforeBase64 with same owner/lifecycle and no events.",
+    "currentVsPrior": "Each10-file tree is separately captured; current missing meals/workouts and includes habits/sleep, prior includes healthy meals144B/workouts185B. They are not falsely described as identical trees.",
+    "allAttachmentIndexes": "png/json/manifest/other indexes all actualempty lists; no screenshot/nativehelper invented.",
+    "rawLog": "Full2593B gzipdecompressed log read, SHA d61acc906d268f234dab03cc0b9d90f5b8bc86fa98f58fe60560afaf4c948152; ends BUILD INTERRUPTED.",
+    "partialNativeBundle": "Canonical archive independently decoded all5files totaling204687B, each path/bytes/hash exact manifest; noInfo.plist present. This salvages incomplete diagnostics, not a completed native result. Internal diagnosticlogs hash-checked, not exhaustively reviewed linebyline.",
+    "noActions": "No fresh simulator/phone/process/defaults/binary/native query or action, source/Git/build/cleanup mutation or checker execution. Only this new report written."
+  },
+  "factsVersusInference": [
+    {
+      "fact": "Original native app prepared report says actual persisted/effective known42B malformed Data passed fixedValues guards and actual originlease ready before waitAck. Currentworkouts/meals leaves absent at that native capture; no acquisitionnotes.",
+      "limit": "This is native API observation, not the host rawplist file at its initial read."
+    },
+    {
+      "fact": "Host retained error KeyError(lumen.health.meals.v1). Driver source reads raw plist and accesses expected key directly; it terminates xcode upon exception without sending preparedack.",
+      "limit": "No exact initial rawplist fixed-key/type/fileidentity sample retained. The error proves missing key at that lookup, not why it was missing or what other keys/type/values were present."
+    },
+    {
+      "fact": "Parent actual readonly audit sampled at1794096508.729263,1794096509.735832,1794096510.746094. Both fixedkeys bytes/Data42B hash4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e eachtime; critic independently decoded all6rows against preparedfixedvalues. Recorded plistmtime1794096456085956031ns is later than driver finish1794096448.911139.",
+      "limit": "Delayed cross-process preferences persistence is plausible, not established. No CFPreferences timing mechanism, missing-data defect or data-loss inference accepted."
+    },
+    {
+      "fact": "Parent actual postfailure liveaudit finds current/prior each exact preparedtree, both movedpaths absent, latestpreparedreport exact16398B and nohostack. Critic read full executed audit code and decoded/bound retainedfacts.",
+      "limit": "No critic live requery or continuous state/timing claim; no root-loss baseline at all."
+    },
+    {
+      "fact": "retain_terminal actually reports summary/exporter64 errors, missingmanifest/summary,0PNG/JSON. Partial xcresult5files retained separately.",
+      "limit": "Fail-closed retention works; actual incomplete process termination exposed need to allow natural failed-native finalization, not a hidden product failure or native completedtest count."
+    }
+  ],
+  "driverOnlyFollowupRequirements": [
+    {
+      "id": "P56-H1",
+      "title": "Prepared-only bounded missing-key observation",
+      "requirement": "In separately frozen driver, allow a finite declared interval only for genuinely absent expected prepared fixedkeys. Persist every actual readonly sample BEFOREassert: timestamp, fresh phase/runID, known plist file identity/size/read error category and fixedknownkey presence/type/rawbytes/hash when supported. Never retain unrelated fullplist values. Existing present expectedData must stay exact; unsupported/presentwrongtype/changedvalue strictfail immediately, not wait for desired data."
+    },
+    {
+      "id": "P56-H2",
+      "title": "Revalidate authority immediately before preparedack",
+      "requirement": "After bounded expectedkeys appear, reread/revalidate same preparedrunID/phase and nativeoriginalreport, frozenmanifest/buildidentity, actual installedbinary, current/prior live rawtrees+metadata and unmovedpaths, fixedknownvalues, no stage/residue. Persist facts beforeack. If app naturallyfailed/timedout, phase/runID changed, rawtree/source/type/value changed, no ack. Observedboundary remains strict: no missingkey/tree/phase retry that waits away post-action changes; narrow startup polling exceptions outside observed validation."
+    },
+    {
+      "id": "P56-H3",
+      "title": "No ack on hostfailure; bounded natural native completion before fallback termination",
+      "requirement": "On hosterror retain originalreport/sample/error immediately, suppress all future nonceacks, and allow finite declared grace for native waitAck timeout/testfailure to finish xcode/resultbundle naturally. Retain actual remaining originalreports and then summary/originalattachments/manifest independently. If grace expires use explicit bounded terminatefallback, preserve partialresult and actualexit/countsunavailable; never fabricatecompletedfailure or screenshotcount. Original xcode/native failure remainsFAILED even if final diagnostics retained."
+    },
+    {
+      "id": "P56-H4",
+      "title": "Preserve baseline sequencing and provenance",
+      "requirement": "Publish exact207failure/source/partialbundle/audit/critic before reset or successor edits. Driver-only retry must transparently bind unchanged206compiledapp/UITests by continuity, not claim a newnativebuild. First actual root-relocation acquisition baseline still must be reviewed/retained/exactbackedup before with-prior/ordinaryreset and before any productionrepair."
+    }
+  ],
+  "adviceLimits": "These are concrete acquisition/failure-finalization requirements for the proposed next driver; no implemented successor source reviewed or new runtime credit. Prepared missing-only bounded read is not permission to weaken actual observed safety gates, operational errors, type/rawidentity or fullcontext preservation.",
+  "broaderOpen": [
+    "No product rootcreation/restoration defect reproduced by thisattempt; actual ready capture only. Rootloss/no-create/targetchange/ordinarypendingdeletion remain unexecuted here.",
+    "No native UI/error/confirmation/visualscore/screenshot/fullhelperJSON credit. No original43negative/reset/heldCancel/oldphotos/retainedtargetUI/appearance/Release/VO/fullspeech/motion/eightgroup/privacy/provider/performance/distribution/fullparent acceptance.",
+    "Prior205/206unexecuted audits,207source55retentionclosure and all earlier native failures/positive cases remain immutable. Actualfailure does not retroactively supply any missing productresult."
+  ],
+  "bindings": [
+    {
+      "file": "root-acquisition-no-prior-source207r1-outcome.json",
+      "bytes": 2389,
+      "sha256": "64684f577c92cbe49afa2edcfb5efe37a3a2aca5fe7fd8e8ad9513651daef785"
+    },
+    {
+      "file": "root-acquisition-no-prior-source207r1-latest-original-report.json",
+      "bytes": 16398,
+      "sha256": "93c286794f916f53c4c9a89ff834a95af2794d88a2c25f1e31178a307c269a07"
+    },
+    {
+      "file": "root-acquisition-no-prior-source207r1-latest-report.json",
+      "bytes": 16070,
+      "sha256": "f4fd18b67172a8336e47a05c98b0a2bc38d970404bee7a50dc2071eeb60f55d3"
+    },
+    {
+      "file": "root-acquisition-no-prior-source207r1-postfailure-app-report.json",
+      "bytes": 16398,
+      "sha256": "93c286794f916f53c4c9a89ff834a95af2794d88a2c25f1e31178a307c269a07"
+    },
+    {
+      "file": "root-acquisition-no-prior-source207r1-png-attachments.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "file": "root-acquisition-no-prior-source207r1-json-attachments.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "file": "root-acquisition-no-prior-source207r1-manifest-attachments.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "file": "root-acquisition-no-prior-source207r1-other-attachments.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "file": "root-acquisition-no-prior-source207r1.log.gz",
+      "bytes": 1153,
+      "sha256": "aeb5e34e19cc94180075092033d8a482d3646465fa2213fa887bc5c444d1a8a2"
+    },
+    {
+      "file": "source207-no-prior-r1-failure-outcome.json",
+      "bytes": 1568,
+      "sha256": "72592dc85199819073922a7fba427c42ff41d794708237e6993d82bf0a7a2921"
+    },
+    {
+      "file": "source207-no-prior-r1-postfailure-live-audit.json",
+      "bytes": 3120,
+      "sha256": "cf2a1c4e89c7a2299dc079eb006d1c8774edecb8a6bfb9b4d5574faa5f2dcd5e"
+    },
+    {
+      "file": "source207-no-prior-r1-postfailure-live-audit-executed.py",
+      "bytes": 2800,
+      "sha256": "169fa84c17ef8a60a44dc63971d1e58eca2429858d12cf58afe17b50a9721547"
+    },
+    {
+      "file": "source207-no-prior-r1-partial-xcresult.json.gz",
+      "bytes": 36118,
+      "sha256": "e20cbe029e0effe90ca4f65bcf5673c7ccf5cf009e5fc8866576d41eea39e453"
+    },
+    {
+      "file": "source207-no-prior-r1-partial-xcresult-manifest.json",
+      "bytes": 3116,
+      "sha256": "3713009e7a563221bcd6e46cbea56ba372ed4b13369e22f327c5d377ca97bb76"
+    },
+    {
+      "file": "durable-source-r207.json",
+      "bytes": 43905,
+      "sha256": "3a87d069d43752fa9f9f8a853d4ab99636967145045bfc1d01c7b55d217724b8"
+    },
+    {
+      "file": "durable-source-r207.json.gz",
+      "bytes": 980011,
+      "sha256": "2eed7e035e1c32f4701c1b29550657f644895cefa6b48991abe43e13d1185ebe"
+    },
+    {
+      "file": "health-legacy-root-acquisition-driver-r1.py",
+      "bytes": 18180,
+      "sha256": "b7025c71556577ee69de031f0d46b72c8f8386f14bd1dcfeeb90cc8afeb20952"
+    },
+    {
+      "file": "health-root-acquisition-r3-continuity.json",
+      "bytes": 1080,
+      "sha256": "94af514c0599a4dc1282a503b4bd74106090cc0a192157e7ffd23eb1014f800f"
+    },
+    {
+      "file": "source207-root-acquisition-r1-plan.json",
+      "bytes": 1317,
+      "sha256": "ab777bd867d8d9daa889bc3ed8d7ae4bc47b37f95d18c58c80cf859aa09a650d"
+    },
+    {
+      "file": "health-legacy-root-acquisition-source207-round2-part55-retention-review.json",
+      "bytes": 11276,
+      "sha256": "5cd22548ccbf0c3883bae8ed30ce1c5924185608c16b8d22be1b654d77353c79"
+    }
+  ],
+  "storage": {
+    "criticDeletedFiles": false,
+    "criticRecoveredBytes": 0,
+    "freeBytesAtFinish": 35846455296,
+    "retention": "Canonical preparedreport/partialbundle/log/failure/source/skill retained; no rawlivepath or fixture cleanup/currentlifetime claim. Parent exactbackup required before reset/cleanup."
+  },
+  "next": "Freeze/publish failure first, then separately review bounded prepared-key observation and natural-native-finalization driver. No production repair before actual root-acquisition baseline."
+}

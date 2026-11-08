@@ -1,0 +1,59 @@
+{
+  "source": "durable-source-r207.json",
+  "mode": "legacy-root-missing-no-prior",
+  "expectation": "mutation",
+  "startedAt": 1794096386.646828,
+  "localIdentityPreflight": true,
+  "safetyAcceptance": false,
+  "pid": 35779,
+  "command": [
+    "xcodebuild",
+    "-project",
+    "Lumen.xcodeproj",
+    "-scheme",
+    "Lumen",
+    "-configuration",
+    "Debug",
+    "-destination",
+    "id=AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+    "-derivedDataPath",
+    "/tmp/LumenBatch37Simulator",
+    "-clonedSourcePackagesDirPath",
+    "/tmp/LumenBatch37Packages",
+    "-disableAutomaticPackageResolution",
+    "-parallel-testing-enabled",
+    "NO",
+    "-maximum-concurrent-test-simulator-destinations",
+    "1",
+    "-resultBundlePath",
+    "/tmp/LumenBatch44Checks/RootAcquisitionNoPriorSource207R1.xcresult",
+    "-only-testing:LumenUITests/LumenSmokeTests/testHealthLegacyRootAcquisitionNoPrior",
+    "test-without-building"
+  ],
+  "latestOriginalReport": {
+    "bytes": 16398,
+    "sha256": "93c286794f916f53c4c9a89ff834a95af2794d88a2c25f1e31178a307c269a07"
+  },
+  "status": "FAILED evidence retention; no acceptance",
+  "error": "KeyError('lumen.health.meals.v1')",
+  "driverExitCode": 1,
+  "nativeExitCode": -15,
+  "retention": {
+    "errors": [
+      "summary: CalledProcessError(64, ['xcrun', 'xcresulttool', 'get', 'test-results', 'summary', '--path', '/tmp/LumenBatch44Checks/RootAcquisitionNoPriorSource207R1.xcresult'])",
+      "attachment exporter: CalledProcessError(64, ['xcrun', 'xcresulttool', 'export', 'attachments', '--path', '/tmp/LumenBatch44Checks/RootAcquisitionNoPriorSource207R1.xcresult', '--output-path', '/tmp/LumenBatch44Checks/RootAcquisitionNoPriorSource207R1-attachments'])",
+      "attachment metadata identity/inventory: AssertionError('exactly one original export manifest required')",
+      "required native summary unavailable",
+      "required original export metadata unavailable"
+    ],
+    "originalPNGCount": 0,
+    "nativeHelperJSONCount": 0,
+    "exportMetadataCount": 0,
+    "nativeHelperBoundary": "These API observation wrappers attach screenshots only. Full app protocol reports are host readbacks, not native-helper JSON.",
+    "summaryRetained": false,
+    "partialSalvageAttemptedIndependently": true
+  },
+  "logBytes": 2593,
+  "logSHA256": "d61acc906d268f234dab03cc0b9d90f5b8bc86fa98f58fe60560afaf4c948152",
+  "finishedAt": 1794096448.911139
+}
