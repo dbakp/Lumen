@@ -1,0 +1,93 @@
+{
+  "status": "PASS selected actual Release settings and app compiler invocation checks",
+  "source": "durable-source-r217.json",
+  "queryPID": 25458,
+  "queryExitCode": 0,
+  "command": [
+    "xcodebuild",
+    "-project",
+    "Lumen.xcodeproj",
+    "-scheme",
+    "Lumen",
+    "-configuration",
+    "Release",
+    "-destination",
+    "generic/platform=iOS",
+    "-derivedDataPath",
+    "/tmp/LumenBatch37Release",
+    "-clonedSourcePackagesDirPath",
+    "/tmp/LumenBatch37Packages",
+    "-disableAutomaticPackageResolution",
+    "-jobs",
+    "2",
+    "CODE_SIGNING_ALLOWED=NO",
+    "-showBuildSettings",
+    "-json"
+  ],
+  "target": "Lumen",
+  "actualSettingTargetCount": 1,
+  "selectedSettings": {
+    "CONFIGURATION": "Release",
+    "PLATFORM_NAME": "iphoneos",
+    "SDKROOT": "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS27.0.sdk",
+    "ARCHS": "arm64",
+    "PRODUCT_BUNDLE_IDENTIFIER": "com.dbakp.lumen",
+    "CODE_SIGNING_ALLOWED": "NO",
+    "SWIFT_VERSION": "5.0",
+    "SWIFT_OPTIMIZATION_LEVEL": null,
+    "SWIFT_ACTIVE_COMPILATION_CONDITIONS": null,
+    "OTHER_SWIFT_FLAGS": null,
+    "GCC_PREPROCESSOR_DEFINITIONS": null,
+    "SWIFT_COMPILATION_MODE": null,
+    "ENABLE_TESTABILITY": "NO",
+    "IPHONEOS_DEPLOYMENT_TARGET": "18.0",
+    "CLANG_ENABLE_CODE_COVERAGE": null,
+    "GCC_GENERATE_TEST_COVERAGE_FILES": null,
+    "ENABLE_CODE_COVERAGE": "YES"
+  },
+  "rawSettingsBytes": 38491,
+  "rawSettingsSHA256": "6aa3a8f8d25112d768dee542bf9fe3e0ecb3b4c5aaf432a1b1a0772ad4912d70",
+  "rawSettingsPath": "/tmp/LumenBatch44Checks/Source217UnsignedReleaseR1Settings.json",
+  "stderrBytes": 0,
+  "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "appCompilerInvocations": 3,
+  "appCompilerDefinesDEBUG": false,
+  "actualCompilerOptimizationFlags": [
+    [
+      "-O"
+    ],
+    [
+      "-O"
+    ],
+    [
+      "-O"
+    ]
+  ],
+  "appCompilerEnableTesting": false,
+  "oneActualCurrentQuery": true,
+  "missingSettingsAreNotNegativeFlagProof": [
+    "SWIFT_OPTIMIZATION_LEVEL",
+    "SWIFT_ACTIVE_COMPILATION_CONDITIONS",
+    "OTHER_SWIFT_FLAGS",
+    "GCC_PREPROCESSOR_DEFINITIONS",
+    "SWIFT_COMPILATION_MODE",
+    "CLANG_ENABLE_CODE_COVERAGE",
+    "GCC_GENERATE_TEST_COVERAGE_FILES"
+  ],
+  "appCompilerCoverageFlags": [
+    "-profile-generate",
+    "-profile-coverage-mapping"
+  ],
+  "swiftFileList": {
+    "retained": "source217-unsigned-release-r1-swift-filelist.txt.gz",
+    "originalPath": "/tmp/LumenBatch37Release/Build/Intermediates.noindex/Lumen.build/Release-iphoneos/Lumen.build/Objects-normal/arm64/Lumen.SwiftFileList",
+    "bytes": 15981,
+    "sha256": "e654928953c014141d4ff70b0fdb0fa540170c8245961d8dc18e66fc77c879c7",
+    "changedCallerAndPayloadListed": true
+  },
+  "buildLogSHA256": "36e07ae9fba603e05fa6454cf20762615d446ba67dc6f95abb6f120bae547f5c",
+  "planSHA256": "a5755889743c5f9618919884c8dcbf5402e1f4f1279855c6803075c3c4ee18a6",
+  "auditorSHA256": "4a77423c00c77df34a865a4c0c1b87b2e786808f837b5f65280625d5065abaef",
+  "checkedAt": 1794113337.560332,
+  "scope": "Selected actual app settings/three parsed compiler invocations only; omitted settings are not no-DEBUG evidence. Fresh217 actual settings acquired once; inherited missing-field correction retains actual compiler flags as evidence. Coverage instrumentation is reported separately; no distribution/performance/noninstrumented/runtime acceptance. Unselected raw settings are not published; raw acquisition retained through review and exact compact backup."
+}
