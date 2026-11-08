@@ -71,7 +71,7 @@
 <button class="btn" type="button" data-area="quality" aria-pressed="false" aria-controls="lumen-plan-detail">Answer quality</button>
 <button class="btn" type="button" data-area="release" aria-pressed="false" aria-controls="lumen-plan-detail">Release gates</button>
 </div>
-<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Healthy meal protection · in progress</h3><div data-verified>Earlier stale-review rejection, fresh recovery, visible completion and closing passed in the simulator.</div><div data-next>Now: correcting file-addition verification before repeating the healthy-meal test.</div><div class="text-small" data-gate>The simulator created the known healthy meal; verification stopped at a folder link-count assumption before recovery. All 197 attachments were retained. Healthy-meal recovery and wider release gates remain unverified.</div></div>
+<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Fresh review protection · needs a fix</h3><div data-verified>The newer healthy meal survived the stale recovery attempt; leaving the old review cleaned up its files.</div><div data-next>Now: correct the healthy-meal choices, then repeat the full recovery test.</div><div class="text-small" data-gate>The fresh review wrongly enables meal recovery and photo omission. The test stopped before replacement. All 108 attachments, including 12 original screens, were retained; full recovery and wider release gates remain open.</div></div>
 </div>
 <div class="section"><h3>Verified safety checks</h3>
 <table class="table table-sm" aria-label="Earlier checks retain their original scope; broader checks remain open"><thead><tr><th>Situation</th><th>Observed result</th></tr></thead><tbody>
@@ -88,9 +88,9 @@
 <script>
 (()=>{
 const root=document.getElementById('lumen-plan-progress');
-const snapshot='nov8-healthy-folder-check';
+const snapshot='nov8-healthy-eligibility-finding';
 const areas={
-current:{title:'Healthy meal protection · in progress',verified:'Earlier stale-review rejection, fresh recovery, visible completion and closing passed in the simulator.',next:'Now: correcting file-addition verification before repeating the healthy-meal test.',gate:'The simulator created the known healthy meal; verification stopped at a folder link-count assumption before recovery. All 197 attachments were retained. Healthy-meal recovery and wider release gates remain unverified.'},
+current:{title:'Fresh review protection · needs a fix',verified:'The newer healthy meal survived the stale recovery attempt; leaving the old review cleaned up its files.',next:'Now: correct the healthy-meal choices, then repeat the full recovery test.',gate:'The fresh review wrongly enables meal recovery and photo omission. The test stopped before replacement. All 108 attachments, including 12 original screens, were retained; full recovery and wider release gates remain open.'},
 quality:{title:'Answer quality · open',verified:'Library search, source identity, consent controls and literal-reference safeguards are delivered.',next:'Next: evidence-support policy and independent evaluation; personal-context and conversation-history privacy review.',gate:'Clinical accuracy, language coverage and live-provider evaluation remain required.'},
 release:{title:'Release readiness · open',verified:'The current unsigned Release build passed independent review, with coverage recording enabled.',next:'Next: background Health, Watch reconnect, widget, interruption and accessibility checks.',gate:'Orientation warning, representative histories, performance, privacy and distribution review remain open. No iPhone installation, launch or checks without a renewed request.'}
 };
