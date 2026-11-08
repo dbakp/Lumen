@@ -1,0 +1,64 @@
+{
+  "status": "CONFIRMED frozen250checker wrongargument; isolated one-argument projection passes7controls",
+  "actualChecker": {
+    "file": "check-confirmation-lifecycle-r1.py",
+    "bytes": 15321,
+    "sha256": "4a75cc06b26b509f4ad2f58d73e1704a75dac571e0a41b4b5b06db138cef13ae",
+    "callAST": "Expr(value=Call(func=Attribute(value=Name(id='v', ctx=Load()), attr='all_payloads', ctx=Load()), args=[Name(id='state', ctx=Load()), Name(id='h', ctx=Load()), Subscript(value=Name(id='state', ctx=Load()), slice=Constant(value='appData'), ctx=Load())], keywords=[]))"
+  },
+  "projectionAST": "Expr(value=Call(func=Attribute(value=Name(id='v', ctx=Load()), attr='all_payloads', ctx=Load()), args=[Name(id='state', ctx=Load()), Name(id='h', ctx=Load()), Subscript(value=Name(id='inputs', ctx=Load()), slice=Constant(value='app'), ctx=Load())], keywords=[]))",
+  "priorRealInput": {
+    "file": "health-legacy-confirmation-data-source248r1-host-audit.json",
+    "sha256": "dc55803c0e474aeddbb77041e8955d0ade9a1da954851be69def8c31b575bb32"
+  },
+  "validator": {
+    "file": "legacy-target-change-validation-r3.py",
+    "sha256": "5900a9ab9ea0fe288b1890bec9868b6ab20cca008a53ed36ee3023e265167b50"
+  },
+  "cases": [
+    {
+      "case": "actual250call-rejects-genuine-metadata",
+      "accepted": false,
+      "expected": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "projected-fresh-inputs-app-accepts-genuine-metadata",
+      "accepted": true,
+      "expected": true,
+      "error": null
+    },
+    {
+      "case": "projected-rejects-spoofed-app-metadata",
+      "accepted": false,
+      "expected": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "projected-rejects-arbitrary-null-payload",
+      "accepted": false,
+      "expected": false,
+      "error": "TypeError: argument should be a bytes-like object or ASCII string, not 'NoneType'"
+    },
+    {
+      "case": "projected-rejects-invalid-payload-hash",
+      "accepted": false,
+      "expected": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "actual250call-full-retained248-fails",
+      "accepted": false,
+      "expected": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "projected-full-retained248-passes",
+      "accepted": true,
+      "expected": true,
+      "error": null
+    }
+  ],
+  "scope": "Actual frozen250call plus isolated AST projection only; no Source251 source written, sourceReady/currentbuild/native/lateack or simulator acceptance. No old live/raw audit or process/defaults action.",
+  "checkedAt": 1794176360.5598679
+}

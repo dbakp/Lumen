@@ -1,0 +1,46 @@
+{
+  "status": "PASS actualSDKtyping",
+  "kind": "lifecycle",
+  "sources": [
+    {
+      "file": "Lumen/Views/HealthConfirmationTargetChangeGate.swift",
+      "bytes": 7319,
+      "sha256": "010e65b6e051058397d8aa0fbf7fbd2ac56c93d922c0015a12e649f1c64978fd"
+    },
+    {
+      "file": "Lumen/Views/HealthConfirmationLifecycleTrace.swift",
+      "bytes": 12955,
+      "sha256": "aa8177ba4e3336817abb299c4ada54eb2c2a14b781e1b01d4ca613adae5070e8"
+    }
+  ],
+  "command": [
+    "xcrun",
+    "swiftc",
+    "-typecheck",
+    "-swift-version",
+    "5",
+    "-target",
+    "arm64-apple-ios18.0-simulator",
+    "-sdk",
+    "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk",
+    "-F",
+    "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Library/Frameworks",
+    "-I",
+    "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/lib",
+    "-module-alias",
+    "Testing=_Testing_Unavailable",
+    "-module-cache-path",
+    "/tmp/LumenBatch37Simulator/ModuleCache.noindex",
+    "-D",
+    "DEBUG",
+    "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen250-lifecycle-typing-1m6ix1jy/stubs.swift",
+    "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen250-lifecycle-typing-1m6ix1jy/HealthConfirmationTargetChangeGate.swift",
+    "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen250-lifecycle-typing-1m6ix1jy/HealthConfirmationLifecycleTrace.swift"
+  ],
+  "exit": 0,
+  "stdout": "",
+  "stderr": "",
+  "stubs": "import Foundation\nfinal class BackupOperationControl { var verificationCancelled: Bool { false }; func cancel() {}; func checkCancellation() throws {} }\nenum AppGroup { static let id = \"group.com.dbakp.lumen\" }\nenum HealthLocalFiles { enum Domain: String, Hashable { case meals, workouts } }\nfinal class BackupRecoveryReviewSession { let id = UUID() }\nenum HealthLegacyTargetChangeUIFixture {\n enum Failure: Error { case invalidContext, invalidObservation }\n struct Context { let kind: String }\n static let lifecycleFlag = \"-health-legacy-confirmation-lifecycle-ui\"\n static var requested: Bool { false }; static var phase: String { \"ready\" }\n static func context(_ args: [String]) throws -> Context? { nil }\n static func confirmationBinding(_ session: UUID) throws -> [String:String] { [:] }\n static func change(_ session: BackupRecoveryReviewSession) {}\n @MainActor static func confirmationLifecycleFacts(session: UUID, capture: String) throws -> [String:Any] { [:] }\n}\n",
+  "scope": "Whole actual UITest without stubs or whole actual gate+trace with named dependencies stubbed; no full currentapp build/native/closure/lateack/probe/runtime acceptance",
+  "checkedAt": 1794175232.6051211
+}

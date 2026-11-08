@@ -1,0 +1,90 @@
+{
+  "status": "PASS actual caller/actual exception handler isolated controls",
+  "cases": [
+    {
+      "case": "valid-completed-cancel-before-one-late-ack",
+      "expected": "ack",
+      "actualAck": true,
+      "status": "PASS"
+    },
+    {
+      "case": "missing-completion-is-pending",
+      "expected": "pending",
+      "actualAck": false,
+      "status": "PASS"
+    },
+    {
+      "case": "missing-dismissed-is-pending",
+      "expected": "pending",
+      "actualAck": false,
+      "status": "PASS"
+    },
+    {
+      "case": "malformed-gate",
+      "expected": "error",
+      "actualAck": false,
+      "status": "PASS"
+    },
+    {
+      "case": "malformed-trace",
+      "expected": "error",
+      "actualAck": false,
+      "status": "PASS"
+    },
+    {
+      "case": "malformed-presented",
+      "expected": "error",
+      "actualAck": false,
+      "status": "PASS"
+    },
+    {
+      "case": "malformed-dismissed",
+      "expected": "error",
+      "actualAck": false,
+      "status": "PASS"
+    },
+    {
+      "case": "wrong-closed-reason",
+      "expected": "error",
+      "actualAck": false,
+      "status": "PASS"
+    },
+    {
+      "case": "task-not-cancelled",
+      "expected": "error",
+      "actualAck": false,
+      "status": "PASS"
+    },
+    {
+      "case": "wrong-nonce",
+      "expected": "error",
+      "actualAck": false,
+      "status": "PASS"
+    },
+    {
+      "case": "dismissed-before-touch",
+      "expected": "error",
+      "actualAck": false,
+      "status": "PASS"
+    },
+    {
+      "case": "wrong-retained-choices",
+      "expected": "error",
+      "actualAck": false,
+      "status": "PASS"
+    },
+    {
+      "case": "outside-modal",
+      "expected": "error",
+      "actualAck": false,
+      "status": "PASS"
+    }
+  ],
+  "count": 13,
+  "sourceSHA256": "7f31ecee2e4199c5ebf23ee1bff96982f77b146d3ca8f9b664e5ce86605b647b",
+  "fixture": "source250-lifecycle-caller-controls-r1-fixtures.json.gz",
+  "decodedBytes": 106019,
+  "decodedSHA256": "01d1e2d46a31942694974ac80b4be4cd4b03998be5fdda215477e7c0702546df",
+  "scope": "Actual caller+raw reader+protocol/publisher/outer handler on isolated files, runner preseeded/protection+fixed/source+installed stubbed. No actual native/UI/app/preferences/process acceptance.",
+  "checkedAt": 1794176053.6689951
+}

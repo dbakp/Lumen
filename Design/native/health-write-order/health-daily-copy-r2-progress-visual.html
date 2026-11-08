@@ -71,7 +71,7 @@
 <button class="btn" type="button" data-area="quality" aria-pressed="false" aria-controls="lumen-plan-detail">Answer quality</button>
 <button class="btn" type="button" data-area="release" aria-pressed="false" aria-controls="lumen-plan-detail">Release gates</button>
 </div>
-<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Confirmation changes · verified</h3><div data-verified>Data and String each passed all eight stages. Both reviews verified stale rejection, fresh recovery and cleanup across 34 original screens.</div><div data-next>Now: implement the reviewed “Not now” and late-response test. Expiry and later recovery stages remain.</div><div class="text-small" data-gate>Both storage forms passed this confirmation window. Other timing windows, recovery ownership and broader product checks remain open.</div></div>
+<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Cancellation · review correction</h3><div data-verified>Earlier Data and String confirmation flows passed both reviews across 34 original screens. The new cancellation code passes isolated task and validation checks.</div><div data-next>Now: correct the checker’s app-metadata binding, then finish source review and run the actual simulator test.</div><div class="text-small" data-gate>Cancellation has no simulator acceptance yet. Expiry, later recovery stages, recovery ownership and broader product checks remain open.</div></div>
 </div>
 <div class="section"><h3>Verified safety checks</h3>
 <table class="table table-sm" aria-label="Earlier checks retain their original scope; broader checks remain open"><thead><tr><th>Situation</th><th>Observed result</th></tr></thead><tbody>
@@ -88,11 +88,11 @@
 <script>
 (()=>{
 const root=document.getElementById('lumen-plan-progress');
-const snapshot='nov8-not-now-plan';
+const snapshot='nov8-not-now-review-correction';
 const areas={
-current:{title:'Confirmation changes · verified',verified:'Data and String each passed all eight stages. Both reviews verified stale rejection, fresh recovery and cleanup across 34 original screens.',next:'Now: implement the reviewed “Not now” and late-response test. Expiry and later recovery stages remain.',gate:'Both storage forms passed this confirmation window. Other timing windows, recovery ownership and broader product checks remain open.'},
+current:{title:'Cancellation · review correction',verified:'Earlier Data and String confirmation flows passed both reviews across 34 original screens. The new cancellation code passes isolated task and validation checks.',next:'Now: correct the checker’s app-metadata binding, then finish source review and run the actual simulator test.',gate:'Cancellation has no simulator acceptance yet. Expiry, later recovery stages, recovery ownership and broader product checks remain open.'},
 quality:{title:'Answer quality · open',verified:'Library search, source identity, consent controls and literal-reference safeguards are delivered.',next:'Next: evidence-support policy and independent evaluation; personal-context and conversation-history privacy review.',gate:'Clinical accuracy, language coverage and live-provider evaluation remain required.'},
-release:{title:'Release readiness · open',verified:'The current optimized build passed both static reviews. Coverage instrumentation remains enabled; distribution and runtime checks remain open.',next:'Next: background Health, Watch reconnect, widget, interruption and accessibility checks.',gate:'Orientation warning, representative histories, performance, privacy and distribution review remain open. No iPhone installation, launch or checks without a renewed request.'}
+release:{title:'Release readiness · open',verified:'The earlier optimized build passed both static reviews with coverage instrumentation enabled. The new cancellation changes still need a current build and audit.',next:'Next: background Health, Watch reconnect, widget, interruption and accessibility checks.',gate:'Orientation warning, representative histories, performance, privacy and distribution review remain open. No iPhone installation, launch or checks without a renewed request.'}
 };
 const buttons=Array.from(root.querySelectorAll('[data-area]'));
 function select(key,remember){

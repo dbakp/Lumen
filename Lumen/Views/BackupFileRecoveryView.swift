@@ -209,6 +209,7 @@ struct BackupFileRecoveryView: View {
     @State private var confirmationGate: HealthConfirmationTargetChangeGate?
     @State private var confirmationGateWork: Task<Void, Never>?
     @State private var confirmationGateValue = ""
+    @State private var confirmationLifecycleCheckValue = ""
     #endif
     @State private var originMetadata: HealthLegacyRecoveryOrigin.ReviewMetadata?
     @State private var captureIssue = false
@@ -431,6 +432,15 @@ struct BackupFileRecoveryView: View {
             if HealthLegacyTargetChangeUIFixture.requested {
                 ToolbarItem(placement: .topBarTrailing) { HealthLegacyTargetChangeUIProbe(session: session) }
             }
+            if HealthConfirmationLifecycleTrace.requested {
+                ToolbarItem(placement: .bottomBar) {
+                    Button("Check cancellation") {
+                        confirmationLifecycleCheckValue = HealthConfirmationLifecycleTrace.check(
+                            session: session.id, request: UUID())
+                    }.accessibilityIdentifier("checkConfirmationLifecycle")
+                        .accessibilityValue(confirmationLifecycleCheckValue)
+                }
+            }
             if HealthHealthyTargetChangeUIFixture.requested {
                 ToolbarItem(placement: .topBarTrailing) { HealthHealthyTargetChangeUIProbe(session: session) }
             }
@@ -438,9 +448,9 @@ struct BackupFileRecoveryView: View {
         #endif
         .alert("Replace selected data?", isPresented: $confirmation, presenting: confirmationSelection) { selection in
             #if DEBUG && targetEnvironment(simulator)
-            Button("Recover") { closeConfirmationGate(); recover(selection) }
+            Button("Recover") { closeConfirmationGate(reason: "recover"); recover(selection) }
                 .accessibilityValue(confirmationGateValue)
-            Button("Not now", role: .cancel) { closeConfirmationGate() }
+            Button("Not now", role: .cancel) { closeConfirmationGate(reason: "not-now") }
             #else
             Button("Recover") { recover(selection) }
             Button("Not now", role: .cancel) { }
@@ -457,6 +467,9 @@ struct BackupFileRecoveryView: View {
                     domains: selection.domains, legacyDomains: selection.legacyDomains, omitPhotos: selection.omitPhotos)
                 confirmationGate = gate; confirmationGateValue = gate.accessibilityValue
                 confirmationGateWork = Task { @MainActor in
+                    var exitType = "returned"
+                    gate.noteWaiterStarted()
+                    defer { gate.noteWaiterExit(errorType: exitType) }
                     do {
                         try await gate.waitAndChange(session) {
                             confirmation && reviewActive && appearanceID == gate.appearance
@@ -467,8 +480,9 @@ struct BackupFileRecoveryView: View {
                         }
                         guard confirmationGate === gate else { return }
                         confirmationGateValue = gate.accessibilityValue
-                    } catch is CancellationError { }
+                    } catch is CancellationError { exitType = "CancellationError" }
                     catch {
+                        exitType = String(reflecting: type(of: error))
                         guard confirmationGate === gate else { return }
                         confirmationGateValue = "confirmation-verification-failed"
                         gate.close()
@@ -485,7 +499,7 @@ struct BackupFileRecoveryView: View {
         .onDisappear {
             reviewActive = false
             #if DEBUG && targetEnvironment(simulator)
-            closeConfirmationGate()
+            closeConfirmationGate(reason: "disappearance")
             #endif
             cancelSuccessReveal()
             if let captureControl { session.suspendOriginCapture(control: captureControl) }
@@ -498,9 +512,15 @@ struct BackupFileRecoveryView: View {
     }
 
     #if DEBUG && targetEnvironment(simulator)
-    private func closeConfirmationGate() {
-        confirmationGate?.close(); confirmationGateWork?.cancel()
+    private func closeConfirmationGate(reason: String = "presentation-change") {
+        let ending = confirmationGateWork, metadata = confirmationGate?.lifecycle
+        confirmationGate?.close(reason: reason); ending?.cancel()
         confirmationGate = nil; confirmationGateWork = nil; confirmationGateValue = ""
+        if let metadata, let ending {
+            // This observer is outside the exact waiter. The registry receives
+            // copied metadata only, after that task's actual value completes.
+            HealthConfirmationLifecycleTrace.observeCompletion(of: ending, metadata: metadata)
+        }
     }
     #endif
 

@@ -10,13 +10,14 @@ enum HealthLegacyTargetChangeUIFixture {
     struct Context: Equatable { let runID: UUID; let kind: String }
     static let flag = "-health-legacy-target-change-ui"
     static let runFlag = "-health-legacy-target-change-run"
+    static let lifecycleFlag = "-health-legacy-confirmation-lifecycle-ui"
     static let verificationProtocol = "Lumen-legacy-target-change-verification-v1"
     static let newerMeals = Data("{synthetic newer persisted meals damaged".utf8)
     static let newerMealsString = "Synthetic newer saved value e\u{301} 🫖"
     private static let bridge = Bridge()
 
     static func context(_ args: [String]) throws -> Context? {
-        guard args.contains(flag) || args.contains(runFlag) else { return nil }
+        guard args.contains(flag) || args.contains(runFlag) || args.contains(lifecycleFlag) else { return nil }
         func one(_ flag: String) throws -> String {
             let positions = args.indices.filter { args[$0] == flag }
             guard positions.count == 1, let index = positions.first, args.indices.contains(index + 1),
@@ -24,10 +25,16 @@ enum HealthLegacyTargetChangeUIFixture {
             return args[index + 1]
         }
         guard args.filter({ $0 == "-health-legacy-confirmation-window-ui" }).count <= 1 else { throw Failure.invalidContext }
+        let lifecycleCount = args.filter { $0 == lifecycleFlag }.count
+        guard lifecycleCount <= 1 else { throw Failure.invalidContext }
         guard try one(flag) == "ready", let run = UUID(uuidString: try one(runFlag)),
               let reset = UUID(uuidString: try one("-health-legacy-reset-run")), run == reset,
               ["data", "string"].contains(try one("-health-legacy-origin-ui")), try one("-health-backup-case") == "legacy"
         else { throw Failure.invalidContext }
+        if lifecycleCount == 1 {
+            guard args.filter({ $0 == "-health-legacy-confirmation-window-ui" }).count == 1,
+                  try one("-health-legacy-origin-ui") == "data" else { throw Failure.invalidContext }
+        }
         for required in ["-resetForUITests", "-health-backup-ui-fixture", "-health-backup-empty-ui",
                          "-health-backup-healthy-merge-ui", "-health-legacy-reset-ui"] {
             guard args.filter({ $0 == required }).count == 1 else { throw Failure.invalidContext }
@@ -212,6 +219,25 @@ enum HealthLegacyTargetChangeUIFixture {
         return result
     }
 
+    /// A diagnostic read after an actual UI touch; never acquires a new origin,
+    /// updates LocalStore, repairs preferences or changes the fixture phase.
+    @MainActor static func confirmationLifecycleFacts(session: UUID, capture: String) throws -> [String: Any] {
+        let args = ProcessInfo.processInfo.arguments
+        guard args.filter({ $0 == lifecycleFlag }).count == 1,
+              let context = try context(args), context.kind == "data",
+              Bundle.main.bundleIdentifier == "com.dbakp.lumen" else { throw Failure.invalidContext }
+        let binding = try bridge.confirmationBinding(session)
+        guard binding["captureID"] == capture else { throw Failure.invalidObservation }
+        let started = Date().timeIntervalSince1970
+        let facts = fixedFacts()
+        let connected = UserDefaults.standard.bool(forKey: "lumen.health.connected")
+        let original = (try? requireOriginalFixedValues()) != nil
+        return ["readStartedAt": started, "readFinishedAt": Date().timeIntervalSince1970,
+                "fixed": facts, "healthConnected": connected, "originalValuesVerified": original,
+                "fixtureBinding": binding, "knownKeyWritten": bridge.didWrite,
+                "fixtureFlags": bridge.lifecycleFlags]
+    }
+
     private final class Bridge: @unchecked Sendable {
         private let lock = NSLock()
         private var context: Context?
@@ -230,6 +256,10 @@ enum HealthLegacyTargetChangeUIFixture {
         private var rows: [[String: Any]] = []
         private var status = "not-prepared"
         var didWrite: Bool { lock.lock(); defer { lock.unlock() }; return written }
+        var lifecycleFlags: [String: Bool] {
+            lock.lock(); defer { lock.unlock() }
+            return ["singleUseConsumed": consumed, "knownKeyWritten": written, "failed": failedFlag]
+        }
         var phase: String {
             lock.lock()
             let status = self.status, parent = self.parent, context = self.context, active = self.active, capture = captureID
@@ -316,7 +346,9 @@ enum HealthLegacyTargetChangeUIFixture {
         } }
         func ready(_ session: UUID, control: BackupOperationControl, domains: Set<HealthLocalFiles.Domain>) { update {
             guard active == session, pendingControl === control, let captureID, domains.contains(.meals) else { throw Failure.invalidObservation }
-            readyID = captureID; pendingControl = nil; status = consumed ? "fresh-ready" : "ready"
+            let lifecycleReopen = ProcessInfo.processInfo.arguments.contains(HealthLegacyTargetChangeUIFixture.lifecycleFlag)
+                && rows.filter { $0["event"] as? String == "capture-ready" }.count == 1
+            readyID = captureID; pendingControl = nil; status = consumed || lifecycleReopen ? "fresh-ready" : "ready"
             rows.append(["event": "capture-ready", "sessionID": session.uuidString, "captureID": captureID.uuidString,
                          "actualControl": String(describing: ObjectIdentifier(control)), "domains": domains.map(\.rawValue).sorted()])
         } }

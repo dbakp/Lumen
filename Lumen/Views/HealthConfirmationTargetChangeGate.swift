@@ -14,6 +14,7 @@ final class HealthConfirmationTargetChangeGate {
     let appearance: UUID
     let sessionID: UUID
     let binding: [String: String]
+    let lifecycle: HealthConfirmationLifecycleTrace.Metadata?
     private let ack: URL
     private let control = BackupOperationControl()
     private var closed = false
@@ -45,8 +46,25 @@ final class HealthConfirmationTargetChangeGate {
         let temporary = gate.appendingPathExtension("tmp")
         try bytes.write(to: temporary, options: .withoutOverwriting)
         try FileManager.default.moveItem(at: temporary, to: gate)
+        lifecycle = try HealthConfirmationLifecycleTrace.register(binding: record,
+            acknowledgement: parent.appendingPathComponent(stem + "-ack.json"))
     }
-    func close() { closed = true; control.cancel() }
+    func close(reason: String = "unspecified") {
+        guard !closed else { return }
+        closed = true; control.cancel()
+        HealthConfirmationLifecycleTrace.note(lifecycle, event: "closed", fields: ["reason": reason,
+            "closed": closed, "consumed": consumed, "controlCancelled": control.verificationCancelled])
+    }
+    func noteWaiterStarted() {
+        HealthConfirmationLifecycleTrace.note(lifecycle, event: "wait-started", fields: [
+            "taskCancelled": Task.isCancelled, "closed": closed, "consumed": consumed,
+            "controlCancelled": control.verificationCancelled])
+    }
+    func noteWaiterExit(errorType: String) {
+        HealthConfirmationLifecycleTrace.note(lifecycle, event: "wait-exit", fields: [
+            "errorType": errorType, "taskCancelled": Task.isCancelled, "closed": closed,
+            "consumed": consumed, "controlCancelled": control.verificationCancelled])
+    }
     func waitAndChange(_ session: BackupRecoveryReviewSession, stillPresented: () -> Bool) async throws {
         let deadline = ContinuousClock.now.advanced(by: .seconds(90))
         while ContinuousClock.now < deadline {

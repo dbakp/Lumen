@@ -1,0 +1,455 @@
+{
+  "part": 163,
+  "source": "durable-source-r250.json",
+  "status": "NOT_READY: mandatory checker passes wrong metadata argument to retained payload validator; preserve source250 unexecuted before successor correction",
+  "verdict": {
+    "sourceReady": false,
+    "requiredCorrectionIDs": [
+      "P163-C1"
+    ],
+    "runtimeAcceptance": false,
+    "globalProductAcceptance": false,
+    "score": null,
+    "stopBeforeBuildAndNative": true,
+    "scope": "Current DEBUGsim Data Notnow/lateack/freshread source review. Production transaction/authority change not requested or accepted. Fullgoal stays active."
+  },
+  "independentFrozenVerification": {
+    "bindings": 852,
+    "text": 792,
+    "fixtures": 60,
+    "previousInputs": 816,
+    "priorModified": [
+      "Lumen/Views/BackupFileRecoveryView.swift",
+      "Lumen/Views/HealthConfirmationTargetChangeGate.swift",
+      "Lumen/Views/HealthLegacyTargetChangeUIFixture.swift",
+      "LumenUITests/LumenSmokeTests.swift"
+    ],
+    "priorUnchanged": 812,
+    "appended": 36,
+    "allCurrentArchiveBytesHashesExact": true,
+    "readScope": "Whole new trace/gate and actual view changes; full new native method/setup diff; full new host evidence/protocol/transport/driver/checker; isolated producer sources and full controlarchives/receipts. Unchanged historical sources mechanically byte-bound, not all newly human reread.",
+    "subjectImportsExecutionsByCritic": false,
+    "simulatorProcessDefaultsGitBuildQueriesByCritic": false,
+    "oldRawAudits": false,
+    "onlyNewReportWritten": true,
+    "archiveVerification": [
+      {
+        "file": "source250-lifecycle-caller-controls-r1-fixtures.json.gz",
+        "decodedBytes": 106019,
+        "decodedSHA256": "01d1e2d46a31942694974ac80b4be4cd4b03998be5fdda215477e7c0702546df",
+        "embeddedPayloadInstancesVerified": 48,
+        "scope": "Current isolated control archive"
+      },
+      {
+        "file": "source250-native-lifecycle-controls-r2-fixtures.json.gz",
+        "decodedBytes": 41631,
+        "decodedSHA256": "2bc2440dd5f1f5b4d62feb57573173791c7218956b8d44b68e98b76909f64fe8",
+        "embeddedPayloadInstancesVerified": 0,
+        "scope": "Current isolated control archive"
+      },
+      {
+        "file": "source250-native-lifecycle-controls-r1-fixtures.json.gz",
+        "decodedBytes": 36948,
+        "decodedSHA256": "de7b85fd4f997567b46e00f6ee9d7491adca70e4a7dd3908cd200ca2e2679b52",
+        "embeddedPayloadInstancesVerified": 0,
+        "scope": "Historical initial scheduling compile failure"
+      },
+      {
+        "file": "source250-native-guard-controls-r1-fixtures.json.gz",
+        "decodedBytes": 14387,
+        "decodedSHA256": "1d6625d167f30f7dc4556199d07dce29d0646d2fa7c7ebcfae652577e59857e6",
+        "embeddedPayloadInstancesVerified": 0,
+        "scope": "Current isolated control archive"
+      }
+    ]
+  },
+  "requiredFindings": [
+    {
+      "id": "P163-C1",
+      "priority": "blocking before actual trial",
+      "file": "Design/native/health-write-order/check-confirmation-lifecycle-r1.py",
+      "code": "v.all_payloads(state,h,state['appData'])",
+      "problem": "The actual imported legacy-target-change-validation-r3.py:86 function requires metadata_app, the freshly verified preflight app metadata dictionary. At exact path (preflight,app) it asserts value==metadata_app and base64 is None. state.appData is the simulator data-container path string. A genuine retained state therefore fails the mandatory checker even after successful native flow and all lifecycle gates. This is a deterministic authority-type mismatch, not an observed native failure.",
+      "independentEvidence": "Read actual checker/callee source. Canonical retained248 hostaudit has preflight.app as dictionary/base64None and appData as string; direct read-only shape comparison gives unequal. No checker execution/import or new simulator query performed. Accepted predecessor checker correctly passes inputs.app. Existing33pure/13caller/4mac/37guard/help/typing controls do not exercise this final checker argument.",
+      "minimumCorrection": "In separately frozen successor pass freshly verified inputs['app'] into all_payloads, keeping earlier exact state.preflight==inputs check and the sole exact metadata-only path exception. Do not globally skip null base64 or substitute an arbitrary expected dictionary. Add actual checker AST/caller-fragment validation using a genuine retained preflight app row and matching independently verified metadata; inject wrongmetadata/path/string/null/spoof/badbytes/hash/base64 elsewhere and require failure. Preserve current250 source/review/root/exactcheckpoint before correction."
+    }
+  ],
+  "nonblockingPracticalRisk": [
+    {
+      "id": "P163-R1",
+      "area": "Waiter-start ordering",
+      "detail": "confirmation_gate publishes armed metadata after v.trace accepts any valid prefix including only created. The mandatory complete trace expects created→wait-started(taskCancelledfalse)→closed→wait-exit→task-value-completed. If UI Notnow wins before waiter starts, safe cancellation can still occur but the nativecase conservatively fails the strict ordering. The isolated close-before-start scheduling case proves gate cancellation/completion mechanics with different event order, not acceptance by the strict nativecase validator.",
+      "recommendation": "Before exposing armed relay, optionally require the exact active created+wait-started prefix, returning pending if onlycreated. Add a corresponding actualcaller pending control. Alternatively explicitly retain this as a bounded fail-closed orchestration risk; no lateack can pass complete trace otherwise. No iOS failure or mutation bypass inferred."
+    }
+  ],
+  "planRequirementsClosure": [
+    {
+      "id": "P162-C1",
+      "status": "Supported actual source, runtime unproved",
+      "evidence": "closeConfirmationGate copies metadata/exact Task<Void,Never>, synchronously gate.close(reason)/task.cancel and clears normalview refs. New trace.observeCompletion creates outside MainActor observer awaiting exact task.value, then noteTaskCompleted requires closed once and lastwait-exit before emitting task-value-completed. Actual waiter captures original error/control/taskcancel/closed/consumed facts in defer. Metadata registry contains dictionaries/Metadata URLs/IDs/digests only; no gate/task/session/originlease retained there. Observer temporarily owns exact task, not a reference-release or descriptor-closure proof."
+    },
+    {
+      "id": "P162-C2",
+      "status": "Supported actual source, runtime unproved",
+      "evidence": "Actual Check cancellation button makes fresh UUID on touch. trace.check permits oneordinal only after exactnotnow/unconsumedclosed/fulltaskvaluecompletion; bounded nofollow reads exactoldgateack raw bytes beforeparse, validates originalbinding+phase, then actual fixture getter reads knownfixed2 persisted/effective/Healthstate with new native timestamps. Full rawfixedfacts live only in separate bounded .check-1.json; registry stores header/digest. Host protocol ties nativeactualtouchinterval,ackhash/bytes/nonce/generation/header/requestordinal/readtime strictlyafteractualpublishedlateack and actualknownoldData facts."
+    }
+  ],
+  "sourceObservations": [
+    {
+      "area": "Scope/authority",
+      "detail": "All additions under DEBUG&&sim. Shipping #else Notnow/Recover behavior and transaction/token logic unchanged. Actual gating still90second waiter and synchronous final Task/control/closed/appearance/session/selection/binding checks beforeknownwrite. Newregistry/probe is observational and cannot grant commit authority. No shortenedexpiry or no-op success provider introduced."
+    },
+    {
+      "area": "Context guards",
+      "detail": "New lifecycleflag participates in context detection, rejects duplicates, requires exactlyone confirmationwindow flag and Data kind; requiredsafeoldflags/run/context constraints retained beforefixture writes. Flagabsent existingData/String mutation cases preserve old ready/freshready branch behavior. New lifecycle-only secondcapture freshready metadata derives from actual capture count without marking mutationconsumed. This is test protocol metadata, not rawauthority acquisition or productavailability."
+    },
+    {
+      "area": "Actual getter safety",
+      "detail": "confirmationLifecycleFacts checks lifecycleflag/contextData/bundle/session/capture against actualbridge confirmationBinding before fixedFacts. It observes onlyknown2keys/bounded payloads/Health/fixturewrittenconsumedfailed flags; requireOriginalFixedValues follows. No LocalStoreperformWrite, revision bump, defaultswrite/synchronize, rootopen/create/restore, originrecapture/acquire or phase mutation. Facts-beforeassert and separatefile retain actual mismatch bytes. No atomic snapshot guarantee across independent preference reads."
+    },
+    {
+      "area": "Native flow",
+      "detail": "Dedicated native method performs actual Startcheck, actualFiles selection/ready/offchoices, mealonly+omitoff, wholeactualfull131char alert/body/actions/image, exactownrunner armedrelay, screenshot-boundpresentedmarker, actualNotnowtap+dismissal/choicesretained marker, then lateackrelay and actualChecktouch/value with screenshot/marker. Aftercheckedrelay actualBackoldclosure/reselectdistinctfreshowner/offchoices/disabledRecover/finalBack, noRecover/commit intended. Partialfailed JSON/original emitted before controlledXCTFail; no universal all-XCTest-abort guarantee."
+    },
+    {
+      "area": "Transport and lateack",
+      "detail": "Separate lifecycle schemas/names/nonce/run/PID/taskGeneration, no Recover.value dependency or oldR1/R3 weakening. Three exclusiveatomic relay generations armed/lateack/checked, exactsamegate/singleknownclosednonce ack, intended/raw/status persisted beforepublication. Driver requires realpresented+dismissed markers, complete actualnotnowclosed/taskcompleted trace, strictoldprotected/fixed/source/installed/originopenready beforelateack. ActualfreshCheck validates exactlateackraw, freshrequestread facts and repeatsstrictprotected/current13prior13/source/provider before checkedrelay. Relay cannot substitute for realvisibility or safety."
+    },
+    {
+      "area": "Preservation/final audit",
+      "detail": "Five nativehostboundaries and noAcquire origintrace schemas: beforeselection/ready/oldownersclosed/freshready/finalclosed. Original13current+13prior/files/rootmetadata/provider/intent/private and knownData42 unchanged atallendpoints, noresidual/stage/receipt. Nativeflags false/no knownwrite; old/freshworkspacesdisjoint and closeabsent with3s endpoint spans. Finalchecker retains explicit live/absentprocess guards and currentinstalled/native/fixed/protected/provider/origin/owned/rootabsence checks. C1currently prevents finalchecker success; none of this is actual250runtime evidence yet."
+    },
+    {
+      "area": "Retention",
+      "detail": "Observe retains bounded rawversions/readtime beforeidentity/JSONparse; outeractualexceptionhandler persists failure/error; uniqueoutcome/retention/endpoints failclosed. Sharedterminalfinalization retains naturalgrace/fallback/emergency/peer-salvage scope frompriorreview, not rerun here. Prefixpreflight/source/currentbinary/provider protected beforePopen;no olddevicefallback. Nativefailure may emit extra partial helpers/images, accepted14+1counts apply onlysuccess, not hypothetical failure counts."
+    }
+  ],
+  "isolatedEvidenceReviewed": [
+    {
+      "name": "Pure protocol/publisher controls",
+      "checks": 33,
+      "scope": "Actualtrace/check/marker/publisher predicates on synthetic fixtures and realisolatedfiles plus historical actual248prepared/readyrows. Reject defer-ascompletion/wrongreason/taskcancel/consumed/problem/generation/cachedread/request/ordinal/digest/Health/write/fixed mutations;3relays/lateack/exclusivefile negatives. These do not exercise full mandatorychecker endtoend and missedC1."
+    },
+    {
+      "name": "Actualcaller and outerexceptionhandler",
+      "checks": 13,
+      "scope": "Archived actualobserve/confirmation_gate AST and outerhandler matchcurrentdriver. Missingcompletion/dismissed pending; malformedgate/trace/UI marker and identity/close/task/choices/geometry errors retainraw/noack, onecompletedcancel publisheslateack. Runner preseeded/protection/fixed/source/installed stubbed; no actualUI/preferences/process/native proof."
+    },
+    {
+      "name": "Wholegate+trace macOS scheduling R2",
+      "checks": 4,
+      "compileExit": 0,
+      "runExit": 0,
+      "scope": "Actualwholefiles with only DEBUGwrapper removal and exactcontainerlookup→Harness.parent transformation; compiledcopies/sourcehashes independentlymatched. Bundle/args/control/session/fixtureprefs explicitlystubbed. RealTask/cancel/await/files/lateack/check scheduling covers closebeforestart/whilewaitingdoubleclose/wrongnonce/rawretention/duplicatecheck. No currentiOS app/realalert/prefs/reference release/FD acceptance; closebeforestart trace ordering not strictnativecase acceptance."
+    },
+    {
+      "name": "Actualextractedcontext/fixedguards",
+      "checks": 37,
+      "compileExit": 0,
+      "runExit": 0,
+      "scope": "Exactcurrentfixturecontext/UTF16LE/knownfixedguard fragments with namedfakeProcess/defaults. Includes lifecycleDataaccept/Stringreject/missingwindow/duplicateflag/forbiddencontexts/mismatchvalues/normalization. No actualproductionLocalStore/fullnative integration."
+    },
+    {
+      "name": "WholecurrentUITest and gateTrace SDK R2",
+      "exit": [
+        0,
+        0
+      ],
+      "streams": "empty stdout/stderr",
+      "scope": "CurrentwholeUITest801938B SHA c3868c379777737bed6f13a87df25b9c906f59bf837737aaaa2a006d31cc73f4 no stubs; actualwholegate7319B+trace13090B with nameddependency stubs. Sourcehashes currentexact. Not fullSwiftUIappbody/pairbuild/typecheck/runtime evidence."
+    },
+    {
+      "name": "Actualentrypointhelp",
+      "checks": 2,
+      "exit": [
+        0,
+        0
+      ],
+      "realProcessQueries": 0,
+      "scope": "Actualdriver/checker moduleloading/argparse beforeproducer; not finalchecker runtimevalidation. Fullstdout/emptyerr retained."
+    }
+  ],
+  "preparationHistory": {
+    "initialImportFailure": "Initialcontrolpreparation importfailed beforecases because historicalreexport parent alias; exactfailure retained. Finalcurrenthelper private_parent import/entrypointcontrols passed onlytheirscopedpreparation.",
+    "initialSchedulingCompile": "R1 actual harness lacked its own Foundation import and compilednocases; fullarchive retained, no false schedulingpass. CorrectedR2importsFoundation compiles/runsactual4cases.",
+    "SDK": "R1/R2SDKreceipts retained individually; currentR2sourcehash/exits/emptystreams govern currenttyping scope. No execution inferred from syntax alone."
+  },
+  "predeclaredAndFutureGates": {
+    "markerArrays": {
+      "negative": 215,
+      "plannedDebugPositive": 199,
+      "negativeOnly": 16,
+      "production": 21,
+      "new4": [
+        "-health-legacy-confirmation-lifecycle-ui",
+        "Lumen-confirmation-lifecycle-verification-v1",
+        "Lumen-confirmation-lifecycle-",
+        "checkConfirmationLifecycle"
+      ],
+      "oldArraysRetained": true,
+      "actualCurrentBinaryProof": false
+    },
+    "currentBuildNativeRelease": "No250fullapp/testbuild/native/Release acceptance. Root acknowledged no250build/native beforeimmutable163/root/exact; successor251 must correctchecker and retainactualAPI/callercontrols beforefreshsource review/build. New DEBUGappfile/changes require coherentcurrentRelease/settings/compiler/FileList proof later.",
+    "actualRequired": "Source-readycorrectedsuccessor/currentfullpair/Debugmarkers/root/exact thenactual14originals/fullhelper/summary/strict5boundaries/mandatorycorrectedchecker/root/critic/exact. NeitheractualNotnow noractualclosedtasklateack/freshnativeCheck acceptednow.",
+    "broader": "True90sexpiry/StringNotnow/selectionpresentationinvalidations/othercancelraces/preparation-finalcommit/retained-copyowner/all43/eightgroups/fullgoal remainopen; no phoneactions."
+  },
+  "limits": [
+    "Onlynewreportwritten; source250/sourceplans/controls/otherreports/indices remainunchanged. All852source/archive/currentproofreadonly.",
+    "No sourceReady/build/native/counts/globalproduct/designscore/VOspeech/motion/appearance/distribution/performance acceptance. P162contractclosures sourceonly; C1rejects currentexecutionreadiness.",
+    "No raw249/248nativeorReleasequeries/readbacks/reopenedoldrawaudits or cleanup. StoragecurrentDebug/packages/provider/skill/unbackedvideos parentretention scope unchanged."
+  ],
+  "provenance": [
+    {
+      "path": "Design/native/health-write-order/check-confirmation-lifecycle-r1.py",
+      "bytes": 15321,
+      "sha256": "4a75cc06b26b509f4ad2f58d73e1704a75dac571e0a41b4b5b06db138cef13ae"
+    },
+    {
+      "path": "Design/native/health-write-order/confirmation-lifecycle-driver-r1.py",
+      "bytes": 18780,
+      "sha256": "7f31ecee2e4199c5ebf23ee1bff96982f77b146d3ca8f9b664e5ce86605b647b"
+    },
+    {
+      "path": "Design/native/health-write-order/confirmation-lifecycle-evidence-r1.py",
+      "bytes": 4473,
+      "sha256": "bb937d682f9f0437f0125083240be0cfd5f7646fb54c93d2161a7ad03b2ba341"
+    },
+    {
+      "path": "Design/native/health-write-order/confirmation-lifecycle-protocol-r1.py",
+      "bytes": 4998,
+      "sha256": "efb9a5acc54bb5d4d3a8fe1cd905c55cdb403e8e72ac0d7232721953e364375a"
+    },
+    {
+      "path": "Design/native/health-write-order/confirmation-lifecycle-transport-r1.py",
+      "bytes": 3506,
+      "sha256": "868ed6fd523937a15dfd8b79f105d40cc89f013f8a624ac50c9e9c209bf3834e"
+    },
+    {
+      "path": "Design/native/health-write-order/health-current-release-source250-r1-predeclared-plan.json",
+      "bytes": 20025,
+      "sha256": "37b9e477f4f143eee570efc6225f9edf54ad61aa39f09954fd74b7669e74bf3b"
+    },
+    {
+      "path": "Design/native/health-write-order/source250-confirmation-not-now-late-ack-r1-plan.json",
+      "bytes": 5693,
+      "sha256": "54f7ce54017bb5a2028439078f23360ffe6b521c2aa5678b95c2394a3a0fb603"
+    },
+    {
+      "path": "Design/native/health-write-order/source250-confirmation-not-now-late-ack-r2-supplement.json",
+      "bytes": 2373,
+      "sha256": "ffaaa7610d9e6bb6771745e334cb93e3fc854af76033d7559375e9e6c35628c5"
+    },
+    {
+      "path": "Design/native/health-write-order/source250-debug-release-controls-r1-planned.py",
+      "bytes": 2688,
+      "sha256": "cc5192512075403d06cbb56530cfdd157680e89d1b3087e4fd7d3350206c2800"
+    },
+    {
+      "path": "Design/native/health-write-order/source250-entrypoint-controls-r1-executed.py",
+      "bytes": 1305,
+      "sha256": "33f53854b5c708aa3b3a66bedbb0f56edf0ddef28c2e2d10cbf74ae00e34f855"
+    },
+    {
+      "path": "Design/native/health-write-order/source250-entrypoint-controls-r1.json",
+      "bytes": 1406,
+      "sha256": "a382874eaf94a00764dd0f1d5b88b1ef282058a8514bac382496a940d7613ca2"
+    },
+    {
+      "path": "Design/native/health-write-order/source250-lifecycle-caller-controls-r1-executed.py",
+      "bytes": 7896,
+      "sha256": "a2b536368fc6a84dfafc60bc8d2a891963def98213356f3a752a0ed8141bb8a2"
+    },
+    {
+      "path": "Design/native/health-write-order/source250-lifecycle-caller-controls-r1-fixtures.json.gz",
+      "bytes": 8930,
+      "sha256": "0229815ff17bf3823310c46a73f478c9cb194610b39702cb65f500aeabfc937e"
+    },
+    {
+      "path": "Design/native/health-write-order/source250-lifecycle-caller-controls-r1.json",
+      "bytes": 2288,
+      "sha256": "1a626454c6962fd880866f33d13db50f843096351a41b1c35b997f9604d88e47"
+    },
+    {
+      "path": "Design/native/health-write-order/source250-lifecycle-controls-r1-executed.py",
+      "bytes": 7885,
+      "sha256": "2f4b8ecc81e4fa53c17e665c98bf68443b2d344dacc6bf7712dbe6fac8b86e30"
+    },
+    {
+      "path": "Design/native/health-write-order/source250-lifecycle-controls-r1-initial-import-failure.json",
+      "bytes": 13214,
+      "sha256": "7330120a1beeb2070356be4b77ba577cc0856f19ca2f4b9d5bfec51f46d15765"
+    },
+    {
+      "path": "Design/native/health-write-order/source250-lifecycle-controls-r1.json",
+      "bytes": 5867,
+      "sha256": "b809b5caef27e4a8dc530eb3ba75bb12567298300310aba48ed56016e9464665"
+    },
+    {
+      "path": "Design/native/health-write-order/source250-lifecycle-sdk-typecheck-r1.json",
+      "bytes": 2767,
+      "sha256": "f9da9b5d7201908e4aa135986673669c59e892e1c79a3baa2338002c774e72ae"
+    },
+    {
+      "path": "Design/native/health-write-order/source250-lifecycle-sdk-typecheck-r2.json",
+      "bytes": 2767,
+      "sha256": "16cbeb6ededaf01d0fd4240fa3a2b9e989105c0aad21a7ce23d189eca59088ca"
+    },
+    {
+      "path": "Design/native/health-write-order/source250-native-guard-controls-r1-executed.py",
+      "bytes": 8516,
+      "sha256": "938bfdd078b18d5683c089edc93a5189ba6a1e59614daf1005aa918dfeaa4c32"
+    },
+    {
+      "path": "Design/native/health-write-order/source250-native-guard-controls-r1-fixtures.json.gz",
+      "bytes": 3305,
+      "sha256": "49c6eb950e4f39775910e14f748e2d94f1be6e989cad5e4e1ccf4b11a0113389"
+    },
+    {
+      "path": "Design/native/health-write-order/source250-native-guard-controls-r1.json",
+      "bytes": 4533,
+      "sha256": "f71f53680c606bba13ff7ab84ad00ca8622706aeea11975f806819700a0c4446"
+    },
+    {
+      "path": "Design/native/health-write-order/source250-native-lifecycle-controls-r1-executed.py",
+      "bytes": 8577,
+      "sha256": "732c373058ccd8d8db44aeec053c634d0bb070be147fdb6245b193ebd02e7ca7"
+    },
+    {
+      "path": "Design/native/health-write-order/source250-native-lifecycle-controls-r1-fixtures.json.gz",
+      "bytes": 7625,
+      "sha256": "1a571bb7a6d143f394ebbb68943f55d7b61306b60830043671f18680ad0bc17e"
+    },
+    {
+      "path": "Design/native/health-write-order/source250-native-lifecycle-controls-r1.json",
+      "bytes": 934,
+      "sha256": "199986e7f9da539da6b965f630df5a5497c483d46fe6b6a3aa2feddfb8e2bb8a"
+    },
+    {
+      "path": "Design/native/health-write-order/source250-native-lifecycle-controls-r2-executed.py",
+      "bytes": 8595,
+      "sha256": "443ea477496001ea3a7a1e7f435833966e529e7e5a57055a00fdc427a79290a1"
+    },
+    {
+      "path": "Design/native/health-write-order/source250-native-lifecycle-controls-r2-fixtures.json.gz",
+      "bytes": 9958,
+      "sha256": "80054bdc62940b81174848a90e4f757343b85109d3e646f51c2af7b21d0fca37"
+    },
+    {
+      "path": "Design/native/health-write-order/source250-native-lifecycle-controls-r2.json",
+      "bytes": 942,
+      "sha256": "24fb7bda69333362f9b7baffb73fbaad64ea9abfebf4fb304a729c040a93c015"
+    },
+    {
+      "path": "Design/native/health-write-order/source250-plan-exact-github.json",
+      "bytes": 396397,
+      "sha256": "27f82decdf4877fb65a3461ce1d0ab9a032d332c5a3f68b7c8e861ff97e31592"
+    },
+    {
+      "path": "Design/native/health-write-order/source250-root-preparation-r1-executed.py",
+      "bytes": 4825,
+      "sha256": "0c3a1c08f2b65fef7c2462e852da67625c66b4b3caa67b0a56fa69a8de1db9ec"
+    },
+    {
+      "path": "Design/native/health-write-order/source250-sdk-typecheck-r1-executed.py",
+      "bytes": 2834,
+      "sha256": "5d0d5a8dbf6cff891979f6c87985486e47264da3ad199119ecc05484a0e2d345"
+    },
+    {
+      "path": "Design/native/health-write-order/source250-sdk-typecheck-r2-executed.py",
+      "bytes": 2834,
+      "sha256": "a8008f2d421f80ad04d38f746b58705d29c4ae2c57393656380c1128a129276b"
+    },
+    {
+      "path": "Design/native/health-write-order/source250-target-change-native-build-r1-planned.py",
+      "bytes": 2682,
+      "sha256": "eab610ff8c84f2f48da7a9661e12fe34c8973ce32b09084b5364ef10e763ece5"
+    },
+    {
+      "path": "Design/native/health-write-order/source250-uitest-sdk-typecheck-r1.json",
+      "bytes": 2367,
+      "sha256": "9b9648e38ef378ce653c7ea9f7d69af5240f9873faa86544a2e887985482b134"
+    },
+    {
+      "path": "Design/native/health-write-order/source250-uitest-sdk-typecheck-r2.json",
+      "bytes": 1293,
+      "sha256": "003e2d706b9a2fc938580d52ac7deade0feec19bbf45f0cc767b55bab95e9465"
+    },
+    {
+      "path": "Lumen/Views/HealthConfirmationLifecycleTrace.swift",
+      "bytes": 13090,
+      "sha256": "62d32a8e17acf7bca5233b0da1fbf8b5959c53a491cc4929915e5d73212b8e4a"
+    },
+    {
+      "path": "Lumen/Views/BackupFileRecoveryView.swift",
+      "bytes": 40912,
+      "sha256": "d1be20aed36fe76a6c5e76d413df24c0766e3418bfffa7cf7c042fa9c5ffa99a"
+    },
+    {
+      "path": "Lumen/Views/HealthConfirmationTargetChangeGate.swift",
+      "bytes": 7319,
+      "sha256": "010e65b6e051058397d8aa0fbf7fbd2ac56c93d922c0015a12e649f1c64978fd"
+    },
+    {
+      "path": "Lumen/Views/HealthLegacyTargetChangeUIFixture.swift",
+      "bytes": 31263,
+      "sha256": "bb84e44e1f59cfdfe28aa977f9799858edf72cd1c6c1339479724e8dd8b5c3a2"
+    },
+    {
+      "path": "LumenUITests/LumenSmokeTests.swift",
+      "bytes": 801938,
+      "sha256": "c3868c379777737bed6f13a87df25b9c906f59bf837737aaaa2a006d31cc73f4"
+    },
+    {
+      "path": "Design/native/health-write-order/durable-source-r250.json",
+      "bytes": 157509,
+      "sha256": "899883a05d73213e38491fb1ec6cef3e058af6f88c077af2c629786c6c07f043"
+    },
+    {
+      "path": "Design/native/health-write-order/durable-source-r250.json.gz",
+      "bytes": 4569021,
+      "sha256": "68a28fa3180d70cc98e753a63358c01fa1353cf80271aad6f6486f71dc229d7d"
+    },
+    {
+      "path": "Design/native/health-write-order/durable-source-r249.json",
+      "bytes": 150360,
+      "sha256": "52cd839cac01de0ae1572af43c495f20616d7134a8080c4becc1c3fa20c35d18"
+    },
+    {
+      "path": "Design/native/health-write-order/durable-source-r249.json.gz",
+      "bytes": 4399964,
+      "sha256": "67418e56e59760c990b82ff6cf1f2c0daa092b56f21ef8ad57082f3efd5e002a"
+    },
+    {
+      "path": "Design/native/health-write-order/source250-root-preparation-r1.json",
+      "bytes": 1129,
+      "sha256": "06c14b022b64c953e5d9d0bce5db7d402cc34fe8b4385f952f164a839d659591"
+    },
+    {
+      "path": "Design/native/health-write-order/health-legacy-confirmation-lifecycle-source250-round2-part162-plan.json",
+      "bytes": 12914,
+      "sha256": "06535811451cbb3c44826f74819a52c32ef5ba52508fa1301e415f722cf671fb"
+    },
+    {
+      "path": "Design/native/health-write-order/legacy-target-change-validation-r3.py",
+      "bytes": 8532,
+      "sha256": "5900a9ab9ea0fe288b1890bec9868b6ab20cca008a53ed36ee3023e265167b50"
+    },
+    {
+      "path": "Design/native/health-write-order/confirmation-window-evidence-r3.py",
+      "bytes": 4425,
+      "sha256": "df6bcfc5cbe7ab325b994bcbbf34988bdaac4bea7c4b48424b5a7485fb40756a"
+    },
+    {
+      "path": "Design/native/health-write-order/health-legacy-confirmation-data-source248r1-host-audit.json",
+      "bytes": 1760125,
+      "sha256": "dc55803c0e474aeddbb77041e8955d0ade9a1da954851be69def8c31b575bb32"
+    },
+    {
+      "path": "Design/native/health-write-order/source249-build-exact-github.json",
+      "bytes": 382956,
+      "sha256": "f5044aebcb8716b299a755c0fa7d15739d0e71d64baa1ac5b845d154c906eb56"
+    }
+  ],
+  "availableBytesAtFinish": 28070944768,
+  "completedAtUTC": "2026-11-08T22:20:32Z"
+}

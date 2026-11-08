@@ -1,0 +1,223 @@
+{
+  "status": "PASS isolated actual validators and publisher controls",
+  "cases": [
+    {
+      "case": "valid-external-task-completion",
+      "expectedAccepted": true,
+      "actualAccepted": true,
+      "error": null
+    },
+    {
+      "case": "defer-is-not-completion",
+      "expectedAccepted": false,
+      "actualAccepted": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "completion-before-exit",
+      "expectedAccepted": false,
+      "actualAccepted": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "wrong-close-reason",
+      "expectedAccepted": false,
+      "actualAccepted": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "not-actually-cancelled",
+      "expectedAccepted": false,
+      "actualAccepted": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "consumed-gate",
+      "expectedAccepted": false,
+      "actualAccepted": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "problem-present",
+      "expectedAccepted": false,
+      "actualAccepted": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "wrong-generation",
+      "expectedAccepted": false,
+      "actualAccepted": false,
+      "error": "ValueError: badly formed hexadecimal UUID string"
+    },
+    {
+      "case": "extra-task-reference",
+      "expectedAccepted": false,
+      "actualAccepted": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "valid-fresh-check",
+      "expectedAccepted": true,
+      "actualAccepted": true,
+      "error": null
+    },
+    {
+      "case": "cached-before-publication",
+      "expectedAccepted": false,
+      "actualAccepted": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "duplicate-ordinal",
+      "expectedAccepted": false,
+      "actualAccepted": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "bool-ordinal",
+      "expectedAccepted": false,
+      "actualAccepted": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "missing-fresh-read",
+      "expectedAccepted": false,
+      "actualAccepted": false,
+      "error": "KeyError: 'readStartedAt'"
+    },
+    {
+      "case": "preack-native-read",
+      "expectedAccepted": false,
+      "actualAccepted": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "wrong-digest",
+      "expectedAccepted": false,
+      "actualAccepted": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "wrong-closed-nonce",
+      "expectedAccepted": false,
+      "actualAccepted": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "wrong-task-generation",
+      "expectedAccepted": false,
+      "actualAccepted": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "health-connected",
+      "expectedAccepted": false,
+      "actualAccepted": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "write-occurred",
+      "expectedAccepted": false,
+      "actualAccepted": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "consumed-fixture",
+      "expectedAccepted": false,
+      "actualAccepted": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "native-original-false",
+      "expectedAccepted": false,
+      "actualAccepted": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "changed-fixed",
+      "expectedAccepted": false,
+      "actualAccepted": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "actual-publish-armed",
+      "expectedAccepted": true,
+      "actualAccepted": true,
+      "error": null
+    },
+    {
+      "case": "actual-publish-late",
+      "expectedAccepted": true,
+      "actualAccepted": true,
+      "error": null
+    },
+    {
+      "case": "actual-publish-checked",
+      "expectedAccepted": true,
+      "actualAccepted": true,
+      "error": null
+    },
+    {
+      "case": "reject-fourth-relay",
+      "expectedAccepted": false,
+      "actualAccepted": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "actual-publish-late-ack",
+      "expectedAccepted": true,
+      "actualAccepted": true,
+      "error": null
+    },
+    {
+      "case": "reject-existing-ack",
+      "expectedAccepted": false,
+      "actualAccepted": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "reject-dangling-symlink-ack",
+      "expectedAccepted": false,
+      "actualAccepted": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "native-prepared-real248-prefix",
+      "expectedAccepted": true,
+      "actualAccepted": true,
+      "error": null
+    },
+    {
+      "case": "native-ready-real248-prefix",
+      "expectedAccepted": true,
+      "actualAccepted": true,
+      "error": null
+    },
+    {
+      "case": "reject-native-mutation",
+      "expectedAccepted": false,
+      "actualAccepted": false,
+      "error": "AssertionError: "
+    }
+  ],
+  "sourceBindings": {
+    "confirmation-lifecycle-evidence-r1.py": {
+      "bytes": 4473,
+      "sha256": "bb937d682f9f0437f0125083240be0cfd5f7646fb54c93d2161a7ad03b2ba341"
+    },
+    "confirmation-lifecycle-protocol-r1.py": {
+      "bytes": 4998,
+      "sha256": "efb9a5acc54bb5d4d3a8fe1cd905c55cdb403e8e72ac0d7232721953e364375a"
+    },
+    "confirmation-lifecycle-transport-r1.py": {
+      "bytes": 3506,
+      "sha256": "868ed6fd523937a15dfd8b79f105d40cc89f013f8a624ac50c9e9c209bf3834e"
+    }
+  },
+  "priorRealInput": {
+    "file": "health-legacy-confirmation-data-source248r1-host-audit.json",
+    "sha256": "dc55803c0e474aeddbb77041e8955d0ade9a1da954851be69def8c31b575bb32"
+  },
+  "scope": "Synthetic lifecycle timing/request/trace fixtures and real248 Data bootstrap/ready rows, real isolated publisher files; no current250 app/runtime/native/worker completion acceptance. Temporary files removed by TemporaryDirectory.",
+  "checkedAt": 1794175854.765006
+}

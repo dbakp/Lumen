@@ -136,6 +136,7 @@ final class LumenSmokeTests: XCTestCase {
                     "-health-legacy-target-change-ui", "ready", "-health-legacy-target-change-run", run,
                     "-lumen.appearance", "light", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryL"]
                 if name.contains("DuringConfirmation") { app.launchArguments.append("-health-legacy-confirmation-window-ui") }
+                if name.contains("DuringConfirmationNotNow") { app.launchArguments.append("-health-legacy-confirmation-lifecycle-ui") }
             }
             if name.contains("RecoveryHealthyTargetAfterReady") {
                 let run = UUID().uuidString
@@ -6064,6 +6065,222 @@ final class LumenSmokeTests: XCTestCase {
                     "label": rectangle(labelFrame), "viewport": rectangle(viewport)],
                 "wholeSuccessBeforeAnyTestScroll": true, "at": Date().timeIntervalSince1970])
             snap(prefix + "-fresh-committed"); try checkpoint("fresh-committed")
+            try backToSettings("final-closed"); snap(prefix + "-final-closed")
+            try checkpoint("final-closed", location: "settings"); snap(prefix + "-final-followup")
+            report("completed")
+        } catch { report("thrown", failure: String(describing: error)); throw error }
+    }
+
+    @MainActor
+    func testHealthBackupFileRecoveryTargetChangedDuringConfirmationNotNowOriginData() throws {
+        executionTimeAllowance = 480
+        let prefix = "health-confirmation-notnow"
+        let timingScope = "actual-confirmation-notnow-before-late-ack"
+        var observations: [[String: Any]] = []
+        func report(_ phase: String, failure: String? = nil) {
+            var row: [String: Any] = ["scope": timingScope,
+                "phase": phase, "launchArguments": app.launchArguments, "observations": observations]
+            if let failure { row["failure"] = failure }
+            if let data = try? JSONSerialization.data(withJSONObject: row, options: [.prettyPrinted, .sortedKeys]) {
+                let item = XCTAttachment(data: data, uniformTypeIdentifier: "public.json")
+                item.name = prefix + (failure == nil ? "-readback" : "-failure-readback")
+                item.lifetime = .keepAlways; add(item)
+            }
+        }
+        func require(_ ok: Bool, _ phase: String, _ message: String) throws {
+            if !ok {
+                report(phase, failure: message); snap(prefix + "-failed-" + phase); XCTFail(message)
+                throw NSError(domain: "LumenLegacyTargetChangeUI", code: 1)
+            }
+        }
+        func whole(_ target: XCUIElement, _ phase: String, nav: String) throws {
+            let bar = app.navigationBars[nav].firstMatch
+            for attempt in 0..<16 {
+                try require(bar.exists, phase, "Expected active navigation lost")
+                let box = CGRect(x: 0, y: bar.frame.maxY + 12, width: app.frame.width,
+                    height: app.frame.maxY - 40 - bar.frame.maxY - 12)
+                if target.exists && target.isHittable && box.contains(target.frame) { return }
+                let delta = target.exists ? min(box.height * 0.4, max(40, abs(target.frame.midY - box.midY))) : box.height * 0.4
+                let direction: CGFloat = target.exists && target.frame.midY < box.midY ? -1 : 1
+                app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: box.midX, dy: box.midY + direction * delta / 2))
+                    .press(forDuration: 0.05, thenDragTo: app.coordinate(withNormalizedOffset: .zero)
+                        .withOffset(CGVector(dx: box.midX, dy: box.midY - direction * delta / 2)))
+                observations.append(["phase": phase, "pan": attempt, "targetPresent": target.exists, "navigationStillPresent": bar.exists])
+            }
+            try require(false, phase, "Requested complete target could not be revealed")
+        }
+        let change = app.buttons["changeHealthRecoveryTarget"].firstMatch
+        func checkpoint(_ phase: String, location: String? = nil) throws {
+            let probe = phase == "before-selection" ? app.buttons["startHealthRecoveryCheck"].firstMatch
+                : (location.map { app.descendants(matching: .any).matching(identifier: "healthLegacyTargetStatus-" + $0).firstMatch } ?? change)
+            if phase == "before-selection" {
+                try require(probe.waitForExistence(timeout: 10) && probe.isHittable && probe.isEnabled,
+                    phase, "Actual parent startup control unavailable")
+                let touchFrame = probe.frame, beforeTouchHittable = probe.isHittable, beforeTouchEnabled = probe.isEnabled
+                let beforeTouchAt = Date().timeIntervalSince1970
+                probe.tap()
+                observations.append(["phase": "native-before-selection-tap", "identifier": probe.identifier,
+                    "beforeTouchHittable": beforeTouchHittable, "beforeTouchEnabled": beforeTouchEnabled,
+                    "beforeTouchFrame": String(describing: touchFrame), "at": beforeTouchAt,
+                    "tapReturnedAt": Date().timeIntervalSince1970])
+            }
+            let expected = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", "host-" + phase), object: probe)
+            try require(XCTWaiter.wait(for: [expected], timeout: 45) == .completed, phase, "Actual host audit acknowledgement missing")
+            observations.append(["phase": phase, "probeValue": probe.value as? String ?? "", "at": Date().timeIntervalSince1970])
+        }
+        func backToSettings(_ phase: String) throws {
+            app.navigationBars["Review recovery"].buttons.element(boundBy: 0).tap()
+            try require(app.navigationBars["Backup & restore"].waitForExistence(timeout: 10), phase, "Recovery Back missed parent")
+            app.navigationBars["Backup & restore"].buttons.element(boundBy: 0).tap()
+            try require(app.navigationBars["Settings"].waitForExistence(timeout: 10), phase, "Backup Back missed Settings")
+        }
+        func openOriginal(_ phase: String) throws {
+            try chooseBackupFixture("Lumen-backup-health-matrix-two-legacy")
+            let link = app.buttons["reviewBackupHealthRecovery"].firstMatch
+            try require(link.waitForExistence(timeout: 30), phase, "Original preview missing")
+            try whole(link, phase, nav: "Backup & restore"); link.tap()
+            let filename = app.staticTexts["recoveryFileName"].firstMatch
+            try require(filename.waitForExistence(timeout: 15) && filename.label == "Lumen-backup-health-matrix-two-legacy.json", phase, "Wrong selected original")
+            let meals = app.switches["recoverFile-meals"].firstMatch
+            let ready = XCTNSPredicateExpectation(predicate: NSPredicate(format: "enabled == true"), object: meals)
+            try require(XCTWaiter.wait(for: [ready], timeout: 30) == .completed, phase, "Actual capture not ready")
+            snap(prefix + "-" + phase + "-original")
+            for (index, control) in [meals, app.switches["Recover without meal photos"].firstMatch, app.switches["recoverFile-workouts"].firstMatch].enumerated() {
+                try whole(control, phase + "-choice-\(index)", nav: "Review recovery")
+                try require(control.isEnabled && control.value as? String == "0", phase, "Choices must be eligible and off")
+                observations.append(["phase": phase, "choice": index, "enabled": control.isEnabled, "value": control.value as? String ?? ""])
+            }
+            snap(prefix + "-" + phase + (phase == "ready" ? "-choices" : "-off"))
+        }
+        let args = app.launchArguments
+        try require(args.filter { $0 == "-health-legacy-reset-run" }.count == 1, "run", "One launch run required")
+        guard let offset = args.firstIndex(of: "-health-legacy-reset-run"), args.indices.contains(offset + 1),
+              let run = UUID(uuidString: args[offset + 1]) else { throw NSError(domain: "LumenLifecycleUI", code: 2) }
+        let relayURL = FileManager.default.temporaryDirectory.appendingPathComponent("Lumen-confirmation-lifecycle-relay-" + run.uuidString.lowercased() + ".json")
+        var lastRelay = ""
+        func relay(_ phase: String, previous: [String: String]? = nil) -> [String: String]? {
+            var fact: [String: Any] = ["phase": "lifecycle-relay", "expected": phase, "file": relayURL.path,
+                                       "at": Date().timeIntervalSince1970]
+            var signature = ""
+            func retain() { if signature != lastRelay { observations.append(fact); lastRelay = signature } }
+            let fd = Darwin.open(relayURL.path, O_RDONLY | O_NOFOLLOW | O_NONBLOCK | O_CLOEXEC)
+            guard fd >= 0 else { fact["status"] = "unavailable"; fact["errno"] = Int(errno); signature = "open-" + String(errno); retain(); return nil }
+            defer { Darwin.close(fd) }
+            var st = stat()
+            guard fstat(fd, &st) == 0, st.st_mode & mode_t(S_IFMT) == mode_t(S_IFREG),
+                  st.st_nlink == 1, st.st_size > 0, st.st_size <= 4096 else {
+                fact["status"] = "unsafe-file"; signature = "unsafe-file"; retain(); return nil
+            }
+            var buffer = [UInt8](repeating: 0, count: 4097)
+            let n = Darwin.read(fd, &buffer, buffer.count)
+            guard n == Int(st.st_size) else { fact["status"] = "incomplete"; fact["readCount"] = n; signature = "incomplete"; retain(); return nil }
+            let raw = Data(buffer.prefix(n)), hash = SHA256.hash(data: Data(buffer.prefix(n))).map { String(format: "%02x", $0) }.joined()
+            fact["raw"] = ["bytes": raw.count, "sha256": hash, "base64": raw.base64EncodedString()]
+            fact["inode"] = st.st_ino; signature = phase + "-" + hash
+            guard let value = try? JSONSerialization.jsonObject(with: raw) as? [String: String] else {
+                fact["status"] = "invalid-json"; retain(); return nil
+            }
+            let additions = Set(["phase", "targetPhase", "ackSHA256", "checkRequestID", "checkOrdinal"])
+            let base = Set(["runID", "pid", "sessionID", "captureID", "nonce", "appearanceID", "domains", "legacyDomains", "omitPhotos", "taskGeneration"])
+            let fields = base.union(["phase", "targetPhase"])
+                .union(phase == "armed" ? [] : ["ackSHA256"])
+                .union(phase == "checked" ? ["checkRequestID", "checkOrdinal"] : [])
+            let same = previous.map { $0.filter { !additions.contains($0.key) } == value.filter { !additions.contains($0.key) } } ?? true
+            let target = ["armed": "host-ready", "late-ack": "host-late-ack", "checked": "host-checked"][phase]
+            let validUUIDs = ["runID", "sessionID", "captureID", "nonce", "appearanceID", "taskGeneration"].allSatisfy { UUID(uuidString: value[$0] ?? "")?.uuidString == value[$0] }
+            let ack = value["ackSHA256"] ?? ""
+            guard Set(value.keys) == fields, validUUIDs, same, value["runID"] == run.uuidString,
+                  let pid = value["pid"], let number = Int(pid), number > 0, String(number) == pid,
+                  value["domains"] == "meals", value["legacyDomains"] == "meals", value["omitPhotos"] == "false",
+                  value["phase"] == phase, value["targetPhase"] == target,
+                  phase == "armed" || (ack.count == 64 && ack.allSatisfy { "0123456789abcdef".contains($0) }),
+                  phase != "checked" || (UUID(uuidString: value["checkRequestID"] ?? "")?.uuidString == value["checkRequestID"] && value["checkOrdinal"] == "1") else {
+                fact["status"] = "binding-or-phase-mismatch"; retain(); return nil
+            }
+            fact["status"] = "accepted-metadata-only"; fact["value"] = value; retain(); return value
+        }
+        func waitRelay(_ phase: String, previous: [String: String]? = nil) throws -> [String: String] {
+            var value: [String: String]?
+            let expectation = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in value = relay(phase, previous: previous); return value != nil }, object: nil)
+            try require(XCTWaiter.wait(for: [expectation], timeout: 45) == .completed, "relay-" + phase, "Missing bounded lifecycle relay")
+            return value!
+        }
+        func marker(_ suffix: String, gate: [String: String], fields: [String: Any]) throws {
+            let file = FileManager.default.temporaryDirectory.appendingPathComponent("Lumen-confirmation-lifecycle-ui-" + gate["nonce"]!.lowercased() + "-" + suffix + ".json")
+            var row = fields; row["scope"] = timingScope; row["phase"] = suffix; row["gate"] = gate
+            row["at"] = Date().timeIntervalSince1970
+            let temporary = file.appendingPathExtension(UUID().uuidString + ".tmp")
+            try JSONSerialization.data(withJSONObject: row, options: [.sortedKeys]).write(to: temporary, options: .withoutOverwriting)
+            try FileManager.default.moveItem(at: temporary, to: file)
+            observations.append(["phase": "ui-marker-" + suffix, "file": file.path, "value": row])
+        }
+        func image(_ suffix: String) -> [String: Any] {
+            let shot = app.screenshot(), bytes = shot.pngRepresentation
+            let item = XCTAttachment(screenshot: shot); item.name = prefix + "-" + suffix; item.lifetime = .keepAlways; add(item)
+            return ["attachmentName": item.name ?? "", "imageBytes": bytes.count,
+                    "imageSHA256": SHA256.hash(data: bytes).map { String(format: "%02x", $0) }.joined()]
+        }
+        func rect(_ value: CGRect) -> [String: Double] { ["x": value.minX, "y": value.minY, "width": value.width, "height": value.height] }
+        do {
+            tab("Today"); tap("Settings")
+            let backup = app.buttons["backupSettings"].firstMatch
+            try whole(backup, "backup-settings", nav: "Settings"); backup.tap()
+            try checkpoint("before-selection", location: "parent"); snap(prefix + "-before-selection")
+            try openOriginal("ready")
+            nativeSwitch("recoverFile-meals", enabled: true, towardsTop: true)
+            let confirm = app.buttons["confirmFileRecovery"].firstMatch
+            try whole(confirm, "selected-meal", nav: "Review recovery")
+            try require(confirm.isEnabled, "selected-meal", "Explicit meal choice required")
+            snap(prefix + "-selected-meal"); try checkpoint("ready")
+            confirm.tap()
+            let alert = app.alerts["Replace selected data?"].firstMatch
+            try require(alert.waitForExistence(timeout: 5), "confirmation", "Actual confirmation missing")
+            let gate = try waitRelay("armed")
+            let body = "Selected data will be replaced by records from this file. The older saved data will stay in a private recovery copy on this iPhone."
+            let bodyElement = alert.staticTexts.matching(NSPredicate(format: "label == %@", body)).firstMatch
+            let recover = alert.buttons["Recover"].firstMatch, cancel = alert.buttons["Not now"].firstMatch
+            try require(alert.exists && app.frame.contains(alert.frame) && bodyElement.exists
+                && alert.frame.contains(bodyElement.frame) && alert.frame.contains(recover.frame) && alert.frame.contains(cancel.frame)
+                && recover.isHittable && cancel.isHittable, "presented", "Whole real alert/body/both actions required")
+            var presented = image("presented")
+            presented.merge(["title": "Replace selected data?", "body": body, "appFrame": rect(app.frame),
+                "alertFrame": rect(alert.frame), "bodyFrame": rect(bodyElement.frame),
+                "recoverFrame": rect(recover.frame), "cancelFrame": rect(cancel.frame)]) { _, new in new }
+            try marker("presented", gate: gate, fields: presented)
+            let touchAt = Date().timeIntervalSince1970, cancelFrame = cancel.frame
+            cancel.tap(); let returned = Date().timeIntervalSince1970
+            let dismissed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"), object: alert)
+            try require(XCTWaiter.wait(for: [dismissed], timeout: 10) == .completed, "not-now", "Actual Not now did not dismiss confirmation")
+            snap(prefix + "-not-now-dismissed")
+            for (index, choice) in [app.switches["recoverFile-meals"].firstMatch,
+                    app.switches["Recover without meal photos"].firstMatch, app.switches["recoverFile-workouts"].firstMatch].enumerated() {
+                try whole(choice, "not-now-choice-" + String(index), nav: "Review recovery")
+                try require(choice.isEnabled && choice.value as? String == (index == 0 ? "1" : "0"), "not-now", "Not now must retain the same choices")
+                observations.append(["phase": "not-now-choice", "choice": index, "enabled": choice.isEnabled, "value": choice.value as? String ?? ""])
+            }
+            var after = image("not-now-choices")
+            after.merge(["touchAt": touchAt, "tapReturnedAt": returned, "cancelFrame": rect(cancelFrame),
+                         "alertDismissed": !alert.exists, "choiceValues": ["1", "0", "0"]]) { _, new in new }
+            try marker("dismissed", gate: gate, fields: after)
+            let late = try waitRelay("late-ack", previous: gate)
+            let check = app.buttons["checkConfirmationLifecycle"].firstMatch
+            try require(check.waitForExistence(timeout: 5) && check.isEnabled && check.isHittable, "check", "Actual cancellation Check control unavailable")
+            let checkAt = Date().timeIntervalSince1970, checkFrame = check.frame
+            check.tap(); let checkReturnedAt = Date().timeIntervalSince1970
+            let checked = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", "checked-1"), object: check)
+            try require(XCTWaiter.wait(for: [checked], timeout: 10) == .completed, "check", "Actual fresh native Check failed")
+            var evidence = image("checked")
+            evidence.merge(["lateRelay": late, "identifier": check.identifier, "touchAt": checkAt,
+                "tapReturnedAt": checkReturnedAt, "checkFrame": rect(checkFrame), "value": check.value as? String ?? ""]) { _, new in new }
+            try marker("checked", gate: gate, fields: evidence)
+            _ = try waitRelay("checked", previous: gate)
+            try backToSettings("owners-closed"); snap(prefix + "-owners-closed")
+            try checkpoint("owners-closed", location: "settings"); snap(prefix + "-owners-followup")
+            try whole(backup, "reopen-backup", nav: "Settings"); backup.tap(); try openOriginal("fresh")
+            try require(!app.descendants(matching: .any).matching(identifier: "fileHealthRecoveryError").firstMatch.exists, "fresh", "Fresh review retained an error")
+            try whole(confirm, "fresh-action", nav: "Review recovery")
+            try require(!confirm.isEnabled, "fresh", "Fresh choices must be off")
+            try checkpoint("fresh-ready")
             try backToSettings("final-closed"); snap(prefix + "-final-closed")
             try checkpoint("final-closed", location: "settings"); snap(prefix + "-final-followup")
             report("completed")
