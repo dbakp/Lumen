@@ -71,7 +71,7 @@
 <button class="btn" type="button" data-area="quality" aria-pressed="false" aria-controls="lumen-plan-detail">Answer quality</button>
 <button class="btn" type="button" data-area="release" aria-pressed="false" aria-controls="lumen-plan-detail">Release gates</button>
 </div>
-<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Recovery protection · in progress</h3><div data-verified>Stale recovery rejected; newer saved data and 26 protected files preserved. Simulator flow, separate final audit and current development Release build independently reviewed.</div><div data-next>Next: recovery from a fresh review, then remaining timing checks.</div><div class="text-small" data-gate>Original audit failure retained. Release checks cover an unsigned build with coverage recording; broader recovery and product checks remain open.</div></div>
+<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Recovery protection · in progress</h3><div data-verified>Stale-review rejection verified. Fresh recovery passed its data checks; completion-message visibility remains open.</div><div data-next>Next: make recovery completion visible, then verify closing and cleanup.</div><div class="text-small" data-gate>Latest simulator test failed while finding the completion message. Its failure and all original evidence are retained; current Release and broader recovery checks remain open.</div></div>
 </div>
 <div class="section"><h3>Verified safety checks</h3>
 <table class="table table-sm" aria-label="Earlier checks retain their original scope; broader checks remain open"><thead><tr><th>Situation</th><th>Observed result</th></tr></thead><tbody>
@@ -88,11 +88,11 @@
 <script>
 (()=>{
 const root=document.getElementById('lumen-plan-progress');
-const snapshot='nov8-release230-reviewed';
+const snapshot='nov8-fresh-commit-visibility-open';
 const areas={
-current:{title:'Recovery protection · in progress',verified:'Stale recovery rejected; newer saved data and 26 protected files preserved. Simulator flow, separate final audit and current development Release build independently reviewed.',next:'Next: recovery from a fresh review, then remaining timing checks.',gate:'Original audit failure retained. Release checks cover an unsigned build with coverage recording; broader recovery and product checks remain open.'},
+current:{title:'Recovery protection · in progress',verified:'Stale-review rejection verified. Fresh recovery passed its data checks; completion-message visibility remains open.',next:'Next: make recovery completion visible, then verify closing and cleanup.',gate:'Latest simulator test failed while finding the completion message. Its failure and all original evidence are retained; current Release and broader recovery checks remain open.'},
 quality:{title:'Answer quality · open',verified:'Library search, source identity, consent controls and literal-reference safeguards are delivered.',next:'Next: evidence-support policy and independent evaluation; personal-context and conversation-history privacy review.',gate:'Clinical accuracy, language coverage and live-provider evaluation remain required.'},
-release:{title:'Release readiness · open',verified:'Current Source230 unsigned release compilation, executable markers and compiler settings passed independent review. Coverage recording is enabled.',next:'Next: background Health, Watch reconnect, widget, interruption and accessibility checks.',gate:'Orientation warning, representative histories, performance, privacy and distribution review remain open. No iPhone installation, launch or checks without a renewed request.'}
+release:{title:'Release readiness · open',verified:'The previous unsigned Release build passed independent review, with coverage recording enabled. Current-app Release checks remain pending.',next:'Next: background Health, Watch reconnect, widget, interruption and accessibility checks.',gate:'Orientation warning, representative histories, performance, privacy and distribution review remain open. No iPhone installation, launch or checks without a renewed request.'}
 };
 const buttons=Array.from(root.querySelectorAll('[data-area]'));
 function select(key,remember){
