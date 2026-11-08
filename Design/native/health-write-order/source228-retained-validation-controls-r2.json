@@ -1,0 +1,197 @@
+{
+  "status": "PASS isolated31retained evidence and metadata-path replay/injection controls; no native/current-state proof",
+  "runnerSHA256": "0c4deda280a19111ead30f985450bc60d2cac3df8f89042a79e72eb64d16dd26",
+  "cases": [
+    {
+      "case": "exact protected replay",
+      "kind": "protected",
+      "expectedAccept": true,
+      "actualAccept": true
+    },
+    {
+      "case": "exact old-to-new samples",
+      "kind": "persistence",
+      "expectedAccept": true,
+      "actualAccept": true
+    },
+    {
+      "case": "exact selected replay",
+      "kind": "selection",
+      "expectedAccept": true,
+      "actualAccept": true
+    },
+    {
+      "case": "changed raw protected bytes",
+      "kind": "protected",
+      "expectedAccept": false,
+      "actualAccept": false
+    },
+    {
+      "case": "changed protected metadata",
+      "kind": "protected",
+      "expectedAccept": false,
+      "actualAccept": false
+    },
+    {
+      "case": "changed prior root identity",
+      "kind": "protected",
+      "expectedAccept": false,
+      "actualAccept": false
+    },
+    {
+      "case": "unexpected receipt",
+      "kind": "protected",
+      "expectedAccept": false,
+      "actualAccept": false
+    },
+    {
+      "case": "unexpected stage",
+      "kind": "protected",
+      "expectedAccept": false,
+      "actualAccept": false
+    },
+    {
+      "case": "provider identity changed",
+      "kind": "protected",
+      "expectedAccept": false,
+      "actualAccept": false
+    },
+    {
+      "case": "wrong typed sample",
+      "kind": "persistence",
+      "expectedAccept": false,
+      "actualAccept": false
+    },
+    {
+      "case": "wrong known sample bytes",
+      "kind": "persistence",
+      "expectedAccept": false,
+      "actualAccept": false
+    },
+    {
+      "case": "workout changed",
+      "kind": "persistence",
+      "expectedAccept": false,
+      "actualAccept": false
+    },
+    {
+      "case": "Health connected",
+      "kind": "persistence",
+      "expectedAccept": false,
+      "actualAccept": false
+    },
+    {
+      "case": "sample error hidden by PASS",
+      "kind": "persistence",
+      "expectedAccept": false,
+      "actualAccept": false
+    },
+    {
+      "case": "time regressed",
+      "kind": "persistence",
+      "expectedAccept": false,
+      "actualAccept": false
+    },
+    {
+      "case": "deadline exceeded",
+      "kind": "persistence",
+      "expectedAccept": false,
+      "actualAccept": false
+    },
+    {
+      "case": "insufficient stable span",
+      "kind": "persistence",
+      "expectedAccept": false,
+      "actualAccept": false
+    },
+    {
+      "case": "acceptance time inconsistent",
+      "kind": "persistence",
+      "expectedAccept": false,
+      "actualAccept": false
+    },
+    {
+      "case": "old resets stable streak",
+      "kind": "persistence",
+      "expectedAccept": false,
+      "actualAccept": false
+    },
+    {
+      "case": "source selected bytes changed",
+      "kind": "selection",
+      "expectedAccept": false,
+      "actualAccept": false
+    },
+    {
+      "case": "source PID changed",
+      "kind": "selection",
+      "expectedAccept": false,
+      "actualAccept": false
+    },
+    {
+      "case": "workspace owner marker changed",
+      "kind": "selection",
+      "expectedAccept": false,
+      "actualAccept": false
+    },
+    {
+      "case": "exact metadata and nested payload",
+      "kind": "metadata-payload traversal",
+      "expectedAccept": true,
+      "actualAccept": true
+    },
+    {
+      "case": "null payload elsewhere",
+      "kind": "metadata-payload traversal",
+      "expectedAccept": false,
+      "actualAccept": false
+    },
+    {
+      "case": "nested app spoof",
+      "kind": "metadata-payload traversal",
+      "expectedAccept": false,
+      "actualAccept": false
+    },
+    {
+      "case": "metadata bytes wrong",
+      "kind": "metadata-payload traversal",
+      "expectedAccept": false,
+      "actualAccept": false
+    },
+    {
+      "case": "metadata digest wrong",
+      "kind": "metadata-payload traversal",
+      "expectedAccept": false,
+      "actualAccept": false
+    },
+    {
+      "case": "metadata raw unexpectedly retained",
+      "kind": "metadata-payload traversal",
+      "expectedAccept": false,
+      "actualAccept": false
+    },
+    {
+      "case": "payload digest wrong",
+      "kind": "metadata-payload traversal",
+      "expectedAccept": false,
+      "actualAccept": false
+    },
+    {
+      "case": "malformed base64",
+      "kind": "metadata-payload traversal",
+      "expectedAccept": false,
+      "actualAccept": false
+    },
+    {
+      "case": "array null not exempt",
+      "kind": "metadata-payload traversal",
+      "expectedAccept": false,
+      "actualAccept": false
+    }
+  ],
+  "fixtureArchive": "source228-retained-validation-controls-r2-fixtures.json.gz",
+  "decodedBytes": 421394,
+  "decodedSHA256": "645b0c1a84fd0a167201ba68877cf528a89470f821e0eacfc5f2bf246de5a19d",
+  "bytes": 76270,
+  "sha256": "6924e64b92fad63c5333294ecb3309e53cad381dc2d921aeebb14cef0cd4f7d6"
+}

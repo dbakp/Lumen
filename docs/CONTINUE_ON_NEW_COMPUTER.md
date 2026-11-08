@@ -4,7 +4,11 @@ Continue developing Lumen into a world-class, primarily iOS, AI health assistant
 
 Repository: https://github.com/dbakp/Lumen · branch `main`.
 
-## Current checkpoint · Source227 source finding retained · 8 November 2026
+## Current checkpoint · Source228 ready for fresh build · 8 November 2026
+
+Part112/root supports frozen444text+18fixtures=462 and31isolatedchecker controls: exact preflight.app metadata exception is bound to freshly verified source/build/app/test, all other malformed/nullpayloads reject. All455priorinputs unchanged; app/test/fixture code remains226. Source-ready only: publish/compare exact checkpoint, compile actual228Debug, require predeclared198negative/182actualDebugpositive/16negativeonly/20production, then actual Data ready-before-confirmation trial and mandatory R3readonlychecker/full originals/helper/summary/root/samecritic/fullbackup. No current build/native/Release yet. Earlier226/110 and227/111 source rejections remain unexecuted; no native failure invented.
+
+## Historical source findings · 8 November 2026
 
 Source225 Data107 and String108 complete evidence reached exact GitHub main `4e659b8d487bb1e3d2d8779f0788632144d11f1b`:42checkpoint/516completeunion before Source226 edits. Source226 now frozen430text+18fixtures=448 reviewed by Part110: guarded actual OLD-token acquisition and one known synthetic meals mutation after ready, genuine stale-recovery rejection, Back/parent closure and fresh owner/off choices. Nine isolated readonly observation controls and31 extracted actual Swift context controls pass; Swift syntax parsing passes. **Part110/root rejected source readiness (P110-C1): checker trusts some recorded PASS labels; independently revalidate every retained sample/protected/fixed/source/cleanup fact plus final live endpoint and full outcome/attachments in a separately frozen successor. No Source226 app typecheck, build, native, Release or target-change acceptance.** Source225439 is historical exact source, not current app-source equality. All broader43/eightgroups remain open.
 
