@@ -1,0 +1,24 @@
+{
+  "status": "PASS actualfinalfrozen R2entrypointhelp0 underqueryguard",
+  "guard": "import runpy,sys,subprocess\ncalls=[]\ndef forbidden(*a,**k):calls.append(a);raise AssertionError(\"No process/device query on help path\")\nfor name in [\"run\",\"check_output\",\"Popen\",\"check_call\",\"call\"]:setattr(subprocess,name,forbidden)\nsys.argv=[sys.argv[1],\"--help\"]\ntry:runpy.run_path(sys.argv[0],run_name=\"__main__\")\nexcept SystemExit as error:\n assert error.code==0 and not calls\n raise\n",
+  "rows": [
+    {
+      "file": "health-mixed-ineligible-driver-r2.py",
+      "bytes": 17215,
+      "sha256": "707b9acfc7a2e989a89c614831ebaa398960245c64d39174291e98a02f625c14",
+      "exit": 0,
+      "stdout": "usage: health-mixed-ineligible-driver-r2.py [-h] --source SOURCE --host-source\n                                            HOST_SOURCE --build BUILD --trial\n                                            TRIAL\n\noptional arguments:\n  -h, --help            show this help message and exit\n  --source SOURCE\n  --host-source HOST_SOURCE\n  --build BUILD\n  --trial TRIAL\n",
+      "stderr": ""
+    },
+    {
+      "file": "check-mixed-ineligible-evidence-r2.py",
+      "bytes": 8713,
+      "sha256": "2f1293549d707d0fdc5a460bfc940e5e6bf7288db74de6aff2d0fc6e61ef0aab",
+      "exit": 0,
+      "stdout": "usage: check-mixed-ineligible-evidence-r2.py [-h] --host-source HOST_SOURCE\n                                             prefix output\n\npositional arguments:\n  prefix\n  output\n\noptional arguments:\n  -h, --help            show this help message and exit\n  --host-source HOST_SOURCE\n",
+      "stderr": ""
+    }
+  ],
+  "scope": "Actual imports/argparse only; no device/process queries; notnative acceptance",
+  "checkedAt": 1794165098.7650208
+}

@@ -1,0 +1,230 @@
+{
+  "status": "PASS isolated exact/wrong-context rejection and actual guardedR2help controls",
+  "checks": [
+    {
+      "name": "exact frozen approved context",
+      "accepted": true,
+      "expected": true,
+      "newProcessQueries": 0
+    },
+    {
+      "name": "reject changed device 'AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481'",
+      "accepted": false,
+      "expected": false,
+      "newProcessQueries": 0
+    },
+    {
+      "name": "reject changed device 'unknown'",
+      "accepted": false,
+      "expected": false,
+      "newProcessQueries": 0
+    },
+    {
+      "name": "reject changed input '/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/other.json'",
+      "accepted": false,
+      "expected": false,
+      "newProcessQueries": 0
+    },
+    {
+      "name": "reject changed seeded '/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Shared/AppGroup/1E143EEB-A0AC-424A-AF23-ACA91DD19451/File Provider Storage/Lumen-backup-health-matrix-two-legacy.json'",
+      "accepted": false,
+      "expected": false,
+      "newProcessQueries": 0
+    },
+    {
+      "name": "reject changed seeded '/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7/data/Containers/Shared/AppGroup/1E143EEB-A0AC-424A-AF23-ACA91DD19451/File Provider Storage/Lumen-backup-health-matrix-two-legacy.json/../Lumen-backup-health-matrix-two-legacy.json'",
+      "accepted": false,
+      "expected": false,
+      "newProcessQueries": 0
+    },
+    {
+      "name": "reject changed bytes True",
+      "accepted": false,
+      "expected": false,
+      "newProcessQueries": 0
+    },
+    {
+      "name": "reject changed bytes 4991",
+      "accepted": false,
+      "expected": false,
+      "newProcessQueries": 0
+    },
+    {
+      "name": "reject changed sha256 '0000000000000000000000000000000000000000000000000000000000000000'",
+      "accepted": false,
+      "expected": false,
+      "newProcessQueries": 0
+    },
+    {
+      "name": "reject identity st_ino 0",
+      "accepted": false,
+      "expected": false,
+      "newProcessQueries": 0
+    },
+    {
+      "name": "reject identity st_ino True",
+      "accepted": false,
+      "expected": false,
+      "newProcessQueries": 0
+    },
+    {
+      "name": "reject identity st_ino 46084868",
+      "accepted": false,
+      "expected": false,
+      "newProcessQueries": 0
+    },
+    {
+      "name": "reject identity st_dev 0",
+      "accepted": false,
+      "expected": false,
+      "newProcessQueries": 0
+    },
+    {
+      "name": "reject identity st_dev True",
+      "accepted": false,
+      "expected": false,
+      "newProcessQueries": 0
+    },
+    {
+      "name": "reject identity st_dev 16777234",
+      "accepted": false,
+      "expected": false,
+      "newProcessQueries": 0
+    },
+    {
+      "name": "reject identity st_mode 0",
+      "accepted": false,
+      "expected": false,
+      "newProcessQueries": 0
+    },
+    {
+      "name": "reject identity st_mode True",
+      "accepted": false,
+      "expected": false,
+      "newProcessQueries": 0
+    },
+    {
+      "name": "reject identity st_mode 33153",
+      "accepted": false,
+      "expected": false,
+      "newProcessQueries": 0
+    },
+    {
+      "name": "reject identity st_nlink 0",
+      "accepted": false,
+      "expected": false,
+      "newProcessQueries": 0
+    },
+    {
+      "name": "reject identity st_nlink True",
+      "accepted": false,
+      "expected": false,
+      "newProcessQueries": 0
+    },
+    {
+      "name": "reject identity st_nlink 2",
+      "accepted": false,
+      "expected": false,
+      "newProcessQueries": 0
+    },
+    {
+      "name": "reject identity st_size 0",
+      "accepted": false,
+      "expected": false,
+      "newProcessQueries": 0
+    },
+    {
+      "name": "reject identity st_size True",
+      "accepted": false,
+      "expected": false,
+      "newProcessQueries": 0
+    },
+    {
+      "name": "reject identity st_size 4993",
+      "accepted": false,
+      "expected": false,
+      "newProcessQueries": 0
+    },
+    {
+      "name": "reject identity st_mtime_ns 0",
+      "accepted": false,
+      "expected": false,
+      "newProcessQueries": 0
+    },
+    {
+      "name": "reject identity st_mtime_ns True",
+      "accepted": false,
+      "expected": false,
+      "newProcessQueries": 0
+    },
+    {
+      "name": "reject identity st_mtime_ns 1794129209803882774",
+      "accepted": false,
+      "expected": false,
+      "newProcessQueries": 0
+    },
+    {
+      "name": "reject unknown identity field",
+      "accepted": false,
+      "expected": false,
+      "newProcessQueries": 0
+    },
+    {
+      "name": "reject runtime device redirected to preserved simulator",
+      "accepted": false,
+      "expected": false,
+      "newProcessQueries": 0
+    },
+    {
+      "name": "container refuses runtime old-device redirect before subprocess",
+      "accepted": false,
+      "expected": false,
+      "newProcessQueries": 0
+    }
+  ],
+  "count": 30,
+  "accept": 1,
+  "reject": 29,
+  "processDeviceQueries": 0,
+  "unchangedExistingEvidenceFunctions": [
+    "row",
+    "read",
+    "load",
+    "snapshot",
+    "directories",
+    "allowed_directories",
+    "identity",
+    "metadata",
+    "fixed",
+    "verify_inputs",
+    "installed",
+    "owned",
+    "selected",
+    "source_exact",
+    "preparation",
+    "committed",
+    "events"
+  ],
+  "newFunctions": [
+    "validate_context",
+    "verify_host_source"
+  ],
+  "entrypoints": [
+    {
+      "file": "health-mixed-ineligible-driver-r2.py",
+      "exit": 0,
+      "stdout": "usage: health-mixed-ineligible-driver-r2.py [-h] --source SOURCE --host-source\n                                            HOST_SOURCE --build BUILD --trial\n                                            TRIAL\n\noptional arguments:\n  -h, --help            show this help message and exit\n  --source SOURCE\n  --host-source HOST_SOURCE\n  --build BUILD\n  --trial TRIAL\n",
+      "stderr": "",
+      "queryGuardSource": "import runpy,sys,subprocess\ncalls=[]\ndef forbidden(*a,**k):calls.append(a);raise AssertionError(\"No process/device query on help path\")\nfor name in [\"run\",\"check_output\",\"Popen\",\"check_call\",\"call\"]:setattr(subprocess,name,forbidden)\nsys.argv=[sys.argv[1],\"--help\"]\ntry:runpy.run_path(sys.argv[0],run_name=\"__main__\")\nexcept SystemExit as error:\n assert error.code==0 and not calls\n raise\n"
+    },
+    {
+      "file": "check-mixed-ineligible-evidence-r2.py",
+      "exit": 0,
+      "stdout": "usage: check-mixed-ineligible-evidence-r2.py [-h] --host-source HOST_SOURCE\n                                             prefix output\n\npositional arguments:\n  prefix\n  output\n\noptional arguments:\n  -h, --help            show this help message and exit\n  --host-source HOST_SOURCE\n",
+      "stderr": "",
+      "queryGuardSource": "import runpy,sys,subprocess\ncalls=[]\ndef forbidden(*a,**k):calls.append(a);raise AssertionError(\"No process/device query on help path\")\nfor name in [\"run\",\"check_output\",\"Popen\",\"check_call\",\"call\"]:setattr(subprocess,name,forbidden)\nsys.argv=[sys.argv[1],\"--help\"]\ntry:runpy.run_path(sys.argv[0],run_name=\"__main__\")\nexcept SystemExit as error:\n assert error.code==0 and not calls\n raise\n"
+    }
+  ],
+  "scope": "Pure known metadata/AST/help only; no simulator/app/defaults query, seed, reset or native execution; not actual mixed acceptance",
+  "checkedAt": 1794164970.509546
+}
