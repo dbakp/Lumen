@@ -71,7 +71,7 @@
 <button class="btn" type="button" data-area="quality" aria-pressed="false" aria-controls="lumen-plan-detail">Answer quality</button>
 <button class="btn" type="button" data-area="release" aria-pressed="false" aria-controls="lumen-plan-detail">Release gates</button>
 </div>
-<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Recovery protection · in progress</h3><div data-verified>Stale-review rejection verified. Fresh recovery passed its data checks; completion-message visibility remains open.</div><div data-next>Next: test automatic completion visibility, closing and cleanup in the simulator.</div><div class="text-small" data-gate>The full app and test build passed. Simulator verification is next; earlier failures stay recorded.</div></div>
+<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Recovery protection · in progress</h3><div data-verified>Stale-review rejection and fresh data checks passed. The completion message is visible; its test measurement needs correction.</div><div data-next>Next: correct the viewport measurement, then verify closing and cleanup.</div><div class="text-small" data-gate>Latest run failed an extra spacing requirement in the test. Original screen and accessibility frames show the whole message; the complete flow, closing and final audit remain open.</div></div>
 </div>
 <div class="section"><h3>Verified safety checks</h3>
 <table class="table table-sm" aria-label="Earlier checks retain their original scope; broader checks remain open"><thead><tr><th>Situation</th><th>Observed result</th></tr></thead><tbody>
@@ -83,14 +83,14 @@
 </tbody></table>
 <div class="text-small">Earlier six-file long-wait preservation failure and Banana zero-fat omission remain failed expectations. Final dismissal preserved the immediate newer state.</div></div>
 <hr>
-<div class="viz-row"><span>About 31 GiB available at last check</span><span>11.06 GB recovered in recorded cleanups · latest cleanup 174.51 MB</span></div>
+<div class="viz-row"><span>About 30 GiB available at last check</span><span>11.06 GB recovered in recorded cleanups · latest cleanup 174.51 MB</span></div>
 <div class="text-small">Redundant exports and completed test bundles removed after exact GitHub verification · canonical evidence and needed caches retained · no further iPhone actions authorized</div>
 <script>
 (()=>{
 const root=document.getElementById('lumen-plan-progress');
-const snapshot='nov8-success-build-passed';
+const snapshot='nov8-success-viewport-diagnosed';
 const areas={
-current:{title:'Recovery protection · in progress',verified:'Stale-review rejection verified. Fresh recovery passed its data checks; completion-message visibility remains open.',next:'Next: test automatic completion visibility, closing and cleanup in the simulator.',gate:'The full app and test build passed. Simulator verification is next; earlier failures stay recorded.'},
+current:{title:'Recovery protection · in progress',verified:'Stale-review rejection and fresh data checks passed. The completion message is visible; its test measurement needs correction.',next:'Next: correct the viewport measurement, then verify closing and cleanup.',gate:'Latest run failed an extra spacing requirement in the test. Original screen and accessibility frames show the whole message; the complete flow, closing and final audit remain open.'},
 quality:{title:'Answer quality · open',verified:'Library search, source identity, consent controls and literal-reference safeguards are delivered.',next:'Next: evidence-support policy and independent evaluation; personal-context and conversation-history privacy review.',gate:'Clinical accuracy, language coverage and live-provider evaluation remain required.'},
 release:{title:'Release readiness · open',verified:'The previous unsigned Release build passed independent review, with coverage recording enabled. Current-app Release checks remain pending.',next:'Next: background Health, Watch reconnect, widget, interruption and accessibility checks.',gate:'Orientation warning, representative histories, performance, privacy and distribution review remain open. No iPhone installation, launch or checks without a renewed request.'}
 };

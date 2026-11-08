@@ -1,0 +1,40 @@
+{
+  "status": "Retained original/AX source-bound diagnosis: current test adds12pt arbitrary top exclusion; actualwholeLabel starts at true navbottom132. OriginalcaseFAILED immutable.",
+  "source": "durable-source-r237.json",
+  "diagnosticAttachments": [
+    {
+      "attachment": "26FB4EB2-B593-470F-8801-6B6BDC2190DE.txt",
+      "bytes": 22954,
+      "sha256": "72bc64eacd2bb2bb6f2efaf0e725a62b251597e9abcbccf3e0c802992a3a58cf"
+    },
+    {
+      "attachment": "7F57B7E6-B37E-49C9-9BF0-AEF0F191C34B.txt",
+      "bytes": 22952,
+      "sha256": "1a24484a7fc64c31eace0fb214924373592a74b3c0040b5d509cb7620525d697"
+    },
+    {
+      "attachment": "F42002DD-D5DF-4E51-9F23-964C70991E74.txt",
+      "bytes": 22952,
+      "sha256": "79fc68a6d0d0a7b5188dccb61860b4f1372012ba18be7d1be39f1aca928371dc"
+    }
+  ],
+  "labelFrame": [
+    16,
+    132,
+    370,
+    52
+  ],
+  "navigationFrame": [
+    0,
+    78,
+    402,
+    54
+  ],
+  "trueNavigationBottom": 132,
+  "currentPredicateTop": 144,
+  "labelStartsAtTrueBoundary": true,
+  "currentPredicateNecessarilyRejectsThisFrame": true,
+  "predicateSource": "            let successVisible = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in\n                guard reviewBar.exists, recovered.exists, recovered.isHittable else { return false }\n                let box = CGRect(x: 0, y: reviewBar.frame.maxY + 12, width: self.app.frame.width,\n                    height: self.app.frame.maxY - 40 - reviewBar.frame.maxY - 12)\n                return box.contains(recovered.frame) && recovered.label.contains(\"Selected data recovered\")\n            }, object: recovered)\n",
+  "scope": "Whole readable text visible in actual original; label existed before anytestscroll. Does not prove other nativepredicate branches/finalBack/R9 or retroactively passcase. No productgap/scrolladjustment justified merely by arbitrarytestmargin. Separate source-reviewed successor should use actual unobscured viewport and retain measuredframe/negative clipping checks.",
+  "checkedAt": 1794149738.845153
+}

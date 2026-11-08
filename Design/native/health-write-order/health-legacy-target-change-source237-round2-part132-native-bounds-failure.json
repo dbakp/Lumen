@@ -1,0 +1,569 @@
+{
+  "part": 132,
+  "kind": "actual failed synthetic native contribution",
+  "status": "FAILED native0/1/0/65 and driver1; R9FAILED1 immutable. Backend fresh commit supported; complete success row visually/AX supported before test scrolling; final Back/closure unexecuted.",
+  "score": null,
+  "source": "durable-source-r237.json",
+  "case": "Source237R1 / data-ready-before-confirmation",
+  "independentReview": {
+    "all573CurrentArchiveInputsByteExact": true,
+    "fullNativeSummaryRead": true,
+    "fullNativeHelperRead": true,
+    "nativeHelperBytes": 4970,
+    "all14OriginalsIndividuallyOpened": true,
+    "fullHostJSONParsed": true,
+    "hostEmbeddedPayloadInstancesStrictBase64SizeSHA256Verified": 474,
+    "all160OriginalAttachmentsCanonicalBytesHashesVerified": true,
+    "otherArchivedPayloadsVerified": 144,
+    "noSubjectHelperExecuted": true,
+    "noLiveSimulatorProcessDefaultsOrDeviceQueries": true,
+    "binaryReadsAsDataOnly": [
+      {
+        "file": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+        "bytes": 46170896,
+        "sha256": "62587a42d480d5067d2fcf5ab674990672b959f061481e8d55e258298837d4fb"
+      },
+      {
+        "file": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+        "bytes": 6098880,
+        "sha256": "67d27c4aa3988dc5045b9b1b7f9e871ca3b061646305aad3c1821d7f76e33290"
+      }
+    ]
+  },
+  "actualOutcome": {
+    "nativePID": 91957,
+    "appPID": 92541,
+    "runID": "50623199-BE4E-4D92-9A73-6E018BC2B804",
+    "nativeExit": 65,
+    "driverExit": 1,
+    "counts": [
+      0,
+      1,
+      0
+    ],
+    "fullSummaryWallSeconds": 217.98800015449524,
+    "mandatoryR9": "Ran once; failed original nativeExit/driverExit gate before final validation, not accepted",
+    "nativeFailure": "Whole completion message was not automatically visible before test scrolling",
+    "helperPhase": "fresh-committed",
+    "helperIncomplete": true,
+    "noFinalBackOrFinalClosed": true,
+    "retentionErrors": []
+  },
+  "finding": {
+    "id": "P132-C1",
+    "severity": "required narrow test-bounds correction before successor native",
+    "evidence": "Three original AX attachments report success frame x16/y132/w370/h52 and navigation x0/y78/w402/h54. Original ADFD shows all success text readable below navigation. Current test constructs top=nav.maxY+12=144, necessarily excluding first12pt of actual success row.",
+    "labelFrame": [
+      16,
+      132,
+      370,
+      52
+    ],
+    "navigationFrame": [
+      0,
+      78,
+      402,
+      54
+    ],
+    "actualNavigationBottom": 132,
+    "currentArtificialPredicateTop": 144,
+    "necessarilyFalseContainment": true,
+    "distinction": "Necessary failing geometry is proved. Does not establish that every other predicate branch passed throughout the wait, complete VoiceOver focus, absence of stale error throughout time, or native PASS. No additional product scroll redesign is supported merely by this arbitrary test margin.",
+    "requiredSuccessor": "Use measured unobscured app/navigation/usable-bottom geometry with positive finite label width/height and full2D containment, retain exact label/navigation/app/viewport rectangles and label/hittability/time, preserve no-test-scroll requirement. Add meaningful exact-top acceptance and top/bottom/side-clipping, zero/invalid geometry, absent/wrong-label negatives; require strict successor checker and actual new build/native case/finalBack.",
+    "predicate": "            let successVisible = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in\n                guard reviewBar.exists, recovered.exists, recovered.isHittable else { return false }\n                let box = CGRect(x: 0, y: reviewBar.frame.maxY + 12, width: self.app.frame.width,\n                    height: self.app.frame.maxY - 40 - reviewBar.frame.maxY - 12)\n                return box.contains(recovered.frame) && recovered.label.contains(\"Selected data recovered\")\n            }, object: recovered)\n",
+    "axAttachmentBindings": [
+      {
+        "attachment": "26FB4EB2-B593-470F-8801-6B6BDC2190DE.txt",
+        "bytes": 22954,
+        "sha256": "72bc64eacd2bb2bb6f2efaf0e725a62b251597e9abcbccf3e0c802992a3a58cf",
+        "fullTextRead": true
+      },
+      {
+        "attachment": "7F57B7E6-B37E-49C9-9BF0-AEF0F191C34B.txt",
+        "bytes": 22952,
+        "sha256": "1a24484a7fc64c31eace0fb214924373592a74b3c0040b5d509cb7620525d697",
+        "fullTextRead": true
+      },
+      {
+        "attachment": "F42002DD-D5DF-4E51-9F23-964C70991E74.txt",
+        "bytes": 22952,
+        "sha256": "79fc68a6d0d0a7b5188dccb61860b4f1372012ba18be7d1be39f1aca928371dc",
+        "fullTextRead": true
+      }
+    ]
+  },
+  "backendScope": {
+    "sevenHostPhases": [
+      "before-selection",
+      "ready",
+      "target-changed",
+      "rejected",
+      "owners-closed",
+      "fresh-ready",
+      "fresh-committed"
+    ],
+    "sevenCanonicalAcks": 7,
+    "allPrecommitProtectedCurrent13Prior13Exact": true,
+    "oldTokenGuardAcquireAndActualRecoverAcquireThenChangedError": true,
+    "fixedMealsOld42ToNew40WorkoutsOld42": "Strict typed retained payloads; newer value preserved after stale rejection and used by genuinely distinct fresh session",
+    "freshOriginAcquisition": "Both meals/workouts acquired from fresh ready owner, no borrowed old payload",
+    "freshCurrentFileCount": 26,
+    "proof": {
+      "currentFiles": 26,
+      "requiredFinalPriorExists": false,
+      "newPrivateFiles": 8,
+      "priorPrivateDirectory": ".health-recovery/4E2BA5B7-09F7-4EE8-A83A-FFE339439FD3",
+      "receipt": ".health-recovery-history/63A97B0D-8A64-422F-8417-2A0DC1932FBE.json",
+      "photoDigests": {
+        "photos/AEA66EA2-DC9B-41CC-9945-07D9AE6E777E.jpg": "12ad2783f7ecd9fb2252dff7c79781d92d2a52f637c33d7f46a60fdb1ef6f4e3",
+        "photos/6BF835AA-2C4B-43B4-B293-884C4DFA0177.jpg": "4aeb340f233dfbfe59066886f6326e2c393dfd27596eb914a7895aff23a8e720"
+      },
+      "newPrivateDirectory": ".health-recovery/A7B24541-7822-48FA-B90A-B3D1EF22D745",
+      "journalOwnerAndEventIdentitiesPayloadsAcknowledgementsPreserved": true,
+      "existingDeletionIssue": "unavailable",
+      "journalLifecycleRotated": true,
+      "olderPriorRetirement": "Selected prior meals/workouts/intent retained privately; final acceptance separately requires .previous absent. Not all13 prior files copied."
+    },
+    "privateCopies": "Prior selected meals/workouts/123Bintent + v1manifest4; current newer40/old42 typed legacy envelopes +835Bintent+v2manifest4; existing privateToday3 carried. Not all13 prior raw files privately copied.",
+    "receipt": "Full source4992B/SHA80d236..., meals/workouts record digests, two actual fresh photo SHA mappings, two reviewed photo facts, zero omissions independently compared to retained file payloads.",
+    "healthyContext": "Original current13 raw payloads carried except explicitly recovered files/new journal; exact source/provider retained. No global external-race claim.",
+    "journal": "Owner/event identities and payload/acks preservation and lifecycle qualification supported by retained source-bound root audit; existing pending delete issue unavailable permitted, no imported Health save claim.",
+    "oldOwnerClosureSpanSeconds": 3.619632333999988,
+    "retirementSamples": 3,
+    "retirementCompletedElapsedSeconds": [
+      1.2771138749999977,
+      2.78008324999999,
+      4.34004058299999
+    ],
+    "retirementInterpretation": "All three retained samples already clean; IO/context included. Not cleanup latency, a raced-loop proof, continuous absence or full retired-tree history.",
+    "noFinalFreshOwnerClosureCredit": true
+  },
+  "laterReadonlyDiagnostic": {
+    "scope": "Parsed retained separate diagnostic only; no new critic live query or native relaunch.",
+    "twoAbsentEndpoints": true,
+    "current26MetadataPayloadExactToCommittedBoundary": true,
+    "nativeFinalStateSame": true,
+    "freshOwnedWorkspacesStillPresent": 2,
+    "oldOwnedWorkspacesAbsent": "Root diagnostic records; no native final Back inference",
+    "staleWording": "Original diagnostic says R8FAILED; root erratum qualifies actual current R9FAILED1. Preserve original bytes.",
+    "absenceDoesNotProve": "Exit cause/time, continuous absence, globalFD closure, nativeBack or automatic fresh workspace retirement"
+  },
+  "visualObservations": [
+    {
+      "file": "Design/native/health-write-order/health-legacy-target-change-data-source237r1-F127F72E-A6DF-48B7-BA59-26B8531D80EA.png",
+      "bytes": 282899,
+      "sha256": "e5165411d3ee7f471b9deae2e42f07758444d4273f90356bc5927f8f32ac0bf1",
+      "phase": "before-selection",
+      "individuallyOpened": true,
+      "detail": "original",
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "observation": "Whole Backup & restore heading/explanation and Create backup/Choose backup; Start check disabled after touch. Lower readable-export explanation clipped."
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-target-change-data-source237r1-E4123233-D144-4732-9416-2CEE350F4390.png",
+      "bytes": 226088,
+      "sha256": "750a81af6db0dc5da1645d05c7baa1797d360929c970fa6bccfdcc533e21ffda",
+      "phase": "ready-original",
+      "individuallyOpened": true,
+      "detail": "original",
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "observation": "Whole selected-file metadata and Water history 1 record/Review records/Current data opens. Meal 2/older-data unavailable visible; lower meal control clipped; no whole-form claim."
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-target-change-data-source237r1-7067D563-DE5F-4B02-B065-51CD408A8076.png",
+      "bytes": 354216,
+      "sha256": "81d2687c99e31924a8431e7e3a9598fa0bf64dda0e92c374075cd09aad2dfe74",
+      "phase": "ready-choices",
+      "individuallyOpened": true,
+      "detail": "original",
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "observation": "Meal, omission and workout controls visibly off; whole Workout 0/Review records/unavailable. Targets starts at lower edge."
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-target-change-data-source237r1-B44151E3-95CE-401B-8EF1-A9CA1BC4841C.png",
+      "bytes": 375079,
+      "sha256": "534b5ca552b156deb699b3ed6e53f076e1e71bbeea96d9f3cff791796fcbce5f",
+      "phase": "selected-meal",
+      "individuallyOpened": true,
+      "detail": "original",
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "observation": "Targets/Daily readings and both complete recovery consequences plus enabled Recover selected data visible. Selected meal toggle is outside this viewport."
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-target-change-data-source237r1-FF84123C-36C8-4296-91EE-0EA70DF1FE72.png",
+      "bytes": 370213,
+      "sha256": "4fd30cab5027deb87eccf0bb09a7c4b2244c17bf08ed1986de8aef00a9414ddb",
+      "phase": "target-mutated",
+      "individuallyOpened": true,
+      "detail": "original",
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "observation": "Same complete action/consequences viewport; mutation control gray. Typed value mutation is attributed to retained native/host facts, not pixels."
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-target-change-data-source237r1-774846F7-835C-4376-8663-575FEED75AAF.png",
+      "bytes": 481816,
+      "sha256": "9fa901d42f012ed98e939975e515e78af719234dafc4214eafca1278bbcc806e",
+      "phase": "confirmation",
+      "individuallyOpened": true,
+      "detail": "original",
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "observation": "Whole Replace selected data? heading, complete body and Not now/Recover visible. Native gray body/dimmed background limitation retained."
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-target-change-data-source237r1-673C2DD0-AD74-483D-84F4-2600FC9DE570.png",
+      "bytes": 365492,
+      "sha256": "0ebbf6f979b3d6a3314cbc3c08f5b938a71ecba22fab7887860e5f062cf8e8a1",
+      "phase": "changed-error",
+      "individuallyOpened": true,
+      "detail": "original",
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "observation": "Whole primary error heading/body and Recover selected data, with both complete consequences above. Genuine target-changed error supported separately by protocol."
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-target-change-data-source237r1-F4400B5F-F331-4F07-AF4E-76E9D952F5A0.png",
+      "bytes": 459022,
+      "sha256": "fc860aeb9b761578d59be569b59d3700999cf65cb2143ddfd3ba89fca2b111f9",
+      "phase": "owners-closed",
+      "individuallyOpened": true,
+      "detail": "original",
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "observation": "Settings viewport shows Backup & restore/Recover health data/Export my data; DEBUG Target check overlays Export area. Upper paragraph and lower erase area clipped."
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-target-change-data-source237r1-DC1CFE31-E965-4D6C-BCB8-C3FBBAC64CEC.png",
+      "bytes": 459022,
+      "sha256": "fc860aeb9b761578d59be569b59d3700999cf65cb2143ddfd3ba89fca2b111f9",
+      "phase": "owners-followup",
+      "individuallyOpened": true,
+      "detail": "original",
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "observation": "Same Settings viewport at later timestamp. Repeated pixels do not prove continuous timing or distinct backend state."
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-target-change-data-source237r1-DA6CC8F6-F76D-4AB8-9C0F-27B2DB6502EF.png",
+      "bytes": 224324,
+      "sha256": "29b7f01f553f4993f9a58213114c14c0ccfbc6900e8def0e8e39dbc890581d8d",
+      "phase": "fresh-original",
+      "individuallyOpened": true,
+      "detail": "original",
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "observation": "Fresh selected-file metadata and Water 1/current data opens; Meal 2/older unavailable; lower meal control clipped. New identity comes from protocol."
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-target-change-data-source237r1-0FA08F46-72E2-4189-8154-FF5A1DB76720.png",
+      "bytes": 352669,
+      "sha256": "1d2eef2fbb7669f5ef7028b9d8434590c476454dcd15dac8b389c2cb6ec90687",
+      "phase": "fresh-off",
+      "individuallyOpened": true,
+      "detail": "original",
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "observation": "Meal/omission/workout switches visibly off; whole workout 0/Review records/older unavailable. Meal heading behind glass; Targets lower rows outside viewport."
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-target-change-data-source237r1-0099CCE1-33A3-4BC1-B197-1DEC4D7BB6E8.png",
+      "bytes": 384028,
+      "sha256": "fa80c5aabadd4c78b20576e2d2814f213025de6e57bbde39b2a818a6dffb99bb",
+      "phase": "fresh-selected",
+      "individuallyOpened": true,
+      "detail": "original",
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "observation": "Whole Targets/Daily readings and both complete consequences with enabled Recover selected data. Choice selection itself not visible here."
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-target-change-data-source237r1-616B2AFC-0FAF-494D-BE0A-B6DB9A7E1C7B.png",
+      "bytes": 492096,
+      "sha256": "9055c54053ce53d9b00626621f2108cae29b7cd8c4cbf929afbe3b2500cf0742",
+      "phase": "fresh-confirmation",
+      "individuallyOpened": true,
+      "detail": "original",
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "observation": "Whole confirmation heading/body/actions; native gray body limitation remains. Both recovery consequences visible behind alert without broad contrast acceptance."
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-target-change-data-source237r1-ADFD43F0-6B4C-4B77-832E-6A9ECAC7A40D.png",
+      "bytes": 343412,
+      "sha256": "1d48bdf7e645ce8495905190880b25bca71a869831e45906d1c33b7d3fe50dff",
+      "phase": "failed-fresh-committed",
+      "individuallyOpened": true,
+      "detail": "original",
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "observation": "Complete readable Selected data recovered row and check icon immediately below navigation, no clipping of label. Whole Water group and Meal 2/current opens/disabled omission visible. Workout lower group clipped. This is success before any test success-scroll, not native case PASS."
+    }
+  ],
+  "retention": {
+    "completeOriginals": {
+      "png": 14,
+      "json": 1,
+      "text": 18,
+      "binary-plist": 126,
+      "video": 1
+    },
+    "all160MetadataAndCanonicalPayloadBindingsVerified": true,
+    "video": {
+      "file": "health-legacy-target-change-data-source237r1-58E23B22-9641-45D6-8631-9E9CAA0FEA9E.mp4",
+      "bytes": 70253061,
+      "sha256": "5e69e42491bee352286b69ed8bd66877c99d1694154e0e5bcfb678af1ba2ac7a",
+      "played": false
+    },
+    "fullManifestCanonicalSHA256": "abe2e8587636a3058a31eafa15d391ff779d74875a60981335df6b233c27983b",
+    "nativeAndExportQueries": "Retained exit0 query stdout/stderr gzip decoded and size/hash checked; native test remains failed.",
+    "acquisitionIndices": "Preserved; independent original-open/read credit is in this report and root report, without altering acquisition flags.",
+    "noCleanupPerformed": true
+  },
+  "sourceBuildLimits": {
+    "actualAppTestBuild0": true,
+    "actualDebugControls": "202 predeclared negative /186 actual Debug positive /16 negative-only /21 production; separately bound current receipt. No Release run/acceptance in this native contribution.",
+    "priorFailures": "234 native visibility failure,235/236 compile failures and source-readiness withdrawals remain immutable.237 fixes compiled but this actual native geometry failure remains failed.",
+    "source235SuccessGuardControls": "22 isolated interleavings remain source-level carry, not new SwiftUI/render/accessibility runtime proof."
+  },
+  "limits": [
+    "Dedicated synthetic main/light/standard malformedData legacyJSON target-change flow only.",
+    "Visible complete success in failure original and AX is supported; full test/end-to-end/R9 success is not.",
+    "No final Back/final3s closure/relaunch accepted; fresh workspace cleanup remains open.",
+    "Native gray confirmation body limitation and clipped individual form regions retained; no whole-form or new appearance signoff.",
+    "No speech/audio/announcement history/motion/video playback/continuous timing/physical phone/Release/distribution/performance/globalSafety acceptance.",
+    "All43 requirements/eight groups/full product goal remain open; no new design score."
+  ],
+  "nextAction": "Preserve failed fullcase/report/root/exact backup, then minimal test-only viewport repair with measured rectangles and boundary negatives, separately frozen source review/current build/markers and fresh native case; do not change product reveal merely to satisfy artificial margin.",
+  "provenance": [
+    {
+      "file": "Design/native/health-write-order/durable-source-r237.json",
+      "bytes": 104036,
+      "sha256": "c63acf54f8152493675ba1a52c2d5d03ec4934f4209a22b6063b5d8557105b25"
+    },
+    {
+      "file": "Design/native/health-write-order/durable-source-r237.json.gz",
+      "bytes": 3700087,
+      "sha256": "3bf776803083358fe0157fb0b19a734b44ca7da42e1b8ffdc280031bd6b1697f"
+    },
+    {
+      "file": "Design/native/health-write-order/health-target-change-source237-r1-build.json",
+      "bytes": 701,
+      "sha256": "d60c6ef10f86b2898e684a03af3f533aa82eefb8903602dc9f5e378d04cd14ba"
+    },
+    {
+      "file": "Design/native/health-write-order/source237-target-change-native-build-r1-outcome.json",
+      "bytes": 904,
+      "sha256": "b1ab4d27ab42da1a03151f59007e8f3c980b09a75826032def507c710b402b3c"
+    },
+    {
+      "file": "Design/native/health-write-order/source237-target-change-native-build-r1.log.gz",
+      "bytes": 3955,
+      "sha256": "3832c01f5b967e8f30739be83d01e60741f2adf13c8d085018c261412ef2e274"
+    },
+    {
+      "file": "Design/native/health-write-order/source237-current-debug-release-controls-r1.json",
+      "bytes": 1127,
+      "sha256": "0e8a7c03a6d2ec7dddcf4ee929917297359a0a87ae11070dc50a20da10ad78f5"
+    },
+    {
+      "file": "Design/native/health-write-order/source237-root-build-controls-r1.json",
+      "bytes": 944,
+      "sha256": "0f9f028298b6b0b3a1216e8c4c77cbfd1b5de46d1614ae3bb40488da240c2c59"
+    },
+    {
+      "file": "Design/native/health-write-order/source237-preexecution-exact-github.json",
+      "bytes": 153316,
+      "sha256": "01bb7cf1d65d5973557202250ca96a335a38866c687705c12c879fc47c12b678"
+    },
+    {
+      "file": "Design/native/health-write-order/source237-test-capture-r1-plan.json",
+      "bytes": 2497,
+      "sha256": "a372c8bc02dad3127e97819158595dbe29d02681b0fc560f2e063b0513b70d3a"
+    },
+    {
+      "file": "Design/native/health-write-order/source237-root-native-failure-audit-r1.py",
+      "bytes": 8785,
+      "sha256": "51ae254ab71a54897e33f2ffa1f5101e89f7114910143349d2c7c135433b5e80"
+    },
+    {
+      "file": "Design/native/health-write-order/source237-root-native-failure-audit-r1.json",
+      "bytes": 2525,
+      "sha256": "fb71d31da9f37d19a003dd7c541a3bf8585b28620019ed2889b51e1add4f4ca2"
+    },
+    {
+      "file": "Design/native/health-write-order/source237-root-native-original-observations-r1.json",
+      "bytes": 8199,
+      "sha256": "27013a2fa3b3d504a01c843d6e46194caa91c702f5073c3a817617bb945a794e"
+    },
+    {
+      "file": "Design/native/health-write-order/source237-root-success-viewport-diagnosis-r1.json",
+      "bytes": 2035,
+      "sha256": "5fd4eb68b72ca66083896693deb797022879f573e873e53adacfd5de4d681e81"
+    },
+    {
+      "file": "Design/native/health-write-order/source237-post-failure-readonly-diagnostic-r1.json",
+      "bytes": 192726,
+      "sha256": "eab76804d44d57d4c0485bfed7548fb5363a32f0f70318b7271a6d5ae3e39d9a"
+    },
+    {
+      "file": "Design/native/health-write-order/source237-post-failure-readonly-diagnostic-r1-executed.py",
+      "bytes": 3503,
+      "sha256": "9619524b35d34906f8a3ebd6d11bf62f5fc765d597c4af9fddf9126cbdde4f01"
+    },
+    {
+      "file": "Design/native/health-write-order/source237-root-post-failure-diagnostic-review-r1.json",
+      "bytes": 758,
+      "sha256": "b0031cb52ef7c48c18f20de9f338617e39b94eeebbef62a68f9d52d4227190f7"
+    },
+    {
+      "file": "Design/native/health-write-order/source237-native-all-original-export-r1.json",
+      "bytes": 810,
+      "sha256": "0c7b5ba4f49cb40816575af92e00917daa7bbe9990d8ae5283be7faf1fcd1c6d"
+    },
+    {
+      "file": "Design/native/health-write-order/source237-retain-all-originals-r1-executed.py",
+      "bytes": 3907,
+      "sha256": "a15144ed03db840af4bb57742451d659130b02152b45fb2321b8a9b3da07cc5c"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-target-change-source237-round2-part131-source.json",
+      "bytes": 13622,
+      "sha256": "cecc94383448fe35a89dc22128068da002dbbfe647fca803becb1cd240b9a715"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-target-change-data-source237r1-driver-observations.json",
+      "bytes": 1392792,
+      "sha256": "ce9b6f56f62362c9dbd2f5d52141029b0bf199f91313a1591c153b8506b6f401"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-target-change-data-source237r1-outcome.json",
+      "bytes": 71769,
+      "sha256": "f7efd26ea402eaa43f9bd7f36656c871be50d1553fdebf326dd73e89093158d2"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-target-change-data-source237r1-summary.json",
+      "bytes": 1497,
+      "sha256": "03ec4424c731e146d204367db02f927e883e5ca710baf2910508397bb155b6bd"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-target-change-data-source237r1-retention-state.json",
+      "bytes": 65537,
+      "sha256": "82c3b91b2edb4fbee776ad99c0e74f5fa132d8da80f57e4d541f0ad3dbf7a4ea"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-target-change-data-source237r1-images.json",
+      "bytes": 13349,
+      "sha256": "2ae841b2842965cbc57e90f6a6a190d271a51152a31b18bc7735730af93e24bb"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-target-change-data-source237r1-readbacks.json",
+      "bytes": 961,
+      "sha256": "7ede44330040cc8cd082ca84aa15930fcf1789d8eab77ff83ff087040808da48"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-target-change-data-source237r1-BC2AFD08-9B54-4377-B503-C2A4C3E55D6E.json",
+      "bytes": 4970,
+      "sha256": "dc3ce90cc6435c9061fb40ce2777f4f4e31414eadc5fb8d3351095fb7bc97738"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-target-change-data-source237r1-r9-source237r1-outcome.json",
+      "bytes": 989,
+      "sha256": "3b1da8e764addf3a2cc679448ca6716293c8c24c14068ea26bd4a48960b4c7d7"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-target-change-data-source237r1-all-originals.json",
+      "bytes": 130454,
+      "sha256": "eca1e4f25308954c1c292813ac8df648a7f8683922724885aee25451d8057535"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-target-change-data-source237r1-all-original-manifest.json.gz",
+      "bytes": 6841,
+      "sha256": "069517a1029727b2cf40181267b20cf3735c094c8007d34a4e334d6062eca5fe"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-target-change-data-source237r1-all-other-payloads.json.gz",
+      "bytes": 156391,
+      "sha256": "ccafb4f351bf6a2d6189f059b3299d0d7931fb8707e9d3f871483e3191861254"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-target-change-data-source237r1-png-original-manifest.json.gz",
+      "bytes": 1306,
+      "sha256": "3dccad7653aa44e11569326006d73ab6af288d14f4e44430768d45ca632feb90"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-target-change-data-source237r1-json-original-manifest.json.gz",
+      "bytes": 436,
+      "sha256": "93e261460de8799ad93908406cc29298f7242f22bb44751cfd303c7cfa539464"
+    },
+    {
+      "file": "Design/native/health-write-order/legacy-target-change-driver-r6.py",
+      "bytes": 15544,
+      "sha256": "79ddde9f9b98c438af36f15286e78110fb114247f1409dc07802cda87abb17f3"
+    },
+    {
+      "file": "Design/native/health-write-order/legacy-target-change-evidence-r5.py",
+      "bytes": 3707,
+      "sha256": "7d2ad378f07d1f4e957601da5b4b9cc186e2b9f9a682a912b71397542660f499"
+    },
+    {
+      "file": "Design/native/health-write-order/check-legacy-target-change-r9.py",
+      "bytes": 14360,
+      "sha256": "efa51587cbe5a49eecc04f54c0c88619fa9c8fc358eee9e81e277c77c7ea3caa"
+    },
+    {
+      "file": "Design/native/health-write-order/legacy-target-retirement-r1.py",
+      "bytes": 8752,
+      "sha256": "0f780c78fa87cb44f6e6a72379273ce3f1321f3bd706093ef4914bfb89ccca8e"
+    },
+    {
+      "file": "Lumen/Views/BackupFileRecoveryView.swift",
+      "bytes": 35742,
+      "sha256": "02583c0cf7f54f90104f25f5152bb3786307be459652313b05ab56ec23500d0d"
+    },
+    {
+      "file": "LumenUITests/LumenSmokeTests.swift",
+      "bytes": 750354,
+      "sha256": "7e31f1d261c81c143444aca0206cf0c324596b603c66bbcd0be97a5a46297c8b"
+    }
+  ],
+  "storage": {
+    "checkedFreeBytes": 31995076608,
+    "deletedFiles": 0,
+    "recoveredBytes": 0,
+    "retention": "Current source/canonical evidence and caches retained; no deletion or raw-retention promises added."
+  },
+  "reviewedAtEpoch": 1794149974.8322911
+}
