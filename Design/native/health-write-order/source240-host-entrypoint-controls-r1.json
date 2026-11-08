@@ -1,0 +1,23 @@
+{
+  "status": "PASS both actualnewhostR2 --help0 before nativepaths",
+  "controls": [
+    {
+      "file": "Design/native/health-write-order/target-string-driver-r2.py",
+      "bytes": 15553,
+      "sha256": "9553a63a6fcfd25a52759bdc4567cfe1647d807c8c146bc1dd8015c1c059b60c",
+      "exit": 0,
+      "stdout": "usage: target-string-driver-r2.py [-h] --source SOURCE --host-source\n                                  HOST_SOURCE --build BUILD --trial TRIAL\n\noptional arguments:\n  -h, --help            show this help message and exit\n  --source SOURCE\n  --host-source HOST_SOURCE\n  --build BUILD\n  --trial TRIAL\n",
+      "stderr": ""
+    },
+    {
+      "file": "Design/native/health-write-order/check-target-string-r2.py",
+      "bytes": 14469,
+      "sha256": "ea85ec9357198e3cda490131e374a9c7bb73555d771cec1d5e353aece95e44f4",
+      "exit": 0,
+      "stdout": "usage: check-target-string-r2.py [-h] --checker-source CHECKER_SOURCE\n                                 --case-source CASE_SOURCE --build BUILD\n                                 --trial TRIAL\n                                 prefix\n\npositional arguments:\n  prefix\n\noptional arguments:\n  -h, --help            show this help message and exit\n  --checker-source CHECKER_SOURCE\n  --case-source CASE_SOURCE\n  --build BUILD\n  --trial TRIAL\n",
+      "stderr": ""
+    }
+  ],
+  "scope": "Import/argparse only, no newnative/devicequery",
+  "checkedAt": 1794154131.5739672
+}
