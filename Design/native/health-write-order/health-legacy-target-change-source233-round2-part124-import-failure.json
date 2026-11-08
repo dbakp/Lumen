@@ -1,0 +1,206 @@
+{
+  "part": 124,
+  "source": "durable-source-r233.json",
+  "status": "ACTUAL HOST DRIVER IMPORT FAILED before native launch. Source233 source-ready123 judgment is qualified/withdrawn for execution readiness until separately reviewed host-only import repair. Actual compile/finite Debug controls remain supported separately.",
+  "sourceReady": false,
+  "runtimeAcceptance": false,
+  "score": null,
+  "overallDesignAcceptance": false,
+  "productCompletion": false,
+  "actualAttempt": {
+    "command": [
+      "python3",
+      "Design/native/health-write-order/legacy-target-change-driver-r4.py",
+      "--source",
+      "durable-source-r233.json",
+      "--build",
+      "health-target-change-source233-r1-build.json",
+      "--trial",
+      "Source233R1"
+    ],
+    "driverExit": 1,
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/legacy-target-change-driver-r4.py\", line 14, in <module>\n    e=importlib.util.module_from_spec(spec); spec.loader.exec_module(e)\n  File \"<frozen importlib._bootstrap_external>\", line 850, in exec_module\n  File \"<frozen importlib._bootstrap>\", line 228, in _call_with_frames_removed\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/legacy-target-change-evidence-r4.py\", line 8, in <module>\n    if not name.startswith('_'):globals()[name]=getattr(parent,name)\nAttributeError: module 'target_prior' has no attribute 'time'\n",
+    "nativeLaunched": false,
+    "nativePID": null,
+    "nativeExit": null,
+    "nativeTestCounts": null,
+    "originalPNGCount": 0,
+    "nativeHelperCount": 0,
+    "caseArtifactsPresent": [],
+    "failureStage": "Driver line14 exec_module(e) → evidenceR4 re-export loop line8, before argparse/trial state/path initialization/producer Popen. No app reset/Files selection/bootstrap/stale rejection/fresh commit occurred. No native0/1/0 count is invented."
+  },
+  "independentVerification": {
+    "sourceCurrentArchiveExact": 535,
+    "allFrozenInputsUnchanged": true,
+    "failureReceiptSixBindingsVerified": true,
+    "canonicalCasePrefixFiles": 0,
+    "caseArtifactCheckScope": "Repository filename inventory only plus source-order/retained exact traceback. No simulator/app/process/device/defaults query or driver/helper execution by critic.",
+    "actualBuildSource": "durable-source-r233.json",
+    "actualBuildPID": 49846,
+    "buildExit": 0,
+    "buildLogBytes": 59940,
+    "buildLogSHA256": "9280b02b8961a170b196017faef57f1675a8c304af426a7785eea80b711b7e77",
+    "buildLogRawGzipVerifiedAndSuccessMarkerPresent": true,
+    "appReadAsData": {
+      "bytes": 46105632,
+      "sha256": "761ccd74ef1f258ea70b3fc6eac8d33e632fd93f3be4af63818cbc2415d10bf2"
+    },
+    "testReadAsData": {
+      "bytes": 6097184,
+      "sha256": "32c1d1d9b08895b8b5cc233984b5ab8633cef66503cd39007d492e6ed8130140"
+    },
+    "actualDebugControls": [
+      202,
+      186,
+      16,
+      20
+    ],
+    "allActualDebugPositivesAndProductionLiteralsPresent": true,
+    "negativeOnlySetExact": true,
+    "Release233Executed": false
+  },
+  "finding": {
+    "id": "P124-C1",
+    "severity": "required host-only import repair",
+    "mechanism": "EvidenceR4 loads EvidenceR2 as global parent, then iterates dir(parent) and writes all public names to globals. EvidenceR2 itself publicly exposes parent=EvidenceR1 and time imported at its top. When R4 exports the parent key, its own global parent is replaced by R1 midway through the loop. Later getattr(parent,time) reads R1 rather than the originally enumerated R2 and raises the actual AttributeError. Sorted public-name traversal places parent before time. The failed dependency import is deterministic for this chain, not a native or product transaction defect.",
+    "additionalEffect": "Even merely precomputing export values or suppressing the immediate exception is insufficient if PHASES/STATUSES and check_state/origin_trace still delegate through the overwritten global parent. The intended strict R2 bootstrap schema must remain the real base for all inherited-prefix dispatch.",
+    "required": "Create separate successor host evidence module with private stable _base (and private import bookkeeping) that cannot be overwritten by public re-exports; all array construction and delegated functions must reference that same stable base. Redirect successor driver/checker imports to it. Do not rewrite233/123 or mutate compiled app/test/model inputs.",
+    "verification": "Before a new native attempt, execute and retain real corrected evidence-module import checks plus driver/checker --help subprocess controls (exit0/stdout/stderr/command/current source hashes). Help must import dependencies then stop at argparse before container/provider query, trial creation or native producer code. Check intended exported eight-phase/status/count/16-suffix contract and stable base/strict bootstrap delegation; AST-only coverage is insufficient. These are host import controls, not native passes or app compile."
+  },
+  "reviewCorrection": {
+    "priorReport": "health-legacy-target-change-source233-round2-part123-source.json",
+    "preservedImmutable": true,
+    "assessment": "Part123 correctly bound535 source/archive and inspected C1/C2 retirement/private-copy correction, but its sourceReady=true conclusion missed the dynamic re-export alias collision. I did not import the actual evidence/driver chain; the isolated39/32 subjects imported success/retirement modules directly and therefore did not exercise this path. Preserve the historical report and qualify execution readiness with this actual failure.",
+    "stillSourceSupported": "C1/C2 payload/inventory/retirement predicates and isolated controls remain their stated source-only/host-fixture evidence. Actual233 compile0, current app/test pair and finite202/186/16/20 Debug controls remain separate facts. None provides native or full import viability."
+  },
+  "successorCarry": {
+    "possibleWithoutRebuild": true,
+    "condition": "If all535 retained actual233 app/test/source bytes and compiled binaries remain unchanged, bind new corrected host Source234 manifest and executed host driver/checker/helper separately from compiled/native case Source233. Explicitly verify both manifests/current archives plus exact actual233 build receipt/app/test pair before launch. No freshbuild/logic/Release credit from host-only correction.",
+    "failureRetention": "Current failure occurs before driver can create its own outcome/state; parent retained exact command/traceback/exit and zero-case-artifact receipt. Do not claim complete finalization/salvage executed or alter its stage. Later host import failure controls must retain their own results externally, without launching native."
+  },
+  "preexecutionProof": {
+    "commit": "7c1f1f13926cf7359281861e47641151d7ac94b1",
+    "checkpointPaths": 16,
+    "unionPaths": 626,
+    "scope": "Source/build/current controls/Part123 exact receipt bound, not a fresh Git query by critic."
+  },
+  "limits": [
+    "No native test executed or failed; no screenshots/helper/visual review or new native count.",
+    "No bootstrap/persistence observation, actual pending or stale/fresh authority/commit/retirement/preservation/cleanup/relaunch runtime proof in this failed attempt.",
+    "No Source233 Release execution, distribution/performance/physical-device or global design/product acceptance.",
+    "Historical Source230 native/R5/Release bounded evidence unchanged. Source232 findings and original R4/Source229/Source219 failures preserved.",
+    "All43/eightgroups/String/healthy/timing/retained-copy/full goal remain open."
+  ],
+  "provenance": [
+    {
+      "file": "Design/native/health-write-order/durable-source-r233.json",
+      "bytes": 98035,
+      "sha256": "db0049a9df656494848cfe1d49657e4e66a7c2a0a2f4372e7fe2b7aebb9c47fe"
+    },
+    {
+      "file": "Design/native/health-write-order/durable-source-r233.json.gz",
+      "bytes": 3445722,
+      "sha256": "f6439fa27744e0fc248b675bf4393599fb55e00bab4279af4f8990da9092b603"
+    },
+    {
+      "file": "Design/native/health-write-order/source233-native-launch-import-failure-r1.json",
+      "bytes": 3223,
+      "sha256": "76f5258279c351f25edd1e718415696e98f41006b235729d14a7f9335288559a"
+    },
+    {
+      "file": "Design/native/health-write-order/health-target-change-source233-r1-build.json",
+      "bytes": 700,
+      "sha256": "34631c7e6bafc49bd5cd017da4cd1f8ed01db8aa66d1ac71fb2e091ba15d0225"
+    },
+    {
+      "file": "Design/native/health-write-order/source233-target-change-native-build-r1-outcome.json",
+      "bytes": 904,
+      "sha256": "7308ba2be1969eed2dbbda913e390059964e55ee948d0c6437e903e4b25cd977"
+    },
+    {
+      "file": "Design/native/health-write-order/source233-target-change-native-build-r1.log.gz",
+      "bytes": 5363,
+      "sha256": "fdff30b815586d938c3eb9527537d505bed8e98528433e5f634adf64a3b50268"
+    },
+    {
+      "file": "Design/native/health-write-order/source233-current-debug-release-controls-r1.json",
+      "bytes": 1127,
+      "sha256": "21090423402d337f7f9ed4f9dabce1d66e702a9212d7e2a623f4202f4217cfdb"
+    },
+    {
+      "file": "Design/native/health-write-order/health-current-release-source233-r1-predeclared-plan.json",
+      "bytes": 19085,
+      "sha256": "ad4a7e84418acf128767e07da1e325796a89fd9ba153bb0865e1cfa81d3d9b48"
+    },
+    {
+      "file": "Design/native/health-write-order/health-current-release-source233-r1-plan.json",
+      "bytes": 19073,
+      "sha256": "fd62075b0a738ce81c068d032baeb754bd8f07492db8c37ddcbb51131d6ade52"
+    },
+    {
+      "file": "Design/native/health-write-order/source233-root-build-controls-r1.json",
+      "bytes": 1671,
+      "sha256": "847c0cdf63c398841ce984b74e303c9c3ae8cd11a481321d0ac383e3d7b565b8"
+    },
+    {
+      "file": "Design/native/health-write-order/source233-build-exact-github.json",
+      "bytes": 123469,
+      "sha256": "c22d4a880afa9d6552e88ac0853ae6cd710f1e28a28fcde26a1cdc0588dc8fb3"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-target-change-source233-round2-part123-source.json",
+      "bytes": 23317,
+      "sha256": "e22dceff692f6e9d50ca12d9b52598ac66870b32b18b719dbf56e39981e7a987"
+    },
+    {
+      "file": "Design/native/health-write-order/source233-fresh-authority-r1-plan.json",
+      "bytes": 8748,
+      "sha256": "5301bea3a9b31fafe728d763c1fae858f1c3ed69b680e87b0499f5795a4f9891"
+    },
+    {
+      "file": "Design/native/health-write-order/legacy-target-change-driver-r4.py",
+      "bytes": 15388,
+      "sha256": "dbb9d30b52e6e3f51103a3d5b21d497e3022e38aca76e7cf3d0caab40e7b5041"
+    },
+    {
+      "file": "Design/native/health-write-order/legacy-target-change-evidence-r4.py",
+      "bytes": 2823,
+      "sha256": "38d303cfc664b16e93b05a31ca0ffd4403ec4b3b759d50289380c9df496a51a0"
+    },
+    {
+      "file": "Design/native/health-write-order/legacy-target-change-evidence-r2.py",
+      "bytes": 1700,
+      "sha256": "ca5353d63ad7a1ad3f52278c3f130d70a7e11c0dd3d4c241abda4b05e74c2605"
+    },
+    {
+      "file": "Design/native/health-write-order/legacy-target-change-evidence-r1.py",
+      "bytes": 5945,
+      "sha256": "3fc57e1c7ae4afa4f9e005ab7426c048b5c2576f29e662f0118dd3f2b27fec23"
+    },
+    {
+      "file": "Design/native/health-write-order/legacy-settings-erase-evidence-r3.py",
+      "bytes": 4233,
+      "sha256": "836535599235e46194ff9231291d80ac9a44d2992267365a06559462cfd3083e"
+    },
+    {
+      "file": "Design/native/health-write-order/legacy-settings-erase-evidence-r2.py",
+      "bytes": 12348,
+      "sha256": "a70db065ce59b90f09fae1a2410f2afdb3fd0e10c0f5d5f08d22cb3bd467980d"
+    },
+    {
+      "file": "Design/native/health-write-order/check-legacy-target-change-r7.py",
+      "bytes": 13981,
+      "sha256": "7af2dc7a8bd851bc78bc6ee267a74e4c743db458065b4c4d44cdf002754fd514"
+    }
+  ],
+  "storage": {
+    "availableBytesAtFinish": 32364584960,
+    "deletedFiles": 0,
+    "bytesRecovered": 0,
+    "retention": "No cleanup; preserve actual233 native build/package cache and frozen sources/current binaries for explicit continuity. Both historical unbacked videos retained by parent."
+  },
+  "judgedInputsModified": false,
+  "physicalPhoneActions": false,
+  "checkedAt": 1794145434.131839
+}

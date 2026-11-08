@@ -1,0 +1,59 @@
+{
+  "status": "FAILED actual driver module import before native launch; no simulator test/reset or native test failure",
+  "source": "durable-source-r233.json",
+  "build": "health-target-change-source233-r1-build.json",
+  "command": [
+    "python3",
+    "Design/native/health-write-order/legacy-target-change-driver-r4.py",
+    "--source",
+    "durable-source-r233.json",
+    "--build",
+    "health-target-change-source233-r1-build.json",
+    "--trial",
+    "Source233R1"
+  ],
+  "driverExit": 1,
+  "stdout": "",
+  "stderr": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/legacy-target-change-driver-r4.py\", line 14, in <module>\n    e=importlib.util.module_from_spec(spec); spec.loader.exec_module(e)\n  File \"<frozen importlib._bootstrap_external>\", line 850, in exec_module\n  File \"<frozen importlib._bootstrap>\", line 228, in _call_with_frames_removed\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/legacy-target-change-evidence-r4.py\", line 8, in <module>\n    if not name.startswith('_'):globals()[name]=getattr(parent,name)\nAttributeError: module 'target_prior' has no attribute 'time'\n",
+  "nativeLaunched": false,
+  "nativePID": null,
+  "nativeExit": null,
+  "nativeTestCounts": null,
+  "caseArtifactsPresent": [],
+  "failureStage": "Module import line14 before argument parsing/state/trial paths/subprocess creation",
+  "analysis": "Re-export loop uses global parent as both source module and an exported key. Exporting parent from R2 overwrites parent with its R1 module mid-loop, so later getattr(parent,time) fails. Preserve this actual failure; prior source123 acceptance did not execute module imports.",
+  "inputs": [
+    {
+      "file": "Design/native/health-write-order/legacy-target-change-driver-r4.py",
+      "bytes": 15388,
+      "sha256": "dbb9d30b52e6e3f51103a3d5b21d497e3022e38aca76e7cf3d0caab40e7b5041"
+    },
+    {
+      "file": "Design/native/health-write-order/legacy-target-change-evidence-r4.py",
+      "bytes": 2823,
+      "sha256": "38d303cfc664b16e93b05a31ca0ffd4403ec4b3b759d50289380c9df496a51a0"
+    },
+    {
+      "file": "Design/native/health-write-order/legacy-target-change-evidence-r2.py",
+      "bytes": 1700,
+      "sha256": "ca5353d63ad7a1ad3f52278c3f130d70a7e11c0dd3d4c241abda4b05e74c2605"
+    },
+    {
+      "file": "Design/native/health-write-order/legacy-target-change-evidence-r1.py",
+      "bytes": 5945,
+      "sha256": "3fc57e1c7ae4afa4f9e005ab7426c048b5c2576f29e662f0118dd3f2b27fec23"
+    },
+    {
+      "file": "Design/native/health-write-order/health-target-change-source233-r1-build.json",
+      "bytes": 700,
+      "sha256": "34631c7e6bafc49bd5cd017da4cd1f8ed01db8aa66d1ac71fb2e091ba15d0225"
+    },
+    {
+      "file": "Design/native/health-write-order/source233-build-exact-github.json",
+      "bytes": 123469,
+      "sha256": "c22d4a880afa9d6552e88ac0853ae6cd710f1e28a28fcde26a1cdc0588dc8fb3"
+    }
+  ],
+  "scope": "Actual compile/current186Debugpositive binding and exact7c1f1f13/16checkpoint/626union stay separate. No native/bootstrap/retirement/freshcommit/Release233 credit. No iPhone action.",
+  "checkedAt": 1794145292.5744152
+}
