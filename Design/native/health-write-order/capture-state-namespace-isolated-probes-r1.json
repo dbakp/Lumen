@@ -1,0 +1,87 @@
+{
+  "status": "PASS isolated host namespace probes",
+  "passed": 8,
+  "expectedGuardErrors": 4,
+  "results": [
+    {
+      "name": "normal-install-restore",
+      "started": 1794116056.056227,
+      "journal": "/tmp/LumenCaptureNamespaceProbe218R1/normal-install-restore/Lumen-capture-fault-journal-dac265d8-4d65-49df-89a5-b0ed86c2143c.jsonl",
+      "status": "PASS",
+      "finished": 1794116056.071381
+    },
+    {
+      "name": "rename-before-journal-resume",
+      "started": 1794116056.071382,
+      "journal": "/tmp/LumenCaptureNamespaceProbe218R1/rename-before-journal-resume/Lumen-capture-fault-journal-dff26084-f667-4430-82a8-69311671d887.jsonl",
+      "limit": "Second object resumes an actual rename; no process was killed",
+      "status": "PASS",
+      "finished": 1794116056.080906
+    },
+    {
+      "name": "foreign-original-blocked",
+      "started": 1794116056.080907,
+      "expectedError": "AssertionError()",
+      "foreignPreserved": true,
+      "status": "PASS",
+      "finished": 1794116056.088323
+    },
+    {
+      "name": "exclusive-restore-collision-blocked",
+      "started": 1794116056.088324,
+      "expectedError": "FileExistsError(17, 'File exists')",
+      "limit": "Deterministically injected file creation, not an actual concurrent caller",
+      "status": "PASS",
+      "finished": 1794116056.098942
+    },
+    {
+      "name": "changed-sentinel-blocked",
+      "started": 1794116056.098943,
+      "expectedError": "AssertionError()",
+      "status": "PASS",
+      "finished": 1794116056.1106272
+    },
+    {
+      "name": "recorded-sentinel-resume",
+      "started": 1794116056.1106281,
+      "journal": "/tmp/LumenCaptureNamespaceProbe218R1/recorded-sentinel-resume/Lumen-capture-fault-journal-efca3d00-b877-48e0-b53b-f2624bcda4d3.jsonl",
+      "limit": "Same process/new object resume; no actual process-crash or power-loss proof",
+      "status": "PASS",
+      "finished": 1794116056.122414
+    },
+    {
+      "name": "no-install-exact-root",
+      "started": 1794116056.122415,
+      "status": "PASS",
+      "finished": 1794116056.1293619
+    },
+    {
+      "name": "truncated-journal-blocked",
+      "started": 1794116056.129363,
+      "expectedError": "AssertionError()",
+      "status": "PASS",
+      "finished": 1794116056.1396859
+    }
+  ],
+  "failure": null,
+  "workDirectory": "/tmp/LumenCaptureNamespaceProbe218R1",
+  "artifacts": {
+    "file": "capture-state-namespace-isolated-probes-r1-artifacts.json.gz",
+    "bytes": 12468,
+    "sha256": "8e7dd9494a38a0e270c19a91d6a051dc3cafd030ceba3b38bcc6e095f2faa21c",
+    "fullSyntheticFiles": 172
+  },
+  "module": {
+    "file": "capture-state-namespace-fault-r1.py",
+    "bytes": 13142,
+    "sha256": "b55e1ca0c9a6ce56b759924fd7a7be359c76e4a3a206a3d9ed7da8826270312d"
+  },
+  "SDKHeader": {
+    "file": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/stdio.h",
+    "bytes": 2415,
+    "sha256": "a8078ae1cba1a46a66d0de6fe7f13bbc969cdb7e78fc2d4b9a5c5cdaaf16126b",
+    "exclusiveRenameFlag": 4
+  },
+  "scope": "Actual isolated own-temp host operations;4expected failclosed controls. No simulator, app, native UI, actual concurrent race/process-crash/power-loss or global acceptance. Fixtures/archive retained through review/backup.",
+  "checkedAt": 1794116056.153734
+}

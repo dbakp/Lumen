@@ -73,16 +73,54 @@ final class BackupRecoveryReviewSession: Sendable {
     let id = UUID()
     private let origins = HealthRecoveryOriginReviewLease()
     var originMetadata: HealthLegacyRecoveryOrigin.ReviewMetadata? { origins.metadata }
-    func beginOriginCapture(control: BackupOperationControl) throws { try origins.begin(control) }
-    func suspendOriginCapture(control: BackupOperationControl) { origins.suspend(control) }
+    func beginOriginCapture(control: BackupOperationControl) throws {
+        try origins.begin(control)
+        #if DEBUG && targetEnvironment(simulator)
+        HealthOriginCaptureUIFixture.register(id, control: control,
+            state: String(describing: origins.state), metadata: origins.metadata != nil)
+        #endif
+    }
+    func suspendOriginCapture(control: BackupOperationControl) {
+        origins.suspend(control)
+        #if DEBUG && targetEnvironment(simulator)
+        noteCapture("suspended", control: control)
+        #endif
+    }
+    #if DEBUG && targetEnvironment(simulator)
+    func noteCapture(_ event: String, control: BackupOperationControl?, error: Error? = nil) {
+        HealthOriginCaptureUIFixture.observe(event, session: id, control: control,
+            state: String(describing: origins.state), metadata: origins.metadata != nil, error: error)
+    }
+    #endif
     /// Detached caller returns Void; completed tasks cannot retain raw snapshot results.
     func captureOrigins(domains: Set<HealthLocalFiles.Domain>, control: BackupOperationControl) throws {
+        #if DEBUG && targetEnvironment(simulator)
+        var capturePhase = "acquire-input"
+        do {
+            let input = try acquire(control: control)
+            defer { withExtendedLifetime(input) {} }
+            capturePhase = "before-read"
+            try HealthOriginCaptureUIFixture.hold("before-read", session: id, control: control,
+                state: { String(describing: self.origins.state) }, metadata: { self.origins.metadata != nil })
+            capturePhase = "capture"
+            let snapshot = try LocalStore.captureLegacyRecoveryReview(domains, control: control)
+            capturePhase = "after-read"
+            try HealthOriginCaptureUIFixture.hold("after-read", session: id, control: control,
+                state: { String(describing: self.origins.state) }, metadata: { self.origins.metadata != nil })
+            capturePhase = "finish"
+            try origins.finish(snapshot, control: control)
+            noteCapture("finish-accepted", control: control)
+            HealthLegacyOriginUIFixture.note("ready", id: id, domains: snapshot.metadata.legacyDomains)
+        } catch {
+            // Record the original error before the view catch suspends/cancels.
+            noteCapture("capture-threw-" + capturePhase, control: control, error: error)
+            throw error
+        }
+        #else
         let input = try acquire(control: control)
         defer { withExtendedLifetime(input) {} }
         let snapshot = try LocalStore.captureLegacyRecoveryReview(domains, control: control)
         try origins.finish(snapshot, control: control)
-        #if DEBUG && targetEnvironment(simulator)
-        HealthLegacyOriginUIFixture.note("ready", id: id, domains: snapshot.metadata.legacyDomains)
         #endif
     }
     func acquireOrigins(_ domains: Set<HealthLocalFiles.Domain>, control: BackupOperationControl) throws
@@ -112,6 +150,7 @@ final class BackupRecoveryReviewSession: Sendable {
     func close() {
         origins.close()
         #if DEBUG && targetEnvironment(simulator)
+        noteCapture("owner-closed", control: nil)
         HealthLegacyOriginUIFixture.note("closed", id: id)
         #endif
         lease.close()
@@ -340,6 +379,9 @@ struct BackupFileRecoveryView: View {
                     Text("Read check").accessibilityIdentifier("healthReadControlState").accessibilityValue(readVerification.phase)
                 }
             }
+            if HealthOriginCaptureUIFixture.mode != nil {
+                ToolbarItem(placement: .topBarTrailing) { HealthOriginCaptureUIProbe(location: "review") }
+            }
         }
         #endif
         .alert("Replace selected data?", isPresented: $confirmation, presenting: confirmationSelection) { selection in
@@ -376,10 +418,29 @@ struct BackupFileRecoveryView: View {
                     captureControl = nil; captureWork = nil
                     captureReveal?.cancel(); captureReveal = nil; captureVisible = false
                 }
+                #if DEBUG && targetEnvironment(simulator)
+                session.noteCapture("ui-wrapper-cleanup", control: control)
+                #endif
             }
             do {
                 try await withTaskCancellationHandler {
+                    #if DEBUG && targetEnvironment(simulator)
+                    try await Task.detached {
+                        do {
+                            try session.captureOrigins(domains: domains, control: control)
+                            #if DEBUG && targetEnvironment(simulator)
+                            session.noteCapture("capture-returned", control: control)
+                            #endif
+                        } catch {
+                            #if DEBUG && targetEnvironment(simulator)
+                            session.noteCapture("capture-returned-error", control: control, error: error)
+                            #endif
+                            throw error
+                        }
+                    }.value
+                    #else
                     try await Task.detached { try session.captureOrigins(domains: domains, control: control) }.value
+                    #endif
                 } onCancel: { control.cancel() }
                 try Task.checkCancellation(); try control.checkCancellation()
                 guard reviewActive, captureControl === control else { return }

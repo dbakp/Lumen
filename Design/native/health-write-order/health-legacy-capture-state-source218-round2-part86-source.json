@@ -1,0 +1,450 @@
+{
+  "part": 86,
+  "scope": "Concrete Source218 preexecution code/harness review against83/84; current295text+9fixtures frozen. No218nativecompile/hostlogic/nativecase/Release/settings execution or globaldesign score.",
+  "verdict": {
+    "sourceReadyForExecution": false,
+    "requiredCorrections": [
+      "P86-C1",
+      "P86-C2",
+      "P86-C3",
+      "P86-C4"
+    ],
+    "mechanism": "Guarded real capture/cancellation/root-invalid mechanisms and isolated namespace scope coherent; four concrete harness/evidence gaps must be repaired in a separately frozen successor before execution.",
+    "productionAuthorityDefectEstablished": false,
+    "runtimeAccepted": false,
+    "overallAcceptance": false,
+    "rubricScore": null
+  },
+  "independentVerification": {
+    "currentAndFullArchiveInputsExact": 304,
+    "text": 295,
+    "fixtures": 9,
+    "exactArchiveDiffFrom217": {
+      "changedExistingSwift": 5,
+      "newStaticInputs": 16,
+      "total": 21,
+      "paths": [
+        "Design/native/health-write-order/capture-state-driver-r1.py",
+        "Design/native/health-write-order/capture-state-evidence-r1.py",
+        "Design/native/health-write-order/capture-state-namespace-fault-r1.py",
+        "Design/native/health-write-order/capture-state-namespace-isolated-probes-r1.py",
+        "Design/native/health-write-order/check-capture-state-evidence-r1.py",
+        "Design/native/health-write-order/cleanup-capture-state-metadata-r1.py",
+        "Design/native/health-write-order/health-current-release-source218-r1-predeclared-plan.json",
+        "Design/native/health-write-order/health-legacy-capture-state-r1-contract.json",
+        "Design/native/health-write-order/health-legacy-capture-state-r2-addendum.json",
+        "Design/native/health-write-order/source217-completed-output-cleanup-r1-executed.py",
+        "Design/native/health-write-order/source218-capture-state-native-build-r1-executed.py",
+        "Design/native/health-write-order/source218-capture-state-r1-plan.json",
+        "Design/native/health-write-order/source218-debug-release-controls-r1-executed.py",
+        "Design/native/health-write-order/source218-logic-r1-executed.py",
+        "Design/native/health-write-order/source218-release-settings-auditor-r1.py",
+        "Design/native/health-write-order/source218-unsigned-release-r1-executed.py",
+        "Lumen/Models/BackupPackage.swift",
+        "Lumen/Views/BackupFileRecoveryView.swift",
+        "Lumen/Views/BackupView.swift",
+        "Lumen/Views/HealthRecoveryCancelUIFixture.swift",
+        "LumenUITests/LumenSmokeTests.swift"
+      ]
+    },
+    "unchangedExistingTextFrom217": 274,
+    "unchangedBinaryFixtures": 9,
+    "method": "Each current regular non-symlink input bytes/size/SHA matched manifest and full UTF8/base64 archive; exact union diff matches declared21. All12 root-review support hashes/sizes independently matched.",
+    "readCoverage": "Full fiveSwift diffs, complete new capture driver/evidence/checker/namespace/probe/metadata-cleanup/native/logic/Debug-preflight code and plans read. New218Release/settings runners are byte-for-byte217→218 identifier replacement of already reviewed217tooling. Historical217cleanup script read as retained completed provenance, not executed.",
+    "syntax": "Parent actual5Swift grammar inputs parsed in DEBUGsim and deviceRelease configurations0; grammar only, no typecheck/build. Critic ASTparsed11Python syntax inputs without imports/execution.",
+    "actualIsolated": "Parent actually executed8own-temp namespace checks/4expected guarderrors. Critic decoded all172archived syntheticfiles, verified bytes/hash and actual172retained tempfiles exact; module/SDKheader bindings exact. No probe rerun.",
+    "noActions": "No source/test/evidence changes, simulator/device/process/defaults/binary query, build/native/logic execution, Git or cleanup. Only this new report written."
+  },
+  "requiredFindings": [
+    {
+      "id": "P86-C1",
+      "priority": "required",
+      "area": "Host failure native completion and safe restoration ordering",
+      "source": "capture-state-driver-r1.py finally around290–309",
+      "evidence": "Any host exception while xcode process lives sends SIGINT immediately, then waits3×60seconds. Those waits are after interruption, not natural native completion grace. If fault is active, simctl terminate return is recorded but never required successful or reconciled to actual known app/worker absence before fault.restore().",
+      "impact": "An independent host check failure can interrupt an otherwise bounded native wait before a complete failure result is acquired; restoration can begin despite failed app termination and an unproven live capture worker. Earlier207failure evidence established that forced producer termination can leave an incomplete result; no218runtime failure is claimed.",
+      "requiredRepair": "On host failure first durably record unaccepted outcome/no further acknowledgements, allow finite natural native completion before explicit interrupt/terminate/kill fallback and retain each actual transition. For fault-restoration failure cleanup, reverify dedicated current source/installed identity and recorded known app PID/control/namespace. Require actual app/worker termination/absence or explicit real terminal outcome before restore; benign already-closed termination needs independent absence proof. If unknown/alive or termination fails, retain fault/journal/descriptor/restoration-needed failure and do not restore blindly.",
+      "verification": "Exercise isolated orchestration branches for natural completion, fallback, unsuccessful termination/still-alive refusal and already-absent classification; no nativecredit from mocks. Real trials retain actual outcomes."
+    },
+    {
+      "id": "P86-C2",
+      "priority": "required",
+      "area": "Durable terminal outcome and guarded independent retention",
+      "source": "capture-state-driver-r1.py320–339",
+      "evidence": "The finally block persists state, then imports retainer and calls retain outside a guarding try. Compact outcome is created only afterward. An exception in final state persistence/import/retainer can prevent any terminal outcome; a retainer failure can bypass the final FAILED classification entirely.",
+      "impact": "Regresses established independent minimal-outcome-before-retention requirement. Successful or isolated namespace checks do not exercise this new producer finalization path.",
+      "requiredRepair": "Create/persist minimal terminal FAILED-or-incomplete outcome before retainer import/call, including native exit/host failure/restoration state. Guard independent retention, log/summary/original-manifest/attachment attempts and outcome final persistence. Retain exceptions and available peers; never promote acceptance with any finalization/retention error. Preserve actual unavailable summary/counts rather than fabricating6/1.",
+      "verification": "Isolated injected retainer import/call/export/summary/persistence failures should demonstrate durable unaccepted outcome and attempted later peers, with mocked scope explicit. Existing215retainer probes do not prove this new unguarded caller orchestration."
+    },
+    {
+      "id": "P86-C3",
+      "priority": "required clarification",
+      "area": "Actual error/input lifetime event boundary",
+      "source": "BackupFileRecoveryView.swift captureOrigins DEBUG do/catch",
+      "evidence": "input and defer{withExtendedLifetime(input)} are inside do. Swift unwinds that scope/defer before entering outer catch that emits capture-threw-phase. Thus capture-threw-finish/capture-threw-capture is an internal error observation AFTER the input lifetime defer, not a pre-input-release rejection event. It still records original error before the UI catch/suspend.",
+      "impact": "Current source cannot substantiate the83/r2 pre-defer rejection wording. Detached capture-returned-error and UI-wrapper-cleanup remain distinct later events; neither should be mislabeled as the first actual input-release boundary.",
+      "requiredRepair": "Either add a real appropriately scoped rejection observation before the input defer if that boundary remains promised, or explicitly amend the successor contract/plan/record names/classifications to after-defer internal catch. Keep unchanged real cancellation/finish authority and exact original error before UI suspend; do not invent a pre-defer event from source intent.",
+      "verification": "Bind precise event names/order to actual source; real control-bit/Task-bit/lease-state/error records and later detached/UI/workspace boundaries retain separate scopes. No deeper closed-phase guard credit if control cancellation throws first."
+    },
+    {
+      "id": "P86-C4",
+      "priority": "required evidence alignment",
+      "area": "Native requested-target visual limits",
+      "source": "LumenSmokeTests.swift captureStateFlow pending progress/choices and capture-state-evidence-r1.py native_helper",
+      "evidence": "Progress whole() captures only[progress], not contracted file identity alongside it. choices() captures meals/omission/workouts, then reveals and queries disabled Recover AFTER that screenshot; action Boolean has no captured action frame/original. Current six-per-case flow therefore does not prove all promised visual targets.",
+      "impact": "Same type of source-versus-actual-capture overcredit must be prevented before native execution; automated whole-frame checks only apply to included targets. No current UI layout defect inferred.",
+      "requiredRepair": "Include actual file identity/progress in the requested capture, and add actual frame/original evidence for disabled Recover at relevant pending/failure/fresh/retry endpoints if visual closure remains promised. If a group cannot fit, predeclare separate/overlapping originals with honest counts/helper fields and update checker/plan/contract addendum. Alternatively explicitly narrow those points to queried assertions, leaving the visual gates open; never claim visible action from the three-choice screenshot.",
+      "verification": "Concrete successor source review must align target IDs/frames/usable viewport, original suffix counts/helper/checker and actual future observations. Keep partial failure helper distinct, no fullForm credit."
+    }
+  ],
+  "supportedCode": {
+    "guardsAndAuthority": [
+      "New control getter is readonly DEBUG&&simulator, NSLock-protected, reads actual cancelled bit and does not replace existing cancellationHandler. Existing checkCancellation still combines actual bit and Task.isCancelled.",
+      "Fixture mode requires real UUID flag plus existing reset/backup/empty/originData and nonmixed mode. Setup names get OriginData flags and dedicated pendingBack/retryFailure mode; no forced snapshot/getter/eligibility/return value.",
+      "Before-read hold occurs after actual source input acquire, before LocalStore call. After-read hold occurs after real LocalStore returns, before unchanged origins.finish. Both waits outside writes.read/copies/source/review locks.",
+      "Bridge weak control references avoid extending control lifetime. Each actual register has session/control token/nonce/ordinal/runPID metadata. Phase probes use separate parent/review identifiers and latest registered control; host phase cannot publish product metadata.",
+      "Controlbit/Taskbit/actual origins.state/metadata/error type/domain/code recorded; error catch before UI suspend preserves original operational classification subject to C3 after-defer correction. Actual view onDisappear/parent close authority retained.",
+      "Release branch capture implementation retains original real acquire/capture/finish behavior. New guarded observation code requires actual fresh compile/logic/native/Release proof; no behavioral equivalence acceptance from grammar."
+    ],
+    "stateProtocol": [
+      "Native pendingBack waits actual held-after-read/progress, queries offdisabled choices, actualBack then host old-terminal coordination; fresh originalowner/realready/offchoices then finalBack.",
+      "RetryFailure waits actual before-read/progress, real rootInvalid captureissue/Checkagain, host exact restore, actual Checkagain creates fresh control same session, realready/offchoices thenBack. No Recover/Health-write expected.",
+      "Driver verifies source/build beforelaunch, actual initial PID installed path, provider/current10/prior10/fixedData/metadata/emptydir inventory, full source ownership; seven boundaries and exact nonce/run/ordinal releases/acks. No ready/acquire1; fresh or retry2 realfinish ready required.",
+      "Host checks actual close/controlcancel before late release; original error before UI suspend, detached completion/UIcleanup, source input/parent/workspace cleanup distinct. Strict complete-state model requires registeredcontrol identity transitions, no acquire, oneactualready owner and finalcleanups.",
+      "Readonly checker verifies actual6originals/1completedhelper, metadata/hash/raw/source/frame/checkpoint/message/journal/live current/prior/default/provider facts. It is not run by critic and future counts must reflect C4 repair."
+    ],
+    "namespace": [
+      "Pinned parentFD identity and exact known synthetic10file water137/goals fixture guard. Append-only fsynced journal and separately persisted descriptor before install; exact file/device/inode/mode/nlink/size/mtime inventory.",
+      "renameatx_np with actual installedSDK RENAME_EXCL4, no overwrite fallback; exclusive no-follow regular sentinel, raw noncebytes and identity, exact moved tree guards. Restore exact known sentinel or absent-original/exactmoved root; foreign/changed facts failclosed.",
+      "Resume reconciles actual namespace using independently retained descriptor, exact journal identity/content; partial/truncated journal or unknown partial sentinel rejected. No general process-crash/power-loss/TOCTOU claim.",
+      "Known namespace path changes outsidecurrent tree journaled; original file metadata exact while root/parent namespace metadata effects excluded from immutable identity subsets.",
+      "Metadata cleanup script requires exactoriginmain proof/currentcanonicalbytes, opened indices/root/fullcriticread, no ownedroots/open metadata paths before removing only two exact run/nonce release/ack files. It is not executed here; actual rootreview schema must be supplied after future nativecases."
+    ]
+  },
+  "isolatedProbeAssessment": {
+    "actualPassed": 8,
+    "expectedGuardErrors": 4,
+    "cases": [
+      {
+        "name": "normal-install-restore",
+        "status": "PASS",
+        "expectedGuardError": null
+      },
+      {
+        "name": "rename-before-journal-resume",
+        "status": "PASS",
+        "expectedGuardError": null
+      },
+      {
+        "name": "foreign-original-blocked",
+        "status": "PASS",
+        "expectedGuardError": "AssertionError()"
+      },
+      {
+        "name": "exclusive-restore-collision-blocked",
+        "status": "PASS",
+        "expectedGuardError": "FileExistsError(17, 'File exists')"
+      },
+      {
+        "name": "changed-sentinel-blocked",
+        "status": "PASS",
+        "expectedGuardError": "AssertionError()"
+      },
+      {
+        "name": "recorded-sentinel-resume",
+        "status": "PASS",
+        "expectedGuardError": null
+      },
+      {
+        "name": "no-install-exact-root",
+        "status": "PASS",
+        "expectedGuardError": null
+      },
+      {
+        "name": "truncated-journal-blocked",
+        "status": "PASS",
+        "expectedGuardError": "AssertionError()"
+      }
+    ],
+    "fullArchivedFilesDecoded": 172,
+    "actualOwnTempFilesByteMatched": 172,
+    "SDKHeader": {
+      "file": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/stdio.h",
+      "bytes": 2415,
+      "sha256": "a8078ae1cba1a46a66d0de6fe7f13bbc969cdb7e78fc2d4b9a5c5cdaaf16126b",
+      "exclusiveRenameFlag": 4
+    },
+    "module": {
+      "file": "capture-state-namespace-fault-r1.py",
+      "bytes": 13142,
+      "sha256": "b55e1ca0c9a6ce56b759924fd7a7be359c76e4a3a206a3d9ed7da8826270312d"
+    },
+    "proofLimits": [
+      "Normal install/restore, actual rename-before-journal/newobject resume, exact recorded sentinel/newobject resume and no-install restore exercised actual host filesystem.",
+      "Foreign/changed sentinel/truncatedjournal guards and deterministic injected EEXIST collision preserved synthetic originals/moved trees.",
+      "Sameprocessnewobject resume is not a killedprocess or crash/power-loss test; injected collision is not an actual concurrent caller.",
+      "These probes do not execute app/UI/Task lifecycle/host main orchestration/native failure retention/C1termination. No newnativefullcasecredit."
+    ]
+  },
+  "preparedVerification": {
+    "grammar": {
+      "files": 5,
+      "DEBUGsimParseExit": 0,
+      "deviceReleaseParseExit": 0,
+      "typecheck": false,
+      "compiledApp": false
+    },
+    "PythonASTOnly": 11,
+    "hostLogic": "BackupPackage text is a compiledpureinput changed; fresh218host build/full2350=2177+137+36 and separate23focus runner prepared, noneexecuted. No unchangedpureinput claim.",
+    "Release": {
+      "negative": 181,
+      "plannedDebugPositive": 166,
+      "negativeOnly": 15,
+      "production": 20,
+      "newLiterals": [
+        "-health-legacy-capture-ui",
+        "-health-legacy-capture-run",
+        "Lumen-legacy-capture-release.json",
+        "Lumen-legacy-capture-host-ack.json",
+        "Lumen-legacy-capture-checkpoint.json",
+        "HealthOriginCaptureUIFixture",
+        "healthOriginCaptureState-",
+        "Capture check"
+      ],
+      "actualDebugHash": null,
+      "actualPositivesVerified": false,
+      "status": "Predeclaredonly; actualDebug compile/preflight/Release/settings pending. Optimizedinstrumentedunsigneddevelopment limits retained."
+    },
+    "storage": "Historical217cleanup proof/credit parent-only completed and bound; critic didnotdelete/query oldraws/executecleanup."
+  },
+  "limits": [
+    "No Source218 runtime/build/currentlogic/Release or source-ready acceptance. Four required fixes acknowledged for separately frozen successor; preserve current judged304inputs/archive/8probes unchanged.",
+    "Two planned legacyJSON/nonmixedData/mainlightstandard cases only; no encrypted/mixedcapture/fulltiming/globalquietstate/rootrace/crash/nativefullgoal proof.",
+    "No deeper finish phaseguard execution inferred from cancellation; no zero workspace roots while legitimate worker/parent retains input.",
+    "All43/eightgroups/reset/noresurrection/targetchange/retained-target legacyUI/fullspokenVO/audio/duplicates/ReduceMotiontemporal/appearance/contrast/personalAIprivacy/provider/performance/distribution/fullgoal remain open."
+  ],
+  "next": "Freeze this report/rootread/exact Source218 unexecuted checkpoint. Separate successor219 repairs four harness findings, updates actual capturecounts/contracts/markers/plan as needed, then independent concrete review before appcompile/freshlogic/native. No current218native trial recommended.",
+  "provenance": [
+    {
+      "file": "Design/native/health-write-order/durable-source-r218.json",
+      "bytes": 51815,
+      "sha256": "83daaaa8820b66169fab1eb6ceac10847a4b82062a61e0ccd3649b539ad94391"
+    },
+    {
+      "file": "Design/native/health-write-order/durable-source-r218.json.gz",
+      "bytes": 1059395,
+      "sha256": "57935b42cfa4ecdda790b66bc7e7f0cd0d0f714579a8022337faa17d3a67a21f"
+    },
+    {
+      "file": "Design/native/health-write-order/durable-source-r217.json",
+      "bytes": 47470,
+      "sha256": "3220960cdbf73234125735cc49b0409bc7db42e76a1707a9aa0b995ddb9ea3a9"
+    },
+    {
+      "file": "Design/native/health-write-order/durable-source-r217.json.gz",
+      "bytes": 1021413,
+      "sha256": "b1a48b1dbc349b0115fbfb08bf943c281cc718f0c7d7cbed358e7d5fbaf58d2b"
+    },
+    {
+      "file": "Design/native/health-write-order/source218-capture-state-r1-plan.json",
+      "bytes": 8693,
+      "sha256": "faf9394d9c0140e8177a1165b59bc6b05607ce67b7547170e4f292efe0a1a025"
+    },
+    {
+      "file": "Design/native/health-write-order/source218-capture-state-r1-root-review.json",
+      "bytes": 2892,
+      "sha256": "7a87269c6111850ff3fcbfc4d46fa766a0e2636d21d8ab9cf8176bfc0725196f"
+    },
+    {
+      "file": "Design/native/health-write-order/source218-capture-state-syntax-r2.json",
+      "bytes": 2899,
+      "sha256": "f25886fc567283097ae8738ce357f1dc1346a4d43be06cab6b061f209c732654"
+    },
+    {
+      "file": "Design/native/health-write-order/capture-state-namespace-isolated-probes-r1.json",
+      "bytes": 3322,
+      "sha256": "c9bcc1806c6ff58ba7eedb34c072bbbbda68dbfc9596c8f66aeb5a2d4c649e95"
+    },
+    {
+      "file": "Design/native/health-write-order/capture-state-namespace-isolated-probes-r1-artifacts.json.gz",
+      "bytes": 12468,
+      "sha256": "8e7dd9494a38a0e270c19a91d6a051dc3cafd030ceba3b38bcc6e095f2faa21c"
+    },
+    {
+      "file": "Design/native/health-write-order/capture-state-namespace-isolated-probes-r1-root-review.json",
+      "bytes": 668,
+      "sha256": "adfd4a85d0248b1ffb9f1b6bb5052b123078db19283aac7455e9e9f65ff311aa"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-capture-state-round2-part83-contract.json",
+      "bytes": 15444,
+      "sha256": "a2d8b5864171d9456a8ef84843f75b3e0c47943a0bddd435e699d47542a99e27"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-capture-state-round2-part84-contract.json",
+      "bytes": 7882,
+      "sha256": "131190c3970eefc37f1929d4b41549057ea0d33a423c07ebea90a7239d7d107a"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-capture-state-r2-root-review.json",
+      "bytes": 537,
+      "sha256": "3f1c6e97c0e4436f851ed76f4fa607d2dfdce439fdec8d4a81f7ea947f62a6ec"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-failed-origin-source217-round2-part85-native-data.json",
+      "bytes": 31214,
+      "sha256": "61897ef9d216d2b772c37adcb8bb8cc333682a7928b5df2522e74c710bccbcaf"
+    },
+    {
+      "file": "Design/native/health-write-order/retain-mixed-ineligible-results-r1.py",
+      "bytes": 5816,
+      "sha256": "c51b1f2a05a825a0fed630f51a64547b8efd9aca2612640eb19a5de495aa5443"
+    },
+    {
+      "file": "Design/native/health-write-order/health-mixed-ineligible-evidence-r1.py",
+      "bytes": 11627,
+      "sha256": "d0661274d74b439ef756ea89ade4b7184127f6c4d3e16837617efed5c6d3163d"
+    },
+    {
+      "file": "Design/native/health-write-order/source217-completed-output-cleanup-r1.json",
+      "bytes": 27681,
+      "sha256": "80bc6b014aa8379a4884cc9de87123b4fca446eb879ff9a7b7dff832886b62ac"
+    },
+    {
+      "file": "Design/native/health-write-order/capture-state-driver-r1.py",
+      "bytes": 20662,
+      "sha256": "418d6692e228c88f53c722c5c8ffc8f1c6c70c8739439d4640ec3c1581202474"
+    },
+    {
+      "file": "Design/native/health-write-order/capture-state-evidence-r1.py",
+      "bytes": 10974,
+      "sha256": "cf3d9a346c4d3cf4d0db12d5406851d56207996915903c5aa087c1031debcd7a"
+    },
+    {
+      "file": "Design/native/health-write-order/capture-state-namespace-fault-r1.py",
+      "bytes": 13142,
+      "sha256": "b55e1ca0c9a6ce56b759924fd7a7be359c76e4a3a206a3d9ed7da8826270312d"
+    },
+    {
+      "file": "Design/native/health-write-order/capture-state-namespace-isolated-probes-r1.py",
+      "bytes": 9052,
+      "sha256": "99bbee54f839a36fbcf907e160e5dc484ac0b9df91e85fd86c1c7759f283cfa6"
+    },
+    {
+      "file": "Design/native/health-write-order/check-capture-state-evidence-r1.py",
+      "bytes": 5269,
+      "sha256": "480a4fa5b2c4ebb7533d97899b714e58f4fae71b86ad846ad53edeae140fe311"
+    },
+    {
+      "file": "Design/native/health-write-order/cleanup-capture-state-metadata-r1.py",
+      "bytes": 4316,
+      "sha256": "1f5407135197ac46c09e380b86818656068f7e4661732e0395027356d0c34f68"
+    },
+    {
+      "file": "Design/native/health-write-order/health-current-release-source218-r1-predeclared-plan.json",
+      "bytes": 16722,
+      "sha256": "503135df082dcd4a9bb2f3d9183055c73a2d48339fbe35e84a29f15002f9fd31"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-capture-state-r1-contract.json",
+      "bytes": 10735,
+      "sha256": "28f11ffda199421c1290ffcfdafe7ab219aaf06701e73285546908965a9ebb5e"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-capture-state-r2-addendum.json",
+      "bytes": 4908,
+      "sha256": "1bad2b2a79b3f6a6700a9d3dbdfa5ebb30be41f679721b4fe5ffcc3c4c42d23e"
+    },
+    {
+      "file": "Design/native/health-write-order/source217-completed-output-cleanup-r1-executed.py",
+      "bytes": 6355,
+      "sha256": "f44a87a088e7c39a5f9ba4f97db7035ba432b282f73f8d33aa26f5f3d58e0668"
+    },
+    {
+      "file": "Design/native/health-write-order/source218-capture-state-native-build-r1-executed.py",
+      "bytes": 2688,
+      "sha256": "981ae4b774d2dc3318fe80140fccd21c8469e0e87ef9c9ed603ea06fc179c841"
+    },
+    {
+      "file": "Design/native/health-write-order/source218-debug-release-controls-r1-executed.py",
+      "bytes": 2688,
+      "sha256": "e2b07f08034a2bf637895f06256109f5e3164ed2f85661dfb2215d1d0982ba6e"
+    },
+    {
+      "file": "Design/native/health-write-order/source218-logic-r1-executed.py",
+      "bytes": 5198,
+      "sha256": "d640f0d81f8bddf44b821c2dd47fd61e323dcef4da6669386e950f280f6d4ca8"
+    },
+    {
+      "file": "Design/native/health-write-order/source218-release-settings-auditor-r1.py",
+      "bytes": 6438,
+      "sha256": "6188787ac92110fe0582135757c7c2d080d941976839fae111fadc07a0f71ead"
+    },
+    {
+      "file": "Design/native/health-write-order/source218-unsigned-release-r1-executed.py",
+      "bytes": 3333,
+      "sha256": "815c24949491157fba0370899ad15d7959dd583889d6abb27138b0187274e194"
+    },
+    {
+      "file": "Lumen/Models/BackupPackage.swift",
+      "bytes": 26314,
+      "sha256": "73f5c852633478f08161568ee2076a372b652739941a34cc3fda494da1f4a7a3"
+    },
+    {
+      "file": "Lumen/Views/BackupFileRecoveryView.swift",
+      "bytes": 31454,
+      "sha256": "f58c0ffde6ff276cb89c3f59b3b7aa9fe4b4265207e540daddc809b4aab594e6"
+    },
+    {
+      "file": "Lumen/Views/BackupView.swift",
+      "bytes": 24198,
+      "sha256": "7838c8c21904a6615ae5b73f85089af804f20dee6730aa0dc44c49c1a0c41113"
+    },
+    {
+      "file": "Lumen/Views/HealthRecoveryCancelUIFixture.swift",
+      "bytes": 46744,
+      "sha256": "2f7b93b51eb9e331c66134ad26dd23a7f0012f8f003cb4b596b72959d35ccfe5"
+    },
+    {
+      "file": "LumenUITests/LumenSmokeTests.swift",
+      "bytes": 726105,
+      "sha256": "4a88486a3934ef24b3593f83d70733e37275ad840c3726f9ea4946cbcb497097"
+    },
+    {
+      "file": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/stdio.h",
+      "bytes": 2415,
+      "sha256": "a8078ae1cba1a46a66d0de6fe7f13bbc969cdb7e78fc2d4b9a5c5cdaaf16126b"
+    },
+    {
+      "file": "Lumen/Models/HealthLegacyRecoveryOrigin.swift",
+      "bytes": 15081,
+      "sha256": "9eddbef986fac589d7bfa3ab81cfad5a9b11caba23e39794795bbebcf8e3ecb9"
+    },
+    {
+      "file": "Lumen/Persistence/LocalStore.swift",
+      "bytes": 23686,
+      "sha256": "85177baebb876b27d8cb4160fbe52337802284cc0c694a6b13efacdf8e61590d"
+    },
+    {
+      "file": "Lumen/Models/BackupStorageRevision.swift",
+      "bytes": 1061,
+      "sha256": "1c4748f91bf74ea8e6df8a9b69405485220509c03edf584fc5064f5a89fc2783"
+    },
+    {
+      "file": "Lumen/Models/BackupRecoverySource.swift",
+      "bytes": 4777,
+      "sha256": "7bd67fbee0a145eb9a78a5132dcc62183411eb7b84e913273247a54e8ea5cebf"
+    },
+    {
+      "file": "Lumen/Models/HealthRecoveryCopies.swift",
+      "bytes": 48433,
+      "sha256": "61e5b1e1da288e9b69765bf355c34b07eea46b178f972b1f33dbba42050c7c63"
+    }
+  ],
+  "storage": {
+    "criticDeletedFiles": false,
+    "criticRecoveredBytes": 0,
+    "availableBytesAtFreeze": 39890714624
+  },
+  "checkedAt": 1794117619.238156
+}

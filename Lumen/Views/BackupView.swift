@@ -138,6 +138,7 @@ struct BackupView: View {
         }
         #if DEBUG && targetEnvironment(simulator)
         .overlay(alignment: .bottom) { HealthImportReadUIProbe() }
+        .overlay(alignment: .bottom) { HealthOriginCaptureUIProbe(location: "parent") }
         #endif
         .toolbar {
             if busy {

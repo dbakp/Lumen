@@ -391,6 +391,10 @@ final class BackupOperationControl: @unchecked Sendable {
     init(observer: (@Sendable (Progress) -> Void)? = nil) { self.observer = observer }
     private var state = Progress(stage: .preparing, completed: 0, total: 0, bytes: 0)
     var progress: Progress { lock.lock(); defer { lock.unlock() }; return state }
+    #if DEBUG && targetEnvironment(simulator)
+    /// Read-only provenance: checkCancellation also considers Task cancellation.
+    var verificationCancelled: Bool { lock.lock(); defer { lock.unlock() }; return cancelled }
+    #endif
     func cancel() {
         lock.lock(); cancelled = true; let handler = cancellationHandler; lock.unlock()
         handler?()

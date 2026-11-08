@@ -1,0 +1,361 @@
+{
+  "scope": "Isolated host subprocesses and explicitly mocked process queries; no simulator/native app/crash acceptance",
+  "helperSHA256": "690449f2242fe1fce6ae4e3e037837df73e48e120ad6d6a2d9523be2647d9605",
+  "cases": [
+    {
+      "case": "natural-failure-attachment",
+      "status": "PASS",
+      "actualChild": true,
+      "exit": 1,
+      "facts": {
+        "naturalWaitSeconds": 0.2,
+        "interruptFallbackSeconds": 0.2,
+        "samples": [
+          {
+            "attempt": 1,
+            "at": 1794117684.294294,
+            "exit": 1
+          }
+        ],
+        "exit": 1,
+        "finishedAt": 1794117684.295083
+      }
+    },
+    {
+      "case": "interrupt-fallback-attachment",
+      "status": "PASS",
+      "actualChild": true,
+      "exit": 2,
+      "facts": {
+        "naturalWaitSeconds": 0.2,
+        "interruptFallbackSeconds": 0.2,
+        "samples": [
+          {
+            "attempt": 1,
+            "at": 1794117684.438303,
+            "exit": null
+          },
+          {
+            "attempt": 2,
+            "at": 1794117684.5490801,
+            "exit": null
+          }
+        ],
+        "interruptSentAt": 1794117684.549841,
+        "exit": 2,
+        "finishedAt": 1794117684.553928
+      }
+    },
+    {
+      "case": "forced-fallback",
+      "status": "PASS",
+      "actualChild": true,
+      "exit": -9,
+      "facts": {
+        "naturalWaitSeconds": 0.2,
+        "interruptFallbackSeconds": 0.2,
+        "samples": [
+          {
+            "attempt": 1,
+            "at": 1794117684.685492,
+            "exit": null
+          },
+          {
+            "attempt": 2,
+            "at": 1794117684.7889469,
+            "exit": null
+          }
+        ],
+        "interruptSentAt": 1794117684.790421,
+        "interruptWaits": 2,
+        "forcedTerminationAt": 1794117684.9939,
+        "exit": -9,
+        "finishedAt": 1794117684.9959528
+      }
+    },
+    {
+      "case": "already-absent",
+      "status": "PASS",
+      "mockedProcessQueries": true,
+      "expectedGuard": null,
+      "facts": {
+        "failureAppTermination": {
+          "device": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+          "executable": "/synthetic-only/Lumen.app/Lumen",
+          "knownPID": 123,
+          "samples": [
+            {
+              "at": 1794117684.99775,
+              "command": [
+                "ps",
+                "-axo",
+                "pid=,comm="
+              ],
+              "exit": 0,
+              "stdoutBytes": 0,
+              "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr": "",
+              "matchingProcesses": []
+            },
+            {
+              "at": 1794117684.998639,
+              "command": [
+                "ps",
+                "-axo",
+                "pid=,comm="
+              ],
+              "exit": 0,
+              "stdoutBytes": 0,
+              "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr": "",
+              "matchingProcesses": []
+            },
+            {
+              "at": 1794117684.999551,
+              "command": [
+                "ps",
+                "-axo",
+                "pid=,comm="
+              ],
+              "exit": 0,
+              "stdoutBytes": 0,
+              "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr": "",
+              "matchingProcesses": []
+            }
+          ],
+          "knownAppAndInProcessWorkerAbsent": true,
+          "scope": "Two bounded actual process-table observations; no universal relaunch/race/crash claim"
+        }
+      }
+    },
+    {
+      "case": "failed-terminate-but-observed-absent",
+      "status": "PASS",
+      "mockedProcessQueries": true,
+      "expectedGuard": null,
+      "facts": {
+        "failureAppTermination": {
+          "device": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+          "executable": "/synthetic-only/Lumen.app/Lumen",
+          "knownPID": 123,
+          "samples": [
+            {
+              "at": 1794117685.001578,
+              "command": [
+                "ps",
+                "-axo",
+                "pid=,comm="
+              ],
+              "exit": 0,
+              "stdoutBytes": 35,
+              "stdoutSHA256": "4532b1150c4f27066976416b655086862f612090e4d816794d502d7a138509a2",
+              "stderr": "",
+              "matchingProcesses": [
+                [
+                  "123",
+                  "/synthetic-only/Lumen.app/Lumen"
+                ]
+              ]
+            },
+            {
+              "at": 1794117685.002709,
+              "command": [
+                "ps",
+                "-axo",
+                "pid=,comm="
+              ],
+              "exit": 0,
+              "stdoutBytes": 0,
+              "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr": "",
+              "matchingProcesses": []
+            },
+            {
+              "at": 1794117685.004608,
+              "command": [
+                "ps",
+                "-axo",
+                "pid=,comm="
+              ],
+              "exit": 0,
+              "stdoutBytes": 0,
+              "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr": "",
+              "matchingProcesses": []
+            }
+          ],
+          "terminate": {
+            "exit": 1,
+            "stdout": "",
+            "stderr": "synthetic terminate failed",
+            "at": 1794117685.002337
+          },
+          "knownAppAndInProcessWorkerAbsent": true,
+          "scope": "Two bounded actual process-table observations; no universal relaunch/race/crash claim"
+        }
+      }
+    },
+    {
+      "case": "failed-terminate-still-live",
+      "status": "PASS",
+      "mockedProcessQueries": true,
+      "expectedGuard": "App/worker still present: preserve sentinel and moved root",
+      "facts": {
+        "failureAppTermination": {
+          "device": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+          "executable": "/synthetic-only/Lumen.app/Lumen",
+          "knownPID": 123,
+          "samples": [
+            {
+              "at": 1794117685.006769,
+              "command": [
+                "ps",
+                "-axo",
+                "pid=,comm="
+              ],
+              "exit": 0,
+              "stdoutBytes": 35,
+              "stdoutSHA256": "4532b1150c4f27066976416b655086862f612090e4d816794d502d7a138509a2",
+              "stderr": "",
+              "matchingProcesses": [
+                [
+                  "123",
+                  "/synthetic-only/Lumen.app/Lumen"
+                ]
+              ]
+            },
+            {
+              "at": 1794117685.007935,
+              "command": [
+                "ps",
+                "-axo",
+                "pid=,comm="
+              ],
+              "exit": 0,
+              "stdoutBytes": 35,
+              "stdoutSHA256": "4532b1150c4f27066976416b655086862f612090e4d816794d502d7a138509a2",
+              "stderr": "",
+              "matchingProcesses": [
+                [
+                  "123",
+                  "/synthetic-only/Lumen.app/Lumen"
+                ]
+              ]
+            },
+            {
+              "at": 1794117685.008822,
+              "command": [
+                "ps",
+                "-axo",
+                "pid=,comm="
+              ],
+              "exit": 0,
+              "stdoutBytes": 35,
+              "stdoutSHA256": "4532b1150c4f27066976416b655086862f612090e4d816794d502d7a138509a2",
+              "stderr": "",
+              "matchingProcesses": [
+                [
+                  "123",
+                  "/synthetic-only/Lumen.app/Lumen"
+                ]
+              ]
+            },
+            {
+              "at": 1794117685.009623,
+              "command": [
+                "ps",
+                "-axo",
+                "pid=,comm="
+              ],
+              "exit": 0,
+              "stdoutBytes": 35,
+              "stdoutSHA256": "4532b1150c4f27066976416b655086862f612090e4d816794d502d7a138509a2",
+              "stderr": "",
+              "matchingProcesses": [
+                [
+                  "123",
+                  "/synthetic-only/Lumen.app/Lumen"
+                ]
+              ]
+            }
+          ],
+          "terminate": {
+            "exit": 1,
+            "stdout": "",
+            "stderr": "synthetic terminate failed",
+            "at": 1794117685.00752
+          }
+        }
+      }
+    },
+    {
+      "case": "pid-reuse-refused",
+      "status": "PASS",
+      "mockedProcessQueries": true,
+      "expectedGuard": "PID identity changed; retain fault for guarded recovery",
+      "facts": {
+        "failureAppTermination": {
+          "device": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+          "executable": "/synthetic-only/Lumen.app/Lumen",
+          "knownPID": 123,
+          "samples": [
+            {
+              "at": 1794117685.0112798,
+              "command": [
+                "ps",
+                "-axo",
+                "pid=,comm="
+              ],
+              "exit": 0,
+              "stdoutBytes": 22,
+              "stdoutSHA256": "e6711078507384dca1b6055db28143afc642b8444226fd7b3f8a710afb217923",
+              "stderr": ""
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case": "extra-app-process-refused",
+      "status": "PASS",
+      "mockedProcessQueries": true,
+      "expectedGuard": "Unexpected extra app process; no restoration",
+      "facts": {
+        "failureAppTermination": {
+          "device": "AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481",
+          "executable": "/synthetic-only/Lumen.app/Lumen",
+          "knownPID": 123,
+          "samples": [
+            {
+              "at": 1794117685.0123,
+              "command": [
+                "ps",
+                "-axo",
+                "pid=,comm="
+              ],
+              "exit": 0,
+              "stdoutBytes": 71,
+              "stdoutSHA256": "612abfa0adc1256b2bc2d1df777ebbe155621dc7c4f2cb0230adf9537b9253a1",
+              "stderr": "",
+              "matchingProcesses": [
+                [
+                  "123",
+                  "/synthetic-only/Lumen.app/Lumen"
+                ],
+                [
+                  "124",
+                  "/synthetic-only/Lumen.app/Lumen"
+                ]
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "work": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/LumenCaptureFinalization219R1-c10s13ms",
+  "status": "PASS 3 actual host child cases plus 5 mocked absence/termination guard cases",
+  "passed": 8,
+  "expectedGuards": 3
+}

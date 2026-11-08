@@ -121,6 +121,12 @@ final class LumenSmokeTests: XCTestCase {
                     "-health-success-observation-ui", "-health-legacy-origin-ui", "data", "-health-legacy-origin-mixed-ui",
                     "-lumen.appearance", "light", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryL"]
             }
+            if name.contains("RecoveryCapture") {
+                app.launchArguments += ["-health-backup-healthy-merge-ui", "-health-backup-empty-ui",
+                    "-health-legacy-capture-ui", name.contains("PendingBack") ? "pending-back" : "retry-failure",
+                    "-health-legacy-capture-run", UUID().uuidString,
+                    "-lumen.appearance", "light", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryL"]
+            }
             if name.contains("RecoveryPhotoFaultErrorBack") {
                 app.launchArguments += ["-health-read-ui", "-health-read-scope", "selected-record"]
             }
@@ -5607,6 +5613,151 @@ final class LumenSmokeTests: XCTestCase {
     func testHealthBackupFileRecoveryPhotoFaultErrorBackLegacyOriginData() throws { try healthBackupPhotoFaultErrorBack("legacy") }
     @MainActor
     func testHealthBackupFileRecoveryPhotoFaultErrorBackEncryptedOriginString() throws { try healthBackupPhotoFaultErrorBack("encrypted") }
+    @MainActor
+    func testHealthBackupFileRecoveryCapturePendingBackLegacyOriginData() throws {
+        try captureStateFlow(pendingBack: true)
+    }
+
+    @MainActor
+    func testHealthBackupFileRecoveryCaptureFailureRetryLegacyOriginData() throws {
+        try captureStateFlow(pendingBack: false)
+    }
+
+    @MainActor
+    private func captureStateFlow(pendingBack: Bool) throws {
+        executionTimeAllowance = 600
+        let prefix = pendingBack ? "health-capture-pending-back" : "health-capture-failure-retry"
+        var observations: [[String: Any]] = []
+        let probe = app.descendants(matching: .any).matching(identifier: "healthOriginCaptureState-review").firstMatch
+        let progress = app.descendants(matching: .any).matching(identifier: "fileRecoveryCaptureProgress").firstMatch
+        let filename = app.staticTexts["recoveryFileName"].firstMatch
+        let meals = app.switches["recoverFile-meals"].firstMatch
+        let workouts = app.switches["recoverFile-workouts"].firstMatch
+        let omission = app.switches["Recover without meal photos"].firstMatch
+        let confirm = app.buttons["confirmFileRecovery"].firstMatch
+        let retry = app.buttons["retryFileRecoveryCapture"].firstMatch
+        let issue = app.staticTexts["Saved data couldn't be checked. Check again to retry."].firstMatch
+        func json(_ phase: String, failure: String? = nil) {
+            var row: [String: Any] = ["scope": "real-legacy-capture-state", "case": pendingBack ? "pending-back" : "retry-failure",
+                "phase": phase, "observations": observations, "launchArguments": app.launchArguments]
+            if let failure { row["failure"] = failure }
+            if let data = try? JSONSerialization.data(withJSONObject: row, options: [.prettyPrinted, .sortedKeys]) {
+                let item = XCTAttachment(data: data, uniformTypeIdentifier: "public.json")
+                item.name = prefix + (failure == nil ? "-readback" : "-failure-readback")
+                item.lifetime = .keepAlways; add(item)
+            }
+        }
+        func fail(_ phase: String, _ message: String) throws -> Never {
+            json(phase, failure: message)
+            snap(prefix + "-failed-" + phase)
+            XCTFail(message)
+            throw NSError(domain: "LumenCaptureStateUI", code: 1)
+        }
+        func require(_ condition: Bool, _ phase: String, _ message: String) throws {
+            if !condition { try fail(phase, message) }
+        }
+        func waitPhase(_ value: String, parent: Bool = false) throws {
+            let actual = parent ? app.descendants(matching: .any).matching(identifier: "healthOriginCaptureState-parent").firstMatch : probe
+            try require(actual.waitForExistence(timeout: 15), value, "Capture probe missing")
+            let expectation = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", value), object: actual)
+            try require(XCTWaiter.wait(for: [expectation], timeout: 40) == .completed, value, "Actual capture/host phase not observed")
+            observations.append(["phase": "probe-" + value, "value": actual.value as? String ?? "", "probeIdentifier": actual.identifier])
+        }
+        func whole(_ phase: String, _ targets: [XCUIElement], towardsTop: Bool = false) throws {
+            let first = targets[0]
+            func bounds() -> CGRect {
+                let top = app.navigationBars.firstMatch.frame.maxY + 12
+                return CGRect(x: app.frame.minX, y: top, width: app.frame.width, height: app.frame.maxY - 40 - top)
+            }
+            func move(_ down: Bool, _ distance: CGFloat) {
+                let box = bounds(), step = min(box.height * 0.4, max(24, distance))
+                let start = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: down ? box.minY + 20 : box.maxY - 20))
+                start.press(forDuration: 0.05, thenDragTo: start.withOffset(CGVector(dx: 0, dy: down ? step : -step)))
+                if first.exists && !first.frame.isEmpty { settleLabFrame(first) }
+            }
+            if !first.exists || first.frame.isEmpty { reveal(first, towardsTop: towardsTop) }
+            for _ in 0..<16 {
+                let box = bounds()
+                guard first.exists && !first.frame.isEmpty else { move(true, 72); continue }
+                guard targets.allSatisfy({ $0.exists && !$0.frame.isEmpty }) else {
+                    move(false, max(72, first.frame.minY - box.minY - 24)); continue
+                }
+                let group = targets.reduce(CGRect.null) { $0.union($1.frame) }
+                if box.contains(group) { break }
+                let down = group.minY < box.minY
+                move(down, down ? box.minY - group.minY + 12 : group.maxY - box.maxY + 12)
+            }
+            try require(targets.allSatisfy({ $0.exists && !$0.frame.isEmpty }), phase, "Native requested group not materialized")
+            settleLabFrame(first)
+            let box = bounds()
+            var rows: [[String: Any]] = []
+            for target in targets {
+                let frame = target.frame
+                try require(box.contains(frame), phase, "Native target clipped outside usable viewport")
+                rows.append(["identifier": target.identifier, "label": target.label, "value": target.value as? String ?? "",
+                    "enabled": target.isEnabled, "frame": ["x": Double(frame.minX), "y": Double(frame.minY),
+                    "width": Double(frame.width), "height": Double(frame.height)]])
+            }
+            observations.append(["phase": phase, "elements": rows, "usableTop": Double(box.minY),
+                "usableBottom": Double(box.maxY), "usableLeft": Double(box.minX), "usableRight": Double(box.maxX),
+                "probeValue": probe.exists ? probe.value as? String ?? "" : "absent"])
+            snap(prefix + "-" + phase)
+        }
+        func choices(_ phase: String, enabled: Bool) throws {
+            try whole(phase, [meals, omission, workouts], towardsTop: true)
+            for element in [meals, omission, workouts] {
+                try require(element.value as? String == "0" && element.isEnabled == enabled, phase, "Choices must be off with actual expected eligibility")
+            }
+            reveal(confirm)
+            try require(confirm.exists && !confirm.isEnabled, phase, "Empty selection must not allow Recover")
+            observations.append(["phase": phase + "-action", "recoverDisabled": !confirm.isEnabled])
+        }
+        func selectOriginal() throws {
+            try chooseBackupFixture("Lumen-backup-health-matrix-two-legacy")
+            try require(app.descendants(matching: .any).matching(identifier: "backupPreviewKind").firstMatch.waitForExistence(timeout: 30), "selection", "Real preview missing")
+            let link = app.buttons["reviewBackupHealthRecovery"].firstMatch
+            reveal(link); link.tap()
+            try require(filename.waitForExistence(timeout: 15) && filename.label == "Lumen-backup-health-matrix-two-legacy.json", "selection", "Wrong selected original")
+        }
+        func back(_ phase: String) throws {
+            app.navigationBars["Review recovery"].buttons.element(boundBy: 0).tap()
+            try require(app.navigationBars["Backup & restore"].waitForExistence(timeout: 10), phase, "Actual Back parent missing")
+            snap(prefix + "-" + phase)
+        }
+        openBackupSettings(); try selectOriginal()
+        try waitPhase(pendingBack ? "held-after-read-1" : "held-before-read-1")
+        try require(progress.waitForExistence(timeout: 10), "progress", "Actual delayed progress missing")
+        try whole(pendingBack ? "pending-progress" : "before-read-progress", [progress], towardsTop: true)
+        if pendingBack {
+            try choices("pending-choices", enabled: false)
+            try waitPhase("host-pending-choices-checked")
+            try back("parent-old-worker-held")
+            try waitPhase("host-old-worker-terminal", parent: true)
+            snap(prefix + "-parent-old-worker-terminal")
+            try selectOriginal()
+            try waitPhase("ui-wrapper-cleanup-2")
+            try require(!issue.exists && !progress.exists, "fresh-review", "Old capture state leaked into fresh review")
+            try choices("fresh-review", enabled: true)
+            try waitPhase("host-fresh-ready-checked")
+            try back("fresh-parent")
+        } else {
+            try require(issue.waitForExistence(timeout: 35) && retry.exists, "genuine-failure", "Actual capture issue/retry missing")
+            try whole("genuine-failure", [issue, retry], towardsTop: true)
+            try choices("failure-disabled-choices", enabled: false)
+            try waitPhase("host-root-restored")
+            reveal(retry, towardsTop: true); retry.tap()
+            try waitPhase("ui-wrapper-cleanup-2")
+            try require(!issue.exists && !progress.exists, "retry-ready", "Real retry did not clear prior capture state")
+            try whole("retry-ready", [filename], towardsTop: true)
+            try choices("retry-off-choices", enabled: true)
+            try waitPhase("host-retry-ready-checked")
+            try back("retry-parent")
+        }
+        try waitPhase("host-final-cleanup-checked", parent: true)
+        Thread.sleep(forTimeInterval: 4)
+        json("completed")
+    }
+
     @MainActor
     func testHealthBackupFileRecoveryMixedIneligibleLegacy() throws {
         executionTimeAllowance = 600

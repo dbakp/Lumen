@@ -22,6 +22,7 @@ enum HealthLegacyOriginUIFixture {
     static func prepare(in root: URL) throws {
         guard let kind else { return }
         bridge.reset(root.deletingLastPathComponent())
+        try HealthOriginCaptureUIFixture.prepare(root.deletingLastPathComponent())
         for domain in [HealthLocalFiles.Domain.meals, .workouts] {
             try FileManager.default.removeItem(at: root.appendingPathComponent(domain.rawValue + ".json"))
             if mixedMeals && domain == .meals {
@@ -93,6 +94,178 @@ enum HealthLegacyOriginUIFixture {
             // changes a product outcome or substitutes replacement authority.
             if let bytes = try? JSONSerialization.data(withJSONObject: ["events": rows], options: [.sortedKeys]) {
                 try? bytes.write(to: root.appendingPathComponent("Lumen-legacy-origin-review-events.json"), options: .atomic)
+            }
+        }
+    }
+}
+
+/// Metadata-only barriers around the real capture call, outside store/lease locks.
+/// A held cancelled worker may return to the unchanged finish cancellation check.
+enum HealthOriginCaptureUIFixture {
+    enum Failure: Error { case invalidFixture, timedOut }
+    static var runID: UUID? {
+        let args = ProcessInfo.processInfo.arguments
+        guard let index = args.firstIndex(of: "-health-legacy-capture-run"), args.indices.contains(index + 1)
+        else { return nil }
+        return UUID(uuidString: args[index + 1])
+    }
+    static var mode: String? {
+        let args = ProcessInfo.processInfo.arguments
+        guard runID != nil, HealthLegacyOriginUIFixture.kind == "data", !HealthLegacyOriginUIFixture.mixedMeals,
+              let index = args.firstIndex(of: "-health-legacy-capture-ui"),
+              args.indices.contains(index + 1), ["pending-back", "retry-failure"].contains(args[index + 1])
+        else { return nil }
+        return args[index + 1]
+    }
+    private static let bridge = Bridge()
+    static var phase: String { bridge.phase() }
+    static func prepare(_ parent: URL) throws {
+        guard mode != nil else { return }
+        try bridge.reset(parent)
+    }
+    static func register(_ session: UUID, control: BackupOperationControl, state: String, metadata: Bool) {
+        guard mode != nil else { return }
+        try? bridge.register(session, control: control, state: state, metadata: metadata)
+    }
+    static func observe(_ event: String, session: UUID, control: BackupOperationControl?,
+                        state: String, metadata: Bool, error: Error? = nil) {
+        guard mode != nil else { return }
+        try? bridge.observe(event, session: session, control: control, state: state, metadata: metadata, error: error)
+    }
+    static func hold(_ point: String, session: UUID, control: BackupOperationControl,
+                     state: @Sendable () -> String, metadata: @Sendable () -> Bool) throws {
+        guard let mode, (mode == "pending-back" && point == "after-read")
+                || (mode == "retry-failure" && point == "before-read") else { return }
+        guard let held = try bridge.beginHold(session, control: control, point: point, state: state(), metadata: metadata())
+        else { return }
+        let deadline = Date().addingTimeInterval(120)
+        while Date() < deadline {
+            // Intentionally no cancellation short circuit: the late worker must
+            // reach the real unchanged capture/finish check after host release.
+            let release = held.parent.appendingPathComponent("Lumen-legacy-capture-release.json")
+            var facts = stat()
+            if lstat(release.path, &facts) == 0, facts.st_mode & mode_t(S_IFMT) == mode_t(S_IFREG),
+               facts.st_size > 0, facts.st_size <= 4096,
+               let data = try? Data(contentsOf: release),
+               let message = try? JSONDecoder().decode(Release.self, from: data),
+               message.runID == runID, message.nonce == held.nonce, message.ordinal == held.ordinal {
+                try bridge.observe("host-released-" + point, session: session, control: control,
+                                   state: state(), metadata: metadata(), error: nil)
+                return
+            }
+            Thread.sleep(forTimeInterval: 0.025)
+        }
+        try bridge.observe("barrier-timeout-" + point, session: session, control: control,
+                           state: state(), metadata: metadata(), error: Failure.timedOut)
+        throw Failure.timedOut
+    }
+    private struct Release: Decodable { let runID: UUID; let nonce: UUID; let ordinal: Int }
+    private struct Held { let parent: URL; let nonce: UUID; let ordinal: Int }
+    private final class Entry {
+        let session: UUID, token = UUID(), nonce = UUID()
+        let ordinal: Int
+        weak var control: BackupOperationControl?
+        var held = false
+        init(_ session: UUID, ordinal: Int, control: BackupOperationControl) {
+            self.session = session; self.ordinal = ordinal; self.control = control
+        }
+    }
+    private final class Bridge: @unchecked Sendable {
+        private let lock = NSLock()
+        private var parent: URL?
+        private var entries: [Entry] = []
+        private var rows: [[String: Any]] = []
+        func phase() -> String {
+            lock.lock()
+            let parent = self.parent, token = entries.last?.token.uuidString
+            let row = rows.last(where: { $0["controlID"] as? String == token })
+            lock.unlock()
+            guard let row, let event = row["event"] as? String, let ordinal = row["ordinal"] as? Int,
+                  let nonce = row["nonce"] as? String else { return "preparing" }
+            if let parent {
+                let path = parent.appendingPathComponent("Lumen-legacy-capture-host-ack.json")
+                var facts = stat()
+                if lstat(path.path, &facts) == 0, facts.st_mode & mode_t(S_IFMT) == mode_t(S_IFREG),
+                   facts.st_size > 0, facts.st_size <= 4096,
+                   let data = try? Data(contentsOf: path),
+                   let ack = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+                   ack["runID"] as? String == row["runID"] as? String,
+                   ack["nonce"] as? String == nonce, ack["ordinal"] as? Int == ordinal,
+                   let value = ack["phase"] as? String,
+                   ["pending-choices-checked", "old-worker-terminal", "root-restored",
+                    "fresh-ready-checked", "retry-ready-checked", "final-cleanup-checked"].contains(value) {
+                    // Host coordination only; never publishes product metadata.
+                    return "host-" + value
+                }
+            }
+            return event + "-" + String(ordinal)
+        }
+        func reset(_ parent: URL) throws {
+            lock.lock(); defer { lock.unlock() }
+            self.parent = parent; entries = []; rows = []
+            try save()
+        }
+        func register(_ session: UUID, control: BackupOperationControl, state: String, metadata: Bool) throws {
+            lock.lock(); defer { lock.unlock() }
+            guard parent != nil, !entries.contains(where: { $0.control === control }) else { throw Failure.invalidFixture }
+            let entry = Entry(session, ordinal: entries.count + 1, control: control)
+            entries.append(entry)
+            append("registered", entry: entry, control: control, state: state, metadata: metadata, error: nil)
+            try save()
+        }
+        func observe(_ event: String, session: UUID, control: BackupOperationControl?,
+                     state: String, metadata: Bool, error: Error?) throws {
+            lock.lock(); defer { lock.unlock() }
+            guard let entry = entries.last(where: { $0.session == session && (control == nil || $0.control === control) })
+            else { throw Failure.invalidFixture }
+            append(event, entry: entry, control: control ?? entry.control, state: state, metadata: metadata, error: error)
+            try save()
+        }
+        func beginHold(_ session: UUID, control: BackupOperationControl, point: String,
+                       state: String, metadata: Bool) throws -> Held? {
+            lock.lock(); defer { lock.unlock() }
+            guard let parent, let entry = entries.last(where: { $0.session == session && $0.control === control })
+            else { throw Failure.invalidFixture }
+            guard entry.ordinal == 1, !entry.held else { return nil }
+            entry.held = true
+            append("held-" + point, entry: entry, control: control, state: state, metadata: metadata, error: nil)
+            try save()
+            return Held(parent: parent, nonce: entry.nonce, ordinal: entry.ordinal)
+        }
+        private func append(_ event: String, entry: Entry, control: BackupOperationControl?,
+                            state: String, metadata: Bool, error: Error?) {
+            var row: [String: Any] = ["event": event, "sessionID": entry.session.uuidString,
+                "runID": HealthOriginCaptureUIFixture.runID?.uuidString ?? "invalid",
+                "controlID": entry.token.uuidString, "nonce": entry.nonce.uuidString, "ordinal": entry.ordinal,
+                "pid": getpid(), "at": Date().timeIntervalSince1970, "leaseState": state,
+                "metadataAvailable": metadata, "taskCancelled": Task.isCancelled]
+            row["controlAlive"] = control != nil
+            if let control { row["controlCancelled"] = control.verificationCancelled }
+            if let error {
+                let value = error as NSError
+                row["errorType"] = String(reflecting: type(of: error))
+                row["errorDomain"] = value.domain; row["errorCode"] = value.code
+            }
+            rows.append(row)
+        }
+        private func save() throws {
+            guard let parent else { throw Failure.invalidFixture }
+            let data = try JSONSerialization.data(withJSONObject: ["version": 1,
+                "mode": HealthOriginCaptureUIFixture.mode ?? "invalid",
+                "runID": HealthOriginCaptureUIFixture.runID?.uuidString ?? "invalid",
+                "pid": getpid(), "events": rows], options: [.sortedKeys])
+            try data.write(to: parent.appendingPathComponent("Lumen-legacy-capture-checkpoint.json"), options: .atomic)
+        }
+    }
+}
+
+@MainActor struct HealthOriginCaptureUIProbe: View {
+    let location: String
+    var body: some View {
+        if HealthOriginCaptureUIFixture.mode != nil {
+            TimelineView(.periodic(from: .now, by: 0.2)) { _ in
+                Text("Capture check").accessibilityIdentifier("healthOriginCaptureState-" + location)
+                    .accessibilityValue(HealthOriginCaptureUIFixture.phase)
             }
         }
     }
