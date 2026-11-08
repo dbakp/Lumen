@@ -71,7 +71,7 @@
 <button class="btn" type="button" data-area="quality" aria-pressed="false" aria-controls="lumen-plan-detail">Answer quality</button>
 <button class="btn" type="button" data-area="release" aria-pressed="false" aria-controls="lumen-plan-detail">Release gates</button>
 </div>
-<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Recovery coverage · in progress</h3><div data-verified>Leaving a pending check and retrying a real failure passed independent review. All 16 original screens and both complete results were inspected.</div><div data-next>Next: erase through Settings and verify old meals and workouts stay erased after a clean relaunch.</div><div class="text-small" data-gate>Two main-phone, light, normal-text cases. Other appearances, full speech and motion remain open.</div></div>
+<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Erasure verification · in progress</h3><div data-verified>The startup safeguard stopped the first erasure test. Saved files and the original backup are unchanged.</div><div data-next>Next: identify which safeguard stopped startup, then verify erasure through Settings and a clean relaunch.</div><div class="text-small" data-gate>Settings erasure is unverified. The two earlier check-and-retry cases remain independently accepted.</div></div>
 </div>
 <div class="section"><h3>Verified safety checks</h3>
 <table class="table table-sm" aria-label="Earlier checks retain their original scope; broader checks remain open"><thead><tr><th>Situation</th><th>Observed result</th></tr></thead><tbody>
@@ -83,16 +83,16 @@
 </tbody></table>
 <div class="text-small">Earlier six-file long-wait preservation failure and Banana zero-fat omission remain failed expectations. Final dismissal preserved the immediate newer state.</div></div>
 <hr>
-<div class="viz-row"><span>About 36 GiB available</span><span>9.27 GB recovered in recorded cleanups · latest cleanup 355.16 MB</span></div>
+<div class="viz-row"><span>About 33 GiB available at last check</span><span>9.30 GB recovered in recorded cleanups · latest cleanup 30.54 MB</span></div>
 <div class="text-small">Redundant exports and completed test bundles removed after exact GitHub verification · canonical evidence and needed caches retained · no further iPhone actions authorized</div>
 <script>
 (()=>{
 const root=document.getElementById('lumen-plan-progress');
-const snapshot='nov8-capture-retry-reviewed';
+const snapshot='nov8-erasure-startup-review';
 const areas={
-current:{title:'Recovery coverage · in progress',verified:'Leaving a pending check and retrying a real failure passed independent review. All 16 original screens and both complete results were inspected.',next:'Next: erase through Settings and verify old meals and workouts stay erased after a clean relaunch.',gate:'Two main-phone, light, normal-text cases. Other appearances, full speech and motion remain open.'},
+current:{title:'Erasure verification · in progress',verified:'The startup safeguard stopped the first erasure test. Saved files and the original backup are unchanged.',next:'Next: identify which safeguard stopped startup, then verify erasure through Settings and a clean relaunch.',gate:'Settings erasure is unverified. The two earlier check-and-retry cases remain independently accepted.'},
 quality:{title:'Answer quality · open',verified:'Library search, source identity, consent controls and literal-reference safeguards are delivered.',next:'Next: evidence-support policy and independent evaluation; personal-context and conversation-history privacy review.',gate:'Clinical accuracy, language coverage and live-provider evaluation remain required.'},
-release:{title:'Release readiness · open',verified:'Source220 unsigned release compilation, executable markers and compiler settings passed independent review. Coverage recording is enabled.',next:'Next: background Health, Watch reconnect, widget, interruption and accessibility checks.',gate:'Representative histories, performance, privacy and distribution review remain required. No iPhone installation, launch or checks without a renewed request.'}
+release:{title:'Release readiness · open',verified:'Source222 unsigned release compilation, executable markers and compiler settings passed independent review. Coverage recording is enabled.',next:'Next: background Health, Watch reconnect, widget, interruption and accessibility checks.',gate:'Representative histories, performance, privacy and distribution review remain required. No iPhone installation, launch or checks without a renewed request.'}
 };
 const buttons=Array.from(root.querySelectorAll('[data-area]'));
 function select(key,remember){
