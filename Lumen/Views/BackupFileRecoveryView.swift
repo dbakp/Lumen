@@ -226,7 +226,7 @@ struct BackupFileRecoveryView: View {
     }
     @State private var completion: RecoveryCompletion?
     @State private var successReveal: Task<Void, Never>?
-    @AccessibilityFocusState private var recoverySuccessFocused = false
+    @AccessibilityFocusState private var recoverySuccessFocused: Bool
     @State private var appearanceID = UUID()
     @State private var attemptID = UUID()
     @State private var reviewActive = false
