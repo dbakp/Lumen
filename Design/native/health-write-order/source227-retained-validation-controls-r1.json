@@ -1,0 +1,143 @@
+{
+  "status": "PASS isolated22retained evidence replay/injection controls; no native/current-state proof",
+  "runnerSHA256": "750de8f6cd0e45d4a47faed63f3f1a54f066dca87a92ef242f1576a8da54861c",
+  "cases": [
+    {
+      "case": "exact protected replay",
+      "kind": "protected",
+      "expectedAccept": true,
+      "actualAccept": true
+    },
+    {
+      "case": "exact old-to-new samples",
+      "kind": "persistence",
+      "expectedAccept": true,
+      "actualAccept": true
+    },
+    {
+      "case": "exact selected replay",
+      "kind": "selection",
+      "expectedAccept": true,
+      "actualAccept": true
+    },
+    {
+      "case": "changed raw protected bytes",
+      "kind": "protected",
+      "expectedAccept": false,
+      "actualAccept": false
+    },
+    {
+      "case": "changed protected metadata",
+      "kind": "protected",
+      "expectedAccept": false,
+      "actualAccept": false
+    },
+    {
+      "case": "changed prior root identity",
+      "kind": "protected",
+      "expectedAccept": false,
+      "actualAccept": false
+    },
+    {
+      "case": "unexpected receipt",
+      "kind": "protected",
+      "expectedAccept": false,
+      "actualAccept": false
+    },
+    {
+      "case": "unexpected stage",
+      "kind": "protected",
+      "expectedAccept": false,
+      "actualAccept": false
+    },
+    {
+      "case": "provider identity changed",
+      "kind": "protected",
+      "expectedAccept": false,
+      "actualAccept": false
+    },
+    {
+      "case": "wrong typed sample",
+      "kind": "persistence",
+      "expectedAccept": false,
+      "actualAccept": false
+    },
+    {
+      "case": "wrong known sample bytes",
+      "kind": "persistence",
+      "expectedAccept": false,
+      "actualAccept": false
+    },
+    {
+      "case": "workout changed",
+      "kind": "persistence",
+      "expectedAccept": false,
+      "actualAccept": false
+    },
+    {
+      "case": "Health connected",
+      "kind": "persistence",
+      "expectedAccept": false,
+      "actualAccept": false
+    },
+    {
+      "case": "sample error hidden by PASS",
+      "kind": "persistence",
+      "expectedAccept": false,
+      "actualAccept": false
+    },
+    {
+      "case": "time regressed",
+      "kind": "persistence",
+      "expectedAccept": false,
+      "actualAccept": false
+    },
+    {
+      "case": "deadline exceeded",
+      "kind": "persistence",
+      "expectedAccept": false,
+      "actualAccept": false
+    },
+    {
+      "case": "insufficient stable span",
+      "kind": "persistence",
+      "expectedAccept": false,
+      "actualAccept": false
+    },
+    {
+      "case": "acceptance time inconsistent",
+      "kind": "persistence",
+      "expectedAccept": false,
+      "actualAccept": false
+    },
+    {
+      "case": "old resets stable streak",
+      "kind": "persistence",
+      "expectedAccept": false,
+      "actualAccept": false
+    },
+    {
+      "case": "source selected bytes changed",
+      "kind": "selection",
+      "expectedAccept": false,
+      "actualAccept": false
+    },
+    {
+      "case": "source PID changed",
+      "kind": "selection",
+      "expectedAccept": false,
+      "actualAccept": false
+    },
+    {
+      "case": "workspace owner marker changed",
+      "kind": "selection",
+      "expectedAccept": false,
+      "actualAccept": false
+    }
+  ],
+  "fixtureArchive": "source227-retained-validation-controls-r1-fixtures.json.gz",
+  "decodedBytes": 408700,
+  "decodedSHA256": "755f1d27944c3412565721efc4d1dc057c054cac397bc187929e978857a2f40a",
+  "bytes": 75228,
+  "sha256": "f4a8787b40215f21f11b8b7527c996bbce28967bd1e7705d01df57cfd0ba9361"
+}

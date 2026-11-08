@@ -1,0 +1,295 @@
+{
+  "part": 111,
+  "role": "Same independent App Designer Pro critic",
+  "scope": "Source227 strictreadonly checker successor before build/native",
+  "verdict": "NOT source-ready: one deterministic metadata decoder blocker remains; most P110-C1 strict retained/live validation is implemented",
+  "sourceReady": false,
+  "score": null,
+  "independentChecks": {
+    "currentAndFullArchiveInputsExact": 455,
+    "text": 437,
+    "fixturesArchives": 18,
+    "all448PriorInputsUnchanged": true,
+    "only7NewFilesExact": true,
+    "all7NewFilesRead": true,
+    "allNewPythonASTParsed": true,
+    "appTestFixtureModelsUnchanged226": true,
+    "markerArraysUnchanged1981821620": true,
+    "isolatedArchiveCompressedDecodedSizeHashesExact": true,
+    "isolatedTrialsRead": 22,
+    "actualControlsRunnerHashCurrent": true
+  },
+  "findings": [
+    {
+      "id": "P111-C1",
+      "severity": "required before build/native",
+      "file": "check-legacy-target-change-r2.py",
+      "function": "decode_all",
+      "observation": "It treats any dict with bytes/sha256/base64 keys as a serialized payload. Shared h.verify_inputs intentionally returns state.preflight.app={bytes,sha256,base64:None} for binary metadata. v.payload immediately b64decodes None and raises TypeError in every genuine case. The22 isolated controls exercise v functions and omit this full state traversal, so they did not cover it. Root extracted actualfunction control independently confirms this exact failure.",
+      "requiredRepair": "Whitelist ONLY the exact state/preflight/app metadata location and exact shape/null marker. Validate its size/hash against the referenced build receipt and actual reviewed app binary/source preflight, then continue strict traversal. All other null/malformed payload rows must still fail. Include genuine metadata-null positive and arbitrary-null negative controls in a separate successor; preserve Source227 unexecuted finding."
+    }
+  ],
+  "P110ClosureAssessment": [
+    "New v.persistence independently checks every supported retained sample/error/time/deadline/old-new typed value/unchanged workout/Healthfalse; old resets streak, requires trailing3new span0.2 and matching acceptedElapsed. This directly addresses stored-PASS trust at source.",
+    "v.tree/payload/protected validate decoded rawhash/size, regular/directory kinds, exact entry/metadata/ancestor sets and protected initial/current/prior equality with provider/no residuals. v.fixed validates exact old/new Data. v.selection checks owner/PID/workspace marker/name/sourceprovider/canonicalbytes and disjoint fresh workspace roots.",
+    "Checker iterates all7phases/events/acks and cleanup endpoints, validates raw/nativeJSON/sequence, summary/outcome/retention/log/query/index/helper/13suffix inventory and no error/emergency fields. Final live separately checks actual nativefile/installed/process/currentprior/newfixed/provider and both old/fresh cleanup/noopenpaths. These improvements are source-supported, not executed currentnative proof.",
+    "Initial R1 driver remains native+host-boundary acceptance pending mandatory strictsuccessor checker/root/critic; it is not reclassified as sufficient alone. Source226/110 rejection remains historical/unexecuted."
+  ],
+  "indexWorkflowPrerequisite": {
+    "requiredFutureWorkflow": "Keep acquisition images/readbacks/retention-state immutable and exactly equal. Put independent/root originalopen credit in separate review reports. Under this explicit new workflow, exact equality is appropriate; do not silently weaken immutable acquisition facts.",
+    "historical225ActualRead": {
+      "imagesFirstIndividuallyOpened": true,
+      "retainedImagesFirstIndividuallyOpened": false,
+      "readbacksFirstIndividuallyOpened": true,
+      "retainedReadbacksFirstIndividuallyOpened": false
+    },
+    "qualification": "Current historical225 acquisition indices have true human-open bookkeeping while outcome.retention flags arefalse. Therefore current227checker cannot be blindly applied to that modified historical acquisition trio without a separate scope adaptation. This is a history/workflow distinction, not another blocker for the newly explicit immutable next-case workflow."
+  },
+  "isolatedControls": {
+    "status": "PASS isolated22retained evidence replay/injection controls; no native/current-state proof",
+    "cases": [
+      {
+        "case": "exact protected replay",
+        "kind": "protected",
+        "expectedAccept": true,
+        "actualAccept": true
+      },
+      {
+        "case": "exact old-to-new samples",
+        "kind": "persistence",
+        "expectedAccept": true,
+        "actualAccept": true
+      },
+      {
+        "case": "exact selected replay",
+        "kind": "selection",
+        "expectedAccept": true,
+        "actualAccept": true
+      },
+      {
+        "case": "changed raw protected bytes",
+        "kind": "protected",
+        "expectedAccept": false,
+        "actualAccept": false
+      },
+      {
+        "case": "changed protected metadata",
+        "kind": "protected",
+        "expectedAccept": false,
+        "actualAccept": false
+      },
+      {
+        "case": "changed prior root identity",
+        "kind": "protected",
+        "expectedAccept": false,
+        "actualAccept": false
+      },
+      {
+        "case": "unexpected receipt",
+        "kind": "protected",
+        "expectedAccept": false,
+        "actualAccept": false
+      },
+      {
+        "case": "unexpected stage",
+        "kind": "protected",
+        "expectedAccept": false,
+        "actualAccept": false
+      },
+      {
+        "case": "provider identity changed",
+        "kind": "protected",
+        "expectedAccept": false,
+        "actualAccept": false
+      },
+      {
+        "case": "wrong typed sample",
+        "kind": "persistence",
+        "expectedAccept": false,
+        "actualAccept": false
+      },
+      {
+        "case": "wrong known sample bytes",
+        "kind": "persistence",
+        "expectedAccept": false,
+        "actualAccept": false
+      },
+      {
+        "case": "workout changed",
+        "kind": "persistence",
+        "expectedAccept": false,
+        "actualAccept": false
+      },
+      {
+        "case": "Health connected",
+        "kind": "persistence",
+        "expectedAccept": false,
+        "actualAccept": false
+      },
+      {
+        "case": "sample error hidden by PASS",
+        "kind": "persistence",
+        "expectedAccept": false,
+        "actualAccept": false
+      },
+      {
+        "case": "time regressed",
+        "kind": "persistence",
+        "expectedAccept": false,
+        "actualAccept": false
+      },
+      {
+        "case": "deadline exceeded",
+        "kind": "persistence",
+        "expectedAccept": false,
+        "actualAccept": false
+      },
+      {
+        "case": "insufficient stable span",
+        "kind": "persistence",
+        "expectedAccept": false,
+        "actualAccept": false
+      },
+      {
+        "case": "acceptance time inconsistent",
+        "kind": "persistence",
+        "expectedAccept": false,
+        "actualAccept": false
+      },
+      {
+        "case": "old resets stable streak",
+        "kind": "persistence",
+        "expectedAccept": false,
+        "actualAccept": false
+      },
+      {
+        "case": "source selected bytes changed",
+        "kind": "selection",
+        "expectedAccept": false,
+        "actualAccept": false
+      },
+      {
+        "case": "source PID changed",
+        "kind": "selection",
+        "expectedAccept": false,
+        "actualAccept": false
+      },
+      {
+        "case": "workspace owner marker changed",
+        "kind": "selection",
+        "expectedAccept": false,
+        "actualAccept": false
+      }
+    ],
+    "scope": "22 isolated historical synthetic tree/selection replays and injected invalid variants, fake readonly old\u2192new observation; no currenttarget-change native, actualLocalStorewrite/lease mutation, livechecker/process query or actualnativefinalization execution.",
+    "archive": "source227-retained-validation-controls-r1-fixtures.json.gz",
+    "decodedArchiveBytes": 408700,
+    "nestedPayloadInstancesIncludingIntentionallyInvalidInjections": 343,
+    "verification": "Archive compression/rawsizes/hash and runnerhash independently verified; all22outcomes match expected. Intentionally corrupted raw/hash rows are retained negative fixtures, not claimed individually validpayloads. No controls rerun/import by critic.",
+    "coverageLimit": "Tests do not execute completecheckercaller/decode_all with actual preflight.app metadata; P111-C1 escapes unitvalidators."
+  },
+  "plannedBuildAndMarkers": [
+    "Both new planned scripts fully read/ASTparsed, no execution. Build verifies frozeninputs before/after, uses same dedicatedUUID/currentcache/packagecache and emits source227receipt/log onactual0. No compiled227binary/typecheck/runtime claim.",
+    "Marker script verifies actualnewreceipt/binary before resolving plan; unchanged198negative/182plannedDebugpositive/16negativeonly/20production arrays exactly226predeclaration. Missing actualmarker fails without tuning arrays. No Releaseacceptance."
+  ],
+  "limits": [
+    "Source227 unbuilt/unexecuted. Must preserve finding/exactcheckpoint then separately freeze/review decoder repair before native.",
+    "Actual2192350+23 unchangedlogic historicalcarry, source223actualoldcompile and225Data/Stringboundedproofs remain separate; no new227execution or oldlivechecker rerun.",
+    "Prior9readonly/31context/18Bridge scopes remain historical/parser/stub-only; no new acceptance from them.",
+    "Freshrawauthority success, String/healthy/unsupported/preparation/finalcommit/retainedcopy/full43/eightgroups and overallgoal remain open. No globaldesignscore.",
+    "Only report written; no judgedsource/evidence mutations, helper/build/Git/device/simulator/defaults/process/cleanup actions or agents spawned."
+  ],
+  "provenance": [
+    {
+      "file": "Design/native/health-write-order/durable-source-r227.json",
+      "bytes": 80707,
+      "sha256": "f3518a45201e71d97ba05a7282f8a15baf5c0963dd57e277d3167e5f2d889cee"
+    },
+    {
+      "file": "Design/native/health-write-order/durable-source-r227.json.gz",
+      "bytes": 1777423,
+      "sha256": "36d668baaee5799b6e47ee5d1f7a1d23a88d959fe161075c78ba9ca17ffe78e6"
+    },
+    {
+      "file": "Design/native/health-write-order/durable-source-r226.json",
+      "bytes": 79777,
+      "sha256": "6e1eb6038aee94689af92d350406c6a8c2d97fe3edb9bd2a40080b56596a6c5d"
+    },
+    {
+      "file": "Design/native/health-write-order/durable-source-r226.json.gz",
+      "bytes": 1768420,
+      "sha256": "5220b441c09952e3ba04f4e0087f1cc3e261484668335266d67bd43fe55b8b4b"
+    },
+    {
+      "file": "Design/native/health-write-order/source226-unexecuted-finding-exact-github.json",
+      "bytes": 90909,
+      "sha256": "137447817a2e71b239aa6c7e606a40d0613f030678182cba90c866c40bc3d5f8"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-target-change-source226-round2-part110-source.json",
+      "bytes": 16857,
+      "sha256": "a9192f7a77f273a0f721a7569dca8616b18d171cd880b355e694460b134d943a"
+    },
+    {
+      "file": "Design/native/health-write-order/source227-retained-validation-controls-r1.json",
+      "bytes": 3584,
+      "sha256": "2c10fc3ecd7368f89e5ef92460d6b39ce3314da7b999da57a37110bb21c36c29"
+    },
+    {
+      "file": "Design/native/health-write-order/source227-retained-validation-controls-r1-fixtures.json.gz",
+      "bytes": 75228,
+      "sha256": "f4a8787b40215f21f11b8b7527c996bbce28967bd1e7705d01df57cfd0ba9361"
+    },
+    {
+      "file": "Design/native/health-write-order/source227-root-checker-metadata-control-r1.json",
+      "bytes": 1478,
+      "sha256": "dce2781114853d00079f2e5cea7c200554df680a9f063e097e4af4dc00e325e2"
+    },
+    {
+      "file": "Design/native/health-write-order/health-mixed-ineligible-evidence-r1.py",
+      "bytes": 11627,
+      "sha256": "d0661274d74b439ef756ea89ade4b7184127f6c4d3e16837617efed5c6d3163d"
+    },
+    {
+      "file": "Design/native/health-write-order/legacy-target-change-validation-r1.py",
+      "bytes": 4704,
+      "sha256": "ca593736e7054140a136c302ebf795eb22a019b8a879b54e9be548b77995a810"
+    },
+    {
+      "file": "Design/native/health-write-order/check-legacy-target-change-r2.py",
+      "bytes": 7915,
+      "sha256": "d6fe783cf48ced33fcef0d3ca74e31f1b74377496fce7bd6f40312fc31a789b7"
+    },
+    {
+      "file": "Design/native/health-write-order/target-change-validation-controls-r1.py",
+      "bytes": 5589,
+      "sha256": "750de8f6cd0e45d4a47faed63f3f1a54f066dca87a92ef242f1576a8da54861c"
+    },
+    {
+      "file": "Design/native/health-write-order/health-current-release-source227-r1-predeclared-plan.json",
+      "bytes": 18850,
+      "sha256": "9cd00d5a99f7f2f4a1d642304edbe28a7ed2e160dc30f98a8a0d6816787ab334"
+    },
+    {
+      "file": "Design/native/health-write-order/source227-target-change-checker-r1-plan.json",
+      "bytes": 1752,
+      "sha256": "1aa303f5ecf35cb70522763ec40fed338308181bf24704551f4139898ec4acc6"
+    },
+    {
+      "file": "Design/native/health-write-order/source227-target-change-native-build-r1-planned.py",
+      "bytes": 2682,
+      "sha256": "67f6c106e33a223dca4ca842ec614fab464daf807b9826f3c16e28c7dede7ae2"
+    },
+    {
+      "file": "Design/native/health-write-order/source227-debug-release-controls-r1-planned.py",
+      "bytes": 2688,
+      "sha256": "46345271f5561daa80454ed6e1a00d9322308a44fdc1468aa6ea78889d651f71"
+    }
+  ],
+  "storage": {
+    "availableBytes": 33300312064,
+    "cleanupPerformed": false,
+    "deletedBytes": 0
+  },
+  "checkedAt": 1794135592.347926
+}

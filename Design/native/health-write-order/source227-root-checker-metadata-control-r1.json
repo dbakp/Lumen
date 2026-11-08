@@ -1,0 +1,15 @@
+{
+  "status": "Confirmed root source finding before build/native: generic decoder rejects intentionally metadata-only preflight.app base64=None",
+  "scope": "Extracted actual checker function with tiny payload stub; no current native/app/binary proof",
+  "actualError": "Traceback (most recent call last):\n  File \"<stdin>\", line 12, in <module>\n  File \"actual-r2-checker-decode-all\", line 84, in decode_all\n  File \"actual-r2-checker-decode-all\", line 84, in decode_all\n  File \"actual-r2-checker-decode-all\", line 83, in decode_all\n  File \"<stdin>\", line 9, in payload\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/base64.py\", line 80, in b64decode\n    s = _bytes_from_decode_data(s)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/base64.py\", line 45, in _bytes_from_decode_data\n    raise TypeError(\"argument should be a bytes-like object or ASCII \"\nTypeError: argument should be a bytes-like object or ASCII string, not 'NoneType'\n",
+  "input": {
+    "preflight": {
+      "app": {
+        "bytes": 45876752,
+        "sha256": "1ec56ed85a5fdb37728829c4b85cd51aed7c43c52807dd5b47e7c30989d637ad",
+        "base64": null
+      }
+    }
+  },
+  "repairRequired": "Whitelist only this exact metadata path, require build/source/app bytes+SHA match and null marker; still decode/reject every other malformed payload row."
+}

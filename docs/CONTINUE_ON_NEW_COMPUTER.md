@@ -4,11 +4,13 @@ Continue developing Lumen into a world-class, primarily iOS, AI health assistant
 
 Repository: https://github.com/dbakp/Lumen · branch `main`.
 
-## Current checkpoint · Source226 source finding retained · 8 November 2026
+## Current checkpoint · Source227 source finding retained · 8 November 2026
 
 Source225 Data107 and String108 complete evidence reached exact GitHub main `4e659b8d487bb1e3d2d8779f0788632144d11f1b`:42checkpoint/516completeunion before Source226 edits. Source226 now frozen430text+18fixtures=448 reviewed by Part110: guarded actual OLD-token acquisition and one known synthetic meals mutation after ready, genuine stale-recovery rejection, Back/parent closure and fresh owner/off choices. Nine isolated readonly observation controls and31 extracted actual Swift context controls pass; Swift syntax parsing passes. **Part110/root rejected source readiness (P110-C1): checker trusts some recorded PASS labels; independently revalidate every retained sample/protected/fixed/source/cleanup fact plus final live endpoint and full outcome/attachments in a separately frozen successor. No Source226 app typecheck, build, native, Release or target-change acceptance.** Source225439 is historical exact source, not current app-source equality. All broader43/eightgroups remain open.
 
 [Source226](../Design/native/health-write-order/durable-source-r226.json) · [Concrete binding](../Design/native/health-write-order/source226-target-change-ready-r1-binding.json) · [Exact prior pair backup](../Design/native/health-write-order/source225-pair-completion-exact-github.json).
+
+Source227 successor frozen437text+18fixtures=455, all448prior inputs unchanged. Part111/root supports most strict retained/live validation and22 isolated replay/injection controls, but rejects source readiness: generic decoder rejects intentionally metadata-only `preflight.app` nullbase64. Repair that exact path against actual build/source/binary, retain arbitrary-null rejection and new controls; separately freeze/review before build/native. Preserve acquisition indices immutable in the nextcase; record human-open credit only in separate review reports. Historical225indices have true flags versus false retainedflags, so newchecker is not applied blindly to those old indices. No Source226/227 build/native/Release acceptance.
 
 ## Last accepted native checkpoint · Source225 Data and String
 
