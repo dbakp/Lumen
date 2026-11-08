@@ -1,0 +1,29 @@
+{
+  "command": [
+    "python3",
+    "Design/native/health-write-order/check-confirmation-lifecycle-r2.py",
+    "health-confirmation-notnow-data-source253r1",
+    "--checker-source",
+    "durable-source-r253.json",
+    "--case-source",
+    "durable-source-r253.json",
+    "--build",
+    "health-target-change-source253-r1-build.json",
+    "--trial",
+    "CurrentR2"
+  ],
+  "pid": 13260,
+  "exit": 1,
+  "stdout": {
+    "bytes": 262,
+    "sha256": "30144f047fea17d5f89efad5dd8913045cdeb04747c9882457bd2f33d9e8d39b",
+    "base64": "eyJzdGF0dXMiOiAiRkFJTEVEIHJlYWRvbmx5IHN1Y2Nlc3NvciBjaGVja2VyOyBubyBhY2NlcHRhbmNlIiwgImNoZWNrZXJFeGl0IjogMSwgIm91dGNvbWUiOiAiaGVhbHRoLWNvbmZpcm1hdGlvbi1ub3Rub3ctZGF0YS1zb3VyY2UyNTNyMS1saWZlY3ljbGUtcjItY3VycmVudHIyLW91dGNvbWUuanNvbiIsICJjYXNlU291cmNlIjogImR1cmFibGUtc291cmNlLXIyNTMuanNvbiIsICJjaGVja2VyU291cmNlIjogImR1cmFibGUtc291cmNlLXIyNTMuanNvbiJ9Cg=="
+  },
+  "stderr": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "base64": ""
+  },
+  "scope": "Actualcurrent903R2checker invocation after initialwrong252source checker failure; bothfailures retained. Native253failed so currentchecker mustrejectnative/driver prerequisite, no finalAudit acceptance.",
+  "checkedAt": 1794179749.202167
+}

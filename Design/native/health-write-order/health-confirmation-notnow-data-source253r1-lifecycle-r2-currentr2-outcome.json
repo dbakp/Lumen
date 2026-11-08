@@ -1,0 +1,18 @@
+{
+  "status": "FAILED readonly successor checker; no acceptance",
+  "checkerExit": 1,
+  "checkerSource": "durable-source-r253.json",
+  "caseSource": "durable-source-r253.json",
+  "build": "health-target-change-source253-r1-build.json",
+  "prefix": "health-confirmation-notnow-data-source253r1",
+  "trial": "CurrentR2",
+  "physicalPhoneActions": false,
+  "started": 1794179748.823709,
+  "checkerSourceVerification": {
+    "source": "durable-source-r253.json",
+    "exactCurrentArchiveBindings": 903,
+    "manifestSHA256": "54fff2b97624fb4632b736bad1439bbccdae6e3156010ffa5b3ffec5933401ff"
+  },
+  "failure": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/check-confirmation-lifecycle-r2.py\", line 38, in <module>\n    assert out['source']==a.case_source and out['build']==a.build;assert out['driverExit']==out['nativeExit']==0 and out['hostError'] is None\nAssertionError\n",
+  "finished": 1794179749.1825652
+}
