@@ -1,0 +1,97 @@
+{
+  "source": "durable-source-r210.json",
+  "status": "Current210Releasebuild/executableauditPASS; settingsR1failedschema/R2samequeryPASS; optimizedinstrumentedunsignedscope;critic68next",
+  "plan": "source210-root-acquisition-r1-plan.json",
+  "baselineExactGithubMain": "af1ae2d59ea72879d9209e6b0c71e5b7db692e0d",
+  "next": "Critic68/fullrootread/exactbackup beforeobsoleteRelease/pureoutputcleanup andnextrecoverygates;fullgoalactive",
+  "checkedAt": 1794100511.171044,
+  "completedBuild": {
+    "session": 46998,
+    "PID": 62770,
+    "log": "/tmp/LumenBatch44Checks/Source210RootAcquisitionRepairNativeBuildR1.log",
+    "exitCode": 0
+  },
+  "completedLogic": {
+    "session": 10724,
+    "PID": 62772,
+    "outcome": "source210-logic-r1-outcome.json",
+    "exitCode": 0
+  },
+  "exactCheckpoint": "316a7bd7edbaeaebb960998fdac5baad7bad3921 all33paths exactbeforelaunch",
+  "noPriorNative": {
+    "case": "no-prior",
+    "trial": "Source210R1",
+    "expectation": "safe (scopedAPI, notglobalproduct)",
+    "session": 92652,
+    "PID": 66692,
+    "log": "/tmp/LumenBatch44Checks/RootAcquisitionNoPriorSource210R1.log",
+    "result": "/tmp/LumenBatch44Checks/RootAcquisitionNoPriorSource210R1.xcresult",
+    "nativeExitCode": 0,
+    "driverExitCode": 0,
+    "nativePassed": 1,
+    "scopedSafeRejection": true
+  },
+  "noPriorExactCheckpoint": "1c5618271506bac99d0b90fac0ece7637dcc61f1 all25paths exactorigin/main",
+  "withPriorNative": {
+    "case": "with-prior",
+    "trial": "Source210R2",
+    "session": 23521,
+    "PID": 71344,
+    "status": "terminal",
+    "checkedAt": 1794100973.644386,
+    "nativeExitCode": 0,
+    "driverExitCode": 0,
+    "passed": 1
+  },
+  "withPriorExactCheckpoint": "d1d684e58c9e392581e5cefd87eb68d6edcb0bb7 all25paths exactorigin/main",
+  "ordinaryNative": {
+    "case": "ordinary",
+    "trial": "Source210R3",
+    "session": 61972,
+    "PID": 74290,
+    "status": "terminal",
+    "checkedAt": 1794101204.557853,
+    "nativeExitCode": 0,
+    "driverExitCode": 0,
+    "passed": 1
+  },
+  "ordinaryExactCheckpoint": "810ed13057956fd3996d84ccb169dc0a66b17ac2 all34paths exactorigin/main",
+  "legacyDataUI": {
+    "session": 57064,
+    "PID": 78358,
+    "trial": "Source210R4",
+    "status": "terminal",
+    "log": "/tmp/LumenBatch44Checks/HealthErrorStateLegacySource210R4.log",
+    "result": "/tmp/LumenBatch44Checks/HealthErrorStateLegacySource210R4.xcresult",
+    "checkedAt": 1794101516.824966,
+    "nativeExitCode": 0,
+    "driverExitCode": 0,
+    "passed": 1
+  },
+  "legacyDataExactCheckpoint": "8e04b0a8815749427b4accc4421ea32e56c62fdd all39paths exactorigin/main beforecleanup",
+  "cleanupExactCheckpoint": "13547615e3ec75247f7e1768686c147666ec8f4b all10paths exactorigin/main",
+  "encryptedStringUI": {
+    "session": 60859,
+    "PID": 94536,
+    "trial": "Source210R5",
+    "status": "terminal",
+    "log": "/tmp/LumenBatch44Checks/HealthErrorStateEncryptedSource210R5.log",
+    "result": "/tmp/LumenBatch44Checks/HealthErrorStateEncryptedSource210R5.xcresult",
+    "checkedAt": 1794102568.210824,
+    "nativeExitCode": 0,
+    "driverExitCode": 0,
+    "passed": 1
+  },
+  "encryptedStringExactCheckpoint": "13aa76cde6eb1f9603f6a541a3b494be102a620f all40paths exactorigin/main beforeRelease",
+  "release": {
+    "session": 83396,
+    "PID": 9995,
+    "status": "terminal",
+    "log": "/tmp/LumenBatch44Checks/Source210UnsignedReleaseR1.log",
+    "plan": "health-current-release-source210-r1-plan.json",
+    "checkedAt": 1794103416.7866812,
+    "buildExitCode": 0,
+    "auditExitCode": 0,
+    "settingsAudit": "source210-unsigned-release-r2-settings-audit.json"
+  }
+}
