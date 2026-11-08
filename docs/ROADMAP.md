@@ -1,5 +1,9 @@
 # Lumen product gaps and delivery batches
 
+Current continuation, 8 November 2026: data confidence and recovery remain active. The Source210 root-acquisition repair passed the declared three simulator API cases, both affected import flows, fresh2,350 logic checks and the current unsigned Release audit, with independent review and exact GitHub backups. The Release artifact includes coverage recording; performance and distribution remain open. Source212 adds focused post-recovery disclosure checks: the older JSON case passed, with20 originals and the complete native result inspected; independent review/publication precede the encrypted case. All43 legacy gates, the eight durable work groups and the broader AI, privacy, Health, companion, accessibility and release work remain in scope. Use the [current handoff](CONTINUE_ON_NEW_COMPUTER.md) and its latest producer/progress links for current status. Continue directly between checkpoints.
+
+The dated batch entries below are historical and retain their original source and verification boundaries.
+
 Current publication: Batch42 is published as `31b30838d6c882f59b57477e54406a06e663d7ce`; fresh GitHub main/root and2,207 required file identities match. Design and scoped native/Release checks pass with no later application/UI edit. Scoped stopped-output cleanup is complete after its verified checkpoint, recovering an immediate measured3.52GB. Next implement the full predeclared durable Health contract. Full product goal remains active.
 
 Earlier checkpoints below are historical.
