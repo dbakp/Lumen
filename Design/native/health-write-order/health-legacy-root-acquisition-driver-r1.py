@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Dedicated synthetic simulator API observation; native observation != safety PASS."""
-import argparse,base64,gzip,hashlib,json,os,pathlib,plistlib,stat,subprocess,time
+import argparse,base64,gzip,hashlib,json,os,pathlib,plistlib,stat,subprocess,time,uuid
 P=pathlib.Path(__file__).resolve().parent; REPO=P.parents[2]
 SIM='AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481'
 MODES={'no-prior':('legacy-root-missing-no-prior','NoPrior'),'with-prior':('legacy-root-missing-with-prior','WithPrior'),'ordinary':('ordinary-root-missing-pending-removal-control','Ordinary')}
@@ -43,6 +43,58 @@ def exact_payload_rows(value):
   for x in value:count+=exact_payload_rows(x)
  return count
 
+def assess_observed(r,a,evidence):
+ initial=r['initialRoot']; prior=r['initialPrevious'];absent={'root':{'exists':False},'entries':{}}
+ assert r['movedRoot']==initial and r['initialFixed']==r['finalFixed']
+ assert r['traceBefore']==r['traceAfter'] and r['externalBefore']==r['externalAfter']
+ assert [n['phase'] for n in r['notes']]==['before-root-acquisition','after-root-acquisition']
+ before,after=r['notes'];assert before['root']==absent
+ if a.case=='no-prior':assert before['previous']==absent and r['movedPrevious']==prior
+ else:assert before['previous']==prior and r['movedPrevious']==absent
+ assert not any(n.startswith(('LumenData.restore-','LumenData.retired-','LumenData.discovery-')) for n in r['siblingNamesAfter'])
+ if a.expect=='safe':
+  assert after['root']==absent and r['finalRoot']==absent
+  assert after['previous']==before['previous']==r['finalPrevious']
+  assert r['rejected'] and not r['didCommit'];evidence['safetyAcceptance']=True
+  return
+ assert after['previous']==absent
+ if a.case=='no-prior':
+  assert after['root']['root']['exists'] and after['root']['entries']=={}
+  assert r['finalRoot']==after['root'] and r['finalPrevious']==absent
+  assert r['rejected'] and not r['didCommit']
+  evidence.update(observedRootMutation=True,baselineDefectObserved=True,acquisitionTransition='absent→new empty root; movedcurrent/prior exact')
+  return
+ assert after['root']==prior, 'actual prior identity/bytes restored at wrapper acquisition'
+ assert r['finalPrevious']==absent
+ if a.case=='with-prior':
+  assert r['finalRoot']==prior and r['rejected'] and not r['didCommit']
+  evidence.update(observedRootMutation=True,baselineDefectObserved=True,acquisitionTransition='absent→exact restored prior; movedcurrent exact')
+  return
+ assert not r['rejected'] and r['didCommit']
+ entries=r['finalRoot']['entries'];original=prior['entries']
+ def data(n):return base64.b64decode(entries[n]['base64'],validate=True)
+ before_journal=json.loads(base64.b64decode(r['journalBeforeBase64'],validate=True));after_journal=json.loads(data('health-write-intent.json'))
+ assert before_journal['owner']==after_journal['owner'] and before_journal['lifecycle']!=after_journal['lifecycle']
+ assert before_journal['events']==after_journal['events'] and len(after_journal['events'])==1 and after_journal['events'][0]['action']=='delete'
+ assert data('workouts.json')==b'[]'
+ # Every old ordinary file/directory is covered. Raw comparison is intentional;
+ # report a failure rather than silently excluding context or key-order changes.
+ for n,row in original.items():
+  assert n in entries,n
+  if n not in {'workouts.json','health-write-intent.json'} and 'base64' in row:assert entries[n]['base64']==row['base64'],n
+ private=[n for n in entries if n.startswith('.health-recovery/') and n.endswith('/manifest.json')]
+ assert len(private)==1 and not any(n.startswith('.health-recovery') for n in original)
+ base=private[0].removesuffix('/manifest.json');import uuid;uuid.UUID(base.split('/')[1])
+ manifest=json.loads(data(private[0]));assert manifest['version']==1 and manifest['domains']==['workouts'] and manifest['photos'] is False and manifest['intent'] is True and not manifest.get('legacyOrigins')
+ assert data(base+'/workouts.json')==base64.b64decode(original['workouts.json']['base64'],validate=True)
+ assert data(base+'/device-intent.json')==base64.b64decode(r['journalBeforeBase64'],validate=True)
+ receipts=[n for n in entries if n.startswith('.health-recovery-history/') and n.endswith('.json')];assert len(receipts)==1
+ receipt=json.loads(data(receipts[0]));assert set(receipt)=={'source','domains','recordDigests','photoDigests','recoveredAt'}
+ assert receipt['source']=='reviewed-backup' and receipt['domains']==['workouts'] and receipt['recordDigests']=={'workouts.json':sha(b'[]')} and receipt['photoDigests']=={}
+ allowed=set(original)|{'.health-recovery',base,base+'/manifest.json',base+'/workouts.json',base+'/device-intent.json','.health-recovery-history',receipts[0]}
+ assert set(entries)==allowed, sorted(set(entries)^allowed)
+ evidence.update(ordinaryPendingDeletionPreserved=True,completeFinalTreeAndReceipt=True,acquisitionTransition='absent→exact restored prior before original intent read; committed selected empty workouts')
+
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--source',required=True);ap.add_argument('--build',required=True);ap.add_argument('--case',choices=MODES,required=True);ap.add_argument('--trial',required=True);ap.add_argument('--expect',choices=['mutation','safe','control'],required=True);a=ap.parse_args()
  assert a.trial.isalnum();mode,test=MODES[a.case];assert (a.case=='ordinary')==(a.expect=='control')
@@ -62,12 +114,22 @@ def main():
      if data_root is None:data_root=pathlib.Path(cmd('xcrun','simctl','get_app_container',SIM,'com.dbakp.lumen','data'))
      report_file=data_root/'tmp/Lumen-legacy-root-probe-report.json'
      if report_file.stat().st_mtime<start:raise FileNotFoundError()
-     report=read(report_file);assert report['mode']==mode
+     raw_report=report_file.read_bytes();(P/(prefix+'-latest-original-report.json')).write_bytes(raw_report)
+     evidence['latestOriginalReport']={'bytes':len(raw_report),'sha256':sha(raw_report)}
+     report=json.loads(raw_report);assert report['mode']==mode
+     uuid.UUID(report['runID'])
+     if 'prepared' in evidence:assert report['runID']==evidence['prepared']['runID']
      phase=report['phase']
-     if phase=='failed':raise AssertionError(report)
+     write(P/(prefix+'-latest-report.json'),report)
+     if phase=='failed':raise AssertionError('Native probe failed; full original report retained')
      if phase in ['prepared','observed'] and phase not in seen:
       installed=pathlib.Path(cmd('xcrun','simctl','get_app_container',SIM,'com.dbakp.lumen','app'))/'Lumen';assert installed.stat().st_size==build['binaryBytes'] and sha(installed.read_bytes())==build['sha256']
-      paths={k:pathlib.Path(v) for k,v in report['paths'].items()};assert all(x.name.startswith('LumenData') for x in paths.values());assert paths['root'].name=='LumenData';assert len({x.parent for x in paths.values()})==1
+      paths={k:pathlib.Path(v) for k,v in report['paths'].items()}
+      expected=pathlib.Path(cmd('xcrun','simctl','get_app_container',SIM,'com.dbakp.lumen','group.com.dbakp.lumen'))/'LumenData'
+      assert set(paths)=={'root','previous','moved','movedPrevious'} and paths['root'].resolve()==expected.resolve()
+      assert paths['previous']==paths['root'].with_suffix('.previous')
+      assert paths['moved']==paths['root'].parent/('LumenData.legacy-root-probe-'+report['runID'])
+      assert paths['movedPrevious']==paths['root'].parent/('LumenData.legacy-prior-probe-'+report['runID'])
       rows=exact_payload_rows(report)
       for reportkey,pathkey in ([('initialRoot','root'),('initialPrevious','previous')] if phase=='prepared' else [('finalRoot','root'),('finalPrevious','previous'),('movedRoot','moved'),('movedPrevious','movedPrevious')]):assert live_tree(paths[pathkey])==report[reportkey],reportkey
       plist=plistlib.loads((data_root/'Library/Preferences/com.dbakp.lumen.plist').read_bytes())
@@ -76,7 +138,12 @@ def main():
        assert not live_tree(paths['moved'])['root']['exists'] and not live_tree(paths['movedPrevious'])['root']['exists']
        assert not any(x.name.startswith(('LumenData.restore-','LumenData.retired-','LumenData.discovery-')) for x in paths['root'].parent.iterdir())
        assert report['leaseReady']==(a.case!='ordinary')
-      write(P/(prefix+'-'+phase+'.json'),report);evidence[phase]={'payloadRows':rows,'installedIdentity':True,'liveTreesAndFixedDataExact':True,'runID':report['runID']};seen.add(phase)
+      (P/(prefix+'-'+phase+'.json')).write_bytes(raw_report)
+      if phase=='observed':
+       assert not any(x.name.startswith(('LumenData.restore-','LumenData.retired-','LumenData.discovery-')) for x in paths['root'].parent.iterdir()), 'unfinished stage/retired/discovery'
+       assess_observed(report,a,evidence)
+       manifest_verify(m)
+      evidence[phase]={'payloadRows':rows,'installedIdentity':True,'liveTreesAndFixedDataExact':True,'runID':report['runID']};seen.add(phase)
       write(data_root/'tmp/Lumen-legacy-root-probe-ack.json',{'runID':report['runID'],'phase':phase})
      if process.poll() is not None:break
     except (FileNotFoundError,subprocess.CalledProcessError,json.JSONDecodeError):data_root=None
@@ -84,27 +151,28 @@ def main():
    else:raise TimeoutError('bounded native observation')
   evidence['nativeExitCode']=process.wait();assert evidence['nativeExitCode']==0 and seen=={'prepared','observed'},evidence
   summary=json.loads(cmd('xcrun','xcresulttool','get','test-results','summary','--path',str(result)));write(P/(prefix+'-summary.json'),summary);assert summary['passedTests']==1 and summary['failedTests']==0 and summary['skippedTests']==0
-  r=read(P/(prefix+'-observed.json'));initial=r['initialRoot'];assert r['movedRoot']==initial;assert r['initialFixed']==r['finalFixed'];assert r['traceBefore']==r['traceAfter'] and r['externalBefore']==r['externalAfter']
-  assert [n['phase'] for n in r['notes']]==['before-root-acquisition','after-root-acquisition'];assert not r['notes'][0]['root']['root']['exists']
-  if a.case!='ordinary':
-   assert r['rejected'] and not r['didCommit'];mutated=r['finalRoot']['root']['exists'];evidence['observedRootMutation']=mutated
-   if a.case=='no-prior':assert r['movedPrevious']==r['initialPrevious']
-   if a.expect=='mutation':assert mutated;evidence['baselineDefectObserved']=True
-   else:assert not mutated and r['finalPrevious']==(r['initialPrevious'] if a.case=='with-prior' else {'root':{'exists':False},'entries':{}});evidence['safetyAcceptance']=True
-  else:
-   assert not r['rejected'] and r['didCommit'];entries=r['finalRoot']['entries'];before=json.loads(base64.b64decode(r['journalBeforeBase64']));after=json.loads(base64.b64decode(entries['health-write-intent.json']['base64']))
-   assert before['owner']==after['owner'] and before['lifecycle']!=after['lifecycle'] and before['events']==after['events'] and len(after['events'])==1 and after['events'][0]['action']=='delete'
-   assert json.loads(base64.b64decode(entries['workouts.json']['base64']))==[]
-   for name in ['water.json','goals.json','profile.json']:
-    assert json.loads(base64.b64decode(entries[name]['base64']))==json.loads(base64.b64decode(initial['entries'][name]['base64'])),name
-   before_workout=initial['entries']['workouts.json']['base64'];assert any(row.get('base64')==before_workout for n,row in entries.items() if n.startswith('.health-recovery/'))
-   evidence['ordinaryPendingDeletionPreserved']=True
   manifest_verify(m);evidence['status']='PASS declared observation/expectation only';evidence['driverExitCode']=0
  except Exception as ex:
   error=repr(ex);evidence.update(status='FAILED observation or expectation; no acceptance',error=error,driverExitCode=1)
   if process is not None and process.poll() is None:process.terminate();process.wait(timeout=30)
  finally:
+  if process is not None:evidence['nativeExitCode']=process.poll()
+  if result.exists():
+   try:
+    summary=json.loads(cmd('xcrun','xcresulttool','get','test-results','summary','--path',str(result)));write(P/(prefix+'-summary.json'),summary)
+   except Exception as ex:evidence['summaryExportError']=repr(ex)
+   for kind in ['png','json']:
+    destination=pathlib.Path(str(raw)+'-attachments');destination.mkdir(exist_ok=True)
+    try:
+     if kind=='png':subprocess.run(['xcrun','xcresulttool','export','attachments','--path',str(result),'--output-path',str(destination)],stdout=subprocess.DEVNULL,stderr=subprocess.PIPE,check=True)
+     bindings=[]
+     for f in sorted(destination.rglob('*')):
+      if f.is_file() and not f.is_symlink() and f.suffix.lower()=='.'+kind and f.name!='manifest.json':
+       target=P/(prefix+'-'+f.name);target.write_bytes(f.read_bytes());bindings.append({'file':target.name,'bytes':target.stat().st_size,'sha256':sha(target.read_bytes()),'raw':str(f),'individuallyOpened':False})
+     write(P/(prefix+'-'+kind+'-attachments.json'),bindings)
+    except Exception as ex:evidence[kind+'AttachmentExportError']=repr(ex)
   if log.exists():b=log.read_bytes();(P/(prefix+'.log.gz')).write_bytes(gzip.compress(b,mtime=0));evidence.update(logBytes=len(b),logSHA256=sha(b))
+  if any(k.endswith('ExportError') for k in evidence):error=error or 'Native retention incomplete';evidence.update(status='FAILED evidence retention; no acceptance',driverExitCode=1,safetyAcceptance=False)
   evidence['finishedAt']=time.time();write(P/(prefix+'-outcome.json'),evidence);print(json.dumps(evidence),flush=True)
  return 1 if error else 0
 if __name__=='__main__':raise SystemExit(main())

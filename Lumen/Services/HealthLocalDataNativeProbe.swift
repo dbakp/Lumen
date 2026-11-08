@@ -428,6 +428,13 @@ import Darwin
             do { try await LocalStore.recoverHealthChecked(payload, control: control, canCommit: { true }, didCommit: { didCommit = true }) }
             catch { rejected = true; actualError = String(describing: error) }
             observedRoot = nil
+            // Allow the actual commit retirement worker to finish before the
+            // observed host boundary; do not erase or conceal any residue.
+            for _ in 0..<200 {
+                let siblings = try fm.contentsOfDirectory(atPath: root.deletingLastPathComponent().path)
+                if !siblings.contains(where: { $0.hasPrefix("LumenData.restore-") || $0.hasPrefix("LumenData.retired-") || $0.hasPrefix("LumenData.discovery-") }) { break }
+                try await Task.sleep(for: .milliseconds(50))
+            }
             report["didCommit"] = didCommit; report["rejected"] = rejected; report["error"] = actualError ?? NSNull()
             report["finalRoot"] = try tree(root); report["finalPrevious"] = try tree(previous)
             report["movedRoot"] = try tree(moved); report["movedPrevious"] = try tree(movedPrevious)

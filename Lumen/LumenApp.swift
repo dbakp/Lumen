@@ -72,6 +72,9 @@ private struct LumenReadyView: View {
             .task {
                 #if DEBUG && targetEnvironment(simulator)
                 if ProviderConnectionUIFixture.isAuthorized { return }
+                if HealthWriteNativeProbe.requested, ProcessInfo.processInfo.arguments.contains("-health-legacy-root-probe") {
+                    await healthWriteProbe.run(); return
+                }
                 if HealthRecoveryUIFixture.requested || HealthRecoveryUIFixture.backupRequested {
                     if HealthRecoveryUIFixture.dailyRebuildRequested { await HealthDailyCacheHealthUIFixture.connect() }
                     return
