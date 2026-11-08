@@ -1,0 +1,33 @@
+{
+  "status": "PASS actual current driver/checker --help imports and exits0 before native paths",
+  "rows": [
+    {
+      "file": "Design/native/health-write-order/legacy-target-change-driver-r6.py",
+      "sha256": "79ddde9f9b98c438af36f15286e78110fb114247f1409dc07802cda87abb17f3",
+      "command": [
+        "python3",
+        "-B",
+        "Design/native/health-write-order/legacy-target-change-driver-r6.py",
+        "--help"
+      ],
+      "exit": 0,
+      "stdout": "usage: legacy-target-change-driver-r6.py [-h] --source SOURCE --host-source\n                                         HOST_SOURCE --build BUILD --trial\n                                         TRIAL\n\noptional arguments:\n  -h, --help            show this help message and exit\n  --source SOURCE\n  --host-source HOST_SOURCE\n  --build BUILD\n  --trial TRIAL\n",
+      "stderr": ""
+    },
+    {
+      "file": "Design/native/health-write-order/check-legacy-target-change-r9.py",
+      "sha256": "efa51587cbe5a49eecc04f54c0c88619fa9c8fc358eee9e81e277c77c7ea3caa",
+      "command": [
+        "python3",
+        "-B",
+        "Design/native/health-write-order/check-legacy-target-change-r9.py",
+        "--help"
+      ],
+      "exit": 0,
+      "stdout": "usage: check-legacy-target-change-r9.py [-h] --checker-source CHECKER_SOURCE\n                                        --case-source CASE_SOURCE --build\n                                        BUILD --trial TRIAL\n                                        prefix\n\npositional arguments:\n  prefix\n\noptional arguments:\n  -h, --help            show this help message and exit\n  --checker-source CHECKER_SOURCE\n  --case-source CASE_SOURCE\n  --build BUILD\n  --trial TRIAL\n",
+      "stderr": ""
+    }
+  ],
+  "scope": "No native run/reset or process/defaults query acceptance; inherited20import/startup controls unchanged source234 carry only",
+  "checkedAt": 1794148074.686729
+}

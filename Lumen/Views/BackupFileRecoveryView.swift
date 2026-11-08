@@ -218,6 +218,17 @@ struct BackupFileRecoveryView: View {
     @AccessibilityFocusState private var recoveryErrorFocused: UUID?
     @State private var errorReveal: Task<Void, Never>?
     @State private var busyReveal: Task<Void, Never>?
+    private struct RecoveryCompletion: Equatable {
+        let id = UUID()
+        let sessionID: UUID
+        let appearanceID: UUID
+        let attemptID: UUID
+    }
+    @State private var completion: RecoveryCompletion?
+    @State private var successReveal: Task<Void, Never>?
+    @AccessibilityFocusState private var recoverySuccessFocused = false
+    @State private var appearanceID = UUID()
+    @State private var attemptID = UUID()
     @State private var reviewActive = false
     @State private var operation: BackupOperationControl?
     @State private var work: Task<Void, Never>?
@@ -273,11 +284,12 @@ struct BackupFileRecoveryView: View {
                 Section {
                     Label("Selected data recovered", systemImage: "checkmark.circle")
                         .accessibilityIdentifier("fileHealthRecovered")
+                        .accessibilityFocused($recoverySuccessFocused)
                         #if DEBUG && targetEnvironment(simulator)
                         .accessibilityValue(cancelVerification.successPhase)
                         .task { await HealthRecoveryCancelUIFixture.observeSuccess() }
                         #endif
-                }
+                }.id("fileHealthRecoverySuccess")
             }
             if captureVisible {
                 Section { ProgressView("Checking saved data…").accessibilityIdentifier("fileRecoveryCaptureProgress") }
@@ -342,6 +354,7 @@ struct BackupFileRecoveryView: View {
                     recoveryProgress
                     Button("Cancel") {
                         busyReveal?.cancel(); busyReveal = nil
+                        cancelSuccessReveal()
                         operation?.cancel(); work?.cancel()
                     }
                     .accessibilityIdentifier("cancelFileRecovery")
@@ -367,7 +380,15 @@ struct BackupFileRecoveryView: View {
                 scroll.scrollTo("fileHealthRecoveryCancel", anchor: .bottom)
             }
         }
+        .onChange(of: completion?.id) { _, _ in
+            successReveal?.cancel(); successReveal = nil
+            guard let completion, canRevealSuccess(completion) else { return }
+            busyReveal?.cancel(); busyReveal = nil
+            errorReveal?.cancel(); errorReveal = nil; recoveryErrorFocused = nil
+            revealSuccess(completion, scroll: scroll)
+        }
         .onChange(of: issue?.id) { _, failureID in
+            if failureID != nil { cancelSuccessReveal() }
             errorReveal?.cancel()
             guard let failureID, reviewActive else { return }
             errorReveal = Task { @MainActor in
@@ -403,15 +424,40 @@ struct BackupFileRecoveryView: View {
             Button("Recover") { recover(selection) }
             Button("Not now", role: .cancel) { }
         } message: { selection in Text(confirmationMessage(selection)) }
-        .onAppear { reviewActive = true; startOriginCapture() }
+        .onAppear { appearanceID = UUID(); reviewActive = true; startOriginCapture() }
         .onDisappear {
             reviewActive = false
+            cancelSuccessReveal()
             if let captureControl { session.suspendOriginCapture(control: captureControl) }
             captureWork?.cancel(); captureReveal?.cancel()
             captureControl = nil; captureWork = nil; captureReveal = nil; captureVisible = false
             busyReveal?.cancel(); busyReveal = nil
             errorReveal?.cancel(); errorReveal = nil; recoveryErrorFocused = nil
             operation?.cancel(); work?.cancel()
+        }
+    }
+
+    private func cancelSuccessReveal() {
+        successReveal?.cancel(); successReveal = nil
+        completion = nil; recoverySuccessFocused = false
+    }
+
+    private func canRevealSuccess(_ value: RecoveryCompletion) -> Bool {
+        reviewActive && recovered && !busy && issue == nil && operation == nil
+        && completion == value && value.sessionID == session.id
+        && value.appearanceID == appearanceID && value.attemptID == attemptID
+    }
+
+    private func revealSuccess(_ value: RecoveryCompletion, scroll: ScrollViewProxy) {
+        successReveal = Task { @MainActor in
+            // The successful operation has finished before this layout turn.
+            // Keep metadata only; completed presentation must not own its input.
+            await Task.yield()
+            guard !Task.isCancelled, canRevealSuccess(value) else { return }
+            scroll.scrollTo("fileHealthRecoverySuccess", anchor: .top)
+            await Task.yield()
+            guard !Task.isCancelled, canRevealSuccess(value) else { return }
+            recoverySuccessFocused = true
         }
     }
 
@@ -472,6 +518,9 @@ struct BackupFileRecoveryView: View {
     private func recover(_ selection: ConfirmationSelection) {
         guard canRecover, selection.sessionID == session.id, selection.domains == selected,
               selection.omitPhotos == omitPhotos, selection.legacyDomains == selectedLegacyDomains else { return }
+        cancelSuccessReveal()
+        attemptID = UUID()
+        let activeAttemptID = attemptID, activeAppearanceID = appearanceID
         errorReveal?.cancel(); errorReveal = nil
         busy = true; issue = nil; recoveryErrorFocused = nil
         #if DEBUG && targetEnvironment(simulator)
@@ -499,6 +548,14 @@ struct BackupFileRecoveryView: View {
                 try await health.recoverUnavailableHealth(payload, control: control)
                 committedLegacyDomains = selection.legacyDomains; committedDomains = domains
                 recovered = true; selected = []
+                // A committed outcome remains truthful even if navigation left.
+                // Only its still-active attempt may request a deferred reveal.
+                if reviewActive, appearanceID == activeAppearanceID, attemptID == activeAttemptID,
+                   operation === control, !Task.isCancelled,
+                   (try? control.checkCancellation()) != nil {
+                    completion = RecoveryCompletion(sessionID: session.id,
+                        appearanceID: activeAppearanceID, attemptID: activeAttemptID)
+                }
                 #if DEBUG && targetEnvironment(simulator)
                 HealthLegacyTargetChangeUIFixture.succeeded(session.id)
                 #endif

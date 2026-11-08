@@ -5879,11 +5879,20 @@ final class LumenSmokeTests: XCTestCase {
             try require(alert.waitForExistence(timeout: 5), "fresh-confirmation", "Fresh confirmation missing")
             snap(prefix + "-fresh-confirmation"); alert.buttons["Recover"].tap()
             let recovered = app.descendants(matching: .any).matching(identifier: "fileHealthRecovered").firstMatch
-            try require(recovered.waitForExistence(timeout: 30), "fresh-committed", "Fresh authority did not recover selected data")
+            try require(recovered.waitForExistence(timeout: 30), "fresh-committed", "Recovery completion message did not appear")
+            let reviewBar = app.navigationBars["Review recovery"].firstMatch
+            let successVisible = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+                guard reviewBar.exists, recovered.exists, recovered.isHittable else { return false }
+                let box = CGRect(x: 0, y: reviewBar.frame.maxY + 12, width: app.frame.width,
+                    height: app.frame.maxY - 40 - reviewBar.frame.maxY - 12)
+                return box.contains(recovered.frame) && recovered.label.contains("Selected data recovered")
+            }, object: recovered)
+            try require(XCTWaiter.wait(for: [successVisible], timeout: 10) == .completed,
+                "fresh-committed", "Whole completion message was not automatically visible before test scrolling")
             try require(!failure.exists, "fresh-committed", "Fresh successful recovery retained stale error")
-            try whole(recovered, "fresh-committed", nav: "Review recovery")
             observations.append(["phase": "fresh-committed", "message": recovered.label,
-                "hittable": recovered.isHittable, "frame": String(describing: recovered.frame)])
+                "hittable": recovered.isHittable, "frame": String(describing: recovered.frame),
+                "wholeSuccessBeforeAnyTestScroll": true, "at": Date().timeIntervalSince1970])
             snap(prefix + "-fresh-committed"); try checkpoint("fresh-committed")
             try backToSettings("final-closed"); snap(prefix + "-final-closed")
             try checkpoint("final-closed", location: "settings"); snap(prefix + "-final-followup")
