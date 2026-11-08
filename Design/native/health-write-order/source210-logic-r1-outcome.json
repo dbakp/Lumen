@@ -1,0 +1,151 @@
+{
+  "source": "durable-source-r210.json",
+  "runs": [
+    {
+      "label": "build",
+      "exitCode": 0,
+      "PID": 62772,
+      "command": [
+        "swift",
+        "build",
+        "--scratch-path",
+        "/tmp/LumenLogicBuild",
+        "--product",
+        "LumenLogicChecks"
+      ],
+      "log": "source210-logic-build-r1.log.gz",
+      "logBytes": 9810,
+      "logSHA256": "18b4ef751af2a93d09e3e1571e692bf72f013dd3ae230bc6813fdd533a80888f",
+      "passLines": 0,
+      "terminalLines": [
+        "146 |     id _kvo_;",
+        "",
+        "[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>",
+        "[15\u2009/\u200917] LumenLogicChecks-product",
+        "Build complete! (10,38 secs)"
+      ],
+      "startedAt": 1794099834.765038,
+      "finishedAt": 1794099848.898956
+    },
+    {
+      "label": "review",
+      "exitCode": 0,
+      "PID": 62954,
+      "command": [
+        "/private/tmp/LumenLogicBuild/out/Products/Debug/LumenLogicChecks",
+        "--health-origin-review",
+        "Design/native/health-write-order/source210-origin-review-r1.json"
+      ],
+      "log": "source210-logic-review-r1.log.gz",
+      "logBytes": 30,
+      "logSHA256": "080ffed9320724ca78a2e8e3daf6235abc756c7e9bf534a0e791f4b50ea3ef16",
+      "passLines": 1,
+      "terminalLines": [
+        "PASS: 23 origin review checks"
+      ],
+      "startedAt": 1794099848.9230158,
+      "finishedAt": 1794099849.562369,
+      "declaredFocusChecks": 23,
+      "report": "source210-origin-review-r1.json"
+    },
+    {
+      "label": "foundation",
+      "exitCode": 0,
+      "PID": 62963,
+      "command": [
+        "/private/tmp/LumenLogicBuild/out/Products/Debug/LumenLogicChecks",
+        "--health-legacy-origin",
+        "Design/native/health-write-order/source210-legacy-origin-r1.json"
+      ],
+      "log": "source210-logic-foundation-r1.log.gz",
+      "logBytes": 82,
+      "logSHA256": "e4d48e919c56bcd9d298b7c2c7b8ed4d3fad9a03d5898153a93ebe0d799e9db3",
+      "passLines": 1,
+      "terminalLines": [
+        "PASS: 57 failed-legacy observation/provenance checks; integration remains pending"
+      ],
+      "startedAt": 1794099849.5744379,
+      "finishedAt": 1794099861.0795362,
+      "declaredFocusChecks": 57,
+      "report": "source210-legacy-origin-r1.json"
+    },
+    {
+      "label": "boundaries",
+      "exitCode": 0,
+      "PID": 63022,
+      "command": [
+        "/private/tmp/LumenLogicBuild/out/Products/Debug/LumenLogicChecks",
+        "--health-legacy-boundaries",
+        "Design/native/health-write-order/source210-legacy-boundaries-r1.json"
+      ],
+      "log": "source210-logic-boundaries-r1.log.gz",
+      "logBytes": 69,
+      "logSHA256": "111466975626b6deacede02a0fb1cc002c3126fb7887176e39e784a9c7afd6d7",
+      "passLines": 1,
+      "terminalLines": [
+        "PASS: final-prepare cleanup and final retained-copy shape boundaries"
+      ],
+      "startedAt": 1794099861.092205,
+      "finishedAt": 1794099861.260936,
+      "declaredFocusChecks": 22,
+      "report": "source210-legacy-boundaries-r1.json"
+    },
+    {
+      "label": "backend",
+      "exitCode": 0,
+      "PID": 63025,
+      "command": [
+        "/private/tmp/LumenLogicBuild/out/Products/Debug/LumenLogicChecks",
+        "--health-legacy-transaction",
+        "Design/native/health-write-order/source210-legacy-transaction-r1.json"
+      ],
+      "log": "source210-logic-backend-r1.log.gz",
+      "logBytes": 232,
+      "logSHA256": "db6383d3236755dde931de570e6394501af17b95209767662e635ac3b816cd33",
+      "passLines": 1,
+      "terminalLines": [
+        "Retained legacy transaction root: /var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/Lumen-legacy-transaction-8029D93C-2B2E-431C-B02F-D55BE189F26F",
+        "PASS: 117 failed-legacy backend transaction checks; native product integration pending"
+      ],
+      "startedAt": 1794099861.2905111,
+      "finishedAt": 1794099862.382826,
+      "declaredFocusChecks": 117,
+      "report": "source210-legacy-transaction-r1.json"
+    },
+    {
+      "label": "full",
+      "exitCode": 0,
+      "PID": 63046,
+      "command": [
+        "/private/tmp/LumenLogicBuild/out/Products/Debug/LumenLogicChecks"
+      ],
+      "log": "source210-logic-full-r1.log.gz",
+      "logBytes": 171673,
+      "logSHA256": "cf495d3ce4c9497114472e8bc344145388c20601caa949fb0a1a4be26ddd35d1",
+      "passLines": 2177,
+      "terminalLines": [
+        "PASS: a real concurrent local writer enters the storage barrier",
+        "PASS: restore cannot commit while a concurrent local writer holds the barrier",
+        "PASS: the waiting restore observes the completed write and rejects its stale revision",
+        "PASS: existing version-one JSON backups remain readable after the streamed format is introduced",
+        "All import, model, totals, history, plan, conversation, evidence, document and reminder checks passed."
+      ],
+      "startedAt": 1794099862.39746,
+      "finishedAt": 1794099898.0891929
+    }
+  ],
+  "status": "PASS freshhostcompile/focused23+57+22+117 and actualfull2350; focuscounts separate, no native/UI/Release acceptance",
+  "binary": {
+    "path": "/private/tmp/LumenLogicBuild/out/Products/Debug/LumenLogicChecks",
+    "bytes": 16979760,
+    "sha256": "b6a2f459f2ade373fd509b00f86970d46992cba08b1680b1587172afc32b49ca"
+  },
+  "fullComponents": {
+    "individualPassLines": 2177,
+    "dailyCacheChecks": 137,
+    "todayQueryChecks": 36,
+    "total": 2350
+  },
+  "scope": "Host pure model/backend tests; LocalStore UIKit caller itself needs actualnative safe/control cases. Retained synthetic focusfixtures for independent audit, not permanent /tmp archives.",
+  "availableBytes": 42807500800
+}

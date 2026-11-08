@@ -289,7 +289,7 @@ def main():
   evidence['nativeExitCode']=process.wait();assert evidence['nativeExitCode']==0 and seen=={'prepared','observed'},evidence
   manifest_verify(m);evidence['status']='PASS declared observation/expectation only';evidence['driverExitCode']=0
  except Exception as ex:
-  error=repr(ex);evidence.update(status='FAILED observation or expectation; no acceptance',error=error,driverExitCode=1)
+  error=repr(ex);evidence.update(status='FAILED observation or expectation; no acceptance',error=error,driverExitCode=1,safetyAcceptance=False)
   write(P/(prefix+'-host-failure.json'),{'error':error,'phase':'host gate failed; no further acknowledgement','nativePID':process.pid if process else None,'at':time.time()})
   if process is not None and process.poll() is None:
    # Keep XCTest alive so the app's own unacknowledged protocol can fail and
@@ -326,6 +326,7 @@ def main():
    b=log.read_bytes();(P/(prefix+'.log.gz')).write_bytes(gzip.compress(b,mtime=0));evidence.update(logBytes=len(b),logSHA256=sha(b))
   except Exception as ex:retention_errors.append('log retention: '+repr(ex));evidence['logRetentionError']=repr(ex)
   if retention_errors:error=error or 'Native retention incomplete';evidence.update(status='FAILED evidence retention; no acceptance',driverExitCode=1,safetyAcceptance=False)
-  evidence['finishedAt']=time.time();write(P/(prefix+'-outcome.json'),evidence);print(json.dumps(evidence),flush=True)
+  evidence['finishedAt']=time.time();write(P/(prefix+'-outcome.json'),evidence)
+  print(json.dumps({'source':a.source,'mode':mode,'status':evidence['status'],'nativeExitCode':evidence.get('nativeExitCode'),'driverExitCode':evidence['driverExitCode'],'safetyAcceptance':evidence['safetyAcceptance'],'outcome':prefix+'-outcome.json','retentionErrorCount':len(evidence.get('retention',{}).get('errors',[]))}),flush=True)
  return 1 if error else 0
 if __name__=='__main__':raise SystemExit(main())

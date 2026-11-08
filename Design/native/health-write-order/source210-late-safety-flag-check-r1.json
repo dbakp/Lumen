@@ -1,0 +1,29 @@
+{
+  "status": "PASS isolated late-host-failure flag regression; no native/product acceptance",
+  "baselineSource": "durable-source-r209.json.gz",
+  "baselineDriverSHA256": "c3f9131579c1f9db6712dbc18bad33c412cebfec26c274b597de8738a4b7b7e0",
+  "candidateDriverBytes": 26667,
+  "candidateDriverSHA256": "3db33098b2a8805f6208825d2528e6d9fa36b2c202a073a8632780e4796c751e",
+  "baseline": {
+    "driverExitCode": 1,
+    "status": "FAILED observation or expectation; no acceptance",
+    "safetyAcceptance": true,
+    "acknowledgedPhases": [
+      "prepared"
+    ],
+    "lateHostFailurePreserved": true,
+    "retentionErrorsInjected": false
+  },
+  "fixed": {
+    "driverExitCode": 1,
+    "status": "FAILED observation or expectation; no acceptance",
+    "safetyAcceptance": false,
+    "acknowledgedPhases": [
+      "prepared"
+    ],
+    "lateHostFailurePreserved": true,
+    "retentionErrorsInjected": false
+  },
+  "scope": "Exact old/new main ASTs with fake source/installed/live/mode/native/retention endpoints and real known temporary files. Mode stub deliberately sets preliminarytrue; later source-check fault, successfuldiagnostic retention and noobservedack isolateP58F1. No actual safe-recovery/authority/exporter behavior proved. Fixtures deleted after compact result.",
+  "checkedAt": 1794099575.628544
+}

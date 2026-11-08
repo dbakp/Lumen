@@ -13,6 +13,9 @@ enum HealthRecoverySelection {
         fileprivate var fileSource: BackupRecoverySource? = nil
         fileprivate var reviewedPhotos: [String: BackupPhotoIdentity] = [:]
         fileprivate var legacyOrigins: [HealthLocalFiles.Domain: HealthLegacyRecoveryOrigin] = [:]
+
+        /// Expose only the acquisition rule, never the retained raw observations.
+        var requiresExistingLegacyRoot: Bool { !legacyOrigins.isEmpty }
     }
 
     /// Attach observations owned by the same explicit review; never recapture a

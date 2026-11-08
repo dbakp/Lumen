@@ -65,7 +65,15 @@ public enum LocalStore {
             #if DEBUG && targetEnvironment(simulator)
             HealthLegacyRootAcquisitionNativeProbe.observe("before-root-acquisition")
             #endif
-            let root = try checkedDirectory(), captured = revision, owner = try HealthWriteDeviceOwner.current()
+            // A captured origin belongs to the reviewed root. Do not create or
+            // restore another root before its identity is checked by prepare.
+            let root: URL
+            if payload.requiresExistingLegacyRoot {
+                root = storageRoot
+            } else {
+                root = try checkedDirectory()
+            }
+            let captured = revision, owner = try HealthWriteDeviceOwner.current()
             #if DEBUG && targetEnvironment(simulator)
             HealthLegacyRootAcquisitionNativeProbe.observe("after-root-acquisition")
             #endif
