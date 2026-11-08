@@ -42,7 +42,18 @@ assert phases['acknowledged']['successValue']=='success-observed'
 assert phases['post-success']['elements'][0]['label']=='Older saved data will stay in a private recovery copy on this iPhone. For meal recovery, this includes any old photos.'
 assert phases['relaunch-review']['elements'][0]['label']=="This saved data can't be replaced here."
 assert phases['relaunch-review']['elements'][1]['value']=='0' and phases['relaunch-review']['elements'][1]['enabled'] is False
-assert len(phases['relaunch-review']['elements'])==3 and phases['relaunch-review']['elements'][2]['label']=='Current data opens'
+assert len(phases['relaunch-review']['elements'])==4
+assert phases['relaunch-review']['elements'][2]['identifier']=='reviewFile-workouts'
+assert phases['relaunch-review']['elements'][3]['label']=='Current data opens'
+for phase,domain in [('healthy-water','water'),('healthy-goals','goals'),('relaunch-review','workouts')]:
+    x=phases[phase];association=x['healthyAssociation'];anchor=association['reviewFrame'];status=association['statusFrame']
+    assert association['reviewIdentifier']=='reviewFile-'+domain and association['requeriedAfterLastScroll'] is True
+    assert 0<=association['verticalGap']<80 and abs(association['verticalGap']-(status['y']-anchor['y']-anchor['height']))<0.001
+    anchors=[e for e in x['elements'] if e['identifier']=='reviewFile-'+domain]
+    assert len(anchors)==1 and anchors[0]['frame']==anchor
+    assert x['elements'][-1]['frame']==status and x['elements'][-1]['label']=='Current data opens'
+    assert status['y']>=anchor['y']+anchor['height']
+
 assert all(phases['relaunch-workouts-healthy'][k] is True for k in ['noWorkoutsToggle','recoverDisabled','noFixtureRelaunchArguments'])
 root=h.container('group.com.dbakp.lumen')/'LumenData';assert h.snapshot(root)==r['after']
 assert h.directories(root)==r['directoriesAfter']==r['commitObservedDirectories']==h.allowed_directories(r['directoriesBefore'],r['after'])

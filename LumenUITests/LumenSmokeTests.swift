@@ -5629,18 +5629,13 @@ final class LumenSmokeTests: XCTestCase {
             XCTAssertTrue(filename.waitForExistence(timeout: 10))
             XCTAssertEqual(filename.label, "Lumen-backup-health-matrix-two-legacy.json")
         }
-        func whole(_ suffix: String, _ elements: [XCUIElement], towardsTop: Bool = false) {
-            let first = elements[0]
+        func whole(_ suffix: String, _ stable: [XCUIElement], towardsTop: Bool = false, healthyLink: XCUIElement? = nil) {
+            let first = stable[0]
             reveal(first, towardsTop: towardsTop)
             XCTAssertTrue(first.waitForExistence(timeout: 10))
-            // All group members are ordered in the Form. Materialize the last
-            // row, then return to the first before measuring their real union.
-            if let last = elements.last, elements.count > 1 {
-                reveal(last)
-                reveal(first, towardsTop: true)
-            }
-            for element in elements { XCTAssertTrue(element.waitForExistence(timeout: 5)) }
-            guard elements.allSatisfy({ $0.exists && !$0.frame.isEmpty }) else {
+            if let last = stable.last, stable.count > 1 { reveal(last); reveal(first, towardsTop: true) }
+            for element in stable { XCTAssertTrue(element.waitForExistence(timeout: 5)) }
+            guard stable.allSatisfy({ $0.exists && !$0.frame.isEmpty }) else {
                 XCTFail("Requested native group did not materialize after bounded reveal"); return
             }
             func viewport() -> CGRect {
@@ -5649,30 +5644,71 @@ final class LumenSmokeTests: XCTestCase {
                 let bottom = bar.exists && bar.isHittable ? bar.frame.minY - 12 : app.frame.maxY - 40
                 return CGRect(x: app.frame.minX, y: top, width: app.frame.width, height: bottom - top)
             }
-            func union() -> CGRect { elements.reduce(CGRect.null) { $0.union($1.frame) } }
-            for _ in 0..<12 {
-                let bounds = viewport(), frame = union()
-                if elements.allSatisfy({ $0.exists && !$0.frame.isEmpty }) && bounds.insetBy(dx: 0, dy: -2).contains(frame) { break }
-                let down = frame.minY < bounds.minY
-                let distance = min(bounds.height - 50, max(24, down ? bounds.minY - frame.minY + 12 : frame.maxY - bounds.maxY + 12))
+            func resolved() -> [XCUIElement]? {
+                guard let link = healthyLink else { return stable }
+                let anchor = link.frame
+                guard link.exists, !anchor.isEmpty else { return nil }
+                // Duplicate text's boundByIndex reference may retarget after a
+                // lazy Form scroll. Requery against the stable domain link on
+                // EVERY measurement, and again at the final settled capture.
+                let candidates = app.staticTexts.matching(NSPredicate(format: "label == %@", "Current data opens")).allElementsBoundByIndex.filter {
+                    $0.exists && !$0.frame.isEmpty && $0.frame.minY >= anchor.maxY && $0.frame.minY - anchor.maxY < 80
+                }
+                guard candidates.count == 1 else { return nil }
+                return stable + [candidates[0]]
+            }
+            func move(down: Bool, distance: CGFloat) {
+                let bounds = viewport()
+                let step = min(bounds.height - 50, max(24, distance))
                 let y = down ? bounds.minY + 20 : bounds.maxY - 20
                 let start = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: y))
-                let end = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: y + (down ? distance : -distance)))
+                let end = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: y + (down ? step : -step)))
                 start.press(forDuration: 0.05, thenDragTo: end); settleLabFrame(first)
             }
+            for _ in 0..<16 {
+                let bounds = viewport()
+                guard let targets = resolved() else {
+                    // Known adjacent status is later than the stable link.
+                    // Bring that actual row into the viewport, then requery.
+                    if let link = healthyLink { reveal(link) }
+                    move(down: false, distance: 72)
+                    continue
+                }
+                guard targets.allSatisfy({ $0.exists && !$0.frame.isEmpty }) else {
+                    XCTFail("Native group lost a materialized target"); return
+                }
+                let frame = targets.reduce(CGRect.null) { $0.union($1.frame) }
+                if frame.minY >= bounds.minY - 2 && frame.maxY <= bounds.maxY && frame.minX >= bounds.minX && frame.maxX <= bounds.maxX { break }
+                let down = frame.minY < bounds.minY
+                move(down: down, distance: down ? bounds.minY - frame.minY + 12 : frame.maxY - bounds.maxY + 12)
+            }
             settleLabFrame(first)
+            guard let targets = resolved() else { XCTFail("Domain's adjacent healthy status was not materialized"); return }
             let bounds = viewport()
+            func frameRow(_ frame: CGRect) -> [String: Double] {
+                ["x": Double(frame.minX), "y": Double(frame.minY), "width": Double(frame.width), "height": Double(frame.height)]
+            }
             var rows: [[String: Any]] = []
-            for element in elements {
+            for element in targets {
                 let frame = element.frame
                 XCTAssertTrue(element.exists); XCTAssertGreaterThan(frame.width, 0); XCTAssertGreaterThan(frame.height, 0)
                 XCTAssertGreaterThanOrEqual(frame.minX, bounds.minX); XCTAssertLessThanOrEqual(frame.maxX, bounds.maxX)
                 XCTAssertGreaterThanOrEqual(frame.minY, bounds.minY - 2); XCTAssertLessThanOrEqual(frame.maxY, bounds.maxY)
-                rows.append(["label": element.label, "value": element.value as? String ?? "", "enabled": element.isEnabled,
-                    "frame": ["x": Double(frame.minX), "y": Double(frame.minY), "width": Double(frame.width), "height": Double(frame.height)]])
+                rows.append(["identifier": element.identifier, "label": element.label, "value": element.value as? String ?? "",
+                    "enabled": element.isEnabled, "frame": frameRow(frame)])
             }
-            observations.append(["phase": suffix, "elements": rows, "usableTop": Double(bounds.minY), "usableBottom": Double(bounds.maxY),
-                "usableLeft": Double(bounds.minX), "usableRight": Double(bounds.maxX)])
+            var observation: [String: Any] = ["phase": suffix, "elements": rows, "usableTop": Double(bounds.minY), "usableBottom": Double(bounds.maxY),
+                "usableLeft": Double(bounds.minX), "usableRight": Double(bounds.maxX)]
+            if let link = healthyLink, let status = targets.last {
+                let linkFrame = link.frame, statusFrame = status.frame
+                XCTAssertEqual(status.label, "Current data opens")
+                XCTAssertGreaterThanOrEqual(statusFrame.minY, linkFrame.maxY)
+                XCTAssertLessThan(statusFrame.minY - linkFrame.maxY, 80)
+                observation["healthyAssociation"] = ["reviewIdentifier": link.identifier, "reviewFrame": frameRow(linkFrame),
+                    "statusFrame": frameRow(statusFrame), "verticalGap": Double(statusFrame.minY - linkFrame.maxY),
+                    "requeriedAfterLastScroll": true]
+            }
+            observations.append(observation)
             snap(prefix + "-" + suffix)
         }
         let ineligible = app.staticTexts["This saved data can't be replaced here."].firstMatch
@@ -5687,27 +5723,9 @@ final class LumenSmokeTests: XCTestCase {
         }
         openBackupSettings(); try selectOriginal()
         snap(prefix + "-source"); Thread.sleep(forTimeInterval: 3)
-        func adjacentHealthyStatus(_ link: XCUIElement) throws -> XCUIElement {
-            reveal(link)
-            XCTAssertTrue(link.exists && !link.frame.isEmpty)
-            // Align the real row before looking up its lazy adjacent status.
-            // Midpoint visibility alone does not materialize the next label.
-            let top = app.navigationBars.firstMatch.frame.maxY + 12
-            for _ in 0..<8 where link.frame.minY > top + 24 {
-                let bar = app.tabBars.firstMatch
-                let bottom = bar.exists && bar.isHittable ? bar.frame.minY - 12 : app.frame.maxY - 40
-                let distance = min(bottom - top - 50, link.frame.minY - top - 12)
-                let start = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: bottom - 20))
-                let end = app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: 10, dy: bottom - 20 - distance))
-                start.press(forDuration: 0.05, thenDragTo: end); settleLabFrame(link)
-            }
-            let candidates = app.staticTexts.matching(NSPredicate(format: "label == %@", "Current data opens")).allElementsBoundByIndex
-            return try XCTUnwrap(candidates.filter { !$0.frame.isEmpty && $0.frame.minY >= link.frame.maxY && $0.frame.minY - link.frame.maxY < 80 }.first)
-        }
         for domain in ["water", "goals"] {
             let link = app.buttons["reviewFile-" + domain].firstMatch
-            let state = try adjacentHealthyStatus(link)
-            whole("healthy-" + domain, [link, state])
+            whole("healthy-" + domain, [link], healthyLink: link)
             XCTAssertFalse(app.switches["recoverFile-" + domain].exists)
         }
         mixed("mixed-off", selected: false)
@@ -5754,11 +5772,10 @@ final class LumenSmokeTests: XCTestCase {
         snap(prefix + "-parent"); Thread.sleep(forTimeInterval: 4)
         app.terminate(); app.launchArguments = []; app.launch(); openBackupSettings(); try selectOriginal()
         let workoutLink = app.buttons["reviewFile-workouts"].firstMatch
-        let healthyWorkoutStatus = try adjacentHealthyStatus(workoutLink)
-        whole("relaunch-review", [ineligible, omission, healthyWorkoutStatus], towardsTop: true)
+        whole("relaunch-review", [ineligible, omission, workoutLink], healthyLink: workoutLink)
         XCTAssertFalse(app.switches["recoverFile-meals"].exists)
         XCTAssertEqual(omission.value as? String, "0"); XCTAssertFalse(omission.isEnabled)
-        XCTAssertTrue(healthyWorkoutStatus.exists); XCTAssertFalse(workouts.exists)
+        XCTAssertFalse(workouts.exists)
         reveal(confirm); XCTAssertFalse(confirm.isEnabled)
         observations.append(["phase": "relaunch-workouts-healthy", "noWorkoutsToggle": !workouts.exists, "recoverDisabled": !confirm.isEnabled,
             "noFixtureRelaunchArguments": app.launchArguments.isEmpty])
