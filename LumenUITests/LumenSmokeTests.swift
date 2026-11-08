@@ -6023,9 +6023,29 @@ final class LumenSmokeTests: XCTestCase {
             try require(filename.waitForExistence(timeout: 15) && filename.label == "Lumen-backup-health-matrix-two-legacy.json", phase, "Wrong selected original")
             let meals = app.switches["recoverFile-meals"].firstMatch
             let workouts = app.switches["recoverFile-workouts"].firstMatch
+            // A later lazy Form row must be materialized before its enabled
+            // state can establish that the fresh capture finished.
+            if phase != "ready" { try whole(workouts, "fresh-workout-readiness", nav: "Review recovery") }
             let readyControl = phase == "ready" ? meals : workouts
             let ready = XCTNSPredicateExpectation(predicate: NSPredicate(format: "enabled == true"), object: readyControl)
             try require(XCTWaiter.wait(for: [ready], timeout: 30) == .completed, phase, "Actual capture not ready")
+            let workoutReadyAfterCapture = workouts.exists && workouts.isEnabled
+            if phase != "ready" {
+                let bar = app.navigationBars["Review recovery"].firstMatch
+                let appBox = app.frame, navBox = bar.frame, workoutBox = workouts.frame
+                let viewport = CGRect(x: appBox.minX, y: navBox.maxY, width: appBox.width,
+                    height: appBox.maxY - 40 - navBox.maxY)
+                func rect(_ value: CGRect) -> [Double] {
+                    [Double(value.minX), Double(value.minY), Double(value.width), Double(value.height)]
+                }
+                let workoutValue = workouts.value as? String ?? ""
+                observations.append(["phase": "fresh-workout-ready-visible", "exists": workouts.exists,
+                    "hittable": workouts.isHittable, "enabled": workoutReadyAfterCapture, "value": workoutValue,
+                    "appRect": rect(appBox), "navigationRect": rect(navBox), "viewportRect": rect(viewport),
+                    "workoutRect": rect(workoutBox), "beforeMealRegion": true])
+                try require(workoutReadyAfterCapture && workouts.isHittable && workoutValue == "0"
+                    && viewport.contains(workoutBox), "fresh-workout-ready-visible", "Fresh workout readiness must be visible and off before meal inspection")
+            }
             snap(prefix + "-" + phase + "-original")
             let omission = app.switches["Recover without meal photos"].firstMatch
             if phase == "ready" {
@@ -6035,18 +6055,70 @@ final class LumenSmokeTests: XCTestCase {
                     observations.append(["phase": phase, "choice": index, "enabled": control.isEnabled, "value": control.value as? String ?? ""])
                 }
             } else {
-                // Workout enabled proves the completed capture reached view state;
-                // disabled pending controls cannot masquerade as healthy protection.
-                try whole(omission, "fresh-healthy-region", nav: "Review recovery")
-                let mealExists = meals.exists, mealEnabled = meals.exists && meals.isEnabled
+                let review = app.buttons["reviewFile-meals"].firstMatch
+                try whole(review, "fresh-meal-review-anchor", nav: "Review recovery")
+                try whole(omission, "fresh-meal-omission-anchor", nav: "Review recovery")
+                let bar = app.navigationBars["Review recovery"].firstMatch
+                func rect(_ value: CGRect) -> [Double] {
+                    [Double(value.minX), Double(value.minY), Double(value.width), Double(value.height)]
+                }
+                func finite(_ value: CGRect) -> Bool {
+                    rect(value).allSatisfy { $0.isFinite } && value.width > 0 && value.height > 0
+                }
+                var regionRevealed = false
+                for attempt in 0..<16 {
+                    try require(bar.exists && review.exists && omission.exists, "fresh-healthy-region", "Positive meal section anchors are required")
+                    let viewport = CGRect(x: app.frame.minX, y: bar.frame.maxY,
+                        width: app.frame.width, height: app.frame.maxY - 40 - bar.frame.maxY)
+                    let region = review.frame.union(omission.frame)
+                    if finite(viewport) && finite(region) && viewport.contains(region)
+                        && review.isHittable && omission.isHittable { regionRevealed = true; break }
+                    let delta = min(viewport.height * 0.35, max(40, abs(region.midY - viewport.midY)))
+                    let direction: CGFloat = region.midY < viewport.midY ? -1 : 1
+                    app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: viewport.midX, dy: viewport.midY + direction * delta / 2))
+                        .press(forDuration: 0.05, thenDragTo: app.coordinate(withNormalizedOffset: .zero)
+                            .withOffset(CGVector(dx: viewport.midX, dy: viewport.midY - direction * delta / 2)))
+                    observations.append(["phase": "fresh-healthy-region", "pan": attempt])
+                }
+                try require(regionRevealed, "fresh-healthy-region", "The whole meal review and omission region must be visible together")
+                // Only query negative eligibility after two positive visible
+                // anchors bound the actual meal controls/disclosure on screen.
+                let appBox = app.frame, navBox = bar.frame, reviewBox = review.frame, omissionBox = omission.frame
+                let viewport = CGRect(x: appBox.minX, y: navBox.maxY, width: appBox.width,
+                    height: appBox.maxY - 40 - navBox.maxY)
+                let region = reviewBox.union(omissionBox)
+                let mealExists = meals.exists, mealEnabled = mealExists && meals.isEnabled
+                let mealBox = mealExists ? meals.frame : .zero
+                let mealHittable = mealExists && meals.isHittable
+                let disclosureLabels = ["This saved data can't be replaced here.", "Current data opens"]
+                let disclosures = app.staticTexts.matching(NSPredicate(format: "label IN %@", disclosureLabels))
+                    .allElementsBoundByIndex.filter { item in
+                        item.exists && item.isHittable && finite(item.frame) && viewport.contains(item.frame)
+                            && item.frame.minY >= reviewBox.maxY && item.frame.maxY <= omissionBox.minY
+                    }
+                let disclosure = disclosures.first
+                let disclosureBox = disclosure?.frame ?? .zero
+                let anchoredChoice = mealExists
+                    ? (mealHittable && finite(mealBox) && viewport.contains(mealBox)
+                        && mealBox.minY >= reviewBox.maxY && mealBox.maxY <= omissionBox.minY)
+                    : (disclosures.count == 1)
                 let omitEnabled = omission.isEnabled, omitValue = omission.value as? String ?? ""
                 observations.append(["phase": "fresh-healthy-target", "mealToggleExists": mealExists,
-                    "mealToggleEnabled": mealEnabled, "omissionExists": omission.exists,
-                    "omissionHittable": omission.isHittable, "omissionEnabled": omitEnabled,
-                    "omissionValue": omitValue, "workoutEnabledAfterCapture": workouts.isEnabled,
-                    "cannotReplaceDisclosureExists": app.staticTexts["This saved data can't be replaced here."].firstMatch.exists])
-                try require(omission.exists && omission.isHittable && workouts.isEnabled,
-                    "fresh-healthy-target", "Actual healthy meal region and finished workout capture are required")
+                    "mealToggleEnabled": mealEnabled, "mealToggleHittable": mealHittable,
+                    "omissionExists": omission.exists, "omissionHittable": omission.isHittable,
+                    "omissionEnabled": omitEnabled, "omissionValue": omitValue,
+                    "workoutEnabledAfterCapture": workoutReadyAfterCapture,
+                    "reviewAnchorExists": review.exists, "reviewAnchorHittable": review.isHittable,
+                    "disclosureCount": disclosures.count, "disclosureLabel": disclosure?.label ?? "",
+                    "appRect": rect(appBox), "navigationRect": rect(navBox), "viewportRect": rect(viewport),
+                    "reviewAnchorRect": rect(reviewBox), "omissionRect": rect(omissionBox),
+                    "mealToggleRect": mealExists ? rect(mealBox) : [],
+                    "disclosureRect": disclosure == nil ? [] : rect(disclosureBox), "regionRect": rect(region),
+                    "wholeMealRegionBeforeWorkoutSelection": true, "regionImageSuffix": "fresh-healthy-region"])
+                snap(prefix + "-fresh-healthy-region")
+                try require(finite(appBox) && finite(navBox) && finite(viewport) && finite(region)
+                    && viewport.contains(region) && review.isHittable && omission.isHittable && anchoredChoice,
+                    "fresh-healthy-target", "Actual whole meal controls or explicit healthy disclosure must be positively visible")
                 try require(!mealEnabled && !omitEnabled && omitValue == "0",
                     "fresh-healthy-target", "A healthy meal target must not be selectable or offer photo omission")
                 try whole(workouts, "fresh-workout-choice", nav: "Review recovery")
