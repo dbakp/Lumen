@@ -1,0 +1,135 @@
+{
+  "status": "PASS actual3runner source/AST/readonly prelaunch controls; zero subprocess calls",
+  "cases": [
+    {
+      "case": "current reference target-change-native-build-r1-planned.py",
+      "values": [
+        "durable-source-r252.json",
+        "durable-source-r252.json",
+        "durable-source-r252.json",
+        "durable-source-r252.json",
+        "durable-source-r252.json.gz"
+      ],
+      "status": "PASS"
+    },
+    {
+      "case": "reject stale251 references target-change-native-build-r1-planned.py",
+      "status": "PASS"
+    },
+    {
+      "case": "current reference debug-release-controls-r1-planned.py",
+      "values": [
+        "durable-source-r252.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "case": "reject stale251 references debug-release-controls-r1-planned.py",
+      "status": "PASS"
+    },
+    {
+      "case": "current reference unsigned-release-r1-planned.py",
+      "values": [
+        "durable-source-r252.json",
+        "durable-source-r252.json",
+        "durable-source-r252.json",
+        "durable-source-r252.json.gz"
+      ],
+      "status": "PASS"
+    },
+    {
+      "case": "reject stale251 references unsigned-release-r1-planned.py",
+      "status": "PASS"
+    },
+    {
+      "case": "actual readonly prelaunch target-change-native-build-r1-planned.py",
+      "bindings": 887,
+      "status": "PASS"
+    },
+    {
+      "case": "actual emitted source fields target-change-native-build-r1-planned.py",
+      "fields": 2,
+      "status": "PASS"
+    },
+    {
+      "case": "actual readonly prelaunch unsigned-release-r1-planned.py",
+      "bindings": 887,
+      "status": "PASS"
+    },
+    {
+      "case": "actual emitted source fields unsigned-release-r1-planned.py",
+      "fields": 1,
+      "status": "PASS"
+    },
+    {
+      "case": "binder current source+plan",
+      "accepted": true,
+      "status": "PASS"
+    },
+    {
+      "case": "binder wrong receipt",
+      "accepted": false,
+      "status": "PASS"
+    },
+    {
+      "case": "binder wrong plan",
+      "accepted": false,
+      "status": "PASS"
+    },
+    {
+      "case": "binder failed build",
+      "accepted": false,
+      "status": "PASS"
+    },
+    {
+      "case": "release current source+plan",
+      "accepted": true,
+      "status": "PASS"
+    },
+    {
+      "case": "release stale manifest",
+      "accepted": false,
+      "status": "PASS"
+    },
+    {
+      "case": "native current source",
+      "accepted": true,
+      "status": "PASS"
+    },
+    {
+      "case": "native stale manifest",
+      "accepted": false,
+      "status": "PASS"
+    },
+    {
+      "case": "native matching plan",
+      "accepted": true,
+      "status": "PASS"
+    },
+    {
+      "case": "native stale plan",
+      "accepted": false,
+      "status": "PASS"
+    }
+  ],
+  "count": 20,
+  "sources": {
+    "source252-target-change-native-build-r1-planned.py": {
+      "bytes": 3216,
+      "sha256": "347ea2ab8ffee5a743eb4a26fb038641df8414e9b9dc7d9ccb1371837805887f"
+    },
+    "source252-debug-release-controls-r1-planned.py": {
+      "bytes": 2688,
+      "sha256": "4c6cb08cdc6377b24d27852306a4747e4466df3d6c99cd7508044b45bdd8c300"
+    },
+    "source252-unsigned-release-r1-planned.py": {
+      "bytes": 3403,
+      "sha256": "c6ef7ef8d6ff325585107228b1851d7141330979d93d4d4ae52088e815304d1b"
+    }
+  },
+  "actualManifest": "durable-source-r252.json",
+  "planSHA256": "5f72ba468057546a889849d96c186773679a661eecde36a70465c1b84d755da4",
+  "realProcessQueries": [],
+  "scope": "Actual current native prefix including source+plan+archive/hash/file equality/disk/log-absence and Release prefix before unresolved Debug-bound plan. Actual emittedsource fields and binder/source guards executed as AST fragments; stale251reference controls reject. Does not execute build/logopen/DebugbinarySHA/Releasebinary or claim currentcompile/runtime. Never rerun after native build logfile is created.",
+  "checkedAt": 1794177143.803426
+}

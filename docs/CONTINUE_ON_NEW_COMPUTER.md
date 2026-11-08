@@ -4,6 +4,12 @@ Continue developing Lumen into a world-class, primarily iOS, AI health assistant
 
 Repository: https://github.com/dbakp/Lumen · branch `main`.
 
+## Current execution source · Source252 /165 SOURCE_READY · 8 November 2026
+
+Full251/164/root40/source875/priorunion exact GitHub3f8995653180fe83723d8cb9b63d039efe84b9c6 /33checkpoint1910union BEFORE252. Frozen252825text+62fixtures=887/all875priorunchanged/12appends. Separate3plannedrunners now current252manifest/archive/header/outcome/receipt/binder and actualDebug labels; nativecurrentplan+archive/all887 proof beforePopen. Actual20AST/source-reference/readonlycurrent-prefix controls pass/zero subprocess; old251refs reject. Samecritic165 SOURCE_READY scoped/rootfull14419B/all27bindings/current887archive exact. Allapp/nativecase/R2driver/checker exact251/250; no250/251/252fullbuild/native/Release acceptance yet.
+
+Exact full165/root887/27/currentcheckpoint BEFORE first252fullapp-testbuild and actual215negative199Debugpositive16negative-only21production/root/exact. Then actualR2Notnowdriver+mandatoryR2checker/full14originalPNG/helper/summary/fullunfilteredexport/root/samecritic/exact beforecleanup/reset. CurrentoptimizedRelease/settings/compiler/FileList/staticreview, true90sexpiry/StringNotnow/laterwindows/retainedowner/all43/eightgroups/fullgoal remain; no checkpointstop or phoneactions. Do NOT rerun single-use runner-prefix controls after buildlogcreated.
+
 ## Corrected cancellation host · Source251 /164 NOT_READY · 8 November 2026
 
 Full250/163/root50/source852/7diagnostic/priorunion exact GitHub103a5edb0a9af60c99b5855e992033b6f57b3429 /56checkpoint1887union BEFORE251. Frozen251813text+62fixtures=875, all852priorunchanged/23appends; app/UITest exact250. SeparateR2checker fixes inputs.app/null exception and uniqueoutcome; R2driver withholds armed until exactactive created+wait-started. Actual14APIguard+payload and14caller+outerhandler/twostage startup controls plus2help pass. Source164 supports these two repairs; rootfull18132B/all40bindings/875archive exact.
