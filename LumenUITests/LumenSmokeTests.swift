@@ -5603,6 +5603,14 @@ final class LumenSmokeTests: XCTestCase {
     @MainActor
     func testHealthBackupFileRecoveryPhotoFaultErrorBackEncryptedOriginString() throws { try healthBackupPhotoFaultErrorBack("encrypted") }
     @MainActor
+    func testHealthBackupFileRecoveryPhotoFaultErrorBackLegacyOriginDataPostSuccess() throws {
+        try healthBackupPhotoFaultErrorBack("legacy", postSuccessDisclosure: true)
+    }
+    @MainActor
+    func testHealthBackupFileRecoveryPhotoFaultErrorBackEncryptedOriginStringPostSuccess() throws {
+        try healthBackupPhotoFaultErrorBack("encrypted", postSuccessDisclosure: true)
+    }
+    @MainActor
     func testHealthBackupFileRecoveryPhotoFaultErrorBackLegacy() throws { try healthBackupPhotoFaultErrorBack("legacy") }
     @MainActor
     func testHealthBackupFileRecoveryPhotoFaultErrorBackEncrypted() throws { try healthBackupPhotoFaultErrorBack("encrypted") }
@@ -5612,7 +5620,7 @@ final class LumenSmokeTests: XCTestCase {
     }
     @MainActor
     private func healthBackupPhotoFaultErrorBack(_ kind: String, voiceOver: Bool = false,
-        motionSample: ((String) throws -> Void)? = nil) throws {
+        postSuccessDisclosure: Bool = false, motionSample: ((String) throws -> Void)? = nil) throws {
         executionTimeAllowance = 600
         let base = "Lumen-backup-health-matrix-two-" + kind
         let prefix = "health-error-state-" + kind
@@ -5812,6 +5820,38 @@ final class LumenSmokeTests: XCTestCase {
         try motionSample?("recovered-before-success-ack"); XCTAssertFalse(failure.exists); snap(prefix + "-success")
         let observed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", "success-observed"), object: success)
         XCTAssertEqual(XCTWaiter.wait(for: [observed], timeout: 35), .completed)
+        var disclosureObservation: [String: Any] = [:]
+        if postSuccessDisclosure {
+            let successValue = success.value as? String ?? ""
+            XCTAssertEqual(successValue, "success-observed")
+            let message = "Older saved data will stay in a private recovery copy on this iPhone. For meal recovery, this includes any old photos."
+            // Match the complete native label without the identifier length limit.
+            let disclosure = app.staticTexts.matching(NSPredicate(format: "label == %@", message)).firstMatch
+            reveal(disclosure)
+            XCTAssertTrue(disclosure.waitForExistence(timeout: 5))
+            settleLabFrame(disclosure)
+            let frame = disclosure.frame
+            let top = app.navigationBars["Review recovery"].frame.maxY + 12
+            let bar = app.tabBars.firstMatch
+            let bottom = bar.exists && bar.isHittable ? bar.frame.minY - 12 : app.frame.maxY - 40
+            XCTAssertEqual(disclosure.label, message)
+            XCTAssertTrue(disclosure.isHittable)
+            XCTAssertGreaterThan(frame.width, 0)
+            XCTAssertGreaterThan(frame.height, 0)
+            XCTAssertGreaterThanOrEqual(frame.minX, app.frame.minX)
+            XCTAssertLessThanOrEqual(frame.maxX, app.frame.maxX)
+            XCTAssertGreaterThanOrEqual(frame.minY, top - 2)
+            XCTAssertLessThanOrEqual(frame.maxY, bottom)
+            XCTAssertFalse(failure.exists)
+            snap(prefix + "-post-success-older-data")
+            disclosureObservation = ["completeMessage": disclosure.label,
+                "afterSuccessAcknowledgement": true, "successValue": successValue,
+                "frame": ["x": Double(frame.minX), "y": Double(frame.minY),
+                          "width": Double(frame.width), "height": Double(frame.height)],
+                "usableTop": Double(top), "usableBottom": Double(bottom),
+                "usableLeft": Double(app.frame.minX), "usableRight": Double(app.frame.maxX),
+                "wholeMessageInSingleFrame": true]
+        }
         app.navigationBars["Review recovery"].buttons.element(boundBy: 0).tap()
         XCTAssertTrue(app.navigationBars["Backup & restore"].waitForExistence(timeout: 5))
         snap(prefix + "-parent"); Thread.sleep(forTimeInterval: 4)
@@ -5819,7 +5859,8 @@ final class LumenSmokeTests: XCTestCase {
             "scrollFrame": String(describing: firstFrame), "boundedScrollObservationSeconds": 3,
             "initialChoicesOff": true, "failedBeforeTestScroll": true, "omissionNotNowRetained": true,
             "backAtGenuineFailure": true, "freshChoicesAndOmissionOff": true,
-            "retryWithoutOmission": true, "successObserved": true, "voiceOver": voiceOverReadback]
+            "retryWithoutOmission": true, "successObserved": true, "voiceOver": voiceOverReadback,
+            "postSuccessDisclosure": disclosureObservation]
         let attachment = XCTAttachment(data: try JSONSerialization.data(withJSONObject: readback, options: [.prettyPrinted, .sortedKeys]), uniformTypeIdentifier: "public.json")
         attachment.name = "error-state-readback"; attachment.lifetime = .keepAlways; add(attachment)
         app.terminate(); app.launchArguments = []; app.launch(); openBackupSettings()
