@@ -1,0 +1,16 @@
+{
+  "status": "PASS seven isolated fixed-preference observation checks; no native/product acceptance",
+  "candidateDriverBytes": 26345,
+  "candidateDriverSHA256": "c3f9131579c1f9db6712dbc18bad33c412cebfec26c274b597de8738a4b7b7e0",
+  "checks": [
+    "Absent prepared keys become exact: all three actual file observations retained before return",
+    "Present changed Data rejects immediately; exact original mismatch bytes/type/hash retained before assertion",
+    "Present changed String rejects immediately; decomposed and surrogate-pair UTF16LE exact bytes retained",
+    "Unsupported known-key type classified and rejected without value coercion/wait",
+    "Corrected observed missing-only branch: nativephaseobserved/samehash, specific strictmissing rejection, zero waits",
+    "Prepared absent keys time out at declared30second bound with all121samples retained; simulated clock only",
+    "Changed native phase rejects before wait/ack"
+  ],
+  "scope": "Exact helper AST with real temporary known synthetic plist files, injected clock/process and native phase report; no actual CFPreferences mechanism or simulator result proved. Fixtures deleted after compact result.",
+  "checkedAt": 1794097303.7608058
+}

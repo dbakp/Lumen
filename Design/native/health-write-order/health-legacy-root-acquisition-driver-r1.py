@@ -170,8 +170,10 @@ def verify_fixed_keys(data_root,expected,phase,prefix,run_id,process,original_re
  while True:
   path=data_root/'Library/Preferences/com.dbakp.lumen.plist';row={'phase':phase,'runID':run_id,'observedAt':time.time(),'fixedKeys':{}};values={};file_missing=False
   try:
-   s=path.lstat();assert stat.S_ISREG(s.st_mode) and not path.is_symlink() and s.st_size<262144
-   row['fileIdentity']={'device':s.st_dev,'inode':s.st_ino,'bytes':s.st_size,'mtimeNS':s.st_mtime_ns};values=plistlib.loads(path.read_bytes())
+   s=path.lstat();row['fileIdentity']={'device':s.st_dev,'inode':s.st_ino,'bytes':s.st_size,'mtimeNS':s.st_mtime_ns}
+   row['fileClassification']='oversized plist' if s.st_size>=262144 else 'regular bounded plist' if stat.S_ISREG(s.st_mode) else 'unsupported nonregular plist'
+   assert stat.S_ISREG(s.st_mode) and not path.is_symlink() and s.st_size<262144,'plist must be bounded regular file'
+   values=plistlib.loads(path.read_bytes())
   except FileNotFoundError:file_missing=True;row['fileMissing']=True
   except Exception as ex:
    row['readError']=repr(ex);observations.append(row);write(target,observations);raise
@@ -187,12 +189,14 @@ def verify_fixed_keys(data_root,expected,phase,prefix,run_id,process,original_re
    value=values.get(key);fact={'actualType':type(value).__name__};row['fixedKeys'][key]=fact
    if key not in values:missing=True;continue
    if type(value) is bytes:
-    fact.update(bytes=len(value),sha256=sha(value));good=value==base64.b64decode(wanted['base64'],validate=True)
-    if good:fact['base64']=base64.b64encode(value).decode()
-    else:changed=True
+    fact.update(bytes=len(value),sha256=sha(value),base64=base64.b64encode(value).decode(),rawEncoding='data')
+    changed=changed or value!=base64.b64decode(wanted['base64'],validate=True)
    else:
     changed=True
-    if isinstance(value,str):raw=value.encode('utf-16-le');fact.update(bytes=len(raw),sha256=sha(raw))
+    if isinstance(value,str):
+     raw=value.encode('utf-16-le',errors='surrogatepass');assert len(raw)<=524288
+     fact.update(bytes=len(raw),sha256=sha(raw),base64=base64.b64encode(raw).decode(),rawEncoding='stringUTF16LE')
+    else:fact['classification']='unsupported property-list type'
   row['status']='changed' if changed else 'missing' if missing or file_missing else 'exact'
   observations.append(row);write(target,observations)
   assert not native_changed,'native original report/runID/phase changed during fixed preferences check'
@@ -225,47 +229,61 @@ def main():
      if report_file.stat().st_mtime<start:raise FileNotFoundError()
      raw_report=report_file.read_bytes();(P/(prefix+'-latest-original-report.json')).write_bytes(raw_report)
      evidence['latestOriginalReport']={'bytes':len(raw_report),'sha256':sha(raw_report)}
-     report=json.loads(raw_report);assert report['mode']==mode
-     uuid.UUID(report['runID'])
-     if selected_run_id is None:selected_run_id=report['runID']
-     assert report['runID']==selected_run_id
-     if 'prepared' in evidence:assert report['runID']==evidence['prepared']['runID']
-     phase=report['phase']
-     write(P/(prefix+'-latest-report.json'),report)
-     if phase=='failed':raise AssertionError('Native probe failed; full original report retained')
-     if phase in ['prepared','observed'] and phase not in seen:
-      installed=pathlib.Path(cmd('xcrun','simctl','get_app_container',SIM,'com.dbakp.lumen','app'))/'Lumen';assert installed.stat().st_size==build['binaryBytes'] and sha(installed.read_bytes())==build['sha256']
-      paths={k:pathlib.Path(v) for k,v in report['paths'].items()}
-      expected=pathlib.Path(cmd('xcrun','simctl','get_app_container',SIM,'com.dbakp.lumen','group.com.dbakp.lumen'))/'LumenData'
-      assert set(paths)=={'root','previous','moved','movedPrevious'} and paths['root'].resolve()==expected.resolve()
-      assert paths['previous']==paths['root'].with_suffix('.previous')
-      assert paths['moved']==paths['root'].parent/('LumenData.legacy-root-probe-'+report['runID'])
-      assert paths['movedPrevious']==paths['root'].parent/('LumenData.legacy-prior-probe-'+report['runID'])
-      rows=exact_payload_rows(report)
-      for reportkey,pathkey in ([('initialRoot','root'),('initialPrevious','previous')] if phase=='prepared' else [('finalRoot','root'),('finalPrevious','previous'),('movedRoot','moved'),('movedPrevious','movedPrevious')]):assert live_tree(paths[pathkey])==report[reportkey],reportkey
-      fixed_observations=verify_fixed_keys(data_root,report['initialFixed'],phase,prefix,report['runID'],process,sha(raw_report))
-      # Recheck the complete phase boundary after any prepared-only wait.
-      current_report=read(report_file);assert current_report['runID']==report['runID'] and current_report['phase']==phase
-      assert report_file.read_bytes()==raw_report,'immutable prepared/observed report changed during host checks'
-      assert installed.stat().st_size==build['binaryBytes'] and sha(installed.read_bytes())==build['sha256']
-      for reportkey,pathkey in ([('initialRoot','root'),('initialPrevious','previous')] if phase=='prepared' else [('finalRoot','root'),('finalPrevious','previous'),('movedRoot','moved'),('movedPrevious','movedPrevious')]):assert live_tree(paths[pathkey])==report[reportkey],reportkey
-      if phase=='prepared':
-       assert not live_tree(paths['moved'])['root']['exists'] and not live_tree(paths['movedPrevious'])['root']['exists']
-       assert not any(x.name.startswith(('LumenData.restore-','LumenData.retired-','LumenData.discovery-')) for x in paths['root'].parent.iterdir())
-       assert report['leaseReady']==(a.case!='ordinary')
-      (P/(prefix+'-'+phase+'.json')).write_bytes(raw_report)
-      if phase=='observed':
-       assert not any(x.name.startswith(('LumenData.restore-','LumenData.retired-','LumenData.discovery-')) for x in paths['root'].parent.iterdir()), 'unfinished stage/retired/discovery'
-       assess_observed(report,a,evidence)
-       manifest_verify(m)
-      manifest_verify(m);assert (P/a.source).read_bytes()==manifest_bytes and (P/a.build).read_bytes()==build_bytes
-      verify_fixed_keys(data_root,report['initialFixed'],phase,prefix,report['runID'],process,sha(raw_report),allow_missing_wait=False,observation_tag=phase+'-immediately-before-ack')
-      final_installed_bytes=installed.read_bytes();assert len(final_installed_bytes)==build['binaryBytes'] and sha(final_installed_bytes)==build['sha256']
-      evidence[phase]={'payloadRows':rows,'installedIdentity':True,'liveTreesAndFixedDataExact':True,'runID':report['runID'],'originalReportSHA256':sha(raw_report),'sourceManifestSHA256':sha(manifest_bytes),'buildReceiptSHA256':sha(build_bytes),'installedBinary':{'path':str(installed),'bytes':len(final_installed_bytes),'sha256':sha(final_installed_bytes)},'checkedAt':time.time()}
-      write(P/(prefix+'-'+phase+'-host-preack.json'),evidence[phase]);seen.add(phase)
-      write(data_root/'tmp/Lumen-legacy-root-probe-ack.json',{'runID':report['runID'],'phase':phase})
+     report=json.loads(raw_report)
+    except (FileNotFoundError,subprocess.CalledProcessError,json.JSONDecodeError) as discovery_error:
+     # Retry only initial discovery. Once a fresh run is known, even a later
+     # report/parse/container error is an operational failure, never a retry.
+     if selected_run_id is not None:raise
+     evidence.setdefault('initialDiscoveryErrors',[]).append({'at':time.time(),'error':repr(discovery_error)})
+     assert len(evidence['initialDiscoveryErrors'])<=3200
+     write(P/(prefix+'-initial-discovery-errors.json'),evidence['initialDiscoveryErrors'])
      if process.poll() is not None:break
-    except (FileNotFoundError,subprocess.CalledProcessError,json.JSONDecodeError):data_root=None
+     data_root=None;time.sleep(.15);continue
+    assert report['mode']==mode
+    uuid.UUID(report['runID'])
+    if selected_run_id is None:selected_run_id=report['runID']
+    assert report['runID']==selected_run_id
+    if 'prepared' in evidence:assert report['runID']==evidence['prepared']['runID']
+    phase=report['phase']
+    assert phase in {'prepared','observed','host-audited','failed'}
+    if phase=='prepared':assert 'observed' not in seen,'native phase regressed after observation'
+    if phase=='observed':assert 'prepared' in seen,'observed phase without actual prepared acknowledgement'
+    if phase=='host-audited':assert seen=={'prepared','observed'}
+    if phase in seen:assert sha(raw_report)==evidence[phase]['originalReportSHA256'],'immutable known phase report changed'
+    write(P/(prefix+'-latest-report.json'),report)
+    if phase=='failed':raise AssertionError('Native probe failed; full original report retained')
+    if phase in ['prepared','observed'] and phase not in seen:
+     installed=pathlib.Path(cmd('xcrun','simctl','get_app_container',SIM,'com.dbakp.lumen','app'))/'Lumen';assert installed.stat().st_size==build['binaryBytes'] and sha(installed.read_bytes())==build['sha256']
+     paths={k:pathlib.Path(v) for k,v in report['paths'].items()}
+     expected=pathlib.Path(cmd('xcrun','simctl','get_app_container',SIM,'com.dbakp.lumen','group.com.dbakp.lumen'))/'LumenData'
+     assert set(paths)=={'root','previous','moved','movedPrevious'} and paths['root'].resolve()==expected.resolve()
+     assert paths['previous']==paths['root'].with_suffix('.previous')
+     assert paths['moved']==paths['root'].parent/('LumenData.legacy-root-probe-'+report['runID'])
+     assert paths['movedPrevious']==paths['root'].parent/('LumenData.legacy-prior-probe-'+report['runID'])
+     rows=exact_payload_rows(report)
+     for reportkey,pathkey in ([('initialRoot','root'),('initialPrevious','previous')] if phase=='prepared' else [('finalRoot','root'),('finalPrevious','previous'),('movedRoot','moved'),('movedPrevious','movedPrevious')]):assert live_tree(paths[pathkey])==report[reportkey],reportkey
+     fixed_observations=verify_fixed_keys(data_root,report['initialFixed'],phase,prefix,report['runID'],process,sha(raw_report))
+     # Recheck the complete phase boundary after any prepared-only wait.
+     current_report=read(report_file);assert current_report['runID']==report['runID'] and current_report['phase']==phase
+     assert report_file.read_bytes()==raw_report,'immutable prepared/observed report changed during host checks'
+     assert installed.stat().st_size==build['binaryBytes'] and sha(installed.read_bytes())==build['sha256']
+     for reportkey,pathkey in ([('initialRoot','root'),('initialPrevious','previous')] if phase=='prepared' else [('finalRoot','root'),('finalPrevious','previous'),('movedRoot','moved'),('movedPrevious','movedPrevious')]):assert live_tree(paths[pathkey])==report[reportkey],reportkey
+     if phase=='prepared':
+      assert not live_tree(paths['moved'])['root']['exists'] and not live_tree(paths['movedPrevious'])['root']['exists']
+      assert not any(x.name.startswith(('LumenData.restore-','LumenData.retired-','LumenData.discovery-')) for x in paths['root'].parent.iterdir())
+      assert report['leaseReady']==(a.case!='ordinary')
+     (P/(prefix+'-'+phase+'.json')).write_bytes(raw_report)
+     if phase=='observed':
+      assert not any(x.name.startswith(('LumenData.restore-','LumenData.retired-','LumenData.discovery-')) for x in paths['root'].parent.iterdir()), 'unfinished stage/retired/discovery'
+      assess_observed(report,a,evidence)
+      manifest_verify(m)
+     manifest_verify(m);assert (P/a.source).read_bytes()==manifest_bytes and (P/a.build).read_bytes()==build_bytes
+     verify_fixed_keys(data_root,report['initialFixed'],phase,prefix,report['runID'],process,sha(raw_report),allow_missing_wait=False,observation_tag=phase+'-immediately-before-ack')
+     final_installed_bytes=installed.read_bytes();assert len(final_installed_bytes)==build['binaryBytes'] and sha(final_installed_bytes)==build['sha256']
+     evidence[phase]={'payloadRows':rows,'installedIdentity':True,'liveTreesAndFixedDataExact':True,'runID':report['runID'],'originalReportSHA256':sha(raw_report),'sourceManifestSHA256':sha(manifest_bytes),'buildReceiptSHA256':sha(build_bytes),'installedBinary':{'path':str(installed),'bytes':len(final_installed_bytes),'sha256':sha(final_installed_bytes)},'checkedAt':time.time()}
+     write(P/(prefix+'-'+phase+'-host-preack.json'),evidence[phase]);seen.add(phase)
+     write(data_root/'tmp/Lumen-legacy-root-probe-ack.json',{'runID':report['runID'],'phase':phase})
+    if process.poll() is not None:break
     time.sleep(.15)
    else:raise TimeoutError('bounded native observation')
   evidence['nativeExitCode']=process.wait();assert evidence['nativeExitCode']==0 and seen=={'prepared','observed'},evidence

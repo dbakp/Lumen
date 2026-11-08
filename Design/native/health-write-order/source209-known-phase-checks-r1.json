@@ -1,0 +1,41 @@
+{
+  "status": "PASS four exact-main orchestration fault checks; no simulator/native/product credit",
+  "candidateDriverBytes": 26345,
+  "candidateDriverSHA256": "c3f9131579c1f9db6712dbc18bad33c412cebfec26c274b597de8738a4b7b7e0",
+  "checks": [
+    {
+      "fault": "file",
+      "failure": "FileNotFoundError('injected known-phase child disappearance')",
+      "discoveryQueries": 1,
+      "ackSent": false,
+      "simulatedNaturalFinalization": true,
+      "originalAppReportSalvaged": true
+    },
+    {
+      "fault": "query",
+      "failure": "CalledProcessError(7, ['known synthetic installed query'])",
+      "discoveryQueries": 1,
+      "ackSent": false,
+      "simulatedNaturalFinalization": true,
+      "originalAppReportSalvaged": true
+    },
+    {
+      "fault": "decode",
+      "failure": "JSONDecodeError('injected known-phase report decode: line 1 column 1 (char 0)')",
+      "discoveryQueries": 1,
+      "ackSent": false,
+      "simulatedNaturalFinalization": true,
+      "originalAppReportSalvaged": true
+    },
+    {
+      "fault": "order",
+      "failure": "AssertionError('observed phase without actual prepared acknowledgement')",
+      "discoveryQueries": 1,
+      "ackSent": false,
+      "simulatedNaturalFinalization": true,
+      "originalAppReportSalvaged": true
+    }
+  ],
+  "scope": "Exact current main AST with fake native/tool/source-validation/retention endpoints and only known synthetic temporary files. Tests known-phase error routing, no rediscovery/ack and simulated natural finalization, not actual native failure/export/identity behavior. Raw output destination redirected to temporary fixture root via injected Path factory; main AST unchanged. Fixtures deleted after compact result.",
+  "checkedAt": 1794097432.083885
+}
