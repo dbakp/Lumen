@@ -71,7 +71,7 @@
 <button class="btn" type="button" data-area="quality" aria-pressed="false" aria-controls="lumen-plan-detail">Answer quality</button>
 <button class="btn" type="button" data-area="release" aria-pressed="false" aria-controls="lumen-plan-detail">Release gates</button>
 </div>
-<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Confirmation timing · simulator check next</h3><div data-verified>The updated app and tests compiled. The required development-code checks matched.</div><div data-next>Now: run the real confirmation check in the dedicated simulator.</div><div class="text-small" data-gate>Current binary, string and mixed recovery passed. Confirmation, recovery ownership and broader product checks remain open.</div></div>
+<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Confirmation check · handshake repair</h3><div data-verified>The app build passed. The simulator test stopped before changing data; saved files stayed unchanged.</div><div data-next>Now: repair the test handshake, review it and rerun the confirmation check.</div><div class="text-small" data-gate>Current binary, string and mixed recovery passed. Confirmation, recovery ownership and broader product checks remain open.</div></div>
 </div>
 <div class="section"><h3>Verified safety checks</h3>
 <table class="table table-sm" aria-label="Earlier checks retain their original scope; broader checks remain open"><thead><tr><th>Situation</th><th>Observed result</th></tr></thead><tbody>
@@ -88,9 +88,9 @@
 <script>
 (()=>{
 const root=document.getElementById('lumen-plan-progress');
-const snapshot='nov8-confirmation-built';
+const snapshot='nov8-confirmation-failed';
 const areas={
-current:{title:'Confirmation timing · simulator check next',verified:'The updated app and tests compiled. The required development-code checks matched.',next:'Now: run the real confirmation check in the dedicated simulator.',gate:'Current binary, string and mixed recovery passed. Confirmation, recovery ownership and broader product checks remain open.'},
+current:{title:'Confirmation check · handshake repair',verified:'The app build passed. The simulator test stopped before changing data; saved files stayed unchanged.',next:'Now: repair the test handshake, review it and rerun the confirmation check.',gate:'Current binary, string and mixed recovery passed. Confirmation, recovery ownership and broader product checks remain open.'},
 quality:{title:'Answer quality · open',verified:'Library search, source identity, consent controls and literal-reference safeguards are delivered.',next:'Next: evidence-support policy and independent evaluation; personal-context and conversation-history privacy review.',gate:'Clinical accuracy, language coverage and live-provider evaluation remain required.'},
 release:{title:'Release readiness · open',verified:'The previous Release build passed both reviews; the updated build still needs verification.',next:'Next: background Health, Watch reconnect, widget, interruption and accessibility checks.',gate:'Orientation warning, representative histories, performance, privacy and distribution review remain open. No iPhone installation, launch or checks without a renewed request.'}
 };

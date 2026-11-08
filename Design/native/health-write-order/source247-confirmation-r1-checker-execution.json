@@ -1,0 +1,34 @@
+{
+  "status": "FAILED actual mandatoryR2readonlychecker; no acceptance",
+  "command": [
+    "python3",
+    "-B",
+    "Design/native/health-write-order/check-confirmation-target-r2.py",
+    "health-legacy-confirmation-data-source247r1",
+    "--checker-source",
+    "durable-source-r247.json",
+    "--case-source",
+    "durable-source-r247.json",
+    "--build",
+    "health-target-change-source247-r1-build.json",
+    "--trial",
+    "PostRunR1"
+  ],
+  "checkerExit": 1,
+  "checkerPID": 96633,
+  "streams": {
+    "stdout": {
+      "retained": "source247-confirmation-r1-checker-stdout.gz",
+      "bytes": 265,
+      "sha256": "872d051f051f10f9bae18d506fbd3ca1d8c6eea9fd91db6b9ea6d59c7e2847c8"
+    },
+    "stderr": {
+      "retained": "source247-confirmation-r1-checker-stderr.gz",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "started": 1794168720.293246,
+  "finished": 1794168720.693513,
+  "scope": "One readonly currentcase checker; no native rerun/reset/defaults repair/build/phoneactions"
+}
