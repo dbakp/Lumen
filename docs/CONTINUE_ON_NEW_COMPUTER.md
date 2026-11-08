@@ -4,7 +4,13 @@ Continue developing Lumen into a world-class, primarily iOS, AI health assistant
 
 Repository: https://github.com/dbakp/Lumen · branch `main`.
 
-## Current checkpoint · Source229 reviewed formatting fix · 8 November 2026
+## Current checkpoint · Source229 startup checkpoint failed · 8 November 2026
+
+Actual229 Data native0/1/0/native65/driver1 failed FIRST before-selection boundary, independently116/root reviewed. Preparedappstate0/run2800C4EB…/PID78235 had Healthfalse/no owner/capture; firsthost172Bplist showed BOTH fixedkeys absent. Full13current+13prior/private/journal/provider observed; nohostack/Filesselection/capture/mutation/Recover. Native45s ackwait failed, naturalterminal65/nointerrupt. Later readonly BOTH exact42B oldData and all26protected raw+metadata/provider unchanged, trace[]/owned{}; transitiontime/mechanism UNKNOWN, no hostrepair. Full1originalPNG/full1591Bpartialhelper/fullsummary/all88attachments include full23,457,203Bvideo SHA17820860…(unplayed)+85otherfullpayloads. Acquisition indices remain immutable. StrictR3accepted-case checker notrun; no target-change product proof.
+
+Publish/exact-back full116/root/case before Source230 correction. Required116C1: explicit actual beforeselection UIcheckpoint after real parent navigation with contemporaneous old persisted/effective nativefacts. Required116C2: separately predeclared initial-only finite readonly missing→exactold bootstrap, reject changed/type/oversize/Health/identity/phase errors, fullpreack strictchecks. Never broaden postmutation old→new observer to permit missing. Source229compile0/182Debugpositive/16negativeonly20production/198predeclaration remain separate. Part115 source-reviewed laterRelease scripts UNEXECUTED; qualify resolvedplan “No native/markersyet” as prebuild historical wording, actualreceipts authority. Futureappfixturechanges require successor Release labels/review; no unnecessary229Releasebuild if superseded.
+
+## Historical Source229 formatting fix
 
 Part114/root supports frozen448text+18fixtures=466 after one diagnostic-string change: `String(describing: failure.frame)` replaces the unavailable helper. All461otherpriorinputs unchanged; no predicate/backend/fixture/checker change. Root syntax-only parse passed. Publish/exactcompare, then actual229Debugbuild and198/182/16/20controlpreflight before declared Data trial. Actual229build-for-testing PID76353 exited0, app46,032,736B SHAde2e5d8b… and test pair receipt verified; actual182Debugpositive/16negativeonly/20production with198negativepredeclaration passed. Publish/exact-back build receipts before native reset. Native/Release/target-change acceptance still pending; reuse same current simulator/package cache.
 

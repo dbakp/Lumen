@@ -71,7 +71,7 @@
 <button class="btn" type="button" data-area="quality" aria-pressed="false" aria-controls="lumen-plan-detail">Answer quality</button>
 <button class="btn" type="button" data-area="release" aria-pressed="false" aria-controls="lumen-plan-detail">Release gates</button>
 </div>
-<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Recovery protection · in progress</h3><div data-verified>Both legacy formats passed Settings erasure, clean relaunch and follow-up checks, with independent review of all 18 screenshots.</div><div data-next>Next: compile the corrected test, then prove recovery preserves data changed after review.</div><div class="text-small" data-gate>2 of 2 erasure formats verified. Independent source review passed; simulator proof pending. Broader gates remain open.</div></div>
+<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Recovery protection · in progress</h3><div data-verified>Both legacy formats passed Settings erasure, clean relaunch and follow-up checks, with independent review of all 18 screenshots.</div><div data-next>Next: add a visible startup checkpoint, then retry the changed-data recovery test.</div><div class="text-small" data-gate>2 of 2 erasure formats verified. New test build passed; the first simulator run stopped before backup selection. Recovery protection remains unverified.</div></div>
 </div>
 <div class="section"><h3>Verified safety checks</h3>
 <table class="table table-sm" aria-label="Earlier checks retain their original scope; broader checks remain open"><thead><tr><th>Situation</th><th>Observed result</th></tr></thead><tbody>
@@ -88,9 +88,9 @@
 <script>
 (()=>{
 const root=document.getElementById('lumen-plan-progress');
-const snapshot='nov8-target-change-build';
+const snapshot='nov8-target-change-startup-failure';
 const areas={
-current:{title:'Recovery protection · in progress',verified:'Both legacy formats passed Settings erasure, clean relaunch and follow-up checks, with independent review of all 18 screenshots.',next:'Next: compile the corrected test, then prove recovery preserves data changed after review.',gate:'2 of 2 erasure formats verified. Independent source review passed; simulator proof pending. Broader gates remain open.'},
+current:{title:'Recovery protection · in progress',verified:'Both legacy formats passed Settings erasure, clean relaunch and follow-up checks, with independent review of all 18 screenshots.',next:'Next: add a visible startup checkpoint, then retry the changed-data recovery test.',gate:'2 of 2 erasure formats verified. New test build passed; the first simulator run stopped before backup selection. Recovery protection remains unverified.'},
 quality:{title:'Answer quality · open',verified:'Library search, source identity, consent controls and literal-reference safeguards are delivered.',next:'Next: evidence-support policy and independent evaluation; personal-context and conversation-history privacy review.',gate:'Clinical accuracy, language coverage and live-provider evaluation remain required.'},
 release:{title:'Release readiness · open',verified:'Source223 unsigned release compilation, executable markers and compiler settings passed independent review. Coverage recording is enabled.',next:'Next: background Health, Watch reconnect, widget, interruption and accessibility checks.',gate:'Representative histories, performance, privacy and distribution review remain required. No iPhone installation, launch or checks without a renewed request.'}
 };

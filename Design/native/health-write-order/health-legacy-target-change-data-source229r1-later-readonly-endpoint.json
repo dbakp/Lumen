@@ -1,0 +1,910 @@
+{
+  "scope": "Later readonly endpoint after FAILED actual229case; does not rewrite failed firstmissingkeys boundary, no host repair/ack",
+  "at": 1794136543.1488051,
+  "failedBoundaryAt": 1794136337.881963,
+  "fixed": {
+    "lumen.health.meals.v1": {
+      "key": "lumen.health.meals.v1",
+      "present": true,
+      "actualType": "bytes",
+      "type": "data",
+      "actualBytes": 42,
+      "bytes": 42,
+      "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+      "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+    },
+    "lumen.health.workouts.v1": {
+      "key": "lumen.health.workouts.v1",
+      "present": true,
+      "actualType": "bytes",
+      "type": "data",
+      "actualBytes": 42,
+      "bytes": 42,
+      "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+      "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk"
+    },
+    "_healthConnected": {
+      "actual": null,
+      "effectiveBool": false
+    }
+  },
+  "protected": {
+    "current": {
+      "exists": true,
+      "files": {
+        "chat.json": {
+          "bytes": 2,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "base64": "W10="
+        },
+        "conversation-selection.json": {
+          "bytes": 2,
+          "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "base64": "e30="
+        },
+        "conversations.json": {
+          "bytes": 2,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "base64": "W10="
+        },
+        "goals.json": {
+          "bytes": 178,
+          "sha256": "142f89cee16338829e91bfe76c5c34ea249afb4bb338d987ee708ada70b4656c",
+          "base64": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6NDIsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxODEsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ=="
+        },
+        "habits.json": {
+          "bytes": 3170,
+          "sha256": "b1492f8ff1d8e06545829f1ee6f643860f7368ca3f0211d81e383cd2d2a031f4",
+          "base64": "W3sib2Zmc2V0IjoxODAwLCJhbmNob3IiOiJ3YWtlUGx1cyIsImRvbmVUb2RheSI6ZmFsc2UsImljb24iOiJzdW4ubWF4LmZpbGwiLCJpc0VuYWJsZWQiOnRydWUsInRpdGxlIjoiR2V0IGJyaWdodCBsaWdodCIsImRldGFpbCI6IjEwIG1pbiBvZiBkYXlsaWdodCB3aXRoaW4gMzAgbWluIG9mIHdha2luZyBhbmNob3JzIHlvdXIgY2xvY2suIiwiaWQiOiJsaWdodCJ9LHsib2Zmc2V0IjozNjAwMCwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiZG9uZVRvZGF5IjpmYWxzZSwiaWNvbiI6ImN1cC5hbmQuc2F1Y2VyLmZpbGwiLCJpc0VuYWJsZWQiOnRydWUsInRpdGxlIjoiQ2FmZmVpbmUgY3V0b2ZmIiwiZGV0YWlsIjoiTm8gY2FmZmVpbmUgd2l0aGluIDEwaCBvZiBiZWQg4oCUIGhhbGYtbGlmZSBpcyB+NmguIiwiaWQiOiJjYWZmZWluZSJ9LHsib2Zmc2V0IjoyMTYwMCwiYW5jaG9yIjoid2FrZVBsdXMiLCJkb25lVG9kYXkiOmZhbHNlLCJpY29uIjoiZmlndXJlLnJ1biIsImlzRW5hYmxlZCI6dHJ1ZSwidGl0bGUiOiJNb3ZlIHlvdXIgYm9keSIsImRldGFpbCI6IjIwKyBtaW4uIEZpbmlzaCBpbnRlbnNlIHdvcmtvdXRzIDNoKyBiZWZvcmUgYmVkLiIsImlkIjoiZXhlcmNpc2UifSx7Im9mZnNldCI6MjUyMDAsImFuY2hvciI6Indha2VQbHVzIiwiZG9uZVRvZGF5IjpmYWxzZSwiaWNvbiI6Im1vb24uenp6LmZpbGwiLCJpc0VuYWJsZWQiOnRydWUsInRpdGxlIjoiU21hcnQgbmFwIHdpbmRvdyIsImRldGFpbCI6IklmIG5hcHBpbmc6IDIw4oCTMzAgbWluLCBiZWZvcmUgeW91ciBkaXAgZW5kcy4gTm8gbGF0ZSBuYXBzLiIsImlkIjoibmFwIn0seyJvZmZzZXQiOjE0NDAwLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJkb25lVG9kYXkiOmZhbHNlLCJpY29uIjoid2luZWdsYXNzIiwiaXNFbmFibGVkIjp0cnVlLCJ0aXRsZSI6IlNraXAgbmlnaHRjYXAiLCJkZXRhaWwiOiJBbGNvaG9sIGZyYWdtZW50cyBzbGVlcCBldmVuIHdoZW4gaXQgc3BlZWRzIG9uc2V0LiIsImlkIjoiYWxjb2hvbCJ9LHsib2Zmc2V0IjoxMDgwMCwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiZG9uZVRvZGF5IjpmYWxzZSwiaWNvbiI6ImZvcmsua25pZmUiLCJpc0VuYWJsZWQiOnRydWUsInRpdGxlIjoiTGFzdCBiaWcgbWVhbCIsImRldGFpbCI6IkZpbmlzaCBsYXJnZSBtZWFscyAzaCBiZWZvcmUgYmVkOyBsaWdodCBzbmFjayBPSy4iLCJpZCI6Im1lYWwifSx7Im9mZnNldCI6NzIwMCwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiZG9uZVRvZGF5IjpmYWxzZSwiaWNvbiI6ImlwaG9uZS5nZW4yIiwiaXNFbmFibGVkIjp0cnVlLCJ0aXRsZSI6IkRpbSBzY3JlZW5zIiwiZGV0YWlsIjoiTG93ZXIgYnJpZ2h0bmVzcyArIE5pZ2h0IFNoaWZ0IDJoIGJlZm9yZSBiZWQuIiwiaWQiOiJzY3JlZW5zIn0seyJvZmZzZXQiOjU0MDAsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsImRvbmVUb2RheSI6ZmFsc2UsImljb24iOiJsaWdodGJ1bGIuZmlsbCIsImlzRW5hYmxlZCI6dHJ1ZSwidGl0bGUiOiJEaW0gdGhlIGxpZ2h0cyIsImRldGFpbCI6Ik92ZXJoZWFkIG9mZiwgbGFtcHMgbG93IOKAlCBsaWdodCBkZWxheXMgbWVsYXRvbmluLiIsImlkIjoibGlnaHRzIn0seyJvZmZzZXQiOjI3MDAsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsImRvbmVUb2RheSI6ZmFsc2UsImljb24iOiJ3aW5kIiwiaXNFbmFibGVkIjp0cnVlLCJ0aXRsZSI6IldpbmQgZG93biIsImRldGFpbCI6IjIw4oCTMzAgbWluIHJpdHVhbDogc2hvd2VyLCBzdHJldGNoLCByZWFkLCBicmVhdGhlLiIsImlkIjoid2luZGRvd24ifSx7Im9mZnNldCI6MCwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIiwiZG9uZVRvZGF5IjpmYWxzZSwiaWNvbiI6ImJlZC5kb3VibGUuZmlsbCIsImlzRW5hYmxlZCI6dHJ1ZSwidGl0bGUiOiJJbiBiZWQgb24gdGltZSIsImRldGFpbCI6IkhpdCB5b3VyIG1lbGF0b25pbiB3aW5kb3cg4oCUIHRoZSBlYXNpZXN0IGZhbGxpbmctYXNsZWVwLiIsImlkIjoiYmVkdGltZSJ9LHsib2Zmc2V0IjoxODAwLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJkb25lVG9kYXkiOmZhbHNlLCJpY29uIjoidGhlcm1vbWV0ZXIuc25vd2ZsYWtlIiwiaXNFbmFibGVkIjp0cnVlLCJ0aXRsZSI6IkNvb2wgJiBkYXJrIHJvb20iLCJkZXRhaWwiOiI2NeKAkzY4wrBGIFwvIDE44oCTMjDCsEMsIGJsYWNrb3V0IGRhcmssIHF1aWV0LiIsImlkIjoiY29vbCJ9LHsib2Zmc2V0IjowLCJhbmNob3IiOiJ3YWtlUGx1cyIsImRvbmVUb2RheSI6ZmFsc2UsImljb24iOiJhbGFybS5maWxsIiwiaXNFbmFibGVkIjp0cnVlLCJ0aXRsZSI6IkNvbnNpc3RlbnQgd2FrZSIsImRldGFpbCI6IlNhbWUgd2FrZSDCsTMwIG1pbiDigJQgZXZlbiB3ZWVrZW5kcy4gIzEgcmh5dGhtIGxldmVyLiIsImlkIjoiY29uc2lzdGVudCJ9LHsib2Zmc2V0IjozMDAsImFuY2hvciI6Indha2VQbHVzIiwiZG9uZVRvZGF5IjpmYWxzZSwiaWNvbiI6ImRyb3AuZmlsbCIsImlzRW5hYmxlZCI6dHJ1ZSwidGl0bGUiOiJNb3JuaW5nIGh5ZHJhdGlvbiIsImRldGFpbCI6IldhdGVyICsgbGlnaHQgYmVmb3JlIGNvZmZlZSBib29zdHMgYWxlcnRuZXNzLiIsImlkIjoiaHlkcmF0aW9uIn0seyJvZmZzZXQiOjE4MDAwLCJhbmNob3IiOiJiZWR0aW1lTWludXMiLCJkb25lVG9kYXkiOmZhbHNlLCJpY29uIjoicGVuY2lsLmFuZC5saXN0LmNsaXBib2FyZCIsImlzRW5hYmxlZCI6dHJ1ZSwidGl0bGUiOiJCcmFpbiBkdW1wIiwiZGV0YWlsIjoiMi1taW4gd29ycnkgbGlzdCBhZnRlciBkaW5uZXIgY2xlYXJzIG5pZ2h0IHJ1bWluYXRpb24uIiwiaWQiOiJzdHJlc3MifSx7Im9mZnNldCI6MTQ0MDAsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsImRvbmVUb2RheSI6ZmFsc2UsImljb24iOiJzbW9rZS5maWxsIiwiaXNFbmFibGVkIjpmYWxzZSwidGl0bGUiOiJObyBsYXRlIG5pY290aW5lIiwiZGV0YWlsIjoiU3RpbXVsYW50IOKAlCBhdm9pZCB3aXRoaW4gNGggb2YgYmVkLiIsImlkIjoibmljb3RpbmUifSx7Im9mZnNldCI6MTQ0MDAsImFuY2hvciI6ImJlZHRpbWVNaW51cyIsImRvbmVUb2RheSI6ZmFsc2UsImljb24iOiJzdW5zZXQuZmlsbCIsImlzRW5hYmxlZCI6ZmFsc2UsInRpdGxlIjoiRXZlbmluZyBsaWdodCB3YWxrIiwiZGV0YWlsIjoiQSBkdXNrIHdhbGsgc2hhcnBlbnMgRExNTyB0aW1pbmcuIiwiaWQiOiJzdW5zZXQifV0="
+        },
+        "health-write-intent.json": {
+          "bytes": 835,
+          "sha256": "dae8ba103ecabe81f1ebcea6dafd14276f9c63bc82d07f1160e142c8cacc8b8b",
+          "base64": "eyJldmVudHMiOlt7ImFja25vd2xlZGdlZCI6W10sImFjdGlvbiI6InNhdmUiLCJjb21wb25lbnRzIjpbeyJkYXRlIjo4MTUzMTM2MDAsIm1ldHJpYyI6IndhdGVyIiwidmFsdWUiOjEzN31dLCJkb21haW4iOiJ3YXRlciIsImdlbmVyYXRpb24iOiI3MjQwNEM4NC1DODlCLTQwQjctQTdCMy01RkNFNzQ1RjQ1NDIiLCJpZCI6IkI1MUE5RDVFLTFFMTctNDI2OC04MTMxLUQ0MjA2MjU4RTNFRCIsImlkZW50aXR5Ijoic3luYyIsImxpZmVjeWNsZSI6Ijg4MzY5OTZGLTA5MzItNEQyMC05MUUwLTA0ODc1MDM4M0M4MyIsImxvY2FsSUQiOiJzeW50aGV0aWMtcmVzZXQtdW5zdGFydGVkLXNhdmUiLCJyZXF1ZXN0ZWRBdCI6ODE1ODI5MTM3LjUxNzMzOH0seyJhY2tub3dsZWRnZWQiOltdLCJhY3Rpb24iOiJkZWxldGUiLCJjb21wb25lbnRzIjpbeyJkYXRlIjo4MTUzMTM2MDAsIm1ldHJpYyI6IndhdGVyIiwidmFsdWUiOjI1N31dLCJkb21haW4iOiJ3YXRlciIsImdlbmVyYXRpb24iOiJBOTM1RjgzQy1DNDczLTQ0OTgtQUM4NS0xOTE1RTI2MUIwMDEiLCJpZCI6IjE5QTk2MjUxLUE3QTAtNEI5Ni04NkVDLTAxQ0I5Q0VFRDBDMiIsImlkZW50aXR5Ijoic3luYyIsImxpZmVjeWNsZSI6Ijg4MzY5OTZGLTA5MzItNEQyMC05MUUwLTA0ODc1MDM4M0M4MyIsImxvY2FsSUQiOiJzeW50aGV0aWMtcmVzZXQtcGVuZGluZy1yZW1vdmFsIiwicmVxdWVzdGVkQXQiOjgxNTgyOTEzNy41MTczNDV9XSwibGlmZWN5Y2xlIjoiODgzNjk5NkYtMDkzMi00RDIwLTkxRTAtMDQ4NzUwMzgzQzgzIiwib3duZXIiOiJGOTlBN0YzOS1BQ0Q1LTQ4OEYtOEM4Ri1BREI1QzkzRjYyOEEiLCJ2ZXJzaW9uIjoxfQ=="
+        },
+        "profile.json": {
+          "bytes": 184,
+          "sha256": "fa6556e03fa452304ae8a607b3c4c7fcf4d9274117dd6e13456d4a7151d6926f",
+          "base64": "eyJzbGVlcE5lZWQiOjI5NDAwLCJzbGVlcE5lZWRDb25maWRlbmNlIjowLjMsIm9uYm9hcmRpbmdEb25lIjp0cnVlLCJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwibmFtZSI6IlN5bnRoZXRpYyBiYWNrdXAgYmFzZWxpbmUiLCJ3YWtlR29hbCI6eyJob3VyIjo3LCJtaW51dGUiOjB9LCJpc1N1YnNjcmliZWQiOmZhbHNlfQ=="
+        },
+        "sleep.json": {
+          "bytes": 2,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "base64": "W10="
+        },
+        "today.json": {
+          "bytes": 123,
+          "sha256": "a41612489498e94bcfd2a4c3d7a1cca3b36865269360b9e0e6a440c9db46cecf",
+          "base64": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDdUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9"
+        },
+        "water.json": {
+          "bytes": 72,
+          "sha256": "1dc7d921432b620cf0fcd72262f29a4ffe06902fcd4d7e3cb546d370e3908291",
+          "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwibWwiOjEzN31d"
+        },
+        ".health-recovery/78F86AC3-634A-4E1E-B55E-5C17D58A0422/device-intent.json": {
+          "bytes": 835,
+          "sha256": "dae8ba103ecabe81f1ebcea6dafd14276f9c63bc82d07f1160e142c8cacc8b8b",
+          "base64": "eyJldmVudHMiOlt7ImFja25vd2xlZGdlZCI6W10sImFjdGlvbiI6InNhdmUiLCJjb21wb25lbnRzIjpbeyJkYXRlIjo4MTUzMTM2MDAsIm1ldHJpYyI6IndhdGVyIiwidmFsdWUiOjEzN31dLCJkb21haW4iOiJ3YXRlciIsImdlbmVyYXRpb24iOiI3MjQwNEM4NC1DODlCLTQwQjctQTdCMy01RkNFNzQ1RjQ1NDIiLCJpZCI6IkI1MUE5RDVFLTFFMTctNDI2OC04MTMxLUQ0MjA2MjU4RTNFRCIsImlkZW50aXR5Ijoic3luYyIsImxpZmVjeWNsZSI6Ijg4MzY5OTZGLTA5MzItNEQyMC05MUUwLTA0ODc1MDM4M0M4MyIsImxvY2FsSUQiOiJzeW50aGV0aWMtcmVzZXQtdW5zdGFydGVkLXNhdmUiLCJyZXF1ZXN0ZWRBdCI6ODE1ODI5MTM3LjUxNzMzOH0seyJhY2tub3dsZWRnZWQiOltdLCJhY3Rpb24iOiJkZWxldGUiLCJjb21wb25lbnRzIjpbeyJkYXRlIjo4MTUzMTM2MDAsIm1ldHJpYyI6IndhdGVyIiwidmFsdWUiOjI1N31dLCJkb21haW4iOiJ3YXRlciIsImdlbmVyYXRpb24iOiJBOTM1RjgzQy1DNDczLTQ0OTgtQUM4NS0xOTE1RTI2MUIwMDEiLCJpZCI6IjE5QTk2MjUxLUE3QTAtNEI5Ni04NkVDLTAxQ0I5Q0VFRDBDMiIsImlkZW50aXR5Ijoic3luYyIsImxpZmVjeWNsZSI6Ijg4MzY5OTZGLTA5MzItNEQyMC05MUUwLTA0ODc1MDM4M0M4MyIsImxvY2FsSUQiOiJzeW50aGV0aWMtcmVzZXQtcGVuZGluZy1yZW1vdmFsIiwicmVxdWVzdGVkQXQiOjgxNTgyOTEzNy41MTczNDV9XSwibGlmZWN5Y2xlIjoiODgzNjk5NkYtMDkzMi00RDIwLTkxRTAtMDQ4NzUwMzgzQzgzIiwib3duZXIiOiJGOTlBN0YzOS1BQ0Q1LTQ4OEYtOEM4Ri1BREI1QzkzRjYyOEEiLCJ2ZXJzaW9uIjoxfQ=="
+        },
+        ".health-recovery/78F86AC3-634A-4E1E-B55E-5C17D58A0422/manifest.json": {
+          "bytes": 97,
+          "sha256": "4e58b1ec405b0b002d0a4291f83486db4bd4b98d09e36bd36bb61255d41cd696",
+          "base64": "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTA4VDExOjEyOjE3WiIsImRvbWFpbnMiOlsidG9kYXkiXSwiaW50ZW50Ijp0cnVlLCJwaG90b3MiOmZhbHNlLCJ2ZXJzaW9uIjoxfQ=="
+        },
+        ".health-recovery/78F86AC3-634A-4E1E-B55E-5C17D58A0422/today.json": {
+          "bytes": 123,
+          "sha256": "a41612489498e94bcfd2a4c3d7a1cca3b36865269360b9e0e6a440c9db46cecf",
+          "base64": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDdUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9"
+        }
+      },
+      "metadata": {
+        "files": {
+          "chat.json": {
+            "identity": {
+              "st_ino": 46167070,
+              "st_dev": 16777233,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 2,
+              "st_mtime_ns": 1794136337511108214
+            },
+            "bytes": 2,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "conversation-selection.json": {
+            "identity": {
+              "st_ino": 46167065,
+              "st_dev": 16777233,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 2,
+              "st_mtime_ns": 1794136337509665133
+            },
+            "bytes": 2,
+            "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+          },
+          "conversations.json": {
+            "identity": {
+              "st_ino": 46167074,
+              "st_dev": 16777233,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 2,
+              "st_mtime_ns": 1794136337512186753
+            },
+            "bytes": 2,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "goals.json": {
+            "identity": {
+              "st_ino": 46167072,
+              "st_dev": 16777233,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 178,
+              "st_mtime_ns": 1794136337511571046
+            },
+            "bytes": 178,
+            "sha256": "142f89cee16338829e91bfe76c5c34ea249afb4bb338d987ee708ada70b4656c"
+          },
+          "habits.json": {
+            "identity": {
+              "st_ino": 46167119,
+              "st_dev": 16777233,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 3170,
+              "st_mtime_ns": 1794136337550431185
+            },
+            "bytes": 3170,
+            "sha256": "b1492f8ff1d8e06545829f1ee6f643860f7368ca3f0211d81e383cd2d2a031f4"
+          },
+          "health-write-intent.json": {
+            "identity": {
+              "st_ino": 46167088,
+              "st_dev": 16777233,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 835,
+              "st_mtime_ns": 1794136337517636702
+            },
+            "bytes": 835,
+            "sha256": "dae8ba103ecabe81f1ebcea6dafd14276f9c63bc82d07f1160e142c8cacc8b8b"
+          },
+          "profile.json": {
+            "identity": {
+              "st_ino": 46167117,
+              "st_dev": 16777233,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 184,
+              "st_mtime_ns": 1794136337547765773
+            },
+            "bytes": 184,
+            "sha256": "fa6556e03fa452304ae8a607b3c4c7fcf4d9274117dd6e13456d4a7151d6926f"
+          },
+          "sleep.json": {
+            "identity": {
+              "st_ino": 46167118,
+              "st_dev": 16777233,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 2,
+              "st_mtime_ns": 1794136337548463106
+            },
+            "bytes": 2,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "today.json": {
+            "identity": {
+              "st_ino": 46167066,
+              "st_dev": 16777233,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 123,
+              "st_mtime_ns": 1794136337509971882
+            },
+            "bytes": 123,
+            "sha256": "a41612489498e94bcfd2a4c3d7a1cca3b36865269360b9e0e6a440c9db46cecf"
+          },
+          "water.json": {
+            "identity": {
+              "st_ino": 46167071,
+              "st_dev": 16777233,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 72,
+              "st_mtime_ns": 1794136337511355463
+            },
+            "bytes": 72,
+            "sha256": "1dc7d921432b620cf0fcd72262f29a4ffe06902fcd4d7e3cb546d370e3908291"
+          },
+          ".health-recovery/78F86AC3-634A-4E1E-B55E-5C17D58A0422/device-intent.json": {
+            "identity": {
+              "st_ino": 46167107,
+              "st_dev": 16777233,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 835,
+              "st_mtime_ns": 1794136337517636702
+            },
+            "bytes": 835,
+            "sha256": "dae8ba103ecabe81f1ebcea6dafd14276f9c63bc82d07f1160e142c8cacc8b8b"
+          },
+          ".health-recovery/78F86AC3-634A-4E1E-B55E-5C17D58A0422/manifest.json": {
+            "identity": {
+              "st_ino": 46167109,
+              "st_dev": 16777233,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 97,
+              "st_mtime_ns": 1794136337526495728
+            },
+            "bytes": 97,
+            "sha256": "4e58b1ec405b0b002d0a4291f83486db4bd4b98d09e36bd36bb61255d41cd696"
+          },
+          ".health-recovery/78F86AC3-634A-4E1E-B55E-5C17D58A0422/today.json": {
+            "identity": {
+              "st_ino": 46167108,
+              "st_dev": 16777233,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 123,
+              "st_mtime_ns": 1794136337509971882
+            },
+            "bytes": 123,
+            "sha256": "a41612489498e94bcfd2a4c3d7a1cca3b36865269360b9e0e6a440c9db46cecf"
+          }
+        },
+        "directories": [
+          ".health-recovery",
+          ".health-recovery/78F86AC3-634A-4E1E-B55E-5C17D58A0422"
+        ]
+      },
+      "entries": [
+        {
+          "path": ".health-recovery",
+          "identity": {
+            "st_ino": 46167105,
+            "st_dev": 16777233,
+            "st_mode": 16832,
+            "st_nlink": 3,
+            "st_size": 96,
+            "st_mtime_ns": 1794136337523019109
+          },
+          "kind": "directory"
+        },
+        {
+          "path": "chat.json",
+          "identity": {
+            "st_ino": 46167070,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 2,
+            "st_mtime_ns": 1794136337511108214
+          },
+          "kind": "regular"
+        },
+        {
+          "path": "conversation-selection.json",
+          "identity": {
+            "st_ino": 46167065,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 2,
+            "st_mtime_ns": 1794136337509665133
+          },
+          "kind": "regular"
+        },
+        {
+          "path": "conversations.json",
+          "identity": {
+            "st_ino": 46167074,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 2,
+            "st_mtime_ns": 1794136337512186753
+          },
+          "kind": "regular"
+        },
+        {
+          "path": "goals.json",
+          "identity": {
+            "st_ino": 46167072,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 178,
+            "st_mtime_ns": 1794136337511571046
+          },
+          "kind": "regular"
+        },
+        {
+          "path": "habits.json",
+          "identity": {
+            "st_ino": 46167119,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 3170,
+            "st_mtime_ns": 1794136337550431185
+          },
+          "kind": "regular"
+        },
+        {
+          "path": "health-write-intent.json",
+          "identity": {
+            "st_ino": 46167088,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 835,
+            "st_mtime_ns": 1794136337517636702
+          },
+          "kind": "regular"
+        },
+        {
+          "path": "profile.json",
+          "identity": {
+            "st_ino": 46167117,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 184,
+            "st_mtime_ns": 1794136337547765773
+          },
+          "kind": "regular"
+        },
+        {
+          "path": "sleep.json",
+          "identity": {
+            "st_ino": 46167118,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 2,
+            "st_mtime_ns": 1794136337548463106
+          },
+          "kind": "regular"
+        },
+        {
+          "path": "today.json",
+          "identity": {
+            "st_ino": 46167066,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 123,
+            "st_mtime_ns": 1794136337509971882
+          },
+          "kind": "regular"
+        },
+        {
+          "path": "water.json",
+          "identity": {
+            "st_ino": 46167071,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 72,
+            "st_mtime_ns": 1794136337511355463
+          },
+          "kind": "regular"
+        },
+        {
+          "path": ".health-recovery/78F86AC3-634A-4E1E-B55E-5C17D58A0422",
+          "identity": {
+            "st_ino": 46167106,
+            "st_dev": 16777233,
+            "st_mode": 16832,
+            "st_nlink": 5,
+            "st_size": 160,
+            "st_mtime_ns": 1794136337526665686
+          },
+          "kind": "directory"
+        },
+        {
+          "path": ".health-recovery/78F86AC3-634A-4E1E-B55E-5C17D58A0422/device-intent.json",
+          "identity": {
+            "st_ino": 46167107,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 835,
+            "st_mtime_ns": 1794136337517636702
+          },
+          "kind": "regular"
+        },
+        {
+          "path": ".health-recovery/78F86AC3-634A-4E1E-B55E-5C17D58A0422/manifest.json",
+          "identity": {
+            "st_ino": 46167109,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 97,
+            "st_mtime_ns": 1794136337526495728
+          },
+          "kind": "regular"
+        },
+        {
+          "path": ".health-recovery/78F86AC3-634A-4E1E-B55E-5C17D58A0422/today.json",
+          "identity": {
+            "st_ino": 46167108,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 123,
+            "st_mtime_ns": 1794136337509971882
+          },
+          "kind": "regular"
+        }
+      ],
+      "rootIdentity": {
+        "st_ino": 46167062,
+        "st_dev": 16777233,
+        "st_mode": 16832,
+        "st_nlink": 13,
+        "st_size": 416,
+        "st_mtime_ns": 1794136337550604852
+      },
+      "status": "observed"
+    },
+    "prior": {
+      "exists": true,
+      "files": {
+        "chat.json": {
+          "bytes": 2,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "base64": "W10="
+        },
+        "conversation-selection.json": {
+          "bytes": 2,
+          "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "base64": "e30="
+        },
+        "conversations.json": {
+          "bytes": 2,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "base64": "W10="
+        },
+        "goals.json": {
+          "bytes": 178,
+          "sha256": "142f89cee16338829e91bfe76c5c34ea249afb4bb338d987ee708ada70b4656c",
+          "base64": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6NDIsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxODEsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ=="
+        },
+        "health-write-intent.json": {
+          "bytes": 123,
+          "sha256": "b31a845067a6839be365e95ecbba7101f7bdd659d8d75fffbd33e94ea28c0665",
+          "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI4ODM2OTk2Ri0wOTMyLTREMjAtOTFFMC0wNDg3NTAzODNDODMiLCJvd25lciI6IkY5OUE3RjM5LUFDRDUtNDg4Ri04QzhGLUFEQjVDOTNGNjI4QSIsInZlcnNpb24iOjF9"
+        },
+        "meals.json": {
+          "bytes": 144,
+          "sha256": "9eec205ab83ed2466da007aaa29e3f18f8b4b5741f451c529ef7527ead443a68",
+          "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtY3VycmVudC1tZWFsIiwiaXRlbXMiOltdLCJub3RlIjoiS2VlcCB0aGlzIGN1cnJlbnQgbWVhbC4iLCJzb3VyY2UiOiJtYW51YWwiLCJ0eXBlIjoiYnJlYWtmYXN0In1d"
+        },
+        "profile.json": {
+          "bytes": 184,
+          "sha256": "233fff496e5b49e10ec22a5f4b94d52c307168dc8c8fac93b4e0c420291b6a2d",
+          "base64": "eyJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwiaXNTdWJzY3JpYmVkIjpmYWxzZSwibmFtZSI6IlN5bnRoZXRpYyBiYWNrdXAgYmFzZWxpbmUiLCJvbmJvYXJkaW5nRG9uZSI6dHJ1ZSwic2xlZXBOZWVkIjoyOTQwMCwic2xlZXBOZWVkQ29uZmlkZW5jZSI6MC4zLCJ3YWtlR29hbCI6eyJob3VyIjo3LCJtaW51dGUiOjB9fQ=="
+        },
+        "today.json": {
+          "bytes": 123,
+          "sha256": "a41612489498e94bcfd2a4c3d7a1cca3b36865269360b9e0e6a440c9db46cecf",
+          "base64": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDdUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9"
+        },
+        "water.json": {
+          "bytes": 72,
+          "sha256": "1dc7d921432b620cf0fcd72262f29a4ffe06902fcd4d7e3cb546d370e3908291",
+          "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwibWwiOjEzN31d"
+        },
+        "workouts.json": {
+          "bytes": 185,
+          "sha256": "a7e3f55c6c5e75d0b270c1a918742b4424a86bc359c972a3073532184db17f9c",
+          "base64": "W3siYWN0aXZlQ2Fsb3JpZXMiOjM1LCJkdXJhdGlvbiI6OTAwLCJlbmVyZ3lLbm93biI6dHJ1ZSwiaWQiOiJzeW50aGV0aWMtbXVsdGktemVybyIsImtpbmQiOiJzdHJlbmd0aCIsInNvdXJjZSI6Im1hbnVhbCIsInN0YXJ0IjoiMjAyNi0xMS0wMlQxMjowMDowMFoiLCJ0aXRsZSI6IkN1cnJlbnQgZWRpdGVkIHdvcmtvdXQifV0="
+        },
+        ".health-recovery/78F86AC3-634A-4E1E-B55E-5C17D58A0422/device-intent.json": {
+          "bytes": 835,
+          "sha256": "dae8ba103ecabe81f1ebcea6dafd14276f9c63bc82d07f1160e142c8cacc8b8b",
+          "base64": "eyJldmVudHMiOlt7ImFja25vd2xlZGdlZCI6W10sImFjdGlvbiI6InNhdmUiLCJjb21wb25lbnRzIjpbeyJkYXRlIjo4MTUzMTM2MDAsIm1ldHJpYyI6IndhdGVyIiwidmFsdWUiOjEzN31dLCJkb21haW4iOiJ3YXRlciIsImdlbmVyYXRpb24iOiI3MjQwNEM4NC1DODlCLTQwQjctQTdCMy01RkNFNzQ1RjQ1NDIiLCJpZCI6IkI1MUE5RDVFLTFFMTctNDI2OC04MTMxLUQ0MjA2MjU4RTNFRCIsImlkZW50aXR5Ijoic3luYyIsImxpZmVjeWNsZSI6Ijg4MzY5OTZGLTA5MzItNEQyMC05MUUwLTA0ODc1MDM4M0M4MyIsImxvY2FsSUQiOiJzeW50aGV0aWMtcmVzZXQtdW5zdGFydGVkLXNhdmUiLCJyZXF1ZXN0ZWRBdCI6ODE1ODI5MTM3LjUxNzMzOH0seyJhY2tub3dsZWRnZWQiOltdLCJhY3Rpb24iOiJkZWxldGUiLCJjb21wb25lbnRzIjpbeyJkYXRlIjo4MTUzMTM2MDAsIm1ldHJpYyI6IndhdGVyIiwidmFsdWUiOjI1N31dLCJkb21haW4iOiJ3YXRlciIsImdlbmVyYXRpb24iOiJBOTM1RjgzQy1DNDczLTQ0OTgtQUM4NS0xOTE1RTI2MUIwMDEiLCJpZCI6IjE5QTk2MjUxLUE3QTAtNEI5Ni04NkVDLTAxQ0I5Q0VFRDBDMiIsImlkZW50aXR5Ijoic3luYyIsImxpZmVjeWNsZSI6Ijg4MzY5OTZGLTA5MzItNEQyMC05MUUwLTA0ODc1MDM4M0M4MyIsImxvY2FsSUQiOiJzeW50aGV0aWMtcmVzZXQtcGVuZGluZy1yZW1vdmFsIiwicmVxdWVzdGVkQXQiOjgxNTgyOTEzNy41MTczNDV9XSwibGlmZWN5Y2xlIjoiODgzNjk5NkYtMDkzMi00RDIwLTkxRTAtMDQ4NzUwMzgzQzgzIiwib3duZXIiOiJGOTlBN0YzOS1BQ0Q1LTQ4OEYtOEM4Ri1BREI1QzkzRjYyOEEiLCJ2ZXJzaW9uIjoxfQ=="
+        },
+        ".health-recovery/78F86AC3-634A-4E1E-B55E-5C17D58A0422/manifest.json": {
+          "bytes": 97,
+          "sha256": "4e58b1ec405b0b002d0a4291f83486db4bd4b98d09e36bd36bb61255d41cd696",
+          "base64": "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTA4VDExOjEyOjE3WiIsImRvbWFpbnMiOlsidG9kYXkiXSwiaW50ZW50Ijp0cnVlLCJwaG90b3MiOmZhbHNlLCJ2ZXJzaW9uIjoxfQ=="
+        },
+        ".health-recovery/78F86AC3-634A-4E1E-B55E-5C17D58A0422/today.json": {
+          "bytes": 123,
+          "sha256": "a41612489498e94bcfd2a4c3d7a1cca3b36865269360b9e0e6a440c9db46cecf",
+          "base64": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDdUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9"
+        }
+      },
+      "metadata": {
+        "files": {
+          "chat.json": {
+            "identity": {
+              "st_ino": 46167076,
+              "st_dev": 16777233,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 2,
+              "st_mtime_ns": 1794136337511108214
+            },
+            "bytes": 2,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "conversation-selection.json": {
+            "identity": {
+              "st_ino": 46167083,
+              "st_dev": 16777233,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 2,
+              "st_mtime_ns": 1794136337509665133
+            },
+            "bytes": 2,
+            "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+          },
+          "conversations.json": {
+            "identity": {
+              "st_ino": 46167077,
+              "st_dev": 16777233,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 2,
+              "st_mtime_ns": 1794136337512186753
+            },
+            "bytes": 2,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+          },
+          "goals.json": {
+            "identity": {
+              "st_ino": 46167079,
+              "st_dev": 16777233,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 178,
+              "st_mtime_ns": 1794136337511571046
+            },
+            "bytes": 178,
+            "sha256": "142f89cee16338829e91bfe76c5c34ea249afb4bb338d987ee708ada70b4656c"
+          },
+          "health-write-intent.json": {
+            "identity": {
+              "st_ino": 46167085,
+              "st_dev": 16777233,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 123,
+              "st_mtime_ns": 1794136337510749631
+            },
+            "bytes": 123,
+            "sha256": "b31a845067a6839be365e95ecbba7101f7bdd659d8d75fffbd33e94ea28c0665"
+          },
+          "meals.json": {
+            "identity": {
+              "st_ino": 46167081,
+              "st_dev": 16777233,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 144,
+              "st_mtime_ns": 1794136337511895962
+            },
+            "bytes": 144,
+            "sha256": "9eec205ab83ed2466da007aaa29e3f18f8b4b5741f451c529ef7527ead443a68"
+          },
+          "profile.json": {
+            "identity": {
+              "st_ino": 46167084,
+              "st_dev": 16777233,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 184,
+              "st_mtime_ns": 1794136337510481256
+            },
+            "bytes": 184,
+            "sha256": "233fff496e5b49e10ec22a5f4b94d52c307168dc8c8fac93b4e0c420291b6a2d"
+          },
+          "today.json": {
+            "identity": {
+              "st_ino": 46167080,
+              "st_dev": 16777233,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 123,
+              "st_mtime_ns": 1794136337509971882
+            },
+            "bytes": 123,
+            "sha256": "a41612489498e94bcfd2a4c3d7a1cca3b36865269360b9e0e6a440c9db46cecf"
+          },
+          "water.json": {
+            "identity": {
+              "st_ino": 46167082,
+              "st_dev": 16777233,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 72,
+              "st_mtime_ns": 1794136337511355463
+            },
+            "bytes": 72,
+            "sha256": "1dc7d921432b620cf0fcd72262f29a4ffe06902fcd4d7e3cb546d370e3908291"
+          },
+          "workouts.json": {
+            "identity": {
+              "st_ino": 46167078,
+              "st_dev": 16777233,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 185,
+              "st_mtime_ns": 1794136337510247757
+            },
+            "bytes": 185,
+            "sha256": "a7e3f55c6c5e75d0b270c1a918742b4424a86bc359c972a3073532184db17f9c"
+          },
+          ".health-recovery/78F86AC3-634A-4E1E-B55E-5C17D58A0422/device-intent.json": {
+            "identity": {
+              "st_ino": 46167112,
+              "st_dev": 16777233,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 835,
+              "st_mtime_ns": 1794136337517636702
+            },
+            "bytes": 835,
+            "sha256": "dae8ba103ecabe81f1ebcea6dafd14276f9c63bc82d07f1160e142c8cacc8b8b"
+          },
+          ".health-recovery/78F86AC3-634A-4E1E-B55E-5C17D58A0422/manifest.json": {
+            "identity": {
+              "st_ino": 46167114,
+              "st_dev": 16777233,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 97,
+              "st_mtime_ns": 1794136337526495728
+            },
+            "bytes": 97,
+            "sha256": "4e58b1ec405b0b002d0a4291f83486db4bd4b98d09e36bd36bb61255d41cd696"
+          },
+          ".health-recovery/78F86AC3-634A-4E1E-B55E-5C17D58A0422/today.json": {
+            "identity": {
+              "st_ino": 46167113,
+              "st_dev": 16777233,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 123,
+              "st_mtime_ns": 1794136337509971882
+            },
+            "bytes": 123,
+            "sha256": "a41612489498e94bcfd2a4c3d7a1cca3b36865269360b9e0e6a440c9db46cecf"
+          }
+        },
+        "directories": [
+          ".health-recovery",
+          ".health-recovery/78F86AC3-634A-4E1E-B55E-5C17D58A0422"
+        ]
+      },
+      "entries": [
+        {
+          "path": ".health-recovery",
+          "identity": {
+            "st_ino": 46167110,
+            "st_dev": 16777233,
+            "st_mode": 16832,
+            "st_nlink": 3,
+            "st_size": 96,
+            "st_mtime_ns": 1794136337523019109
+          },
+          "kind": "directory"
+        },
+        {
+          "path": "chat.json",
+          "identity": {
+            "st_ino": 46167076,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 2,
+            "st_mtime_ns": 1794136337511108214
+          },
+          "kind": "regular"
+        },
+        {
+          "path": "conversation-selection.json",
+          "identity": {
+            "st_ino": 46167083,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 2,
+            "st_mtime_ns": 1794136337509665133
+          },
+          "kind": "regular"
+        },
+        {
+          "path": "conversations.json",
+          "identity": {
+            "st_ino": 46167077,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 2,
+            "st_mtime_ns": 1794136337512186753
+          },
+          "kind": "regular"
+        },
+        {
+          "path": "goals.json",
+          "identity": {
+            "st_ino": 46167079,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 178,
+            "st_mtime_ns": 1794136337511571046
+          },
+          "kind": "regular"
+        },
+        {
+          "path": "health-write-intent.json",
+          "identity": {
+            "st_ino": 46167085,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 123,
+            "st_mtime_ns": 1794136337510749631
+          },
+          "kind": "regular"
+        },
+        {
+          "path": "meals.json",
+          "identity": {
+            "st_ino": 46167081,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 144,
+            "st_mtime_ns": 1794136337511895962
+          },
+          "kind": "regular"
+        },
+        {
+          "path": "profile.json",
+          "identity": {
+            "st_ino": 46167084,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 184,
+            "st_mtime_ns": 1794136337510481256
+          },
+          "kind": "regular"
+        },
+        {
+          "path": "today.json",
+          "identity": {
+            "st_ino": 46167080,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 123,
+            "st_mtime_ns": 1794136337509971882
+          },
+          "kind": "regular"
+        },
+        {
+          "path": "water.json",
+          "identity": {
+            "st_ino": 46167082,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 72,
+            "st_mtime_ns": 1794136337511355463
+          },
+          "kind": "regular"
+        },
+        {
+          "path": "workouts.json",
+          "identity": {
+            "st_ino": 46167078,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 185,
+            "st_mtime_ns": 1794136337510247757
+          },
+          "kind": "regular"
+        },
+        {
+          "path": ".health-recovery/78F86AC3-634A-4E1E-B55E-5C17D58A0422",
+          "identity": {
+            "st_ino": 46167111,
+            "st_dev": 16777233,
+            "st_mode": 16832,
+            "st_nlink": 5,
+            "st_size": 160,
+            "st_mtime_ns": 1794136337526665686
+          },
+          "kind": "directory"
+        },
+        {
+          "path": ".health-recovery/78F86AC3-634A-4E1E-B55E-5C17D58A0422/device-intent.json",
+          "identity": {
+            "st_ino": 46167112,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 835,
+            "st_mtime_ns": 1794136337517636702
+          },
+          "kind": "regular"
+        },
+        {
+          "path": ".health-recovery/78F86AC3-634A-4E1E-B55E-5C17D58A0422/manifest.json",
+          "identity": {
+            "st_ino": 46167114,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 97,
+            "st_mtime_ns": 1794136337526495728
+          },
+          "kind": "regular"
+        },
+        {
+          "path": ".health-recovery/78F86AC3-634A-4E1E-B55E-5C17D58A0422/today.json",
+          "identity": {
+            "st_ino": 46167113,
+            "st_dev": 16777233,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 123,
+            "st_mtime_ns": 1794136337509971882
+          },
+          "kind": "regular"
+        }
+      ],
+      "rootIdentity": {
+        "st_ino": 46167075,
+        "st_dev": 16777233,
+        "st_mode": 16832,
+        "st_nlink": 13,
+        "st_size": 416,
+        "st_mtime_ns": 1794136337531491886
+      },
+      "status": "observed"
+    },
+    "provider": {
+      "file": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7/data/Containers/Shared/AppGroup/1E143EEB-A0AC-424A-AF23-ACA91DD19451/File Provider Storage/Lumen-backup-health-matrix-two-legacy.json",
+      "identity": {
+        "st_ino": 46084867,
+        "st_dev": 16777233,
+        "st_mode": 33152,
+        "st_nlink": 1,
+        "st_size": 4992,
+        "st_mtime_ns": 1794129209803882773
+      },
+      "bytes": 4992,
+      "sha256": "80d236abd21b33a3d012d3287a0606e699d53ddc18a9e4263a635cb899629078",
+      "base64": "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTAyVDEyOjAwOjAwWiIsImZvcm1hdCI6Ikx1bWVuQmFja3VwIiwicGF5bG9hZCI6ImV5SmphR1ZqYTBsdWN5STZXMTBzSW1OdmJuWmxjbk5oZEdsdmJuTWlPbHRkTENKa2IyTjFiV1Z1ZEhNaU9sdGRMQ0puYjJGc2N5STZleUpoWTNScGRtVkRZV3hIYjJGc0lqbzJNREFzSW1GamRHbDJhWFI1VEdWMlpXd2lPaUp0YjJSbGNtRjBaU0lzSW1GblpTSTZNekFzSW1WNFpYSmphWE5sUjI5aGJFMXBiaUk2TXpBc0ltZHZZV3dpT2lKdFlXbHVkR0ZwYmlJc0ltaGxhV2RvZEVOdElqb3hOemdzSW5ObGVDSTZJblZ1YzNCbFkybG1hV1ZrSWl3aWMzUmhibVJIYjJGc0lqb3hNaXdpYzNSbGNFZHZZV3dpT2pFd01EQXdMQ0ozWldsbmFIUkxaeUk2TnpWOUxDSm9ZV0pwZEhNaU9sdGRMQ0pwYlhCdmNuUmxaRVJoZVhNaU9sdGRMQ0pwYlhCdmNuUnpJanBiWFN3aWJXVmhiSE1pT2x0N0ltUmhkR1VpT2lJeU1ESTJMVEV4TFRBeVZERXlPakF3T2pBd1dpSXNJbWxrSWpvaWMzbHVkR2hsZEdsakxXMWhkSEpwZUMxdFpXRnNMV0VpTENKcGRHVnRjeUk2VzEwc0ltNXZkR1VpT2lKVGVXNTBhR1YwYVdNZ1ptbHljM1FnYldWaGJDNGlMQ0p3YUc5MGIwbEVJam9pYzNsdWRHaGxkR2xqTFcxaGRISnBlQzF3YUc5MGJ5MWhJaXdpYzI5MWNtTmxJam9pYldGdWRXRnNJaXdpZEhsd1pTSTZJbXgxYm1Ob0luMHNleUprWVhSbElqb2lNakF5TmkweE1TMHdNbFF4TXpvd01Eb3dNRm9pTENKcFpDSTZJbk41Ym5Sb1pYUnBZeTF0WVhSeWFYZ3RiV1ZoYkMxaUlpd2lhWFJsYlhNaU9sdGRMQ0p1YjNSbElqb2lVM2x1ZEdobGRHbGpJSE5sWTI5dVpDQnRaV0ZzTGlJc0luQm9iM1J2U1VRaU9pSnplVzUwYUdWMGFXTXRiV0YwY21sNExYQm9iM1J2TFdJaUxDSnpiM1Z5WTJVaU9pSnRZVzUxWVd3aUxDSjBlWEJsSWpvaWMyNWhZMnNpZlYwc0luQmxjbk52Ym1Gc1EyOXVkR1Y0ZENJNmV5SmhiR3hsY21kcFpYTWlPaUlpTENKbWIyTjFjeUk2SWlJc0ltWnZiMlJRY21WbVpYSmxibU5sY3lJNklpSXNJbWx1WTJ4MVpHVkpia0Z6YzJsemRHRnVkQ0k2Wm1Gc2MyVXNJbXhwYldsMFlYUnBiMjV6SWpvaUlpd2libTkwWlhNaU9pSWlMQ0p6WTJobFpIVnNaU0k2SWlKOUxDSndhRzkwYjNNaU9uc2ljM2x1ZEdobGRHbGpMVzFoZEhKcGVDMXdhRzkwYnkxaElqb2lYQzg1YWx3dk5FRkJVVk5yV2twU1owRkNRVkZCUVRKQlJGbEJRVVJjTHpSUlEwMVNXR2h3V21kQlFWUlZNRUZMWjBGQlFVRm5RVUpSUlZOQlFVMUJRVUZCUWtGQlJVRkJRVVZoUVVGVlFVRkJRVUpCUVVGQlUyZEZZa0ZCVlVGQlFVRkNRVUZCUVZWblJXOUJRVTFCUVVGQlFrRkJTVUZCU1dSd1FVRlJRVUZCUVVKQlFVRkJWMmRCUVVGQlFVRkJRVVJaUVVGQlFVRlJRVUZCVG1kQlFVRkJRa0ZCVDJkQlVVRkVRVUZCUVVGUlFVSkJRVU5uUVdkQlJVRkJRVUZCVVVGQlFVVnBaMEYzUVVWQlFVRkJRVkZCUVVGRVFVRkJRVUZCWEM4ck1FRlBSa0p2WWpOU2RtTXlhSFpqUTBGNlRHcEJRVTlGU2twVVVWRkZRVUZCUVVGQlFVRlBSVXBLVkZGUmJFRkJRVUZCUVVGUk1VSXlUVEpaT0VGeloxUndaMEZ0V1RkUWFFTm1kbHd2UVVGQ1JVbEJSRUZCVTBGTlFrbG5RVU5GVVVWRVJWRklYQzk0UVVGbVFVRkJRa0pSUlVKQlVVVkNRVkZCUVVGQlFVRkJRVUZCUVZGSlJFSkJWVWRDZDJkS1EyZDJYQzk0UVVNeFJVRkJRMEZSVFVSQloxRkVRbEZWUlVKQlFVRkJXREJDUVdkTlFVSkNSVVpGYVVWNFVWRlpWRlZYUlVoSmJrVlZUVzlIVW05UloycFJja2hDUmxaTVVqaERVWHBaYmt0RFExRnZWMFo0WjFwSGFWVnRTbmxuY0V0cVVURk9hbU0wVDFSd1JGSkZWa2RTTUdoS1UyeE9WVlpXV2xoWFJteGhXVEpTYkZwdFpHOWhWM0I2WkVoV01tUXphRFZsYjA5RmFGbGhTR2xKYlV0cmNFOVZiRnBoV0cxS2JXRnZjVTlyY0dGaGJuRkxiWEZ6Y2s4d2RHSmhNM1ZNYlRaM2MxQkZlR05pU0hsTmJrc3dkRkJWTVdSaVdESk9ibUUwWlV4cU5VOVliVFVyYW5BMmRraDVPRnd2VkRFNWRtWTBLMlp5WEM5NFFVRm1RVkZCUkVGUlJVSkJVVVZDUVZGRlFrRkJRVUZCUVVGQlFWRkpSRUpCVlVkQ2QyZEtRMmQyWEM5NFFVTXhSVkZCUTBGUlNVVkNRVTFGUW5kVlJVSkJRVUpCYm1OQlFWRkpSRVZSVVVaSlZFVkhSV3RHVWtJeVJuaEZlVWw1WjFGblZWRndSMmh6WTBWS1NYcE9VemhDVm1samRFVkxSbWxSTURSVFdIaEdlR2RhUjJsWmJrdERhM0ZPVkZrelQwUnJObEV3VWtaU2EyUkpVMVZ3VkZaR1ZsZFdNV2hhVjIxT2ExcFhXbTVoUjJ4eFl6TlNNV1J1WkRSbFdIRkRaelJUUm1odlpVbHBXWEZUYXpWVFZteHdaVmx0V25GcGJ6WlRiSEJ4Wlc5eFlYRjVjemRUTVhSeVpUUjFZbkpEZHpoVVJuaHpaa2w1WTNKVE1EbFVWakYwWmxreVpISnBOQ3RVYkRWMVptODJaWEo1T0Z3dlZERTVkbVkwSzJaeVhDOHlkMEpFUVVGRlFrRlJSVUpCVVVsQ1FWRkpSRUZuU1VOQmQxRkVRWGROUkVKQldVVkNRVkZGUWtGWlNFSm5XVWRDWjFsSFFuZGpTRUozWTBoQ2QyTkpRMEZuU1VOQlowcERVV3RLUTFGelRFTjNjMHhEZDNOTVEzZDJYQzh5ZDBKRVFWRkpRMEZuVFVSQmQxVkVRWGRWVEVOQldVbERkM05NUTNkelRFTjNjMHhEZDNOTVEzZHpURU4zYzB4RGQzTk1RM2R6VEVOM2MweERkM05NUTNkelRFTjNjMHhEZDNOTVEzZHpURU4zYzB4RGQzTk1RM2QyWEM4elVVRkZRVUZZWEM4eVowRk5RWGRGUVVGb1JVUkZVVUZjTDBGUVZVdExTMHRjTDNCM1hDOTRla05wYVdsblFXOXZiMjlCUzB0TFMwRkRhV2xwWjBSY0x6QlFWVXRMUzB0Y0wzQjNYQzk0ZWtOcGFXbG5RVzl2YjI5QlMwdExTMEZEYVdscFowUmNMekJtVlV0TFMwdGNMM0IzWEM5NGVrTnBhV2xuUVc5dmIyOUJTMHRMUzBGRGFXbHBaMFJjTHpKUlBUMGlMQ0p6ZVc1MGFHVjBhV010YldGMGNtbDRMWEJvYjNSdkxXSWlPaUpjTHpscVhDODBRVUZSVTJ0YVNsSm5RVUpCVVVGQk1rRkVXVUZCUkZ3dk5GRkRUVkpZYUhCYVowRkJWRlV3UVV0blFVRkJRV2RCUWxGRlUwRkJUVUZCUVVGQ1FVRkZRVUZCUldGQlFWVkJRVUZCUWtGQlFVRlRaMFZpUVVGVlFVRkJRVUpCUVVGQlZXZEZiMEZCVFVGQlFVRkNRVUZKUVVGSlpIQkJRVkZCUVVGQlFrRkJRVUZYWjBGQlFVRkJRVUZCUkZsQlFVRkJRVkZCUVVGT1owRkJRVUZDUVVGUFowRlJRVVJCUVVGQlFWRkJRa0ZCUTJkQlowRkZRVUZCUVVGUlFVRkJSV2xuUVhkQlJVRkJRVUZCVVVGQlFVUkJRVUZCUVVGY0x5c3dRVTlHUW05aU0xSjJZekpvZG1ORFFYcE1ha0ZCVDBWS1NsUlJVVVZCUVVGQlFVRkJRVTlGU2twVVVWRnNRVUZCUVVGQlFWRXhRakpOTWxrNFFYTm5WSEJuUVcxWk4xQm9RMloyWEM5QlFVSkZTVUZFUVVGVFFVMUNTV2RCUTBWUlJVUkZVVWhjTDNoQlFXWkJRVUZDUWxGRlFrRlJSVUpCVVVGQlFVRkJRVUZCUVVGQlVVbEVRa0ZWUjBKM1owcERaM1pjTDNoQlF6RkZRVUZEUVZGTlJFRm5VVVJDVVZWRlFrRkJRVUZZTUVKQlowMUJRa0pGUmtWcFJYaFJVVmxVVlZkRlNFbHVSVlZOYjBkU2IxRm5hbEZ5U0VKR1ZreFNPRU5SZWxsdVMwTkRVVzlYUm5obldrZHBWVzFLZVdkd1MycFJNVTVxWXpSUFZIQkVVa1ZXUjFJd2FFcFRiRTVWVmxaYVdGZEdiR0ZaTWxKc1dtMWtiMkZYY0hwa1NGWXlaRE5vTldWdlQwVm9XV0ZJYVVsdFMydHdUMVZzV21GWWJVcHRZVzl4VDJ0d1lXRnVjVXR0Y1hOeVR6QjBZbUV6ZFV4dE5uZHpVRVY0WTJKSWVVMXVTekIwVUZVeFpHSllNazV1WVRSbFRHbzFUMWh0TlN0cWNEWjJTSGs0WEM5VU1UbDJaalFyWm5KY0wzaEJRV1pCVVVGRVFWRkZRa0ZSUlVKQlVVVkNRVUZCUVVGQlFVRkJVVWxFUWtGVlIwSjNaMHBEWjNaY0wzaEJRekZGVVVGRFFWRkpSVUpCVFVWQ2QxVkZRa0ZCUWtGdVkwRkJVVWxFUlZGUlJrbFVSVWRGYTBaU1FqSkdlRVY1U1hsblVXZFZVWEJIYUhOalJVcEplazVUT0VKV2FXTjBSVXRHYVZFd05GTlllRVo0WjFwSGFWbHVTME5yY1U1VVdUTlBSR3MyVVRCU1JsSnJaRWxUVlhCVVZrWldWMVl4YUZwWGJVNXJXbGRhYm1GSGJIRmpNMUl4Wkc1a05HVlljVU5uTkZOR2FHOWxTV2xaY1ZOck5WTldiSEJsV1cxYWNXbHZObE5zY0hGbGIzRmhjWGx6TjFNeGRISmxOSFZpY2tOM09GUkdlSE5tU1hsamNsTXdPVlJXTVhSbVdUSmtjbWswSzFSc05YVm1ielpsY25rNFhDOVVNVGwyWmpRclpuSmNMekozUWtSQlFVVkNRVkZGUWtGUlNVSkJVVWxFUVdkSlEwRjNVVVJCZDAxRVFrRlpSVUpCVVVWQ1FWbElRbWRaUjBKbldVZENkMk5JUW5kalNFSjNZMGxEUVdkSlEwRm5Ta05SYTBwRFVYTk1RM2R6VEVOM2MweERkM1pjTHpKM1FrUkJVVWxEUVdkTlJFRjNWVVJCZDFWTVEwRlpTVU4zYzB4RGQzTk1RM2R6VEVOM2MweERkM05NUTNkelRFTjNjMHhEZDNOTVEzZHpURU4zYzB4RGQzTk1RM2R6VEVOM2MweERkM05NUTNkelRFTjNjMHhEZDNaY0x6TlJRVVZCUVZoY0x6Sm5RVTFCZDBWQlFXaEZSRVZSUVZ3dlFWQXdaMjl2YjNKY0wwOWpYQzh3UlVOcGFXbG5RVzl2YjI5QlMwdExTMEZEYVdscFowUmNMemxFT1VsTFMwdExYQzk2YmxBNVFrRnZiMjl2UVV0TFMwdEJRMmxwYVdkQmIyOXZiMEZjTDF3dlVsd3ZVME5wYVdsMk9EVjZYQzlSVVV0TFMwdEJRMmxwYVdkQmIyOXZiMEZMUzB0TFFWQmNMekpSUFQwaWZTd2ljSEp2Wm1sc1pTSTZleUpqYUhKdmJtOTBlWEJsSWpvaWFXNTBaWEp0WldScFlYUmxJaXdpYVhOVGRXSnpZM0pwWW1Wa0lqcG1ZV3h6WlN3aWJtRnRaU0k2SWlJc0ltOXVZbTloY21ScGJtZEViMjVsSWpwbVlXeHpaU3dpYzJ4bFpYQk9aV1ZrSWpveU9UUXdNQ3dpYzJ4bFpYQk9aV1ZrUTI5dVptbGtaVzVqWlNJNk1DNHpMQ0ozWVd0bFIyOWhiQ0k2ZXlKb2IzVnlJam8zTENKdGFXNTFkR1VpT2pCOWZTd2ljMnhsWlhBaU9sdGRMQ0p6ZVcxd2RHOXRjeUk2VzEwc0luZGhkR1Z5SWpwYmV5SmtZWFJsSWpvaU1qQXlOaTB4TVMwd01sUXhNam93TURvd01Gb2lMQ0pwWkNJNkluTjViblJvWlhScFl5MXRZWFJ5YVhndGQyRjBaWElpTENKdGJDSTZNalEyZlYwc0luZHZjbXR2ZFhSeklqcGJYWDA9Iiwic2hhMjU2IjoiY2U1MjgyZDE0NmE3MWZlNTQ3ZGNkMTQ2Y2MxNGI3ZTllNzI3ZDIyZjAzZWJmNWI2NmM3ODgyODlmMTY3NjdiNCIsInZlcnNpb24iOjF9"
+    },
+    "residuals": {
+      "LumenData.restore-*": [],
+      "LumenData.retired-*": [],
+      "Lumen-reset-fixture-*": []
+    }
+  },
+  "originEvents": [],
+  "owned": {},
+  "installed": {
+    "path": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7/data/Containers/Bundle/Application/2E4086CA-AB3A-43BD-BA46-4935FAD095D8/Lumen.app/Lumen",
+    "bytes": 46032736,
+    "sha256": "de2e5d8b2aaa979d995bbb512a713ce948add7a8baa74c5dcd4c902998745415"
+  },
+  "status": "PASS later both fixed typedData old present and full13current/prior/provider unchanged; timing/mechanism of transition unknown"
+}
