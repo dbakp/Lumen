@@ -1,0 +1,905 @@
+{
+  "didCommit": false,
+  "error": "changed",
+  "externalAfter": {},
+  "externalBefore": {},
+  "finalFixed": {
+    "lumen.health.meals.v1": {
+      "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk",
+      "bytes": 42,
+      "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+      "type": "data"
+    },
+    "lumen.health.workouts.v1": {
+      "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk",
+      "bytes": 42,
+      "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+      "type": "data"
+    }
+  },
+  "finalPrevious": {
+    "entries": {},
+    "root": {
+      "exists": false
+    }
+  },
+  "finalRoot": {
+    "entries": {
+      "chat.json": {
+        "base64": "W10=",
+        "bytes": 2,
+        "device": 16777233,
+        "exists": true,
+        "inode": 45474259,
+        "mode": 33188,
+        "mtimeNanos": 850003820,
+        "mtimeSeconds": 1794098265,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "size": 2
+      },
+      "conversation-selection.json": {
+        "base64": "e30=",
+        "bytes": 2,
+        "device": 16777233,
+        "exists": true,
+        "inode": 45474266,
+        "mode": 33188,
+        "mtimeNanos": 849552522,
+        "mtimeSeconds": 1794098265,
+        "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "size": 2
+      },
+      "conversations.json": {
+        "base64": "W10=",
+        "bytes": 2,
+        "device": 16777233,
+        "exists": true,
+        "inode": 45474260,
+        "mode": 33188,
+        "mtimeNanos": 850615411,
+        "mtimeSeconds": 1794098265,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "size": 2
+      },
+      "goals.json": {
+        "base64": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6NDIsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxODEsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ==",
+        "bytes": 178,
+        "device": 16777233,
+        "exists": true,
+        "inode": 45474262,
+        "mode": 33188,
+        "mtimeNanos": 848738218,
+        "mtimeSeconds": 1794098265,
+        "sha256": "142f89cee16338829e91bfe76c5c34ea249afb4bb338d987ee708ada70b4656c",
+        "size": 178
+      },
+      "health-write-intent.json": {
+        "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI0NUFGMDMzNC04Mzc5LTQ5MjAtOUNFNy1GQzE5RTA1QTlFOTQiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9",
+        "bytes": 123,
+        "device": 16777233,
+        "exists": true,
+        "inode": 45474299,
+        "mode": 33188,
+        "mtimeNanos": 62824297,
+        "mtimeSeconds": 1794098268,
+        "sha256": "26d4a84f6669544032e5fb4d23026b232518a51a31028ab45c398d400138715c",
+        "size": 123
+      },
+      "meals.json": {
+        "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtY3VycmVudC1tZWFsIiwiaXRlbXMiOltdLCJub3RlIjoiS2VlcCB0aGlzIGN1cnJlbnQgbWVhbC4iLCJzb3VyY2UiOiJtYW51YWwiLCJ0eXBlIjoiYnJlYWtmYXN0In1d",
+        "bytes": 144,
+        "device": 16777233,
+        "exists": true,
+        "inode": 45474264,
+        "mode": 33188,
+        "mtimeNanos": 850408617,
+        "mtimeSeconds": 1794098265,
+        "sha256": "9eec205ab83ed2466da007aaa29e3f18f8b4b5741f451c529ef7527ead443a68",
+        "size": 144
+      },
+      "profile.json": {
+        "base64": "eyJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwiaXNTdWJzY3JpYmVkIjpmYWxzZSwibmFtZSI6IlN5bnRoZXRpYyBiYWNrdXAgYmFzZWxpbmUiLCJvbmJvYXJkaW5nRG9uZSI6dHJ1ZSwic2xlZXBOZWVkIjoyOTQwMCwic2xlZXBOZWVkQ29uZmlkZW5jZSI6MC4zLCJ3YWtlR29hbCI6eyJob3VyIjo3LCJtaW51dGUiOjB9fQ==",
+        "bytes": 184,
+        "device": 16777233,
+        "exists": true,
+        "inode": 45474267,
+        "mode": 33188,
+        "mtimeNanos": 850207781,
+        "mtimeSeconds": 1794098265,
+        "sha256": "233fff496e5b49e10ec22a5f4b94d52c307168dc8c8fac93b4e0c420291b6a2d",
+        "size": 184
+      },
+      "today.json": {
+        "base64": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDdUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9",
+        "bytes": 123,
+        "device": 16777233,
+        "exists": true,
+        "inode": 45474263,
+        "mode": 33188,
+        "mtimeNanos": 848947471,
+        "mtimeSeconds": 1794098265,
+        "sha256": "a41612489498e94bcfd2a4c3d7a1cca3b36865269360b9e0e6a440c9db46cecf",
+        "size": 123
+      },
+      "water.json": {
+        "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwibWwiOjEzN31d",
+        "bytes": 72,
+        "device": 16777233,
+        "exists": true,
+        "inode": 45474265,
+        "mode": 33188,
+        "mtimeNanos": 849791608,
+        "mtimeSeconds": 1794098265,
+        "sha256": "1dc7d921432b620cf0fcd72262f29a4ffe06902fcd4d7e3cb546d370e3908291",
+        "size": 72
+      },
+      "workouts.json": {
+        "base64": "W3siYWN0aXZlQ2Fsb3JpZXMiOjM1LCJkdXJhdGlvbiI6OTAwLCJlbmVyZ3lLbm93biI6dHJ1ZSwiaWQiOiJzeW50aGV0aWMtbXVsdGktemVybyIsImtpbmQiOiJzdHJlbmd0aCIsInNvdXJjZSI6Im1hbnVhbCIsInN0YXJ0IjoiMjAyNi0xMS0wMlQxMjowMDowMFoiLCJ0aXRsZSI6IkN1cnJlbnQgZWRpdGVkIHdvcmtvdXQifV0=",
+        "bytes": 185,
+        "device": 16777233,
+        "exists": true,
+        "inode": 45474261,
+        "mode": 33188,
+        "mtimeNanos": 848438714,
+        "mtimeSeconds": 1794098265,
+        "sha256": "a7e3f55c6c5e75d0b270c1a918742b4424a86bc359c972a3073532184db17f9c",
+        "size": 185
+      }
+    },
+    "root": {
+      "device": 16777233,
+      "exists": true,
+      "inode": 45474258,
+      "mode": 16832,
+      "mtimeNanos": 63003300,
+      "mtimeSeconds": 1794098268,
+      "size": 384
+    }
+  },
+  "initialFixed": {
+    "lumen.health.meals.v1": {
+      "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk",
+      "bytes": 42,
+      "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+      "type": "data"
+    },
+    "lumen.health.workouts.v1": {
+      "base64": "e3N5bnRoZXRpYyBwZXJzaXN0ZWQgbGVnYWN5IG9yaWdpbiBkYW1hZ2Vk",
+      "bytes": 42,
+      "sha256": "4852110c84027ec9146e5cb2bcfc6176dc351fb4f53d2141f438be1d5550132e",
+      "type": "data"
+    }
+  },
+  "initialPrevious": {
+    "entries": {
+      "chat.json": {
+        "base64": "W10=",
+        "bytes": 2,
+        "device": 16777233,
+        "exists": true,
+        "inode": 45474259,
+        "mode": 33188,
+        "mtimeNanos": 850003820,
+        "mtimeSeconds": 1794098265,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "size": 2
+      },
+      "conversation-selection.json": {
+        "base64": "e30=",
+        "bytes": 2,
+        "device": 16777233,
+        "exists": true,
+        "inode": 45474266,
+        "mode": 33188,
+        "mtimeNanos": 849552522,
+        "mtimeSeconds": 1794098265,
+        "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "size": 2
+      },
+      "conversations.json": {
+        "base64": "W10=",
+        "bytes": 2,
+        "device": 16777233,
+        "exists": true,
+        "inode": 45474260,
+        "mode": 33188,
+        "mtimeNanos": 850615411,
+        "mtimeSeconds": 1794098265,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "size": 2
+      },
+      "goals.json": {
+        "base64": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6NDIsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxODEsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ==",
+        "bytes": 178,
+        "device": 16777233,
+        "exists": true,
+        "inode": 45474262,
+        "mode": 33188,
+        "mtimeNanos": 848738218,
+        "mtimeSeconds": 1794098265,
+        "sha256": "142f89cee16338829e91bfe76c5c34ea249afb4bb338d987ee708ada70b4656c",
+        "size": 178
+      },
+      "health-write-intent.json": {
+        "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI0NUFGMDMzNC04Mzc5LTQ5MjAtOUNFNy1GQzE5RTA1QTlFOTQiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9",
+        "bytes": 123,
+        "device": 16777233,
+        "exists": true,
+        "inode": 45474299,
+        "mode": 33188,
+        "mtimeNanos": 62824297,
+        "mtimeSeconds": 1794098268,
+        "sha256": "26d4a84f6669544032e5fb4d23026b232518a51a31028ab45c398d400138715c",
+        "size": 123
+      },
+      "meals.json": {
+        "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtY3VycmVudC1tZWFsIiwiaXRlbXMiOltdLCJub3RlIjoiS2VlcCB0aGlzIGN1cnJlbnQgbWVhbC4iLCJzb3VyY2UiOiJtYW51YWwiLCJ0eXBlIjoiYnJlYWtmYXN0In1d",
+        "bytes": 144,
+        "device": 16777233,
+        "exists": true,
+        "inode": 45474264,
+        "mode": 33188,
+        "mtimeNanos": 850408617,
+        "mtimeSeconds": 1794098265,
+        "sha256": "9eec205ab83ed2466da007aaa29e3f18f8b4b5741f451c529ef7527ead443a68",
+        "size": 144
+      },
+      "profile.json": {
+        "base64": "eyJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwiaXNTdWJzY3JpYmVkIjpmYWxzZSwibmFtZSI6IlN5bnRoZXRpYyBiYWNrdXAgYmFzZWxpbmUiLCJvbmJvYXJkaW5nRG9uZSI6dHJ1ZSwic2xlZXBOZWVkIjoyOTQwMCwic2xlZXBOZWVkQ29uZmlkZW5jZSI6MC4zLCJ3YWtlR29hbCI6eyJob3VyIjo3LCJtaW51dGUiOjB9fQ==",
+        "bytes": 184,
+        "device": 16777233,
+        "exists": true,
+        "inode": 45474267,
+        "mode": 33188,
+        "mtimeNanos": 850207781,
+        "mtimeSeconds": 1794098265,
+        "sha256": "233fff496e5b49e10ec22a5f4b94d52c307168dc8c8fac93b4e0c420291b6a2d",
+        "size": 184
+      },
+      "today.json": {
+        "base64": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDdUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9",
+        "bytes": 123,
+        "device": 16777233,
+        "exists": true,
+        "inode": 45474263,
+        "mode": 33188,
+        "mtimeNanos": 848947471,
+        "mtimeSeconds": 1794098265,
+        "sha256": "a41612489498e94bcfd2a4c3d7a1cca3b36865269360b9e0e6a440c9db46cecf",
+        "size": 123
+      },
+      "water.json": {
+        "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwibWwiOjEzN31d",
+        "bytes": 72,
+        "device": 16777233,
+        "exists": true,
+        "inode": 45474265,
+        "mode": 33188,
+        "mtimeNanos": 849791608,
+        "mtimeSeconds": 1794098265,
+        "sha256": "1dc7d921432b620cf0fcd72262f29a4ffe06902fcd4d7e3cb546d370e3908291",
+        "size": 72
+      },
+      "workouts.json": {
+        "base64": "W3siYWN0aXZlQ2Fsb3JpZXMiOjM1LCJkdXJhdGlvbiI6OTAwLCJlbmVyZ3lLbm93biI6dHJ1ZSwiaWQiOiJzeW50aGV0aWMtbXVsdGktemVybyIsImtpbmQiOiJzdHJlbmd0aCIsInNvdXJjZSI6Im1hbnVhbCIsInN0YXJ0IjoiMjAyNi0xMS0wMlQxMjowMDowMFoiLCJ0aXRsZSI6IkN1cnJlbnQgZWRpdGVkIHdvcmtvdXQifV0=",
+        "bytes": 185,
+        "device": 16777233,
+        "exists": true,
+        "inode": 45474261,
+        "mode": 33188,
+        "mtimeNanos": 848438714,
+        "mtimeSeconds": 1794098265,
+        "sha256": "a7e3f55c6c5e75d0b270c1a918742b4424a86bc359c972a3073532184db17f9c",
+        "size": 185
+      }
+    },
+    "root": {
+      "device": 16777233,
+      "exists": true,
+      "inode": 45474258,
+      "mode": 16832,
+      "mtimeNanos": 63003300,
+      "mtimeSeconds": 1794098268,
+      "size": 384
+    }
+  },
+  "initialRoot": {
+    "entries": {
+      "chat.json": {
+        "base64": "W10=",
+        "bytes": 2,
+        "device": 16777233,
+        "exists": true,
+        "inode": 45474254,
+        "mode": 33188,
+        "mtimeNanos": 850003820,
+        "mtimeSeconds": 1794098265,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "size": 2
+      },
+      "conversation-selection.json": {
+        "base64": "e30=",
+        "bytes": 2,
+        "device": 16777233,
+        "exists": true,
+        "inode": 45474252,
+        "mode": 33188,
+        "mtimeNanos": 849552522,
+        "mtimeSeconds": 1794098265,
+        "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "size": 2
+      },
+      "conversations.json": {
+        "base64": "W10=",
+        "bytes": 2,
+        "device": 16777233,
+        "exists": true,
+        "inode": 45474257,
+        "mode": 33188,
+        "mtimeNanos": 850615411,
+        "mtimeSeconds": 1794098265,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "size": 2
+      },
+      "goals.json": {
+        "base64": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6NDIsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxODEsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ==",
+        "bytes": 178,
+        "device": 16777233,
+        "exists": true,
+        "inode": 45474249,
+        "mode": 33188,
+        "mtimeNanos": 848738218,
+        "mtimeSeconds": 1794098265,
+        "sha256": "142f89cee16338829e91bfe76c5c34ea249afb4bb338d987ee708ada70b4656c",
+        "size": 178
+      },
+      "habits.json": {
+        "base64": "W3siaXNFbmFibGVkIjp0cnVlLCJkZXRhaWwiOiIxMCBtaW4gb2YgZGF5bGlnaHQgd2l0aGluIDMwIG1pbiBvZiB3YWtpbmcgYW5jaG9ycyB5b3VyIGNsb2NrLiIsInRpdGxlIjoiR2V0IGJyaWdodCBsaWdodCIsImljb24iOiJzdW4ubWF4LmZpbGwiLCJvZmZzZXQiOjE4MDAsImlkIjoibGlnaHQiLCJkb25lVG9kYXkiOmZhbHNlLCJhbmNob3IiOiJ3YWtlUGx1cyJ9LHsiaXNFbmFibGVkIjp0cnVlLCJkZXRhaWwiOiJObyBjYWZmZWluZSB3aXRoaW4gMTBoIG9mIGJlZCDigJQgaGFsZi1saWZlIGlzIH42aC4iLCJ0aXRsZSI6IkNhZmZlaW5lIGN1dG9mZiIsImljb24iOiJjdXAuYW5kLnNhdWNlci5maWxsIiwib2Zmc2V0IjozNjAwMCwiaWQiOiJjYWZmZWluZSIsImRvbmVUb2RheSI6ZmFsc2UsImFuY2hvciI6ImJlZHRpbWVNaW51cyJ9LHsiaXNFbmFibGVkIjp0cnVlLCJkZXRhaWwiOiIyMCsgbWluLiBGaW5pc2ggaW50ZW5zZSB3b3Jrb3V0cyAzaCsgYmVmb3JlIGJlZC4iLCJ0aXRsZSI6Ik1vdmUgeW91ciBib2R5IiwiaWNvbiI6ImZpZ3VyZS5ydW4iLCJvZmZzZXQiOjIxNjAwLCJpZCI6ImV4ZXJjaXNlIiwiZG9uZVRvZGF5IjpmYWxzZSwiYW5jaG9yIjoid2FrZVBsdXMifSx7ImlzRW5hYmxlZCI6dHJ1ZSwiZGV0YWlsIjoiSWYgbmFwcGluZzogMjDigJMzMCBtaW4sIGJlZm9yZSB5b3VyIGRpcCBlbmRzLiBObyBsYXRlIG5hcHMuIiwidGl0bGUiOiJTbWFydCBuYXAgd2luZG93IiwiaWNvbiI6Im1vb24uenp6LmZpbGwiLCJvZmZzZXQiOjI1MjAwLCJpZCI6Im5hcCIsImRvbmVUb2RheSI6ZmFsc2UsImFuY2hvciI6Indha2VQbHVzIn0seyJpc0VuYWJsZWQiOnRydWUsImRldGFpbCI6IkFsY29ob2wgZnJhZ21lbnRzIHNsZWVwIGV2ZW4gd2hlbiBpdCBzcGVlZHMgb25zZXQuIiwidGl0bGUiOiJTa2lwIG5pZ2h0Y2FwIiwiaWNvbiI6IndpbmVnbGFzcyIsIm9mZnNldCI6MTQ0MDAsImlkIjoiYWxjb2hvbCIsImRvbmVUb2RheSI6ZmFsc2UsImFuY2hvciI6ImJlZHRpbWVNaW51cyJ9LHsiaXNFbmFibGVkIjp0cnVlLCJkZXRhaWwiOiJGaW5pc2ggbGFyZ2UgbWVhbHMgM2ggYmVmb3JlIGJlZDsgbGlnaHQgc25hY2sgT0suIiwidGl0bGUiOiJMYXN0IGJpZyBtZWFsIiwiaWNvbiI6ImZvcmsua25pZmUiLCJvZmZzZXQiOjEwODAwLCJpZCI6Im1lYWwiLCJkb25lVG9kYXkiOmZhbHNlLCJhbmNob3IiOiJiZWR0aW1lTWludXMifSx7ImlzRW5hYmxlZCI6dHJ1ZSwiZGV0YWlsIjoiTG93ZXIgYnJpZ2h0bmVzcyArIE5pZ2h0IFNoaWZ0IDJoIGJlZm9yZSBiZWQuIiwidGl0bGUiOiJEaW0gc2NyZWVucyIsImljb24iOiJpcGhvbmUuZ2VuMiIsIm9mZnNldCI6NzIwMCwiaWQiOiJzY3JlZW5zIiwiZG9uZVRvZGF5IjpmYWxzZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIn0seyJpc0VuYWJsZWQiOnRydWUsImRldGFpbCI6Ik92ZXJoZWFkIG9mZiwgbGFtcHMgbG93IOKAlCBsaWdodCBkZWxheXMgbWVsYXRvbmluLiIsInRpdGxlIjoiRGltIHRoZSBsaWdodHMiLCJpY29uIjoibGlnaHRidWxiLmZpbGwiLCJvZmZzZXQiOjU0MDAsImlkIjoibGlnaHRzIiwiZG9uZVRvZGF5IjpmYWxzZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIn0seyJpc0VuYWJsZWQiOnRydWUsImRldGFpbCI6IjIw4oCTMzAgbWluIHJpdHVhbDogc2hvd2VyLCBzdHJldGNoLCByZWFkLCBicmVhdGhlLiIsInRpdGxlIjoiV2luZCBkb3duIiwiaWNvbiI6IndpbmQiLCJvZmZzZXQiOjI3MDAsImlkIjoid2luZGRvd24iLCJkb25lVG9kYXkiOmZhbHNlLCJhbmNob3IiOiJiZWR0aW1lTWludXMifSx7ImlzRW5hYmxlZCI6dHJ1ZSwiZGV0YWlsIjoiSGl0IHlvdXIgbWVsYXRvbmluIHdpbmRvdyDigJQgdGhlIGVhc2llc3QgZmFsbGluZy1hc2xlZXAuIiwidGl0bGUiOiJJbiBiZWQgb24gdGltZSIsImljb24iOiJiZWQuZG91YmxlLmZpbGwiLCJvZmZzZXQiOjAsImlkIjoiYmVkdGltZSIsImRvbmVUb2RheSI6ZmFsc2UsImFuY2hvciI6ImJlZHRpbWVNaW51cyJ9LHsiaXNFbmFibGVkIjp0cnVlLCJkZXRhaWwiOiI2NeKAkzY4wrBGIFwvIDE44oCTMjDCsEMsIGJsYWNrb3V0IGRhcmssIHF1aWV0LiIsInRpdGxlIjoiQ29vbCAmIGRhcmsgcm9vbSIsImljb24iOiJ0aGVybW9tZXRlci5zbm93Zmxha2UiLCJvZmZzZXQiOjE4MDAsImlkIjoiY29vbCIsImRvbmVUb2RheSI6ZmFsc2UsImFuY2hvciI6ImJlZHRpbWVNaW51cyJ9LHsiaXNFbmFibGVkIjp0cnVlLCJkZXRhaWwiOiJTYW1lIHdha2UgwrEzMCBtaW4g4oCUIGV2ZW4gd2Vla2VuZHMuICMxIHJoeXRobSBsZXZlci4iLCJ0aXRsZSI6IkNvbnNpc3RlbnQgd2FrZSIsImljb24iOiJhbGFybS5maWxsIiwib2Zmc2V0IjowLCJpZCI6ImNvbnNpc3RlbnQiLCJkb25lVG9kYXkiOmZhbHNlLCJhbmNob3IiOiJ3YWtlUGx1cyJ9LHsiaXNFbmFibGVkIjp0cnVlLCJkZXRhaWwiOiJXYXRlciArIGxpZ2h0IGJlZm9yZSBjb2ZmZWUgYm9vc3RzIGFsZXJ0bmVzcy4iLCJ0aXRsZSI6Ik1vcm5pbmcgaHlkcmF0aW9uIiwiaWNvbiI6ImRyb3AuZmlsbCIsIm9mZnNldCI6MzAwLCJpZCI6Imh5ZHJhdGlvbiIsImRvbmVUb2RheSI6ZmFsc2UsImFuY2hvciI6Indha2VQbHVzIn0seyJpc0VuYWJsZWQiOnRydWUsImRldGFpbCI6IjItbWluIHdvcnJ5IGxpc3QgYWZ0ZXIgZGlubmVyIGNsZWFycyBuaWdodCBydW1pbmF0aW9uLiIsInRpdGxlIjoiQnJhaW4gZHVtcCIsImljb24iOiJwZW5jaWwuYW5kLmxpc3QuY2xpcGJvYXJkIiwib2Zmc2V0IjoxODAwMCwiaWQiOiJzdHJlc3MiLCJkb25lVG9kYXkiOmZhbHNlLCJhbmNob3IiOiJiZWR0aW1lTWludXMifSx7ImlzRW5hYmxlZCI6ZmFsc2UsImRldGFpbCI6IlN0aW11bGFudCDigJQgYXZvaWQgd2l0aGluIDRoIG9mIGJlZC4iLCJ0aXRsZSI6Ik5vIGxhdGUgbmljb3RpbmUiLCJpY29uIjoic21va2UuZmlsbCIsIm9mZnNldCI6MTQ0MDAsImlkIjoibmljb3RpbmUiLCJkb25lVG9kYXkiOmZhbHNlLCJhbmNob3IiOiJiZWR0aW1lTWludXMifSx7ImlzRW5hYmxlZCI6ZmFsc2UsImRldGFpbCI6IkEgZHVzayB3YWxrIHNoYXJwZW5zIERMTU8gdGltaW5nLiIsInRpdGxlIjoiRXZlbmluZyBsaWdodCB3YWxrIiwiaWNvbiI6InN1bnNldC5maWxsIiwib2Zmc2V0IjoxNDQwMCwiaWQiOiJzdW5zZXQiLCJkb25lVG9kYXkiOmZhbHNlLCJhbmNob3IiOiJiZWR0aW1lTWludXMifV0=",
+        "bytes": 3170,
+        "device": 16777233,
+        "exists": true,
+        "inode": 45474274,
+        "mode": 33188,
+        "mtimeNanos": 868451413,
+        "mtimeSeconds": 1794098265,
+        "sha256": "df6a189416dd34cd5df89685f09460b50f4a941f555b629c367a0fb44a18198d",
+        "size": 3170
+      },
+      "health-write-intent.json": {
+        "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI0NUFGMDMzNC04Mzc5LTQ5MjAtOUNFNy1GQzE5RTA1QTlFOTQiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9",
+        "bytes": 123,
+        "device": 16777233,
+        "exists": true,
+        "inode": 45474298,
+        "mode": 33188,
+        "mtimeNanos": 62320540,
+        "mtimeSeconds": 1794098268,
+        "sha256": "26d4a84f6669544032e5fb4d23026b232518a51a31028ab45c398d400138715c",
+        "size": 123
+      },
+      "profile.json": {
+        "base64": "eyJvbmJvYXJkaW5nRG9uZSI6dHJ1ZSwibmFtZSI6IlN5bnRoZXRpYyBiYWNrdXAgYmFzZWxpbmUiLCJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwid2FrZUdvYWwiOnsiaG91ciI6NywibWludXRlIjowfSwic2xlZXBOZWVkQ29uZmlkZW5jZSI6MC4zLCJzbGVlcE5lZWQiOjI5NDAwLCJpc1N1YnNjcmliZWQiOmZhbHNlfQ==",
+        "bytes": 184,
+        "device": 16777233,
+        "exists": true,
+        "inode": 45474272,
+        "mode": 33188,
+        "mtimeNanos": 866373676,
+        "mtimeSeconds": 1794098265,
+        "sha256": "1a494c5d31b9f740b86d6e1e3109efee61b1d6f4eec9f5b314d6f408dc4be99d",
+        "size": 184
+      },
+      "sleep.json": {
+        "base64": "W10=",
+        "bytes": 2,
+        "device": 16777233,
+        "exists": true,
+        "inode": 45474273,
+        "mode": 33188,
+        "mtimeNanos": 866907850,
+        "mtimeSeconds": 1794098265,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "size": 2
+      },
+      "today.json": {
+        "base64": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDdUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9",
+        "bytes": 123,
+        "device": 16777233,
+        "exists": true,
+        "inode": 45474250,
+        "mode": 33188,
+        "mtimeNanos": 848947471,
+        "mtimeSeconds": 1794098265,
+        "sha256": "a41612489498e94bcfd2a4c3d7a1cca3b36865269360b9e0e6a440c9db46cecf",
+        "size": 123
+      },
+      "water.json": {
+        "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwibWwiOjEzN31d",
+        "bytes": 72,
+        "device": 16777233,
+        "exists": true,
+        "inode": 45474253,
+        "mode": 33188,
+        "mtimeNanos": 849791608,
+        "mtimeSeconds": 1794098265,
+        "sha256": "1dc7d921432b620cf0fcd72262f29a4ffe06902fcd4d7e3cb546d370e3908291",
+        "size": 72
+      }
+    },
+    "root": {
+      "device": 16777233,
+      "exists": true,
+      "inode": 45474245,
+      "mode": 16832,
+      "mtimeNanos": 62561794,
+      "mtimeSeconds": 1794098268,
+      "size": 384
+    }
+  },
+  "journalBeforeBase64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI0NUFGMDMzNC04Mzc5LTQ5MjAtOUNFNy1GQzE5RTA1QTlFOTQiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9",
+  "leaseReady": true,
+  "mode": "legacy-root-missing-with-prior",
+  "movedPrevious": {
+    "entries": {},
+    "root": {
+      "exists": false
+    }
+  },
+  "movedRoot": {
+    "entries": {
+      "chat.json": {
+        "base64": "W10=",
+        "bytes": 2,
+        "device": 16777233,
+        "exists": true,
+        "inode": 45474254,
+        "mode": 33188,
+        "mtimeNanos": 850003820,
+        "mtimeSeconds": 1794098265,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "size": 2
+      },
+      "conversation-selection.json": {
+        "base64": "e30=",
+        "bytes": 2,
+        "device": 16777233,
+        "exists": true,
+        "inode": 45474252,
+        "mode": 33188,
+        "mtimeNanos": 849552522,
+        "mtimeSeconds": 1794098265,
+        "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "size": 2
+      },
+      "conversations.json": {
+        "base64": "W10=",
+        "bytes": 2,
+        "device": 16777233,
+        "exists": true,
+        "inode": 45474257,
+        "mode": 33188,
+        "mtimeNanos": 850615411,
+        "mtimeSeconds": 1794098265,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "size": 2
+      },
+      "goals.json": {
+        "base64": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6NDIsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxODEsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ==",
+        "bytes": 178,
+        "device": 16777233,
+        "exists": true,
+        "inode": 45474249,
+        "mode": 33188,
+        "mtimeNanos": 848738218,
+        "mtimeSeconds": 1794098265,
+        "sha256": "142f89cee16338829e91bfe76c5c34ea249afb4bb338d987ee708ada70b4656c",
+        "size": 178
+      },
+      "habits.json": {
+        "base64": "W3siaXNFbmFibGVkIjp0cnVlLCJkZXRhaWwiOiIxMCBtaW4gb2YgZGF5bGlnaHQgd2l0aGluIDMwIG1pbiBvZiB3YWtpbmcgYW5jaG9ycyB5b3VyIGNsb2NrLiIsInRpdGxlIjoiR2V0IGJyaWdodCBsaWdodCIsImljb24iOiJzdW4ubWF4LmZpbGwiLCJvZmZzZXQiOjE4MDAsImlkIjoibGlnaHQiLCJkb25lVG9kYXkiOmZhbHNlLCJhbmNob3IiOiJ3YWtlUGx1cyJ9LHsiaXNFbmFibGVkIjp0cnVlLCJkZXRhaWwiOiJObyBjYWZmZWluZSB3aXRoaW4gMTBoIG9mIGJlZCDigJQgaGFsZi1saWZlIGlzIH42aC4iLCJ0aXRsZSI6IkNhZmZlaW5lIGN1dG9mZiIsImljb24iOiJjdXAuYW5kLnNhdWNlci5maWxsIiwib2Zmc2V0IjozNjAwMCwiaWQiOiJjYWZmZWluZSIsImRvbmVUb2RheSI6ZmFsc2UsImFuY2hvciI6ImJlZHRpbWVNaW51cyJ9LHsiaXNFbmFibGVkIjp0cnVlLCJkZXRhaWwiOiIyMCsgbWluLiBGaW5pc2ggaW50ZW5zZSB3b3Jrb3V0cyAzaCsgYmVmb3JlIGJlZC4iLCJ0aXRsZSI6Ik1vdmUgeW91ciBib2R5IiwiaWNvbiI6ImZpZ3VyZS5ydW4iLCJvZmZzZXQiOjIxNjAwLCJpZCI6ImV4ZXJjaXNlIiwiZG9uZVRvZGF5IjpmYWxzZSwiYW5jaG9yIjoid2FrZVBsdXMifSx7ImlzRW5hYmxlZCI6dHJ1ZSwiZGV0YWlsIjoiSWYgbmFwcGluZzogMjDigJMzMCBtaW4sIGJlZm9yZSB5b3VyIGRpcCBlbmRzLiBObyBsYXRlIG5hcHMuIiwidGl0bGUiOiJTbWFydCBuYXAgd2luZG93IiwiaWNvbiI6Im1vb24uenp6LmZpbGwiLCJvZmZzZXQiOjI1MjAwLCJpZCI6Im5hcCIsImRvbmVUb2RheSI6ZmFsc2UsImFuY2hvciI6Indha2VQbHVzIn0seyJpc0VuYWJsZWQiOnRydWUsImRldGFpbCI6IkFsY29ob2wgZnJhZ21lbnRzIHNsZWVwIGV2ZW4gd2hlbiBpdCBzcGVlZHMgb25zZXQuIiwidGl0bGUiOiJTa2lwIG5pZ2h0Y2FwIiwiaWNvbiI6IndpbmVnbGFzcyIsIm9mZnNldCI6MTQ0MDAsImlkIjoiYWxjb2hvbCIsImRvbmVUb2RheSI6ZmFsc2UsImFuY2hvciI6ImJlZHRpbWVNaW51cyJ9LHsiaXNFbmFibGVkIjp0cnVlLCJkZXRhaWwiOiJGaW5pc2ggbGFyZ2UgbWVhbHMgM2ggYmVmb3JlIGJlZDsgbGlnaHQgc25hY2sgT0suIiwidGl0bGUiOiJMYXN0IGJpZyBtZWFsIiwiaWNvbiI6ImZvcmsua25pZmUiLCJvZmZzZXQiOjEwODAwLCJpZCI6Im1lYWwiLCJkb25lVG9kYXkiOmZhbHNlLCJhbmNob3IiOiJiZWR0aW1lTWludXMifSx7ImlzRW5hYmxlZCI6dHJ1ZSwiZGV0YWlsIjoiTG93ZXIgYnJpZ2h0bmVzcyArIE5pZ2h0IFNoaWZ0IDJoIGJlZm9yZSBiZWQuIiwidGl0bGUiOiJEaW0gc2NyZWVucyIsImljb24iOiJpcGhvbmUuZ2VuMiIsIm9mZnNldCI6NzIwMCwiaWQiOiJzY3JlZW5zIiwiZG9uZVRvZGF5IjpmYWxzZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIn0seyJpc0VuYWJsZWQiOnRydWUsImRldGFpbCI6Ik92ZXJoZWFkIG9mZiwgbGFtcHMgbG93IOKAlCBsaWdodCBkZWxheXMgbWVsYXRvbmluLiIsInRpdGxlIjoiRGltIHRoZSBsaWdodHMiLCJpY29uIjoibGlnaHRidWxiLmZpbGwiLCJvZmZzZXQiOjU0MDAsImlkIjoibGlnaHRzIiwiZG9uZVRvZGF5IjpmYWxzZSwiYW5jaG9yIjoiYmVkdGltZU1pbnVzIn0seyJpc0VuYWJsZWQiOnRydWUsImRldGFpbCI6IjIw4oCTMzAgbWluIHJpdHVhbDogc2hvd2VyLCBzdHJldGNoLCByZWFkLCBicmVhdGhlLiIsInRpdGxlIjoiV2luZCBkb3duIiwiaWNvbiI6IndpbmQiLCJvZmZzZXQiOjI3MDAsImlkIjoid2luZGRvd24iLCJkb25lVG9kYXkiOmZhbHNlLCJhbmNob3IiOiJiZWR0aW1lTWludXMifSx7ImlzRW5hYmxlZCI6dHJ1ZSwiZGV0YWlsIjoiSGl0IHlvdXIgbWVsYXRvbmluIHdpbmRvdyDigJQgdGhlIGVhc2llc3QgZmFsbGluZy1hc2xlZXAuIiwidGl0bGUiOiJJbiBiZWQgb24gdGltZSIsImljb24iOiJiZWQuZG91YmxlLmZpbGwiLCJvZmZzZXQiOjAsImlkIjoiYmVkdGltZSIsImRvbmVUb2RheSI6ZmFsc2UsImFuY2hvciI6ImJlZHRpbWVNaW51cyJ9LHsiaXNFbmFibGVkIjp0cnVlLCJkZXRhaWwiOiI2NeKAkzY4wrBGIFwvIDE44oCTMjDCsEMsIGJsYWNrb3V0IGRhcmssIHF1aWV0LiIsInRpdGxlIjoiQ29vbCAmIGRhcmsgcm9vbSIsImljb24iOiJ0aGVybW9tZXRlci5zbm93Zmxha2UiLCJvZmZzZXQiOjE4MDAsImlkIjoiY29vbCIsImRvbmVUb2RheSI6ZmFsc2UsImFuY2hvciI6ImJlZHRpbWVNaW51cyJ9LHsiaXNFbmFibGVkIjp0cnVlLCJkZXRhaWwiOiJTYW1lIHdha2UgwrEzMCBtaW4g4oCUIGV2ZW4gd2Vla2VuZHMuICMxIHJoeXRobSBsZXZlci4iLCJ0aXRsZSI6IkNvbnNpc3RlbnQgd2FrZSIsImljb24iOiJhbGFybS5maWxsIiwib2Zmc2V0IjowLCJpZCI6ImNvbnNpc3RlbnQiLCJkb25lVG9kYXkiOmZhbHNlLCJhbmNob3IiOiJ3YWtlUGx1cyJ9LHsiaXNFbmFibGVkIjp0cnVlLCJkZXRhaWwiOiJXYXRlciArIGxpZ2h0IGJlZm9yZSBjb2ZmZWUgYm9vc3RzIGFsZXJ0bmVzcy4iLCJ0aXRsZSI6Ik1vcm5pbmcgaHlkcmF0aW9uIiwiaWNvbiI6ImRyb3AuZmlsbCIsIm9mZnNldCI6MzAwLCJpZCI6Imh5ZHJhdGlvbiIsImRvbmVUb2RheSI6ZmFsc2UsImFuY2hvciI6Indha2VQbHVzIn0seyJpc0VuYWJsZWQiOnRydWUsImRldGFpbCI6IjItbWluIHdvcnJ5IGxpc3QgYWZ0ZXIgZGlubmVyIGNsZWFycyBuaWdodCBydW1pbmF0aW9uLiIsInRpdGxlIjoiQnJhaW4gZHVtcCIsImljb24iOiJwZW5jaWwuYW5kLmxpc3QuY2xpcGJvYXJkIiwib2Zmc2V0IjoxODAwMCwiaWQiOiJzdHJlc3MiLCJkb25lVG9kYXkiOmZhbHNlLCJhbmNob3IiOiJiZWR0aW1lTWludXMifSx7ImlzRW5hYmxlZCI6ZmFsc2UsImRldGFpbCI6IlN0aW11bGFudCDigJQgYXZvaWQgd2l0aGluIDRoIG9mIGJlZC4iLCJ0aXRsZSI6Ik5vIGxhdGUgbmljb3RpbmUiLCJpY29uIjoic21va2UuZmlsbCIsIm9mZnNldCI6MTQ0MDAsImlkIjoibmljb3RpbmUiLCJkb25lVG9kYXkiOmZhbHNlLCJhbmNob3IiOiJiZWR0aW1lTWludXMifSx7ImlzRW5hYmxlZCI6ZmFsc2UsImRldGFpbCI6IkEgZHVzayB3YWxrIHNoYXJwZW5zIERMTU8gdGltaW5nLiIsInRpdGxlIjoiRXZlbmluZyBsaWdodCB3YWxrIiwiaWNvbiI6InN1bnNldC5maWxsIiwib2Zmc2V0IjoxNDQwMCwiaWQiOiJzdW5zZXQiLCJkb25lVG9kYXkiOmZhbHNlLCJhbmNob3IiOiJiZWR0aW1lTWludXMifV0=",
+        "bytes": 3170,
+        "device": 16777233,
+        "exists": true,
+        "inode": 45474274,
+        "mode": 33188,
+        "mtimeNanos": 868451413,
+        "mtimeSeconds": 1794098265,
+        "sha256": "df6a189416dd34cd5df89685f09460b50f4a941f555b629c367a0fb44a18198d",
+        "size": 3170
+      },
+      "health-write-intent.json": {
+        "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI0NUFGMDMzNC04Mzc5LTQ5MjAtOUNFNy1GQzE5RTA1QTlFOTQiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9",
+        "bytes": 123,
+        "device": 16777233,
+        "exists": true,
+        "inode": 45474298,
+        "mode": 33188,
+        "mtimeNanos": 62320540,
+        "mtimeSeconds": 1794098268,
+        "sha256": "26d4a84f6669544032e5fb4d23026b232518a51a31028ab45c398d400138715c",
+        "size": 123
+      },
+      "profile.json": {
+        "base64": "eyJvbmJvYXJkaW5nRG9uZSI6dHJ1ZSwibmFtZSI6IlN5bnRoZXRpYyBiYWNrdXAgYmFzZWxpbmUiLCJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwid2FrZUdvYWwiOnsiaG91ciI6NywibWludXRlIjowfSwic2xlZXBOZWVkQ29uZmlkZW5jZSI6MC4zLCJzbGVlcE5lZWQiOjI5NDAwLCJpc1N1YnNjcmliZWQiOmZhbHNlfQ==",
+        "bytes": 184,
+        "device": 16777233,
+        "exists": true,
+        "inode": 45474272,
+        "mode": 33188,
+        "mtimeNanos": 866373676,
+        "mtimeSeconds": 1794098265,
+        "sha256": "1a494c5d31b9f740b86d6e1e3109efee61b1d6f4eec9f5b314d6f408dc4be99d",
+        "size": 184
+      },
+      "sleep.json": {
+        "base64": "W10=",
+        "bytes": 2,
+        "device": 16777233,
+        "exists": true,
+        "inode": 45474273,
+        "mode": 33188,
+        "mtimeNanos": 866907850,
+        "mtimeSeconds": 1794098265,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "size": 2
+      },
+      "today.json": {
+        "base64": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDdUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9",
+        "bytes": 123,
+        "device": 16777233,
+        "exists": true,
+        "inode": 45474250,
+        "mode": 33188,
+        "mtimeNanos": 848947471,
+        "mtimeSeconds": 1794098265,
+        "sha256": "a41612489498e94bcfd2a4c3d7a1cca3b36865269360b9e0e6a440c9db46cecf",
+        "size": 123
+      },
+      "water.json": {
+        "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwibWwiOjEzN31d",
+        "bytes": 72,
+        "device": 16777233,
+        "exists": true,
+        "inode": 45474253,
+        "mode": 33188,
+        "mtimeNanos": 849791608,
+        "mtimeSeconds": 1794098265,
+        "sha256": "1dc7d921432b620cf0fcd72262f29a4ffe06902fcd4d7e3cb546d370e3908291",
+        "size": 72
+      }
+    },
+    "root": {
+      "device": 16777233,
+      "exists": true,
+      "inode": 45474245,
+      "mode": 16832,
+      "mtimeNanos": 62561794,
+      "mtimeSeconds": 1794098268,
+      "size": 384
+    }
+  },
+  "notes": [
+    {
+      "phase": "before-root-acquisition",
+      "previous": {
+        "entries": {
+          "chat.json": {
+            "base64": "W10=",
+            "bytes": 2,
+            "device": 16777233,
+            "exists": true,
+            "inode": 45474259,
+            "mode": 33188,
+            "mtimeNanos": 850003820,
+            "mtimeSeconds": 1794098265,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "size": 2
+          },
+          "conversation-selection.json": {
+            "base64": "e30=",
+            "bytes": 2,
+            "device": 16777233,
+            "exists": true,
+            "inode": 45474266,
+            "mode": 33188,
+            "mtimeNanos": 849552522,
+            "mtimeSeconds": 1794098265,
+            "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+            "size": 2
+          },
+          "conversations.json": {
+            "base64": "W10=",
+            "bytes": 2,
+            "device": 16777233,
+            "exists": true,
+            "inode": 45474260,
+            "mode": 33188,
+            "mtimeNanos": 850615411,
+            "mtimeSeconds": 1794098265,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "size": 2
+          },
+          "goals.json": {
+            "base64": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6NDIsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxODEsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ==",
+            "bytes": 178,
+            "device": 16777233,
+            "exists": true,
+            "inode": 45474262,
+            "mode": 33188,
+            "mtimeNanos": 848738218,
+            "mtimeSeconds": 1794098265,
+            "sha256": "142f89cee16338829e91bfe76c5c34ea249afb4bb338d987ee708ada70b4656c",
+            "size": 178
+          },
+          "health-write-intent.json": {
+            "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI0NUFGMDMzNC04Mzc5LTQ5MjAtOUNFNy1GQzE5RTA1QTlFOTQiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9",
+            "bytes": 123,
+            "device": 16777233,
+            "exists": true,
+            "inode": 45474299,
+            "mode": 33188,
+            "mtimeNanos": 62824297,
+            "mtimeSeconds": 1794098268,
+            "sha256": "26d4a84f6669544032e5fb4d23026b232518a51a31028ab45c398d400138715c",
+            "size": 123
+          },
+          "meals.json": {
+            "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtY3VycmVudC1tZWFsIiwiaXRlbXMiOltdLCJub3RlIjoiS2VlcCB0aGlzIGN1cnJlbnQgbWVhbC4iLCJzb3VyY2UiOiJtYW51YWwiLCJ0eXBlIjoiYnJlYWtmYXN0In1d",
+            "bytes": 144,
+            "device": 16777233,
+            "exists": true,
+            "inode": 45474264,
+            "mode": 33188,
+            "mtimeNanos": 850408617,
+            "mtimeSeconds": 1794098265,
+            "sha256": "9eec205ab83ed2466da007aaa29e3f18f8b4b5741f451c529ef7527ead443a68",
+            "size": 144
+          },
+          "profile.json": {
+            "base64": "eyJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwiaXNTdWJzY3JpYmVkIjpmYWxzZSwibmFtZSI6IlN5bnRoZXRpYyBiYWNrdXAgYmFzZWxpbmUiLCJvbmJvYXJkaW5nRG9uZSI6dHJ1ZSwic2xlZXBOZWVkIjoyOTQwMCwic2xlZXBOZWVkQ29uZmlkZW5jZSI6MC4zLCJ3YWtlR29hbCI6eyJob3VyIjo3LCJtaW51dGUiOjB9fQ==",
+            "bytes": 184,
+            "device": 16777233,
+            "exists": true,
+            "inode": 45474267,
+            "mode": 33188,
+            "mtimeNanos": 850207781,
+            "mtimeSeconds": 1794098265,
+            "sha256": "233fff496e5b49e10ec22a5f4b94d52c307168dc8c8fac93b4e0c420291b6a2d",
+            "size": 184
+          },
+          "today.json": {
+            "base64": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDdUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9",
+            "bytes": 123,
+            "device": 16777233,
+            "exists": true,
+            "inode": 45474263,
+            "mode": 33188,
+            "mtimeNanos": 848947471,
+            "mtimeSeconds": 1794098265,
+            "sha256": "a41612489498e94bcfd2a4c3d7a1cca3b36865269360b9e0e6a440c9db46cecf",
+            "size": 123
+          },
+          "water.json": {
+            "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwibWwiOjEzN31d",
+            "bytes": 72,
+            "device": 16777233,
+            "exists": true,
+            "inode": 45474265,
+            "mode": 33188,
+            "mtimeNanos": 849791608,
+            "mtimeSeconds": 1794098265,
+            "sha256": "1dc7d921432b620cf0fcd72262f29a4ffe06902fcd4d7e3cb546d370e3908291",
+            "size": 72
+          },
+          "workouts.json": {
+            "base64": "W3siYWN0aXZlQ2Fsb3JpZXMiOjM1LCJkdXJhdGlvbiI6OTAwLCJlbmVyZ3lLbm93biI6dHJ1ZSwiaWQiOiJzeW50aGV0aWMtbXVsdGktemVybyIsImtpbmQiOiJzdHJlbmd0aCIsInNvdXJjZSI6Im1hbnVhbCIsInN0YXJ0IjoiMjAyNi0xMS0wMlQxMjowMDowMFoiLCJ0aXRsZSI6IkN1cnJlbnQgZWRpdGVkIHdvcmtvdXQifV0=",
+            "bytes": 185,
+            "device": 16777233,
+            "exists": true,
+            "inode": 45474261,
+            "mode": 33188,
+            "mtimeNanos": 848438714,
+            "mtimeSeconds": 1794098265,
+            "sha256": "a7e3f55c6c5e75d0b270c1a918742b4424a86bc359c972a3073532184db17f9c",
+            "size": 185
+          }
+        },
+        "root": {
+          "device": 16777233,
+          "exists": true,
+          "inode": 45474258,
+          "mode": 16832,
+          "mtimeNanos": 63003300,
+          "mtimeSeconds": 1794098268,
+          "size": 384
+        }
+      },
+      "root": {
+        "entries": {},
+        "root": {
+          "exists": false
+        }
+      }
+    },
+    {
+      "phase": "after-root-acquisition",
+      "previous": {
+        "entries": {},
+        "root": {
+          "exists": false
+        }
+      },
+      "root": {
+        "entries": {
+          "chat.json": {
+            "base64": "W10=",
+            "bytes": 2,
+            "device": 16777233,
+            "exists": true,
+            "inode": 45474259,
+            "mode": 33188,
+            "mtimeNanos": 850003820,
+            "mtimeSeconds": 1794098265,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "size": 2
+          },
+          "conversation-selection.json": {
+            "base64": "e30=",
+            "bytes": 2,
+            "device": 16777233,
+            "exists": true,
+            "inode": 45474266,
+            "mode": 33188,
+            "mtimeNanos": 849552522,
+            "mtimeSeconds": 1794098265,
+            "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+            "size": 2
+          },
+          "conversations.json": {
+            "base64": "W10=",
+            "bytes": 2,
+            "device": 16777233,
+            "exists": true,
+            "inode": 45474260,
+            "mode": 33188,
+            "mtimeNanos": 850615411,
+            "mtimeSeconds": 1794098265,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "size": 2
+          },
+          "goals.json": {
+            "base64": "eyJhY3RpdmVDYWxHb2FsIjo2MDAsImFjdGl2aXR5TGV2ZWwiOiJtb2RlcmF0ZSIsImFnZSI6NDIsImV4ZXJjaXNlR29hbE1pbiI6MzAsImdvYWwiOiJtYWludGFpbiIsImhlaWdodENtIjoxODEsInNleCI6InVuc3BlY2lmaWVkIiwic3RhbmRHb2FsIjoxMiwic3RlcEdvYWwiOjY1NDMsIndlaWdodEtnIjo4OC41fQ==",
+            "bytes": 178,
+            "device": 16777233,
+            "exists": true,
+            "inode": 45474262,
+            "mode": 33188,
+            "mtimeNanos": 848738218,
+            "mtimeSeconds": 1794098265,
+            "sha256": "142f89cee16338829e91bfe76c5c34ea249afb4bb338d987ee708ada70b4656c",
+            "size": 178
+          },
+          "health-write-intent.json": {
+            "base64": "eyJldmVudHMiOltdLCJsaWZlY3ljbGUiOiI0NUFGMDMzNC04Mzc5LTQ5MjAtOUNFNy1GQzE5RTA1QTlFOTQiLCJvd25lciI6IjUzRDkzNTM2LTlFMkEtNDM5RS1BNkYyLTdGNTUzNkI1MzRFMiIsInZlcnNpb24iOjF9",
+            "bytes": 123,
+            "device": 16777233,
+            "exists": true,
+            "inode": 45474299,
+            "mode": 33188,
+            "mtimeNanos": 62824297,
+            "mtimeSeconds": 1794098268,
+            "sha256": "26d4a84f6669544032e5fb4d23026b232518a51a31028ab45c398d400138715c",
+            "size": 123
+          },
+          "meals.json": {
+            "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtY3VycmVudC1tZWFsIiwiaXRlbXMiOltdLCJub3RlIjoiS2VlcCB0aGlzIGN1cnJlbnQgbWVhbC4iLCJzb3VyY2UiOiJtYW51YWwiLCJ0eXBlIjoiYnJlYWtmYXN0In1d",
+            "bytes": 144,
+            "device": 16777233,
+            "exists": true,
+            "inode": 45474264,
+            "mode": 33188,
+            "mtimeNanos": 850408617,
+            "mtimeSeconds": 1794098265,
+            "sha256": "9eec205ab83ed2466da007aaa29e3f18f8b4b5741f451c529ef7527ead443a68",
+            "size": 144
+          },
+          "profile.json": {
+            "base64": "eyJjaHJvbm90eXBlIjoiaW50ZXJtZWRpYXRlIiwiaXNTdWJzY3JpYmVkIjpmYWxzZSwibmFtZSI6IlN5bnRoZXRpYyBiYWNrdXAgYmFzZWxpbmUiLCJvbmJvYXJkaW5nRG9uZSI6dHJ1ZSwic2xlZXBOZWVkIjoyOTQwMCwic2xlZXBOZWVkQ29uZmlkZW5jZSI6MC4zLCJ3YWtlR29hbCI6eyJob3VyIjo3LCJtaW51dGUiOjB9fQ==",
+            "bytes": 184,
+            "device": 16777233,
+            "exists": true,
+            "inode": 45474267,
+            "mode": 33188,
+            "mtimeNanos": 850207781,
+            "mtimeSeconds": 1794098265,
+            "sha256": "233fff496e5b49e10ec22a5f4b94d52c307168dc8c8fac93b4e0c420291b6a2d",
+            "size": 184
+          },
+          "today.json": {
+            "base64": "eyJhY3RpdmVDYWxvcmllcyI6MCwiZGF0ZSI6IjIwMjYtMTEtMDdUMjM6MDA6MDBaIiwiZXhlcmNpc2VNaW4iOjAsInJlc3RpbmdDYWxvcmllcyI6MCwic3RhbmRIb3VycyI6MCwic3RlcHMiOjAsIndhdGVyTUwiOjB9",
+            "bytes": 123,
+            "device": 16777233,
+            "exists": true,
+            "inode": 45474263,
+            "mode": 33188,
+            "mtimeNanos": 848947471,
+            "mtimeSeconds": 1794098265,
+            "sha256": "a41612489498e94bcfd2a4c3d7a1cca3b36865269360b9e0e6a440c9db46cecf",
+            "size": 123
+          },
+          "water.json": {
+            "base64": "W3siZGF0ZSI6IjIwMjYtMTEtMDJUMTI6MDA6MDBaIiwiaWQiOiJzeW50aGV0aWMtcmV2aWV3LXdhdGVyIiwibWwiOjEzN31d",
+            "bytes": 72,
+            "device": 16777233,
+            "exists": true,
+            "inode": 45474265,
+            "mode": 33188,
+            "mtimeNanos": 849791608,
+            "mtimeSeconds": 1794098265,
+            "sha256": "1dc7d921432b620cf0fcd72262f29a4ffe06902fcd4d7e3cb546d370e3908291",
+            "size": 72
+          },
+          "workouts.json": {
+            "base64": "W3siYWN0aXZlQ2Fsb3JpZXMiOjM1LCJkdXJhdGlvbiI6OTAwLCJlbmVyZ3lLbm93biI6dHJ1ZSwiaWQiOiJzeW50aGV0aWMtbXVsdGktemVybyIsImtpbmQiOiJzdHJlbmd0aCIsInNvdXJjZSI6Im1hbnVhbCIsInN0YXJ0IjoiMjAyNi0xMS0wMlQxMjowMDowMFoiLCJ0aXRsZSI6IkN1cnJlbnQgZWRpdGVkIHdvcmtvdXQifV0=",
+            "bytes": 185,
+            "device": 16777233,
+            "exists": true,
+            "inode": 45474261,
+            "mode": 33188,
+            "mtimeNanos": 848438714,
+            "mtimeSeconds": 1794098265,
+            "sha256": "a7e3f55c6c5e75d0b270c1a918742b4424a86bc359c972a3073532184db17f9c",
+            "size": 185
+          }
+        },
+        "root": {
+          "device": 16777233,
+          "exists": true,
+          "inode": 45474258,
+          "mode": 16832,
+          "mtimeNanos": 63003300,
+          "mtimeSeconds": 1794098268,
+          "size": 384
+        }
+      }
+    }
+  ],
+  "paths": {
+    "moved": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Shared/AppGroup/E300DD24-B5D1-4A6A-BF1B-E66173E3428B/LumenData.legacy-root-probe-CAF4BB4A-7945-41A9-B152-262FEE59A338",
+    "movedPrevious": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Shared/AppGroup/E300DD24-B5D1-4A6A-BF1B-E66173E3428B/LumenData.legacy-prior-probe-CAF4BB4A-7945-41A9-B152-262FEE59A338",
+    "previous": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Shared/AppGroup/E300DD24-B5D1-4A6A-BF1B-E66173E3428B/LumenData.previous",
+    "root": "/Users/davidbakposada/Library/Developer/CoreSimulator/Devices/AF849DEA-DF34-4B0E-9FC1-3E45DCBE8481/data/Containers/Shared/AppGroup/E300DD24-B5D1-4A6A-BF1B-E66173E3428B/LumenData"
+  },
+  "phase": "host-audited",
+  "rejected": true,
+  "runID": "CAF4BB4A-7945-41A9-B152-262FEE59A338",
+  "scope": "Actual LocalStore API boundary only. Constant canCommit; no UI authority, HealthStore permission or external-delivery acceptance.",
+  "siblingNamesAfter": [
+    ".com.apple.mobile_container_manager.metadata.plist",
+    "Library",
+    "Lumen-daily-cache-health-access.json",
+    "Lumen-daily-cache-health-query.json",
+    "Lumen-daily-cache-previous-fixture-before-cleanup.json",
+    "Lumen-daily-cache-previous-fixture-cleanup.json",
+    "Lumen-daily-cache-recorded-fixture.json",
+    "Lumen-daily-query-interruption.json",
+    "Lumen-daily-query-observed.json",
+    "Lumen-health-backup-baseline.json",
+    "Lumen-health-cancel-checkpoint.json",
+    "Lumen-health-cancel-release.json",
+    "Lumen-health-read-checkpoint.json",
+    "Lumen-health-read-release.json",
+    "Lumen-health-success-ack.json",
+    "Lumen-health-success-checkpoint.json",
+    "Lumen-legacy-origin-review-events.json",
+    "Lumen-photo-binding-baseline.json",
+    "Lumen-photo-binding-checked.json",
+    "Lumen-ui-daily-cache-link-target.bin",
+    "LumenData",
+    "LumenData.legacy-prior-probe-84E1B938-1112-4152-8276-1CC99C76B4FB",
+    "LumenData.legacy-root-probe-84E1B938-1112-4152-8276-1CC99C76B4FB",
+    "LumenData.legacy-root-probe-CAF4BB4A-7945-41A9-B152-262FEE59A338"
+  ],
+  "traceAfter": [],
+  "traceBefore": []
+}

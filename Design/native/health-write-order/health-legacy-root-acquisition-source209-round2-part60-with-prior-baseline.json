@@ -1,0 +1,358 @@
+{
+  "schemaVersion": 1,
+  "part": 60,
+  "critic": "Continuing independent App Designer Pro critic /root/daily_critic_recovery2",
+  "source": "durable-source-r209.json",
+  "actualCompiledSource": "durable-source-r206.json",
+  "case": "with-prior Source209R2",
+  "createdAtUTC": "2026-11-08T00:44:28.631516+00:00",
+  "scope": "Actual second synthetic LocalStore API root-acquisition baseline. Realreadyorigin/boundpayload and constantcanCommit, not actual selected-file UI authority/recoveryacceptance.",
+  "verdict": {
+    "priorRestorationCounterexampleReproduced": true,
+    "observationExpectationSucceeded": true,
+    "productSafetyAcceptance": false,
+    "overallAcceptance": false,
+    "score": null,
+    "summary": "Actual caller restores the entire prior directory to the missing root before stale-origin rejection. Original movedcurrent remains exact, but currentroot/previouspath changed despite didCommitfalse. This confirms the with-prior branch of P59-C1 acquisition gap, not a productPASS or successful selectedbackup recovery."
+  },
+  "native": {
+    "session": 74709,
+    "xcodePID": 50040,
+    "nativeExitCode": 0,
+    "driverExitCode": 0,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "fullNativeSummaryRead": true,
+    "nativeHelperJSONCount": 0,
+    "runID": "CAF4BB4A-7945-41A9-B152-262FEE59A338",
+    "completeAppProtocolReports": [
+      "prepared16396B",
+      "observed44628B",
+      "hostaudited44632B"
+    ],
+    "reportBoundary": "Separate full nativeapp hostprotocol reports, not XCTesthelperJSON. Summary1/0/0 means the declared mutation observation passed.",
+    "retention": "1PNG+1original710Bexportmanifest,0nativehelperJSON/other, no retentionerrors."
+  },
+  "independentVerification": {
+    "frozenCurrentSourceAndArchiveInputsExact": 270,
+    "driverBytes": 26345,
+    "driverSHA256": "c3f9131579c1f9db6712dbc18bad33c412cebfec26c274b597de8738a4b7b7e0",
+    "allThreeCompleteAppReportRecordsParsedAndInspected": true,
+    "embeddedRawPayloadInstancesBytesHashDecodedExact": 150,
+    "latestNormalizedJSONEqualsHostAuditedOriginal": true,
+    "preackPhaseRecordsSourceBuildOriginalHashesExact": true,
+    "allFourFixedPreferenceSampleFilesVerified": true,
+    "originalPNGAndExportManifestByteHashSourceBindings": 2,
+    "actualOriginalPNGIndividuallyOpened": 1,
+    "detail": "original",
+    "nativeSummaryAndOriginalExportMetadataReadFully": true,
+    "checker": "Canonical reused check-root-acquisition-native-evidence-r1.py hash independently equals Part59bound checker; full code read at59, no unreviewedcheckerchange. Parent executed liveaudit4trees/2Datakeys/installedapp+localtestbinary; critic did not execute or requerylivefacts.",
+    "noActions": "No simulator/phone/process/defaults/binary/native/build/Git/cleanup or judgedsource/evidence mutation. Only this report written."
+  },
+  "transition": {
+    "capturedCurrentRoot": {
+      "device": 16777233,
+      "exists": true,
+      "inode": 45474245,
+      "mode": 16832,
+      "mtimeNanos": 62561794,
+      "mtimeSeconds": 1794098268,
+      "size": 384
+    },
+    "capturedPriorRoot": {
+      "device": 16777233,
+      "exists": true,
+      "inode": 45474258,
+      "mode": 16832,
+      "mtimeNanos": 63003300,
+      "mtimeSeconds": 1794098268,
+      "size": 384
+    },
+    "beforeAcquisitionRoot": {
+      "exists": false
+    },
+    "beforeAcquisitionPrevious": {
+      "device": 16777233,
+      "exists": true,
+      "inode": 45474258,
+      "mode": 16832,
+      "mtimeNanos": 63003300,
+      "mtimeSeconds": 1794098268,
+      "size": 384
+    },
+    "afterAcquisitionRoot": {
+      "device": 16777233,
+      "exists": true,
+      "inode": 45474258,
+      "mode": 16832,
+      "mtimeNanos": 63003300,
+      "mtimeSeconds": 1794098268,
+      "size": 384
+    },
+    "afterAcquisitionPrevious": {
+      "exists": false
+    },
+    "finalRoot": {
+      "device": 16777233,
+      "exists": true,
+      "inode": 45474258,
+      "mode": 16832,
+      "mtimeNanos": 63003300,
+      "mtimeSeconds": 1794098268,
+      "size": 384
+    },
+    "finalPrevious": {
+      "exists": false
+    },
+    "movedCurrent": {
+      "device": 16777233,
+      "exists": true,
+      "inode": 45474245,
+      "mode": 16832,
+      "mtimeNanos": 62561794,
+      "mtimeSeconds": 1794098268,
+      "size": 384
+    },
+    "movedPrevious": {
+      "exists": false
+    },
+    "backendError": "changed",
+    "rejected": true,
+    "didCommit": false,
+    "interpretation": "Before wrapper acquisition rootENOENT and priorpresentinode45474258; afterward samepriorinode/device/mode/size/mtime and all10rawfiles are at root, previousENOENT. Backend changed rejection/noCommit does not reverse caller restoration. Original currentinode45474245/all10files remain exact at synthetic movedpath."
+  },
+  "productFinding": {
+    "id": "P60-C1",
+    "relationship": "Second actual branch of still-OPEN P59-C1 caller acquisition gap",
+    "severity": "product safety counterexample reproduced; repair not implemented",
+    "sourceOrder": "recoverHealthChecked calls checkedDirectory→openDirectory(createIfMissing:true) before Selection.prepare→ConversationFiles legacyorigin verify. Existing openDirectory moves available.previous to absentroot. Boundorigin captured earlier currentroot identity differs; backend rejectschanged, after prior alreadyrestored.",
+    "proof": "after-acquisition root and finalroot both EXACT full preparedprior tree, including root+eachleafmetadata/rawbytes/hash, not merely semanticJSON equality. Movedcurrent exactpreparedtree independently checked.",
+    "requiredFollowon": "Exactbackup thiscase/critic then run declared ordinary interrupted-open/pendingremovalcontrol on unchanged209 before selecting narroworigin-bearing acquisitionrepair. Preserve ordinary intentread/restoration order and fullcontracts; no blanket switch of every root access inferred from these two counterexamples."
+  },
+  "protocolAndPreservation": [
+    "Prepared→observed→hostaudited samerunID; observed/latest allfields identical exceptphase. Preackproofs equaloutcomephasefacts and exact originalreport/source-manifest/continuityreceipt hashes. Nativeactual206app identity boundbeforephaseacks; critic relies on retainedproofs+parentliveaudit, not freshbinaryquery.",
+    "Actualreadyorigin lease and boundvalid workouts payload preceded relocation. canCommittrue deliberatelytests LocalStoreboundary, not actualreviewUIowner/HealthStorepermissions or useralert action.",
+    "Current10filetree differs fromprior10filetree: current selectedmeals/workouts absent while prior has healthy144Bmeals/185Bworkouts; currenthabits/sleep/profilecontext preserved unmovedcontent at movedcurrent path. No claim that the two startingtrees wereidentical.",
+    "Restoredroot==completepreparedprior, before-note previous==sameprior; finalprevious/movedPrevious absent. No selectedbackuprecordinstallation/commit/receipt/privatecopy/stage/retired/discovery residue or newadaptertrace. Existing prior data nowoccupiescurrentpath; no separate claim about liveHealthStore becominghealthy or actualUIerror wording.",
+    "Both42B fixedData keys remain exact type/rawhash. Fourpreferencefiles each have one exactsample, including strictpreack; zero missingkeywait thisrun.65initialdiscoveryFileNotFound entries allbeforepreparedgate; not65preferencesmissing or retriesafterknownphase.",
+    "Originaljournal rawbytes match both capturedtrees; no events. Tracebefore/after[] and externalbefore/after{}. No pendingdeletion tested in thiscase; that is the upcomingordinarycontrol.",
+    "Stageabsence and identity equality are bounded captured/host/liveaudit observations; no continuous timing, externalrace, lock/unlock or realdevice guarantees."
+  ],
+  "visualObservation": {
+    "index": 0,
+    "file": "root-acquisition-with-prior-source209r2-99c8487f89b3-F7FFB9E8-AA13-4669-AA57-F150763BC540.png",
+    "bytes": 2020080,
+    "sha256": "c80376d68e6ea1a8f2f669b2553664cc37ce55ff55ea97b942a0b45590113192",
+    "dimensions": [
+      1206,
+      2622
+    ],
+    "individuallyOpenedOriginalDetail": true,
+    "exportedFileName": "F7FFB9E8-AA13-4669-AA57-F150763BC540.png",
+    "visible": "Light Today/Lumen screen with Yourday,incontext hero/Startwithhowyoufeel, Sleep/Movement/Food NoData rows, Loghowyoufeel/Checkin buttons; complete bottom Legacyrootprobeobserved:legacy-root-missing-with-prior syntheticstatus visible.",
+    "limit": "Visible terminalstatus only; no recoveryview/errorcopy/confirmation/storageidentity/permission/accessibility/fullToday/layout/designscore credit. Productfinding comes from source/protocol/rawtreeevidence."
+  },
+  "parentLiveAuditAttribution": {
+    "report": "source209-with-prior-r2-live-audit.json",
+    "actualReported": "270source/archive,150payloadinstances,4exactlivetrees,2exactpersistentData42Bkeys,2retainedattachmentbindings,actualinstalledapp+localtestbinaryidentity,1nativepass.",
+    "limit": "Critic independently verified retained270/150/prefs/treeequalities/attachments, not currentlivetrees/processes/defaults/binaries. Parentlivefacts timestamped1794098452.714505 and ceaseafterreset."
+  },
+  "storageAndOrchestrationBoundary": {
+    "R1ExactCheckpointAttributed": "a31fa4c0d8ca72d1a7e6f0bd66058bd39377e8ab/33casepaths beforeR2reset",
+    "optionalCleanupFailure": "Read ledger source209-no-prior-r1-cleanup-failure.json: alreadyclosedapp madeoptionalterminatefail beforedeletion; shellcontinued alreadybackedauthorizedR2, futureorchestration corrected. This is harnesscleanup failure, not product/userCancel behavior.",
+    "deletedByThatLedger": 0,
+    "recoveredBytesByThatLedger": 0,
+    "retention": "Parent says R1movedtrees/rawduplicates remain. Current siblingnames also listoldR1paths, but critic didnotquery/rehasholdpaths or claim their currentcontent/lifetime. CurrentR2case evidence retained until exactbackup."
+  },
+  "openLimits": [
+    "No productrepair or safetyPASS; ordinary interrupted-open/pendingdeletioncontrol must be acquired/reviewed/exactbackedup before productionrepair.",
+    "P58-F1 future--expect safe hosterror acceptanceflag repair remainsrequired before any safe use. Currentmutationcase correctlykeeps safetyAcceptancefalse.",
+    "No actual file-reviewUI/errorcopy/confirmation/negative-state/reset/heldCancel/oldphotos/retainedtargetUI/appearance/Release/VO/fullspeech/motion/other43/eightgroups/privacy/provider/performance/distribution/fullparent/fullgoal/newscore acceptance.",
+    "Historical207failure/initialpreferencesmechanism uncertainty and prior209no-priorcounterexample remainimmutable. Present observation doesnotrepair pastfailed evidence."
+  ],
+  "bindings": [
+    {
+      "file": "root-acquisition-with-prior-source209r2-99c8487f89b3-F7FFB9E8-AA13-4669-AA57-F150763BC540.png",
+      "bytes": 2020080,
+      "sha256": "c80376d68e6ea1a8f2f669b2553664cc37ce55ff55ea97b942a0b45590113192"
+    },
+    {
+      "file": "root-acquisition-with-prior-source209r2-ffa5b716b5a5-manifest.json",
+      "bytes": 710,
+      "sha256": "cd34935d57f53c51781bc0a15a37fb356c604d1134ac6b112dc0d4042c04638f"
+    },
+    {
+      "file": "root-acquisition-with-prior-source209r2-initial-discovery-errors.json",
+      "bytes": 4766,
+      "sha256": "a456215b1dbbebeefe0fad3e68aa412b926654de31ad29e36729bf53d0bea632"
+    },
+    {
+      "file": "root-acquisition-with-prior-source209r2-json-attachments.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "file": "root-acquisition-with-prior-source209r2-latest-original-report.json",
+      "bytes": 44632,
+      "sha256": "0b803307a6f78290f61281975f96226041574a413b2d4c70e0fa5880daff003e"
+    },
+    {
+      "file": "root-acquisition-with-prior-source209r2-latest-report.json",
+      "bytes": 43753,
+      "sha256": "22dd384615bdc6422c3a04d7d75c9bc71d0e1673a0a948ab91d21e5d6e29cbd7"
+    },
+    {
+      "file": "root-acquisition-with-prior-source209r2-manifest-attachments.json",
+      "bytes": 442,
+      "sha256": "03ff28c14a6ac6fe4813e742a1f9e561375b699efad3b52ce3ef03c03978df2d"
+    },
+    {
+      "file": "root-acquisition-with-prior-source209r2-observed-fixed-preferences-observations.json",
+      "bytes": 1125,
+      "sha256": "0c7b53d936fbac8a7feafbcd7ec1cc57d6ad8d3b83232c911e077f7a2bc5ef10"
+    },
+    {
+      "file": "root-acquisition-with-prior-source209r2-observed-host-preack.json",
+      "bytes": 790,
+      "sha256": "2ee45eb190144720decb99698210f9445c31b19e90869217fb97f2a09c9d86c0"
+    },
+    {
+      "file": "root-acquisition-with-prior-source209r2-observed-immediately-before-ack-fixed-preferences-observations.json",
+      "bytes": 1125,
+      "sha256": "700a1f1ca4255ba717d3171b8b5f53f138e09f1d1c48e957a56bde2eabe7c13b"
+    },
+    {
+      "file": "root-acquisition-with-prior-source209r2-observed.json",
+      "bytes": 44628,
+      "sha256": "0cd94d324ec940900754c62a1e130da7bc532693726a88232aaf9b76729cb14a"
+    },
+    {
+      "file": "root-acquisition-with-prior-source209r2-other-attachments.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "file": "root-acquisition-with-prior-source209r2-outcome.json",
+      "bytes": 8857,
+      "sha256": "fddb55710b7b6fe5d111706fda8fee3d1c1034ef72d2a44c642b6eaead262958"
+    },
+    {
+      "file": "root-acquisition-with-prior-source209r2-png-attachments.json",
+      "bytes": 764,
+      "sha256": "9dec682972b3f6b65ceed1c3cce63487e1c030728ae1929eb1ab46a80951b18e"
+    },
+    {
+      "file": "root-acquisition-with-prior-source209r2-prepared-fixed-preferences-observations.json",
+      "bytes": 1126,
+      "sha256": "52e021ff622801dcd4d064f9585885762f052ea365daf9176d8d009610881dc5"
+    },
+    {
+      "file": "root-acquisition-with-prior-source209r2-prepared-host-preack.json",
+      "bytes": 790,
+      "sha256": "b9b87afd3d616020236fa3e702f6d823d98dcb64f530b1b8adc0551fa455a0ec"
+    },
+    {
+      "file": "root-acquisition-with-prior-source209r2-prepared-immediately-before-ack-fixed-preferences-observations.json",
+      "bytes": 1125,
+      "sha256": "14c727cf5ec632934cdbff5da609fa5e3a6e8817b3d3ff7532693c2de295fa14"
+    },
+    {
+      "file": "root-acquisition-with-prior-source209r2-prepared.json",
+      "bytes": 16396,
+      "sha256": "6deea459b1c050da9cc3fda6c9925059380cc39a1a53b8a54808a132bc508e4a"
+    },
+    {
+      "file": "root-acquisition-with-prior-source209r2-summary.json",
+      "bytes": 1011,
+      "sha256": "593b89a3b2e78c282360dbbe57b6b99b457519da2526e6e4b3a61aea1e967890"
+    },
+    {
+      "file": "root-acquisition-with-prior-source209r2.log.gz",
+      "bytes": 1518,
+      "sha256": "6d3f92574f9de45cee5686bb52e01f3be94d62e8ea8ba5363215038fb0b5ae77"
+    },
+    {
+      "file": "source209-with-prior-r2-outcome.json",
+      "bytes": 1727,
+      "sha256": "25bd855be26b12ffd236969d42e536feffb9f47f5c7bb23189e833a787f82c81"
+    },
+    {
+      "file": "source209-with-prior-r2-live-audit.json",
+      "bytes": 706,
+      "sha256": "cdf5e35bd478daf319aaedf79affe17af15bff2ba1798bedb20992df82914998"
+    },
+    {
+      "file": "check-root-acquisition-native-evidence-r1.py",
+      "bytes": 7207,
+      "sha256": "f7f1232890a25a5de7e178ce53d2babdb6fa1716732d315611f5ca4306c8e3b7"
+    },
+    {
+      "file": "durable-source-r209.json",
+      "bytes": 43908,
+      "sha256": "76f7f5f14d00a572531e74bdfdb8b4a9601d7a121054e5c527442acdb092d84a"
+    },
+    {
+      "file": "durable-source-r209.json.gz",
+      "bytes": 982062,
+      "sha256": "343a261c9bb5c0e56a71ca51ce07891fa7b78cd8b32e34e848922370ad9704ed"
+    },
+    {
+      "file": "health-root-acquisition-r5-continuity.json",
+      "bytes": 1007,
+      "sha256": "ec82de6fde01141e03333baf344ac83d68ac1a79e369c3f133337920812c9b7b"
+    },
+    {
+      "file": "source209-root-acquisition-r1-plan.json",
+      "bytes": 1654,
+      "sha256": "688cf1a6f2403c5b6eaea04ca6e01c9c9c1ba719922a1b127c63058d44e23415"
+    },
+    {
+      "file": "health-legacy-root-acquisition-source209-round2-part59-no-prior-baseline.json",
+      "bytes": 18065,
+      "sha256": "41dc5e5e75ad34a383582fde9412ab0f3177624ed59cdddc66704346413cc4f4"
+    },
+    {
+      "file": "source209-no-prior-r1-cleanup-failure.json",
+      "bytes": 879,
+      "sha256": "205793b18e79100097fc922a01d4824c0dd550a92e458eac00dca9e9ea1e60a8"
+    },
+    {
+      "file": "Lumen/Persistence/LocalStore.swift",
+      "bytes": 23364,
+      "sha256": "4da5d67b4d1b959a19f0549eb6286a9c28fc1724cc1df1dc8c5e9e3513aecd47"
+    },
+    {
+      "file": "Lumen/Models/BackupArchive.swift",
+      "bytes": 19111,
+      "sha256": "69e10af40cd932df7689734a0c8f177473a9c03af2279d18bcf77d674681a2e6"
+    },
+    {
+      "file": "Lumen/Models/ConversationFiles.swift",
+      "bytes": 9364,
+      "sha256": "3aa3c4f077ae82de62b71e81d07c12bc016060a82c0ee00918654cef89544726"
+    },
+    {
+      "file": "Lumen/Models/HealthRecoverySelection.swift",
+      "bytes": 13858,
+      "sha256": "593c9da108af9400dce44aad95407bf707d714e0c7cb6ecbaca20eb96000032b"
+    },
+    {
+      "file": "Lumen/Models/HealthLegacyRecoveryOrigin.swift",
+      "bytes": 15081,
+      "sha256": "9eddbef986fac589d7bfa3ab81cfad5a9b11caba23e39794795bbebcf8e3ecb9"
+    },
+    {
+      "file": "Lumen/Services/HealthLocalDataNativeProbe.swift",
+      "bytes": 37228,
+      "sha256": "fe5806f15b600bab1beafdd619a64d1cde7f8a7000319729c6a90ce812eb4863"
+    }
+  ],
+  "storage": {
+    "criticDeletedFiles": false,
+    "criticRecoveredBytes": 0,
+    "freeBytesAtFinish": 42777776128,
+    "retention": "Canonical currentoriginal/fullreports/metadata/source/skill retained. No rawbundle/oldlivepath/binaryquery or cleanup. Parent exactcurrentcasebackup before ordinaryreset."
+  },
+  "next": "Exactbackup thiscase/critic, then unchanged209ordinarySource209R3pendingremovalcontrol. Preserve allbaseline outcomes before a separatelyreviewed conditionalproductionrepair; continue fullgoal."
+}
