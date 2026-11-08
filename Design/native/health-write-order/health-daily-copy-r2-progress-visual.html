@@ -18,6 +18,11 @@
 <li><div class="mark"></div><span>○ Answer quality</span><span class="text-small">Evidence support and personal context</span></li>
 <li><div class="mark"></div><span>○ Release readiness</span><span class="text-small">Accessibility, companions and distribution</span></li>
 </ol>
+<div class="section"><h3>Leaving and retrying a data check</h3>
+<div class="viz-row"><span>1 / 2 cases independently reviewed</span><span>8 original screens inspected</span></div>
+<div class="progress" role="progressbar" aria-label="Pending-check and retry cases, separate from product completion" aria-valuenow="1" aria-valuemin="0" aria-valuemax="2"><div class="progress-bar" style="width:50%"></div></div>
+<div class="viz-row"><span>✓ Back during a pending check</span><span>Next · retry after a real check failure</span></div>
+</div>
 <div class="section"><h3>Recovery across backup formats</h3>
 <div class="viz-row"><span>✓ 3 / 3 complete flows verified</span><span>53 original screens inspected</span></div>
 <div class="progress" role="progressbar" aria-label="Three-format recovery checks, separate from product completion" aria-valuenow="3" aria-valuemin="0" aria-valuemax="3"><div class="progress-bar" style="width:100%"></div></div>
@@ -66,7 +71,7 @@
 <button class="btn" type="button" data-area="quality" aria-pressed="false" aria-controls="lumen-plan-detail">Answer quality</button>
 <button class="btn" type="button" data-area="release" aria-pressed="false" aria-controls="lumen-plan-detail">Release gates</button>
 </div>
-<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Recovery coverage · in progress</h3><div data-verified>The current app compiles and passes 2,350 logic checks plus 23 focused review checks. Earlier selective recovery and the standard regression passed independent review, with all 34 screens inspected.</div><div data-next>The pending-check test left the review during an offscreen search and failed before Back. Both original screens were inspected. Next: correct the search and run both app cases.</div><div class="text-small" data-gate>Pending Back and retry remain unverified. Release text audit needs a separate correction. Reset, other appearances, speech and motion remain open.</div></div>
+<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Recovery coverage · in progress</h3><div data-verified>Back during a pending data check passed independent review. All eight original screens and the complete result were inspected.</div><div data-next>Next: retry after a real check failure. Release compilation and compiler settings passed; independent release review is next.</div><div class="text-small" data-gate>One main-phone, light, normal-text case. Reset, other appearances, full speech and motion remain open.</div></div>
 </div>
 <div class="section"><h3>Verified safety checks</h3>
 <table class="table table-sm" aria-label="Earlier checks retain their original scope; broader checks remain open"><thead><tr><th>Situation</th><th>Observed result</th></tr></thead><tbody>
@@ -83,11 +88,11 @@
 <script>
 (()=>{
 const root=document.getElementById('lumen-plan-progress');
-const snapshot='nov8-capture-search-repair';
+const snapshot='nov8-pending-back-reviewed';
 const areas={
-current:{title:'Recovery coverage · in progress',verified:'The current app compiles and passes 2,350 logic checks plus 23 focused review checks. Earlier selective recovery and the standard regression passed independent review, with all 34 screens inspected.',next:'The pending-check test left the review during an offscreen search and failed before Back. Both original screens were inspected. Next: correct the search and run both app cases.',gate:'Pending Back and retry remain unverified. Release text audit needs a separate correction. Reset, other appearances, speech and motion remain open.'},
+current:{title:'Recovery coverage · in progress',verified:'Back during a pending data check passed independent review. All eight original screens and the complete result were inspected.',next:'Next: retry after a real check failure. Release compilation and compiler settings passed; independent release review is next.',gate:'One main-phone, light, normal-text case. Reset, other appearances, full speech and motion remain open.'},
 quality:{title:'Answer quality · open',verified:'Library search, source identity, consent controls and literal-reference safeguards are delivered.',next:'Next: evidence-support policy and independent evaluation; personal-context and conversation-history privacy review.',gate:'Clinical accuracy, language coverage and live-provider evaluation remain required.'},
-release:{title:'Release readiness · open',verified:'The latest verified Source217 unsigned release and compiler settings passed independent review. The newer Source219 text audit failed; its correction awaits a fresh build.',next:'Next: current release audit, background Health, Watch reconnect, widget, interruption and accessibility checks.',gate:'Representative histories, performance, privacy and distribution review remain required. No iPhone installation, launch or checks without a renewed request.'}
+release:{title:'Release readiness · open',verified:'Source220 unsigned release compilation, executable markers and compiler settings passed. Coverage recording is enabled. Independent release review is pending.',next:'Next: independent review, background Health, Watch reconnect, widget, interruption and accessibility checks.',gate:'Representative histories, performance, privacy and distribution review remain required. No iPhone installation, launch or checks without a renewed request.'}
 };
 const buttons=Array.from(root.querySelectorAll('[data-area]'));
 function select(key,remember){
