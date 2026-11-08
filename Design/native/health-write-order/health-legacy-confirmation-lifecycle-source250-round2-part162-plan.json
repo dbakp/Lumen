@@ -1,0 +1,144 @@
+{
+  "part": 162,
+  "subject": "source250-confirmation-not-now-late-ack-r1-plan.json",
+  "status": "PLAN_FEASIBLE with explicit implementation requirements; no implementation/source-ready/runtime acceptance",
+  "verdict": {
+    "readyToImplementBoundedDesign": true,
+    "sourceReady": false,
+    "nativeAcceptance": false,
+    "globalProductAcceptance": false,
+    "score": null,
+    "requiredClarificationsBeforeCodeAcceptance": [
+      "P162-C1 actual completion boundary must be honest",
+      "P162-C2 fresh post-lateack Check must be individually bound"
+    ],
+    "scope": "Data first: Not now terminates/cancels an unused confirmation worker before deliberately late valid acknowledgement; no Recover or commit. This does not validate other cancellation windows or true90s expiry."
+  },
+  "independentReview": {
+    "fullPlanRead": true,
+    "sourceRead": "Current whole HealthConfirmationTargetChangeGate.swift plus actual alert/onChange/close/disappear caller and fixed-value getter/facts implementation. Historical full shared native/host contracts already independently reviewed157/160 and actual scoped161 remains separate.",
+    "currentSourceChangeAtPlanStage": false,
+    "subjectExecutionOrImports": false,
+    "simulatorProcessDefaultsGitBuildQueries": false,
+    "onlyNewReportWritten": true,
+    "noHistoricalRaw249Reads": true,
+    "prerequisiteAttribution": "Parent reports exact519052b7eadf86327e080a3ba92a0d574b70f7fa /60checkpoint1838union beforeplan. No newGit query or raw249/nativechecker rerun by critic. Exact original rootpreparation recovery remains separately qualified, not new source evidence."
+  },
+  "sourceInformedAssessment": [
+    {
+      "area": "Real cancellation versus authority",
+      "finding": "Existing gate.close() synchronously marks closed and cancels its BackupOperationControl. Actual Not now invokes closeConfirmationGate, which closes gate, cancels task and clears view references. waitAndChange checks Task/control/closed/presentation/appearance/session/binding before acknowledging and immediately before the existing single known write. New observational instrumentation must preserve that authority and must not add a synthetic mutation handler or allowlateack fallback."
+    },
+    {
+      "area": "Worker holds session separately",
+      "finding": "Current Task captures gate and real review session for waitAndChange. Clearing confirmationGateWork or confirmationGate references in the view is not by itself worker completion or captured-input release. The review itself intentionally stays open/ready after Not now until actualBack. Owner retirement belongs to laterBack, not Not now."
+    },
+    {
+      "area": "Metadata-only lifecycle registry",
+      "finding": "Bounded run/PID/session/capture/appearance/selection/nonce records and firstclose reason are suitable. Registry must not strongly retain gate/task/session/originlease/rawpayload or be consulted as production canCommit authority. Getter must observe actual state, not set phase flags that are then re-read as safety proof."
+    },
+    {
+      "area": "Late acknowledgement target",
+      "finding": "A late valid ack can be safely written to the exact known closed gate acknowledgement path after strict completion/oldbaseline prerequisites. It must use original gate binding plus existing phase ui-observed, preserve bytes/intended/status/path/identity before parse/assert, require unique nofollow/exclusive publication and never search for/fallback to a newer gate. No pre-cancel ack may exist. Gate files staying on disk are not live authority."
+    },
+    {
+      "area": "Actual UI evidence",
+      "finding": "Native must independently capture whole actual131char confirmation/title/actions and perform actual Not now, then prove alert dismissal and unchanged choice/selection. Lifecycle relay reports transport milestones only, not real alert visibility/cancellation/unchanged values. Avoid Recover.value dependence and wrong historical duplicate AX probes."
+    },
+    {
+      "area": "Read-only safety check",
+      "finding": "Two fixed known synthetic values should be freshly read persisted/effective inapp after lateack, with actual Data42/rawbytes/hash/type/Healthfalse and no mutation flags. It must not recapture origins, acquire rawtoken, call revision-mutating LocalStore.performWrite, synchronize defaults, reload through a path that creates/restores currentroot or mutate any store to make the evidence match."
+    },
+    {
+      "area": "Filesystem preservation boundaries",
+      "finding": "For this pre-Recover case current13/prior13/root/filemetadata/private/intent/provider/source equality and no newstage/receipt are coherent. Later preparationpause occurs after recover/open/prior retirement and needs a separate source-aligned before/after contract. The plan correctly refuses to reuse13/13/26 invariants blindly or call ordinary selectedprior retirement a product bug."
+    }
+  ],
+  "requiredImplementationRequirements": [
+    {
+      "id": "P162-C1",
+      "priority": "required evidence semantics",
+      "issue": "Plan says gate Task defer records actual workerfinished and host waits actual workercompletion. A defer event is emitted while finalization code is executing, before return and before captured references necessarily release. That must not be called externally observed task completion or session/input/descriptor release.",
+      "required": "Either define and label exactly an after-wait-return/outer-task-defer observation and source-prove that no mutation operation remains after it (credit only that boundary), or separately await the exact task value/completion outside that task before recording completion and permittinglateack. Bind run/nonce/gate/taskgeneration and preserve original error/Taskcancel/controlcancel/closed/consumed state. Do not let a helper replace the actual waiter or clear handlers to manufacture termination.",
+      "validation": "Controls for close-before-start/whilewaiting/doubleclose/wrongnonce/taskgeneration, late closure/failure and event persistence. Actual native must retain exact real Not now ordering and observed task boundary; source/isolated controls alone no native task-completion credit."
+    },
+    {
+      "id": "P162-C2",
+      "priority": "required fresh observation identity",
+      "issue": "A Check getter can accidentally return cached pre-cancel or pre-lateack fixed facts while a lifecycle phase says postlateack. Timestamp/phase alone cannot establish an actual fresh UI touch/read.",
+      "required": "Bind every actual Check touch to a fresh ordinal/requestnonce and exact closed gate/lateack byte digest, then capture strictly later read time and actual known2key persisted/effective values. Host must require fresh ordinal/native event and rawactualfacts after the actual ack publication observed boundary, same run/appPID/oldreview/session/capture/owner/selection; reject duplicate/stale/changedrun/error/noop. Probe must remain readonly; no implied origin acquire/commit.",
+      "validation": "Dependency-aware controls must reject preack cachedrow/sameordinal/wrongackdigest/wrongnonce/missingread/changedData/Healthconnected, preserve actual mismatch bytes before assertions and never acknowledge further or reset on failure."
+    }
+  ],
+  "concreteFurtherAcceptanceRequirements": [
+    "Validate exactnewlifecycleflag in existing safe syntheticcontext before trace/probe/reset writes, including duplicates/missing/wrongrun/kind/olddevice. Append meaningful predeclared DEBUG marker(s) beforebuild; unchanged old248/249 cases behave exactlywhenflagabsent.",
+    "Capture reason at actual synchronous Not now close site; duplicate onChange(disappearance)/Back close is idempotent and firstreason retained. Do not invent Notnow reason if a different real close happened first; retain explicit native touch event and actual close ordering separately.",
+    "Bind initial wholealert UI marker to exactoriginal image bytes/name/fullbody/frames and originalarmedgate. Native touchNotnow must follow that realmarker; close/waitfinish prerequisites and strictoldbaseline must precede lateack. Missing/error/unexpectedtrace means noack.",
+    "Preserve durable bounded raw gate/marker/lifecycle/relay/ack inputs and identity/errors before parse/validation. Keep raw intended lateack before exclusivewrite, record publication failure and preserve negative outcome even if subsequentretention succeeds. New separate schemas/checker must not relax oldR1/R3 markercontracts.",
+    "Noack-beforecancel and exactlyone validlateack to originalclosednonce; native knows publication only from separate metadatarelay and then issues real Check. A validackfile existing aftertaskend is a deliberate testinput, not proofthatcancellationwasrequested or workerconsumednothing.",
+    "Independently compare oldtypedData/current13/prior13/private/intent/provider/source/installed/selection at baseline, actualclosed-beforelateack, freshCheckafterlateack and laterendpoint. No knownwrite/singleUseConsumed/guardacquire/actualRecover/commit events; no newreceipt/private/stage. Preserve anyunexpectedwrite/error as actualfailure.",
+    "Actual Notnow retains same open reviewowner/originready metadata and choices without hiddenrecapture. ActualBack closesoldowner/temporaryworkspaces; neworiginal selection has distinctowner/session/capture/offchoices; finalBackclosesnewowner. NoRecoverycommit acceptance fromthiscase.",
+    "Full source/freeze/currentarchive/actualdependency controls/SDKtyping/strictsource review and exactpreexec beforefullcurrentpairbuild. Fullactualnative summary/helpers/originals/unique mandatorychecker/root/independentreview/exactbackup beforecleanup/nextreset. Sourcegoodguards/controlpasses never replaceactualtest.",
+    "Real90s expiry and earlier/later cancellation races remainseparate. This postclosedack case deliberately serializes completionbeforeack; do not report it as a race stress test or heldCancel without host release."
+  ],
+  "limits": [
+    "No source250 implementation/frozenmanifest/currentcompile/native/cancel/lateack/expiry/freshgetter outcomes exist at this plan review. readyToImplement is design feasibility, not SOURCE_READY or productacceptance.",
+    "No arbitrarypreferences/credentialvalues/accountdata/unknownargv/secret reads or write/sync/hostrepair allowed. Only fixedknownsynthetic Data bytes after actualcontextvalidation may appear in dedicated evidence.",
+    "No newscore/all43/eightgroups/fullgoal/physicaldevice/runtime/distribution/performance/speech/VO/motion/appearance acceptance. Existing completed249String/248Data/Release scope remains immutable.",
+    "Storagecleanup after exact249proof is parent scope; historical249raw not revisited, no diskrecovery credit from critic."
+  ],
+  "provenance": [
+    {
+      "path": "Design/native/health-write-order/source250-confirmation-not-now-late-ack-r1-plan.json",
+      "bytes": 5693,
+      "sha256": "54f7ce54017bb5a2028439078f23360ffe6b521c2aa5678b95c2394a3a0fb603"
+    },
+    {
+      "path": "Design/native/health-write-order/durable-source-r249.json",
+      "bytes": 150360,
+      "sha256": "52cd839cac01de0ae1572af43c495f20616d7134a8080c4becc1c3fa20c35d18"
+    },
+    {
+      "path": "Design/native/health-write-order/durable-source-r249.json.gz",
+      "bytes": 4399964,
+      "sha256": "67418e56e59760c990b82ff6cf1f2c0daa092b56f21ef8ad57082f3efd5e002a"
+    },
+    {
+      "path": "Design/native/health-write-order/health-legacy-confirmation-source249-round2-part160-source.json",
+      "bytes": 21104,
+      "sha256": "69441048fa7969529c1d6c0db34f7c3947d821126d0c8f6950c44ac80066e494"
+    },
+    {
+      "path": "Design/native/health-write-order/health-legacy-confirmation-source249-round2-part161-native.json",
+      "bytes": 39659,
+      "sha256": "9ee51baf7e645468bf3175dc463019f90d1272adb1812a2db82771549aec85e6"
+    },
+    {
+      "path": "Design/native/health-write-order/confirmation-window-evidence-r3.py",
+      "bytes": 4425,
+      "sha256": "df6bcfc5cbe7ab325b994bcbbf34988bdaac4bea7c4b48424b5a7485fb40756a"
+    },
+    {
+      "path": "Design/native/health-write-order/confirmation-runner-relay-r1.py",
+      "bytes": 2317,
+      "sha256": "3e0325998044f7b284fe2f6820bdc513fea615e8b1febebdb75c598b831533f7"
+    },
+    {
+      "path": "Lumen/Views/HealthConfirmationTargetChangeGate.swift",
+      "bytes": 6218,
+      "sha256": "2266dddf579b5bf9c27846c79c317acf4aabb5876a22e2c8ae4746274db071ec"
+    },
+    {
+      "path": "Lumen/Views/BackupFileRecoveryView.swift",
+      "bytes": 39596,
+      "sha256": "c1cc52d7a72d237800a032744000a3fb6128d1a2e362fe9bba08b546a86dc91b"
+    },
+    {
+      "path": "Lumen/Views/HealthLegacyTargetChangeUIFixture.swift",
+      "bytes": 29064,
+      "sha256": "46b4718a23d2603f503f52b3f18ad0d38f7a526f7c387250177859fde5d867ea"
+    }
+  ],
+  "completedAtUTC": "2026-11-08T21:46:26Z",
+  "availableBytesAtFinish": 27230752768
+}
