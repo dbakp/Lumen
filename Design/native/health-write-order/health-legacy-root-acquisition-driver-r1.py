@@ -159,15 +159,60 @@ def retain_terminal(result,raw,prefix,evidence):
  evidence['retention']={'errors':errors,'originalPNGCount':len(bindings['png']),'nativeHelperJSONCount':len(bindings['json']),'exportMetadataCount':len(bindings['manifest']),'nativeHelperBoundary':'These API observation wrappers attach screenshots only. Full app protocol reports are host readbacks, not native-helper JSON.','summaryRetained':summary is not None,'partialSalvageAttemptedIndependently':True}
  return errors
 
+def verify_fixed_keys(data_root,expected,phase,prefix,run_id,process,original_report_sha,allow_missing_wait=True,observation_tag=None):
+ """Wait only for absent prepared fixture keys; present changes never retry."""
+ assert set(expected)=={'lumen.health.meals.v1','lumen.health.workouts.v1'}
+ for wanted in expected.values():
+  assert wanted['type']=='data' and wanted['bytes']==42 and wanted['sha256']==sha(b'{synthetic persisted legacy origin damaged')
+  assert base64.b64decode(wanted['base64'],validate=True)==b'{synthetic persisted legacy origin damaged'
+ observations=[];deadline=time.monotonic()+(30 if phase=='prepared' and allow_missing_wait else 0)
+ target=P/(prefix+'-'+(observation_tag or phase)+'-fixed-preferences-observations.json')
+ while True:
+  path=data_root/'Library/Preferences/com.dbakp.lumen.plist';row={'phase':phase,'runID':run_id,'observedAt':time.time(),'fixedKeys':{}};values={};file_missing=False
+  try:
+   s=path.lstat();assert stat.S_ISREG(s.st_mode) and not path.is_symlink() and s.st_size<262144
+   row['fileIdentity']={'device':s.st_dev,'inode':s.st_ino,'bytes':s.st_size,'mtimeNS':s.st_mtime_ns};values=plistlib.loads(path.read_bytes())
+  except FileNotFoundError:file_missing=True;row['fileMissing']=True
+  except Exception as ex:
+   row['readError']=repr(ex);observations.append(row);write(target,observations);raise
+  try:
+   native_bytes=(data_root/'tmp/Lumen-legacy-root-probe-report.json').read_bytes()
+   native=json.loads(native_bytes);row.update(nativePhase=native.get('phase'),nativeRunID=native.get('runID'),nativeReportSHA256=sha(native_bytes))
+  except Exception as ex:
+   row['nativeReportReadError']=repr(ex);observations.append(row);write(target,observations);raise
+  native_changed=native.get('runID')!=run_id or native.get('phase')!=phase or sha(native_bytes)!=original_report_sha
+  missing=False;changed=False
+  for key,wanted in expected.items():
+   assert key in {'lumen.health.meals.v1','lumen.health.workouts.v1'}
+   value=values.get(key);fact={'actualType':type(value).__name__};row['fixedKeys'][key]=fact
+   if key not in values:missing=True;continue
+   if type(value) is bytes:
+    fact.update(bytes=len(value),sha256=sha(value));good=value==base64.b64decode(wanted['base64'],validate=True)
+    if good:fact['base64']=base64.b64encode(value).decode()
+    else:changed=True
+   else:
+    changed=True
+    if isinstance(value,str):raw=value.encode('utf-16-le');fact.update(bytes=len(raw),sha256=sha(raw))
+  row['status']='changed' if changed else 'missing' if missing or file_missing else 'exact'
+  observations.append(row);write(target,observations)
+  assert not native_changed,'native original report/runID/phase changed during fixed preferences check'
+  assert not changed,'present fixed preference type/bytes changed; no retry permitted'
+  if not missing and not file_missing:return observations
+  assert phase=='prepared' and allow_missing_wait,'strict boundary fixed preference missing; no wait permitted'
+  assert process.poll() is None,'native producer ended before prepared fixed keys became durable'
+  assert row['nativePhase']=='prepared' and row['nativeRunID']==run_id
+  if time.monotonic()>=deadline:raise TimeoutError('prepared fixed preferences still absent after bounded30second observation')
+  time.sleep(.25)
+
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--source',required=True);ap.add_argument('--build',required=True);ap.add_argument('--case',choices=MODES,required=True);ap.add_argument('--trial',required=True);ap.add_argument('--expect',choices=['mutation','safe','control'],required=True);a=ap.parse_args()
  assert a.trial.isalnum();mode,test=MODES[a.case];assert (a.case=='ordinary')==(a.expect=='control')
- m=read(P/a.source);build=read(P/a.build);assert build['source']==a.source and build['buildExit']==0;manifest_verify(m)
+ manifest_bytes=(P/a.source).read_bytes();build_bytes=(P/a.build).read_bytes();m=json.loads(manifest_bytes);build=json.loads(build_bytes);assert build['source']==a.source and build['buildExit']==0;manifest_verify(m)
  testbin=pathlib.Path(build['testBinary']);app=testbin.parents[3]/'Lumen.app/Lumen'
  for f,size,h in [(app,build['binaryBytes'],build['sha256']),(testbin,build['testBinaryBytes'],build['testBinarySHA256'])]:assert f.stat().st_size==size and sha(f.read_bytes())==h
  prefix='root-acquisition-'+a.case+'-'+a.trial.lower();raw=pathlib.Path('/tmp/LumenBatch44Checks')/('RootAcquisition'+test+a.trial);assert not raw.with_suffix('.log').exists() and not raw.with_suffix('.xcresult').exists()
  start=time.time();evidence={'source':a.source,'mode':mode,'expectation':a.expect,'startedAt':start,'localIdentityPreflight':True,'safetyAcceptance':False}
- log=raw.with_suffix('.log');result=raw.with_suffix('.xcresult');process=None;error=None
+ log=raw.with_suffix('.log');result=raw.with_suffix('.xcresult');process=None;error=None;data_root=None;selected_run_id=None
  try:
   with log.open('xb') as out:
    command=['xcodebuild','-project','Lumen.xcodeproj','-scheme','Lumen','-configuration','Debug','-destination','id='+SIM,'-derivedDataPath','/tmp/LumenBatch37Simulator','-clonedSourcePackagesDirPath','/tmp/LumenBatch37Packages','-disableAutomaticPackageResolution','-parallel-testing-enabled','NO','-maximum-concurrent-test-simulator-destinations','1','-resultBundlePath',str(result),'-only-testing:LumenUITests/LumenSmokeTests/testHealthLegacyRootAcquisition'+test,'test-without-building']
@@ -182,6 +227,8 @@ def main():
      evidence['latestOriginalReport']={'bytes':len(raw_report),'sha256':sha(raw_report)}
      report=json.loads(raw_report);assert report['mode']==mode
      uuid.UUID(report['runID'])
+     if selected_run_id is None:selected_run_id=report['runID']
+     assert report['runID']==selected_run_id
      if 'prepared' in evidence:assert report['runID']==evidence['prepared']['runID']
      phase=report['phase']
      write(P/(prefix+'-latest-report.json'),report)
@@ -196,8 +243,12 @@ def main():
       assert paths['movedPrevious']==paths['root'].parent/('LumenData.legacy-prior-probe-'+report['runID'])
       rows=exact_payload_rows(report)
       for reportkey,pathkey in ([('initialRoot','root'),('initialPrevious','previous')] if phase=='prepared' else [('finalRoot','root'),('finalPrevious','previous'),('movedRoot','moved'),('movedPrevious','movedPrevious')]):assert live_tree(paths[pathkey])==report[reportkey],reportkey
-      plist=plistlib.loads((data_root/'Library/Preferences/com.dbakp.lumen.plist').read_bytes())
-      for key,row in report['initialFixed'].items():assert type(plist[key]) is bytes and plist[key]==base64.b64decode(row['base64'],validate=True)
+      fixed_observations=verify_fixed_keys(data_root,report['initialFixed'],phase,prefix,report['runID'],process,sha(raw_report))
+      # Recheck the complete phase boundary after any prepared-only wait.
+      current_report=read(report_file);assert current_report['runID']==report['runID'] and current_report['phase']==phase
+      assert report_file.read_bytes()==raw_report,'immutable prepared/observed report changed during host checks'
+      assert installed.stat().st_size==build['binaryBytes'] and sha(installed.read_bytes())==build['sha256']
+      for reportkey,pathkey in ([('initialRoot','root'),('initialPrevious','previous')] if phase=='prepared' else [('finalRoot','root'),('finalPrevious','previous'),('movedRoot','moved'),('movedPrevious','movedPrevious')]):assert live_tree(paths[pathkey])==report[reportkey],reportkey
       if phase=='prepared':
        assert not live_tree(paths['moved'])['root']['exists'] and not live_tree(paths['movedPrevious'])['root']['exists']
        assert not any(x.name.startswith(('LumenData.restore-','LumenData.retired-','LumenData.discovery-')) for x in paths['root'].parent.iterdir())
@@ -207,7 +258,11 @@ def main():
        assert not any(x.name.startswith(('LumenData.restore-','LumenData.retired-','LumenData.discovery-')) for x in paths['root'].parent.iterdir()), 'unfinished stage/retired/discovery'
        assess_observed(report,a,evidence)
        manifest_verify(m)
-      evidence[phase]={'payloadRows':rows,'installedIdentity':True,'liveTreesAndFixedDataExact':True,'runID':report['runID']};seen.add(phase)
+      manifest_verify(m);assert (P/a.source).read_bytes()==manifest_bytes and (P/a.build).read_bytes()==build_bytes
+      verify_fixed_keys(data_root,report['initialFixed'],phase,prefix,report['runID'],process,sha(raw_report),allow_missing_wait=False,observation_tag=phase+'-immediately-before-ack')
+      final_installed_bytes=installed.read_bytes();assert len(final_installed_bytes)==build['binaryBytes'] and sha(final_installed_bytes)==build['sha256']
+      evidence[phase]={'payloadRows':rows,'installedIdentity':True,'liveTreesAndFixedDataExact':True,'runID':report['runID'],'originalReportSHA256':sha(raw_report),'sourceManifestSHA256':sha(manifest_bytes),'buildReceiptSHA256':sha(build_bytes),'installedBinary':{'path':str(installed),'bytes':len(final_installed_bytes),'sha256':sha(final_installed_bytes)},'checkedAt':time.time()}
+      write(P/(prefix+'-'+phase+'-host-preack.json'),evidence[phase]);seen.add(phase)
       write(data_root/'tmp/Lumen-legacy-root-probe-ack.json',{'runID':report['runID'],'phase':phase})
      if process.poll() is not None:break
     except (FileNotFoundError,subprocess.CalledProcessError,json.JSONDecodeError):data_root=None
@@ -217,7 +272,33 @@ def main():
   manifest_verify(m);evidence['status']='PASS declared observation/expectation only';evidence['driverExitCode']=0
  except Exception as ex:
   error=repr(ex);evidence.update(status='FAILED observation or expectation; no acceptance',error=error,driverExitCode=1)
-  if process is not None and process.poll() is None:process.terminate();process.wait(timeout=30)
+  write(P/(prefix+'-host-failure.json'),{'error':error,'phase':'host gate failed; no further acknowledgement','nativePID':process.pid if process else None,'at':time.time()})
+  if process is not None and process.poll() is None:
+   # Keep XCTest alive so the app's own unacknowledged protocol can fail and
+   # produce a complete failure result. Never acknowledge a failed host gate.
+   print('Host gate failed; awaiting bounded native failure finalization without acknowledgement',flush=True)
+   until=time.monotonic()+180;finalization_hashes=set();evidence['failureFinalizationReports']=[]
+   def salvage_app_report():
+    try:
+     if data_root is None:return
+     f=data_root/'tmp/Lumen-legacy-root-probe-report.json';s=f.lstat();assert stat.S_ISREG(s.st_mode) and not f.is_symlink() and 0<s.st_size<=16*1024**2 and s.st_mtime>=start
+     data=f.read_bytes();h=sha(data)
+     if h in finalization_hashes:return
+     assert len(finalization_hashes)<16,'bounded finalization reports exceeded'
+     finalization_hashes.add(h);target=P/(prefix+'-failure-finalization-'+str(len(finalization_hashes))+'.json');target.write_bytes(data)
+     facts={'file':target.name,'bytes':len(data),'sha256':h,'observedAt':time.time()};evidence['failureFinalizationReports'].append(facts)
+     write(P/(prefix+'-failure-finalization-reports.json'),evidence['failureFinalizationReports'])
+     parsed=json.loads(data);assert parsed['mode']==mode
+     if selected_run_id is not None:assert parsed['runID']==selected_run_id
+    except Exception as ex:evidence.setdefault('failureFinalizationReadErrors',[]).append(repr(ex))
+   while process.poll() is None and time.monotonic()<until:
+    salvage_app_report();time.sleep(.25)
+   salvage_app_report()
+   if process.poll() is None:
+    evidence['forcedTerminationAfterGrace']=True;process.terminate()
+    try:process.wait(timeout=30)
+    except subprocess.TimeoutExpired:process.kill();process.wait(timeout=10)
+   else:evidence['nativeFinalizedNaturallyAfterHostFailure']=True
  finally:
   if process is not None:evidence['nativeExitCode']=process.poll()
   try:retention_errors=retain_terminal(result,raw,prefix,evidence)
