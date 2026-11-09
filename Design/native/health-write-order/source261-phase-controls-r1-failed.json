@@ -1,0 +1,11 @@
+{
+  "status": "FAILED synthetic control acquisition; no acceptance",
+  "recipe": "source261-phase-controls-r1-executed.py",
+  "recipeBytes": 12318,
+  "recipeSHA256": "f162cf67b6ee9b6d8047ea42b73523423390f65832b27dfdd539902dbb7636b3",
+  "exitCode": 1,
+  "observedFailure": "AssertionError at line135: expected six predicate-valid differing attempts. Complete control artifacts were not exported before the TemporaryDirectory context removed them; this failed run does not establish a successful negative control.",
+  "suspectedCause": "The synthetic inode perturbation used adjacent inode numbers and can alias a separate fixture file. Not confirmed from retained raw data.",
+  "scope": "Host synthetic replay only; no simulator, app or native Recover actions.",
+  "checkedAt": 1794205170.27002
+}

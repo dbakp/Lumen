@@ -1,0 +1,129 @@
+{
+  "status": "PASS synthetic evidence receipt/command and local Git anchor controls",
+  "helperBytes": 8262,
+  "helperSHA256": "706db994097c81c26274825a1a8bdb064101498871ebcd258ce4b346eaef7480",
+  "sourceBeforeAfterExact": true,
+  "checkCount": 20,
+  "checks": [
+    {
+      "case": "synthetic typed receipt accepted; no actual build receipt inferred",
+      "accepted": true
+    },
+    {
+      "case": "synthetic receipt rejects source",
+      "wrongValue": "durable-source-r260.json",
+      "accepted": false
+    },
+    {
+      "case": "synthetic receipt rejects buildExit",
+      "wrongValue": 1,
+      "accepted": false
+    },
+    {
+      "case": "synthetic receipt rejects buildExit",
+      "wrongValue": false,
+      "accepted": false
+    },
+    {
+      "case": "synthetic receipt rejects sourceInputs",
+      "wrongValue": true,
+      "accepted": false
+    },
+    {
+      "case": "synthetic receipt rejects sourceInputs",
+      "wrongValue": 2,
+      "accepted": false
+    },
+    {
+      "case": "synthetic receipt rejects fixtureInputs",
+      "wrongValue": false,
+      "accepted": false
+    },
+    {
+      "case": "synthetic receipt rejects binaryBytes",
+      "wrongValue": true,
+      "accepted": false
+    },
+    {
+      "case": "synthetic receipt rejects testBinaryBytes",
+      "wrongValue": 0,
+      "accepted": false
+    },
+    {
+      "case": "synthetic receipt rejects appCarrySource",
+      "wrongValue": "durable-source-r259.json",
+      "accepted": false
+    },
+    {
+      "case": "synthetic receipt rejects testBuiltSource",
+      "wrongValue": "durable-source-r260.json",
+      "accepted": false
+    },
+    {
+      "case": "synthetic receipt rejects appCarriedUnchanged",
+      "wrongValue": 1,
+      "accepted": false
+    },
+    {
+      "case": "synthetic receipt rejects appCarriedUnchanged",
+      "wrongValue": false,
+      "accepted": false
+    },
+    {
+      "case": "synthetic receipt rejects testSourceSHA256",
+      "wrongValue": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "accepted": false
+    },
+    {
+      "case": "command is exact approved simulator and dedicated backend method; no execution",
+      "command": [
+        "xcodebuild",
+        "-project",
+        "Lumen.xcodeproj",
+        "-scheme",
+        "Lumen",
+        "-configuration",
+        "Debug",
+        "-destination",
+        "platform=iOS Simulator,id=5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+        "-derivedDataPath",
+        "/tmp/LumenBatch37Simulator",
+        "-clonedSourcePackagesDirPath",
+        "/tmp/LumenBatch37Packages",
+        "-disableAutomaticPackageResolution",
+        "-parallel-testing-enabled",
+        "NO",
+        "-collect-test-diagnostics",
+        "never",
+        "-only-testing:LumenUITests/LumenSmokeTests/testHealthRetainedReviewOwnerBackend",
+        "-resultBundlePath",
+        "/synthetic-only-results/RetainedBackendSource261R1.xcresult",
+        "test-without-building"
+      ]
+    },
+    {
+      "case": "other native case rejected by names and proof mapping",
+      "accepted": false
+    },
+    {
+      "case": "actual tiny local Git selected blobs match synthetic metadata",
+      "accepted": true
+    },
+    {
+      "case": "coherently edited local proof and facts fail actual Git blob anchor",
+      "accepted": false
+    },
+    {
+      "case": "duplicate proof row rejected",
+      "accepted": false
+    },
+    {
+      "case": "Boolean file-size alias rejected",
+      "accepted": false
+    }
+  ],
+  "temporarySyntheticRepositoryRemoved": true,
+  "scope": "Pure synthetic receipt/command and actual tiny local Git fixture only. No source261 freeze, actual build, simulator, GitHub proof or backend acceptance.",
+  "remaining": "Actual new build/current app-test receipt and full source/proof/controller/checker integration remain pending.",
+  "checkedAt": 1794205322.175763
+}

@@ -35,7 +35,12 @@
     "transport": "retained-backend-transport-r2.py",
     "transportControls": "source261-transport-controls-r2.json",
     "transportControlCount": 13,
-    "newEvidencePreparation": "retained-backend-evidence-r1.py syntax only; synthetic receipt/proof controls pending"
+    "newEvidencePreparation": "retained-backend-evidence-r1.py;20 synthetic receipt/command/local Git controls in source261-evidence-controls-r1.json; actual build/proof integration pending",
+    "phaseCoordinationPreparation": "source261-phase-preparation-r1.json",
+    "phaseCoordinatorReplayControls": "source261-phase-controls-r3.json",
+    "phaseCoordinatorReplayControlCount": 20,
+    "transportSuccessor": "retained-backend-transport-r3.py",
+    "transportSuccessorControls": "source261-transport-controls-r3.json"
   },
   "sourceSemanticsNotes": [
     "BackupFileTransaction preserveByLink keeps regular inodes while link operations/previous retirement can alter nlink/ctime; record both, require within-read stability, predeclare cross-phase allowed transitions rather than imposing global nlink/ctime equality.",
@@ -53,5 +58,6 @@
     "Source inspection corrected R1 prototype widget expectation: CurrentHealthEvidence.local requires nonempty current-day dates, so restoring old November2 fixture meals must NOT invent today nutrition zero/estimate readings. R2 control explicitly rejects zero invention; R1 sources/results remain historical synthetic controls only.",
     "R2 transport requires intention callback before any write and independently retains actual leftover staging bytes after short-write/fsync/rename failures. Post-publication errors remain possibly observed; controller still must independently salvage all run peers."
   ],
-  "parentMarkerQualification": "final-parent uiState is last committed review identity, location=parent and actual navigation screenshot/trace close prove parent. Never treat copied ready metadata as a live ready owner after Back."
+  "parentMarkerQualification": "final-parent uiState is last committed review identity, location=parent and actual navigation screenshot/trace close prove parent. Never treat copied ready metadata as a live ready owner after Back.",
+  "phaseTimingLimitation": "Current phase helper aborts on the first unsafe, malformed, namespace or semantic failure. Only fully predicate-valid differing samples may settle (maximum6 at0.15s interval). No pending disk-default refresh or asynchronous retired-root cleanup classification is implemented. Prior native evidence observed multi-second defaults persistence lag; this preparation must not be represented as robust native-ready."
 }

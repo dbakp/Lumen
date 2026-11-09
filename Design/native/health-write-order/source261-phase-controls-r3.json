@@ -1,0 +1,106 @@
+{
+  "status": "PASS scoped phase coordination controls",
+  "helperBytes": 15843,
+  "helperSHA256": "a9295755f7178931df47061e38ec33147aa0141958cedd01daff73f1412550d2",
+  "sourceBeforeAfterExact": true,
+  "checks": [
+    {
+      "case": "persist-before-predicate; two stable pre samples; actual durable host ack; frozen envelope unchanged",
+      "ackPublished": true
+    },
+    {
+      "case": "historical synthetic post and final endpoint predicates integrated; no new native transaction",
+      "ackPrepared": true
+    },
+    {
+      "case": "failed-sample-retained",
+      "ackPrepared": false,
+      "attempts": 1
+    },
+    {
+      "case": "wrong-bound-path",
+      "ackPrepared": false,
+      "attempts": 1
+    },
+    {
+      "case": "unknown-namespace",
+      "ackPrepared": false,
+      "attempts": 1
+    },
+    {
+      "case": "namespace-root-metadata-mismatch",
+      "ackPrepared": false,
+      "attempts": 1
+    },
+    {
+      "case": "post-missing-baseline",
+      "ackPrepared": false,
+      "attempts": 0
+    },
+    {
+      "case": "final-missing-prior-post",
+      "ackPrepared": false,
+      "attempts": 0
+    },
+    {
+      "case": "valid-but-never-settles",
+      "ackPrepared": false,
+      "attempts": 6
+    },
+    {
+      "case": "fully valid differing samples may settle; all three attempts retained",
+      "attempts": 3
+    },
+    {
+      "case": "partial-evidence-write",
+      "ackPrepared": false,
+      "attempts": 1
+    },
+    {
+      "case": "changed actual retained file rejects before native transport intention",
+      "ackPublished": false
+    },
+    {
+      "case": "changed ack binding rejected before transport",
+      "ackPublished": false
+    },
+    {
+      "case": "expired conservative native ack window rejects before transport",
+      "ackPublished": false
+    },
+    {
+      "case": "metadata-float-readback-bytes rejects in actual publish caller before intention",
+      "ackPublished": false
+    },
+    {
+      "case": "metadata-bool-link-count rejects in actual publish caller before intention",
+      "ackPublished": false
+    },
+    {
+      "case": "metadata-float-expected-bytes rejects in actual publish caller before intention",
+      "ackPublished": false
+    },
+    {
+      "case": "metadata-float-mode rejects in actual publish caller before intention",
+      "ackPublished": false
+    },
+    {
+      "case": "deadline-after-intention rejects immediately before rename and retains full staging/intention",
+      "ackPublished": false
+    },
+    {
+      "case": "deadline-after-staging-fsync rejects immediately before rename and retains full staging/intention",
+      "ackPublished": false
+    }
+  ],
+  "checkCount": 20,
+  "raw": {
+    "file": "source261-phase-controls-r3-raw.json.gz",
+    "bytes": 616167,
+    "sha256": "e828e9f1323f18045f8f86f152f710de58fb5562ef80e47bd1d170988dce2dbb"
+  },
+  "temporarySyntheticFixturesRemoved": true,
+  "scope": "Historical synthetic sample replay plus actual host evidence/transport files only; no native/backend acceptance",
+  "remaining": "Actual process/container/source/proof/trace provenance controller, complete producer/independent checker/finalizer, freeze/build/native audit remain pending.",
+  "checkedAt": 1794205549.247542
+}

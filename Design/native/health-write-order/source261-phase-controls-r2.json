@@ -1,0 +1,82 @@
+{
+  "status": "PASS scoped phase coordination controls",
+  "helperBytes": 14678,
+  "helperSHA256": "f462817c1b437d0208774d6ae26be8d61bb62781035f402f36dee80d42d5c1d9",
+  "sourceBeforeAfterExact": true,
+  "checks": [
+    {
+      "case": "persist-before-predicate; two stable pre samples; actual durable host ack; frozen envelope unchanged",
+      "ackPublished": true
+    },
+    {
+      "case": "historical synthetic post and final endpoint predicates integrated; no new native transaction",
+      "ackPrepared": true
+    },
+    {
+      "case": "failed-sample-retained",
+      "ackPrepared": false,
+      "attempts": 1
+    },
+    {
+      "case": "wrong-bound-path",
+      "ackPrepared": false,
+      "attempts": 1
+    },
+    {
+      "case": "unknown-namespace",
+      "ackPrepared": false,
+      "attempts": 1
+    },
+    {
+      "case": "namespace-root-metadata-mismatch",
+      "ackPrepared": false,
+      "attempts": 1
+    },
+    {
+      "case": "post-missing-baseline",
+      "ackPrepared": false,
+      "attempts": 0
+    },
+    {
+      "case": "final-missing-prior-post",
+      "ackPrepared": false,
+      "attempts": 0
+    },
+    {
+      "case": "valid-but-never-settles",
+      "ackPrepared": false,
+      "attempts": 6
+    },
+    {
+      "case": "fully valid differing samples may settle; all three attempts retained",
+      "attempts": 3
+    },
+    {
+      "case": "partial-evidence-write",
+      "ackPrepared": false,
+      "attempts": 1
+    },
+    {
+      "case": "changed actual retained file rejects before native transport intention",
+      "ackPublished": false
+    },
+    {
+      "case": "changed ack binding rejected before transport",
+      "ackPublished": false
+    },
+    {
+      "case": "expired conservative native ack window rejects before transport",
+      "ackPublished": false
+    }
+  ],
+  "checkCount": 14,
+  "raw": {
+    "file": "source261-phase-controls-r2-raw.json.gz",
+    "bytes": 384865,
+    "sha256": "e3eb5738eee7f5f977a817a44e7ccb4ca41b75c03e31fa8a96bd7a256d0d2512"
+  },
+  "temporarySyntheticFixturesRemoved": true,
+  "scope": "Historical synthetic sample replay plus actual host evidence/transport files only; no native/backend acceptance",
+  "remaining": "Actual process/container/source/proof/trace provenance controller, complete producer/independent checker/finalizer, freeze/build/native audit remain pending.",
+  "checkedAt": 1794205170.615053
+}
