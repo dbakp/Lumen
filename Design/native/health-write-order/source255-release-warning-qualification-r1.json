@@ -1,0 +1,27 @@
+{
+  "status": "Qualified immutable root warnings[] false negative; actual1orientationwarning retained",
+  "source": "durable-source-r255.json",
+  "hostSource": "durable-source-r256.json",
+  "root": {
+    "file": "source255-root-release-audit-r1.json",
+    "bytes": 5729,
+    "sha256": "ba168a471e13b2cd0390dcbd2251183a5aa70d14c42ea3770ba3a21abad12c7a",
+    "recordedWarnings": []
+  },
+  "actualBuildLog": {
+    "file": "source255-unsigned-release-r1-build.log.gz",
+    "decodedBytes": 400953,
+    "decodedSHA256": "874b3ad901467b107817689d389b9e43ccfd7ea3e2843b4e22ed6acd596eee4a",
+    "lines": 2981
+  },
+  "warnings": [
+    {
+      "line": 2968,
+      "text": "warning: All interface orientations must be supported unless the app requires full screen. (in target 'Lumen' from project 'Lumen')"
+    }
+  ],
+  "errors": [],
+  "cause": "Original root scanner only matched colon-space-warning and missed a line starting warning:. This separate whitespace/start-aware scan preserves original root bytes; no new build executed.",
+  "scope": "Optimized instrumented unsigneddevelopment static compile/audit only. Orientation support remains a release-readiness limitation. Does not change actual215/199/16/21 markers,3appcompilerflags,194FileList,source/currentpair/MachO proof or imply distribution/runtime/noninstrumentedperformance/phone/fullgoal acceptance.",
+  "checkedAt": 1794184799.095072
+}
