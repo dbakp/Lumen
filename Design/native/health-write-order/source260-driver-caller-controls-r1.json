@@ -1,0 +1,3613 @@
+{
+  "status": "PASS twelve actual-main injected retention cases",
+  "driver": "retained-owner-driver-r3.py",
+  "driverBytes": 11777,
+  "driverSHA256": "0462e4ec888f1f8c725b424052e50316a1eaef86d1c54d6976580e0b1eddaf49",
+  "count": 12,
+  "cases": [
+    {
+      "fault": "success",
+      "escaped": {
+        "type": "SystemExit",
+        "code": false
+      },
+      "summaryAttempted": true,
+      "exportAttempted": true,
+      "terminalPersisted": true,
+      "retainedNames": [
+        "10-bad.png",
+        "20-later.png",
+        "manifest.json",
+        "readback.json"
+      ],
+      "state": {
+        "status": "NATIVE_FINISHED acceptance pending",
+        "source": "durable-source-r260.json",
+        "build": "health-target-change-source260-r1-build.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "stem": "RetainedOwnerSource260ChildrenR1",
+        "command": [
+          "xcodebuild",
+          "-project",
+          "Lumen.xcodeproj",
+          "-scheme",
+          "Lumen",
+          "-configuration",
+          "Debug",
+          "-destination",
+          "platform=iOS Simulator,id=5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "-derivedDataPath",
+          "/tmp/LumenBatch37Simulator",
+          "-clonedSourcePackagesDirPath",
+          "/tmp/LumenBatch37Packages",
+          "-disableAutomaticPackageResolution",
+          "-parallel-testing-enabled",
+          "NO",
+          "-collect-test-diagnostics",
+          "never",
+          "-only-testing:LumenUITests/LumenSmokeTests/testHealthRetainedReviewOwnerChildren",
+          "-resultBundlePath",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-krad8jl_/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+          "test-without-building"
+        ],
+        "startedAt": 1794194721.7129862,
+        "physicalDeviceActions": false,
+        "errors": [],
+        "originals": [
+          {
+            "file": "retained-owner-source260-children-r1-original-10-bad.png",
+            "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-krad8jl_/raw/RetainedOwnerSource260ChildrenR1All/10-bad.png",
+            "name": "10-bad.png",
+            "bytes": 20,
+            "sha256": "d685d85be9a9014dbcdd73446470b42697a4e07ab19a691cae50a94a027d0c8b",
+            "individuallyOpened": false
+          },
+          {
+            "file": "retained-owner-source260-children-r1-original-20-later.png",
+            "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-krad8jl_/raw/RetainedOwnerSource260ChildrenR1All/20-later.png",
+            "name": "20-later.png",
+            "bytes": 20,
+            "sha256": "ea69893690c73ae32da9e2f5cde01a7c1c58b1e4d8d7d272485791285cf66b27",
+            "individuallyOpened": false
+          },
+          {
+            "file": "retained-owner-source260-children-r1-original-manifest.json",
+            "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-krad8jl_/raw/RetainedOwnerSource260ChildrenR1All/manifest.json",
+            "name": "manifest.json",
+            "bytes": 304,
+            "sha256": "9c8b23959c759bf18cc86ba0c7e52e1618ffba43423ff6d6f2d41a715b94a4bc",
+            "individuallyOpened": false
+          },
+          {
+            "file": "retained-owner-source260-children-r1-original-readback.json",
+            "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-krad8jl_/raw/RetainedOwnerSource260ChildrenR1All/readback.json",
+            "name": "readback.json",
+            "bytes": 2,
+            "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+            "individuallyOpened": false
+          }
+        ],
+        "originalFailures": [],
+        "prerequisiteExactProof": "source260-build-exact-github.json",
+        "preflight": {
+          "source": "durable-source-r260.json",
+          "app": {
+            "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-krad8jl_/app",
+            "bytes": 12,
+            "sha256": "55fb26d2fe83cd62ce18d8770c08cefa6eb728b55cd2073aad9e41544111c013",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 47035148,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 12,
+              "st_mtime_ns": 1794194721700258506
+            }
+          },
+          "injected": true
+        },
+        "prerequisiteExactProofFact": {
+          "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-krad8jl_/canonical/source260-build-exact-github.json",
+          "bytes": 67,
+          "sha256": "8153f6357ccbaa3bcab5f5b6b0832c969c61f4d0f80f8f65a1f343d953d231a4",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 47035151,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 67,
+            "st_mtime_ns": 1794194721700998128
+          }
+        },
+        "providerBefore": {
+          "bytes": 4992,
+          "sha256": "injected provider"
+        },
+        "nativePID": 424242,
+        "nativeExit": 0,
+        "containerQuery": {
+          "command": [
+            "xcrun",
+            "simctl",
+            "get_app_container",
+            "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+            "com.dbakp.lumen",
+            "group.com.dbakp.lumen"
+          ],
+          "pid": 424243,
+          "exit": 0,
+          "stdout": "L3Zhci9mb2xkZXJzL3M4Lzlqendmc3dzNnpiM3FiZzBmZnl5X2JsbTAwMDBnbi9UL2x1bWVuMjU5LWRyaXZlci1pbmplY3RlZC1rcmFkOGpsXy9ncm91cA==",
+          "stderr": ""
+        },
+        "trace": {
+          "file": "retained-owner-source260-children-r1-trace.json",
+          "bytes": 33,
+          "sha256": "eaeb191d259544eb27f249813dc9b0f3676136e7fa5f19938c0f4552729e3d0b",
+          "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-krad8jl_/group/Lumen-retained-review-owner-events.json"
+        },
+        "preflightAfter": {
+          "source": "durable-source-r260.json",
+          "app": {
+            "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-krad8jl_/app",
+            "bytes": 12,
+            "sha256": "55fb26d2fe83cd62ce18d8770c08cefa6eb728b55cd2073aad9e41544111c013",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 47035148,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 12,
+              "st_mtime_ns": 1794194721700258506
+            }
+          },
+          "injected": true
+        },
+        "providerAfter": {
+          "bytes": 4992,
+          "sha256": "injected provider"
+        },
+        "installedAppQuery": {
+          "command": [
+            "xcrun",
+            "simctl",
+            "get_app_container",
+            "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+            "com.dbakp.lumen",
+            "app"
+          ],
+          "pid": 424243,
+          "exit": 0,
+          "stdout": "L3Zhci9mb2xkZXJzL3M4Lzlqendmc3dzNnpiM3FiZzBmZnl5X2JsbTAwMDBnbi9UL2x1bWVuMjU5LWRyaXZlci1pbmplY3RlZC1rcmFkOGpsXy9JbnN0YWxsZWQuYXBw",
+          "stderr": ""
+        },
+        "installedApp": {
+          "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-krad8jl_/Installed.app/Lumen",
+          "bytes": 12,
+          "sha256": "55fb26d2fe83cd62ce18d8770c08cefa6eb728b55cd2073aad9e41544111c013",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 47035167,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 12,
+            "st_mtime_ns": 1794194721716030120
+          }
+        },
+        "nativeFinalization": {
+          "launched": true,
+          "pid": 424242,
+          "errors": [],
+          "exit": 0
+        },
+        "log": {
+          "file": "retained-owner-source260-children-r1-native.log.gz",
+          "bytes": 43,
+          "sha256": "6c44d1a8739bf6ba8b575d797402408aa9bde281c676441d35dffba87940544d"
+        },
+        "summaryQuery": {
+          "command": [
+            "xcrun",
+            "xcresulttool",
+            "get",
+            "test-results",
+            "summary",
+            "--path",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-krad8jl_/raw/RetainedOwnerSource260ChildrenR1.xcresult"
+          ],
+          "pid": 424244,
+          "exit": 0,
+          "stdout": "eyJwYXNzZWRUZXN0cyI6IDEsICJmYWlsZWRUZXN0cyI6IDAsICJza2lwcGVkVGVzdHMiOiAwfQ==",
+          "stderr": ""
+        },
+        "exportQuery": {
+          "command": [
+            "xcrun",
+            "xcresulttool",
+            "export",
+            "attachments",
+            "--path",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-krad8jl_/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+            "--output-path",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-krad8jl_/raw/RetainedOwnerSource260ChildrenR1All"
+          ],
+          "pid": 424244,
+          "exit": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        "originalManifest": "retained-owner-source260-children-r1-original-manifest.json",
+        "finishedAt": 1794194721.7236931
+      },
+      "primaryStatus": "NATIVE_FINISHED acceptance pending",
+      "emergencyExists": false,
+      "injectedCalls": [
+        [
+          "xcodebuild",
+          "-project",
+          "Lumen.xcodeproj",
+          "-scheme",
+          "Lumen",
+          "-configuration",
+          "Debug",
+          "-destination",
+          "platform=iOS Simulator,id=5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "-derivedDataPath",
+          "/tmp/LumenBatch37Simulator",
+          "-clonedSourcePackagesDirPath",
+          "/tmp/LumenBatch37Packages",
+          "-disableAutomaticPackageResolution",
+          "-parallel-testing-enabled",
+          "NO",
+          "-collect-test-diagnostics",
+          "never",
+          "-only-testing:LumenUITests/LumenSmokeTests/testHealthRetainedReviewOwnerChildren",
+          "-resultBundlePath",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-krad8jl_/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+          "test-without-building"
+        ],
+        [
+          "caffeinate",
+          "-i",
+          "-w",
+          "424242"
+        ],
+        [
+          "xcrun",
+          "simctl",
+          "get_app_container",
+          "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "com.dbakp.lumen",
+          "group.com.dbakp.lumen"
+        ],
+        [
+          "xcrun",
+          "simctl",
+          "get_app_container",
+          "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "com.dbakp.lumen",
+          "app"
+        ],
+        [
+          "xcrun",
+          "xcresulttool",
+          "get",
+          "test-results",
+          "summary",
+          "--path",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-krad8jl_/raw/RetainedOwnerSource260ChildrenR1.xcresult"
+        ],
+        [
+          "xcrun",
+          "xcresulttool",
+          "export",
+          "attachments",
+          "--path",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-krad8jl_/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+          "--output-path",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-krad8jl_/raw/RetainedOwnerSource260ChildrenR1All"
+        ]
+      ],
+      "syntheticNativeCompleted": true,
+      "correctRetention": true
+    },
+    {
+      "fault": "summary-query-raise",
+      "escaped": {
+        "type": "SystemExit",
+        "code": true
+      },
+      "summaryAttempted": true,
+      "exportAttempted": true,
+      "terminalPersisted": true,
+      "retainedNames": [
+        "10-bad.png",
+        "20-later.png",
+        "manifest.json",
+        "readback.json"
+      ],
+      "state": {
+        "status": "FAILED retention/native; no acceptance",
+        "source": "durable-source-r260.json",
+        "build": "health-target-change-source260-r1-build.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "stem": "RetainedOwnerSource260ChildrenR1",
+        "command": [
+          "xcodebuild",
+          "-project",
+          "Lumen.xcodeproj",
+          "-scheme",
+          "Lumen",
+          "-configuration",
+          "Debug",
+          "-destination",
+          "platform=iOS Simulator,id=5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "-derivedDataPath",
+          "/tmp/LumenBatch37Simulator",
+          "-clonedSourcePackagesDirPath",
+          "/tmp/LumenBatch37Packages",
+          "-disableAutomaticPackageResolution",
+          "-parallel-testing-enabled",
+          "NO",
+          "-collect-test-diagnostics",
+          "never",
+          "-only-testing:LumenUITests/LumenSmokeTests/testHealthRetainedReviewOwnerChildren",
+          "-resultBundlePath",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-l1y4sftd/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+          "test-without-building"
+        ],
+        "startedAt": 1794194721.734139,
+        "physicalDeviceActions": false,
+        "errors": [
+          {
+            "stage": "summaryQuery",
+            "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/retained-owner-driver-r3.py\", line 113, in acquisition\n    acquired = query(argv)\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/source260-driver-caller-controls-r1-executed.py\", line 92, in query\n    if fault == 'summary-query-raise': raise OSError('injected summary launch/communicate error')\nOSError: injected summary launch/communicate error\n"
+          }
+        ],
+        "originals": [
+          {
+            "file": "retained-owner-source260-children-r1-original-10-bad.png",
+            "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-l1y4sftd/raw/RetainedOwnerSource260ChildrenR1All/10-bad.png",
+            "name": "10-bad.png",
+            "bytes": 20,
+            "sha256": "d685d85be9a9014dbcdd73446470b42697a4e07ab19a691cae50a94a027d0c8b",
+            "individuallyOpened": false
+          },
+          {
+            "file": "retained-owner-source260-children-r1-original-20-later.png",
+            "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-l1y4sftd/raw/RetainedOwnerSource260ChildrenR1All/20-later.png",
+            "name": "20-later.png",
+            "bytes": 20,
+            "sha256": "ea69893690c73ae32da9e2f5cde01a7c1c58b1e4d8d7d272485791285cf66b27",
+            "individuallyOpened": false
+          },
+          {
+            "file": "retained-owner-source260-children-r1-original-manifest.json",
+            "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-l1y4sftd/raw/RetainedOwnerSource260ChildrenR1All/manifest.json",
+            "name": "manifest.json",
+            "bytes": 304,
+            "sha256": "9c8b23959c759bf18cc86ba0c7e52e1618ffba43423ff6d6f2d41a715b94a4bc",
+            "individuallyOpened": false
+          },
+          {
+            "file": "retained-owner-source260-children-r1-original-readback.json",
+            "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-l1y4sftd/raw/RetainedOwnerSource260ChildrenR1All/readback.json",
+            "name": "readback.json",
+            "bytes": 2,
+            "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+            "individuallyOpened": false
+          }
+        ],
+        "originalFailures": [],
+        "prerequisiteExactProof": "source260-build-exact-github.json",
+        "preflight": {
+          "source": "durable-source-r260.json",
+          "app": {
+            "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-l1y4sftd/app",
+            "bytes": 12,
+            "sha256": "55fb26d2fe83cd62ce18d8770c08cefa6eb728b55cd2073aad9e41544111c013",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 47035192,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 12,
+              "st_mtime_ns": 1794194721728631495
+            }
+          },
+          "injected": true
+        },
+        "prerequisiteExactProofFact": {
+          "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-l1y4sftd/canonical/source260-build-exact-github.json",
+          "bytes": 67,
+          "sha256": "8153f6357ccbaa3bcab5f5b6b0832c969c61f4d0f80f8f65a1f343d953d231a4",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 47035195,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 67,
+            "st_mtime_ns": 1794194721729192077
+          }
+        },
+        "providerBefore": {
+          "bytes": 4992,
+          "sha256": "injected provider"
+        },
+        "nativePID": 424242,
+        "nativeExit": 0,
+        "containerQuery": {
+          "command": [
+            "xcrun",
+            "simctl",
+            "get_app_container",
+            "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+            "com.dbakp.lumen",
+            "group.com.dbakp.lumen"
+          ],
+          "pid": 424243,
+          "exit": 0,
+          "stdout": "L3Zhci9mb2xkZXJzL3M4Lzlqendmc3dzNnpiM3FiZzBmZnl5X2JsbTAwMDBnbi9UL2x1bWVuMjU5LWRyaXZlci1pbmplY3RlZC1sMXk0c2Z0ZC9ncm91cA==",
+          "stderr": ""
+        },
+        "trace": {
+          "file": "retained-owner-source260-children-r1-trace.json",
+          "bytes": 33,
+          "sha256": "eaeb191d259544eb27f249813dc9b0f3676136e7fa5f19938c0f4552729e3d0b",
+          "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-l1y4sftd/group/Lumen-retained-review-owner-events.json"
+        },
+        "preflightAfter": {
+          "source": "durable-source-r260.json",
+          "app": {
+            "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-l1y4sftd/app",
+            "bytes": 12,
+            "sha256": "55fb26d2fe83cd62ce18d8770c08cefa6eb728b55cd2073aad9e41544111c013",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 47035192,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 12,
+              "st_mtime_ns": 1794194721728631495
+            }
+          },
+          "injected": true
+        },
+        "providerAfter": {
+          "bytes": 4992,
+          "sha256": "injected provider"
+        },
+        "installedAppQuery": {
+          "command": [
+            "xcrun",
+            "simctl",
+            "get_app_container",
+            "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+            "com.dbakp.lumen",
+            "app"
+          ],
+          "pid": 424243,
+          "exit": 0,
+          "stdout": "L3Zhci9mb2xkZXJzL3M4Lzlqendmc3dzNnpiM3FiZzBmZnl5X2JsbTAwMDBnbi9UL2x1bWVuMjU5LWRyaXZlci1pbmplY3RlZC1sMXk0c2Z0ZC9JbnN0YWxsZWQuYXBw",
+          "stderr": ""
+        },
+        "installedApp": {
+          "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-l1y4sftd/Installed.app/Lumen",
+          "bytes": 12,
+          "sha256": "55fb26d2fe83cd62ce18d8770c08cefa6eb728b55cd2073aad9e41544111c013",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 47035210,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 12,
+            "st_mtime_ns": 1794194721738333838
+          }
+        },
+        "nativeFinalization": {
+          "launched": true,
+          "pid": 424242,
+          "errors": [],
+          "exit": 0
+        },
+        "log": {
+          "file": "retained-owner-source260-children-r1-native.log.gz",
+          "bytes": 43,
+          "sha256": "6c44d1a8739bf6ba8b575d797402408aa9bde281c676441d35dffba87940544d"
+        },
+        "summaryQuery": {
+          "command": [
+            "xcrun",
+            "xcresulttool",
+            "get",
+            "test-results",
+            "summary",
+            "--path",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-l1y4sftd/raw/RetainedOwnerSource260ChildrenR1.xcresult"
+          ],
+          "exit": null,
+          "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/retained-owner-driver-r3.py\", line 113, in acquisition\n    acquired = query(argv)\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/source260-driver-caller-controls-r1-executed.py\", line 92, in query\n    if fault == 'summary-query-raise': raise OSError('injected summary launch/communicate error')\nOSError: injected summary launch/communicate error\n"
+        },
+        "exportQuery": {
+          "command": [
+            "xcrun",
+            "xcresulttool",
+            "export",
+            "attachments",
+            "--path",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-l1y4sftd/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+            "--output-path",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-l1y4sftd/raw/RetainedOwnerSource260ChildrenR1All"
+          ],
+          "pid": 424244,
+          "exit": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        "originalManifest": "retained-owner-source260-children-r1-original-manifest.json",
+        "finishedAt": 1794194721.746804
+      },
+      "primaryStatus": "FAILED retention/native; no acceptance",
+      "emergencyExists": false,
+      "injectedCalls": [
+        [
+          "xcodebuild",
+          "-project",
+          "Lumen.xcodeproj",
+          "-scheme",
+          "Lumen",
+          "-configuration",
+          "Debug",
+          "-destination",
+          "platform=iOS Simulator,id=5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "-derivedDataPath",
+          "/tmp/LumenBatch37Simulator",
+          "-clonedSourcePackagesDirPath",
+          "/tmp/LumenBatch37Packages",
+          "-disableAutomaticPackageResolution",
+          "-parallel-testing-enabled",
+          "NO",
+          "-collect-test-diagnostics",
+          "never",
+          "-only-testing:LumenUITests/LumenSmokeTests/testHealthRetainedReviewOwnerChildren",
+          "-resultBundlePath",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-l1y4sftd/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+          "test-without-building"
+        ],
+        [
+          "caffeinate",
+          "-i",
+          "-w",
+          "424242"
+        ],
+        [
+          "xcrun",
+          "simctl",
+          "get_app_container",
+          "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "com.dbakp.lumen",
+          "group.com.dbakp.lumen"
+        ],
+        [
+          "xcrun",
+          "simctl",
+          "get_app_container",
+          "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "com.dbakp.lumen",
+          "app"
+        ],
+        [
+          "xcrun",
+          "xcresulttool",
+          "get",
+          "test-results",
+          "summary",
+          "--path",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-l1y4sftd/raw/RetainedOwnerSource260ChildrenR1.xcresult"
+        ],
+        [
+          "xcrun",
+          "xcresulttool",
+          "export",
+          "attachments",
+          "--path",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-l1y4sftd/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+          "--output-path",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-l1y4sftd/raw/RetainedOwnerSource260ChildrenR1All"
+        ]
+      ],
+      "syntheticNativeCompleted": true,
+      "correctRetention": true
+    },
+    {
+      "fault": "export-query-raise",
+      "escaped": {
+        "type": "SystemExit",
+        "code": true
+      },
+      "summaryAttempted": true,
+      "exportAttempted": true,
+      "terminalPersisted": true,
+      "retainedNames": [],
+      "state": {
+        "status": "FAILED retention/native; no acceptance",
+        "source": "durable-source-r260.json",
+        "build": "health-target-change-source260-r1-build.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "stem": "RetainedOwnerSource260ChildrenR1",
+        "command": [
+          "xcodebuild",
+          "-project",
+          "Lumen.xcodeproj",
+          "-scheme",
+          "Lumen",
+          "-configuration",
+          "Debug",
+          "-destination",
+          "platform=iOS Simulator,id=5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "-derivedDataPath",
+          "/tmp/LumenBatch37Simulator",
+          "-clonedSourcePackagesDirPath",
+          "/tmp/LumenBatch37Packages",
+          "-disableAutomaticPackageResolution",
+          "-parallel-testing-enabled",
+          "NO",
+          "-collect-test-diagnostics",
+          "never",
+          "-only-testing:LumenUITests/LumenSmokeTests/testHealthRetainedReviewOwnerChildren",
+          "-resultBundlePath",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-dod_a6l2/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+          "test-without-building"
+        ],
+        "startedAt": 1794194721.756286,
+        "physicalDeviceActions": false,
+        "errors": [
+          {
+            "stage": "exportQuery",
+            "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/retained-owner-driver-r3.py\", line 113, in acquisition\n    acquired = query(argv)\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/source260-driver-caller-controls-r1-executed.py\", line 96, in query\n    if fault == 'export-query-raise': raise OSError('injected export launch/communicate error')\nOSError: injected export launch/communicate error\n"
+          },
+          {
+            "stage": "manifest-interpretation",
+            "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/retained-owner-driver-r3.py\", line 173, in main\n    parsed = json.loads(manifest.read_bytes()); assert isinstance(parsed, list)\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/source260-driver-caller-controls-r1-executed.py\", line 46, in read_bytes\n    return super().read_bytes()\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py\", line 1249, in read_bytes\n    with self.open(mode='rb') as f:\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py\", line 1242, in open\n    return io.open(self, mode, buffering, encoding, errors, newline,\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py\", line 1110, in _opener\n    return self._accessor.open(self, flags, mode)\nFileNotFoundError: [Errno 2] No such file or directory: '/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-dod_a6l2/raw/RetainedOwnerSource260ChildrenR1All/manifest.json'\n"
+          }
+        ],
+        "originals": [],
+        "originalFailures": [],
+        "prerequisiteExactProof": "source260-build-exact-github.json",
+        "preflight": {
+          "source": "durable-source-r260.json",
+          "app": {
+            "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-dod_a6l2/app",
+            "bytes": 12,
+            "sha256": "55fb26d2fe83cd62ce18d8770c08cefa6eb728b55cd2073aad9e41544111c013",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 47035235,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 12,
+              "st_mtime_ns": 1794194721752674708
+            }
+          },
+          "injected": true
+        },
+        "prerequisiteExactProofFact": {
+          "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-dod_a6l2/canonical/source260-build-exact-github.json",
+          "bytes": 67,
+          "sha256": "8153f6357ccbaa3bcab5f5b6b0832c969c61f4d0f80f8f65a1f343d953d231a4",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 47035238,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 67,
+            "st_mtime_ns": 1794194721753335039
+          }
+        },
+        "providerBefore": {
+          "bytes": 4992,
+          "sha256": "injected provider"
+        },
+        "nativePID": 424242,
+        "nativeExit": 0,
+        "containerQuery": {
+          "command": [
+            "xcrun",
+            "simctl",
+            "get_app_container",
+            "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+            "com.dbakp.lumen",
+            "group.com.dbakp.lumen"
+          ],
+          "pid": 424243,
+          "exit": 0,
+          "stdout": "L3Zhci9mb2xkZXJzL3M4Lzlqendmc3dzNnpiM3FiZzBmZnl5X2JsbTAwMDBnbi9UL2x1bWVuMjU5LWRyaXZlci1pbmplY3RlZC1kb2RfYTZsMi9ncm91cA==",
+          "stderr": ""
+        },
+        "trace": {
+          "file": "retained-owner-source260-children-r1-trace.json",
+          "bytes": 33,
+          "sha256": "eaeb191d259544eb27f249813dc9b0f3676136e7fa5f19938c0f4552729e3d0b",
+          "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-dod_a6l2/group/Lumen-retained-review-owner-events.json"
+        },
+        "preflightAfter": {
+          "source": "durable-source-r260.json",
+          "app": {
+            "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-dod_a6l2/app",
+            "bytes": 12,
+            "sha256": "55fb26d2fe83cd62ce18d8770c08cefa6eb728b55cd2073aad9e41544111c013",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 47035235,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 12,
+              "st_mtime_ns": 1794194721752674708
+            }
+          },
+          "injected": true
+        },
+        "providerAfter": {
+          "bytes": 4992,
+          "sha256": "injected provider"
+        },
+        "installedAppQuery": {
+          "command": [
+            "xcrun",
+            "simctl",
+            "get_app_container",
+            "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+            "com.dbakp.lumen",
+            "app"
+          ],
+          "pid": 424243,
+          "exit": 0,
+          "stdout": "L3Zhci9mb2xkZXJzL3M4Lzlqendmc3dzNnpiM3FiZzBmZnl5X2JsbTAwMDBnbi9UL2x1bWVuMjU5LWRyaXZlci1pbmplY3RlZC1kb2RfYTZsMi9JbnN0YWxsZWQuYXBw",
+          "stderr": ""
+        },
+        "installedApp": {
+          "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-dod_a6l2/Installed.app/Lumen",
+          "bytes": 12,
+          "sha256": "55fb26d2fe83cd62ce18d8770c08cefa6eb728b55cd2073aad9e41544111c013",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 47035253,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 12,
+            "st_mtime_ns": 1794194721759131895
+          }
+        },
+        "nativeFinalization": {
+          "launched": true,
+          "pid": 424242,
+          "errors": [],
+          "exit": 0
+        },
+        "log": {
+          "file": "retained-owner-source260-children-r1-native.log.gz",
+          "bytes": 43,
+          "sha256": "6c44d1a8739bf6ba8b575d797402408aa9bde281c676441d35dffba87940544d"
+        },
+        "summaryQuery": {
+          "command": [
+            "xcrun",
+            "xcresulttool",
+            "get",
+            "test-results",
+            "summary",
+            "--path",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-dod_a6l2/raw/RetainedOwnerSource260ChildrenR1.xcresult"
+          ],
+          "pid": 424244,
+          "exit": 0,
+          "stdout": "eyJwYXNzZWRUZXN0cyI6IDEsICJmYWlsZWRUZXN0cyI6IDAsICJza2lwcGVkVGVzdHMiOiAwfQ==",
+          "stderr": ""
+        },
+        "exportQuery": {
+          "command": [
+            "xcrun",
+            "xcresulttool",
+            "export",
+            "attachments",
+            "--path",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-dod_a6l2/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+            "--output-path",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-dod_a6l2/raw/RetainedOwnerSource260ChildrenR1All"
+          ],
+          "exit": null,
+          "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/retained-owner-driver-r3.py\", line 113, in acquisition\n    acquired = query(argv)\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/source260-driver-caller-controls-r1-executed.py\", line 96, in query\n    if fault == 'export-query-raise': raise OSError('injected export launch/communicate error')\nOSError: injected export launch/communicate error\n"
+        },
+        "finishedAt": 1794194721.764256
+      },
+      "primaryStatus": "FAILED retention/native; no acceptance",
+      "emergencyExists": false,
+      "injectedCalls": [
+        [
+          "xcodebuild",
+          "-project",
+          "Lumen.xcodeproj",
+          "-scheme",
+          "Lumen",
+          "-configuration",
+          "Debug",
+          "-destination",
+          "platform=iOS Simulator,id=5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "-derivedDataPath",
+          "/tmp/LumenBatch37Simulator",
+          "-clonedSourcePackagesDirPath",
+          "/tmp/LumenBatch37Packages",
+          "-disableAutomaticPackageResolution",
+          "-parallel-testing-enabled",
+          "NO",
+          "-collect-test-diagnostics",
+          "never",
+          "-only-testing:LumenUITests/LumenSmokeTests/testHealthRetainedReviewOwnerChildren",
+          "-resultBundlePath",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-dod_a6l2/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+          "test-without-building"
+        ],
+        [
+          "caffeinate",
+          "-i",
+          "-w",
+          "424242"
+        ],
+        [
+          "xcrun",
+          "simctl",
+          "get_app_container",
+          "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "com.dbakp.lumen",
+          "group.com.dbakp.lumen"
+        ],
+        [
+          "xcrun",
+          "simctl",
+          "get_app_container",
+          "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "com.dbakp.lumen",
+          "app"
+        ],
+        [
+          "xcrun",
+          "xcresulttool",
+          "get",
+          "test-results",
+          "summary",
+          "--path",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-dod_a6l2/raw/RetainedOwnerSource260ChildrenR1.xcresult"
+        ],
+        [
+          "xcrun",
+          "xcresulttool",
+          "export",
+          "attachments",
+          "--path",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-dod_a6l2/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+          "--output-path",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-dod_a6l2/raw/RetainedOwnerSource260ChildrenR1All"
+        ]
+      ],
+      "syntheticNativeCompleted": true,
+      "correctRetention": true
+    },
+    {
+      "fault": "peer-copy-raise",
+      "escaped": {
+        "type": "SystemExit",
+        "code": true
+      },
+      "summaryAttempted": true,
+      "exportAttempted": true,
+      "terminalPersisted": true,
+      "retainedNames": [
+        "20-later.png",
+        "manifest.json",
+        "readback.json"
+      ],
+      "state": {
+        "status": "FAILED retention/native; no acceptance",
+        "source": "durable-source-r260.json",
+        "build": "health-target-change-source260-r1-build.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "stem": "RetainedOwnerSource260ChildrenR1",
+        "command": [
+          "xcodebuild",
+          "-project",
+          "Lumen.xcodeproj",
+          "-scheme",
+          "Lumen",
+          "-configuration",
+          "Debug",
+          "-destination",
+          "platform=iOS Simulator,id=5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "-derivedDataPath",
+          "/tmp/LumenBatch37Simulator",
+          "-clonedSourcePackagesDirPath",
+          "/tmp/LumenBatch37Packages",
+          "-disableAutomaticPackageResolution",
+          "-parallel-testing-enabled",
+          "NO",
+          "-collect-test-diagnostics",
+          "never",
+          "-only-testing:LumenUITests/LumenSmokeTests/testHealthRetainedReviewOwnerChildren",
+          "-resultBundlePath",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-i619zikq/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+          "test-without-building"
+        ],
+        "startedAt": 1794194721.772873,
+        "physicalDeviceActions": false,
+        "errors": [
+          {
+            "stage": "individual-original",
+            "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/retained-owner-driver-r3.py\", line 188, in main\n    else: target.write_bytes(raw)\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/source260-driver-caller-controls-r1-executed.py\", line 42, in write_bytes\n    raise OSError('injected first peer copy failure')\nOSError: injected first peer copy failure\n"
+          }
+        ],
+        "originals": [
+          {
+            "file": "retained-owner-source260-children-r1-original-20-later.png",
+            "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-i619zikq/raw/RetainedOwnerSource260ChildrenR1All/20-later.png",
+            "name": "20-later.png",
+            "bytes": 20,
+            "sha256": "ea69893690c73ae32da9e2f5cde01a7c1c58b1e4d8d7d272485791285cf66b27",
+            "individuallyOpened": false
+          },
+          {
+            "file": "retained-owner-source260-children-r1-original-manifest.json",
+            "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-i619zikq/raw/RetainedOwnerSource260ChildrenR1All/manifest.json",
+            "name": "manifest.json",
+            "bytes": 304,
+            "sha256": "9c8b23959c759bf18cc86ba0c7e52e1618ffba43423ff6d6f2d41a715b94a4bc",
+            "individuallyOpened": false
+          },
+          {
+            "file": "retained-owner-source260-children-r1-original-readback.json",
+            "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-i619zikq/raw/RetainedOwnerSource260ChildrenR1All/readback.json",
+            "name": "readback.json",
+            "bytes": 2,
+            "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+            "individuallyOpened": false
+          }
+        ],
+        "originalFailures": [
+          {
+            "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-i619zikq/raw/RetainedOwnerSource260ChildrenR1All/10-bad.png",
+            "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/retained-owner-driver-r3.py\", line 188, in main\n    else: target.write_bytes(raw)\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/source260-driver-caller-controls-r1-executed.py\", line 42, in write_bytes\n    raise OSError('injected first peer copy failure')\nOSError: injected first peer copy failure\n"
+          }
+        ],
+        "prerequisiteExactProof": "source260-build-exact-github.json",
+        "preflight": {
+          "source": "durable-source-r260.json",
+          "app": {
+            "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-i619zikq/app",
+            "bytes": 12,
+            "sha256": "55fb26d2fe83cd62ce18d8770c08cefa6eb728b55cd2073aad9e41544111c013",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 47035265,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 12,
+              "st_mtime_ns": 1794194721767972740
+            }
+          },
+          "injected": true
+        },
+        "prerequisiteExactProofFact": {
+          "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-i619zikq/canonical/source260-build-exact-github.json",
+          "bytes": 67,
+          "sha256": "8153f6357ccbaa3bcab5f5b6b0832c969c61f4d0f80f8f65a1f343d953d231a4",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 47035268,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 67,
+            "st_mtime_ns": 1794194721769324944
+          }
+        },
+        "providerBefore": {
+          "bytes": 4992,
+          "sha256": "injected provider"
+        },
+        "nativePID": 424242,
+        "nativeExit": 0,
+        "containerQuery": {
+          "command": [
+            "xcrun",
+            "simctl",
+            "get_app_container",
+            "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+            "com.dbakp.lumen",
+            "group.com.dbakp.lumen"
+          ],
+          "pid": 424243,
+          "exit": 0,
+          "stdout": "L3Zhci9mb2xkZXJzL3M4Lzlqendmc3dzNnpiM3FiZzBmZnl5X2JsbTAwMDBnbi9UL2x1bWVuMjU5LWRyaXZlci1pbmplY3RlZC1pNjE5emlrcS9ncm91cA==",
+          "stderr": ""
+        },
+        "trace": {
+          "file": "retained-owner-source260-children-r1-trace.json",
+          "bytes": 33,
+          "sha256": "eaeb191d259544eb27f249813dc9b0f3676136e7fa5f19938c0f4552729e3d0b",
+          "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-i619zikq/group/Lumen-retained-review-owner-events.json"
+        },
+        "preflightAfter": {
+          "source": "durable-source-r260.json",
+          "app": {
+            "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-i619zikq/app",
+            "bytes": 12,
+            "sha256": "55fb26d2fe83cd62ce18d8770c08cefa6eb728b55cd2073aad9e41544111c013",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 47035265,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 12,
+              "st_mtime_ns": 1794194721767972740
+            }
+          },
+          "injected": true
+        },
+        "providerAfter": {
+          "bytes": 4992,
+          "sha256": "injected provider"
+        },
+        "installedAppQuery": {
+          "command": [
+            "xcrun",
+            "simctl",
+            "get_app_container",
+            "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+            "com.dbakp.lumen",
+            "app"
+          ],
+          "pid": 424243,
+          "exit": 0,
+          "stdout": "L3Zhci9mb2xkZXJzL3M4Lzlqendmc3dzNnpiM3FiZzBmZnl5X2JsbTAwMDBnbi9UL2x1bWVuMjU5LWRyaXZlci1pbmplY3RlZC1pNjE5emlrcS9JbnN0YWxsZWQuYXBw",
+          "stderr": ""
+        },
+        "installedApp": {
+          "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-i619zikq/Installed.app/Lumen",
+          "bytes": 12,
+          "sha256": "55fb26d2fe83cd62ce18d8770c08cefa6eb728b55cd2073aad9e41544111c013",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 47035283,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 12,
+            "st_mtime_ns": 1794194721778877246
+          }
+        },
+        "nativeFinalization": {
+          "launched": true,
+          "pid": 424242,
+          "errors": [],
+          "exit": 0
+        },
+        "log": {
+          "file": "retained-owner-source260-children-r1-native.log.gz",
+          "bytes": 43,
+          "sha256": "6c44d1a8739bf6ba8b575d797402408aa9bde281c676441d35dffba87940544d"
+        },
+        "summaryQuery": {
+          "command": [
+            "xcrun",
+            "xcresulttool",
+            "get",
+            "test-results",
+            "summary",
+            "--path",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-i619zikq/raw/RetainedOwnerSource260ChildrenR1.xcresult"
+          ],
+          "pid": 424244,
+          "exit": 0,
+          "stdout": "eyJwYXNzZWRUZXN0cyI6IDEsICJmYWlsZWRUZXN0cyI6IDAsICJza2lwcGVkVGVzdHMiOiAwfQ==",
+          "stderr": ""
+        },
+        "exportQuery": {
+          "command": [
+            "xcrun",
+            "xcresulttool",
+            "export",
+            "attachments",
+            "--path",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-i619zikq/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+            "--output-path",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-i619zikq/raw/RetainedOwnerSource260ChildrenR1All"
+          ],
+          "pid": 424244,
+          "exit": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        "originalManifest": "retained-owner-source260-children-r1-original-manifest.json",
+        "finishedAt": 1794194721.78775
+      },
+      "primaryStatus": "FAILED retention/native; no acceptance",
+      "emergencyExists": false,
+      "injectedCalls": [
+        [
+          "xcodebuild",
+          "-project",
+          "Lumen.xcodeproj",
+          "-scheme",
+          "Lumen",
+          "-configuration",
+          "Debug",
+          "-destination",
+          "platform=iOS Simulator,id=5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "-derivedDataPath",
+          "/tmp/LumenBatch37Simulator",
+          "-clonedSourcePackagesDirPath",
+          "/tmp/LumenBatch37Packages",
+          "-disableAutomaticPackageResolution",
+          "-parallel-testing-enabled",
+          "NO",
+          "-collect-test-diagnostics",
+          "never",
+          "-only-testing:LumenUITests/LumenSmokeTests/testHealthRetainedReviewOwnerChildren",
+          "-resultBundlePath",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-i619zikq/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+          "test-without-building"
+        ],
+        [
+          "caffeinate",
+          "-i",
+          "-w",
+          "424242"
+        ],
+        [
+          "xcrun",
+          "simctl",
+          "get_app_container",
+          "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "com.dbakp.lumen",
+          "group.com.dbakp.lumen"
+        ],
+        [
+          "xcrun",
+          "simctl",
+          "get_app_container",
+          "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "com.dbakp.lumen",
+          "app"
+        ],
+        [
+          "xcrun",
+          "xcresulttool",
+          "get",
+          "test-results",
+          "summary",
+          "--path",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-i619zikq/raw/RetainedOwnerSource260ChildrenR1.xcresult"
+        ],
+        [
+          "xcrun",
+          "xcresulttool",
+          "export",
+          "attachments",
+          "--path",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-i619zikq/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+          "--output-path",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-i619zikq/raw/RetainedOwnerSource260ChildrenR1All"
+        ]
+      ],
+      "syntheticNativeCompleted": true,
+      "correctRetention": true
+    },
+    {
+      "fault": "peer-read-raise",
+      "escaped": {
+        "type": "SystemExit",
+        "code": true
+      },
+      "summaryAttempted": true,
+      "exportAttempted": true,
+      "terminalPersisted": true,
+      "retainedNames": [
+        "20-later.png",
+        "manifest.json",
+        "readback.json"
+      ],
+      "state": {
+        "status": "FAILED retention/native; no acceptance",
+        "source": "durable-source-r260.json",
+        "build": "health-target-change-source260-r1-build.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "stem": "RetainedOwnerSource260ChildrenR1",
+        "command": [
+          "xcodebuild",
+          "-project",
+          "Lumen.xcodeproj",
+          "-scheme",
+          "Lumen",
+          "-configuration",
+          "Debug",
+          "-destination",
+          "platform=iOS Simulator,id=5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "-derivedDataPath",
+          "/tmp/LumenBatch37Simulator",
+          "-clonedSourcePackagesDirPath",
+          "/tmp/LumenBatch37Packages",
+          "-disableAutomaticPackageResolution",
+          "-parallel-testing-enabled",
+          "NO",
+          "-collect-test-diagnostics",
+          "never",
+          "-only-testing:LumenUITests/LumenSmokeTests/testHealthRetainedReviewOwnerChildren",
+          "-resultBundlePath",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-rh7le020/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+          "test-without-building"
+        ],
+        "startedAt": 1794194721.796621,
+        "physicalDeviceActions": false,
+        "errors": [
+          {
+            "stage": "individual-original",
+            "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/retained-owner-driver-r3.py\", line 185, in main\n    raw = file.read_bytes(); target = B / (prefix + '-original-' + file.name)\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/source260-driver-caller-controls-r1-executed.py\", line 45, in read_bytes\n    if fault == 'peer-read-raise' and self.name == '10-bad.png': raise OSError('injected first peer read failure')\nOSError: injected first peer read failure\n"
+          }
+        ],
+        "originals": [
+          {
+            "file": "retained-owner-source260-children-r1-original-20-later.png",
+            "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-rh7le020/raw/RetainedOwnerSource260ChildrenR1All/20-later.png",
+            "name": "20-later.png",
+            "bytes": 20,
+            "sha256": "ea69893690c73ae32da9e2f5cde01a7c1c58b1e4d8d7d272485791285cf66b27",
+            "individuallyOpened": false
+          },
+          {
+            "file": "retained-owner-source260-children-r1-original-manifest.json",
+            "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-rh7le020/raw/RetainedOwnerSource260ChildrenR1All/manifest.json",
+            "name": "manifest.json",
+            "bytes": 304,
+            "sha256": "9c8b23959c759bf18cc86ba0c7e52e1618ffba43423ff6d6f2d41a715b94a4bc",
+            "individuallyOpened": false
+          },
+          {
+            "file": "retained-owner-source260-children-r1-original-readback.json",
+            "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-rh7le020/raw/RetainedOwnerSource260ChildrenR1All/readback.json",
+            "name": "readback.json",
+            "bytes": 2,
+            "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+            "individuallyOpened": false
+          }
+        ],
+        "originalFailures": [
+          {
+            "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-rh7le020/raw/RetainedOwnerSource260ChildrenR1All/10-bad.png",
+            "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/retained-owner-driver-r3.py\", line 185, in main\n    raw = file.read_bytes(); target = B / (prefix + '-original-' + file.name)\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/source260-driver-caller-controls-r1-executed.py\", line 45, in read_bytes\n    if fault == 'peer-read-raise' and self.name == '10-bad.png': raise OSError('injected first peer read failure')\nOSError: injected first peer read failure\n"
+          }
+        ],
+        "prerequisiteExactProof": "source260-build-exact-github.json",
+        "preflight": {
+          "source": "durable-source-r260.json",
+          "app": {
+            "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-rh7le020/app",
+            "bytes": 12,
+            "sha256": "55fb26d2fe83cd62ce18d8770c08cefa6eb728b55cd2073aad9e41544111c013",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 47035307,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 12,
+              "st_mtime_ns": 1794194721791525871
+            }
+          },
+          "injected": true
+        },
+        "prerequisiteExactProofFact": {
+          "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-rh7le020/canonical/source260-build-exact-github.json",
+          "bytes": 67,
+          "sha256": "8153f6357ccbaa3bcab5f5b6b0832c969c61f4d0f80f8f65a1f343d953d231a4",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 47035310,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 67,
+            "st_mtime_ns": 1794194721792346952
+          }
+        },
+        "providerBefore": {
+          "bytes": 4992,
+          "sha256": "injected provider"
+        },
+        "nativePID": 424242,
+        "nativeExit": 0,
+        "containerQuery": {
+          "command": [
+            "xcrun",
+            "simctl",
+            "get_app_container",
+            "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+            "com.dbakp.lumen",
+            "group.com.dbakp.lumen"
+          ],
+          "pid": 424243,
+          "exit": 0,
+          "stdout": "L3Zhci9mb2xkZXJzL3M4Lzlqendmc3dzNnpiM3FiZzBmZnl5X2JsbTAwMDBnbi9UL2x1bWVuMjU5LWRyaXZlci1pbmplY3RlZC1yaDdsZTAyMC9ncm91cA==",
+          "stderr": ""
+        },
+        "trace": {
+          "file": "retained-owner-source260-children-r1-trace.json",
+          "bytes": 33,
+          "sha256": "eaeb191d259544eb27f249813dc9b0f3676136e7fa5f19938c0f4552729e3d0b",
+          "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-rh7le020/group/Lumen-retained-review-owner-events.json"
+        },
+        "preflightAfter": {
+          "source": "durable-source-r260.json",
+          "app": {
+            "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-rh7le020/app",
+            "bytes": 12,
+            "sha256": "55fb26d2fe83cd62ce18d8770c08cefa6eb728b55cd2073aad9e41544111c013",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 47035307,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 12,
+              "st_mtime_ns": 1794194721791525871
+            }
+          },
+          "injected": true
+        },
+        "providerAfter": {
+          "bytes": 4992,
+          "sha256": "injected provider"
+        },
+        "installedAppQuery": {
+          "command": [
+            "xcrun",
+            "simctl",
+            "get_app_container",
+            "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+            "com.dbakp.lumen",
+            "app"
+          ],
+          "pid": 424243,
+          "exit": 0,
+          "stdout": "L3Zhci9mb2xkZXJzL3M4Lzlqendmc3dzNnpiM3FiZzBmZnl5X2JsbTAwMDBnbi9UL2x1bWVuMjU5LWRyaXZlci1pbmplY3RlZC1yaDdsZTAyMC9JbnN0YWxsZWQuYXBw",
+          "stderr": ""
+        },
+        "installedApp": {
+          "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-rh7le020/Installed.app/Lumen",
+          "bytes": 12,
+          "sha256": "55fb26d2fe83cd62ce18d8770c08cefa6eb728b55cd2073aad9e41544111c013",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 47035325,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 12,
+            "st_mtime_ns": 1794194721799738344
+          }
+        },
+        "nativeFinalization": {
+          "launched": true,
+          "pid": 424242,
+          "errors": [],
+          "exit": 0
+        },
+        "log": {
+          "file": "retained-owner-source260-children-r1-native.log.gz",
+          "bytes": 43,
+          "sha256": "6c44d1a8739bf6ba8b575d797402408aa9bde281c676441d35dffba87940544d"
+        },
+        "summaryQuery": {
+          "command": [
+            "xcrun",
+            "xcresulttool",
+            "get",
+            "test-results",
+            "summary",
+            "--path",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-rh7le020/raw/RetainedOwnerSource260ChildrenR1.xcresult"
+          ],
+          "pid": 424244,
+          "exit": 0,
+          "stdout": "eyJwYXNzZWRUZXN0cyI6IDEsICJmYWlsZWRUZXN0cyI6IDAsICJza2lwcGVkVGVzdHMiOiAwfQ==",
+          "stderr": ""
+        },
+        "exportQuery": {
+          "command": [
+            "xcrun",
+            "xcresulttool",
+            "export",
+            "attachments",
+            "--path",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-rh7le020/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+            "--output-path",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-rh7le020/raw/RetainedOwnerSource260ChildrenR1All"
+          ],
+          "pid": 424244,
+          "exit": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        "originalManifest": "retained-owner-source260-children-r1-original-manifest.json",
+        "finishedAt": 1794194721.813117
+      },
+      "primaryStatus": "FAILED retention/native; no acceptance",
+      "emergencyExists": false,
+      "injectedCalls": [
+        [
+          "xcodebuild",
+          "-project",
+          "Lumen.xcodeproj",
+          "-scheme",
+          "Lumen",
+          "-configuration",
+          "Debug",
+          "-destination",
+          "platform=iOS Simulator,id=5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "-derivedDataPath",
+          "/tmp/LumenBatch37Simulator",
+          "-clonedSourcePackagesDirPath",
+          "/tmp/LumenBatch37Packages",
+          "-disableAutomaticPackageResolution",
+          "-parallel-testing-enabled",
+          "NO",
+          "-collect-test-diagnostics",
+          "never",
+          "-only-testing:LumenUITests/LumenSmokeTests/testHealthRetainedReviewOwnerChildren",
+          "-resultBundlePath",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-rh7le020/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+          "test-without-building"
+        ],
+        [
+          "caffeinate",
+          "-i",
+          "-w",
+          "424242"
+        ],
+        [
+          "xcrun",
+          "simctl",
+          "get_app_container",
+          "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "com.dbakp.lumen",
+          "group.com.dbakp.lumen"
+        ],
+        [
+          "xcrun",
+          "simctl",
+          "get_app_container",
+          "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "com.dbakp.lumen",
+          "app"
+        ],
+        [
+          "xcrun",
+          "xcresulttool",
+          "get",
+          "test-results",
+          "summary",
+          "--path",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-rh7le020/raw/RetainedOwnerSource260ChildrenR1.xcresult"
+        ],
+        [
+          "xcrun",
+          "xcresulttool",
+          "export",
+          "attachments",
+          "--path",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-rh7le020/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+          "--output-path",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-rh7le020/raw/RetainedOwnerSource260ChildrenR1All"
+        ]
+      ],
+      "syntheticNativeCompleted": true,
+      "correctRetention": true
+    },
+    {
+      "fault": "export-nonzero",
+      "escaped": {
+        "type": "SystemExit",
+        "code": true
+      },
+      "summaryAttempted": true,
+      "exportAttempted": true,
+      "terminalPersisted": true,
+      "retainedNames": [
+        "10-bad.png",
+        "20-later.png",
+        "manifest.json",
+        "readback.json"
+      ],
+      "state": {
+        "status": "FAILED retention/native; no acceptance",
+        "source": "durable-source-r260.json",
+        "build": "health-target-change-source260-r1-build.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "stem": "RetainedOwnerSource260ChildrenR1",
+        "command": [
+          "xcodebuild",
+          "-project",
+          "Lumen.xcodeproj",
+          "-scheme",
+          "Lumen",
+          "-configuration",
+          "Debug",
+          "-destination",
+          "platform=iOS Simulator,id=5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "-derivedDataPath",
+          "/tmp/LumenBatch37Simulator",
+          "-clonedSourcePackagesDirPath",
+          "/tmp/LumenBatch37Packages",
+          "-disableAutomaticPackageResolution",
+          "-parallel-testing-enabled",
+          "NO",
+          "-collect-test-diagnostics",
+          "never",
+          "-only-testing:LumenUITests/LumenSmokeTests/testHealthRetainedReviewOwnerChildren",
+          "-resultBundlePath",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-6jncq66m/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+          "test-without-building"
+        ],
+        "startedAt": 1794194721.826195,
+        "physicalDeviceActions": false,
+        "errors": [
+          {
+            "stage": "exportQuery",
+            "error": "Actual query did not complete successfully",
+            "query": {
+              "command": [
+                "xcrun",
+                "xcresulttool",
+                "export",
+                "attachments",
+                "--path",
+                "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-6jncq66m/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+                "--output-path",
+                "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-6jncq66m/raw/RetainedOwnerSource260ChildrenR1All"
+              ],
+              "pid": 424244,
+              "exit": 1,
+              "stdout": "",
+              "stderr": ""
+            }
+          }
+        ],
+        "originals": [
+          {
+            "file": "retained-owner-source260-children-r1-original-10-bad.png",
+            "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-6jncq66m/raw/RetainedOwnerSource260ChildrenR1All/10-bad.png",
+            "name": "10-bad.png",
+            "bytes": 20,
+            "sha256": "d685d85be9a9014dbcdd73446470b42697a4e07ab19a691cae50a94a027d0c8b",
+            "individuallyOpened": false
+          },
+          {
+            "file": "retained-owner-source260-children-r1-original-20-later.png",
+            "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-6jncq66m/raw/RetainedOwnerSource260ChildrenR1All/20-later.png",
+            "name": "20-later.png",
+            "bytes": 20,
+            "sha256": "ea69893690c73ae32da9e2f5cde01a7c1c58b1e4d8d7d272485791285cf66b27",
+            "individuallyOpened": false
+          },
+          {
+            "file": "retained-owner-source260-children-r1-original-manifest.json",
+            "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-6jncq66m/raw/RetainedOwnerSource260ChildrenR1All/manifest.json",
+            "name": "manifest.json",
+            "bytes": 304,
+            "sha256": "9c8b23959c759bf18cc86ba0c7e52e1618ffba43423ff6d6f2d41a715b94a4bc",
+            "individuallyOpened": false
+          },
+          {
+            "file": "retained-owner-source260-children-r1-original-readback.json",
+            "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-6jncq66m/raw/RetainedOwnerSource260ChildrenR1All/readback.json",
+            "name": "readback.json",
+            "bytes": 2,
+            "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+            "individuallyOpened": false
+          }
+        ],
+        "originalFailures": [],
+        "prerequisiteExactProof": "source260-build-exact-github.json",
+        "preflight": {
+          "source": "durable-source-r260.json",
+          "app": {
+            "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-6jncq66m/app",
+            "bytes": 12,
+            "sha256": "55fb26d2fe83cd62ce18d8770c08cefa6eb728b55cd2073aad9e41544111c013",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 47035349,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 12,
+              "st_mtime_ns": 1794194721818809573
+            }
+          },
+          "injected": true
+        },
+        "prerequisiteExactProofFact": {
+          "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-6jncq66m/canonical/source260-build-exact-github.json",
+          "bytes": 67,
+          "sha256": "8153f6357ccbaa3bcab5f5b6b0832c969c61f4d0f80f8f65a1f343d953d231a4",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 47035352,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 67,
+            "st_mtime_ns": 1794194721819660820
+          }
+        },
+        "providerBefore": {
+          "bytes": 4992,
+          "sha256": "injected provider"
+        },
+        "nativePID": 424242,
+        "nativeExit": 0,
+        "containerQuery": {
+          "command": [
+            "xcrun",
+            "simctl",
+            "get_app_container",
+            "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+            "com.dbakp.lumen",
+            "group.com.dbakp.lumen"
+          ],
+          "pid": 424243,
+          "exit": 0,
+          "stdout": "L3Zhci9mb2xkZXJzL3M4Lzlqendmc3dzNnpiM3FiZzBmZnl5X2JsbTAwMDBnbi9UL2x1bWVuMjU5LWRyaXZlci1pbmplY3RlZC02am5jcTY2bS9ncm91cA==",
+          "stderr": ""
+        },
+        "trace": {
+          "file": "retained-owner-source260-children-r1-trace.json",
+          "bytes": 33,
+          "sha256": "eaeb191d259544eb27f249813dc9b0f3676136e7fa5f19938c0f4552729e3d0b",
+          "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-6jncq66m/group/Lumen-retained-review-owner-events.json"
+        },
+        "preflightAfter": {
+          "source": "durable-source-r260.json",
+          "app": {
+            "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-6jncq66m/app",
+            "bytes": 12,
+            "sha256": "55fb26d2fe83cd62ce18d8770c08cefa6eb728b55cd2073aad9e41544111c013",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 47035349,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 12,
+              "st_mtime_ns": 1794194721818809573
+            }
+          },
+          "injected": true
+        },
+        "providerAfter": {
+          "bytes": 4992,
+          "sha256": "injected provider"
+        },
+        "installedAppQuery": {
+          "command": [
+            "xcrun",
+            "simctl",
+            "get_app_container",
+            "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+            "com.dbakp.lumen",
+            "app"
+          ],
+          "pid": 424243,
+          "exit": 0,
+          "stdout": "L3Zhci9mb2xkZXJzL3M4Lzlqendmc3dzNnpiM3FiZzBmZnl5X2JsbTAwMDBnbi9UL2x1bWVuMjU5LWRyaXZlci1pbmplY3RlZC02am5jcTY2bS9JbnN0YWxsZWQuYXBw",
+          "stderr": ""
+        },
+        "installedApp": {
+          "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-6jncq66m/Installed.app/Lumen",
+          "bytes": 12,
+          "sha256": "55fb26d2fe83cd62ce18d8770c08cefa6eb728b55cd2073aad9e41544111c013",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 47035367,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 12,
+            "st_mtime_ns": 1794194721835310726
+          }
+        },
+        "nativeFinalization": {
+          "launched": true,
+          "pid": 424242,
+          "errors": [],
+          "exit": 0
+        },
+        "log": {
+          "file": "retained-owner-source260-children-r1-native.log.gz",
+          "bytes": 43,
+          "sha256": "6c44d1a8739bf6ba8b575d797402408aa9bde281c676441d35dffba87940544d"
+        },
+        "summaryQuery": {
+          "command": [
+            "xcrun",
+            "xcresulttool",
+            "get",
+            "test-results",
+            "summary",
+            "--path",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-6jncq66m/raw/RetainedOwnerSource260ChildrenR1.xcresult"
+          ],
+          "pid": 424244,
+          "exit": 0,
+          "stdout": "eyJwYXNzZWRUZXN0cyI6IDEsICJmYWlsZWRUZXN0cyI6IDAsICJza2lwcGVkVGVzdHMiOiAwfQ==",
+          "stderr": ""
+        },
+        "exportQuery": {
+          "command": [
+            "xcrun",
+            "xcresulttool",
+            "export",
+            "attachments",
+            "--path",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-6jncq66m/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+            "--output-path",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-6jncq66m/raw/RetainedOwnerSource260ChildrenR1All"
+          ],
+          "pid": 424244,
+          "exit": 1,
+          "stdout": "",
+          "stderr": ""
+        },
+        "originalManifest": "retained-owner-source260-children-r1-original-manifest.json",
+        "finishedAt": 1794194721.845943
+      },
+      "primaryStatus": "FAILED retention/native; no acceptance",
+      "emergencyExists": false,
+      "injectedCalls": [
+        [
+          "xcodebuild",
+          "-project",
+          "Lumen.xcodeproj",
+          "-scheme",
+          "Lumen",
+          "-configuration",
+          "Debug",
+          "-destination",
+          "platform=iOS Simulator,id=5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "-derivedDataPath",
+          "/tmp/LumenBatch37Simulator",
+          "-clonedSourcePackagesDirPath",
+          "/tmp/LumenBatch37Packages",
+          "-disableAutomaticPackageResolution",
+          "-parallel-testing-enabled",
+          "NO",
+          "-collect-test-diagnostics",
+          "never",
+          "-only-testing:LumenUITests/LumenSmokeTests/testHealthRetainedReviewOwnerChildren",
+          "-resultBundlePath",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-6jncq66m/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+          "test-without-building"
+        ],
+        [
+          "caffeinate",
+          "-i",
+          "-w",
+          "424242"
+        ],
+        [
+          "xcrun",
+          "simctl",
+          "get_app_container",
+          "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "com.dbakp.lumen",
+          "group.com.dbakp.lumen"
+        ],
+        [
+          "xcrun",
+          "simctl",
+          "get_app_container",
+          "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "com.dbakp.lumen",
+          "app"
+        ],
+        [
+          "xcrun",
+          "xcresulttool",
+          "get",
+          "test-results",
+          "summary",
+          "--path",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-6jncq66m/raw/RetainedOwnerSource260ChildrenR1.xcresult"
+        ],
+        [
+          "xcrun",
+          "xcresulttool",
+          "export",
+          "attachments",
+          "--path",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-6jncq66m/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+          "--output-path",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-6jncq66m/raw/RetainedOwnerSource260ChildrenR1All"
+        ]
+      ],
+      "syntheticNativeCompleted": true,
+      "correctRetention": true
+    },
+    {
+      "fault": "malformed-manifest",
+      "escaped": {
+        "type": "SystemExit",
+        "code": true
+      },
+      "summaryAttempted": true,
+      "exportAttempted": true,
+      "terminalPersisted": true,
+      "retainedNames": [
+        "10-bad.png",
+        "20-later.png",
+        "manifest.json",
+        "readback.json"
+      ],
+      "state": {
+        "status": "FAILED retention/native; no acceptance",
+        "source": "durable-source-r260.json",
+        "build": "health-target-change-source260-r1-build.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "stem": "RetainedOwnerSource260ChildrenR1",
+        "command": [
+          "xcodebuild",
+          "-project",
+          "Lumen.xcodeproj",
+          "-scheme",
+          "Lumen",
+          "-configuration",
+          "Debug",
+          "-destination",
+          "platform=iOS Simulator,id=5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "-derivedDataPath",
+          "/tmp/LumenBatch37Simulator",
+          "-clonedSourcePackagesDirPath",
+          "/tmp/LumenBatch37Packages",
+          "-disableAutomaticPackageResolution",
+          "-parallel-testing-enabled",
+          "NO",
+          "-collect-test-diagnostics",
+          "never",
+          "-only-testing:LumenUITests/LumenSmokeTests/testHealthRetainedReviewOwnerChildren",
+          "-resultBundlePath",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-f49q_itm/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+          "test-without-building"
+        ],
+        "startedAt": 1794194721.85427,
+        "physicalDeviceActions": false,
+        "errors": [
+          {
+            "stage": "manifest-interpretation",
+            "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/retained-owner-driver-r3.py\", line 173, in main\n    parsed = json.loads(manifest.read_bytes()); assert isinstance(parsed, list)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/__init__.py\", line 346, in loads\n    return _default_decoder.decode(s)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/decoder.py\", line 337, in decode\n    obj, end = self.raw_decode(s, idx=_w(s, 0).end())\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/decoder.py\", line 353, in raw_decode\n    obj, end = self.scan_once(s, idx)\njson.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)\n"
+          }
+        ],
+        "originals": [
+          {
+            "file": "retained-owner-source260-children-r1-original-10-bad.png",
+            "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-f49q_itm/raw/RetainedOwnerSource260ChildrenR1All/10-bad.png",
+            "name": "10-bad.png",
+            "bytes": 20,
+            "sha256": "d685d85be9a9014dbcdd73446470b42697a4e07ab19a691cae50a94a027d0c8b",
+            "individuallyOpened": false
+          },
+          {
+            "file": "retained-owner-source260-children-r1-original-20-later.png",
+            "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-f49q_itm/raw/RetainedOwnerSource260ChildrenR1All/20-later.png",
+            "name": "20-later.png",
+            "bytes": 20,
+            "sha256": "ea69893690c73ae32da9e2f5cde01a7c1c58b1e4d8d7d272485791285cf66b27",
+            "individuallyOpened": false
+          },
+          {
+            "file": "retained-owner-source260-children-r1-original-manifest.json",
+            "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-f49q_itm/raw/RetainedOwnerSource260ChildrenR1All/manifest.json",
+            "name": "manifest.json",
+            "bytes": 10,
+            "sha256": "d94369f560e33258400e3e856e3be50fc380a5e7aa493b7f974fd3eaf36fb555",
+            "individuallyOpened": false
+          },
+          {
+            "file": "retained-owner-source260-children-r1-original-readback.json",
+            "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-f49q_itm/raw/RetainedOwnerSource260ChildrenR1All/readback.json",
+            "name": "readback.json",
+            "bytes": 2,
+            "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+            "individuallyOpened": false
+          }
+        ],
+        "originalFailures": [],
+        "prerequisiteExactProof": "source260-build-exact-github.json",
+        "preflight": {
+          "source": "durable-source-r260.json",
+          "app": {
+            "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-f49q_itm/app",
+            "bytes": 12,
+            "sha256": "55fb26d2fe83cd62ce18d8770c08cefa6eb728b55cd2073aad9e41544111c013",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 47035392,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 12,
+              "st_mtime_ns": 1794194721849723595
+            }
+          },
+          "injected": true
+        },
+        "prerequisiteExactProofFact": {
+          "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-f49q_itm/canonical/source260-build-exact-github.json",
+          "bytes": 67,
+          "sha256": "8153f6357ccbaa3bcab5f5b6b0832c969c61f4d0f80f8f65a1f343d953d231a4",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 47035395,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 67,
+            "st_mtime_ns": 1794194721850734759
+          }
+        },
+        "providerBefore": {
+          "bytes": 4992,
+          "sha256": "injected provider"
+        },
+        "nativePID": 424242,
+        "nativeExit": 0,
+        "containerQuery": {
+          "command": [
+            "xcrun",
+            "simctl",
+            "get_app_container",
+            "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+            "com.dbakp.lumen",
+            "group.com.dbakp.lumen"
+          ],
+          "pid": 424243,
+          "exit": 0,
+          "stdout": "L3Zhci9mb2xkZXJzL3M4Lzlqendmc3dzNnpiM3FiZzBmZnl5X2JsbTAwMDBnbi9UL2x1bWVuMjU5LWRyaXZlci1pbmplY3RlZC1mNDlxX2l0bS9ncm91cA==",
+          "stderr": ""
+        },
+        "trace": {
+          "file": "retained-owner-source260-children-r1-trace.json",
+          "bytes": 33,
+          "sha256": "eaeb191d259544eb27f249813dc9b0f3676136e7fa5f19938c0f4552729e3d0b",
+          "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-f49q_itm/group/Lumen-retained-review-owner-events.json"
+        },
+        "preflightAfter": {
+          "source": "durable-source-r260.json",
+          "app": {
+            "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-f49q_itm/app",
+            "bytes": 12,
+            "sha256": "55fb26d2fe83cd62ce18d8770c08cefa6eb728b55cd2073aad9e41544111c013",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 47035392,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 12,
+              "st_mtime_ns": 1794194721849723595
+            }
+          },
+          "injected": true
+        },
+        "providerAfter": {
+          "bytes": 4992,
+          "sha256": "injected provider"
+        },
+        "installedAppQuery": {
+          "command": [
+            "xcrun",
+            "simctl",
+            "get_app_container",
+            "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+            "com.dbakp.lumen",
+            "app"
+          ],
+          "pid": 424243,
+          "exit": 0,
+          "stdout": "L3Zhci9mb2xkZXJzL3M4Lzlqendmc3dzNnpiM3FiZzBmZnl5X2JsbTAwMDBnbi9UL2x1bWVuMjU5LWRyaXZlci1pbmplY3RlZC1mNDlxX2l0bS9JbnN0YWxsZWQuYXBw",
+          "stderr": ""
+        },
+        "installedApp": {
+          "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-f49q_itm/Installed.app/Lumen",
+          "bytes": 12,
+          "sha256": "55fb26d2fe83cd62ce18d8770c08cefa6eb728b55cd2073aad9e41544111c013",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 47035410,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 12,
+            "st_mtime_ns": 1794194721857357487
+          }
+        },
+        "nativeFinalization": {
+          "launched": true,
+          "pid": 424242,
+          "errors": [],
+          "exit": 0
+        },
+        "log": {
+          "file": "retained-owner-source260-children-r1-native.log.gz",
+          "bytes": 43,
+          "sha256": "6c44d1a8739bf6ba8b575d797402408aa9bde281c676441d35dffba87940544d"
+        },
+        "summaryQuery": {
+          "command": [
+            "xcrun",
+            "xcresulttool",
+            "get",
+            "test-results",
+            "summary",
+            "--path",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-f49q_itm/raw/RetainedOwnerSource260ChildrenR1.xcresult"
+          ],
+          "pid": 424244,
+          "exit": 0,
+          "stdout": "eyJwYXNzZWRUZXN0cyI6IDEsICJmYWlsZWRUZXN0cyI6IDAsICJza2lwcGVkVGVzdHMiOiAwfQ==",
+          "stderr": ""
+        },
+        "exportQuery": {
+          "command": [
+            "xcrun",
+            "xcresulttool",
+            "export",
+            "attachments",
+            "--path",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-f49q_itm/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+            "--output-path",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-f49q_itm/raw/RetainedOwnerSource260ChildrenR1All"
+          ],
+          "pid": 424244,
+          "exit": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        "finishedAt": 1794194721.865707
+      },
+      "primaryStatus": "FAILED retention/native; no acceptance",
+      "emergencyExists": false,
+      "injectedCalls": [
+        [
+          "xcodebuild",
+          "-project",
+          "Lumen.xcodeproj",
+          "-scheme",
+          "Lumen",
+          "-configuration",
+          "Debug",
+          "-destination",
+          "platform=iOS Simulator,id=5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "-derivedDataPath",
+          "/tmp/LumenBatch37Simulator",
+          "-clonedSourcePackagesDirPath",
+          "/tmp/LumenBatch37Packages",
+          "-disableAutomaticPackageResolution",
+          "-parallel-testing-enabled",
+          "NO",
+          "-collect-test-diagnostics",
+          "never",
+          "-only-testing:LumenUITests/LumenSmokeTests/testHealthRetainedReviewOwnerChildren",
+          "-resultBundlePath",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-f49q_itm/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+          "test-without-building"
+        ],
+        [
+          "caffeinate",
+          "-i",
+          "-w",
+          "424242"
+        ],
+        [
+          "xcrun",
+          "simctl",
+          "get_app_container",
+          "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "com.dbakp.lumen",
+          "group.com.dbakp.lumen"
+        ],
+        [
+          "xcrun",
+          "simctl",
+          "get_app_container",
+          "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "com.dbakp.lumen",
+          "app"
+        ],
+        [
+          "xcrun",
+          "xcresulttool",
+          "get",
+          "test-results",
+          "summary",
+          "--path",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-f49q_itm/raw/RetainedOwnerSource260ChildrenR1.xcresult"
+        ],
+        [
+          "xcrun",
+          "xcresulttool",
+          "export",
+          "attachments",
+          "--path",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-f49q_itm/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+          "--output-path",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-f49q_itm/raw/RetainedOwnerSource260ChildrenR1All"
+        ]
+      ],
+      "syntheticNativeCompleted": true,
+      "correctRetention": true
+    },
+    {
+      "fault": "manifest-exact-reuse",
+      "escaped": {
+        "type": "SystemExit",
+        "code": false
+      },
+      "summaryAttempted": true,
+      "exportAttempted": true,
+      "terminalPersisted": true,
+      "retainedNames": [
+        "10-bad.png",
+        "20-later.png",
+        "manifest.json",
+        "readback.json"
+      ],
+      "state": {
+        "status": "NATIVE_FINISHED acceptance pending",
+        "source": "durable-source-r260.json",
+        "build": "health-target-change-source260-r1-build.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "stem": "RetainedOwnerSource260ChildrenR1",
+        "command": [
+          "xcodebuild",
+          "-project",
+          "Lumen.xcodeproj",
+          "-scheme",
+          "Lumen",
+          "-configuration",
+          "Debug",
+          "-destination",
+          "platform=iOS Simulator,id=5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "-derivedDataPath",
+          "/tmp/LumenBatch37Simulator",
+          "-clonedSourcePackagesDirPath",
+          "/tmp/LumenBatch37Packages",
+          "-disableAutomaticPackageResolution",
+          "-parallel-testing-enabled",
+          "NO",
+          "-collect-test-diagnostics",
+          "never",
+          "-only-testing:LumenUITests/LumenSmokeTests/testHealthRetainedReviewOwnerChildren",
+          "-resultBundlePath",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-f3w37vsd/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+          "test-without-building"
+        ],
+        "startedAt": 1794194721.8801868,
+        "physicalDeviceActions": false,
+        "errors": [],
+        "originals": [
+          {
+            "file": "retained-owner-source260-children-r1-original-10-bad.png",
+            "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-f3w37vsd/raw/RetainedOwnerSource260ChildrenR1All/10-bad.png",
+            "name": "10-bad.png",
+            "bytes": 20,
+            "sha256": "d685d85be9a9014dbcdd73446470b42697a4e07ab19a691cae50a94a027d0c8b",
+            "individuallyOpened": false
+          },
+          {
+            "file": "retained-owner-source260-children-r1-original-20-later.png",
+            "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-f3w37vsd/raw/RetainedOwnerSource260ChildrenR1All/20-later.png",
+            "name": "20-later.png",
+            "bytes": 20,
+            "sha256": "ea69893690c73ae32da9e2f5cde01a7c1c58b1e4d8d7d272485791285cf66b27",
+            "individuallyOpened": false
+          },
+          {
+            "file": "retained-owner-source260-children-r1-original-manifest.json",
+            "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-f3w37vsd/raw/RetainedOwnerSource260ChildrenR1All/manifest.json",
+            "name": "manifest.json",
+            "bytes": 304,
+            "sha256": "9c8b23959c759bf18cc86ba0c7e52e1618ffba43423ff6d6f2d41a715b94a4bc",
+            "individuallyOpened": false
+          },
+          {
+            "file": "retained-owner-source260-children-r1-original-readback.json",
+            "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-f3w37vsd/raw/RetainedOwnerSource260ChildrenR1All/readback.json",
+            "name": "readback.json",
+            "bytes": 2,
+            "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+            "individuallyOpened": false
+          }
+        ],
+        "originalFailures": [],
+        "prerequisiteExactProof": "source260-build-exact-github.json",
+        "preflight": {
+          "source": "durable-source-r260.json",
+          "app": {
+            "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-f3w37vsd/app",
+            "bytes": 12,
+            "sha256": "55fb26d2fe83cd62ce18d8770c08cefa6eb728b55cd2073aad9e41544111c013",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 47035435,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 12,
+              "st_mtime_ns": 1794194721874689014
+            }
+          },
+          "injected": true
+        },
+        "prerequisiteExactProofFact": {
+          "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-f3w37vsd/canonical/source260-build-exact-github.json",
+          "bytes": 67,
+          "sha256": "8153f6357ccbaa3bcab5f5b6b0832c969c61f4d0f80f8f65a1f343d953d231a4",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 47035438,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 67,
+            "st_mtime_ns": 1794194721876136051
+          }
+        },
+        "providerBefore": {
+          "bytes": 4992,
+          "sha256": "injected provider"
+        },
+        "nativePID": 424242,
+        "nativeExit": 0,
+        "containerQuery": {
+          "command": [
+            "xcrun",
+            "simctl",
+            "get_app_container",
+            "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+            "com.dbakp.lumen",
+            "group.com.dbakp.lumen"
+          ],
+          "pid": 424243,
+          "exit": 0,
+          "stdout": "L3Zhci9mb2xkZXJzL3M4Lzlqendmc3dzNnpiM3FiZzBmZnl5X2JsbTAwMDBnbi9UL2x1bWVuMjU5LWRyaXZlci1pbmplY3RlZC1mM3czN3ZzZC9ncm91cA==",
+          "stderr": ""
+        },
+        "trace": {
+          "file": "retained-owner-source260-children-r1-trace.json",
+          "bytes": 33,
+          "sha256": "eaeb191d259544eb27f249813dc9b0f3676136e7fa5f19938c0f4552729e3d0b",
+          "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-f3w37vsd/group/Lumen-retained-review-owner-events.json"
+        },
+        "preflightAfter": {
+          "source": "durable-source-r260.json",
+          "app": {
+            "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-f3w37vsd/app",
+            "bytes": 12,
+            "sha256": "55fb26d2fe83cd62ce18d8770c08cefa6eb728b55cd2073aad9e41544111c013",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 47035435,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 12,
+              "st_mtime_ns": 1794194721874689014
+            }
+          },
+          "injected": true
+        },
+        "providerAfter": {
+          "bytes": 4992,
+          "sha256": "injected provider"
+        },
+        "installedAppQuery": {
+          "command": [
+            "xcrun",
+            "simctl",
+            "get_app_container",
+            "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+            "com.dbakp.lumen",
+            "app"
+          ],
+          "pid": 424243,
+          "exit": 0,
+          "stdout": "L3Zhci9mb2xkZXJzL3M4Lzlqendmc3dzNnpiM3FiZzBmZnl5X2JsbTAwMDBnbi9UL2x1bWVuMjU5LWRyaXZlci1pbmplY3RlZC1mM3czN3ZzZC9JbnN0YWxsZWQuYXBw",
+          "stderr": ""
+        },
+        "installedApp": {
+          "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-f3w37vsd/Installed.app/Lumen",
+          "bytes": 12,
+          "sha256": "55fb26d2fe83cd62ce18d8770c08cefa6eb728b55cd2073aad9e41544111c013",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 47035453,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 12,
+            "st_mtime_ns": 1794194721890713211
+          }
+        },
+        "nativeFinalization": {
+          "launched": true,
+          "pid": 424242,
+          "errors": [],
+          "exit": 0
+        },
+        "log": {
+          "file": "retained-owner-source260-children-r1-native.log.gz",
+          "bytes": 43,
+          "sha256": "6c44d1a8739bf6ba8b575d797402408aa9bde281c676441d35dffba87940544d"
+        },
+        "summaryQuery": {
+          "command": [
+            "xcrun",
+            "xcresulttool",
+            "get",
+            "test-results",
+            "summary",
+            "--path",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-f3w37vsd/raw/RetainedOwnerSource260ChildrenR1.xcresult"
+          ],
+          "pid": 424244,
+          "exit": 0,
+          "stdout": "eyJwYXNzZWRUZXN0cyI6IDEsICJmYWlsZWRUZXN0cyI6IDAsICJza2lwcGVkVGVzdHMiOiAwfQ==",
+          "stderr": ""
+        },
+        "exportQuery": {
+          "command": [
+            "xcrun",
+            "xcresulttool",
+            "export",
+            "attachments",
+            "--path",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-f3w37vsd/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+            "--output-path",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-f3w37vsd/raw/RetainedOwnerSource260ChildrenR1All"
+          ],
+          "pid": 424244,
+          "exit": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        "originalManifest": "retained-owner-source260-children-r1-original-manifest.json",
+        "finishedAt": 1794194721.9018319
+      },
+      "primaryStatus": "NATIVE_FINISHED acceptance pending",
+      "emergencyExists": false,
+      "injectedCalls": [
+        [
+          "xcodebuild",
+          "-project",
+          "Lumen.xcodeproj",
+          "-scheme",
+          "Lumen",
+          "-configuration",
+          "Debug",
+          "-destination",
+          "platform=iOS Simulator,id=5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "-derivedDataPath",
+          "/tmp/LumenBatch37Simulator",
+          "-clonedSourcePackagesDirPath",
+          "/tmp/LumenBatch37Packages",
+          "-disableAutomaticPackageResolution",
+          "-parallel-testing-enabled",
+          "NO",
+          "-collect-test-diagnostics",
+          "never",
+          "-only-testing:LumenUITests/LumenSmokeTests/testHealthRetainedReviewOwnerChildren",
+          "-resultBundlePath",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-f3w37vsd/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+          "test-without-building"
+        ],
+        [
+          "caffeinate",
+          "-i",
+          "-w",
+          "424242"
+        ],
+        [
+          "xcrun",
+          "simctl",
+          "get_app_container",
+          "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "com.dbakp.lumen",
+          "group.com.dbakp.lumen"
+        ],
+        [
+          "xcrun",
+          "simctl",
+          "get_app_container",
+          "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "com.dbakp.lumen",
+          "app"
+        ],
+        [
+          "xcrun",
+          "xcresulttool",
+          "get",
+          "test-results",
+          "summary",
+          "--path",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-f3w37vsd/raw/RetainedOwnerSource260ChildrenR1.xcresult"
+        ],
+        [
+          "xcrun",
+          "xcresulttool",
+          "export",
+          "attachments",
+          "--path",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-f3w37vsd/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+          "--output-path",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-f3w37vsd/raw/RetainedOwnerSource260ChildrenR1All"
+        ]
+      ],
+      "syntheticNativeCompleted": true,
+      "correctRetention": true
+    },
+    {
+      "fault": "manifest-mismatch",
+      "escaped": {
+        "type": "SystemExit",
+        "code": true
+      },
+      "summaryAttempted": true,
+      "exportAttempted": true,
+      "terminalPersisted": true,
+      "retainedNames": [
+        "10-bad.png",
+        "20-later.png",
+        "readback.json"
+      ],
+      "state": {
+        "status": "FAILED retention/native; no acceptance",
+        "source": "durable-source-r260.json",
+        "build": "health-target-change-source260-r1-build.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "stem": "RetainedOwnerSource260ChildrenR1",
+        "command": [
+          "xcodebuild",
+          "-project",
+          "Lumen.xcodeproj",
+          "-scheme",
+          "Lumen",
+          "-configuration",
+          "Debug",
+          "-destination",
+          "platform=iOS Simulator,id=5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "-derivedDataPath",
+          "/tmp/LumenBatch37Simulator",
+          "-clonedSourcePackagesDirPath",
+          "/tmp/LumenBatch37Packages",
+          "-disableAutomaticPackageResolution",
+          "-parallel-testing-enabled",
+          "NO",
+          "-collect-test-diagnostics",
+          "never",
+          "-only-testing:LumenUITests/LumenSmokeTests/testHealthRetainedReviewOwnerChildren",
+          "-resultBundlePath",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-x70t1no2/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+          "test-without-building"
+        ],
+        "startedAt": 1794194721.910443,
+        "physicalDeviceActions": false,
+        "errors": [
+          {
+            "stage": "individual-original",
+            "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/retained-owner-driver-r3.py\", line 187, in main\n    assert not target.is_symlink() and target.is_file() and target.read_bytes() == raw\nAssertionError\n"
+          }
+        ],
+        "originals": [
+          {
+            "file": "retained-owner-source260-children-r1-original-10-bad.png",
+            "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-x70t1no2/raw/RetainedOwnerSource260ChildrenR1All/10-bad.png",
+            "name": "10-bad.png",
+            "bytes": 20,
+            "sha256": "d685d85be9a9014dbcdd73446470b42697a4e07ab19a691cae50a94a027d0c8b",
+            "individuallyOpened": false
+          },
+          {
+            "file": "retained-owner-source260-children-r1-original-20-later.png",
+            "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-x70t1no2/raw/RetainedOwnerSource260ChildrenR1All/20-later.png",
+            "name": "20-later.png",
+            "bytes": 20,
+            "sha256": "ea69893690c73ae32da9e2f5cde01a7c1c58b1e4d8d7d272485791285cf66b27",
+            "individuallyOpened": false
+          },
+          {
+            "file": "retained-owner-source260-children-r1-original-readback.json",
+            "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-x70t1no2/raw/RetainedOwnerSource260ChildrenR1All/readback.json",
+            "name": "readback.json",
+            "bytes": 2,
+            "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+            "individuallyOpened": false
+          }
+        ],
+        "originalFailures": [
+          {
+            "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-x70t1no2/raw/RetainedOwnerSource260ChildrenR1All/manifest.json",
+            "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/retained-owner-driver-r3.py\", line 187, in main\n    assert not target.is_symlink() and target.is_file() and target.read_bytes() == raw\nAssertionError\n"
+          }
+        ],
+        "prerequisiteExactProof": "source260-build-exact-github.json",
+        "preflight": {
+          "source": "durable-source-r260.json",
+          "app": {
+            "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-x70t1no2/app",
+            "bytes": 12,
+            "sha256": "55fb26d2fe83cd62ce18d8770c08cefa6eb728b55cd2073aad9e41544111c013",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 47035478,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 12,
+              "st_mtime_ns": 1794194721905505329
+            }
+          },
+          "injected": true
+        },
+        "prerequisiteExactProofFact": {
+          "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-x70t1no2/canonical/source260-build-exact-github.json",
+          "bytes": 67,
+          "sha256": "8153f6357ccbaa3bcab5f5b6b0832c969c61f4d0f80f8f65a1f343d953d231a4",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 47035481,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 67,
+            "st_mtime_ns": 1794194721906560909
+          }
+        },
+        "providerBefore": {
+          "bytes": 4992,
+          "sha256": "injected provider"
+        },
+        "nativePID": 424242,
+        "nativeExit": 0,
+        "containerQuery": {
+          "command": [
+            "xcrun",
+            "simctl",
+            "get_app_container",
+            "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+            "com.dbakp.lumen",
+            "group.com.dbakp.lumen"
+          ],
+          "pid": 424243,
+          "exit": 0,
+          "stdout": "L3Zhci9mb2xkZXJzL3M4Lzlqendmc3dzNnpiM3FiZzBmZnl5X2JsbTAwMDBnbi9UL2x1bWVuMjU5LWRyaXZlci1pbmplY3RlZC14NzB0MW5vMi9ncm91cA==",
+          "stderr": ""
+        },
+        "trace": {
+          "file": "retained-owner-source260-children-r1-trace.json",
+          "bytes": 33,
+          "sha256": "eaeb191d259544eb27f249813dc9b0f3676136e7fa5f19938c0f4552729e3d0b",
+          "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-x70t1no2/group/Lumen-retained-review-owner-events.json"
+        },
+        "preflightAfter": {
+          "source": "durable-source-r260.json",
+          "app": {
+            "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-x70t1no2/app",
+            "bytes": 12,
+            "sha256": "55fb26d2fe83cd62ce18d8770c08cefa6eb728b55cd2073aad9e41544111c013",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 47035478,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 12,
+              "st_mtime_ns": 1794194721905505329
+            }
+          },
+          "injected": true
+        },
+        "providerAfter": {
+          "bytes": 4992,
+          "sha256": "injected provider"
+        },
+        "installedAppQuery": {
+          "command": [
+            "xcrun",
+            "simctl",
+            "get_app_container",
+            "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+            "com.dbakp.lumen",
+            "app"
+          ],
+          "pid": 424243,
+          "exit": 0,
+          "stdout": "L3Zhci9mb2xkZXJzL3M4Lzlqendmc3dzNnpiM3FiZzBmZnl5X2JsbTAwMDBnbi9UL2x1bWVuMjU5LWRyaXZlci1pbmplY3RlZC14NzB0MW5vMi9JbnN0YWxsZWQuYXBw",
+          "stderr": ""
+        },
+        "installedApp": {
+          "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-x70t1no2/Installed.app/Lumen",
+          "bytes": 12,
+          "sha256": "55fb26d2fe83cd62ce18d8770c08cefa6eb728b55cd2073aad9e41544111c013",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 47035496,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 12,
+            "st_mtime_ns": 1794194721913926593
+          }
+        },
+        "nativeFinalization": {
+          "launched": true,
+          "pid": 424242,
+          "errors": [],
+          "exit": 0
+        },
+        "log": {
+          "file": "retained-owner-source260-children-r1-native.log.gz",
+          "bytes": 43,
+          "sha256": "6c44d1a8739bf6ba8b575d797402408aa9bde281c676441d35dffba87940544d"
+        },
+        "summaryQuery": {
+          "command": [
+            "xcrun",
+            "xcresulttool",
+            "get",
+            "test-results",
+            "summary",
+            "--path",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-x70t1no2/raw/RetainedOwnerSource260ChildrenR1.xcresult"
+          ],
+          "pid": 424244,
+          "exit": 0,
+          "stdout": "eyJwYXNzZWRUZXN0cyI6IDEsICJmYWlsZWRUZXN0cyI6IDAsICJza2lwcGVkVGVzdHMiOiAwfQ==",
+          "stderr": ""
+        },
+        "exportQuery": {
+          "command": [
+            "xcrun",
+            "xcresulttool",
+            "export",
+            "attachments",
+            "--path",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-x70t1no2/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+            "--output-path",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-x70t1no2/raw/RetainedOwnerSource260ChildrenR1All"
+          ],
+          "pid": 424244,
+          "exit": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        "originalManifest": "retained-owner-source260-children-r1-original-manifest.json",
+        "finishedAt": 1794194721.92254
+      },
+      "primaryStatus": "FAILED retention/native; no acceptance",
+      "emergencyExists": false,
+      "injectedCalls": [
+        [
+          "xcodebuild",
+          "-project",
+          "Lumen.xcodeproj",
+          "-scheme",
+          "Lumen",
+          "-configuration",
+          "Debug",
+          "-destination",
+          "platform=iOS Simulator,id=5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "-derivedDataPath",
+          "/tmp/LumenBatch37Simulator",
+          "-clonedSourcePackagesDirPath",
+          "/tmp/LumenBatch37Packages",
+          "-disableAutomaticPackageResolution",
+          "-parallel-testing-enabled",
+          "NO",
+          "-collect-test-diagnostics",
+          "never",
+          "-only-testing:LumenUITests/LumenSmokeTests/testHealthRetainedReviewOwnerChildren",
+          "-resultBundlePath",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-x70t1no2/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+          "test-without-building"
+        ],
+        [
+          "caffeinate",
+          "-i",
+          "-w",
+          "424242"
+        ],
+        [
+          "xcrun",
+          "simctl",
+          "get_app_container",
+          "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "com.dbakp.lumen",
+          "group.com.dbakp.lumen"
+        ],
+        [
+          "xcrun",
+          "simctl",
+          "get_app_container",
+          "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "com.dbakp.lumen",
+          "app"
+        ],
+        [
+          "xcrun",
+          "xcresulttool",
+          "get",
+          "test-results",
+          "summary",
+          "--path",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-x70t1no2/raw/RetainedOwnerSource260ChildrenR1.xcresult"
+        ],
+        [
+          "xcrun",
+          "xcresulttool",
+          "export",
+          "attachments",
+          "--path",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-x70t1no2/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+          "--output-path",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-x70t1no2/raw/RetainedOwnerSource260ChildrenR1All"
+        ]
+      ],
+      "syntheticNativeCompleted": true,
+      "correctRetention": true
+    },
+    {
+      "fault": "terminal-persist-raise",
+      "escaped": {
+        "type": "SystemExit",
+        "code": true
+      },
+      "summaryAttempted": true,
+      "exportAttempted": true,
+      "terminalPersisted": true,
+      "retainedNames": [
+        "10-bad.png",
+        "20-later.png",
+        "manifest.json",
+        "readback.json"
+      ],
+      "state": {
+        "status": "FAILED persistence; no acceptance",
+        "source": "durable-source-r260.json",
+        "build": "health-target-change-source260-r1-build.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "stem": "RetainedOwnerSource260ChildrenR1",
+        "command": [
+          "xcodebuild",
+          "-project",
+          "Lumen.xcodeproj",
+          "-scheme",
+          "Lumen",
+          "-configuration",
+          "Debug",
+          "-destination",
+          "platform=iOS Simulator,id=5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "-derivedDataPath",
+          "/tmp/LumenBatch37Simulator",
+          "-clonedSourcePackagesDirPath",
+          "/tmp/LumenBatch37Packages",
+          "-disableAutomaticPackageResolution",
+          "-parallel-testing-enabled",
+          "NO",
+          "-collect-test-diagnostics",
+          "never",
+          "-only-testing:LumenUITests/LumenSmokeTests/testHealthRetainedReviewOwnerChildren",
+          "-resultBundlePath",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-i_9f7a96/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+          "test-without-building"
+        ],
+        "startedAt": 1794194721.9324732,
+        "physicalDeviceActions": false,
+        "errors": [
+          {
+            "stage": "terminal-persistence",
+            "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/retained-owner-driver-r3.py\", line 102, in persist\n    pending.write_text(json.dumps(state, indent=2) + '\\n'); pending.replace(report)\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/source260-driver-caller-controls-r1-executed.py\", line 49, in write_text\n    raise OSError('injected terminal primary persistence failure')\nOSError: injected terminal primary persistence failure\n"
+          }
+        ],
+        "originals": [
+          {
+            "file": "retained-owner-source260-children-r1-original-10-bad.png",
+            "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-i_9f7a96/raw/RetainedOwnerSource260ChildrenR1All/10-bad.png",
+            "name": "10-bad.png",
+            "bytes": 20,
+            "sha256": "d685d85be9a9014dbcdd73446470b42697a4e07ab19a691cae50a94a027d0c8b",
+            "individuallyOpened": false
+          },
+          {
+            "file": "retained-owner-source260-children-r1-original-20-later.png",
+            "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-i_9f7a96/raw/RetainedOwnerSource260ChildrenR1All/20-later.png",
+            "name": "20-later.png",
+            "bytes": 20,
+            "sha256": "ea69893690c73ae32da9e2f5cde01a7c1c58b1e4d8d7d272485791285cf66b27",
+            "individuallyOpened": false
+          },
+          {
+            "file": "retained-owner-source260-children-r1-original-manifest.json",
+            "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-i_9f7a96/raw/RetainedOwnerSource260ChildrenR1All/manifest.json",
+            "name": "manifest.json",
+            "bytes": 304,
+            "sha256": "9c8b23959c759bf18cc86ba0c7e52e1618ffba43423ff6d6f2d41a715b94a4bc",
+            "individuallyOpened": false
+          },
+          {
+            "file": "retained-owner-source260-children-r1-original-readback.json",
+            "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-i_9f7a96/raw/RetainedOwnerSource260ChildrenR1All/readback.json",
+            "name": "readback.json",
+            "bytes": 2,
+            "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+            "individuallyOpened": false
+          }
+        ],
+        "originalFailures": [],
+        "prerequisiteExactProof": "source260-build-exact-github.json",
+        "preflight": {
+          "source": "durable-source-r260.json",
+          "app": {
+            "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-i_9f7a96/app",
+            "bytes": 12,
+            "sha256": "55fb26d2fe83cd62ce18d8770c08cefa6eb728b55cd2073aad9e41544111c013",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 47035521,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 12,
+              "st_mtime_ns": 1794194721927286465
+            }
+          },
+          "injected": true
+        },
+        "prerequisiteExactProofFact": {
+          "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-i_9f7a96/canonical/source260-build-exact-github.json",
+          "bytes": 67,
+          "sha256": "8153f6357ccbaa3bcab5f5b6b0832c969c61f4d0f80f8f65a1f343d953d231a4",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 47035524,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 67,
+            "st_mtime_ns": 1794194721928850710
+          }
+        },
+        "providerBefore": {
+          "bytes": 4992,
+          "sha256": "injected provider"
+        },
+        "nativePID": 424242,
+        "nativeExit": 0,
+        "containerQuery": {
+          "command": [
+            "xcrun",
+            "simctl",
+            "get_app_container",
+            "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+            "com.dbakp.lumen",
+            "group.com.dbakp.lumen"
+          ],
+          "pid": 424243,
+          "exit": 0,
+          "stdout": "L3Zhci9mb2xkZXJzL3M4Lzlqendmc3dzNnpiM3FiZzBmZnl5X2JsbTAwMDBnbi9UL2x1bWVuMjU5LWRyaXZlci1pbmplY3RlZC1pXzlmN2E5Ni9ncm91cA==",
+          "stderr": ""
+        },
+        "trace": {
+          "file": "retained-owner-source260-children-r1-trace.json",
+          "bytes": 33,
+          "sha256": "eaeb191d259544eb27f249813dc9b0f3676136e7fa5f19938c0f4552729e3d0b",
+          "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-i_9f7a96/group/Lumen-retained-review-owner-events.json"
+        },
+        "preflightAfter": {
+          "source": "durable-source-r260.json",
+          "app": {
+            "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-i_9f7a96/app",
+            "bytes": 12,
+            "sha256": "55fb26d2fe83cd62ce18d8770c08cefa6eb728b55cd2073aad9e41544111c013",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 47035521,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 12,
+              "st_mtime_ns": 1794194721927286465
+            }
+          },
+          "injected": true
+        },
+        "providerAfter": {
+          "bytes": 4992,
+          "sha256": "injected provider"
+        },
+        "installedAppQuery": {
+          "command": [
+            "xcrun",
+            "simctl",
+            "get_app_container",
+            "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+            "com.dbakp.lumen",
+            "app"
+          ],
+          "pid": 424243,
+          "exit": 0,
+          "stdout": "L3Zhci9mb2xkZXJzL3M4Lzlqendmc3dzNnpiM3FiZzBmZnl5X2JsbTAwMDBnbi9UL2x1bWVuMjU5LWRyaXZlci1pbmplY3RlZC1pXzlmN2E5Ni9JbnN0YWxsZWQuYXBw",
+          "stderr": ""
+        },
+        "installedApp": {
+          "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-i_9f7a96/Installed.app/Lumen",
+          "bytes": 12,
+          "sha256": "55fb26d2fe83cd62ce18d8770c08cefa6eb728b55cd2073aad9e41544111c013",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 47035539,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 12,
+            "st_mtime_ns": 1794194721936162478
+          }
+        },
+        "nativeFinalization": {
+          "launched": true,
+          "pid": 424242,
+          "errors": [],
+          "exit": 0
+        },
+        "log": {
+          "file": "retained-owner-source260-children-r1-native.log.gz",
+          "bytes": 43,
+          "sha256": "6c44d1a8739bf6ba8b575d797402408aa9bde281c676441d35dffba87940544d"
+        },
+        "summaryQuery": {
+          "command": [
+            "xcrun",
+            "xcresulttool",
+            "get",
+            "test-results",
+            "summary",
+            "--path",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-i_9f7a96/raw/RetainedOwnerSource260ChildrenR1.xcresult"
+          ],
+          "pid": 424244,
+          "exit": 0,
+          "stdout": "eyJwYXNzZWRUZXN0cyI6IDEsICJmYWlsZWRUZXN0cyI6IDAsICJza2lwcGVkVGVzdHMiOiAwfQ==",
+          "stderr": ""
+        },
+        "exportQuery": {
+          "command": [
+            "xcrun",
+            "xcresulttool",
+            "export",
+            "attachments",
+            "--path",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-i_9f7a96/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+            "--output-path",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-i_9f7a96/raw/RetainedOwnerSource260ChildrenR1All"
+          ],
+          "pid": 424244,
+          "exit": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        "originalManifest": "retained-owner-source260-children-r1-original-manifest.json",
+        "finishedAt": 1794194721.94507
+      },
+      "primaryStatus": "RUNNING",
+      "emergencyExists": true,
+      "injectedCalls": [
+        [
+          "xcodebuild",
+          "-project",
+          "Lumen.xcodeproj",
+          "-scheme",
+          "Lumen",
+          "-configuration",
+          "Debug",
+          "-destination",
+          "platform=iOS Simulator,id=5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "-derivedDataPath",
+          "/tmp/LumenBatch37Simulator",
+          "-clonedSourcePackagesDirPath",
+          "/tmp/LumenBatch37Packages",
+          "-disableAutomaticPackageResolution",
+          "-parallel-testing-enabled",
+          "NO",
+          "-collect-test-diagnostics",
+          "never",
+          "-only-testing:LumenUITests/LumenSmokeTests/testHealthRetainedReviewOwnerChildren",
+          "-resultBundlePath",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-i_9f7a96/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+          "test-without-building"
+        ],
+        [
+          "caffeinate",
+          "-i",
+          "-w",
+          "424242"
+        ],
+        [
+          "xcrun",
+          "simctl",
+          "get_app_container",
+          "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "com.dbakp.lumen",
+          "group.com.dbakp.lumen"
+        ],
+        [
+          "xcrun",
+          "simctl",
+          "get_app_container",
+          "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "com.dbakp.lumen",
+          "app"
+        ],
+        [
+          "xcrun",
+          "xcresulttool",
+          "get",
+          "test-results",
+          "summary",
+          "--path",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-i_9f7a96/raw/RetainedOwnerSource260ChildrenR1.xcresult"
+        ],
+        [
+          "xcrun",
+          "xcresulttool",
+          "export",
+          "attachments",
+          "--path",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-i_9f7a96/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+          "--output-path",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-i_9f7a96/raw/RetainedOwnerSource260ChildrenR1All"
+        ]
+      ],
+      "syntheticNativeCompleted": true,
+      "correctRetention": true
+    },
+    {
+      "fault": "caffeinate-raise",
+      "escaped": {
+        "type": "SystemExit",
+        "code": true
+      },
+      "summaryAttempted": true,
+      "exportAttempted": true,
+      "terminalPersisted": true,
+      "retainedNames": [
+        "10-bad.png",
+        "20-later.png",
+        "manifest.json",
+        "readback.json"
+      ],
+      "state": {
+        "status": "FAILED retention/native; no acceptance",
+        "source": "durable-source-r260.json",
+        "build": "health-target-change-source260-r1-build.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "stem": "RetainedOwnerSource260ChildrenR1",
+        "command": [
+          "xcodebuild",
+          "-project",
+          "Lumen.xcodeproj",
+          "-scheme",
+          "Lumen",
+          "-configuration",
+          "Debug",
+          "-destination",
+          "platform=iOS Simulator,id=5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "-derivedDataPath",
+          "/tmp/LumenBatch37Simulator",
+          "-clonedSourcePackagesDirPath",
+          "/tmp/LumenBatch37Packages",
+          "-disableAutomaticPackageResolution",
+          "-parallel-testing-enabled",
+          "NO",
+          "-collect-test-diagnostics",
+          "never",
+          "-only-testing:LumenUITests/LumenSmokeTests/testHealthRetainedReviewOwnerChildren",
+          "-resultBundlePath",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-45kl6yz3/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+          "test-without-building"
+        ],
+        "startedAt": 1794194721.9551492,
+        "physicalDeviceActions": false,
+        "errors": [
+          {
+            "stage": "caffeinate",
+            "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/retained-owner-driver-r3.py\", line 135, in main\n    try: subprocess.Popen(['caffeinate', '-i', '-w', str(process.pid)])\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/source260-driver-caller-controls-r1-executed.py\", line 73, in __init__\n    if command[0] == 'caffeinate' and fault == 'caffeinate-raise': raise OSError('injected keepawake launch failure')\nOSError: injected keepawake launch failure\n"
+          }
+        ],
+        "originals": [
+          {
+            "file": "retained-owner-source260-children-r1-original-10-bad.png",
+            "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-45kl6yz3/raw/RetainedOwnerSource260ChildrenR1All/10-bad.png",
+            "name": "10-bad.png",
+            "bytes": 20,
+            "sha256": "d685d85be9a9014dbcdd73446470b42697a4e07ab19a691cae50a94a027d0c8b",
+            "individuallyOpened": false
+          },
+          {
+            "file": "retained-owner-source260-children-r1-original-20-later.png",
+            "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-45kl6yz3/raw/RetainedOwnerSource260ChildrenR1All/20-later.png",
+            "name": "20-later.png",
+            "bytes": 20,
+            "sha256": "ea69893690c73ae32da9e2f5cde01a7c1c58b1e4d8d7d272485791285cf66b27",
+            "individuallyOpened": false
+          },
+          {
+            "file": "retained-owner-source260-children-r1-original-manifest.json",
+            "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-45kl6yz3/raw/RetainedOwnerSource260ChildrenR1All/manifest.json",
+            "name": "manifest.json",
+            "bytes": 304,
+            "sha256": "9c8b23959c759bf18cc86ba0c7e52e1618ffba43423ff6d6f2d41a715b94a4bc",
+            "individuallyOpened": false
+          },
+          {
+            "file": "retained-owner-source260-children-r1-original-readback.json",
+            "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-45kl6yz3/raw/RetainedOwnerSource260ChildrenR1All/readback.json",
+            "name": "readback.json",
+            "bytes": 2,
+            "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+            "individuallyOpened": false
+          }
+        ],
+        "originalFailures": [],
+        "prerequisiteExactProof": "source260-build-exact-github.json",
+        "preflight": {
+          "source": "durable-source-r260.json",
+          "app": {
+            "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-45kl6yz3/app",
+            "bytes": 12,
+            "sha256": "55fb26d2fe83cd62ce18d8770c08cefa6eb728b55cd2073aad9e41544111c013",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 47035564,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 12,
+              "st_mtime_ns": 1794194721949934349
+            }
+          },
+          "injected": true
+        },
+        "prerequisiteExactProofFact": {
+          "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-45kl6yz3/canonical/source260-build-exact-github.json",
+          "bytes": 67,
+          "sha256": "8153f6357ccbaa3bcab5f5b6b0832c969c61f4d0f80f8f65a1f343d953d231a4",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 47035567,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 67,
+            "st_mtime_ns": 1794194721950774346
+          }
+        },
+        "providerBefore": {
+          "bytes": 4992,
+          "sha256": "injected provider"
+        },
+        "nativePID": 424242,
+        "nativeExit": 0,
+        "containerQuery": {
+          "command": [
+            "xcrun",
+            "simctl",
+            "get_app_container",
+            "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+            "com.dbakp.lumen",
+            "group.com.dbakp.lumen"
+          ],
+          "pid": 424243,
+          "exit": 0,
+          "stdout": "L3Zhci9mb2xkZXJzL3M4Lzlqendmc3dzNnpiM3FiZzBmZnl5X2JsbTAwMDBnbi9UL2x1bWVuMjU5LWRyaXZlci1pbmplY3RlZC00NWtsNnl6My9ncm91cA==",
+          "stderr": ""
+        },
+        "trace": {
+          "file": "retained-owner-source260-children-r1-trace.json",
+          "bytes": 33,
+          "sha256": "eaeb191d259544eb27f249813dc9b0f3676136e7fa5f19938c0f4552729e3d0b",
+          "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-45kl6yz3/group/Lumen-retained-review-owner-events.json"
+        },
+        "preflightAfter": {
+          "source": "durable-source-r260.json",
+          "app": {
+            "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-45kl6yz3/app",
+            "bytes": 12,
+            "sha256": "55fb26d2fe83cd62ce18d8770c08cefa6eb728b55cd2073aad9e41544111c013",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 47035564,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 12,
+              "st_mtime_ns": 1794194721949934349
+            }
+          },
+          "injected": true
+        },
+        "providerAfter": {
+          "bytes": 4992,
+          "sha256": "injected provider"
+        },
+        "installedAppQuery": {
+          "command": [
+            "xcrun",
+            "simctl",
+            "get_app_container",
+            "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+            "com.dbakp.lumen",
+            "app"
+          ],
+          "pid": 424243,
+          "exit": 0,
+          "stdout": "L3Zhci9mb2xkZXJzL3M4Lzlqendmc3dzNnpiM3FiZzBmZnl5X2JsbTAwMDBnbi9UL2x1bWVuMjU5LWRyaXZlci1pbmplY3RlZC00NWtsNnl6My9JbnN0YWxsZWQuYXBw",
+          "stderr": ""
+        },
+        "installedApp": {
+          "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-45kl6yz3/Installed.app/Lumen",
+          "bytes": 12,
+          "sha256": "55fb26d2fe83cd62ce18d8770c08cefa6eb728b55cd2073aad9e41544111c013",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 47035584,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 12,
+            "st_mtime_ns": 1794194721959946107
+          }
+        },
+        "nativeFinalization": {
+          "launched": true,
+          "pid": 424242,
+          "errors": [],
+          "exit": 0
+        },
+        "log": {
+          "file": "retained-owner-source260-children-r1-native.log.gz",
+          "bytes": 43,
+          "sha256": "6c44d1a8739bf6ba8b575d797402408aa9bde281c676441d35dffba87940544d"
+        },
+        "summaryQuery": {
+          "command": [
+            "xcrun",
+            "xcresulttool",
+            "get",
+            "test-results",
+            "summary",
+            "--path",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-45kl6yz3/raw/RetainedOwnerSource260ChildrenR1.xcresult"
+          ],
+          "pid": 424244,
+          "exit": 0,
+          "stdout": "eyJwYXNzZWRUZXN0cyI6IDEsICJmYWlsZWRUZXN0cyI6IDAsICJza2lwcGVkVGVzdHMiOiAwfQ==",
+          "stderr": ""
+        },
+        "exportQuery": {
+          "command": [
+            "xcrun",
+            "xcresulttool",
+            "export",
+            "attachments",
+            "--path",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-45kl6yz3/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+            "--output-path",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-45kl6yz3/raw/RetainedOwnerSource260ChildrenR1All"
+          ],
+          "pid": 424244,
+          "exit": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        "originalManifest": "retained-owner-source260-children-r1-original-manifest.json",
+        "finishedAt": 1794194721.970869
+      },
+      "primaryStatus": "FAILED retention/native; no acceptance",
+      "emergencyExists": false,
+      "injectedCalls": [
+        [
+          "xcodebuild",
+          "-project",
+          "Lumen.xcodeproj",
+          "-scheme",
+          "Lumen",
+          "-configuration",
+          "Debug",
+          "-destination",
+          "platform=iOS Simulator,id=5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "-derivedDataPath",
+          "/tmp/LumenBatch37Simulator",
+          "-clonedSourcePackagesDirPath",
+          "/tmp/LumenBatch37Packages",
+          "-disableAutomaticPackageResolution",
+          "-parallel-testing-enabled",
+          "NO",
+          "-collect-test-diagnostics",
+          "never",
+          "-only-testing:LumenUITests/LumenSmokeTests/testHealthRetainedReviewOwnerChildren",
+          "-resultBundlePath",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-45kl6yz3/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+          "test-without-building"
+        ],
+        [
+          "caffeinate",
+          "-i",
+          "-w",
+          "424242"
+        ],
+        [
+          "xcrun",
+          "simctl",
+          "get_app_container",
+          "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "com.dbakp.lumen",
+          "group.com.dbakp.lumen"
+        ],
+        [
+          "xcrun",
+          "simctl",
+          "get_app_container",
+          "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "com.dbakp.lumen",
+          "app"
+        ],
+        [
+          "xcrun",
+          "xcresulttool",
+          "get",
+          "test-results",
+          "summary",
+          "--path",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-45kl6yz3/raw/RetainedOwnerSource260ChildrenR1.xcresult"
+        ],
+        [
+          "xcrun",
+          "xcresulttool",
+          "export",
+          "attachments",
+          "--path",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-45kl6yz3/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+          "--output-path",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-45kl6yz3/raw/RetainedOwnerSource260ChildrenR1All"
+        ]
+      ],
+      "syntheticNativeCompleted": true,
+      "correctRetention": true
+    },
+    {
+      "fault": "native-wait-raise",
+      "escaped": {
+        "type": "SystemExit",
+        "code": true
+      },
+      "summaryAttempted": true,
+      "exportAttempted": true,
+      "terminalPersisted": true,
+      "retainedNames": [
+        "10-bad.png",
+        "20-later.png",
+        "manifest.json",
+        "readback.json"
+      ],
+      "state": {
+        "status": "FAILED retention/native; no acceptance",
+        "source": "durable-source-r260.json",
+        "build": "health-target-change-source260-r1-build.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "stem": "RetainedOwnerSource260ChildrenR1",
+        "command": [
+          "xcodebuild",
+          "-project",
+          "Lumen.xcodeproj",
+          "-scheme",
+          "Lumen",
+          "-configuration",
+          "Debug",
+          "-destination",
+          "platform=iOS Simulator,id=5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "-derivedDataPath",
+          "/tmp/LumenBatch37Simulator",
+          "-clonedSourcePackagesDirPath",
+          "/tmp/LumenBatch37Packages",
+          "-disableAutomaticPackageResolution",
+          "-parallel-testing-enabled",
+          "NO",
+          "-collect-test-diagnostics",
+          "never",
+          "-only-testing:LumenUITests/LumenSmokeTests/testHealthRetainedReviewOwnerChildren",
+          "-resultBundlePath",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-8ucvo4y_/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+          "test-without-building"
+        ],
+        "startedAt": 1794194721.983944,
+        "physicalDeviceActions": false,
+        "errors": [
+          {
+            "stage": "native-or-preflight",
+            "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/retained-owner-driver-r3.py\", line 137, in main\n    state['nativeExit'] = process.wait(timeout=600); persist('native-completed')\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/source260-driver-caller-controls-r1-executed.py\", line 78, in wait\n    if fault == 'native-wait-raise' and self.waits == 1: raise subprocess.TimeoutExpired('injected native', 600)\nsubprocess.TimeoutExpired: Command 'injected native' timed out after 600 seconds\n"
+          }
+        ],
+        "originals": [
+          {
+            "file": "retained-owner-source260-children-r1-original-10-bad.png",
+            "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-8ucvo4y_/raw/RetainedOwnerSource260ChildrenR1All/10-bad.png",
+            "name": "10-bad.png",
+            "bytes": 20,
+            "sha256": "d685d85be9a9014dbcdd73446470b42697a4e07ab19a691cae50a94a027d0c8b",
+            "individuallyOpened": false
+          },
+          {
+            "file": "retained-owner-source260-children-r1-original-20-later.png",
+            "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-8ucvo4y_/raw/RetainedOwnerSource260ChildrenR1All/20-later.png",
+            "name": "20-later.png",
+            "bytes": 20,
+            "sha256": "ea69893690c73ae32da9e2f5cde01a7c1c58b1e4d8d7d272485791285cf66b27",
+            "individuallyOpened": false
+          },
+          {
+            "file": "retained-owner-source260-children-r1-original-manifest.json",
+            "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-8ucvo4y_/raw/RetainedOwnerSource260ChildrenR1All/manifest.json",
+            "name": "manifest.json",
+            "bytes": 304,
+            "sha256": "9c8b23959c759bf18cc86ba0c7e52e1618ffba43423ff6d6f2d41a715b94a4bc",
+            "individuallyOpened": false
+          },
+          {
+            "file": "retained-owner-source260-children-r1-original-readback.json",
+            "raw": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-8ucvo4y_/raw/RetainedOwnerSource260ChildrenR1All/readback.json",
+            "name": "readback.json",
+            "bytes": 2,
+            "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+            "individuallyOpened": false
+          }
+        ],
+        "originalFailures": [],
+        "prerequisiteExactProof": "source260-build-exact-github.json",
+        "preflight": {
+          "source": "durable-source-r260.json",
+          "app": {
+            "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-8ucvo4y_/app",
+            "bytes": 12,
+            "sha256": "55fb26d2fe83cd62ce18d8770c08cefa6eb728b55cd2073aad9e41544111c013",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 47035609,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 12,
+              "st_mtime_ns": 1794194721975928555
+            }
+          },
+          "injected": true
+        },
+        "prerequisiteExactProofFact": {
+          "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-8ucvo4y_/canonical/source260-build-exact-github.json",
+          "bytes": 67,
+          "sha256": "8153f6357ccbaa3bcab5f5b6b0832c969c61f4d0f80f8f65a1f343d953d231a4",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 47035612,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 67,
+            "st_mtime_ns": 1794194721978595587
+          }
+        },
+        "providerBefore": {
+          "bytes": 4992,
+          "sha256": "injected provider"
+        },
+        "nativePID": 424242,
+        "nativeFinalization": {
+          "launched": true,
+          "pid": 424242,
+          "errors": [],
+          "exit": 0,
+          "finishedBy": "natural-grace"
+        },
+        "log": {
+          "file": "retained-owner-source260-children-r1-native.log.gz",
+          "bytes": 43,
+          "sha256": "6c44d1a8739bf6ba8b575d797402408aa9bde281c676441d35dffba87940544d"
+        },
+        "summaryQuery": {
+          "command": [
+            "xcrun",
+            "xcresulttool",
+            "get",
+            "test-results",
+            "summary",
+            "--path",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-8ucvo4y_/raw/RetainedOwnerSource260ChildrenR1.xcresult"
+          ],
+          "pid": 424244,
+          "exit": 0,
+          "stdout": "eyJwYXNzZWRUZXN0cyI6IDEsICJmYWlsZWRUZXN0cyI6IDAsICJza2lwcGVkVGVzdHMiOiAwfQ==",
+          "stderr": ""
+        },
+        "exportQuery": {
+          "command": [
+            "xcrun",
+            "xcresulttool",
+            "export",
+            "attachments",
+            "--path",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-8ucvo4y_/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+            "--output-path",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-8ucvo4y_/raw/RetainedOwnerSource260ChildrenR1All"
+          ],
+          "pid": 424244,
+          "exit": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        "originalManifest": "retained-owner-source260-children-r1-original-manifest.json",
+        "finishedAt": 1794194721.994741
+      },
+      "primaryStatus": "FAILED retention/native; no acceptance",
+      "emergencyExists": false,
+      "injectedCalls": [
+        [
+          "xcodebuild",
+          "-project",
+          "Lumen.xcodeproj",
+          "-scheme",
+          "Lumen",
+          "-configuration",
+          "Debug",
+          "-destination",
+          "platform=iOS Simulator,id=5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+          "-derivedDataPath",
+          "/tmp/LumenBatch37Simulator",
+          "-clonedSourcePackagesDirPath",
+          "/tmp/LumenBatch37Packages",
+          "-disableAutomaticPackageResolution",
+          "-parallel-testing-enabled",
+          "NO",
+          "-collect-test-diagnostics",
+          "never",
+          "-only-testing:LumenUITests/LumenSmokeTests/testHealthRetainedReviewOwnerChildren",
+          "-resultBundlePath",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-8ucvo4y_/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+          "test-without-building"
+        ],
+        [
+          "caffeinate",
+          "-i",
+          "-w",
+          "424242"
+        ],
+        [
+          "xcrun",
+          "xcresulttool",
+          "get",
+          "test-results",
+          "summary",
+          "--path",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-8ucvo4y_/raw/RetainedOwnerSource260ChildrenR1.xcresult"
+        ],
+        [
+          "xcrun",
+          "xcresulttool",
+          "export",
+          "attachments",
+          "--path",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-8ucvo4y_/raw/RetainedOwnerSource260ChildrenR1.xcresult",
+          "--output-path",
+          "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-driver-injected-8ucvo4y_/raw/RetainedOwnerSource260ChildrenR1All"
+        ]
+      ],
+      "syntheticNativeCompleted": true,
+      "correctRetention": true
+    }
+  ],
+  "scope": "Actual main and real temporary file retention; injected source/build/proof/provider/native/query functions and synthetic PID metadata. R2 fixes missing STDOUT in first baseline namespace and requires synthetic native completion/finalization. No native/source verification/build/compiled-pair acceptance.",
+  "checkedAt": 1794194721.997132
+}

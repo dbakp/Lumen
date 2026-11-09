@@ -1,0 +1,146 @@
+{
+  "status": "PASS current parser/help and finalizer argument controls",
+  "count": 13,
+  "cases": [
+    {
+      "command": [
+        "python3",
+        "Design/native/health-write-order/retained-owner-driver-r3.py",
+        "--help"
+      ],
+      "pid": 65232,
+      "exit": 0,
+      "stdout": "usage: retained-owner-driver-r3.py [-h] --case\n                                   {children,pending-back,sheet-dismiss}\n\nCorrected retained-owner producer: independent acquisitions and exact\nexecution facts. Run after current source review/exact backup and current full\napp/test build/exact backup. Each case must be reviewed and backed up before\nthe next fixture reset.\n\noptional arguments:\n  -h, --help            show this help message and exit\n  --case {children,pending-back,sheet-dismiss}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "Design/native/health-write-order/retained-owner-driver-r3.py",
+        "--case",
+        "unknown"
+      ],
+      "pid": 65233,
+      "exit": 2,
+      "stdout": "",
+      "stderr": "usage: retained-owner-driver-r3.py [-h] --case\n                                   {children,pending-back,sheet-dismiss}\nretained-owner-driver-r3.py: error: argument --case: invalid choice: 'unknown' (choose from 'children', 'pending-back', 'sheet-dismiss')\n"
+    },
+    {
+      "command": [
+        "python3",
+        "Design/native/health-write-order/check-retained-owner-r3.py",
+        "--help"
+      ],
+      "pid": 65236,
+      "exit": 0,
+      "stdout": "usage: check-retained-owner-r3.py [-h] --case\n                                  {children,pending-back,sheet-dismiss}\n\nMandatory fresh-source checker of one actual retained-owner native case.\n\noptional arguments:\n  -h, --help            show this help message and exit\n  --case {children,pending-back,sheet-dismiss}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "Design/native/health-write-order/check-retained-owner-r3.py",
+        "--case",
+        "unknown"
+      ],
+      "pid": 65239,
+      "exit": 2,
+      "stdout": "",
+      "stderr": "usage: check-retained-owner-r3.py [-h] --case\n                                  {children,pending-back,sheet-dismiss}\ncheck-retained-owner-r3.py: error: argument --case: invalid choice: 'unknown' (choose from 'children', 'pending-back', 'sheet-dismiss')\n"
+    },
+    {
+      "command": [
+        "python3",
+        "Design/native/health-write-order/retained-owner-finalization-r3.py",
+        "--help"
+      ],
+      "pid": 65247,
+      "exit": 0,
+      "stdout": "usage: retained-owner-finalization-r3.py [-h] --case\n                                         {children,pending-back,sheet-dismiss}\n\nRetain actual mandatory checker completion before interpreting its audit.\n\noptional arguments:\n  -h, --help            show this help message and exit\n  --case {children,pending-back,sheet-dismiss}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "Design/native/health-write-order/retained-owner-finalization-r3.py",
+        "--case",
+        "unknown"
+      ],
+      "pid": 65249,
+      "exit": 2,
+      "stdout": "",
+      "stderr": "usage: retained-owner-finalization-r3.py [-h] --case\n                                         {children,pending-back,sheet-dismiss}\nretained-owner-finalization-r3.py: error: argument --case: invalid choice: 'unknown' (choose from 'children', 'pending-back', 'sheet-dismiss')\n"
+    },
+    {
+      "case": "children",
+      "command": [
+        "python3",
+        "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/check-retained-owner-r3.py",
+        "--case",
+        "children"
+      ]
+    },
+    {
+      "case": "pending-back",
+      "command": [
+        "python3",
+        "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/check-retained-owner-r3.py",
+        "--case",
+        "pending-back"
+      ]
+    },
+    {
+      "case": "sheet-dismiss",
+      "command": [
+        "python3",
+        "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/check-retained-owner-r3.py",
+        "--case",
+        "sheet-dismiss"
+      ]
+    },
+    {
+      "case": "../children",
+      "rejected": true
+    },
+    {
+      "case": "children-r2",
+      "rejected": true
+    },
+    {
+      "case": "",
+      "rejected": true
+    },
+    {
+      "case": null,
+      "rejected": true
+    }
+  ],
+  "sources": {
+    "retained-owner-driver-r3.py": {
+      "bytes": 11777,
+      "sha256": "0462e4ec888f1f8c725b424052e50316a1eaef86d1c54d6976580e0b1eddaf49"
+    },
+    "retained-owner-evidence-r2.py": {
+      "bytes": 7546,
+      "sha256": "7b6349386ff5bbdf32aa7ee7976a99e4c8fb52a018a72b8bf71b385b35196335"
+    },
+    "check-retained-owner-r3.py": {
+      "bytes": 8049,
+      "sha256": "9b5af5de6e9e29fbe8e7d76a0e4236c0e6ec3153bfe2e8c1598ab7b233115cf0"
+    },
+    "retained-owner-finalization-r3.py": {
+      "bytes": 3111,
+      "sha256": "b692e2784cafb2a2f35062533ec98fe5789acd039f92460b3f4ba781e05b567c"
+    },
+    "source260-target-change-native-build-r1-planned.py": {
+      "bytes": 3866,
+      "sha256": "69d8df84aa33fa381251aa93ef79c37b31c00c4dd4f596a9013d872624b67716"
+    },
+    "source260-debug-release-controls-r1-planned.py": {
+      "bytes": 2688,
+      "sha256": "002433696a7f657c5286d435a8fc61f122e30ab87cb87e8ba97f4a3cbe992a36"
+    }
+  },
+  "scope": "Actual CLI help/invalid-case subprocesses and pure checker command builder. No native/fullbuild/source-bound main invoked.",
+  "checkedAt": 1794195480.814913
+}

@@ -1,0 +1,269 @@
+{
+  "status": "PASS actual strict JSON/integer/receipt/Git-fact controls",
+  "count": 54,
+  "cases": [
+    {
+      "name": "same integers",
+      "accepted": true
+    },
+    {
+      "name": "Boolean/int",
+      "accepted": false
+    },
+    {
+      "name": "float/int",
+      "accepted": false
+    },
+    {
+      "name": "same float",
+      "accepted": true
+    },
+    {
+      "name": "signed float zero",
+      "accepted": false
+    },
+    {
+      "name": "nested Boolean",
+      "accepted": false
+    },
+    {
+      "name": "null",
+      "accepted": true
+    },
+    {
+      "name": "null/string",
+      "accepted": false
+    },
+    {
+      "name": "tuple/list",
+      "accepted": false
+    },
+    {
+      "name": "invalid numeric keys",
+      "accepted": false
+    },
+    {
+      "name": "NaN",
+      "accepted": false
+    },
+    {
+      "name": "infinity",
+      "accepted": false
+    },
+    {
+      "name": "UTF units differ",
+      "accepted": false
+    },
+    {
+      "name": "integer rule",
+      "value": 0,
+      "minimum": 0,
+      "accepted": true
+    },
+    {
+      "name": "integer rule",
+      "value": 0,
+      "minimum": 1,
+      "accepted": false
+    },
+    {
+      "name": "integer rule",
+      "value": 1,
+      "minimum": 1,
+      "accepted": true
+    },
+    {
+      "name": "integer rule",
+      "value": true,
+      "minimum": 0,
+      "accepted": false
+    },
+    {
+      "name": "integer rule",
+      "value": false,
+      "minimum": 0,
+      "accepted": false
+    },
+    {
+      "name": "integer rule",
+      "value": 1.0,
+      "minimum": 0,
+      "accepted": false
+    },
+    {
+      "name": "integer rule",
+      "value": 0.0,
+      "minimum": 0,
+      "accepted": false
+    },
+    {
+      "name": "integer rule",
+      "value": -1,
+      "minimum": 0,
+      "accepted": false
+    },
+    {
+      "name": "integer rule",
+      "value": "1",
+      "minimum": 0,
+      "accepted": false
+    },
+    {
+      "name": "integer rule",
+      "value": null,
+      "minimum": 0,
+      "accepted": false
+    },
+    {
+      "name": "genuine historical257 receipt schema",
+      "accepted": true
+    },
+    {
+      "name": "buildExit type",
+      "value": 0.0,
+      "accepted": false
+    },
+    {
+      "name": "buildExit type",
+      "value": false,
+      "accepted": false
+    },
+    {
+      "name": "buildExit type",
+      "value": null,
+      "accepted": false
+    },
+    {
+      "name": "buildExit type",
+      "value": "0",
+      "accepted": false
+    },
+    {
+      "name": "sourceInputs type",
+      "value": 979.0,
+      "accepted": false
+    },
+    {
+      "name": "sourceInputs type",
+      "value": true,
+      "accepted": false
+    },
+    {
+      "name": "sourceInputs type",
+      "value": null,
+      "accepted": false
+    },
+    {
+      "name": "sourceInputs type",
+      "value": "979",
+      "accepted": false
+    },
+    {
+      "name": "fixtureInputs type",
+      "value": 66.0,
+      "accepted": false
+    },
+    {
+      "name": "fixtureInputs type",
+      "value": true,
+      "accepted": false
+    },
+    {
+      "name": "fixtureInputs type",
+      "value": null,
+      "accepted": false
+    },
+    {
+      "name": "fixtureInputs type",
+      "value": "66",
+      "accepted": false
+    },
+    {
+      "name": "binaryBytes type",
+      "value": 46657632.0,
+      "accepted": false
+    },
+    {
+      "name": "binaryBytes type",
+      "value": true,
+      "accepted": false
+    },
+    {
+      "name": "binaryBytes type",
+      "value": null,
+      "accepted": false
+    },
+    {
+      "name": "binaryBytes type",
+      "value": "46657632",
+      "accepted": false
+    },
+    {
+      "name": "testBinaryBytes type",
+      "value": 6517648.0,
+      "accepted": false
+    },
+    {
+      "name": "testBinaryBytes type",
+      "value": true,
+      "accepted": false
+    },
+    {
+      "name": "testBinaryBytes type",
+      "value": null,
+      "accepted": false
+    },
+    {
+      "name": "testBinaryBytes type",
+      "value": "6517648",
+      "accepted": false
+    },
+    {
+      "name": "genuine historical257 three-file Git blob anchor",
+      "accepted": true
+    },
+    {
+      "name": "manifest proof-sha256 tamper",
+      "accepted": false
+    },
+    {
+      "name": "manifest proof-bytes tamper",
+      "accepted": false
+    },
+    {
+      "name": "manifest simultaneously forged proof+fact rejected against Git blob",
+      "accepted": false
+    },
+    {
+      "name": "archive proof-sha256 tamper",
+      "accepted": false
+    },
+    {
+      "name": "archive proof-bytes tamper",
+      "accepted": false
+    },
+    {
+      "name": "archive simultaneously forged proof+fact rejected against Git blob",
+      "accepted": false
+    },
+    {
+      "name": "receipt proof-sha256 tamper",
+      "accepted": false
+    },
+    {
+      "name": "receipt proof-bytes tamper",
+      "accepted": false
+    },
+    {
+      "name": "receipt simultaneously forged proof+fact rejected against Git blob",
+      "accepted": false
+    }
+  ],
+  "source": {
+    "file": "retained-owner-evidence-r2.py",
+    "bytes": 7546,
+    "sha256": "7b6349386ff5bbdf32aa7ee7976a99e4c8fb52a018a72b8bf71b385b35196335"
+  },
+  "scope": "Actual helper functions, genuine historical257 receipt/manifest/file metadata and three actual retained Git blobs. Generic schema/integrity fixtures only; no old257 source-bound native audit or current257/260pair/source/runtime acceptance. Empty diagnostics require strict int0; app/test/log/trace use positive sizes.",
+  "checkedAt": 1794194244.040249
+}

@@ -1,0 +1,2378 @@
+{
+  "status": "PASS actual mandatory-checker main typed-family controls",
+  "count": 33,
+  "cases": [
+    {
+      "fault": "valid-injected",
+      "exit": false,
+      "accepted": true,
+      "audit": {
+        "status": "SUPPORTED native trace/readback/export; original visual/root/critic review pending",
+        "source": "durable-source-r260.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "startedAt": 1794194425.989028,
+        "sourceInputs": 1045,
+        "currentExecutionFacts": {
+          "source": "durable-source-r260.json",
+          "build": "health-target-change-source260-r1-build.json",
+          "inputCount": 1045,
+          "manifest": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r260.json",
+            "bytes": 196620,
+            "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46934266,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 196620,
+              "st_mtime_ns": 1794186375481479438
+            }
+          },
+          "archive": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r260.json.gz",
+            "bytes": 5936742,
+            "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46934267,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 5936742,
+              "st_mtime_ns": 1794186375482614056
+            }
+          },
+          "receipt": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source260-r1-build.json",
+            "bytes": 701,
+            "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936802,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 701,
+              "st_mtime_ns": 1794186754091915233
+            }
+          },
+          "app": {
+            "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+            "bytes": 46657632,
+            "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936770,
+              "st_mode": 33261,
+              "st_nlink": 1,
+              "st_size": 46657632,
+              "st_mtime_ns": 1794186718137419780
+            }
+          },
+          "test": {
+            "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+            "bytes": 6517648,
+            "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936795,
+              "st_mode": 33261,
+              "st_nlink": 1,
+              "st_size": 6517648,
+              "st_mtime_ns": 1794186753745564273
+            }
+          }
+        },
+        "installedAppQuery": {
+          "command": [
+            "xcrun",
+            "simctl",
+            "get_app_container",
+            "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+            "com.dbakp.lumen",
+            "app"
+          ],
+          "pid": 424243,
+          "exit": 0,
+          "stdout": "L3RtcC9MdW1lbkJhdGNoMzdTaW11bGF0b3IvQnVpbGQvUHJvZHVjdHMvRGVidWctaXBob25lc2ltdWxhdG9yL0x1bWVuLmFwcA==",
+          "stderr": ""
+        },
+        "installedAppCurrent": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "protocol": {
+          "owners": [
+            "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "51DA36EF-6E83-4D7C-A090-B7C052B5E35D"
+          ],
+          "captureOperations": [
+            "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "8E2954DF-A884-46C7-B82C-6F154C180E7B"
+          ],
+          "eventCount": 10,
+          "scope": "Actual trace plus UI readback consistency; no continuous visibility, reference-release or global descriptor claim."
+        },
+        "originalCount": 13,
+        "pngCount": 9,
+        "scope": "One actual case, sampled native screenshots and metadata trace. No global lifetime/continuous visibility/appearance/phone/full-goal acceptance.",
+        "finishedAt": 1794194426.018925
+      }
+    },
+    {
+      "fault": "wrong-source",
+      "exit": true,
+      "accepted": false,
+      "audit": {
+        "status": "FAILED",
+        "source": "durable-source-r260.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "startedAt": 1794194426.05637,
+        "sourceInputs": 1045,
+        "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/check-retained-owner-r3.py\", line 22, in main\n    assert state['source'] == result['source'] and state['case'] == args.case and state['prefix'] == prefix\nAssertionError\n",
+        "finishedAt": 1794194426.056917
+      }
+    },
+    {
+      "fault": "wrong-build",
+      "exit": true,
+      "accepted": false,
+      "audit": {
+        "status": "FAILED",
+        "source": "durable-source-r260.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "startedAt": 1794194426.0922902,
+        "sourceInputs": 1045,
+        "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/check-retained-owner-r3.py\", line 25, in main\n    assert evidence.validate_recorded(state, current, args.case, driver.RAW)\n  File \"/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-checker-caller-0xa3n7s5/retained-owner-evidence-r2.py\", line 109, in validate_recorded\n    assert state['case'] == case and state['source'] == SOURCE and state['build'] == BUILD\nAssertionError\n",
+        "finishedAt": 1794194426.094351
+      }
+    },
+    {
+      "fault": "wrong-device",
+      "exit": true,
+      "accepted": false,
+      "audit": {
+        "status": "FAILED",
+        "source": "durable-source-r260.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "startedAt": 1794194426.131258,
+        "sourceInputs": 1045,
+        "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/check-retained-owner-r3.py\", line 25, in main\n    assert evidence.validate_recorded(state, current, args.case, driver.RAW)\n  File \"/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-checker-caller-8qaas72r/retained-owner-evidence-r2.py\", line 111, in validate_recorded\n    assert state['command'] == command(case, raw)\nAssertionError\n",
+        "finishedAt": 1794194426.1333592
+      }
+    },
+    {
+      "fault": "wrong-only-test",
+      "exit": true,
+      "accepted": false,
+      "audit": {
+        "status": "FAILED",
+        "source": "durable-source-r260.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "startedAt": 1794194426.169686,
+        "sourceInputs": 1045,
+        "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/check-retained-owner-r3.py\", line 25, in main\n    assert evidence.validate_recorded(state, current, args.case, driver.RAW)\n  File \"/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-checker-caller-b33fdwwn/retained-owner-evidence-r2.py\", line 111, in validate_recorded\n    assert state['command'] == command(case, raw)\nAssertionError\n",
+        "finishedAt": 1794194426.1717172
+      }
+    },
+    {
+      "fault": "wrong-summary-path",
+      "exit": true,
+      "accepted": false,
+      "audit": {
+        "status": "FAILED",
+        "source": "durable-source-r260.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "startedAt": 1794194426.207565,
+        "sourceInputs": 1045,
+        "currentExecutionFacts": {
+          "source": "durable-source-r260.json",
+          "build": "health-target-change-source260-r1-build.json",
+          "inputCount": 1045,
+          "manifest": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r260.json",
+            "bytes": 196620,
+            "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46934266,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 196620,
+              "st_mtime_ns": 1794186375481479438
+            }
+          },
+          "archive": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r260.json.gz",
+            "bytes": 5936742,
+            "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46934267,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 5936742,
+              "st_mtime_ns": 1794186375482614056
+            }
+          },
+          "receipt": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source260-r1-build.json",
+            "bytes": 701,
+            "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936802,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 701,
+              "st_mtime_ns": 1794186754091915233
+            }
+          },
+          "app": {
+            "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+            "bytes": 46657632,
+            "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936770,
+              "st_mode": 33261,
+              "st_nlink": 1,
+              "st_size": 46657632,
+              "st_mtime_ns": 1794186718137419780
+            }
+          },
+          "test": {
+            "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+            "bytes": 6517648,
+            "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936795,
+              "st_mode": 33261,
+              "st_nlink": 1,
+              "st_size": 6517648,
+              "st_mtime_ns": 1794186753745564273
+            }
+          }
+        },
+        "installedAppQuery": {
+          "command": [
+            "xcrun",
+            "simctl",
+            "get_app_container",
+            "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+            "com.dbakp.lumen",
+            "app"
+          ],
+          "pid": 424243,
+          "exit": 0,
+          "stdout": "L3RtcC9MdW1lbkJhdGNoMzdTaW11bGF0b3IvQnVpbGQvUHJvZHVjdHMvRGVidWctaXBob25lc2ltdWxhdG9yL0x1bWVuLmFwcA==",
+          "stderr": ""
+        },
+        "installedAppCurrent": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/check-retained-owner-r3.py\", line 60, in main\n    assert state['summaryQuery']['command'] == ['xcrun', 'xcresulttool', 'get', 'test-results', 'summary', '--path', str(bundle)]\nAssertionError\n",
+        "finishedAt": 1794194426.23568
+      }
+    },
+    {
+      "fault": "null-query-pid",
+      "exit": true,
+      "accepted": false,
+      "audit": {
+        "status": "FAILED",
+        "source": "durable-source-r260.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "startedAt": 1794194426.2725608,
+        "sourceInputs": 1045,
+        "currentExecutionFacts": {
+          "source": "durable-source-r260.json",
+          "build": "health-target-change-source260-r1-build.json",
+          "inputCount": 1045,
+          "manifest": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r260.json",
+            "bytes": 196620,
+            "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46934266,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 196620,
+              "st_mtime_ns": 1794186375481479438
+            }
+          },
+          "archive": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r260.json.gz",
+            "bytes": 5936742,
+            "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46934267,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 5936742,
+              "st_mtime_ns": 1794186375482614056
+            }
+          },
+          "receipt": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source260-r1-build.json",
+            "bytes": 701,
+            "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936802,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 701,
+              "st_mtime_ns": 1794186754091915233
+            }
+          },
+          "app": {
+            "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+            "bytes": 46657632,
+            "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936770,
+              "st_mode": 33261,
+              "st_nlink": 1,
+              "st_size": 46657632,
+              "st_mtime_ns": 1794186718137419780
+            }
+          },
+          "test": {
+            "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+            "bytes": 6517648,
+            "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936795,
+              "st_mode": 33261,
+              "st_nlink": 1,
+              "st_size": 6517648,
+              "st_mtime_ns": 1794186753745564273
+            }
+          }
+        },
+        "installedAppQuery": {
+          "command": [
+            "xcrun",
+            "simctl",
+            "get_app_container",
+            "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+            "com.dbakp.lumen",
+            "app"
+          ],
+          "pid": 424243,
+          "exit": 0,
+          "stdout": "L3RtcC9MdW1lbkJhdGNoMzdTaW11bGF0b3IvQnVpbGQvUHJvZHVjdHMvRGVidWctaXBob25lc2ltdWxhdG9yL0x1bWVuLmFwcA==",
+          "stderr": ""
+        },
+        "installedAppCurrent": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/check-retained-owner-r3.py\", line 64, in main\n    assert type(acquired['pid']) is int and acquired['pid'] > 0\nAssertionError\n",
+        "finishedAt": 1794194426.300902
+      }
+    },
+    {
+      "fault": "native-exit-Boolean",
+      "exit": true,
+      "accepted": false,
+      "audit": {
+        "status": "FAILED",
+        "source": "durable-source-r260.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "startedAt": 1794194426.3370728,
+        "sourceInputs": 1045,
+        "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/check-retained-owner-r3.py\", line 43, in main\n    assert type(state['nativeExit']) is int\nAssertionError\n",
+        "finishedAt": 1794194426.339068
+      }
+    },
+    {
+      "fault": "final-exit-Boolean",
+      "exit": true,
+      "accepted": false,
+      "audit": {
+        "status": "FAILED",
+        "source": "durable-source-r260.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "startedAt": 1794194426.374609,
+        "sourceInputs": 1045,
+        "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/check-retained-owner-r3.py\", line 37, in main\n    assert type(state['nativeFinalization']['exit']) is int\nAssertionError\n",
+        "finishedAt": 1794194426.376388
+      }
+    },
+    {
+      "fault": "summary-count-Boolean",
+      "exit": true,
+      "accepted": false,
+      "audit": {
+        "status": "FAILED",
+        "source": "durable-source-r260.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "startedAt": 1794194426.41185,
+        "sourceInputs": 1045,
+        "currentExecutionFacts": {
+          "source": "durable-source-r260.json",
+          "build": "health-target-change-source260-r1-build.json",
+          "inputCount": 1045,
+          "manifest": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r260.json",
+            "bytes": 196620,
+            "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46934266,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 196620,
+              "st_mtime_ns": 1794186375481479438
+            }
+          },
+          "archive": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r260.json.gz",
+            "bytes": 5936742,
+            "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46934267,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 5936742,
+              "st_mtime_ns": 1794186375482614056
+            }
+          },
+          "receipt": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source260-r1-build.json",
+            "bytes": 701,
+            "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936802,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 701,
+              "st_mtime_ns": 1794186754091915233
+            }
+          },
+          "app": {
+            "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+            "bytes": 46657632,
+            "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936770,
+              "st_mode": 33261,
+              "st_nlink": 1,
+              "st_size": 46657632,
+              "st_mtime_ns": 1794186718137419780
+            }
+          },
+          "test": {
+            "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+            "bytes": 6517648,
+            "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936795,
+              "st_mode": 33261,
+              "st_nlink": 1,
+              "st_size": 6517648,
+              "st_mtime_ns": 1794186753745564273
+            }
+          }
+        },
+        "installedAppQuery": {
+          "command": [
+            "xcrun",
+            "simctl",
+            "get_app_container",
+            "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+            "com.dbakp.lumen",
+            "app"
+          ],
+          "pid": 424243,
+          "exit": 0,
+          "stdout": "L3RtcC9MdW1lbkJhdGNoMzdTaW11bGF0b3IvQnVpbGQvUHJvZHVjdHMvRGVidWctaXBob25lc2ltdWxhdG9yL0x1bWVuLmFwcA==",
+          "stderr": ""
+        },
+        "installedAppCurrent": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/check-retained-owner-r3.py\", line 75, in main\n    assert all(type(summary[key]) is int for key in ['passedTests', 'failedTests', 'skippedTests'])\nAssertionError\n",
+        "finishedAt": 1794194426.439728
+      }
+    },
+    {
+      "fault": "null-manifest-metadata",
+      "exit": true,
+      "accepted": false,
+      "audit": {
+        "status": "FAILED",
+        "source": "durable-source-r260.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "startedAt": 1794194426.4752052,
+        "sourceInputs": 1045,
+        "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/check-retained-owner-r3.py\", line 25, in main\n    assert evidence.validate_recorded(state, current, args.case, driver.RAW)\n  File \"/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-checker-caller-lf20c6g_/retained-owner-evidence-r2.py\", line 112, in validate_recorded\n    validate_preflight_replay(state['preflight'], current)\n  File \"/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-checker-caller-lf20c6g_/retained-owner-evidence-r2.py\", line 119, in validate_preflight_replay\n    assert type(recorded) is dict and strict_json_equal(recorded, current)\nAssertionError\n",
+        "finishedAt": 1794194426.4771998
+      }
+    },
+    {
+      "fault": "wrong-app-digest",
+      "exit": true,
+      "accepted": false,
+      "audit": {
+        "status": "FAILED",
+        "source": "durable-source-r260.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "startedAt": 1794194426.513082,
+        "sourceInputs": 1045,
+        "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/check-retained-owner-r3.py\", line 25, in main\n    assert evidence.validate_recorded(state, current, args.case, driver.RAW)\n  File \"/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-checker-caller-tvet752h/retained-owner-evidence-r2.py\", line 112, in validate_recorded\n    validate_preflight_replay(state['preflight'], current)\n  File \"/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-checker-caller-tvet752h/retained-owner-evidence-r2.py\", line 119, in validate_preflight_replay\n    assert type(recorded) is dict and strict_json_equal(recorded, current)\nAssertionError\n",
+        "finishedAt": 1794194426.515137
+      }
+    },
+    {
+      "fault": "wrong-test-path",
+      "exit": true,
+      "accepted": false,
+      "audit": {
+        "status": "FAILED",
+        "source": "durable-source-r260.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "startedAt": 1794194426.5526478,
+        "sourceInputs": 1045,
+        "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/check-retained-owner-r3.py\", line 25, in main\n    assert evidence.validate_recorded(state, current, args.case, driver.RAW)\n  File \"/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-checker-caller-xbhqsqtq/retained-owner-evidence-r2.py\", line 112, in validate_recorded\n    validate_preflight_replay(state['preflight'], current)\n  File \"/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-checker-caller-xbhqsqtq/retained-owner-evidence-r2.py\", line 119, in validate_preflight_replay\n    assert type(recorded) is dict and strict_json_equal(recorded, current)\nAssertionError\n",
+        "finishedAt": 1794194426.554518
+      }
+    },
+    {
+      "fault": "wrong-archive-bytes",
+      "exit": true,
+      "accepted": false,
+      "audit": {
+        "status": "FAILED",
+        "source": "durable-source-r260.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "startedAt": 1794194426.591465,
+        "sourceInputs": 1045,
+        "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/check-retained-owner-r3.py\", line 25, in main\n    assert evidence.validate_recorded(state, current, args.case, driver.RAW)\n  File \"/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-checker-caller-87tq_y56/retained-owner-evidence-r2.py\", line 112, in validate_recorded\n    validate_preflight_replay(state['preflight'], current)\n  File \"/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-checker-caller-87tq_y56/retained-owner-evidence-r2.py\", line 119, in validate_preflight_replay\n    assert type(recorded) is dict and strict_json_equal(recorded, current)\nAssertionError\n",
+        "finishedAt": 1794194426.5938199
+      }
+    },
+    {
+      "fault": "after-Boolean-identity",
+      "exit": true,
+      "accepted": false,
+      "audit": {
+        "status": "FAILED",
+        "source": "durable-source-r260.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "startedAt": 1794194426.633304,
+        "sourceInputs": 1045,
+        "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/check-retained-owner-r3.py\", line 26, in main\n    assert evidence.validate_preflight_replay(state['preflightAfter'], current)\n  File \"/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-checker-caller-k0e48sdb/retained-owner-evidence-r2.py\", line 119, in validate_preflight_replay\n    assert type(recorded) is dict and strict_json_equal(recorded, current)\nAssertionError\n",
+        "finishedAt": 1794194426.635682
+      }
+    },
+    {
+      "fault": "installed-digest",
+      "exit": true,
+      "accepted": false,
+      "audit": {
+        "status": "FAILED",
+        "source": "durable-source-r260.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "startedAt": 1794194426.673752,
+        "sourceInputs": 1045,
+        "currentExecutionFacts": {
+          "source": "durable-source-r260.json",
+          "build": "health-target-change-source260-r1-build.json",
+          "inputCount": 1045,
+          "manifest": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r260.json",
+            "bytes": 196620,
+            "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46934266,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 196620,
+              "st_mtime_ns": 1794186375481479438
+            }
+          },
+          "archive": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r260.json.gz",
+            "bytes": 5936742,
+            "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46934267,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 5936742,
+              "st_mtime_ns": 1794186375482614056
+            }
+          },
+          "receipt": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source260-r1-build.json",
+            "bytes": 701,
+            "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936802,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 701,
+              "st_mtime_ns": 1794186754091915233
+            }
+          },
+          "app": {
+            "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+            "bytes": 46657632,
+            "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936770,
+              "st_mode": 33261,
+              "st_nlink": 1,
+              "st_size": 46657632,
+              "st_mtime_ns": 1794186718137419780
+            }
+          },
+          "test": {
+            "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+            "bytes": 6517648,
+            "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936795,
+              "st_mode": 33261,
+              "st_nlink": 1,
+              "st_size": 6517648,
+              "st_mtime_ns": 1794186753745564273
+            }
+          }
+        },
+        "installedAppQuery": {
+          "command": [
+            "xcrun",
+            "simctl",
+            "get_app_container",
+            "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+            "com.dbakp.lumen",
+            "app"
+          ],
+          "pid": 424243,
+          "exit": 0,
+          "stdout": "L3RtcC9MdW1lbkJhdGNoMzdTaW11bGF0b3IvQnVpbGQvUHJvZHVjdHMvRGVidWctaXBob25lc2ltdWxhdG9yL0x1bWVuLmFwcA==",
+          "stderr": ""
+        },
+        "installedAppCurrent": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/check-retained-owner-r3.py\", line 51, in main\n    assert evidence.strict_json_equal(result['installedAppCurrent'], state['installedApp'])\nAssertionError\n",
+        "finishedAt": 1794194426.702901
+      }
+    },
+    {
+      "fault": "trace-digest",
+      "exit": true,
+      "accepted": false,
+      "audit": {
+        "status": "FAILED",
+        "source": "durable-source-r260.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "startedAt": 1794194426.7402189,
+        "sourceInputs": 1045,
+        "currentExecutionFacts": {
+          "source": "durable-source-r260.json",
+          "build": "health-target-change-source260-r1-build.json",
+          "inputCount": 1045,
+          "manifest": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r260.json",
+            "bytes": 196620,
+            "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46934266,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 196620,
+              "st_mtime_ns": 1794186375481479438
+            }
+          },
+          "archive": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r260.json.gz",
+            "bytes": 5936742,
+            "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46934267,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 5936742,
+              "st_mtime_ns": 1794186375482614056
+            }
+          },
+          "receipt": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source260-r1-build.json",
+            "bytes": 701,
+            "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936802,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 701,
+              "st_mtime_ns": 1794186754091915233
+            }
+          },
+          "app": {
+            "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+            "bytes": 46657632,
+            "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936770,
+              "st_mode": 33261,
+              "st_nlink": 1,
+              "st_size": 46657632,
+              "st_mtime_ns": 1794186718137419780
+            }
+          },
+          "test": {
+            "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+            "bytes": 6517648,
+            "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936795,
+              "st_mode": 33261,
+              "st_nlink": 1,
+              "st_size": 6517648,
+              "st_mtime_ns": 1794186753745564273
+            }
+          }
+        },
+        "installedAppQuery": {
+          "command": [
+            "xcrun",
+            "simctl",
+            "get_app_container",
+            "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+            "com.dbakp.lumen",
+            "app"
+          ],
+          "pid": 424243,
+          "exit": 0,
+          "stdout": "L3RtcC9MdW1lbkJhdGNoMzdTaW11bGF0b3IvQnVpbGQvUHJvZHVjdHMvRGVidWctaXBob25lc2ltdWxhdG9yL0x1bWVuLmFwcA==",
+          "stderr": ""
+        },
+        "installedAppCurrent": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/check-retained-owner-r3.py\", line 99, in main\n    assert len(raw) == fact['bytes'] and hashlib.sha256(raw).hexdigest() == fact['sha256']\nAssertionError\n",
+        "finishedAt": 1794194426.774184
+      }
+    },
+    {
+      "fault": "original-digest",
+      "exit": true,
+      "accepted": false,
+      "audit": {
+        "status": "FAILED",
+        "source": "durable-source-r260.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "startedAt": 1794194426.820554,
+        "sourceInputs": 1045,
+        "currentExecutionFacts": {
+          "source": "durable-source-r260.json",
+          "build": "health-target-change-source260-r1-build.json",
+          "inputCount": 1045,
+          "manifest": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r260.json",
+            "bytes": 196620,
+            "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46934266,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 196620,
+              "st_mtime_ns": 1794186375481479438
+            }
+          },
+          "archive": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r260.json.gz",
+            "bytes": 5936742,
+            "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46934267,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 5936742,
+              "st_mtime_ns": 1794186375482614056
+            }
+          },
+          "receipt": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source260-r1-build.json",
+            "bytes": 701,
+            "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936802,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 701,
+              "st_mtime_ns": 1794186754091915233
+            }
+          },
+          "app": {
+            "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+            "bytes": 46657632,
+            "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936770,
+              "st_mode": 33261,
+              "st_nlink": 1,
+              "st_size": 46657632,
+              "st_mtime_ns": 1794186718137419780
+            }
+          },
+          "test": {
+            "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+            "bytes": 6517648,
+            "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936795,
+              "st_mode": 33261,
+              "st_nlink": 1,
+              "st_size": 6517648,
+              "st_mtime_ns": 1794186753745564273
+            }
+          }
+        },
+        "installedAppQuery": {
+          "command": [
+            "xcrun",
+            "simctl",
+            "get_app_container",
+            "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+            "com.dbakp.lumen",
+            "app"
+          ],
+          "pid": 424243,
+          "exit": 0,
+          "stdout": "L3RtcC9MdW1lbkJhdGNoMzdTaW11bGF0b3IvQnVpbGQvUHJvZHVjdHMvRGVidWctaXBob25lc2ltdWxhdG9yL0x1bWVuLmFwcA==",
+          "stderr": ""
+        },
+        "installedAppCurrent": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/check-retained-owner-r3.py\", line 81, in main\n    assert len(raw) == item['bytes'] and hashlib.sha256(raw).hexdigest() == item['sha256']\nAssertionError\n",
+        "finishedAt": 1794194426.849447
+      }
+    },
+    {
+      "fault": "wrong-manifest-path",
+      "exit": true,
+      "accepted": false,
+      "audit": {
+        "status": "FAILED",
+        "source": "durable-source-r260.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "startedAt": 1794194426.8899689,
+        "sourceInputs": 1045,
+        "currentExecutionFacts": {
+          "source": "durable-source-r260.json",
+          "build": "health-target-change-source260-r1-build.json",
+          "inputCount": 1045,
+          "manifest": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r260.json",
+            "bytes": 196620,
+            "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46934266,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 196620,
+              "st_mtime_ns": 1794186375481479438
+            }
+          },
+          "archive": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r260.json.gz",
+            "bytes": 5936742,
+            "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46934267,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 5936742,
+              "st_mtime_ns": 1794186375482614056
+            }
+          },
+          "receipt": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source260-r1-build.json",
+            "bytes": 701,
+            "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936802,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 701,
+              "st_mtime_ns": 1794186754091915233
+            }
+          },
+          "app": {
+            "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+            "bytes": 46657632,
+            "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936770,
+              "st_mode": 33261,
+              "st_nlink": 1,
+              "st_size": 46657632,
+              "st_mtime_ns": 1794186718137419780
+            }
+          },
+          "test": {
+            "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+            "bytes": 6517648,
+            "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936795,
+              "st_mode": 33261,
+              "st_nlink": 1,
+              "st_size": 6517648,
+              "st_mtime_ns": 1794186753745564273
+            }
+          }
+        },
+        "installedAppQuery": {
+          "command": [
+            "xcrun",
+            "simctl",
+            "get_app_container",
+            "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+            "com.dbakp.lumen",
+            "app"
+          ],
+          "pid": 424243,
+          "exit": 0,
+          "stdout": "L3RtcC9MdW1lbkJhdGNoMzdTaW11bGF0b3IvQnVpbGQvUHJvZHVjdHMvRGVidWctaXBob25lc2ltdWxhdG9yL0x1bWVuLmFwcA==",
+          "stderr": ""
+        },
+        "installedAppCurrent": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/check-retained-owner-r3.py\", line 67, in main\n    assert state['originalManifest'] == prefix + '-original-manifest.json'\nAssertionError\n",
+        "finishedAt": 1794194426.9219682
+      }
+    },
+    {
+      "fault": "log-digest",
+      "exit": true,
+      "accepted": false,
+      "audit": {
+        "status": "FAILED",
+        "source": "durable-source-r260.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "startedAt": 1794194426.969734,
+        "sourceInputs": 1045,
+        "currentExecutionFacts": {
+          "source": "durable-source-r260.json",
+          "build": "health-target-change-source260-r1-build.json",
+          "inputCount": 1045,
+          "manifest": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r260.json",
+            "bytes": 196620,
+            "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46934266,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 196620,
+              "st_mtime_ns": 1794186375481479438
+            }
+          },
+          "archive": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r260.json.gz",
+            "bytes": 5936742,
+            "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46934267,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 5936742,
+              "st_mtime_ns": 1794186375482614056
+            }
+          },
+          "receipt": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source260-r1-build.json",
+            "bytes": 701,
+            "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936802,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 701,
+              "st_mtime_ns": 1794186754091915233
+            }
+          },
+          "app": {
+            "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+            "bytes": 46657632,
+            "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936770,
+              "st_mode": 33261,
+              "st_nlink": 1,
+              "st_size": 46657632,
+              "st_mtime_ns": 1794186718137419780
+            }
+          },
+          "test": {
+            "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+            "bytes": 6517648,
+            "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936795,
+              "st_mode": 33261,
+              "st_nlink": 1,
+              "st_size": 6517648,
+              "st_mtime_ns": 1794186753745564273
+            }
+          }
+        },
+        "installedAppQuery": {
+          "command": [
+            "xcrun",
+            "simctl",
+            "get_app_container",
+            "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+            "com.dbakp.lumen",
+            "app"
+          ],
+          "pid": 424243,
+          "exit": 0,
+          "stdout": "L3RtcC9MdW1lbkJhdGNoMzdTaW11bGF0b3IvQnVpbGQvUHJvZHVjdHMvRGVidWctaXBob25lc2ltdWxhdG9yL0x1bWVuLmFwcA==",
+          "stderr": ""
+        },
+        "installedAppCurrent": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/check-retained-owner-r3.py\", line 72, in main\n    assert len(log_raw) == log['bytes'] and hashlib.sha256(log_raw).hexdigest() == log['sha256']\nAssertionError\n",
+        "finishedAt": 1794194427.006906
+      }
+    },
+    {
+      "fault": "not-terminal",
+      "exit": true,
+      "accepted": false,
+      "audit": {
+        "status": "FAILED",
+        "source": "durable-source-r260.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "startedAt": 1794194427.0498729,
+        "sourceInputs": 1045,
+        "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/check-retained-owner-r3.py\", line 35, in main\n    assert state['status'] == 'NATIVE_FINISHED acceptance pending'\nAssertionError\n",
+        "finishedAt": 1794194427.0518699
+      }
+    },
+    {
+      "fault": "empty-original-bytes-bool",
+      "exit": true,
+      "accepted": false,
+      "audit": {
+        "status": "FAILED",
+        "source": "durable-source-r260.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "startedAt": 1794194427.09696,
+        "sourceInputs": 1045,
+        "currentExecutionFacts": {
+          "source": "durable-source-r260.json",
+          "build": "health-target-change-source260-r1-build.json",
+          "inputCount": 1045,
+          "manifest": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r260.json",
+            "bytes": 196620,
+            "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46934266,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 196620,
+              "st_mtime_ns": 1794186375481479438
+            }
+          },
+          "archive": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r260.json.gz",
+            "bytes": 5936742,
+            "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46934267,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 5936742,
+              "st_mtime_ns": 1794186375482614056
+            }
+          },
+          "receipt": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source260-r1-build.json",
+            "bytes": 701,
+            "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936802,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 701,
+              "st_mtime_ns": 1794186754091915233
+            }
+          },
+          "app": {
+            "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+            "bytes": 46657632,
+            "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936770,
+              "st_mode": 33261,
+              "st_nlink": 1,
+              "st_size": 46657632,
+              "st_mtime_ns": 1794186718137419780
+            }
+          },
+          "test": {
+            "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+            "bytes": 6517648,
+            "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936795,
+              "st_mode": 33261,
+              "st_nlink": 1,
+              "st_size": 6517648,
+              "st_mtime_ns": 1794186753745564273
+            }
+          }
+        },
+        "installedAppQuery": {
+          "command": [
+            "xcrun",
+            "simctl",
+            "get_app_container",
+            "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+            "com.dbakp.lumen",
+            "app"
+          ],
+          "pid": 424243,
+          "exit": 0,
+          "stdout": "L3RtcC9MdW1lbkJhdGNoMzdTaW11bGF0b3IvQnVpbGQvUHJvZHVjdHMvRGVidWctaXBob25lc2ltdWxhdG9yL0x1bWVuLmFwcA==",
+          "stderr": ""
+        },
+        "installedAppCurrent": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/check-retained-owner-r3.py\", line 80, in main\n    evidence.require_int(item['bytes'])\n  File \"/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-checker-caller-inx29ndg/retained-owner-evidence-r2.py\", line 27, in require_int\n    assert type(value) is int and value >= minimum\nAssertionError\n",
+        "finishedAt": 1794194427.127038
+      }
+    },
+    {
+      "fault": "final-pid-float",
+      "exit": true,
+      "accepted": false,
+      "audit": {
+        "status": "FAILED",
+        "source": "durable-source-r260.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "startedAt": 1794194427.16593,
+        "sourceInputs": 1045,
+        "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/check-retained-owner-r3.py\", line 42, in main\n    evidence.require_int(state['nativeFinalization']['pid'], 1)\n  File \"/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-checker-caller-g5o0snsi/retained-owner-evidence-r2.py\", line 27, in require_int\n    assert type(value) is int and value >= minimum\nAssertionError\n",
+        "finishedAt": 1794194427.169544
+      }
+    },
+    {
+      "fault": "installed-identity-bool",
+      "exit": true,
+      "accepted": false,
+      "audit": {
+        "status": "FAILED",
+        "source": "durable-source-r260.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "startedAt": 1794194427.222177,
+        "sourceInputs": 1045,
+        "currentExecutionFacts": {
+          "source": "durable-source-r260.json",
+          "build": "health-target-change-source260-r1-build.json",
+          "inputCount": 1045,
+          "manifest": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r260.json",
+            "bytes": 196620,
+            "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46934266,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 196620,
+              "st_mtime_ns": 1794186375481479438
+            }
+          },
+          "archive": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r260.json.gz",
+            "bytes": 5936742,
+            "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46934267,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 5936742,
+              "st_mtime_ns": 1794186375482614056
+            }
+          },
+          "receipt": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source260-r1-build.json",
+            "bytes": 701,
+            "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936802,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 701,
+              "st_mtime_ns": 1794186754091915233
+            }
+          },
+          "app": {
+            "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+            "bytes": 46657632,
+            "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936770,
+              "st_mode": 33261,
+              "st_nlink": 1,
+              "st_size": 46657632,
+              "st_mtime_ns": 1794186718137419780
+            }
+          },
+          "test": {
+            "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+            "bytes": 6517648,
+            "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936795,
+              "st_mode": 33261,
+              "st_nlink": 1,
+              "st_size": 6517648,
+              "st_mtime_ns": 1794186753745564273
+            }
+          }
+        },
+        "installedAppQuery": {
+          "command": [
+            "xcrun",
+            "simctl",
+            "get_app_container",
+            "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+            "com.dbakp.lumen",
+            "app"
+          ],
+          "pid": 424243,
+          "exit": 0,
+          "stdout": "L3RtcC9MdW1lbkJhdGNoMzdTaW11bGF0b3IvQnVpbGQvUHJvZHVjdHMvRGVidWctaXBob25lc2ltdWxhdG9yL0x1bWVuLmFwcA==",
+          "stderr": ""
+        },
+        "installedAppCurrent": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/check-retained-owner-r3.py\", line 51, in main\n    assert evidence.strict_json_equal(result['installedAppCurrent'], state['installedApp'])\nAssertionError\n",
+        "finishedAt": 1794194427.258063
+      }
+    },
+    {
+      "fault": "installed-identity-float",
+      "exit": true,
+      "accepted": false,
+      "audit": {
+        "status": "FAILED",
+        "source": "durable-source-r260.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "startedAt": 1794194427.304054,
+        "sourceInputs": 1045,
+        "currentExecutionFacts": {
+          "source": "durable-source-r260.json",
+          "build": "health-target-change-source260-r1-build.json",
+          "inputCount": 1045,
+          "manifest": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r260.json",
+            "bytes": 196620,
+            "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46934266,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 196620,
+              "st_mtime_ns": 1794186375481479438
+            }
+          },
+          "archive": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r260.json.gz",
+            "bytes": 5936742,
+            "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46934267,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 5936742,
+              "st_mtime_ns": 1794186375482614056
+            }
+          },
+          "receipt": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source260-r1-build.json",
+            "bytes": 701,
+            "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936802,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 701,
+              "st_mtime_ns": 1794186754091915233
+            }
+          },
+          "app": {
+            "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+            "bytes": 46657632,
+            "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936770,
+              "st_mode": 33261,
+              "st_nlink": 1,
+              "st_size": 46657632,
+              "st_mtime_ns": 1794186718137419780
+            }
+          },
+          "test": {
+            "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+            "bytes": 6517648,
+            "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936795,
+              "st_mode": 33261,
+              "st_nlink": 1,
+              "st_size": 6517648,
+              "st_mtime_ns": 1794186753745564273
+            }
+          }
+        },
+        "installedAppQuery": {
+          "command": [
+            "xcrun",
+            "simctl",
+            "get_app_container",
+            "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+            "com.dbakp.lumen",
+            "app"
+          ],
+          "pid": 424243,
+          "exit": 0,
+          "stdout": "L3RtcC9MdW1lbkJhdGNoMzdTaW11bGF0b3IvQnVpbGQvUHJvZHVjdHMvRGVidWctaXBob25lc2ltdWxhdG9yL0x1bWVuLmFwcA==",
+          "stderr": ""
+        },
+        "installedAppCurrent": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/check-retained-owner-r3.py\", line 51, in main\n    assert evidence.strict_json_equal(result['installedAppCurrent'], state['installedApp'])\nAssertionError\n",
+        "finishedAt": 1794194427.344843
+      }
+    },
+    {
+      "fault": "log-bytes-bool",
+      "exit": true,
+      "accepted": false,
+      "audit": {
+        "status": "FAILED",
+        "source": "durable-source-r260.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "startedAt": 1794194427.385309,
+        "sourceInputs": 1045,
+        "currentExecutionFacts": {
+          "source": "durable-source-r260.json",
+          "build": "health-target-change-source260-r1-build.json",
+          "inputCount": 1045,
+          "manifest": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r260.json",
+            "bytes": 196620,
+            "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46934266,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 196620,
+              "st_mtime_ns": 1794186375481479438
+            }
+          },
+          "archive": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r260.json.gz",
+            "bytes": 5936742,
+            "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46934267,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 5936742,
+              "st_mtime_ns": 1794186375482614056
+            }
+          },
+          "receipt": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source260-r1-build.json",
+            "bytes": 701,
+            "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936802,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 701,
+              "st_mtime_ns": 1794186754091915233
+            }
+          },
+          "app": {
+            "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+            "bytes": 46657632,
+            "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936770,
+              "st_mode": 33261,
+              "st_nlink": 1,
+              "st_size": 46657632,
+              "st_mtime_ns": 1794186718137419780
+            }
+          },
+          "test": {
+            "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+            "bytes": 6517648,
+            "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936795,
+              "st_mode": 33261,
+              "st_nlink": 1,
+              "st_size": 6517648,
+              "st_mtime_ns": 1794186753745564273
+            }
+          }
+        },
+        "installedAppQuery": {
+          "command": [
+            "xcrun",
+            "simctl",
+            "get_app_container",
+            "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+            "com.dbakp.lumen",
+            "app"
+          ],
+          "pid": 424243,
+          "exit": 0,
+          "stdout": "L3RtcC9MdW1lbkJhdGNoMzdTaW11bGF0b3IvQnVpbGQvUHJvZHVjdHMvRGVidWctaXBob25lc2ltdWxhdG9yL0x1bWVuLmFwcA==",
+          "stderr": ""
+        },
+        "installedAppCurrent": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/check-retained-owner-r3.py\", line 70, in main\n    evidence.require_int(log['bytes'], 1)\n  File \"/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-checker-caller-8adc69qg/retained-owner-evidence-r2.py\", line 27, in require_int\n    assert type(value) is int and value >= minimum\nAssertionError\n",
+        "finishedAt": 1794194427.419168
+      }
+    },
+    {
+      "fault": "log-bytes-float",
+      "exit": true,
+      "accepted": false,
+      "audit": {
+        "status": "FAILED",
+        "source": "durable-source-r260.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "startedAt": 1794194427.458843,
+        "sourceInputs": 1045,
+        "currentExecutionFacts": {
+          "source": "durable-source-r260.json",
+          "build": "health-target-change-source260-r1-build.json",
+          "inputCount": 1045,
+          "manifest": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r260.json",
+            "bytes": 196620,
+            "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46934266,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 196620,
+              "st_mtime_ns": 1794186375481479438
+            }
+          },
+          "archive": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r260.json.gz",
+            "bytes": 5936742,
+            "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46934267,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 5936742,
+              "st_mtime_ns": 1794186375482614056
+            }
+          },
+          "receipt": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source260-r1-build.json",
+            "bytes": 701,
+            "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936802,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 701,
+              "st_mtime_ns": 1794186754091915233
+            }
+          },
+          "app": {
+            "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+            "bytes": 46657632,
+            "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936770,
+              "st_mode": 33261,
+              "st_nlink": 1,
+              "st_size": 46657632,
+              "st_mtime_ns": 1794186718137419780
+            }
+          },
+          "test": {
+            "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+            "bytes": 6517648,
+            "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936795,
+              "st_mode": 33261,
+              "st_nlink": 1,
+              "st_size": 6517648,
+              "st_mtime_ns": 1794186753745564273
+            }
+          }
+        },
+        "installedAppQuery": {
+          "command": [
+            "xcrun",
+            "simctl",
+            "get_app_container",
+            "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+            "com.dbakp.lumen",
+            "app"
+          ],
+          "pid": 424243,
+          "exit": 0,
+          "stdout": "L3RtcC9MdW1lbkJhdGNoMzdTaW11bGF0b3IvQnVpbGQvUHJvZHVjdHMvRGVidWctaXBob25lc2ltdWxhdG9yL0x1bWVuLmFwcA==",
+          "stderr": ""
+        },
+        "installedAppCurrent": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/check-retained-owner-r3.py\", line 70, in main\n    evidence.require_int(log['bytes'], 1)\n  File \"/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-checker-caller-xu02micb/retained-owner-evidence-r2.py\", line 27, in require_int\n    assert type(value) is int and value >= minimum\nAssertionError\n",
+        "finishedAt": 1794194427.4875479
+      }
+    },
+    {
+      "fault": "original-bytes-bool",
+      "exit": true,
+      "accepted": false,
+      "audit": {
+        "status": "FAILED",
+        "source": "durable-source-r260.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "startedAt": 1794194427.538569,
+        "sourceInputs": 1045,
+        "currentExecutionFacts": {
+          "source": "durable-source-r260.json",
+          "build": "health-target-change-source260-r1-build.json",
+          "inputCount": 1045,
+          "manifest": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r260.json",
+            "bytes": 196620,
+            "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46934266,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 196620,
+              "st_mtime_ns": 1794186375481479438
+            }
+          },
+          "archive": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r260.json.gz",
+            "bytes": 5936742,
+            "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46934267,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 5936742,
+              "st_mtime_ns": 1794186375482614056
+            }
+          },
+          "receipt": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source260-r1-build.json",
+            "bytes": 701,
+            "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936802,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 701,
+              "st_mtime_ns": 1794186754091915233
+            }
+          },
+          "app": {
+            "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+            "bytes": 46657632,
+            "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936770,
+              "st_mode": 33261,
+              "st_nlink": 1,
+              "st_size": 46657632,
+              "st_mtime_ns": 1794186718137419780
+            }
+          },
+          "test": {
+            "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+            "bytes": 6517648,
+            "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936795,
+              "st_mode": 33261,
+              "st_nlink": 1,
+              "st_size": 6517648,
+              "st_mtime_ns": 1794186753745564273
+            }
+          }
+        },
+        "installedAppQuery": {
+          "command": [
+            "xcrun",
+            "simctl",
+            "get_app_container",
+            "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+            "com.dbakp.lumen",
+            "app"
+          ],
+          "pid": 424243,
+          "exit": 0,
+          "stdout": "L3RtcC9MdW1lbkJhdGNoMzdTaW11bGF0b3IvQnVpbGQvUHJvZHVjdHMvRGVidWctaXBob25lc2ltdWxhdG9yL0x1bWVuLmFwcA==",
+          "stderr": ""
+        },
+        "installedAppCurrent": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/check-retained-owner-r3.py\", line 80, in main\n    evidence.require_int(item['bytes'])\n  File \"/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-checker-caller-273xpsbe/retained-owner-evidence-r2.py\", line 27, in require_int\n    assert type(value) is int and value >= minimum\nAssertionError\n",
+        "finishedAt": 1794194427.571996
+      }
+    },
+    {
+      "fault": "original-bytes-float",
+      "exit": true,
+      "accepted": false,
+      "audit": {
+        "status": "FAILED",
+        "source": "durable-source-r260.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "startedAt": 1794194427.6171432,
+        "sourceInputs": 1045,
+        "currentExecutionFacts": {
+          "source": "durable-source-r260.json",
+          "build": "health-target-change-source260-r1-build.json",
+          "inputCount": 1045,
+          "manifest": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r260.json",
+            "bytes": 196620,
+            "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46934266,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 196620,
+              "st_mtime_ns": 1794186375481479438
+            }
+          },
+          "archive": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r260.json.gz",
+            "bytes": 5936742,
+            "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46934267,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 5936742,
+              "st_mtime_ns": 1794186375482614056
+            }
+          },
+          "receipt": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source260-r1-build.json",
+            "bytes": 701,
+            "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936802,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 701,
+              "st_mtime_ns": 1794186754091915233
+            }
+          },
+          "app": {
+            "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+            "bytes": 46657632,
+            "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936770,
+              "st_mode": 33261,
+              "st_nlink": 1,
+              "st_size": 46657632,
+              "st_mtime_ns": 1794186718137419780
+            }
+          },
+          "test": {
+            "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+            "bytes": 6517648,
+            "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936795,
+              "st_mode": 33261,
+              "st_nlink": 1,
+              "st_size": 6517648,
+              "st_mtime_ns": 1794186753745564273
+            }
+          }
+        },
+        "installedAppQuery": {
+          "command": [
+            "xcrun",
+            "simctl",
+            "get_app_container",
+            "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+            "com.dbakp.lumen",
+            "app"
+          ],
+          "pid": 424243,
+          "exit": 0,
+          "stdout": "L3RtcC9MdW1lbkJhdGNoMzdTaW11bGF0b3IvQnVpbGQvUHJvZHVjdHMvRGVidWctaXBob25lc2ltdWxhdG9yL0x1bWVuLmFwcA==",
+          "stderr": ""
+        },
+        "installedAppCurrent": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/check-retained-owner-r3.py\", line 80, in main\n    evidence.require_int(item['bytes'])\n  File \"/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-checker-caller-3d0rx5mf/retained-owner-evidence-r2.py\", line 27, in require_int\n    assert type(value) is int and value >= minimum\nAssertionError\n",
+        "finishedAt": 1794194427.647563
+      }
+    },
+    {
+      "fault": "provider-after-float",
+      "exit": true,
+      "accepted": false,
+      "audit": {
+        "status": "FAILED",
+        "source": "durable-source-r260.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "startedAt": 1794194427.688906,
+        "sourceInputs": 1045,
+        "currentExecutionFacts": {
+          "source": "durable-source-r260.json",
+          "build": "health-target-change-source260-r1-build.json",
+          "inputCount": 1045,
+          "manifest": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r260.json",
+            "bytes": 196620,
+            "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46934266,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 196620,
+              "st_mtime_ns": 1794186375481479438
+            }
+          },
+          "archive": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r260.json.gz",
+            "bytes": 5936742,
+            "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46934267,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 5936742,
+              "st_mtime_ns": 1794186375482614056
+            }
+          },
+          "receipt": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source260-r1-build.json",
+            "bytes": 701,
+            "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936802,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 701,
+              "st_mtime_ns": 1794186754091915233
+            }
+          },
+          "app": {
+            "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+            "bytes": 46657632,
+            "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936770,
+              "st_mode": 33261,
+              "st_nlink": 1,
+              "st_size": 46657632,
+              "st_mtime_ns": 1794186718137419780
+            }
+          },
+          "test": {
+            "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+            "bytes": 6517648,
+            "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936795,
+              "st_mode": 33261,
+              "st_nlink": 1,
+              "st_size": 6517648,
+              "st_mtime_ns": 1794186753745564273
+            }
+          }
+        },
+        "installedAppQuery": {
+          "command": [
+            "xcrun",
+            "simctl",
+            "get_app_container",
+            "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+            "com.dbakp.lumen",
+            "app"
+          ],
+          "pid": 424243,
+          "exit": 0,
+          "stdout": "L3RtcC9MdW1lbkJhdGNoMzdTaW11bGF0b3IvQnVpbGQvUHJvZHVjdHMvRGVidWctaXBob25lc2ltdWxhdG9yL0x1bWVuLmFwcA==",
+          "stderr": ""
+        },
+        "installedAppCurrent": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/check-retained-owner-r3.py\", line 56, in main\n    assert evidence.strict_json_equal(state['providerBefore'], state['providerAfter'])\nAssertionError\n",
+        "finishedAt": 1794194427.7187378
+      }
+    },
+    {
+      "fault": "provider-before-bool",
+      "exit": true,
+      "accepted": false,
+      "audit": {
+        "status": "FAILED",
+        "source": "durable-source-r260.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "startedAt": 1794194427.7724102,
+        "sourceInputs": 1045,
+        "currentExecutionFacts": {
+          "source": "durable-source-r260.json",
+          "build": "health-target-change-source260-r1-build.json",
+          "inputCount": 1045,
+          "manifest": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r260.json",
+            "bytes": 196620,
+            "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46934266,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 196620,
+              "st_mtime_ns": 1794186375481479438
+            }
+          },
+          "archive": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r260.json.gz",
+            "bytes": 5936742,
+            "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46934267,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 5936742,
+              "st_mtime_ns": 1794186375482614056
+            }
+          },
+          "receipt": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source260-r1-build.json",
+            "bytes": 701,
+            "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936802,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 701,
+              "st_mtime_ns": 1794186754091915233
+            }
+          },
+          "app": {
+            "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+            "bytes": 46657632,
+            "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936770,
+              "st_mode": 33261,
+              "st_nlink": 1,
+              "st_size": 46657632,
+              "st_mtime_ns": 1794186718137419780
+            }
+          },
+          "test": {
+            "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+            "bytes": 6517648,
+            "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936795,
+              "st_mode": 33261,
+              "st_nlink": 1,
+              "st_size": 6517648,
+              "st_mtime_ns": 1794186753745564273
+            }
+          }
+        },
+        "installedAppQuery": {
+          "command": [
+            "xcrun",
+            "simctl",
+            "get_app_container",
+            "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+            "com.dbakp.lumen",
+            "app"
+          ],
+          "pid": 424243,
+          "exit": 0,
+          "stdout": "L3RtcC9MdW1lbkJhdGNoMzdTaW11bGF0b3IvQnVpbGQvUHJvZHVjdHMvRGVidWctaXBob25lc2ltdWxhdG9yL0x1bWVuLmFwcA==",
+          "stderr": ""
+        },
+        "installedAppCurrent": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/check-retained-owner-r3.py\", line 56, in main\n    assert evidence.strict_json_equal(state['providerBefore'], state['providerAfter'])\nAssertionError\n",
+        "finishedAt": 1794194427.8020108
+      }
+    },
+    {
+      "fault": "trace-bytes-float",
+      "exit": true,
+      "accepted": false,
+      "audit": {
+        "status": "FAILED",
+        "source": "durable-source-r260.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "startedAt": 1794194427.8421068,
+        "sourceInputs": 1045,
+        "currentExecutionFacts": {
+          "source": "durable-source-r260.json",
+          "build": "health-target-change-source260-r1-build.json",
+          "inputCount": 1045,
+          "manifest": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r260.json",
+            "bytes": 196620,
+            "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46934266,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 196620,
+              "st_mtime_ns": 1794186375481479438
+            }
+          },
+          "archive": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r260.json.gz",
+            "bytes": 5936742,
+            "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46934267,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 5936742,
+              "st_mtime_ns": 1794186375482614056
+            }
+          },
+          "receipt": {
+            "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source260-r1-build.json",
+            "bytes": 701,
+            "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936802,
+              "st_mode": 33188,
+              "st_nlink": 1,
+              "st_size": 701,
+              "st_mtime_ns": 1794186754091915233
+            }
+          },
+          "app": {
+            "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+            "bytes": 46657632,
+            "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936770,
+              "st_mode": 33261,
+              "st_nlink": 1,
+              "st_size": 46657632,
+              "st_mtime_ns": 1794186718137419780
+            }
+          },
+          "test": {
+            "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+            "bytes": 6517648,
+            "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+            "identity": {
+              "st_dev": 16777233,
+              "st_ino": 46936795,
+              "st_mode": 33261,
+              "st_nlink": 1,
+              "st_size": 6517648,
+              "st_mtime_ns": 1794186753745564273
+            }
+          }
+        },
+        "installedAppQuery": {
+          "command": [
+            "xcrun",
+            "simctl",
+            "get_app_container",
+            "5C4C4A6C-4D9E-4181-8794-E3925C1A7EA7",
+            "com.dbakp.lumen",
+            "app"
+          ],
+          "pid": 424243,
+          "exit": 0,
+          "stdout": "L3RtcC9MdW1lbkJhdGNoMzdTaW11bGF0b3IvQnVpbGQvUHJvZHVjdHMvRGVidWctaXBob25lc2ltdWxhdG9yL0x1bWVuLmFwcA==",
+          "stderr": ""
+        },
+        "installedAppCurrent": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/check-retained-owner-r3.py\", line 98, in main\n    evidence.require_int(fact['bytes'], 1)\n  File \"/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-checker-caller-d4bvcii3/retained-owner-evidence-r2.py\", line 27, in require_int\n    assert type(value) is int and value >= minimum\nAssertionError\n",
+        "finishedAt": 1794194427.8754828
+      }
+    },
+    {
+      "fault": "final-pid-bool",
+      "exit": true,
+      "accepted": false,
+      "audit": {
+        "status": "FAILED",
+        "source": "durable-source-r260.json",
+        "case": "children",
+        "prefix": "retained-owner-source260-children-r1",
+        "startedAt": 1794194427.921909,
+        "sourceInputs": 1045,
+        "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/check-retained-owner-r3.py\", line 41, in main\n    assert state['nativeFinalization']['pid'] == state['nativePID']\nAssertionError\n",
+        "finishedAt": 1794194427.9238951
+      }
+    }
+  ],
+  "sources": {
+    "check-retained-owner-r3.py": {
+      "bytes": 8049,
+      "sha256": "9b5af5de6e9e29fbe8e7d76a0e4236c0e6ec3153bfe2e8c1598ab7b233115cf0"
+    },
+    "retained-owner-driver-r3.py": {
+      "bytes": 11777,
+      "sha256": "0462e4ec888f1f8c725b424052e50316a1eaef86d1c54d6976580e0b1eddaf49"
+    },
+    "retained-owner-evidence-r2.py": {
+      "bytes": 7546,
+      "sha256": "7b6349386ff5bbdf32aa7ee7976a99e4c8fb52a018a72b8bf71b385b35196335"
+    },
+    "retained-owner-protocol-r1.py": {
+      "bytes": 6053,
+      "sha256": "c7e62d570f0747f073d029f13b2c69f4ef92f367ee5f23ef808a16403912c024"
+    }
+  },
+  "scope": "Actual checker.main/file/trace/readback validation with named injected source verification, draft preflight/proof/Git/provider/installed endpoints. Tiny synthetic non-PNG bytes and legitimate empty diagnostic peer. No native/current260build/pixel/source-preflight acceptance. Generic genuine historical receipt/Git facts are separately tested.",
+  "checkedAt": 1794194427.9258041
+}

@@ -1,0 +1,262 @@
+{
+  "status": "PASS actual preflight body historical-context controls",
+  "count": 20,
+  "cases": [
+    {
+      "fault": "valid-historical-context",
+      "accepted": true,
+      "errorType": null,
+      "sourceVerifierCalls": [
+        "injected historical context, no current257 source check"
+      ],
+      "acquired": {
+        "source": "durable-source-r257.json",
+        "build": "health-target-change-source257-r1-build.json",
+        "inputCount": 1045,
+        "manifest": {
+          "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen260-preflight-context-0rzvnnut/durable-source-r257.json",
+          "bytes": 173579,
+          "sha256": "dec4cb687449abb7db59497737fb0aafbe9a1f074793ddc4189545115cb3acc2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 47032523,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 173579,
+            "st_mtime_ns": 1794194581084172711
+          }
+        },
+        "archive": {
+          "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen260-preflight-context-0rzvnnut/durable-source-r257.json.gz",
+          "bytes": 5936742,
+          "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 47032525,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 5936742,
+            "st_mtime_ns": 1794194581085324915
+          }
+        },
+        "receipt": {
+          "path": "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen260-preflight-context-0rzvnnut/health-target-change-source257-r1-build.json",
+          "bytes": 674,
+          "sha256": "e133c6ed35d5179882d08883177b7f2120fd39c3c6ba13ae30ff103dce5430a0",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 47032524,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 674,
+            "st_mtime_ns": 1794194581084370085
+          }
+        },
+        "app": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "test": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+          "bytes": 6517648,
+          "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936795,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 6517648,
+            "st_mtime_ns": 1794186753745564273
+          }
+        }
+      }
+    },
+    {
+      "fault": "source-verifier-error",
+      "accepted": false,
+      "errorType": "ValueError",
+      "sourceVerifierCalls": [
+        "injected historical context, no current257 source check"
+      ],
+      "acquired": null
+    },
+    {
+      "fault": "missing-archive",
+      "accepted": false,
+      "errorType": "FileNotFoundError",
+      "sourceVerifierCalls": [
+        "injected historical context, no current257 source check"
+      ],
+      "acquired": null
+    },
+    {
+      "fault": "wrong-test-path",
+      "accepted": false,
+      "errorType": "AssertionError",
+      "sourceVerifierCalls": [
+        "injected historical context, no current257 source check"
+      ],
+      "acquired": null
+    },
+    {
+      "fault": "wrong-app-digest",
+      "accepted": false,
+      "errorType": "AssertionError",
+      "sourceVerifierCalls": [
+        "injected historical context, no current257 source check"
+      ],
+      "acquired": null
+    },
+    {
+      "fault": "buildExit:float",
+      "accepted": false,
+      "errorType": "AssertionError",
+      "sourceVerifierCalls": [
+        "injected historical context, no current257 source check"
+      ],
+      "acquired": null
+    },
+    {
+      "fault": "buildExit:Boolean",
+      "accepted": false,
+      "errorType": "AssertionError",
+      "sourceVerifierCalls": [
+        "injected historical context, no current257 source check"
+      ],
+      "acquired": null
+    },
+    {
+      "fault": "buildExit:null",
+      "accepted": false,
+      "errorType": "AssertionError",
+      "sourceVerifierCalls": [
+        "injected historical context, no current257 source check"
+      ],
+      "acquired": null
+    },
+    {
+      "fault": "sourceInputs:float",
+      "accepted": false,
+      "errorType": "AssertionError",
+      "sourceVerifierCalls": [
+        "injected historical context, no current257 source check"
+      ],
+      "acquired": null
+    },
+    {
+      "fault": "sourceInputs:Boolean",
+      "accepted": false,
+      "errorType": "AssertionError",
+      "sourceVerifierCalls": [
+        "injected historical context, no current257 source check"
+      ],
+      "acquired": null
+    },
+    {
+      "fault": "sourceInputs:null",
+      "accepted": false,
+      "errorType": "AssertionError",
+      "sourceVerifierCalls": [
+        "injected historical context, no current257 source check"
+      ],
+      "acquired": null
+    },
+    {
+      "fault": "fixtureInputs:float",
+      "accepted": false,
+      "errorType": "AssertionError",
+      "sourceVerifierCalls": [
+        "injected historical context, no current257 source check"
+      ],
+      "acquired": null
+    },
+    {
+      "fault": "fixtureInputs:Boolean",
+      "accepted": false,
+      "errorType": "AssertionError",
+      "sourceVerifierCalls": [
+        "injected historical context, no current257 source check"
+      ],
+      "acquired": null
+    },
+    {
+      "fault": "fixtureInputs:null",
+      "accepted": false,
+      "errorType": "AssertionError",
+      "sourceVerifierCalls": [
+        "injected historical context, no current257 source check"
+      ],
+      "acquired": null
+    },
+    {
+      "fault": "binaryBytes:float",
+      "accepted": false,
+      "errorType": "AssertionError",
+      "sourceVerifierCalls": [
+        "injected historical context, no current257 source check"
+      ],
+      "acquired": null
+    },
+    {
+      "fault": "binaryBytes:Boolean",
+      "accepted": false,
+      "errorType": "AssertionError",
+      "sourceVerifierCalls": [
+        "injected historical context, no current257 source check"
+      ],
+      "acquired": null
+    },
+    {
+      "fault": "binaryBytes:null",
+      "accepted": false,
+      "errorType": "AssertionError",
+      "sourceVerifierCalls": [
+        "injected historical context, no current257 source check"
+      ],
+      "acquired": null
+    },
+    {
+      "fault": "testBinaryBytes:float",
+      "accepted": false,
+      "errorType": "AssertionError",
+      "sourceVerifierCalls": [
+        "injected historical context, no current257 source check"
+      ],
+      "acquired": null
+    },
+    {
+      "fault": "testBinaryBytes:Boolean",
+      "accepted": false,
+      "errorType": "AssertionError",
+      "sourceVerifierCalls": [
+        "injected historical context, no current257 source check"
+      ],
+      "acquired": null
+    },
+    {
+      "fault": "testBinaryBytes:null",
+      "accepted": false,
+      "errorType": "AssertionError",
+      "sourceVerifierCalls": [
+        "injected historical context, no current257 source check"
+      ],
+      "acquired": null
+    }
+  ],
+  "source": {
+    "file": "retained-owner-evidence-r2.py",
+    "bytes": 7546,
+    "sha256": "7b6349386ff5bbdf32aa7ee7976a99e4c8fb52a018a72b8bf71b385b35196335"
+  },
+  "scope": "Actual new preflight function reads genuine retained257 manifest/archive/receipt copies and matching historical cached app/test bytes. SOURCE/BUILD context and source-verification callback explicitly injected; no current257 whole-source audit or current260build/native acceptance. Real temp fixtures deleted; canonical inputs preserved.",
+  "checkedAt": 1794194581.2522938
+}

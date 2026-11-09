@@ -71,7 +71,7 @@
 <button class="btn" type="button" data-area="quality" aria-pressed="false" aria-controls="lumen-plan-detail">Answer quality</button>
 <button class="btn" type="button" data-area="release" aria-pressed="false" aria-controls="lumen-plan-detail">Release gates</button>
 </div>
-<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Verification tooling · in progress</h3><div data-verified>Evidence retention and build-binding checks passed isolated tests. Review found one remaining family of metadata comparisons to tighten.</div><div data-next>Now: applying the same strict rule to every saved fact, followed by review and simulator verification.</div><div class="text-small" data-gate>35 focused and 2,212 logic checks remain valid at unchanged source. Current build, navigation and release checks remain pending.</div></div>
+<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Current simulator build · next</h3><div data-verified>The corrected verification source passed independent review with no required changes. 35 focused and 2,212 logic checks retain their scope.</div><div data-next>Next: build the current app and tests, then verify records and photos, Back during a check, and dismissing Settings.</div><div class="text-small" data-gate>Build, native navigation, raw recovery preservation and release verification remain pending.</div></div>
 </div>
 <div class="section"><h3>Verified safety checks</h3>
 <table class="table table-sm" aria-label="Earlier checks retain their original scope; broader checks remain open"><thead><tr><th>Situation</th><th>Observed result</th></tr></thead><tbody>
@@ -88,9 +88,9 @@
 <script>
 (()=>{
 const root=document.getElementById('lumen-plan-progress');
-const snapshot='nov9-typed-provenance-review';
+const snapshot='nov9-retained-source-ready';
 const areas={
-current:{title:'Verification tooling · in progress',verified:'Evidence retention and build-binding checks passed isolated tests. Review found one remaining family of metadata comparisons to tighten.',next:'Now: applying the same strict rule to every saved fact, followed by review and simulator verification.',gate:'35 focused and 2,212 logic checks remain valid at unchanged source. Current build, navigation and release checks remain pending.'},
+current:{title:'Current simulator build · next',verified:'The corrected verification source passed independent review with no required changes. 35 focused and 2,212 logic checks retain their scope.',next:'Next: build the current app and tests, then verify records and photos, Back during a check, and dismissing Settings.',gate:'Build, native navigation, raw recovery preservation and release verification remain pending.'},
 quality:{title:'Answer quality · open',verified:'Library search, source identity, consent controls and literal-reference safeguards are delivered.',next:'Next: evidence-support policy and independent evaluation; personal-context and conversation-history privacy review.',gate:'Clinical accuracy, language coverage and live-provider evaluation remain required.'},
 release:{title:'Release readiness · open',verified:'The current optimized build passed static review with coverage instrumentation enabled. Its orientation warning remains open.',next:'Next: retained-copy ownership, then background Health, Watch reconnect, widget and accessibility.',gate:'Orientation warning, representative histories, performance, privacy and distribution review remain open. No iPhone installation, launch or checks without a renewed request.'}
 };
