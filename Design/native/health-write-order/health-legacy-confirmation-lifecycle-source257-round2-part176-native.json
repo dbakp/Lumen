@@ -1,0 +1,763 @@
+{
+  "review": "Part176 independent actual currentSource257 Data Not now regression",
+  "source": "durable-source-r257.json",
+  "caseSource": "durable-source-r257.json",
+  "hostSource": "durable-source-r257.json",
+  "build": "health-target-change-source257-r1-build.json",
+  "trial": "Source257R1",
+  "prefix": "health-confirmation-notnow-data-source257r1",
+  "status": "SUPPORTED_SCOPED_CURRENT_NATIVE_NOT_NOW_REGRESSION",
+  "nativeScopedAcceptance": true,
+  "expiryAcceptance": false,
+  "globalProductAcceptance": false,
+  "score": null,
+  "findings": [],
+  "reviewMethod": {
+    "readOnlyExceptNewReport": true,
+    "judgedHelpersImportedOrExecuted": false,
+    "newAppNativeBuildOrQueries": false,
+    "simulatorProcessDefaultsGitQueries": false,
+    "phoneActions": false,
+    "oldRaw255256Access": false,
+    "fullNativeHelperRead": {
+      "file": "health-confirmation-notnow-data-source257r1-70A8ECED-89E1-474D-877C-9CD06D54B87D.json",
+      "bytes": 27756,
+      "sha256": "a1bac5539724413a19b52c663c921b27ec4dd45bfd0cf9e04c759e69bd3183eb",
+      "ranges": "Complete770-line helper read in three nontruncated ranges; all observations parsed."
+    },
+    "fullSummaryRead": true,
+    "originals": "All14 canonical originals independently opened individually at explicit original detail1206x2622; no crops/derived substitutes. Acquisition flags remain untouched."
+  },
+  "actualExecution": {
+    "nativePID": 80387,
+    "appPID": 81052,
+    "runID": "2542DBC7-7542-4C89-8C16-3A02815FBADD",
+    "nativeExit": 0,
+    "driverExit": 0,
+    "nativeCounts": [
+      1,
+      0,
+      0
+    ],
+    "summaryWallSeconds": 212.59599995613098,
+    "hostBoundaryCount": 5,
+    "hostPhases": [
+      "before-selection",
+      "ready",
+      "owners-closed",
+      "fresh-ready",
+      "final-closed"
+    ],
+    "hostSequence": [
+      0,
+      3,
+      4,
+      7,
+      8
+    ],
+    "hostErrors": null,
+    "mandatoryChecker": {
+      "name": "check-confirmation-lifecycle-r3.py",
+      "PID": 87796,
+      "exit": 0,
+      "finalizer": "confirmation-lifecycle-finalization-r4.py",
+      "coherentRawAuditRetained": true,
+      "sourceVerification": {
+        "source": "durable-source-r257.json",
+        "exactCurrentArchiveBindings": 1045,
+        "manifestSHA256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66"
+      }
+    },
+    "preExecutionExactProof": {
+      "commit": "66afb39d4f8fda922ad2bfcfd8aa2a55aa292065",
+      "checkpointPaths": 17,
+      "unionPaths": 2305,
+      "scope": "Retained proof read as provenance; critic did not query Git/GitHub."
+    }
+  },
+  "independentVerification": {
+    "currentArchiveBindings": 1045,
+    "textInputs": 979,
+    "fixtures": 66,
+    "everyMemberCurrentBytesSizeSHA256AndArchiveMembership": true,
+    "actualCurrentApp": {
+      "file": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+      "bytes": 46657632,
+      "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+      "readAsDataOnly": true
+    },
+    "actualCurrentTest": {
+      "file": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+      "bytes": 6517648,
+      "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+      "readAsDataOnly": true
+    },
+    "actualBuildPID": 78558,
+    "buildExit": 0,
+    "currentDebugControls": [
+      217,
+      201,
+      16,
+      21
+    ],
+    "arrays": "No retuning; actual current Debug executable matches receipt and all declared positive controls. No Release acceptance inferred.",
+    "nativeStatesRawJSONEqualStoredValue": 10,
+    "hostBase64PayloadRowsDecodedVerified": 369,
+    "preflightAppMetadataNullRowsSeparatelyBound": 1,
+    "nativePayloadStringRowsDecodedVerified": 76,
+    "mandatoryCheckerPayloadRowsDecodedVerified": 60,
+    "fullProtectedEquality": "Current13 and prior13 raw-file maps, regular-file metadata, directory entries/root identity, provider and residual absence match first protected state at every host endpoint, before late ack, after Check and both mandatory final samples.",
+    "allOriginals": {
+      "total": 15,
+      "png": 14,
+      "json": 1,
+      "video": 0,
+      "other": 0,
+      "rawCanonicalEveryByteHashEqual": true,
+      "completeOriginalManifestGzipVerified": true,
+      "nativeHelperRawCanonicalEqual": true,
+      "retentionQueriesExactGzipStreamsVerified": true,
+      "retentionErrors": []
+    },
+    "nativeLog": {
+      "retained": "HealthConfirmationNotNowDataSource257R1.log.gz",
+      "decodedBytes": 82802,
+      "decodedSHA256": "a71eb3b853f89ec1b8c95c8c252aecc31a1aeb5a86bd426c5cc506fa6085b632"
+    },
+    "parentRootReplayQualification": "Root recipe actually executed despite planned suffix;90 actual strict-checker retained AST statements under process denial stop before live endpoint collection. This corroborates retained facts and is not another native run or a critic-executed helper."
+  },
+  "protocolObservations": {
+    "oldSession": "103E8D64-1AE6-4CAB-B2DF-ADACDA3D8D5E",
+    "oldCapture": "07CFAB22-8647-46AA-B22A-993A313DEA56",
+    "freshSession": "9104496F-F678-4C85-B1F7-578E42360BDE",
+    "freshCapture": "971B1BC9-45C1-4813-AC9A-F67FE46CCB61",
+    "gateNonce": "C9AEB433-5E78-48A5-B964-AF625D136D31",
+    "taskGeneration": "81205A10-F606-46F4-B719-39B3EC02E74E",
+    "actualEventOrder": [
+      "created",
+      "wait-started",
+      "closed",
+      "wait-exit",
+      "task-value-completed"
+    ],
+    "closed": {
+      "at": 1794186972.517221,
+      "closed": true,
+      "consumed": false,
+      "controlCancelled": true,
+      "event": "closed",
+      "reason": "not-now"
+    },
+    "waitExit": {
+      "at": 1794186972.527041,
+      "closed": true,
+      "consumed": false,
+      "controlCancelled": true,
+      "errorType": "CancellationError",
+      "event": "wait-exit",
+      "taskCancelled": true
+    },
+    "taskValueCompletedAt": 1794186972.528469,
+    "problems": [],
+    "scope": "Actual native Not now closes unconsumed gate, cancels control and Task, real waiter exits CancellationError, outside observer records exactTask.value completion. No deeper guard/reference-release/globalFD conclusion.",
+    "uiBeforePermission": "Whole real131-character confirmation and both actions screenshot-bound; immediate tap/dismiss facts precede bounded choice scrolling. All three retained enabled choices1/0/0 and original screenshot precede strict dismissed marker. Native initially reads armed relay while waiting late and rejects phase correctly.",
+    "lateAck": {
+      "bytes": 233,
+      "sha256": "a8100b246ab19bc800d3d8e48773cf9ca6b40f2a28e4e7ebd9b2e6bef009ada4",
+      "publishedAt": 1794186988.2998772,
+      "observedAt": 1794186988.300082,
+      "afterBothTaskCompletionAndDismissedMarker": true,
+      "hostIntentionalAcknowledgment": true
+    },
+    "nativeCheck": {
+      "requestID": "7BE03566-3F78-469E-861E-5B784BA59067",
+      "ordinal": 1,
+      "touchAt": 1794187002.573164,
+      "ackReadStartedAt": 1794187002.583068,
+      "ackReadFinishedAt": 1794187002.583245,
+      "freshReadStartedAt": 1794187002.5842981,
+      "freshReadFinishedAt": 1794187002.5988631,
+      "finishedAt": 1794187002.600412,
+      "actualAcknowledgmentBytesMatch": true,
+      "nativeFixedTypes": "Both known synthetic keys persisted/effective __NSCFData42B, exact malformed original bytes/hash; no unrelated preference values read.",
+      "fixtureFlags": {
+        "failed": false,
+        "knownKeyWritten": false,
+        "singleUseConsumed": false
+      },
+      "healthConnectedNative": false,
+      "hostDiskHealthConnectedQualification": "Host raw plist healthConnected is null/absent; native effective check is false. Do not equate null with native false."
+    },
+    "checkAcquisition": {
+      "appFrame": {
+        "height": 874,
+        "width": 402,
+        "x": 0,
+        "y": 0
+      },
+      "at": 1794187001.946209,
+      "enabled": true,
+      "enabledObserved": true,
+      "exists": true,
+      "finiteFrame": true,
+      "frame": {
+        "height": 52,
+        "width": 370,
+        "x": 16,
+        "y": 492.3333333333335
+      },
+      "frameObserved": true,
+      "hittable": true,
+      "hittableObserved": true,
+      "identifier": "checkConfirmationLifecycle",
+      "navigationFrame": {
+        "height": 54,
+        "width": 402,
+        "x": 0,
+        "y": 78
+      },
+      "navigationStillPresent": true,
+      "phase": "check-acquisition-before-touch",
+      "positiveWholeFrame": true,
+      "queryCount": 1,
+      "queryRole": "buttons",
+      "ready": true,
+      "role": "XCUIElementType(rawValue: 9)",
+      "roleIsButton": true,
+      "roleObserved": true,
+      "sampleStartedAt": 1794187000.9103708,
+      "value": "",
+      "valueObserved": true,
+      "valuePresent": true,
+      "valueType": "__NSCFConstantString",
+      "viewport": {
+        "height": 690,
+        "width": 402,
+        "x": 0,
+        "y": 144
+      }
+    },
+    "relayOrder": [
+      "armed",
+      "late-ack",
+      "checked"
+    ],
+    "relayStatus": [
+      "PUBLISHED metadata-only relay",
+      "PUBLISHED metadata-only relay",
+      "PUBLISHED metadata-only relay"
+    ],
+    "checkedRawDictionaryRetained": true,
+    "hostCheckCompleted": true,
+    "hostCheckCompletionAfter": "Exact postCheck protected state/origin validation and real checked relay publication; no collision with checked raw dictionary.",
+    "noMutationRecovery": "No Recover tap, legacy origin acquisition, transaction commit, new receipt/stage/private copy or Health sample write in this case. Known fixedData42/current13/prior13/provider/source remain exact. Existing private and intent state are covered by full raw protected maps; do not invent empty/new intent event coverage.",
+    "originTrace": [
+      {
+        "event": "open",
+        "sessionID": "103E8D64-1AE6-4CAB-B2DF-ADACDA3D8D5E",
+        "domains": []
+      },
+      {
+        "event": "ready",
+        "sessionID": "103E8D64-1AE6-4CAB-B2DF-ADACDA3D8D5E",
+        "domains": [
+          "meals",
+          "workouts"
+        ]
+      },
+      {
+        "event": "closed",
+        "sessionID": "103E8D64-1AE6-4CAB-B2DF-ADACDA3D8D5E",
+        "domains": []
+      },
+      {
+        "event": "open",
+        "sessionID": "9104496F-F678-4C85-B1F7-578E42360BDE",
+        "domains": []
+      },
+      {
+        "event": "ready",
+        "sessionID": "9104496F-F678-4C85-B1F7-578E42360BDE",
+        "domains": [
+          "meals",
+          "workouts"
+        ]
+      },
+      {
+        "event": "closed",
+        "sessionID": "9104496F-F678-4C85-B1F7-578E42360BDE",
+        "domains": []
+      }
+    ],
+    "ownership": "Actual Back closes old session; known temporary owner roots retire before acknowledged old closure endpoints. Actual Files reselect creates disjoint fresh workspaces and distinct ready owner/capture; three native enabled choices0/0/0 plus disabled Recover action. Final actual Back and known-path closure verified. Live LumenData current13 remains; cleanup concerns temporary owned workspaces."
+  },
+  "sampledClosure": {
+    "oldBackEndpointGapSeconds": 3.968719166999989,
+    "finalBackEndpointGapSeconds": 4.01614379099999,
+    "mandatoryFinalMode": "absent",
+    "mandatoryFinalSamples": 2,
+    "mandatoryFinalGapSeconds": 1.288857792,
+    "endpointFacts": "Both successful complete process enumerations explicitly classify absent expected app with no PID/executable matches; installed hash, exact final native state/current+prior/provider/fixed/origin, empty owner map and four absent case roots checked at each.",
+    "limits": "No continuousabsence/preciseexitcause/retirementlatency/globalFD claim. Live-phase known-path lsof evidence is distinct from absent final mode; absent mode earns no new lsof credit."
+  },
+  "visualObservations": [
+    {
+      "file": "health-confirmation-notnow-data-source257r1-78C6B276-178B-4C75-89EF-3A93D650F438.png",
+      "bytes": 283813,
+      "sha256": "f5a81767a00b0002438925f901b2fa87b8675889a485c4b2d5b2a1e9f758aed8",
+      "attachmentName": "health-confirmation-notnow-before-selection_0_F1284BC6-2030-4B4F-8C05-069966ED6792.png",
+      "nativeTimestamp": 1794186904.308,
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "individuallyOpenedByCritic": true,
+      "detail": "original",
+      "observation": "Backup & restore parent; initial Start check disabled after acknowledgment. Lower explanatory footer clipped; no whole-form claim."
+    },
+    {
+      "file": "health-confirmation-notnow-data-source257r1-0CF6CAE2-EBD3-412E-85B3-F9CE01BA67FD.png",
+      "bytes": 226226,
+      "sha256": "ce0709478082fc7d3d827f149dfc8a8564c87e7470f2f4633f7854f22c060ae3",
+      "attachmentName": "health-confirmation-notnow-ready-original_0_488DA5BF-0383-4A87-8B54-AAB15E28C2FE.png",
+      "nativeTimestamp": 1794186931.431,
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "individuallyOpenedByCritic": true,
+      "detail": "original",
+      "observation": "Correct4992B older JSON filename/format/created metadata and Water history visible; meal recover switch partly below bottom edge. Later individual native assertions establish choices."
+    },
+    {
+      "file": "health-confirmation-notnow-data-source257r1-7AC11000-454B-4E4C-ACDF-09B6FE768B90.png",
+      "bytes": 328868,
+      "sha256": "cfe38f3f19ed81489b5f42571e9c5d12af65c4e3ef2c3515ea1155045d82d9e6",
+      "attachmentName": "health-confirmation-notnow-ready-choices_0_1803A35C-7F1B-4B41-B468-55B737F9E858.png",
+      "nativeTimestamp": 1794186940.633,
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "individuallyOpenedByCritic": true,
+      "detail": "original",
+      "observation": "Review viewport shows meal/omission switches off near top and workout0/off. Meal switch top partly obscured by navigation, not all rows whole simultaneously."
+    },
+    {
+      "file": "health-confirmation-notnow-data-source257r1-DA787256-F3B7-4DB4-8C88-D81943C47E17.png",
+      "bytes": 361833,
+      "sha256": "7948c745223a60eb5c334aa3da8d1f222585213eb3b08d75ff0482b519edcc90",
+      "attachmentName": "health-confirmation-notnow-selected-meal_0_60B9E279-38C1-4948-9A1B-7AA621FB417C.png",
+      "nativeTimestamp": 1794186967.025,
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "individuallyOpenedByCritic": true,
+      "detail": "original",
+      "observation": "Lower review viewport shows Check cancellation and complete preservation/Apple Health paragraphs plus enabled Recover selected data. Selected meal value comes from actual native state/choice flow, not visible toggle in this viewport."
+    },
+    {
+      "file": "health-confirmation-notnow-data-source257r1-F4A09FFD-C5B3-48BD-BED2-8A9FB48B92A1.png",
+      "bytes": 479140,
+      "sha256": "e9777f1a7948efad87e1c3c53e7cdd3ff347401651a0fcb1c7b5c671b90ab2fe",
+      "attachmentName": "health-confirmation-notnow-presented_0_F0873967-9188-40C0-9335-E83B2B917DA1.png",
+      "nativeTimestamp": 1794186971.63,
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "individuallyOpenedByCritic": true,
+      "detail": "original",
+      "observation": "Whole native confirmation alert title/full131-character body/Not now and Recover visible; system gray styling retained without contrast/appearance-wide acceptance."
+    },
+    {
+      "file": "health-confirmation-notnow-data-source257r1-4092A17B-3141-4B3B-BD7D-301206541F3B.png",
+      "bytes": 361183,
+      "sha256": "268066b9556a5a47653561f3b77df1286d5a64c6d5d9d31305d1c814760e4116",
+      "attachmentName": "health-confirmation-notnow-not-now-dismissed_0_9DA15D16-0CF0-4D0F-ACD4-8D0867E2AB10.png",
+      "nativeTimestamp": 1794186974.133,
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "individuallyOpenedByCritic": true,
+      "detail": "original",
+      "observation": "Alert dismissed; lower review Form shows ordinary Check cancellation row, consequence paragraphs and Recover. Same pixels as later checked image do not prove a new visible status."
+    },
+    {
+      "file": "health-confirmation-notnow-data-source257r1-7D56786E-A723-4E97-87BC-B4DB895CC4D6.png",
+      "bytes": 354568,
+      "sha256": "f79fcf87afa1c0926b4b5b2729a821a6883b12210f7f2fdfafe621e178db04da",
+      "attachmentName": "health-confirmation-notnow-not-now-choices_0_63A74C3A-DB69-4B46-9010-F4D523F87E9E.png",
+      "nativeTimestamp": 1794186986.839,
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "individuallyOpenedByCritic": true,
+      "detail": "original",
+      "observation": "After Not now: meal on, photo omission off, workout off are visible in this viewport; no success/recovery occurred."
+    },
+    {
+      "file": "health-confirmation-notnow-data-source257r1-5D00CD94-AFD4-454A-9776-FD231246B7EE.png",
+      "bytes": 361183,
+      "sha256": "268066b9556a5a47653561f3b77df1286d5a64c6d5d9d31305d1c814760e4116",
+      "attachmentName": "health-confirmation-notnow-checked_0_6181D3D3-971E-46C0-A321-19DC3B76E926.png",
+      "nativeTimestamp": 1794187004.491,
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "individuallyOpenedByCritic": true,
+      "detail": "original",
+      "observation": "After actual Check: ordinary Check cancellation row and lower review visible. Actual checked-1/native request/raw fresh read comes from helper/protocol, not a unique visual difference."
+    },
+    {
+      "file": "health-confirmation-notnow-data-source257r1-CE459725-E1A5-4406-B193-F92ECD7A0305.png",
+      "bytes": 366974,
+      "sha256": "2ca6e8d51894b0927e03d55cede4f0ae53d6c1ab2ff9d25c2277508bfee40eeb",
+      "attachmentName": "health-confirmation-notnow-owners-closed_0_D5017182-8CDE-4148-BD81-17E84D79A8F1.png",
+      "nativeTimestamp": 1794187011.025,
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "individuallyOpenedByCritic": true,
+      "detail": "original",
+      "observation": "Settings after old actual Back; DEBUG Target check overlay intersects How Lumen works/lower footer. Navigation endpoint screenshot alone is not owner/FD closure proof."
+    },
+    {
+      "file": "health-confirmation-notnow-data-source257r1-C72D6588-3D75-4EDF-A701-4F482E385E49.png",
+      "bytes": 366974,
+      "sha256": "2ca6e8d51894b0927e03d55cede4f0ae53d6c1ab2ff9d25c2277508bfee40eeb",
+      "attachmentName": "health-confirmation-notnow-owners-followup_0_7B4B3F10-3097-4ABD-AEF5-95878A35B459.png",
+      "nativeTimestamp": 1794187014.368,
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "individuallyOpenedByCritic": true,
+      "detail": "original",
+      "observation": "Old closure followup byte-identical to preceding Settings image; separate time/metadata preserved, no unique visual-state claim."
+    },
+    {
+      "file": "health-confirmation-notnow-data-source257r1-C9B9462A-000B-4606-BD2D-316FBFA4351B.png",
+      "bytes": 224040,
+      "sha256": "45a434ae03268537ae3377e349ebbe6403d51136cc285066137d5b8a1668dbff",
+      "attachmentName": "health-confirmation-notnow-fresh-original_0_8B93CB3F-03D3-48A6-8365-7889268EF644.png",
+      "nativeTimestamp": 1794187036.408,
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "individuallyOpenedByCritic": true,
+      "detail": "original",
+      "observation": "Fresh selected original filename/older JSON metadata/Water group visible. Meal toggle partly below bottom; fresh owner/capture identity is protocol evidence."
+    },
+    {
+      "file": "health-confirmation-notnow-data-source257r1-12DF8D03-C485-4334-8272-A480A5C76C69.png",
+      "bytes": 345968,
+      "sha256": "270585e3a18f694a4c1094e1b377729635fae6dc50756dd7cea49d992c9db1d1",
+      "attachmentName": "health-confirmation-notnow-fresh-off_0_6B433DDE-EF88-4CAB-AA37-9EC593D9E21E.png",
+      "nativeTimestamp": 1794187043.628,
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "individuallyOpenedByCritic": true,
+      "detail": "original",
+      "observation": "Fresh review shows meal, omission and workout off; native per-control enabled/value assertions and disabled action establish full scoped off-choice fact."
+    },
+    {
+      "file": "health-confirmation-notnow-data-source257r1-C6BBECD3-AF3D-498C-BF6E-65D97E60DA63.png",
+      "bytes": 366102,
+      "sha256": "2ae9d0a2c57bf3a5c860324eec6254a9d70d6f1dbd9bf034247f9a56ca667f3d",
+      "attachmentName": "health-confirmation-notnow-final-closed_0_E69FC0AE-BFB9-47C0-9BD1-39D333CD1EB9.png",
+      "nativeTimestamp": 1794187054.798,
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "individuallyOpenedByCritic": true,
+      "detail": "original",
+      "observation": "Settings after final Back; DEBUG Target check overlay/lower clipping persists; no whole-settings-form acceptance."
+    },
+    {
+      "file": "health-confirmation-notnow-data-source257r1-33F2BD37-D5AD-4F20-ACDA-E04ECEC015CB.png",
+      "bytes": 366102,
+      "sha256": "2ae9d0a2c57bf3a5c860324eec6254a9d70d6f1dbd9bf034247f9a56ca667f3d",
+      "attachmentName": "health-confirmation-notnow-final-followup_0_9131C175-09D0-4DA9-B347-CF85AB3079A4.png",
+      "nativeTimestamp": 1794187058.055,
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "individuallyOpenedByCritic": true,
+      "detail": "original",
+      "observation": "Final followup byte-identical to preceding final Settings image; sampled metadata endpoint, not continuous absence proof."
+    }
+  ],
+  "bookkeeping": "Acquisition images/readbacks retain individuallyOpened:false as original acquisition state. Separate root/critic original-detail observation reports provide actual-open credit; do not rewrite acquisition indices or retention state. Several screenshots are byte-identical at separate timestamps, including dismissed vs checked and each Settings followup pair.",
+  "limits": [
+    "Current257 Not now Data main/light/standard simulator regression only. Dedicated expiry flag absent from actual launch arguments; no actual90-second expiry acceptance.",
+    "No String Not now, remaining preparation/final-commit windows, retained authoritative closable-owner or all43/eightgroups/fullgoal acceptance.",
+    "Native gray modal body, DEBUG toolbar review-title truncation, Target check overlay on Settings and unrelated clipped rows remain documented visual boundaries. No whole Form/all rows simultaneously/contrast/appearance-wide/speech/motion score.",
+    "No video exported; no recording/motion/continuous-time proof.",
+    "Prior252/253/255 native failures and historical source readiness qualifications remain immutable; current success does not retroactively pass them.",
+    "Current257 unsigned Release/settings/compiler/FileList audit remains future work; prior app255 static release is historical after source changes."
+  ],
+  "requiredNext": "Full parent read/binding and exact currentcase checkpoint before any fixture reset. Then declared separate actual unshortened expiry trial with complete originals/helper/mandatory expiry checker/root/independent review/exact; current static Release and broader goal continue afterward.",
+  "bindings": [
+    {
+      "file": "Design/native/health-write-order/durable-source-r257.json",
+      "bytes": 196620,
+      "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66"
+    },
+    {
+      "file": "Design/native/health-write-order/durable-source-r257.json.gz",
+      "bytes": 5936742,
+      "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-confirmation-expiry-source257-round2-part175-source.json",
+      "bytes": 25591,
+      "sha256": "f647afb56b435ea3d58963a03ed64a382daf2742da06a6726ee9877d4f8f8745"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-source-exact-github.json",
+      "bytes": 496322,
+      "sha256": "843769610a50dd805bcdb6ad51d27a16519d0a30871ea3a358dc331a512486df"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-build-exact-github.json",
+      "bytes": 498034,
+      "sha256": "cd8a5dbf5c04ba3234cc80df567206cf37de95ee192543ac7c7c9be0c27fd9c8"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-target-change-native-build-r1-outcome.json",
+      "bytes": 904,
+      "sha256": "320d5ee93bff8a3d57eec5ecd8bd72f54a73ef87745597c5ea43c50ed70cdf3b"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-target-change-native-build-r1.log.gz",
+      "bytes": 5936,
+      "sha256": "3557faa0b2182ab1337db0a0edbadeeafaeb69e6042727b331d1d04a949b030e"
+    },
+    {
+      "file": "Design/native/health-write-order/health-target-change-source257-r1-build.json",
+      "bytes": 701,
+      "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-root-build-controls-r1.json",
+      "bytes": 1492,
+      "sha256": "b68a3e0607da68437ec6820d24438a6274704f2d342782002edc30276b3a8f30"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-current-debug-release-controls-r1.json",
+      "bytes": 1128,
+      "sha256": "2af580d1ba45c9c36b5c109f19d6d5bd76d468ca1071e2386331820a8ba7e433"
+    },
+    {
+      "file": "Design/native/health-write-order/health-current-release-source257-r1-predeclared-plan.json",
+      "bytes": 20097,
+      "sha256": "dc7af4e7847e218fa955ab76016377f70ba165ba9c08052b73aaea29b0522381"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-notnow-regression-r1-plan.json",
+      "bytes": 1418,
+      "sha256": "87c32fa69d928ee345da914ae59e832f3b6ff57b1ba49825ce05b0131445e51e"
+    },
+    {
+      "file": "Design/native/health-write-order/confirmation-lifecycle-driver-r3.py",
+      "bytes": 19225,
+      "sha256": "979407e987be61f34b407e31ca6e7e78c35c244898a40059e231179102997fa7"
+    },
+    {
+      "file": "Design/native/health-write-order/confirmation-lifecycle-evidence-r1.py",
+      "bytes": 4473,
+      "sha256": "bb937d682f9f0437f0125083240be0cfd5f7646fb54c93d2161a7ad03b2ba341"
+    },
+    {
+      "file": "Design/native/health-write-order/confirmation-lifecycle-protocol-r1.py",
+      "bytes": 4998,
+      "sha256": "efb9a5acc54bb5d4d3a8fe1cd905c55cdb403e8e72ac0d7232721953e364375a"
+    },
+    {
+      "file": "Design/native/health-write-order/confirmation-lifecycle-transport-r1.py",
+      "bytes": 3506,
+      "sha256": "868ed6fd523937a15dfd8b79f105d40cc89f013f8a624ac50c9e9c209bf3834e"
+    },
+    {
+      "file": "Design/native/health-write-order/confirmation-lifecycle-finalization-r4.py",
+      "bytes": 8987,
+      "sha256": "c8ba144cf1967fc0ad30b519d96a357b8fb9dbfd361cfc9fbcbf28de9c03fa7c"
+    },
+    {
+      "file": "Design/native/health-write-order/check-confirmation-lifecycle-r3.py",
+      "bytes": 15329,
+      "sha256": "320063ad539e5ea111cc0805b3e47ccee6b2b1f5ffb0441b02111415afc2de8a"
+    },
+    {
+      "file": "Design/native/health-write-order/target-postrun-process-r1.py",
+      "bytes": 4301,
+      "sha256": "41f34e1d48268ce87d86edac121bf7570392f4e8c01081ada8cf831817b21ea0"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-notnow-root-native-final-audit-r1-planned.py",
+      "bytes": 7305,
+      "sha256": "2467ee202842d7ec31e10ca24b3623c629b106dc70988937d5112596c2354a97"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-notnow-root-native-final-audit-r1.json",
+      "bytes": 2419,
+      "sha256": "e193dda467849d83074448a29950d45f892b2bb22ecdc5e21d059cb6b07e5b4f"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-notnow-root-original-observations-r1.json",
+      "bytes": 6885,
+      "sha256": "c7f7cfc959a411b5459cbf88de06f96db1b941c42048bcd97ac2b813ee5c4fcf"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-notnow-data-source257r1-all-original-export-query.json",
+      "bytes": 3932,
+      "sha256": "49e95f8dddf4d5132888f86b6d0e7d01ad6c646567ef0456e5bf114b5e6ed370"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-notnow-data-source257r1-all-original-manifest.json.gz",
+      "bytes": 1367,
+      "sha256": "18fc74b5c24b9ee92d82e9da27d6edba1dfd032d0816c431218f013b7a7698c5"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-notnow-data-source257r1-all-originals.json",
+      "bytes": 5307,
+      "sha256": "d1a92342a2861c0d88dec5576acc20ec9e7cbcfed250b505104110951f15fa2f"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-notnow-data-source257r1-all-other-originals.json.gz",
+      "bytes": 33,
+      "sha256": "ea5d8f49089bb2d391854a0405992905f714049e05335148d6165deae0e584a2"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-notnow-data-source257r1-driver-observations.json",
+      "bytes": 930205,
+      "sha256": "eb65bebfcb3ab711c363cc4c75199aa1878dc6defb706696dbfd5fd4eddbe67c"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-notnow-data-source257r1-export-json-stderr.gz",
+      "bytes": 20,
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-notnow-data-source257r1-export-json-stdout.gz",
+      "bytes": 308,
+      "sha256": "24c81304ee5dc491b6d18e28020dca224b7a390f37bfccc56a3dd9b36b1be134"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-notnow-data-source257r1-export-png-stderr.gz",
+      "bytes": 20,
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-notnow-data-source257r1-export-png-stdout.gz",
+      "bytes": 1056,
+      "sha256": "d4af6e14fb342ba987e631ddb427dd0a03e26a9b3a45f9dc683d64e23f00d15d"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-notnow-data-source257r1-host-audit.json",
+      "bytes": 930205,
+      "sha256": "eb65bebfcb3ab711c363cc4c75199aa1878dc6defb706696dbfd5fd4eddbe67c"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-notnow-data-source257r1-images.json",
+      "bytes": 13497,
+      "sha256": "d22c369af59b682a579e5d33abae138970483c520a443dd69e8bb7939848fc96"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-notnow-data-source257r1-json-original-manifest.json.gz",
+      "bytes": 439,
+      "sha256": "ccb0257095cd9136771684bb9bab12fbc20d3e6d06c99ddf1346446466934141"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-notnow-data-source257r1-lifecycle-r3-source257r1-outcome.json",
+      "bytes": 120134,
+      "sha256": "298423c97cbc8e3c05715fc3cc46ccc40aa078e2564bb9307e8e19de645b49f1"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-notnow-data-source257r1-mandatory-checker-audit-observation.json",
+      "bytes": 161712,
+      "sha256": "b353e448be232e4c7d182c94e198831678b0265113ef79030b0f3cc5174b15b0"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-notnow-data-source257r1-mandatory-checker-intended-command.json",
+      "bytes": 507,
+      "sha256": "b3c611f4a5b683fb4021c8b1bb54cd4891c71ce7dfc70a6c7b594a719843ac24"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-notnow-data-source257r1-mandatory-checker-query.json",
+      "bytes": 1216,
+      "sha256": "7e8ce521413c926a03204bce41065f3c68a0dbcc34414e62110a94b0a411c1ca"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-notnow-data-source257r1-outcome.json",
+      "bytes": 42168,
+      "sha256": "fa39d0b94aa50f279e95cb2d684449c87cb0a67c18d027a8ac4188b6d616f97c"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-notnow-data-source257r1-png-original-manifest.json.gz",
+      "bytes": 1298,
+      "sha256": "78c67f2d54f0e86a3d8104f052fa84fd59b89def57e0fe23060b2a06601e6cc5"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-notnow-data-source257r1-readbacks.json",
+      "bytes": 966,
+      "sha256": "3b0dcafc1daadfcb733d17f898d5427760126ef5fcaa8001eb95ddcb23e2b6dd"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-notnow-data-source257r1-retention-state.json",
+      "bytes": 38673,
+      "sha256": "4e61cb493f82a7c3f538f94b9d274749d3b901e34789754b37b8a79b74b5d4e1"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-notnow-data-source257r1-summary-query-stderr.gz",
+      "bytes": 20,
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-notnow-data-source257r1-summary-query-stdout.gz",
+      "bytes": 467,
+      "sha256": "b87c2b774f98cd212ca73527fbf50819eb57c70b0b1f69db21acee2e3623ff4d"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-notnow-data-source257r1-summary.json",
+      "bytes": 962,
+      "sha256": "0c025a6c68c1bf476cc7bfe42e3a94248a6baa4d99c26e68a7dc7585883f9589"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-notnow-data-source257r1-70A8ECED-89E1-474D-877C-9CD06D54B87D.json",
+      "bytes": 27756,
+      "sha256": "a1bac5539724413a19b52c663c921b27ec4dd45bfd0cf9e04c759e69bd3183eb"
+    }
+  ],
+  "actualPairBindings": [
+    {
+      "file": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+      "bytes": 46657632,
+      "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+      "readAsDataOnly": true
+    },
+    {
+      "file": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+      "bytes": 6517648,
+      "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+      "readAsDataOnly": true
+    }
+  ],
+  "storage": {
+    "criticDeletion": false,
+    "availableBytesAtFinish": 25284980736,
+    "oldRaw255256": "Historical; never reopened or replayed."
+  },
+  "checkedAtUTC": "2026-11-09T01:22:53.086574+00:00"
+}
