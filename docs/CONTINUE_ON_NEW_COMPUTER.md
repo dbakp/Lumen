@@ -4,6 +4,14 @@ Continue developing Lumen into a world-class, primarily iOS, AI health assistant
 
 Repository: https://github.com/dbakp/Lumen · branch `main`.
 
+## Current optimized static build passed · Source257 /178 · 9 November 2026
+
+After177/root60/current1045/all16/exact GitHuba43dea69a8b909dd7a50f1821110bb05a3b87a18 /59checkpoint2400union, actual current257 unsignedRelease7333/0/bundleauditor0 and settings9966/0 passed. Main40,872,376B SHA8cc3c37c929ba3df7ee4140a258f6dbc83edc12a3e9f7c0dfedf87bee4cbe9b3. Full400937B log SHA23d987e9e29a040c35f9684917b236cbe005be52777343265389e0874514a148 retained. CurrentDebug/testpair exact; all1045 current/archive and unchanged217/201/16/21 arrays verified.
+
+Allthree actualapp compiler commands use-O/noDEBUG/no-enable-testing/BOTH-profile-generate+-profile-coverage-mapping, settingscoverageYES. ActualFileList194=191Lumen+2Shared+1generated, all193frozenmembers complete/current. Mainarm64/min18/noLC_CODE_SIGNATURE/pinnedZipFoundation verified. Full20958B178/rootall30/current1045 exact. ONEorientationwarning retained withbroadline-startscan; no correctionneeded for thisscopedstatic verdict. Earlier sendablecapture warning notdeclaredresolved. Optimized INSTRUMENTED unsigneddevelopment STATIC only, no currentRelease runtime/distribution/signing/noninstrumentedperformance/phone/fullgoal acceptance.
+
+InheritedsettingsscopeFresh255 andplanrationale4oldmarkers/createdUTC/priorUI5d6304c0 baseline are qualified againstactual257fields/PID/log/arrayfacts and current177UI gatea43dea69...2400. Originalproducer/report/planbytes preserved; no retuning/requery. Publish/exact full178/root/currentRelease BEFORE scopedcompletedReleasecache/raw257native+buildcleanup or newproductionappedits. KeepDebug/packages for immediateSource258 work, provider/skill/unbacked191219/canonicalevidence. Currentaggregate16,001,797,719B recovery unchanged untilactualcleanup. Then implement retained-copy authoritativeclosableowner/freshcurrenteligibility/originbinding, withmeaningfulcore/currentnative/Release/review/exact workflow; StringNotnow/otherwindows/originalnext1–7/all43/eightgroups/fullgoal remainopen. No checkpointstop/physicaliPhoneactions. Visualrecords scopednativeandstaticprogress; VMonly/no browserrender.
+
 ## Real diagnostic timeout passed · Source257 /177 · 9 November 2026
 
 ActualSource257R1 expiry followed complete176/root62/all15/exact GitHubb4f2caf0a922c4e808bcedbfaa219b43d64bbc5c /56checkpoint2351union. Native91745/app92814/run57B49129-1132-45D4-8DFB-E6EE857770AB passed1/0/0/native0/driver0/all5boundaries. ActualexpiryFinalizerR1/currentmandatorychecker2961/0 retained full16 originals=15PNG+33842B helper; no video exported. Samecurrent257pair and all1045 inputs exact.
