@@ -71,7 +71,7 @@
 <button class="btn" type="button" data-area="quality" aria-pressed="false" aria-controls="lumen-plan-detail">Answer quality</button>
 <button class="btn" type="button" data-area="release" aria-pressed="false" aria-controls="lumen-plan-detail">Release gates</button>
 </div>
-<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Cancellation · delayed-response check</h3><div data-verified>The simulator verified cancellation and a fresh read of the original data after a delayed response. A test collector error stopped navigation.</div><div data-next>Now: verify the collector fix and repeat the complete cancellation flow.</div><div class="text-small" data-gate>Full navigation remains unverified. Failed runs and their original evidence are preserved.</div></div>
+<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Cancellation · Data case verified</h3><div data-verified>The full simulator flow passed: cancellation, delayed-response read, Back, fresh review and final closure.</div><div data-next>Next: current optimized build and the remaining recovery windows.</div><div class="text-small" data-gate>One Data case is verified. String values, true expiry and other recovery windows remain open; earlier failures stay preserved.</div></div>
 </div>
 <div class="section"><h3>Verified safety checks</h3>
 <table class="table table-sm" aria-label="Earlier checks retain their original scope; broader checks remain open"><thead><tr><th>Situation</th><th>Observed result</th></tr></thead><tbody>
@@ -88,9 +88,9 @@
 <script>
 (()=>{
 const root=document.getElementById('lumen-plan-progress');
-const snapshot='nov9-native-read-host-completion';
+const snapshot='nov9-not-now-data-verified-current-release';
 const areas={
-current:{title:'Cancellation · delayed-response check',verified:'The simulator verified cancellation and a fresh read of the original data after a delayed response. A test collector error stopped navigation.',next:'Now: verify the collector fix and repeat the complete cancellation flow.',gate:'Full navigation remains unverified. Failed runs and their original evidence are preserved.'},
+current:{title:'Cancellation · Data case verified',verified:'The full simulator flow passed: cancellation, delayed-response read, Back, fresh review and final closure.',next:'Next: current optimized build and the remaining recovery windows.',gate:'One Data case is verified. String values, true expiry and other recovery windows remain open; earlier failures stay preserved.'},
 quality:{title:'Answer quality · open',verified:'Library search, source identity, consent controls and literal-reference safeguards are delivered.',next:'Next: evidence-support policy and independent evaluation; personal-context and conversation-history privacy review.',gate:'Clinical accuracy, language coverage and live-provider evaluation remain required.'},
 release:{title:'Release readiness · open',verified:'The earlier optimized build passed both static reviews with coverage instrumentation enabled. The cancellation changes still need a current optimized build and audit.',next:'Next: background Health, Watch reconnect, widget, interruption and accessibility checks.',gate:'Orientation warning, representative histories, performance, privacy and distribution review remain open. No iPhone installation, launch or checks without a renewed request.'}
 };
