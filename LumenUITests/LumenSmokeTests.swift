@@ -8028,6 +8028,88 @@ final class LumenSmokeTests: XCTestCase {
         let attachment = XCTAttachment(data: try JSONSerialization.data(withJSONObject: ["first": first, "selected": selected, "returned": returned, "fresh": fresh], options: [.sortedKeys, .prettyPrinted]), uniformTypeIdentifier: "public.json")
         attachment.name = "retained-owner-children-readback"; attachment.lifetime = .keepAlways; add(attachment)
     }
+    func testHealthRetainedReviewOwnerBackend() throws {
+        executionTimeAllowance = 360
+        let barrier = RetainedRecoveryBackendBarrier()
+        var observations: [String: Any] = [:]
+        defer {
+            observations["runID"] = barrier.runID; observations["runnerPID"] = barrier.runnerPID
+            observations["case"] = barrier.caseName; observations["barriers"] = barrier.events
+            if let data = try? JSONSerialization.data(withJSONObject: observations, options: [.sortedKeys, .prettyPrinted]) {
+                let attachment = XCTAttachment(data: data, uniformTypeIdentifier: "public.json")
+                attachment.name = "retained-backend-readback"; attachment.lifetime = .keepAlways; add(attachment)
+            }
+        }
+        func checkpoint(_ phase: String, _ state: [String: String], _ location: String, _ name: String, _ copyID: String) throws {
+            let shot = app.screenshot(), data = shot.pngRepresentation
+            let attachment = XCTAttachment(screenshot: shot); attachment.name = name
+            attachment.lifetime = .keepAlways; add(attachment)
+            try barrier.wait(phase: phase, state: state, location: location,
+                image: ["attachmentName": name, "bytes": data.count,
+                        "sha256": SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined()], copyID: copyID)
+        }
+        let copy = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'healthRecoveryCopy-'")).firstMatch
+        reveal(copy); XCTAssertTrue(copy.waitForExistence(timeout: 10)); let copyID = copy.identifier; copy.tap()
+        let probe = app.descendants(matching: .any).matching(identifier: "retainedReviewOwnerState").firstMatch
+        func state() throws -> [String: String] {
+            try XCTUnwrap(probe.value as? String).split(separator: ";", omittingEmptySubsequences: false).reduce(into: [:]) { result, pair in
+                let fields = pair.split(separator: "=", maxSplits: 1, omittingEmptySubsequences: false)
+                if fields.count == 2 { result[String(fields[0])] = String(fields[1]) }
+            }
+        }
+        let ready = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+            (probe.value as? String)?.contains("phase=ready") == true
+        }, object: probe)
+        XCTAssertEqual(XCTWaiter.wait(for: [ready], timeout: 10), .completed)
+        let first = try state(); XCTAssertEqual(first["selected"], ""); snap("retained-backend-ready")
+        nativeSwitch("recoverHealth-meals", enabled: true)
+        let selected = try state(); XCTAssertEqual(selected["selected"], "meals"); snap("retained-backend-selected")
+        let records = app.buttons["reviewHealth-meals"].firstMatch; reveal(records, towardsTop: true); records.tap()
+        let meal = app.buttons["recoveryRecord-0"].firstMatch; reveal(meal); XCTAssertTrue(meal.waitForExistence(timeout: 10)); meal.tap()
+        let mealTitle = app.navigationBars.firstMatch.identifier
+        let photo = app.buttons["recoveryChild-2"].firstMatch; reveal(photo); XCTAssertTrue(photo.exists); photo.tap()
+        let image = app.images["recoveryMealPhoto"].firstMatch
+        XCTAssertTrue(image.waitForExistence(timeout: 10)); snap("retained-backend-photo")
+        app.navigationBars["Meal photo"].buttons.element(boundBy: 0).tap()
+        XCTAssertTrue(app.navigationBars[mealTitle].waitForExistence(timeout: 5))
+        app.navigationBars[mealTitle].buttons.element(boundBy: 0).tap()
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        XCTAssertTrue(probe.waitForExistence(timeout: 5)); let returned = try state()
+        XCTAssertEqual(returned, selected); snap("retained-backend-returned")
+        let recover = app.buttons["confirmHealthRecovery"].firstMatch; reveal(recover); XCTAssertTrue(recover.isEnabled)
+        recover.tap(); let alert = app.alerts["Replace selected data?"]
+        XCTAssertTrue(alert.waitForExistence(timeout: 5)); snap("retained-backend-confirmation"); alert.buttons["Not now"].tap()
+        app.navigationBars["Review recovery"].buttons.element(boundBy: 0).tap()
+        XCTAssertTrue(app.navigationBars["Recover health data"].waitForExistence(timeout: 5)); snap("retained-backend-parent")
+        let sameCopy = app.buttons[copyID].firstMatch; reveal(sameCopy); sameCopy.tap()
+        let freshReady = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+            (probe.value as? String)?.contains("phase=ready") == true
+        }, object: probe)
+        XCTAssertEqual(XCTWaiter.wait(for: [freshReady], timeout: 10), .completed)
+        let fresh = try state(); XCTAssertNotEqual(fresh["session"], first["session"]); XCTAssertNotEqual(fresh["capture"], first["capture"])
+        XCTAssertEqual(fresh["selected"], "")
+        observations["first"] = first; observations["selected"] = selected
+        observations["returned"] = returned; observations["fresh"] = fresh; observations["copyID"] = copyID
+        try checkpoint("pre-recover", fresh, "review-ready", "retained-backend-fresh", copyID)
+        guard try state() == fresh else { throw NSError(domain: "LumenRetainedBackendUI", code: 2) }
+        nativeSwitch("recoverHealth-meals", enabled: true); reveal(recover); recover.tap()
+        XCTAssertTrue(alert.waitForExistence(timeout: 5)); alert.buttons["Recover"].tap()
+        let success = app.descendants(matching: .any).matching(identifier: "healthDataRecovered").firstMatch
+        reveal(success, towardsTop: true); XCTAssertTrue(success.waitForExistence(timeout: 20))
+        let committed = try state(); observations["committed"] = committed
+        guard committed["session"] == fresh["session"], committed["capture"] == fresh["capture"],
+              committed["phase"] == "ready", committed["selected"] == "" else {
+            throw NSError(domain: "LumenRetainedBackendUI", code: 3)
+        }
+        try checkpoint("post-success", committed, "review-success", "retained-backend-recovered", copyID)
+        guard try state() == committed, success.exists else { throw NSError(domain: "LumenRetainedBackendUI", code: 4) }
+        app.navigationBars["Review recovery"].buttons.element(boundBy: 0).tap()
+        XCTAssertTrue(app.navigationBars["Recover health data"].waitForExistence(timeout: 5))
+        try checkpoint("final-parent", committed, "parent", "retained-backend-final-parent", copyID)
+        guard app.navigationBars["Recover health data"].exists, !probe.exists else {
+            throw NSError(domain: "LumenRetainedBackendUI", code: 5)
+        }
+    }
     func testHealthRetainedReviewOwnerPendingBack() throws {
         executionTimeAllowance = 90
         let copy = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'healthRecoveryCopy-'")).firstMatch
@@ -10867,4 +10949,122 @@ final class LumenSmokeTests: XCTestCase {
         snap("208-large-sleep-zero")
     }
 
+}
+
+/// Test-runner transport only. It does not grant app recovery authority.
+private final class RetainedRecoveryBackendBarrier {
+    let runID = UUID().uuidString
+    let runnerPID = String(ProcessInfo.processInfo.processIdentifier)
+    let caseName = "retained-meals-backend"
+    private(set) var events: [[String: Any]] = []
+    private var nextPhase = 0
+    private(set) var lastAckAttempt: [String: Any]?
+    private let phases = ["pre-recover", "post-success", "final-parent"]
+
+    private func fail(_ message: String) -> NSError {
+        NSError(domain: "LumenRetainedBackendUI", code: 1,
+                userInfo: [NSLocalizedDescriptionKey: message])
+    }
+    private func digest(_ data: Data) -> String {
+        SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined()
+    }
+    private func facts(_ value: stat) -> [String: String] {
+        ["dev": String(value.st_dev), "ino": String(value.st_ino), "mode": String(value.st_mode),
+         "nlink": String(value.st_nlink), "bytes": String(value.st_size),
+         "mtimeSeconds": String(value.st_mtimespec.tv_sec), "mtimeNanoseconds": String(value.st_mtimespec.tv_nsec)]
+    }
+    private func readAck(_ path: URL, expected: [String: String]) throws -> [String: Any]? {
+        lastAckAttempt = ["file": path.path, "at": Date().timeIntervalSince1970]
+        let fd = Darwin.open(path.path, O_RDONLY | O_NOFOLLOW | O_NONBLOCK | O_CLOEXEC)
+        if fd < 0 {
+            lastAckAttempt?["openErrno"] = Int(errno)
+            if errno == ENOENT { return nil }
+            throw fail("Acknowledgement could not be safely opened: \(errno)")
+        }
+        defer { Darwin.close(fd) }
+        var before = stat()
+        let beforeResult = fstat(fd, &before)
+        lastAckAttempt?["fstatBeforeResult"] = Int(beforeResult); lastAckAttempt?["identityBefore"] = facts(before)
+        guard beforeResult == 0, before.st_mode & mode_t(S_IFMT) == mode_t(S_IFREG),
+              before.st_nlink == 1, before.st_size > 0, before.st_size <= 8192 else {
+            throw fail("Acknowledgement must be one bounded regular file")
+        }
+        var buffer = [UInt8](repeating: 0, count: 8193)
+        let count = Darwin.read(fd, &buffer, buffer.count)
+        let raw = Data(buffer.prefix(max(0, count)))
+        var after = stat(), named = stat()
+        let afterResult = fstat(fd, &after), namedResult = lstat(path.path, &named)
+        lastAckAttempt?["returnedBytes"] = count
+        lastAckAttempt?["raw"] = ["bytes": raw.count, "sha256": digest(raw), "base64": raw.base64EncodedString()]
+        lastAckAttempt?["fstatAfterResult"] = Int(afterResult); lastAckAttempt?["identityAfter"] = facts(after)
+        lastAckAttempt?["lstatNamedResult"] = Int(namedResult); lastAckAttempt?["identityNamed"] = facts(named)
+        guard count == Int(before.st_size), afterResult == 0, namedResult == 0,
+              facts(before) == facts(after), facts(after) == facts(named) else {
+            throw fail("Acknowledgement changed while being read")
+        }
+        guard let ack = try JSONSerialization.jsonObject(with: raw) as? [String: String],
+              Set(ack.keys) == Set(expected.keys).union(["snapshotSHA256"]),
+              expected.allSatisfy({ ack[$0.key] == $0.value }),
+              let snapshot = ack["snapshotSHA256"], snapshot.count == 64,
+              snapshot.allSatisfy({ "0123456789abcdef".contains($0) }),
+              try JSONSerialization.data(withJSONObject: ack, options: [.sortedKeys]) == raw else {
+            throw fail("Acknowledgement identity, phase, nonce or snapshot digest mismatch")
+        }
+        return ["value": ack, "bytes": raw.count, "sha256": digest(raw),
+                "base64": raw.base64EncodedString(), "identity": facts(after)]
+    }
+
+    func wait(phase: String, state: [String: String], location: String,
+              image: [String: Any], copyID: String, timeout: TimeInterval = 60) throws {
+        let prefix = "healthRecoveryCopy-discovered-"
+        let copyDigest = String(copyID.dropFirst(prefix.count))
+        guard copyID.hasPrefix(prefix), copyDigest.count == 64,
+              copyDigest.allSatisfy({ "0123456789abcdef".contains($0) }),
+              nextPhase < phases.count, phase == phases[nextPhase], timeout > 0, timeout <= 60,
+              Set(state.keys) == Set(["session", "capture", "phase", "selected"]),
+              ["session", "capture"].allSatisfy({ UUID(uuidString: state[$0] ?? "")?.uuidString == state[$0] }),
+              state["phase"] == "ready", state["selected"] == "",
+              location == ["review-ready", "review-success", "parent"][nextPhase] else {
+            throw fail("Unexpected native backend boundary or review identity")
+        }
+        let nonce = UUID().uuidString
+        let temporaryRoot = FileManager.default.temporaryDirectory
+        let stem = "Lumen-retained-backend-" + runID.lowercased() + "-" + phase
+        let marker = temporaryRoot.appendingPathComponent(stem + "-marker.json")
+        let ackPath = temporaryRoot.appendingPathComponent(stem + "-ack.json")
+        let binding = ["schema": "Lumen-retained-backend-ack-v1", "runID": runID,
+                       "runnerPID": runnerPID, "case": caseName, "phase": phase, "nonce": nonce, "copyID": copyID,
+                       "sessionID": state["session"]!, "captureID": state["capture"]!,
+                       "selected": state["selected"]!, "location": location]
+        let value: [String: Any] = ["schema": "Lumen-retained-backend-marker-v1", "binding": binding,
+                                   "uiState": state, "image": image, "at": Date().timeIntervalSince1970]
+        let data = try JSONSerialization.data(withJSONObject: value, options: [.sortedKeys])
+        let staging = marker.appendingPathExtension(UUID().uuidString + ".tmp")
+        try data.write(to: staging, options: .withoutOverwriting)
+        try FileManager.default.moveItem(at: staging, to: marker)
+        var event: [String: Any] = ["phase": phase, "markerFile": marker.path, "marker": value,
+                                   "markerBytes": data.count, "markerSHA256": digest(data),
+                                   "markerBase64": data.base64EncodedString(), "ackFile": ackPath.path]
+        let index = events.count; events.append(event)
+        var expected = binding; expected["markerSHA256"] = digest(data)
+        var accepted: [String: Any]?, invalid: Error?
+        let ready = XCTNSPredicateExpectation(predicate: NSPredicate { [self] _, _ in
+            do { accepted = try readAck(ackPath, expected: expected) }
+            catch { invalid = error }
+            return accepted != nil || invalid != nil
+        }, object: nil)
+        let result = XCTWaiter.wait(for: [ready], timeout: timeout)
+        if let invalid {
+            event["ackAttempt"] = lastAckAttempt
+            event["failure"] = invalid.localizedDescription; events[index] = event; throw invalid
+        }
+        guard result == .completed, let accepted else {
+            event["ackAttempt"] = lastAckAttempt
+            event["failure"] = "Missing bounded host acknowledgement"; events[index] = event
+            throw fail("Missing bounded host acknowledgement; native action blocked")
+        }
+        event["ackAttempt"] = lastAckAttempt
+        event["ack"] = accepted; event["acceptedAt"] = Date().timeIntervalSince1970
+        events[index] = event; nextPhase += 1
+    }
 }

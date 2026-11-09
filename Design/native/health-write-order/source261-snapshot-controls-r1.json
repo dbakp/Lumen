@@ -1,0 +1,74 @@
+{
+  "status": "PASS actual bounded nofollow sampler synthetic OS controls",
+  "sourceBytes": 8144,
+  "sourceSHA256": "671c105237a4a5910e85f39cbe1310daff0973af91adeddd9f6836679b94d5f0",
+  "sourceBeforeAfterExact": true,
+  "checks": [
+    {
+      "case": "regular nested hardlinks and absent",
+      "supported": true,
+      "errors": 0
+    },
+    {
+      "case": "root symlink nofollow",
+      "supported": false,
+      "errors": 1
+    },
+    {
+      "case": "intermediate symlink nofollow",
+      "supported": false,
+      "errors": 1
+    },
+    {
+      "case": "dangling symlink rejected",
+      "supported": false,
+      "errors": 1
+    },
+    {
+      "case": "fifo never read and later peer retained",
+      "supported": false,
+      "errors": 1
+    },
+    {
+      "case": "depth bound and regular peer",
+      "supported": false,
+      "errors": 1
+    },
+    {
+      "case": "actual file size limit before read",
+      "supported": false,
+      "errors": 1
+    },
+    {
+      "case": "actual directory entry bound with independent peer",
+      "supported": false,
+      "errors": 1
+    },
+    {
+      "case": "real in-place mutation retained rejected",
+      "supported": false,
+      "errors": 1
+    },
+    {
+      "case": "real directory inventory mutation rejected",
+      "supported": false,
+      "errors": 1
+    },
+    {
+      "case": "real regular-to-symlink swap nofollow",
+      "supported": false,
+      "errors": 2
+    },
+    {
+      "case": "actual aggregate counter under named small injected limit",
+      "supported": false,
+      "errors": 1
+    }
+  ],
+  "raw": "source261-snapshot-controls-r1-raw.json.gz",
+  "rawDecodedBytes": 59226,
+  "rawDecodedSHA256": "3d3a5457c071112c80e76aaa2c86a1e6f65692e1c042db79685c2597e8e043ef",
+  "syntheticTemporaryFixturesRemoved": true,
+  "scope": "Actual sampler with OS regular/directory/hardlink/symlink/FIFO/mutation/size/inventory bounds. No global FD/atomic/continuous or app acceptance; all failed sample diagnostics retained.",
+  "checkedAt": 1794200794.392191
+}

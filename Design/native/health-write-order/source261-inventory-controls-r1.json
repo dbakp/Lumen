@@ -1,0 +1,167 @@
+{
+  "status": "PASS actual task namespace metadata inventory controls",
+  "helperBytes": 2166,
+  "helperSHA256": "103592145f4bf56c7de779ef6a209fb8623636e0f704a4eb82f5562964870f62",
+  "sourceBeforeAfterExact": true,
+  "checks": [
+    {
+      "case": "bounded owned namespace excludes unrelated files",
+      "sample": {
+        "status": "SUPPORTED bounded task namespace inventory",
+        "path": "/private/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen261-inventory-0ykbg800",
+        "startedAt": 1794200931.2984068,
+        "entries": {
+          "LumenData": {
+            "st_dev": 16777233,
+            "st_ino": 47087502,
+            "st_mode": 16877,
+            "st_nlink": 2,
+            "st_size": 64,
+            "st_mtime_ns": 1794200931298173759,
+            "st_ctime_ns": 1794200931298198051
+          },
+          "LumenData.previous": {
+            "st_dev": 16777233,
+            "st_ino": 47087503,
+            "st_mode": 16877,
+            "st_nlink": 2,
+            "st_size": 64,
+            "st_mtime_ns": 1794200931298247718,
+            "st_ctime_ns": 1794200931298267968
+          }
+        },
+        "errors": [],
+        "namesBefore": [
+          "LumenData",
+          "LumenData.previous"
+        ],
+        "namesAfter": [
+          "LumenData",
+          "LumenData.previous"
+        ],
+        "finishedAt": 1794200931.298636
+      }
+    },
+    {
+      "case": "namespace symlink rejected without traversal",
+      "sample": {
+        "status": "FAILED namespace inventory",
+        "path": "/private/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen261-inventory-0ykbg800",
+        "startedAt": 1794200931.298777,
+        "entries": {
+          "LumenData": {
+            "st_dev": 16777233,
+            "st_ino": 47087502,
+            "st_mode": 16877,
+            "st_nlink": 2,
+            "st_size": 64,
+            "st_mtime_ns": 1794200931298173759,
+            "st_ctime_ns": 1794200931298198051
+          },
+          "LumenData.link": {
+            "st_dev": 16777233,
+            "st_ino": 47087506,
+            "st_mode": 41453,
+            "st_nlink": 1,
+            "st_size": 92,
+            "st_mtime_ns": 1794200931298752180,
+            "st_ctime_ns": 1794200931298771805
+          },
+          "LumenData.previous": {
+            "st_dev": 16777233,
+            "st_ino": 47087503,
+            "st_mode": 16877,
+            "st_nlink": 2,
+            "st_size": 64,
+            "st_mtime_ns": 1794200931298247718,
+            "st_ctime_ns": 1794200931298267968
+          }
+        },
+        "errors": [
+          {
+            "entry": "LumenData.link",
+            "error": "Task namespace contains a non-directory entry"
+          },
+          {
+            "stage": "inventory",
+            "error": ""
+          }
+        ],
+        "namesBefore": [
+          "LumenData",
+          "LumenData.link",
+          "LumenData.previous"
+        ],
+        "namesAfter": [
+          "LumenData",
+          "LumenData.link",
+          "LumenData.previous"
+        ],
+        "finishedAt": 1794200931.2989
+      }
+    },
+    {
+      "case": "ancestor symlink rejected",
+      "sample": {
+        "status": "FAILED namespace inventory",
+        "path": "/private/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen261-inventory-0ykbg800/alias",
+        "startedAt": 1794200931.299019,
+        "entries": {},
+        "errors": [
+          {
+            "stage": "inventory",
+            "error": "[Errno 20] Not a directory: 'alias'"
+          }
+        ],
+        "finishedAt": 1794200931.299092
+      }
+    },
+    {
+      "case": "actual sibling inventory mutation rejected",
+      "sample": {
+        "status": "FAILED namespace inventory",
+        "path": "/private/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen261-inventory-0ykbg800",
+        "startedAt": 1794200931.299094,
+        "entries": {
+          "LumenData": {
+            "st_dev": 16777233,
+            "st_ino": 47087502,
+            "st_mode": 16877,
+            "st_nlink": 2,
+            "st_size": 64,
+            "st_mtime_ns": 1794200931298173759,
+            "st_ctime_ns": 1794200931298198051
+          },
+          "LumenData.previous": {
+            "st_dev": 16777233,
+            "st_ino": 47087503,
+            "st_mode": 16877,
+            "st_nlink": 2,
+            "st_size": 64,
+            "st_mtime_ns": 1794200931298247718,
+            "st_ctime_ns": 1794200931298267968
+          }
+        },
+        "errors": [
+          {
+            "stage": "inventory",
+            "error": "Task sibling names changed during inventory"
+          }
+        ],
+        "namesBefore": [
+          "LumenData",
+          "LumenData.previous"
+        ],
+        "namesAfter": [
+          "LumenData",
+          "LumenData.previous",
+          "LumenData.restore-synthetic"
+        ],
+        "finishedAt": 1794200931.29925
+      }
+    }
+  ],
+  "temporarySyntheticFixturesRemoved": true,
+  "scope": "Metadata of synthetic task-prefixed sibling paths only, unrelated file contents never read. No app/native/global descriptor acceptance.",
+  "checkedAt": 1794200931.2998872
+}

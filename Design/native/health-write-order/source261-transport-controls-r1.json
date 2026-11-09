@@ -1,0 +1,341 @@
+{
+  "status": "PASS actual runner transport synthetic OS controls",
+  "helperBytes": 7298,
+  "helperSHA256": "d5b81ddbba606a396e8f6b36f919bad5b3ab63d66a9c0346899f8d4b3d8e900b",
+  "sourceBeforeAfterExact": true,
+  "checks": [
+    {
+      "case": "actual Darwin exclusive publish/fsync/readback",
+      "result": {
+        "file": "/private/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen261-transport-cyau8s72/ack.json",
+        "status": "SUPPORTED exclusive durable publication",
+        "startedAt": 1794202905.55858,
+        "raw": {
+          "bytes": 19,
+          "sha256": "91f696e21d138b1623053fe9521892d33338f22c949501c7488fe68e01ddacfd",
+          "base64": "eyJzeW50aGV0aWMiOiJhY2sifQ=="
+        },
+        "published": true,
+        "mayHaveBeenObserved": true,
+        "errors": [],
+        "temporaryFile": "/private/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen261-transport-cyau8s72/ack.json.a80f79e7-adde-4b9c-8b20-292fb15bc1c0.tmp",
+        "temporaryFsynced": true,
+        "publicationStartedAt": 1794202905.558964,
+        "directoryFsynced": true,
+        "publicationObservedAt": 1794202905.559585,
+        "readback": {
+          "file": "/private/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen261-transport-cyau8s72/ack.json",
+          "startedAt": 1794202905.559638,
+          "status": "SUPPORTED stable transport file",
+          "errors": [],
+          "identityBefore": {
+            "st_dev": 16777233,
+            "st_ino": 47108395,
+            "st_mode": 33152,
+            "st_nlink": 1,
+            "st_size": 19,
+            "st_mtime_ns": 1794202905558842577,
+            "st_ctime_ns": 1794202905559560545
+          },
+          "raw": {
+            "bytes": 19,
+            "sha256": "91f696e21d138b1623053fe9521892d33338f22c949501c7488fe68e01ddacfd",
+            "base64": "eyJzeW50aGV0aWMiOiJhY2sifQ=="
+          },
+          "identityAfter": {
+            "st_dev": 16777233,
+            "st_ino": 47108395,
+            "st_mode": 33152,
+            "st_nlink": 1,
+            "st_size": 19,
+            "st_mtime_ns": 1794202905558842577,
+            "st_ctime_ns": 1794202905559560545
+          },
+          "identityNamedAfter": {
+            "st_dev": 16777233,
+            "st_ino": 47108395,
+            "st_mode": 33152,
+            "st_nlink": 1,
+            "st_size": 19,
+            "st_mtime_ns": 1794202905558842577,
+            "st_ctime_ns": 1794202905559560545
+          },
+          "finishedAt": 1794202905.559786
+        },
+        "finishedAt": 1794202905.5597901
+      }
+    },
+    {
+      "case": "existing ack never overwritten",
+      "result": {
+        "file": "/private/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen261-transport-cyau8s72/ack.json",
+        "status": "FAILED publication",
+        "startedAt": 1794202905.559801,
+        "raw": {
+          "bytes": 7,
+          "sha256": "d67e2e944994496c8d8ec76eed0cf9f09679448d584b532bebf941852a37f5ed",
+          "base64": "Y2hhbmdlZA=="
+        },
+        "published": false,
+        "mayHaveBeenObserved": false,
+        "errors": [
+          {
+            "stage": "publication",
+            "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/retained-backend-transport-r1.py\", line 117, in write_once\n    if code!=0:raise OSError(ctypes.get_errno(),os.strerror(ctypes.get_errno()))\nFileExistsError: [Errno 17] File exists\n"
+          }
+        ],
+        "temporaryFile": "/private/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen261-transport-cyau8s72/ack.json.fb6ef540-b493-4dcd-9fcf-baf440a8cd06.tmp",
+        "temporaryFsynced": true,
+        "publicationStartedAt": 1794202905.560052,
+        "readback": {
+          "file": "/private/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen261-transport-cyau8s72/ack.json",
+          "startedAt": 1794202905.560454,
+          "status": "SUPPORTED stable transport file",
+          "errors": [],
+          "identityBefore": {
+            "st_dev": 16777233,
+            "st_ino": 47108395,
+            "st_mode": 33152,
+            "st_nlink": 1,
+            "st_size": 19,
+            "st_mtime_ns": 1794202905558842577,
+            "st_ctime_ns": 1794202905559560545
+          },
+          "raw": {
+            "bytes": 19,
+            "sha256": "91f696e21d138b1623053fe9521892d33338f22c949501c7488fe68e01ddacfd",
+            "base64": "eyJzeW50aGV0aWMiOiJhY2sifQ=="
+          },
+          "identityAfter": {
+            "st_dev": 16777233,
+            "st_ino": 47108395,
+            "st_mode": 33152,
+            "st_nlink": 1,
+            "st_size": 19,
+            "st_mtime_ns": 1794202905558842577,
+            "st_ctime_ns": 1794202905559560545
+          },
+          "identityNamedAfter": {
+            "st_dev": 16777233,
+            "st_ino": 47108395,
+            "st_mode": 33152,
+            "st_nlink": 1,
+            "st_size": 19,
+            "st_mtime_ns": 1794202905558842577,
+            "st_ctime_ns": 1794202905559560545
+          },
+          "finishedAt": 1794202905.5605628
+        },
+        "finishedAt": 1794202905.560566
+      }
+    },
+    {
+      "case": "symlink nofollow",
+      "result": {
+        "file": "/private/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen261-transport-cyau8s72/link.json",
+        "startedAt": 1794202905.560678,
+        "status": "FAILED read",
+        "errors": [
+          {
+            "stage": "read",
+            "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/retained-backend-transport-r1.py\", line 50, in read\n    try:fd=os.open(name,os.O_RDONLY|os.O_NOFOLLOW|os.O_NONBLOCK|os.O_CLOEXEC,dir_fd=parent)\nOSError: [Errno 62] Too many levels of symbolic links: 'link.json'\n"
+          }
+        ],
+        "finishedAt": 1794202905.560777
+      }
+    },
+    {
+      "case": "FIFO rejected before nonblocking read",
+      "result": {
+        "file": "/private/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen261-transport-cyau8s72/fifo.json",
+        "startedAt": 1794202905.560847,
+        "status": "FAILED read",
+        "errors": [
+          {
+            "stage": "read",
+            "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/retained-backend-transport-r1.py\", line 54, in read\n    assert stat.S_ISREG(before.st_mode) and before.st_nlink==1 and 0<=before.st_size<=limit\nAssertionError\n"
+          }
+        ],
+        "identityBefore": {
+          "st_dev": 16777233,
+          "st_ino": 47108398,
+          "st_mode": 4516,
+          "st_nlink": 1,
+          "st_size": 0,
+          "st_mtime_ns": 1794202905560815602,
+          "st_ctime_ns": 1794202905560834436
+        },
+        "raw": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "base64": ""
+        },
+        "finishedAt": 1794202905.5609689
+      }
+    },
+    {
+      "case": "hardlinked ack rejected",
+      "result": {
+        "file": "/private/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen261-transport-cyau8s72/linked.json",
+        "startedAt": 1794202905.561434,
+        "status": "FAILED read",
+        "errors": [
+          {
+            "stage": "read",
+            "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/retained-backend-transport-r1.py\", line 54, in read\n    assert stat.S_ISREG(before.st_mode) and before.st_nlink==1 and 0<=before.st_size<=limit\nAssertionError\n"
+          }
+        ],
+        "identityBefore": {
+          "st_dev": 16777233,
+          "st_ino": 47108395,
+          "st_mode": 33152,
+          "st_nlink": 2,
+          "st_size": 19,
+          "st_mtime_ns": 1794202905558842577,
+          "st_ctime_ns": 1794202905561403943
+        },
+        "raw": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "base64": ""
+        },
+        "finishedAt": 1794202905.561574
+      }
+    },
+    {
+      "case": "actual pinned-parent leaf absence",
+      "result": {
+        "file": "/private/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen261-transport-cyau8s72/missing.json",
+        "startedAt": 1794202905.561635,
+        "status": "ABSENT anchored leaf",
+        "errors": [],
+        "finishedAt": 1794202905.5617201
+      }
+    },
+    {
+      "case": "missing ancestor not leaf absence",
+      "result": {
+        "file": "/private/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen261-transport-cyau8s72/missing-parent/missing.json",
+        "startedAt": 1794202905.561732,
+        "status": "FAILED read",
+        "errors": [
+          {
+            "stage": "read",
+            "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/retained-backend-transport-r1.py\", line 49, in read\n    opened,links=_anchors(root);parent=opened[-1]\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/retained-backend-transport-r1.py\", line 24, in _anchors\n    parent=opened[-1];child=os.open(part,os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW|os.O_CLOEXEC,dir_fd=parent)\nFileNotFoundError: [Errno 2] No such file or directory: 'missing-parent'\n"
+          }
+        ],
+        "finishedAt": 1794202905.561821
+      }
+    },
+    {
+      "case": "matching cap plus one sentinel",
+      "result": {
+        "root": "/private/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen261-transport-cyau8s72",
+        "prefix": "marker-",
+        "startedAt": 1794202905.562177,
+        "status": "FAILED inventory",
+        "names": [
+          "marker-0",
+          "marker-1",
+          "marker-2",
+          "marker-3"
+        ],
+        "scannedAtLeast": 7,
+        "overflow": true,
+        "errors": [
+          {
+            "stage": "inventory",
+            "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/retained-backend-transport-r1.py\", line 86, in list_names\n    result['names'].sort();assert not result['overflow'],'Bounded transport inventory exceeded'\nAssertionError: Bounded transport inventory exceeded\n"
+          }
+        ],
+        "finishedAt": 1794202905.562303
+      }
+    },
+    {
+      "case": "scanning cap plus one sentinel",
+      "result": {
+        "root": "/private/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen261-transport-cyau8s72",
+        "prefix": "none-",
+        "startedAt": 1794202905.562305,
+        "status": "FAILED inventory",
+        "names": [],
+        "scannedAtLeast": 4,
+        "overflow": true,
+        "errors": [
+          {
+            "stage": "inventory",
+            "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/retained-backend-transport-r1.py\", line 86, in list_names\n    result['names'].sort();assert not result['overflow'],'Bounded transport inventory exceeded'\nAssertionError: Bounded transport inventory exceeded\n"
+          }
+        ],
+        "finishedAt": 1794202905.562479
+      }
+    },
+    {
+      "case": "post-publication fsync failure retained may-be-observed, no blocked-Recover promise",
+      "result": {
+        "file": "/private/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen261-transport-cyau8s72/post-publication-error.json",
+        "status": "FAILED publication",
+        "startedAt": 1794202905.562491,
+        "raw": {
+          "bytes": 19,
+          "sha256": "91f696e21d138b1623053fe9521892d33338f22c949501c7488fe68e01ddacfd",
+          "base64": "eyJzeW50aGV0aWMiOiJhY2sifQ=="
+        },
+        "published": true,
+        "mayHaveBeenObserved": true,
+        "errors": [
+          {
+            "stage": "publication",
+            "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/retained-backend-transport-r1.py\", line 119, in write_once\n    os.fsync(parent);result['directoryFsynced']=True\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/source261-transport-controls-r1-executed.py\", line 21, in failed_directory\n    if count[0]==2:raise OSError('Synthetic actual callback fault after rename')\nOSError: Synthetic actual callback fault after rename\n"
+          }
+        ],
+        "temporaryFile": "/private/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen261-transport-cyau8s72/post-publication-error.json.b13f1771-9505-48b0-960e-b129341f6b7e.tmp",
+        "temporaryFsynced": true,
+        "publicationStartedAt": 1794202905.5627441,
+        "readback": {
+          "file": "/private/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen261-transport-cyau8s72/post-publication-error.json",
+          "startedAt": 1794202905.563057,
+          "status": "SUPPORTED stable transport file",
+          "errors": [],
+          "identityBefore": {
+            "st_dev": 16777233,
+            "st_ino": 47108406,
+            "st_mode": 33152,
+            "st_nlink": 1,
+            "st_size": 19,
+            "st_mtime_ns": 1794202905562659042,
+            "st_ctime_ns": 1794202905562820920
+          },
+          "raw": {
+            "bytes": 19,
+            "sha256": "91f696e21d138b1623053fe9521892d33338f22c949501c7488fe68e01ddacfd",
+            "base64": "eyJzeW50aGV0aWMiOiJhY2sifQ=="
+          },
+          "identityAfter": {
+            "st_dev": 16777233,
+            "st_ino": 47108406,
+            "st_mode": 33152,
+            "st_nlink": 1,
+            "st_size": 19,
+            "st_mtime_ns": 1794202905562659042,
+            "st_ctime_ns": 1794202905562820920
+          },
+          "identityNamedAfter": {
+            "st_dev": 16777233,
+            "st_ino": 47108406,
+            "st_mode": 33152,
+            "st_nlink": 1,
+            "st_size": 19,
+            "st_mtime_ns": 1794202905562659042,
+            "st_ctime_ns": 1794202905562820920
+          },
+          "finishedAt": 1794202905.563182
+        },
+        "finishedAt": 1794202905.563189
+      }
+    }
+  ],
+  "temporarySyntheticFixturesRemoved": true,
+  "scope": "Real host-only synthetic files and Darwin exclusive rename, named fsync callback fault. No native Recover or app/backend acceptance; no general process/global FD guarantee.",
+  "checkedAt": 1794202905.563776
+}

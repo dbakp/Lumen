@@ -1,0 +1,330 @@
+{
+  "status": "PASS actual task namespace metadata inventory controls",
+  "helperBytes": 2695,
+  "helperSHA256": "67f59a3f04b2be6aed6019a1d301b1899a42d1a3e6b1d98ed5cb31e3657cba89",
+  "sourceBeforeAfterExact": true,
+  "checks": [
+    {
+      "case": "bounded owned namespace excludes unrelated files",
+      "sample": {
+        "status": "SUPPORTED bounded task namespace inventory",
+        "path": "/private/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen261-inventory-u53cp5jj",
+        "startedAt": 1794201217.0984058,
+        "entries": {
+          "LumenData": {
+            "st_dev": 16777233,
+            "st_ino": 47088449,
+            "st_mode": 16877,
+            "st_nlink": 2,
+            "st_size": 64,
+            "st_mtime_ns": 1794201217098195390,
+            "st_ctime_ns": 1794201217098215223
+          },
+          "LumenData.previous": {
+            "st_dev": 16777233,
+            "st_ino": 47088450,
+            "st_mode": 16877,
+            "st_nlink": 2,
+            "st_size": 64,
+            "st_mtime_ns": 1794201217098260015,
+            "st_ctime_ns": 1794201217098282432
+          }
+        },
+        "errors": [],
+        "inventoryBefore": {
+          "names": [
+            "LumenData",
+            "LumenData.previous"
+          ],
+          "scannedAtLeast": 3,
+          "overflow": false
+        },
+        "namesBefore": [
+          "LumenData",
+          "LumenData.previous"
+        ],
+        "inventoryAfter": {
+          "names": [
+            "LumenData",
+            "LumenData.previous"
+          ],
+          "scannedAtLeast": 3,
+          "overflow": false
+        },
+        "namesAfter": [
+          "LumenData",
+          "LumenData.previous"
+        ],
+        "finishedAt": 1794201217.098637
+      }
+    },
+    {
+      "case": "namespace symlink rejected without traversal",
+      "sample": {
+        "status": "FAILED namespace inventory",
+        "path": "/private/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen261-inventory-u53cp5jj",
+        "startedAt": 1794201217.098769,
+        "entries": {
+          "LumenData": {
+            "st_dev": 16777233,
+            "st_ino": 47088449,
+            "st_mode": 16877,
+            "st_nlink": 2,
+            "st_size": 64,
+            "st_mtime_ns": 1794201217098195390,
+            "st_ctime_ns": 1794201217098215223
+          },
+          "LumenData.link": {
+            "st_dev": 16777233,
+            "st_ino": 47088453,
+            "st_mode": 41453,
+            "st_nlink": 1,
+            "st_size": 92,
+            "st_mtime_ns": 1794201217098740727,
+            "st_ctime_ns": 1794201217098763519
+          },
+          "LumenData.previous": {
+            "st_dev": 16777233,
+            "st_ino": 47088450,
+            "st_mode": 16877,
+            "st_nlink": 2,
+            "st_size": 64,
+            "st_mtime_ns": 1794201217098260015,
+            "st_ctime_ns": 1794201217098282432
+          }
+        },
+        "errors": [
+          {
+            "entry": "LumenData.link",
+            "error": "Task namespace contains a non-directory entry"
+          },
+          {
+            "stage": "inventory",
+            "error": ""
+          }
+        ],
+        "inventoryBefore": {
+          "names": [
+            "LumenData",
+            "LumenData.link",
+            "LumenData.previous"
+          ],
+          "scannedAtLeast": 5,
+          "overflow": false
+        },
+        "namesBefore": [
+          "LumenData",
+          "LumenData.link",
+          "LumenData.previous"
+        ],
+        "inventoryAfter": {
+          "names": [
+            "LumenData",
+            "LumenData.link",
+            "LumenData.previous"
+          ],
+          "scannedAtLeast": 5,
+          "overflow": false
+        },
+        "namesAfter": [
+          "LumenData",
+          "LumenData.link",
+          "LumenData.previous"
+        ],
+        "finishedAt": 1794201217.098888
+      }
+    },
+    {
+      "case": "ancestor symlink rejected",
+      "sample": {
+        "status": "FAILED namespace inventory",
+        "path": "/private/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen261-inventory-u53cp5jj/alias",
+        "startedAt": 1794201217.099009,
+        "entries": {},
+        "errors": [
+          {
+            "stage": "inventory",
+            "error": "[Errno 20] Not a directory: 'alias'"
+          }
+        ],
+        "finishedAt": 1794201217.099076
+      }
+    },
+    {
+      "case": "actual sibling inventory mutation rejected",
+      "sample": {
+        "status": "FAILED namespace inventory",
+        "path": "/private/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen261-inventory-u53cp5jj",
+        "startedAt": 1794201217.099087,
+        "entries": {
+          "LumenData": {
+            "st_dev": 16777233,
+            "st_ino": 47088449,
+            "st_mode": 16877,
+            "st_nlink": 2,
+            "st_size": 64,
+            "st_mtime_ns": 1794201217098195390,
+            "st_ctime_ns": 1794201217098215223
+          },
+          "LumenData.previous": {
+            "st_dev": 16777233,
+            "st_ino": 47088450,
+            "st_mode": 16877,
+            "st_nlink": 2,
+            "st_size": 64,
+            "st_mtime_ns": 1794201217098260015,
+            "st_ctime_ns": 1794201217098282432
+          }
+        },
+        "errors": [
+          {
+            "stage": "inventory",
+            "error": "Task sibling names changed or exceeded bound during inventory"
+          }
+        ],
+        "inventoryBefore": {
+          "names": [
+            "LumenData",
+            "LumenData.previous"
+          ],
+          "scannedAtLeast": 5,
+          "overflow": false
+        },
+        "namesBefore": [
+          "LumenData",
+          "LumenData.previous"
+        ],
+        "inventoryAfter": {
+          "names": [
+            "LumenData",
+            "LumenData.previous",
+            "LumenData.restore-synthetic"
+          ],
+          "scannedAtLeast": 6,
+          "overflow": false
+        },
+        "namesAfter": [
+          "LumenData",
+          "LumenData.previous",
+          "LumenData.restore-synthetic"
+        ],
+        "finishedAt": 1794201217.099246
+      }
+    },
+    {
+      "case": "matching names capped at32plus sentinel",
+      "sample": {
+        "status": "FAILED namespace inventory",
+        "path": "/private/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen261-inventory-u53cp5jj/crowded",
+        "startedAt": 1794201217.101372,
+        "entries": {},
+        "errors": [
+          {
+            "stage": "inventory",
+            "error": "Bounded namespace scan or matching-name limit exceeded"
+          }
+        ],
+        "inventoryBefore": {
+          "names": [
+            "LumenData.synthetic-0",
+            "LumenData.synthetic-1",
+            "LumenData.synthetic-10",
+            "LumenData.synthetic-11",
+            "LumenData.synthetic-12",
+            "LumenData.synthetic-13",
+            "LumenData.synthetic-14",
+            "LumenData.synthetic-15",
+            "LumenData.synthetic-16",
+            "LumenData.synthetic-17",
+            "LumenData.synthetic-18",
+            "LumenData.synthetic-19",
+            "LumenData.synthetic-2",
+            "LumenData.synthetic-20",
+            "LumenData.synthetic-21",
+            "LumenData.synthetic-22",
+            "LumenData.synthetic-23",
+            "LumenData.synthetic-24",
+            "LumenData.synthetic-25",
+            "LumenData.synthetic-26",
+            "LumenData.synthetic-27",
+            "LumenData.synthetic-28",
+            "LumenData.synthetic-29",
+            "LumenData.synthetic-3",
+            "LumenData.synthetic-30",
+            "LumenData.synthetic-31",
+            "LumenData.synthetic-32",
+            "LumenData.synthetic-33",
+            "LumenData.synthetic-5",
+            "LumenData.synthetic-6",
+            "LumenData.synthetic-7",
+            "LumenData.synthetic-8",
+            "LumenData.synthetic-9"
+          ],
+          "scannedAtLeast": 33,
+          "overflow": true
+        },
+        "namesBefore": [
+          "LumenData.synthetic-0",
+          "LumenData.synthetic-1",
+          "LumenData.synthetic-10",
+          "LumenData.synthetic-11",
+          "LumenData.synthetic-12",
+          "LumenData.synthetic-13",
+          "LumenData.synthetic-14",
+          "LumenData.synthetic-15",
+          "LumenData.synthetic-16",
+          "LumenData.synthetic-17",
+          "LumenData.synthetic-18",
+          "LumenData.synthetic-19",
+          "LumenData.synthetic-2",
+          "LumenData.synthetic-20",
+          "LumenData.synthetic-21",
+          "LumenData.synthetic-22",
+          "LumenData.synthetic-23",
+          "LumenData.synthetic-24",
+          "LumenData.synthetic-25",
+          "LumenData.synthetic-26",
+          "LumenData.synthetic-27",
+          "LumenData.synthetic-28",
+          "LumenData.synthetic-29",
+          "LumenData.synthetic-3",
+          "LumenData.synthetic-30",
+          "LumenData.synthetic-31",
+          "LumenData.synthetic-32",
+          "LumenData.synthetic-33",
+          "LumenData.synthetic-5",
+          "LumenData.synthetic-6",
+          "LumenData.synthetic-7",
+          "LumenData.synthetic-8",
+          "LumenData.synthetic-9"
+        ],
+        "finishedAt": 1794201217.101511
+      }
+    },
+    {
+      "case": "unrelated scan capped at2048plus sentinel without content reads",
+      "sample": {
+        "status": "FAILED namespace inventory",
+        "path": "/private/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen261-inventory-u53cp5jj/unrelated-crowded",
+        "startedAt": 1794201217.252775,
+        "entries": {},
+        "errors": [
+          {
+            "stage": "inventory",
+            "error": "Bounded namespace scan or matching-name limit exceeded"
+          }
+        ],
+        "inventoryBefore": {
+          "names": [],
+          "scannedAtLeast": 2049,
+          "overflow": true
+        },
+        "namesBefore": [],
+        "finishedAt": 1794201217.254297
+      }
+    }
+  ],
+  "temporarySyntheticFixturesRemoved": true,
+  "scope": "Metadata of synthetic task-prefixed sibling paths only, unrelated file contents never read. No app/native/global descriptor acceptance.",
+  "checkedAt": 1794201217.3903518
+}

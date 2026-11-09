@@ -1,0 +1,93 @@
+{
+  "status": "PREDECLARED host implementation plan; no predicates executed against native data",
+  "sourcePreparation": "Source261 not yet frozen",
+  "testMethod": "LumenSmokeTests/testHealthRetainedReviewOwnerBackend",
+  "namespace": "retained-backend-source261-r1 / RetainedBackendSource261R1",
+  "currentAppCarry": "Only existing whole UITest file differs from260. All195 Release/app Swift sources, project/assets/dependency/Core remain exact260; source-ready186/root/exact before build-for-testing new test binary. Assert actual current app MachO unchanged260 and bind new test binary; if app changes, retain failed carry acquisition, do not fabricate unchanged app. No redundant Core/Release build for test-only change.",
+  "requiredPhases": [
+    "pre-recover",
+    "post-success",
+    "final-parent"
+  ],
+  "nativeTransport": {
+    "runnerOwnedRun": "UUID generated in native method, runner PID separately bound from app PID; discover only current new run markers under actual dedicated runner data/tmp",
+    "markerBinding": [
+      "schema",
+      "runID",
+      "runnerPID",
+      "case",
+      "phase",
+      "nonce",
+      "copyID",
+      "sessionID",
+      "captureID",
+      "selected",
+      "location"
+    ],
+    "ackAdds": [
+      "markerSHA256",
+      "snapshotSHA256"
+    ],
+    "ackBytes": "Exact canonical sorted compact string JSON, O_EXCL temp file + fsync + atomic no-overwrite install, parent-dir fsync. No ack until retained snapshot file is read back/hash-verified and predicates pass.",
+    "failurePolicy": "Any missing/invalid/late ack blocks following native action. Host independently salvage all matching marker/ack peers and complete unfiltered native export even if native method-level defer skipped by XCTest abort. Preserve every failed acquisition/partial peer; bounded known xcodebuild finalization."
+  },
+  "snapshot": {
+    "helpers": [
+      "retained-backend-snapshot-r2.py",
+      "retained-backend-inventory-r2.py"
+    ],
+    "roots": [
+      "exact group/LumenData",
+      "exact group/LumenData.previous",
+      "exact appData/Library/Preferences directory",
+      "exact group/Library/Preferences directory"
+    ],
+    "inventory": "Metadata-only LumenData* siblings before/after; fail unknown names, overflow, unsafe kinds or nonanchored absence. Capture complete current/previous/declared prefs roots, never unrelated group contents.",
+    "stability": "Bounded attempts with all samples/partial diagnostics retained, two complete identical stable accepted samples at each native barrier before ack. Whitelist transient metadata/CFPrefs atomic-replacement/retired cleanup retries; malformed/unsafe/overflow/unexpected-semantic data fails without ack. No synchronize/defaults write.",
+    "durability": "Phase envelope includes every attempt + accepted sample indices/fingerprints + actual context/marker hash; gzip mtime0, fsync/readback. Native snapshotSHA binds actual retained compressed bytes, also record decoded size/SHA.",
+    "limits": "No global atomic/continuous or cached-defaults/memory-active-flags/no-Health-API guarantee.",
+    "pinnedParents": "source261-preparation-prefs-paths-r1.json read-only preparation metadata confirms both Library parents exist. Future actual context must requery/bind roots; missing parent fails closed, never relabel as leaf absence."
+  },
+  "baseline": {
+    "copy": "Actual copyID healthRecoveryCopy-discovered-64hex bound in marker/ack; source catalog .health-recovery/id exact expected8files: manifest, device-intent, all5health domains, original photo. Previous healthy domain/photo/journal bytes match those catalog inputs with source-expected hardlink identities.",
+    "currentRequired": [
+      "chat.json",
+      "conversation-selection.json",
+      "conversations.json",
+      "goals.json",
+      "health-write-intent.json",
+      "meals.json",
+      "today.json",
+      "water.json",
+      "workouts.json",
+      "photos/synthetic-review-photo.jpg"
+    ],
+    "optionalProtectedModelDefaults": [
+      "profile.json",
+      "sleep.json",
+      "habits.json"
+    ],
+    "failedCurrent": {
+      "water.json": "{\"syntheticUnavailableWater\":",
+      "meals.json": "{",
+      "workouts.json": "{",
+      "goals.json": "{",
+      "today.json": "{"
+    },
+    "journal": "Exact version1/integer, canonical opaque owner/lifecycle UUID, empty events. No preexisting receipts. Catalogue one source copy, previous remains present until transaction.",
+    "sourceMeals": "Two actual source records synthetic-first-meal/synthetic-second-meal share original synthetic-review-photo; fixture dates far before current day. Full nested values retained."
+  },
+  "postPredicates": {
+    "selected": "Exactly meals recovered. New current records equal source records except shared fresh uppercase UUID photoID; record digest matches exact current bytes; one new receipt source=retained:actualcopyid/domains[meals]/actual photo digest. New photo bytes exact original source; new file is real regular no symlink.",
+    "private": "Exactly one new uppercase-UUID private incident containing manifest(version1/domainsmeals/photosTrue/intentTrue), exact pre failed meals bytes AND preserved regular dev/inode/mode/size/mtime, entire pre-current photo tree retained under incident with corresponding bytes/identity, exact pre journal provenance.",
+    "unselected": "Every pre-existing current protected leaf and permanent source-catalog leaf preserves raw bytes/hash/dev/inode/mode/size/mtime. nlink/ctime recorded but allowed to change via preserveByLink/previous retirement; directories/root may be replaced as source specifies. New root installed on same device. Unknown files/dirs/receipts/transitions fail.",
+    "journal": "Same owner, version1, no new/removed events from empty fixture; lifecycle rotates once to distinct UUID. Final-parent endpoint matches post-success journal and record/private/receipt/source leaves.",
+    "previousAndTransient": "Previous retired as source specifies. Bounded stable post samples await no restore/discovery/retired sibling; keep all intermediate failed/unstable attempts, no continuous-absence claim.",
+    "standardPreferences": "All persisted typed standard defaults unchanged, fixed legacy keys meals/workouts/goals and connected/rescan/conversation active presence+types explicit; do not equate absence/false. No cached-effective or keychain proof.",
+    "groupPreferences": "Only health.localStorageIssue losing meals and bounded refreshed widget.evidence.v1 day/capturedAt may change. Source CurrentHealthEvidence.local rejects empty today dates, so both pre/post values and estimates remain empty for historical November2 meals. Every other typed shared preference unchanged. R1 prototype zero expectation was incorrect and is superseded by R2.",
+    "provider": "Known4992B seed/raw identity unchanged before/after, exact approved simulator only."
+  },
+  "checker": "Independently verify frozen261/archive + unchanged260 app-target closure/new test receipt/current executable identities/commands/proof and actual Git rows/HEAD/origin; typed complete sample schema and raw hashes, all marker-ack-snapshot native readbacks, full unfiltered originals/helper/trace/log/summary, actual phase predicates. Fresh post-native read-only terminal sample separate, no reset. Actual checker query retained before audit parse; full root/samecritic187/exact before any next reset.",
+  "remaining": "Controller/stable sampler, producer, independent mandatory checker/finalizer, receipt/proof caller controls, build recipes and full186 review/freeze/exact remain pending. Current isolated controls22/13/6/24/13 and whole UITest SDKR2 pass only their named scopes. No new test binary/native/backend acceptance.",
+  "checkedAt": 1794204354.8536608
+}

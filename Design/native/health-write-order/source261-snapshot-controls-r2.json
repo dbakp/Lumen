@@ -1,0 +1,79 @@
+{
+  "status": "PASS actual bounded nofollow sampler synthetic OS controls",
+  "sourceBytes": 8658,
+  "sourceSHA256": "04484035950937f1c08cf5ef02db326b1eb15d6428832f74de00cb293b1fe0e0",
+  "sourceBeforeAfterExact": true,
+  "checks": [
+    {
+      "case": "regular nested hardlinks and absent",
+      "supported": true,
+      "errors": 0
+    },
+    {
+      "case": "missing intermediate fails closed",
+      "supported": false,
+      "errors": 1
+    },
+    {
+      "case": "root symlink nofollow",
+      "supported": false,
+      "errors": 1
+    },
+    {
+      "case": "intermediate symlink nofollow",
+      "supported": false,
+      "errors": 1
+    },
+    {
+      "case": "dangling symlink rejected",
+      "supported": false,
+      "errors": 1
+    },
+    {
+      "case": "fifo never read and later peer retained",
+      "supported": false,
+      "errors": 1
+    },
+    {
+      "case": "depth bound and regular peer",
+      "supported": false,
+      "errors": 1
+    },
+    {
+      "case": "actual file size limit before read",
+      "supported": false,
+      "errors": 1
+    },
+    {
+      "case": "actual directory entry bound with independent peer",
+      "supported": false,
+      "errors": 1
+    },
+    {
+      "case": "real in-place mutation retained rejected",
+      "supported": false,
+      "errors": 1
+    },
+    {
+      "case": "real directory inventory mutation rejected",
+      "supported": false,
+      "errors": 1
+    },
+    {
+      "case": "real regular-to-symlink swap nofollow",
+      "supported": false,
+      "errors": 2
+    },
+    {
+      "case": "actual aggregate counter under named small injected limit",
+      "supported": false,
+      "errors": 1
+    }
+  ],
+  "raw": "source261-snapshot-controls-r2-raw.json.gz",
+  "rawDecodedBytes": 69958,
+  "rawDecodedSHA256": "2edacc5cccaf102360ba5af77f843970c939e8620fe6eb49a598e4a5d21d4cfe",
+  "syntheticTemporaryFixturesRemoved": true,
+  "scope": "Actual sampler with OS regular/directory/hardlink/symlink/FIFO/mutation/size/inventory bounds. No global FD/atomic/continuous or app acceptance; all failed sample diagnostics retained.",
+  "checkedAt": 1794201191.101003
+}
