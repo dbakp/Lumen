@@ -71,7 +71,7 @@
 <button class="btn" type="button" data-area="quality" aria-pressed="false" aria-controls="lumen-plan-detail">Answer quality</button>
 <button class="btn" type="button" data-area="release" aria-pressed="false" aria-controls="lumen-plan-detail">Release gates</button>
 </div>
-<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Verification tooling · fixing</h3><div data-verified>The retained-review implementation passed 35 focused checks and 2,212 logic checks. Independent review found three tooling gaps before execution.</div><div data-next>Now: preserving all available evidence after failures and binding each simulator run to its exact app and test build.</div><div class="text-small" data-gate>Current build, three navigation cases, raw post-recovery audits and release verification remain pending.</div></div>
+<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Verification tooling · in progress</h3><div data-verified>Evidence retention and build-binding checks passed isolated tests. Review found one remaining family of metadata comparisons to tighten.</div><div data-next>Now: applying the same strict rule to every saved fact, followed by review and simulator verification.</div><div class="text-small" data-gate>35 focused and 2,212 logic checks remain valid at unchanged source. Current build, navigation and release checks remain pending.</div></div>
 </div>
 <div class="section"><h3>Verified safety checks</h3>
 <table class="table table-sm" aria-label="Earlier checks retain their original scope; broader checks remain open"><thead><tr><th>Situation</th><th>Observed result</th></tr></thead><tbody>
@@ -83,14 +83,14 @@
 </tbody></table>
 <div class="text-small">Earlier six-file long-wait preservation failure and Banana zero-fat omission remain failed expectations. Final dismissal preserved the immediate newer state.</div></div>
 <hr>
-<div class="viz-row"><span>About 23 GiB available before this batch</span><span>16.75 GB recovered in recorded cleanups · latest cleanup 744.66 MB</span></div>
+<div class="viz-row"><span>About 22 GiB available at last check</span><span>17.03 GB recovered in recorded cleanups · latest cleanup 282.27 MB</span></div>
 <div class="text-small">Redundant exports and completed test bundles removed after exact GitHub verification · canonical evidence and needed caches retained · no further iPhone actions authorized</div>
 <script>
 (()=>{
 const root=document.getElementById('lumen-plan-progress');
-const snapshot='nov9-retained-review-harness-correction';
+const snapshot='nov9-typed-provenance-review';
 const areas={
-current:{title:'Verification tooling · fixing',verified:'The retained-review implementation passed 35 focused checks and 2,212 logic checks. Independent review found three tooling gaps before execution.',next:'Now: preserving all available evidence after failures and binding each simulator run to its exact app and test build.',gate:'Current build, three navigation cases, raw post-recovery audits and release verification remain pending.'},
+current:{title:'Verification tooling · in progress',verified:'Evidence retention and build-binding checks passed isolated tests. Review found one remaining family of metadata comparisons to tighten.',next:'Now: applying the same strict rule to every saved fact, followed by review and simulator verification.',gate:'35 focused and 2,212 logic checks remain valid at unchanged source. Current build, navigation and release checks remain pending.'},
 quality:{title:'Answer quality · open',verified:'Library search, source identity, consent controls and literal-reference safeguards are delivered.',next:'Next: evidence-support policy and independent evaluation; personal-context and conversation-history privacy review.',gate:'Clinical accuracy, language coverage and live-provider evaluation remain required.'},
 release:{title:'Release readiness · open',verified:'The current optimized build passed static review with coverage instrumentation enabled. Its orientation warning remains open.',next:'Next: retained-copy ownership, then background Health, Watch reconnect, widget and accessibility.',gate:'Orientation warning, representative histories, performance, privacy and distribution review remain open. No iPhone installation, launch or checks without a renewed request.'}
 };

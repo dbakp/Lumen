@@ -1,0 +1,382 @@
+{
+  "status": "PASS actual query/finalizer injected caller controls",
+  "queryCount": 4,
+  "finalizerCount": 11,
+  "queryCases": [
+    {
+      "fault": "success",
+      "result": {
+        "command": [
+          "injected-query"
+        ],
+        "pid": 424244,
+        "exit": 0,
+        "stdout": "ZXhhY3QgaW5qZWN0ZWQgc3Rkb3V0",
+        "stderr": "ZXhhY3QgaW5qZWN0ZWQgc3RkZXJy"
+      }
+    },
+    {
+      "fault": "launch",
+      "result": {
+        "command": [
+          "injected-query"
+        ],
+        "pid": null,
+        "exit": null,
+        "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/retained-owner-driver-r2.py\", line 44, in query\n    p = subprocess.Popen(command, cwd=R, stdout=subprocess.PIPE, stderr=subprocess.PIPE)\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/source259-query-finalizer-controls-r2-executed.py\", line 18, in __init__\n    if fault == 'launch': raise OSError('injected launch error')\nOSError: injected launch error\n",
+        "stdout": "",
+        "stderr": ""
+      }
+    },
+    {
+      "fault": "communicate",
+      "result": {
+        "command": [
+          "injected-query"
+        ],
+        "pid": 424244,
+        "exit": 0,
+        "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/retained-owner-driver-r2.py\", line 46, in query\n    out, err = p.communicate(timeout=90); result['exit'] = p.returncode\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/source259-query-finalizer-controls-r2-executed.py\", line 22, in communicate\n    if fault == 'communicate' and self.calls == 1: raise OSError('injected communicate error')\nOSError: injected communicate error\n",
+        "knownChildFinalization": {
+          "launched": true,
+          "pid": 424244,
+          "errors": [],
+          "exit": 0,
+          "finishedBy": "natural-grace"
+        },
+        "stdout": "ZXhhY3QgaW5qZWN0ZWQgc3Rkb3V0",
+        "stderr": "ZXhhY3QgaW5qZWN0ZWQgc3RkZXJy"
+      }
+    },
+    {
+      "fault": "nonzero",
+      "result": {
+        "command": [
+          "injected-query"
+        ],
+        "pid": 424244,
+        "exit": 1,
+        "stdout": "ZXhhY3QgaW5qZWN0ZWQgc3Rkb3V0",
+        "stderr": "ZXhhY3QgaW5qZWN0ZWQgc3RkZXJy"
+      }
+    }
+  ],
+  "finalizerCases": [
+    {
+      "fault": "valid",
+      "exit": false,
+      "result": {
+        "status": "SUPPORTED mandatory checker completion; originals/root/critic/exact pending",
+        "source": "durable-source-r259.json",
+        "case": "children",
+        "query": "retained-owner-source259-children-r1-mandatory-checker-query.json",
+        "actualCheckerQuery": {
+          "command": [
+            "python3",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-finalizer-injected-d7ilx6ub/check-retained-owner-r2.py",
+            "--case",
+            "children"
+          ],
+          "pid": 424245,
+          "exit": 0,
+          "stdout": "aW5qZWN0ZWQgY2hlY2tlciBzdGRvdXQ=",
+          "stderr": "aW5qZWN0ZWQgY2hlY2tlciBzdGRlcnI=",
+          "checkedAt": 1794193023.052
+        },
+        "errors": [],
+        "rawAuditBase64": "eyJzb3VyY2UiOiAiZHVyYWJsZS1zb3VyY2UtcjI1OS5qc29uIiwgImNhc2UiOiAiY2hpbGRyZW4iLCAicHJlZml4IjogInJldGFpbmVkLW93bmVyLXNvdXJjZTI1OS1jaGlsZHJlbi1yMSIsICJzdGF0dXMiOiAiU1VQUE9SVEVEIGluamVjdGVkIn0=",
+        "checkedAt": 1794193023.0523121
+      }
+    },
+    {
+      "fault": "missing",
+      "exit": true,
+      "result": {
+        "status": "FAILED",
+        "source": "durable-source-r259.json",
+        "case": "children",
+        "query": "retained-owner-source259-children-r1-mandatory-checker-query.json",
+        "actualCheckerQuery": {
+          "command": [
+            "python3",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-finalizer-injected-r5aaqm4k/check-retained-owner-r2.py",
+            "--case",
+            "children"
+          ],
+          "pid": 424245,
+          "exit": 0,
+          "stdout": "aW5qZWN0ZWQgY2hlY2tlciBzdGRvdXQ=",
+          "stderr": "aW5qZWN0ZWQgY2hlY2tlciBzdGRlcnI=",
+          "checkedAt": 1794193023.053992
+        },
+        "errors": [],
+        "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/retained-owner-finalization-r2.py\", line 33, in main\n    with path.open('rb') as stream: raw = stream.read(1024 * 1024 + 1)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py\", line 1242, in open\n    return io.open(self, mode, buffering, encoding, errors, newline,\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py\", line 1110, in _opener\n    return self._accessor.open(self, flags, mode)\nFileNotFoundError: [Errno 2] No such file or directory: '/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-finalizer-injected-r5aaqm4k/retained-owner-source259-children-r1-mandatory-audit.json'\n",
+        "checkedAt": 1794193023.05498
+      }
+    },
+    {
+      "fault": "malformed",
+      "exit": true,
+      "result": {
+        "status": "FAILED",
+        "source": "durable-source-r259.json",
+        "case": "children",
+        "query": "retained-owner-source259-children-r1-mandatory-checker-query.json",
+        "actualCheckerQuery": {
+          "command": [
+            "python3",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-finalizer-injected-ci6weqev/check-retained-owner-r2.py",
+            "--case",
+            "children"
+          ],
+          "pid": 424245,
+          "exit": 0,
+          "stdout": "aW5qZWN0ZWQgY2hlY2tlciBzdGRvdXQ=",
+          "stderr": "aW5qZWN0ZWQgY2hlY2tlciBzdGRlcnI=",
+          "checkedAt": 1794193023.056524
+        },
+        "errors": [],
+        "rawAuditBase64": "e21hbGZvcm1lZA==",
+        "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/retained-owner-finalization-r2.py\", line 36, in main\n    audit = json.loads(raw); assert isinstance(audit, dict)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/__init__.py\", line 346, in loads\n    return _default_decoder.decode(s)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/decoder.py\", line 337, in decode\n    obj, end = self.raw_decode(s, idx=_w(s, 0).end())\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/decoder.py\", line 353, in raw_decode\n    obj, end = self.scan_once(s, idx)\njson.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)\n",
+        "checkedAt": 1794193023.057585
+      }
+    },
+    {
+      "fault": "array",
+      "exit": true,
+      "result": {
+        "status": "FAILED",
+        "source": "durable-source-r259.json",
+        "case": "children",
+        "query": "retained-owner-source259-children-r1-mandatory-checker-query.json",
+        "actualCheckerQuery": {
+          "command": [
+            "python3",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-finalizer-injected-7d9qbsdx/check-retained-owner-r2.py",
+            "--case",
+            "children"
+          ],
+          "pid": 424245,
+          "exit": 0,
+          "stdout": "aW5qZWN0ZWQgY2hlY2tlciBzdGRvdXQ=",
+          "stderr": "aW5qZWN0ZWQgY2hlY2tlciBzdGRlcnI=",
+          "checkedAt": 1794193023.058919
+        },
+        "errors": [],
+        "rawAuditBase64": "W10=",
+        "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/retained-owner-finalization-r2.py\", line 36, in main\n    audit = json.loads(raw); assert isinstance(audit, dict)\nAssertionError\n",
+        "checkedAt": 1794193023.059137
+      }
+    },
+    {
+      "fault": "null",
+      "exit": true,
+      "result": {
+        "status": "FAILED",
+        "source": "durable-source-r259.json",
+        "case": "children",
+        "query": "retained-owner-source259-children-r1-mandatory-checker-query.json",
+        "actualCheckerQuery": {
+          "command": [
+            "python3",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-finalizer-injected-70yshwpr/check-retained-owner-r2.py",
+            "--case",
+            "children"
+          ],
+          "pid": 424245,
+          "exit": 0,
+          "stdout": "aW5qZWN0ZWQgY2hlY2tlciBzdGRvdXQ=",
+          "stderr": "aW5qZWN0ZWQgY2hlY2tlciBzdGRlcnI=",
+          "checkedAt": 1794193023.0606642
+        },
+        "errors": [],
+        "rawAuditBase64": "bnVsbA==",
+        "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/retained-owner-finalization-r2.py\", line 36, in main\n    audit = json.loads(raw); assert isinstance(audit, dict)\nAssertionError\n",
+        "checkedAt": 1794193023.060878
+      }
+    },
+    {
+      "fault": "wrong-source",
+      "exit": true,
+      "result": {
+        "status": "FAILED",
+        "source": "durable-source-r259.json",
+        "case": "children",
+        "query": "retained-owner-source259-children-r1-mandatory-checker-query.json",
+        "actualCheckerQuery": {
+          "command": [
+            "python3",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-finalizer-injected-tp14klwb/check-retained-owner-r2.py",
+            "--case",
+            "children"
+          ],
+          "pid": 424245,
+          "exit": 0,
+          "stdout": "aW5qZWN0ZWQgY2hlY2tlciBzdGRvdXQ=",
+          "stderr": "aW5qZWN0ZWQgY2hlY2tlciBzdGRlcnI=",
+          "checkedAt": 1794193023.06252
+        },
+        "errors": [],
+        "rawAuditBase64": "eyJzb3VyY2UiOiAiT1RIRVIiLCAiY2FzZSI6ICJjaGlsZHJlbiIsICJwcmVmaXgiOiAicmV0YWluZWQtb3duZXItc291cmNlMjU5LWNoaWxkcmVuLXIxIiwgInN0YXR1cyI6ICJTVVBQT1JURUQgaW5qZWN0ZWQifQ==",
+        "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/retained-owner-finalization-r2.py\", line 37, in main\n    assert audit['source'] == result['source'] and audit['case'] == args.case and audit['prefix'] == prefix\nAssertionError\n",
+        "checkedAt": 1794193023.062767
+      }
+    },
+    {
+      "fault": "wrong-case",
+      "exit": true,
+      "result": {
+        "status": "FAILED",
+        "source": "durable-source-r259.json",
+        "case": "children",
+        "query": "retained-owner-source259-children-r1-mandatory-checker-query.json",
+        "actualCheckerQuery": {
+          "command": [
+            "python3",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-finalizer-injected-uo5djql7/check-retained-owner-r2.py",
+            "--case",
+            "children"
+          ],
+          "pid": 424245,
+          "exit": 0,
+          "stdout": "aW5qZWN0ZWQgY2hlY2tlciBzdGRvdXQ=",
+          "stderr": "aW5qZWN0ZWQgY2hlY2tlciBzdGRlcnI=",
+          "checkedAt": 1794193023.063927
+        },
+        "errors": [],
+        "rawAuditBase64": "eyJzb3VyY2UiOiAiZHVyYWJsZS1zb3VyY2UtcjI1OS5qc29uIiwgImNhc2UiOiAiT1RIRVIiLCAicHJlZml4IjogInJldGFpbmVkLW93bmVyLXNvdXJjZTI1OS1jaGlsZHJlbi1yMSIsICJzdGF0dXMiOiAiU1VQUE9SVEVEIGluamVjdGVkIn0=",
+        "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/retained-owner-finalization-r2.py\", line 37, in main\n    assert audit['source'] == result['source'] and audit['case'] == args.case and audit['prefix'] == prefix\nAssertionError\n",
+        "checkedAt": 1794193023.064149
+      }
+    },
+    {
+      "fault": "wrong-prefix",
+      "exit": true,
+      "result": {
+        "status": "FAILED",
+        "source": "durable-source-r259.json",
+        "case": "children",
+        "query": "retained-owner-source259-children-r1-mandatory-checker-query.json",
+        "actualCheckerQuery": {
+          "command": [
+            "python3",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-finalizer-injected-cp0w3i8n/check-retained-owner-r2.py",
+            "--case",
+            "children"
+          ],
+          "pid": 424245,
+          "exit": 0,
+          "stdout": "aW5qZWN0ZWQgY2hlY2tlciBzdGRvdXQ=",
+          "stderr": "aW5qZWN0ZWQgY2hlY2tlciBzdGRlcnI=",
+          "checkedAt": 1794193023.0654972
+        },
+        "errors": [],
+        "rawAuditBase64": "eyJzb3VyY2UiOiAiZHVyYWJsZS1zb3VyY2UtcjI1OS5qc29uIiwgImNhc2UiOiAiY2hpbGRyZW4iLCAicHJlZml4IjogIk9USEVSIiwgInN0YXR1cyI6ICJTVVBQT1JURUQgaW5qZWN0ZWQifQ==",
+        "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/retained-owner-finalization-r2.py\", line 37, in main\n    assert audit['source'] == result['source'] and audit['case'] == args.case and audit['prefix'] == prefix\nAssertionError\n",
+        "checkedAt": 1794193023.065721
+      }
+    },
+    {
+      "fault": "checker-nonzero",
+      "exit": true,
+      "result": {
+        "status": "FAILED",
+        "source": "durable-source-r259.json",
+        "case": "children",
+        "query": "retained-owner-source259-children-r1-mandatory-checker-query.json",
+        "actualCheckerQuery": {
+          "command": [
+            "python3",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-finalizer-injected-zt8oxxe2/check-retained-owner-r2.py",
+            "--case",
+            "children"
+          ],
+          "pid": 424245,
+          "exit": 1,
+          "stdout": "aW5qZWN0ZWQgY2hlY2tlciBzdGRvdXQ=",
+          "stderr": "aW5qZWN0ZWQgY2hlY2tlciBzdGRlcnI=",
+          "checkedAt": 1794193023.06712
+        },
+        "errors": [],
+        "rawAuditBase64": "eyJzb3VyY2UiOiAiZHVyYWJsZS1zb3VyY2UtcjI1OS5qc29uIiwgImNhc2UiOiAiY2hpbGRyZW4iLCAicHJlZml4IjogInJldGFpbmVkLW93bmVyLXNvdXJjZTI1OS1jaGlsZHJlbi1yMSIsICJzdGF0dXMiOiAiU1VQUE9SVEVEIGluamVjdGVkIn0=",
+        "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/retained-owner-finalization-r2.py\", line 38, in main\n    assert child.returncode == 0 and audit['status'].startswith('SUPPORTED')\nAssertionError\n",
+        "checkedAt": 1794193023.0673542
+      }
+    },
+    {
+      "fault": "query-write",
+      "exit": true,
+      "result": {
+        "status": "FAILED",
+        "source": "durable-source-r259.json",
+        "case": "children",
+        "query": "retained-owner-source259-children-r1-mandatory-checker-query.json",
+        "actualCheckerQuery": {
+          "command": [
+            "python3",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-finalizer-injected-lhr2k6__/check-retained-owner-r2.py",
+            "--case",
+            "children"
+          ],
+          "pid": 424245,
+          "exit": 0,
+          "stdout": "aW5qZWN0ZWQgY2hlY2tlciBzdGRvdXQ=",
+          "stderr": "aW5qZWN0ZWQgY2hlY2tlciBzdGRlcnI=",
+          "checkedAt": 1794193023.06867
+        },
+        "errors": [
+          {
+            "stage": "query-persistence",
+            "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/retained-owner-finalization-r2.py\", line 29, in main\n    try: output.write_text(json.dumps(query, indent=2) + '\\n')\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/source259-query-finalizer-controls-r2-executed.py\", line 40, in write_text\n    if fault == 'query-write' and self.name.endswith('-mandatory-checker-query.json'): raise OSError('injected query write failure')\nOSError: injected query write failure\n"
+          }
+        ],
+        "rawAuditBase64": "eyJzb3VyY2UiOiAiZHVyYWJsZS1zb3VyY2UtcjI1OS5qc29uIiwgImNhc2UiOiAiY2hpbGRyZW4iLCAicHJlZml4IjogInJldGFpbmVkLW93bmVyLXNvdXJjZTI1OS1jaGlsZHJlbi1yMSIsICJzdGF0dXMiOiAiU1VQUE9SVEVEIGluamVjdGVkIn0=",
+        "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/retained-owner-finalization-r2.py\", line 39, in main\n    assert result['errors'] == []\nAssertionError\n",
+        "checkedAt": 1794193023.068778
+      }
+    },
+    {
+      "fault": "outcome-write",
+      "exit": true,
+      "result": {
+        "status": "FAILED outcome persistence; no acceptance",
+        "source": "durable-source-r259.json",
+        "case": "children",
+        "query": "retained-owner-source259-children-r1-mandatory-checker-query.json",
+        "actualCheckerQuery": {
+          "command": [
+            "python3",
+            "/var/folders/s8/9jzwfsws6zb3qbg0ffyy_blm0000gn/T/lumen259-finalizer-injected-95km_t2g/check-retained-owner-r2.py",
+            "--case",
+            "children"
+          ],
+          "pid": 424245,
+          "exit": 0,
+          "stdout": "aW5qZWN0ZWQgY2hlY2tlciBzdGRvdXQ=",
+          "stderr": "aW5qZWN0ZWQgY2hlY2tlciBzdGRlcnI=",
+          "checkedAt": 1794193023.070176
+        },
+        "errors": [
+          {
+            "stage": "outcome-persistence",
+            "error": "Traceback (most recent call last):\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/retained-owner-finalization-r2.py\", line 43, in main\n    try: outcome.write_text(json.dumps(result, indent=2) + '\\n')\n  File \"/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/source259-query-finalizer-controls-r2-executed.py\", line 41, in write_text\n    if fault == 'outcome-write' and self.name.endswith('-finalization.json'): raise OSError('injected outcome write failure')\nOSError: injected outcome write failure\n"
+          }
+        ],
+        "rawAuditBase64": "eyJzb3VyY2UiOiAiZHVyYWJsZS1zb3VyY2UtcjI1OS5qc29uIiwgImNhc2UiOiAiY2hpbGRyZW4iLCAicHJlZml4IjogInJldGFpbmVkLW93bmVyLXNvdXJjZTI1OS1jaGlsZHJlbi1yMSIsICJzdGF0dXMiOiAiU1VQUE9SVEVEIGluamVjdGVkIn0=",
+        "checkedAt": 1794193023.070389
+      }
+    }
+  ],
+  "sources": {
+    "retained-owner-driver-r2.py": {
+      "bytes": 11757,
+      "sha256": "8d8c3ca37191b832c19cde39a1cfc395f501449f48bd6044ac280934ec7b3153"
+    },
+    "retained-owner-finalization-r2.py": {
+      "bytes": 3111,
+      "sha256": "cf12e10d04140e0560dcd08526dc582b328a0e5e0fa217c70caa0f88feaf6e60"
+    }
+  },
+  "scope": "Actual query()/finalizer.main with named fake child processes and real temporary query/audit/outcome/emergency files. No native/current source verification/actual checker subprocess acceptance. Total filesystem outage remains unrecoverable.",
+  "checkedAt": 1794193023.07105
+}

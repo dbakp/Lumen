@@ -1,0 +1,385 @@
+{
+  "schema": "Lumen-independent-source-review-v1",
+  "part": 180,
+  "source": "durable-source-r259.json",
+  "status": "NOT_READY required exact typed provenance correction",
+  "sourceReady": false,
+  "runtimeAcceptance": false,
+  "globalProductAcceptance": false,
+  "score": null,
+  "reviewMethod": {
+    "readOnly": true,
+    "judgedHelpersImportedOrExecuted": false,
+    "subjectBuildNativeSimulatorProcessGitDefaultsOrCleanupActions": false,
+    "writes": "This new report only.",
+    "fullCurrentArchiveVerification": true,
+    "sourceAndCallerReview": "Read current driver/evidence/checker/finalizer and relevant actual control recipes; parse control receipts rather than accept their status labels. No independent rerun of controls.",
+    "visualReview": "Not applicable to source-only synthetic caller controls; no fake image pixels accepted as native screenshots."
+  },
+  "sourceFacts": {
+    "textInputs": 1062,
+    "fixtureInputs": 75,
+    "total": 1137,
+    "priorTotal": 1101,
+    "allPriorCurrentAndArchiveByteIdentical": true,
+    "priorModified": [],
+    "appended": 36,
+    "appModelUICoreWholeUITestChanges": false,
+    "verificationInventorySHA256": "a43e1a324292790d43b6d4da3265b9518efb4ebc684337ed711849209ef3ea29",
+    "predeclaredMarkerCounts": [
+      219,
+      203,
+      16,
+      21
+    ],
+    "markerArraysElementIdentical258": true
+  },
+  "requiredFindings": [
+    {
+      "id": "P180-C1",
+      "priority": "required before build/native source acceptance",
+      "title": "Finish strict typed provenance across installed facts, finalization and retained numeric facts",
+      "evidence": [
+        "check-retained-owner-r2.py compares installedAppCurrent == state.installedApp using ordinary dictionary equality; installed identity st_nlink True can equal actual integer1, and floats equal corresponding integers. Existing installed-digest negative does not test this.",
+        "nativeFinalization.pid is compared to strict-int nativePID without independently requiring an integer; the equal floating PID passes that equality.",
+        "Retained log.bytes, originals[].bytes and trace.bytes are compared to len(raw) without strict integer checks. ProviderBefore/After use ordinary dictionary equality to fresh provider identity facts.",
+        "retained-owner-evidence-r1.py preflight requires buildExit strict int but receipt sourceInputs/fixtureInputs/binaryBytes/testBinaryBytes use value equality only. Equal floats remain possible for these intended integer metadata fields.",
+        "driver preflightAfter/preflight and provider pre/post use ordinary equality; these newly acquired values are real file facts, but canonical type-exact equality should be shared for consistency with checker replay."
+      ],
+      "scope": "Exact app/test bytes and digest checks remain sound; no unsafe executable replacement or product lifetime failure is demonstrated. This is a remaining mandatory provenance-schema correctness gap, not an observed native failure.",
+      "minimumCorrection": [
+        "Use one strict JSON/value-type equality helper for complete installed/provider and recorded/current/pre-post facts; retain exact file path, digest, byte count and identity checks.",
+        "Require strict positive integer finalization PID and retained raw sizes; require strict integer positive receipt counts/sizes as appropriate. Do not weaken strict summary/native/query counters already present.",
+        "Extend actual checker.main controls with installed identity Boolean/float, finalization PID float/Boolean, retained size float/Boolean, provider identity type negatives, and receipt numeric type negatives through actual preflight; preserve existing strict preflight Boolean controls."
+      ],
+      "demonstration": "Source-inspected Python equality semantics; no judged helper was executed by critic."
+    }
+  ],
+  "prior179Corrections": {
+    "C1": "Source and injected actual-main paths now independently attempt summary/export/later peers and terminal persistence, preserve query errors, and boundedly finalize known native child. Supported at host-source/isolated-caller scope only.",
+    "C2": "Fresh source/archive/receipt/app/test facts and exact command replay are now present, including strict canonical JSON preflight replay. Remaining installed/numeric type family is P180-C1.",
+    "C3": "Manifest is copied once in independent directory loop or exact existing content reused. Complete-success and mismatch controls cover the former deterministic collision.",
+    "priorNOTREADYCheckpoint": "7f5eb5f1f52e179c670882ab6ce7bd3938d7938d; 83 checkpoint/2478 union rows retained in bound proof."
+  },
+  "controlAssessment": {
+    "producer12": {
+      "cases": 12,
+      "actualCaller": "driver.main",
+      "supported": "Complete success; independent summary/export exceptions; first-peer copy/read failure continuation; exporter nonzero salvage; malformed manifest raw retention; exact reuse/mismatch; terminal emergency persistence; caffeinate failure; wait/finalization failure.",
+      "qualification": "Named fake source/build/proof/provider/native/query endpoints, fake PIDs and image bytes; real isolated temporary file paths and caller control flow. No current259 native or pair proof."
+    },
+    "checker21": {
+      "cases": 21,
+      "actualCaller": "checker.main",
+      "supported": "Exact source/build/case/device/result commands; strict query/native counters; preflight metadata/digest/path and preflightAfter Boolean identity negatives; installed digest/log/trace/original/manifest/terminal negatives.",
+      "gap": "No installed-identity Boolean/float or finalization-PID float coverage; does not close P180-C1."
+    },
+    "queryAndFinalizer": {
+      "queryCases": 4,
+      "finalizerCases": 11,
+      "supported": "Actual caller paths with fake child streams, real query/audit/outcome/emergency files; launch/communicate/nonzero and malformed/missing/nonobject/wrong binding/query-write/outcome-write branches.",
+      "qualification": "No real child launch or total filesystem-outage guarantee. Completed query is embedded in outcome if primary query persistence fails."
+    },
+    "metadata": {
+      "historicalReplayCases": 36,
+      "separateSyntheticCommandCases": 24,
+      "supported": "Historical257 acquired file-fact schema replay and explicit synthetic259 commands; current strict preflight Boolean alias correction covered.",
+      "qualification": "Historical cached pair is a generic schema fixture only; no old257 source-bound runtime audit or current259 compiled pair claim."
+    },
+    "runnerArguments": {
+      "cases": 13,
+      "scope": "Actual CLI help/invalid-case subprocesses and pure finalizer argument controls as retained by producer; critic did not rerun them."
+    },
+    "baselineAndPreparationFailures": "Corrected baselineR3 requires fake native completion and reproduces all four frozen R1 defects. Earlier omitted STDOUT and intermediate assertion failure are qualified; initial metadata True==1 defect, before-fix helper and logs remain retained. Do not borrow baseline results as native proof."
+  },
+  "unchangedProductionCarry": {
+    "targetedCore": 35,
+    "fullPrintedPassLines": 2212,
+    "wholeAppSDKInputs": 196,
+    "wholeUITestSDK": 1,
+    "coreAndSDKSourceCarryOnly": true,
+    "notes": [
+      "App/model/scope/navigation/cancellation conclusions remain those of Part179 at identical bytes. No product defect identified in this host-only diff.",
+      "Whole app196 consists of195 frozen inputs plus generated asset source; SDKR4 fenced provenance is inherited, not rerun.",
+      "Core cache removed after exact proof; raw/cache paths historical. No live Core audit performed here."
+    ]
+  },
+  "plannedExecutionAssessment": {
+    "buildSource": "r259 references and strict sourceReady=true/exact proof gates present; current NOT_READY report blocks execution.",
+    "buildHumanLabel": "Current planned build still prints Current258nativebuild / FAILED current258native build in inherited descriptive text; executable source/receipt/outcome fields are259. Qualify or correct descriptive label in successor; no259 execution occurred.",
+    "debugBinder": "Current259 receipt/plan/source and219/203/16/21 arrays coherent at source scope; actual binary positives not yet acquired.",
+    "newFullBuildNativeRelease": false
+  },
+  "remainingGates": [
+    "Resolve P180-C1 in a separately frozen successor after full report/root/exact publication; preserve frozen259.",
+    "Fresh reviewed successor full app/test compile, actual Debug controls and exact source/build pair before native.",
+    "Each children/pending-back/actual Settings deep-photo sheet-dismiss case requires actual helper/summary/originals, current mandatory checker, root/critic and exact backup before next reset.",
+    "Raw postcommit/protected current/private/receipt/journal backend audit is independently OPEN; UI success alone cannot establish it.",
+    "Current Release, remaining next1-7/all43/eight groups and full product goal remain open."
+  ],
+  "limitations": [
+    "No current259 build receipt, native case, image, installed executable or Release acceptance exists from this review.",
+    "No reference-release/global descriptor/global process absence/continuous visibility/appearance/speech/motion/performance/distribution/phone acceptance.",
+    "Independent per-peer acquisition and primary/emergency writes cannot guarantee salvage after total disk failure or arbitrary child-launch failure.",
+    "No cleanup performed by critic; prior scoped282271744-byte Core cleanup is parent evidence only."
+  ],
+  "bindings": [
+    {
+      "file": "Design/native/health-write-order/check-retained-owner-r2.py",
+      "bytes": 7103,
+      "sha256": "acb9b2f275964d9ddd851e905780bb289c95a772099a18cb7c2c707558ea153a"
+    },
+    {
+      "file": "Design/native/health-write-order/durable-source-r258.json",
+      "bytes": 207418,
+      "sha256": "92ab22a022a3add13d6a8983ad0de4e8882afc58fc69d540a365a9c16b8c1ac4"
+    },
+    {
+      "file": "Design/native/health-write-order/durable-source-r258.json.gz",
+      "bytes": 6188272,
+      "sha256": "807703f127852867dfe9462201a1ff59cb2d09ade56faa22962510046bae1dc9"
+    },
+    {
+      "file": "Design/native/health-write-order/durable-source-r259.json",
+      "bytes": 214334,
+      "sha256": "98bbd5d3a6b890dce4aaa5de285f0d7dffdd10f6f894d35bc618b61e8c45dc33"
+    },
+    {
+      "file": "Design/native/health-write-order/durable-source-r259.json.gz",
+      "bytes": 6372401,
+      "sha256": "3a31a807d972b5995879c666e8cb23618d8a56db76af2feb83c15e8f28b3c8d2"
+    },
+    {
+      "file": "Design/native/health-write-order/health-current-release-source259-r1-predeclared-plan.json",
+      "bytes": 20675,
+      "sha256": "c664a99cc742ddf83986d1f4437d42e8ce2c60078695f5b857dd097a6e8c58a0"
+    },
+    {
+      "file": "Design/native/health-write-order/health-retained-review-owner-source258-round2-part179-source.json",
+      "bytes": 28799,
+      "sha256": "674ab95828a9694261e571b94dfe6e54a31cb40e5459f3429810f78032e84e46"
+    },
+    {
+      "file": "Design/native/health-write-order/retained-owner-driver-r2.py",
+      "bytes": 11757,
+      "sha256": "8d8c3ca37191b832c19cde39a1cfc395f501449f48bd6044ac280934ec7b3153"
+    },
+    {
+      "file": "Design/native/health-write-order/retained-owner-evidence-r1.py",
+      "bytes": 5369,
+      "sha256": "f4d6a74bc62ff56f1e7a7d8fbcaf2a2e44aca1728e1e0618e8a704805a814ee4"
+    },
+    {
+      "file": "Design/native/health-write-order/retained-owner-finalization-r2.py",
+      "bytes": 3111,
+      "sha256": "cf12e10d04140e0560dcd08526dc582b328a0e5e0fa217c70caa0f88feaf6e60"
+    },
+    {
+      "file": "Design/native/health-write-order/source258-full-core-r3.json",
+      "bytes": 1053,
+      "sha256": "408aa5865900ef6ab9c3e75410d3c74fcb973a0544cb1d68cc740c6af32e2e2f"
+    },
+    {
+      "file": "Design/native/health-write-order/source258-notready-exact-github.json",
+      "bytes": 536845,
+      "sha256": "833f6fa3bb71a226ac236855d2ac0a689e0d2d4a5bf6811e1757d87ef45a50d3"
+    },
+    {
+      "file": "Design/native/health-write-order/source258-retained-guard-controls-r2.json",
+      "bytes": 4358,
+      "sha256": "b3a297ecbf18d1424017d10a86ffd70f4436bc20df7d466a23c09169730f2ad4"
+    },
+    {
+      "file": "Design/native/health-write-order/source258-retained-owner-core-r5.json",
+      "bytes": 3927,
+      "sha256": "c18d188c8d515c31b6cec474c5b0695e64cf00d40cafd9d57cc9b8c5ba8e8bf8"
+    },
+    {
+      "file": "Design/native/health-write-order/source258-retained-protocol-controls-r2.json",
+      "bytes": 107203,
+      "sha256": "ff58ac9a20ff231c03a1e10b0f80742ec3d7eb1e896b1fd0be10b6d3077fb302"
+    },
+    {
+      "file": "Design/native/health-write-order/source258-root-part179-review.json",
+      "bytes": 1110,
+      "sha256": "b4370443c9422f51de86a0b43f388885be868044db6846fc6e2eeba04ebc5f6b"
+    },
+    {
+      "file": "Design/native/health-write-order/source258-runner-argument-controls-r2.json",
+      "bytes": 5838,
+      "sha256": "dc744577ecddc7b6069f54210b6cb896d4065be943c579835923058f2c82ed08"
+    },
+    {
+      "file": "Design/native/health-write-order/source258-uitest-sdk-r4.json",
+      "bytes": 1448,
+      "sha256": "72b9ea9c6f184f44046a8184d1375613533f7f216f6209e8c14c1e72b5c132be"
+    },
+    {
+      "file": "Design/native/health-write-order/source258-whole-app-sdk-r4.json",
+      "bytes": 82532,
+      "sha256": "e101bae0414167ef716be4cc55e164a4dc947af636e4cd146105f5f337634dd4"
+    },
+    {
+      "file": "Design/native/health-write-order/source259-completed-core258-cleanup-r1-executed.py",
+      "bytes": 2881,
+      "sha256": "6ccbfc3f83bb46260b2a6c9c71b15229cf69c026c9b79d28ae43eda1f4c97e1f"
+    },
+    {
+      "file": "Design/native/health-write-order/source259-completed-core258-cleanup-r1.json",
+      "bytes": 633,
+      "sha256": "e1c28583193da98ce2080e38627370eb4e9844c422cafa1773e529f6630e03d3"
+    },
+    {
+      "file": "Design/native/health-write-order/source259-debug-release-controls-r1-planned.py",
+      "bytes": 2688,
+      "sha256": "33554215ff1cca4dcc7a0dad55bbb701dd1bdd72a0924a9aafb2395794eaf49d"
+    },
+    {
+      "file": "Design/native/health-write-order/source259-evidence-before-type-fix-r1.py.txt.gz",
+      "bytes": 1837,
+      "sha256": "dda2cf35d4a01d785cd8be4df70951ed04d8bad98be45895c044862cf94639ee"
+    },
+    {
+      "file": "Design/native/health-write-order/source259-host-retention-binding-r1-plan.json",
+      "bytes": 3293,
+      "sha256": "645554aa50f2602bf0284dabffb4f81eb5a42163c54c2f79c191dc10e2a2a636"
+    },
+    {
+      "file": "Design/native/health-write-order/source259-metadata-controls-r1-failure.json",
+      "bytes": 430,
+      "sha256": "9a795261dab10bbd95474a018495fba3f67bab38631bd5938af1522e5d9c15dd"
+    },
+    {
+      "file": "Design/native/health-write-order/source259-metadata-controls-r1-failure.log.gz",
+      "bytes": 343,
+      "sha256": "298f376ebd85c88e663fe2264f324152cb0a239d2acafc6518d2d90d27de4fad"
+    },
+    {
+      "file": "Design/native/health-write-order/source259-preparation-qualifications-r1.json",
+      "bytes": 1554,
+      "sha256": "05f76576936e5bedf42cd884ffaa726b3d9313fa204b9436d4bd9cefb6399eea"
+    },
+    {
+      "file": "Design/native/health-write-order/source259-query-finalizer-controls-r1-executed.py",
+      "bytes": 5116,
+      "sha256": "ab36c798625c2af9f0f540c8ade3e22558153ca73e255fa5eb768e84bcb71ede"
+    },
+    {
+      "file": "Design/native/health-write-order/source259-query-finalizer-controls-r1.json",
+      "bytes": 18982,
+      "sha256": "e7910f809c601d1af6ae28c4f693df9ff946cd0179a956b84e709865c5081cf5"
+    },
+    {
+      "file": "Design/native/health-write-order/source259-query-finalizer-controls-r2-executed.py",
+      "bytes": 5116,
+      "sha256": "c836cb45dbf3f1706d1fe9164c8aa85d37a9425e903cf6c0c5c52ae307febcfa"
+    },
+    {
+      "file": "Design/native/health-write-order/source259-query-finalizer-controls-r2.json",
+      "bytes": 18977,
+      "sha256": "4a43d55377bd76eea5888db3ec2b9ff4e0322cec485c774e4ae44ecddc7afec9"
+    },
+    {
+      "file": "Design/native/health-write-order/source259-retained-checker-caller-controls-r1-executed.py",
+      "bytes": 9668,
+      "sha256": "2d6111b6badb83ad7bbecc4f7a71e124d368829d6f5b76a8f234bb5240a2d692"
+    },
+    {
+      "file": "Design/native/health-write-order/source259-retained-checker-caller-controls-r1.json",
+      "bytes": 52957,
+      "sha256": "96d825cc7e5ebcc0735b9452cd16df8739e81646d35a221dc5796d0866905209"
+    },
+    {
+      "file": "Design/native/health-write-order/source259-retained-driver-baseline-r1.json",
+      "bytes": 16198,
+      "sha256": "6af17e153274676f36a9a34a729cdca31e398b05a733012fbcdf8e625c5efe51"
+    },
+    {
+      "file": "Design/native/health-write-order/source259-retained-driver-baseline-r3.json",
+      "bytes": 22884,
+      "sha256": "698dbc850a4e5912d20f3b1364ea4c3880e68c009cfd4d70249cfd252cbae0af"
+    },
+    {
+      "file": "Design/native/health-write-order/source259-retained-driver-controls-r1-executed.py",
+      "bytes": 7558,
+      "sha256": "d694a5523cf7b633a33aa467ab67d913ca27970c33fec61cb1129afe17041543"
+    },
+    {
+      "file": "Design/native/health-write-order/source259-retained-driver-controls-r2-executed.py",
+      "bytes": 11402,
+      "sha256": "40977017cac32ae2e2a09f774dcba87c8d865729eaccc0be0c14954679214ca8"
+    },
+    {
+      "file": "Design/native/health-write-order/source259-retained-driver-controls-r3-executed.py",
+      "bytes": 11637,
+      "sha256": "229496d2a83a9d3532f019ce6dae7ecb38d8ac91722433e6013ed418c347b070"
+    },
+    {
+      "file": "Design/native/health-write-order/source259-retained-driver-retention-r1.json",
+      "bytes": 135163,
+      "sha256": "2a9d7602591817777a66f9d4474d0fd221dac68f65e24e71c063dd84f6de7440"
+    },
+    {
+      "file": "Design/native/health-write-order/source259-retained-driver-retention-r2.json",
+      "bytes": 135649,
+      "sha256": "c45e448d2569530dbfefa11b54ccb37e028bd2adf1a54eb15cd3b563deb244b5"
+    },
+    {
+      "file": "Design/native/health-write-order/source259-retained-metadata-controls-r1-executed.py",
+      "bytes": 6232,
+      "sha256": "588218b3db1f79a59c8539b784be208d7c123df6396e36b17af4ba007997026d"
+    },
+    {
+      "file": "Design/native/health-write-order/source259-retained-metadata-controls-r2-executed.py",
+      "bytes": 6232,
+      "sha256": "fe0269bfb4f810c651e42ce9bb512f17c081b3779cec323a51da24b86a75a692"
+    },
+    {
+      "file": "Design/native/health-write-order/source259-retained-metadata-controls-r2.json",
+      "bytes": 98291,
+      "sha256": "ae6649169cfe1f0c9379954a90cfa62afd323ba4898339ad3f22b2982d079cd0"
+    },
+    {
+      "file": "Design/native/health-write-order/source259-root-preparation-r1-executed.py",
+      "bytes": 5737,
+      "sha256": "e291a58fb5aa3f7fe73ef73229bc129b045bdc9913eb4317e1a0ba06feb746b5"
+    },
+    {
+      "file": "Design/native/health-write-order/source259-root-preparation-r1.json",
+      "bytes": 1940,
+      "sha256": "0e3f305d31e4c9139d470e3a7e9d30b793744289098b085b01c5729ee08635a8"
+    },
+    {
+      "file": "Design/native/health-write-order/source259-runner-argument-controls-r1.json",
+      "bytes": 5591,
+      "sha256": "9b26eb2c0e0645d4cdbe375ac9ebb12c316a4b2c21a2ef15ee7a9b13de0d4adf"
+    },
+    {
+      "file": "Design/native/health-write-order/source259-runner-argument-controls-r2.json",
+      "bytes": 5646,
+      "sha256": "b62a4d99e31981d78aa6a03cb45e7eae9cc84680dbd2292b48f265e35661426f"
+    },
+    {
+      "file": "Design/native/health-write-order/source259-target-change-native-build-r1-planned.py",
+      "bytes": 3866,
+      "sha256": "c24ae1c0348b05094c476790b25a850945d6b0328b0d1687e1ebcefdf1d08602"
+    },
+    {
+      "file": "Lumen/Models/HealthRetainedRecoveryReviewSession.swift",
+      "bytes": 8085,
+      "sha256": "f7e2570d15a23a70a3fccf614fce4602c537e44d25b8f1a8eba2d21cc45ed399"
+    },
+    {
+      "file": "Lumen/Views/HealthRecoveryView.swift",
+      "bytes": 64287,
+      "sha256": "6a1a9e308f198f69234861db5c3ea86f90e985ba32aa314fd4cb4806a2fc3d61"
+    },
+    {
+      "file": "Lumen/Views/SettingsView.swift",
+      "bytes": 54308,
+      "sha256": "7b732ac6911857c51c2e8efafdc4ce9a687430a6cfa449acc25f7e71e81f8a5b"
+    }
+  ],
+  "finishedAtUnix": 1794193676.686475,
+  "availableBytesAtFinish": 23863341056
+}

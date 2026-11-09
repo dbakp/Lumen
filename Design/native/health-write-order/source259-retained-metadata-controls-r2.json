@@ -1,0 +1,2676 @@
+{
+  "status": "PASS actual file-fact replay and separate command tamper controls",
+  "historicalGenuineMetadata": {
+    "source": "durable-source-r257.json",
+    "build": "health-target-change-source257-r1-build.json",
+    "inputCount": 1045,
+    "manifest": {
+      "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json",
+      "bytes": 196620,
+      "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+      "identity": {
+        "st_dev": 16777233,
+        "st_ino": 46934266,
+        "st_mode": 33188,
+        "st_nlink": 1,
+        "st_size": 196620,
+        "st_mtime_ns": 1794186375481479438
+      }
+    },
+    "archive": {
+      "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json.gz",
+      "bytes": 5936742,
+      "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+      "identity": {
+        "st_dev": 16777233,
+        "st_ino": 46934267,
+        "st_mode": 33188,
+        "st_nlink": 1,
+        "st_size": 5936742,
+        "st_mtime_ns": 1794186375482614056
+      }
+    },
+    "receipt": {
+      "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source257-r1-build.json",
+      "bytes": 701,
+      "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+      "identity": {
+        "st_dev": 16777233,
+        "st_ino": 46936802,
+        "st_mode": 33188,
+        "st_nlink": 1,
+        "st_size": 701,
+        "st_mtime_ns": 1794186754091915233
+      }
+    },
+    "app": {
+      "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+      "bytes": 46657632,
+      "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+      "identity": {
+        "st_dev": 16777233,
+        "st_ino": 46936770,
+        "st_mode": 33261,
+        "st_nlink": 1,
+        "st_size": 46657632,
+        "st_mtime_ns": 1794186718137419780
+      }
+    },
+    "test": {
+      "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+      "bytes": 6517648,
+      "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+      "identity": {
+        "st_dev": 16777233,
+        "st_ino": 46936795,
+        "st_mode": 33261,
+        "st_nlink": 1,
+        "st_size": 6517648,
+        "st_mtime_ns": 1794186753745564273
+      }
+    }
+  },
+  "metadataCases": [
+    {
+      "name": "genuine historical257 metadata replay",
+      "accepted": true
+    },
+    {
+      "name": "manifest missing",
+      "accepted": false,
+      "recorded": {
+        "source": "durable-source-r257.json",
+        "build": "health-target-change-source257-r1-build.json",
+        "inputCount": 1045,
+        "archive": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json.gz",
+          "bytes": 5936742,
+          "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934267,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 5936742,
+            "st_mtime_ns": 1794186375482614056
+          }
+        },
+        "receipt": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source257-r1-build.json",
+          "bytes": 701,
+          "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936802,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 701,
+            "st_mtime_ns": 1794186754091915233
+          }
+        },
+        "app": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "test": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+          "bytes": 6517648,
+          "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936795,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 6517648,
+            "st_mtime_ns": 1794186753745564273
+          }
+        }
+      }
+    },
+    {
+      "name": "manifest null",
+      "accepted": false,
+      "recorded": {
+        "source": "durable-source-r257.json",
+        "build": "health-target-change-source257-r1-build.json",
+        "inputCount": 1045,
+        "manifest": null,
+        "archive": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json.gz",
+          "bytes": 5936742,
+          "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934267,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 5936742,
+            "st_mtime_ns": 1794186375482614056
+          }
+        },
+        "receipt": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source257-r1-build.json",
+          "bytes": 701,
+          "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936802,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 701,
+            "st_mtime_ns": 1794186754091915233
+          }
+        },
+        "app": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "test": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+          "bytes": 6517648,
+          "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936795,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 6517648,
+            "st_mtime_ns": 1794186753745564273
+          }
+        }
+      }
+    },
+    {
+      "name": "manifest changed hash",
+      "accepted": false,
+      "recorded": {
+        "source": "durable-source-r257.json",
+        "build": "health-target-change-source257-r1-build.json",
+        "inputCount": 1045,
+        "manifest": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json",
+          "bytes": 196620,
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934266,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 196620,
+            "st_mtime_ns": 1794186375481479438
+          }
+        },
+        "archive": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json.gz",
+          "bytes": 5936742,
+          "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934267,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 5936742,
+            "st_mtime_ns": 1794186375482614056
+          }
+        },
+        "receipt": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source257-r1-build.json",
+          "bytes": 701,
+          "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936802,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 701,
+            "st_mtime_ns": 1794186754091915233
+          }
+        },
+        "app": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "test": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+          "bytes": 6517648,
+          "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936795,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 6517648,
+            "st_mtime_ns": 1794186753745564273
+          }
+        }
+      }
+    },
+    {
+      "name": "manifest changed bytes",
+      "accepted": false,
+      "recorded": {
+        "source": "durable-source-r257.json",
+        "build": "health-target-change-source257-r1-build.json",
+        "inputCount": 1045,
+        "manifest": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json",
+          "bytes": 196621,
+          "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934266,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 196620,
+            "st_mtime_ns": 1794186375481479438
+          }
+        },
+        "archive": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json.gz",
+          "bytes": 5936742,
+          "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934267,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 5936742,
+            "st_mtime_ns": 1794186375482614056
+          }
+        },
+        "receipt": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source257-r1-build.json",
+          "bytes": 701,
+          "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936802,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 701,
+            "st_mtime_ns": 1794186754091915233
+          }
+        },
+        "app": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "test": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+          "bytes": 6517648,
+          "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936795,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 6517648,
+            "st_mtime_ns": 1794186753745564273
+          }
+        }
+      }
+    },
+    {
+      "name": "manifest spoofed path",
+      "accepted": false,
+      "recorded": {
+        "source": "durable-source-r257.json",
+        "build": "health-target-change-source257-r1-build.json",
+        "inputCount": 1045,
+        "manifest": {
+          "path": "/tmp/spoofed-input",
+          "bytes": 196620,
+          "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934266,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 196620,
+            "st_mtime_ns": 1794186375481479438
+          }
+        },
+        "archive": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json.gz",
+          "bytes": 5936742,
+          "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934267,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 5936742,
+            "st_mtime_ns": 1794186375482614056
+          }
+        },
+        "receipt": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source257-r1-build.json",
+          "bytes": 701,
+          "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936802,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 701,
+            "st_mtime_ns": 1794186754091915233
+          }
+        },
+        "app": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "test": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+          "bytes": 6517648,
+          "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936795,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 6517648,
+            "st_mtime_ns": 1794186753745564273
+          }
+        }
+      }
+    },
+    {
+      "name": "manifest changed inode",
+      "accepted": false,
+      "recorded": {
+        "source": "durable-source-r257.json",
+        "build": "health-target-change-source257-r1-build.json",
+        "inputCount": 1045,
+        "manifest": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json",
+          "bytes": 196620,
+          "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934267,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 196620,
+            "st_mtime_ns": 1794186375481479438
+          }
+        },
+        "archive": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json.gz",
+          "bytes": 5936742,
+          "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934267,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 5936742,
+            "st_mtime_ns": 1794186375482614056
+          }
+        },
+        "receipt": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source257-r1-build.json",
+          "bytes": 701,
+          "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936802,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 701,
+            "st_mtime_ns": 1794186754091915233
+          }
+        },
+        "app": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "test": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+          "bytes": 6517648,
+          "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936795,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 6517648,
+            "st_mtime_ns": 1794186753745564273
+          }
+        }
+      }
+    },
+    {
+      "name": "archive missing",
+      "accepted": false,
+      "recorded": {
+        "source": "durable-source-r257.json",
+        "build": "health-target-change-source257-r1-build.json",
+        "inputCount": 1045,
+        "manifest": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json",
+          "bytes": 196620,
+          "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934266,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 196620,
+            "st_mtime_ns": 1794186375481479438
+          }
+        },
+        "receipt": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source257-r1-build.json",
+          "bytes": 701,
+          "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936802,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 701,
+            "st_mtime_ns": 1794186754091915233
+          }
+        },
+        "app": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "test": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+          "bytes": 6517648,
+          "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936795,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 6517648,
+            "st_mtime_ns": 1794186753745564273
+          }
+        }
+      }
+    },
+    {
+      "name": "archive null",
+      "accepted": false,
+      "recorded": {
+        "source": "durable-source-r257.json",
+        "build": "health-target-change-source257-r1-build.json",
+        "inputCount": 1045,
+        "manifest": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json",
+          "bytes": 196620,
+          "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934266,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 196620,
+            "st_mtime_ns": 1794186375481479438
+          }
+        },
+        "archive": null,
+        "receipt": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source257-r1-build.json",
+          "bytes": 701,
+          "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936802,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 701,
+            "st_mtime_ns": 1794186754091915233
+          }
+        },
+        "app": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "test": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+          "bytes": 6517648,
+          "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936795,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 6517648,
+            "st_mtime_ns": 1794186753745564273
+          }
+        }
+      }
+    },
+    {
+      "name": "archive changed hash",
+      "accepted": false,
+      "recorded": {
+        "source": "durable-source-r257.json",
+        "build": "health-target-change-source257-r1-build.json",
+        "inputCount": 1045,
+        "manifest": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json",
+          "bytes": 196620,
+          "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934266,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 196620,
+            "st_mtime_ns": 1794186375481479438
+          }
+        },
+        "archive": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json.gz",
+          "bytes": 5936742,
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934267,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 5936742,
+            "st_mtime_ns": 1794186375482614056
+          }
+        },
+        "receipt": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source257-r1-build.json",
+          "bytes": 701,
+          "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936802,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 701,
+            "st_mtime_ns": 1794186754091915233
+          }
+        },
+        "app": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "test": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+          "bytes": 6517648,
+          "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936795,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 6517648,
+            "st_mtime_ns": 1794186753745564273
+          }
+        }
+      }
+    },
+    {
+      "name": "archive changed bytes",
+      "accepted": false,
+      "recorded": {
+        "source": "durable-source-r257.json",
+        "build": "health-target-change-source257-r1-build.json",
+        "inputCount": 1045,
+        "manifest": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json",
+          "bytes": 196620,
+          "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934266,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 196620,
+            "st_mtime_ns": 1794186375481479438
+          }
+        },
+        "archive": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json.gz",
+          "bytes": 5936743,
+          "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934267,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 5936742,
+            "st_mtime_ns": 1794186375482614056
+          }
+        },
+        "receipt": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source257-r1-build.json",
+          "bytes": 701,
+          "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936802,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 701,
+            "st_mtime_ns": 1794186754091915233
+          }
+        },
+        "app": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "test": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+          "bytes": 6517648,
+          "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936795,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 6517648,
+            "st_mtime_ns": 1794186753745564273
+          }
+        }
+      }
+    },
+    {
+      "name": "archive spoofed path",
+      "accepted": false,
+      "recorded": {
+        "source": "durable-source-r257.json",
+        "build": "health-target-change-source257-r1-build.json",
+        "inputCount": 1045,
+        "manifest": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json",
+          "bytes": 196620,
+          "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934266,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 196620,
+            "st_mtime_ns": 1794186375481479438
+          }
+        },
+        "archive": {
+          "path": "/tmp/spoofed-input",
+          "bytes": 5936742,
+          "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934267,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 5936742,
+            "st_mtime_ns": 1794186375482614056
+          }
+        },
+        "receipt": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source257-r1-build.json",
+          "bytes": 701,
+          "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936802,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 701,
+            "st_mtime_ns": 1794186754091915233
+          }
+        },
+        "app": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "test": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+          "bytes": 6517648,
+          "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936795,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 6517648,
+            "st_mtime_ns": 1794186753745564273
+          }
+        }
+      }
+    },
+    {
+      "name": "archive changed inode",
+      "accepted": false,
+      "recorded": {
+        "source": "durable-source-r257.json",
+        "build": "health-target-change-source257-r1-build.json",
+        "inputCount": 1045,
+        "manifest": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json",
+          "bytes": 196620,
+          "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934266,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 196620,
+            "st_mtime_ns": 1794186375481479438
+          }
+        },
+        "archive": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json.gz",
+          "bytes": 5936742,
+          "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934268,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 5936742,
+            "st_mtime_ns": 1794186375482614056
+          }
+        },
+        "receipt": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source257-r1-build.json",
+          "bytes": 701,
+          "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936802,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 701,
+            "st_mtime_ns": 1794186754091915233
+          }
+        },
+        "app": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "test": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+          "bytes": 6517648,
+          "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936795,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 6517648,
+            "st_mtime_ns": 1794186753745564273
+          }
+        }
+      }
+    },
+    {
+      "name": "receipt missing",
+      "accepted": false,
+      "recorded": {
+        "source": "durable-source-r257.json",
+        "build": "health-target-change-source257-r1-build.json",
+        "inputCount": 1045,
+        "manifest": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json",
+          "bytes": 196620,
+          "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934266,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 196620,
+            "st_mtime_ns": 1794186375481479438
+          }
+        },
+        "archive": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json.gz",
+          "bytes": 5936742,
+          "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934267,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 5936742,
+            "st_mtime_ns": 1794186375482614056
+          }
+        },
+        "app": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "test": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+          "bytes": 6517648,
+          "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936795,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 6517648,
+            "st_mtime_ns": 1794186753745564273
+          }
+        }
+      }
+    },
+    {
+      "name": "receipt null",
+      "accepted": false,
+      "recorded": {
+        "source": "durable-source-r257.json",
+        "build": "health-target-change-source257-r1-build.json",
+        "inputCount": 1045,
+        "manifest": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json",
+          "bytes": 196620,
+          "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934266,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 196620,
+            "st_mtime_ns": 1794186375481479438
+          }
+        },
+        "archive": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json.gz",
+          "bytes": 5936742,
+          "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934267,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 5936742,
+            "st_mtime_ns": 1794186375482614056
+          }
+        },
+        "receipt": null,
+        "app": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "test": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+          "bytes": 6517648,
+          "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936795,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 6517648,
+            "st_mtime_ns": 1794186753745564273
+          }
+        }
+      }
+    },
+    {
+      "name": "receipt changed hash",
+      "accepted": false,
+      "recorded": {
+        "source": "durable-source-r257.json",
+        "build": "health-target-change-source257-r1-build.json",
+        "inputCount": 1045,
+        "manifest": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json",
+          "bytes": 196620,
+          "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934266,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 196620,
+            "st_mtime_ns": 1794186375481479438
+          }
+        },
+        "archive": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json.gz",
+          "bytes": 5936742,
+          "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934267,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 5936742,
+            "st_mtime_ns": 1794186375482614056
+          }
+        },
+        "receipt": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source257-r1-build.json",
+          "bytes": 701,
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936802,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 701,
+            "st_mtime_ns": 1794186754091915233
+          }
+        },
+        "app": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "test": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+          "bytes": 6517648,
+          "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936795,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 6517648,
+            "st_mtime_ns": 1794186753745564273
+          }
+        }
+      }
+    },
+    {
+      "name": "receipt changed bytes",
+      "accepted": false,
+      "recorded": {
+        "source": "durable-source-r257.json",
+        "build": "health-target-change-source257-r1-build.json",
+        "inputCount": 1045,
+        "manifest": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json",
+          "bytes": 196620,
+          "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934266,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 196620,
+            "st_mtime_ns": 1794186375481479438
+          }
+        },
+        "archive": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json.gz",
+          "bytes": 5936742,
+          "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934267,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 5936742,
+            "st_mtime_ns": 1794186375482614056
+          }
+        },
+        "receipt": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source257-r1-build.json",
+          "bytes": 702,
+          "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936802,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 701,
+            "st_mtime_ns": 1794186754091915233
+          }
+        },
+        "app": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "test": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+          "bytes": 6517648,
+          "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936795,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 6517648,
+            "st_mtime_ns": 1794186753745564273
+          }
+        }
+      }
+    },
+    {
+      "name": "receipt spoofed path",
+      "accepted": false,
+      "recorded": {
+        "source": "durable-source-r257.json",
+        "build": "health-target-change-source257-r1-build.json",
+        "inputCount": 1045,
+        "manifest": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json",
+          "bytes": 196620,
+          "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934266,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 196620,
+            "st_mtime_ns": 1794186375481479438
+          }
+        },
+        "archive": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json.gz",
+          "bytes": 5936742,
+          "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934267,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 5936742,
+            "st_mtime_ns": 1794186375482614056
+          }
+        },
+        "receipt": {
+          "path": "/tmp/spoofed-input",
+          "bytes": 701,
+          "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936802,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 701,
+            "st_mtime_ns": 1794186754091915233
+          }
+        },
+        "app": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "test": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+          "bytes": 6517648,
+          "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936795,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 6517648,
+            "st_mtime_ns": 1794186753745564273
+          }
+        }
+      }
+    },
+    {
+      "name": "receipt changed inode",
+      "accepted": false,
+      "recorded": {
+        "source": "durable-source-r257.json",
+        "build": "health-target-change-source257-r1-build.json",
+        "inputCount": 1045,
+        "manifest": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json",
+          "bytes": 196620,
+          "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934266,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 196620,
+            "st_mtime_ns": 1794186375481479438
+          }
+        },
+        "archive": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json.gz",
+          "bytes": 5936742,
+          "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934267,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 5936742,
+            "st_mtime_ns": 1794186375482614056
+          }
+        },
+        "receipt": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source257-r1-build.json",
+          "bytes": 701,
+          "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936803,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 701,
+            "st_mtime_ns": 1794186754091915233
+          }
+        },
+        "app": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "test": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+          "bytes": 6517648,
+          "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936795,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 6517648,
+            "st_mtime_ns": 1794186753745564273
+          }
+        }
+      }
+    },
+    {
+      "name": "app missing",
+      "accepted": false,
+      "recorded": {
+        "source": "durable-source-r257.json",
+        "build": "health-target-change-source257-r1-build.json",
+        "inputCount": 1045,
+        "manifest": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json",
+          "bytes": 196620,
+          "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934266,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 196620,
+            "st_mtime_ns": 1794186375481479438
+          }
+        },
+        "archive": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json.gz",
+          "bytes": 5936742,
+          "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934267,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 5936742,
+            "st_mtime_ns": 1794186375482614056
+          }
+        },
+        "receipt": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source257-r1-build.json",
+          "bytes": 701,
+          "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936802,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 701,
+            "st_mtime_ns": 1794186754091915233
+          }
+        },
+        "test": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+          "bytes": 6517648,
+          "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936795,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 6517648,
+            "st_mtime_ns": 1794186753745564273
+          }
+        }
+      }
+    },
+    {
+      "name": "app null",
+      "accepted": false,
+      "recorded": {
+        "source": "durable-source-r257.json",
+        "build": "health-target-change-source257-r1-build.json",
+        "inputCount": 1045,
+        "manifest": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json",
+          "bytes": 196620,
+          "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934266,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 196620,
+            "st_mtime_ns": 1794186375481479438
+          }
+        },
+        "archive": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json.gz",
+          "bytes": 5936742,
+          "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934267,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 5936742,
+            "st_mtime_ns": 1794186375482614056
+          }
+        },
+        "receipt": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source257-r1-build.json",
+          "bytes": 701,
+          "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936802,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 701,
+            "st_mtime_ns": 1794186754091915233
+          }
+        },
+        "app": null,
+        "test": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+          "bytes": 6517648,
+          "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936795,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 6517648,
+            "st_mtime_ns": 1794186753745564273
+          }
+        }
+      }
+    },
+    {
+      "name": "app changed hash",
+      "accepted": false,
+      "recorded": {
+        "source": "durable-source-r257.json",
+        "build": "health-target-change-source257-r1-build.json",
+        "inputCount": 1045,
+        "manifest": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json",
+          "bytes": 196620,
+          "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934266,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 196620,
+            "st_mtime_ns": 1794186375481479438
+          }
+        },
+        "archive": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json.gz",
+          "bytes": 5936742,
+          "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934267,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 5936742,
+            "st_mtime_ns": 1794186375482614056
+          }
+        },
+        "receipt": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source257-r1-build.json",
+          "bytes": 701,
+          "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936802,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 701,
+            "st_mtime_ns": 1794186754091915233
+          }
+        },
+        "app": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "test": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+          "bytes": 6517648,
+          "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936795,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 6517648,
+            "st_mtime_ns": 1794186753745564273
+          }
+        }
+      }
+    },
+    {
+      "name": "app changed bytes",
+      "accepted": false,
+      "recorded": {
+        "source": "durable-source-r257.json",
+        "build": "health-target-change-source257-r1-build.json",
+        "inputCount": 1045,
+        "manifest": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json",
+          "bytes": 196620,
+          "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934266,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 196620,
+            "st_mtime_ns": 1794186375481479438
+          }
+        },
+        "archive": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json.gz",
+          "bytes": 5936742,
+          "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934267,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 5936742,
+            "st_mtime_ns": 1794186375482614056
+          }
+        },
+        "receipt": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source257-r1-build.json",
+          "bytes": 701,
+          "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936802,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 701,
+            "st_mtime_ns": 1794186754091915233
+          }
+        },
+        "app": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657633,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "test": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+          "bytes": 6517648,
+          "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936795,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 6517648,
+            "st_mtime_ns": 1794186753745564273
+          }
+        }
+      }
+    },
+    {
+      "name": "app spoofed path",
+      "accepted": false,
+      "recorded": {
+        "source": "durable-source-r257.json",
+        "build": "health-target-change-source257-r1-build.json",
+        "inputCount": 1045,
+        "manifest": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json",
+          "bytes": 196620,
+          "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934266,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 196620,
+            "st_mtime_ns": 1794186375481479438
+          }
+        },
+        "archive": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json.gz",
+          "bytes": 5936742,
+          "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934267,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 5936742,
+            "st_mtime_ns": 1794186375482614056
+          }
+        },
+        "receipt": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source257-r1-build.json",
+          "bytes": 701,
+          "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936802,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 701,
+            "st_mtime_ns": 1794186754091915233
+          }
+        },
+        "app": {
+          "path": "/tmp/spoofed-input",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "test": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+          "bytes": 6517648,
+          "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936795,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 6517648,
+            "st_mtime_ns": 1794186753745564273
+          }
+        }
+      }
+    },
+    {
+      "name": "app changed inode",
+      "accepted": false,
+      "recorded": {
+        "source": "durable-source-r257.json",
+        "build": "health-target-change-source257-r1-build.json",
+        "inputCount": 1045,
+        "manifest": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json",
+          "bytes": 196620,
+          "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934266,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 196620,
+            "st_mtime_ns": 1794186375481479438
+          }
+        },
+        "archive": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json.gz",
+          "bytes": 5936742,
+          "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934267,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 5936742,
+            "st_mtime_ns": 1794186375482614056
+          }
+        },
+        "receipt": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source257-r1-build.json",
+          "bytes": 701,
+          "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936802,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 701,
+            "st_mtime_ns": 1794186754091915233
+          }
+        },
+        "app": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936771,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "test": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+          "bytes": 6517648,
+          "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936795,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 6517648,
+            "st_mtime_ns": 1794186753745564273
+          }
+        }
+      }
+    },
+    {
+      "name": "test missing",
+      "accepted": false,
+      "recorded": {
+        "source": "durable-source-r257.json",
+        "build": "health-target-change-source257-r1-build.json",
+        "inputCount": 1045,
+        "manifest": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json",
+          "bytes": 196620,
+          "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934266,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 196620,
+            "st_mtime_ns": 1794186375481479438
+          }
+        },
+        "archive": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json.gz",
+          "bytes": 5936742,
+          "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934267,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 5936742,
+            "st_mtime_ns": 1794186375482614056
+          }
+        },
+        "receipt": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source257-r1-build.json",
+          "bytes": 701,
+          "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936802,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 701,
+            "st_mtime_ns": 1794186754091915233
+          }
+        },
+        "app": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        }
+      }
+    },
+    {
+      "name": "test null",
+      "accepted": false,
+      "recorded": {
+        "source": "durable-source-r257.json",
+        "build": "health-target-change-source257-r1-build.json",
+        "inputCount": 1045,
+        "manifest": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json",
+          "bytes": 196620,
+          "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934266,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 196620,
+            "st_mtime_ns": 1794186375481479438
+          }
+        },
+        "archive": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json.gz",
+          "bytes": 5936742,
+          "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934267,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 5936742,
+            "st_mtime_ns": 1794186375482614056
+          }
+        },
+        "receipt": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source257-r1-build.json",
+          "bytes": 701,
+          "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936802,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 701,
+            "st_mtime_ns": 1794186754091915233
+          }
+        },
+        "app": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "test": null
+      }
+    },
+    {
+      "name": "test changed hash",
+      "accepted": false,
+      "recorded": {
+        "source": "durable-source-r257.json",
+        "build": "health-target-change-source257-r1-build.json",
+        "inputCount": 1045,
+        "manifest": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json",
+          "bytes": 196620,
+          "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934266,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 196620,
+            "st_mtime_ns": 1794186375481479438
+          }
+        },
+        "archive": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json.gz",
+          "bytes": 5936742,
+          "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934267,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 5936742,
+            "st_mtime_ns": 1794186375482614056
+          }
+        },
+        "receipt": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source257-r1-build.json",
+          "bytes": 701,
+          "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936802,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 701,
+            "st_mtime_ns": 1794186754091915233
+          }
+        },
+        "app": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "test": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+          "bytes": 6517648,
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936795,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 6517648,
+            "st_mtime_ns": 1794186753745564273
+          }
+        }
+      }
+    },
+    {
+      "name": "test changed bytes",
+      "accepted": false,
+      "recorded": {
+        "source": "durable-source-r257.json",
+        "build": "health-target-change-source257-r1-build.json",
+        "inputCount": 1045,
+        "manifest": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json",
+          "bytes": 196620,
+          "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934266,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 196620,
+            "st_mtime_ns": 1794186375481479438
+          }
+        },
+        "archive": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json.gz",
+          "bytes": 5936742,
+          "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934267,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 5936742,
+            "st_mtime_ns": 1794186375482614056
+          }
+        },
+        "receipt": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source257-r1-build.json",
+          "bytes": 701,
+          "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936802,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 701,
+            "st_mtime_ns": 1794186754091915233
+          }
+        },
+        "app": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "test": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+          "bytes": 6517649,
+          "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936795,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 6517648,
+            "st_mtime_ns": 1794186753745564273
+          }
+        }
+      }
+    },
+    {
+      "name": "test spoofed path",
+      "accepted": false,
+      "recorded": {
+        "source": "durable-source-r257.json",
+        "build": "health-target-change-source257-r1-build.json",
+        "inputCount": 1045,
+        "manifest": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json",
+          "bytes": 196620,
+          "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934266,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 196620,
+            "st_mtime_ns": 1794186375481479438
+          }
+        },
+        "archive": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json.gz",
+          "bytes": 5936742,
+          "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934267,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 5936742,
+            "st_mtime_ns": 1794186375482614056
+          }
+        },
+        "receipt": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source257-r1-build.json",
+          "bytes": 701,
+          "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936802,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 701,
+            "st_mtime_ns": 1794186754091915233
+          }
+        },
+        "app": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "test": {
+          "path": "/tmp/spoofed-input",
+          "bytes": 6517648,
+          "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936795,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 6517648,
+            "st_mtime_ns": 1794186753745564273
+          }
+        }
+      }
+    },
+    {
+      "name": "test changed inode",
+      "accepted": false,
+      "recorded": {
+        "source": "durable-source-r257.json",
+        "build": "health-target-change-source257-r1-build.json",
+        "inputCount": 1045,
+        "manifest": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json",
+          "bytes": 196620,
+          "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934266,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 196620,
+            "st_mtime_ns": 1794186375481479438
+          }
+        },
+        "archive": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json.gz",
+          "bytes": 5936742,
+          "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934267,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 5936742,
+            "st_mtime_ns": 1794186375482614056
+          }
+        },
+        "receipt": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source257-r1-build.json",
+          "bytes": 701,
+          "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936802,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 701,
+            "st_mtime_ns": 1794186754091915233
+          }
+        },
+        "app": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "test": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+          "bytes": 6517648,
+          "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936796,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 6517648,
+            "st_mtime_ns": 1794186753745564273
+          }
+        }
+      }
+    },
+    {
+      "name": "changed source",
+      "accepted": false,
+      "recorded": {
+        "source": "durable-source-r258.json",
+        "build": "health-target-change-source257-r1-build.json",
+        "inputCount": 1045,
+        "manifest": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json",
+          "bytes": 196620,
+          "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934266,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 196620,
+            "st_mtime_ns": 1794186375481479438
+          }
+        },
+        "archive": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json.gz",
+          "bytes": 5936742,
+          "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934267,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 5936742,
+            "st_mtime_ns": 1794186375482614056
+          }
+        },
+        "receipt": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source257-r1-build.json",
+          "bytes": 701,
+          "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936802,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 701,
+            "st_mtime_ns": 1794186754091915233
+          }
+        },
+        "app": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "test": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+          "bytes": 6517648,
+          "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936795,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 6517648,
+            "st_mtime_ns": 1794186753745564273
+          }
+        }
+      }
+    },
+    {
+      "name": "changed build",
+      "accepted": false,
+      "recorded": {
+        "source": "durable-source-r257.json",
+        "build": "health-target-change-source258-r1-build.json",
+        "inputCount": 1045,
+        "manifest": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json",
+          "bytes": 196620,
+          "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934266,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 196620,
+            "st_mtime_ns": 1794186375481479438
+          }
+        },
+        "archive": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json.gz",
+          "bytes": 5936742,
+          "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934267,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 5936742,
+            "st_mtime_ns": 1794186375482614056
+          }
+        },
+        "receipt": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source257-r1-build.json",
+          "bytes": 701,
+          "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936802,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 701,
+            "st_mtime_ns": 1794186754091915233
+          }
+        },
+        "app": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "test": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+          "bytes": 6517648,
+          "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936795,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 6517648,
+            "st_mtime_ns": 1794186753745564273
+          }
+        }
+      }
+    },
+    {
+      "name": "wrong input count",
+      "accepted": false,
+      "recorded": {
+        "source": "durable-source-r257.json",
+        "build": "health-target-change-source257-r1-build.json",
+        "inputCount": 1046,
+        "manifest": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json",
+          "bytes": 196620,
+          "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934266,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 196620,
+            "st_mtime_ns": 1794186375481479438
+          }
+        },
+        "archive": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json.gz",
+          "bytes": 5936742,
+          "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934267,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 5936742,
+            "st_mtime_ns": 1794186375482614056
+          }
+        },
+        "receipt": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source257-r1-build.json",
+          "bytes": 701,
+          "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936802,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 701,
+            "st_mtime_ns": 1794186754091915233
+          }
+        },
+        "app": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "test": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+          "bytes": 6517648,
+          "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936795,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 6517648,
+            "st_mtime_ns": 1794186753745564273
+          }
+        }
+      }
+    },
+    {
+      "name": "Boolean identity cannot impersonate integer",
+      "accepted": false,
+      "recorded": {
+        "source": "durable-source-r257.json",
+        "build": "health-target-change-source257-r1-build.json",
+        "inputCount": 1045,
+        "manifest": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json",
+          "bytes": 196620,
+          "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934266,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 196620,
+            "st_mtime_ns": 1794186375481479438
+          }
+        },
+        "archive": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json.gz",
+          "bytes": 5936742,
+          "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934267,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 5936742,
+            "st_mtime_ns": 1794186375482614056
+          }
+        },
+        "receipt": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source257-r1-build.json",
+          "bytes": 701,
+          "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936802,
+            "st_mode": 33188,
+            "st_nlink": true,
+            "st_size": 701,
+            "st_mtime_ns": 1794186754091915233
+          }
+        },
+        "app": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "test": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+          "bytes": 6517648,
+          "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936795,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 6517648,
+            "st_mtime_ns": 1794186753745564273
+          }
+        }
+      }
+    },
+    {
+      "name": "extra unbound metadata",
+      "accepted": false,
+      "recorded": {
+        "source": "durable-source-r257.json",
+        "build": "health-target-change-source257-r1-build.json",
+        "inputCount": 1045,
+        "manifest": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json",
+          "bytes": 196620,
+          "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934266,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 196620,
+            "st_mtime_ns": 1794186375481479438
+          }
+        },
+        "archive": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/durable-source-r257.json.gz",
+          "bytes": 5936742,
+          "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46934267,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 5936742,
+            "st_mtime_ns": 1794186375482614056
+          }
+        },
+        "receipt": {
+          "path": "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/health-target-change-source257-r1-build.json",
+          "bytes": 701,
+          "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936802,
+            "st_mode": 33188,
+            "st_nlink": 1,
+            "st_size": 701,
+            "st_mtime_ns": 1794186754091915233
+          }
+        },
+        "app": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+          "bytes": 46657632,
+          "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936770,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 46657632,
+            "st_mtime_ns": 1794186718137419780
+          }
+        },
+        "test": {
+          "path": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+          "bytes": 6517648,
+          "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+          "identity": {
+            "st_dev": 16777233,
+            "st_ino": 46936795,
+            "st_mode": 33261,
+            "st_nlink": 1,
+            "st_size": 6517648,
+            "st_mtime_ns": 1794186753745564273
+          }
+        },
+        "unbound": "ignored?"
+      }
+    }
+  ],
+  "metadataCount": 36,
+  "commandCases": [
+    {
+      "case": "children",
+      "name": "synthetic command/case positive",
+      "accepted": true
+    },
+    {
+      "case": "children",
+      "name": "-destination tamper",
+      "accepted": false
+    },
+    {
+      "case": "children",
+      "name": "-resultBundlePath tamper",
+      "accepted": false
+    },
+    {
+      "case": "children",
+      "name": "other-only-test",
+      "accepted": false
+    },
+    {
+      "case": "children",
+      "name": "duplicate-destination",
+      "accepted": false
+    },
+    {
+      "case": "children",
+      "name": "drop-without-building",
+      "accepted": false
+    },
+    {
+      "case": "children",
+      "name": "wrong-build",
+      "accepted": false
+    },
+    {
+      "case": "children",
+      "name": "null-preflight",
+      "accepted": false
+    },
+    {
+      "case": "pending-back",
+      "name": "synthetic command/case positive",
+      "accepted": true
+    },
+    {
+      "case": "pending-back",
+      "name": "-destination tamper",
+      "accepted": false
+    },
+    {
+      "case": "pending-back",
+      "name": "-resultBundlePath tamper",
+      "accepted": false
+    },
+    {
+      "case": "pending-back",
+      "name": "other-only-test",
+      "accepted": false
+    },
+    {
+      "case": "pending-back",
+      "name": "duplicate-destination",
+      "accepted": false
+    },
+    {
+      "case": "pending-back",
+      "name": "drop-without-building",
+      "accepted": false
+    },
+    {
+      "case": "pending-back",
+      "name": "wrong-build",
+      "accepted": false
+    },
+    {
+      "case": "pending-back",
+      "name": "null-preflight",
+      "accepted": false
+    },
+    {
+      "case": "sheet-dismiss",
+      "name": "synthetic command/case positive",
+      "accepted": true
+    },
+    {
+      "case": "sheet-dismiss",
+      "name": "-destination tamper",
+      "accepted": false
+    },
+    {
+      "case": "sheet-dismiss",
+      "name": "-resultBundlePath tamper",
+      "accepted": false
+    },
+    {
+      "case": "sheet-dismiss",
+      "name": "other-only-test",
+      "accepted": false
+    },
+    {
+      "case": "sheet-dismiss",
+      "name": "duplicate-destination",
+      "accepted": false
+    },
+    {
+      "case": "sheet-dismiss",
+      "name": "drop-without-building",
+      "accepted": false
+    },
+    {
+      "case": "sheet-dismiss",
+      "name": "wrong-build",
+      "accepted": false
+    },
+    {
+      "case": "sheet-dismiss",
+      "name": "null-preflight",
+      "accepted": false
+    }
+  ],
+  "commandCount": 24,
+  "source": {
+    "file": "retained-owner-evidence-r1.py",
+    "bytes": 5369,
+    "sha256": "f4d6a74bc62ff56f1e7a7d8fbcaf2a2e44aca1728e1e0618e8a704805a814ee4"
+  },
+  "scope": "Actual generic replay helper receives genuine retained257 manifest/archive/receipt and freshly read matching historical257 app/test cache identities. No old257 source-bound audit executed or current257 source validity claimed. Separately synthetic renamed259 command/case facts exercise exact argv validation only; no259fullbuild/preflight/native/checker-main acceptance. Actual259 preflight must independently verify all current source and current receipt/pair.",
+  "checkedAt": 1794192671.369636
+}
