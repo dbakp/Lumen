@@ -11,13 +11,15 @@ enum HealthLegacyTargetChangeUIFixture {
     static let flag = "-health-legacy-target-change-ui"
     static let runFlag = "-health-legacy-target-change-run"
     static let lifecycleFlag = "-health-legacy-confirmation-lifecycle-ui"
+    static let expiryFlag = "-health-legacy-confirmation-expiry-ui"
     static let verificationProtocol = "Lumen-legacy-target-change-verification-v1"
     static let newerMeals = Data("{synthetic newer persisted meals damaged".utf8)
     static let newerMealsString = "Synthetic newer saved value e\u{301} 🫖"
     private static let bridge = Bridge()
 
     static func context(_ args: [String]) throws -> Context? {
-        guard args.contains(flag) || args.contains(runFlag) || args.contains(lifecycleFlag) else { return nil }
+        guard args.contains(flag) || args.contains(runFlag) || args.contains(lifecycleFlag)
+                || args.contains(expiryFlag) else { return nil }
         func one(_ flag: String) throws -> String {
             let positions = args.indices.filter { args[$0] == flag }
             guard positions.count == 1, let index = positions.first, args.indices.contains(index + 1),
@@ -27,12 +29,19 @@ enum HealthLegacyTargetChangeUIFixture {
         guard args.filter({ $0 == "-health-legacy-confirmation-window-ui" }).count <= 1 else { throw Failure.invalidContext }
         let lifecycleCount = args.filter { $0 == lifecycleFlag }.count
         guard lifecycleCount <= 1 else { throw Failure.invalidContext }
+        let expiryCount = args.filter { $0 == expiryFlag }.count
+        guard expiryCount <= 1 else { throw Failure.invalidContext }
         guard try one(flag) == "ready", let run = UUID(uuidString: try one(runFlag)),
               let reset = UUID(uuidString: try one("-health-legacy-reset-run")), run == reset,
               ["data", "string"].contains(try one("-health-legacy-origin-ui")), try one("-health-backup-case") == "legacy"
         else { throw Failure.invalidContext }
         if lifecycleCount == 1 {
             guard args.filter({ $0 == "-health-legacy-confirmation-window-ui" }).count == 1,
+                  try one("-health-legacy-origin-ui") == "data" else { throw Failure.invalidContext }
+        }
+        if expiryCount == 1 {
+            guard lifecycleCount == 1,
+                  args.filter({ $0 == "-health-legacy-confirmation-window-ui" }).count == 1,
                   try one("-health-legacy-origin-ui") == "data" else { throw Failure.invalidContext }
         }
         for required in ["-resetForUITests", "-health-backup-ui-fixture", "-health-backup-empty-ui",

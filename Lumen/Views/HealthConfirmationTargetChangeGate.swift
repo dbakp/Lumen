@@ -19,6 +19,7 @@ final class HealthConfirmationTargetChangeGate {
     private let control = BackupOperationControl()
     private var closed = false
     private var consumed = false
+    private var expiryElapsed: (seconds: Int64, attoseconds: Int64)?
     var accessibilityValue: String {
         let record = binding.merging(["nonce": nonce.uuidString, "appearanceID": appearance.uuidString,
             "domains": "meals", "legacyDomains": "meals", "omitPhotos": "false", "phase": consumed ? "mutated" : "armed",
@@ -61,12 +62,20 @@ final class HealthConfirmationTargetChangeGate {
             "controlCancelled": control.verificationCancelled])
     }
     func noteWaiterExit(errorType: String) {
-        HealthConfirmationLifecycleTrace.note(lifecycle, event: "wait-exit", fields: [
+        var fields: [String: Any] = [
             "errorType": errorType, "taskCancelled": Task.isCancelled, "closed": closed,
-            "consumed": consumed, "controlCancelled": control.verificationCancelled])
+            "consumed": consumed, "controlCancelled": control.verificationCancelled]
+        if let expiryElapsed {
+            fields["expiryClock"] = "ContinuousClock"
+            fields["expiryLimitSeconds"] = 90
+            fields["expiryElapsedSeconds"] = expiryElapsed.seconds
+            fields["expiryElapsedAttoseconds"] = expiryElapsed.attoseconds
+        }
+        HealthConfirmationLifecycleTrace.note(lifecycle, event: "wait-exit", fields: fields)
     }
     func waitAndChange(_ session: BackupRecoveryReviewSession, stillPresented: () -> Bool) async throws {
-        let deadline = ContinuousClock.now.advanced(by: .seconds(90))
+        let began = ContinuousClock.now
+        let deadline = began.advanced(by: .seconds(90))
         while ContinuousClock.now < deadline {
             try Task.checkCancellation(); try control.checkCancellation()
             guard !closed, !consumed, session.id == sessionID, stillPresented(),
@@ -99,6 +108,10 @@ final class HealthConfirmationTargetChangeGate {
                 throw HealthLegacyTargetChangeUIFixture.Failure.invalidObservation
             }
             try await Task.sleep(for: .milliseconds(100))
+        }
+        if HealthConfirmationLifecycleTrace.expiryRequested {
+            expiryElapsed = began.duration(to: ContinuousClock.now).components
+            close(reason: "deadline")
         }
         throw HealthLegacyTargetChangeUIFixture.Failure.invalidObservation
     }

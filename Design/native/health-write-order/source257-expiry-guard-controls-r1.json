@@ -1,0 +1,134 @@
+{
+  "status": "PASS actual extracted native expiry guard",
+  "fixture": "source257-expiry-guard-controls-r1-fixtures.json.gz",
+  "decodedBytes": 6412,
+  "decodedSHA256": "21986120ad2a4d2bd798611326dc00bf6e65ca4679230b7529f128928903146f",
+  "sourceSHA256": "c6191d78dbb28d03a9b3f045a7dbea076f7845b5fb24ca61d8f2ea10ef5f8b64",
+  "guardSHA256": "ddb60e948a12375ae333c04bba6e73694cc897cdeb8cb586015385f8f4ad1ace",
+  "compileExit": 0,
+  "runExit": 0,
+  "cases": [
+    {
+      "accepted": true,
+      "case": "real-shaped-90-boundary",
+      "expected": true
+    },
+    {
+      "accepted": true,
+      "case": "duration-components-boundary",
+      "expected": true
+    },
+    {
+      "accepted": false,
+      "case": "missing-exit",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "reject-expiryClock-Date",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "reject-expiryLimitSeconds-89",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "reject-expiryElapsedSeconds-89",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "reject-expiryElapsedSeconds-90",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "reject-expiryElapsedAttoseconds--1",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "reject-expiryElapsedAttoseconds-1000000000000000000",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "reject-closed-false",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "reject-consumed-true",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "reject-controlCancelled-false",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "reject-taskCancelled-true",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "missing-expiryLimitSeconds",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "missing-expiryElapsedSeconds",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "missing-expiryElapsedAttoseconds",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "missing-consumed",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "missing-taskCancelled",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "missing-expiryClock",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "missing-closed",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "missing-controlCancelled",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "closed-row-closed",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "closed-row-controlCancelled",
+      "expected": false
+    },
+    {
+      "accepted": true,
+      "case": "ordinary-notnow-skips-only-expiry-additional-guard",
+      "expected": true
+    }
+  ],
+  "scope": "Actual additional expiry predicate only, isolated in-memory native types. Synthetic elapsed metadata is not real90second/native UI proof. Ordinary lifecycle outer guard and fresh reads are separate.",
+  "checkedAt": 1794186137.433461
+}

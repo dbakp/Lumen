@@ -15,6 +15,10 @@ enum HealthConfirmationLifecycleTrace {
     }
     enum Failure: Error { case invalidContext, invalidRecord, unsafeFile, tooManyEvents }
     static let verificationProtocol = "Lumen-confirmation-lifecycle-verification-v1"
+    static let expiryVerificationProtocol = "Lumen-confirmation-expiry-verification-v1"
+    private static var activeVerificationProtocol: String {
+        expiryRequested ? expiryVerificationProtocol : verificationProtocol
+    }
     private static var records: [String: [String: Any]] = [:]
     private static var metadata: [String: Metadata] = [:]
     private static var published: [String: (bytes: Int, sha256: String)] = [:]
@@ -23,6 +27,11 @@ enum HealthConfirmationLifecycleTrace {
         let args = ProcessInfo.processInfo.arguments
         return args.filter { $0 == HealthLegacyTargetChangeUIFixture.lifecycleFlag }.count == 1
             && (try? HealthLegacyTargetChangeUIFixture.context(args))?.kind == "data"
+    }
+    static var expiryRequested: Bool {
+        requested && ProcessInfo.processInfo.arguments.filter {
+            $0 == HealthLegacyTargetChangeUIFixture.expiryFlag
+        }.count == 1
     }
 
     static func register(binding: [String: String], acknowledgement: URL) throws -> Metadata? {
@@ -45,7 +54,7 @@ enum HealthConfirmationLifecycleTrace {
         guard !FileManager.default.fileExists(atPath: file.path) else { throw Failure.invalidRecord }
         let value = Metadata(binding: binding, taskGeneration: UUID(), trace: file, acknowledgement: acknowledgement)
         metadata[nonce] = value
-        records[nonce] = ["verificationProtocol": verificationProtocol, "binding": binding,
+        records[nonce] = ["verificationProtocol": activeVerificationProtocol, "binding": binding,
             "taskGeneration": value.taskGeneration.uuidString, "events": [[String: Any]](),
             "checks": [[String: Any]](), "problems": [String]()]
         try append(value, event: "created", fields: [:])
@@ -88,9 +97,23 @@ enum HealthConfirmationLifecycleTrace {
             var row = try current(value)
             guard let events = row["events"] as? [[String: Any]],
                   let closed = events.first(where: { $0["event"] as? String == "closed" }),
-                  closed["reason"] as? String == "not-now", closed["consumed"] as? Bool == false,
+                  closed["reason"] as? String == (expiryRequested ? "deadline" : "not-now"),
+                  closed["consumed"] as? Bool == false,
                   events.last?["event"] as? String == "task-value-completed",
                   let checks = row["checks"] as? [[String: Any]], checks.isEmpty else { throw Failure.invalidRecord }
+            if expiryRequested {
+                guard closed["closed"] as? Bool == true,
+                      closed["controlCancelled"] as? Bool == true,
+                      let exit = events.first(where: { $0["event"] as? String == "wait-exit" }),
+                      exit["expiryClock"] as? String == "ContinuousClock",
+                      exit["expiryLimitSeconds"] as? Int == 90,
+                      let seconds = exit["expiryElapsedSeconds"] as? Int64, seconds >= 90,
+                      let attoseconds = exit["expiryElapsedAttoseconds"] as? Int64,
+                      attoseconds >= 0, attoseconds < 1_000_000_000_000_000_000,
+                      exit["closed"] as? Bool == true, exit["consumed"] as? Bool == false,
+                      exit["controlCancelled"] as? Bool == true,
+                      exit["taskCancelled"] as? Bool == false else { throw Failure.invalidRecord }
+            }
             let touchAt = Date().timeIntervalSince1970
             var check: [String: Any] = ["ordinal": checks.count + 1, "requestID": request.uuidString,
                                        "touchAt": touchAt, "status": "reading-acknowledgement"]
@@ -154,7 +177,7 @@ enum HealthConfirmationLifecycleTrace {
     private static func saveCheck(_ value: Metadata, _ check: [String: Any], record: inout [String: Any]) throws {
         guard let nonce = value.binding["nonce"], metadata[nonce] == value else { throw Failure.invalidContext }
         let file = value.trace.deletingPathExtension().appendingPathExtension("check-1.json")
-        let full: [String: Any] = ["verificationProtocol": verificationProtocol,
+        let full: [String: Any] = ["verificationProtocol": activeVerificationProtocol,
             "binding": value.binding, "taskGeneration": value.taskGeneration.uuidString, "check": check]
         let bytes = try JSONSerialization.data(withJSONObject: full, options: [.prettyPrinted, .sortedKeys])
         guard bytes.count <= 16384 else { throw Failure.tooManyEvents }

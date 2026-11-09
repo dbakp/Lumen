@@ -1,0 +1,192 @@
+{
+  "status": "PASS isolated actual expiry schema and atomic relay controls",
+  "count": 29,
+  "cases": [
+    {
+      "case": "prefix-1",
+      "accepted": true,
+      "expected": true,
+      "error": null
+    },
+    {
+      "case": "prefix-2",
+      "accepted": true,
+      "expected": true,
+      "error": null
+    },
+    {
+      "case": "prefix-3",
+      "accepted": true,
+      "expected": true,
+      "error": null
+    },
+    {
+      "case": "prefix-4",
+      "accepted": true,
+      "expected": true,
+      "error": null
+    },
+    {
+      "case": "prefix-5",
+      "accepted": true,
+      "expected": true,
+      "error": null
+    },
+    {
+      "case": "reject-expiryClock-Date",
+      "accepted": false,
+      "expected": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "reject-expiryLimitSeconds-89",
+      "accepted": false,
+      "expected": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "reject-expiryElapsedSeconds-89",
+      "accepted": false,
+      "expected": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "reject-expiryElapsedSeconds-True",
+      "accepted": false,
+      "expected": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "reject-expiryElapsedSeconds-90.0",
+      "accepted": false,
+      "expected": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "reject-expiryElapsedAttoseconds--1",
+      "accepted": false,
+      "expected": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "reject-expiryElapsedAttoseconds-1000000000000000000",
+      "accepted": false,
+      "expected": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "reject-taskCancelled-True",
+      "accepted": false,
+      "expected": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "reject-closed-False",
+      "accepted": false,
+      "expected": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "reject-consumed-True",
+      "accepted": false,
+      "expected": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "reject-controlCancelled-False",
+      "accepted": false,
+      "expected": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "reject-errorType-CancellationError",
+      "accepted": false,
+      "expected": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "reject-event-2-reason",
+      "accepted": false,
+      "expected": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "reject-event-1-taskCancelled",
+      "accepted": false,
+      "expected": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "reject-event-2-consumed",
+      "accepted": false,
+      "expected": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "incomplete-not-complete",
+      "accepted": false,
+      "expected": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "publish-armed",
+      "accepted": true,
+      "expected": true,
+      "error": null
+    },
+    {
+      "case": "publish-expired",
+      "accepted": true,
+      "expected": true,
+      "error": null
+    },
+    {
+      "case": "publish-late-ack",
+      "accepted": true,
+      "expected": true,
+      "error": null
+    },
+    {
+      "case": "publish-checked",
+      "accepted": true,
+      "expected": true,
+      "error": null
+    },
+    {
+      "case": "no-fifth-relay",
+      "accepted": false,
+      "expected": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "skip-expiry",
+      "accepted": false,
+      "expected": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "expired-wrong-hash",
+      "accepted": false,
+      "expected": false,
+      "error": "AssertionError: "
+    },
+    {
+      "case": "expired-extra-ack",
+      "accepted": false,
+      "expected": false,
+      "error": "AssertionError: "
+    }
+  ],
+  "sources": {
+    "confirmation-expiry-protocol-r1.py": {
+      "bytes": 5978,
+      "sha256": "b48c860b51176f86ee910b97611147f9126076c092f0c255f83ccd5e12651787"
+    },
+    "confirmation-expiry-transport-r1.py": {
+      "bytes": 3734,
+      "sha256": "587357900209dc2cfd3f40b32551d9a44c8b9906238974420b9ee0c360ac713c"
+    }
+  },
+  "scope": "Synthetic metadata only, actual validators and temporary file atomic transport. No real elapsed clock, app/native UI, source/build acceptance or postrun checker claimed.",
+  "checkedAt": 1794186175.209114
+}

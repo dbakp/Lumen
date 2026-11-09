@@ -1,0 +1,59 @@
+{
+  "status": "PASS frozen1045/currentarchive, only5expected changes, shipping projection exact, actualSDK typing and isolated expiry/cancellation controls; independent source review pending",
+  "source": "durable-source-r257.json",
+  "bindings": 1045,
+  "priorModified": [
+    "Lumen/Views/BackupFileRecoveryView.swift",
+    "Lumen/Views/HealthConfirmationLifecycleTrace.swift",
+    "Lumen/Views/HealthConfirmationTargetChangeGate.swift",
+    "Lumen/Views/HealthLegacyTargetChangeUIFixture.swift",
+    "LumenUITests/LumenSmokeTests.swift"
+  ],
+  "priorUnchanged": 972,
+  "appended": 68,
+  "controls": {
+    "source257-native-guard-controls-r1.json": {
+      "status": "PASS actualextractedcontext/UTF16LE/fixedguards",
+      "cases": 44
+    },
+    "source257-expiry-guard-controls-r1.json": {
+      "status": "PASS actual extracted native expiry guard",
+      "cases": 24
+    },
+    "source257-expiry-protocol-controls-r1.json": {
+      "status": "PASS isolated actual expiry schema and atomic relay controls",
+      "cases": 29
+    },
+    "source257-host-caller-controls-r2.json": {
+      "status": "PASS actual whole expiry confirmation_gate+observe completion paths with synthetic expiry metadata and retained255 fixture data",
+      "cases": 8
+    },
+    "source257-host-deadline-caller-controls-r1.json": {
+      "status": "PASS actual whole expiry confirmation_gate+observe pending and deadline-publication paths using synthetic clock metadata",
+      "cases": 7
+    },
+    "source257-cancellation-regression-controls-r1.json": {
+      "status": "PASS actual whole gate+trace isolated scheduling",
+      "cases": 0
+    },
+    "source257-native-lifecycle-controls-r1.json": {
+      "status": "PASS actual whole gate+trace isolated real90second deadline",
+      "cases": 0
+    },
+    "source257-finalizer-argument-controls-r1.json": {
+      "status": "PASS actual pure mixed case/host manifest and checker-name/protocol argument builder",
+      "cases": 21
+    },
+    "source257-finalizer-caller-controls-r1.json": {
+      "status": "PASS actual main malformed/missing/wrong-shape audit retention paths, coherent failed-native case; isolated files/injected child and exporter only",
+      "cases": 11
+    },
+    "source257-runner-reference-controls-r1.json": {
+      "status": "PASS actual3runner source/AST/readonly prelaunch controls; zero subprocess calls",
+      "cases": 20
+    }
+  },
+  "realIsolatedDeadlineSeconds": 90,
+  "qualifications": "90second control uses actual gate/trace with named Bundle/arguments/container/control/session/fixed-value stubs on macOS. Deliberate early Check rejected and records one problem; later check exercises actual code but is not a problem-free native trial. Caller/schema synthetic expiry metadata expressly no trueclock/native proof. Initial caller R1 failed missing digest comparison, driver fixed and R2/R1deadline controls pass. Native wholealert/currentpair/regression/expiry/Release remain pending.",
+  "checkedAt": 1794186419.8154938
+}

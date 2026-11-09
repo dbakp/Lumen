@@ -353,7 +353,7 @@ struct BackupFileRecoveryView: View {
             #if DEBUG && targetEnvironment(simulator)
             if HealthConfirmationLifecycleTrace.requested {
                 Section {
-                    Button("Check cancellation") {
+                    Button(HealthConfirmationLifecycleTrace.expiryRequested ? "Check timeout" : "Check cancellation") {
                         confirmationLifecycleCheckValue = HealthConfirmationLifecycleTrace.check(
                             session: session.id, request: UUID())
                     }.accessibilityIdentifier("checkConfirmationLifecycle")

@@ -1,0 +1,117 @@
+{
+  "status": "PASS actual whole expiry confirmation_gate+observe completion paths with synthetic expiry metadata and retained255 fixture data",
+  "count": 8,
+  "cases": [
+    {
+      "case": "expiry-completion",
+      "actualSource": "confirmation-expiry-driver-r1.py",
+      "expected": "completed",
+      "failure": null,
+      "actualObserveExecuted": true,
+      "completionFlag": true,
+      "checkedMarkerStillDictionary": true,
+      "postCheckStages": [
+        "protected-after-check",
+        "origin-after-check",
+        "checked-relay"
+      ],
+      "status": "PASS"
+    },
+    {
+      "case": "expiry-repeat",
+      "actualSource": "confirmation-expiry-driver-r1.py",
+      "expected": "repeat",
+      "failure": null,
+      "actualObserveExecuted": true,
+      "completionFlag": true,
+      "checkedMarkerStillDictionary": true,
+      "postCheckStages": [],
+      "status": "PASS"
+    },
+    {
+      "case": "checked-marker-missing",
+      "actualSource": "confirmation-expiry-driver-r1.py",
+      "expected": "pending",
+      "failure": null,
+      "actualObserveExecuted": true,
+      "completionFlag": null,
+      "checkedMarkerStillDictionary": true,
+      "postCheckStages": [],
+      "status": "PASS"
+    },
+    {
+      "case": "wrong-ack",
+      "actualSource": "confirmation-expiry-driver-r1.py",
+      "expected": "rejected",
+      "failure": "AssertionError: ",
+      "actualObserveExecuted": true,
+      "completionFlag": null,
+      "checkedMarkerStillDictionary": true,
+      "postCheckStages": [],
+      "status": "PASS"
+    },
+    {
+      "case": "native-check-rejected",
+      "actualSource": "confirmation-expiry-driver-r1.py",
+      "expected": "rejected",
+      "failure": "AssertionError: ",
+      "actualObserveExecuted": true,
+      "completionFlag": null,
+      "checkedMarkerStillDictionary": true,
+      "postCheckStages": [],
+      "status": "PASS"
+    },
+    {
+      "case": "truthy-nonboolean-not-complete",
+      "actualSource": "confirmation-expiry-driver-r1.py",
+      "expected": "rejected",
+      "failure": "AssertionError: Host completion flag must be Boolean",
+      "actualObserveExecuted": true,
+      "completionFlag": {
+        "synthetic": true
+      },
+      "checkedMarkerStillDictionary": true,
+      "postCheckStages": [],
+      "status": "PASS"
+    },
+    {
+      "case": "truthy-expiry-flag",
+      "actualSource": "confirmation-expiry-driver-r1.py",
+      "expected": "rejected",
+      "failure": "AssertionError: ",
+      "actualObserveExecuted": true,
+      "completionFlag": null,
+      "checkedMarkerStillDictionary": true,
+      "postCheckStages": [],
+      "status": "PASS"
+    },
+    {
+      "case": "wrong-expired-digest",
+      "actualSource": "confirmation-expiry-driver-r1.py",
+      "expected": "rejected",
+      "failure": "AssertionError: ",
+      "actualObserveExecuted": true,
+      "completionFlag": null,
+      "checkedMarkerStillDictionary": true,
+      "postCheckStages": [],
+      "status": "PASS"
+    }
+  ],
+  "sources": {
+    "confirmation-expiry-driver-r1.py": {
+      "bytes": 20543,
+      "sha256": "062e53c5ff59e2155777f3f92ec1d79a0bcc8df1e6e8576dc94fd44c6f30daae"
+    },
+    "confirmation-expiry-protocol-r1.py": {
+      "bytes": 5978,
+      "sha256": "b48c860b51176f86ee910b97611147f9126076c092f0c255f83ccd5e12651787"
+    },
+    "confirmation-window-evidence-r3.py": {
+      "bytes": 4425,
+      "sha256": "df6bcfc5cbe7ab325b994bcbbf34988bdaac4bea7c4b48424b5a7485fb40756a"
+    }
+  },
+  "realProcessQueries": [],
+  "scope": "Synthetic expiry facts/expired relay are expressly fixture-only, not native clock or UI proof. Real actual observed-marker storage and protocol validators execute in unique TemporaryDirectory files, with native255 JSON only as retained fixture input. Trace header file/hash adapted to fixture copy; no native/fresh process proof. Only protection/origin/publisher persistence dependencies injected and explicitly recorded. New completes once, retains checked dictionary, repeated call skips duplicate stages; wrong ack/rejected nativeCheck/pending marker never publish. All fixture files automatically removed.",
+  "checkedAt": 1794186238.464735
+}

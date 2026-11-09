@@ -1,0 +1,498 @@
+{
+  "review": "Part175 independent source-only expiry review",
+  "source": "durable-source-r257.json",
+  "status": "SOURCE_READY_FOR_FRESH_FULL_BUILD_AND_DECLARED_NATIVE_GATES",
+  "sourceReady": true,
+  "runtimeAcceptance": false,
+  "globalProductAcceptance": false,
+  "score": null,
+  "reviewMethod": {
+    "readOnly": true,
+    "executedJudgedHelpers": false,
+    "importsOrSubjectExecution": false,
+    "newBuildOrNativeRun": false,
+    "simulatorProcessDefaultsGitQueries": false,
+    "phoneActions": false,
+    "writes": "This new report only; frozen inputs and parent reports unchanged.",
+    "humanSourceRead": "Full six new expiry Python modules, full gate/trace and relevant view lifecycle, full five-file diffs/new native method, execution plans, current runner sources, root recipe and control receipts; control archives decoded and provenance compared. Retained programs not executed by critic.",
+    "historicalRaw": "No old255/256 native, Release, settings, cache or live-source-bound checker replay."
+  },
+  "independentFrozenVerification": {
+    "exactCurrentArchiveBindings": 1045,
+    "text": 979,
+    "fixtures": 66,
+    "priorSourceBindings": 977,
+    "priorModified": [
+      "Lumen/Views/BackupFileRecoveryView.swift",
+      "Lumen/Views/HealthConfirmationLifecycleTrace.swift",
+      "Lumen/Views/HealthConfirmationTargetChangeGate.swift",
+      "Lumen/Views/HealthLegacyTargetChangeUIFixture.swift",
+      "LumenUITests/LumenSmokeTests.swift"
+    ],
+    "priorUnchanged": 972,
+    "appended": 68,
+    "membershipAndEveryByteSizeSHA256": true,
+    "shippingChangeScope": "All three changed standalone app files remain wholly DEBUG+simulator guarded; sole view change is inside existing DEBUG+simulator Form Section. Shipping projection unchanged. Production transaction/authority/models/Shared inputs unchanged.",
+    "priorNotNowMethodByteIdentical": true,
+    "setupChange": "Only dedicated DuringConfirmationExpiry adds lifecycle+expiry flags; old Notnow flag behavior retained.",
+    "currentPair": "No source257 full app/test pair claimed. Historical compiled255 pair is insufficient after these app/test changes."
+  },
+  "findings": [],
+  "sourceObservations": [
+    {
+      "area": "Context and expiry clock",
+      "assessment": "New expiry flag is counted and validated before fixture writes, requires lifecycle/window/Data plus existing reset and synthetic-context guards. Actual gate retains an unshortened 90-second ContinuousClock loop. Only explicitly requested expiry terminal path records elapsed components and closes deadline unconsumed with control cancelled; it throws the real fixture error. No shipping TTL introduced."
+    },
+    {
+      "area": "Real task completion",
+      "assessment": "The waiter records wait-exit from its defer; a separate observer awaits the exact Task<Void,Never>.value after actual Not now closure/cancellation and records event five. Registry stores metadata/trace identity only, never the gate/session/lease/task. Await completion does not prove reference release or global descriptor closure."
+    },
+    {
+      "area": "Four phases and timing",
+      "assessment": "Armed publication requires exact created+wait-started active prefix; created-only remains pending. Host waits for exactly four deadline events with no checks/no acknowledgment, retains raw trace digest, protects current/prior/source/provider/fixed state, then publishes expired relay. Actual native alert/body/both actions are remeasured and separately screenshot-bound after this relay. Host late acknowledgment additionally requires actual expired/dismissed UI markers and event-five completion. Checked raw dictionary and explicit hostCheckCompleted Boolean remain distinct."
+    },
+    {
+      "area": "Fresh native Check",
+      "assessment": "Actual unique ordinary Form button must be positive, whole, enabled and hittable before tap. Trace Check validates deadline reason/clock/90-second duration/control state and exact Task completion; reads exact late acknowledgment bytes and then the two known fixed values natively. Host checks raw digest/header/request/touch ordering, unchanged Data42 and fixture flags, protects state after Check, then publishes fourth checked relay. No host preference write or synthetic Check replacement."
+    },
+    {
+      "area": "Mandatory checker",
+      "assessment": "Strict current source/build/app metadata binding uses inputs[app] for the sole explicit metadata-null exception; all real payloads remain strict. Checker requires five ordered host phases, 15 original PNG suffixes plus one completed helper, four published/independently native-read relays, matching raw trace/expired digest and image bytes, four real UI markers, native clock/event/order/ack/Check facts, all protected checkpoints, actual Back/new owner/off choices/final Back and sampled final live-or-absent endpoints."
+    },
+    {
+      "area": "Finalization and failures",
+      "assessment": "Argument builder binds reviewed source/case/build/trial/result bundle/checker basename and expiry protocol. Actual child PID/exit/streams are retained before bounded audit parsing; malformed or incoherent audits latch errors while full unfiltered export is independently attempted. Existing retainer/natural-grace failure path remains; no blanket subprocess-launch/disk-failure/export-success promise."
+    },
+    {
+      "area": "Current future commands",
+      "assessment": "All three planned runners consistently bind r257/current manifest/archive and predeclared arrays. Debug build must produce a new full pair and current marker evidence; Release depends on resolved current Debug-bound plan. No prefix controls rerun after their unique log exists."
+    }
+  ],
+  "retainedControls": [
+    {
+      "file": "source257-native-guard-controls-r1.json",
+      "cases": 44,
+      "status": "PASS actualextractedcontext/UTF16LE/fixedguards",
+      "fixtures": [
+        {
+          "file": "source257-native-guard-controls-r1-fixtures.json.gz",
+          "decodedBytes": 16175,
+          "decodedSHA256": "d041e8bc51fc6d2fee367febe5c612f5ff4ada6a462dc643dd226426dcc1896c"
+        }
+      ]
+    },
+    {
+      "file": "source257-expiry-guard-controls-r1.json",
+      "cases": 24,
+      "status": "PASS actual extracted native expiry guard",
+      "fixtures": [
+        {
+          "file": "source257-expiry-guard-controls-r1-fixtures.json.gz",
+          "decodedBytes": 6412,
+          "decodedSHA256": "21986120ad2a4d2bd798611326dc00bf6e65ca4679230b7529f128928903146f"
+        }
+      ]
+    },
+    {
+      "file": "source257-expiry-protocol-controls-r1.json",
+      "cases": 29,
+      "status": "PASS isolated actual expiry schema and atomic relay controls",
+      "fixtures": []
+    },
+    {
+      "file": "source257-host-caller-controls-r2.json",
+      "cases": 8,
+      "status": "PASS actual whole expiry confirmation_gate+observe completion paths with synthetic expiry metadata and retained255 fixture data",
+      "fixtures": []
+    },
+    {
+      "file": "source257-host-deadline-caller-controls-r1.json",
+      "cases": 7,
+      "status": "PASS actual whole expiry confirmation_gate+observe pending and deadline-publication paths using synthetic clock metadata",
+      "fixtures": []
+    },
+    {
+      "file": "source257-cancellation-regression-controls-r1.json",
+      "cases": 4,
+      "status": "PASS actual whole gate+trace isolated scheduling",
+      "fixtures": [
+        {
+          "file": "source257-cancellation-regression-controls-r1-fixtures.json.gz",
+          "decodedBytes": 43783,
+          "decodedSHA256": "ac5870a8d648cfd503fe7662d538de5baa7c31d2662291d34612667bc594a573"
+        }
+      ]
+    },
+    {
+      "file": "source257-native-lifecycle-controls-r1.json",
+      "cases": 1,
+      "status": "PASS actual whole gate+trace isolated real90second deadline",
+      "fixtures": [
+        {
+          "file": "source257-native-lifecycle-controls-r1-fixtures.json.gz",
+          "decodedBytes": 34222,
+          "decodedSHA256": "3a61370e95850a3fbd4afa71becf86d3a7116dafd04809f98f31de2fa36a9e44"
+        }
+      ]
+    },
+    {
+      "file": "source257-finalizer-argument-controls-r1.json",
+      "cases": 21,
+      "status": "PASS actual pure mixed case/host manifest and checker-name/protocol argument builder",
+      "fixtures": []
+    },
+    {
+      "file": "source257-finalizer-caller-controls-r1.json",
+      "cases": 11,
+      "status": "PASS actual main malformed/missing/wrong-shape audit retention paths, coherent failed-native case; isolated files/injected child and exporter only",
+      "fixtures": []
+    },
+    {
+      "file": "source257-runner-reference-controls-r1.json",
+      "cases": 20,
+      "status": "PASS actual3runner source/AST/readonly prelaunch controls; zero subprocess calls",
+      "fixtures": []
+    }
+  ],
+  "controlQualifications": [
+    "44 parser/fixed controls and 24 extracted native expiry guard controls compile/run isolated fragments with explicit dependencies, not full app or live preferences.",
+    "29 protocol/atomic-file controls and 8+7 whole-caller controls use synthetic expiry metadata and retained255 data as fixtures; real observe/protocol/regular-file code executes, protection/origin/publisher dependencies injected. No real native/UI clock or ordering proof from these controls.",
+    "Four whole-gate/trace cancellation scheduling cases and one actual unshortened macOS90-second gate/trace run have explicit Bundle/arguments/container/control/session/fixed-value stubs. The90-second expiredTrace has four events and no problems, then completedTrace has five; finalTrace deliberately retains one early-Check invalidRecord problem even though later Check code returns checked-1. This is not a clean native acceptance.",
+    "21 argument controls use actual same257 manifest/build names despite inherited positive-case label saying mixed255/256; command payload is authoritative. 11 injected actual-main retention controls are not actual failed-XCTest acquisition proof.",
+    "Whole current UITest and whole gate/trace SDK R3 typing have exit0/empty streams at current hashes. They do not typecheck the entire actual SwiftUI app body or replace a full app/test build.",
+    "Initial caller R1 failure and SDK preparation history remain retained; current R2 caller rejects wrong expired digest. Old Notnow method source equality and isolated scheduling do not establish current257 Notnow native regression."
+  ],
+  "requiredNextGates": [
+    "Full parent read/binding and exact checkpoint before fresh source257 full app/test build; inspect actual receipt/log and unchanged predeclared217/201/16/21 current Debug controls.",
+    "Current compiled257 Notnow regression first: reviewed lifecycle R3 producer/checker and R4 finalizer, actual14 PNGs/helper/summary/unfiltered originals/root/independent review/exact checkpoint before fixture reset.",
+    "Then declared actual expiry run: actual unshortened ContinuousClock deadline, whole original alert before and after expiry, all four real relays/raw trace/lateack/native Check, all five protected host boundaries, all15 originals/helper/summary, mandatory complete expiry checker/finalizer/root/independent review/exact.",
+    "Preserve any failure before correction/reset/cleanup. Actual current optimized Release/settings/compiler/FileList audit remains separate and must retain instrumented unsigned-development limitations and orientation-warning item."
+  ],
+  "scopeLimits": [
+    "Source readiness only; no current app compile, actual runner temp visibility, actual native expiry, real alert persistence, native cancellation regression or current Release acceptance.",
+    "The expiry is a DEBUG diagnostic waiter deadline, not a demonstrated production selection TTL or recovery policy.",
+    "No Recover, origin acquisition, private-copy write or commit is intended in this case; no such recovery acceptance borrowed from prior tests.",
+    "Sampled known-path ownership/closure and process endpoints cannot establish continuous absence, precise exit/retirement latency, global FDs or released references.",
+    "Main/light/standard declared case only. String Notnow, other recovery windows, retained authoritative closable owner, appearance/speech/motion and all43/eightgroups/full product goal remain open."
+  ],
+  "predeclaredMarkers": {
+    "negative": 217,
+    "plannedDebugPositive": 201,
+    "negativeOnly": 16,
+    "production": 21,
+    "arrays": "Exact prior arrays plus only two new expiry controls; no current binary matching claimed."
+  },
+  "storage": {
+    "reviewerDeletion": false,
+    "availableBytesAtFinish": 25466126336,
+    "historicalCleanup": "Parent recorded scoped722485248B/aggregate16001797719B after prior2235 exact proof; not independently reexecuted or newly credited here."
+  },
+  "bindings": [
+    {
+      "file": "Design/native/health-write-order/durable-source-r257.json",
+      "bytes": 196620,
+      "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66"
+    },
+    {
+      "file": "Design/native/health-write-order/durable-source-r257.json.gz",
+      "bytes": 5936742,
+      "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1"
+    },
+    {
+      "file": "Design/native/health-write-order/durable-source-r256.json",
+      "bytes": 182665,
+      "sha256": "9f3dde954d67459a099f730bc11c4ec102b6deda5276d10f71f6032fbf3cfe44"
+    },
+    {
+      "file": "Design/native/health-write-order/source255-release-exact-github.json",
+      "bytes": 483265,
+      "sha256": "75c293e4cf953b06188552b8fff228e99ed5bd5fc80399eca8ad32e3f6bee1bb"
+    },
+    {
+      "file": "Design/native/health-write-order/health-current-release-source257-r1-predeclared-plan.json",
+      "bytes": 20097,
+      "sha256": "dc7af4e7847e218fa955ab76016377f70ba165ba9c08052b73aaea29b0522381"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-confirmation-expiry-r1-plan.json",
+      "bytes": 3749,
+      "sha256": "4f3451d9c172669418d6804e824bb104018eb7d77af0b0115f50c2df6f6d1f26"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-expiry-execution-r1-plan.json",
+      "bytes": 1490,
+      "sha256": "7169bb62d4c8deb10504cd5ee3ceb4c3a0bddc0dc3413140c8e67c7235ab1798"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-notnow-regression-r1-plan.json",
+      "bytes": 1418,
+      "sha256": "87c32fa69d928ee345da914ae59e832f3b6ff57b1ba49825ce05b0131445e51e"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-root-preparation-r1.json",
+      "bytes": 2991,
+      "sha256": "066bff0359a5246cb3dd9208f0ee8aee6dc270cbce76973cebbd9cd02e279b66"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-root-preparation-r1-executed.py",
+      "bytes": 5593,
+      "sha256": "cc8f7cc9861e735ddb629067992b3c9a7e95e078dfa4a7e73dceaa19064fa52e"
+    },
+    {
+      "file": "Design/native/health-write-order/confirmation-expiry-protocol-r1.py",
+      "bytes": 5978,
+      "sha256": "b48c860b51176f86ee910b97611147f9126076c092f0c255f83ccd5e12651787"
+    },
+    {
+      "file": "Design/native/health-write-order/confirmation-expiry-evidence-r1.py",
+      "bytes": 4495,
+      "sha256": "cbd1560ba7b8cdabe5b3030774f135b244ded56b36abf00d365dae9aef38db8c"
+    },
+    {
+      "file": "Design/native/health-write-order/confirmation-expiry-transport-r1.py",
+      "bytes": 3734,
+      "sha256": "587357900209dc2cfd3f40b32551d9a44c8b9906238974420b9ee0c360ac713c"
+    },
+    {
+      "file": "Design/native/health-write-order/confirmation-expiry-driver-r1.py",
+      "bytes": 20543,
+      "sha256": "062e53c5ff59e2155777f3f92ec1d79a0bcc8df1e6e8576dc94fd44c6f30daae"
+    },
+    {
+      "file": "Design/native/health-write-order/confirmation-expiry-finalization-r1.py",
+      "bytes": 8978,
+      "sha256": "5facfac8c6968da156257a9acac2e1fd7ac876e937ec71cb24e0a1856feba86e"
+    },
+    {
+      "file": "Design/native/health-write-order/check-confirmation-expiry-r1.py",
+      "bytes": 16407,
+      "sha256": "17a88d4b6e83973feb62137bed029c337e4cb074ffb00c90afc990555fd5920a"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-cancellation-regression-controls-r1-executed.py",
+      "bytes": 8672,
+      "sha256": "f94f4fd67772071be606cc075f8a68bf653c668777da4239dc55aac7ec428a1c"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-cancellation-regression-controls-r1.json",
+      "bytes": 949,
+      "sha256": "0346c3ea0066bc5d536cc82bb026b7aea2a0527ff24e21292d7414dcfd157f6c"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-debug-release-controls-r1-planned.py",
+      "bytes": 2688,
+      "sha256": "c59d9b68d6935674fe063942d1c4381ada2adc4eb4bf814f4ea1dded565944c6"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-expiry-guard-controls-r1-executed.py",
+      "bytes": 4202,
+      "sha256": "10e3c309ea421d635884e1ef6ef91c872ab6dd4016e24f0934b1e6b639366ad8"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-expiry-guard-controls-r1.json",
+      "bytes": 3250,
+      "sha256": "a88e8a9d39e6109341a05f4f770cfb2d7dc8aa17bd6dfa1dcf6725d9e333060e"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-expiry-protocol-controls-r1-executed.py",
+      "bytes": 4727,
+      "sha256": "d2a559f1160aae4cd67941eebdc6e7c2dd52da72242731a492a16f5eacb55f1b"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-expiry-protocol-controls-r1.json",
+      "bytes": 4461,
+      "sha256": "83642910f5bf2266e8f96296877ca446031af76d7781c0ffc3c0cfe84611247b"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-finalizer-argument-controls-r1-executed.py",
+      "bytes": 3935,
+      "sha256": "f894c7cd00362f5bc73a170ba91e1bf2d58ccea1b6db3e4d7aa7bcfcbf818e90"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-finalizer-argument-controls-r1.json",
+      "bytes": 3891,
+      "sha256": "30e73190ac80517a63441f873cbef4cb0d91c1d74f7a235e299ed5c4fa6a332e"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-finalizer-caller-controls-r1-executed.py",
+      "bytes": 6606,
+      "sha256": "c0809ffdbb146f1e2f1f75f31cec44cd0ce61663941ff0957438b640906a9f7c"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-finalizer-caller-controls-r1.json",
+      "bytes": 7582,
+      "sha256": "ff97f9211e1fe97fac47554435902adfa431cb4ccf6d5971d26ad034a093ee28"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-host-caller-controls-r1-executed.py",
+      "bytes": 8284,
+      "sha256": "a04b5db35c577c99dcf3a51fe6efbd8310c361ab327af6cdc83346cfa2df6e93"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-host-caller-controls-r1-execution-failure.json",
+      "bytes": 306,
+      "sha256": "44b7c429a81d3af200a7d08b2591dca216c8d2c8b8158e72ebc966858fad752a"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-host-caller-controls-r2-executed.py",
+      "bytes": 8333,
+      "sha256": "22a9c81d14697539ffd5bf6b78147eca8cc54d87d5a483383edce40cc328f90e"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-host-caller-controls-r2.json",
+      "bytes": 4165,
+      "sha256": "19b07371cd47a13d0a9555027b5e5882bf647d6bcc727f72b71c267856a26e69"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-host-deadline-caller-controls-r1-executed.py",
+      "bytes": 9175,
+      "sha256": "41b3b78548d943c3f8aa61a7e3a30a9d87f88543118144f19697b02fd0272a95"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-host-deadline-caller-controls-r1.json",
+      "bytes": 3756,
+      "sha256": "b1399d8259d2f4e11a8d0bbc781348173d90c9c79a0e046bea2c8b0bfd605062"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-lifecycle-sdk-typecheck-r1.json",
+      "bytes": 2835,
+      "sha256": "23945c1f5592b9d047b7f4723792a7ec4d9eb2424af63fd7a944c66f6bf11fe1"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-lifecycle-sdk-typecheck-r2.json",
+      "bytes": 2835,
+      "sha256": "f0297afedf05c0d014976508c3ddc8a894eac60087e61ca2f3f8b64e82b0a965"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-lifecycle-sdk-typecheck-r3.json",
+      "bytes": 2835,
+      "sha256": "2d67f55c819c1ccb14b8e64c1b7f1f86b6e8fe87f5440620df341f1fd780bf71"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-native-guard-controls-r1-executed.py",
+      "bytes": 9302,
+      "sha256": "d4b8ce17adc94dcfeaa0f77e2a0b6b53226f27b9cc98cc63b2471b55c736501d"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-native-guard-controls-r1.json",
+      "bytes": 5211,
+      "sha256": "bb450d0e377d3d0da108ec63818229702533ed74f76da2c6cb2172aef4a4af5d"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-native-lifecycle-controls-r1-executed.py",
+      "bytes": 8087,
+      "sha256": "7e4cad2b285564ca8af98c99781418a4a299c175d37dd0e32daf47bd7a006d1d"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-native-lifecycle-controls-r1.json",
+      "bytes": 966,
+      "sha256": "bb0d7d1e12d03e6f25a88111eb8b94ae7545cf064fa503ac554b9cb2edfb8626"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-progress-visual-controls-r1.json",
+      "bytes": 443,
+      "sha256": "8ea82a4d74675d2f84c0c59d95b0f14a93940445ff347f98e021756e5d7b4925"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-root-build-controls-r1-executed.py",
+      "bytes": 4220,
+      "sha256": "4d3245b468fb1f944497fdd7af0d87f057773a0a476d4910d9889f509a0c6a9f"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-runner-reference-controls-r1-executed.py",
+      "bytes": 5958,
+      "sha256": "fada9c58bfb3e65530241db40e5f478462db96b5318cc0e5068a70d732bf7560"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-runner-reference-controls-r1.json",
+      "bytes": 3929,
+      "sha256": "a313e6ddc1f9c2f55ce55fe5eaa072fc4d98f17371f1a0379a0217f4d7511c8f"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-sdk-typecheck-r1-executed.py",
+      "bytes": 2899,
+      "sha256": "6e66def59ac24ca34b26ac7c35d7caf721f28c2fcf244283ef787bb92543215a"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-sdk-typecheck-r2-executed.py",
+      "bytes": 2899,
+      "sha256": "441b75fe22e6a23ecf2af60753ab88fa35c886693dcc1b7781a86252729e8107"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-sdk-typecheck-r3-executed.py",
+      "bytes": 2899,
+      "sha256": "29042b04b728cebc24a932b9bd122ceccf80b98903f259f44bb438050eef5f16"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-uitest-sdk-typecheck-r1.json",
+      "bytes": 1292,
+      "sha256": "f02f0234b4b893230639b06351345ecbd41ffd6a656348c672aebc01440a6be7"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-uitest-sdk-typecheck-r2.json",
+      "bytes": 1294,
+      "sha256": "34d717d77577b960732cb488c8d47944e7904552e9a3462944debef116240426"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-uitest-sdk-typecheck-r3.json",
+      "bytes": 1293,
+      "sha256": "1d0ebbfea63c1b0c72ec191c66b0d72ee4e614fc614acf37b781ea9ddff43d90"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-cancellation-regression-controls-r1-fixtures.json.gz",
+      "bytes": 10354,
+      "sha256": "76be6e48ed19500c4c0120aa6d568ed612c82574951303a6f203db51341313bb"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-expiry-guard-controls-r1-fixtures.json.gz",
+      "bytes": 1453,
+      "sha256": "01a45ea20255a28b84a3ec6c8e13e50bf87659a9e9c001729fc011b181ef4326"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-native-guard-controls-r1-fixtures.json.gz",
+      "bytes": 3468,
+      "sha256": "aedce86da56aa7fb0023692f9d043b86157132061553a1b95b894377af4b0cf2"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-native-lifecycle-controls-r1-fixtures.json.gz",
+      "bytes": 8155,
+      "sha256": "34e6af061c362a64265e8b2deb19a167497c0bd1e518010a32abf4148ff388e8"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-target-change-native-build-r1-planned.py",
+      "bytes": 3216,
+      "sha256": "765d89fa36f506b3f8fc2f2c266daaed43101be37c83964adf46f6e461e29d89"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-unsigned-release-r1-planned.py",
+      "bytes": 3403,
+      "sha256": "28f8d69bccd5915664bf04da50fd5c452fff556ee9d33609efec70937c68efb6"
+    },
+    {
+      "file": "Lumen/Views/BackupFileRecoveryView.swift",
+      "bytes": 41027,
+      "sha256": "c7ad13c730cec361c86609cdf2a31160d00fc8b00e4fe742d3f4f9812b13ee74"
+    },
+    {
+      "file": "Lumen/Views/HealthConfirmationLifecycleTrace.swift",
+      "bytes": 14494,
+      "sha256": "c6191d78dbb28d03a9b3f045a7dbea076f7845b5fb24ca61d8f2ea10ef5f8b64"
+    },
+    {
+      "file": "Lumen/Views/HealthConfirmationTargetChangeGate.swift",
+      "bytes": 7929,
+      "sha256": "6ba89a6ed70c3be986dd15308d094c9fb788ca122970d90d8c3735441e8913cc"
+    },
+    {
+      "file": "Lumen/Views/HealthLegacyTargetChangeUIFixture.swift",
+      "bytes": 31784,
+      "sha256": "1de48d13818b8c1e2e2bdef9702d646a05773705aa26b091e28e2940c172b262"
+    },
+    {
+      "file": "LumenUITests/LumenSmokeTests.swift",
+      "bytes": 829882,
+      "sha256": "801e006d0416dbb6bc0dd2d5e78093ecf68e8650bc9c6018369b2a335cac1d92"
+    }
+  ],
+  "checkedAtUTC": "2026-11-09T01:10:18.916134+00:00"
+}

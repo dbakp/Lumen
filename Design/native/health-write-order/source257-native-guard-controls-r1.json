@@ -1,0 +1,235 @@
+{
+  "status": "PASS actualextractedcontext/UTF16LE/fixedguards",
+  "fixture": "source257-native-guard-controls-r1-fixtures.json.gz",
+  "decodedBytes": 16175,
+  "decodedSHA256": "d041e8bc51fc6d2fee367febe5c612f5ff4ada6a462dc643dd226426dcc1896c",
+  "actualSourceSHA256": "1de48d13818b8c1e2e2bdef9702d646a05773705aa26b091e28e2940c172b262",
+  "contextSHA256": "785556f6ef85bbcc222492ced91fe6a8fab5240fa14298cad72ddb943c438e5c",
+  "helpersSHA256": "c42b234260ae0396e602d150eee26691f74f8054db104f3f13920fe9606706c9",
+  "compileExit": 0,
+  "runExit": 0,
+  "cases": [
+    {
+      "accepted": true,
+      "case": "context-data",
+      "expected": true
+    },
+    {
+      "accepted": true,
+      "case": "context-string",
+      "expected": true
+    },
+    {
+      "accepted": true,
+      "case": "no-request",
+      "expected": true
+    },
+    {
+      "accepted": true,
+      "case": "confirmation-flag-once",
+      "expected": true
+    },
+    {
+      "accepted": false,
+      "case": "confirmation-flag-duplicate",
+      "expected": false
+    },
+    {
+      "accepted": true,
+      "case": "lifecycle-data",
+      "expected": true
+    },
+    {
+      "accepted": false,
+      "case": "lifecycle-string-rejected",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "lifecycle-without-window",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "lifecycle-duplicate",
+      "expected": false
+    },
+    {
+      "accepted": true,
+      "case": "expiry-valid",
+      "expected": true
+    },
+    {
+      "accepted": false,
+      "case": "expiry-alone",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "expiry-duplicate",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "expiry-without-lifecycle",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "expiry-without-window",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "expiry-string",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "expiry-missing-context",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "lifecycle-alone",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "unknown-kind",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "duplicate--health-legacy-origin-ui",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "missing--health-legacy-origin-ui",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "duplicate--health-legacy-target-change-ui",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "missing--health-legacy-target-change-ui",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "duplicate--health-legacy-reset-ui",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "missing--health-legacy-reset-ui",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "mismatched-run",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "forbidden--health-legacy-reset-observer",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "forbidden--health-legacy-reset-diagnostic-only",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "forbidden--health-legacy-origin-mixed-ui",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "forbidden--health-legacy-capture-ui",
+      "expected": false
+    },
+    {
+      "accepted": true,
+      "case": "data-false",
+      "expected": true
+    },
+    {
+      "accepted": true,
+      "case": "string-false",
+      "expected": true
+    },
+    {
+      "accepted": false,
+      "case": "string-reject-data-false",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "data-reject-string-false",
+      "expected": false
+    },
+    {
+      "accepted": true,
+      "case": "data-true",
+      "expected": true
+    },
+    {
+      "accepted": true,
+      "case": "string-true",
+      "expected": true
+    },
+    {
+      "accepted": false,
+      "case": "string-reject-data-true",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "data-reject-string-true",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "normalization-equivalent",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "effective-changed",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "missing-persisted",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "missing-effective",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "workout-mutated",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "new-as-original",
+      "expected": false
+    },
+    {
+      "accepted": false,
+      "case": "old-as-new",
+      "expected": false
+    }
+  ],
+  "scope": "Actual extracted functions with isolated defaults/arguments stubs; no real preferences, app/runtime/bridge/scheduling/transaction/closure acceptance",
+  "checkedAt": 1794185930.190346
+}
