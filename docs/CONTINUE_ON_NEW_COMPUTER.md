@@ -4,6 +4,14 @@ Continue developing Lumen into a world-class, primarily iOS, AI health assistant
 
 Repository: https://github.com/dbakp/Lumen · branch `main`.
 
+## Current app and test build passed · Source257 · 9 November 2026
+
+After175/source/root61 and exact GitHub `5b9d3281274d44432a61d1a03fb0333dfe97d78a` (77 checkpoint /2,297 union files), full simulator build 78558 exited0. App 46657632B SHA6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2; test 6517648B SHA9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9. All1,045 current/archive inputs and the full67166B build log match. The actual app and test binaries both changed from255. Actual217negative/201Debugpositive/16negative-only/21production marker arrays match their predeclared values.
+
+Root: `source257-root-build-controls-r1.json`. Build-only acceptance: current native cancellation regression and expiry remain pending. Retained warnings include the existing PersonalContextNativeProbe sendable-capture warning (also repeated as a diagnostic excerpt) and skipped AppIntents metadata extraction. No wider concurrency or release readiness acceptance.
+
+Publish/exact this build checkpoint, then run `confirmation-lifecycle-driver-r3.py --source durable-source-r257.json --host-source durable-source-r257.json --build health-target-change-source257-r1-build.json --trial Source257R1`. Finalize with R4 and `source257-notnow-regression-r1-plan.json`; all14 originals/helper/summary/current mandatorychecker/root/samecritic/exact are required before any reset and the separate actual90sexpiry trial. Continue current Release and remainingfullgoal; no checkpointstop or iPhone actions. Keep Debug/packages for immediate reuse.
+
 ## Timeout source ready for build · Source257 · 9 November 2026
 
 Independent review175 cleared the new diagnostic timeout source for a fresh full build, with no blocking findings. No current full build or native trial has run yet. It preserves the actual 90-second ContinuousClock deadline, records its elapsed duration, and adds a separate expiry UI test and strict four-phase host protocol. Current whole-test and gate/trace SDK typing passed. Isolated controls include an actual unshortened 90-second run, four cancellation scheduling cases, parser/native guards, relay publication and caller/finalizer rejection paths. These controls do not establish simulator acceptance. The shipping-code projection is unchanged, and the earlier Not now test method is byte-identical.
