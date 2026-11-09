@@ -1,0 +1,18 @@
+{
+  "status": "SUPPORTED limited actual poststate integrity, broader backend remains open",
+  "source": "durable-source-r260.json",
+  "capture": "source260-children-poststate-raw-r1.json.gz",
+  "decodedBytes": 31356,
+  "decodedSHA256": "9feeb3f8c4ee135da05e08f8af504dc5f43ad6e131eff5d499363780d850652c",
+  "fileCount": 26,
+  "totalFileBytes": 16432,
+  "checks": [
+    "poststate receipt meals-only and current meal digest exact",
+    "two source/current meal records differ only by shared photo remap",
+    "actual new photo bytes equal retained source and receipt digest",
+    "four unselected health files equal frozen fixture failed bytes",
+    "one permanent private copy contains exact one-byte failed original meals"
+  ],
+  "scope": "One actual post-case synthetic tree, captured after UI/native/checker completion. No pre-action host raw snapshot, inode continuity, every protected-file-before/after comparison, fixed-defaults/active flags or journal semantic/backend-wide acceptance. Read-only; no source/simulator writes or reset.",
+  "checkedAt": 1794197576.049927
+}

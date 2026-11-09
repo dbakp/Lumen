@@ -71,7 +71,7 @@
 <button class="btn" type="button" data-area="quality" aria-pressed="false" aria-controls="lumen-plan-detail">Answer quality</button>
 <button class="btn" type="button" data-area="release" aria-pressed="false" aria-controls="lumen-plan-detail">Release gates</button>
 </div>
-<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Current simulator build · passed</h3><div data-verified>The current app and tests compiled successfully. Source, build identities and declared checks match; independent source review is clear.</div><div data-next>Next: verify records and photos, Back during a check, and dismissing Settings.</div><div class="text-small" data-gate>35 focused and 2,212 logic checks retain their scope. Native navigation, raw recovery preservation and release verification remain pending.</div></div>
+<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Records and photos · verified</h3><div data-verified>The current simulator flow preserved the selected meal through records and a photo, then started a fresh review after Back. All 9 original screens were reviewed independently.</div><div data-next>Next: Back during a pending check, followed by dismissing Settings from a photo.</div><div class="text-small" data-gate>1 of 3 planned navigation cases verified. Broader data-preservation, contrast and release checks remain open.</div></div>
 </div>
 <div class="section"><h3>Verified safety checks</h3>
 <table class="table table-sm" aria-label="Earlier checks retain their original scope; broader checks remain open"><thead><tr><th>Situation</th><th>Observed result</th></tr></thead><tbody>
@@ -88,11 +88,11 @@
 <script>
 (()=>{
 const root=document.getElementById('lumen-plan-progress');
-const snapshot='nov9-retained-current-build-passed';
+const snapshot='nov9-retained-children-verified';
 const areas={
-current:{title:'Current simulator build · passed',verified:'The current app and tests compiled successfully. Source, build identities and declared checks match; independent source review is clear.',next:'Next: verify records and photos, Back during a check, and dismissing Settings.',gate:'35 focused and 2,212 logic checks retain their scope. Native navigation, raw recovery preservation and release verification remain pending.'},
+current:{title:'Records and photos · verified',verified:'The current simulator flow preserved the selected meal through records and a photo, then started a fresh review after Back. All 9 original screens were reviewed independently.',next:'Next: Back during a pending check, followed by dismissing Settings from a photo.',gate:'1 of 3 planned navigation cases verified. Broader data-preservation, contrast and release checks remain open.'},
 quality:{title:'Answer quality · open',verified:'Library search, source identity, consent controls and literal-reference safeguards are delivered.',next:'Next: evidence-support policy and independent evaluation; personal-context and conversation-history privacy review.',gate:'Clinical accuracy, language coverage and live-provider evaluation remain required.'},
-release:{title:'Release readiness · open',verified:'The current optimized build passed static review with coverage instrumentation enabled. Its orientation warning remains open.',next:'Next: retained-copy ownership, then background Health, Watch reconnect, widget and accessibility.',gate:'Orientation warning, representative histories, performance, privacy and distribution review remain open. No iPhone installation, launch or checks without a renewed request.'}
+release:{title:'Release readiness · open',verified:'The earlier optimized build passed scoped static review with coverage instrumentation. The current retained-review build still needs its optimized-build audit.',next:'Next: remaining navigation checks, then current static review, background Health, Watch, widget and accessibility.',gate:'Orientation warning, representative histories, performance, privacy and distribution review remain open. No iPhone installation, launch or checks without a renewed request.'}
 };
 const buttons=Array.from(root.querySelectorAll('[data-area]'));
 function select(key,remember){
