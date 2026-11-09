@@ -71,7 +71,7 @@
 <button class="btn" type="button" data-area="quality" aria-pressed="false" aria-controls="lumen-plan-detail">Answer quality</button>
 <button class="btn" type="button" data-area="release" aria-pressed="false" aria-controls="lumen-plan-detail">Release gates</button>
 </div>
-<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Back during a check · verified</h3><div data-verified>Records and photo navigation passed. Back during an unfinished check also passed: the old review closed and reopening started fresh. All 13 original screenshots were independently inspected.</div><div data-next>Next: dismiss Settings from a photo, then verify the current optimized build.</div><div class="text-small" data-gate>2 of 3 planned navigation cases verified. Broader data-preservation, contrast and release checks remain open.</div></div>
+<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Review navigation · verified</h3><div data-verified>Records and photos, Back during an unfinished check, and dismissing Settings from a photo all passed. Each reopened review started fresh. All 18 original screenshots were independently inspected.</div><div data-next>Next: verify the current optimized build, then complete data-preservation and readability checks.</div><div class="text-small" data-gate>3 of 3 planned navigation cases verified. Broader data-preservation, contrast and release checks remain open.</div></div>
 </div>
 <div class="section"><h3>Verified safety checks</h3>
 <table class="table table-sm" aria-label="Earlier checks retain their original scope; broader checks remain open"><thead><tr><th>Situation</th><th>Observed result</th></tr></thead><tbody>
@@ -88,9 +88,9 @@
 <script>
 (()=>{
 const root=document.getElementById('lumen-plan-progress');
-const snapshot='nov9-retained-pending-back-verified';
+const snapshot='nov9-retained-navigation-verified';
 const areas={
-current:{title:'Back during a check · verified',verified:'Records and photo navigation passed. Back during an unfinished check also passed: the old review closed and reopening started fresh. All 13 original screenshots were independently inspected.',next:'Next: dismiss Settings from a photo, then verify the current optimized build.',gate:'2 of 3 planned navigation cases verified. Broader data-preservation, contrast and release checks remain open.'},
+current:{title:'Review navigation · verified',verified:'Records and photos, Back during an unfinished check, and dismissing Settings from a photo all passed. Each reopened review started fresh. All 18 original screenshots were independently inspected.',next:'Next: verify the current optimized build, then complete data-preservation and readability checks.',gate:'3 of 3 planned navigation cases verified. Broader data-preservation, contrast and release checks remain open.'},
 quality:{title:'Answer quality · open',verified:'Library search, source identity, consent controls and literal-reference safeguards are delivered.',next:'Next: evidence-support policy and independent evaluation; personal-context and conversation-history privacy review.',gate:'Clinical accuracy, language coverage and live-provider evaluation remain required.'},
 release:{title:'Release readiness · open',verified:'The earlier optimized build passed scoped static review with coverage instrumentation. The current retained-review build still needs its optimized-build audit.',next:'Next: remaining navigation checks, then current static review, background Health, Watch, widget and accessibility.',gate:'Orientation warning, representative histories, performance, privacy and distribution review remain open. No iPhone installation, launch or checks without a renewed request.'}
 };
