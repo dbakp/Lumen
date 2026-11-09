@@ -4,6 +4,14 @@ Continue developing Lumen into a world-class, primarily iOS, AI health assistant
 
 Repository: https://github.com/dbakp/Lumen · branch `main`.
 
+## Completed Source260 output cleaned; continue backend and readability · 9 November 2026
+
+Full185/root35/current1162/static evidence/cleanuprecipe reached mainadf496444e1173836378514c76f3d0ee8d67c1f9 and exact23checkpoint2,646union before deletion. Executed `source260-completed-release-native-cleanup-r1-planned.py` once; report `source260-completed-release-native-cleanup-r1.json`. All required canonical/proof/actualGit bytes including own recipe and three native-case originals verified first, no relevant active build/test/query. Deleted only14 known completed Release/raw260 paths,2,759entries/no symlinks. Allocated715,804,672B; available24,022,745,088 ->24,739,766,272B; credited715,804,672B. Aggregate credited17,744,531,031B, about23GiB available. Kept current Debug/packages for immediate reuse, repository/currentinputs/provider/designskill/unbacked191219videos/other projects/globalcaches/simulatordata.
+
+All260 raw/native-export/Release/settings/FileList/cache-bound audits and runners are now HISTORICAL: never rerun or infer current existence. All earlier257 raw/cached audits and historical257-based replay controls also stay historical. Current Debug app/test bytes are preserved for separately prepared new checks; do not reuse an already executed output namespace or pretend a new native run occurred. Current260 frozen1162 remains immutable. Canonical reports/originals/logs remain valid exact-backed provenance.
+
+Continue actual retained-recovery pre/post/backend verification and P182-V1 retained-row semantic readability/appearance work. A new host-observed pre/post trial using unchanged current app/test may avoid a redundant build, but needs a defensible pre-action boundary and independent helper/source review/exact publication before reset. Never borrow the children poststate-only snapshot as missing pre-state or global Health-write proof. StringNotnow/otherwindows/original next1–7/all43/eightgroups/full product goal remain open. No phone actions/checkpoint stop. Do not launch a build for this cleanup-only documentation.
+
 ## Current optimized static build passed · Source260 /185 · 9 November 2026
 
 Actual optimized unsigned generic-iOS build91831/0, bundleauditor0, actual settings93738/0 and independent185/root supported. Full21,045B185 SHA4daddea39ff899aeee837713a8e682e05bce510cd24108ddc79e361ceb06a66c read by parent; all26canonical+9actual bindings/current1,162 source/archive inputs independently verified. Main41,070,808B SHA011442fd532f9ed99ce5b12a2c3c2a26e613f61a2e46adc5f0875e2a9c5de399, arm64/min18/noLC_CODE_SIGNATURE/no bundled models/pin0.9.20. Actual219absent/203Debugpositive/16negative-only/21production arrays exactly predeclared, no retuning.
