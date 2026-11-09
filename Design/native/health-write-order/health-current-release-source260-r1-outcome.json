@@ -1,0 +1,52 @@
+{
+  "source": "durable-source-r260.json",
+  "buildExitCode": 0,
+  "buildPID": 91831,
+  "command": [
+    "xcodebuild",
+    "-project",
+    "Lumen.xcodeproj",
+    "-scheme",
+    "Lumen",
+    "-configuration",
+    "Release",
+    "-destination",
+    "generic/platform=iOS",
+    "-derivedDataPath",
+    "/tmp/LumenBatch37Release",
+    "-clonedSourcePackagesDirPath",
+    "/tmp/LumenBatch37Packages",
+    "-disableAutomaticPackageResolution",
+    "-jobs",
+    "2",
+    "CODE_SIGNING_ALLOWED=NO",
+    "build"
+  ],
+  "logBytes": 401889,
+  "logSHA256": "09fca9bf669ab7b215122f091a31dee1a0a9d80ae180cc5419b2c55d53043e17",
+  "log": "source260-unsigned-release-r1-build.log.gz",
+  "checkedAt": 1794199359.562639,
+  "availableBytes": 23972282368,
+  "status": "PASS unsigned compilation and bounded executable/bundle audit",
+  "physicalDeviceActions": false,
+  "nativePrerequisiteGate": {
+    "commit": "0c639d989d114cbdf79f85649b06732050e8188c",
+    "verifiedNativeReports": [
+      {
+        "file": "Design/native/health-write-order/health-retained-review-owner-source260-round2-part184-sheet-dismiss-native.json",
+        "bytes": 24348,
+        "sha256": "17b792f1d600c5d1fdf1625fb7644ee71ce786761a1e87a90372685a813c11d5"
+      },
+      {
+        "file": "Design/native/health-write-order/source260-root-part184-review.json",
+        "bytes": 1195,
+        "sha256": "7c9539dc0cbd38be06afad6f800399a652f780fcecabe698ff6c7891635b065d"
+      }
+    ]
+  },
+  "nativePrerequisiteExactCommit": "0c639d989d114cbdf79f85649b06732050e8188c",
+  "nativePrerequisiteProof": "source260-sheet-dismiss-exact-github.json",
+  "executionHelperSHA256": "63c52ebd57ffdb11c3f8578da84b0b8179cd85f85c5ebc2483720281cb069a63",
+  "auditExitCode": 0,
+  "auditOutput": "Passed: 219 absent development markers; 203 Debug positives; 21 production controls; arm64; minimum iOS18; no bundled models; pinned dependency.\n"
+}
