@@ -71,7 +71,7 @@
 <button class="btn" type="button" data-area="quality" aria-pressed="false" aria-controls="lumen-plan-detail">Answer quality</button>
 <button class="btn" type="button" data-area="release" aria-pressed="false" aria-controls="lumen-plan-detail">Release gates</button>
 </div>
-<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Cancellation · new build verified</h3><div data-verified>The new build passed the complete cancellation flow, fresh native read, Back and a fresh review with choices off.</div><div data-next>Next: the separate 90-second timeout trial in the simulator.</div><div class="text-small" data-gate>Timeout has passed source review and an isolated real clock check. Its simulator trial, String cancellation and retained-copy ownership remain open.</div></div>
+<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Cancellation and timeout · verified</h3><div data-verified>The new build passed cancellation and the real 90-second diagnostic timeout, including delayed-response reads and fresh review after Back.</div><div data-next>Next: optimized-build review, then retained-copy ownership and the remaining recovery windows.</div><div class="text-small" data-gate>Two Data cases verified. String cancellation, retained-copy ownership and broader release gates remain open.</div></div>
 </div>
 <div class="section"><h3>Verified safety checks</h3>
 <table class="table table-sm" aria-label="Earlier checks retain their original scope; broader checks remain open"><thead><tr><th>Situation</th><th>Observed result</th></tr></thead><tbody>
@@ -88,9 +88,9 @@
 <script>
 (()=>{
 const root=document.getElementById('lumen-plan-progress');
-const snapshot='nov9-current-cancellation-regression-verified';
+const snapshot='nov9-cancellation-and-timeout-verified';
 const areas={
-current:{title:'Cancellation · new build verified',verified:'The new build passed the complete cancellation flow, fresh native read, Back and a fresh review with choices off.',next:'Next: the separate 90-second timeout trial in the simulator.',gate:'Timeout has passed source review and an isolated real clock check. Its simulator trial, String cancellation and retained-copy ownership remain open.'},
+current:{title:'Cancellation and timeout · verified',verified:'The new build passed cancellation and the real 90-second diagnostic timeout, including delayed-response reads and fresh review after Back.',next:'Next: optimized-build review, then retained-copy ownership and the remaining recovery windows.',gate:'Two Data cases verified. String cancellation, retained-copy ownership and broader release gates remain open.'},
 quality:{title:'Answer quality · open',verified:'Library search, source identity, consent controls and literal-reference safeguards are delivered.',next:'Next: evidence-support policy and independent evaluation; personal-context and conversation-history privacy review.',gate:'Clinical accuracy, language coverage and live-provider evaluation remain required.'},
 release:{title:'Release readiness · open',verified:'The previous optimized build passed static review with coverage instrumentation enabled. Its orientation warning remains open.',next:'Next: verify the new build, then background Health, Watch reconnect, widget and accessibility.',gate:'Orientation warning, representative histories, performance, privacy and distribution review remain open. No iPhone installation, launch or checks without a renewed request.'}
 };

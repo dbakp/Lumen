@@ -1,0 +1,869 @@
+{
+  "review": "Part177 independent actual unshortened diagnostic confirmation expiry",
+  "status": "SUPPORTED_SCOPED_NATIVE_DIAGNOSTIC_90_SECOND_EXPIRY",
+  "source": "durable-source-r257.json",
+  "caseSource": "durable-source-r257.json",
+  "hostSource": "durable-source-r257.json",
+  "build": "health-target-change-source257-r1-build.json",
+  "trial": "Source257R1",
+  "prefix": "health-confirmation-expiry-data-source257r1",
+  "nativeScopedAcceptance": true,
+  "shippingSelectionTTLAcceptance": false,
+  "globalProductAcceptance": false,
+  "score": null,
+  "findings": [],
+  "reviewMethod": {
+    "readOnlyExceptThisNewReport": true,
+    "judgedHelpersImportedOrExecuted": false,
+    "newBuildNativeOrProcessSimulatorDefaultsGitQueries": false,
+    "phoneActions": false,
+    "oldRaw255256Access": false,
+    "allOriginalPNGsIndividuallyOpened": 15,
+    "detail": "original1206x2622, each canonical actual attachment opened individually",
+    "fullHelper": {
+      "file": "health-confirmation-expiry-data-source257r1-6B529F35-FF3C-495D-9B0E-A42996B3B9CB.json",
+      "bytes": 33842,
+      "sha256": "a9306247b977db2f0592bf3ae29ec88bbf797ca6b3b19312dcf2429a22a207cb",
+      "read": "Complete in nontruncated1\u2013250/251\u2013500/501\u2013750/751\u2013end ranges; all observations parsed."
+    },
+    "fullNativeSummaryRead": true,
+    "acquisitionIndices": "Original individuallyOpened:false fields preserved; actual review documented here and in separate root observations."
+  },
+  "execution": {
+    "nativePID": 91745,
+    "appPID": 92814,
+    "runID": "57B49129-1132-45D4-8DFB-E6EE857770AB",
+    "nativeExit": 0,
+    "driverExit": 0,
+    "nativeCounts": [
+      1,
+      0,
+      0
+    ],
+    "nativeSummaryWallSeconds": 300.5350000858307,
+    "hostBoundaryCount": 5,
+    "hostPhases": [
+      "before-selection",
+      "ready",
+      "owners-closed",
+      "fresh-ready",
+      "final-closed"
+    ],
+    "hostSequence": [
+      0,
+      3,
+      4,
+      7,
+      8
+    ],
+    "hostError": null,
+    "mandatoryChecker": {
+      "name": "check-confirmation-expiry-r1.py",
+      "PID": 2961,
+      "exit": 0,
+      "finalizer": "confirmation-expiry-finalization-r1.py",
+      "currentSourceCoherenceRawAuditVerified": true,
+      "sourceVerification": {
+        "source": "durable-source-r257.json",
+        "exactCurrentArchiveBindings": 1045,
+        "manifestSHA256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66"
+      }
+    },
+    "priorCaseExactProof": {
+      "commit": "b4f2caf0a922c4e808bcedbfaa219b43d64bbc5c",
+      "checkpointPaths": 56,
+      "unionPaths": 2351,
+      "beforeExpiryReset": true,
+      "scope": "Retained exact proof provenance; no critic Git/GitHub query or replay of historical Notnow live context."
+    }
+  },
+  "independentBindingsVerified": {
+    "currentArchiveInputs": 1045,
+    "text": 979,
+    "fixtures": 66,
+    "allMembersCurrentSizeSHAAndArchiveBytesExact": true,
+    "currentPairSame257CompileAsNotnow": [
+      {
+        "file": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+        "bytes": 46657632,
+        "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+        "readAsDataOnly": true
+      },
+      {
+        "file": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+        "bytes": 6517648,
+        "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+        "readAsDataOnly": true
+      }
+    ],
+    "noNewBuildForExpiry": true,
+    "hostBase64PayloadRows": 409,
+    "solePreflightAppMetadataNullRowSeparatelyBound": 1,
+    "nativePayloadStringRows": 76,
+    "mandatoryCheckerPayloadRows": 60,
+    "rawNativeStatesJSONEqualStoredValue": 10,
+    "protectedState": "Current13/prior13 full raw maps, directory entries, file metadata/root identity, source/provider and residual absence exact at all host endpoints, pre-expiry, pre-late-ack, postCheck and both mandatory final process/protected samples.",
+    "sourceSelection": "Old/fresh4992B selected original source bytes/hash and exact provider identity preserved; disjoint fresh temporary workspaces and distinct owner/capture.",
+    "allOriginalExport": {
+      "total": 16,
+      "png": 15,
+      "json": 1,
+      "video": 0,
+      "other": 0,
+      "rawCanonicalEveryByteHashMatch": true,
+      "completeManifestGzipVerified": true,
+      "helperRawCanonicalEqual": true,
+      "retentionErrorCount": 0,
+      "queryGzipStreamsAndNativeLogVerified": true
+    },
+    "nativeLog": {
+      "retained": "HealthConfirmationExpiryDataSource257R1.log.gz",
+      "decodedBytes": 82731,
+      "decodedSHA256": "feda6bb228b1a4647cf9ff97f42127cb056794422363114a56f74b323b689149"
+    },
+    "parentReplay": "Actual root recipe has planned filename but executed receipt;101 actual mandatory-checker retained AST statements replayed under process denial stopping before live collection. Corroboration only, no second native run or critic helper execution."
+  },
+  "actualDeadline": {
+    "clock": "ContinuousClock",
+    "limitSeconds": 90,
+    "elapsedSecondsComponent": 90,
+    "elapsedAttosecondsComponent": 96432541000000000,
+    "elapsedSecondsDecimal": 90.096432541,
+    "closed": {
+      "at": 1794187750.5534139,
+      "closed": true,
+      "consumed": false,
+      "controlCancelled": true,
+      "event": "closed",
+      "reason": "deadline"
+    },
+    "waitExit": {
+      "at": 1794187751.5470428,
+      "closed": true,
+      "consumed": false,
+      "controlCancelled": true,
+      "errorType": "Lumen.HealthLegacyTargetChangeUIFixture.Failure",
+      "event": "wait-exit",
+      "expiryClock": "ContinuousClock",
+      "expiryElapsedAttoseconds": 96432541000000000,
+      "expiryElapsedSeconds": 90,
+      "expiryLimitSeconds": 90,
+      "taskCancelled": false
+    },
+    "expiredTrace": {
+      "bytes": 1475,
+      "sha256": "e5b060a41040b312349de6f0ab8ce55b8d9a9100b71d22fb5aeb99ddb28722e0",
+      "readAt": 1794187751.832722,
+      "eventCount": 4,
+      "checks": [],
+      "problems": [],
+      "exactPrefixOfFinalTrace": true
+    },
+    "expiryRelay": {
+      "phase": "expired",
+      "expiredTraceSHA256": "e5b060a41040b312349de6f0ab8ce55b8d9a9100b71d22fb5aeb99ddb28722e0",
+      "publicationStartedAt": 1794187752.996074,
+      "publicationObservedAt": 1794187752.996351
+    },
+    "interpretation": "Actual unshortened app ContinuousClock DEBUG waiter expired unconsumed/controlCancelled=true/TaskCancelled=false before actual Not now. Real fixture error recorded, not CancellationError attributed to expiry. This is not an established shipping selectionTTL or production policy."
+  },
+  "nativeAlertBeforeAfter": {
+    "before": {
+      "at": 1794187663.2665172,
+      "imageBytes": 472694,
+      "imageSHA256": "95e6f0db112aebf95e70479199dbc69942f18c7ea230cecbad443baa169ecff0",
+      "title": "Replace selected data?",
+      "body": "Selected data will be replaced by records from this file. The older saved data will stay in a private recovery copy on this iPhone.",
+      "appFrame": {
+        "height": 874,
+        "width": 402,
+        "x": 0,
+        "y": 0
+      },
+      "alertFrame": {
+        "height": 212,
+        "width": 320,
+        "x": 41,
+        "y": 345
+      },
+      "bodyFrame": {
+        "height": 78,
+        "width": 260,
+        "x": 71,
+        "y": 394.6666666666667
+      },
+      "recoverFrame": {
+        "height": 48,
+        "width": 140,
+        "x": 205,
+        "y": 493
+      },
+      "cancelFrame": {
+        "height": 48,
+        "width": 140,
+        "x": 57,
+        "y": 493
+      }
+    },
+    "after": {
+      "at": 1794187754.718076,
+      "imageBytes": 473287,
+      "imageSHA256": "0fde55cfe07b84c8c5f44568e18bae0f312a967b81f20afbadc2a01d18ec16ea",
+      "expiryWaitStartedAt": 1794187663.267591,
+      "expiryRelayObservedAt": 1794187753.306861,
+      "appFrame": {
+        "height": 874,
+        "width": 402,
+        "x": 0,
+        "y": 0
+      },
+      "alertFrame": {
+        "height": 212,
+        "width": 320,
+        "x": 41,
+        "y": 345
+      },
+      "bodyFrame": {
+        "height": 78,
+        "width": 260,
+        "x": 71,
+        "y": 394.6666666666667
+      },
+      "recoverFrame": {
+        "height": 48,
+        "width": 140,
+        "x": 205,
+        "y": 493
+      },
+      "cancelFrame": {
+        "height": 48,
+        "width": 140,
+        "x": 57,
+        "y": 493
+      },
+      "recoverEnabled": true,
+      "cancelEnabled": true,
+      "recoverHittable": true,
+      "cancelHittable": true
+    },
+    "binding": "Both actual native originals and marker fields bind the same gate nonce/session/capture/appearance/task generation. After image is independently measured after expired relay; the relay is metadata only and earns no visual credit itself.",
+    "limits": "Wholealert/title/full131body/bothactions visible at before/after samples. No continuous visibility or frame/motion/video proof throughout the wait; native gray alert retained."
+  },
+  "afterExpiryProtocol": {
+    "eventOrder": [
+      "created",
+      "wait-started",
+      "closed",
+      "wait-exit",
+      "task-value-completed"
+    ],
+    "taskValueCompletedAt": 1794187755.8999481,
+    "problems": [],
+    "actualNotnow": "Real Not now tap after expired screenshot/marker; actual dismissal and retained three enabled choices1/0/0 precede dismissed permission marker. Deadline close remains original reason; no second close fabricated. Outside observer records exact prior Task.value completion after actual Not now.",
+    "lateAck": {
+      "bytes": 233,
+      "sha256": "94e68a85028c99409a5542f7c7fb97c31e53ce07dc03409ff05c8ad030c4a047",
+      "publishedAt": 1794187768.926474,
+      "observedAt": 1794187768.9267268,
+      "afterCompletionAndDismissedMarker": true,
+      "hostIntentionallyAcknowledged": true
+    },
+    "freshNativeCheck": {
+      "requestID": "49726BB6-0DF5-4A61-AEC3-3361EAA05512",
+      "ordinal": 1,
+      "touchAt": 1794187782.0313659,
+      "ackReadStartedAt": 1794187782.032726,
+      "ackReadFinishedAt": 1794187782.032912,
+      "readStartedAt": 1794187782.033869,
+      "readFinishedAt": 1794187782.047838,
+      "finishedAt": 1794187782.049314,
+      "nativeAcknowledgmentRawEqualsHostPublishedBytes": true,
+      "fixtureFlags": {
+        "failed": false,
+        "knownKeyWritten": false,
+        "singleUseConsumed": false
+      },
+      "nativeHealthConnected": false,
+      "knownValues": "Both fixed known keys persisted/effective __NSCFData42B exact original malformed bytes/hash; fresh native read follows exact lateack read. Host raw plist Health flag null/absent is distinct from native effectivefalse."
+    },
+    "checkAcquisition": {
+      "appFrame": {
+        "height": 874,
+        "width": 402,
+        "x": 0,
+        "y": 0
+      },
+      "at": 1794187781.408247,
+      "enabled": true,
+      "enabledObserved": true,
+      "exists": true,
+      "finiteFrame": true,
+      "frame": {
+        "height": 52,
+        "width": 370,
+        "x": 16,
+        "y": 757.6666666666666
+      },
+      "frameObserved": true,
+      "hittable": true,
+      "hittableObserved": true,
+      "identifier": "checkConfirmationLifecycle",
+      "navigationFrame": {
+        "height": 54,
+        "width": 402,
+        "x": 0,
+        "y": 78
+      },
+      "navigationStillPresent": true,
+      "phase": "check-acquisition-before-touch",
+      "positiveWholeFrame": true,
+      "queryCount": 1,
+      "queryRole": "buttons",
+      "ready": true,
+      "role": "XCUIElementType(rawValue: 9)",
+      "roleIsButton": true,
+      "roleObserved": true,
+      "sampleStartedAt": 1794187780.233293,
+      "value": "",
+      "valueObserved": true,
+      "valuePresent": true,
+      "valueType": "__NSCFConstantString",
+      "viewport": {
+        "height": 690,
+        "width": 402,
+        "x": 0,
+        "y": 144
+      }
+    },
+    "relayOrder": [
+      "armed",
+      "expired",
+      "late-ack",
+      "checked"
+    ],
+    "relayStatus": [
+      "PUBLISHED metadata-only relay",
+      "PUBLISHED metadata-only relay",
+      "PUBLISHED metadata-only relay",
+      "PUBLISHED metadata-only relay"
+    ],
+    "hostExpiryCheckpointPublished": true,
+    "hostCheckCompleted": true,
+    "checkedRawDictionaryRetained": true,
+    "completionGuard": "Separate explicitBoolean flags; actual post-expiry/postCheck protection/origin evidence retained before permission/completion publication. Raw observed dictionaries never overwritten as flags."
+  },
+  "sourceAndOwnership": {
+    "oldSession": "A855E4AA-583B-482E-9432-05D92ACD7F16",
+    "oldCapture": "82639A3B-6020-4915-AEE9-BC5D06EB4026",
+    "freshSession": "7987B4EF-CF13-496F-9E3C-D97C440DEE3A",
+    "freshCapture": "0AA2E479-F037-4C7E-A372-51D6F2668479",
+    "originTrace": [
+      {
+        "domains": [],
+        "event": "open",
+        "sessionID": "A855E4AA-583B-482E-9432-05D92ACD7F16"
+      },
+      {
+        "domains": [
+          "meals",
+          "workouts"
+        ],
+        "event": "ready",
+        "sessionID": "A855E4AA-583B-482E-9432-05D92ACD7F16"
+      },
+      {
+        "domains": [],
+        "event": "closed",
+        "sessionID": "A855E4AA-583B-482E-9432-05D92ACD7F16"
+      },
+      {
+        "domains": [],
+        "event": "open",
+        "sessionID": "7987B4EF-CF13-496F-9E3C-D97C440DEE3A"
+      },
+      {
+        "domains": [
+          "meals",
+          "workouts"
+        ],
+        "event": "ready",
+        "sessionID": "7987B4EF-CF13-496F-9E3C-D97C440DEE3A"
+      },
+      {
+        "domains": [],
+        "event": "closed",
+        "sessionID": "7987B4EF-CF13-496F-9E3C-D97C440DEE3A"
+      }
+    ],
+    "actualNavigation": "Old actual Back to parent/Settings and known temporary-workspace retirement precede old host closure ack. Actual Files original reselect makes distinct fresh ready owner/capture, three enabled choices0/0/0 and disabled Recover; final actual Back and known workspace retirement pass.",
+    "noCommit": "No Recover/originacquire/transactioncommit/newreceipt/stage/privatecopy/Healthsamplewrite in this bounded case. Existing intent/private/current13/prior13 preserved as raw state, no invented intent mutation or recovery acceptance.",
+    "workspaceMeaning": "Temporary owned roots absent after Back; live LumenData current13 remains. ExactTask.value does not prove released references/globalFDs."
+  },
+  "sampledClosure": {
+    "oldBackGapSeconds": 4.044861791000017,
+    "finalBackGapSeconds": 4.112448207999989,
+    "mandatoryFinalMode": "absent",
+    "mandatoryFinalSampleCount": 2,
+    "mandatoryFinalGapSeconds": 1.3610916670000002,
+    "facts": "Both complete successful process enumerations explicitly classify known app absent with no PID/executable matches; installed binary/current nativefinal/rawprotected/fixed/provider/origin/emptyowned/fourabsentcaseroots checked at each.",
+    "limits": "Sampled endpoints only. No continuousabsence, preciseexitcause/retirementlatency, globalFD or new lsof credit for absent final mode."
+  },
+  "visualObservations": [
+    {
+      "file": "health-confirmation-expiry-data-source257r1-862F5469-8C53-4638-8903-B59D57BBE9B9.png",
+      "bytes": 279269,
+      "sha256": "fde4df002a8e3bf4f99e63c8f3eff7bed5083cb4bf1eda3383730fa1f42ad575",
+      "attachmentName": "health-confirmation-expiry-before-selection_0_61CA624A-5A30-47FB-9EA5-9EFADD593D93.png",
+      "nativeTimestamp": 1794187603.061,
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "individuallyOpenedByCritic": true,
+      "detail": "original",
+      "observation": "Backup & restore parent after initial acknowledgment; startup control disabled. Lower explanatory copy clipped; no whole-form claim."
+    },
+    {
+      "file": "health-confirmation-expiry-data-source257r1-41632478-0695-4232-9971-A09481AD2FB2.png",
+      "bytes": 224399,
+      "sha256": "15309d675cd0ab65c3eb3cff30a38f590cf5c5d9f8f7f5dab36de69c177fa059",
+      "attachmentName": "health-confirmation-expiry-ready-original_0_AF9965EF-1F5F-4A5A-AF64-B883D8ECBB29.png",
+      "nativeTimestamp": 1794187631.726,
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "individuallyOpenedByCritic": true,
+      "detail": "original",
+      "observation": "Correct original older JSON4992B name/format/created facts and Water group visible; meal switch partly below viewport. Per-control native records supply full initial eligibility/value facts."
+    },
+    {
+      "file": "health-confirmation-expiry-data-source257r1-61799BDB-8777-42F9-9D66-28324AC6830E.png",
+      "bytes": 346688,
+      "sha256": "a11961c6a9c9aaa1b219b448039ccc52555568f89af007aeb6bd4edd843ffda2",
+      "attachmentName": "health-confirmation-expiry-ready-choices_0_4E48F454-C65A-4AD2-9BE5-6455342E9221.png",
+      "nativeTimestamp": 1794187639.288,
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "individuallyOpenedByCritic": true,
+      "detail": "original",
+      "observation": "Meal/omission/workout switches off visible together; upper meal header partially under navigation. No all-rows whole Form claim."
+    },
+    {
+      "file": "health-confirmation-expiry-data-source257r1-C733CD87-3B48-4C05-BF34-742463E3E695.png",
+      "bytes": 359272,
+      "sha256": "5538da2b318777c517bc2a7bd11e439985448fc605f21373f799b14f6f235b25",
+      "attachmentName": "health-confirmation-expiry-selected-meal_0_B928242C-AA60-45A0-9DCA-C99ADA8AC059.png",
+      "nativeTimestamp": 1794187658.827,
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "individuallyOpenedByCritic": true,
+      "detail": "original",
+      "observation": "Lower review Form shows guarded Check timeout, full preservation and Apple Health paragraphs and enabled Recover selected data. Selected meal comes from native choice flow, not a visible meal switch here."
+    },
+    {
+      "file": "health-confirmation-expiry-data-source257r1-1802952B-3928-4F08-BC15-A6B071A19BB3.png",
+      "bytes": 472694,
+      "sha256": "95e6f0db112aebf95e70479199dbc69942f18c7ea230cecbad443baa169ecff0",
+      "attachmentName": "health-confirmation-expiry-presented_0_D1081148-0F4B-4CDC-9A5C-B0F3A2D26D30.png",
+      "nativeTimestamp": 1794187663.077,
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "individuallyOpenedByCritic": true,
+      "detail": "original",
+      "observation": "Whole native confirmation alert title/full131-character body/Not now+Recover visible before deadline. System gray styling retained; no broad contrast/appearance acceptance."
+    },
+    {
+      "file": "health-confirmation-expiry-data-source257r1-08165DEE-3299-497C-A8C4-8C6A76CFAAA4.png",
+      "bytes": 473287,
+      "sha256": "0fde55cfe07b84c8c5f44568e18bae0f312a967b81f20afbadc2a01d18ec16ea",
+      "attachmentName": "health-confirmation-expiry-expired_0_10E619D8-201F-4A7E-A0C2-9436B3FEF86D.png",
+      "nativeTimestamp": 1794187754.385,
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "individuallyOpenedByCritic": true,
+      "detail": "original",
+      "observation": "Whole same native confirmation title/body/actions visible after actual deadline, separate timestamp and image bytes. Clock minute changed; this sampled screenshot does not establish continuous visibility during the wait."
+    },
+    {
+      "file": "health-confirmation-expiry-data-source257r1-F128CE7E-BBC5-4E0F-90DB-2B03C04EAEA5.png",
+      "bytes": 358993,
+      "sha256": "967f2025a07d6a53c4b5591406b8bfa50641c3fdf8237813cccb2b1bdec417e2",
+      "attachmentName": "health-confirmation-expiry-not-now-dismissed_0_051CF148-18F1-4E2D-8FB6-A3AF52ABCEBD.png",
+      "nativeTimestamp": 1794187757.497,
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "individuallyOpenedByCritic": true,
+      "detail": "original",
+      "observation": "After actual Not now, alert absent and lower review Form/Check timeout visible. Dismissal/late-ack ordering comes from actual native/helper/trace facts."
+    },
+    {
+      "file": "health-confirmation-expiry-data-source257r1-A0199279-4476-4B45-81D9-DF8901D4088A.png",
+      "bytes": 330022,
+      "sha256": "05e11f7bcf19b3f4a067131ad16a1d6b11b1738161eaacb2f94ab12fd1b97769",
+      "attachmentName": "health-confirmation-expiry-not-now-choices_0_7DA3121E-453F-4433-BAB2-6E065A3954AB.png",
+      "nativeTimestamp": 1794187767.439,
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "individuallyOpenedByCritic": true,
+      "detail": "original",
+      "observation": "After Not now meal on, omission off, workout off visible; retained native enabled/value facts agree1/0/0."
+    },
+    {
+      "file": "health-confirmation-expiry-data-source257r1-94D05802-5F10-4903-8F41-901622C6F600.png",
+      "bytes": 332497,
+      "sha256": "8073d7049e221dd8936c8ec493d8c982a19038a751e5ee509f12ca2ad173493a",
+      "attachmentName": "health-confirmation-expiry-checked_0_AAA58DB6-39EF-4478-9B01-39823E531E6E.png",
+      "nativeTimestamp": 1794187783.896,
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "individuallyOpenedByCritic": true,
+      "detail": "original",
+      "observation": "After actual Check, positive ordinary Check timeout row fully visible near bottom. Actual checked-1/request/ack/fresh-read facts are protocol/helper evidence, not unique visible text in screenshot."
+    },
+    {
+      "file": "health-confirmation-expiry-data-source257r1-1D36F418-F98E-4C99-BD01-5B8042330768.png",
+      "bytes": 364402,
+      "sha256": "9de32e80775fc5ea929503cfec7710345b0a0c09b8598a294f1d265d17a50098",
+      "attachmentName": "health-confirmation-expiry-owners-closed_0_FA1198D4-23A5-42C0-AB7D-479D2476F63F.png",
+      "nativeTimestamp": 1794187790.697,
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "individuallyOpenedByCritic": true,
+      "detail": "original",
+      "observation": "Settings after old Back; DEBUG Target check overlays How Lumen works/lower footer. Screenshot alone is not owner/FD closure proof."
+    },
+    {
+      "file": "health-confirmation-expiry-data-source257r1-E87388B5-13ED-44C3-B8BB-C1233F161156.png",
+      "bytes": 364402,
+      "sha256": "9de32e80775fc5ea929503cfec7710345b0a0c09b8598a294f1d265d17a50098",
+      "attachmentName": "health-confirmation-expiry-owners-followup_0_5E27C031-D122-4BB5-A512-55E189FDF26E.png",
+      "nativeTimestamp": 1794187794.996,
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "individuallyOpenedByCritic": true,
+      "detail": "original",
+      "observation": "Old followup byte-identical to previous Settings capture; separately timestamped sampled endpoint, no unique visual-state or continuous absence claim."
+    },
+    {
+      "file": "health-confirmation-expiry-data-source257r1-AA502563-E8F2-49F3-AEEF-918B7C35F4C7.png",
+      "bytes": 223249,
+      "sha256": "f59fbea368d37a53561273b63b9725019d293458792a5f62fd7cb5f6d7a09caf",
+      "attachmentName": "health-confirmation-expiry-fresh-original_0_6EBEE538-4420-4719-8DB9-0FD2090DB2D8.png",
+      "nativeTimestamp": 1794187819.879,
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "individuallyOpenedByCritic": true,
+      "detail": "original",
+      "observation": "Fresh original older JSON and Water history visible; meal toggle at bottom partly clipped. Distinct owner/capture identity comes from retained metadata."
+    },
+    {
+      "file": "health-confirmation-expiry-data-source257r1-A409A3D7-F6BC-41CA-A2D1-C10524217A7F.png",
+      "bytes": 345306,
+      "sha256": "eedc669b53230cf36a13152f50dde384cc3f1676891fa695e3119af54f0732d9",
+      "attachmentName": "health-confirmation-expiry-fresh-off_0_F06E90EA-8496-4D59-839D-0E07890E577A.png",
+      "nativeTimestamp": 1794187827.312,
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "individuallyOpenedByCritic": true,
+      "detail": "original",
+      "observation": "Fresh meal/omission/workout switches off visible; actual enabled/value records0/0/0 and disabled Recover assert scoped fresh choices."
+    },
+    {
+      "file": "health-confirmation-expiry-data-source257r1-783D0987-7B33-4E24-83C6-C94846337982.png",
+      "bytes": 364313,
+      "sha256": "073f9db3e1784e2116aa2c3286e596e86e54cc2dcd2105c37fa06b9ba89ca1d3",
+      "attachmentName": "health-confirmation-expiry-final-closed_0_09FC9F75-13E8-4444-ACE0-C1A325153BB8.png",
+      "nativeTimestamp": 1794187840.007,
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "individuallyOpenedByCritic": true,
+      "detail": "original",
+      "observation": "Settings after final Back; same DEBUG overlay/lower clipping retained. No whole-settings-form or unrelated visual-state credit."
+    },
+    {
+      "file": "health-confirmation-expiry-data-source257r1-27451EF1-09D2-46BF-B02A-904E7750509B.png",
+      "bytes": 364313,
+      "sha256": "073f9db3e1784e2116aa2c3286e596e86e54cc2dcd2105c37fa06b9ba89ca1d3",
+      "attachmentName": "health-confirmation-expiry-final-followup_0_3AEF255F-FE21-438A-B9C3-880E90BA9758.png",
+      "nativeTimestamp": 1794187843.311,
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "individuallyOpenedByCritic": true,
+      "detail": "original",
+      "observation": "Final followup byte-identical to previous final Settings capture; time/sample metadata distinct, no continuous lifecycle claim."
+    }
+  ],
+  "scopeLimits": [
+    "Main/light/standard dedicated malformedData legacyJSON case only; not String expiry/Notnow, all permission/clock/cancel races or other recovery windows.",
+    "Actual90.096432541-second DEBUG deadline here is independent of the earlier macOS stubbed control and current Notnow176; neither supplies the other trial acceptance.",
+    "No new recovery/commit/privatecopy correctness, signeddistribution/currentRelease/noninstrumentedperformance/physicalphone acceptance.",
+    "No global design score, speech/VoiceOver/motion/appearance-wide acceptance. DEBUG toolbar truncation, SettingsTargetcheckoverlay and unrelated clipped rows remain qualified.",
+    "Previous failed native/build/source records remain immutable; no retroactive pass.",
+    "Remaining StringNotnow, preparation/finalcommit timing windows, retained authoritative closable owner, all43/eightgroups and full product goal remain open."
+  ],
+  "requiredNext": "Parent fullread/provenance/exact current expiry case before current257 unsignedRelease/settings/compiler/FileList review or scopedcleanup. Future excluded Release helpers/plan historical-string qualifications are outside this native verdict. Continue the full goal after the checkpoint.",
+  "bindings": [
+    {
+      "file": "Design/native/health-write-order/durable-source-r257.json",
+      "bytes": 196620,
+      "sha256": "cc83866a1a6f103613a7d1dbd1908b241eb1108dd859ebb0e85018c04475ce66"
+    },
+    {
+      "file": "Design/native/health-write-order/durable-source-r257.json.gz",
+      "bytes": 5936742,
+      "sha256": "e6e931bfaf60653adad768cdad67caf8061d5a18e8a7a21d67df048f0ad34fb1"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-confirmation-expiry-source257-round2-part175-source.json",
+      "bytes": 25591,
+      "sha256": "f647afb56b435ea3d58963a03ed64a382daf2742da06a6726ee9877d4f8f8745"
+    },
+    {
+      "file": "Design/native/health-write-order/health-legacy-confirmation-lifecycle-source257-round2-part176-native.json",
+      "bytes": 34156,
+      "sha256": "eb55da0efe813524e77779ed6f6f48faf8d544d30e6fa8736daa3fd8da681adc"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-notnow-exact-github.json",
+      "bytes": 509010,
+      "sha256": "6566020da73e57f4c30deea3d8e12eec8411e0df2f44646530417d7b59d9ebf1"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-build-exact-github.json",
+      "bytes": 498034,
+      "sha256": "cd8a5dbf5c04ba3234cc80df567206cf37de95ee192543ac7c7c9be0c27fd9c8"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-expiry-execution-r1-plan.json",
+      "bytes": 1490,
+      "sha256": "7169bb62d4c8deb10504cd5ee3ceb4c3a0bddc0dc3413140c8e67c7235ab1798"
+    },
+    {
+      "file": "Design/native/health-write-order/health-target-change-source257-r1-build.json",
+      "bytes": 701,
+      "sha256": "49f36ce126334a851b8bcc725635f69b5cc8c2f70745b296d233be5cba13d927"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-current-debug-release-controls-r1.json",
+      "bytes": 1128,
+      "sha256": "2af580d1ba45c9c36b5c109f19d6d5bd76d468ca1071e2386331820a8ba7e433"
+    },
+    {
+      "file": "Design/native/health-write-order/confirmation-expiry-evidence-r1.py",
+      "bytes": 4495,
+      "sha256": "cbd1560ba7b8cdabe5b3030774f135b244ded56b36abf00d365dae9aef38db8c"
+    },
+    {
+      "file": "Design/native/health-write-order/confirmation-expiry-protocol-r1.py",
+      "bytes": 5978,
+      "sha256": "b48c860b51176f86ee910b97611147f9126076c092f0c255f83ccd5e12651787"
+    },
+    {
+      "file": "Design/native/health-write-order/confirmation-expiry-transport-r1.py",
+      "bytes": 3734,
+      "sha256": "587357900209dc2cfd3f40b32551d9a44c8b9906238974420b9ee0c360ac713c"
+    },
+    {
+      "file": "Design/native/health-write-order/confirmation-expiry-driver-r1.py",
+      "bytes": 20543,
+      "sha256": "062e53c5ff59e2155777f3f92ec1d79a0bcc8df1e6e8576dc94fd44c6f30daae"
+    },
+    {
+      "file": "Design/native/health-write-order/check-confirmation-expiry-r1.py",
+      "bytes": 16407,
+      "sha256": "17a88d4b6e83973feb62137bed029c337e4cb074ffb00c90afc990555fd5920a"
+    },
+    {
+      "file": "Design/native/health-write-order/confirmation-expiry-finalization-r1.py",
+      "bytes": 8978,
+      "sha256": "5facfac8c6968da156257a9acac2e1fd7ac876e937ec71cb24e0a1856feba86e"
+    },
+    {
+      "file": "Design/native/health-write-order/target-postrun-process-r1.py",
+      "bytes": 4301,
+      "sha256": "41f34e1d48268ce87d86edac121bf7570392f4e8c01081ada8cf831817b21ea0"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-expiry-root-native-final-audit-r1-planned.py",
+      "bytes": 7351,
+      "sha256": "30e5dc74f0a1c5ac42bc7b08cc396dccf8c22fc66f78118d444404e6d5f90d00"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-expiry-root-native-final-audit-r1.json",
+      "bytes": 2432,
+      "sha256": "7ac5af00bcdb16482d228ff36bbf962ce22f4ae39f59199550a10da5ced28c75"
+    },
+    {
+      "file": "Design/native/health-write-order/source257-expiry-root-original-observations-r1.json",
+      "bytes": 7661,
+      "sha256": "c78155dcb84d486cac840c9084c3aa050c63aa11022d4340bf5a7b3c1e4e9991"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-expiry-data-source257r1-6B529F35-FF3C-495D-9B0E-A42996B3B9CB.json",
+      "bytes": 33842,
+      "sha256": "a9306247b977db2f0592bf3ae29ec88bbf797ca6b3b19312dcf2429a22a207cb"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-expiry-data-source257r1-all-original-export-query.json",
+      "bytes": 4123,
+      "sha256": "701dac8b4f6364a201b13986b783c6b063f58750881adec5dc71231b9309a707"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-expiry-data-source257r1-all-original-manifest.json.gz",
+      "bytes": 1428,
+      "sha256": "81aa717804dc2bd2f4d5256589716233f476c12337e57ea763ea38ca53f1cf38"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-expiry-data-source257r1-all-originals.json",
+      "bytes": 5611,
+      "sha256": "0d15af434c7cea7e4acaffe8996eea9e6afceada312ec5feea41f1848b65d937"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-expiry-data-source257r1-all-other-originals.json.gz",
+      "bytes": 33,
+      "sha256": "ea5d8f49089bb2d391854a0405992905f714049e05335148d6165deae0e584a2"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-expiry-data-source257r1-driver-observations.json",
+      "bytes": 1010438,
+      "sha256": "fdd6fa904300ca82a4ef0bd01d288e87a732824e382e1f17653c80630c547e90"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-expiry-data-source257r1-expiry-r1-source257r1-outcome.json",
+      "bytes": 120188,
+      "sha256": "fe285e2c380a018840384052b8595ab14337337d0a585a8680dff6b203c55f3e"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-expiry-data-source257r1-export-json-stderr.gz",
+      "bytes": 20,
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-expiry-data-source257r1-export-json-stdout.gz",
+      "bytes": 307,
+      "sha256": "62e21499a127a3e81c182f71e5c86dd37c59e419cedda7e65d21306513cc1b45"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-expiry-data-source257r1-export-png-stderr.gz",
+      "bytes": 20,
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-expiry-data-source257r1-export-png-stdout.gz",
+      "bytes": 1107,
+      "sha256": "e7dee94d55b9f7ee40fcdd518980e8d49e01460542a4514da4c7862d94bc6f2b"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-expiry-data-source257r1-host-audit.json",
+      "bytes": 1010438,
+      "sha256": "fdd6fa904300ca82a4ef0bd01d288e87a732824e382e1f17653c80630c547e90"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-expiry-data-source257r1-images.json",
+      "bytes": 14456,
+      "sha256": "df92f37606dfe5e7a12d72c1679e899544f1c830a8a14da49be3ae94493df71f"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-expiry-data-source257r1-json-original-manifest.json.gz",
+      "bytes": 436,
+      "sha256": "9167b6683b5aeca34ab60a574de60ef63c2aacea4846fe83e2ac8f3fa9946857"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-expiry-data-source257r1-mandatory-checker-audit-observation.json",
+      "bytes": 161776,
+      "sha256": "d9ed71a1e6aef803ca27e1201e672c3cd4a54e322e8d8e3fc58e3284da0797e8"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-expiry-data-source257r1-mandatory-checker-intended-command.json",
+      "bytes": 503,
+      "sha256": "98f3d5914067276900acbc2aab4aa087193c2803a498da65dc2ffd121406aeac"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-expiry-data-source257r1-mandatory-checker-query.json",
+      "bytes": 1209,
+      "sha256": "2222221f82ee0f998bcd11e9f3c10dfa307fda6b31b2160fa9957ce168f6e805"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-expiry-data-source257r1-outcome.json",
+      "bytes": 44432,
+      "sha256": "97cdc714a484158a775213528517a8721341582885b7944cb1217c0b997b896e"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-expiry-data-source257r1-png-original-manifest.json.gz",
+      "bytes": 1359,
+      "sha256": "38422aa1766709de297534980c7b0c85bfbd92bc36b50fdf0f05894f54130a9e"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-expiry-data-source257r1-readbacks.json",
+      "bytes": 966,
+      "sha256": "0639ba9454c65a130d6bac45889e657539b28847a92a8445466934214a5b68e1"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-expiry-data-source257r1-retention-state.json",
+      "bytes": 40822,
+      "sha256": "7520600363ae84a93c0791a11b4e7c72fc07ad0e8470d1d14c9eb43d5427f229"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-expiry-data-source257r1-summary-query-stderr.gz",
+      "bytes": 20,
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-expiry-data-source257r1-summary-query-stdout.gz",
+      "bytes": 465,
+      "sha256": "4ef5c206d8f0df6098cde35dedee58deff45872df33336166c55b30d17a402ae"
+    },
+    {
+      "file": "Design/native/health-write-order/health-confirmation-expiry-data-source257r1-summary.json",
+      "bytes": 962,
+      "sha256": "2d5fb606d6d051ff7c26ce1abfd347df122fed5bd14df203af11bb73826523c7"
+    }
+  ],
+  "actualPairBindings": [
+    {
+      "file": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/Lumen.app/Lumen",
+      "bytes": 46657632,
+      "sha256": "6f399ffdae991ece048569f5138527277fd6fb2a3d37255bcb22c01a5f1a0ab2",
+      "readAsDataOnly": true
+    },
+    {
+      "file": "/tmp/LumenBatch37Simulator/Build/Products/Debug-iphonesimulator/LumenUITests-Runner.app/PlugIns/LumenUITests.xctest/LumenUITests",
+      "bytes": 6517648,
+      "sha256": "9d419dab11e8c6ed9ef1004234536af60d7fb86d5f1d1386be3695c84df467b9",
+      "readAsDataOnly": true
+    }
+  ],
+  "storage": {
+    "criticDeletion": false,
+    "availableBytesAtFinish": 25735663616,
+    "historicalRaw": "No old255/256 actual native/Release/cache/defaults/process or source-bound audit replay; prior Notnow canonical proof read only."
+  },
+  "checkedAtUTC": "2026-11-09T01:36:09.353735+00:00"
+}
