@@ -1,0 +1,86 @@
+{
+  "status": "PASS scoped independent phase replay controls",
+  "helperBytes": 11799,
+  "helperSHA256": "e3ac242e23c5a4416e207cb231d1a819ccd7b3b778049a5da7add99b82867863",
+  "sourceBeforeAfterExact": true,
+  "dependencies": [
+    {
+      "file": "retained-backend-phase-r2.py",
+      "bytes": 17539,
+      "sha256": "5e08561da0219e3a0118981d86c9867bfb6d0a8d4c5eed84f0183f92de7645f0"
+    },
+    {
+      "file": "retained-backend-protocol-r3.py",
+      "bytes": 19578,
+      "sha256": "c62039371c73e053dd3538ceb3436b1811a5a54e442f1d25b898a62c83132e61"
+    },
+    {
+      "file": "retained-backend-transport-r3.py",
+      "bytes": 7755,
+      "sha256": "6c61baa6370006b16f66be7d555f7fdf35f67b380a302e76d9733d8b1b6dc179"
+    }
+  ],
+  "checkCount": 11,
+  "checks": [
+    {
+      "case": "three linked immutable phases and raw marker observations independently replay; pending cannot count toward acceptance; actual host ACK publication",
+      "accepted": true
+    },
+    {
+      "case": "returned mutable acceptedSample replaced; independent replay still reconstructs retained sample",
+      "accepted": true
+    },
+    {
+      "case": "Boolean alias in accepted indices",
+      "accepted": false,
+      "actualPublishCallerRejectedBeforeTransport": true
+    },
+    {
+      "case": "integer alias in predicate-valid flag",
+      "accepted": false,
+      "actualPublishCallerRejectedBeforeTransport": true
+    },
+    {
+      "case": "forged fingerprint despite actual complete sample",
+      "accepted": false,
+      "actualPublishCallerRejectedBeforeTransport": true
+    },
+    {
+      "case": "wrong prior snapshot digest despite coherent new current envelope hash",
+      "accepted": false,
+      "actualPublishCallerRejectedBeforeTransport": true
+    },
+    {
+      "case": "wrong fixed verification context",
+      "accepted": false,
+      "actualPublishCallerRejectedBeforeTransport": true
+    },
+    {
+      "case": "wrong raw marker decoded digest",
+      "accepted": false,
+      "actualPublishCallerRejectedBeforeTransport": true
+    },
+    {
+      "case": "pending old preferences falsely labelled valid",
+      "accepted": false,
+      "actualPublishCallerRejectedBeforeTransport": true
+    },
+    {
+      "case": "Boolean decoded byte count rejects before read/decompression",
+      "accepted": false
+    },
+    {
+      "case": "all restored actual host envelopes replay successfully after negative mutations",
+      "accepted": true
+    }
+  ],
+  "raw": {
+    "file": "source261-replay-controls-r2-raw.json.gz",
+    "bytes": 110734,
+    "sha256": "84c7bd0c96ac35551e1a0aadd97a1d98b9e0d897e67f9cd710bfb88d3373a2f3"
+  },
+  "temporarySyntheticFixturesRemoved": true,
+  "scope": "Actual host evidence/ACK files and historical synthetic data replay only; no native transaction or source readiness",
+  "remaining": "Actual source/proof/process/container/provider/trace discovery, producer, native helper/ACK/original attachment linkage, mandatory full checker/finalizer and new test build/native run remain pending.",
+  "checkedAt": 1794206652.143643
+}

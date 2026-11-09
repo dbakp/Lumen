@@ -71,7 +71,7 @@
 <button class="btn" type="button" data-area="quality" aria-pressed="false" aria-controls="lumen-plan-detail">Answer quality</button>
 <button class="btn" type="button" data-area="release" aria-pressed="false" aria-controls="lumen-plan-detail">Release gates</button>
 </div>
-<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Recovery file audit · preparing</h3><div data-verified>All 3 navigation flows and the optimized static build are verified. The new paused-test and file-audit controls pass their isolated checks.</div><div data-next>Next: finish the host coordinator and independent checker, then run the paused simulator audit.</div><div class="text-small" data-gate>The new before-and-after audit has not run. Readability and broader release checks remain open.</div></div>
+<div class="card detail" id="lumen-plan-detail" aria-live="polite"><h3 data-title>Recovery file audit · host checks</h3><div data-verified>Known update delays now wait safely. All 3 saved phases are linked and checked again before the test can continue. Host checks pass.</div><div data-next>Next: connect the simulator data, finish the independent checker and run the paused recovery audit.</div><div class="text-small" data-gate>These checks use synthetic data. The new simulator audit, readability and broader release checks remain open.</div></div>
 </div>
 <div class="section"><h3>Verified safety checks</h3>
 <table class="table table-sm" aria-label="Earlier checks retain their original scope; broader checks remain open"><thead><tr><th>Situation</th><th>Observed result</th></tr></thead><tbody>
@@ -83,14 +83,14 @@
 </tbody></table>
 <div class="text-small">Earlier six-file long-wait preservation failure and Banana zero-fat omission remain failed expectations. Final dismissal preserved the immediate newer state.</div></div>
 <hr>
-<div class="viz-row"><span>About 22 GiB available at last check</span><span>17.74 GB recovered in recorded cleanups · latest cleanup 715.80 MB</span></div>
+<div class="viz-row"><span>About 24 GiB available at last check</span><span>17.88 GB recovered in recorded cleanups · latest cleanup 136.74 MB</span></div>
 <div class="text-small">Redundant exports and completed test bundles removed after exact GitHub verification · canonical evidence and needed caches retained · no further iPhone actions authorized</div>
 <script>
 (()=>{
 const root=document.getElementById('lumen-plan-progress');
-const snapshot='nov9-backend-audit-preparing';
+const snapshot='nov9-backend-pending-replay';
 const areas={
-current:{title:'Recovery file audit · preparing',verified:'All 3 navigation flows and the optimized static build are verified. The new paused-test and file-audit controls pass their isolated checks.',next:'Next: finish the host coordinator and independent checker, then run the paused simulator audit.',gate:'The new before-and-after audit has not run. Readability and broader release checks remain open.'},
+current:{title:'Recovery file audit · host checks',verified:'Known update delays now wait safely. All 3 saved phases are linked and checked again before the test can continue. Host checks pass.',next:'Next: connect the simulator data, finish the independent checker and run the paused recovery audit.',gate:'These checks use synthetic data. The new simulator audit, readability and broader release checks remain open.'},
 quality:{title:'Answer quality · open',verified:'Library search, source identity, consent controls and literal-reference safeguards are delivered.',next:'Next: evidence-support policy and independent evaluation; personal-context and conversation-history privacy review.',gate:'Clinical accuracy, language coverage and live-provider evaluation remain required.'},
 release:{title:'Release readiness · open',verified:'The current retained-review build passed independent optimized static review. It remains unsigned and has coverage instrumentation.',next:'Next: data preservation, readability, background Health, Watch, widget and accessibility.',gate:'Orientation warning, representative histories, performance, privacy and distribution review remain open. No iPhone installation, launch or checks without a renewed request.'}
 };

@@ -1,0 +1,114 @@
+{
+  "status": "PASS scoped phase coordination controls",
+  "helperBytes": 17539,
+  "helperSHA256": "5e08561da0219e3a0118981d86c9867bfb6d0a8d4c5eed84f0183f92de7645f0",
+  "sourceBeforeAfterExact": true,
+  "checks": [
+    {
+      "case": "known old/new combination both waits without acknowledging pending; two final-valid stable samples",
+      "attempts": 5,
+      "ackPrepared": true
+    },
+    {
+      "case": "known old/new combination only-storage-issue waits without acknowledging pending; two final-valid stable samples",
+      "attempts": 5,
+      "ackPrepared": true
+    },
+    {
+      "case": "known old/new combination only-widget-packet waits without acknowledging pending; two final-valid stable samples",
+      "attempts": 5,
+      "ackPrepared": true
+    },
+    {
+      "case": "valid then pending resets consecutive-stability requirement",
+      "attempts": 4,
+      "ackPrepared": true
+    },
+    {
+      "case": "actual unshortened multi-second coordinator wait over historical synthetic prefs; not native defaults timing",
+      "elapsedSeconds": 3.40591275,
+      "ackPrepared": true
+    },
+    {
+      "case": "pending-through-bound",
+      "ackPrepared": false,
+      "attempts": 8
+    },
+    {
+      "case": "pending-with-unexpected-shared-key",
+      "ackPrepared": false,
+      "attempts": 1
+    },
+    {
+      "case": "pending-with-changed-protected-water",
+      "ackPrepared": false,
+      "attempts": 1
+    },
+    {
+      "case": "pending-with-invented-widget-zero",
+      "ackPrepared": false,
+      "attempts": 1
+    },
+    {
+      "case": "changed-packet-bytes-without-advanced-capture",
+      "ackPrepared": false,
+      "attempts": 1
+    },
+    {
+      "case": "packet advances stale baseline capture but predates actual pre-action boundary; explicit lower-bound rejection",
+      "ackPrepared": false
+    },
+    {
+      "case": "explicit one-second clock tolerance lower boundary accepted for otherwise valid synthetic endpoint",
+      "accepted": true
+    },
+    {
+      "case": "outside one-second lower clock tolerance rejected",
+      "accepted": false
+    },
+    {
+      "case": "only exact baseline old-root device/inode/mode and UUID retired leaf may wait; gone twice before ack",
+      "ackPrepared": true
+    },
+    {
+      "case": "unexpected-retired-restore",
+      "ackPrepared": false,
+      "attempts": 1
+    },
+    {
+      "case": "unexpected-retired-malformed",
+      "ackPrepared": false,
+      "attempts": 1
+    },
+    {
+      "case": "unexpected-retired-wrong-inode",
+      "ackPrepared": false,
+      "attempts": 1
+    },
+    {
+      "case": "multiple-retired-root-names",
+      "ackPrepared": false,
+      "attempts": 1
+    },
+    {
+      "case": "retired-through-bound",
+      "ackPrepared": false,
+      "attempts": 8
+    },
+    {
+      "case": "final-parent-cannot-regress-prefs",
+      "ackPrepared": false,
+      "attempts": 1
+    }
+  ],
+  "checkCount": 20,
+  "raw": {
+    "file": "source261-pending-phase-controls-r2-raw.json.gz",
+    "bytes": 642731,
+    "sha256": "6291855e090ac958dc3752339add265bd765897f83303cf5a75be57d4c10e424"
+  },
+  "temporarySyntheticFixturesRemoved": true,
+  "scope": "Historical synthetic sample replay plus actual host evidence/transport files only; no native/backend acceptance",
+  "remaining": "Actual provenance controller, raw marker durability and prior-phase artifact binding/independent replay, producer/checker/finalizer, freeze/build/native audit remain pending. Unsafe or within-sample mutation still fails immediately; no arbitrary-error retry.",
+  "checkedAt": 1794206446.7370958
+}
