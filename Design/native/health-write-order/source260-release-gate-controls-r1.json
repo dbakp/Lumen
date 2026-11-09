@@ -1,0 +1,66 @@
+{
+  "status": "PASS actual gate isolated synthetic Git positive and negatives",
+  "source": "durable-source-r260.json",
+  "helperBytes": 1961,
+  "helperSHA256": "048650cbbaa2f068c5e74dc06711a7ca2a6e17103b90b23b95c193660597a284",
+  "cases": [
+    {
+      "case": "exact synthetic checkpoint",
+      "accepted": true
+    },
+    {
+      "case": "wrong proof source",
+      "rejected": true
+    },
+    {
+      "case": "wrong proof commit",
+      "rejected": true
+    },
+    {
+      "case": "missing exact report row",
+      "rejected": true
+    },
+    {
+      "case": "duplicate exact report row",
+      "rejected": true
+    },
+    {
+      "case": "Boolean byte alias",
+      "rejected": true
+    },
+    {
+      "case": "wrong SHA",
+      "rejected": true
+    },
+    {
+      "case": "missing origin main",
+      "rejected": true
+    },
+    {
+      "case": "local report tamper",
+      "rejected": true
+    },
+    {
+      "case": "local plus proof row tamper versus Git",
+      "rejected": true
+    },
+    {
+      "case": "actual committed invalid scopedNativeAcceptance",
+      "rejected": true
+    },
+    {
+      "case": "actual committed invalid case",
+      "rejected": true
+    },
+    {
+      "case": "actual committed invalid part",
+      "rejected": true
+    },
+    {
+      "case": "actual committed invalid requiredCorrectionsForThisScopedCase",
+      "rejected": true
+    }
+  ],
+  "scope": "Actual gate function with real tiny temporary synthetic Git blobs/local files. No actual184 existence, native success, current release execution or global product acceptance. Temporary synthetic repository removed.",
+  "checkedAt": 1794198638.458734
+}
