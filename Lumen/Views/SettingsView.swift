@@ -29,6 +29,7 @@ public struct SettingsView: View {
     @State private var nameDraft = ""
     @State private var nameReady = false
     @State private var reminderOwner = UUID()
+    @State private var retainedRecoveryScope = HealthRetainedRecoveryReviewScope()
 
     public init() {}
 
@@ -102,6 +103,7 @@ public struct SettingsView: View {
             .onChange(of: sleep.profile.name) { old, new in if nameDraft == old { nameDraft = new } }
         }
         .tint(Theme.accent)
+        .onDisappear { retainedRecoveryScope.close() }
         .interactiveDismissDisabled(savingProfilePair || nameDirty)
         .settingsSaveAlert($settingsFailure)
     }
@@ -404,7 +406,7 @@ public struct SettingsView: View {
                     }))
             }
             NavigationLink("Backup & restore") { BackupView() }.accessibilityIdentifier("backupSettings")
-            NavigationLink("Recover health data") { HealthRecoveryView() }.accessibilityIdentifier("healthRecoverySettings")
+            NavigationLink("Recover health data") { HealthRecoveryView(scope: retainedRecoveryScope) }.accessibilityIdentifier("healthRecoverySettings")
             NavigationLink { ReadableExportView() } label: {
                 Label("Export my data", systemImage: "square.and.arrow.up")
             }.accessibilityIdentifier("readableExportSettings")

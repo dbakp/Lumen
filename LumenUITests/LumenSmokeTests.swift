@@ -88,6 +88,10 @@ final class LumenSmokeTests: XCTestCase {
             if name.contains("PhotoUnavailable") { app.launchArguments += ["-health-review-invalid-photo"] }
             if name.contains("PhotoOriented") { app.launchArguments += ["-health-review-oriented-photo"] }
         }
+        if name.contains("testHealthRetainedReviewOwner") {
+            app.launchArguments = ["-resetForUITests", "-health-review-records-fixture", "-health-review-oriented-photo",
+                "-health-retained-review-owner-ui", name.contains("PendingBack") ? "pending-back" : name.contains("SheetDismiss") ? "sheet-dismiss" : "children"]
+        }
         if name.contains("testHealthOriginalImport") {
             let kind = name.contains("Encrypted") ? "encrypted" : name.contains("Readable") ? "readable" : "legacy"
             app.launchArguments = ["-resetForUITests", "-health-backup-ui-fixture", "-health-backup-case", kind, "-health-read-ui", "-health-read-scope", "selected-import"]
@@ -7973,6 +7977,113 @@ final class LumenSmokeTests: XCTestCase {
         snap("health-file-" + kind + "-relaunch")
     }
     func testHealthRecoveryScreen() throws { try healthRecoveryScreen() }
+    func testHealthRetainedReviewOwnerChildren() throws {
+        executionTimeAllowance = 180
+        let copy = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'healthRecoveryCopy-'")).firstMatch
+        reveal(copy); XCTAssertTrue(copy.waitForExistence(timeout: 10)); let copyID = copy.identifier; copy.tap()
+        let probe = app.descendants(matching: .any).matching(identifier: "retainedReviewOwnerState").firstMatch
+        func state() throws -> [String: String] {
+            try XCTUnwrap(probe.value as? String).split(separator: ";", omittingEmptySubsequences: false).reduce(into: [:]) { result, pair in
+                let fields = pair.split(separator: "=", maxSplits: 1, omittingEmptySubsequences: false)
+                if fields.count == 2 { result[String(fields[0])] = String(fields[1]) }
+            }
+        }
+        let ready = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+            (probe.value as? String)?.contains("phase=ready") == true
+        }, object: probe)
+        XCTAssertEqual(XCTWaiter.wait(for: [ready], timeout: 10), .completed)
+        let first = try state(); XCTAssertEqual(first["selected"], ""); snap("retained-owner-ready")
+        nativeSwitch("recoverHealth-meals", enabled: true)
+        let selected = try state(); XCTAssertEqual(selected["selected"], "meals"); snap("retained-owner-selected")
+        let records = app.buttons["reviewHealth-meals"].firstMatch; reveal(records, towardsTop: true); records.tap()
+        let meal = app.buttons["recoveryRecord-0"].firstMatch; reveal(meal); XCTAssertTrue(meal.waitForExistence(timeout: 10)); meal.tap()
+        let mealTitle = app.navigationBars.firstMatch.identifier
+        let photo = app.buttons["recoveryChild-2"].firstMatch; reveal(photo); XCTAssertTrue(photo.exists); photo.tap()
+        let image = app.images["recoveryMealPhoto"].firstMatch
+        XCTAssertTrue(image.waitForExistence(timeout: 10)); snap("retained-owner-photo")
+        app.navigationBars["Meal photo"].buttons.element(boundBy: 0).tap()
+        XCTAssertTrue(app.navigationBars[mealTitle].waitForExistence(timeout: 5))
+        app.navigationBars[mealTitle].buttons.element(boundBy: 0).tap()
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        XCTAssertTrue(probe.waitForExistence(timeout: 5)); let returned = try state()
+        XCTAssertEqual(returned, selected); snap("retained-owner-returned")
+        let recover = app.buttons["confirmHealthRecovery"].firstMatch; reveal(recover); XCTAssertTrue(recover.isEnabled)
+        recover.tap(); let alert = app.alerts["Replace selected data?"]
+        XCTAssertTrue(alert.waitForExistence(timeout: 5)); snap("retained-owner-confirmation"); alert.buttons["Not now"].tap()
+        app.navigationBars["Review recovery"].buttons.element(boundBy: 0).tap()
+        XCTAssertTrue(app.navigationBars["Recover health data"].waitForExistence(timeout: 5)); snap("retained-owner-parent")
+        let sameCopy = app.buttons[copyID].firstMatch; reveal(sameCopy); sameCopy.tap()
+        let freshReady = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+            (probe.value as? String)?.contains("phase=ready") == true
+        }, object: probe)
+        XCTAssertEqual(XCTWaiter.wait(for: [freshReady], timeout: 10), .completed)
+        let fresh = try state(); XCTAssertNotEqual(fresh["session"], first["session"]); XCTAssertNotEqual(fresh["capture"], first["capture"])
+        XCTAssertEqual(fresh["selected"], ""); snap("retained-owner-fresh")
+        nativeSwitch("recoverHealth-meals", enabled: true); reveal(recover); recover.tap()
+        XCTAssertTrue(alert.waitForExistence(timeout: 5)); alert.buttons["Recover"].tap()
+        let success = app.descendants(matching: .any).matching(identifier: "healthDataRecovered").firstMatch
+        reveal(success, towardsTop: true); XCTAssertTrue(success.waitForExistence(timeout: 20)); snap("retained-owner-recovered")
+        app.navigationBars["Review recovery"].buttons.element(boundBy: 0).tap()
+        XCTAssertTrue(app.navigationBars["Recover health data"].waitForExistence(timeout: 5)); snap("retained-owner-final-parent")
+        let attachment = XCTAttachment(data: try JSONSerialization.data(withJSONObject: ["first": first, "selected": selected, "returned": returned, "fresh": fresh], options: [.sortedKeys, .prettyPrinted]), uniformTypeIdentifier: "public.json")
+        attachment.name = "retained-owner-children-readback"; attachment.lifetime = .keepAlways; add(attachment)
+    }
+    func testHealthRetainedReviewOwnerPendingBack() throws {
+        executionTimeAllowance = 90
+        let copy = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'healthRecoveryCopy-'")).firstMatch
+        reveal(copy); XCTAssertTrue(copy.waitForExistence(timeout: 10)); copy.tap()
+        let probe = app.descendants(matching: .any).matching(identifier: "retainedReviewOwnerState").firstMatch
+        XCTAssertTrue(probe.waitForExistence(timeout: 5)); XCTAssertTrue((probe.value as? String)?.contains("phase=pending") == true)
+        let old = try XCTUnwrap(probe.value as? String)
+        let recover = app.buttons["confirmHealthRecovery"].firstMatch; reveal(recover); XCTAssertFalse(recover.isEnabled)
+        Thread.sleep(forTimeInterval: 2); snap("retained-owner-pending")
+        app.navigationBars["Review recovery"].buttons.element(boundBy: 0).tap()
+        XCTAssertTrue(app.navigationBars["Recover health data"].waitForExistence(timeout: 5)); snap("retained-owner-pending-parent")
+        Thread.sleep(forTimeInterval: 2)
+        reveal(copy); copy.tap()
+        let ready = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+            (probe.value as? String)?.contains("phase=ready") == true
+        }, object: probe)
+        XCTAssertEqual(XCTWaiter.wait(for: [ready], timeout: 10), .completed)
+        let fresh = try XCTUnwrap(probe.value as? String); XCTAssertNotEqual(fresh.components(separatedBy: ";").first, old.components(separatedBy: ";").first)
+        XCTAssertTrue(fresh.hasSuffix("selected=")); snap("retained-owner-pending-fresh")
+        app.navigationBars["Review recovery"].buttons.element(boundBy: 0).tap()
+        XCTAssertTrue(app.navigationBars["Recover health data"].waitForExistence(timeout: 5)); snap("retained-owner-pending-final-parent")
+        let attachment = XCTAttachment(data: try JSONSerialization.data(withJSONObject: ["old": old, "fresh": fresh], options: [.sortedKeys]), uniformTypeIdentifier: "public.json")
+        attachment.name = "retained-owner-pending-readback"; attachment.lifetime = .keepAlways; add(attachment)
+    }
+    func testHealthRetainedReviewOwnerSheetDismiss() throws {
+        executionTimeAllowance = 150
+        let recovery = app.buttons["healthRecoverySettings"].firstMatch
+        reveal(recovery); XCTAssertTrue(recovery.waitForExistence(timeout: 10)); recovery.tap()
+        let copy = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'healthRecoveryCopy-'")).firstMatch
+        reveal(copy); XCTAssertTrue(copy.waitForExistence(timeout: 10)); let copyID = copy.identifier; copy.tap()
+        let probe = app.descendants(matching: .any).matching(identifier: "retainedReviewOwnerState").firstMatch
+        let ready = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in (probe.value as? String)?.contains("phase=ready") == true }, object: probe)
+        XCTAssertEqual(XCTWaiter.wait(for: [ready], timeout: 10), .completed)
+        let old = try XCTUnwrap(probe.value as? String); snap("retained-owner-sheet-ready")
+        let records = app.buttons["reviewHealth-meals"].firstMatch; reveal(records); records.tap()
+        let meal = app.buttons["recoveryRecord-0"].firstMatch; reveal(meal); XCTAssertTrue(meal.waitForExistence(timeout: 10)); meal.tap()
+        let photo = app.buttons["recoveryChild-2"].firstMatch; reveal(photo); photo.tap()
+        XCTAssertTrue(app.images["recoveryMealPhoto"].waitForExistence(timeout: 10)); snap("retained-owner-sheet-photo")
+        let bar = app.navigationBars["Meal photo"]
+        let start = bar.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.1))
+        let end = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.95))
+        start.press(forDuration: 0.1, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.1)
+        XCTAssertTrue(bar.waitForNonExistence(timeout: 5)); snap("retained-owner-sheet-dismissed")
+        let reopen = app.buttons["retainedFixtureOpenSettings"].firstMatch
+        XCTAssertTrue(reopen.isHittable); reopen.tap(); reveal(recovery); recovery.tap()
+        let sameCopy = app.buttons[copyID].firstMatch; reveal(sameCopy); sameCopy.tap()
+        let freshReady = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in (probe.value as? String)?.contains("phase=ready") == true }, object: probe)
+        XCTAssertEqual(XCTWaiter.wait(for: [freshReady], timeout: 10), .completed)
+        let fresh = try XCTUnwrap(probe.value as? String)
+        XCTAssertNotEqual(fresh.components(separatedBy: ";").first, old.components(separatedBy: ";").first)
+        XCTAssertTrue(fresh.hasSuffix("selected=")); snap("retained-owner-sheet-fresh")
+        app.navigationBars["Review recovery"].buttons.element(boundBy: 0).tap()
+        XCTAssertTrue(app.navigationBars["Recover health data"].waitForExistence(timeout: 5)); snap("retained-owner-sheet-final-parent")
+        let attachment = XCTAttachment(data: try JSONSerialization.data(withJSONObject: ["old": old, "fresh": fresh], options: [.sortedKeys]), uniformTypeIdentifier: "public.json")
+        attachment.name = "retained-owner-sheet-readback"; attachment.lifetime = .keepAlways; add(attachment)
+    }
     func testDailyCacheRejectsLink() throws {
         executionTimeAllowance = 120
         let manage = app.buttons["manageDailyCache"].firstMatch

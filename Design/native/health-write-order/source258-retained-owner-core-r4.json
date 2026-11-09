@@ -1,0 +1,124 @@
+{
+  "checks" : [
+    {
+      "name" : "payload requires completed fresh capture",
+      "passed" : true
+    },
+    {
+      "name" : "fresh capture classifies failed file separately from Data and String legacy",
+      "passed" : true
+    },
+    {
+      "name" : "record child reads exact reviewed records",
+      "passed" : true
+    },
+    {
+      "name" : "photo child reads exact reviewed photo",
+      "passed" : true
+    },
+    {
+      "name" : "child reads preserve ready authority",
+      "passed" : true
+    },
+    {
+      "name" : "second capture cannot replace reviewed origins",
+      "passed" : true
+    },
+    {
+      "name" : "failed second capture preserves existing ready origins",
+      "passed" : true
+    },
+    {
+      "name" : "unselected legacy binding rejected",
+      "passed" : true
+    },
+    {
+      "name" : "missing selected legacy binding rejected",
+      "passed" : true
+    },
+    {
+      "name" : "selected Data and String origins bound to payload",
+      "passed" : true
+    },
+    {
+      "name" : "changed raw legacy rejected by actual preparation",
+      "passed" : true
+    },
+    {
+      "name" : "stale preparation preserves damaged current file",
+      "passed" : true
+    },
+    {
+      "name" : "close cancels commit registration with reentrant callback outside lock",
+      "passed" : true
+    },
+    {
+      "name" : "close clears origin metadata and marks closed",
+      "passed" : true
+    },
+    {
+      "name" : "closed owner rejects fresh operation",
+      "passed" : true
+    },
+    {
+      "name" : "closed owner rejects records",
+      "passed" : true
+    },
+    {
+      "name" : "closed owner rejects photo",
+      "passed" : true
+    },
+    {
+      "name" : "closed owner rejects payload",
+      "passed" : true
+    },
+    {
+      "name" : "idempotent close preserves permanent retained copy",
+      "passed" : true
+    },
+    {
+      "name" : "reselection has distinct owner with no inherited capture",
+      "passed" : true
+    },
+    {
+      "name" : "fresh review excludes newly healthy file despite failed legacy",
+      "passed" : true
+    },
+    {
+      "name" : "healthy selected domain cannot produce payload",
+      "passed" : true
+    },
+    {
+      "name" : "close while capture holds snapshot rejects late completion",
+      "passed" : true
+    },
+    {
+      "name" : "late completion cannot resurrect cleared metadata",
+      "passed" : true
+    },
+    {
+      "name" : "enclosing scope permits child record reads",
+      "passed" : true
+    },
+    {
+      "name" : "container close clears child-held ready authority",
+      "passed" : true
+    },
+    {
+      "name" : "container close cancels operation held by child",
+      "passed" : true
+    },
+    {
+      "name" : "dismissed container cannot open another review",
+      "passed" : true
+    },
+    {
+      "name" : "new selection retires prior scope owner",
+      "passed" : true
+    }
+  ],
+  "fixturePhotoSHA256" : "12ad2783f7ecd9fb2252dff7c79781d92d2a52f637c33d7f46a60fdb1ef6f4e3",
+  "fixtureRootRemovedOnReturn" : true,
+  "scope" : "Actual retained owner, catalog reads, origin lease and preparation; isolated temporary files and raw legacy closure. No LocalStore locking, SwiftUI navigation, native or full app acceptance.",
+  "status" : "PASS"
+}

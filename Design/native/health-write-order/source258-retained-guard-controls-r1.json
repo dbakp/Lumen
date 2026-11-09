@@ -1,0 +1,111 @@
+{
+  "status": "PASS actual extracted native mode guard",
+  "count": 10,
+  "source": {
+    "file": "Lumen/Views/HealthRetainedReviewUIFixture.swift",
+    "bytes": 4352,
+    "sha256": "4fc0074f80e29edba2f3ef18832d387b6b38309e6b65bbb5f2978354336ebc01"
+  },
+  "extractedProgram": "import Foundation\nlet flag = \"-health-retained-review-owner-ui\"\nfunc mode(_ arguments: [String]) -> String? {\n        let args = arguments\n        guard args.filter({ $0 == flag }).count == 1,\n              args.contains(\"-resetForUITests\"), args.contains(\"-health-review-records-fixture\"),\n              let index = args.firstIndex(of: flag), args.indices.contains(index + 1),\n              [\"children\", \"pending-back\", \"sheet-dismiss\"].contains(args[index + 1]) else { return nil }\n        return args[index + 1]\n    }\nlet cases = [[\"-resetForUITests\", \"-health-review-records-fixture\", \"-health-retained-review-owner-ui\", \"children\"], [\"-resetForUITests\", \"-health-review-records-fixture\", \"-health-retained-review-owner-ui\", \"pending-back\"], [\"-resetForUITests\", \"-health-review-records-fixture\", \"-health-retained-review-owner-ui\", \"sheet-dismiss\"], [], [\"-health-retained-review-owner-ui\", \"children\"], [\"-resetForUITests\", \"-health-review-records-fixture\", \"-health-retained-review-owner-ui\"], [\"-resetForUITests\", \"-health-review-records-fixture\", \"-health-retained-review-owner-ui\", \"unknown\"], [\"-resetForUITests\", \"-health-review-records-fixture\", \"-health-retained-review-owner-ui\", \"children\", \"-health-retained-review-owner-ui\", \"children\"], [\"-health-review-records-fixture\", \"-health-retained-review-owner-ui\", \"children\"], [\"-resetForUITests\", \"-health-retained-review-owner-ui\", \"children\"]]\nlet values = cases.map { mode($0) as Any? ?? NSNull() }; let data = try JSONSerialization.data(withJSONObject: values); print(String(decoding: data, as: UTF8.self))\n",
+  "fixtures": [
+    {
+      "arguments": [
+        "-resetForUITests",
+        "-health-review-records-fixture",
+        "-health-retained-review-owner-ui",
+        "children"
+      ],
+      "expected": "children",
+      "observed": "children"
+    },
+    {
+      "arguments": [
+        "-resetForUITests",
+        "-health-review-records-fixture",
+        "-health-retained-review-owner-ui",
+        "pending-back"
+      ],
+      "expected": "pending-back",
+      "observed": "pending-back"
+    },
+    {
+      "arguments": [
+        "-resetForUITests",
+        "-health-review-records-fixture",
+        "-health-retained-review-owner-ui",
+        "sheet-dismiss"
+      ],
+      "expected": "sheet-dismiss",
+      "observed": "sheet-dismiss"
+    },
+    {
+      "arguments": [],
+      "expected": null,
+      "observed": null
+    },
+    {
+      "arguments": [
+        "-health-retained-review-owner-ui",
+        "children"
+      ],
+      "expected": null,
+      "observed": null
+    },
+    {
+      "arguments": [
+        "-resetForUITests",
+        "-health-review-records-fixture",
+        "-health-retained-review-owner-ui"
+      ],
+      "expected": null,
+      "observed": null
+    },
+    {
+      "arguments": [
+        "-resetForUITests",
+        "-health-review-records-fixture",
+        "-health-retained-review-owner-ui",
+        "unknown"
+      ],
+      "expected": null,
+      "observed": null
+    },
+    {
+      "arguments": [
+        "-resetForUITests",
+        "-health-review-records-fixture",
+        "-health-retained-review-owner-ui",
+        "children",
+        "-health-retained-review-owner-ui",
+        "children"
+      ],
+      "expected": null,
+      "observed": null
+    },
+    {
+      "arguments": [
+        "-health-review-records-fixture",
+        "-health-retained-review-owner-ui",
+        "children"
+      ],
+      "expected": null,
+      "observed": null
+    },
+    {
+      "arguments": [
+        "-resetForUITests",
+        "-health-retained-review-owner-ui",
+        "children"
+      ],
+      "expected": null,
+      "observed": null
+    }
+  ],
+  "compileExit": 0,
+  "compileStdout": "",
+  "compileStderr": "",
+  "runExit": 0,
+  "runStdout": "[\"children\",\"pending-back\",\"sheet-dismiss\",null,null,null,null,null,null,null]\n",
+  "runStderr": "",
+  "scope": "Actual extracted context property and Foundation execution only, not full fixture/SwiftUI/native launch acceptance."
+}

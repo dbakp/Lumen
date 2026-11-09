@@ -3,6 +3,9 @@ import Darwin
 
 @main struct ImportTests {
     static func main() async throws {
+        if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--health-retained-review" {
+            try HealthRetainedRecoveryReviewChecks.run(output: URL(fileURLWithPath: CommandLine.arguments[2])); return
+        }
         if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "--health-origin-review" {
             try HealthOriginReviewChecks.run(output: URL(fileURLWithPath: CommandLine.arguments[2])); return
         }
@@ -188,6 +191,7 @@ import Darwin
         precondition(cancelledDecodePassed, "Cancelled decoder returned a preview or the wrong error")
         try HealthLocalArchiveChecks.payloadCancellation()
         try HealthRecoveryCopyChecks.run()
+        try HealthRetainedRecoveryReviewChecks.run()
         try HealthDailyCacheChecks.run()
         try await HealthTodayQueryChecks.run()
         try BackupPhotoBindingChecks.run()

@@ -74,7 +74,7 @@ private struct LumenReadyView: View {
         Group {
             #if DEBUG && targetEnvironment(simulator)
             if ProviderConnectionUIFixture.isAuthorized { ProviderConnectionUIRoot() }
-            else if HealthRecoveryUIFixture.requested { NavigationStack { HealthRecoveryView() } }
+            else if HealthRecoveryUIFixture.requested { HealthRetainedRecoveryFixtureRoot() }
             else { RootView() }
             #else
             RootView()

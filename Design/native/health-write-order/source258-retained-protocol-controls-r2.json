@@ -1,0 +1,3211 @@
+{
+  "status": "PASS isolated actual protocol controls",
+  "count": 34,
+  "source": {
+    "file": "retained-owner-protocol-r1.py",
+    "bytes": 6053,
+    "sha256": "c7e62d570f0747f073d029f13b2c69f4ef92f367ee5f23ef808a16403912c024"
+  },
+  "cases": [
+    {
+      "name": "valid isolated children",
+      "case": "children",
+      "accepted": true,
+      "passed": true,
+      "trace": {
+        "schema": "Lumen-retained-review-owner-v1",
+        "events": [
+          {
+            "event": "opened",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "records-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "photo-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "opened",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          }
+        ]
+      },
+      "readback": {
+        "first": {
+          "session": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": ""
+        },
+        "selected": {
+          "session": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": "meals"
+        },
+        "returned": {
+          "session": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": "meals"
+        },
+        "fresh": {
+          "session": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+          "capture": "FFA18661-9FE8-4DB6-99D6-71B1F60D127B",
+          "phase": "ready",
+          "selected": ""
+        }
+      }
+    },
+    {
+      "name": "reject duplicate owner children",
+      "case": "children",
+      "accepted": false,
+      "passed": true,
+      "trace": {
+        "schema": "Lumen-retained-review-owner-v1",
+        "events": [
+          {
+            "event": "opened",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "records-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "photo-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "opened",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "opened",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          }
+        ]
+      },
+      "readback": {
+        "first": {
+          "session": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": ""
+        },
+        "selected": {
+          "session": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": "meals"
+        },
+        "returned": {
+          "session": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": "meals"
+        },
+        "fresh": {
+          "session": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+          "capture": "FFA18661-9FE8-4DB6-99D6-71B1F60D127B",
+          "phase": "ready",
+          "selected": ""
+        }
+      }
+    },
+    {
+      "name": "reject missing close children",
+      "case": "children",
+      "accepted": false,
+      "passed": true,
+      "trace": {
+        "schema": "Lumen-retained-review-owner-v1",
+        "events": [
+          {
+            "event": "opened",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "records-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "photo-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "opened",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": true
+          }
+        ]
+      },
+      "readback": {
+        "first": {
+          "session": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": ""
+        },
+        "selected": {
+          "session": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": "meals"
+        },
+        "returned": {
+          "session": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": "meals"
+        },
+        "fresh": {
+          "session": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+          "capture": "FFA18661-9FE8-4DB6-99D6-71B1F60D127B",
+          "phase": "ready",
+          "selected": ""
+        }
+      }
+    },
+    {
+      "name": "reject closed raw authority metadata children",
+      "case": "children",
+      "accepted": false,
+      "passed": true,
+      "trace": {
+        "schema": "Lumen-retained-review-owner-v1",
+        "events": [
+          {
+            "event": "opened",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "records-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "photo-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "opened",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": true,
+            "metadata": true
+          }
+        ]
+      },
+      "readback": {
+        "first": {
+          "session": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": ""
+        },
+        "selected": {
+          "session": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": "meals"
+        },
+        "returned": {
+          "session": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": "meals"
+        },
+        "fresh": {
+          "session": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+          "capture": "FFA18661-9FE8-4DB6-99D6-71B1F60D127B",
+          "phase": "ready",
+          "selected": ""
+        }
+      }
+    },
+    {
+      "name": "reject Boolean-as-integer state children",
+      "case": "children",
+      "accepted": false,
+      "passed": true,
+      "trace": {
+        "schema": "Lumen-retained-review-owner-v1",
+        "events": [
+          {
+            "event": "opened",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": 0,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "records-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "photo-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "opened",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          }
+        ]
+      },
+      "readback": {
+        "first": {
+          "session": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": ""
+        },
+        "selected": {
+          "session": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": "meals"
+        },
+        "returned": {
+          "session": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": "meals"
+        },
+        "fresh": {
+          "session": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+          "capture": "FFA18661-9FE8-4DB6-99D6-71B1F60D127B",
+          "phase": "ready",
+          "selected": ""
+        }
+      }
+    },
+    {
+      "name": "reject reused capture operation children",
+      "case": "children",
+      "accepted": false,
+      "passed": true,
+      "trace": {
+        "schema": "Lumen-retained-review-owner-v1",
+        "events": [
+          {
+            "event": "opened",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "records-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "photo-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "opened",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          }
+        ]
+      },
+      "readback": {
+        "first": {
+          "session": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": ""
+        },
+        "selected": {
+          "session": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": "meals"
+        },
+        "returned": {
+          "session": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": "meals"
+        },
+        "fresh": {
+          "session": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+          "capture": "FFA18661-9FE8-4DB6-99D6-71B1F60D127B",
+          "phase": "ready",
+          "selected": ""
+        }
+      }
+    },
+    {
+      "name": "reject unknown schema children",
+      "case": "children",
+      "accepted": false,
+      "passed": true,
+      "trace": {
+        "schema": "old",
+        "events": [
+          {
+            "event": "opened",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "records-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "photo-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "opened",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          }
+        ]
+      },
+      "readback": {
+        "first": {
+          "session": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": ""
+        },
+        "selected": {
+          "session": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": "meals"
+        },
+        "returned": {
+          "session": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": "meals"
+        },
+        "fresh": {
+          "session": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+          "capture": "FFA18661-9FE8-4DB6-99D6-71B1F60D127B",
+          "phase": "ready",
+          "selected": ""
+        }
+      }
+    },
+    {
+      "name": "reject missing first capture children",
+      "case": "children",
+      "accepted": false,
+      "passed": true,
+      "trace": {
+        "schema": "Lumen-retained-review-owner-v1",
+        "events": [
+          {
+            "event": "opened",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "records-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "photo-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "opened",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          }
+        ]
+      },
+      "readback": {
+        "first": {
+          "session": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": ""
+        },
+        "selected": {
+          "session": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": "meals"
+        },
+        "returned": {
+          "session": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": "meals"
+        },
+        "fresh": {
+          "session": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+          "capture": "FFA18661-9FE8-4DB6-99D6-71B1F60D127B",
+          "phase": "ready",
+          "selected": ""
+        }
+      }
+    },
+    {
+      "name": "valid isolated pending-back",
+      "case": "pending-back",
+      "accepted": true,
+      "passed": true,
+      "trace": {
+        "schema": "Lumen-retained-review-owner-v1",
+        "events": [
+          {
+            "event": "opened",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-held",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "closed",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "capture-hold-cancelled",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "capture-cancelled",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "opened",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          }
+        ]
+      },
+      "readback": {
+        "old": "session=B9619068-E75C-48B2-94DF-E407579EBCE2;capture=5D1DB254-F8BA-47AF-8269-B3E7228F8765;phase=pending;selected=",
+        "fresh": "session=51DA36EF-6E83-4D7C-A090-B7C052B5E35D;capture=FFA18661-9FE8-4DB6-99D6-71B1F60D127B;phase=ready;selected="
+      }
+    },
+    {
+      "name": "reject duplicate owner pending-back",
+      "case": "pending-back",
+      "accepted": false,
+      "passed": true,
+      "trace": {
+        "schema": "Lumen-retained-review-owner-v1",
+        "events": [
+          {
+            "event": "opened",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-held",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "closed",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "capture-hold-cancelled",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "capture-cancelled",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "opened",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "opened",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          }
+        ]
+      },
+      "readback": {
+        "old": "session=B9619068-E75C-48B2-94DF-E407579EBCE2;capture=5D1DB254-F8BA-47AF-8269-B3E7228F8765;phase=pending;selected=",
+        "fresh": "session=51DA36EF-6E83-4D7C-A090-B7C052B5E35D;capture=FFA18661-9FE8-4DB6-99D6-71B1F60D127B;phase=ready;selected="
+      }
+    },
+    {
+      "name": "reject missing close pending-back",
+      "case": "pending-back",
+      "accepted": false,
+      "passed": true,
+      "trace": {
+        "schema": "Lumen-retained-review-owner-v1",
+        "events": [
+          {
+            "event": "opened",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-held",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "closed",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "capture-hold-cancelled",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "capture-cancelled",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "opened",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": true
+          }
+        ]
+      },
+      "readback": {
+        "old": "session=B9619068-E75C-48B2-94DF-E407579EBCE2;capture=5D1DB254-F8BA-47AF-8269-B3E7228F8765;phase=pending;selected=",
+        "fresh": "session=51DA36EF-6E83-4D7C-A090-B7C052B5E35D;capture=FFA18661-9FE8-4DB6-99D6-71B1F60D127B;phase=ready;selected="
+      }
+    },
+    {
+      "name": "reject closed raw authority metadata pending-back",
+      "case": "pending-back",
+      "accepted": false,
+      "passed": true,
+      "trace": {
+        "schema": "Lumen-retained-review-owner-v1",
+        "events": [
+          {
+            "event": "opened",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-held",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "closed",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "capture-hold-cancelled",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "capture-cancelled",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "opened",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": true,
+            "metadata": true
+          }
+        ]
+      },
+      "readback": {
+        "old": "session=B9619068-E75C-48B2-94DF-E407579EBCE2;capture=5D1DB254-F8BA-47AF-8269-B3E7228F8765;phase=pending;selected=",
+        "fresh": "session=51DA36EF-6E83-4D7C-A090-B7C052B5E35D;capture=FFA18661-9FE8-4DB6-99D6-71B1F60D127B;phase=ready;selected="
+      }
+    },
+    {
+      "name": "reject Boolean-as-integer state pending-back",
+      "case": "pending-back",
+      "accepted": false,
+      "passed": true,
+      "trace": {
+        "schema": "Lumen-retained-review-owner-v1",
+        "events": [
+          {
+            "event": "opened",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": 0,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-held",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "closed",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "capture-hold-cancelled",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "capture-cancelled",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "opened",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          }
+        ]
+      },
+      "readback": {
+        "old": "session=B9619068-E75C-48B2-94DF-E407579EBCE2;capture=5D1DB254-F8BA-47AF-8269-B3E7228F8765;phase=pending;selected=",
+        "fresh": "session=51DA36EF-6E83-4D7C-A090-B7C052B5E35D;capture=FFA18661-9FE8-4DB6-99D6-71B1F60D127B;phase=ready;selected="
+      }
+    },
+    {
+      "name": "reject reused capture operation pending-back",
+      "case": "pending-back",
+      "accepted": false,
+      "passed": true,
+      "trace": {
+        "schema": "Lumen-retained-review-owner-v1",
+        "events": [
+          {
+            "event": "opened",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-held",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "closed",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "capture-hold-cancelled",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "capture-cancelled",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "opened",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          }
+        ]
+      },
+      "readback": {
+        "old": "session=B9619068-E75C-48B2-94DF-E407579EBCE2;capture=5D1DB254-F8BA-47AF-8269-B3E7228F8765;phase=pending;selected=",
+        "fresh": "session=51DA36EF-6E83-4D7C-A090-B7C052B5E35D;capture=FFA18661-9FE8-4DB6-99D6-71B1F60D127B;phase=ready;selected="
+      }
+    },
+    {
+      "name": "reject unknown schema pending-back",
+      "case": "pending-back",
+      "accepted": false,
+      "passed": true,
+      "trace": {
+        "schema": "old",
+        "events": [
+          {
+            "event": "opened",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-held",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "closed",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "capture-hold-cancelled",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "capture-cancelled",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "opened",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          }
+        ]
+      },
+      "readback": {
+        "old": "session=B9619068-E75C-48B2-94DF-E407579EBCE2;capture=5D1DB254-F8BA-47AF-8269-B3E7228F8765;phase=pending;selected=",
+        "fresh": "session=51DA36EF-6E83-4D7C-A090-B7C052B5E35D;capture=FFA18661-9FE8-4DB6-99D6-71B1F60D127B;phase=ready;selected="
+      }
+    },
+    {
+      "name": "reject missing first capture pending-back",
+      "case": "pending-back",
+      "accepted": false,
+      "passed": true,
+      "trace": {
+        "schema": "Lumen-retained-review-owner-v1",
+        "events": [
+          {
+            "event": "opened",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-held",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "closed",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "capture-hold-cancelled",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "capture-cancelled",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "opened",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          }
+        ]
+      },
+      "readback": {
+        "old": "session=B9619068-E75C-48B2-94DF-E407579EBCE2;capture=5D1DB254-F8BA-47AF-8269-B3E7228F8765;phase=pending;selected=",
+        "fresh": "session=51DA36EF-6E83-4D7C-A090-B7C052B5E35D;capture=FFA18661-9FE8-4DB6-99D6-71B1F60D127B;phase=ready;selected="
+      }
+    },
+    {
+      "name": "valid isolated sheet-dismiss",
+      "case": "sheet-dismiss",
+      "accepted": true,
+      "passed": true,
+      "trace": {
+        "schema": "Lumen-retained-review-owner-v1",
+        "events": [
+          {
+            "event": "opened",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "records-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "photo-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "opened",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          }
+        ]
+      },
+      "readback": {
+        "old": "session=B9619068-E75C-48B2-94DF-E407579EBCE2;capture=5D1DB254-F8BA-47AF-8269-B3E7228F8765;phase=ready;selected=",
+        "fresh": "session=51DA36EF-6E83-4D7C-A090-B7C052B5E35D;capture=FFA18661-9FE8-4DB6-99D6-71B1F60D127B;phase=ready;selected="
+      }
+    },
+    {
+      "name": "reject duplicate owner sheet-dismiss",
+      "case": "sheet-dismiss",
+      "accepted": false,
+      "passed": true,
+      "trace": {
+        "schema": "Lumen-retained-review-owner-v1",
+        "events": [
+          {
+            "event": "opened",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "records-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "photo-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "opened",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "opened",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          }
+        ]
+      },
+      "readback": {
+        "old": "session=B9619068-E75C-48B2-94DF-E407579EBCE2;capture=5D1DB254-F8BA-47AF-8269-B3E7228F8765;phase=ready;selected=",
+        "fresh": "session=51DA36EF-6E83-4D7C-A090-B7C052B5E35D;capture=FFA18661-9FE8-4DB6-99D6-71B1F60D127B;phase=ready;selected="
+      }
+    },
+    {
+      "name": "reject missing close sheet-dismiss",
+      "case": "sheet-dismiss",
+      "accepted": false,
+      "passed": true,
+      "trace": {
+        "schema": "Lumen-retained-review-owner-v1",
+        "events": [
+          {
+            "event": "opened",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "records-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "photo-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "opened",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": true
+          }
+        ]
+      },
+      "readback": {
+        "old": "session=B9619068-E75C-48B2-94DF-E407579EBCE2;capture=5D1DB254-F8BA-47AF-8269-B3E7228F8765;phase=ready;selected=",
+        "fresh": "session=51DA36EF-6E83-4D7C-A090-B7C052B5E35D;capture=FFA18661-9FE8-4DB6-99D6-71B1F60D127B;phase=ready;selected="
+      }
+    },
+    {
+      "name": "reject closed raw authority metadata sheet-dismiss",
+      "case": "sheet-dismiss",
+      "accepted": false,
+      "passed": true,
+      "trace": {
+        "schema": "Lumen-retained-review-owner-v1",
+        "events": [
+          {
+            "event": "opened",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "records-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "photo-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "opened",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": true,
+            "metadata": true
+          }
+        ]
+      },
+      "readback": {
+        "old": "session=B9619068-E75C-48B2-94DF-E407579EBCE2;capture=5D1DB254-F8BA-47AF-8269-B3E7228F8765;phase=ready;selected=",
+        "fresh": "session=51DA36EF-6E83-4D7C-A090-B7C052B5E35D;capture=FFA18661-9FE8-4DB6-99D6-71B1F60D127B;phase=ready;selected="
+      }
+    },
+    {
+      "name": "reject Boolean-as-integer state sheet-dismiss",
+      "case": "sheet-dismiss",
+      "accepted": false,
+      "passed": true,
+      "trace": {
+        "schema": "Lumen-retained-review-owner-v1",
+        "events": [
+          {
+            "event": "opened",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": 0,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "records-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "photo-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "opened",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          }
+        ]
+      },
+      "readback": {
+        "old": "session=B9619068-E75C-48B2-94DF-E407579EBCE2;capture=5D1DB254-F8BA-47AF-8269-B3E7228F8765;phase=ready;selected=",
+        "fresh": "session=51DA36EF-6E83-4D7C-A090-B7C052B5E35D;capture=FFA18661-9FE8-4DB6-99D6-71B1F60D127B;phase=ready;selected="
+      }
+    },
+    {
+      "name": "reject reused capture operation sheet-dismiss",
+      "case": "sheet-dismiss",
+      "accepted": false,
+      "passed": true,
+      "trace": {
+        "schema": "Lumen-retained-review-owner-v1",
+        "events": [
+          {
+            "event": "opened",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "records-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "photo-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "opened",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          }
+        ]
+      },
+      "readback": {
+        "old": "session=B9619068-E75C-48B2-94DF-E407579EBCE2;capture=5D1DB254-F8BA-47AF-8269-B3E7228F8765;phase=ready;selected=",
+        "fresh": "session=51DA36EF-6E83-4D7C-A090-B7C052B5E35D;capture=FFA18661-9FE8-4DB6-99D6-71B1F60D127B;phase=ready;selected="
+      }
+    },
+    {
+      "name": "reject unknown schema sheet-dismiss",
+      "case": "sheet-dismiss",
+      "accepted": false,
+      "passed": true,
+      "trace": {
+        "schema": "old",
+        "events": [
+          {
+            "event": "opened",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "records-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "photo-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "opened",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          }
+        ]
+      },
+      "readback": {
+        "old": "session=B9619068-E75C-48B2-94DF-E407579EBCE2;capture=5D1DB254-F8BA-47AF-8269-B3E7228F8765;phase=ready;selected=",
+        "fresh": "session=51DA36EF-6E83-4D7C-A090-B7C052B5E35D;capture=FFA18661-9FE8-4DB6-99D6-71B1F60D127B;phase=ready;selected="
+      }
+    },
+    {
+      "name": "reject missing first capture sheet-dismiss",
+      "case": "sheet-dismiss",
+      "accepted": false,
+      "passed": true,
+      "trace": {
+        "schema": "Lumen-retained-review-owner-v1",
+        "events": [
+          {
+            "event": "opened",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "records-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "photo-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "opened",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          }
+        ]
+      },
+      "readback": {
+        "old": "session=B9619068-E75C-48B2-94DF-E407579EBCE2;capture=5D1DB254-F8BA-47AF-8269-B3E7228F8765;phase=ready;selected=",
+        "fresh": "session=51DA36EF-6E83-4D7C-A090-B7C052B5E35D;capture=FFA18661-9FE8-4DB6-99D6-71B1F60D127B;phase=ready;selected="
+      }
+    },
+    {
+      "name": "reject child loses selected choices",
+      "case": "children",
+      "accepted": false,
+      "passed": true,
+      "trace": {
+        "schema": "Lumen-retained-review-owner-v1",
+        "events": [
+          {
+            "event": "opened",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "records-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "photo-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "opened",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          }
+        ]
+      },
+      "readback": {
+        "first": {
+          "session": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": ""
+        },
+        "selected": {
+          "session": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": "meals"
+        },
+        "returned": {
+          "session": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": ""
+        },
+        "fresh": {
+          "session": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+          "capture": "FFA18661-9FE8-4DB6-99D6-71B1F60D127B",
+          "phase": "ready",
+          "selected": ""
+        }
+      }
+    },
+    {
+      "name": "reject child switches owner",
+      "case": "children",
+      "accepted": false,
+      "passed": true,
+      "trace": {
+        "schema": "Lumen-retained-review-owner-v1",
+        "events": [
+          {
+            "event": "opened",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "records-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "photo-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "opened",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          }
+        ]
+      },
+      "readback": {
+        "first": {
+          "session": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": ""
+        },
+        "selected": {
+          "session": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": "meals"
+        },
+        "returned": {
+          "session": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": "meals"
+        },
+        "fresh": {
+          "session": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+          "capture": "FFA18661-9FE8-4DB6-99D6-71B1F60D127B",
+          "phase": "ready",
+          "selected": ""
+        }
+      }
+    },
+    {
+      "name": "reject reused UI capture",
+      "case": "children",
+      "accepted": false,
+      "passed": true,
+      "trace": {
+        "schema": "Lumen-retained-review-owner-v1",
+        "events": [
+          {
+            "event": "opened",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "records-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "photo-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "opened",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          }
+        ]
+      },
+      "readback": {
+        "first": {
+          "session": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": ""
+        },
+        "selected": {
+          "session": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": "meals"
+        },
+        "returned": {
+          "session": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": "meals"
+        },
+        "fresh": {
+          "session": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": ""
+        }
+      }
+    },
+    {
+      "name": "reject missing actual photo read",
+      "case": "children",
+      "accepted": false,
+      "passed": true,
+      "trace": {
+        "schema": "Lumen-retained-review-owner-v1",
+        "events": [
+          {
+            "event": "opened",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "records-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "opened",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          }
+        ]
+      },
+      "readback": {
+        "first": {
+          "session": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": ""
+        },
+        "selected": {
+          "session": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": "meals"
+        },
+        "returned": {
+          "session": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": "meals"
+        },
+        "fresh": {
+          "session": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+          "capture": "FFA18661-9FE8-4DB6-99D6-71B1F60D127B",
+          "phase": "ready",
+          "selected": ""
+        }
+      }
+    },
+    {
+      "name": "reject pending late ready resurrection",
+      "case": "pending-back",
+      "accepted": false,
+      "passed": true,
+      "trace": {
+        "schema": "Lumen-retained-review-owner-v1",
+        "events": [
+          {
+            "event": "opened",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-held",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "closed",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "capture-hold-cancelled",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "capture-cancelled",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "opened",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          }
+        ]
+      },
+      "readback": {
+        "old": "session=B9619068-E75C-48B2-94DF-E407579EBCE2;capture=5D1DB254-F8BA-47AF-8269-B3E7228F8765;phase=pending;selected=",
+        "fresh": "session=51DA36EF-6E83-4D7C-A090-B7C052B5E35D;capture=FFA18661-9FE8-4DB6-99D6-71B1F60D127B;phase=ready;selected="
+      }
+    },
+    {
+      "name": "reject missing cancelled worker terminal",
+      "case": "pending-back",
+      "accepted": false,
+      "passed": true,
+      "trace": {
+        "schema": "Lumen-retained-review-owner-v1",
+        "events": [
+          {
+            "event": "opened",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-held",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "closed",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "capture-hold-cancelled",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "opened",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          }
+        ]
+      },
+      "readback": {
+        "old": "session=B9619068-E75C-48B2-94DF-E407579EBCE2;capture=5D1DB254-F8BA-47AF-8269-B3E7228F8765;phase=pending;selected=",
+        "fresh": "session=51DA36EF-6E83-4D7C-A090-B7C052B5E35D;capture=FFA18661-9FE8-4DB6-99D6-71B1F60D127B;phase=ready;selected="
+      }
+    },
+    {
+      "name": "reject unlisted third-owner event",
+      "case": "children",
+      "accepted": false,
+      "passed": true,
+      "trace": {
+        "schema": "Lumen-retained-review-owner-v1",
+        "events": [
+          {
+            "event": "opened",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "F0766462-D0A0-4716-B5D9-B25C63CD485A",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "records-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "photo-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "opened",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          }
+        ]
+      },
+      "readback": {
+        "first": {
+          "session": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": ""
+        },
+        "selected": {
+          "session": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": "meals"
+        },
+        "returned": {
+          "session": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": "meals"
+        },
+        "fresh": {
+          "session": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+          "capture": "FFA18661-9FE8-4DB6-99D6-71B1F60D127B",
+          "phase": "ready",
+          "selected": ""
+        }
+      }
+    },
+    {
+      "name": "reject selection before prior owner closes",
+      "case": "children",
+      "accepted": false,
+      "passed": true,
+      "trace": {
+        "schema": "Lumen-retained-review-owner-v1",
+        "events": [
+          {
+            "event": "opened",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "records-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "photo-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "opened",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "closed",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          }
+        ]
+      },
+      "readback": {
+        "first": {
+          "session": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": ""
+        },
+        "selected": {
+          "session": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": "meals"
+        },
+        "returned": {
+          "session": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": "meals"
+        },
+        "fresh": {
+          "session": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+          "capture": "FFA18661-9FE8-4DB6-99D6-71B1F60D127B",
+          "phase": "ready",
+          "selected": ""
+        }
+      }
+    },
+    {
+      "name": "reject opened owner metadata",
+      "case": "children",
+      "accepted": false,
+      "passed": true,
+      "trace": {
+        "schema": "Lumen-retained-review-owner-v1",
+        "events": [
+          {
+            "event": "opened",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "records-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "photo-read",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "opened",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          }
+        ]
+      },
+      "readback": {
+        "first": {
+          "session": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": ""
+        },
+        "selected": {
+          "session": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": "meals"
+        },
+        "returned": {
+          "session": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+          "capture": "5D1DB254-F8BA-47AF-8269-B3E7228F8765",
+          "phase": "ready",
+          "selected": "meals"
+        },
+        "fresh": {
+          "session": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+          "capture": "FFA18661-9FE8-4DB6-99D6-71B1F60D127B",
+          "phase": "ready",
+          "selected": ""
+        }
+      }
+    },
+    {
+      "name": "reject capture starts closed",
+      "case": "pending-back",
+      "accepted": false,
+      "passed": true,
+      "trace": {
+        "schema": "Lumen-retained-review-owner-v1",
+        "events": [
+          {
+            "event": "opened",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "capture-held",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "closed",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "capture-hold-cancelled",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "capture-cancelled",
+            "sessionID": "B9619068-E75C-48B2-94DF-E407579EBCE2",
+            "operationID": "F82F0C30-DD27-42B7-87D1-0A130FFBBDC9",
+            "closed": true,
+            "metadata": false
+          },
+          {
+            "event": "opened",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-started",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": false
+          },
+          {
+            "event": "capture-ready",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": "8E2954DF-A884-46C7-B82C-6F154C180E7B",
+            "closed": false,
+            "metadata": true
+          },
+          {
+            "event": "closed",
+            "sessionID": "51DA36EF-6E83-4D7C-A090-B7C052B5E35D",
+            "operationID": null,
+            "closed": true,
+            "metadata": false
+          }
+        ]
+      },
+      "readback": {
+        "old": "session=B9619068-E75C-48B2-94DF-E407579EBCE2;capture=5D1DB254-F8BA-47AF-8269-B3E7228F8765;phase=pending;selected=",
+        "fresh": "session=51DA36EF-6E83-4D7C-A090-B7C052B5E35D;capture=FFA18661-9FE8-4DB6-99D6-71B1F60D127B;phase=ready;selected="
+      }
+    }
+  ],
+  "scope": "Synthetic adversarial inputs to the actual pure checker. No native/container/clock/UI acceptance."
+}

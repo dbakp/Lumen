@@ -1,0 +1,48 @@
+{
+  "status": "PASS frozen current/archive and scoped controls; independent source review pending",
+  "source": "durable-source-r258.json",
+  "bindings": 1101,
+  "priorModified": [
+    "Lumen/LumenApp.swift",
+    "Lumen/Views/HealthRecoveryView.swift",
+    "Lumen/Views/SettingsView.swift",
+    "LumenUITests/LumenSmokeTests.swift",
+    "Package.swift",
+    "Tests/ImportTests.swift"
+  ],
+  "controls": {
+    "source258-retained-owner-core-r5.json": 35,
+    "source258-retained-guard-controls-r2.json": 10,
+    "source258-retained-protocol-controls-r2.json": 34,
+    "source258-runner-argument-controls-r2.json": 13
+  },
+  "fullCorePassLines": 2212,
+  "sdk": {
+    "whole-app": {
+      "sourceCount": 196,
+      "generated": [
+        {
+          "file": "/tmp/LumenBatch37Simulator/Build/Intermediates.noindex/Lumen.build/Debug-iphonesimulator/Lumen.build/DerivedSources/GeneratedAssetSymbols.swift",
+          "bytes": 2278,
+          "sha256": "4ade8d1b8298c7335cc53e0e9ef1d592cd540a51e05dd27bd60abe29b4916469"
+        }
+      ],
+      "diagnosticBytes": 1089
+    },
+    "uitest": {
+      "sourceCount": 1,
+      "generated": [],
+      "diagnosticBytes": 0
+    }
+  },
+  "taskOwnedCoreFixtureRootsAtCheck": [],
+  "qualifications": [
+    "Production retained owner, origin binding and Settings lifetime intentionally change; no unchanged-shipping projection claimed.",
+    "Core35 and full2212 are pure logic, without LocalStore locking or SwiftUI/native runtime. Native cases, full current build/test pair/current markers/Release remain required.",
+    "Guard10 extracts actual context property only; protocol34 uses synthetic traces; runner13 covers actual help/rejection/pure command builder only, not actual main failure retention.",
+    "SDK R4 whole196 includes195 current frozen app files plus one actual generated asset-symbol source; no stubs. Existing concurrency warnings retained, not resolved.",
+    "Earlier core/SDK/protocol reports remain historical preparation. R1/R2 compiler/fixture failures and SDK pre-fence qualification retained. R5 fixtureRootRemovedOnReturn expresses scheduled defer; independent current task-prefix absence check is the actual cleanup observation.",
+    "Original native acquisitions and visual review have not occurred. No sourceReady/runtime/full-goal acceptance until same critic reviews this checkpoint."
+  ],
+  "checkedAt": 1794191507.783867
+}

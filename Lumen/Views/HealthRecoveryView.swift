@@ -6,11 +6,15 @@ import HealthKit
 
 @MainActor
 struct HealthRecoveryView: View {
+    let scope: HealthRetainedRecoveryReviewScope
     @EnvironmentObject private var health: HealthStore
     @State private var copies: [HealthRecoveryCopies.Preview] = []
     @State private var loading = false
     @State private var issue: String?
     @State private var control: BackupOperationControl?
+    @State private var copiesRoot: URL?
+    @State private var reviewSession: HealthRetainedRecoveryReviewSession?
+    @State private var reviewingCopy = false
     #if DEBUG && targetEnvironment(simulator)
     @ObservedObject private var cancelVerification = HealthRecoveryCancelUIState.shared
     #endif
@@ -35,9 +39,14 @@ struct HealthRecoveryView: View {
             Section {
                 if copies.isEmpty && !loading && issue == nil { Text("No retained copies on this iPhone.").foregroundStyle(.secondary) }
                 ForEach(copies, id: \.id) { copy in
-                    NavigationLink {
-                        HealthRecoveryReviewView(copy: copy)
+                    Button {
+                        guard let copiesRoot else { return }
+                        reviewSession?.close()
+                        do { reviewSession = try scope.review(copy, in: copiesRoot) }
+                        catch { issue = "This review ended. Open recovery again."; return }
+                        reviewingCopy = true
                     } label: {
+                        HStack {
                         VStack(alignment: .leading, spacing: 4) {
                             Text(copy.complete ? "Retained copy" : "Incomplete copy")
                             if let date = copy.createdAt { Text(date.formatted(date: .abbreviated, time: .standard)).font(.footnote).foregroundStyle(.secondary) }
@@ -49,6 +58,10 @@ struct HealthRecoveryView: View {
                                 Text("Contents couldn't be opened").font(.footnote).foregroundStyle(.secondary)
                             }
                         }
+                        Spacer()
+                        Image(systemName: "chevron.right").foregroundStyle(.secondary)
+                        }
+                        .foregroundStyle(.primary).contentShape(Rectangle())
                     }.disabled(!copy.complete || loading).accessibilityIdentifier("healthRecoveryCopy-" + copy.id)
                 }
                 #if DEBUG && targetEnvironment(simulator)
@@ -63,8 +76,17 @@ struct HealthRecoveryView: View {
             }
         }
         .navigationTitle("Recover health data").navigationBarTitleDisplayMode(.inline)
+        .navigationDestination(isPresented: $reviewingCopy) {
+            if let reviewSession { HealthRecoveryReviewView(session: reviewSession).id(reviewSession.id) }
+        }
         .task { await load() }
-        .onDisappear { control?.cancel() }
+        .onChange(of: reviewingCopy) { _, active in
+            if !active { reviewSession?.close(); reviewSession = nil }
+        }
+        .onDisappear {
+            control?.cancel()
+            if !reviewingCopy { reviewSession?.close(); reviewSession = nil }
+        }
     }
 
     private var checkCopiesButton: some View {
@@ -81,7 +103,7 @@ struct HealthRecoveryView: View {
             let root = try LocalStore.checkedDirectory()
             let observed = try await Task.detached { try HealthRecoveryCopies.discover(in: root, control: operation) }.value
             try Task.checkCancellation(); try operation.checkCancellation()
-            copies = observed
+            copies = observed; copiesRoot = root
         } catch is CancellationError { }
         catch { issue = "Recovery copies couldn't be opened. Check again to retry. Your saved files haven't been replaced." }
     }
@@ -89,7 +111,7 @@ struct HealthRecoveryView: View {
 
 @MainActor
 private struct HealthRecoveryReviewView: View {
-    let copy: HealthRecoveryCopies.Preview
+    let session: HealthRetainedRecoveryReviewSession
     @EnvironmentObject private var health: HealthStore
     @Environment(\.dismiss) private var dismiss
     @State private var selected: Set<HealthLocalFiles.Domain> = []
@@ -98,6 +120,23 @@ private struct HealthRecoveryReviewView: View {
     @State private var busy = false
     @State private var recovered = false
     @State private var issue: String?
+    @State private var originMetadata: HealthLegacyRecoveryOrigin.ReviewMetadata?
+    @State private var captureControl: BackupOperationControl?
+    @State private var captureWork: Task<Void, Never>?
+    @State private var captureIssue = false
+    @State private var captureID = UUID()
+    @State private var reviewActive = false
+    @State private var appearanceID = UUID()
+    @State private var recordsDomain: HealthLocalFiles.Domain?
+    @State private var reviewingRecords = false
+    private struct ConfirmationSelection: Sendable {
+        let sessionID: UUID
+        let appearanceID: UUID
+        let domains: Set<HealthLocalFiles.Domain>
+        let legacyDomains: Set<HealthLocalFiles.Domain>
+        let omitPhotos: Bool
+    }
+    @State private var confirmationSelection: ConfirmationSelection?
     #if DEBUG && targetEnvironment(simulator)
     @ObservedObject private var readVerification = HealthReadUIState.shared
     #endif
@@ -106,36 +145,56 @@ private struct HealthRecoveryReviewView: View {
     #if DEBUG && targetEnvironment(simulator)
     @ObservedObject private var cancelVerification = HealthRecoveryCancelUIState.shared
     #endif
-    private var photoIDs: Set<String> { Set(copy.domains.first { $0.domain == .meals }?.photos.map(\.id) ?? []) }
-    private var missingPhotos: Int { copy.domains.first { $0.domain == .meals }?.photos.filter { $0.state != .readable }.count ?? 0 }
+    private var photoIDs: Set<String> { Set(session.summary.domains.first { $0.domain == .meals }?.photos.map(\.id) ?? []) }
+    private var missingPhotos: Int { session.summary.domains.first { $0.domain == .meals }?.photos.filter { $0.state != .readable }.count ?? 0 }
+    private var eligibleDomains: Set<HealthLocalFiles.Domain> {
+        Set((originMetadata?.recoverableDomains ?? []).filter {
+            session.summary.readableDomains.contains($0) && !health.localHealthAvailable($0)
+        })
+    }
+    private var selectedLegacyDomains: Set<HealthLocalFiles.Domain> {
+        selected.intersection(originMetadata?.legacyDomains ?? [])
+    }
     private var canRecover: Bool {
-        !busy && !recovered && !health.isSyncing && !selected.isEmpty
-        && selected.allSatisfy { !health.localHealthAvailable($0) }
+        reviewActive && !session.isClosed && session.originState == .ready && originMetadata != nil
+        && !busy && !recovered && !health.isSyncing && !selected.isEmpty
+        && selected.isSubset(of: eligibleDomains)
         && (!selected.contains(.meals) || missingPhotos == 0 || omitPhotos)
     }
 
     var body: some View {
         Form {
-            if let date = copy.createdAt { Section { LabeledContent("Copy saved", value: date.formatted(date: .abbreviated, time: .standard)) } }
+            if let date = session.summary.createdAt { Section { LabeledContent("Copy saved", value: date.formatted(date: .abbreviated, time: .standard)) } }
             if recovered { Section { Label("Selected data recovered", systemImage: "checkmark.circle").accessibilityIdentifier("healthDataRecovered") } }
             if let issue { Section { Text(issue).foregroundStyle(.secondary) } }
-            ForEach(copy.domains, id: \.domain) { item in
+            if originMetadata == nil && !captureIssue { Section { ProgressView("Checking current data…") } }
+            if captureIssue {
+                Section { Text("Current data couldn't be checked. Go back and review this copy again.").foregroundStyle(.secondary) }
+            }
+            ForEach(session.summary.domains, id: \.domain) { item in
                 Section {
                     if item.state == .readable {
                         Text(item.domain == .goals || item.domain == .today ? "Saved snapshot" : item.recordCount == 1 ? "1 record" : "\(item.recordCount ?? 0) records")
-                        NavigationLink("Review records") { HealthRecoveryRecordsView(copy: copy, domain: item.domain) }
+                        Button("Review records") { recordsDomain = item.domain; reviewingRecords = true }
                             .accessibilityIdentifier("reviewHealth-" + item.domain.rawValue)
-                        if health.localHealthAvailable(item.domain) { Text("Current data opens").foregroundStyle(.secondary) }
+                        if health.localHealthAvailable(item.domain) {
+                            Text("Current data opens").foregroundStyle(.secondary)
+                        }
+                        else if originMetadata?.ineligibleDomains.contains(item.domain) == true {
+                            Text("Current data can't be replaced here.").foregroundStyle(.secondary)
+                        }
                         else {
                             Toggle("Recover \(recoveryLabel(item.domain).lowercased())", isOn: Binding(
                                 get: { selected.contains(item.domain) },
                                 set: { if $0 { selected.insert(item.domain) } else { selected.remove(item.domain) } }
-                            )).accessibilityIdentifier("recoverHealth-" + item.domain.rawValue)
+                            )).disabled(!eligibleDomains.contains(item.domain))
+                                .accessibilityIdentifier("recoverHealth-" + item.domain.rawValue)
                         }
                     } else { Text(item.state == .notIncluded ? "Not included" : "Couldn't open this copy").foregroundStyle(.secondary) }
                     if item.domain == .meals && !photoIDs.isEmpty {
                         if missingPhotos > 0 { Text("\(missingPhotos) photo files unavailable").foregroundStyle(.secondary) }
                         Toggle("Recover without meal photos", isOn: $omitPhotos)
+                            .disabled(!eligibleDomains.contains(.meals))
                         Text("Photo files stay in this copy. Photos kept for recovery receive a final image check.").font(.footnote).foregroundStyle(.secondary)
                     }
                 } header: { Text(recoveryLabel(item.domain)) }.disabled(busy || recovered)
@@ -147,12 +206,28 @@ private struct HealthRecoveryReviewView: View {
                     recoveryProgress
                     Button("Cancel") { operation?.cancel(); work?.cancel() }
                 } else if recovered { Button("Done") { dismiss() } }
-                else { Button("Recover selected data") { confirmation = true }.disabled(!canRecover).accessibilityIdentifier("confirmHealthRecovery") }
+                else {
+                    Button("Recover selected data") {
+                        guard canRecover else { return }
+                        confirmationSelection = ConfirmationSelection(sessionID: session.id, appearanceID: appearanceID,
+                            domains: selected, legacyDomains: selectedLegacyDomains, omitPhotos: omitPhotos)
+                        confirmation = true
+                    }.disabled(!canRecover).accessibilityIdentifier("confirmHealthRecovery")
+                }
             }
         }
         .navigationTitle("Review recovery").navigationBarTitleDisplayMode(.inline)
+        .navigationDestination(isPresented: $reviewingRecords) {
+            if let recordsDomain { HealthRecoveryRecordsView(session: session, domain: recordsDomain) }
+        }
         #if DEBUG && targetEnvironment(simulator)
         .toolbar {
+            if HealthRetainedReviewUIFixture.mode != nil {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Text("Review check").accessibilityIdentifier("retainedReviewOwnerState")
+                        .accessibilityValue("session=\(session.id.uuidString);capture=\(captureID.uuidString);phase=\(originMetadata == nil ? "pending" : "ready");selected=\(selected.map(\.rawValue).sorted().joined(separator: ","))")
+                }
+            }
             if HealthReadUIFixture.requested {
                 ToolbarItem(placement: .topBarTrailing) {
                     Text("Read check").accessibilityIdentifier("healthReadControlState").accessibilityValue(readVerification.phase)
@@ -161,36 +236,81 @@ private struct HealthRecoveryReviewView: View {
         }
         #endif
         .alert("Replace selected data?", isPresented: $confirmation) {
-            Button("Recover") { recover() }
-            Button("Not now", role: .cancel) { }
+            Button("Recover") { if let confirmationSelection { recover(confirmationSelection) } }
+            Button("Not now", role: .cancel) { confirmationSelection = nil }
         } message: { Text("Selected data will be replaced by records from this copy. Damaged originals will stay on this iPhone.") }
-        .onDisappear { operation?.cancel(); work?.cancel() }
+        .onAppear { reviewActive = true; appearanceID = UUID(); startOriginCapture() }
+        .onChange(of: eligibleDomains) { _, eligible in
+            selected.formIntersection(eligible)
+            if !eligible.contains(.meals) { omitPhotos = false }
+        }
+        .onDisappear {
+            reviewActive = false; confirmation = false; confirmationSelection = nil
+            if let captureControl { session.suspendOriginCapture(control: captureControl) }
+            captureControl?.cancel(); captureWork?.cancel(); captureControl = nil; captureWork = nil
+            operation?.cancel(); work?.cancel()
+            if !reviewingRecords { session.close() }
+        }
     }
 
-    private func recover() {
-        guard canRecover else { return }
+    private func startOriginCapture() {
+        guard !session.isClosed else { captureIssue = true; return }
+        if let ready = session.originMetadata { originMetadata = ready; return }
+        guard captureControl == nil else { return }
+        captureIssue = false; captureID = UUID()
+        let control = BackupOperationControl(); captureControl = control
+        captureWork = Task { @MainActor in
+            defer { if captureControl === control { captureControl = nil; captureWork = nil } }
+            do {
+                try await withTaskCancellationHandler {
+                    try await Task.detached { [session] in
+                        try session.captureOrigins(control: control) { domains, control in
+                            try LocalStore.captureLegacyRecoveryReview(domains, control: control)
+                        }
+                    }.value
+                } onCancel: { control.cancel() }
+                try Task.checkCancellation(); try session.checkOpen(control: control)
+                guard reviewActive, captureControl === control, let ready = session.originMetadata else { return }
+                originMetadata = ready
+            } catch is CancellationError { }
+            catch {
+                guard reviewActive, captureControl === control, !Task.isCancelled else { return }
+                captureIssue = true
+            }
+        }
+    }
+
+    private func recover(_ selection: ConfirmationSelection) {
+        guard canRecover, selection.sessionID == session.id, selection.appearanceID == appearanceID,
+              selection.domains == selected, selection.legacyDomains == selectedLegacyDomains,
+              selection.omitPhotos == omitPhotos else { return }
         busy = true; issue = nil
         #if DEBUG && targetEnvironment(simulator)
         let control = HealthRecoveryCancelUIFixture.makeControl()
         #else
         let control = BackupOperationControl()
         #endif
+        let registration: UUID
+        do { registration = try session.beginOperation(control: control) }
+        catch { busy = false; return }
         operation = control
         let domains = selected, omissions = omitPhotos && selected.contains(.meals) ? photoIDs : []
-        work = Task {
-            defer { busy = false; operation = nil; work = nil }
+        work = Task { @MainActor in
+            defer { session.endOperation(registration); busy = false; operation = nil; work = nil }
             do {
-                let root = try LocalStore.checkedDirectory(), reviewed = copy
-                let payload = try await Task.detached {
-                    try HealthRecoverySelection.retained(reviewed, in: root, domains: domains,
-                                                        omittingPhotos: omissions, control: control,
-                                                        validPhoto: BackupService.validPhoto)
+                let payload = try await Task.detached { [session] in
+                    try session.payload(domains: domains, legacyDomains: selection.legacyDomains,
+                        omittingPhotos: omissions, control: control, validPhoto: BackupService.validPhoto)
                 }.value
-                try control.checkCancellation(); try Task.checkCancellation()
+                try session.checkOpen(control: control); try Task.checkCancellation()
                 try await health.recoverUnavailableHealth(payload, control: control)
                 recovered = true; selected = []
             } catch is CancellationError { }
-            catch { issue = "Recovery couldn't finish. Your current files haven't been replaced. Check the copy and try again." }
+            catch {
+                guard !Task.isCancelled, operation === control, !session.isClosed else { return }
+                do { try control.checkCancellation() } catch { return }
+                issue = "Recovery couldn't finish. Your current files haven't been replaced. Check the copy and try again."
+            }
         }
     }
 
@@ -356,6 +476,7 @@ enum HealthRecoveryUIFixture {
         }
         try HealthLegacyResetUIFixture.prepare(in: root)
         try HealthLegacyOriginUIFixture.prepare(in: root)
+        try HealthRetainedReviewUIFixture.prepare(in: root)
         // Leave .previous unarchived: the real product discovery path must
         // expose it without an unrelated write or fixture-only retirement.
         try HealthRecoveryCancelUIFixture.reset(in: root)
@@ -398,7 +519,7 @@ func recoveryLabel(_ domain: HealthLocalFiles.Domain) -> String {
 
 @MainActor
 private struct HealthRecoveryRecordsView: View {
-    let copy: HealthRecoveryCopies.Preview
+    let session: HealthRetainedRecoveryReviewSession
     let domain: HealthLocalFiles.Domain
     @State private var document: HealthRecoveryRecordReview.Document?
     @State private var issue: String?
@@ -413,7 +534,7 @@ private struct HealthRecoveryRecordsView: View {
                 if document.count == 0 { Text("No records in this copy.").foregroundStyle(.secondary) }
                 ForEach(0..<document.count, id: \.self) { index in
                     if let page = document.page(at: index) {
-                        NavigationLink { HealthRecoveryRecordPageView(copy: copy, page: page) } label: {
+                        NavigationLink { HealthRecoveryRecordPageView(session: session, page: page) } label: {
                             VStack(alignment: .leading, spacing: 4) {
                                 Text(page.title).lineLimit(2)
                                 if !page.subtitle.isEmpty { Text(page.subtitle).font(.footnote).foregroundStyle(.secondary) }
@@ -430,14 +551,14 @@ private struct HealthRecoveryRecordsView: View {
             #endif
             defer { if operation === control { operation = nil } }
             do {
-                let root = try LocalStore.checkedDirectory(), copy = copy, domain = domain
+                let session = session, domain = domain
                 let result = try await withTaskCancellationHandler {
                     try await Task.detached {
-                        let data = try HealthRecoverySelection.records(copy, domain: domain, in: root, control: control)
+                        let data = try session.records(domain: domain, control: control)
                         return try HealthRecoveryRecordReview.Document.decode(data, domain: domain, control: control)
                     }.value
                 } onCancel: { control.cancel() }
-                try Task.checkCancellation(); try control.checkCancellation()
+                try Task.checkCancellation(); try session.checkOpen(control: control)
                 guard operation === control else { return }
                 document = result
             } catch is CancellationError { }
@@ -472,16 +593,11 @@ struct HealthRecoveryRecordPageView: View {
     #if DEBUG && targetEnvironment(simulator)
     @ObservedObject private var readVerification = HealthReadUIState.shared
     #endif
-    init(copy: HealthRecoveryCopies.Preview, page: HealthRecoveryRecordReview.Page) {
+    init(session: HealthRetainedRecoveryReviewSession, page: HealthRecoveryRecordReview.Page) {
         self.page = page; photoLabel = "Meal photo from this copy"
         photoFailure = "This photo changed or couldn't be opened. Return to check copies again."
-        let root = try? LocalStore.checkedDirectory()
         loadPhoto = { id, control in
-            try control.checkCancellation()
-            guard let root else { throw BackupError.currentDataInvalid }
-            let data = try HealthRecoverySelection.photoData(copy, id: id, in: root, control: control)
-            try control.checkCancellation()
-            return data
+            try session.photoData(id, control: control)
         }
     }
     init(session: BackupRecoveryReviewSession, page: HealthRecoveryRecordReview.Page) {

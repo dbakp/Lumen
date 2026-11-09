@@ -1,0 +1,44 @@
+{
+  "kind": "uitest",
+  "command": [
+    "xcrun",
+    "swiftc",
+    "-typecheck",
+    "-swift-version",
+    "5",
+    "-target",
+    "arm64-apple-ios18.0-simulator",
+    "-sdk",
+    "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk",
+    "-F",
+    "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Library/Frameworks",
+    "-I",
+    "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/lib",
+    "-module-alias",
+    "Testing=_Testing_Unavailable",
+    "-module-cache-path",
+    "/tmp/LumenBatch37Simulator/ModuleCache.noindex",
+    "/Users/davidbakposada/Documents/ChatGPT/Lumen/LumenUITests/LumenSmokeTests.swift"
+  ],
+  "pid": 29960,
+  "exit": 0,
+  "sourcesBefore": {
+    "LumenUITests/LumenSmokeTests.swift": {
+      "bytes": 839918,
+      "sha256": "e398a69325a24faec216c8d9aa696e9a6e7377dd039f26a574fd061504d0453e"
+    }
+  },
+  "sourcesAfter": {
+    "LumenUITests/LumenSmokeTests.swift": {
+      "bytes": 839918,
+      "sha256": "e398a69325a24faec216c8d9aa696e9a6e7377dd039f26a574fd061504d0453e"
+    }
+  },
+  "sourceFenceExact": true,
+  "stdout": "",
+  "stderr": "",
+  "startedAt": 1794190991.69968,
+  "finishedAt": 1794190995.444672,
+  "scope": "Whole actual source SDK typing, actual dependency modules/generated assets, no stubs. No full link/build/native acceptance.",
+  "status": "PASS"
+}

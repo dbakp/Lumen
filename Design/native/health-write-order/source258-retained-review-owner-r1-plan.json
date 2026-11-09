@@ -1,0 +1,63 @@
+{
+  "status": "Concrete production implementation and current pure controls; final source review/freeze pending",
+  "source": "durable-source-r258.json",
+  "priorSource": "durable-source-r257.json",
+  "priorReleaseExactCommit": "5701c734fee2e101d04e3f978a752865eda1159c",
+  "priorReleaseExactProof": "source257-release-exact-github-r2.json",
+  "priorUnion": 2411,
+  "problem": "Retained-copy review passes Preview directly, gates on cachedHealthStore availability and constructs payload without reviewed currentlegacy origins. A cached destination has no explicit closable review authority.",
+  "implementation": [
+    "New pureHealthRetainedRecoveryReviewSession owns privatePreview lease and HealthRecoveryOriginReviewLease; summaryonly metadata. Capture worker returnsVoid, rawSnapshot staysinlease; close prevents newrecords/photos/payload/origin acquisitions without deleting permanentretainedcopies.",
+    "HealthRecoveryView parent createsfreshsession perselection, boolean navigation destination .id(session.id), closes when realBack endsreview. Preserve sameowner andreadycapture through record/photo child navigation; cancel/suspendpending capture ondisappearance.",
+    "Review derives choiceeligibility from freshrecoverableDomains classification plus existingHealthStoreunavailable guard. Allchoicesoffinitially; explicit confirmation snapshots sessionID/domains/legacyDomains/omitPhotos and revalidates before worker. Actualpayload binds selected origins from samelease via existingbindingLegacyOrigins; neverrecapture onretry/childreturn.",
+    "Retained records/photo workers acquire privatePreview through same session; existing BackupRecoveryReviewSession overload remains unchanged. Nativecomponents/DynamicType/44pttargets; projectminimum18 remains."
+  ],
+  "verification": [
+    "Meaningful actualpurecore tests closedowner, begin/finish/suspend/latefinish, selecteddomain binding, actualchangedData/String origin rejection, file/photo preservation; runcurrenttargeted+fullcoresuite withoutborrowing historical2350 count.",
+    "Wholeactualmodel/corecompile and relevantSwiftUI/nativeSDKtyping, concretecurrentnativecase/host/checker/finalizer controls and all newmarkers predeclared beforefreeze. Root+samecritic179 sourceReady/exact before newfull app/test/currentmarkers.",
+    "Actualretained review\u2192readycapture\u2192explicitchoice\u2192record/photochild\u2192sameowner/capture/choices\u2192Backclosure\u2192distinctfreshowner/capture/offchoices\u2192actualboundedrecovery. AddheldcaptureBack/latecompletion and relevantselected-file records regression; separateData/String/otherwindow scopes remainopen untiltested.",
+    "Everyactualcase fulloriginals/helper/summary/mandatoryaudit/root/samecritic/exact before reset; currentoptimizedRelease/review/exact andscopedcleanup. No physicalphone/checkpointstop/globalacceptance."
+  ],
+  "storage": {
+    "cleanup": "source258-completed257-cleanup-r2.json",
+    "latestCreditedBytes": 744656896,
+    "aggregateCreditedBytes": 16746454615,
+    "preserve": "Debug/packages/provider/designskill/unbacked191219/canonicalevidence",
+    "historical": "All257raw/native/Release/build/cache/settings/FileList-bound audits andrunners nowhistorical. R1cleanupstoppedbeforedeletion onmissinggeneric-auditor explicitproof; R2expanded2411verified thenremovedonly18knownpaths."
+  },
+  "remaining": "StringNotnow/preparation/finalcommit/otherwindows/originalnext1\u20137/all43/eightgroups/fullproductgoal untouched.",
+  "checkedAt": 1794189440.7819872,
+  "nativeCases": {
+    "order": [
+      "children",
+      "pending-back",
+      "sheet-dismiss"
+    ],
+    "driver": "retained-owner-driver-r1.py --case <case>",
+    "finalizer": "retained-owner-finalization-r1.py --case <case>",
+    "mandatoryChecker": "check-retained-owner-r1.py --case <case>",
+    "independentReviewAndExactBeforeEveryReset": true,
+    "sourceReadyReview": "health-retained-review-owner-source258-round2-part179-source.json",
+    "sourceExactProof": "source258-source-exact-github.json",
+    "buildExactProof": "source258-build-exact-github.json",
+    "caseExactProofs": [
+      "source258-children-exact-github.json",
+      "source258-pending-back-exact-github.json",
+      "source258-sheet-dismiss-exact-github.json"
+    ]
+  },
+  "sourceCorrection": "Early same critic found enclosing Settings dismissal with deep child had no guaranteed close. Explicit Settings outer NavigationStack owns a pure closable scope; records/photos preserve same session, enclosing close cancels/clears current session and permanently rejects new review. DEBUG direct root has equivalent outer scope; actual Settings sheet case exercises production boundary.",
+  "currentControls": {
+    "targetedCore": "source258-retained-owner-core-r5.json",
+    "targetedCount": 35,
+    "fullCore": "source258-full-core-r3.json",
+    "fullPassLines": 2212,
+    "wholeAppAndTestTyping": "source258-fenced-sdk-r4-executed.py",
+    "guard": "source258-retained-guard-controls-r2.json",
+    "guardCount": 10,
+    "protocol": "source258-retained-protocol-controls-r2.json",
+    "protocolCount": 34,
+    "runnerArgs": "source258-runner-argument-controls-r2.json",
+    "runnerArgsCount": 13
+  }
+}
