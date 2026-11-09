@@ -1,0 +1,110 @@
+{
+  "status": "PASS7actual whole confirmation_gate+observe caller paths with real protocol/regular-file readers and native255-derived fixture data",
+  "count": 7,
+  "cases": [
+    {
+      "case": "old-marker-collision",
+      "actualSource": "confirmation-lifecycle-driver-r2.py",
+      "expected": "old-return",
+      "failure": null,
+      "actualObserveExecuted": true,
+      "completionFlag": null,
+      "checkedMarkerStillDictionary": true,
+      "postCheckStages": [],
+      "status": "PASS"
+    },
+    {
+      "case": "new-completion",
+      "actualSource": "confirmation-lifecycle-driver-r3.py",
+      "expected": "completed",
+      "failure": null,
+      "actualObserveExecuted": true,
+      "completionFlag": true,
+      "checkedMarkerStillDictionary": true,
+      "postCheckStages": [
+        "protected-after-check",
+        "origin-after-check",
+        "checked-relay"
+      ],
+      "status": "PASS"
+    },
+    {
+      "case": "new-repeat",
+      "actualSource": "confirmation-lifecycle-driver-r3.py",
+      "expected": "repeat",
+      "failure": null,
+      "actualObserveExecuted": true,
+      "completionFlag": true,
+      "checkedMarkerStillDictionary": true,
+      "postCheckStages": [],
+      "status": "PASS"
+    },
+    {
+      "case": "checked-marker-missing",
+      "actualSource": "confirmation-lifecycle-driver-r3.py",
+      "expected": "pending",
+      "failure": null,
+      "actualObserveExecuted": true,
+      "completionFlag": null,
+      "checkedMarkerStillDictionary": true,
+      "postCheckStages": [],
+      "status": "PASS"
+    },
+    {
+      "case": "wrong-ack",
+      "actualSource": "confirmation-lifecycle-driver-r3.py",
+      "expected": "rejected",
+      "failure": "AssertionError: ",
+      "actualObserveExecuted": true,
+      "completionFlag": null,
+      "checkedMarkerStillDictionary": true,
+      "postCheckStages": [],
+      "status": "PASS"
+    },
+    {
+      "case": "native-check-rejected",
+      "actualSource": "confirmation-lifecycle-driver-r3.py",
+      "expected": "rejected",
+      "failure": "AssertionError: ",
+      "actualObserveExecuted": true,
+      "completionFlag": null,
+      "checkedMarkerStillDictionary": true,
+      "postCheckStages": [],
+      "status": "PASS"
+    },
+    {
+      "case": "truthy-nonboolean-not-complete",
+      "actualSource": "confirmation-lifecycle-driver-r3.py",
+      "expected": "rejected",
+      "failure": "AssertionError: Host completion flag must be Boolean",
+      "actualObserveExecuted": true,
+      "completionFlag": {
+        "synthetic": true
+      },
+      "checkedMarkerStillDictionary": true,
+      "postCheckStages": [],
+      "status": "PASS"
+    }
+  ],
+  "sources": {
+    "confirmation-lifecycle-driver-r2.py": {
+      "bytes": 19028,
+      "sha256": "6109d413290fe0a87dbe59b5a4994935f21b728281a94df97e6ebfbd6316b632"
+    },
+    "confirmation-lifecycle-driver-r3.py": {
+      "bytes": 19225,
+      "sha256": "979407e987be61f34b407e31ca6e7e78c35c244898a40059e231179102997fa7"
+    },
+    "confirmation-lifecycle-protocol-r1.py": {
+      "bytes": 4998,
+      "sha256": "efb9a5acc54bb5d4d3a8fe1cd905c55cdb403e8e72ac0d7232721953e364375a"
+    },
+    "confirmation-window-evidence-r3.py": {
+      "bytes": 4425,
+      "sha256": "df6bcfc5cbe7ab325b994bcbbf34988bdaac4bea7c4b48424b5a7485fb40756a"
+    }
+  },
+  "realProcessQueries": [],
+  "scope": "Real actual observed-marker storage and protocol validators execute in unique TemporaryDirectory files, with native255 JSON only as retained fixture input. Trace header file/hash adapted to fixture copy; no native/fresh process proof. Only protection/origin/publisher persistence dependencies injected and explicitly recorded. Old whole caller reproduces marker-dictionary early return. New completes once, retains checked dictionary, repeated call skips duplicate stages; wrong ack/rejected nativeCheck/pending marker never publish. All fixture files automatically removed.",
+  "checkedAt": 1794182757.184884
+}

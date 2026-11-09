@@ -1,0 +1,174 @@
+{
+  "status": "PASS actual checker marker/nativecheck/completion/source schema and driver explicit-completion predicates",
+  "count": 26,
+  "cases": [
+    {
+      "case": "synthetic completion flag and third length-placeholder plus actual255 strict marker/check data only",
+      "accepted": true,
+      "failure": null,
+      "status": "PASS"
+    },
+    {
+      "case": "reject missing checked relay length prerequisite",
+      "accepted": false,
+      "failure": "AssertionError: ",
+      "status": "PASS"
+    },
+    {
+      "case": "reject completion false",
+      "accepted": false,
+      "failure": "AssertionError: ",
+      "status": "PASS"
+    },
+    {
+      "case": "reject completion integer-one",
+      "accepted": false,
+      "failure": "AssertionError: ",
+      "status": "PASS"
+    },
+    {
+      "case": "reject completion truthy-string",
+      "accepted": false,
+      "failure": "AssertionError: ",
+      "status": "PASS"
+    },
+    {
+      "case": "reject completion truthy-dictionary",
+      "accepted": false,
+      "failure": "AssertionError: ",
+      "status": "PASS"
+    },
+    {
+      "case": "reject missing completion",
+      "accepted": false,
+      "failure": "KeyError: 'hostCheckCompleted'",
+      "status": "PASS"
+    },
+    {
+      "case": "reject missing native check",
+      "accepted": false,
+      "failure": "KeyError: 'check'",
+      "status": "PASS"
+    },
+    {
+      "case": "reject missing checked marker",
+      "accepted": false,
+      "failure": "KeyError: 'checked'",
+      "status": "PASS"
+    },
+    {
+      "case": "reject marker overwritten by completion Boolean",
+      "accepted": false,
+      "failure": "TypeError: 'bool' object is not subscriptable",
+      "status": "PASS"
+    },
+    {
+      "case": "reject missing marker payload",
+      "accepted": false,
+      "failure": "AssertionError: ",
+      "status": "PASS"
+    },
+    {
+      "case": "reject tampered raw marker",
+      "accepted": false,
+      "failure": "AssertionError: ",
+      "status": "PASS"
+    },
+    {
+      "case": "reject checked marker gate spoof",
+      "accepted": false,
+      "failure": "AssertionError: ",
+      "status": "PASS"
+    },
+    {
+      "case": "reject native check status",
+      "accepted": false,
+      "failure": "AssertionError: ",
+      "status": "PASS"
+    },
+    {
+      "case": "reject native known-write flag",
+      "accepted": false,
+      "failure": "AssertionError: ",
+      "status": "PASS"
+    },
+    {
+      "case": "reject wrong lateack",
+      "accepted": false,
+      "failure": "AssertionError: ",
+      "status": "PASS"
+    },
+    {
+      "case": "driver guard0 true",
+      "accepted": true,
+      "status": "PASS"
+    },
+    {
+      "case": "driver guard0 one",
+      "accepted": false,
+      "status": "PASS"
+    },
+    {
+      "case": "driver guard0 dictionary",
+      "accepted": false,
+      "status": "PASS"
+    },
+    {
+      "case": "driver guard0 false",
+      "accepted": false,
+      "status": "PASS"
+    },
+    {
+      "case": "driver guard1 true",
+      "accepted": true,
+      "status": "PASS"
+    },
+    {
+      "case": "driver guard1 one",
+      "accepted": false,
+      "status": "PASS"
+    },
+    {
+      "case": "driver guard1 dictionary",
+      "accepted": false,
+      "status": "PASS"
+    },
+    {
+      "case": "driver guard1 false",
+      "accepted": false,
+      "status": "PASS"
+    },
+    {
+      "case": "actual current256 archive verification",
+      "accepted": true,
+      "status": "PASS"
+    },
+    {
+      "case": "reject virtual currentchecker byte tamper, no file mutation",
+      "accepted": false,
+      "status": "PASS"
+    }
+  ],
+  "sources": {
+    "check-confirmation-lifecycle-r3.py": {
+      "bytes": 15329,
+      "sha256": "320063ad539e5ea111cc0805b3e47ccee6b2b1f5ffb0441b02111415afc2de8a"
+    },
+    "confirmation-lifecycle-driver-r3.py": {
+      "bytes": 19225,
+      "sha256": "979407e987be61f34b407e31ca6e7e78c35c244898a40059e231179102997fa7"
+    },
+    "confirmation-lifecycle-protocol-r1.py": {
+      "bytes": 4998,
+      "sha256": "efb9a5acc54bb5d4d3a8fe1cd905c55cdb403e8e72ac0d7232721953e364375a"
+    }
+  },
+  "currentSourceVerification": {
+    "source": "durable-source-r256.json",
+    "exactCurrentArchiveBindings": 977,
+    "manifestSHA256": "9f3dde954d67459a099f730bc11c4ec102b6deda5276d10f71f6032fbf3cfe44"
+  },
+  "processQueries": [],
+  "scope": "Actual checker AST segment from geometry setup through nativeCheck/header validation before three-relay/postCheck/final endpoints checks. Actual255 JSON/native Check as fixture data, plus explicitly synthetic completion flag and third-relay length-only placeholder; no third-relay payload validation in this segment; NOT a full checker/native pass. Current256 source verifier actually checks full frozen archive; one mocked read byte tamper rejects with no file mutation. All processes denied. Actual255 was failed, oldrawpaths not reopened.",
+  "checkedAt": 1794183034.5568042
+}

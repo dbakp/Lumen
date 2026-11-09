@@ -1,0 +1,46 @@
+{
+  "status": "PASS3actual help entrypoints; parser exits before native/checker/finalizer execution",
+  "rows": [
+    {
+      "file": "confirmation-lifecycle-driver-r3.py",
+      "sourceBytes": 19225,
+      "sourceSHA256": "979407e987be61f34b407e31ca6e7e78c35c244898a40059e231179102997fa7",
+      "command": [
+        "python3",
+        "Design/native/health-write-order/confirmation-lifecycle-driver-r3.py",
+        "--help"
+      ],
+      "exit": 0,
+      "stdout": "usage: confirmation-lifecycle-driver-r3.py [-h] --source SOURCE --host-source\n                                           HOST_SOURCE --build BUILD --trial\n                                           TRIAL\n\noptional arguments:\n  -h, --help            show this help message and exit\n  --source SOURCE\n  --host-source HOST_SOURCE\n  --build BUILD\n  --trial TRIAL\n",
+      "stderr": ""
+    },
+    {
+      "file": "check-confirmation-lifecycle-r3.py",
+      "sourceBytes": 15329,
+      "sourceSHA256": "320063ad539e5ea111cc0805b3e47ccee6b2b1f5ffb0441b02111415afc2de8a",
+      "command": [
+        "python3",
+        "Design/native/health-write-order/check-confirmation-lifecycle-r3.py",
+        "--help"
+      ],
+      "exit": 0,
+      "stdout": "usage: check-confirmation-lifecycle-r3.py [-h] --checker-source CHECKER_SOURCE\n                                          --case-source CASE_SOURCE --build\n                                          BUILD --trial TRIAL\n                                          prefix\n\npositional arguments:\n  prefix\n\noptional arguments:\n  -h, --help            show this help message and exit\n  --checker-source CHECKER_SOURCE\n  --case-source CASE_SOURCE\n  --build BUILD\n  --trial TRIAL\n",
+      "stderr": ""
+    },
+    {
+      "file": "confirmation-lifecycle-finalization-r4.py",
+      "sourceBytes": 8987,
+      "sourceSHA256": "c8ba144cf1967fc0ad30b519d96a357b8fb9dbfd361cfc9fbcbf28de9c03fa7c",
+      "command": [
+        "python3",
+        "Design/native/health-write-order/confirmation-lifecycle-finalization-r4.py",
+        "--help"
+      ],
+      "exit": 0,
+      "stdout": "usage: confirmation-lifecycle-finalization-r4.py [-h] --plan PLAN\n\nFinalize the actual reviewed lifecycle case and preserve malformed audit\nfailures. Command construction is pure. Execution is only through main;\nimports perform no process queries, writes, app launches or cleanup.\n\noptional arguments:\n  -h, --help   show this help message and exit\n  --plan PLAN\n",
+      "stderr": ""
+    }
+  ],
+  "scope": "Three real Python --help processes; no native/device/app/process observation queries or case files generated. Not an execution/readiness/runtime pass.",
+  "checkedAt": 1794183070.455505
+}

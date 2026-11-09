@@ -1,0 +1,152 @@
+{
+  "status": "PASS actual pure mixed case/host manifest and checker-name/protocol argument builder",
+  "count": 21,
+  "cases": [
+    {
+      "case": "synthetic future mixed case255 host256 coherence only",
+      "accepted": true,
+      "command": [
+        "python3",
+        "/Users/davidbakposada/Documents/ChatGPT/Lumen/Design/native/health-write-order/check-confirmation-lifecycle-r3.py",
+        "health-confirmation-notnow-data-source256r1",
+        "--checker-source",
+        "durable-source-r256.json",
+        "--case-source",
+        "durable-source-r255.json",
+        "--build",
+        "health-target-change-source255-r1-build.json",
+        "--trial",
+        "Source256R1"
+      ],
+      "status": "PASS"
+    },
+    {
+      "case": "reject case source",
+      "accepted": false,
+      "command": null,
+      "status": "PASS"
+    },
+    {
+      "case": "reject host source",
+      "accepted": false,
+      "command": null,
+      "status": "PASS"
+    },
+    {
+      "case": "reject preflight source",
+      "accepted": false,
+      "command": null,
+      "status": "PASS"
+    },
+    {
+      "case": "reject host source verification",
+      "accepted": false,
+      "command": null,
+      "status": "PASS"
+    },
+    {
+      "case": "reject case build",
+      "accepted": false,
+      "command": null,
+      "status": "PASS"
+    },
+    {
+      "case": "reject preflight build",
+      "accepted": false,
+      "command": null,
+      "status": "PASS"
+    },
+    {
+      "case": "reject resultbundle",
+      "accepted": false,
+      "command": null,
+      "status": "PASS"
+    },
+    {
+      "case": "reject duplicate bundle",
+      "accepted": false,
+      "command": null,
+      "status": "PASS"
+    },
+    {
+      "case": "reject plan source durable-source-r255.json",
+      "accepted": false,
+      "command": null,
+      "status": "PASS"
+    },
+    {
+      "case": "reject plan caseSource durable-source-r254.json",
+      "accepted": false,
+      "command": null,
+      "status": "PASS"
+    },
+    {
+      "case": "reject plan build health-target-change-source254-r1-build.json",
+      "accepted": false,
+      "command": null,
+      "status": "PASS"
+    },
+    {
+      "case": "reject plan prefix health-confirmation-notnow-data-source255r1",
+      "accepted": false,
+      "command": null,
+      "status": "PASS"
+    },
+    {
+      "case": "reject plan rawStem HealthConfirmationNotNowDataSource255R1",
+      "accepted": false,
+      "command": null,
+      "status": "PASS"
+    },
+    {
+      "case": "reject plan nativeTrial Source255R1",
+      "accepted": false,
+      "command": null,
+      "status": "PASS"
+    },
+    {
+      "case": "reject plan checkerTrial ../unsafe",
+      "accepted": false,
+      "command": null,
+      "status": "PASS"
+    },
+    {
+      "case": "reject plan checker ../check-confirmation-lifecycle-r3.py",
+      "accepted": false,
+      "command": null,
+      "status": "PASS"
+    },
+    {
+      "case": "reject plan checker other.py",
+      "accepted": false,
+      "command": null,
+      "status": "PASS"
+    },
+    {
+      "case": "reject plan checkerOutcomeProtocol lifecycle-r2",
+      "accepted": false,
+      "command": null,
+      "status": "PASS"
+    },
+    {
+      "case": "reject outcome source",
+      "accepted": false,
+      "command": null,
+      "status": "PASS"
+    },
+    {
+      "case": "reject outcome build",
+      "accepted": false,
+      "command": null,
+      "status": "PASS"
+    }
+  ],
+  "source": {
+    "file": "confirmation-lifecycle-finalization-r4.py",
+    "bytes": 8987,
+    "sha256": "c8ba144cf1967fc0ad30b519d96a357b8fb9dbfd361cfc9fbcbf28de9c03fa7c"
+  },
+  "processQueries": [],
+  "scope": "Retained failed255 state only as fixture, host source/resultbundle synthetically rebound256; current schema command construction only. No native/currentchecker/realprocess/Release acceptance.",
+  "checkedAt": 1794182943.607235
+}
